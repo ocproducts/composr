@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_vpn_username
+class Hook_config_transaction_flat_cost
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_vpn_username
     public function get_details()
     {
         return array(
-            'human_name' => 'VPN_USERNAME',
-            'type' => 'line',
-            'category' => 'ECOMMERCE',
-            'group' => 'PAYMENT_GATEWAY',
-            'explanation' => 'CONFIG_OPTION_vpn_username',
+            'human_name' => 'TRANSACTION_FLAT_COST',
+            'type' => 'float',
+            'category' => 'TRANSACTION_FEES',
+            'group' => 'ECOMMERCE',
+            'explanation' => 'CONFIG_OPTION_transaction_flat_cost',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 5,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

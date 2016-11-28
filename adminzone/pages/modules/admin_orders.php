@@ -99,7 +99,7 @@ class Module_admin_orders
 
         $action = either_param_string('action', '');
 
-        if ($type == 'order_det' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
+        if ($type == 'order_details' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
             breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')), array('_SELF:_SELF:show_orders', do_lang_tempcode('ORDERS'))));
         }
 
@@ -113,7 +113,7 @@ class Module_admin_orders
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
-        if ($type == 'order_det') {
+        if ($type == 'order_details') {
             $this->title = get_screen_title('MY_ORDER_DETAILS');
         }
 
@@ -174,7 +174,7 @@ class Module_admin_orders
         if ($type == 'show_orders') {
             return $this->show_orders();
         }
-        if ($type == 'order_det') {
+        if ($type == 'order_details') {
             return $this->order_details();
         }
         if ($type == 'order_act') {
@@ -217,9 +217,7 @@ class Module_admin_orders
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(
-            get_screen_title('ORDERS'),
-            comcode_lang_string('DOC_ECOMMERCE'),
+        return do_next_manager(get_screen_title('ORDERS'), comcode_lang_string('DOC_ECOMMERCE'),
             array(
                 array('menu/adminzone/audit/ecommerce/orders', array('_SELF', array('type' => 'show_orders'), '_SELF'), do_lang('SHOW_ORDERS')),
                 array('menu/adminzone/audit/ecommerce/undispatched_orders', array('_SELF', array('type' => 'show_orders', 'filter' => 'undispatched'), '_SELF'), do_lang('SHOW_UNDISPATCHED_ORDERS')),
@@ -238,7 +236,7 @@ class Module_admin_orders
         require_code('shopping');
 
         $filter = get_param_string('filter', null);
-        $search = get_param_string('search', '', INPUT_FILTER_GET_COMPLEX);
+        $search = get_param_string('search', '', true);
 
         $cond = 'WHERE 1=1';
 
@@ -248,7 +246,7 @@ class Module_admin_orders
 
         $extra_join = '';
         if (($search !== null) && ($search != '')) {
-            push_db_scope_check(false);
+            $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
             $cond .= ' AND (t1.id LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\' OR t2.m_username LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\')';
             $extra_join = ' JOIN ' . get_table_prefix() . 'f_members t2 ON t2.id=t1.c_member';
@@ -269,7 +267,7 @@ class Module_admin_orders
             't1.transaction_id' => do_lang_tempcode('TRANSACTION_ID'),
         );
 
-        $query_sort = explode(' ', get_param_string('sort', 't1.add_date ASC', INPUT_FILTER_GET_COMPLEX), 2);
+        $query_sort = explode(' ', get_param_string('sort', 't1.add_date ASC'), 2);
         if (count($query_sort) == 1) {
             $query_sort[] = 'ASC';
         }
@@ -291,13 +289,14 @@ class Module_admin_orders
             ), $sortables, 'sort', $sortable . ' ' . $sort_order
         );
 
-        push_db_scope_check(false);
+        global $NO_DB_SCOPE_CHECK;
+        $NO_DB_SCOPE_CHECK = true;
 
         $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {
-                $view_url = build_url(array('page' => '_SELF', 'type' => 'order_det', 'id' => $row['id']), '_SELF');
+                $view_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
 
                 $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
@@ -327,7 +326,7 @@ class Module_admin_orders
                 $member = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
             }
 
-            $order_date = hyperlink($view_url, get_timezoned_date_time($row['add_date'], false), false, true);
+            $order_date = hyperlink($view_url, get_timezoned_date($row['add_date'], true, false, true, true), false, true);
 
             if (($row['transaction_id'] != '') && ($row['order_status'] != 'ORDER_STATUS_awaiting_payment')) {
                 $transaction_details_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'logs', 'type_code' => $order_title, 'id' => $row['id']), get_module_zone('admin_ecommerce_logs'));
@@ -375,8 +374,6 @@ class Module_admin_orders
             'HIDDEN' => $hidden,
         ));
 
-        pop_db_scope_check();
-
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
     }
@@ -396,7 +393,7 @@ class Module_admin_orders
         $max = get_param_integer('max', 10);
 
         $sortables = array();
-        $query_sort = explode(' ', get_param_string('sort', 'p_name ASC', INPUT_FILTER_GET_COMPLEX), 2);
+        $query_sort = explode(' ', get_param_string('sort', 'p_name ASC'), 2);
         if (count($query_sort) == 1) {
             $query_sort[] = 'ASC';
         }
@@ -440,7 +437,7 @@ class Module_admin_orders
                     ), false, null)
             );
         }
-        $results_table = results_table(do_lang_tempcode('PRODUCTS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries, $sortables, $sortable, $sort_order, 'sort', null, array());
+        $results_table = results_table(do_lang_tempcode('PRODUCTS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries, $sortables, $sortable, $sort_order, 'sort', null, null);
 
         // Pagination
         require_code('templates_pagination');
@@ -468,21 +465,23 @@ class Module_admin_orders
         ));
 
         // Shipping address display
-        $row = $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('order_id' => $id), '', 1);
+        $row = $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('a_order_id' => $id), '', 1);
         if (array_key_exists(0, $row)) {
+            require_lang('cns_special_cpf');
+
             $address = $row[0];
             $shipping_address = do_template('ECOM_SHIPPING_ADDRESS', array(
                 '_GUID' => '332bc2e28a75cff64e6856bbeda6102e',
-                'FIRST_NAME' => $address['first_name'],
-                'LAST_NAME' => $address['last_name'],
-                'ADDRESS_NAME' => $address['address_name'],
-                'ADDRESS_STREET' => $address['address_street'],
-                'ADDRESS_CITY' => $address['address_city'],
-                'ADDRESS_STATE' => $address['address_state'],
-                'ADDRESS_ZIP' => $address['address_zip'],
-                'ADDRESS_COUNTRY' => $address['address_country'],
-                'RECEIVER_EMAIL' => $address['receiver_email'],
-                'CONTACT_PHONE' => $address['contact_phone'],
+                'FIRSTNAME' => $address['a_firstname'],
+                'LASTNAME' => $address['a_lastname'],
+                'STREET_ADDRESS' => $address['a_street_address'],
+                'CITY' => $address['a_city'],
+                'COUNTY' => $address['a_county'],
+                'STATE' => $address['a_state'],
+                'POST_CODE' => $address['a_post_code'],
+                'COUNTRY' => $address['a_country'],
+                'EMAIL' => $address['a_email'],
+                'PHONE' => $address['a_phone'],
             ));
         } else {
             $shipping_address = new Tempcode();
@@ -497,7 +496,7 @@ class Module_admin_orders
             'RESULTS_TABLE' => $results_table,
             'PAGINATION' => $pagination,
             'ORDER_NUMBER' => strval($id),
-            'ADD_DATE' => get_timezoned_date($data['add_date'], false),
+            'ADD_DATE' => get_timezoned_date($data['add_date'], true, false, true, true),
             'CURRENCY' => get_option('currency'),
             'TOTAL_PRICE' => float_format($data['tot_price'], 2),
             'ORDERED_BY_MEMBER_ID' => strval($ordered_by_member_id),
@@ -543,7 +542,7 @@ class Module_admin_orders
 
         require_code('form_templates');
 
-        $redirect_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
+        $redirect_url = get_param_string('redirect', null);
         $last_action = get_param_string('last_act', null);
 
         $update_url = build_url(array('page' => '_SELF', 'type' => '_add_note', 'redirect' => $redirect_url), '_SELF');
@@ -553,7 +552,7 @@ class Module_admin_orders
         $note = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => $id));
 
         if ($last_action !== null) {
-            $note .= do_lang('ADD_NOTE_APPEND_TEXT', get_timezoned_date_time(time(), false), do_lang('ORDER_STATUS_' . $last_action));
+            $note .= do_lang('ADD_NOTE_APPEND_TEXT', get_timezoned_date(time(), true, false, true, true), do_lang('ORDER_STATUS_' . $last_action));
         }
 
         $fields->attach(form_input_text(do_lang_tempcode('NOTE'), do_lang_tempcode('NOTE_DESCRIPTION'), 'note', $note, true));
@@ -563,11 +562,11 @@ class Module_admin_orders
         if ($last_action == 'dispatched') {
             // Display dispatch mail preview
             $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $id), '', 1);
-            $order_det = $res[0];
+            $order_details = $res[0];
 
-            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_det['c_member']);
+            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['c_member']);
 
-            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_det['c_member']));
+            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_details['c_member']));
 
             $fields->attach(form_input_text(do_lang_tempcode('DISPATCH_MAIL_PREVIEW'), do_lang_tempcode('DISPATCH_MAIL_PREVIEW_DESCRIPTION'), 'dispatch_mail_content', $message, true));
 
@@ -599,7 +598,7 @@ class Module_admin_orders
         $id = post_param_integer('order_id');
 
         $notes = post_param_string('note');
-        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
+        $redirect = get_param_string('redirect', null);
 
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('notes' => $notes), array('id' => $id), '', 1);
 
@@ -627,13 +626,13 @@ class Module_admin_orders
         }
 
         $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $order_id), '', 1);
-        $order_det = $res[0];
+        $order_details = $res[0];
 
-        if (is_guest($order_det['c_member'])) {
+        if (is_guest($order_details['c_member'])) {
             attach_message(do_lang_tempcode('NO_NOTE_GUEST'), 'warn');
         } else {
             require_code('notifications');
-            dispatch_notification('order_dispatched', null, do_lang('ORDER_DISPATCHED_MAIL_SUBJECT', get_site_name(), strval($order_id), null, get_lang($order_det['c_member'])), $message, array($order_det['c_member']), A_FROM_SYSTEM_PRIVILEGED);
+            dispatch_notification('order_dispatched', null, do_lang('ORDER_DISPATCHED_MAIL_SUBJECT', get_site_name(), strval($order_id), null, get_lang($order_details['c_member'])), $message, array($order_details['c_member']), A_FROM_SYSTEM_PRIVILEGED);
         }
     }
 
@@ -748,7 +747,7 @@ class Module_admin_orders
         $end_date = post_param_date('end_date', true);
         $order_status = post_param_string('order_status');
 
-        $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false) . '-' . get_timezoned_date($end_date, false) . '.csv';
+        $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false, false, false, true) . '-' . get_timezoned_date($end_date, false, false, false, true) . '.csv';
 
         $orders = array();
         $data = array();
@@ -761,14 +760,14 @@ class Module_admin_orders
         $qry = 'SELECT t1.*,(t2.included_tax*t2.p_quantity) AS tax_amt,t3.*
             FROM ' . get_table_prefix() . 'shopping_order t1
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id
-            LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.order_id
+            LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.a_order_id
             WHERE ' . $cond;
         $rows = $GLOBALS['SITE_DB']->query($qry);
         remove_duplicate_rows($rows);
 
         foreach ($rows as $order) {
             $orders[do_lang('ORDER_NUMBER')] = strval($order['id']);
-            $orders[do_lang('ORDERED_DATE')] = get_timezoned_date_time($order['add_date']);
+            $orders[do_lang('ORDERED_DATE')] = get_timezoned_date($order['add_date'], true, false, true, true);
             $orders[do_lang('ORDER_PRICE')] = $order['tot_price'];
             $orders[do_lang('ORDER_STATUS')] = do_lang($order['order_status']);
             $orders[do_lang('ORDER_TAX_OPT_OUT')] = ($order['tax_opted_out']) ? do_lang('YES') : do_lang('NO');
@@ -778,29 +777,35 @@ class Module_admin_orders
 
             // Put address together
             $address = array();
-            if ($order['first_name'] . $order['last_name'] != '') {
-                $address[] = trim($order['first_name'] . ' ' . $order['last_name']);
+            if ($order['a_firstname'] . $order['a_lastname'] != '') {
+                $address[] = trim($order['a_firstname'] . ' ' . $order['a_lastname']);
             }
-            if ($order['address_name'] != '') {
-                $address[] = $order['address_name'];
+            if ($order['a_street_address'] != '') {
+                $address[] = $order['a_street_address'];
             }
-            if ($order['address_city'] != '') {
-                $address[] = $order['address_city'];
+            if ($order['a_city'] != '') {
+                $address[] = $order['a_city'];
             }
-            if ($order['address_state'] != '') {
-                $address[] = $order['address_state'];
+            if ($order['a_county'] != '') {
+                $address[] = $order['a_county'];
             }
-            if ($order['address_zip'] != '') {
-                $address[] = $order['address_zip'];
+            if ($order['a_state'] != '') {
+                $address[] = $order['a_state'];
             }
-            if ($order['address_country'] != '') {
-                $address[] = $order['address_country'];
+            if ($order['a_post_code'] != '') {
+                $address[] = $order['a_post_code'];
             }
-            if ($order['contact_phone'] != '') {
-                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['contact_phone'];
+            if ($order['a_country'] != '') {
+                $address[] = $order['a_country'];
+            }
+            if ($order['a_email'] != '') {
+                $address[] = do_lang('EMAIL_ADDRESS') . ': ' . $order['a_email'];
+            }
+            if ($order['a_phone'] != '') {
+                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['a_phone'];
             }
             $full_address = implode("\n", $address);
-            $orders[do_lang('FULL_ADDRESS')] = $full_address;
+            $orders[do_lang('SHIPPING_ADDRESS')] = $full_address;
 
             $data[] = $orders;
         }

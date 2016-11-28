@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_ipn_test
+class Hook_config_transaction_percentage_cost
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_ipn_test
     public function get_details()
     {
         return array(
-            'human_name' => 'IPN_ADDRESS_TEST',
-            'type' => 'line',
-            'category' => 'ECOMMERCE',
-            'group' => 'PAYMENT_GATEWAY_TESTING_MODE',
-            'explanation' => 'CONFIG_OPTION_ipn_test',
+            'human_name' => 'TRANSACTION_PERCENTAGE_COST',
+            'type' => 'float',
+            'category' => 'TRANSACTION_FEES',
+            'group' => 'ECOMMERCE',
+            'explanation' => 'CONFIG_OPTION_transaction_percentage_cost',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +51,6 @@ class Hook_config_ipn_test
      */
     public function get_default()
     {
-        return get_option('staff_address');
+        return '';
     }
 }

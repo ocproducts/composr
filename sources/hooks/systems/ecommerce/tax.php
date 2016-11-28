@@ -24,6 +24,16 @@
 class Hook_ecommerce_tax
 {
     /**
+     * Find whether a shipping address is needed.
+     *
+     * @return boolean Whether a shipping address is needed.
+     */
+    public function needs_shipping_address()
+    {
+        return false;
+    }
+
+    /**
      * Function for administrators to pick an identifier (only used by admins, usually the identifier would be picked via some other means in the wider Composr codebase).
      *
      * @param  ID_TEXT $type_code Product codename.

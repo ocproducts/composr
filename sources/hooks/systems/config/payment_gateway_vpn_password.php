@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_callback_password
+class Hook_config_payment_gateway_vpn_password
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_callback_password
     public function get_details()
     {
         return array(
-            'human_name' => 'CALLBACK_PASSWORD',
+            'human_name' => 'PAYMENT_GATEWAY_VPN_PASSWORD',
             'type' => 'line',
             'category' => 'ECOMMERCE',
             'group' => 'PAYMENT_GATEWAY',
-            'explanation' => 'CONFIG_OPTION_callback_password',
+            'explanation' => 'CONFIG_OPTION_payment_gateway_vpn_password',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 6,
 
             'addon' => 'ecommerce',
         );

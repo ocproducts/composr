@@ -36,9 +36,17 @@ class Hook_cns_cpf_filter_ecommerce
         // Not configurable per-member yet
         //    $cpf = array_merge($cpf, array('currency' => true,));
 
-        // Local payment
-        if (get_option('use_local_payment') == '1') {
-            $cpf = array_merge($cpf, array('payment_type' => true, 'payment_cardholder_name' => true, 'payment_card_type' => true, /*'payment_card_number' => true PCI stops us storing this without a lot of extra work, */'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true));
+        // Local payment (we only store these locally if doing local payment, if we've gone through PCI checks)
+        if ((get_option('use_local_payment') == '1') && (get_option('store_credit_card_numbers') == '1')) {
+            // Payment details
+            $cpf = array_merge($cpf, array('payment_cardholder_name' => true, 'payment_card_type' => true, /*'payment_card_number' => true PCI stops us storing this without a lot of extra work, */'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true));
+            $cpf = array_merge($cpf, array('billing_street_address' => true, 'billing_city' => true, 'billing_post_code' => true, 'billing_country' => true, 'billing_mobile_phone_number' => true));
+            if (get_option('cpf_enable_county') == '1') {
+                $cpf = array_merge($cpf, array('billing_county' => true));
+            }
+            if (get_option('cpf_enable_state') == '1') {
+                $cpf = array_merge($cpf, array('billing_state' => true));
+            }
         }
 
         return $cpf;

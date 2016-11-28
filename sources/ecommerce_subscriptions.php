@@ -34,9 +34,9 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
         $query = 'SELECT * FROM ' . get_table_prefix() . 'subscriptions WHERE s_member_id=' . strval($member_id) . ' AND (' . db_string_equal_to('s_state', 'active') . ' OR ' . db_string_equal_to('s_state', 'cancelled') . ') ORDER BY s_time';
         $_subscriptions = $GLOBALS['SITE_DB']->query($query);
         require_code('ecommerce');
-        push_db_scope_check(false);
+        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
         $_subscriptions_non_recurring = $GLOBALS['SITE_DB']->query_select('f_group_member_timeouts', array('*'), array('member_id' => $member_id));
-        pop_db_scope_check();
+        $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
         foreach ($_subscriptions_non_recurring as $sub) {
             $found_transaction = false;
             $subs_trans = $GLOBALS['SITE_DB']->query_select('transactions', array('*'), array('t_purchase_id' => $member_id, 't_status' => 'Completed'), 'ORDER BY t_time DESC');
@@ -64,7 +64,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                     's_time' => $sub_trans['t_time'],
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
-                    's_via' => $sub_trans['t_via'],
+                    's_payment_gateway' => $sub_trans['t_payment_gateway'],
                     's_length' => $sub_trans_2[0]['s_length'],
                     's_length_units' => $sub_trans_2[0]['s_length_units'],
                 );
@@ -106,16 +106,16 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 $usergroup_name = mixed();
 
                 $type_code = $sub['s_type_code'];
-                $object = find_product($type_code);
-                if ($object === null) {
+                $product_object = find_product($type_code);
+                if ($product_object === null) {
                     continue;
                 }
-                $products = $object->get_products(false, $type_code);
+                $products = $product_object->get_products(false, $type_code);
                 $product_row = $products[$type_code];
                 $item_name = $product_row[4];
             }
 
-            $is_manual = ($sub['s_via'] == 'manual');
+            $is_manual = ($sub['s_payment_gateway'] == 'manual');
 
             $length = $sub['s_length'];
             $length_units = $sub['s_length_units']; // y-year, m-month, w-week, d-day
@@ -165,7 +165,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
 
                 'state' => $sub['s_state'],
 
-                'via' => $sub['s_via'],
+                'via' => $sub['s_payment_gateway'],
                 'auto_fund_source' => $sub['s_auto_fund_source'],
                 'auto_fund_key' => $sub['s_auto_fund_key'],
 
@@ -214,10 +214,10 @@ function prepare_templated_subscription($subscription)
         '_TERM_START_TIME' => strval($subscription['term_start_time']),
         '_TERM_END_TIME' => strval($subscription['term_end_time']),
         '_EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : strval($subscription['expiry_time']),
-        'START_TIME' => get_timezoned_date($subscription['start_time'], false),
-        'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false),
-        'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false),
-        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false),
+        'START_TIME' => get_timezoned_date($subscription['start_time'], false, false, false, true),
+        'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false, false, false, true),
+        'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false, false, false, true),
+        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false, false, false, true),
         'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['via']) : new Tempcode(),
     );
 }

@@ -208,9 +208,7 @@ class Module_admin_ecommerce_logs
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(
-            $this->title,
-            new Tempcode(),
+        return do_next_manager($this->title, new Tempcode(),
             array(
                 array('menu/adminzone/audit/ecommerce/cash_flow', array('_SELF', array('type' => 'cash_flow'), '_SELF'), do_lang('CASH_FLOW')),
                 array('menu/adminzone/audit/ecommerce/profit_loss', array('_SELF', array('type' => 'profit_loss'), '_SELF'), do_lang('PROFIT_LOSS')),
@@ -234,7 +232,7 @@ class Module_admin_ecommerce_logs
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 50);
         $sortables = array('t_time' => do_lang_tempcode('DATE'), 't_amount' => do_lang_tempcode('AMOUNT'));
-        $test = explode(' ', get_param_string('sort', 't_time DESC', INPUT_FILTER_GET_COMPLEX), 2);
+        $test = explode(' ', get_param_string('sort', 't_time DESC'), 2);
         if (count($test) == 1) {
             $test[1] = 'DESC';
         }
@@ -274,7 +272,7 @@ class Module_admin_ecommerce_logs
             do_lang('MEMBER')
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {
-            $date = get_timezoned_date_time($myrow['t_time']);
+            $date = get_timezoned_date($myrow['t_time']);
 
             if ($myrow['t_status'] != 'Completed') {
                 $trigger_url = build_url(array('page' => '_SELF', 'type' => 'trigger', 'type_code' => $myrow['t_type_code'], 'id' => $myrow['t_purchase_id']), '_SELF');
@@ -290,7 +288,7 @@ class Module_admin_ecommerce_logs
                 $member_id = method_exists($product_ob, 'member_for') ? $product_ob->member_for($myrow['t_purchase_id']) : null;
             }
             if ($member_id !== null) {
-                $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member_id, '', false);
+                $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member_id, false, '', false);
             } else {
                 $member_link = do_lang_tempcode('UNKNOWN_EM');
             }
@@ -368,7 +366,7 @@ class Module_admin_ecommerce_logs
             return do_template('FORM_SCREEN', array('_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => '', 'URL' => get_self_url(), 'GET' => true, 'HIDDEN' => ''));
         }
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => get_param_string('redirect', null)), '_SELF');
         $text = do_lang('MANUAL_TRANSACTION_TEXT');
         $submit_name = do_lang('MANUAL_TRANSACTION');
 
@@ -442,8 +440,8 @@ class Module_admin_ecommerce_logs
         $custom_expiry = post_param_date('cexpiry');
         $mc_currency = get_option('currency');
 
-        $object = find_product($type_code);
-        $products = $object->get_products(true);
+        $product_object = find_product($type_code);
+        $products = $product_object->get_products(true);
         if ($mc_gross == '') {
             $mc_gross = $products[$type_code][1];
             if (isset($products[$type_code][5])) {
@@ -478,7 +476,7 @@ class Module_admin_ecommerce_logs
                     's_time' => time(),
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
-                    's_via' => 'manual',
+                    's_payment_gateway' => 'manual',
                     's_length' => $products[$type_code][3]['length'],
                     's_length_units' => $products[$type_code][3]['length_units'],
                 ), true));
@@ -510,7 +508,7 @@ class Module_admin_ecommerce_logs
 
         handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual');
 
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
+        $url = get_param_string('redirect', null);
         if ($url !== null) {
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -541,7 +539,7 @@ class Module_admin_ecommerce_logs
             'FIELDS' => $fields,
             'TEXT' => '',
             'HIDDEN' => '',
-            'URL' => get_self_url(false, false, array(), false, true),
+            'URL' => get_self_url(false, false, null, false, true),
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
         ));
@@ -580,7 +578,7 @@ class Module_admin_ecommerce_logs
         $transactions = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'transactions WHERE t_time<' . strval($to) . ' AND ' . db_string_equal_to('t_status', 'Completed') . ' ORDER BY t_time');
         foreach ($transactions as $transaction) {
             if ($transaction['t_time'] > $from) {
-                $types['TRANS']['AMOUNT'] += get_transaction_fee($transaction['t_amount'], $transaction['t_via']);
+                $types['TRANS']['AMOUNT'] += get_transaction_fee($transaction['t_amount'], $transaction['t_payment_gateway']);
             }
 
             if ($unpaid_invoices_count) {
@@ -598,7 +596,7 @@ class Module_admin_ecommerce_logs
             $types['CLOSING']['AMOUNT'] += $transaction['t_amount'];
 
             if ($transaction['t_time'] < $from) {
-                $types['OPENING']['AMOUNT'] += $transaction['t_amount'] - get_transaction_fee($transaction['t_amount'], $transaction['t_via']);
+                $types['OPENING']['AMOUNT'] += $transaction['t_amount'] - get_transaction_fee($transaction['t_amount'], $transaction['t_payment_gateway']);
                 continue;
             }
 
@@ -710,7 +708,7 @@ class Module_admin_ecommerce_logs
     {
         disable_php_memory_limit();
 
-        $where = array('s_via' => 'manual');
+        $where = array('s_payment_gateway' => 'manual');
         if (get_param_integer('all', 0) == 1) {
             $where = null;
         }
@@ -734,8 +732,8 @@ class Module_admin_ecommerce_logs
             $s_length_units = $products[$subs['s_type_code']][3]['length_units']; // y-year, m-month, w-week, d-day
             $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
             $expiry_time = strtotime('+' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $subs['s_time']);
-            $expiry_date = get_timezoned_date($expiry_time, false);
-            $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($subs['s_member_id'], '', false);
+            $expiry_date = get_timezoned_date($expiry_time, false, false, false, true);
+            $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($subs['s_member_id'], true, '', false);
             $cancel_url = build_url(array('page' => '_SELF', 'type' => 'cancel_subscription', 'subscription_id' => $subs['id']), '_SELF');
 
             $data[$item_name][] = array($member_link, $expiry_date, $cancel_url, $subs['id']);

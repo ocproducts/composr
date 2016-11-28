@@ -131,6 +131,13 @@ function string_scan($lang, $do_guessing = false)
         CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
+        CONFIG_OPTION_transaction_flat_cost
+        CONFIG_OPTION_transaction_percentage_cost
+        TRANSACTION_FLAT_COST
+        TRANSACTION_PERCENTAGE_COST
+        CONFIG_CATEGORY_TRANSACTION_FEES
+        PAYMENT_GATEWAY_authorize
+        PAYMENT_GATEWAY_ccbill
         TICKETS_STAFF
         NO_CNS
         DOCS
@@ -171,6 +178,10 @@ function string_scan($lang, $do_guessing = false)
         MAIL_TEST_UNKNOWN
         EDIT_LIVE_POLL
         DESCRIPTION_MAIL_DOMAIN
+        CREDIT_CARD_CLEANUP_DAYS
+        CONFIG_OPTION_credit_card_cleanup_days
+        STORE_CREDIT_CARD_NUMBERS
+        CONFIG_OPTION_store_credit_card_numbers
         RSS
         PGE_M
         PGE_B
@@ -1544,7 +1555,7 @@ function string_scan($lang, $do_guessing = false)
         CALCULATE
         CALCULATED_SIZE
         CALCULATE_SIZE
-        CALLBACK_PASSWORD
+        PAYMENT_GATEWAY_CALLBACK_PASSWORD
         CALL_HOME
         CANCEL
         CANCELLED
@@ -2446,7 +2457,7 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_brute_force_login_minutes
         CONFIG_OPTION_brute_force_threshold
         CONFIG_OPTION_call_home
-        CONFIG_OPTION_callback_password
+        CONFIG_OPTION_payment_gateway_callback_password
         CONFIG_OPTION_captcha_noise
         CONFIG_OPTION_captcha_on_feedback
         CONFIG_OPTION_captcha_single_guess
@@ -2640,10 +2651,10 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_invites_per_day
         CONFIG_OPTION_ip_forwarding
         CONFIG_OPTION_ip_strict_for_sessions
-        CONFIG_OPTION_ipn
-        CONFIG_OPTION_ipn_digest
-        CONFIG_OPTION_ipn_password
-        CONFIG_OPTION_ipn_test
+        CONFIG_OPTION_payment_gateway_username
+        CONFIG_OPTION_payment_gateway_digest
+        CONFIG_OPTION_payment_gateway_password
+        CONFIG_OPTION_payment_gateway_test_username
         CONFIG_OPTION_is_on_anonymous_posts
         CONFIG_OPTION_is_on_automatic_mark_topic_read
         CONFIG_OPTION_is_on_banner_buy
@@ -2963,8 +2974,8 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_video_height_setting
         CONFIG_OPTION_video_width_setting
         CONFIG_OPTION_vote_member_ip_restrict
-        CONFIG_OPTION_vpn_password
-        CONFIG_OPTION_vpn_username
+        CONFIG_OPTION_payment_gateway_vpn_username
+        CONFIG_OPTION_payment_gateway_vpn_password
         CONFIG_OPTION_web_notifications_enabled
         CONFIG_OPTION_website_email
         CONFIG_OPTION_webstandards_compat
@@ -4799,12 +4810,12 @@ function string_scan($lang, $do_guessing = false)
         INVOICES
         INVOICE_AMOUNT_TEXT
         INVOICE_SPECIAL
-        IPN_ADDRESS
-        IPN_ADDRESS_TEST
+        PAYMENT_GATEWAY_USERNAME
+        PAYMENT_GATEWAY_TEST_USERNAME
         IPN_BAD_TRIAL
-        IPN_DIGEST
+        PAYMENT_GATEWAY_DIGEST
         IPN_EMAIL_ERROR
-        IPN_PASSWORD
+        PAYMENT_GATEWAY_PASSWORD
         IPN_SOCKET_ERROR
         IPN_SUB_PERIOD_WRONG
         IPN_SUB_RECURRING_WRONG
@@ -6842,8 +6853,8 @@ function string_scan($lang, $do_guessing = false)
         VIEW_SUBSCRIBERS
         VOTE_MEMBER_IP_RESTRICT
         VOTING
-        VPN_PASSWORD
-        VPN_USERNAME
+        PAYMENT_GATEWAY_VPN_USERNAME
+        PAYMENT_GATEWAY_VPN_PASSWORD
         VR_DAILY
         VR_MONTHLY
         VR_NEVER
@@ -7288,6 +7299,8 @@ function string_scan($lang, $do_guessing = false)
         ACTIVITY_LIKES_UNTITLED
         ACTIVITY_PASSED_TEST
         ACTIVITY_SUBSCRIBED_EVENT
+        SHIPPING_ADDRESS
+        PAYMENT_DETAILS
         ADD
         ADDED
         ADDED_COMCODE_ONLY
@@ -7483,13 +7496,6 @@ function string_scan($lang, $do_guessing = false)
         CAPTCHA
         CAPTCHA_NO_SESSION
         CAPTION
-        CARDHOLDER_NAME
-        CARD_CV2
-        CARD_EXPIRY_DATE
-        CARD_ISSUE_NUMBER
-        CARD_NUMBER
-        CARD_START_DATE
-        CARD_TYPE
         CARE_PLEASE
         CART_EMPTIED
         CART_EMPTY
@@ -8454,12 +8460,6 @@ function string_scan($lang, $do_guessing = false)
         MEDIA_TYPE_video_websafe
         MEDIA_TYPE_vimeo
         MEDIA_TYPE_youtube
-        SHIPPING_ADDRESS_CITY
-        SHIPPING_ADDRESS_COUNTRY
-        SHIPPING_ADDRESS_NAME
-        SHIPPING_ADDRESS_STATE
-        SHIPPING_ADDRESS_STREET
-        SHIPPING_ADDRESS_ZIP
         MEMBER
         MEMBERS
         MEMBERSHIP_LENGTH
@@ -9293,13 +9293,13 @@ function string_scan($lang, $do_guessing = false)
         SPECIAL_CPF__cms_longitude
         SPECIAL_CPF__cms_mobile_phone_number
         SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION
-        SPECIAL_CPF__cms_payment_card_cv2
+        CARD_CV2
         SPECIAL_CPF__cms_payment_card_expiry_date
         SPECIAL_CPF__cms_payment_card_issue_number
         SPECIAL_CPF__cms_payment_card_number
         SPECIAL_CPF__cms_payment_card_start_date
         SPECIAL_CPF__cms_payment_cardholder_name
-        SPECIAL_CPF__cms_payment_type
+        SPECIAL_CPF__cms_payment_card_type
         SPECIAL_CPF__cms_points_gained_chat
         SPECIAL_CPF__cms_points_gained_given
         SPECIAL_CPF__cms_points_gained_rating

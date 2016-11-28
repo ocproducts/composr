@@ -31,8 +31,8 @@ function get_product_details()
 {
     $_hook = get_param_string('hook');
     require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
-    $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
-    $products = $object->get_product_details();
+    $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
+    $products = $product_object->get_product_details();
 
     return $products;
 }
@@ -68,8 +68,8 @@ function add_to_cart($product_det)
 {
     $_hook = get_param_string('hook');
     require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
-    $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
-    $object->add_to_cart($product_det);
+    $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
+    $product_object->add_to_cart($product_det);
 }
 
 /**
@@ -234,15 +234,13 @@ FOR MAKING PURCHASE
 */
 
 /**
- * Payment step.
+ * Render the cart payment form.
  *
- * @return Tempcode The result of execution.
+ * @return array Payment form, Payment form URL.
  */
 function render_cart_payment_form()
 {
     require_code('ecommerce');
-
-    $title = get_screen_title('PAYMENT_HEADING');
 
     $cart_items = find_products_in_cart();
 
@@ -281,12 +279,12 @@ function render_cart_payment_form()
 
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
 
-        $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($object === null) {
+        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+        if ($product_object === null) {
             continue;
         }
 
-        $temp = $object->get_products(false, $type_code);
+        $temp = $product_object->get_products(false, $type_code);
         if (!isset($temp[$type_code])) {
             continue;
         }
@@ -299,8 +297,8 @@ function render_cart_payment_form()
 
         $item_name = $temp[$type_code][4];
 
-        if (method_exists($object, 'set_needed_fields')) {
-            $purchase_id = $object->set_needed_fields($type_code);
+        if (method_exists($product_object, 'set_needed_fields')) {
+            $purchase_id = $product_object->set_needed_fields($type_code);
         } else {
             $purchase_id = strval(get_member());
         }
@@ -309,14 +307,14 @@ function render_cart_payment_form()
 
         $length_units = '';
 
-        if (method_exists($object, 'calculate_product_price')) {
-            $price = $object->calculate_product_price($item['price'], $item['price_pre_tax'], $item['product_weight']);
+        if (method_exists($product_object, 'calculate_product_price')) {
+            $price = $product_object->calculate_product_price($item['price'], $item['price_pre_tax'], $item['product_weight']);
         } else {
             $price = $item['price'];
         }
 
-        if (method_exists($object, 'calculate_tax') && ($tax_opt_out == 0)) {
-            $tax = round($object->calculate_tax($item['price'], $item['price_pre_tax']), 2);
+        if (method_exists($product_object, 'calculate_tax') && ($tax_opt_out == 0)) {
+            $tax = round($product_object->calculate_tax($item['price'], $item['price_pre_tax']), 2);
         } else {
             $tax = 0.0;
         }
@@ -343,31 +341,45 @@ function render_cart_payment_form()
     $GLOBALS['SITE_DB']->query_update('shopping_order', array('tot_price' => $total_price), array('id' => $order_id), '', 1);
 
     if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
-        $result = make_cart_payment_button($order_id, get_option('currency'));
-    } else { // Handle the transaction internally
-        if ((!tacit_https()) && (!ecommerce_test_mode())) {
-            warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
-        }
+        $payment_form = make_cart_payment_button($order_id, get_option('currency'));
 
+        $finish_url = new Tempcode();
+    } else { // Handle the transaction internally
         $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
         $item_name = do_lang('CART_ORDER', strval($order_id));
         if ($order_id === null) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
+            $logos = '';
+            $payment_processor_links = '';
         } else {
-            list($fields, $hidden) = get_transaction_form_fields(null, strval($order_id), $item_name, float_to_raw_string($price), get_option('currency'), null, '');
+            $needs_shipping_address = true;
+
+            list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
+                $type_code,
+                $item_name,
+                strval($order_id),
+                float_to_raw_string($price),
+                get_option('currency'),
+                null,
+                '',
+                get_option('payment_gateway'),
+                $needs_shipping_address
+            );
         }
 
-        $finish_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));
+        $payment_form = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
+            '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
+            'FIELDS' => $fields,
+            'HIDDEN' => $hidden,
+            'LOGOS' => $logos,
+            'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
+        ));
 
-        $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array('_GUID' => 'a70d6995baabb7e41e1af68409361f3c', 'FIELDS' => $fields, 'HIDDEN' => $hidden));
-
-        require_javascript('checking');
-
-        return do_template('PURCHASE_WIZARD_SCREEN', array('_GUID' => 'dfc7b8460e81dfd6d083e5f5d2b606a4', 'TITLE' => $title, 'CONTENT' => $result, 'URL' => $finish_url));
+        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish', 'type_code' => 'cart_orders'), get_module_zone('purchase'));
     }
 
-    return $result;
+    return array($payment_form, $finish_url);
 }
 
 /**
@@ -387,12 +399,12 @@ function get_order_tax_opt_out_status()
     } else {
         $where['c_member'] = get_member();
     }
-    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('tax_opted_out'), $where, 'ORDER BY add_date DESC', 1);
+    $row = $GLOBALS['SITE_DB']->query_select('shopping_order', array('tax_opted_out'), $where, 'ORDER BY add_date DESC', 1);
 
-    if (!array_key_exists(0, $rows)) {
+    if (!array_key_exists(0, $row)) {
         return 0;
     } else {
-        return $rows[0]['tax_opted_out'];
+        return $row[0]['tax_opted_out'];
     }
 }
 
@@ -467,13 +479,13 @@ function update_stock($order_id)
 
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
 
-        $object = object_factory('Hook_ecommerce_' . $hook, true);
-        if ($object === null) {
+        $product_object = object_factory('Hook_ecommerce_' . $hook, true);
+        if ($product_object === null) {
             continue;
         }
 
-        if (method_exists($object, 'update_stock')) {
-            $object->update_stock($ordered_items['p_id'], $ordered_items['p_quantity']);
+        if (method_exists($product_object, 'reduce_stock')) {
+            $product_object->reduce_stock($ordered_items['p_id'], $ordered_items['p_quantity']);
         }
     }
 }
@@ -514,6 +526,7 @@ function get_ordered_product_list_string($order_id)
     $product_det = array();
 
     $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), 'ORDER BY p_name');
+
     foreach ($rows as $key => $product) {
         $product_det[] = $product['p_name'] . ' x ' . integer_format($product['p_quantity']) . ' @ ' . do_lang('UNIT_PRICE') . '=' . float_format($product['p_price']);
     }

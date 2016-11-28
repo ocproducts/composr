@@ -87,30 +87,31 @@ class Hook_profiles_tabs_edit_delete
             }
         }
 
+        if (addon_installed('ecommerce')) {
+            $subscriptions_count = $GLOBALS['SITE_DB']->query_select_value('subscriptions', 'COUNT(*)', array('s_member_id' => $member_id_of, 's_state' => 'active'));
+            if ($subscriptions_count > 0) {
+                $text->attach(paragraph(do_lang_tempcode('MEMBER_HAS_SUBSCRIPTIONS', escape_html($username))));
+            }
+        }
+
         $fields = new Tempcode();
         require_code('form_templates');
         $fields->attach(form_input_tick(do_lang_tempcode(($member_id_of != $member_id_viewing) ? 'DELETE_WITHOUT_MERGING' : 'DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
 
-        ob_start();
-        ?>/*<script>*/
-        (function (){
-            'use strict';
-            var suffix = $cms.filter.id(<?= json_encode(strval(do_lang('DELETE_MEMBER'))); ?>).toLowerCase();
+        require_code('tempcode_compiler');
+        $javascript = static_evaluate_tempcode(template_to_tempcode("
+			window.load_tab__edit__{\$LCASE,{!DELETE_MEMBER|*}}=function() {
+				var submit_button=document.getElementById('submit_button');
+				var delete_checkbox=document.getElementById('delete');
+				var tab=document.getElementById('t_edit__{\$LCASE,{!DELETE_MEMBER|*}}');
 
-            window['load_tab__edit__' + suffix] = function() {
-                var submit_button = document.getElementById('submit_button'),
-                    delete_checkbox = document.getElementById('delete'),
-                    tab = document.getElementById('t_edit__' + suffix);
+				submit_button.disabled=!delete_checkbox.checked;
 
-                submit_button.disabled = !delete_checkbox.checked;
-
-                window.setInterval(function () {
-                    submit_button.disabled = !delete_checkbox.checked && tab.classList.contains('tab_active');
-                }, 100);
-            };
-        }());/*</script>*/
-        <?php
-        $javascript = ob_get_clean();
+				window.setInterval(function() {
+					submit_button.disabled=!delete_checkbox.checked && tab.className.indexOf('tab_active')!=-1;
+				},100);
+			}
+		"));
 
         return array($title, $fields, $text, $javascript, $order, null, 'tabs/member_account/edit/delete');
     }

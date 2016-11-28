@@ -201,7 +201,7 @@ class Module_classifieds
                     'T_ITEM_TITLE' => $item_title,
                     'T_PENDING_REASON' => $t['t_pending_reason'],
                     'T_MEMO' => $t['t_memo'],
-                    'T_VIA' => $t['t_via']
+                    'T_PAYMENT_GATEWAY' => $t['t_payment_gateway']
                 );
             }
             $url_map = array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['id']);
@@ -216,9 +216,9 @@ class Module_classifieds
             $ads[] = array(
                 'AD_TITLE' => $ad_title,
                 'TRANSACTION_DETAILS' => $_transaction_details,
-                'DATE' => get_timezoned_date_time($row['ce_add_date']),
+                'DATE' => get_timezoned_date($row['ce_add_date']),
                 'DATE_RAW' => strval($row['ce_add_date']),
-                'EXPIRES_DATE' => get_timezoned_date_time($row['ce_last_moved']),
+                'EXPIRES_DATE' => get_timezoned_date($row['ce_last_moved']),
                 'EXPIRES_DATE_RAW' => strval($row['ce_last_moved']),
                 'ACTIVE' => $row['ce_validated'] == 1,
                 'PURCHASE_URL' => $purchase_url,

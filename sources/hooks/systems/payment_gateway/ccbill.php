@@ -21,8 +21,9 @@
 /**
  * Hook class.
  */
-class Hook_ecommerce_via_ccbill
+class Hook_payment_gateway_ccbill
 {
+    // https://www.ccbill.com/cs/manuals/CCBill_Background_Post_Users_Guide.pdf
     // Requires:
     //  you have to contact support to enable dynamic pricing and generate the encryption key for your account
     //  the "Account ID" (a number given to you) is the Composr "Gateway username" and also "Testing mode gateway username" (it's all the same installation ID)
@@ -58,24 +59,24 @@ class Hook_ecommerce_via_ccbill
     );
 
     /**
+     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+     *
+     * @param  float $amount A transaction amount.
+     * @return float The fee
+     */
+    public function get_transaction_fee($amount)
+    {
+        return 0.12 * $amount; // A wild guess for now
+    }
+
+    /**
      * Get the CCBill account ID
      *
      * @return string The answer.
      */
     private function get_account_id()
     {
-        return ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn');
-    }
-
-    /**
-     * Generate a transaction ID.
-     *
-     * @return string A transaction ID.
-     */
-    public function generate_trans_id()
-    {
-        require_code('crypt');
-        return get_rand_password();
+        return ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
     }
 
     /**
@@ -96,48 +97,20 @@ class Hook_ecommerce_via_ccbill
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
         $payment_address = strval($this->get_account_id());
-        $ipn_url = 'https://bill.ccbill.com/jpost/signup.cgi';
-
-        $trans_id = $this->generate_trans_id();
-
-        $user_details = array();
-        if (!is_guest()) {
-            $user_details['customer_fname'] = get_cms_cpf('firstname');
-            $user_details['customer_lname'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zipcode'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-            $user_details['username'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        }
+        $form_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $account_num = $this->get_account_id();
-        $subaccount_nums = explode(',', get_option('vpn_username'));
+        $subaccount_nums = explode(',', get_option('payment_gateway_vpn_username'));
         $subaccount_num = sprintf('%04d', $subaccount_nums[0]); // First value is for simple transactions, has to be exactly 4 digits
-        $form_name = explode(',', get_option('ipn_digest'));
+        $form_name = explode(',', get_option('payment_gateway_digest'));
         $form_name = $form_name[0]; // First value is for simple transactions
         // CCBill oddly requires us to pass this parameter for single transactions,
         // this will show up as a confusing "$X.XX for 99 days" message to customers on the CCBill form.
         // To fix this - you need to set up a "custom dynamic description" which removes that message, by contacting CCBill support.
         $form_period = '99';
-        $digest = md5(float_to_raw_string($amount) . $form_period . $currency . get_option('vpn_password'));
+        $digest = md5(float_to_raw_string($amount) . $form_period . $currency . get_option('payment_gateway_vpn_password'));
 
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
-
-        return do_template('ECOM_BUTTON_VIA_CCBILL', array(
+        return do_template('ECOM_TRANSACTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => '24a0560541cedd4c45898f4d19e99249',
             'TYPE_CODE' => strval($type_code),
             'ITEM_NAME' => strval($item_name),
@@ -145,9 +118,8 @@ class Hook_ecommerce_via_ccbill
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
-            'TRANS_ID' => $trans_id,
-            'MEMBER_ADDRESS' => $user_details,
+            'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
             'ACCOUNT_NUM' => $account_num,
             'SUBACCOUNT_NUM' => $subaccount_num,
             'FORM_NAME' => $form_name,
@@ -177,63 +149,56 @@ class Hook_ecommerce_via_ccbill
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
         $payment_address = strval($this->get_account_id());
-        $ipn_url = 'https://bill.ccbill.com/jpost/signup.cgi';
-
-        $trans_id = $this->generate_trans_id();
-
-        $user_details = array();
-        if (!is_guest()) {
-            $user_details['customer_fname'] = get_cms_cpf('firstname');
-            $user_details['customer_lname'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zipcode'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-            $user_details['username'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        }
+        $form_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $account_num = $this->get_account_id();
-        $subaccount_nums = explode(',', get_option('vpn_username'));
+        $subaccount_nums = explode(',', get_option('payment_gateway_vpn_username'));
         $subaccount_num = sprintf('%04d', count($subaccount_nums) === 1 ? $subaccount_nums[0] : $subaccount_nums[1]); // Second value is for subscriptions, has to be exactly 4 digits
         $form_name = explode(',', get_option('ccbill_form_names'));
         $form_name = count($form_name) === 1 ? $form_name[0] : $form_name[1]; // Second value is for subscriptions
         $form_period = strval($length * $this->length_unit_to_days[$length_units]);
-        $digest = md5(float_to_raw_string($amount) . $form_period . float_to_raw_string($amount) . $form_period . '99' . $currency . get_option('vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
-
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => $length,
-            'e_length_units' => $length_units,
-        ));
+        $digest = md5(float_to_raw_string($amount) . $form_period . float_to_raw_string($amount) . $form_period . '99' . $currency . get_option('payment_gateway_vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => 'f8c174f38ae06536833f1510027ba233',
             'TYPE_CODE' => strval($type_code),
             'ITEM_NAME' => strval($item_name),
+            'PURCHASE_ID' => strval($purchase_id),
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
-            'PURCHASE_ID' => strval($purchase_id),
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
-            'TRANS_ID' => $trans_id,
-            'MEMBER_ADDRESS' => $user_details,
+            'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
             'ACCOUNT_NUM' => $account_num,
             'SUBACCOUNT_NUM' => $subaccount_num,
             'FORM_NAME' => $form_name,
             'FORM_PERIOD' => $form_period,
             'DIGEST' => $digest,
         ));
+    }
+
+    /**
+     * Get a member address/etc for use in payment buttons.
+     *
+     * @return array A map of member address details (form field name => address value).
+     */
+    protected function _build_member_address()
+    {
+        $member_address = array();
+        if (!is_guest()) {
+            $member_address['customer_fname'] = get_cms_cpf('firstname');
+            $member_address['customer_lname'] = get_cms_cpf('lastname');
+            $member_address['address1'] = get_cms_cpf('street_address');
+            $member_address['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+            $member_address['city'] = get_cms_cpf('city');
+            $member_address['state'] = get_cms_cpf('state');
+            $member_address['zipcode'] = get_cms_cpf('post_code');
+            $member_address['country'] = get_cms_cpf('country');
+            $member_address['username'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        }
+        return $member_address;
     }
 
     /**
@@ -244,61 +209,31 @@ class Hook_ecommerce_via_ccbill
      */
     public function make_cancel_button($purchase_id)
     {
-        return do_template('ECOM_CANCEL_BUTTON_VIA_CCBILL', array('_GUID' => 'f1aaed809380c3fdca22728393eaef75', 'PURCHASE_ID' => $purchase_id));
-    }
-
-    /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
-     *
-     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
-     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
-     */
-    public function auto_cancel($subscription_id)
-    {
-        return false;
-    }
-
-    /**
-     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
-     *
-     * @param  float $amount A transaction amount.
-     * @return float The fee
-     */
-    public function get_transaction_fee($amount)
-    {
-        return 0.12 * $amount; // A wild guess for now
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_CCBILL', array('_GUID' => 'f1aaed809380c3fdca22728393eaef75', 'PURCHASE_ID' => $purchase_id));
     }
 
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
      */
-    public function handle_transaction()
+    public function handle_ipn_transaction()
     {
-        // assign posted variables to local variables
-        $trans_id = post_param_string('customTransId');
         $purchase_id = post_param_integer('customPurchaseId');
-
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id, 'e_purchase_id' => $purchase_id), '', 1);
-        if (!array_key_exists(0, $transaction_rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-        }
-        $transaction_row = $transaction_rows[0];
 
         $subscription_id = post_param_string('subscription_id', '');
         $denial_id = post_param_string('denialId', '');
         $response_digest = post_param_string('responseDigest');
-        $success_response_digest = md5($subscription_id . '1' . get_option('vpn_password')); // responseDigest must have this value on success
-        $denial_response_digest = md5($denial_id . '0' . get_option('vpn_password')); // responseDigest must have this value on failure
+        $success_response_digest = md5($subscription_id . '1' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on success
+        $denial_response_digest = md5($denial_id . '0' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on failure
 
         if (($response_digest !== $success_response_digest) && ($response_digest !== $denial_response_digest)) {
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED')); // Hacker?!!!
         }
 
         $success = ($success_response_digest === $response_digest);
-        $is_subscription = (bool)post_param_integer('customIsSubscription');
-        $item_name = $is_subscription ? '' : $transaction_row['e_item_name'];
+        $is_subscription = (post_param_integer('customIsSubscription') == 1);
+        $item_name = $is_subscription ? '' : post_param_string('customItemName');
         $payment_status = $success ? 'Completed' : 'Failed';
         $reason_code = post_param_integer('reasonForDeclineCode', 0);
         $pending_reason = '';
@@ -306,14 +241,16 @@ class Hook_ecommerce_via_ccbill
         $mc_gross = post_param_string('initialPrice');
         $_mc_currency = post_param_integer('baseCurrency', 0);
         $mc_currency = ($_mc_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_mc_currency];
+        $txn_id = post_param_string('consumerUniqueId');
 
         if (addon_installed('shopping')) {
-            if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+            list(, $type_code) = find_product_row($item_name, true, true);
+            if ($type_code == 'cart_orders') {
                 $this->store_shipping_address(intval($purchase_id));
             }
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $trans_id, '');
+        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '');
     }
 
     /**
@@ -328,23 +265,37 @@ class Hook_ecommerce_via_ccbill
             return null;
         }
 
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
-            $shipping_address = array();
-            $shipping_address['order_id'] = $order_id;
-            $shipping_address['address_name'] = post_param_string('customer_fname', '') . ' ' . post_param_string('customer_lname', '');
-            $shipping_address['address_street'] = post_param_string('address1', '');
-            $shipping_address['address_zip'] = post_param_string('zipcode', '');
-            $shipping_address['address_city'] = post_param_string('city', '');
-            $shipping_address['address_state'] = post_param_string('state', '');
-            $shipping_address['address_country'] = post_param_string('country', '');
-            $shipping_address['receiver_email'] = post_param_string('email', '');
-            $shipping_address['contact_phone'] = post_param_string('phone_number', '');
-            $shipping_address['first_name'] = post_param_string('customer_fname', '');
-            $shipping_address['last_name'] = post_param_string('customer_lname', '');
-
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
+            $shipping_address = array(
+                'a_order_id' => $order_id,
+                'a_firstname' => post_param_string('customer_fname', ''),
+                'a_lastname' => post_param_string('customer_lname', ''),
+                'a_street_address' => trim(post_param_string('address1', '') . "\n" . post_param_string('address2', '')),
+                'a_city' => post_param_string('city', ''),
+                'a_county' => '',
+                'a_state' => post_param_string('state', ''),
+                'a_post_code' => post_param_string('zipcode', ''),
+                'a_country' => post_param_string('country', ''),
+                'a_email' => post_param_string('email', ''),
+                'a_phone' => post_param_string('phone_number', ''),
+            );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }
 
         return null;
+    }
+
+    /**
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
+     *
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
+     */
+    public function auto_cancel($subscription_id)
+    {
+        // https://www.ccbill.com/cs/manuals/Custom_Cancellation_Software.pdf
+        // Can't do it because we don't have customer's username and password ("login_id", "password")
+
+        return false;
     }
 }

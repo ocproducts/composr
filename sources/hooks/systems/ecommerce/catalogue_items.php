@@ -12,6 +12,14 @@
 
 */
 
+/*
+This eCommerce hook is more than a normal purchase hook.
+It also provides:
+ - Extra methods for shopping module
+ - Extra methods for catalogues module
+It is modular though, and purchase hook may provide these methods too.
+*/
+
 /**
  * @license     http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright   ocProducts Ltd
@@ -19,6 +27,16 @@
  */
 class Hook_ecommerce_catalogue_items
 {
+    /**
+     * Find whether a shipping address is needed.
+     *
+     * @return boolean Whether a shipping address is needed.
+     */
+    public function needs_shipping_address()
+    {
+        return true;
+    }
+
     /**
      * Get the products handled by this eCommerce hook.
      *
@@ -118,6 +136,10 @@ class Hook_ecommerce_catalogue_items
     {
         require_code('catalogues');
 
+        if (get_page_name() == 'purchase') {
+            return ECOMMERCE_PRODUCT_DISABLED; // Don't list within purchase module, we only want it as a part of a cart order
+        }
+
         $res = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)), '', 1);
         if (!array_key_exists(0, $res)) {
             return ECOMMERCE_PRODUCT_MISSING;
@@ -165,50 +187,46 @@ class Hook_ecommerce_catalogue_items
 
         $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
-        if (array_key_exists(5, $field_rows)) { // Stock maintained
-            $stock_maintained = ($field_rows[5]['effective_value_pure'] == do_lang('YES'));
-            if ($stock_maintained) {
-                return null;
-            }
+        $stock_maintained = ($field_rows[5]['effective_value_pure'] == do_lang('YES'));
+        if ($stock_maintained) {
+            return null;
         }
 
-        if (array_key_exists(3, $field_rows)) { // Stock level
-            if (($field_rows[3]['effective_value_pure'] != '') && ($field_rows[3]['effective_value_pure'] != do_lang('NA'))) {
-                $available_quantity = intval($field_rows[3]['effective_value_pure']);
+        if (($field_rows[3]['effective_value_pure'] != '') && ($field_rows[3]['effective_value_pure'] != do_lang('NA'))) {
+            $available_quantity = intval($field_rows[3]['effective_value_pure']);
 
-                // Locked order check
-                $query = 'SELECT sum(t2.p_quantity) FROM ' . get_table_prefix() . 'shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND t2.p_id=' . strval(intval($type_code));
+            // Locked order check
+            $query = 'SELECT sum(t2.p_quantity) FROM ' . get_table_prefix() . 'shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND t2.p_id=' . strval(intval($type_code));
+            if (is_guest()) {
+                $query .= ' AND ' . db_string_not_equal_to('t1.session_id', get_session_id());
+            } else {
+                $query .= ' AND t1.c_member<>' . strval(get_member());
+            }
+            $locked_item_count = $GLOBALS['SITE_DB']->query_value_if_there($query);
+            if ($locked_item_count === null) {
+                $locked_item_count = 0;
+            }
+
+            // Items in own cart (not locked, but tied to this purchase)
+            if ($consider_own_cart_contents) {
+                $where = array(
+                    'is_deleted' => 0,
+                    'product_id' => intval($type_code),
+                );
                 if (is_guest()) {
-                    $query .= ' AND ' . db_string_not_equal_to('t1.session_id', get_session_id());
+                    $where['session_id'] = get_session_id();
                 } else {
-                    $query .= ' AND t1.c_member<>' . strval(get_member());
+                    $where['ordered_by'] = get_member();
                 }
-                $locked_item_count = $GLOBALS['SITE_DB']->query_value_if_there($query);
-                if ($locked_item_count === null) {
-                    $locked_item_count = 0;
-                }
-
-                // Items in own cart (not locked, but tied to this purchase)
-                if ($consider_own_cart_contents) {
-                    $where = array(
-                        'is_deleted' => 0,
-                        'product_id' => intval($type_code),
-                    );
-                    if (is_guest()) {
-                        $where['session_id'] = get_session_id();
-                    } else {
-                        $where['ordered_by'] = get_member();
-                    }
-                    $cart_item_count = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'SUM(quantity)', $where);
-                    if ($cart_item_count === null) {
-                        $cart_item_count = 0;
-                    }
-                } else {
+                $cart_item_count = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'SUM(quantity)', $where);
+                if ($cart_item_count === null) {
                     $cart_item_count = 0;
                 }
-
-                return ($available_quantity - $locked_item_count - $cart_item_count);
+            } else {
+                $cart_item_count = 0;
             }
+
+            return ($available_quantity - $locked_item_count - $cart_item_count);
         }
 
         return null;
@@ -223,6 +241,7 @@ class Hook_ecommerce_catalogue_items
     public function get_message($type_code)
     {
         require_code('catalogues');
+        require_lang('catalogues');
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($type_code)));
 
@@ -241,16 +260,16 @@ class Hook_ecommerce_catalogue_items
 
         $entry = $entries[0];
 
-        $map = get_catalogue_entry_map($entry, $catalogue, 'PAGE', $catalogue_name, intval($type_code), null, null, true, true);
+        $map = get_catalogue_entry_map($entry, $catalogue, 'CATEGORY', $catalogue_name, null, null, null, false, true);
 
-        return do_template('ECOM_ITEM_DETAILS', $map, null, false, 'ECOM_ITEM_DETAILS');
+        return do_template('CATALOGUE_' . $catalogue_name . '_GRID_ENTRY_WRAP', $map, null, false, 'CATALOGUE_DEFAULT_GRID_ENTRY_WRAP');
     }
 
     /**
-     * Get the product's details.
+     * Get the product's details in a standard form.
      *
      * @param  ?AUTO_LINK $pid Product ID (null: read from environment, product_id).
-     * @return    array       A map of product name to list of product details.
+     * @return array List of product details.
      */
     public function get_product_details($pid = null)
     {
@@ -296,7 +315,7 @@ class Hook_ecommerce_catalogue_items
     /**
      * Add an item to the cart.
      *
-     * @param  array $product_det Array of product details.
+     * @param  array $product_det List of product details (as per get_product_details).
      * @return AUTO_LINK Order ID of newly added order.
      */
     public function add_to_cart($product_det)
@@ -352,71 +371,13 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Add order - (order coming from purchase module).
-     *
-     * @param  AUTO_LINK $product Product ID.
-     * @param  array $product_det Product details.
-     * @return AUTO_LINK Order ID.
-     */
-    public function add_purchase_order($product, $product_det)
-    {
-        require_lang('shopping');
-
-        if (get_option('allow_opting_out_of_tax') == '1' && post_param_integer('tax_opted_out', 0) == 1) {
-            $tax_opted_out = 1;
-        } else {
-            $tax_opted_out = 0;
-        }
-
-        if (method_exists($this, 'calculate_tax') && $tax_opted_out == 0) {
-            $tax_percentage = array_key_exists(0, $product_det[3]) ? $product_det[3][0] : 0;
-            $tax = round($this->calculate_tax($product_det[1], $tax_percentage), 2);
-        } else {
-            $tax = 0.0;
-        }
-
-        $order_id = $GLOBALS['SITE_DB']->query_insert(
-            'shopping_order',
-            array(
-                'c_member' => get_member(),
-                'session_id' => get_session_id(),
-                'add_date' => time(),
-                'tot_price' => $product_det[1],
-                'order_status' => 'ORDER_STATUS_awaiting_payment',
-                'notes' => '',
-                'purchase_through' => 'purchase_module',
-                'transaction_id' => '',
-                'tax_opted_out' => $tax_opted_out
-            ),
-            true
-        );
-
-        $GLOBALS['SITE_DB']->query_insert(
-            'shopping_order_details',
-            array(
-                'p_id' => $product,
-                'p_name' => $product_det[4],
-                'p_code' => $product_det[0],
-                'p_type' => 'catalogue_items',
-                'p_quantity' => 1,
-                'p_price' => $product_det[1],
-                'order_id' => $order_id,
-                'dispatch_status' => '',
-                'included_tax' => $tax
-            )
-        );
-
-        return $order_id;
-    }
-
-    /**
-     * Show shopping cart entries.
+     * Produce a results table row for a particular shopping cart entry.
      *
      * @param  Tempcode $shopping_cart Tempcode object of shopping cart result table.
-     * @param  array $entry Details of new entry to the shopping cart.
-     * @return Tempcode Tempcode object of shopping cart result table.
+     * @param  array $product_det List of product details (as per get_product_details), of what to show.
+     * @return Tempcode Tempcode object of shopping cart result row.
      */
-    public function show_cart_entry(&$shopping_cart, $entry)
+    public function show_cart_entry(&$shopping_cart, $product_det)
     {
         $tpl_set = 'cart';
 
@@ -426,46 +387,46 @@ class Hook_ecommerce_catalogue_items
 
         $edit_qnty = do_template('ECOM_SHOPPING_ITEM_QUANTITY_FIELD',
             array(
-                'PRODUCT_ID' => strval($entry['product_id']),
-                'QUANTITY' => strval($entry['quantity'])
+                'PRODUCT_ID' => strval($product_det['product_id']),
+                'QUANTITY' => strval($product_det['quantity'])
             )
         );
 
-        $tax = $this->calculate_tax($entry['price'], $entry['price_pre_tax']);
+        $tax = $this->calculate_tax($product_det['price'], $product_det['price_pre_tax']);
 
-        $shipping_cost = $this->calculate_shipping_cost($entry['product_weight']);
+        $shipping_cost = $this->calculate_shipping_cost($product_det['product_weight']);
 
         $del_item = do_template('ECOM_SHOPPING_ITEM_REMOVE_FIELD',
             array(
-                'PRODUCT_ID' => strval($entry['product_id']),
+                'PRODUCT_ID' => strval($product_det['product_id']),
             )
         );
 
-        $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry['product_id']));
+        $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $product_det['product_id']));
         if ($catalogue_name === null) {
-            $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('product_id' => $entry['product_id']));
+            $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('product_id' => $product_det['product_id']));
             return new Tempcode();
         }
 
-        $image = $this->get_product_image($catalogue_name, $entry['product_id']);
+        $image = $this->_get_product_image($catalogue_name, $product_det['product_id']);
 
         if ($image == '') {
             $product_image = do_image_thumb('themes/default/images/no_image.png', do_lang('NO_IMAGE'), do_lang('NO_IMAGE'), false, 50, 50);
         } else {
-            $product_image = do_image_thumb(url_is_local($image) ? (get_custom_base_url() . '/' . $image) : ($image), $entry['product_name'], $entry['product_name'], false, 50, 50);
+            $product_image = do_image_thumb(url_is_local($image) ? (get_custom_base_url() . '/' . $image) : ($image), $product_det['product_name'], $product_det['product_name'], false, 50, 50);
         }
 
         $currency = ecommerce_get_currency_symbol();
 
-        $price = round((round($entry['price'] + $tax + $shipping_cost, 2)) * $entry['quantity'], 2);
+        $price = round((round($product_det['price'] + $tax + $shipping_cost, 2)) * $product_det['quantity'], 2);
 
-        $total_tax = $tax * $entry['quantity'];
-        $total_shipping = $shipping_cost * $entry['quantity'];
-        $order_price = $entry["price"] * $entry['quantity'];
+        $total_tax = $tax * $product_det['quantity'];
+        $total_shipping = $shipping_cost * $product_det['quantity'];
+        $order_price = $product_det["price"] * $product_det['quantity'];
 
-        $product_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $entry['product_id']), '_SELF');
+        $product_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_det['product_id']), '_SELF');
 
-        $product_link = hyperlink($product_url, $entry['product_name'], false, true, do_lang('INDEX'));
+        $product_link = hyperlink($product_url, $product_det['product_name'], false, true, do_lang('INDEX'));
 
         require_code('templates_results_table');
         $shopping_cart->attach(
@@ -473,7 +434,7 @@ class Hook_ecommerce_catalogue_items
                 array(
                     $product_image,
                     $product_link,
-                    $currency . escape_html(float_format($entry['price'], 2)),
+                    $currency . escape_html(float_format($product_det['price'], 2)),
                     $edit_qnty,
                     $currency . escape_html(float_format($order_price)),
                     $currency . escape_html(float_format($total_tax, 2)),
@@ -563,7 +524,7 @@ class Hook_ecommerce_catalogue_items
      * @param  AUTO_LINK $entry_id Catalogue entry ID.
      * @return ?SHORT_TEXT Image name (null: no image).
      */
-    public function get_product_image($catalogue_name, $entry_id)
+    protected function _get_product_image($catalogue_name, $entry_id)
     {
         require_code('catalogues');
 
@@ -584,7 +545,7 @@ class Hook_ecommerce_catalogue_items
      * @param  AUTO_LINK $entry_id Catalogue entry ID.
      * @param  integer $quantity Quantity to deduct.
      */
-    public function update_stock($entry_id, $quantity)
+    public function reduce_stock($entry_id, $quantity)
     {
         require_code('catalogues');
 
@@ -655,17 +616,6 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Return product info details.
-     *
-     * @param  AUTO_LINK $id Product ID.
-     * @return Tempcode Product information.
-     */
-    public function product_info($id)
-    {
-        return render_catalogue_entry_screen($id, true, false);
-    }
-
-    /**
      * Get custom fields for ecommerce product.
      *
      * @param  AUTO_LINK $id Product entry ID.
@@ -714,13 +664,13 @@ class Hook_ecommerce_catalogue_items
 }
 
 /**
- * Update order status,transaction ID after transaction.
+ * Update stock count after transaction.
  *
- * @param  AUTO_LINK $entry_id Purchase/Order ID.
+ * @param  AUTO_LINK $entry_id Product ID.
  * @param  array $details Details of product.
  */
 function handle_catalogue_items($entry_id, $details)
 {
-    $object = object_factory('Hook_ecommerce_catalogue_items');
-    $object->update_stock($entry_id, 1);
+    $product_object = object_factory('Hook_ecommerce_catalogue_items');
+    $product_object->reduce_stock($entry_id, 1);
 }

@@ -111,7 +111,7 @@ survey	quiz	competition	test	questionnaire
 swf	flash
 friend	buddy	follower
 like	love	rate
-subscribe	subscription
+subscribe	subscription	recurring
 attach	embed
 smf	simple machines forum
 ipb	invision

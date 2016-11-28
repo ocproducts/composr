@@ -35,7 +35,7 @@ class Module_purchase
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 6;
+        $info['version'] = 7;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -51,7 +51,15 @@ class Module_purchase
 
         delete_privilege('access_ecommerce_in_test_mode');
 
-        $cpf = array('currency', 'payment_cardholder_name', 'payment_type', 'payment_card_number', 'payment_card_start_date', 'payment_card_expiry_date', 'payment_card_issue_number');
+        $cpf = array(
+            'currency',
+            'payment_cardholder_name',
+            'payment_card_type',
+            'payment_card_number',
+            'payment_card_start_date',
+            'payment_card_expiry_date',
+            'payment_card_issue_number',
+        );
         foreach ($cpf as $_cpf) {
             $GLOBALS['FORUM_DRIVER']->install_delete_custom_field($_cpf);
         }
@@ -68,8 +76,9 @@ class Module_purchase
         if ($upgrade_from === null) {
             add_privilege('ECOMMERCE', 'access_ecommerce_in_test_mode', false);
 
-            $GLOBALS['SITE_DB']->create_table('trans_expecting', array(
-                'id' => '*ID_TEXT',
+            $GLOBALS['SITE_DB']->create_table('trans_expecting', array( // Used by payment gateways that return limited information back via IPN, or for local transactions
+                'id' => '*ID_TEXT', // NB: This is often different from the 'transactions.id' field
+                'e_type_code' => 'ID_TEXT',
                 'e_purchase_id' => 'ID_TEXT',
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
@@ -87,7 +96,15 @@ class Module_purchase
             foreach ($cpf as $f => $l) {
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, $l[2]);
             }
-            $cpf = array('payment_cardholder_name' => array(100, 'short_text', ''), 'payment_type' => array(26, 'list', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa'), 'payment_card_number' => array(20, 'integer', ''), 'payment_card_start_date' => array(5, 'short_text', 'mm/yy'), 'payment_card_expiry_date' => array(5, 'short_text', 'mm/yy'), 'payment_card_issue_number' => array(2, 'short_text', ''), 'payment_card_cv2' => array(4, 'short_text', ''));
+
+            $cpf = array(
+                'payment_cardholder_name' => array(100, 'short_text', ''),
+                'payment_card_type' => array(26, 'list', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa'),
+                'payment_card_number' => array(20, 'integer', ''),
+                'payment_card_start_date' => array(5, 'year_month', 'mm/yy'),
+                'payment_card_expiry_date' => array(5, 'year_month', 'mm/yy'),
+                'payment_card_issue_number' => array(2, 'integer', ''),
+            );
             foreach ($cpf as $f => $l) {
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 1, $l[2]);
             }
@@ -104,7 +121,7 @@ class Module_purchase
                 't_time' => '*TIME',
                 't_pending_reason' => 'SHORT_TEXT',
                 't_memo' => 'LONG_TEXT',
-                't_via' => 'ID_TEXT'
+                't_payment_gateway' => 'ID_TEXT'
             ));
         }
 
@@ -118,8 +135,35 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
 
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
+            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_type_code', 'ID_TEXT');
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
+
+            require_code('cns_members');
+            $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
+            if ($cf_id !== null) {
+                $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer'), array('id' => $cf_id));
+                $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf_ft_29');
+                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => '0'), array('field_' . strval($cf_id) => ''));
+                $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($cf_id), '?INTEGER');
+                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => null), array('field_' . strval($cf_id) => 0));
+            }
+
+            rename_config_option('ipn', 'payment_gateway_username');
+            rename_config_option('ipn_test', 'payment_gateway_test_username');
+            rename_config_option('ipn_password', 'payment_gateway_password');
+            rename_config_option('ipn_digest', 'payment_gateway_digest');
+            rename_config_option('vpn_username', 'payment_gateway_vpn_username');
+            rename_config_option('vpn_password', 'payment_gateway_vpn_password');
+            rename_config_option('callback_password', 'payment_gateway_callback_password');
+
+            $GLOBALS['SITE_DB']->alter_table_field('transactions', 't_payment_gateway', 'ID_TEXT', 't_payment_gateway');
+
+            $GLOBALS['SITE_DB']->create_index('transactions', 't_time', array('t_time'));
+            $GLOBALS['SITE_DB']->create_index('transactions', 't_type_code', array('t_type_code'));
         }
     }
 
@@ -303,8 +347,8 @@ class Module_purchase
         $type_code = get_param_string('type_code');
 
         $text = new Tempcode();
-        $object = find_product($type_code);
-        if ($object === null) {
+        $product_object = find_product($type_code);
+        if ($product_object === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
@@ -314,21 +358,21 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $terms = method_exists($object, 'get_terms') ? $object->get_terms($type_code) : '';
-        $fields = method_exists($object, 'get_needed_fields') ? $object->get_needed_fields($type_code) : null;
+        $terms = method_exists($product_object, 'get_terms') ? $product_object->get_terms($type_code) : '';
+        $fields = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : null;
         if (($fields !== null) && ($fields->is_empty())) {
             $fields = null;
         }
         $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (($fields === null) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
 
-        if (method_exists($object, 'product_info')) {
-            $text->attach($object->product_info(get_param_integer('type_code'), $this->title));
+        if (method_exists($product_object, 'product_info')) {
+            $text->attach($product_object->product_info(get_param_integer('type_code'), $this->title));
         } else {
-            if (!method_exists($object, 'get_message')) {
+            if (!method_exists($product_object, 'get_message')) {
                 // Ah, not even a message to show - jump ahead
                 return redirect_screen($this->title, $url, '');
             }
-            $text->attach($object->get_message($type_code));
+            $text->attach($product_object->get_message($type_code));
         }
 
         return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_MESSAGE', array('_GUID' => '8667b6b544c4cea645a52bb4d087f816', 'TITLE' => '', 'TEXT' => $text)), $this->title, $url);
@@ -347,7 +391,7 @@ class Module_purchase
 
         $type_code = get_param_string('type_code');
 
-        $object = find_product($type_code);
+        $product_object = find_product($type_code);
 
         $test = $this->_check_availability($type_code);
         if ($test !== null) {
@@ -355,8 +399,8 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $terms = $object->get_terms($type_code);
-        $fields = $object->get_needed_fields($type_code);
+        $terms = $product_object->get_terms($type_code);
+        $fields = $product_object->get_needed_fields($type_code);
         if (($fields !== null) && ($fields->is_empty())) {
             $fields = null;
         }
@@ -380,7 +424,7 @@ class Module_purchase
 
         $type_code = get_param_string('type_code');
 
-        $object = find_product($type_code);
+        $product_object = find_product($type_code);
 
         $test = $this->_check_availability($type_code);
         if ($test !== null) {
@@ -388,7 +432,7 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $fields = $object->get_needed_fields($type_code, get_param_integer('id', -1));
+        $fields = $product_object->get_needed_fields($type_code, get_param_integer('id', -1));
         $url = build_url(array('page' => '_SELF', 'type' => 'pay', 'type_code' => $type_code), '_SELF', null, true);
 
         return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_DETAILS', array('_GUID' => '7fcbb0be5e90e52163bfec01f22f4ea0', 'TEXT' => is_array($fields) ? $fields[1] : '', 'FIELDS' => is_array($fields) ? $fields[0] : $fields)), $this->title, $url);
@@ -402,29 +446,30 @@ class Module_purchase
     public function pay()
     {
         $type_code = get_param_string('type_code');
-        $object = find_product($type_code);
+        $product_object = find_product($type_code);
 
-        $via = get_param_string('via', get_option('payment_gateway'));
-        require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $purchase_object = object_factory('Hook_ecommerce_via_' . $via);
+        $payment_gateway = get_option('payment_gateway');
+        require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
         $test = $this->_check_availability($type_code);
         if ($test !== null) {
             return $test;
         }
 
-        $temp = $object->get_products(true, $type_code);
+        $temp = $product_object->get_products(true, $type_code);
         $price = $temp[$type_code][1];
         $item_name = $temp[$type_code][4];
         $currency = isset($temp[$type_code][5]) ? $temp[$type_code][5] : get_option('currency');
 
-        if (method_exists($object, 'set_needed_fields')) {
-            $purchase_id = $object->set_needed_fields($type_code);
+        if (method_exists($product_object, 'set_needed_fields')) {
+            $purchase_id = $product_object->set_needed_fields($type_code);
         } else {
             $purchase_id = strval(get_member());
         }
 
         if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+            // For a subscription we need to add in the subscription record in advance of payment. This will become our $purchase_id
             $_purchase_id = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 'id', array(
                 's_type_code' => $type_code,
                 's_member_id' => get_member(),
@@ -440,7 +485,7 @@ class Module_purchase
                     's_time' => time(),
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
-                    's_via' => $via,
+                    's_payment_gateway' => $payment_gateway,
                     's_length' => $temp[$type_code][3]['length'],
                     's_length_units' => $temp[$type_code][3]['length_units'],
                 ), true));
@@ -453,14 +498,10 @@ class Module_purchase
         } else {
             $length = null;
             $length_units = '';
-
-            // Add cataloue item order to shopping_orders
-            if (method_exists($object, 'add_purchase_order')) {
-                $purchase_id = strval($object->add_purchase_order($type_code, $temp[$type_code]));
-            }
         }
 
         if ($price == '0') {
+            // Free product, so bought instantly
             $payment_status = 'Completed';
             $reason_code = '';
             $pending_reason = '';
@@ -478,24 +519,55 @@ class Module_purchase
 
         $text = mixed();
         if (get_param_integer('include_message', 0) == 1) {
+            // Request to show message on the payment screen (we would have been hot-linked straight to here)
             $text = new Tempcode();
-            if (method_exists($object, 'product_info')) {
-                $text->attach($object->product_info(get_param_integer('product'), $this->title));
-            } elseif (method_exists($object, 'get_message')) {
-                $text->attach($object->get_message($type_code));
+            if (method_exists($product_object, 'product_info')) {
+                $text->attach($product_object->product_info(get_param_integer('product'), $this->title));
+            } elseif (method_exists($product_object, 'get_message')) {
+                $text->attach($product_object->get_message($type_code));
             }
         }
 
-        if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
-            if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $via);
-            } else {
-                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $via);
-            }
-            $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
-            $logos = method_exists($purchase_object, 'get_logos') ? $purchase_object->get_logos() : new Tempcode();
-            $result = do_template($tpl, array(
+        if (perform_local_payment()) { // Handle the transaction internally
+            $needs_shipping_address = (method_exists($product_object, 'needs_shipping_address')) && ($product_object->needs_shipping_address());
+
+            list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
+                $type_code,
+                $item_name,
+                $purchase_id,
+                float_to_raw_string($price),
+                $currency,
+                ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
+                ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '',
+                $payment_gateway,
+                $needs_shipping_address
+            );
+
+            $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish', 'type_code' => $type_code), '_SELF');
+
+            // Credit card form
+            $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
+                '_GUID' => '15cbba9733f6ff8610968418d8ab527e',
+                'FIELDS' => $fields,
+                'HIDDEN' => $hidden,
                 'LOGOS' => $logos,
+                'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
+            ));
+            return $this->_wrap($result, $this->title, $finish_url);
+        } else { // Pass through to the gateway's HTTP server
+            if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $payment_gateway);
+            } else {
+                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
+            }
+
+            $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
+
+            $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
+            $payment_processor_links = method_exists($payment_gateway_object, 'get_payment_processor_links') ? $payment_gateway_object->get_payment_processor_links() : new Tempcode();
+
+            // Form with pay button on
+            $result = do_template($tpl, array(
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'CURRENCY' => $currency,
                 'ITEM_NAME' => $item_name,
@@ -505,19 +577,11 @@ class Module_purchase
                 'PURCHASE_ID' => $purchase_id,
                 'PRICE' => float_to_raw_string(floatval($price)),
                 'TEXT' => $text,
+                'LOGOS' => $logos,
+                'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
             ));
-        } else { // Handle the transaction internally
-            if ((!tacit_https()) && (!ecommerce_test_mode())) {
-                warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
-            }
-
-            list($fields, $hidden) = get_transaction_form_fields(null, $purchase_id, $item_name, float_to_raw_string($price), $currency, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null, ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '', $via);
-
-            $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish'), '_SELF');
-
-            $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array('_GUID' => '15cbba9733f6ff8610968418d8ab527e', 'FIELDS' => $fields, 'HIDDEN' => $hidden));
-            return $this->_wrap($result, $this->title, $finish_url);
         }
+
         return $this->_wrap($result, $this->title, null);
     }
 
@@ -528,79 +592,53 @@ class Module_purchase
      */
     public function finish()
     {
-        $via = get_option('payment_gateway');
-        require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_ecommerce_via_' . $via);
+        $payment_gateway = get_option('payment_gateway');
+        require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-        $message = mixed();
-        if (method_exists($object, 'get_callback_url_message')) {
-            $message = $object->get_callback_url_message();
+        $message = get_param_string('message', null);
+        if ($message === null) {
+            if (method_exists($payment_gateway_object, 'get_callback_url_message')) {
+                $message = $payment_gateway_object->get_callback_url_message();
+            }
         }
 
-        if (get_param_integer('cancel', 0) == 0) {
-            if (perform_local_payment()) { // We need to try and run the transaction
-                $trans_id = post_param_string('trans_id');
-                $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id), '', 1);
-                if (!array_key_exists(0, $transaction_rows)) {
-                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-                }
-                $transaction_row = $transaction_rows[0];
-                $amount = $transaction_row['e_amount'];
-                $length = $transaction_row['e_length'];
-                $length_units = $transaction_row['e_length_units'];
-                $currency = $transaction_row['e_currency'];
-
-                $name = post_param_string('name');
-                $card_number = post_param_string('card_number');
-                $expiry_date = str_replace('/', '', post_param_string('expiry_date'));
-                $issue_number = post_param_integer('issue_number', null);
-                $start_date = str_replace('/', '', post_param_string('start_date'));
-                $card_type = post_param_string('card_type');
-                $cv2 = post_param_string('cv2');
-
-                list($success, , $message, $message_raw) = $object->do_transaction($trans_id, $name, $card_number, $amount, $currency, $expiry_date, $issue_number, $start_date, $card_type, $cv2, $length, $length_units);
-
-                $item_name = $transaction_row['e_item_name'];
-
-                if (addon_installed('shopping')) {
-                    if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
-                        $this->store_shipping_address(intval($transaction_row['e_purchase_id']));
-                    }
-                }
-
-                if (($success) || ($length !== null)) {
-                    $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
-                    handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $via);
-                }
-
-                if ($success) {
-                    $member_id = $transaction_row['e_member_id'];
-                    require_code('notifications');
-                    dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $currency, get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
-                }
+        if (get_param_integer('cancel', 0) == 1) {
+            if ($message !== null) {
+                return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '859c31e8f0f02a2a46951be698dd22cf', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
             }
 
-            $type_code = get_param_string('type_code', '');
-            if ($type_code != '') {
-                if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
-                    handle_transaction_script();
-                }
+            return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
+        }
 
-                $product_object = find_product($type_code);
-
-                if (method_exists($product_object, 'get_finish_url')) {
-                    return redirect_screen($this->title, $product_object->get_finish_url($type_code, $message, get_param_integer('purchase_id', null)), $message);
-                }
+        if (perform_local_payment()) { // We need to try and run the transaction
+            list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $payment_gateway_object);
+            if (!$success) {
+                warn_exit($message);
             }
-
-            return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '43f706793719ea893c280604efffacfe', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
         }
 
-        if ($message !== null) {
-            return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '859c31e8f0f02a2a46951be698dd22cf', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+        // We know success at this point...
+
+        if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
+            handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
-        return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
+        $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
+
+        if ($redirect === null) {
+            $type_code = get_param_string('type_code');
+            $product_object = find_product($type_code);
+            if (method_exists($product_object, 'get_finish_url')) {
+                $redirect = $product_object->get_finish_url($type_code, $message);
+            }
+        }
+
+        if ($redirect !== null) {
+            return redirect_screen($this->title, $redirect, $message);
+        }
+
+        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '43f706793719ea893c280604efffacfe', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
     }
 
     /**
@@ -611,12 +649,12 @@ class Module_purchase
      */
     public function _check_availability($type_code)
     {
-        $object = find_product($type_code);
-        if (!method_exists($object, 'is_available')) {
+        $product_object = find_product($type_code);
+        if (!method_exists($product_object, 'is_available')) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        $availability_status = $object->is_available($type_code, get_member());
+        $availability_status = $product_object->is_available($type_code, get_member());
 
         switch ($availability_status) {
             case ECOMMERCE_PRODUCT_ALREADY_HAS:
@@ -646,13 +684,14 @@ class Module_purchase
 
                 $url = get_self_url();
 
-                $form = cns_join_form($url, true, false, false, false);
+                list($javascript, $form) = cns_join_form($url, true, false, false, false);
 
                 $hidden = build_keep_post_fields();
 
                 $join_screen = do_template('PURCHASE_WIZARD_STAGE_GUEST', array(
                     '_GUID' => 'accf475a1457f73d7280b14d774acc6e',
                     'TEXT' => do_lang_tempcode('PURCHASE_NOT_LOGGED_IN', escape_html(get_site_name())),
+                    'JAVASCRIPT' => $javascript,
                     'FORM' => $form,
                     'HIDDEN' => $hidden,
                 ));
