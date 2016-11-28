@@ -216,9 +216,9 @@ class Module_classifieds
             $ads[] = array(
                 'AD_TITLE' => $ad_title,
                 'TRANSACTION_DETAILS' => $_transaction_details,
-                'DATE' => get_timezoned_date($row['ce_add_date']),
+                'DATE' => get_timezoned_date_time($row['ce_add_date']),
                 'DATE_RAW' => strval($row['ce_add_date']),
-                'EXPIRES_DATE' => get_timezoned_date($row['ce_last_moved']),
+                'EXPIRES_DATE' => get_timezoned_date_time($row['ce_last_moved']),
                 'EXPIRES_DATE_RAW' => strval($row['ce_last_moved']),
                 'ACTIVE' => $row['ce_validated'] == 1,
                 'PURCHASE_URL' => $purchase_url,

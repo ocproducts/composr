@@ -610,9 +610,10 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
  * @param  ?string $pattern Custom regex pattern (null: none)
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
+ * @param  integer $size How much space the list takes up (inline lists only)
  * @return Tempcode The input field
  */
-function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null)
+function form_input_line($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $type = 'text', $placeholder = null, $pattern = null, $pattern_error = null, $size = 30)
 {
     if ($default === null) {
         $default = '';
@@ -628,7 +629,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
     if (($maxlength === null) && ($_maxlength !== null)) {
         $maxlength = strval($_maxlength);
     }
-    $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => '02789c9af25cbc971e86bfcc0ad322d5', 'PLACEHOLDER' => $placeholder, 'MAXLENGTH' => $maxlength, 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default, 'TYPE' => $type, 'PATTERN' => $pattern));
+    $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => '02789c9af25cbc971e86bfcc0ad322d5', 'PLACEHOLDER' => $placeholder, 'MAXLENGTH' => $maxlength, 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default, 'TYPE' => $type, 'PATTERN' => $pattern, 'SIZE' => strval($size)));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', (($pattern_error === null) && ($pattern !== null)) ? strip_html($description->evaluate()) : $pattern_error);
 }
 
@@ -2229,7 +2230,7 @@ function form_input_date_components($pretty_name, $description, $name, $want_yea
  * @param  ?integer $maxlength Maximum input length (null: no maximum length, regular HTML5 number input)
  * @return Tempcode The input field
  */
-function form_input_integer($pretty_name, $description, $name, $default, $required, $tabindex = null)
+function form_input_integer($pretty_name, $description, $name, $default, $required, $tabindex = null, $maxlength = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 

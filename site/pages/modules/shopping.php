@@ -222,7 +222,7 @@ class Module_shopping
 
         if ($type == 'browse') {
             if ($ecom_catalogue_count == 1) {
-                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . $ecom_catalogue_id, do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE'))));
+                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . strval($ecom_catalogue_id), do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE'))));
             } else {
                 breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES'))));
             }
@@ -289,7 +289,7 @@ class Module_shopping
             warn_exit(do_lang_tempcode('PURCHASE_DISABLED'));
         }
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $type = get_param_string('type', 'browse');
 
@@ -364,7 +364,7 @@ class Module_shopping
                     do_lang_tempcode('SHIPPING_PRICE'),
                     do_lang_tempcode('TOTAL_PRICE'),
                     do_lang_tempcode('REMOVE')
-                ), null
+                )
             );
 
             foreach ($shopping_cart_rows as $i => $value) {
@@ -398,7 +398,7 @@ class Module_shopping
                 $grand_total += round($value['price'] + $tax + $shipping_cost, 2) * $value['quantity'];
             }
 
-            $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, null, 'cart');
+            $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, array(), 'cart');
 
             $update_cart_url = build_url(array('page' => '_SELF', 'type' => 'update_cart'), '_SELF');
             $empty_cart_url = build_url(array('page' => '_SELF', 'type' => 'empty_cart'), '_SELF');
@@ -591,7 +591,7 @@ class Module_shopping
             handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
-        $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
+        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
 
         if ($redirect === null) {
             $product_object = find_product('cart_orders');
@@ -661,7 +661,7 @@ class Module_shopping
                 $order_details_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_det['p_id']), get_module_zone('catalogues'));
             }
 
-            $orders[] = array('ORDER_TITLE' => $order_title, 'ID' => strval($row['id']), 'AMOUNT' => strval($row['tot_price']), 'TIME' => get_timezoned_date($row['add_date'], true, false, true, true), 'STATE' => do_lang_tempcode($row['order_status']), 'NOTE' => '', 'ORDER_DET_URL' => $order_details_url, 'DELIVERABLE' => '');
+            $orders[] = array('ORDER_TITLE' => $order_title, 'ID' => strval($row['id']), 'AMOUNT' => strval($row['tot_price']), 'DATE' => get_timezoned_date_time($row['add_date'], false), 'STATE' => do_lang_tempcode($row['order_status']), 'NOTE' => '', 'ORDER_DET_URL' => $order_details_url, 'DELIVERABLE' => '');
         }
 
         if (count($orders) == 0) {

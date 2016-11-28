@@ -23,7 +23,7 @@ Cheque processing is relatively straight forward, but more infrastructure is nee
 1) By getting an agent to fully handle the transaction and relay the funds
 2) By having a merchant account with a bank, using the banks infrastructure and your bank account to manage the transaction yourself
 
-Composr, by default, allows payment via PayPal, WorldPay, SecPay, CCBill and Authorize.Net, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; others are not regularly tested and intended for developers (usage instructions are included as comments within Composr's source code for the particular payment gateway).
+Composr, by default, allows payment via {$IS_MAINTAINED,gateway_paypal,PayPal} & {$IS_MAINTAINED,gateway_worldpay,WorldPay} & {$IS_MAINTAINED,gateway_secpay,SecPay} & {$IS_MAINTAINED,gateway_ccbill,CCBill} & {$IS_MAINTAINED,gateway_authorize,Authorize.Net}, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; others are not regularly tested and intended for developers (usage instructions are included as comments within Composr's source code for the particular payment gateway).
 
 PayPal was chosen because it is without doubt the leading form of payment on the Internet, easy to setup, and flexible in that it can provide support for funding direct from bank accounts, or cheque, as well as debit and credit card processing. Lots of people do not like PayPal policies, but we have no official position on this -- development priorities simply follow funding.
 [/surround]

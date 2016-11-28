@@ -237,14 +237,9 @@ function send_invoice_notification($member_id, $id)
  */
 function find_all_products($site_lang = false)
 {
-    $_hooks = find_all_hooks('systems', 'ecommerce');
     $products = array();
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($product_object === null) {
-            continue;
-        }
+    $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
+    foreach ($_hooks as $product_object) {
         $_products = $product_object->get_products($site_lang);
         foreach ($_products as $type_code => $details) {
             if (!array_key_exists(4, $details)) {
@@ -267,14 +262,8 @@ function find_all_products($site_lang = false)
  */
 function find_product($search, $site_lang = false, $search_item_names = false)
 {
-    $_hooks = find_all_hooks('systems', 'ecommerce');
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($product_object === null) {
-            continue;
-        }
-
+    $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
+    foreach ($_hooks as $product_object) {
         $_products = $product_object->get_products($site_lang, $search, $search_item_names);
 
         $type_code = mixed();
@@ -307,14 +296,8 @@ function find_product($search, $site_lang = false, $search_item_names = false)
  */
 function find_product_row($search, $site_lang = false, $search_item_names = false)
 {
-    $_hooks = find_all_hooks('systems', 'ecommerce');
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($product_object === null) {
-            continue;
-        }
-
+    $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
+    foreach ($_hooks as $product_object) {
         $_products = $product_object->get_products($site_lang, $search, $search_item_names);
 
         $type_code = mixed();
@@ -738,7 +721,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
  */
 function handle_ipn_transaction_script()
 {
-    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
+    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (cms_is_writable(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'ab');
         fwrite($myfile, serialize($_POST) . "\n");
         fwrite($myfile, serialize($_GET) . "\n");

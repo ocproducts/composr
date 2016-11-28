@@ -34,9 +34,9 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
         $query = 'SELECT * FROM ' . get_table_prefix() . 'subscriptions WHERE s_member_id=' . strval($member_id) . ' AND (' . db_string_equal_to('s_state', 'active') . ' OR ' . db_string_equal_to('s_state', 'cancelled') . ') ORDER BY s_time';
         $_subscriptions = $GLOBALS['SITE_DB']->query($query);
         require_code('ecommerce');
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
         $_subscriptions_non_recurring = $GLOBALS['SITE_DB']->query_select('f_group_member_timeouts', array('*'), array('member_id' => $member_id));
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+        pop_db_scope_check();
         foreach ($_subscriptions_non_recurring as $sub) {
             $found_transaction = false;
             $subs_trans = $GLOBALS['SITE_DB']->query_select('transactions', array('*'), array('t_purchase_id' => $member_id, 't_status' => 'Completed'), 'ORDER BY t_time DESC');
@@ -214,10 +214,10 @@ function prepare_templated_subscription($subscription)
         '_TERM_START_TIME' => strval($subscription['term_start_time']),
         '_TERM_END_TIME' => strval($subscription['term_end_time']),
         '_EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : strval($subscription['expiry_time']),
-        'START_TIME' => get_timezoned_date($subscription['start_time'], false, false, false, true),
-        'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false, false, false, true),
-        'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false, false, false, true),
-        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false, false, false, true),
+        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false),
+        'START_TIME' => get_timezoned_date($subscription['start_time'], false),
+        'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false),
+        'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false),
         'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['via']) : new Tempcode(),
     );
 }

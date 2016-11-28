@@ -624,7 +624,7 @@ class Module_purchase
             handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
-        $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
+        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
 
         if ($redirect === null) {
             $type_code = get_param_string('type_code');
@@ -684,14 +684,13 @@ class Module_purchase
 
                 $url = get_self_url();
 
-                list($javascript, $form) = cns_join_form($url, true, false, false, false);
+                $form = cns_join_form($url, true, false, false, false);
 
                 $hidden = build_keep_post_fields();
 
                 $join_screen = do_template('PURCHASE_WIZARD_STAGE_GUEST', array(
                     '_GUID' => 'accf475a1457f73d7280b14d774acc6e',
                     'TEXT' => do_lang_tempcode('PURCHASE_NOT_LOGGED_IN', escape_html(get_site_name())),
-                    'JAVASCRIPT' => $javascript,
                     'FORM' => $form,
                     'HIDDEN' => $hidden,
                 ));

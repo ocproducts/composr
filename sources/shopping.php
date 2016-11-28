@@ -399,12 +399,12 @@ function get_order_tax_opt_out_status()
     } else {
         $where['c_member'] = get_member();
     }
-    $row = $GLOBALS['SITE_DB']->query_select('shopping_order', array('tax_opted_out'), $where, 'ORDER BY add_date DESC', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('tax_opted_out'), $where, 'ORDER BY add_date DESC', 1);
 
-    if (!array_key_exists(0, $row)) {
+    if (!array_key_exists(0, $rows)) {
         return 0;
     } else {
-        return $row[0]['tax_opted_out'];
+        return $rows[0]['tax_opted_out'];
     }
 }
 
@@ -526,7 +526,6 @@ function get_ordered_product_list_string($order_id)
     $product_det = array();
 
     $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), 'ORDER BY p_name');
-
     foreach ($rows as $key => $product) {
         $product_det[] = $product['p_name'] . ' x ' . integer_format($product['p_quantity']) . ' @ ' . do_lang('UNIT_PRICE') . '=' . float_format($product['p_price']);
     }

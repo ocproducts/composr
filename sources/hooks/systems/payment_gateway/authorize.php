@@ -377,8 +377,8 @@ class Hook_payment_gateway_authorize
 
         $response_data = http_get_contents($this->url, array('trigger_error' => false, 'post_params' => $this->api_parameters, 'timeout' => 12.0));
 
-        if ($response !== null) {
-            list($result_code, $code, $text, $subscription_id) = $this->_parse_arb_return($response);
+        if ($response_data !== null) {
+            list($result_code, $code, $text, $subscription_id) = $this->_parse_arb_return($response_data);
             $success = ($result_code == 'OK');
         } else {
             $success = false;

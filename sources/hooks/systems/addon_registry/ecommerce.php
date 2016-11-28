@@ -311,7 +311,7 @@ class Hook_addon_registry_ecommerce
                 'ID' => placeholder_id(),
                 'STATE' => lorem_phrase(),
                 'AMOUNT' => placeholder_number(),
-                'TIME' => placeholder_date(),
+                'DATE' => placeholder_date(),
                 'NOTE' => lorem_phrase(),
                 'TYPE_CODE' => lorem_phrase(),
             );
@@ -946,7 +946,7 @@ class Hook_addon_registry_ecommerce
                 'INVOICE_TITLE' => lorem_phrase(),
                 'INVOICE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
-                'TIME' => placeholder_date(),
+                'DATE' => placeholder_date(),
                 'STATE' => lorem_word(),
                 'DELIVERABLE' => lorem_word(),
                 'PAYABLE' => lorem_word(),

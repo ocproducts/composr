@@ -217,7 +217,9 @@ class Module_admin_orders
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('ORDERS'), comcode_lang_string('DOC_ECOMMERCE'),
+        return do_next_manager(
+            get_screen_title('ORDERS'),
+            comcode_lang_string('DOC_ECOMMERCE'),
             array(
                 array('menu/adminzone/audit/ecommerce/orders', array('_SELF', array('type' => 'show_orders'), '_SELF'), do_lang('SHOW_ORDERS')),
                 array('menu/adminzone/audit/ecommerce/undispatched_orders', array('_SELF', array('type' => 'show_orders', 'filter' => 'undispatched'), '_SELF'), do_lang('SHOW_UNDISPATCHED_ORDERS')),
@@ -236,7 +238,7 @@ class Module_admin_orders
         require_code('shopping');
 
         $filter = get_param_string('filter', null);
-        $search = get_param_string('search', '', true);
+        $search = get_param_string('search', '', INPUT_FILTER_GET_COMPLEX);
 
         $cond = 'WHERE 1=1';
 
@@ -246,7 +248,7 @@ class Module_admin_orders
 
         $extra_join = '';
         if (($search !== null) && ($search != '')) {
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+            push_db_scope_check(false);
 
             $cond .= ' AND (t1.id LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\' OR t2.m_username LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\')';
             $extra_join = ' JOIN ' . get_table_prefix() . 'f_members t2 ON t2.id=t1.c_member';
@@ -267,7 +269,7 @@ class Module_admin_orders
             't1.transaction_id' => do_lang_tempcode('TRANSACTION_ID'),
         );
 
-        $query_sort = explode(' ', get_param_string('sort', 't1.add_date ASC'), 2);
+        $query_sort = explode(' ', get_param_string('sort', 't1.add_date ASC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($query_sort) == 1) {
             $query_sort[] = 'ASC';
         }
@@ -289,8 +291,7 @@ class Module_admin_orders
             ), $sortables, 'sort', $sortable . ' ' . $sort_order
         );
 
-        global $NO_DB_SCOPE_CHECK;
-        $NO_DB_SCOPE_CHECK = true;
+        push_db_scope_check(false);
 
         $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
         $order_entries = new Tempcode();
@@ -326,7 +327,7 @@ class Module_admin_orders
                 $member = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
             }
 
-            $order_date = hyperlink($view_url, get_timezoned_date($row['add_date'], true, false, true, true), false, true);
+            $order_date = hyperlink($view_url, get_timezoned_date_time($row['add_date'], false), false, true);
 
             if (($row['transaction_id'] != '') && ($row['order_status'] != 'ORDER_STATUS_awaiting_payment')) {
                 $transaction_details_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'logs', 'type_code' => $order_title, 'id' => $row['id']), get_module_zone('admin_ecommerce_logs'));
@@ -374,6 +375,8 @@ class Module_admin_orders
             'HIDDEN' => $hidden,
         ));
 
+        pop_db_scope_check();
+
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
     }
@@ -393,7 +396,7 @@ class Module_admin_orders
         $max = get_param_integer('max', 10);
 
         $sortables = array();
-        $query_sort = explode(' ', get_param_string('sort', 'p_name ASC'), 2);
+        $query_sort = explode(' ', get_param_string('sort', 'p_name ASC', INPUT_FILTER_GET_COMPLEX), 2);
         if (count($query_sort) == 1) {
             $query_sort[] = 'ASC';
         }
@@ -437,7 +440,7 @@ class Module_admin_orders
                     ), false, null)
             );
         }
-        $results_table = results_table(do_lang_tempcode('PRODUCTS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries, $sortables, $sortable, $sort_order, 'sort', null, null);
+        $results_table = results_table(do_lang_tempcode('PRODUCTS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries, $sortables, $sortable, $sort_order, 'sort', null, array());
 
         // Pagination
         require_code('templates_pagination');
@@ -496,7 +499,7 @@ class Module_admin_orders
             'RESULTS_TABLE' => $results_table,
             'PAGINATION' => $pagination,
             'ORDER_NUMBER' => strval($id),
-            'ADD_DATE' => get_timezoned_date($data['add_date'], true, false, true, true),
+            'ADD_DATE' => get_timezoned_date($data['add_date'], false),
             'CURRENCY' => get_option('currency'),
             'TOTAL_PRICE' => float_format($data['tot_price'], 2),
             'ORDERED_BY_MEMBER_ID' => strval($ordered_by_member_id),
@@ -542,7 +545,7 @@ class Module_admin_orders
 
         require_code('form_templates');
 
-        $redirect_url = get_param_string('redirect', null);
+        $redirect_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         $last_action = get_param_string('last_act', null);
 
         $update_url = build_url(array('page' => '_SELF', 'type' => '_add_note', 'redirect' => $redirect_url), '_SELF');
@@ -552,7 +555,7 @@ class Module_admin_orders
         $note = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => $id));
 
         if ($last_action !== null) {
-            $note .= do_lang('ADD_NOTE_APPEND_TEXT', get_timezoned_date(time(), true, false, true, true), do_lang('ORDER_STATUS_' . $last_action));
+            $note .= do_lang('ADD_NOTE_APPEND_TEXT', get_timezoned_date_time(time(), false), do_lang('ORDER_STATUS_' . $last_action));
         }
 
         $fields->attach(form_input_text(do_lang_tempcode('NOTE'), do_lang_tempcode('NOTE_DESCRIPTION'), 'note', $note, true));
@@ -598,7 +601,7 @@ class Module_admin_orders
         $id = post_param_integer('order_id');
 
         $notes = post_param_string('note');
-        $redirect = get_param_string('redirect', null);
+        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
 
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('notes' => $notes), array('id' => $id), '', 1);
 
@@ -747,7 +750,7 @@ class Module_admin_orders
         $end_date = post_param_date('end_date', true);
         $order_status = post_param_string('order_status');
 
-        $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false, false, false, true) . '-' . get_timezoned_date($end_date, false, false, false, true) . '.csv';
+        $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false) . '-' . get_timezoned_date($end_date, false) . '.csv';
 
         $orders = array();
         $data = array();
@@ -767,7 +770,7 @@ class Module_admin_orders
 
         foreach ($rows as $order) {
             $orders[do_lang('ORDER_NUMBER')] = strval($order['id']);
-            $orders[do_lang('ORDERED_DATE')] = get_timezoned_date($order['add_date'], true, false, true, true);
+            $orders[do_lang('ORDERED_DATE')] = get_timezoned_date_time($order['add_date']);
             $orders[do_lang('ORDER_PRICE')] = $order['tot_price'];
             $orders[do_lang('ORDER_STATUS')] = do_lang($order['order_status']);
             $orders[do_lang('ORDER_TAX_OPT_OUT')] = ($order['tax_opted_out']) ? do_lang('YES') : do_lang('NO');
