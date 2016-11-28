@@ -14,7 +14,7 @@ If you are a Windows user and haven't installed a new web browser, you are proba
 [title="4"]Microsoft Edge[/title]
 
 Instructions:
- - From the "..." menu, go to [b]Settings[/b]
+ - From the "..." menu, go to [b]Settings[/b] ([tt]Alt[/tt]+[tt]t[/tt] then [tt]o[/tt])
  - Click "View advanced settings"
  - Make sure "Block pop-ups" is set to Off.
 
@@ -23,51 +23,51 @@ As this is a global setting (not a per-site setting), you'll want to put it back
 [title="4"]Microsoft Internet Explorer[/title]
 
 Instructions:
- - From the gear menu, go to [b]Internet Options[/b]
+ - From the gear menu, go to [b]Internet Options[/b] ([tt]Alt[/tt]+[tt]t[/tt] then [tt]o[/tt])
  - Click the Privacy tab
- - Under Pop-up Blocker, click [b]Settings[/b].
- - In the [b]Address of website to allow[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
- - Click [b]Add[/b].
- - Click [b]Close[/b].
- - Click [b]OK[/b].
+ - Under Pop-up Blocker, click [b]Settings[/b]
+ - In the [b]Address of website to allow[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml]
+ - Click [b]Add[/b]
+ - Click [b]Close[/b]
+ - Click [b]OK[/b]
 
 [title="3"]Google Chrome[/title]
 
 Instructions:
  - [i]If you're on Windows or Linux:[/i]
-  - Click the wrench icon on the browser toolbar.
+  - Click the wrench icon on the browser toolbar ([tt]Alt[/tt]+[tt]f[/tt] then [tt]s[/tt])
  - [i]If you're on a Mac:[/i]
-  - From the [b]Chrome[/b] menu, click [b]Preferences[/b].
- - Select [b]Settings[/b].
+  - From the [b]Chrome[/b] menu, click [b]Preferences[/b] ([tt]Cmd[/tt]+[tt],[/tt])
+ - Select [b]Settings[/b]
  - Click [b]Show advanced settings...[/b].
- - In the "Privacy" section, click the [b]Content settings...[/b] button. The "Content settings" window appears.
- - In the "Pop-ups" section of this window, click the [b]Manage exceptions...[/b] button.
- - On top of where it says [b]Add a new hostname pattern[/b], type [semihtml]<kbd>{$BASE_URL*}</kbd>[/semihtml].
- - Click [b]OK[/b].
- - Click [b]OK[/b].
- - Close the Settings tab.
+ - In the "Privacy" section, click the [b]Content settings...[/b] button. The "Content settings" window appears
+ - In the "Pop-ups" section of this window, click the [b]Manage exceptions...[/b] button
+ - On top of where it says [b]Add a new hostname pattern[/b], type [semihtml]<kbd>{$BASE_URL*}</kbd>[/semihtml]
+ - Click [b]OK[/b]
+ - Click [b]OK[/b]
+ - Close the Settings tab
 
 [title="3"]Mozilla Firefox[/title]
 
 Instructions:
  - [i]If you're on Windows or Linux:[/i]
-  - From the [b]Tools[/b] menu, click [b]Options[/b].
+  - From the [b]Tools[/b] menu, click [b]Options[/b] ([tt]Alt[/tt]+[tt]t[/tt] then [tt]o[/tt])
  - [i]If you're on a Mac:[/i]
-  - From the [b]Firefox[/b] menu, click [b]Preferences[/b].
- - Click the [b]Content[/b] icon located at the top of the window.
- - Click the [b]Exceptions[/b] button located to the right of [b]Block pop-up windows[/b].
- - You will see the [b]Allowed Sites[/b] dialog box.
- - In the [b]Address of website[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
- - Click [b]Allow[/b].
- - Click [b]Close[/b].
- - Click [b]OK[/b] to close the [i]Options[/i] dialog box.
+  - From the [b]Firefox[/b] menu, click [b]Preferences[/b] ([tt]Cmd[/tt]+[tt],[/tt])
+ - Click the [b]Content[/b] icon located at the top of the window
+ - Click the [b]Exceptions[/b] button located to the right of [b]Block pop-up windows[/b]
+ - You will see the [b]Allowed Sites[/b] dialog box
+ - In the [b]Address of website[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml]
+ - Click [b]Allow[/b]
+ - Click [b]Close[/b]
+ - Click [b]OK[/b] to close the [i]Options[/i] dialog box
 
 [title="3"]Apple Safari[/title]
 
 Safari has no per-website control over blocking pop-ups windows. Pop-ups are either blocked, or they are not. To allow pop-ups:
- - From the [b]Safari[/b] menu, click [b]Preferences[/b].
- - Click [b]Security[/b].
- - Make sure [b]Block pop-up windows[/b] is unchecked.
+ - From the [b]Safari[/b] menu, click [b]Preferences[/b] ([tt]Cmd[/tt]+[tt],[/tt])
+ - Click [b]Security[/b]
+ - Make sure [b]Block pop-up windows[/b] is unchecked
 
 You should go back and check [b]Block pop-up windows[/b] when you are done using the site for the day, to avoid inconvenience if other websites abuse pop-up windows.
 
@@ -77,11 +77,11 @@ You may wish to install a more featured web browser, such as Google Chrome for g
 
 Opera has no per-website control over blocking pop-ups windows. Pop-ups are either blocked, or they are not. To allow pop-ups:
  - [i]If you're on Windows or Linux:[/i]
-  - From the [b]Tools[/b] menu, click [b]Options[/b].
+  - From the [b]Tools[/b] menu, click [b]Options[/b] ([tt]Alt[/tt]+[tt]t[/tt] then [tt]o[/tt])
  - [i]If you're on a Mac:[/i]
-  - From the [b]Opera[/b] menu, click [b]Preferences[/b].
- - Make sure you are looking at the [b]General[/b] tab.
- - Make sure [b]Pop-ups[/b] is set to "Open all pop-ups".
+  - From the [b]Opera[/b] menu, click [b]Preferences[/b] ([tt]Cmd[/tt]+[tt],[/tt])
+ - Make sure you are looking at the [b]General[/b] tab
+ - Make sure [b]Pop-ups[/b] is set to "Open all pop-ups"
 
 You should go back and change [b]Pop-ups[/b] to "Block unwanted pop-ups" when you are done using the site for the day, to avoid inconvenience if other websites abuse pop-up windows.
 
