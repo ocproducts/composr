@@ -50,7 +50,7 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
 
     if ($myrow['s_auto_recur'] == 1) {
         $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_member_id', array('id' => intval($purchase_id)));
-        if (is_null($member_id)) {
+        if ($member_id === null) {
             return;
         }
     } else {
@@ -62,7 +62,7 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
         if ($test) {
             // Remove them from the group
 
-            if (is_null($GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)))) {
+            if ($GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)) === null) {
                 if ((method_exists($GLOBALS['FORUM_DRIVER'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
                     $GLOBALS['FORUM_DRIVER']->remove_member_from_group($member_id, $new_group);
                 } else {
@@ -111,7 +111,7 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
                 'member_id' => $member_id,
                 'group_id' => $new_group,
             ));
-            if ((is_null($start_time)) || ($start_time < time())) {
+            if (($start_time === null) || ($start_time < time())) {
                 $start_time = time();
             }
             $GLOBALS['SITE_DB']->query_delete('f_group_member_timeouts', array(
@@ -160,7 +160,7 @@ class Hook_ecommerce_usergroup
         $rows = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code, 's_state' => 'new'), 'ORDER BY id DESC');
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['s_member_id']);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
             $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('SUBSCRIPTION_OF', strval($row['id']), $username, get_timezoned_date($row['s_time']))));

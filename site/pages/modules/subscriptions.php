@@ -66,7 +66,7 @@ class Module_subscriptions
         $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('subscriptions', array(
                 'id' => '*AUTO',
                 's_type_code' => 'ID_TEXT',
@@ -101,7 +101,7 @@ class Module_subscriptions
             ));
         }
 
-        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
+        if (($upgrade_from === null) || ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->create_table('f_usergroup_sub_mails', array(
                 'id' => '*AUTO',
                 'm_usergroup_sub_id' => 'AUTO_LINK',
@@ -112,7 +112,7 @@ class Module_subscriptions
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_special', 'ID_TEXT', 's_purchase_id');
             $GLOBALS['SITE_DB']->add_table_field('subscriptions', 's_length', 'INTEGER', 1);
             $GLOBALS['SITE_DB']->add_table_field('subscriptions', 's_length_units', 'SHORT_TEXT', 'm');
@@ -139,7 +139,7 @@ class Module_subscriptions
             $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_auto_recur', 'BINARY', 1);
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_payment_gateway', 'ID_TEXT', 's_payment_gateway');
 
             $GLOBALS['SITE_DB']->create_index('subscriptions', 's_member_id', array('s_member_id'));
@@ -255,7 +255,7 @@ class Module_subscriptions
     {
         $id = get_param_integer('id');
         $payment_gateway = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_payment_gateway', array('id' => $id));
-        if (is_null($payment_gateway)) {
+        if ($payment_gateway === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 

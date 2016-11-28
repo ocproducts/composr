@@ -73,7 +73,7 @@ class Module_purchase
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             add_privilege('ECOMMERCE', 'access_ecommerce_in_test_mode', false);
 
             $GLOBALS['SITE_DB']->create_table('trans_expecting', array( // Used by payment gateways that return limited information back via IPN, or for local transactions
@@ -125,7 +125,7 @@ class Module_purchase
             ));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'purchase_id', 'ID_TEXT', 't_purchase_id');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'status', 'SHORT_TEXT', 't_status');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'reason', 'SHORT_TEXT', 't_reason');
@@ -137,7 +137,7 @@ class Module_purchase
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_type_code', 'ID_TEXT');
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
@@ -230,7 +230,7 @@ class Module_purchase
 
         // Recognise join operations
         $new_username = post_param_string('username', null);
-        if (!is_null($new_username)) {
+        if ($new_username !== null) {
             require_code('cns_join');
             list($messages) = cns_join_actual(true, false, false, true, false, false, false, true);
             if (!$messages->is_empty()) {
@@ -271,7 +271,7 @@ class Module_purchase
      */
     public function _wrap($content, $title, $url, $get = false)
     {
-        if (is_null($url)) {
+        if ($url === null) {
             $url = '';
         }
         require_javascript('checking');
@@ -301,7 +301,7 @@ class Module_purchase
                 }
             }
 
-            if (!is_null($type_filter)) {
+            if ($type_filter !== null) {
                 if ($details[0] != $type_filter) {
                     continue;
                 }
@@ -348,22 +348,22 @@ class Module_purchase
 
         $text = new Tempcode();
         $product_object = find_product($type_code);
-        if (is_null($product_object)) {
+        if ($product_object === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
         $test = $this->_check_availability($type_code);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
         // Work out what next step is
         $terms = method_exists($product_object, 'get_terms') ? $product_object->get_terms($type_code) : '';
         $fields = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : null;
-        if ((!is_null($fields)) && ($fields->is_empty())) {
+        if (($fields !== null) && ($fields->is_empty())) {
             $fields = null;
         }
-        $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
+        $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (($fields === null) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
 
         if (method_exists($product_object, 'product_info')) {
             $text->attach($product_object->product_info(get_param_integer('type_code'), $this->title));
@@ -394,17 +394,17 @@ class Module_purchase
         $product_object = find_product($type_code);
 
         $test = $this->_check_availability($type_code);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
         // Work out what next step is
         $terms = $product_object->get_terms($type_code);
         $fields = $product_object->get_needed_fields($type_code);
-        if ((!is_null($fields)) && ($fields->is_empty())) {
+        if (($fields !== null) && ($fields->is_empty())) {
             $fields = null;
         }
-        $url = build_url(array('page' => '_SELF', 'type' => is_null($fields) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
+        $url = build_url(array('page' => '_SELF', 'type' => ($fields === null) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
 
         return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_TERMS', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'TERMS' => $terms)), $this->title, null);
     }
@@ -427,7 +427,7 @@ class Module_purchase
         $product_object = find_product($type_code);
 
         $test = $this->_check_availability($type_code);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
@@ -453,7 +453,7 @@ class Module_purchase
         $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
         $test = $this->_check_availability($type_code);
-        if (!is_null($test)) {
+        if ($test !== null) {
             return $test;
         }
 
@@ -475,7 +475,7 @@ class Module_purchase
                 's_member_id' => get_member(),
                 's_state' => 'new'
             ));
-            if (is_null($_purchase_id)) {
+            if ($_purchase_id === null) {
                 $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('subscriptions', array(
                     's_type_code' => $type_code,
                     's_member_id' => get_member(),
@@ -572,7 +572,7 @@ class Module_purchase
                 'CURRENCY' => $currency,
                 'ITEM_NAME' => $item_name,
                 'TITLE' => $this->title,
-                'LENGTH' => is_null($length) ? '' : strval($length),
+                'LENGTH' => ($length === null) ? '' : strval($length),
                 'LENGTH_UNITS' => $length_units,
                 'PURCHASE_ID' => $purchase_id,
                 'PRICE' => float_to_raw_string(floatval($price)),

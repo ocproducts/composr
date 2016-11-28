@@ -52,7 +52,7 @@ class Module_classifieds
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('classifieds_prices', array(
                 'id' => '*AUTO',
                 'c_catalogue_name' => 'ID_TEXT',
@@ -182,7 +182,7 @@ class Module_classifieds
             $_transaction_details = array();
             foreach ($transaction_details as $t) {
                 list($found,) = find_product_row($t['t_item']);
-                if (!is_null($found)) {
+                if ($found !== null) {
                     $item_title = $found[4];
                 } else {
                     $item_title = $t['t_item'];

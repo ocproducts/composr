@@ -63,7 +63,7 @@ class Module_shopping
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (is_null($upgrade_from)) {
+        if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('shopping_cart', array(
                 'id' => '*AUTO',
                 'session_id' => 'ID_TEXT',
@@ -145,7 +145,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->create_index('shopping_order_addresses', 'order_id', array('a_order_id'));
         }
 
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_contact_phone', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_address_state', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_first_name', 'SHORT_TEXT');
@@ -498,7 +498,7 @@ class Module_shopping
                     if (method_exists($product_object, 'get_available_quantity')) {
                         $available_qty = $product_object->get_available_quantity($pid, false);
 
-                        if ((!is_null($available_qty)) && ($available_qty <= $qty)) {
+                        if (($available_qty !== null) && ($available_qty <= $qty)) {
                             $qty = $available_qty;
 
                             attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', strval($pid)), 'warn');

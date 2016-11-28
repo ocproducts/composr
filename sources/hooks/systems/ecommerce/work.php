@@ -45,7 +45,7 @@ class Hook_ecommerce_work
         $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_type_code' => $type_code), 'ORDER BY id DESC');
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
             $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('INVOICE_OF', strval($row['id']), $username)));

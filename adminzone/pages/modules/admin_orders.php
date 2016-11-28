@@ -245,7 +245,7 @@ class Module_admin_orders
         }
 
         $extra_join = '';
-        if ((!is_null($search)) && ($search != '')) {
+        if (($search !== null) && ($search != '')) {
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
             $cond .= ' AND (t1.id LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\' OR t2.m_username LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\')';
@@ -339,7 +339,7 @@ class Module_admin_orders
                 array(
                     escape_html($order_title),
                     ecommerce_get_currency_symbol() . escape_html(float_format($row['tot_price'], 2)),
-                    escape_html(is_null($row['tax']) ? '' : float_format($row['tax'], 2)),
+                    escape_html(($row['tax'] === null) ? '' : float_format($row['tax'], 2)),
                     $order_date,
                     $member,
                     $transaction_id,
@@ -551,7 +551,7 @@ class Module_admin_orders
 
         $note = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => $id));
 
-        if (!is_null($last_action)) {
+        if ($last_action !== null) {
             $note .= do_lang('ADD_NOTE_APPEND_TEXT', get_timezoned_date(time(), true, false, true, true), do_lang('ORDER_STATUS_' . $last_action));
         }
 
@@ -604,7 +604,7 @@ class Module_admin_orders
 
         $this->send_dispatch_notification($id);
 
-        if (is_null($redirect)) { // If a redirect url is not passed, redirect to the order list
+        if ($redirect === null) { // If a redirect url is not passed, redirect to the order list
             $_redirect = build_url(array('page' => '_SELF', 'type' => 'show_orders'), get_module_zone('admin_orders'));
             $redirect = $_redirect->evaluate();
         }
@@ -621,7 +621,7 @@ class Module_admin_orders
     {
         $message = post_param_string('dispatch_mail_content', null);
 
-        if (is_null($message)) {
+        if ($message === null) {
             return;
         }
 
@@ -771,7 +771,7 @@ class Module_admin_orders
             $orders[do_lang('ORDER_PRICE')] = $order['tot_price'];
             $orders[do_lang('ORDER_STATUS')] = do_lang($order['order_status']);
             $orders[do_lang('ORDER_TAX_OPT_OUT')] = ($order['tax_opted_out']) ? do_lang('YES') : do_lang('NO');
-            $orders[do_lang('TOTAL_TAX_PAID')] = is_null($order['tax_amt']) ? float_format(0.0, 2) : float_format($order['tax_amt'], 2);
+            $orders[do_lang('TOTAL_TAX_PAID')] = ($order['tax_amt'] === null) ? float_format(0.0, 2) : float_format($order['tax_amt'], 2);
             $orders[do_lang('ORDERED_PRODUCTS')] = get_ordered_product_list_string($order['id']);
             $orders[do_lang('ORDERED_BY')] = $GLOBALS['FORUM_DRIVER']->get_username($order['c_member']);
 

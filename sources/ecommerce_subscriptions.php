@@ -107,7 +107,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
 
                 $type_code = $sub['s_type_code'];
                 $product_object = find_product($type_code);
-                if (is_null($product_object)) {
+                if ($product_object === null) {
                     continue;
                 }
                 $products = $product_object->get_products(false, $type_code);
@@ -198,9 +198,9 @@ function prepare_templated_subscription($subscription)
         'TYPE_CODE' => $subscription['type_code'],
         'ITEM_NAME' => $subscription['item_name'],
         'USERGROUP_SUBSCRIPTION_TITLE' => $subscription['usergroup_subscription_title'], // May be null, if not a usergroup subscription
-        'USERGROUP_SUBSCRIPTION_DESCRIPTION' => is_null($subscription['usergroup_subscription_description']) ? new Tempcode() : $subscription['usergroup_subscription_description'],
-        'USERGROUP_SUBSCRIPTION_ID' => is_null($subscription['usergroup_subscription_id']) ? '' : strval($subscription['usergroup_subscription_id']),
-        'USERGROUP_ID' => is_null($subscription['usergroup_id']) ? '' : strval($subscription['usergroup_id']),
+        'USERGROUP_SUBSCRIPTION_DESCRIPTION' => ($subscription['usergroup_subscription_description'] === null) ? new Tempcode() : $subscription['usergroup_subscription_description'],
+        'USERGROUP_SUBSCRIPTION_ID' => ($subscription['usergroup_subscription_id'] === null) ? '' : strval($subscription['usergroup_subscription_id']),
+        'USERGROUP_ID' => ($subscription['usergroup_id'] === null) ? '' : strval($subscription['usergroup_id']),
         'USERGROUP_NAME' => $subscription['usergroup_name'],
         'LENGTH' => strval($subscription['length']),
         'LENGTH_UNITS' => $subscription['length_units'],
@@ -213,11 +213,11 @@ function prepare_templated_subscription($subscription)
         '_START_TIME' => strval($subscription['start_time']),
         '_TERM_START_TIME' => strval($subscription['term_start_time']),
         '_TERM_END_TIME' => strval($subscription['term_end_time']),
-        '_EXPIRY_TIME' => is_null($subscription['expiry_time']) ? '' : strval($subscription['expiry_time']),
+        '_EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : strval($subscription['expiry_time']),
         'START_TIME' => get_timezoned_date($subscription['start_time'], false, false, false, true),
         'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false, false, false, true),
         'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false, false, false, true),
-        'EXPIRY_TIME' => is_null($subscription['expiry_time']) ? '' : get_timezoned_date($subscription['expiry_time'], false, false, false, true),
+        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false, false, false, true),
         'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['via']) : new Tempcode(),
     );
 }

@@ -27,14 +27,14 @@ function handle_support_credits($purchase_id, $details, $type_code)
         return;
     }
     $member_id = $row[0]['member_id'];
-    if (is_null($member_id)) {
+    if ($member_id === null) {
         return;
     }
     $num_credits = $row[0]['num_credits'];
 
     require_code('mantis');
     $cpf_id = get_credits_profile_field_id();
-    if (is_null($cpf_id)) {
+    if ($cpf_id === null) {
         return;
     }
 
@@ -129,7 +129,7 @@ class Hook_ecommerce_support_credits
 
         // Check if we've already been passed a member ID and use it to pre-populate the field
         $member_id = get_param_integer('member_id', null);
-        $username = $GLOBALS['FORUM_DRIVER']->get_username(is_null($member_id) ? get_member() : $member_id);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username(($member_id === null) ? get_member() : $member_id);
 
         return form_input_username(do_lang('USERNAME'), do_lang('USERNAME_CREDITS_FOR'), 'member_username', $username, true);
     }
@@ -153,12 +153,12 @@ class Hook_ecommerce_support_credits
         // Allow admins to specify the member who should receive the credits with the field in get_needed_fields
         if (has_actual_page_access(get_member(), 'admin_ecommerce', get_module_zone('admin_ecommerce')) && get_page_name() == 'admin_ecommerce') {
             $id = post_param_integer('member_id', null);
-            if (!is_null($id)) {
+            if ($id !== null) {
                 $manual = 1;
                 $member_id = $id;
             } else {
                 $username = post_param_string('member_username', null);
-                if (!is_null($username)) {
+                if ($username !== null) {
                     $manual = 1;
                     $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
                 }

@@ -129,7 +129,7 @@ class Module_admin_ecommerce_logs
         if ($type == '_trigger') {
             breadcrumb_set_self(do_lang_tempcode('DONE'));
             $type_code = get_param_string('type_code', null);
-            if (is_null($type_code)) {
+            if ($type_code === null) {
                 breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:trigger', do_lang_tempcode('PRODUCT'))));
             } else {
                 breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:trigger', do_lang_tempcode('PRODUCT')), array('_SELF:_SELF:trigger:type_code=' . $type_code, do_lang_tempcode('MANUAL_TRANSACTION'))));
@@ -244,9 +244,9 @@ class Module_admin_ecommerce_logs
         $where = null;
         $type_code = get_param_string('type_code', null);
         $id = get_param_string('id', null);
-        if (!is_null($type_code)) {
+        if ($type_code !== null) {
             $where = array('t_type_code' => $type_code);
-            if ((!is_null($id)) && ($id != '')) {
+            if (($id !== null) && ($id != '')) {
                 $where['t_purchase_id'] = $id;
             }
         }
@@ -284,10 +284,10 @@ class Module_admin_ecommerce_logs
             // Find member link, if possible
             $member_id = null;
             $product_ob = find_product($myrow['t_type_code']);
-            if (!is_null($product_ob)) {
+            if ($product_ob !== null) {
                 $member_id = method_exists($product_ob, 'member_for') ? $product_ob->member_for($myrow['t_purchase_id']) : null;
             }
-            if (!is_null($member_id)) {
+            if ($member_id !== null) {
                 $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member_id, false, '', false);
             } else {
                 $member_link = do_lang_tempcode('UNKNOWN_EM');
@@ -339,7 +339,7 @@ class Module_admin_ecommerce_logs
 
         // Choose product
         $type_code = get_param_string('type_code', null);
-        if (is_null($type_code)) {
+        if ($type_code === null) {
             $products = find_all_products();
             $list = new Tempcode();
             foreach ($products as $type_code => $details) {
@@ -375,7 +375,7 @@ class Module_admin_ecommerce_logs
         // To work out key
         if (post_param_integer('got_purchase_key_dependencies', 0) == 0) {
             $needed_fields = method_exists($product_ob, 'get_needed_fields') ? $product_ob->get_needed_fields($type_code) : null;
-            if (!is_null($needed_fields)) { // Only do step if we actually have fields - create intermediary step. get_self_url ensures first product-choose step choice is propagated.
+            if ($needed_fields !== null) { // Only do step if we actually have fields - create intermediary step. get_self_url ensures first product-choose step choice is propagated.
                 $submit_name = do_lang('PROCEED');
                 $extra_hidden = new Tempcode();
                 $extra_hidden->attach(form_input_hidden('got_purchase_key_dependencies', '1'));
@@ -392,12 +392,12 @@ class Module_admin_ecommerce_logs
         // Remaining fields, customised for product chosen
         if (method_exists($product_ob, 'get_identifier_manual_field_inputter')) {
             $f = $product_ob->get_identifier_manual_field_inputter($type_code);
-            if (!is_null($f)) {
+            if ($f !== null) {
                 $fields->attach($f);
             }
         } else {
             $default_purchase_id = get_param_string('id', null);
-            if (is_null($default_purchase_id)) {
+            if ($default_purchase_id === null) {
                 if (method_exists($product_ob, 'set_needed_fields')) {
                     $default_purchase_id = $product_ob->set_needed_fields($type_code);
                 } else {
@@ -462,7 +462,7 @@ class Module_admin_ecommerce_logs
                 $username = post_param_string('username', '');
                 if ($username != '') {
                     $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-                    if (!is_null($_member_id)) {
+                    if ($_member_id !== null) {
                         $member_id = $_member_id;
                     }
                 }
@@ -497,7 +497,7 @@ class Module_admin_ecommerce_logs
                 $username = post_param_string('username', '');
                 if ($username != '') {
                     $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-                    if (!is_null($_member_id)) {
+                    if ($_member_id !== null) {
                         $member_id = $_member_id;
                     }
                 }
@@ -509,7 +509,7 @@ class Module_admin_ecommerce_logs
         handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual');
 
         $url = get_param_string('redirect', null);
-        if (!is_null($url)) {
+        if ($url !== null) {
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
 
@@ -659,7 +659,7 @@ class Module_admin_ecommerce_logs
     public function cash_flow()
     {
         $d = array(post_param_date('from', true), post_param_date('to', true));
-        if (is_null($d[0])) {
+        if ($d[0] === null) {
             return $this->_get_between($this->title);
         }
         list($from, $to) = $d;
@@ -678,7 +678,7 @@ class Module_admin_ecommerce_logs
     public function profit_loss()
     {
         $d = array(post_param_date('from', true), post_param_date('to', true));
-        if (is_null($d[0])) {
+        if ($d[0] === null) {
             return $this->_get_between($this->title);
         }
         list($from, $to) = $d;
@@ -721,7 +721,7 @@ class Module_admin_ecommerce_logs
         $data = array();
         foreach ($subscriptions as $subs) {
             $product_obj = find_product($subs['s_type_code']);
-            if (is_null($product_obj)) {
+            if ($product_obj === null) {
                 continue;
             }
 

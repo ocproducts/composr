@@ -34,7 +34,7 @@ function handle_permission_purchase($purchase_id, $details, $type_code)
     $row = $rows[0];
 
     $map = get_sales_permission_map($row, $member);
-    $map['active_until'] = is_null($row['p_hours']) ? null : (time() + $row['p_hours'] * 60 * 60);
+    $map['active_until'] = ($row['p_hours'] === null) ? null : (time() + $row['p_hours'] * 60 * 60);
     $GLOBALS['SITE_DB']->query_insert(filter_naughty_harsh($row['p_type']), $map);
 
     // Email member
@@ -141,7 +141,7 @@ class Hook_ecommerce_permission
 
             $map = get_sales_permission_map($row, $member);
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there(filter_naughty_harsh($row['p_type']), 'member_id', $map);
-            return is_null($test) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_ALREADY_HAS;
+            return ($test === null) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_ALREADY_HAS;
         }
 
         return ECOMMERCE_PRODUCT_MISSING;

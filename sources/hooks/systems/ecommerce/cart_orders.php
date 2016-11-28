@@ -96,7 +96,7 @@ class Hook_ecommerce_cart_orders
             @set_time_limit(0);
         }
 
-        if (!is_null($search)) {
+        if ($search !== null) {
             $l = do_lang('CART_ORDER', '', null, null, $site_lang ? get_site_default_lang() : user_lang());
             if (substr($search, 0, strlen($l)) != $l) {
                 return array();
@@ -107,7 +107,7 @@ class Hook_ecommerce_cart_orders
             $where = '(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')';
         }
 
-        if (is_null($search)) {
+        if ($search === null) {
             $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where);
             if ($count > 50) {
                 return array(); // Too many to list
@@ -158,7 +158,7 @@ class Hook_ecommerce_cart_orders
         $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id));
 
         foreach ($rows as $item) {
-            if (is_null($item['p_type'])) {
+            if ($item['p_type'] === null) {
                 continue;
             }
 
