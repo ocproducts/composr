@@ -401,6 +401,19 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                             @unlink($path . $file) or intelligent_write_error($path . $file);
                         }
                     }
+
+                    // Recreate static files right away because of parallelism...
+                    if (!$preserve_some) {
+                        if (substr($file_template_name, -3) == '.js') {
+                            require_code('web_resources');
+                            javascript_enforce(basename($file_template_name, '.js'), $theme);
+                        }
+
+                        if (substr($file_template_name, -4) == '.css') {
+                            require_code('web_resources');
+                            css_enforce(basename($file_template_name, '.css'), $theme);
+                        }
+                    }
                 }
                 closedir($_dir);
             }
