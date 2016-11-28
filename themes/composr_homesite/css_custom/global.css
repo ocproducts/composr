@@ -1282,7 +1282,7 @@ th.metadata_title {
 
 .box {
 	border: 1px solid {$GET,standard_border};
-	{$BETA_CSS_PROPERTY,border-radius: 15px;}
+	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 
 	margin: 1em 0;
 
