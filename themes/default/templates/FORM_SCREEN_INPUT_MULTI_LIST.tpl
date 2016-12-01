@@ -35,10 +35,6 @@
 					dropdownAutoWidth: true,
 					containerCssClass: 'wide_field'
 				});
-			} else
-			{
-				if (typeof window.console!='undefined')
-					console.log('select2 is missing');
 			}
 		});
 	//]]></script>

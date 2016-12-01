@@ -1112,16 +1112,19 @@ function get_page_grouping_links()
 function get_root_comcode_pages($zone, $include_zone = false)
 {
     /*
-    $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page', 'p_validated'), array('the_zone' => $zone, 'p_parent_page' => ''));
-    return collapse_2d_complexity('the_page', 'p_validated', $rows);
+    $rows[$zone] = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page', 'p_validated'), array('the_zone' => $zone, 'p_parent_page' => ''));
+    return collapse_2d_complexity('the_page', 'p_validated', $rows[$zone]);
     */
 
     // This uses more memory than the above, but is needed as pages may not have got into the database yet...
 
     disable_php_memory_limit();
 
-    $rows = $GLOBALS['SITE_DB']->query('SELECT the_page,p_validated FROM ' . get_table_prefix() . 'comcode_pages WHERE ' . db_string_equal_to('the_zone', $zone) . ' AND ' . db_string_not_equal_to('p_parent_page', ''));
-    $non_root = collapse_2d_complexity('the_page', 'p_validated', $rows);
+    static $rows = array();
+    if (!isset($rows[$zone])) {
+        $rows[$zone] = $GLOBALS['SITE_DB']->query('SELECT the_page,p_validated FROM ' . get_table_prefix() . 'comcode_pages WHERE ' . db_string_equal_to('the_zone', $zone) . ' AND ' . db_string_not_equal_to('p_parent_page', ''));
+    }
+    $non_root = collapse_2d_complexity('the_page', 'p_validated', $rows[$zone]);
 
     $pages = find_all_pages_wrap($zone, false, /*$consider_redirects = */true, /*$show_method = */0, /*$page_type = */'comcode');
     foreach ($pages as $page => $page_type) {

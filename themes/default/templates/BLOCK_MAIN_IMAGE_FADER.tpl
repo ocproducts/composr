@@ -5,7 +5,7 @@
 		<h2>{!MEDIA}</h2>
 
 		<div class="img_thumb_wrap">
-			<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{FIRST_URL*}" alt="" /></a>
+			<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
 		</div>
 	</div></div>
 {+END}
@@ -15,7 +15,7 @@
 			<div class="float_surrounder">
 				<div class="gallery_tease_pic_pic">
 					<div class="img_thumb_wrap">
-						<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{FIRST_URL*}" alt="" /></a>
+						<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
 					</div>
 				</div>
 
@@ -47,7 +47,7 @@
 			initialise_image_fader_html(data,'{_loop_var;^/}',{_loop_key%});
 		{+END}
 		{+START,LOOP,IMAGES}
-			initialise_image_fader_image(data,'{_loop_var;^/}',{_loop_key%},{MILL%},{IMAGES%});
+			initialise_image_fader_image(data,'{$ENSURE_PROTOCOL_SUITABILITY;^/,{_loop_var}}',{_loop_key%},{MILL%},{IMAGES%});
 		{+END}
 	});
 //]]></script>

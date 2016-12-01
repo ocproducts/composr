@@ -14,7 +14,7 @@
 	{+END}
 
 	<audio controls="controls" preload="none" id="{$GET%,player_id}">
-		<source type="{MIME_TYPE*}" src="{URL*}" />
+		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 		<object width="{WIDTH*}" height="{HEIGHT*}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
 			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
 			<param name="flashvars" value="controls=true&amp;file={URL&*}" />

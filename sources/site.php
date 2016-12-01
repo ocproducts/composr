@@ -129,7 +129,7 @@ function init__site()
 
             // Detect bad cookie path
             $cookie_path = get_cookie_path();
-            $access_path = cms_srv('SCRIPT_NAME');
+            $access_path = '/' . cms_srv('SCRIPT_NAME');
             if (!empty($cookie_path) && !empty($access_path)) {
                 if (substr($access_path, 0, strlen($cookie_path)) != $cookie_path) {
                     attach_message(do_lang_tempcode('INCORRECT_COOKIE_PATH', escape_html($cookie_path), escape_html($access_path)), 'warn');

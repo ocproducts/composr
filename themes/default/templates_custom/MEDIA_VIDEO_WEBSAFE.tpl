@@ -15,7 +15,7 @@
 	{+END}
 
 	<video width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}">
-		<source type="{MIME_TYPE*}" src="{URL*}" />
+		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 		<object width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
 			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
 			<param name="flashvars" value="controls=true&amp;file={URL&*}" />

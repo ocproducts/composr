@@ -489,20 +489,29 @@ function get_country()
  */
 function geolocate_ip($ip = null)
 {
+    static $result = array();
+
     if (is_null($ip)) {
         $ip = get_ip_address();
     }
 
+    if (array_key_exists($ip, $result)) {
+        return $result[$ip];
+    }
+
     if (!addon_installed('stats')) {
+        $result[$ip] = null;
         return null;
     }
 
     $long_ip = ip2long($ip);
     if ($long_ip === false) {
+        $result[$ip] = null;
         return null; // No IP6 support
     }
 
     if (running_script('install')) {
+        $result[$ip] = null;
         return null;
     }
 
@@ -510,12 +519,14 @@ function geolocate_ip($ip = null)
     $results = $GLOBALS['SITE_DB']->query($query);
 
     if (!array_key_exists(0, $results)) {
-        return null;
+        $result[$ip] = null;
     } elseif (!is_null($results[0]['country'])) {
-        return $results[0]['country'];
+        $result[$ip] = $results[0]['country'];
     } else {
-        return null;
+        $result[$ip] = null;
     }
+
+    return $result[$ip];
 }
 
 /**
