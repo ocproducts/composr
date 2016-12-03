@@ -163,7 +163,9 @@
                         options = JSON.parse(el.dataset.cmsSelect2);
                     }
 
-                    window.jQuery(el).select2(options);
+                    if (typeof window.jQuery(el).select2 != 'undefined') {
+                        window.jQuery(el).select2(options);
+                    }
                 });
             }
         },

@@ -1,18 +1,14 @@
 {$SET,RAND_FADER_IMAGE,{$RAND}}
 
 {+START,IF,{$EQ,{BLOCK_ID},small_version}}
+	{$,TODO: We need to wrap all the image URLs with the ENSURE_PROTOCOL_SUITABILITY symbol somehow}
 	<div class="box box___block_main_image_fader" data-view="BlockMainImageFader" data-view-params="{+START,PARAMS_JSON,RAND_FADER_IMAGE,TITLES,HTML,IMAGES}{_*}{+END}">
 		<div class="box_inner">
 			<h2>{!MEDIA}</h2>
 
-<<<<<<< HEAD
 			<div class="img_thumb_wrap">
-				<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{FIRST_URL*}" alt="" /></a>
+				<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
 			</div>
-=======
-		<div class="img_thumb_wrap">
-			<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{FIRST_URL}}" alt="" /></a>
->>>>>>> master
 		</div>
 	</div>
 {+END}
@@ -37,29 +33,3 @@
 	</div>
 	</div>
 {+END}
-<<<<<<< HEAD
-=======
-
-<noscript>
-	{+START,LOOP,HTML}
-		{_loop_var}
-	{+END}
-</noscript>
-
-<script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
-		var data={};
-		initialise_image_fader(data,'{$GET%,RAND_FADER_IMAGE}');
-
-		{+START,LOOP,TITLES}
-			initialise_image_fader_title(data,'{_loop_var;^/}',{_loop_key%});
-		{+END}
-		{+START,LOOP,HTML}
-			initialise_image_fader_html(data,'{_loop_var;^/}',{_loop_key%});
-		{+END}
-		{+START,LOOP,IMAGES}
-			initialise_image_fader_image(data,'{$ENSURE_PROTOCOL_SUITABILITY;^/,{_loop_var}}',{_loop_key%},{MILL%},{IMAGES%});
-		{+END}
-	});
-//]]></script>
->>>>>>> master

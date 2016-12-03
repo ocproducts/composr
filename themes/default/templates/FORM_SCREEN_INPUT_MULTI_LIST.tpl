@@ -26,20 +26,3 @@
 		</div>
 	</div>
 {+END}
-
-<<<<<<< HEAD
-=======
-{+START,IF,{$EQ,{SIZE},5}}
-	<script>// <![CDATA[
-		add_event_listener_abstract(window,'load',function() {
-			if (typeof $("#{NAME#/}").select2!='undefined')
-			{
-				$("#{NAME#/}").select2({
-					dropdownAutoWidth: true,
-					containerCssClass: 'wide_field'
-				});
-			}
-		});
-	//]]></script>
-{+END}
->>>>>>> master

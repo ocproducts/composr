@@ -20,18 +20,6 @@
 					{+END}
 				</select>
 			</div>
-<<<<<<< HEAD
-=======
-			<script>// <![CDATA[
-				add_event_listener_abstract(window,'load',function() {
-					if (typeof $("#resource_types").select2!='undefined') {
-						$("#resource_types").select2({
-							dropdownAutoWidth: true
-						});
-					}
-				});
-			//]]></script>
->>>>>>> master
 
 			{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 			<div class="revisions_filter_item">
