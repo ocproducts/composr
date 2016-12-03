@@ -1,6 +1,6 @@
 <script src="https://www.google.com/jsapi"></script>
 {+START,IF,{CLUSTER}}
-	<script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js"></script>
+	<script src="https://raw.githubusercontent.com/printercu/google-maps-utility-library-v3-read-only/master/markerclustererplus/src/markerclusterer_packed.js"></script>
 {+END}
 <script>// <![CDATA[
 	function google_map_users_initialize()

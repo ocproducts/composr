@@ -128,6 +128,8 @@ function string_scan($lang, $do_guessing = false)
         TICKETS_STAFF
         NO_CNS
         DOCS
+        CONFIG_OPTION_complex_lists
+        COMPLEX_LISTS
         HERE_SURVEY_RESULTS
         HERE_TEST_RESULTS
         METADATA

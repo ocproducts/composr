@@ -305,7 +305,7 @@ class Module_wiki
             global $CANONICAL_URL, $NON_CANONICAL_PARAMS;
             $non_canonical = array();
             if (is_array($NON_CANONICAL_PARAMS)) {
-                foreach ($NON_CANONICAL_PARAMS as $n) {
+                foreach (array_keys($NON_CANONICAL_PARAMS) as $n) {
                     $non_canonical[$n] = null;
                 }
             }

@@ -26,7 +26,8 @@ class Hook_payment_gateway_authorize
     // Requires:
     //  the live login is the Composr Composr "Gateway username" option
     //  the testing login is the Composr "Testing mode gateway username" option
-    //  the transaction key is the Composr "Gateway digest code" option; it may be blank ; if they are different for the live and testing logins then separate them with ";"
+    //  the MD5 hash value is the Composr "Callback password" option; it may be blank ; if they are different for the live and testing logins then separate them with ";"
+    //  the transaction key is the Composr "Gateway password" option; it may be blank ; if they are different for the live and testing logins then separate them with ";"
     //  the customer ID is the Composr "Gateway VPN username" option
     // The subscription button isn't great. The merchant needs to manually go into the Authorize.Net backend and configure the subscription details for the transaction. That's an API limitation. Probably best to use PayPal to be honest, or go through a full PCI compliance and do local payments (which works well).
 
@@ -44,22 +45,25 @@ class Hook_payment_gateway_authorize
         return 0.3 + 0.029 * $amount;
     }
 
-    /**
+/**
      * Get authorize access detail
      *
-     * @return array A pair: login username, transaction key
+     * @return array A pair: login username, transaction key, MD5 hash key, MD5 hash value
      */
     protected function _get_access_details()
     {
         $api_login = ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
-
-        $payment_gateway_digest_bits = explode(';', get_option('payment_gateway_digest'));
-        if (!isset($payment_gateway_digest_bits[1])) {
-            $payment_gateway_digest_bits[1] = $payment_gateway_digest_bits[0];
+        $gateway_password_bits = explode(';', get_option('gateway_password'));
+        if (!isset($gateway_password_bits[1])) {
+            $gateway_password_bits[1] = $gateway_password_bits[0];
         }
-        $api_transaction_key = ecommerce_test_mode() ? trim($payment_gateway_digest_bits[1]) : trim($payment_gateway_digest_bits[0]);
-
-        return array($api_login, $api_transaction_key);
+        $api_transaction_key = ecommerce_test_mode() ? trim($gateway_password_bits[1]) : trim($gateway_password_bits[0]);
+        $payment_gateway_callback_password_bits = explode(';', get_option('payment_gateway_callback_password'));
+        if (!isset($payment_gateway_callback_password_bits[1])) {
+            $payment_gateway_callback_password_bits[1] = $payment_gateway_callback_password_bits[0];
+        }
+        $md5_hash_value = ecommerce_test_mode() ? trim($payment_gateway_callback_password_bits[1]) : trim($payment_gateway_callback_password_bits[0]);
+        return array($api_login, $api_transaction_key, $md5_hash_value);
     }
 
     /**
@@ -121,8 +125,6 @@ class Hook_payment_gateway_authorize
      */
     public function get_logos()
     {
-        // TODO: Force CSP off on v11
-
         return do_template('ECOM_LOGOS_AUTHORIZE', array('_GUID' => '5b3254b330b3b1719d66d2b754c7a8c8', 'CUSTOMER_ID' => get_option('payment_gateway_vpn_username')));
     }
 
@@ -304,10 +306,12 @@ class Hook_payment_gateway_authorize
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_ipn_transaction()
     {
+        list($login_id, $transaction_key, $md5_hash_value) = $this->_get_access_details();
+
         $success = (post_param_string('x_response_code', '') == '1');
         $response_text = post_param_string('x_response_reason_text', '');
         $subscription_id = post_param_string('x_subscription_id', '');
@@ -315,7 +319,7 @@ class Hook_payment_gateway_authorize
         $_transaction_id = post_param_string('x_trans_id');
         $purchase_id = preg_replace('# .*$#', '', post_param_string('x_description'));
         $reason_code = post_param_string('x_response_reason_code', '');
-        $amount = post_param_integer('x_amount', 0);
+        $amount = post_param_integer('x_amount');
         $currency = post_param_string('x_currency_code', get_option('currency'));
         $parent_txn_id = '';
         $pending_reason = '';
@@ -327,6 +331,15 @@ class Hook_payment_gateway_authorize
             $payment_status = $success ? 'Completed' : 'Failed';
         }
         $txn_id = ($subscription_id != '') ? $subscription_id : $_transaction_id;
+
+        // SECURITY: Check hash
+        $hash = post_param_string('x_MD5_Hash');
+        if ($hash != md5($md5_hash_value . $login_id . $_transaction_id . post_param_string('amount'))) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
+            fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . flatten_slashed_array($_POST, true));
+        }
 
         if (addon_installed('shopping')) {
             $this->store_shipping_address($purchase_id);
@@ -375,7 +388,7 @@ class Hook_payment_gateway_authorize
 
         $this->_set_cancelation_api_parameters($authorize_subscription_id);
 
-        $response = http_download_file($this->url, null, true, false, 'Composr', array($this->api_parameters), null, null, null, null, null, null, null, 12.0, true); // TODO: Update in v11
+        $response = http_download_file($this->url, null, true, false, 'Composr', array($this->api_parameters), null, null, null, null, null, null, null, 12.0, true);
 
         if ($response !== null) {
             list($result_code, $code, $text, $subscription_id) = $this->_parse_arb_return($response);
@@ -469,7 +482,7 @@ class Hook_payment_gateway_authorize
 
             $this->_set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $trans_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
 
-            $response_data = http_download_file($this->url, null, true, false, 'Composr', $this->api_parameters, null, null, null, null, null, null, null, 12.0); // TODO: Update in v11
+            $response_data = http_download_file($this->url, null, true, false, 'Composr', $this->api_parameters, null, null, null, null, null, null, null, 12.0);
 
             if ($response_data !== null) {
                 $response_result = explode($this->api_parameters['x_delim_char'], $response_data);
@@ -523,7 +536,7 @@ class Hook_payment_gateway_authorize
 
             $this->_set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $trans_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
 
-            $response_data = http_download_file($this->url, null, true, false, 'Composr', array($this->api_parameters), null, null, null, null, null, null, null, 30.0, true); // TODO: Update in v11
+            $response_data = http_download_file($this->url, null, true, false, 'Composr', array($this->api_parameters), null, null, null, null, null, null, null, 30.0, true);
 
             if ($response_data !== null) {
                 list($result_code, $code, $text, $authorizedotnet_subscription_id) = $this->_parse_arb_return($response_data);

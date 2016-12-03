@@ -127,7 +127,7 @@ class Hook_payment_gateway_secpay
             '_GUID' => 'e68e80cb637f8448ef62cd7d73927722',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($purchase_id),
+            'PURCHASE_ID' => $purchase_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
             'TRANS_ID' => $trans_id,
@@ -182,7 +182,7 @@ class Hook_payment_gateway_secpay
             '_GUID' => 'e5e6d6835ee6da1a6cf02ff8c2476aa6',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($purchase_id),
+            'PURCHASE_ID' => $purchase_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
             'TRANS_ID' => $trans_id,
@@ -273,7 +273,7 @@ class Hook_payment_gateway_secpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_ipn_transaction()
     {
@@ -287,6 +287,9 @@ class Hook_payment_gateway_secpay
 
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $txn_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $transaction_row = $transaction_rows[0];
@@ -369,6 +372,9 @@ class Hook_payment_gateway_secpay
             $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('payment_gateway_digest'));
         }
         if ($hash != $my_hash) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 

@@ -624,7 +624,7 @@ class Module_purchase
             handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
-        $redirect = get_param_string('redirect', null); // TODO: Correct flag in v11
+        $redirect = get_param_string('redirect', null);
 
         if ($redirect === null) {
             $type_code = get_param_string('type_code');

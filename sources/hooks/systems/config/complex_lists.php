@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_comcode_pages
+ * @package    core_configuration
  */
 
 /**
  * Hook class.
  */
-class Hook_config_comcode_page_default_review_freq
+class Hook_config_complex_lists
 {
     /**
      * Gets the details relating to the config option.
@@ -31,15 +31,15 @@ class Hook_config_comcode_page_default_review_freq
     public function get_details()
     {
         return array(
-            'human_name' => 'COMCODE_PAGE_DEFAULT_REVIEW_FREQ',
-            'type' => 'integer',
-            'category' => 'ADMIN',
-            'group' => 'CONTENT_REVIEWS',
-            'explanation' => 'CONFIG_OPTION_comcode_page_default_review_freq',
+            'human_name' => 'COMPLEX_LISTS',
+            'type' => 'tick',
+            'category' => 'ACCESSIBILITY',
+            'group' => 'GENERAL',
+            'explanation' => 'CONFIG_OPTION_complex_lists',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'core_comcode_pages',
+            'addon' => 'core_configuration',
         );
     }
 
@@ -50,10 +50,6 @@ class Hook_config_comcode_page_default_review_freq
      */
     public function get_default()
     {
-        if (!addon_installed('content_reviews')) {
-            return null;
-        }
-
-        return '0';
+        return '1';
     }
 }

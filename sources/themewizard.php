@@ -306,7 +306,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
     // Load background image
     $imgs = array();
     foreach (array('logo' => $logo_theme_image, 'background' => $background_theme_image, 'standalone' => 'logo/standalone_logo') as $id => $theme_image) {
-        $url = find_theme_image($theme_image, false, false, $theme);
+        $url = find_theme_image($theme_image, false, false, $theme, null, null, true);
         $file_path_stub = convert_url_to_path($url);
         if (!is_null($file_path_stub)) {
             if (!file_exists($file_path_stub)) {
@@ -323,15 +323,27 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         $imgs[$id] = $img;
     }
     if ($standalone_version) {
+        // Based on 'background' image, but must be the size of 'standalone' image...
+
         $canvas = imagecreatetruecolor(imagesx($imgs['standalone']), imagesy($imgs['standalone']));
-        imagealphablending($canvas, true);
+
+        // TODO: Upgrade to imagepalettetotruecolor in v11
+        imagealphablending($canvas, false);
+        $transparent = imagecolortransparent($imgs['background']);
+        if ($transparent != -1) {
+            $_transparent = imagecolorsforindex($imgs['background'], $transparent);
+            imagecolortransparent($canvas, imagecolorallocate($canvas, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
+        }
+
         imagecopy($canvas, $imgs['background'], 0, 0, 0, 0, imagesx($imgs['standalone']), imagesy($imgs['standalone']));
+
         imagedestroy($imgs['background']);
+        imagedestroy($imgs['standalone']);
     } else {
         $canvas = $imgs['background'];
-        imagealphablending($canvas, true);
+        imagedestroy($imgs['standalone']);
     }
-    imagedestroy($imgs['standalone']);
+    imagealphablending($canvas, true);
 
     // Add logo onto the canvas
     imagecopy($canvas, $imgs['logo'], intval($logowizard_details['logo_x_offset']), intval($logowizard_details['logo_y_offset']), 0, 0, imagesx($imgs['logo']), imagesy($imgs['logo']));
@@ -1424,6 +1436,15 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
 
             if (!imageistruecolor($_image)) {
                 $image = imagecreatetruecolor($width, $height);
+                imagealphablending($image, false);
+
+                // TODO: Upgrade to imagepalettetotruecolor in v11
+                $transparent = imagecolortransparent($_image);
+                if ($transparent != -1) {
+                    $_transparent = imagecolorsforindex($_image, $transparent);
+                    imagecolortransparent($image, imagecolorallocate($image, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
+                }
+
                 imagecopy($image, $_image, 0, 0, 0, 0, $width, $height);
             } else {
                 $image = $_image;
@@ -1595,8 +1616,17 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
         if (function_exists('imagecreatetruecolor')) {
             if (!imageistruecolor($_image)) {
                 $image = imagecreatetruecolor($width, $height);
+
                 imagealphablending($image, false);
                 imagesavealpha($image, true);
+
+                // TODO: Upgrade to imagepalettetotruecolor in v11
+                $transparent = imagecolortransparent($_image);
+                if ($transparent != -1) {
+                    $_transparent = imagecolorsforindex($_image, $transparent);
+                    imagecolortransparent($image, imagecolorallocate($image, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
+                }
+
                 imagecopy($image, $_image, 0, 0, 0, 0, $width, $height);
             } else {
                 $image = $_image;

@@ -347,7 +347,6 @@ function call_block(url,new_block_params,target_div,append,callback,scroll_to_to
 			} else
 			{
 				loading_wrapper.style.position='relative';
-				loading_wrapper.style.overflow='hidden'; // Stops margin collapsing weirdness
 			}
 		}
 		var loading_image=document.createElement('img');

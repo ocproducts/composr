@@ -124,12 +124,12 @@ class Module_recommend
         if ($type == 'browse') {
             attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
-            inform_non_canonical_parameter('page_title');
-            inform_non_canonical_parameter('subject');
-            inform_non_canonical_parameter('s_message');
-            inform_non_canonical_parameter('from');
-            inform_non_canonical_parameter('title');
-            inform_non_canonical_parameter('cms');
+            inform_non_canonical_parameter('page_title', false);
+            inform_non_canonical_parameter('subject', false);
+            inform_non_canonical_parameter('s_message', false);
+            inform_non_canonical_parameter('from', false);
+            inform_non_canonical_parameter('title', false);
+            inform_non_canonical_parameter('cms', false);
 
             $page_title = get_param_string('page_title', null, true);
             if (!is_null(get_param_string('from', null, true))) {

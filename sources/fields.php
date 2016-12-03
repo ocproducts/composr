@@ -316,12 +316,15 @@ function manage_custom_fields_entry_points($content_type)
         $info = $ob->info();
 
         if (($info['support_custom_fields']) && (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues')) && (has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues'))) {
-            $count = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'COUNT(*)', array('c_name' => '_' . $content_type));
-            $exists = ($count != 0);
+            static $count = array();
+            if (!isset($count[$content_type])) {
+                $count[$content_type] = $GLOBALS['SITE_DB']->query_select_value('catalogue_fields', 'COUNT(*)', array('c_name' => '_' . $content_type));
+            }
+            $exists = ($count[$content_type] != 0);
 
             return array(
                 '_SEARCH:cms_catalogues:' . ($exists ? '_edit_catalogue' : 'add_catalogue') . ':_' . $content_type => array(
-                    do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label'])), make_string_tempcode(escape_html(integer_format($count)))),
+                    do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label'])), make_string_tempcode(escape_html(integer_format($count[$content_type])))),
                     'menu/cms/catalogues/edit_one_catalogue'
                 ),
             );

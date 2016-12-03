@@ -182,7 +182,7 @@ class Hook_payment_gateway_paypal
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_ipn_transaction()
     {
@@ -262,6 +262,9 @@ class Hook_payment_gateway_paypal
             case 'send_money':
             case 'virtual_terminal':
             default:
+                if (!running_script('ecommerce')) {
+                    return null;
+                }
                 exit(); // Non-supported for IPN in Composr
         }
         $payment_status = post_param_string('payment_status', '');
@@ -274,11 +277,17 @@ class Hook_payment_gateway_paypal
                     case 'subscr_signup':
                         // SECURITY: Check it's a kind of subscription we would actually have generated
                         if (post_param_integer('recurring') != 1) {
+                            if (!running_script('ecommerce')) {
+                                return null;
+                            }
                             fatal_ipn_exit(do_lang('IPN_SUB_RECURRING_WRONG'));
                         }
 
                         // SECURITY: Check user is not giving themselves a free trial (we don't support trials)
                         if ((post_param_string('amount1', '') != '') || (post_param_string('amount2', '') != '') || (post_param_string('mc_amount1', '') != '') || (post_param_string('mc_amount2', '') != '') || (post_param_string('period1', '') != '') || (post_param_string('period2', '') != '')) {
+                            if (!running_script('ecommerce')) {
+                                return null;
+                            }
                             fatal_ipn_exit(do_lang('IPN_BAD_TRIAL'));
                         }
 
@@ -290,9 +299,15 @@ class Hook_payment_gateway_paypal
                         break;
 
                     case 'subscr_payment':
+                        if (!running_script('ecommerce')) {
+                            return null;
+                        }
                         exit(); // We don't need to track individual payments
 
                     case 'subscr_failed':
+                        if (!running_script('ecommerce')) {
+                            return null;
+                        }
                         exit(); // PayPal auto-cancels at a configured point ("To avoid unnecessary cancellations, you can specify that PayPal should reattempt failed payments before canceling subscriptions."). So, we only listen to the actual cancellation signal.
 
                     case 'subscr_modify':
@@ -301,6 +316,9 @@ class Hook_payment_gateway_paypal
                         break;
 
                     case 'subscr_cancel':
+                        if (!running_script('ecommerce')) {
+                            return null;
+                        }
                         exit(); // We ignore cancel transactions as we don't want to process them immediately - we just let things run until the end-of-term (see below). Maybe ideally we would process these in Composr as a separate state, but it would over-complicate things
 
                     case 'subscr_eot': // NB: An 'eot' means "end of *final* term" (i.e. if a payment fail / cancel / natural last term, has happened). PayPal's terminology is a little dodgy here.
@@ -330,12 +348,18 @@ class Hook_payment_gateway_paypal
             case 'Canceled_Reversal':
             case 'Voided':
             case 'Processed': // Mass-payments
+                if (!running_script('ecommerce')) {
+                    return null;
+                }
                 exit(); // Non-supported for IPN in Composr
         }
 
         // SECURITY: Ignore sandbox transactions if we are not in test mode
         if (post_param_integer('test_ipn', 0) == 1) {
             if (!ecommerce_test_mode()) {
+                if (!running_script('ecommerce')) {
+                    return null;
+                }
                 exit();
             }
         }
@@ -343,7 +367,7 @@ class Hook_payment_gateway_paypal
         // SECURITY: Post back to PayPal system to validate
         if ((!ecommerce_test_mode()) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())/*allow debugging if your test IP was intentionally back-doored*/)) {
             require_code('files');
-            $pure_post = isset($GLOBALS['PURE_POST']) ? $GLOBALS['PURE_POST'] : $_POST;
+            $pure_post = empty($GLOBALS['PURE_POST']) ? $_POST : $GLOBALS['PURE_POST'];
             if (get_magic_quotes_gpc()) {
                 $pure_post = array_map('stripslashes', $pure_post);
             }
@@ -354,9 +378,15 @@ class Hook_payment_gateway_paypal
                 $x++;
             } while ((is_null($res)) && ($x < 3));
             if (is_null($res)) {
+                if (!running_script('ecommerce')) {
+                    return null;
+                }
                 fatal_ipn_exit(do_lang('IPN_SOCKET_ERROR'));
             }
             if (!(strcmp($res, 'VERIFIED') == 0)) {
+                if (!running_script('ecommerce')) {
+                    return null;
+                }
                 fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . $res . ' - ' . flatten_slashed_array($pure_post, true), strpos($res, '<html') !== false);
             }
         }
@@ -368,6 +398,9 @@ class Hook_payment_gateway_paypal
             $primary_paypal_email = $this->_get_payment_address();
         }
         if ($receiver_email != $primary_paypal_email && $receiver_email != $this->_get_payment_address()) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR', $receiver_email, $primary_paypal_email));
         }
 

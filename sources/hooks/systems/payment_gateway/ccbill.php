@@ -96,7 +96,7 @@ class Hook_payment_gateway_ccbill
         }
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
-        $payment_address = strval($this->get_account_id());
+        $payment_address = $this->get_account_id();
         $form_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $account_num = $this->get_account_id();
@@ -112,9 +112,9 @@ class Hook_payment_gateway_ccbill
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => '24a0560541cedd4c45898f4d19e99249',
-            'TYPE_CODE' => strval($type_code),
-            'ITEM_NAME' => strval($item_name),
-            'PURCHASE_ID' => strval($purchase_id),
+            'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $purchase_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
@@ -148,7 +148,7 @@ class Hook_payment_gateway_ccbill
         }
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
-        $payment_address = strval($this->get_account_id());
+        $payment_address = $this->get_account_id();
         $form_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $account_num = $this->get_account_id();
@@ -161,9 +161,9 @@ class Hook_payment_gateway_ccbill
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => 'f8c174f38ae06536833f1510027ba233',
-            'TYPE_CODE' => strval($type_code),
-            'ITEM_NAME' => strval($item_name),
-            'PURCHASE_ID' => strval($purchase_id),
+            'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $purchase_id,
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
             'AMOUNT' => float_to_raw_string($amount),
@@ -215,7 +215,7 @@ class Hook_payment_gateway_ccbill
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_ipn_transaction()
     {
@@ -228,6 +228,9 @@ class Hook_payment_gateway_ccbill
         $denial_response_digest = md5($denial_id . '0' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on failure
 
         if (($response_digest !== $success_response_digest) && ($response_digest !== $denial_response_digest)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED')); // Hacker?!!!
         }
 
