@@ -95,7 +95,7 @@ function can_static_cache()
     }
 
     global $HTTP_STATUS_CODE;
-    if ($HTTP_STATUS_CODE == '404') { // TODO: in v11 is integer
+    if ($HTTP_STATUS_CODE == 404) {
         return false;
     }
 
