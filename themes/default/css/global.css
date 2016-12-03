@@ -4313,7 +4313,7 @@ figure {
 }
 
 a[rel="lightbox"] {
-	display: inline-block; /* Stops "_" showing when we use white-space */
+	text-decoration: none; /* Stops "_" showing when we use white-space */
 }
 
 .attachment img {

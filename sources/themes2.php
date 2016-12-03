@@ -467,7 +467,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
  */
 function resize_rep_image($rep_image)
 {
-    if (($rep_image != '') && (function_exists('imagepng')) && (get_value('resize_rep_images') !== '0')) {
+    if (($rep_image != '') && (function_exists('imagepng')) && (get_value('resize_rep_images') !== '0') && (preg_match('#^uploads/repimages/#', $rep_image) != 0)) {
         $_rep_image = $rep_image;
         if (url_is_local($rep_image)) {
             $_rep_image = get_custom_base_url() . '/' . $rep_image;
