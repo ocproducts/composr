@@ -150,7 +150,7 @@ class shopping_test_set extends cms_test_case
         $period = '';
         $payment_gateway = 'paypal';
 
-        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway);
+        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway, get_member(), false, true);
     }
 
     public function tearDown()

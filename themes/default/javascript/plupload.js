@@ -13698,8 +13698,17 @@ function FileProgress(file, targetID) {
         this.fileProgressWrapper.className = 'progressWrapper';
         this.fileProgressWrapper.id = this.fileProgressID;
 
+<<<<<<< HEAD
         this.fileProgressElement = document.createElement('div');
         this.fileProgressElement.className = 'progressContainer';
+=======
+		this.fileProgressElement=document.createElement('div');
+		this.fileProgressElement.setAttribute('role', 'progressbar');
+		this.fileProgressElement.setAttribute('aria-valuemin', '0');
+		this.fileProgressElement.setAttribute('aria-valuemax', '100');
+		this.fileProgressElement.setAttribute('aria-valuenow', '0');
+		this.fileProgressElement.className='progressContainer';
+>>>>>>> master
 
         var progressCancel = document.createElement('a');
         progressCancel.className = 'progressCancel';
@@ -13740,6 +13749,7 @@ function FileProgress(file, targetID) {
 
     this.height = this.fileProgressWrapper.offsetHeight;
 }
+<<<<<<< HEAD
 FileProgress.prototype.setProgress = function (percentage) {
     this.fileProgressElement.className = 'progressContainer green';
     this.fileProgressElement.childNodes[3].className = 'progressBarInProgress';
@@ -13774,6 +13784,46 @@ FileProgress.prototype.setCancelled = function () {
     setTimeout(function () {
         oSelf.disappear();
     }, 2000);
+=======
+FileProgress.prototype.setProgress=function (percentage) {
+	this.fileProgressElement.className='progressContainer green';
+	this.fileProgressElement.childNodes[3].className='progressBarInProgress';
+	this.fileProgressElement.childNodes[3].style.width=percentage+'%';
+	this.fileProgressElement.setAttribute('aria-valuenow', percentage);
+};
+FileProgress.prototype.setComplete=function () {
+	this.appear();
+	this.fileProgressElement.className='progressContainer blue';
+	this.fileProgressElement.childNodes[3].className='progressBarComplete';
+	this.fileProgressElement.childNodes[3].style.width='';
+	this.fileProgressElement.setAttribute('aria-valuenow', '100');
+	this.completed=true;
+	this.fileProgressElement.completed=this.completed;
+};
+FileProgress.prototype.setError=function () {
+	this.appear();
+	this.fileProgressElement.className='progressContainer red';
+	this.fileProgressElement.childNodes[3].className='progressBarError';
+	this.fileProgressElement.childNodes[3].style.width='';
+	this.fileProgressElement.setAttribute('aria-valuenow', '0');
+
+	var oSelf=this;
+	setTimeout(function () {
+		oSelf.disappear();
+	},5000);
+};
+FileProgress.prototype.setCancelled=function () {
+	this.appear();
+	this.fileProgressElement.className='progressContainer';
+	this.fileProgressElement.childNodes[3].className='progressBarError';
+	this.fileProgressElement.childNodes[3].style.width='';
+	this.fileProgressElement.setAttribute('aria-valuenow', '0');
+
+	var oSelf=this;
+	setTimeout(function () {
+		oSelf.disappear();
+	},2000);
+>>>>>>> master
 };
 FileProgress.prototype.setStatus = function (status) {
     $cms.dom.html(this.fileProgressElement.childNodes[2], status);

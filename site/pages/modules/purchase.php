@@ -509,7 +509,7 @@ class Module_purchase
             $parent_txn_id = '';
             $memo = 'Free';
             $mc_gross = '';
-            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual');
+            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual', get_member(), false, true);
             return inform_screen($this->title, do_lang_tempcode('FREE_PURCHASE'));
         }
 
@@ -621,7 +621,7 @@ class Module_purchase
         // We know success at this point...
 
         if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
-            handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
+            handle_ipn_transaction_script(true, false); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
         $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);

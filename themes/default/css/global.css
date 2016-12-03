@@ -2936,7 +2936,12 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	background: url('{$IMG_INLINE;,icons/24x24/tabs/settings}') right 4px no-repeat;
 	padding-right: 5px;
 	background-origin: content-box;
+<<<<<<< HEAD
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+=======
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	min-height: 26px;
+>>>>>>> master
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.staff_actions {
@@ -4343,7 +4348,7 @@ figure {
 }
 
 a[rel="lightbox"] {
-	display: inline-block; /* Stops "_" showing when we use white-space */
+	text-decoration: none; /* Stops "_" showing when we use white-space */
 }
 
 .attachment img {

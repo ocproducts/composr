@@ -222,7 +222,6 @@ function make_cancel_button($purchase_id, $payment_gateway)
  */
 function send_invoice_notification($member_id, $id)
 {
-    // Send out notification
     require_code('notifications');
     $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), null, false, false, true);
     $url = $_url->evaluate();
@@ -577,18 +576,18 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 
     $trans_id = post_param_string('trans_id');
 
-    $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id), '', 1);
-    if (!array_key_exists(0, $transaction_rows)) {
+    $trans_expecting_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id), '', 1);
+    if (!array_key_exists(0, $trans_expecting_rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
-    $transaction_row = $transaction_rows[0];
+    $trans_expecting_row = $trans_expecting_rows[0];
 
-    $purchase_id = $transaction_row['e_purchase_id'];
+    $purchase_id = $trans_expecting_row['e_purchase_id'];
 
-    $amount = $transaction_row['e_amount'];
-    $length = $transaction_row['e_length'];
-    $length_units = $transaction_row['e_length_units'];
-    $currency = $transaction_row['e_currency'];
+    $amount = $trans_expecting_row['e_amount'];
+    $length = $trans_expecting_row['e_length'];
+    $length_units = $trans_expecting_row['e_length_units'];
+    $currency = $trans_expecting_row['e_currency'];
 
     $cardholder_name = post_param_string('payment_cardholder_name');
     $card_type = post_param_string('payment_card_type', '');
@@ -620,7 +619,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
     $shipping_email = post_param_string('shipping_email', '');
     $shipping_phone = post_param_string('shipping_phone', '');
     if (addon_installed('shopping')) {
-        if ($transaction_row['e_type_code'] == 'cart_orders') {
+        if ($trans_expecting_row['e_type_code'] == 'cart_orders') {
             $shipping_address = array(
                 'a_order_id' => intval($purchase_id),
                 'a_firstname' => $shipping_firstname,
@@ -691,17 +690,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 
     if (($success) || ($length !== null)) {
         $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
-        handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $payment_gateway);
-    }
-
-    // Send notification...
-
-    if ($success) {
-        $member_id = $transaction_row['e_member_id'];
-        if ($member_id !== null) {
-            require_code('notifications');
-            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $currency, get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
-        }
+        handle_confirmed_transaction($trans_expecting_row['e_purchase_id'], $trans_expecting_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $payment_gateway, get_member(), false, true);
     }
 
     // Return...
@@ -717,9 +706,11 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 /**
  * Handle IPN's.
  *
- * @return ID_TEXT The ID of the purchase-type (meaning depends on item_name)
+ * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+ * @param  boolean $send_notifications Whether to send notifications. Set to false if this is not the primary payment handling (e.g. a POST redirect rather than the real IPN).
+ * @return ?ID_TEXT The ID of the purchase-type (meaning depends on item_name) (null: no transaction; will only return null when not running the 'ecommerce' script)
  */
-function handle_ipn_transaction_script()
+function handle_ipn_transaction_script($silent_fail = false, $send_notifications = true)
 {
     if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (cms_is_writable(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'ab');
@@ -735,9 +726,13 @@ function handle_ipn_transaction_script()
 
     ob_start();
 
-    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $payment_gateway_object->handle_ipn_transaction();
+    $transaction = $payment_gateway_object->handle_ipn_transaction($silent_fail);
+    if ($transaction === null) {
+        return null;
+    }
+    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $member_id) = $transaction;
 
-    $type_code = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway);
+    $type_code = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway, $member_id, $silent_fail, $send_notifications);
 
     if (method_exists($payment_gateway_object, 'show_payment_response')) {
         echo $payment_gateway_object->show_payment_response($type_code, $purchase_id);
@@ -763,9 +758,12 @@ function handle_ipn_transaction_script()
  * @param  SHORT_TEXT $parent_txn_id The ID of the parent transaction
  * @param  string $period The subscription period (blank: N/A / unknown: trust is correct on the gateway)
  * @param  ID_TEXT $payment_gateway The payment gateway
- * @return ID_TEXT The product purchased
+ * @param  ?MEMBER $member_id The member who did the transaction [not the same as the member who is recipient of a product] (null: unknown)
+ * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+ * @param  boolean $send_notifications Whether to send notifications. Set to false if this is not the primary payment handling (e.g. a POST redirect rather than the real IPN).
+ * @return ?ID_TEXT The product purchased (null: no transaction; will only return null when not running the 'ecommerce' script)
  */
-function handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway)
+function handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway, $member_id, $silent_fail, $send_notifications)
 {
     $is_subscription = ($item_name == '');
 
@@ -773,7 +771,10 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     if ($is_subscription) { // Subscription
         $type_code = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_type_code', array('id' => intval($purchase_id)));
         if ($type_code === null) {
-            fatal_ipn_exit(do_lang('NO_SUCH_SUBSCRIPTION', strval($purchase_id)));
+            if ($silent_fail) {
+                return null;
+            }
+            fatal_ipn_exit(do_lang('NO_SUCH_SUBSCRIPTION', $purchase_id));
         }
         $item_name = '_' . $type_code;
 
@@ -788,6 +789,9 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
             $length = array_key_exists('length', $found[3]) ? strval($found[3]['length']) : '1';
             $length_units = array_key_exists('length_units', $found[3]) ? $found[3]['length_units'] : 'm';
             if (strtolower($period) != strtolower($length . ' ' . $length_units)) {
+                if ($silent_fail) {
+                    return null;
+                }
                 fatal_ipn_exit(do_lang('IPN_SUB_PERIOD_WRONG'));
             }
         }
@@ -800,18 +804,27 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
     }
     if ($found === null) {
+        if ($silent_fail) {
+            return null;
+        }
         fatal_ipn_exit(do_lang('PRODUCT_NO_SUCH') . ' - ' . $item_name, true);
     }
 
     // Check price, if one defined
     if (($mc_gross != $found[1]) && ($found[1] != '?')) {
         if (($payment_status == 'Completed') && ($payment_gateway != 'manual')) {
+            if ($silent_fail) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $found[1]), $is_subscription);
         }
     }
     $expected_currency = isset($found[5]) ? $found[5] : get_option('currency');
     if ($mc_currency != $expected_currency) {
         if (($payment_status != 'SCancelled') && ($payment_gateway != 'manual')) {
+            if ($silent_fail) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY', $item_name, $mc_currency, $expected_currency));
         }
     }
@@ -852,7 +865,10 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
 
         // Pending transactions stop here
-        fatal_ipn_exit(do_lang('TRANSACTION_NOT_COMPLETE', $type_code . ':' . strval($purchase_id), $payment_status), true);
+        if ($silent_fail) {
+            return null;
+        }
+        fatal_ipn_exit(do_lang('TRANSACTION_NOT_COMPLETE', $type_code . ':' . $purchase_id, $payment_status), true);
     }
 
     // Invoice: Check price
@@ -860,6 +876,9 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         $price = $GLOBALS['SITE_DB']->query_select_value('invoices', 'i_amount', array('id' => intval($purchase_id)));
         if ($price != $mc_gross) {
             if ($payment_gateway != 'manual') {
+                if ($silent_fail) {
+                    return null;
+                }
                 fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $price));
             }
         }
@@ -903,6 +922,14 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
     }
 
+    // Send payment received notification
+    if ($send_notifications) {
+        if (($member_id !== null) && (!is_guest($member_id))) {
+            require_code('notifications');
+            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+        }
+    }
+
     // Dispatch (all product types)
     if ($payment_status != 'SModified') {
         // Call completion/cancellation code
@@ -919,14 +946,16 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
                 if ($username === null) {
                     $username = do_lang('GUEST');
                 }
-                if ($payment_status == 'Completed') { // Completed
-                    $subject = do_lang('SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
-                    $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
-                    dispatch_notification('service_paid_for_staff', null, $subject, $body);
-                } else { // Must be SCancelled
-                    $subject = do_lang('SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
-                    $body = do_notification_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
-                    dispatch_notification('service_cancelled_staff', null, $subject, $body);
+                if ($send_notifications) {
+                    if ($payment_status == 'Completed') { // Completed
+                        $subject = do_lang('SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
+                        $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
+                        dispatch_notification('service_paid_for_staff', null, $subject, $body);
+                    } else { // Must be SCancelled
+                        $subject = do_lang('SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
+                        $body = do_notification_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
+                        dispatch_notification('service_cancelled_staff', null, $subject, $body); // NB: subscription_cancelled_staff is for manual cancels, service_cancelled_staff is for automatic cancels
+                    }
                 }
             }
         }

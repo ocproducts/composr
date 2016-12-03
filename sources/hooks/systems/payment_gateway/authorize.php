@@ -26,7 +26,8 @@ class Hook_payment_gateway_authorize
     // Requires:
     //  the live login is the Composr Composr "Gateway username" option
     //  the testing login is the Composr "Testing mode gateway username" option
-    //  the transaction key is the Composr "Gateway digest code" option; it may be blank ; if they are different for the live and testing logins then separate them with ";"
+    //  the MD5 hash value is the Composr "Callback password" option; it may be blank ; if they are different for the live and testing logins then separate them with ";"
+    //  the transaction key is the Composr "Gateway password" option; it may be blank ; if they are different for the live and testing logins then separate them with ";"
     //  the customer ID is the Composr "Gateway VPN username" option
     // The subscription button isn't great. The merchant needs to manually go into the Authorize.Net backend and configure the subscription details for the transaction. That's an API limitation. Probably best to use PayPal to be honest, or go through a full PCI compliance and do local payments (which works well).
 
@@ -47,19 +48,25 @@ class Hook_payment_gateway_authorize
     /**
      * Get authorize access detail
      *
-     * @return array A pair: login username, transaction key
+     * @return array A pair: login username, transaction key, MD5 hash key, MD5 hash value
      */
     protected function _get_access_details()
     {
         $api_login = ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
 
-        $payment_gateway_digest_bits = explode(';', get_option('payment_gateway_digest'));
-        if (!isset($payment_gateway_digest_bits[1])) {
-            $payment_gateway_digest_bits[1] = $payment_gateway_digest_bits[0];
+        $gateway_password_bits = explode(';', get_option('gateway_password'));
+        if (!isset($gateway_password_bits[1])) {
+            $gateway_password_bits[1] = $gateway_password_bits[0];
         }
-        $api_transaction_key = ecommerce_test_mode() ? trim($payment_gateway_digest_bits[1]) : trim($payment_gateway_digest_bits[0]);
+        $api_transaction_key = ecommerce_test_mode() ? trim($gateway_password_bits[1]) : trim($gateway_password_bits[0]);
 
-        return array($api_login, $api_transaction_key);
+        $payment_gateway_callback_password_bits = explode(';', get_option('payment_gateway_callback_password'));
+        if (!isset($payment_gateway_callback_password_bits[1])) {
+            $payment_gateway_callback_password_bits[1] = $payment_gateway_callback_password_bits[0];
+        }
+        $md5_hash_value = ecommerce_test_mode() ? trim($payment_gateway_callback_password_bits[1]) : trim($payment_gateway_callback_password_bits[0]);
+
+        return array($api_login, $api_transaction_key, $md5_hash_value);
     }
 
     /**
@@ -161,7 +168,7 @@ class Hook_payment_gateway_authorize
     {
         // http://www.authorize.net/content/dam/authorize/documents/SIM_guide.pdf
 
-        list($login_id, $transaction_key) = $this->_get_access_details();
+        list($login_id, $transaction_key, $md5_hash_value) = $this->_get_access_details();
 
         $form_url = $this->_get_remote_form_url();
 
@@ -191,6 +198,7 @@ class Hook_payment_gateway_authorize
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'FORM_URL' => $form_url,
             'MEMBER_ADDRESS' => $this->_build_member_address(),
             'SEQUENCE' => strval($sequence),
@@ -221,7 +229,7 @@ class Hook_payment_gateway_authorize
     {
         // http://www.authorize.net/content/dam/authorize/documents/SIM_guide.pdf (DPM not SIM, see Appendix C)
 
-        list($login_id, $transaction_key) = $this->_get_access_details();
+        list($login_id, $transaction_key, $md5_hash_value) = $this->_get_access_details();
 
         $form_url = $this->_get_remote_form_url();
 
@@ -252,6 +260,7 @@ class Hook_payment_gateway_authorize
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'FORM_URL' => $form_url,
             'MEMBER_ADDRESS' => $this->_build_member_address(),
             'SEQUENCE' => strval($sequence),
@@ -304,10 +313,13 @@ class Hook_payment_gateway_authorize
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+     * @return ?array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response (null: no transaction; will only return null when $silent_fail is set).
      */
-    public function handle_ipn_transaction()
+    public function handle_ipn_transaction($silent_fail)
     {
+        list($login_id, $transaction_key, $md5_hash_value) = $this->_get_access_details();
+
         $success = (post_param_string('x_response_code', '') == '1');
         $response_text = post_param_string('x_response_reason_text', '');
         $subscription_id = post_param_string('x_subscription_id', '');
@@ -315,12 +327,23 @@ class Hook_payment_gateway_authorize
         $_transaction_id = post_param_string('x_trans_id');
         $purchase_id = preg_replace('# .*$#', '', post_param_string('x_description'));
         $reason_code = post_param_string('x_response_reason_code', '');
-        $amount = post_param_integer('x_amount', 0);
+        $amount = post_param_integer('x_amount');
         $currency = post_param_string('x_currency_code', get_option('currency'));
         $parent_txn_id = '';
         $pending_reason = '';
         $memo = '';
-        $item_name = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_item_name', array('e_purchase_id' => $purchase_id));
+
+        $trans_expecting_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $purchase_id), '', 1);
+        if (!array_key_exists(0, $trans_expecting_rows)) {
+            if ($silent_fail) {
+                return null;
+            }
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+        $trans_expecting_row = $trans_expecting_rows[0];
+
+        $item_name = $trans_expecting_row['e_item_name'];
+
         if ($subscription_id != '') {
             $payment_status = $success ? 'Completed' : 'SCancelled';
         } else {
@@ -328,11 +351,20 @@ class Hook_payment_gateway_authorize
         }
         $txn_id = ($subscription_id != '') ? $subscription_id : $_transaction_id;
 
+        // SECURITY: Check hash
+        $hash = post_param_string('x_MD5_Hash');
+        if ($hash != md5($md5_hash_value . $login_id . $_transaction_id . post_param_string('amount'))) {
+            if ($silent_fail) {
+                return null;
+            }
+            fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . flatten_slashed_array($_POST, true));
+        }
+
         if (addon_installed('shopping')) {
             $this->store_shipping_address($purchase_id);
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $amount, $currency, $txn_id, $parent_txn_id, $period);
+        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $amount, $currency, $txn_id, $parent_txn_id, $period, $trans_expecting_row['e_member_id']);
     }
 
     /**
@@ -341,7 +373,7 @@ class Hook_payment_gateway_authorize
      * @param  AUTO_LINK $order_id Order ID.
      * @return ?mixed Address ID (null: No address record found).
      */
-    public function store_shipping_address($order_id)
+    protected function store_shipping_address($order_id)
     {
         if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
             $shipping_address = array(
@@ -394,7 +426,7 @@ class Hook_payment_gateway_authorize
      */
     protected function _set_cancelation_api_parameters($subscription_id)
     {
-        list($login_id, $transaction_key) = $this->_get_access_details();
+        list($login_id, $transaction_key, $md5_hash_value) = $this->_get_access_details();
 
         if (ecommerce_test_mode()) {
             //URL for test account
@@ -570,7 +602,7 @@ class Hook_payment_gateway_authorize
 
         $this->api_parameters = array();
 
-        list($login_id, $transaction_key) = $this->_get_access_details();
+        list($login_id, $transaction_key, $md5_hash_value) = $this->_get_access_details();
 
         $this->url = ecommerce_test_mode() ? 'https://test.authorize.net/gateway/transact.dll' : 'https://secure.authorize.net/gateway/transact.dll';
 
@@ -664,7 +696,7 @@ class Hook_payment_gateway_authorize
     {
         // http://www.authorize.net/content/dam/authorize/documents/ARB_guide.pdf
 
-        list($login_id, $transaction_key) = $this->_get_access_details();
+        list($login_id, $transaction_key, $md5_hash_value) = $this->_get_access_details();
 
         if (ecommerce_test_mode()) {
             //URL for test account

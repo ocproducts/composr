@@ -131,7 +131,8 @@ class Hook_payment_gateway_worldpay
             '_GUID' => '56c78a4e16c0e7f36fcfbe57d37bc3d3',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => $trans_id, // cartID in Worldpay, has to be unique so we generate a transaction ID and store true purchase_id within that
+            'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'DIGEST' => $digest,
             'TEST_MODE' => ecommerce_test_mode(),
             'AMOUNT' => float_to_raw_string($amount),
@@ -207,7 +208,8 @@ class Hook_payment_gateway_worldpay
             '_GUID' => '1f88716137762a467edbf5fbb980c6fe',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($trans_id),
+            'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
             'LENGTH' => strval($length),
@@ -261,34 +263,40 @@ class Hook_payment_gateway_worldpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+     * @return ?array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response (null: no transaction; will only return null when $silent_fail is set).
      */
-    public function handle_ipn_transaction()
+    public function handle_ipn_transaction($silent_fail)
     {
         // http://support.worldpay.com/support/kb/bg/paymentresponse/pr0000.html
 
         $code = post_param_string('transStatus');
         if ($code == 'C') {
+            if ($silent_fail) {
+                return null;
+            }
             exit(); // Cancellation signal, won't process
         }
 
         $txn_id = post_param_string('transId');
         $cart_id = post_param_string('cartId');
         if (post_param_string('futurePayType', '') == 'regular') {
-            $subscription = true;
+            $is_subscription = true;
         } else {
-            $subscription = false;
+            $is_subscription = false;
         }
 
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $cart_id), '', 1);
-        if (!array_key_exists(0, $transaction_rows)) {
+        $trans_expecting_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $cart_id), '', 1);
+        if (!array_key_exists(0, $trans_expecting_rows)) {
+            if ($silent_fail) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
-        $transaction_row = $transaction_rows[0];
+        $trans_expecting_row = $trans_expecting_rows[0];
 
-        $member_id = $transaction_row['e_member_id'];
-        $item_name = $subscription ? '' : $transaction_row['e_item_name'];
-        $purchase_id = $transaction_row['e_purchase_id'];
+        $item_name = $is_subscription ? '' : $trans_expecting_row['e_item_name'];
+        $purchase_id = $trans_expecting_row['e_purchase_id'];
 
         $success = ($code == 'Y');
         $message = post_param_string('rawAuthMessage');
@@ -299,24 +307,24 @@ class Hook_payment_gateway_worldpay
         $memo = '';
         $mc_gross = post_param_string('authAmount');
         $mc_currency = post_param_string('authCurrency');
-        $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
+        $parent_txn_id = '';
+        $period = '';
 
+        // SECURITY: Check password
         if (post_param_string('callbackPW') != get_option('payment_gateway_callback_password')) {
-            fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
-        }
-
-        if ($success) {
-            require_code('notifications');
-            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+            if ($silent_fail) {
+                return null;
+            }
+            fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . flatten_slashed_array($_POST, true));
         }
 
         if (addon_installed('shopping')) {
-            if ($transaction_row['e_type_code'] == 'cart_orders') {
+            if ($trans_expecting_row['e_type_code'] == 'cart_orders') {
                 $this->store_shipping_address(intval($purchase_id));
             }
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '', '');
+        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $trans_expecting_row['e_member_id']);
     }
 
     /**
@@ -340,7 +348,7 @@ class Hook_payment_gateway_worldpay
      * @param  AUTO_LINK $order_id Order ID
      * @return ?mixed Address ID (null: No address record found).
      */
-    public function store_shipping_address($order_id)
+    protected function store_shipping_address($order_id)
     {
         if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
             $_name = explode(' ', post_param_string('delvName', ''));

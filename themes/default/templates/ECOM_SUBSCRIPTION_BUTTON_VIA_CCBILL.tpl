@@ -7,7 +7,7 @@
 	<input type="hidden" name="currencyCode" value="{CURRENCY*}" /> {$,An integer representing the 3-digit currency code that will be used for the transaction.}
 	<input type="hidden" name="formDigest" value="{DIGEST*}" /> {$,An MD5 Hex Digest based on the above values}
 	<input type="hidden" name="productDesc" value="{!SUBSCRIPTION_FOR,{$USERNAME*}} ({ITEM_NAME*})" /> {$,Hopefully shown to the customer when paying}
-	<input type="hidden" name="customPurchaseId" value="{PURCHASE_ID*}" /> {$,Custom variable for tracking purchase ID}
+	<input type="hidden" name="customPurchaseId" value="{TRANS_ID*}" /> {$,Custom variable for tracking purchase}
 	<input type="hidden" name="customItemName" value="{ITEM_NAME*}" /> {$,Custom variable for tracking item name}
 	<input type="hidden" name="customIsSubscription" value="1" /> {$,Custom variable for subscription status}
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}

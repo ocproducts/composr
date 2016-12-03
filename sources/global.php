@@ -70,7 +70,13 @@ function require_code($codename, $light_exit = false)
         }
         if (isset($CODE_OVERRIDES[$codename])) {
             $has_custom = $CODE_OVERRIDES[$codename];
+            if ($has_custom) {
+                $has_custom = is_file($path_custom); // Double-check still there
+            }
             $has_orig = $CODE_OVERRIDES['!' . $codename];
+            if ($has_orig) {
+                $has_orig = is_file($path_orig); // Double-check still there
+            }
         } else {
             $has_custom = is_file($path_custom);
             $has_orig = is_file($path_orig);

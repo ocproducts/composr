@@ -104,7 +104,7 @@
 		<tr>
 			{+START,IF,{SHOW_PROFILE_IMAGE}}
 				<td style="vertical-align: middle; text-align: center; width: 56px">
-					<img src="{USER_PROFILE_IMG_URL}" />
+					<img src="{USER_PROFILE_IMG_URL*}" />
 				</td>
 				<td style="background-color: rgb(204, 204, 204); padding: 0; width: 1px"></td>
 			{+END}

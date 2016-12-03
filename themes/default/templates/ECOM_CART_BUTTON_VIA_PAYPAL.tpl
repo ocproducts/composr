@@ -7,7 +7,7 @@
 	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:shopping:finish:type_code=cart_orders:cancel=1:from=paypal}" />
 	<input type="hidden" name="no_shipping" value="0" />
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />
-	<input type="hidden" name="custom" value="{ORDER_ID*}" />
+	<input type="hidden" name="custom" value="{TRANS_ID*}" />
 	<input type="hidden" name="rm" value="2" />
 	<input type="hidden" name="bn" value="ocproducts_SP" />
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}

@@ -127,10 +127,10 @@ class Hook_payment_gateway_secpay
             '_GUID' => 'e68e80cb637f8448ef62cd7d73927722',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($purchase_id),
+            'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
-            'TRANS_ID' => $trans_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
@@ -182,10 +182,10 @@ class Hook_payment_gateway_secpay
             '_GUID' => 'e5e6d6835ee6da1a6cf02ff8c2476aa6',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($purchase_id),
+            'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
-            'TRANS_ID' => $trans_id,
             'FIRST_REPEAT' => $first_repeat,
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
@@ -273,27 +273,30 @@ class Hook_payment_gateway_secpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response.
+     * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+     * @return ?array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response (null: no transaction; will only return null when $silent_fail is set).
      */
-    public function handle_ipn_transaction()
+    public function handle_ipn_transaction($silent_fail)
     {
         $txn_id = post_param_string('trans_id');
         if (substr($txn_id, 0, 7) == 'subscr_') { // "subscr_" was added in by us explicitly in ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl
-            $subscription = true;
+            $is_subscription = true;
             $txn_id = substr($txn_id, 7);
         } else {
-            $subscription = false;
+            $is_subscription = false;
         }
 
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $txn_id), '', 1);
-        if (!array_key_exists(0, $transaction_rows)) {
+        $trans_expecting_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $txn_id), '', 1);
+        if (!array_key_exists(0, $trans_expecting_rows)) {
+            if ($silent_fail) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
-        $transaction_row = $transaction_rows[0];
+        $trans_expecting_row = $trans_expecting_rows[0];
 
-        $member_id = $transaction_row['e_member_id'];
-        $item_name = $subscription ? '' : $transaction_row['e_item_name'];
-        $purchase_id = $transaction_row['e_purchase_id'];
+        $item_name = $is_subscription ? '' : $trans_expecting_row['e_item_name'];
+        $purchase_id = $trans_expecting_row['e_purchase_id'];
 
         $code = post_param_string('code');
         $success = ($code == 'A');
@@ -359,26 +362,26 @@ class Hook_payment_gateway_secpay
         $memo = '';
         $mc_gross = post_param_string('amount');
         $mc_currency = post_param_string('currency', ''); // May be blank for subscription
+        $parent_txn_id = '';
+        $period = '';
 
-        // Validate
+        // SECURITY: Check hash
         $hash = post_param_string('hash');
-        if ($subscription) {
+        if ($is_subscription) {
             $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . get_option('payment_gateway_digest'));
         } else {
-            $repeat = $this->_translate_subscription_details($transaction_row['e_length'], $transaction_row['e_length_units']);
+            $repeat = $this->_translate_subscription_details($trans_expecting_row['e_length'], $trans_expecting_row['e_length_units']);
             $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('payment_gateway_digest'));
         }
         if ($hash != $my_hash) {
-            fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
-        }
-
-        if ($success) {
-            require_code('notifications');
-            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+            if ($silent_fail) {
+                return null;
+            }
+            fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . flatten_slashed_array($_POST, true));
         }
 
         if (addon_installed('shopping')) {
-            if ($transaction_row['e_type_code'] == 'cart_orders') {
+            if ($trans_expecting_row['e_type_code'] == 'cart_orders') {
                 $this->store_shipping_address(intval($purchase_id));
             }
         }
@@ -392,14 +395,14 @@ class Hook_payment_gateway_secpay
 
         // We need to echo the output of our finish page to SecPay's IPN caller
         if ($success) {
-            $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $transaction_row['e_type_code']), get_module_zone('purchase'));
+            $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $trans_expecting_row['e_type_code']), get_module_zone('purchase'));
         } else {
-            $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $transaction_row['e_type_code'], 'cancel' => 1, 'message' => do_lang_tempcode('DECLINED_MESSAGE', $message)), get_module_zone('purchase'));
+            $_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $trans_expecting_row['e_type_code'], 'cancel' => 1, 'message' => do_lang_tempcode('DECLINED_MESSAGE', $message)), get_module_zone('purchase'));
         }
         $url = $_url->evaluate();
         echo http_get_contents($url, array('trigger_error' => false));
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '', '');
+        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $trans_expecting_row['e_member_id']);
     }
 
     /**
@@ -408,7 +411,7 @@ class Hook_payment_gateway_secpay
      * @param  AUTO_LINK $order_id Order ID.
      * @return ?mixed Address ID (null: No address record found).
      */
-    public function store_shipping_address($order_id)
+    protected function store_shipping_address($order_id)
     {
         if (post_param_string('first_name', null) === null) {
             return null;

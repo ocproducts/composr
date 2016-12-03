@@ -14,7 +14,7 @@
 
 {+START,IF_NON_EMPTY,{FROM_AVATAR_URL}}
 	<div class="right spaced">
-		<img src="{FROM_AVATAR_URL*}" alt="" />
+		<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{FROM_AVATAR_URL}}" alt="" />
 	</div>
 {+END}
 

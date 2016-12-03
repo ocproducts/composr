@@ -352,6 +352,7 @@ class Hook_addon_registry_shopping
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
+                'TRANS_ID' => placeholder_id(),
                 'ORDER_ID' => placeholder_id(),
                 'NOTIFICATION_TEXT' => lorem_sentence_html(),
                 'MEMBER_ADDRESS' => placeholder_array(),

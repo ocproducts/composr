@@ -588,7 +588,7 @@ class Module_shopping
         log_cart_actions('Completed payment');
 
         if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
-            handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
+            handle_ipn_transaction_script(true, false); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
         $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);

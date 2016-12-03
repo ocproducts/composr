@@ -30,8 +30,8 @@
 		{+END}
 	{+END}
 
-	<meta itemprop="width" content="{WIDTH*}" />
-	<meta itemprop="height" content="{HEIGHT*}" />
+	<meta itemprop="width" content="{$MIN*,950,{WIDTH}}" />
+	<meta itemprop="height" content="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" />
 	{+START,IF_NON_EMPTY,{LENGTH}}
 		<meta itemprop="duration" content="T{LENGTH*}S" />
 	{+END}
@@ -39,6 +39,41 @@
 	<meta itemprop="embedURL" content="{URL*}" />
 
 	<div class="webstandards_checker_off" id="{$GET%,player_id}"></div>
+<<<<<<< HEAD
+=======
+
+	{$,API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference}
+
+	<script>// <![CDATA[
+		{$,Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video}
+		add_event_listener_abstract(window,'load',function() {
+			jwplayer('{$GET%,player_id}').setup({
+				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
+				{+START,IF_NON_EMPTY,{WIDTH}}
+					width: {$MIN%,950,{WIDTH}},
+				{+END}
+				{+START,IF_NON_EMPTY,{HEIGHT}}
+					height: {$MIN%,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}},
+				{+END}
+
+				autostart: false,
+				{+START,IF_NON_EMPTY,{LENGTH}}
+					duration: {LENGTH%},
+				{+END}
+				file: '{URL;/}',
+				type: '{$PREG_REPLACE*,.*\.,,{$LCASE,{FILENAME}}}',
+				image: '{THUMB_URL;/}',
+				flashplayer: '{$BASE_URL;/}/data/jwplayer.flash.swf{+START,IF,{$NOT,{$BROWSER_MATCHES,bot}}}?rand={$RAND;/}{+END}',
+				events: {
+					{+START,IF,{$NOT,{$INLINE_STATS}}}onPlay: function() { ga_track(null,'{!VIDEO;/}','{URL;/}'); },{+END}
+					onComplete: function() { if (document.getElementById('next_slide')) player_stopped(); },
+					onReady: function() { if (document.getElementById('next_slide')) { stop_slideshow_timer(); jwplayer('{$GET%,player_id}').play(true); } }
+				}
+			});
+		});
+	//]]></script>
+
+>>>>>>> master
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<figcaption class="associated_details">
 			{$PARAGRAPH,{DESCRIPTION}}
@@ -50,7 +85,7 @@
 
 <div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
 {+START,IF,{$GET,raw_video}}
-	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{WIDTH*}" height="{HEIGHT*}" controls="controls">
+	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls">
 		<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
 		<span>{DESCRIPTION}</span>
 	</video>

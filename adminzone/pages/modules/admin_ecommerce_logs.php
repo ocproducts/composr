@@ -508,7 +508,7 @@ class Module_admin_ecommerce_logs
             }
         }
 
-        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual');
+        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual', null, false, true);
 
         $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
@@ -778,7 +778,7 @@ class Module_admin_ecommerce_logs
         $repost_id = post_param_integer('id', null);
         if (($repost_id !== null) && ($repost_id == $id)) {
             require_code('ecommerce');
-            handle_confirmed_transaction(strval($id), '', 'SCancelled', '', '', '', '', '', '', '', '', 'manual'); // Runs a cancel
+            handle_confirmed_transaction(strval($id), '', 'SCancelled', '', '', '', '', '', '', '', '', 'manual', null, false, true); // Runs a cancel
             return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
         }
 

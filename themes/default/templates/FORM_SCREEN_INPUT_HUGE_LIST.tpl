@@ -25,6 +25,25 @@
 		{+END}
 		{CONTENT}
 		</select>
+<<<<<<< HEAD
+=======
+
+		{+START,IF,{$NOT,{INLINE_LIST}}}
+			<script>// <![CDATA[
+				set_up_change_monitor('form_table_field_input__{$GET,randomised_id}');
+
+				add_event_listener_abstract(window,'load',function() {
+					if (typeof $("#{NAME#/}").select2!='undefined')
+					{
+						$("#{NAME#/}").select2({
+							dropdownAutoWidth: true,
+							containerCssClass: 'wide_field'
+						});
+					}
+				});
+			//]]></script>
+		{+END}
+>>>>>>> master
 	</td>
 </tr>
 

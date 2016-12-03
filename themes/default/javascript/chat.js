@@ -196,9 +196,15 @@
 
 
 // Constants
+<<<<<<< HEAD
 window.MESSAGE_CHECK_INTERVAL = '{$ROUND%,{$CONFIG_OPTION,chat_message_check_interval}}';
 window.TRANSITORY_ALERT_TIME = '{$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_time}}';
 window.LOGS_DOWNLOAD_INTERVAL = 3000;
+=======
+window.MESSAGE_CHECK_INTERVAL={$ROUND%,{$MAX,3000,{$CONFIG_OPTION,chat_message_check_interval}}};
+window.TRANSITORY_ALERT_TIME={$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_time}};
+window.LOGS_DOWNLOAD_INTERVAL=3000;
+>>>>>>> master
 
 // Tracking variables
 var last_message_id = -1;
@@ -530,6 +536,7 @@ function chat_check_response(ajax_result_frame, ajax_result, skip_incoming_sound
     return true;
 }
 
+<<<<<<< HEAD
 function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
     if (!ajax_result) return; // Some kind of error happened
 
@@ -864,6 +871,380 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
         window.top_window.last_timestamp = newest_timestamp_here;
 
     return current_room_id;
+=======
+function process_chat_xml_messages(ajax_result,skip_incoming_sound)
+{
+	if (!ajax_result) return; // Some kind of error happened
+
+	if (typeof skip_incoming_sound=='undefined') skip_incoming_sound=false;
+
+	var messages=ajax_result.childNodes;
+	var message_container=document.getElementById('messages_window');
+	var message_container_global=(message_container!=null);
+	var _cloned_message,cloned_message;
+	var current_room_id=window.load_from_room_id;
+	var tab_element;
+	var flashable_alert=false;
+	var username,room_name,room_id,event_type,member_id,tmp_element,rooms,avatar_url,participants;
+	var id,timestamp;
+	var first_set=false;
+	var newest_id_here=null,newest_timestamp_here=null;
+	var cannot_process_all=false;
+
+	// Look through our messages
+	for (var i=0;i<messages.length;i++)
+	{
+		if (messages[i].nodeName=='div') // MESSAGE
+		{
+			// Find out about our message
+			id=messages[i].getAttribute('id');
+			timestamp=messages[i].getAttribute('timestamp');
+			if (!id) id=messages[i].id; // Weird fix for Opera
+			if (((window.top_window.last_message_id) && (parseInt(id)<=window.top_window.last_message_id)) && ((window.top_window.last_timestamp) && (parseInt(timestamp)<=window.top_window.last_timestamp))) continue;
+
+			// Find container to place message
+			if (!message_container_global)
+			{
+				room_id=messages[i].getAttribute('room_id');
+				current_room_id=room_id;
+				message_container=null;
+			} else
+			{
+				current_room_id=messages[i].getAttribute('room_id');
+			}
+			if (document.getElementById('messages_window_'+current_room_id))
+			{
+				message_container=document.getElementById('messages_window_'+current_room_id);
+				tab_element=document.getElementById('tab_'+current_room_id);
+				if ((tab_element) && (tab_element.className.indexOf('chat_lobby_convos_current_tab')==-1))
+				{
+					tab_element.className=((tab_element.className.indexOf('chat_lobby_convos_tab_first')!=-1)?'chat_lobby_convos_tab_first ':'')+'chat_lobby_convos_tab_new_messages';
+				}
+			} else if ((typeof opened_popups['room_'+current_room_id]!='undefined') && (!opened_popups['room_'+current_room_id].is_shutdown) && (opened_popups['room_'+current_room_id].document)) // Popup
+			{
+				message_container=opened_popups['room_'+current_room_id].document.getElementById('messages_window_'+current_room_id);
+			}
+			if (!message_container)
+			{
+				cannot_process_all=true;
+				continue; // Still no luck
+			}
+
+			// If we got this far, recognise the message as received
+			newest_id_here=parseInt(id);
+			if ((newest_timestamp_here=null) || (newest_timestamp_here<parseInt(timestamp))) newest_timestamp_here=parseInt(timestamp);
+
+			var doc=document;
+			if (typeof opened_popups['room_'+current_room_id]!='undefined')
+			{
+				var popup_win=opened_popups['room_'+current_room_id];
+				if (!popup_win.document) // We have nowhere to put the message
+				{
+					cannot_process_all=true;
+					continue;
+				}
+				doc=popup_win.document;
+
+				// Feed in details, so if it becomes autonomous, it knows what to run with
+				popup_win.last_timestamp=window.last_timestamp;
+				popup_win.last_event_id=window.last_event_id;
+				if ((newest_id_here) && ((popup_win.last_message_id==null) || (popup_win.last_message_id<newest_id_here)))
+				{
+					popup_win.last_message_id=newest_id_here;
+				}
+				if (popup_win.last_timestamp<newest_timestamp_here)
+					popup_win.last_timestamp=newest_timestamp_here;
+			}
+
+			if (doc.getElementById('chat_message__'+id)) continue; // Already there
+
+			// Clone the node so that we may insert it
+			cloned_message=doc.createElement('div');
+			set_inner_html(cloned_message,(typeof messages[i].xml!='undefined')?messages[i].xml/*IE-only optimisation*/:get_outer_html(messages[i].childNodes[0]));
+			cloned_message=cloned_message.childNodes[0];
+			cloned_message.id='chat_message__'+id;
+
+			// Non-first message
+			if (message_container.childNodes.length>0)
+			{
+				message_container.insertBefore(cloned_message,message_container.childNodes[0]);
+
+				if (!first_set) // Only if no other message sound already for this event update
+				{
+					if (!skip_incoming_sound)
+					{
+						if (typeof window.play_chat_sound!='undefined') play_chat_sound(window.has_focus?'message_received':'message_background',messages[i].getAttribute('sender_id'));
+					}
+					flashable_alert=true;
+				}
+			} else // First message
+			{
+				set_inner_html(message_container,'');
+				message_container.appendChild(cloned_message);
+				first_set=true; // Let the code know the first set of messages has started, squashing any extra sounds for this event update
+				if (!skip_incoming_sound)
+				{
+					play_chat_sound('message_initial');
+				}
+			}
+
+			if (!message_container_global)
+			{
+				current_room_id=-1; // We'll be gathering for all rooms we're in now, because this messaging is coming through the master control window
+			}
+		}
+
+		else if (messages[i].nodeName=='chat_members_update') // UPDATE MEMBERS LIST IN ROOM
+		{
+			var members_element=document.getElementById('chat_members_update');
+			if (members_element) set_inner_html(members_element,merge_text_nodes(messages[i].childNodes));
+		}
+
+		else if ((messages[i].nodeName=='chat_event') && (typeof window.im_participant_template!='undefined')) // Some kind of transitory event
+		{
+			event_type=messages[i].getAttribute('event_type');
+			room_id=messages[i].getAttribute('room_id');
+			member_id=messages[i].getAttribute('member_id');
+			username=messages[i].getAttribute('username');
+			avatar_url=messages[i].getAttribute('avatar_url');
+
+			id=merge_text_nodes(messages[i].childNodes);
+
+			switch (event_type)
+			{
+				case 'BECOME_ACTIVE':
+					if (window.TRANSITORY_ALERT_TIME!=0)
+					{
+						flashable_alert=true;
+						tmp_element=document.getElementById('online_'+member_id);
+						if (tmp_element)
+						{
+							if (get_inner_html(tmp_element).toLowerCase()=='{!ACTIVE;^}'.toLowerCase()) break;
+							set_inner_html(tmp_element,'{!ACTIVE;^}');
+							var friend_img=document.getElementById('friend_img_'+member_id);
+							if (friend_img) friend_img.className='friend_active';
+							var alert_box_wrap=document.getElementById('alert_box_wrap');
+							if (alert_box_wrap) alert_box_wrap.style.display='block';
+							var alert_box=document.getElementById('alert_box');
+							if (alert_box) set_inner_html(alert_box,'{!NOW_ONLINE;^}'.replace('{'+'1}',username));
+							window.setTimeout(function() {
+								if (document.getElementById('alert_box')) // If the alert box is still there, remove it
+									alert_box_wrap.style.display='none';
+							} , window.TRANSITORY_ALERT_TIME);
+
+							if (!skip_incoming_sound)
+							{
+								play_chat_sound('contact_on',member_id);
+							}
+						} else if (!document.getElementById('chat_lobby_convos_tabs'))
+						{
+							create_overlay_event(/*skip_incoming_sound*/true,member_id,'{!NOW_ONLINE;^}'.replace('{'+'1}',username),function() { start_im(member_id,true); return false; } ,avatar_url);
+						}
+					}
+
+					rooms=find_im_convo_room_ids();
+					for (var r in rooms)
+					{
+						room_id=rooms[r];
+						var doc=document;
+						if ((typeof opened_popups['room_'+room_id]!='undefined') && (!opened_popups['room_'+room_id].is_shutdown))
+						{
+							if (!opened_popups['room_'+room_id].document) continue;
+							doc=opened_popups['room_'+room_id].document;
+						}
+						tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
+						if (tmp_element)
+						{
+							set_inner_html(tmp_element,'{!ACTIVE;^}');
+						}
+					}
+					break;
+
+				case 'BECOME_INACTIVE':
+					var friend_being_tracked=false;
+					tmp_element=document.getElementById('online_'+member_id);
+					if (tmp_element)
+					{
+						if (get_inner_html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
+						set_inner_html(tmp_element,'{!INACTIVE;^}');
+						document.getElementById('friend_img_'+member_id).className='friend_inactive';
+						friend_being_tracked=true;
+					}
+
+					rooms=find_im_convo_room_ids();
+					for (var r in rooms)
+					{
+						room_id=rooms[r];
+						var doc=document;
+						if (typeof opened_popups['room_'+room_id]!='undefined')
+						{
+							if (!opened_popups['room_'+room_id].document) continue;
+							doc=opened_popups['room_'+room_id].document;
+						}
+						tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
+						if (tmp_element) set_inner_html(tmp_element,'{!INACTIVE;^}');
+						friend_being_tracked=true;
+					}
+
+					if (!skip_incoming_sound)
+					{
+						if (friend_being_tracked)
+							play_chat_sound('contact_off',member_id);
+					}
+					break;
+
+				case 'JOIN_IM':
+					add_im_member(room_id,member_id,username,messages[i].getAttribute('away')=='1',avatar_url);
+
+					var doc=document;
+					if ((typeof opened_popups['room_'+room_id]!='undefined') && (!opened_popups['room_'+room_id].is_shutdown))
+					{
+						if (!opened_popups['room_'+room_id].document) break;
+						doc=opened_popups['room_'+room_id].document;
+					}
+					tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
+					if (tmp_element)
+					{
+						if (get_inner_html(tmp_element).toLowerCase()=='{!ACTIVE;^}'.toLowerCase()) break;
+						set_inner_html(tmp_element,'{!ACTIVE;^}');
+						document.getElementById('friend_img_'+member_id).className='friend_active';
+					}
+
+					if (!skip_incoming_sound)
+					{
+						play_chat_sound('contact_on',member_id);
+					}
+					break;
+
+				case 'PREINVITED_TO_IM':
+					add_im_member(room_id,member_id,username,messages[i].getAttribute('away')=='1',avatar_url);
+					break;
+
+				case 'DEINVOLVE_IM':
+					var doc=document;
+					if (typeof opened_popups['room_'+room_id]!='undefined')
+					{
+						if (!opened_popups['room_'+room_id].document) break;
+						doc=opened_popups['room_'+room_id].document;
+					}
+
+					tmp_element=doc.getElementById('participant__'+room_id+'__'+member_id);
+					if ((tmp_element) && (tmp_element.parentNode))
+					{
+						var parent=tmp_element.parentNode;
+						/*Actually prefer to let them go away it's cleaner if (parent.childNodes.length==1) // Don't really let them go, flag them merely as away - we'll reinvite them upon next post
+						{
+							tmp_element=doc.getElementById('post_'+room_id);
+							if (tmp_element) tmp_element.force_invite=member_id;
+
+							tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
+							if (tmp_element)
+							{
+								if (get_inner_html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
+								set_inner_html(tmp_element,'{!INACTIVE;^}');
+							}
+						} else*/
+						{
+							parent.removeChild(tmp_element);
+						}
+						/*if (parent.childNodes.length==0)		Don't set to none, as we want to allow the 'force_invite' IM re-activation feature, to draw the other guy back -- above we pretended they're merely 'away', not just left
+						{
+							set_inner_html(parent,'<em class="none">{!NONE;^}</em>');
+						}*/
+
+						if (!skip_incoming_sound)
+						{
+							play_chat_sound('contact_off',member_id);
+						}
+					}
+					break;
+			}
+		} else // INVITES
+
+		if ((messages[i].nodeName=='chat_invite') && (typeof window.im_participant_template!='undefined'))
+		{
+			room_id=merge_text_nodes(messages[i].childNodes);
+
+			if ((!document.getElementById('room_'+room_id)) && ((typeof opened_popups['room_'+room_id]=='undefined') || (opened_popups['room_'+room_id].is_shutdown)))
+			{
+				room_name=messages[i].getAttribute('room_name');
+				avatar_url=messages[i].getAttribute('avatar_url');
+				participants=messages[i].getAttribute('participants');
+				var is_new=(messages[i].getAttribute('num_posts')=='0');
+				var by_you=(messages[i].getAttribute('inviter')==messages[i].getAttribute('you'));
+
+				if ((!by_you) && (!window.instant_go) && (!document.getElementById('chat_lobby_convos_tabs')))
+				{
+					create_overlay_event(skip_incoming_sound,messages[i].getAttribute('inviter'),'{!IM_INFO_CHAT_WITH;^}'.replace('{'+'1}',room_name),function() { window.last_message_id=-1 /*Ensure messages re-processed*/; detected_conversation(room_id,room_name,participants); return false; } ,avatar_url,room_id);
+				} else
+				{
+					detected_conversation(room_id,room_name,participants);
+				}
+				flashable_alert=true;
+			}
+		} else
+
+		if (messages[i].nodeName=='chat_tracking') // TRACKING
+		{
+			window.top_window.last_message_id=messages[i].getAttribute('last_msg');
+			window.top_window.last_event_id=messages[i].getAttribute('last_event');
+		}
+	}
+
+	// Get attention, to indicate something has happened
+	if (flashable_alert)
+	{
+		if ((room_id) && (typeof opened_popups['room_'+room_id]!='undefined') && (!opened_popups['room_'+room_id].is_shutdown))
+		{
+			if (typeof opened_popups['room_'+room_id].getAttention!='undefined') opened_popups['room_'+room_id].getAttention();
+			if (typeof opened_popups['room_'+room_id].focus!='undefined')
+			{
+				try
+				{
+					opened_popups['room_'+room_id].focus();
+				}
+				catch (e) {}
+			}
+			if (opened_popups['room_'+room_id].document)
+			{
+				var post=opened_popups['room_'+room_id].document.getElementById('post');
+				if (post)
+				{
+					try
+					{
+						post.focus();
+					}
+					catch (e) {}
+				}
+			}
+		} else
+		{
+			if (typeof window.getAttention!='undefined') window.getAttention();
+			if (typeof window.focus!='undefined')
+			{
+				try
+				{
+					window.focus();
+				}
+				catch (e) {}
+			}
+			var post=document.getElementById('post');
+			if (post && post.name=='message'/*The chat posting field is named message and IDd post*/)
+			{
+				try
+				{
+					post.focus();
+				}
+				catch (e) {}
+			}
+		}
+	}
+
+	if (window.top_window.last_timestamp<newest_timestamp_here)
+		window.top_window.last_timestamp=newest_timestamp_here;
+
+	return current_room_id;
+>>>>>>> master
 }
 
 function create_overlay_event(skip_incoming_sound, member_id, message, click_event, avatar_url, room_id) {

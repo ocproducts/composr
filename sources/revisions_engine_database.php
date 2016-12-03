@@ -87,6 +87,10 @@ class RevisionEngineDatabase
             return;
         }
 
+        if (!addon_installed('commandr')) {
+            return;
+        }
+
         require_code('resource_fs');
 
         $test = get_resource_fs_record($resource_type, $resource_id);

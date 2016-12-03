@@ -7,7 +7,7 @@
 	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:cancel=1:from=paypal}" />
 	<input type="hidden" name="no_shipping" value="1" />
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />
-	<input type="hidden" name="custom" value="{PURCHASE_ID*}" />
+	<input type="hidden" name="custom" value="{TRANS_ID*}" />
 	<input type="hidden" name="item_name" value="{!SUBSCRIPTION_FOR,{$USERNAME*}} ({ITEM_NAME*})" />
 	<input type="hidden" name="rm" value="2" />
 	<input type="hidden" name="bn" value="ocproducts_SP" />

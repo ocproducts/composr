@@ -235,7 +235,7 @@ class Hook_search_cns_members extends FieldsSearchHook
                     list($temp,) = db_like_assemble($param);
                 }
                 if ((($row['cf_type'] == 'short_trans') || ($row['cf_type'] == 'long_trans')) && (multi_lang_content())) {
-                    $where_clause .= preg_replace('#\?#', 't' . strval(count($trans_fields) + 1) . '.text_original', $temp);
+                    $where_clause .= preg_replace('#\?#', 't' . strval(count($trans_fields) + 2/*for the 2 fields prepended to $trans_fields in the get_search_rows call*/) . '.text_original', $temp);
                 } else {
                     if ($index_issue) { // MySQL limit for fulltext index querying
                         list($temp,) = db_like_assemble($param);

@@ -324,6 +324,7 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         attach_message(do_lang_tempcode('CORRUPT_FILE', escape_html($from)), 'warn', false, true);
         return $from;
     }
+    imagepalettetotruecolor($source);
 
     list($source, $reorientated) = adjust_pic_orientation($source, $exif);
     if (($thumb_options !== null) || (!$only_make_smaller)) {
@@ -547,44 +548,29 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         }
     }
 
-    // Resample/copy
-    $gd_version = get_gd_version();
-    if ($gd_version >= 2.0) { // If we have GD2
-        // Set the background if we have one
-        if ($thumb_options !== null && $red !== null) {
-            $dest = imagecreatetruecolor($width, $height);
-            imagealphablending($dest, false);
-            if ((function_exists('imagecolorallocatealpha')) && ($using_alpha)) {
-                $back_col = imagecolorallocatealpha($dest, $red, $green, $blue, 127 - intval(floatval($alpha) / 2.0));
-            } else {
-                $back_col = imagecolorallocate($dest, $red, $green, $blue);
-            }
-            imagefilledrectangle($dest, 0, 0, $width, $height, $back_col);
-            if (function_exists('imagesavealpha')) {
-                imagesavealpha($dest, true);
-            }
+    // Set the background if we have one
+    if ($thumb_options !== null && $red !== null) {
+        $dest = imagecreatetruecolor($width, $height);
+        imagealphablending($dest, false);
+        if ((function_exists('imagecolorallocatealpha')) && ($using_alpha)) {
+            $back_col = imagecolorallocatealpha($dest, $red, $green, $blue, 127 - intval(floatval($alpha) / 2.0));
         } else {
-            $dest = imagecreatetruecolor($_width, $_height);
-            imagealphablending($dest, false);
-            if (function_exists('imagesavealpha')) {
-                imagesavealpha($dest, true);
-            }
-        }
-
-        imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
-    } else {
-        // Set the background if we have one
-        if ($thumb_options !== null && $red !== null) {
-            $dest = imagecreate($width, $height);
-
             $back_col = imagecolorallocate($dest, $red, $green, $blue);
-            imagefill($dest, 0, 0, $back_col);
-        } else {
-            $dest = imagecreate($_width, $_height);
         }
-
-        imagecopyresized($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
+        imagefilledrectangle($dest, 0, 0, $width, $height, $back_col);
+        if (function_exists('imagesavealpha')) {
+            imagesavealpha($dest, true);
+        }
+    } else {
+        $dest = imagecreatetruecolor($_width, $_height);
+        imagealphablending($dest, false);
+        if (function_exists('imagesavealpha')) {
+            imagesavealpha($dest, true);
+        }
     }
+
+    // Resample/copy
+    imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
 
     // Clean up
     imagedestroy($source);
@@ -754,11 +740,11 @@ function find_imagemagick()
  * Based on a comment in:
  * http://stackoverflow.com/questions/3657023/how-to-detect-shot-angle-of-photo-and-auto-rotate-for-website-display-like-desk
  *
- * @param  resource $img GD image resource
- * @param  ~array                       $exif EXIF details (false: could not load)
+ * @param  resource $source GD image resource
+ * @param  ~array   $exif EXIF details (false: could not load)
  * @return array A pair: Adjusted GD image resource, Whether a change was made
  */
-function adjust_pic_orientation($img, $exif)
+function adjust_pic_orientation($source, $exif)
 {
     if ((function_exists('imagerotate')) && ($exif !== false) && (isset($exif['Orientation']))) {
         $orientation = $exif['Orientation'];
@@ -794,54 +780,58 @@ function adjust_pic_orientation($img, $exif)
             }
 
             if ($deg != 0) {
-                $imgdest = imagerotate($img, floatval($deg), 0);
-                imagedestroy($img);
-                $img = $imgdest;
+                $dest = imagerotate($source, floatval($deg), 0);
+                imagedestroy($source);
+                $source = $dest;
             }
 
             if ($mirror) {
-                $width = imagesx($img);
-                $height = imagesy($img);
+                imagepalettetotruecolor($source);
+
+                $width = imagesx($source);
+                $height = imagesy($source);
 
                 $src_x = $width - 1;
                 $src_y = 0;
                 $src_width = -$width;
                 $src_height = $height;
 
-                $imgdest = imagecreatetruecolor($width, $height);
-                imagealphablending($imgdest, false);
+                $dest = imagecreatetruecolor($width, $height);
+                imagealphablending($dest, false);
                 if (function_exists('imagesavealpha')) {
-                    imagesavealpha($imgdest, true);
+                    imagesavealpha($dest, true);
                 }
 
-                if (imagecopyresampled($imgdest, $img, 0, 0, $src_x, $src_y, $width, $height, $src_width, $src_height)) {
-                    imagedestroy($img);
-                    $img = $imgdest;
+                if (imagecopyresampled($dest, $source, 0, 0, $src_x, $src_y, $width, $height, $src_width, $src_height)) {
+                    imagedestroy($source);
+                    $source = $dest;
                 }
             }
 
-            return array($img, true);
+            return array($source, true);
         }
     }
-    return array($img, false);
+    return array($source, false);
 }
 
 /**
  * Remove white/transparent edges from an image.
  *
- * @param  resource $img GD image resource
+ * @param  resource $source GD image resource
  * @return resource Trimmed image
  */
-function remove_white_edges($img)
+function remove_white_edges($source)
 {
-    $width = imagesx($img);
-    $height = imagesy($img);
+    imagepalettetotruecolor($source);
+
+    $width = imagesx($source);
+    $height = imagesy($source);
 
     // From top
     $remove_from_top = 0;
     for ($y = 0; $y < $height; $y++) {
         for ($x = 0; $x < $width; $x++) {
-            $_color = imagecolorat($img, $x, $y);
+            $_color = imagecolorat($source, $x, $y);
             if ($_color != 0) {
                 break 2;
             }
@@ -853,7 +843,7 @@ function remove_white_edges($img)
     $remove_from_bottom = 0;
     for ($y = $height - 1; $y >= 0; $y--) {
         for ($x = 0; $x < $width; $x++) {
-            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            $color = imagecolorsforindex($source, imagecolorat($source, $x, $y));
             if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
                 break 2;
             }
@@ -865,7 +855,7 @@ function remove_white_edges($img)
     $remove_from_left = 0;
     for ($x = 0; $x < $width; $x++) {
         for ($y = 0; $y < $height; $y++) {
-            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            $color = imagecolorsforindex($source, imagecolorat($source, $x, $y));
             if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
                 break 2;
             }
@@ -877,7 +867,7 @@ function remove_white_edges($img)
     $remove_from_right = 0;
     for ($x = $width - 1; $x >= 0; $x--) {
         for ($y = 0; $y < $height; $y++) {
-            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            $color = imagecolorsforindex($source, imagecolorat($source, $x, $y));
             if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
                 break 2;
             }
@@ -887,7 +877,7 @@ function remove_white_edges($img)
 
     // Any changes?
     if ($remove_from_top + $remove_from_bottom + $remove_from_left + $remove_from_right == 0 || $remove_from_left == $width || $remove_from_top == $height) {
-        return $img;
+        return $source;
     }
 
     // Do trimming...
@@ -895,34 +885,16 @@ function remove_white_edges($img)
     $target_width = $width - $remove_from_left - $remove_from_right;
     $target_height = $height - $remove_from_top - $remove_from_bottom;
 
-    $imgdest = imagecreatetruecolor($target_width, $target_height);
-    imagealphablending($imgdest, false);
+    $dest = imagecreatetruecolor($target_width, $target_height);
+    imagealphablending($dest, false);
     if (function_exists('imagesavealpha')) {
-        imagesavealpha($imgdest, true);
+        imagesavealpha($dest, true);
     }
 
-    if (imagecopyresampled($imgdest, $img, 0, 0, $remove_from_left, $remove_from_top, $target_width, $target_height, $target_width, $target_height)) {
-        imagedestroy($img);
-        $img = $imgdest;
+    if (imagecopyresampled($dest, $source, 0, 0, $remove_from_left, $remove_from_top, $target_width, $target_height, $target_width, $target_height)) {
+        imagedestroy($source);
+        $source = $dest;
     }
 
-    return $img;
+    return $source;
 }
-
-/**
- * Get the version number of GD on the system. It should only be called if GD is known to be on the system, and in use
- *
- * @return float The version of GD installed
- */
-function get_gd_version()
-{
-    $info = gd_info();
-    $matches = array();
-    if (preg_match('#(\d(\.|))+#', $info['GD Version'], $matches) != 0) {
-        $version = $matches[0];
-    } else {
-        $version = $info['version'];
-    }
-    return floatval($version);
-}
-
