@@ -95,7 +95,7 @@ class Hook_ccbill
         }
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
-        $payment_address = strval($this->get_account_id());
+        $payment_address = $this->get_account_id();
         $ipn_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $trans_id = $this->generate_trans_id();
@@ -139,9 +139,9 @@ class Hook_ccbill
 
         return do_template('ECOM_BUTTON_VIA_CCBILL', array(
             '_GUID' => '24a0560541cedd4c45898f4d19e99249',
-            'TYPE_CODE' => strval($type_code),
-            'ITEM_NAME' => strval($item_name),
-            'PURCHASE_ID' => strval($purchase_id),
+            'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $purchase_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
@@ -176,7 +176,7 @@ class Hook_ccbill
         }
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
-        $payment_address = strval($this->get_account_id());
+        $payment_address = $this->get_account_id();
         $ipn_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $trans_id = $this->generate_trans_id();
@@ -217,11 +217,11 @@ class Hook_ccbill
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => 'f8c174f38ae06536833f1510027ba233',
-            'TYPE_CODE' => strval($type_code),
-            'ITEM_NAME' => strval($item_name),
+            'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
-            'PURCHASE_ID' => strval($purchase_id),
+            'PURCHASE_ID' => $purchase_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,

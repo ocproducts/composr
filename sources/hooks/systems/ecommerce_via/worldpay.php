@@ -188,7 +188,7 @@ class Hook_worldpay
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($trans_id),
+            'PURCHASE_ID' => $trans_id,
             'AMOUNT' => float_to_raw_string($amount),
             'FIRST_REPEAT' => date('Y-m-d', $first_repeat),
             'CURRENCY' => $currency,
