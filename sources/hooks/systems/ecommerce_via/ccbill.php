@@ -272,7 +272,7 @@ class Hook_ccbill
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_transaction()
     {
@@ -282,6 +282,9 @@ class Hook_ccbill
 
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id, 'e_purchase_id' => $purchase_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $transaction_row = $transaction_rows[0];
@@ -293,6 +296,9 @@ class Hook_ccbill
         $denial_response_digest = md5($denial_id . '0' . get_option('vpn_password')); // responseDigest must have this value on failure
 
         if (($response_digest !== $success_response_digest) && ($response_digest !== $denial_response_digest)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED')); // Hacker?!!!
         }
 

@@ -305,7 +305,7 @@ class Hook_secpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_transaction()
     {
@@ -323,6 +323,9 @@ class Hook_secpay
 
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $txn_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $transaction_row = $transaction_rows[0];
@@ -405,6 +408,9 @@ class Hook_secpay
             $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('ipn_digest'));
         }
         if ($hash != $my_hash) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 

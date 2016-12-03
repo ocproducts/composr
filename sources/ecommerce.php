@@ -397,7 +397,7 @@ function dev__ipn_debug($ipn_target, $ipn_message)
 /**
  * Handle IPN's.
  *
- * @return ID_TEXT The ID of the purchase-type (meaning depends on item_name)
+ * @return ?ID_TEXT The ID of the purchase-type (meaning depends on item_name) (null: no transaction; will only return null when not running the 'ecommerce' script)
  */
 function handle_transaction_script()
 {
@@ -415,7 +415,11 @@ function handle_transaction_script()
 
     ob_start();
 
-    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $object->handle_transaction();
+    $transaction = $object->handle_transaction();
+    if ($transaction === null) {
+        return null;
+    }
+    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $transaction;
 
     $type_code = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $via);
 

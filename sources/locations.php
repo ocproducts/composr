@@ -539,7 +539,7 @@ function form_input_regions($regions = null)
 {
     require_code('form_templates');
     $list_groups = create_region_selection_list($regions);
-    return form_input_multi_list(do_lang_tempcode('FILTER_REGIONS'), do_lang_tempcode('DESCRIPTION_FILTER_REGIONS'), 'regions', $list_groups, null, 30);
+    return form_input_multi_list(do_lang_tempcode('FILTER_REGIONS'), do_lang_tempcode('DESCRIPTION_FILTER_REGIONS'), 'regions', $list_groups, null, 10);
 }
 
 /**

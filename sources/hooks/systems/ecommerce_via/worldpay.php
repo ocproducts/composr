@@ -234,12 +234,15 @@ class Hook_worldpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_transaction()
     {
         $code = post_param_string('transStatus');
         if ($code == 'C') {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             exit(); // Cancellation signal, won't process
         }
 
@@ -253,6 +256,9 @@ class Hook_worldpay
 
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $cart_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $transaction_row = $transaction_rows[0];
@@ -273,6 +279,9 @@ class Hook_worldpay
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
         if (post_param_string('callbackPW') != get_option('callback_password')) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 
