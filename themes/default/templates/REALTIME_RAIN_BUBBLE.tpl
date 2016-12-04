@@ -12,7 +12,7 @@
 
 				<div class="avatar_icon">
 					{+START,IF_NON_EMPTY,{IMAGE}}
-						<img src="{IMAGE*}" alt="" />
+						<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{IMAGE}}" alt="" />
 					{+END}
 				</div>
 			</div>

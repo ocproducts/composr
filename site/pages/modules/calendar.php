@@ -274,6 +274,7 @@ class Module_calendar
         set_feed_url('?mode=calendar&select=' . urlencode(implode(',', $this->get_and_filter())));
 
         inform_non_canonical_parameter('#^int_.*$#');
+        inform_non_canonical_parameter('member_id');
 
         if ($type == 'view') {
             $id = get_param_integer('id');

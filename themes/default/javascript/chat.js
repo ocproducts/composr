@@ -1,7 +1,7 @@
 "use strict";
 
 // Constants
-window.MESSAGE_CHECK_INTERVAL={$ROUND%,{$CONFIG_OPTION,chat_message_check_interval}};
+window.MESSAGE_CHECK_INTERVAL={$ROUND%,{$MAX,3000,{$CONFIG_OPTION,chat_message_check_interval}}};
 window.TRANSITORY_ALERT_TIME={$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_time}};
 window.LOGS_DOWNLOAD_INTERVAL=3000;
 
@@ -519,30 +519,33 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 			switch (event_type)
 			{
 				case 'BECOME_ACTIVE':
-					flashable_alert=true;
-					tmp_element=document.getElementById('online_'+member_id);
-					if (tmp_element)
+					if (window.TRANSITORY_ALERT_TIME!=0)
 					{
-						if (get_inner_html(tmp_element).toLowerCase()=='{!ACTIVE;^}'.toLowerCase()) break;
-						set_inner_html(tmp_element,'{!ACTIVE;^}');
-						var friend_img=document.getElementById('friend_img_'+member_id);
-						if (friend_img) friend_img.className='friend_active';
-						var alert_box_wrap=document.getElementById('alert_box_wrap');
-						if (alert_box_wrap) alert_box_wrap.style.display='block';
-						var alert_box=document.getElementById('alert_box');
-						if (alert_box) set_inner_html(alert_box,'{!NOW_ONLINE;^}'.replace('{'+'1}',username));
-						window.setTimeout(function() {
-							if (document.getElementById('alert_box')) // If the alert box is still there, remove it
-								alert_box_wrap.style.display='none';
-						} , window.TRANSITORY_ALERT_TIME);
-
-						if (!skip_incoming_sound)
+						flashable_alert=true;
+						tmp_element=document.getElementById('online_'+member_id);
+						if (tmp_element)
 						{
-							play_chat_sound('contact_on',member_id);
+							if (get_inner_html(tmp_element).toLowerCase()=='{!ACTIVE;^}'.toLowerCase()) break;
+							set_inner_html(tmp_element,'{!ACTIVE;^}');
+							var friend_img=document.getElementById('friend_img_'+member_id);
+							if (friend_img) friend_img.className='friend_active';
+							var alert_box_wrap=document.getElementById('alert_box_wrap');
+							if (alert_box_wrap) alert_box_wrap.style.display='block';
+							var alert_box=document.getElementById('alert_box');
+							if (alert_box) set_inner_html(alert_box,'{!NOW_ONLINE;^}'.replace('{'+'1}',username));
+							window.setTimeout(function() {
+								if (document.getElementById('alert_box')) // If the alert box is still there, remove it
+									alert_box_wrap.style.display='none';
+							} , window.TRANSITORY_ALERT_TIME);
+
+							if (!skip_incoming_sound)
+							{
+								play_chat_sound('contact_on',member_id);
+							}
+						} else if (!document.getElementById('chat_lobby_convos_tabs'))
+						{
+							create_overlay_event(/*skip_incoming_sound*/true,member_id,'{!NOW_ONLINE;^}'.replace('{'+'1}',username),function() { start_im(member_id,true); return false; } ,avatar_url);
 						}
-					} else if (!document.getElementById('chat_lobby_convos_tabs'))
-					{
-						create_overlay_event(/*skip_incoming_sound*/true,member_id,'{!NOW_ONLINE;^}'.replace('{'+'1}',username),function() { start_im(member_id,true); return false; } ,avatar_url);
 					}
 
 					rooms=find_im_convo_room_ids();

@@ -937,7 +937,7 @@ function _fatal_exit($text, $return = false)
         require_code('global3');
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
-        debug_print_backtrace();
+        @debug_print_backtrace();
         exit(is_object($text) ? strip_html($text->evaluate()) : $text);
     }
 

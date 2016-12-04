@@ -95,7 +95,7 @@ class Hook_ccbill
         }
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
-        $payment_address = strval($this->get_account_id());
+        $payment_address = $this->get_account_id();
         $ipn_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $trans_id = $this->generate_trans_id();
@@ -139,9 +139,9 @@ class Hook_ccbill
 
         return do_template('ECOM_BUTTON_VIA_CCBILL', array(
             '_GUID' => '24a0560541cedd4c45898f4d19e99249',
-            'TYPE_CODE' => strval($type_code),
-            'ITEM_NAME' => strval($item_name),
-            'PURCHASE_ID' => strval($purchase_id),
+            'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $purchase_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
@@ -176,7 +176,7 @@ class Hook_ccbill
         }
         $currency = strval($this->currency_alphabetic_to_numeric_code[$currency]);
 
-        $payment_address = strval($this->get_account_id());
+        $payment_address = $this->get_account_id();
         $ipn_url = 'https://bill.ccbill.com/jpost/signup.cgi';
 
         $trans_id = $this->generate_trans_id();
@@ -217,11 +217,11 @@ class Hook_ccbill
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => 'f8c174f38ae06536833f1510027ba233',
-            'TYPE_CODE' => strval($type_code),
-            'ITEM_NAME' => strval($item_name),
+            'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
-            'PURCHASE_ID' => strval($purchase_id),
+            'PURCHASE_ID' => $purchase_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
@@ -248,12 +248,12 @@ class Hook_ccbill
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  string $trans_id Transaction ID to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
-    public function auto_cancel($trans_id)
+    public function auto_cancel($subscription_id)
     {
         return false;
     }
@@ -272,7 +272,7 @@ class Hook_ccbill
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_transaction()
     {
@@ -282,6 +282,9 @@ class Hook_ccbill
 
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id, 'e_purchase_id' => $purchase_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $transaction_row = $transaction_rows[0];
@@ -293,6 +296,9 @@ class Hook_ccbill
         $denial_response_digest = md5($denial_id . '0' . get_option('vpn_password')); // responseDigest must have this value on failure
 
         if (($response_digest !== $success_response_digest) && ($response_digest !== $denial_response_digest)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED')); // Hacker?!!!
         }
 
@@ -308,7 +314,9 @@ class Hook_ccbill
         $mc_currency = ($_mc_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_mc_currency];
 
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $trans_id, '');
@@ -333,7 +341,7 @@ class Hook_ccbill
             $shipping_address['address_street'] = post_param_string('address1', '');
             $shipping_address['address_zip'] = post_param_string('zipcode', '');
             $shipping_address['address_city'] = post_param_string('city', '');
-            $shipping_address['address_city'] = post_param_string('state', '');
+            $shipping_address['address_state'] = post_param_string('state', '');
             $shipping_address['address_country'] = post_param_string('country', '');
             $shipping_address['receiver_email'] = post_param_string('email', '');
             $shipping_address['contact_phone'] = post_param_string('phone_number', '');

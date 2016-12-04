@@ -47,17 +47,3 @@ The following are free for using:
 .
 /
 [/staff_note]
-
-[surround="accessibility_hidden"][box="Tips for the JAWS screen reader"]
-For best performance, please set JAWS to read Title text. To do this, do the following:
-[list]
-[*] From Internet Explorer, Microsoft Edge, or Firefox, press Insert+F2, the JAWS manager dialog will open. There are lot's of options here, but what you want is the JCF (JAWS Configuration Manager).
-[*] Press ("C") for the Configuration manager and press enter.
-[*] Press Alt+S to open the ("User options submenu").
-[*] Use your up and down arrow keys to navigate to the ("HTML Options Settings") dialog and press enter.
-[*] Press Ctrl+Tab till you get to the ("HTML options") page.
-[*] Tab to "Text Link Options" and press up arrow to the "Use Title" radio button, and press the Tab key to get to the "Ok" button, and press spacebar or enter.
-[*] You should now be back in the configuration manager. Press Alt+F4 to save your settings, and you will be returned back to the website.
-[/list]
-Note that these settings only work with JAWS 11 users and lower. For JAWS 12 users and higher, please see the manual on how to do this.
-[/box][/surround]

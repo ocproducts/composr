@@ -428,10 +428,18 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             if (function_exists('imagesavealpha')) {
                 imagesavealpha($dest, true);
             }
+
+            $transparent = imagecolortransparent($source);
+            if ($transparent != -1) {
+                $_transparent = imagecolorsforindex($source, $transparent);
+                $__transparent = imagecolorallocatealpha($dest, $_transparent['red'], $_transparent['green'], $_transparent['blue'], 127);
+                imagecolortransparent($dest, $__transparent);
+                imagefilledrectangle($dest, 0, 0, $width, $height, $__transparent);
+            }
         }
 
         imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
-    } else {
+    } else { // LEGACY Old GD version, no truecolor support
         // Set the background if we have one
         if (!is_null($thumb_options) && !is_null($red)) {
             $dest = imagecreate($width, $height);
@@ -612,11 +620,11 @@ function find_imagemagick()
  * Based on a comment in:
  * http://stackoverflow.com/questions/3657023/how-to-detect-shot-angle-of-photo-and-auto-rotate-for-website-display-like-desk
  *
- * @param  resource $img GD image resource
- * @param  ~array                       $exif EXIF details (false: could not load)
+ * @param  resource $source GD image resource
+ * @param  ~array   $exif EXIF details (false: could not load)
  * @return array A pair: Adjusted GD image resource, Whether a change was made
  */
-function adjust_pic_orientation($img, $exif)
+function adjust_pic_orientation($source, $exif)
 {
     if ((function_exists('imagerotate')) && ($exif !== false) && (isset($exif['Orientation']))) {
         $orientation = $exif['Orientation'];
@@ -652,54 +660,62 @@ function adjust_pic_orientation($img, $exif)
             }
 
             if ($deg != 0) {
-                $imgdest = imagerotate($img, floatval($deg), 0);
-                imagedestroy($img);
-                $img = $imgdest;
+                $dest = imagerotate($source, floatval($deg), 0);
+                imagedestroy($source);
+                $source = $dest;
             }
 
             if ($mirror) {
-                $width = imagesx($img);
-                $height = imagesy($img);
+                $width = imagesx($source);
+                $height = imagesy($source);
 
                 $src_x = $width - 1;
                 $src_y = 0;
                 $src_width = -$width;
                 $src_height = $height;
 
-                $imgdest = imagecreatetruecolor($width, $height);
-                imagealphablending($imgdest, false);
+                $dest = imagecreatetruecolor($width, $height);
+                imagealphablending($dest, false);
                 if (function_exists('imagesavealpha')) {
-                    imagesavealpha($imgdest, true);
+                    imagesavealpha($dest, true);
                 }
 
-                if (imagecopyresampled($imgdest, $img, 0, 0, $src_x, $src_y, $width, $height, $src_width, $src_height)) {
-                    imagedestroy($img);
-                    $img = $imgdest;
+                $transparent = imagecolortransparent($source);
+                if ($transparent != -1) {
+                    $_transparent = imagecolorsforindex($source, $transparent);
+                    $__transparent = imagecolorallocatealpha($dest, $_transparent['red'], $_transparent['green'], $_transparent['blue'], 127);
+                    imagecolortransparent($dest, $__transparent);
+                    imagefilledrectangle($dest, 0, 0, $width, $height, $__transparent);
+                }
+
+                if (imagecopyresampled($dest, $source, 0, 0, $src_x, $src_y, $width, $height, $src_width, $src_height)) {
+                    imagedestroy($source);
+                    $source = $dest;
                 }
             }
 
-            return array($img, true);
+            return array($source, true);
         }
     }
-    return array($img, false);
+    return array($source, false);
 }
 
 /**
  * Remove white/transparent edges from an image.
  *
- * @param  resource $img GD image resource
+ * @param  resource $source GD image resource
  * @return resource Trimmed image
  */
-function remove_white_edges($img)
+function remove_white_edges($source)
 {
-    $width = imagesx($img);
-    $height = imagesy($img);
+    $width = imagesx($source);
+    $height = imagesy($source);
 
     // From top
     $remove_from_top = 0;
     for ($y = 0; $y < $height; $y++) {
         for ($x = 0; $x < $width; $x++) {
-            $_color = imagecolorat($img, $x, $y);
+            $_color = imagecolorat($source, $x, $y);
             if ($_color != 0) {
                 break 2;
             }
@@ -711,7 +727,7 @@ function remove_white_edges($img)
     $remove_from_bottom = 0;
     for ($y = $height - 1; $y >= 0; $y--) {
         for ($x = 0; $x < $width; $x++) {
-            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            $color = imagecolorsforindex($source, imagecolorat($source, $x, $y));
             if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
                 break 2;
             }
@@ -723,7 +739,7 @@ function remove_white_edges($img)
     $remove_from_left = 0;
     for ($x = 0; $x < $width; $x++) {
         for ($y = 0; $y < $height; $y++) {
-            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            $color = imagecolorsforindex($source, imagecolorat($source, $x, $y));
             if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
                 break 2;
             }
@@ -735,7 +751,7 @@ function remove_white_edges($img)
     $remove_from_right = 0;
     for ($x = $width - 1; $x >= 0; $x--) {
         for ($y = 0; $y < $height; $y++) {
-            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            $color = imagecolorsforindex($source, imagecolorat($source, $x, $y));
             if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
                 break 2;
             }
@@ -745,7 +761,7 @@ function remove_white_edges($img)
 
     // Any changes?
     if ($remove_from_top + $remove_from_bottom + $remove_from_left + $remove_from_right == 0 || $remove_from_left == $width || $remove_from_top == $height) {
-        return $img;
+        return $source;
     }
 
     // Do trimming...
@@ -753,18 +769,26 @@ function remove_white_edges($img)
     $target_width = $width - $remove_from_left - $remove_from_right;
     $target_height = $height - $remove_from_top - $remove_from_bottom;
 
-    $imgdest = imagecreatetruecolor($target_width, $target_height);
-    imagealphablending($imgdest, false);
+    $dest = imagecreatetruecolor($target_width, $target_height);
+    imagealphablending($dest, false);
     if (function_exists('imagesavealpha')) {
-        imagesavealpha($imgdest, true);
+        imagesavealpha($dest, true);
     }
 
-    if (imagecopyresampled($imgdest, $img, 0, 0, $remove_from_left, $remove_from_top, $target_width, $target_height, $target_width, $target_height)) {
-        imagedestroy($img);
-        $img = $imgdest;
+    $transparent = imagecolortransparent($source);
+    if ($transparent != -1) {
+        $_transparent = imagecolorsforindex($source, $transparent);
+        $__transparent = imagecolorallocatealpha($dest, $_transparent['red'], $_transparent['green'], $_transparent['blue'], 127);
+        imagecolortransparent($dest, $__transparent);
+        imagefilledrectangle($dest, 0, 0, $width, $height, $__transparent);
     }
 
-    return $img;
+    if (imagecopyresampled($dest, $source, 0, 0, $remove_from_left, $remove_from_top, $target_width, $target_height, $target_width, $target_height)) {
+        imagedestroy($source);
+        $source = $dest;
+    }
+
+    return $source;
 }
 
 /**

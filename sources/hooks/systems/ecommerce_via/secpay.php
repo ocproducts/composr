@@ -90,7 +90,7 @@ class Hook_secpay
             'TEST' => ecommerce_test_mode(),
             'TRANS_ID' => $trans_id,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($purchase_id),
+            'PURCHASE_ID' => $purchase_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
@@ -178,7 +178,7 @@ class Hook_secpay
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($purchase_id),
+            'PURCHASE_ID' => $purchase_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
@@ -199,23 +199,15 @@ class Hook_secpay
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  string $trans_id Transaction ID to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
-    /*function auto_cancel($trans_id)     Not currently implemented
+    public function auto_cancel($subscription_id)
     {
-        require_lang('ecommerce');
-        $username = $this->_get_username();
-        $password = get_option('ipn_password');
-        $password_2 = get_option('vpn_password');
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $password_2, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true, repeat=false'), true);
-        if (is_null($result)) {
-            return false;
-        }
-        return (strpos($result, '&code=A&') !== false);
-    }*/
+        return false;
+    }
 
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
@@ -305,10 +297,7 @@ class Hook_secpay
         $message_raw = array_key_exists('message', $map) ? $map['message'] : '';
         $message = $success ? do_lang('ACCEPTED_MESSAGE', $message_raw) : do_lang('DECLINED_MESSAGE', $message_raw);
 
-        $purchase_id = post_param_integer('customfld1', '-1');
-        if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
-        }
+        $purchase_id = post_param_string('customfld1', '-1');
 
         return array($success, $trans_id, $message, $message_raw);
     }
@@ -316,7 +305,7 @@ class Hook_secpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_transaction()
     {
@@ -334,6 +323,9 @@ class Hook_secpay
 
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $txn_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $transaction_row = $transaction_rows[0];
@@ -416,6 +408,9 @@ class Hook_secpay
             $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . 'repeat=' . $repeat . '&' . get_option('ipn_digest'));
         }
         if ($hash != $my_hash) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 

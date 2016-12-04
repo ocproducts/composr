@@ -140,6 +140,11 @@ function _build_stored_menu($menu)
  */
 function _build_sitemap_menu($menu)
 {
+    static $cache = array();
+    if (isset($cache[$menu])) {
+        return $cache[$menu];
+    }
+
     require_code('sitemap');
 
     $root = _get_menu_root_wrapper();
@@ -259,6 +264,8 @@ function _build_sitemap_menu($menu)
                 break;
         }
     }
+
+    $cache[$menu] = $root;
 
     return $root;
 }
