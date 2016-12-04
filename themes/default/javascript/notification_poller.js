@@ -131,7 +131,7 @@ function display_alert(notification) {
             };
 
             if (!window.soundManager.setupOptions.url) {
-                window.soundManager.setup({onready: go_func, url: $cms.$BASE_URL_S + 'data/soundmanager', debugMode: false});
+                window.soundManager.setup({onready: go_func, url: $cms.baseUrl('data/soundmanager'), debugMode: false});
             } else {
                 go_func();
             }

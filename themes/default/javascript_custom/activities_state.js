@@ -7,7 +7,7 @@
     $cms.views.BlockMainActivitiesState = BlockMainActivitiesState;
 
     function BlockMainActivitiesState(params) {
-        BlockMainActivitiesState.base(this, arguments);
+        BlockMainActivitiesState.base(this, 'constructor', arguments);
 
         this.form = this.$('form.js-form-status-updates');
         this.submitBtn = this.$('.js-btn-submit-update');
@@ -70,7 +70,7 @@
             } else {
                 var view = this;
                 jQuery.ajax({
-                    url: $cms.$BASE_URL_S + 'data_custom/activities_handler.php' + keep_stub(true),
+                    url: $cms.baseUrl('data_custom/activities_handler.php' + keep_stub(true)),
                     type: 'POST',
                     data: $cms.dom.serialize(form),
                     cache: false,

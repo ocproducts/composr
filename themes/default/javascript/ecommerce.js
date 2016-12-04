@@ -2,7 +2,7 @@
     'use strict';
 
     function PurchaseWizardScreen() {
-        PurchaseWizardScreen.base(this, arguments);
+        PurchaseWizardScreen.base(this, 'constructor', arguments);
         this.formEl = this.$('form.js-form-primary');
     }
 

@@ -13649,10 +13649,10 @@ function get_uploader_settings(name, page_type, _btn_submit_id, posting_field_na
         callbacks: [],
 
         // Flash settings
-        flash_swf_url: $cms.$BASE_URL + '/data/plupload/plupload.flash.swf',
+        flash_swf_url: $cms.baseUrl('data/plupload/plupload.flash.swf'),
 
         // Silverlight settings
-        silverlight_xap_url: $cms.$BASE_URL + '/data/plupload/plupload.silverlight.xap',
+        silverlight_xap_url: $cms.baseUrl('data/plupload/plupload.silverlight.xap'),
 
         // Custom Composr settings
         immediate_submit: true

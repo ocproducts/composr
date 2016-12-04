@@ -1,4 +1,5 @@
-<div>
+{$REQUIRE_JAVASCRIPT,core_cns}
+<div data-tpl="cnsJoinStep1Screen">
 {TITLE}
 
 <p>
@@ -15,7 +16,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p>
-		<input type="checkbox" id="confirm" name="confirm" value="1" onclick="document.getElementById('proceed_button').disabled=!this.checked;" /><label for="confirm">{!I_AGREE}</label>
+		<input type="checkbox" id="confirm" name="confirm" value="1" class="js-chb-click-toggle-proceed-btn" /><label for="confirm">{!I_AGREE}</label>
 	</p>
 
 	{+START,IF_NON_EMPTY,{GROUP_SELECT}}

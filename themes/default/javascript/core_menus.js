@@ -8,7 +8,7 @@
     $cms.views.SelectMenu = SelectMenu;
 
     function Menu() {
-        Menu.base(this, arguments);
+        Menu.base(this, 'constructor', arguments);
 
         this.menuId = this.params.menuId;
 
@@ -25,7 +25,7 @@
     // MENU_dropdown.tpl
     // - MENU_BRANCH_dropdown.tpl
     function DropdownMenu() {
-        DropdownMenu.base(this, arguments);
+        DropdownMenu.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(DropdownMenu, Menu, {
@@ -41,7 +41,7 @@
     });
 
     function PopupMenu() {
-        PopupMenu.base(this, arguments);
+        PopupMenu.base(this, 'constructor', arguments);
 
         this.menuId = this.params.menuId;
         if (this.params.javascriptHighlighting && this.menuId) {
@@ -64,7 +64,7 @@
     });
 
     function PopupMenuBranch() {
-        PopupMenuBranch.base(this, arguments);
+        PopupMenuBranch.base(this, 'constructor', arguments);
 
         this.rand = this.params.rand;
         this.menu = $cms.filter.id(this.params.menu);
@@ -91,7 +91,7 @@
     });
 
     function TreeMenu() {
-        TreeMenu.base(this, arguments);
+        TreeMenu.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(TreeMenu, Menu, {
@@ -110,7 +110,7 @@
     // MENU_mobile.tpl
     // - MENU_BRANCH_mobile.tpl
     function MobileMenu() {
-        MobileMenu.base(this, arguments);
+        MobileMenu.base(this, 'constructor', arguments);
         this.menuContentEl = this.$('.js-el-menu-content');
     }
 
@@ -143,7 +143,7 @@
     });
 
     function SelectMenu() {
-        SelectMenu.base(this, arguments);
+        SelectMenu.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(SelectMenu, Menu, {

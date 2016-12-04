@@ -1,7 +1,6 @@
 "use strict";
 
 (function ($cms) {
-
     $cms.extend($cms.templates, {
         realtimeRainOverlay: function (params) {
             window.min_time = params.minTime;
@@ -39,9 +38,9 @@
 
 // Handle the realtime_rain button on the bottom bar
 function realtime_rain_button_load_handler() {
-    var img = document.getElementById('realtime_rain_img');
+    var img = $cms.dom.$('#realtime_rain_img');
 
-    var e = document.getElementById('real_time_surround');
+    var e = $cms.dom.$('#real_time_surround');
     if (e) {// Clicked twice - so now we close it
         bubbles_tidy_up();
         if (window.bubble_timer_1) {
@@ -123,7 +122,7 @@ function get_more_events(from, to) {
     from = Math.round(from);
     to = Math.round(to);
 
-    var url = $cms.$BASE_URL_NOHTTP + '/data/realtime_rain.php?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to) + keep_stub();
+    var url = $cms.baseUrl('data/realtime_rain.php?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to) + keep_stub());
     do_ajax_request(url, received_events);
 }
 

@@ -392,7 +392,7 @@ function wysiwyg_editor_init_for(element, id) {
         customConfig: '',
         /*{+END}*/
         bodyId: 'wysiwyg_editor',
-        baseHref: $cms.$BASE_URL_S,
+        baseHref: $cms.baseUrl(),
         linkShowAdvancedTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
         imageShowAdvancedTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
         imageShowLinkTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
@@ -638,9 +638,12 @@ function find_tags_in_editor(editor, element) {
 // BOTH EDITORS
 // ============
 
-function do_emoticon(field_name, p, _opener) {
+function do_emoticon(field_name, callerEl, isOpener) {
     var element, title, text;
-    if (_opener) {
+
+    isOpener = !!isOpener;
+
+    if (isOpener) {
         element = get_main_cms_window().document.getElementById(field_name);
         if (!element) { // If it is really actually cascading popups
             element = opener.document.getElementById(field_name);
@@ -649,19 +652,19 @@ function do_emoticon(field_name, p, _opener) {
         element = document.getElementById(field_name);
     }
 
-    title = p.title;
+    title = callerEl.title;
     if (title === '') {
         // Might be on image inside link instead
-        title = p.querySelector('img').alt;
+        title = callerEl.querySelector('img').alt;
     }
     title = title.replace(/^.*: /, '');
 
     text = ' ' + title + ' ';
 
-    if (_opener) {
-        insert_textbox_opener(element, text, null, true, $cms.dom.html(p));
+    if (isOpener) {
+        insert_textbox_opener(element, text, null, true, $cms.dom.html(callerEl));
     } else {
-        insert_textbox(element, text, null, true, $cms.dom.html(p));
+        insert_textbox(element, text, null, true, $cms.dom.html(callerEl));
     }
 }
 

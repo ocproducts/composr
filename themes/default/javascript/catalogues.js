@@ -5,7 +5,7 @@
     $cms.views.CatalogueEditingScreen = CatalogueEditingScreen;
 
     function CatalogueAddingScreen() {
-        CatalogueAddingScreen.base(this, arguments);
+        CatalogueAddingScreen.base(this, 'constructor', arguments);
         catalogue_field_change_watching();
     }
 
@@ -21,7 +21,8 @@
     });
 
     function CatalogueEditingScreen() {
-        CatalogueEditingScreen.base(this, arguments);
+        CatalogueEditingScreen.base(this, 'constructor', arguments);
+
         catalogue_field_change_watching();
     }
 

@@ -724,7 +724,7 @@ function load_contextual_css_editor(file, file_id) {
                 var new_css = editarea_get_value(textarea_id);
                 if (new_css == last_css) return; // Not changed
 
-                var url = $cms.$BASE_URL_NOHTTP + '/data/snippet.php?snippet=css_compile__text' + keep_stub();
+                var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + keep_stub());
                 do_ajax_request(url, function (ajax_result_frame) {
                     receive_compiled_css(ajax_result_frame, file);
                 }, 'css=' + encodeURIComponent(new_css));

@@ -11,7 +11,7 @@
     // POSTING_FORM
     // - POSTING_FIELD
     function PostingForm() {
-        PostingForm.base(this, arguments);
+        PostingForm.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(PostingForm, $cms.View, {
@@ -32,7 +32,7 @@
     });
 
     function FromScreenInputUpload(params) {
-        FromScreenInputUpload.base(this, arguments);
+        FromScreenInputUpload.base(this, 'constructor', arguments);
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
             preinit_file_input('upload', params.name, null, null, params.filter);
@@ -46,7 +46,7 @@
     $cms.inherits(FromScreenInputUpload, $cms.View);
 
     function FormScreenInputPermission(params) {
-        FormScreenInputPermission.base(this, arguments);
+        FormScreenInputPermission.base(this, 'constructor', arguments);
 
         this.groupId = params.groupId;
         this.prefix = 'access_' + this.groupId;
@@ -127,7 +127,7 @@
     });
 
     function FormScreenInputPermissionOverride(params) {
-        FormScreenInputPermissionOverride.base(this, arguments);
+        FormScreenInputPermissionOverride.base(this, 'constructor', arguments);
 
         var prefix = 'access_' + params.groupId;
 
@@ -168,7 +168,7 @@
     });
 
     function FormStandardEnd(params) {
-        FormStandardEnd.base(this, arguments);
+        FormStandardEnd.base(this, 'constructor', arguments);
 
         this.form = $cms.dom.closest(this.el, 'form');
         this.btnSubmit = this.$('#submit_button');

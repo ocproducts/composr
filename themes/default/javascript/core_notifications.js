@@ -2,7 +2,7 @@
     'use strict';
 
     function NotificationButtons(params) {
-        NotificationButtons.base(this, arguments);
+        NotificationButtons.base(this, 'constructor', arguments);
 
         this.disableFormEl = this.$('#ndisable_' + params.notificationId);
         this.enableFormEl = this.$('#nenable_' + params.notificationId);

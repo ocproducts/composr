@@ -130,6 +130,7 @@
 <script src="{$BASE_URL*}/data/polyfills/keyboardevent-key-polyfill.js"></script>
 <script src="{$BASE_URL*}/data/polyfills/fetch.js"></script>
 <script src="{$BASE_URL*}/data/polyfills/web-animations.min.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/json5.js"></script>
 
 {$,Google Analytics account, if one set up}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}

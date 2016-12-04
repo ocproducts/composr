@@ -13,11 +13,11 @@
 </p>
 
 <div class="float_surrounder" id="ze_panels_wrap">
-	<div id="p_panel_left" class="ze_panel" onmouseover="this.classList.add('ze_panel_expanded');" onmouseout="this.classList.remove('ze_panel_expanded');">
+	<div id="p_panel_left" class="ze_panel" data-mouseover-class="{ ze_panel_expanded: 1 }" data-mouseout-class="{ ze_panel_expanded: 0 }">
 		{LEFT_EDITOR}
 	</div>
 
-	<div id="p_panel_right" class="ze_panel" onmouseover="this.classList.add('ze_panel_expanded');" onmouseout="this.classList.remove('ze_panel_expanded');">
+	<div id="p_panel_right" class="ze_panel" data-mouseover-class="{ ze_panel_expanded: 1 }" data-mouseout-class="{ ze_panel_expanded: 0 }">
 		{RIGHT_EDITOR}
 	</div>
 

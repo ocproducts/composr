@@ -1,6 +1,9 @@
 (function ($cms) {
     'use strict';
 
+    var encodeUC = encodeURIComponent,
+        decodeUC = decodeURIComponent;
+
     $cms.ready.then(function () {
         $cms.attachBehaviors(document);
     });
@@ -185,161 +188,228 @@
     $cms.views.ToggleableTray = ToggleableTray;
 
     function Global() {
-        Global.base(this, arguments);
-        this.setup();
+        var view = this;
+        Global.base(this, 'constructor', arguments);
+
+        if ($cms.$CONFIG_OPTION.detect_javascript) {
+            this.detectJavascript();
+        }
+
+        if ($cms.dom.id('global_messages_2')) {
+            var m1 = $cms.dom.id('global_messages');
+            if (!m1) return;
+            var m2 = $cms.dom.id('global_messages_2');
+            $cms.dom.appendHtml(m1, $cms.dom.html(m2));
+            m2.parentNode.removeChild(m2);
+        }
+
+        if (boolVal($cms.usp.get('wide_print'))) {
+            try {
+                window.print();
+            } catch (ignore) {}
+        }
+
+        if (($cms.$ZONE === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
+            var page = $cms.filter.url($cms.$PAGE);
+            load_snippet('background_template_compilation&page=' + page, '', function () {});
+        }
+
+        if (((window === window.top) && !window.opener) || (window.name === '')) {
+            window.name = '_site_opener';
+        }
+
+        // Are we dealing with a touch device?
+        if ($cms.isTouchEnabled) {
+            document.body.classList.add('touch_enabled');
+        }
+
+        if ($cms.$HAS_PRIVILEGE.sees_javascript_error_alerts) {
+            this.initialiseErrorMechanism();
+        }
+
+        // Dynamic images need preloading
+        var preloader = new Image();
+        preloader.src = $cms.img('{$IMG;,loading}');
+
+        // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
+        if ($cms.$CONFIG_OPTION.detect_javascript) {
+            set_cookie('js_on', 1, 120);
+        }
+
+        if ($cms.$CONFIG_OPTION.is_on_timezone_detection) {
+            if (!window.parent || (window.parent === window)) {
+                set_cookie('client_time', (new Date()).toString(), 120);
+                set_cookie('client_time_ref', $cms.$FROM_TIMESTAMP, 120);
+            }
+        }
+
+        // Mouse/keyboard listening
+        window.mouse_x = 0;
+        window.mouse_y = 0;
+
+        window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
+
+        this.stuckNavs();
+
+        // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
+        window.onpopstate = function () {
+            window.setTimeout(function () {
+                if (!window.location.hash && window.has_js_state) {
+                    window.location.reload();
+                }
+            });
+        };
+
+        // Monitor pasting, for anti-spam reasons
+        window.addEventListener('paste', function(event) {
+            if (!event) event = window.event;
+            var clipboard_data = event.clipboardData || window.clipboardData;
+            var pasted_data = clipboard_data.getData('Text');
+            if (pasted_data && pasted_data.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
+                $cms.set_post_data_flag('paste');
+            }
+        });
+
+        window.page_loaded = true;
+
+        /* Tidying up after the page is rendered */
+        $cms.load.then(function () {
+            // When images etc have loaded
+            // Move the help panel if needed
+            if ($cms.$CONFIG_OPTION.fixed_width || (get_window_width() > 990)) {
+                return;
+            }
+
+            var panel_right = view.$('#panel_right');
+            if (!panel_right) {
+                return;
+            }
+
+            var helperPanel = panel_right.querySelector('.global_helper_panel');
+            if (!helperPanel) {
+                return;
+            }
+
+            var middle = panel_right.parentNode.querySelector('.global_middle');
+            if (!middle) {
+                return;
+            }
+
+            middle.style.marginRight = '0';
+            var boxes = panel_right.querySelectorAll('.standardbox_curved'), i;
+            for (i = 0; i < boxes.length; i++) {
+                boxes[i].style.width = 'auto';
+            }
+            panel_right.classList.add('horiz_helper_panel');
+            panel_right.parentNode.removeChild(panel_right);
+            middle.parentNode.appendChild(panel_right);
+            $cms.dom.id('helper_panel_toggle').style.display = 'none';
+            helperPanel.style.minHeight = '0';
+        });
+
+        if ($cms.$IS_STAFF) {
+            this.loadStuffStaff()
+        }
     }
 
     $cms.inherits(Global, $cms.View, {
-        events: {
-            // Show a confirmation dialog for clicks on a link (is higher up for priority)
-            'click [data-cms-confirm-click]': 'confirmClick',
+        events: function () {
+            return {
+                // Show a confirmation dialog for clicks on a link (is higher up for priority)
+                'click [data-cms-confirm-click]': 'confirmClick',
 
-            // Prevent url change for clicks on anchor tags with a placeholder href
-            'click a[href$="#!"]': 'preventDefault',
-            // Prevent form submission for forms with a placeholder action
-            'submit form[action$="#!"]': 'preventDefault',
-            // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
-            'click [data-cms-js]': 'preventDefault',
-            'submit [data-cms-js]': 'preventDefault',
+                'click [data-click-alert]': 'showModalAlert',
+                'click [data-keypress-alert]': 'showModalAlert',
 
-            // Simulated href for non <a> elements
-            'click [data-cms-href]': 'cmsHref',
+                // Prevent url change for clicks on anchor tags with a placeholder href
+                'click a[href$="#!"]': 'preventDefault',
+                // Prevent form submission for forms with a placeholder action
+                'submit form[action$="#!"]': 'preventDefault',
+                // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
+                'click [data-cms-js]': 'preventDefault',
+                'submit [data-cms-js]': 'preventDefault',
 
-            // Disable button after click
-            'click [data-disable-on-click]': 'disableButton',
+                // Simulated href for non <a> elements
+                'click [data-cms-href]': 'cmsHref',
 
-            // Disable form buttons
-            'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
+                // Toggle classes on mouseover/out
+                'mouseover [data-mouseover-class]': 'mouseoverClass',
+                'mouseout [data-mouseout-class]': 'mouseoutClass',
 
-            // Prevents input of matching characters
-            'input input[data-cms-invalid-pattern]': 'invalidPattern',
-            'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
-            'keypress input[data-cms-invalid-pattern]': 'invalidPattern',
+                // Disable button after click
+                'click [data-disable-on-click]': 'disableButton',
 
-            // Open page in overlay
-            'click [data-open-as-overlay]': 'openOverlay',
+                // Disable form buttons
+                'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
 
-            // Lightboxes
-            'click a[rel*="lightbox"]': 'lightBoxes',
+                // Prevents input of matching characters
+                'input input[data-cms-invalid-pattern]': 'invalidPattern',
+                'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
+                'keypress input[data-cms-invalid-pattern]': 'invalidPattern',
 
-            // Go back in browser history
-            'click [data-cms-btn-go-back]': 'goBackInHistory',
+                // Open page in overlay
+                'click [data-open-as-overlay]': 'openOverlay',
 
-            // "Rich semantic tooltips"
-            'click [data-cms-rich-tooltip]': 'activateRichTooltip',
-            'mouseover [data-cms-rich-tooltip]': 'activateRichTooltip',
-            'keypress [data-cms-rich-tooltip]': 'activateRichTooltip',
+                // Lightboxes
+                'click a[rel*="lightbox"]': 'lightBoxes',
 
-            'change input[data-cms-unchecked-is-indeterminate]': 'uncheckedIsIndeterminate',
+                // Go back in browser history
+                'click [data-cms-btn-go-back]': 'goBackInHistory',
 
-            /* STAFF */
-            'click .js-click-load-software-chat': 'loadSoftwareChat',
+                // "Rich semantic tooltips"
+                'click [data-cms-rich-tooltip]': 'activateRichTooltip',
+                'mouseover [data-cms-rich-tooltip]': 'activateRichTooltip',
+                'keypress [data-cms-rich-tooltip]': 'activateRichTooltip',
 
-            'submit .js-submit-staff-actions-select': 'staffActionsSelect'
+                'change input[data-cms-unchecked-is-indeterminate]': 'uncheckedIsIndeterminate',
+
+                'click [data-click-ga-track]': 'gaTrackClick',
+
+                /* STAFF */
+                'click .js-click-load-software-chat': 'loadSoftwareChat',
+
+                'submit .js-submit-staff-actions-select': 'staffActionsSelect'
+            };
         },
 
-        setup: function () {
-            var view = this;
-
-            if ($cms.$CONFIG_OPTION.detect_javascript) {
-                this.detectJavascript();
-            }
-
-            if ($cms.dom.id('global_messages_2')) {
-                var m1 = $cms.dom.id('global_messages');
-                if (!m1) return;
-                var m2 = $cms.dom.id('global_messages_2');
-                $cms.dom.appendHtml(m1, $cms.dom.html(m2));
-                m2.parentNode.removeChild(m2);
-            }
-
-            if (boolVal($cms.usp.get('wide_print'))) {
-                try {
-                    window.print();
-                } catch (ignore) {}
-            }
-
-            if (($cms.$ZONE === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
-                var page = $cms.filter.url($cms.$PAGE);
-                load_snippet('background_template_compilation&page=' + page, '', function () {});
-            }
-
-            if (((window === window.top) && !window.opener) || (window.name === '')) {
-                window.name = '_site_opener';
-            }
-
-            // Are we dealing with a touch device?
-            if ($cms.$TOUCH_ENABLED) {
-                document.body.classList.add('touch_enabled');
-            }
-
-            if ($cms.$HAS_PRIVILEGE.sees_javascript_error_alerts) {
-                this.initialiseErrorMechanism();
-            }
-
-            // Dynamic images need preloading
-            var preloader = new Image();
-            preloader.src = $cms.img('{$IMG;,loading}');
-
-            // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
-            if ($cms.$CONFIG_OPTION.detect_javascript) {
-                set_cookie('js_on', 1, 120);
-            }
-
-            if ($cms.$CONFIG_OPTION.is_on_timezone_detection) {
-                if (!window.parent || (window.parent === window)) {
-                    set_cookie('client_time', (new Date()).toString(), 120);
-                    set_cookie('client_time_ref', $cms.$FROM_TIMESTAMP, 120);
-                }
-            }
-
-            // Mouse/keyboard listening
-            window.mouse_x = 0;
-            window.mouse_y = 0;
-
-            window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
-
+        stuckNavs: function () {
             // Pinning to top if scroll out
-            var stuck_navs = document.querySelectorAll('.stuck_nav');
-            if (stuck_navs.length) {
-                $cms.dom.on(window, 'scroll', function () {
-                    for (var i = 0; i < stuck_navs.length; i++) {
-                        var stuck_nav = stuck_navs[i],
-                            stuck_nav_height = (stuck_nav.real_height === undefined) ? $cms.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
+            var stuck_navs = $cms.dom.$$('.stuck_nav');
 
-                        stuck_nav.real_height = stuck_nav_height;
-                        var pos_y = find_pos_y(stuck_nav.parentNode, true),
-                            footer_height = document.querySelector('footer').offsetHeight,
-                            panel_bottom = $cms.dom.id('panel_bottom');
+            if (!stuck_navs.length) {
+                return;
+            }
+            $cms.dom.on(window, 'scroll', function () {
+                for (var i = 0; i < stuck_navs.length; i++) {
+                    var stuck_nav = stuck_navs[i],
+                        stuck_nav_height = (stuck_nav.real_height === undefined) ? $cms.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
 
-                        if (panel_bottom) {
-                            footer_height += panel_bottom.offsetHeight;
-                        }
-                        panel_bottom = $cms.dom.id('global_messages_2');
-                        if (panel_bottom) {
-                            footer_height += panel_bottom.offsetHeight;
-                        }
-                        if (stuck_nav_height < get_window_height() - footer_height)  {// If there's space in the window to make it "float" between header/footer
-                            var extra_height = (window.pageYOffset - pos_y);
-                            if (extra_height > 0) {
-                                var width = $cms.dom.contentWidth(stuck_nav);
-                                var height = $cms.dom.contentHeight(stuck_nav);
-                                var stuck_nav_width = $cms.dom.contentWidth(stuck_nav);
-                                if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) {// May be centered or something, we should be careful
-                                    stuck_nav.parentNode.style.width = width + 'px';
-                                }
-                                stuck_nav.parentNode.style.height = height + 'px';
-                                stuck_nav.style.position = 'fixed';
-                                stuck_nav.style.top = '0px';
-                                stuck_nav.style.zIndex = '1000';
-                                stuck_nav.style.width = stuck_nav_width + 'px';
-                            } else {
-                                stuck_nav.parentNode.style.width = '';
-                                stuck_nav.parentNode.style.height = '';
-                                stuck_nav.style.position = '';
-                                stuck_nav.style.top = '';
-                                stuck_nav.style.width = '';
+                    stuck_nav.real_height = stuck_nav_height;
+                    var pos_y = find_pos_y(stuck_nav.parentNode, true),
+                        footer_height = document.querySelector('footer').offsetHeight,
+                        panel_bottom = $cms.dom.id('panel_bottom');
+
+                    if (panel_bottom) {
+                        footer_height += panel_bottom.offsetHeight;
+                    }
+                    panel_bottom = $cms.dom.id('global_messages_2');
+                    if (panel_bottom) {
+                        footer_height += panel_bottom.offsetHeight;
+                    }
+                    if (stuck_nav_height < get_window_height() - footer_height)  {// If there's space in the window to make it "float" between header/footer
+                        var extra_height = (window.pageYOffset - pos_y);
+                        if (extra_height > 0) {
+                            var width = $cms.dom.contentWidth(stuck_nav);
+                            var height = $cms.dom.contentHeight(stuck_nav);
+                            var stuck_nav_width = $cms.dom.contentWidth(stuck_nav);
+                            if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) {// May be centered or something, we should be careful
+                                stuck_nav.parentNode.style.width = width + 'px';
                             }
+                            stuck_nav.parentNode.style.height = height + 'px';
+                            stuck_nav.style.position = 'fixed';
+                            stuck_nav.style.top = '0px';
+                            stuck_nav.style.zIndex = '1000';
+                            stuck_nav.style.width = stuck_nav_width + 'px';
                         } else {
                             stuck_nav.parentNode.style.width = '';
                             stuck_nav.parentNode.style.height = '';
@@ -347,81 +417,28 @@
                             stuck_nav.style.top = '';
                             stuck_nav.style.width = '';
                         }
+                    } else {
+                        stuck_nav.parentNode.style.width = '';
+                        stuck_nav.parentNode.style.height = '';
+                        stuck_nav.style.position = '';
+                        stuck_nav.style.top = '';
+                        stuck_nav.style.width = '';
                     }
-                });
-            }
-
-            // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
-            window.onpopstate = function () {
-                window.setTimeout(function () {
-                    if (!window.location.hash && window.has_js_state) {
-                        window.location.reload();
-                    }
-                });
-            };
-
-            // Monitor pasting, for anti-spam reasons
-            window.addEventListener('paste', function(event) {
-                if (!event) event = window.event;
-                var clipboard_data = event.clipboardData || window.clipboardData;
-                var pasted_data = clipboard_data.getData('Text');
-                if (pasted_data && pasted_data.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
-                    $cms.set_post_data_flag('paste');
                 }
             });
-
-            window.page_loaded = true;
-
-            /* Tidying up after the page is rendered */
-            $cms.load.then(function () {
-                // When images etc have loaded
-                // Move the help panel if needed
-                if ($cms.$CONFIG_OPTION.fixed_width || (get_window_width() > 990)) {
-                    return;
-                }
-
-                var panel_right = view.$('#panel_right');
-                if (!panel_right) {
-                    return;
-                }
-
-                var helperPanel = panel_right.querySelector('.global_helper_panel');
-                if (!helperPanel) {
-                    return;
-                }
-
-                var middle = panel_right.parentNode.querySelector('.global_middle');
-                if (!middle) {
-                    return;
-                }
-
-                middle.style.marginRight = '0';
-                var boxes = panel_right.querySelectorAll('.standardbox_curved'), i;
-                for (i = 0; i < boxes.length; i++) {
-                    boxes[i].style.width = 'auto';
-                }
-                panel_right.classList.add('horiz_helper_panel');
-                panel_right.parentNode.removeChild(panel_right);
-                middle.parentNode.appendChild(panel_right);
-                $cms.dom.id('helper_panel_toggle').style.display = 'none';
-                helperPanel.style.minHeight = '0';
-            });
-
-            if ($cms.$IS_STAFF) {
-                this.loadStuffStaff()
-            }
         },
 
-        // Stores an element's `uid`
-        _confirmedClick: null,
         // Implementation for [data-cms-confirm-click="<Message>"]
         confirmClick: function (e, clicked) {
             var view = this, message,
                 uid = $cms.uid(clicked);
 
-            if (uid === view._confirmedClick) {
+            // Stores an element's `uid`
+            this._confirmedClick || (this._confirmedClick = null);
+
+            if (uid === this._confirmedClick) {
                 // Confirmed, let it through
-                view._confirmedClick = null;
+                this._confirmedClick = null;
                 return;
             }
 
@@ -433,6 +450,12 @@
                     clicked.click();
                 }
             });
+        },
+
+        // Implementation for [data-click-alert] and [data-keypress-alert]
+        showModalAlert: function (e, target) {
+            var options = objVal($cms.dom.data(target, e.type + 'Alert'), 'notice');
+            fauxmodal_alert(options.notice);
         },
 
         // Implementation for [data-cms-js]
@@ -452,6 +475,27 @@
             }
         },
 
+        // Implementation for [data-mouseover-class="{ 'some-class' : 1|0 }"]
+        mouseoverClass: function (e, target) {
+            var classes = objVal($cms.dom.data(target, 'mouseoverClass')), key;
+
+            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
+                for (key in classes) {
+                    target.classList.toggle(key, !!classes[key]);
+                }
+            }
+        },
+
+        // Implementation for [data-mouseout-class="{ 'some-class' : 1|0 }"]
+        mouseoutClass: function (e, target) {
+            var classes = objVal($cms.dom.data(target, 'mouseoutClass')), key;
+
+            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
+                for (key in classes) {
+                    target.classList.toggle(key, !!classes[key]);
+                }
+            }
+        },
 
         // Implementation for [data-disable-on-click]
         disableButton: function (e, target) {
@@ -464,11 +508,11 @@
         },
 
         // Implementation for input[data-cms-invalid-pattern]
-        _invalidPatternCache: null,
         invalidPattern: function (e, input) {
             var pattern = input.dataset.cmsInvalidPattern, regex;
 
             this._invalidPatternCache || (this._invalidPatternCache = {});
+
             regex = this._invalidPatternCache[pattern] || (this._invalidPatternCache[pattern] = new RegExp(pattern, 'g'));
 
             if (e.type === 'input') {
@@ -541,6 +585,14 @@
             }
         },
 
+        // Implementation for [data-click-ga-track]
+        gaTrackClick: function (e, clicked) {
+            var options = objVal($cms.dom.data(clicked, 'clickGaTrack'));
+
+            e.preventDefault();
+            ga_track(clicked, options.category, options.action);
+        },
+
         // Detecting of JavaScript support
         detectJavascript: function () {
             var url = window.location.href,
@@ -581,20 +633,24 @@
                 url += encodeURIComponent($cms.$SITE_NAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
             }
             url += '#composrcms';
-            var html = ' \
-    <div class="software_chat"> \
-        <h2>{!CMS_COMMUNITY_HELP}</h2> \
-        <ul class="spaced_list">{!SOFTWARE_CHAT_EXTRA;^}</ul> \
-        <p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + escape_html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#!" class="js-click-load-software-chat">{!HIDE}</a></p> \
-    </div> \
-    <iframe class="software_chat_iframe" style="border: 0" src="' + escape_html(url) + '"></iframe> \
-'.replace(/\\{1\\}/, escape_html(window.location.href.replace($cms.$BASE_URL, 'http://baseurl')));
 
-            var box = $cms.dom.id('software_chat_box'), img;
+            var SOFTWARE_CHAT_EXTRA = '{!SOFTWARE_CHAT_EXTRA;^}'.replace(/\{1\}/, escape_html(window.location.href.replace($cms.$BASE_URL, 'http://baseurl')));
+            var html = '\
+    <div class="software_chat">\
+        <h2>{!CMS_COMMUNITY_HELP}</h2>\
+        <ul class="spaced_list">' + SOFTWARE_CHAT_EXTRA + '</ul>\
+        <p class="associated_link associated_links_block_group">\
+            <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + escape_html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a>\
+            <a href="#!" class="js-click-load-software-chat">{!HIDE}</a>\
+        </p>\
+    </div>\
+    <iframe class="software_chat_iframe" style="border: 0" src="' + escape_html(url) + '"></iframe>';
+
+            var box = $cms.dom.$('#software_chat_box'), img;
             if (box) {
                 box.parentNode.removeChild(box);
 
-                img = $cms.dom.id('software_chat_img');
+                img = $cms.dom.$('#software_chat_img');
                 clear_transition_and_set_opacity(img, 1.0);
             } else {
                 var width = 950,
@@ -621,7 +677,7 @@
 
                 smooth_scroll(0);
 
-                img = $cms.dom.id('software_chat_img');
+                img = $cms.dom.$('#software_chat_img');
                 clear_transition_and_set_opacity(img, 0.5);
             }
         },
@@ -671,13 +727,12 @@
             }
 
             // Theme image editing hovers
-            var els = $cms.dom.$$('*:not(.no_theme_img_click)'), i, el, tag, isMage;
+            var els = $cms.dom.$$('*:not(.no_theme_img_click)'), i, el, isImage;
             for (i = 0; i < els.length; i++) {
                 el = els[i];
-                tag = el.localName;
-                isMage = (tag === 'img') || ((tag === 'input') && (el.type === 'image')) || $cms.dom.css(el, 'background-image').includes('url');
+                isImage = (el.localName === 'img') || ((el.localName === 'input') && (el.type === 'image')) || $cms.dom.css(el, 'background-image').includes('url');
 
-                if (isMage) {
+                if (isImage) {
                     $cms.dom.on(el, {
                         mouseover: handle_image_mouse_over,
                         mouseout: handle_image_mouse_out,
@@ -688,12 +743,8 @@
 
             /* Thumbnail tooltips */
             if ($cms.$DEV_MODE || loc.replace($cms.$BASE_URL_NOHTTP, '').includes('/cms/')) {
-                var urlPatterns = $cms.$EXTRA.staffTooltipsUrlPatterns,
+                var urlPatterns = $cms.staffTooltipsUrlPatterns,
                     links, pattern, hook, patternRgx;
-
-                if ($cms.isEmptyObj(urlPatterns)) {
-                    return;
-                }
 
                 links = $cms.dom.$$('td a');
                 for (pattern in urlPatterns) {
@@ -946,9 +997,10 @@
     });
 
     function ToggleableTray() {
-        ToggleableTray.base(this, arguments);
+        ToggleableTray.base(this, 'constructor', arguments);
 
         this.contentEl = this.$('.toggleable_tray');
+        // cookieId is null for trays not saving a cookie
         this.cookieId = this.el.dataset.trayCookie || null;
 
         if (this.cookieId) {
@@ -957,10 +1009,6 @@
     }
 
     $cms.inherits(ToggleableTray, $cms.View, {
-        contentEl: null,
-        // cookieId is null for trays not saving a cookie
-        cookieId: null,
-
         events: {
             'click .js-btn-tray-toggle': 'toggle',
             'click .js-btn-tray-accordion': 'toggleAccordionItems'
@@ -1368,7 +1416,7 @@
         var el = options.el,
             url = (el.href === undefined) ? el.action : el.href,
             url_stripped = url.replace(/#.*/, ''),
-            new_url = url_stripped + ((url_stripped.indexOf('?') == -1) ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
+            new_url = url_stripped + (!url_stripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
 
         faux_open(new_url, null, 'width=' + options.width + ';height=' + options.height, options.target);
     }
@@ -1376,7 +1424,7 @@
     function convert_tooltip(el) {
         var title = el.title;
 
-        if (!title || $cms.$TOUCH_ENABLED || el.classList.contains('leave_native_tooltip')) {
+        if (!title || $cms.isTouchEnabled || el.classList.contains('leave_native_tooltip')) {
             return;
         }
 

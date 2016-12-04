@@ -1,4 +1,4 @@
-<script>// <![CDATA[
+<script>
 function check_passwords(form) {
 	if (form.confirm) {
 		return true;
@@ -31,8 +31,8 @@ function _check_password(form, field_name, field_label) {
 	}
 
 	// Check does not match database password
-	if (typeof form.elements['db_site_password'] != 'undefined') {
-		if (form.elements[field_name].value != '' && form.elements[field_name].value == form.elements['db_site_password'].value) {
+	if (form.elements['db_site_password'] != null) {
+		if ((form.elements[field_name].value != '') && (form.elements[field_name].value == form.elements['db_site_password'].value)) {
 			window.alert('{!PASSWORDS_DO_NOT_REUSE;^/}'.replace('\{1\}', field_label));
 			return false;
 		}
@@ -51,4 +51,4 @@ function _check_password(form, field_name, field_label) {
 
 	return true;
 }
-//]]></script>
+</script>

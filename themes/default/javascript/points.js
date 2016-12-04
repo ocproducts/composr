@@ -2,7 +2,7 @@
     'use strict';
 
     function PointsGive() {
-        PointsGive.base(this, arguments);
+        PointsGive.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(PointsGive, $cms.View, {

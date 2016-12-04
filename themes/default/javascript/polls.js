@@ -1,7 +1,7 @@
 (function ($cms) {
 
     function PollBox() {
-        PollBox.base(this, arguments);
+        PollBox.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(PollBox, $cms.View, {

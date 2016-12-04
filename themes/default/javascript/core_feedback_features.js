@@ -4,7 +4,7 @@
     $cms.views.CommentsPostingForm = CommentsPostingForm;
 
     function CommentsPostingForm(params) {
-        CommentsPostingForm.base(this, arguments);
+        CommentsPostingForm.base(this, 'constructor', arguments);
 
         this.form = this.$('form.js-form-comments');
         this.btnSubmit = this.$('.js-btn-submit-comments');

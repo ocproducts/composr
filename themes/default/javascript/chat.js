@@ -5,13 +5,13 @@
     $cms.views.ChatRoomScreen = ChatRoomScreen;
 
     function BlockSideShoutbox() {
-        BlockSideShoutbox.base(this, arguments);
+        BlockSideShoutbox.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(BlockSideShoutbox, $cms.View);
 
     function ChatRoomScreen(params) {
-        ChatRoomScreen.base(this, arguments);
+        ChatRoomScreen.base(this, 'constructor', arguments);
         this.chatroomId = params.chatroomId;
 
         $cms.load.then(function () {
@@ -63,7 +63,7 @@
             window.prepared_chat_sounds = true;
 
             window.soundManager.setup({
-                url: $cms.$BASE_URL_S + 'data',
+                url: $cms.baseUrl('data'),
                 debugMode: false,
                 onready: function () {
                     var soundEffects = params.soundEffects,
@@ -108,6 +108,10 @@
                     popupUrl = strVal(params.emoticonsPopupUrl);
 
                 openFunc(maintain_theme_in_link(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            });
+
+            $cms.dom.on(container, 'click', '.js-click-close-chat-conversation', function () {
+                close_chat_conversation(chatroomId);
             });
         },
 
@@ -1208,7 +1212,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
     } else {
         // Open popup
         var im_popup_window_options = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
-        var new_window = window.open($cms.$BASE_URL + '/data/empty.html?instant_messaging', 'room_' + room_id, im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
+        var new_window = window.open($cms.baseUrl('data/empty.html?instant_messaging'), 'room_' + room_id, im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
         if ((!new_window) || (new_window.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
             fauxmodal_alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
         }

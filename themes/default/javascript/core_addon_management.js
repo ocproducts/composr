@@ -2,7 +2,7 @@
     'use strict';
 
     function AddonInstallConfirmScreen() {
-        AddonInstallConfirmScreen.base(this, arguments);
+        AddonInstallConfirmScreen.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(AddonInstallConfirmScreen, $cms.View);
@@ -11,7 +11,7 @@
     // ADDON_SCREEN.tpl
     // - ADDON_SCREEN_ADDON.tpl
     function AddonScreen() {
-        AddonScreen.base(this, arguments);
+        AddonScreen.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(AddonScreen, $cms.View, {
