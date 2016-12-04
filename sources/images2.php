@@ -429,7 +429,6 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
                 imagesavealpha($dest, true);
             }
 
-            // TODO: Upgrade to imagepalettetotruecolor in v11
             $transparent = imagecolortransparent($source);
             if ($transparent != -1) {
                 $_transparent = imagecolorsforindex($source, $transparent);
@@ -681,7 +680,6 @@ function adjust_pic_orientation($source, $exif)
                     imagesavealpha($dest, true);
                 }
 
-                // TODO: Upgrade to imagepalettetotruecolor in v11
                 $transparent = imagecolortransparent($source);
                 if ($transparent != -1) {
                     $_transparent = imagecolorsforindex($source, $transparent);
@@ -777,7 +775,6 @@ function remove_white_edges($source)
         imagesavealpha($dest, true);
     }
 
-    // TODO: Upgrade to imagepalettetotruecolor in v11
     $transparent = imagecolortransparent($source);
     if ($transparent != -1) {
         $_transparent = imagecolorsforindex($source, $transparent);

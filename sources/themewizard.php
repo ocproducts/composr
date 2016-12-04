@@ -327,7 +327,6 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
 
         $canvas = imagecreatetruecolor(imagesx($imgs['standalone']), imagesy($imgs['standalone']));
 
-        // TODO: Upgrade to imagepalettetotruecolor in v11
         imagealphablending($canvas, false);
         $transparent = imagecolortransparent($imgs['background']);
         if ($transparent != -1) {
@@ -1438,7 +1437,6 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
                 $image = imagecreatetruecolor($width, $height);
                 imagealphablending($image, false);
 
-                // TODO: Upgrade to imagepalettetotruecolor in v11
                 $transparent = imagecolortransparent($_image);
                 if ($transparent != -1) {
                     $_transparent = imagecolorsforindex($_image, $transparent);
@@ -1620,7 +1618,6 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
                 imagealphablending($image, false);
                 imagesavealpha($image, true);
 
-                // TODO: Upgrade to imagepalettetotruecolor in v11
                 $transparent = imagecolortransparent($_image);
                 if ($transparent != -1) {
                     $_transparent = imagecolorsforindex($_image, $transparent);
