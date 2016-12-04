@@ -134,40 +134,44 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             $entry_points = manage_custom_fields_entry_points($content_type);
             $entry_point = $entry_points['_SEARCH:cms_catalogues:add_catalogue:_' . $content_type];
         } else {
-            $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
-                true, // $check_perms
-                null, // $member_id
-                false, //$support_crosslinks   Must be false so that things known to be cross-linked from elsewhere are not skipped
-                false //$be_deferential
+            if ($row === null) {
+                $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
+                    true, // $check_perms
+                    null, // $member_id
+                    false, //$support_crosslinks   Must be false so that things known to be cross-linked from elsewhere are not skipped
+                    false //$be_deferential
 
-            ));
+                ));
 
-            $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
+                $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
 
-            if ((($matches[5] == '') || ($page == 'cms_catalogues' && $matches[5] != ''/*masquerades as direct content types but fulfilled as normal entry points*/)) && (isset($entry_points[$type]))) {
-                $entry_point = $entry_points[$type];
-            } elseif (($matches[5] == '') && ((isset($entry_points['!'])) && ($type == 'browse'))) {
-                $entry_point = $entry_points['!'];
-            } else {
-                if (isset($entry_points[$orig_page_link])) {
-                    $entry_point = $entry_points[$orig_page_link];
+                if ((($matches[5] == '') || ($page == 'cms_catalogues' && $matches[5] != ''/*masquerades as direct content types but fulfilled as normal entry points*/)) && (isset($entry_points[$type]))) {
+                    $entry_point = $entry_points[$type];
+                } elseif (($matches[5] == '') && ((isset($entry_points['!'])) && ($type == 'browse'))) {
+                    $entry_point = $entry_points['!'];
                 } else {
-                    $entry_point = array(null, null);
+                    if (isset($entry_points[$orig_page_link])) {
+                        $entry_point = $entry_points[$orig_page_link];
+                    } else {
+                        $entry_point = array(null, null);
 
-                    // Not actually an entry-point, so maybe something else handles it directly?
-                    // Technically this would be better code to have in page_grouping.php, but we don't want to do a scan for entry-points that are easy to find.
-                    $hooks = find_all_hooks('systems', 'sitemap');
-                    foreach (array_keys($hooks) as $_hook) {
-                        require_code('hooks/systems/sitemap/' . $_hook);
-                        $ob = object_factory('Hook_sitemap_' . $_hook);
-                        if ($ob->is_active()) {
-                            $is_handled = $ob->handles_page_link($page_link);
-                            if ($is_handled == SITEMAP_NODE_HANDLED) {
-                                return $ob->get_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, null, $return_anyway);
+                        // Not actually an entry-point, so maybe something else handles it directly?
+                        // Technically this would be better code to have in page_grouping.php, but we don't want to do a scan for entry-points that are easy to find.
+                        $hooks = find_all_hooks('systems', 'sitemap');
+                        foreach (array_keys($hooks) as $_hook) {
+                            require_code('hooks/systems/sitemap/' . $_hook);
+                            $ob = object_factory('Hook_sitemap_' . $_hook);
+                            if ($ob->is_active()) {
+                                $is_handled = $ob->handles_page_link($page_link);
+                                if ($is_handled == SITEMAP_NODE_HANDLED) {
+                                    return $ob->get_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, null, $return_anyway);
+                                }
                             }
                         }
                     }
                 }
+            } else {
+                $entry_point = $row;
             }
         }
 

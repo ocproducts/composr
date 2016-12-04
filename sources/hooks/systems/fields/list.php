@@ -99,6 +99,10 @@ class Hook_fields_list
      */
     public function render_field_value($field, $ev)
     {
+        if ($ev == $field['cf_default']) {
+            return '';
+        }
+
         if (is_object($ev)) {
             return $ev;
         }

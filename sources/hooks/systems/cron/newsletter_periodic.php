@@ -103,6 +103,8 @@ class Hook_cron_newsletter_periodic
 
         $in_full = ($periodic_row['np_in_full'] == 1);
 
+        require_code('global4');
+
         // We need to build the content, based on the chosen categories. This code
         // is lifted straight out of admin_newsletter.php
 

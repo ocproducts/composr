@@ -278,6 +278,12 @@ function _load_blank_output_state($just_tempcode = false, $true_blank = false)
 
     if (!$just_tempcode) {
         global $HTTP_STATUS_CODE;
+        /** Record of the HTTP status code being set.
+         *
+         * @sets_output_state
+         *
+         * @global string $HTTP_STATUS_CODE
+         */
         $HTTP_STATUS_CODE = '200';
 
         global $METADATA;

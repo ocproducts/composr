@@ -267,6 +267,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/remember_me_by_default.php',
             'sources/hooks/systems/config/mobile_support.php',
             'sources/hooks/systems/config/complex_uploader.php',
+            'sources/hooks/systems/config/complex_lists.php',
             'sources/hooks/systems/config/wysiwyg.php',
             'sources/hooks/systems/config/editarea.php',
             'sources/hooks/systems/config/autoban.php',

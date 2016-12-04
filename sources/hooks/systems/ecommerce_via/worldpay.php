@@ -188,7 +188,7 @@ class Hook_worldpay
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($trans_id),
+            'PURCHASE_ID' => $trans_id,
             'AMOUNT' => float_to_raw_string($amount),
             'FIRST_REPEAT' => date('Y-m-d', $first_repeat),
             'CURRENCY' => $currency,
@@ -210,12 +210,12 @@ class Hook_worldpay
     }
 
     /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  string $trans_id Transaction ID to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
-    public function auto_cancel($trans_id)
+    public function auto_cancel($subscription_id)
     {
         return false;
     }
@@ -234,16 +234,15 @@ class Hook_worldpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
     public function handle_transaction()
     {
-        // Test case...
-        //$_POST = unserialize('a:36:{s:8:"testMode";s:3:"100";s:8:"authCost";s:4:"15.0";s:8:"currency";s:3:"GBP";s:7:"address";s:1:"a";s:13:"countryString";s:11:"South Korea";s:10:"callbackPW";s:10:"s35645dxr4";s:12:"installation";s:5:"84259";s:3:"fax";s:1:"a";s:12:"countryMatch";s:1:"B";s:7:"transId";s:9:"222873126";s:3:"AVS";s:4:"0000";s:12:"amountString";s:11:"&#163;15.00";s:8:"postcode";s:1:"a";s:7:"msgType";s:10:"authResult";s:4:"name";s:1:"a";s:3:"tel";s:1:"a";s:11:"transStatus";s:1:"Y";s:4:"desc";s:15:"Property Advert";s:8:"cardType";s:10:"Mastercard";s:4:"lang";s:2:"en";s:9:"transTime";s:13:"1171243476007";s:16:"authAmountString";s:11:"&#163;15.00";s:10:"authAmount";s:4:"15.0";s:9:"ipAddress";s:12:"84.9.162.135";s:4:"cost";s:4:"15.0";s:6:"instId";s:5:"84259";s:6:"amount";s:4:"15.0";s:8:"compName";s:32:"The Accessible Property Register";s:7:"country";s:2:"KR";s:11:"MC_callback";s:63:"www.kivi.co.uk/ClientFiles/APR/data/ecommerce.php?from=worldpay";s:14:"rawAuthMessage";s:22:"cardbe.msg.testSuccess";s:5:"email";s:16:"vaivak@gmail.com";s:12:"authCurrency";s:3:"GBP";s:11:"rawAuthCode";s:1:"A";s:6:"cartId";s:32:"3ecd645f632f0304067fb565e71b4dcd";s:8:"authMode";s:1:"A";}');
-        //$_GET = unserialize('a:3:{s:4:"from";s:8:"worldpay";s:7:"msgType";s:10:"authResult";s:12:"installation";s:5:"84259";}');
-
         $code = post_param_string('transStatus');
         if ($code == 'C') {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             exit(); // Cancellation signal, won't process
         }
 
@@ -257,6 +256,9 @@ class Hook_worldpay
 
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $cart_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $transaction_row = $transaction_rows[0];
@@ -277,6 +279,9 @@ class Hook_worldpay
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
         if (post_param_string('callbackPW') != get_option('callback_password')) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 
@@ -286,7 +291,9 @@ class Hook_worldpay
         }
 
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if (preg_match('#' . str_replace('xxx', '.*', preg_quote(do_lang('shopping:CART_ORDER', 'xxx'), '#')) . '#', $item_name) != 0) {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '', '');

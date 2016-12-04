@@ -166,6 +166,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
         if (url_is_local($_rep_image)) {
             $_rep_image = get_custom_base_url() . '/' . $_rep_image;
         }
+        require_code('images');
         $rep_image = do_image_thumb($row['rep_image'], $_title, false);
     }
 

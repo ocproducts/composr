@@ -240,8 +240,8 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
 
     // Put in defaults...
 
-    $no_width = (!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width']));
-    $no_height = (!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height']));
+    $no_width = (!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width'])) || (floatval($attributes['width']) == 0.0);
+    $no_height = (!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height'])) || (floatval($attributes['height']) == 0.0);
     if ($no_width || $no_height) { // Try and work out the best default width/height, from the thumbnail if possible (image_websafe runs its own code to do the equivalent, as that defaults to thumb_width rather than attachment_default_width&attachment_default_height)
         $_width = get_option('attachment_default_width');
         $_height = get_option('attachment_default_height');
