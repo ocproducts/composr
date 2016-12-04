@@ -459,12 +459,10 @@ function wysiwyg_editor_init_for(element, id) {
     window.lang_SPELLCHECKER_LABEL = '{!javascript:SPELLCHECKER_LABEL;^}';
     window.lang_NO_IMAGE_PASTE_SAFARI = '{!javascript:NO_IMAGE_PASTE_SAFARI;^}';
 
-    // Mainly used by autosaving
-    editor.on('key', function (event) {
+    // Mainly used by autosaving, but also sometimes CKEditor seems to not refresh the textarea (e.g. for one user's site when pressing delete key on an image)
+    editor.on('change', function (event) {
+        element.value = editor.getData();
         if (element.externalOnKeyPress !== undefined) {
-            window.setTimeout(function () { // timeout so that getData returns data *after* keypress
-                element.value = editor.getData();
-            }, 0);
             element.externalOnKeyPress(event, element);
         }
     });
