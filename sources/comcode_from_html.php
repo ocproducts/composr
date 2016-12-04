@@ -508,8 +508,13 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
 
     // Maybe we don't do a conversion? If possible we want to avoid it because conversions are messy.
     if (((!$force) && (get_option('eager_wysiwyg') == '0') && (has_privilege(get_member(), 'allow_html'))) || (strpos($semihtml, '{$,page hint: no_smart_conversion}') !== false)) {
-        $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup_raw', $semihtml); // Resolve relative URLs
-        $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*)>#siU', '_img_tag_fixup_raw', $semihtml); // Resolve relative URLs
+        // Resolve relative URLs
+        $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup_raw', $semihtml);
+        $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*)>#siU', '_img_tag_fixup_raw', $semihtml);
+
+        // Preserve header formatting by moving it to a span
+        $semihtml = preg_replace('#<h1[^>]* style="([^"<>]*)"[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '<h1><span class="inner"><span style="display: inline-block; ${1}">${2}</span></span></h1>', $semihtml);
+        $semihtml = preg_replace('#<h1[^>]* style="([^"<>]*)"[^>]*>(.*)</h1>#Us', '<h1><span class="inner"><span style="display: block; ${1}">${2}</span></span></h1>', $semihtml);
 
         if (strpos($semihtml, '[contents') !== false) { // Contents tag needs proper Comcode titles
             $semihtml = convert_html_headers_to_titles($semihtml);
