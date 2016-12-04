@@ -5,13 +5,13 @@
     $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
 
     function ThemeManageScreen() {
-        ThemeManageScreen.base(this, arguments);
+        ThemeManageScreen.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(ThemeManageScreen, $cms.View);
 
     function ThemeTemplateEditorTab(params) {
-        ThemeTemplateEditorTab.base(this, arguments);
+        ThemeTemplateEditorTab.base(this, 'constructor', arguments);
 
         // Allow searching via URL hash
         if (window.location.hash) {

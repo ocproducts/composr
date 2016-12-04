@@ -2,7 +2,7 @@
     'use strict';
 
     function XmlConfigScreen() {
-        XmlConfigScreen.base(this, arguments);
+        XmlConfigScreen.base(this, 'constructor', arguments);
 
         ace_composr_loader('xml', 'xml');
     }

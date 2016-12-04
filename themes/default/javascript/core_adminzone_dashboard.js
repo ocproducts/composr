@@ -10,7 +10,7 @@
     var $SCRIPT_comcode_convert = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}';
 
     function BlockMainStaffChecklistCustomTask() {
-        BlockMainStaffChecklistCustomTask.base(this, arguments);
+        BlockMainStaffChecklistCustomTask.base(this, 'constructor', arguments);
 
         this.imgChecklistCross = this.$('.js-img-checklist-cross');
         this.imgChecklistStatus = this.$('.js-img-checklist-status');
@@ -70,7 +70,7 @@
     });
 
     function BlockMainStaffLinks() {
-        BlockMainStaffLinks.base(this, arguments);
+        BlockMainStaffLinks.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(BlockMainStaffLinks, $cms.View, {
@@ -97,7 +97,7 @@
     });
 
     function BlockMainStaffWebsiteMonitoring() {
-        BlockMainStaffWebsiteMonitoring.base(this, arguments);
+        BlockMainStaffWebsiteMonitoring.base(this, 'constructor', arguments);
 
         var rand = this.params.randWebsiteMonitoring;
 
@@ -131,7 +131,7 @@
     });
 
     function BlockMainNotes() {
-        BlockMainNotes.base(this, arguments);
+        BlockMainNotes.base(this, 'constructor', arguments);
         this.formEl = this.$('.js-form-block-main-notes');
     }
 

@@ -4,7 +4,7 @@
     $cms.views.GlobalHelperPanel = GlobalHelperPanel;
 
     function GlobalHelperPanel(params) {
-        GlobalHelperPanel.base(this, arguments);
+        GlobalHelperPanel.base(this, 'constructor', arguments);
         this.contentsEl = this.$('.js-helper-panel-contents');
     }
 
@@ -14,7 +14,7 @@
             'click .js-click-toggle-helper-panel': 'toggleHelperPanel'
         },
         toggleHelperPanel: function () {
-            var show = !$cms.dom.isDisplayed(this.contentsEl, 'display');
+            var show = $cms.dom.notDisplayed(this.contentsEl);
             helper_panel(show);
         }
     });

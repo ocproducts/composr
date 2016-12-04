@@ -222,14 +222,8 @@
         console.log('Change notification running');
 
         try {
-            window.getAttention();
-        } catch (e) {
-        }
-
-        try {
             window.focus();
-        } catch (e) {
-        }
+        } catch (e) {}
 
         if (window.soundManager !== undefined) {
             var sound_url = 'data/sounds/message_received.mp3';

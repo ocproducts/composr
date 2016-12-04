@@ -1,5 +1,13 @@
 (function ($cms) {
 
+    $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen() {
+        var container = this;
+
+        $cms.dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
+            document.getElementById('proceed_button').disabled = !checkbox.checked;
+        });
+    };
+
     $cms.templates.cnsMemberProfileScreen = function cnsMemberProfileScreen(params) {
         var container = this,
             tabFunc = 'load_tab__' + params.tabCode;

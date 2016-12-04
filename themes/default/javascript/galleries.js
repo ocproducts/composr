@@ -7,7 +7,7 @@
     }
 
     function BlockMainImageFader(params) {
-        BlockMainImageFader.base(this, arguments);
+        BlockMainImageFader.base(this, 'constructor', arguments);
 
         var data = {},
             key,
@@ -92,7 +92,7 @@
     });
 
     function GalleryNav(params) {
-        GalleryNav.base(this, arguments);
+        GalleryNav.base(this, 'constructor', arguments);
 
         window.slideshow_current_position = params._x - 1;
         window.slideshow_total_slides = params._n;

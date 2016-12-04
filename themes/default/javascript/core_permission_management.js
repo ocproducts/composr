@@ -4,7 +4,7 @@
     $cms.views.PermissionsTreeEditorScreen = PermissionsTreeEditorScreen;
 
     function PermissionsTreeEditorScreen(params) {
-        PermissionsTreeEditorScreen.base(this, arguments);
+        PermissionsTreeEditorScreen.base(this, 'constructor', arguments);
 
         window.column_color = params.color;
         window.usergroup_titles = params.usergroups;
@@ -149,7 +149,7 @@
                                 row = rows[0];
                                 new_cell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 new_cell.className = 'privilege_header';
-                                $cms.dom.html(new_cell, '<img class="gd_text" data-gd-text="1" src="' + $cms.$BASE_URL + '/data/gd_text.php?color=' + window.column_color + '&amp;text=' + encodeURIComponent(privilege_title) + escape_html(keep_stub()) + '" title="' + escape_html(privilege_title) + '" alt="' + escape_html(privilege_title) + '" />');
+                                $cms.dom.html(new_cell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.column_color + '&amp;text=' + encodeURIComponent(privilege_title) + escape_html(keep_stub()) + '" title="' + escape_html(privilege_title) + '" alt="' + escape_html(privilege_title) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 

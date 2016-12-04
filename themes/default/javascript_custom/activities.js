@@ -14,7 +14,7 @@ function s_update_get_data() {
     } else {
         // First we check whether our feed is already up to date
         jQuery.ajax({
-            url: $cms.$BASE_URL_S + 'data_custom/latest_activity.txt?chrome_fix=' + Math.floor(Math.random() * 10000),
+            url: $cms.baseUrl('data_custom/latest_activity.txt?chrome_fix=' + Math.floor(Math.random() * 10000)),
             data: {},
             success: function (data) {
                 if (window.parseInt(data) != window.latest_activity) {
@@ -22,7 +22,7 @@ function s_update_get_data() {
                     window.latest_activity = window.parseInt(data);
 
                     // Now grab whatever updates are available
-                    var url = $cms.$BASE_URL_S + 'data_custom/activities_updater.php' + keep_stub(true),
+                    var url = $cms.baseUrl('data_custom/activities_updater.php' + keep_stub(true)),
                         list_elements = $('li', '#activities_feed'),
                         last_id = ((typeof list_elements.attr('id') == 'undefined') ? '-1' : list_elements.attr('id').replace(/^activity_/, '')),
                         post_val = 'last_id=' + last_id + '&mode=' + window.activities_mode;
@@ -116,7 +116,7 @@ function s_update_remove(event, id) {
         '{!activities:DELETE_CONFIRM;^}',
         function (result) {
             if (result) {
-                var url = $cms.$BASE_URL_S + 'data_custom/activities_removal.php' + keep_stub(true);
+                var url = $cms.baseUrl('data_custom/activities_removal.php' + keep_stub(true));
 
                 var post_val = 'removal_id=' + id;
                 post_val += '&csrf_token=' + encodeURIComponent(get_csrf_token()); // For CSRF prevention

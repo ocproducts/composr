@@ -1,10 +1,11 @@
+var encodeUC = encodeURIComponent,
+    decodeUC = decodeURIComponent;
+
 (function ($cms, symbols) {
     'use strict';
 
     // Cached references
     var smile = ':)',
-        create = Object.create,
-        assign = Object.assign,
         encodeUC = encodeURIComponent,
         decodeUC = decodeURIComponent,
         emptyObj = {},
@@ -12,15 +13,15 @@
         docEl = document.documentElement,
         emptyEl = document.createElement('div'),
         emptyElStyle = emptyEl.style,
-        emptyInputEl = document.createElement('input'),
+
+    // hasOwnProperty shorcut
+        hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
 
         toArray = Function.bind.call(Function.call, emptyArr.slice),
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
     // Clever helper for merging arrays using `[].push`
         merge = Function.bind.call(Function.apply, emptyArr.push),
-    // hasOwnProperty shorcut
-        hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
 
     // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
     // Opera 8.0+
@@ -28,7 +29,7 @@
     // Firefox 1.0+
         isFirefox = (window.InstallTrigger !== undefined),
     // At least Safari 3+: HTMLElement's constructor's name is HTMLElementConstructor
-        isSafari = internal(window.HTMLElement) === 'HTMLElementConstructor',
+        isSafari = internalName(window.HTMLElement) === 'HTMLElementConstructor',
     // Internet Explorer 6-11
         isIE = (/*@cc_on!@*/0 || (typeof document.documentMode === 'number')),
     // Edge 20+
@@ -41,8 +42,10 @@
     window.boolVal = boolVal;
     window.intVal = intVal;
     window.strVal = strVal;
+    window.arrVal = arrVal;
+    window.objVal = objVal;
 
-    $cms = assign($cms, {
+    $cms = Object.assign($cms, {
         // Unique for each copy of Composr on the page
         id: 'composr' + ('' + Math.random()).substr(2),
 
@@ -85,6 +88,7 @@
         $FORUM_BASE_URL: symbols.FORUM_BASE_URL,
         $BASE_URL: strVal(symbols.BASE_URL),
         $BASE_URL_S: strVal(symbols.BASE_URL) + '/', // With trailing slash
+        $BASE_URL_PRL: toProtocolRelative(symbols.BASE_URL), // Protocol relative
         $CUSTOM_BASE_URL: strVal(symbols.CUSTOM_BASE_URL),
         $BASE_URL_NOHTTP: strVal(symbols.BASE_URL_NOHTTP),
         $BASE_URL_NOHTTP_S: strVal(symbols.BASE_URL_NOHTTP) + '/', // With trailing slash
@@ -150,7 +154,6 @@
         isTouchEnabled: ('ontouchstart' in docEl),
 
         uid: uid,
-        isEmptyObj: isEmptyObj,
         nodeType: nodeType,
         isEl: isEl,
         isNumeric: isNumeric,
@@ -163,9 +166,8 @@
         each: each,
         extend: extend,
         extendOwn: extendOwn,
+        extendDeep: extendDeep,
         defaults: defaults,
-
-        createMap: createMap,
 
         define: define,
         defineC: defineC,
@@ -176,6 +178,8 @@
         defineEW: defineEW,
         defineW: defineW,
 
+        boolVal: boolVal,
+        intVal: intVal,
         strVal: strVal,
         format: format,
 
@@ -185,13 +189,16 @@
         uspFromUrl: uspFromUrl,
         paramsFromUsp: paramsFromUsp,
 
+        baseUrl: baseUrl,
         img: img,
         navigate: navigate,
         log: log,
         dir: dir,
         assert: assert,
         error: error,
-        exception: exception
+        exception: exception,
+
+        parseJson: parseJson
     });
 
     var domReadyPromise = new Promise(function (resolve) {
@@ -266,12 +273,8 @@
             return obj[$cms.id];
         }
 
-        var props = {},
-            id = uniqueId();
-
-        props[$cms.id] = id;
-        defineCW(obj, props);
-
+        var id = uniqueId();
+        defineC(obj, $cms.id, id);
         return id;
     }
 
@@ -307,25 +310,9 @@
         return false;
     }
 
-    // Gets the internal type/constructor name of the provided `val`
-    function internal(val) {
-        return emptyObj.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
-    }
-
-    function isEmptyObj(obj) {
-        var k;
-        if (isObj(obj)) {
-            for (k in obj) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     function isPlainObj(obj) {
         var proto;
-        return isObj(obj) && (internal(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
+        return isObj(obj) && (internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
     }
 
     function isArrayOrPlainObj(val) {
@@ -346,18 +333,24 @@
 
     function withProto(prototype, data) {
         var obj = Object.create(prototype);
-        if (data) {
-            assign(obj, data);
+        if (data != null) {
+            Object.assign(obj, data);
         }
         return obj;
     }
 
-    function createMap(data) {
+    function pureObj(data) {
         return withProto(null, data);
     }
 
+    function keyValue(key, value) {
+        var obj = {};
+        obj[key] = value;
+        return obj;
+    }
+
     function isWindow(obj) {
-        return isObj(obj) && (obj === obj.window) && (obj === obj.self) && (internal(obj) === 'Window');
+        return isObj(obj) && (obj === obj.window) && (obj === obj.self) && (internalName(obj) === 'Window');
     }
 
     function nodeType(obj) {
@@ -395,11 +388,11 @@
     }
 
     function isRegExp(obj) {
-        return (obj != null) && (internal(obj) === 'RegExp');
+        return (obj != null) && (internalName(obj) === 'RegExp');
     }
 
     function isDate(obj) {
-        return (obj != null) && (internal(obj) === 'Date');
+        return (obj != null) && (internalName(obj) === 'Date');
     }
 
     // Inspired by jQuery.isNumeric
@@ -413,20 +406,21 @@
     function isArrayLike(obj, minLength) {
         var len;
 
-        minLength = +minLength || 0;
+        minLength = intVal(minLength);
 
-        if ((obj == null ) || (typeof obj !== 'object') || (internal(obj) === 'Window') || (typeof (len = obj.length) !== 'number') || (len < minLength)) {
-            return false;
-        }
-
-        return (len === 0) || ((0 in obj) && ((len - 1) in obj));
+        return (obj != null)
+            && (typeof obj === 'object')
+            && (internalName(obj) !== 'Window')
+            && (typeof (len = obj.length) === 'number')
+            && (len >= minLength)
+            && ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
     }
 
     // Returns a random integer between min (inclusive) and max (inclusive)
     // Using Math.round() will give you a non-uniform distribution!
     function random(min, max) {
-        min = +min || 0;
-        max = +max || 1000000000000000;
+        min = intVal(min);
+        max = intVal(max) || 1000000000000000;
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -435,19 +429,22 @@
     // are the method names to be bound. Useful for ensuring that all callbacks
     // defined on an object belong to it.
     function bindAll(obj/*, ...methodNames*/) {
-        var i, len = arguments.length, key;
+        var i, len = arguments.length, methodName;
         for (i = 1; i < len; i++) {
-            key = arguments[i];
-            obj[key] = obj[key].bind(obj);
+            methodName = arguments[i];
+            obj[methodName] = obj[methodName].bind(obj);
         }
         return obj;
     }
 
     function each(obj, callback, args) {
-        var i = 0,
-            len = obj.length,
+        if (obj == null) {
+            return obj;
+        }
+
+        var len = obj.length,
             isObj = (typeof len !== 'number') || (typeof obj === 'function'),
-            name;
+            name, i;
 
         if (args) {
             if (isObj) {
@@ -457,8 +454,8 @@
                     }
                 }
             } else {
-                for (; i < len;) {
-                    if (callback.apply(obj[i++], args) === false) {
+                for (i = 0; i < len; i++) {
+                    if (callback.apply(obj[i], args) === false) {
                         break;
                     }
                 }
@@ -471,8 +468,8 @@
                     }
                 }
             } else {
-                for (; i < len;) {
-                    if (callback.call(obj[i], i, obj[i++]) === false) {
+                for (i = 0; i < len; i++) {
+                    if (callback.call(obj[i], i, obj[i]) === false) {
                         break;
                     }
                 }
@@ -483,51 +480,49 @@
     }
 
     var EXTEND_DEEP = 1,
-        EXTEND_SRC_OWN_ONLY = 2,
-        EXTEND_TGT_UNDEF_ONLY = 4;
+        EXTEND_TGT_OWN_ONLY = 2,
+        EXTEND_SRC_OWN_ONLY = 4;
 
     function _extend(target, source, mask) {
-        var key, src, tgt;
+        var key, tgt, src, isSrcArr;
 
         mask = +mask || 0;
 
-        var deep = !!(mask & EXTEND_DEEP),
-            srcOwnOnly = !!(mask & EXTEND_SRC_OWN_ONLY),
-            tgtUndefOnly = !!(mask & EXTEND_TGT_UNDEF_ONLY);
-
         for (key in source) {
-            src = source[key];
             tgt = target[key];
+            src = source[key];
 
-            if ((src === undefined) || (srcOwnOnly && !hasOwn(source, key)) || (tgtUndefOnly && (tgt !== undefined))) {
+            if (
+                (src === undefined)
+                || ((mask & EXTEND_TGT_OWN_ONLY) && !hasOwn(target, key))
+                || ((mask & EXTEND_SRC_OWN_ONLY) && !hasOwn(source, key))
+            ) {
                 continue;
             }
 
-            if (deep && src && isArrayOrPlainObj(src)) {
-                if (Array.isArray(src) && !Array.isArray(tgt)) {
-                    tgt = target[key] = [];
-                } else if (isPlainObj(src) && !isPlainObj(tgt)) {
-                    tgt = target[key] = {};
+            if ((mask & EXTEND_DEEP) && src && (typeof src === 'object') && ((isSrcArr = Array.isArray(src)) || isPlainObj(src))) {
+                if (isSrcArr && !Array.isArray(tgt)) {
+                    tgt = {};
+                } else if (!isSrcArr && !isPlainObj(tgt)) {
+                    tgt = [];
                 }
-                _extend(tgt, src, mask);
+
+                target[key] = _extend(tgt, src, mask);
             } else {
                 target[key] = src;
             }
         }
     }
 
-    // Copy all but undefined properties from one or more
-    // objects to the `target` object.
+    // Copy all but undefined properties from one or more objects to the `target` object.
     function extend(target/*, ...sources*/) {
         for (var i = 1, len = arguments.length; i < len; i++) {
             _extend(target, arguments[i]);
         }
-
         return target
     }
 
-    // Copy all but undefined properties from one or more
-    // objects to the `target` object.
+    // Extends `target` with source own-properties only.
     function extendOwn(target/*, ...sources*/) {
         for (var i = 1, len = arguments.length; i < len; i++) {
             _extend(target, arguments[i], EXTEND_SRC_OWN_ONLY);
@@ -535,19 +530,20 @@
         return target
     }
 
-    function defaults(defaults, /*...*/sources) {
-        defaults || (defaults = {});
-        sources = toArray(arguments, 1);
-
-        for (var key in defaults) {
-            for (var i = 0, len = sources.length; i < len; i++) {
-                if ((sources[i] != null) && (sources[i][key] !== undefined)) {
-                    defaults[key] = sources[i][key];
-                }
-            }
+    // Deep extend, clones any arrays and plain objects found in sources.
+    function extendDeep(target/*, ...sources*/) {
+        for (var i = 1, len = arguments.length; i < len; i++) {
+            _extend(target, arguments[i], EXTEND_DEEP);
         }
+        return target
+    }
 
-        return defaults;
+    // Apply `options` to the `defaults` object. Only copies over properties with keys already defined in the `defaults` object.
+    function defaults(defaults/*, ...options*/) {
+        for (var i = 1, len = arguments.length; i < len; i++) {
+            _extend(defaults, arguments[i], EXTEND_TGT_OWN_ONLY);
+        }
+        return defaults
     }
 
     // If the value of the named `property` is a function then invoke it with the
@@ -561,57 +557,73 @@
         DEFINE_ENUMERABLE = 2,
         DEFINE_WRITABLE = 4;
 
-    // `mask` is optional (defaults to 0)
-    function define(mask, obj, props) {
-        if (props === undefined) {
-            props = obj;
+    /**
+     * @param {number} [mask] - optional, assumed to be `obj` if not of type number.
+     * @param {object} obj - the target object to define properties on.
+     * @param {object|string} props - is a single property's name if `value` is passed.
+     * @param {*} [value].
+     * @returns {Object}
+     */
+    function define(mask, obj, props, value) {
+        var key, descriptors, descriptor;
+
+        if (typeof mask !== 'number') {
             obj = mask;
-            mask = 0;
+            props = obj;
+            value = props;
+            mask = DEFINE_CONFIGURABLE | DEFINE_WRITABLE;
         }
 
-        mask = +mask || 0;
-        props || (props = {});
+        if (value !== undefined) {
+            props = keyValue(props, value);
+        }
 
-        var key, descriptors = {};
-
+        descriptors = {};
         for (key in props) {
-            descriptors[key] = {
-                configurable: !!(mask & DEFINE_CONFIGURABLE),
-                enumerable: !!(mask & DEFINE_ENUMERABLE),
-                value: props[key],
-                writable: !!(mask & DEFINE_WRITABLE)
-            };
+            descriptor = Object.getOwnPropertyDescriptor(props, key);
+            descriptor.configurable = !!(mask & DEFINE_CONFIGURABLE);
+            descriptor.enumerable = !!(mask & DEFINE_ENUMERABLE);
+            if (descriptor.writeable !== undefined) {
+                // ^ True if it's not an accessor property, otherwise we just let descriptor.get/set pass-through
+                descriptor.writeable = !!(mask & DEFINE_WRITABLE);
+            }
+            descriptors[key] = descriptor;
         }
 
         return Object.defineProperties(obj, descriptors);
     }
 
-    function defineC(obj, props) {
-        return define(DEFINE_CONFIGURABLE, obj, props);
+    function defineC(obj, props, value) {
+        return define(DEFINE_CONFIGURABLE, obj, props, value);
     }
 
-    function defineCE(obj, props) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE, obj, props);
+    function defineCE(obj, props, value) {
+        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE, obj, props, value);
     }
 
-    function defineCW(obj, props) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_WRITABLE, obj, props);
+    function defineCW(obj, props, value) {
+        return define(DEFINE_CONFIGURABLE | DEFINE_WRITABLE, obj, props, value);
     }
 
-    function defineCEW(obj, props) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props);
+    function defineCEW(obj, props, value) {
+        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props, value);
     }
 
-    function defineE(obj, props) {
-        return define(DEFINE_ENUMERABLE, obj, props);
+    function defineE(obj, props, value) {
+        return define(DEFINE_ENUMERABLE, obj, props, value);
     }
 
-    function defineEW(obj, props) {
-        return define(DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props);
+    function defineEW(obj, props, value) {
+        return define(DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props, value);
     }
 
-    function defineW(obj, props) {
-        return define(DEFINE_WRITABLE, obj, props);
+    function defineW(obj, props, value) {
+        return define(DEFINE_WRITABLE, obj, props, value);
+    }
+
+    // Gets the internal type/constructor name of the provided `val`
+    function internalName(val) {
+        return emptyObj.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
     }
 
     function constructorName(obj) {
@@ -620,47 +632,89 @@
         }
     }
 
-    // Port of PHP's empty() function
-    function falsy(val) {
-        var p;
-        return !val || (val === '0') || ((typeof val === 'object') && ((p = isPlainObj(val)) || isArrayLike(val)) && (p ? !hasEnumerable(val) : (val.length === 0)));
+    function typeName(obj) {
+        var name = constructorName(obj);
+        return (name !== undefined) ? name : internalName(obj);
     }
 
+    /**
+     * @param val
+     * @returns {Boolean}
+     */
     function boolVal(val) {
         var p;
         return !!val && (val !== '0') && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length !== 0)));
     }
 
-    function intVal(val, defaultValue) {
-        if (defaultValue === undefined) {
-            defaultValue = 0;
-        }
-        return ((val != null) && Number.isFinite(val = parseInt(val))) ? val : defaultValue;
+    /**
+     * Port of PHP's empty() function
+     * @returns {Boolean}
+     */
+    function falsy(val) {
+        var p;
+        return !val || (val === '0') || ((typeof val === 'object') && ((p = isPlainObj(val)) || isArrayLike(val)) && (p ? !hasEnumerable(val) : (val.length === 0)));
     }
 
-    // Sensible PHP-like string coercion
-    function strVal(val, defaultValue) {
-        if (defaultValue === undefined) {
-            defaultValue = '';
+    /**
+     * @returns {Number}
+     */
+    function intVal(val) {
+        return ((val != null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    }
+
+    /**
+     * @returns {Array}
+     */
+    function arrVal(val) {
+        var isArr;
+
+        if (val == null) {
+            return [];
         }
 
+        if ((typeof val === 'object') && ((isArr = Array.isArray(val)) || isArrayLike(val))) {
+            return isArr ? val : toArray(val);
+        }
+
+        return [val];
+    }
+
+    /**
+     * @returns {Object}
+     */
+    function objVal(val, defaultPropertyName) {
+        if (!isObj(val) || Array.isArray(val)) {
+            val = (defaultPropertyName !== undefined) ? keyValue(defaultPropertyName, val) : {};
+        }
+
+        return val;
+    }
+
+    /**
+     * Sensible PHP-like string coercion
+     * @returns {String}
+     */
+    function strVal(val) {
         if (!val) {
-            return (val === 0) ? '0' : defaultValue;
+            return (val === 0) ? '0' : '';
         } else if (val === true) {
             return '1';
-        } else if ((type = typeof val) === 'string') {
+        } else if (typeof val === 'string') {
             return val;
-        } else if (type === 'number') {
-            return ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : defaultValue;
-        } else if ((type === 'object') && (val.toString !== emptyObj.toString) && (typeof val.toString === 'function')) {
-            // `val` has a toString implementation other than the useless generic one
+        } else if (typeof val === 'number') {
+            return ((val !== Infinity) && (val !== -Infinity)) ? ('' + val) : '';
+        } else if ((typeof val === 'object') && (val.toString !== emptyObj.toString) && (typeof val.toString === 'function')) {
+            // `val` has a .toString() implementation other than the useless generic one
             return '' + val;
         }
 
-        throw new Error('strVal(): Cannot coerce "' + val + '" of type "' + constructorName(val) + '" to a string');
+        throw new TypeError('strVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a string.');
     }
 
-    // String interpolation
+    /**
+     * String interpolation
+     * @returns {String}
+     */
     function format(str, values) {
         str = strVal(str);
 
@@ -669,7 +723,7 @@
         }
 
         if ((values == null) || (typeof values !== 'object')) {
-            // values provided as multiple parameters?
+            // values provided as multiple arguments?
             values = toArray(arguments, 1);
             values.unshift(''); // Add empty string at index 0 so that interpolation starts from '{1}'
         } else if (isArrayLike(values)) {
@@ -694,18 +748,20 @@
     // Credit: http://stackoverflow.com/a/32604073/362006
     function camelCase(str) {
         // Lower cases the string
-        return str.toLowerCase()
-            // Replaces any - or _ characters with a space
-            .replace(/[\-_]+/g, ' ')
-            // Removes any non alphanumeric characters
-            .replace(/[^\w\s]/g, '')
-            // Uppercases the first character in each group immediately following a space
-            // (delimited by spaces)
-            .replace(/ (.)/g, function ($1) {
-                return $1.toUpperCase();
-            })
-            // Removes spaces
-            .replace(/ /g, '');
+        return ((str != null) && (str = strVal(str))) ?
+            str.toLowerCase()
+                // Replaces any - or _ characters with a space
+                .replace(/[\-_]+/g, ' ')
+                // Removes any non alphanumeric characters
+                .replace(/[^\w\s]/g, '')
+                // Uppercases the first character in each group immediately following a space
+                // (delimited by spaces)
+                .replace(/ (.)/g, function ($1) {
+                    return $1.toUpperCase();
+                })
+                // Removes spaces
+                .replace(/ /g, '')
+            : '';
     }
 
     // Extracts query string from url
@@ -731,23 +787,34 @@
     }
 
     /* Generate url */
-    var rgxProtocol = /^https?:/;
-    $cms.url = function url(url) {};
 
-    $cms.url.absolute = function (relativeUrl) {
-        relativeUrl = strVal(relativeUrl);
+    $cms.url = function () {};
 
-        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
-    };
+    var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
+        rgxHttp = /^https?:(?=\/\/)/i;
+
+    function toProtocolRelative(absoluteUrl) {
+        return strVal(absoluteUrl).replace(rgxProtocol, '');
+    }
 
     function baseUrl(relativeUrl) {
+        if (!relativeUrl && (relativeUrl !== 0)) {
+            return $cms.$BASE_URL_S;
+        }
+
         relativeUrl = strVal(relativeUrl);
+
+        if (rgxHttp.test(relativeUrl)) {
+            // Already an absolute url, just ensure matching protocol as the current page.
+            return relativeUrl.replace(rgxHttp, window.location.protocol);
+        }
+
         return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
     }
 
     // Dynamically fixes the protocol for image URLs
     function img(url) {
-        return strVal(url).replace(rgxProtocol, window.location.protocol);
+        return strVal(url).replace(rgxHttp, window.location.protocol);
     }
 
     function navigate(url, target) {
@@ -755,6 +822,7 @@
 
         if (isEl(url)) {
             el = url;
+            url = '';
 
             if (el.localName === 'a') {
                 url = el.href;
@@ -766,8 +834,6 @@
                 if ('cmsTarget' in el.dataset) {
                     target = el.dataset.cmsTarget;
                 }
-            } else {
-                url = '';
             }
         }
 
@@ -775,7 +841,6 @@
             return;
         }
         target || (target = '_self');
-
         if (target === '_self') {
             window.location = url;
         } else {
@@ -783,27 +848,31 @@
         }
     }
 
+    function parseJson(source) {
+        return window.JSON5.parse(strVal(source));
+    }
+
     function log() {
         if ($cms.$DEV_MODE) {
-            console.log.apply(undefined, arguments);
+            return console.log.apply(undefined, arguments);
         }
     }
 
     function dir() {
         if ($cms.$DEV_MODE) {
-            console.dir.apply(undefined, arguments);
+            return console.dir.apply(undefined, arguments);
         }
     }
 
     function assert() {
         if ($cms.$DEV_MODE) {
-            console.assert.apply(undefined, arguments);
+            return console.assert.apply(undefined, arguments);
         }
     }
 
     function error() {
         if ($cms.$DEV_MODE) {
-            console.error.apply(undefined, arguments);
+            return console.error.apply(undefined, arguments);
         }
     }
 
@@ -816,8 +885,9 @@
         }
     }
 
-    $cms.set_post_data_flag = function set_post_data_flag() {
+    $cms.set_post_data_flag = function set_post_data_flag(flag) {
         var forms = $cms.dom.$$('form'), form, post_data;
+
         for (var i = 0; i < forms.length; i++) {
             form = forms[i];
 
@@ -828,9 +898,9 @@
                 post_data = form.elements['post_data'];
                 post_data.value += ',';
             }
+            post_data.type = 'hidden';
             post_data.name = 'post_data';
             post_data.value += flag;
-            post_data.type = 'hidden';
             form.appendChild(post_data);
         }
     };
@@ -839,140 +909,129 @@
     function inherits(SubClass, SuperClass, protoProps) {
         Object.setPrototypeOf(SubClass, SuperClass);
 
-        defineCW(SubClass, { base: base.bind(SuperClass) });
+        define(SubClass, 'base', base.bind(undefined, SuperClass));
 
         // Set the prototype chain to inherit from `SuperClass`
         SubClass.prototype = Object.create(SuperClass.prototype);
 
-        defineCW(SubClass.prototype, { constructor: SubClass });
+        protoProps || (protoProps = {});
+        protoProps.constructor = SubClass;
 
-        if (protoProps) {
-            assign(SubClass.prototype, protoProps);
-        }
+        define(SubClass.prototype, protoProps);
     }
 
-    /** @private */
-    function base(that, method, args) {
-        var SuperClass = this;
-
-        if ((typeof method !== 'string') && (args === undefined)) {
-            // emulate super() call
-            args = method;
-
-            if (args) {
-                return SuperClass.apply(that, args);
-            } else {
-                return SuperClass.call(that);
-            }
-        }
-
-        // emulate super.method() call
-        if (args) {
-            return SuperClass.prototype[method].apply(that, args);
-        } else {
-            return SuperClass.prototype[method].call(that);
-        }
+    /**
+     *  Emulates super.method() call
+     * @param SuperClass
+     * @param that
+     * @param method
+     * @param args
+     * @returns {*}
+     */
+    function base(SuperClass, that, method, args) {
+        var prop;
+        prop = SuperClass.prototype[method];
+        return (args && args.length) ? prop.apply(that, args) : prop.call(that);
     }
 
     /* Cookies */
 
     // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
-    function CookieMonster() {
-        // Bind method context
-        bindAll(this, ['get', 'getAll', 'set', 'remove']);
-    }
+    function CookieMonster() {}
 
-    CookieMonster.prototype.get = function get(cookieName) {
-        cookieName = strVal(cookieName);
-        if (cookieName) {
-            return this.getAll(cookieName);
-        }
-    };
-
-    CookieMonster.prototype.getAll = function getAll() {
-        // To prevent the for loop in the first place assign an empty array
-        // in case there are no cookies at all. Also prevents odd result when
-        // calling "get()"
-        var cookies = document.cookie ? document.cookie.split('; ') : [],
-            rdecode = /(%[0-9A-Z]{2})+/g,
-            cookieName = arguments[0], // (internal use only)
-            result, i;
-
-        if (cookieName == null) {
-            result = {};
-        }
-
-        for (i = 0; i < cookies.length; i++) {
-            var parts = cookies[i].split('='),
-                cookie = parts.slice(1).join('=');
-
-            if (cookie.startsWith('"') && cookie.endsWith('"')) {
-                cookie = cookie.slice(1, -1);
+    define(CookieMonster.prototype, {
+        get: function get(cookieName) {
+            cookieName = strVal(cookieName);
+            if (cookieName) {
+                return this.getAll(cookieName);
             }
+        },
 
-            var name = parts[0].replace(rdecode, decodeURIComponent);
-            cookie = cookie.replace(rdecode, decodeURIComponent);
+        getAll: function getAll() {
+            // To prevent the for loop in the first place assign an empty array
+            // in case there are no cookies at all. Also prevents odd result when
+            // calling "get()"
+            var cookies = document.cookie ? document.cookie.split('; ') : [],
+                rdecode = /(%[0-9A-Z]{2})+/g,
+                cookieName = arguments[0], // (internal use only)
+                result, i;
 
             if (cookieName == null) {
-                result[name] = cookie;
-            } else if (cookieName === name) {
-                result = cookie;
-                break;
+                result = {};
             }
-        }
 
-        return result;
-    };
+            for (i = 0; i < cookies.length; i++) {
+                var parts = cookies[i].split('='),
+                    cookie = parts.slice(1).join('=');
 
-    CookieMonster.prototype.set = function set(details, value) {
-        var defaults = {
-            value: '',
-            expires: 1, // 1 day
-            path: $cms.$COOKIE_PATH,
-            domain: $cms.$COOKIE_DOMAIN,
-            secure: false
-        };
+                if (cookie.startsWith('"') && cookie.endsWith('"')) {
+                    cookie = cookie.slice(1, -1);
+                }
 
-        if (!isObj(details)) {
-            // `details` is a cookie name
-            details = {
-                name: details,
-                value: value
+                var name = parts[0].replace(rdecode, decodeUC);
+                cookie = cookie.replace(rdecode, decodeUC);
+
+                if (cookieName == null) {
+                    result[name] = cookie;
+                } else if (cookieName === name) {
+                    result = cookie;
+                    break;
+                }
+            }
+
+            return result;
+        },
+
+        set: function set(details, value) {
+            var defaults = {
+                value: '',
+                expires: 1, // 1 day
+                path: $cms.$COOKIE_PATH,
+                domain: $cms.$COOKIE_DOMAIN,
+                secure: false
             };
+
+            if (!isObj(details)) {
+                // `details` is a cookie name
+                details = {
+                    name: details,
+                    value: value
+                };
+            }
+            details = Object.assign(defaults, details);
+
+            if (!isDate(details.expires)) {
+                // Expiry specified in days
+                var expires = new Date();
+                expires.setDate(expires.getDate() + intVal(details.expires)); // Add days to date
+                details.expires = expires;
+            }
+
+            value = encodeUC(strVal(details.value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeUC);
+
+            var cookieName = strVal(details.name);
+            cookieName = encodeUC(cookieName);
+            cookieName = cookieName.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeUC);
+            cookieName = cookieName.replace(/[\(\)]/g, escape);
+
+            document.cookie = [
+                cookieName + '=' + value,
+                details.expires ? '; expires=' + details.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+                details.path ? '; path=' + details.path : '',
+                details.domain ? '; domain=' + details.domain : '',
+                details.secure ? '; secure' : ''
+            ].join('');
+        },
+
+        remove: function remove(cookieName) {
+            var details = {
+                name: cookieName,
+                expiry: -1
+            };
+
+            this.set(details);
         }
-        details = assign(defaults, details);
-
-        if (!isDate(details.expires)) {
-            // Expiry specified in days
-            var expires = new Date();
-            expires.setDate(expires.getDate() + intVal(details.expires)); // Add days to date
-            details.expires = expires;
-        }
-
-        value = encodeURIComponent(strVal(details.value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
-
-        var cookieName = strVal(details.name);
-        cookieName = encodeURIComponent(cookieName);
-        cookieName = cookieName.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
-        cookieName = cookieName.replace(/[\(\)]/g, escape);
-
-        document.cookie = [
-            cookieName + '=' + value,
-            details.expires ? '; expires=' + details.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-            details.path ? '; path=' + details.path : '',
-            details.domain ? '; domain=' + details.domain : '',
-            details.secure ? '; secure' : ''
-        ].join('');
-    };
-
-    CookieMonster.prototype.remove = function remove(cookieName) {
-        var details = {
-            name: cookieName,
-            expiry: -1
-        };
-
-        this.set(details);
-    };
+    });
 
     $cms.cookies || ($cms.cookies = new CookieMonster());
 
@@ -985,7 +1044,7 @@
 
         expires.setDate(expires.getDate() + numDays); // Add days to date
 
-        output = cookieName + '=' + encodeURIComponent(cookieValue) + ';expires=' + expires.toUTCString();
+        output = cookieName + '=' + encodeUC(cookieValue) + ';expires=' + expires.toUTCString();
 
         if ($cms.$COOKIE_PATH) {
             output += ';path=' + $cms.$COOKIE_PATH;
@@ -1009,6 +1068,10 @@
         var cookies = '' + document.cookie,
             startIdx = cookies.startsWith(cookieName + '=') ? 0 : cookies.indexOf(' ' + cookieName + '=');
 
+        if (defaultValue === undefined) {
+            defaultValue = '';
+        }
+
         if ((startIdx === -1) || !cookieName) {
             return defaultValue;
         }
@@ -1022,9 +1085,8 @@
             endIdx = cookies.length;
         }
 
-        return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
+        return decodeUC(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
-
 
     /* Browser feature detection */
     $cms.support || ($cms.support = {});
@@ -1033,42 +1095,44 @@
     $cms.support.cssTransitions = ('transition' in emptyElStyle) || ('WebkitTransition' in emptyElStyle) || ('msTransition' in emptyElStyle);
 
     // If the browser has support for an <input [type=???]>
-    $cms.support.inputTypes = createMap({
+    $cms.support.inputTypes = {
         search: 0, tel: 0, url: 0, email: 0, datetime: 0, date: 0, month: 0,
         week: 0, time: 0, 'datetime-local': 0, number: 0, range: 0, color: 0
-    });
+    };
 
-    var type, bool;
+    (function () {
+        var type, bool, inputEl = document.createElement('input');
 
-    for (type in $cms.support.inputTypes) {
-        emptyInputEl.setAttribute('type', type);
-        bool = emptyInputEl.type !== 'text';
+        for (type in $cms.support.inputTypes) {
+            inputEl.setAttribute('type', type);
+            bool = inputEl.type !== 'text';
 
-        if (bool && (type !== 'search') && (type !== 'tel')) {
-            emptyInputEl.value = smile;
-            emptyInputEl.style.cssText = 'position:absolute;visibility:hidden;';
+            if (bool && (type !== 'search') && (type !== 'tel')) {
+                inputEl.value = smile;
+                inputEl.style.cssText = 'position:absolute;visibility:hidden;';
 
-            if ((type === 'range') && (emptyInputEl.style.WebkitAppearance !== undefined)) {
-                docEl.appendChild(emptyInputEl);
+                if ((type === 'range') && (inputEl.style.WebkitAppearance !== undefined)) {
+                    docEl.appendChild(inputEl);
 
-                bool = (getComputedStyle(emptyInputEl).WebkitAppearance !== 'textfield') && (emptyInputEl.offsetHeight !== 0);
-                docEl.removeChild(emptyInputEl);
-            } else if ((type === 'url') || (type === 'email')) {
-                bool = emptyInputEl.checkValidity && (emptyInputEl.checkValidity() === false);
-            } else {
-                bool = emptyInputEl.value !== smile;
+                    bool = (getComputedStyle(inputEl).WebkitAppearance !== 'textfield') && (inputEl.offsetHeight !== 0);
+                    docEl.removeChild(inputEl);
+                } else if ((type === 'url') || (type === 'email')) {
+                    bool = inputEl.checkValidity && (inputEl.checkValidity() === false);
+                } else {
+                    bool = inputEl.value !== smile;
+                }
             }
-        }
 
-        $cms.support.inputTypes[type] = !!bool;
-    }
+            $cms.support.inputTypes[type] = !!bool;
+        }
+    }());
 
     /* DOM helper methods */
     $cms.dom || ($cms.dom = {});
 
-    function computed(el, property) {
-        var global = el.ownerDocument.defaultView;
-        return global.getComputedStyle(el).getPropertyValue(property);
+    function computedStyle(el, property) {
+        var cs = el.ownerDocument.defaultView.getComputedStyle(el);
+        return (property !== undefined) ? cs.getPropertyValue(property) : cs;
     }
 
     // Returns a single matching child element, defaults to 'document' as parent
@@ -1142,14 +1206,14 @@
     };
 
     // Special attributes that should be set via method calls
-    var mapMethodAttributes = createMap({val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1});
+    var methodAttributes = { val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 };
 
     $cms.dom.create = function (tag, properties) {
         var el = document.createElement(tag);
 
         if (properties) {
             each(properties, function (key, value) {
-                if (key in mapMethodAttributes) {
+                if (key in methodAttributes) {
                     $cms.dom[key](el, value);
                 } else {
                     $cms.dom.attr(el, key, value)
@@ -1188,40 +1252,194 @@
         el.textContent = strVal((typeof text === 'function') ? text.call(el, el.textContent) : text);
     };
 
-    // "true"  => true
-    // "false" => false
-    // "null"  => null
-    // "42"    => 42
-    // "42.5"  => 42.5
-    // "08"    => "08"
-    // JSON    => parse if valid
-    // String  => self
-    function parseJsonish(value) {
-        try {
-            return value ?
-            value === 'true' ||
-            ( value === 'false' ? false :
-                value === 'null' ? null :
-                    (+value + '') == value ? +value :
-                        ((value[0] === '[') || (value[0] === '{')) ? JSON.parse(value) :
-                            value )
-                : value;
-        } catch (e) {
+    var rgxNotWhite = /\S+/g;
+    function Data() {
+        this.expando = $cms.id + Data.uid++;
+    }
+    Data.uid = 1;
+    define(Data.prototype, {
+        cache: function (owner) {
+            // Check if the owner object already has a cache
+            var value = owner[this.expando];
+            // If not, create one
+            if (!value) {
+                value = {};
+
+                // We can accept data for non-element nodes in modern browsers,
+                // but we should not, see #8335.
+                // Always return an empty object.
+                if (!isNode(owner) || isDocOrEl(owner)) {
+                    defineC(owner, this.expando, value);
+                }
+            }
+
             return value;
+        },
+        set: function (owner, data, value) {
+            var prop, cache = this.cache(owner);
+
+            // Handle: [ owner, key, value ] args
+            // Always use camelCase key (gh-2257)
+            if (typeof data === 'string') {
+                cache[camelCase(data)] = value;
+                // Handle: [ owner, { properties } ] args
+            } else {
+                // Copy the properties one-by-one to the cache object
+                for (prop in data) {
+                    cache[camelCase(prop)] = data[prop];
+                }
+            }
+            return cache;
+        },
+        get: function (owner, key) {
+            return key === undefined ?
+                this.cache(owner) :
+                // Always use camelCase key (gh-2257)
+                (owner[this.expando] && owner[this.expando][camelCase(key)]);
+        },
+        access: function (owner, key, value) {
+            // In cases where either:
+            //
+            //   1. No key was specified
+            //   2. A string key was specified, but no value provided
+            //
+            // Take the "read" path and allow the get method to determine
+            // which value to return, respectively either:
+            //
+            //   1. The entire cache object
+            //   2. The data stored at the key
+            //
+            if ((key === undefined) || ((key && (typeof key === 'string')) && (value === undefined))) {
+                return this.get(owner, key);
+            }
+
+            // When the key is not a string, or both a key and value
+            // are specified, set or extend (existing objects) with either:
+            //
+            //   1. An object of properties
+            //   2. A key and value
+            //
+            this.set(owner, key, value);
+
+            // Since the "set" path can have two possible entry points
+            // return the expected data based on which path was taken[*]
+            return (value !== undefined) ? value : key;
+        },
+        remove: function (owner, key) {
+            var i, cache = owner[this.expando];
+
+            if (cache === undefined) {
+                return;
+            }
+
+            if (key !== undefined) {
+                // Support array or space separated string of keys
+                if (Array.isArray(key)) {
+                    // If key is an array of keys...
+                    // We always set camelCase keys, so remove that.
+                    key = key.map(camelCase);
+                } else {
+                    key = camelCase(key);
+                    // If a key with the spaces exists, use it.
+                    // Otherwise, create an array by matching non-whitespace
+                    key = (key in cache) ? [key] : (key.match(rgxNotWhite) || []);
+                }
+
+                i = key.length;
+
+                while (i--) {
+                    delete cache[key[i]];
+                }
+            }
+
+            // Remove the expando if there's no more data
+            if ((key === undefined) || !hasEnumerable(cache)) {
+                // Support: Chrome <=35 - 45
+                // Webkit & Blink performance suffers when deleting properties
+                // from DOM nodes, so set to undefined instead
+                // https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restricted)
+                if (isNode(owner)) {
+                    owner[this.expando] = undefined;
+                } else {
+                    delete owner[this.expando];
+                }
+            }
+        },
+        hasData: function (owner) {
+            var cache = owner[this.expando];
+            return (cache !== undefined) && hasEnumerable(cache);
         }
+    });
+
+    function dataAttr(elem, key, data) {
+        var trimmed;
+        // If nothing was found internally, try to fetch any
+        // data from the HTML5 data-* attribute
+        if ((data === undefined) && (typeof (data = elem.dataset[key]) === 'string')) {
+            trimmed = data.trim();
+
+            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+                data = parseJson(data);
+            }
+
+            // Make sure we set the data so it isn't changed later
+            domData.set(elem, key, data);
+        }
+        return data;
     }
 
-    var rgxCapital = /([A-Z])/g;
-    $cms.dom.data = function (el, name, value) {
-        var attrName = 'data-' + name.replace(rgxCapital, '-$1').toLowerCase();
+    var domData = new Data();
+    /* Data retrieval and storage */
+    $cms.dom.data = function (el, key, value) {
+        var name, data;
 
-        if (value !== undefined) {
-            $cms.dom.attr(el, attrName, value);
+        if (!isEl(el)) {
+            throw new TypeError('$cms.dom.data(): `el` must be of type `HTMLElement`, "' + typeName(el) + '" provided.');
         }
 
-        var data = $cms.dom.attr(el, attrName);
+        // Gets all values
+        if (key === undefined) {
+            data = domData.get(el);
 
-        return (data != null) ? parseJsonish(data) : undefined;
+            if (!domData.hasData(el)) {
+                for (name in el.dataset) {
+                    dataAttr(el, name, data[name]);
+                }
+            }
+
+            return data;
+        }
+
+        // Sets multiple values
+        if (typeof key === 'object') {
+            return domData.set(el, key);
+        }
+
+        if (value === undefined) {
+            // Attempt to get data from the cache
+            // The key will always be camelCased in Data
+            data = domData.get(el, key);
+            if (data !== undefined) {
+                return data;
+            }
+            // Attempt to "discover" the data in
+            // HTML5 custom data-* attrs
+            data = dataAttr(el, key);
+            if (data !== undefined) {
+                return data;
+            }
+
+            // We tried really hard, but the data doesn't exist.
+            return;
+        }
+
+        // Set the data...
+        // We always store the camelCased key
+        domData.set(el, key, strVal(value));
+    };
+
+    $cms.dom.removeData = function (el, key) {
+        domData.remove(el, key);
     };
 
     $cms.dom.width = function (el, value) {
@@ -1378,8 +1596,7 @@
     };
 
     var eventHandlers = {},
-        focusEvents = {focus: 'focusin', blur: 'focusout'},
-        hoverEvents = {mouseenter: 'mouseover', mouseleave: 'mouseout'},
+        focusEvents = { focus: 'focusin', blur: 'focusout' },
         focusinSupported = 'onfocusin' in window;
 
     function parseEventName(event) {
@@ -1396,7 +1613,7 @@
     }
 
     function realEvent(type) {
-        return hoverEvents[type] || (focusinSupported && focusEvents[type]) || type;
+        return (focusinSupported && focusEvents[type]) || type;
     }
 
     function addEvent(el, events, fn, data, selector, delegator, capture) {
@@ -1407,22 +1624,13 @@
             var handler = parseEventName(event);
             handler.fn = fn;
             handler.sel = selector;
-            // emulate mouseenter, mouseleave
-            if (handler.e in hoverEvents) {
-                fn = function (e) {
-                    var related = e.relatedTarget;
-                    if (!related || ((related !== this) && !this.contains(related))) {
-                        return handler.fn.apply(this, arguments);
-                    }
-                };
-            }
             handler.del = delegator;
             var callback = delegator || fn;
             handler.proxy = function (e) {
                 var args = [e, el];
                 e.data = data;
                 if (Array.isArray(e._args)) {
-                    merge(args, e._args);
+                    args = args.concat(e._args);
                 }
                 var result = callback.apply(el, args);
                 if (result === false) {
@@ -1446,10 +1654,10 @@
         }
         return (eventHandlers[uid(element)] || []).filter(function (handler) {
             return handler
-                && (!event.e || handler.e === event.e)
+                && (!event.e || (handler.e === event.e))
                 && (!event.ns || matcher.test(handler.ns))
-                && (!fn || uid(handler.fn) === uid(fn))
-                && (!selector || handler.sel === selector);
+                && (!fn || (uid(handler.fn) === uid(fn)))
+                && (!selector || (handler.sel === selector));
         });
     }
 
@@ -1535,14 +1743,14 @@
         removeEvent(el, event, callback, selector)
     };
 
-    var mapMouseEvents = createMap({click: 1, mousedown: 1, mouseup: 1, mousemove: 1});
+    var mouseEvents = { click: 1, mousedown: 1, mouseup: 1, mousemove: 1 };
 
     $cms.dom.createEvent = function (type, props) {
         if (isObj(type)) {
             props = type;
             type = props.type;
         }
-        var event = document.createEvent((type in mapMouseEvents) ? 'MouseEvents' : 'Events'),
+        var event = document.createEvent((type in mouseEvents) ? 'MouseEvents' : 'Events'),
             bubbles = true,
             cancelable = true;
 
@@ -1576,31 +1784,31 @@
     };
 
     function camelize(str) {
-        return str.replace(/-+(.)?/g, function (match, chr) {
+        return strVal(str).replace(/-+(.)?/g, function (match, chr) {
             return chr ? chr.toUpperCase() : '';
         });
     }
 
     function dasherize(str) {
-        return str.replace(/::/g, '/')
+        return strVal(str).replace(/::/g, '/')
             .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
             .replace(/([a-z\d])([A-Z])/g, '$1_$2')
             .replace(/_/g, '-')
             .toLowerCase();
     }
 
-    var mapCssNumericProps = createMap({'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1});
+    var cssNumericProps = {'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1};
     function maybeAddPx(name, value) {
-        return ((typeof value === 'number') && !(name in mapCssNumericProps)) ? (value + 'px') : value;
+        return ((typeof value === 'number') && !(name in cssNumericProps)) ? (value + 'px') : value;
     }
 
     $cms.dom.css = function (el, property, value) {
         var key;
         if (value === undefined) {
             if (typeof property === 'string') {
-                return el.style[camelize(property)] || getComputedStyle(el).getPropertyValue(property);
+                return el.style[camelize(property)] || computedStyle(el, property);
             } else if (Array.isArray(property)) {
-                var computedStyle = getComputedStyle(el),
+                var computedStyle = computedStyle(el),
                     props = {};
                 property.forEach(function (prop) {
                     props[prop] = (el.style[camelize(prop)] || computedStyle.getPropertyValue(prop));
@@ -1646,12 +1854,13 @@
     // Gets the 'initial' value for an element type's CSS property (only 'display' supported as of now)
     var _initial = {};
     $cms.dom.initial = function (el, property) {
-        var tag = el.localName,
-            doc = el.ownerDocument;
+        var tag = el.localName, doc;
 
         _initial[tag] || (_initial[tag] = {});
 
         if (_initial[tag][property] === undefined) {
+            doc = el.ownerDocument;
+
             if (property === 'display') {
                 var tmp, display;
 
@@ -1674,7 +1883,7 @@
             el.style.removeProperty('display');
         }
 
-        if (getComputedStyle(el).getPropertyValue('display') === 'none') { // Still hidden (with CSS?)
+        if (computedStyle(el, 'display') === 'none') { // Still hidden (with CSS?)
             el.style.display = $cms.dom.initial(el, 'display');
         }
     };
@@ -1723,7 +1932,7 @@
             duration = undefined;
         }
 
-        duration = intVal(duration, 400);
+        duration = Number.isFinite(duration = Math.floor(duration)) ? duration : 400;
 
         var target = $cms.dom.css(el, 'opacity');
 
@@ -1740,17 +1949,17 @@
                 options = { duration : duration },
                 animation = el.animate(keyFrames, options);
 
-            animation.onfinish = function () {
+            animation.onfinish = function (e) {
                 el.style.opacity = target;
 
                 if (callback) {
-                    callback.call(el);
+                    callback.call(el, e, el);
                 }
             };
         } else {
             el.style.opacity = target;
             if (callback) {
-                callback.call(el);
+                callback.call(el, {}, el);
             }
         }
     };
@@ -1761,23 +1970,23 @@
             duration = undefined;
         }
 
-        duration = intVal(duration, 400);
+        duration = Number.isFinite(duration = Math.floor(duration)) ? duration : 400;
 
         if ('animate' in emptyEl) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
                 options = { duration: duration },
                 animation = el.animate(keyFrames, options);
 
-            animation.onfinish = function () {
+            animation.onfinish = function (e) {
                 $cms.dom.hide(el);
                 if (callback) {
-                    callback.call(el);
+                    callback.call(el, e, el);
                 }
             };
         } else {
             $cms.dom.hide(el);
             if (callback) {
-                callback.call(el);
+                callback.call(el, {}, el);
             }
         }
     };
@@ -1849,7 +2058,7 @@
         (value != null) ? el.setAttribute(name, value) : el.removeAttribute(name);
     }
 
-    $cms.dom.attr = function (el, name, value) {
+    $cms.dom.attr = function attr(el, name, value) {
         var key;
 
         if ((typeof name === 'string') && (value === undefined)) {
@@ -1865,9 +2074,9 @@
         }
     };
 
-    $cms.dom.removeAttr = function (el, name) {
+    $cms.dom.removeAttr = function removeAttr(el, name) {
         name.split(' ').forEach(function (attribute) {
-            setAttr(el, attribute)
+            setAttr(el, attribute, null)
         });
     };
 
@@ -1952,7 +2161,7 @@
 
     /* Returns the provided element's width excluding padding and borders */
     $cms.dom.contentWidth = function (el) {
-        var cs = el.ownerDocument.defaultView.getComputedStyle(el),
+        var cs = computedStyle(el),
             padding = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight),
             border = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
 
@@ -1961,20 +2170,20 @@
 
     /* Returns the provided element's height excluding padding and border */
     $cms.dom.contentHeight = function (el) {
-        var cs = el.ownerDocument.defaultView.getComputedStyle(el),
+        var cs = computedStyle(el),
             padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom),
             border = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
 
         return el.offsetHeight - padding - border;
     };
 
-    var mapExcludedTypes = createMap({ submit: 1, reset: 1, button: 1, file: 1 });
+    var serializeExcludedTypes = { submit: 1, reset: 1, button: 1, file: 1 };
     $cms.dom.serializeArray = function (form) {
         var name, result = [];
 
         forEach(form.elements, function (field) {
             name = field.name;
-            if (name && (field.localName !== 'fieldset') && !field.disabled && !(field.type in mapExcludedTypes) && (!['radio', 'checkbox'].includes(field.type) || field.checked)) {
+            if (name && (field.localName !== 'fieldset') && !field.disabled && !(field.type in serializeExcludedTypes) && (!['radio', 'checkbox'].includes(field.type) || field.checked)) {
                 add($cms.dom.val(field));
             }
         });
@@ -1999,8 +2208,6 @@
     };
 
     $cms.settings || ($cms.settings = {});
-
-    $cms.delegates || ($cms.delegates = {});
 
     /* Addons will add "behaviors" under this object */
     $cms.behaviors || ($cms.behaviors = {});
@@ -2032,7 +2239,7 @@
         var behaviors, name;
 
         if (!isDocOrEl(context)) {
-            throw new Error('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
+            throw new TypeError('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
         }
 
         settings || (settings = $cms.settings);
@@ -2060,25 +2267,26 @@
 
     $cms.viewInstances || ($cms.viewInstances = {});
 
-
     // List of view options that can be set as properties.
-    var mapViewOptions = createMap({ el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 });
+    var viewOptionsList = { el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 };
 
     // Initialize
     $cms.View = View;
     function View(params, viewOptions) {
+        // The default `tagName` of a View's element is `"div"`.
+        this.tagName = 'div';
+
         this.initialize.apply(this, arguments);
     }
 
     // Cached regex to split keys for `delegate`.
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
-
-    assign(View.prototype, {
+    define(View.prototype, {
         initialize: function (params, viewOptions) {
             this.params = params || {};
 
             if (isObj(viewOptions)) {
-                for (var key in mapViewOptions) {
+                for (var key in viewOptionsList) {
                     if (key in viewOptions) {
                         this[key] = viewOptions[key];
                     }
@@ -2087,9 +2295,6 @@
 
             this._ensureElement();
         },
-
-        // The default `tagName` of a View's element is `"div"`.
-        tagName: 'div',
 
         $: function (selector) {
             return $cms.dom.$(this.el, selector);
@@ -2132,6 +2337,10 @@
         // alternative DOM manipulation API and are only required to set the `this.el` property.
         _setElement: function (el) {
             this.el = (typeof el === 'string') ? $cms.dom.$(el) : el;
+        },
+
+        events: function () {
+            return {};
         },
 
         // Set callbacks, where `this.events` is a hash of
@@ -2186,7 +2395,7 @@
         _ensureElement: function () {
             var attrs;
             if (!this.el) {
-                attrs = assign({}, result(this, 'attributes'));
+                attrs = Object.assign({}, result(this, 'attributes'));
                 if (this.id) {
                     attrs.id = result(this, 'id');
                 }
@@ -2211,19 +2420,20 @@
     // JavaScript port of php's urlencode function
     // Credit: http://locutus.io/php/url/urlencode/
     function urlencode(str) {
-        str = (str + '');
-        return encodeURIComponent(str)
-            .replace(/!/g, '%21')
-            .replace(/'/g, '%27')
-            .replace(/\(/g, '%28')
-            .replace(/\)/g, '%29')
-            .replace(/\*/g, '%2A')
-            .replace(/%20/g, '+')
-            .replace(/~/g, '%7E');
+        return ((str != null) && (str = strVal(str))) ?
+            encodeUC(str)
+                .replace(/!/g, '%21')
+                .replace(/'/g, '%27')
+                .replace(/\(/g, '%28')
+                .replace(/\)/g, '%29')
+                .replace(/\*/g, '%2A')
+                .replace(/%20/g, '+')
+                .replace(/~/g, '%7E')
+            : '';
     }
 
     // JS port of the cms_url_encode function used by the tempcode filter '&' (UL_ESCAPED)
-    $cms.filter.url = function filterUrl(urlPart, canTryUrlSchemes) {
+    $cms.filter.url = function $cms_filter_url(urlPart, canTryUrlSchemes) {
         var urlPartEncoded = urlencode(strVal(urlPart));
         canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.canTryUrlSchemes;
 
@@ -2237,11 +2447,11 @@
     };
 
     // JS port of the tempcode filter '~' (NL_ESCAPED)
-    $cms.filter.crLf = function filterCrLf(str) {
+    $cms.filter.crLf = function $cms_filter_crLf(str) {
         return strVal(str).replace(/[\r\n]/g, '');
     };
 
-    var mapFilterIdReplace = assign(create(null), {
+    var filterIdReplace = {
         '[': '_opensquare_',
         ']': '_closesquare_',
         '\'': '_apostophe_',
@@ -2250,10 +2460,10 @@
         '+': '_plus_',
         '*': '_star_',
         '/': '__'
-    });
+    };
 
     // JS port of the tempcode filter '|' (ID_ESCAPED)
-    $cms.filter.id = function (str) {
+    $cms.filter.id = function $cms_filter_id(str) {
         var i, char, ascii, out = '';
 
         str = strVal(str);
@@ -2261,12 +2471,18 @@
         for (i = 0; i < str.length; i++) {
             char = str[i];
 
-            if (char in mapFilterIdReplace) {
-                out += mapFilterIdReplace[char];
+            if (char in filterIdReplace) {
+                out += filterIdReplace[char];
             } else {
+                // @TODO (Salman): Need to make sure I ported this block accurately from PHP.
                 ascii = char.charCodeAt(0);
 
-                if (((i !== 0) && (char === '_')) || ((ascii >= 48) && (ascii <= 57)) || ((ascii >= 65) && (ascii <= 90)) || ((ascii >= 97) && (ascii <= 122))) {
+                if (
+                    ((i !== 0) && (char === '_'))
+                    || ((ascii >= 48) && (ascii <= 57))
+                    || ((ascii >= 65) && (ascii <= 90))
+                    || ((ascii >= 97) && (ascii <= 122))
+                ) {
                     out += char;
                 } else {
                     out += '_' + ascii + '_';
@@ -2276,13 +2492,22 @@
 
         if (out === '') {
             out = 'zero_length';
-        }
-
-        if (out[0] === '_') {
+        } else if (out.startsWith('_')) {
             out = 'und_' + out;
         }
 
         return out;
+    };
+
+    // JS port of the tempcode filter '=' (FORCIBLY_ENTITY_ESCAPED)
+    $cms.filter.html = function $cms_filter_html(str) {
+        return ((str != null) && (str = strVal(str))) ?
+            str.replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+            : '';
     };
 
     $cms.parseDataObject = function (data, defaults) {
@@ -2293,7 +2518,7 @@
                 data = JSON.parse(data);
 
                 if (isObj(data)) {
-                    return defaults ? assign({}, defaults, data) : data;
+                    return defaults ? Object.assign({}, defaults, data) : data;
                 }
             } catch (ex) {
                 $cms.error('$cms.parseDataArgs(), error parsing JSON: ' + data, ex);
@@ -2385,9 +2610,29 @@
 
     $cms.views.ModalWindow = ModalWindow;
     function ModalWindow(params) {
-        ModalWindow.base(this, arguments);
+        ModalWindow.base(this, 'constructor', arguments);
 
-        params = assign({ // apply defaults
+        bindAll(this, 'close', 'option', 'reset_dimensions', 'init_box', 'inject', 'remove', 'element', 'getPageSize');
+
+        // Constants
+        this.WINDOW_SIDE_GAP = $cms.$MOBILE ? 5 : 25;
+        this.WINDOW_TOP_GAP = 25; // Will also be used for bottom gap for percentage heights
+        this.BOX_EAST_PERIPHERARY = 4;
+        this.BOX_WEST_PERIPHERARY = 4;
+        this.BOX_NORTH_PERIPHERARY = 4;
+        this.BOX_SOUTH_PERIPHERARY = 4;
+        this.VCENTRE_FRACTION_SHIFT = 0.5; // Fraction of remaining top gap also removed (as overlays look better slightly higher than vertical centre)
+        this.LOADING_SCREEN_HEIGHT = 100;
+
+        // Properties
+        this.boxWrapperEl =  null;
+        this.button_container = null;
+        this.returnValue = null;
+        this.top_window = null;
+        this.iframe_restyle_timer = null;
+
+        // Set params
+        params = defaults({ // apply defaults
             'type': 'alert',
             'opacity': '0.5',
             'width': 'auto',
@@ -2406,26 +2651,11 @@
             'defaultValue': null,
             'target': '_self',
             'input_type': 'text'
-        }, params);
+        }, (params || {}));
 
-        this.type = params.type;
-        this.opacity = params.opacity;
-        this.width = params.width;
-        this.height = params.height;
-        this.title = params.title;
-        this.text = params.text;
-        this.yes_button = params.yes_button;
-        this.no_button = params.no_button;
-        this.cancel_button = params.cancel_button;
-        this.yes = params.yes;
-        this.no = params.no;
-        this.finished = params.finished;
-        this.cancel = params.cancel;
-        this.href = params.href;
-        this.scrollbars = params.scrollbars;
-        this.defaultValue = params.defaultValue;
-        this.target = params.target;
-        this.input_type = params.input_type;
+        for (var key in params) {
+            this[key] = params[key];
+        }
 
         this.top_window = window.top;
         this.top_window = this.top_window.top;
@@ -2435,23 +2665,6 @@
     }
 
     $cms.inherits(ModalWindow, $cms.View, {
-        // Constants
-        WINDOW_SIDE_GAP: $cms.$MOBILE ? 5 : 25,
-        WINDOW_TOP_GAP: 25, // Will also be used for bottom gap for percentage heights
-        BOX_EAST_PERIPHERARY: 4,
-        BOX_WEST_PERIPHERARY: 4,
-        BOX_NORTH_PERIPHERARY: 4,
-        BOX_SOUTH_PERIPHERARY: 4,
-        VCENTRE_FRACTION_SHIFT: 0.5, // Fraction of remaining top gap also removed (as overlays look better slightly higher than vertical centre)
-        LOADING_SCREEN_HEIGHT: 100,
-
-        // Properties
-        boxWrapperEl: null,
-        button_container: null,
-        returnValue: null,
-        top_window: null,
-        iframe_restyle_timer: null,
-
         // Methods...
         close: function (win) {
             if (this.boxWrapperEl) {
@@ -2468,9 +2681,9 @@
         option: function (method) {
             var win = this.top_window; // The below call may end up killing our window reference (for nested alerts), so we need to grab it first
             if (this[method]) {
-                if (this.type == 'prompt') {
+                if (this.type === 'prompt') {
                     this[method](this.input.value);
-                } else if (this.type == 'iframe') {
+                } else if (this.type === 'iframe') {
                     this[method](this.returnValue);
                 } else {
                     this[method]();
@@ -2587,7 +2800,7 @@
             var do_scroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE || (detected_box_height > dim.window_height) || (this.boxWrapperEl.style.position == 'absolute'/*don't switch back to fixed*/)) {
+            if ($cms.$MOBILE || (detected_box_height > dim.window_height) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
                 var was_fixed = (this.boxWrapperEl.style.position == 'fixed');
 
                 this.boxWrapperEl.style.position = 'absolute';
@@ -2616,12 +2829,13 @@
                     if (iframe && ($cms.dom.hasIframeAccess(iframe))) {
                         iframe.contentWindow.scrolled_up_for = true;
                     }
-                } catch (e) {
-                }
+                } catch (ignore) {}
             }
         },
 
         init_box: function () {
+            var button;
+
             this.top_window.overlay_zIndex || (this.top_window.overlay_zIndex = 999999); // Has to be higher than plupload, which is 99999
 
             this.boxWrapperEl = this.element('div', { // Black out the background
@@ -2736,8 +2950,7 @@
             $cms.dom.on(this.boxWrapperEl.firstElementChild, 'click', function (e) {
                 try {
                     that.top_window.cancel_bubbling(e);
-                } catch (e) {
-                }
+                } catch (e) {}
 
                 if ($cms.$MOBILE && (that.type === 'lightbox')) {// IDEA: Swipe detect would be better, but JS does not have this natively yet
                     that.option('right');
@@ -2783,7 +2996,7 @@
 
                     // Fiddle it, to behave like a popup would
                     var name = this.name;
-                    var make_frame_like_popup = function () {
+                    var make_frame_like_popup = function make_frame_like_popup() {
                         if (iframe.parentNode.parentNode.parentNode.parentNode == null && that.iframe_restyle_timer != null) {
                             clearInterval(that.iframe_restyle_timer);
                             that.iframe_restyle_timer = null;
@@ -2879,7 +3092,7 @@
                 case 'lightbox':
                 case 'alert':
                     if (this.yes) {
-                        var button = this.element('button', {
+                        button = this.element('button', {
                             'html': this.yes_button,
                             'class': 'buttons__proceed button_screen_item'
                         });
@@ -2898,7 +3111,7 @@
                     break;
 
                 case 'confirm':
-                    var button = this.element('button', {
+                    button = this.element('button', {
                         'html': this.yes_button,
                         'class': 'buttons__yes button_screen_item',
                         'style': 'font-weight: bold;'
@@ -2907,7 +3120,7 @@
                         that.option('yes');
                     });
                     this.button_container.appendChild(button);
-                    var button = this.element('button', {
+                    button = this.element('button', {
                         'html': this.no_button,
                         'class': 'buttons__no button_screen_item'
                     });
@@ -2933,7 +3146,7 @@
                     container.appendChild(input_wrap);
 
                     if (this.yes) {
-                        var button = this.element('button', {
+                        button = this.element('button', {
                             'html': this.yes_button,
                             'class': 'buttons__yes button_screen_item',
                             'style': 'font-weight: bold;'
@@ -2951,7 +3164,6 @@
 
             // Cancel button handled either via button in corner (if there's no other buttons) or another button in the panel (if there's other buttons)
             if (this.cancel_button) {
-                var button;
                 if (this.button_container.firstChild) {
                     button = this.element('button', {
                         'html': this.cancel_button,
@@ -3047,8 +3259,7 @@
         setStyle: function (el, prop, val) {
             try {
                 el.style[prop] = val;
-            } catch (e) {
-            }
+            } catch (e) {}
         },
 
         getPageSize: function () {
@@ -3072,7 +3283,7 @@
                 all_nodes_selectable: all_nodes_selectable,
                 use_server_id: use_server_id
             },
-            el = $cms.dom.id('tree_list__root_' + name);
+            el = $cms.dom.$('#tree_list__root_' + name);
 
         return new $cms.views.TreeList(options, {el: el});
     };
@@ -3080,7 +3291,7 @@
     $cms.views.TreeList = TreeList;
 
     function TreeList(params) {
-        TreeList.base(this, arguments);
+        TreeList.base(this, 'constructor', arguments);
 
         this.name = params.name;
         this.ajax_url = params.ajax_url;
@@ -3093,12 +3304,12 @@
         $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
-        var url = $cms.$BASE_URL_S + this.ajax_url;
+        var url = baseUrl(this.ajax_url);
         if (params.root_id) {
-            url += '&id=' + encodeURIComponent(params.root_id);
+            url += '&id=' + encodeUC(params.root_id);
         }
         url += '&options=' + this.options;
-        url += '&default=' + encodeURIComponent($cms.dom.id(this.name).value);
+        url += '&default=' + encodeUC($cms.dom.id(this.name).value);
 
         do_ajax_request(url, this);
 
@@ -3200,17 +3411,14 @@
             clear_transition_and_set_opacity(html, 0.0);
             fade_transition(html, 100, 30, 4);
 
-            html.style.display = 'block';
-            if (!xml.firstElementChild) {
-                html.style.display = 'none';
-            }
+            html.style.display = xml.firstElementChild ? 'block' : 'none';
 
             forEach(xml.children, function (node) {
                 var el, html_node, expanding;
 
                 // Special handling of 'options' nodes, inject new options
                 if (node.localName === 'options') {
-                    that.options = encodeURIComponent($cms.dom.html(node));
+                    that.options = encodeUC($cms.dom.html(node));
                     return;
                 }
 
@@ -3286,9 +3494,7 @@
 				</div> \
 			');
                     var expand_button = node_self.querySelector('input');
-                    expand_button.oncontextmenu = function () {
-                        return false;
-                    };
+                    expand_button.oncontextmenu = returnFalse;
                     expand_button.object = that;
                     expand_button.onclick = function (event, automated) {
                         if ($cms.dom.$('#choose_' + that.name)) {
@@ -3309,9 +3515,7 @@
                                 expand_button.onclick(event);
                         }
                     }(expand_button);
-                    a.oncontextmenu = function () {
-                        return false;
-                    };
+                    a.oncontextmenu = returnFalse;
                     a.handleSelection = that.handleSelection;
                     a.firstElementChild.onfocus = function () {
                         this.parentNode.style.outline = '1px dotted';
@@ -3517,7 +3721,7 @@
                 }
 
                 if ((xml_node.getAttribute('has_children') === 'true') && !xml_node.firstElementChild) {
-                    var url = $cms.$BASE_URL_NOHTTP_S + this.object.ajax_url + '&id=' + encodeURIComponent(real_clicked_id) + '&options=' + this.object.options + '&default=' + encodeURIComponent(element.value);
+                    var url = $cms.baseUrl(this.object.ajax_url + '&id=' + encodeUC(real_clicked_id) + '&options=' + this.object.options + '&default=' + encodeUC(element.value));
                     var ob = this.object;
                     do_ajax_request(url, function (ajax_result_frame, ajax_result) {
                         $cms.dom.html(html_node, '');
@@ -3535,7 +3739,6 @@
                 html_node.style.display = 'block';
                 clear_transition_and_set_opacity(html_node, 0.0);
                 fade_transition(html_node, 100, 30, 4);
-
 
                 expand_button.src = $cms.img('{$IMG;,1x/treefield/collapse}');
                 expand_button.title = expand_button.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
@@ -3761,7 +3964,7 @@
             }
 
             // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-            var url = maintain_theme_in_link('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(image_set.join(',')) + '&button_set=' + encodeURIComponent(button_set.join(',')) + '&window_title=' + encodeURIComponent(window_title) + keep_stub());
+            var url = maintain_theme_in_link('{$FIND_SCRIPT;,question_ui}?message=' + encodeUC(message) + '&image_set=' + encodeUC(image_set.join(',')) + '&button_set=' + encodeUC(button_set.join(',')) + '&window_title=' + encodeUC(window_title) + keep_stub());
             if (dialog_width === undefined) {
                 dialog_width = 440;
             }
@@ -3843,7 +4046,7 @@
         ajaxCallbacks;
 
     function do_ajax_request(url, callback__method, post) { // Note: 'post' is not an array, it's a string (a=b)
-        var async = !!callback__method;
+        var async = !!callback__method, index, result;
 
         if (!url.includes('://') && url.startsWith('/')) {
             url = window.location.protocol + '//' + window.location.host + url;
@@ -3852,7 +4055,7 @@
         ajaxInstances || (ajaxInstances = []);
         ajaxCallbacks || (ajaxCallbacks = []);
 
-        var index = ajaxInstances.length;
+        index = ajaxInstances.length;
 
         ajaxInstances[index] = new XMLHttpRequest();
         ajaxCallbacks[index] = callback__method;
@@ -3874,7 +4077,7 @@
             ajaxInstances[index].send(null);
         }
 
-        var result = ajaxInstances[index];
+        result = ajaxInstances[index];
 
         if (!async) {
             delete ajaxInstances[index];
@@ -3899,7 +4102,7 @@
                 if (xhr.status && okStatusCodes.includes(xhr.status)) {
                     // Process the result
                     if ((!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
-                        return this.callAjaxMethod(ajaxCallbacks[i], xhr, null);
+                        return callAjaxMethod(ajaxCallbacks[i], xhr, null);
                     }
 
                     // XML result. Handle with a potentially complex call
@@ -3915,12 +4118,12 @@
                         processRequestChange(xml.documentElement || xml, i);
                     } else {
                         // Error parsing
-                        return this.callAjaxMethod(ajaxCallbacks[i], null, null);
+                        return callAjaxMethod(ajaxCallbacks[i], null, null);
                     }
                 } else {
                     // HTTP error...
 
-                    this.callAjaxMethod(ajaxCallbacks[i], null, null);
+                    callAjaxMethod(ajaxCallbacks[i], null, null);
 
                     try {
                         if ((xhr.status === 0) || (xhr.status === 12029)) {// 0 implies site down, or network down
@@ -3931,10 +4134,10 @@
                                 window.network_down = true;
                             }
                         } else {
-                            console.log('{!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.');
+                            $cms.log('{!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.');
                         }
                     } catch (e) {
-                        console.log('{!PROBLEM_RETRIEVING_XML;^}'); // This is probably clicking back
+                        $cms.log('{!PROBLEM_RETRIEVING_XML;^}'); // This is probably clicking back
                     }
                 }
             });
@@ -3955,7 +4158,7 @@
                 // Either an error or a message was returned. :(
                 var message = messageEl.firstChild.data;
 
-                this.callAjaxMethod(method, null, null);
+                callAjaxMethod(method, null, null);
 
                 if (ajaxResultFrame.querySelector('error')) {
                     // It's an error :|
@@ -3969,11 +4172,11 @@
 
             var ajaxResultEl = ajaxResultFrame.querySelector('result');
             if (!ajaxResultEl) {
-                this.callAjaxMethod(method, null, null);
+                callAjaxMethod(method, null, null);
                 return;
             }
 
-            this.callAjaxMethod(ajaxResultFrame, ajaxResultEl);
+            callAjaxMethod(ajaxResultFrame, ajaxResultEl);
         }
 
         function handleErrorsInResult(xhr) {
@@ -3988,26 +4191,24 @@
             }
 
             if (xhr.responseText && xhr.responseText.includes('<html')) {
-                console.log(xhr);
-
+                $cms.log(xhr);
                 fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
 
-        function callAjaxMethod(method, ajaxResultFrame, ajaxResult)
-        {
-            if (method instanceof Array) {
+        function callAjaxMethod(method, ajaxResultFrame, ajaxResult) {
+            if (Array.isArray(method)) {
                 if (ajaxResultFrame != null) {
-                    method = (typeof method[0] == 'undefined') ? null : method[0];
+                    method = (method[0] === undefined) ? null : method[0];
                 } else {
-                    method = (typeof method[1] == 'undefined') ? null : method[1];
+                    method = (method[1] === undefined) ? null : method[1];
                 }
             } else {
                 if (ajaxResultFrame == null) method = null; // No failure method given, so don't call
             }
 
             if (method != null) {
-                if (typeof method.response != 'undefined') {
+                if (method.response !== undefined) {
                     method.response(ajaxResultFrame, ajaxResult);
                 } else {
                     method(ajaxResultFrame, ajaxResult);
@@ -4053,8 +4254,8 @@
 
         smooth_scroll(find_pos_y(form, true));
 
-        var outer = $cms.dom.id('comments_posting_form_outer');
-        if (outer && !$cms.dom.isDisplayed(outer)) {
+        var outer = $cms.dom.$('#comments_posting_form_outer');
+        if (outer && $cms.dom.notDisplayed(outer)) {
             $cms.toggleableTray(outer);
         }
 
@@ -4080,6 +4281,9 @@
         manage_scroll_height(post);
         post.scrollTop = post.scrollHeight;
     }
+
+
+
 }(window.$cms, JSON.parse(document.getElementById('composr-symbol-data').content)));
 
 function noop() {}
@@ -4125,7 +4329,7 @@ function noop() {}
         }
 
         var value = field.value,
-            ee = $cms.dom.id('error_' + field.id);
+            ee = $cms.dom.$('#error_' + field.id);
 
         if ((value.replace(/\s/g, '') === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
             if (event) {
@@ -4168,7 +4372,7 @@ function noop() {}
     function get_main_cms_window(any_large_ok) {
         any_large_ok = !!any_large_ok;
 
-        if ($cms.dom.id('main_website')) {
+        if ($cms.dom.$('#main_website')) {
             return window;
         }
 
@@ -4250,8 +4454,7 @@ function noop() {}
         new Image().src = rollover; // precache
 
         $cms.dom.on(img, 'mouseover', activate);
-        $cms.dom.on(img, 'click', deactivate);
-        $cms.dom.on(img, 'mouseout', deactivate);
+        $cms.dom.on(img, 'click mouseout', deactivate);
 
         function activate() {
             img.old_src = img.getAttribute('src');
@@ -4360,7 +4563,7 @@ function confirm_session(callback) {
                         } else {
                             _confirm_session(callback, username, url); // Recurse
                         }
-                    }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
+                    }, 'login_username=' + encodeUC(username) + '&password=' + encodeUC(promptt));
                 } else {
                     callback(false);
                 }
@@ -4374,12 +4577,13 @@ function confirm_session(callback) {
 
 /* Dynamic inclusion */
 function load_snippet(snippet_hook, post, callback) {
-    var title = $cms.dom.html(document.querySelector('title'));
-    title = title.replace(/ \u2013 .*/, '');
-    var metas = document.getElementsByTagName('link'), i;
     if (!window.location) { // In middle of page navigation away
         return null;
     }
+
+    var title = $cms.dom.html(document.querySelector('title'));
+    title = title.replace(/ \u2013 .*/, '');
+    var metas = document.getElementsByTagName('link'), i;
     var url = window.location.href;
     for (i = 0; i < metas.length; i++) {
         if (metas[i].getAttribute('rel') === 'canonical') {
@@ -4389,7 +4593,7 @@ function load_snippet(snippet_hook, post, callback) {
     if (!url) {
         url = window.location.href;
     }
-    var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + keep_stub(),
+    var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeUC(url) + '&title=' + encodeUC(title) + keep_stub(),
         html = do_ajax_request(maintain_theme_in_link(url2), callback, post);
     if (callback) {
         return null;
@@ -4408,7 +4612,7 @@ function require_css(sheet) {
 }
 function require_javascript(script, detector, callback) {
     // Check it is not already loading
-    if ($cms.dom.id('loading_js_' + script)) {
+    if ($cms.dom.$('#loading_js_' + script)) {
         return;
     }
 
@@ -4437,7 +4641,7 @@ function find_url_tab(hash) {
     if (hash.replace(/^#/, '') !== '') {
         var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
 
-        if ($cms.dom.id('g_' + tab)) {
+        if ($cms.dom.$('#g_' + tab)) {
             select_tab('g', tab);
         }
         else if ((tab.indexOf('__') != -1) && ($cms.dom.id('g_' + tab.substr(0, tab.indexOf('__'))))) {
@@ -4452,7 +4656,7 @@ function select_tab(id, tab, from_url, automated) {
     automated = !!automated;
 
     if (!from_url) {
-        var tab_marker = $cms.dom.id('tab__' + tab.toLowerCase());
+        var tab_marker = $cms.dom.$('#tab__' + tab.toLowerCase());
         if (tab_marker) {
             // For URL purposes, we will change URL to point to tab
             // HOWEVER, we do not want to cause a scroll so we will be careful
@@ -4484,7 +4688,7 @@ function select_tab(id, tab, from_url, automated) {
             }
         }
 
-        element = $cms.dom.id('t_' + tabs[i]);
+        element = $cms.dom.$('#t_' + tabs[i]);
         if (element) {
             element.classList.toggle('tab_active', tabs[i] === tab);
         }
@@ -4518,7 +4722,7 @@ function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
 
     illustrate_frame_load(frame);
 
-    var ifuob = window.top.$cms.dom.id('iframe_under');
+    var ifuob = window.top.$cms.dom.$('#iframe_under');
     var extra = ifuob ? ((window != window.top) ? find_pos_y(ifuob) : 0) : 0;
     if (ifuob) {
         ifuob.scrolling = 'no';
@@ -4605,8 +4809,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     if (!$cms.$CONFIG_OPTION.enable_animations) {
         try {
             window.scrollTo(0, dest_y);
-        } catch (e) {
-        }
+        } catch (e) {}
         return;
     }
 
@@ -4809,7 +5012,7 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     }
 
     function modsecurity_workaround_ajax(data) {
-        return '_data=' + encodeURIComponent(_modsecurity_workaround(data));
+        return '_data=' + encodeUC(_modsecurity_workaround(data));
     }
 
     function _modsecurity_workaround(data) {
@@ -5238,7 +5441,7 @@ function add_form_marked_posts(work_on, prefix) {
         var bits = append.split('&');
         for (i = 0; i < bits.length; i++) {
             if (bits[i] !== '') {
-                var hidden = assign(document.createElement('input'), {
+                var hidden = Object.assign(document.createElement('input'), {
                     name: bits[i].substr(0, bits[i].indexOf('=1')),
                     type: 'hidden',
                     value: '1'
@@ -5261,7 +5464,7 @@ function cancel_bubbling(event) {
 /* Update a URL to maintain the current theme into it */
 function maintain_theme_in_link(url) {
     var usp = $cms.uspFromUrl(url),
-        theme = encodeURIComponent($cms.$THEME);
+        theme = encodeUC($cms.$THEME);
 
     if (usp.keys().next().done) {
         // `url` doesn't have a query string
@@ -5315,7 +5518,7 @@ function careful_import_node(node) {
 }
 
 /* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
-function ga_track(ob, category, action) {
+function ga_track(el, category, action) {
     if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
         return;
     }
@@ -5325,17 +5528,16 @@ function ga_track(ob, category, action) {
     }
 
     if (action === undefined) {
-        action = ob ? ob.href : '{!UNKNOWN;^}';
+        action = el ? el.href : '{!UNKNOWN;^}';
     }
 
     try {
         window.ga('send', 'event', category, action);
-    } catch (ignore) {
-    }
+    } catch (ignore) {}
 
-    if (ob) {
+    if (el) {
         setTimeout(function () {
-            click_link(ob);
+            click_link(el);
         }, 100);
 
         return false;
@@ -5344,7 +5546,7 @@ function ga_track(ob, category, action) {
 
 /* Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click) */
 function click_link(link) {
-    var tmp, cancelled;
+    var old, cancelled;
 
     if (link && (link.localName !== 'a') && (link.localName !== 'input')) {
         link = link.querySelector('a, input');
@@ -5354,10 +5556,10 @@ function click_link(link) {
         return;
     }
 
-    tmp = link.onclick;
+    old = link.onclick;
     link.onclick = null;
     cancelled = !$cms.dom.trigger(link, {type: 'click', bubbles: false});
-    link.onclick = tmp;
+    link.onclick = old;
 
     if (!cancelled && link.href) {
         if (!link.target || (link.target === '_self')) {
@@ -5408,7 +5610,7 @@ function play_self_audio_link(ob) {
 
         window.clearInterval(timer);
         window.soundManager.setup({
-            url: $cms.$BASE_URL_S + 'data',
+            url: baseUrl('data'),
             debugMode: false,
             onready: function () {
                 var sound_object = window.soundManager.createSound({url: ob.href});
@@ -5501,8 +5703,7 @@ function play_self_audio_link(ob) {
         if (uid && timeouts[uid]) {
             try { // Cross-frame issues may cause error
                 window.clearTimeout(timeouts[uid]);
-            } catch (ignore) {
-            }
+            } catch (ignore) {}
             delete timeouts[uid];
         }
     }
@@ -5532,8 +5733,6 @@ function play_self_audio_link(ob) {
 
  */
 'use strict';
-
-
 
 function open_images_into_lightbox(imgs, start) {
     start = +start || 0;
@@ -5964,7 +6163,9 @@ function faux_open(url, name, options, target, cancel_text) {
 
         var _pagination = wrapper.querySelectorAll('.pagination');
 
-        if (_pagination.length == 0) return false;
+        if (_pagination.length === 0) {
+            return false;
+        }
 
         var more_links = [], found_new_links = null;
 
@@ -6171,7 +6372,7 @@ function faux_open(url, name, options, target, cancel_text) {
             }
             for (j in extra_params) {
                 url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-                url_stub += j + '=' + encodeURIComponent(extra_params[j]);
+                url_stub += j + '=' + encodeUC(extra_params[j]);
             }
 
             // Any POST parameters?
@@ -6180,7 +6381,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 post_params = '';
                 for (j = 0; j < this.elements.length; j++) {
                     if (this.elements[j].name) {
-                        param = this.elements[j].name + '=' + encodeURIComponent(clever_find_value(this, this.elements[j]));
+                        param = this.elements[j].name + '=' + encodeUC(clever_find_value(this, this.elements[j]));
 
                         if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
                             if (post_params != '') post_params += '&';
@@ -6231,7 +6432,7 @@ function faux_open(url, name, options, target, cancel_text) {
         }
 
         var ajax_url = url;
-        if (new_block_params != '') ajax_url += '&block_map_sup=' + encodeURIComponent(new_block_params);
+        if (new_block_params != '') ajax_url += '&block_map_sup=' + encodeUC(new_block_params);
         ajax_url += '&utheme=' + $cms.$THEME;
         if ((_blockDataCache[ajax_url] !== undefined) && post_params == null) {
             // Show results from cache
@@ -6268,7 +6469,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 css: {
                     position: 'absolute',
                     zIndex: 1000,
-                    left: (target_div.offsetWidth / 2 - 10) + 'px',
+                    left: (target_div.offsetWidth / 2 - 10) + 'px'
                 }
             });
             if (!append) {
@@ -6352,7 +6553,7 @@ function faux_open(url, name, options, target, cancel_text) {
         if ((xmlhttp.responseText != '') && (xmlhttp.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
             if (xmlhttp.responseText != 'false') {
                 if (xmlhttp.responseText.length > 1000) {
-                    console.log(xmlhttp.responseText);
+                    $cms.log(xmlhttp.responseText);
 
                     fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;^}', true);
                 } else {
@@ -6377,7 +6578,7 @@ function faux_open(url, name, options, target, cancel_text) {
     function update_ajax_search_list(target, e, search_type) {
         var special = 'search';
         if (search_type !== undefined) {
-            special += '&search_type=' + encodeURIComponent(search_type);
+            special += '&search_type=' + encodeUC(search_type);
         }
         update_ajax_member_list(target, special, false, e);
     }
@@ -6425,7 +6626,7 @@ function faux_open(url, name, options, target, cancel_text) {
         var v = target.value;
 
         currentListForEl = target;
-        var url = '{$FIND_SCRIPT;,namelike}?id=' + encodeURIComponent(v);
+        var url = '{$FIND_SCRIPT;,namelike}?id=' + encodeUC(v);
         if (special) {
             url = url + '&special=' + special;
         }
@@ -6652,7 +6853,7 @@ function password_strength(ob) {
     var _ind = $cms.dom.id('password_strength_' + ob.id);
     if (!_ind) return;
     var ind = _ind.querySelector('div');
-    var post = 'password=' + encodeURIComponent(ob.value);
+    var post = 'password=' + encodeUC(ob.value);
     if (ob.form && ob.form.elements['username'] !== undefined) {
         post += '&username=' + ob.form.elements['username'].value;
     } else {
@@ -7083,7 +7284,7 @@ function check_form(the_form, for_preview) {
             if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
                 error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
             }
-            if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(my_value)))) {
+            if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeUC(my_value)))) {
                 error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
             }
             if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {

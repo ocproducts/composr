@@ -3,7 +3,7 @@
 
     $cms.views.ZoneEditorScreen = ZoneEditorScreen;
     function ZoneEditorScreen(params) {
-        ZoneEditorScreen.base(this, arguments);
+        ZoneEditorScreen.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(ZoneEditorScreen, $cms.View, {
@@ -47,7 +47,7 @@
 
     $cms.views.ZoneEditorPanel = ZoneEditorPanel;
     function ZoneEditorPanel(params) {
-        ZoneEditorPanel.base(this, arguments);
+        ZoneEditorPanel.base(this, 'constructor', arguments);
 
         this.id = params.id;
 

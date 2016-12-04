@@ -4,7 +4,7 @@
     $cms.views.CnsForumTopicWrapper = CnsForumTopicWrapper;
 
     function CnsForumTopicWrapper() {
-        CnsForumTopicWrapper.base(this, arguments);
+        CnsForumTopicWrapper.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(CnsForumTopicWrapper, $cms.View, {

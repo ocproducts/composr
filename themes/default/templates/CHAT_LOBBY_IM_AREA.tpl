@@ -24,7 +24,7 @@
 				<em class="loading">{!LOADING}</em>
 			</div>
 			<div class="im_close_button">
-				<input id="close_button_{CHATROOM_ID*}" class="button_micro buttons__clear" type="button" value="{!END_CHAT}" onclick="close_chat_conversation({CHATROOM_ID%});" />
+				<input id="close_button_{CHATROOM_ID*}" class="button_micro buttons__clear js-click-close-chat-conversation" type="button" value="{!END_CHAT}" />
 			</div>
 		</div>
 

@@ -6,7 +6,7 @@
     $cms.views.ComcodeMediaSet = ComcodeMediaSet;
 
     function Attachment(params) {
-        Attachment.base(this, arguments);
+        Attachment.base(this, 'constructor', arguments);
 
         preinit_file_input("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
 
@@ -26,7 +26,7 @@
     });
 
     function Carousel(params) {
-        Carousel.base(this, arguments);
+        Carousel.base(this, 'constructor', arguments);
 
         var id = params.carouselId,
             carousel_ns = document.getElementById('carousel_ns_' + id);
@@ -124,7 +124,7 @@
     });
 
     function ComcodeMediaSet(params) {
-        ComcodeMediaSet.base(this, arguments);
+        ComcodeMediaSet.base(this, 'constructor', arguments);
 
         if ($cms.$CONFIG_OPTION.js_overlays) {
             this.setup(params);
@@ -209,7 +209,7 @@
     });
 
     function AttachmentsBrowser() {
-        AttachmentsBrowser.base(this, arguments);
+        AttachmentsBrowser.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(AttachmentsBrowser, $cms.View, {
