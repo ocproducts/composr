@@ -35,7 +35,7 @@ class Module_subscriptions
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 5;
+        $info['version'] = 6;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -66,7 +66,7 @@ class Module_subscriptions
 
         if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('subscriptions', array(
-                'id' => '*AUTO', // linked to IPN with this
+                'id' => '*AUTO',
                 's_type_code' => 'ID_TEXT',
                 's_member_id' => 'MEMBER',
                 's_state' => 'ID_TEXT', // pending|new|active|cancelled (pending means payment has been requested)
@@ -75,7 +75,7 @@ class Module_subscriptions
                 's_time' => 'TIME',
                 's_auto_fund_source' => 'ID_TEXT', // The payment gateway
                 's_auto_fund_key' => 'SHORT_TEXT', // Used by PayPal for nothing much, but is of real use if we need to schedule our own subscription transactions
-                's_via' => 'ID_TEXT', // An eCommerce hook or 'manual'
+                's_payment_gateway' => 'ID_TEXT', // An eCommerce hook or 'manual'
 
                 // Copied through from what the hook says at setup, in case the hook later changes
                 's_length' => 'INTEGER',
@@ -135,6 +135,12 @@ class Module_subscriptions
             }
 
             $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_auto_recur', 'BINARY', 1);
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+            $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_payment_gateway', 'ID_TEXT', 's_payment_gateway');
+
+            $GLOBALS['SITE_DB']->create_index('subscriptions', 's_member_id', array('s_member_id'));
         }
 
         pop_db_scope_check();
@@ -246,24 +252,23 @@ class Module_subscriptions
     public function cancel()
     {
         $id = get_param_integer('id');
-        $via = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_via', array('id' => $id));
-        if ($via === null) {
+        $payment_gateway = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_payment_gateway', array('id' => $id));
+        if ($payment_gateway === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
-        if (($via != 'manual') && ($via != '')) {
-            require_code('hooks/systems/ecommerce_via/' . filter_naughty($via));
-            $hook = object_factory($via);
-            if ($hook->auto_cancel($id) !== true) {
+        if (($payment_gateway != 'manual') && ($payment_gateway != '')) {
+            require_code('hooks/systems/payment_gateway/' . filter_naughty($payment_gateway));
+            $payment_gateway_object = object_factory($payment_gateway);
+            if ($payment_gateway_object->auto_cancel($id) !== true) {
                 // Because we cannot TRIGGER a REMOTE cancellation, we have it so the local user action triggers that notification, informing the staff to manually do a remote cancellation
                 require_code('notifications');
-                $trans_id = $GLOBALS['SITE_DB']->query_select_value('transactions', 'id', array('t_purchase_id' => strval($id)));
                 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-                dispatch_notification('subscription_cancelled_staff', null, do_lang('SUBSCRIPTION_CANCELLED_SUBJECT', null, null, null, get_site_default_lang()), do_notification_lang('SUBSCRIPTION_CANCELLED_BODY', $trans_id, $username, null, get_site_default_lang()));
+                dispatch_notification('subscription_cancelled_staff', null, do_lang('SUBSCRIPTION_CANCELLED_SUBJECT', null, null, null, get_site_default_lang()), do_notification_lang('SUBSCRIPTION_CANCELLED_BODY', strval($id), $username, null, get_site_default_lang()));
             }
         }
 
-        $GLOBALS['SITE_DB']->query_delete('subscriptions', array('id' => $id, 's_member_id' => get_member()), '', 1);
+        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_state' => 'cancelled'), array('id' => $id, 's_member_id' => get_member()), '', 1);
 
         $url = build_url(array('page' => '_SELF'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

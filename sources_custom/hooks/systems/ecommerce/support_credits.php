@@ -41,7 +41,7 @@ function handle_support_credits($purchase_id, $details, $type_code)
     // Increment the number of credits this customer has
     require_code('cns_members_action2');
     $fields = cns_get_custom_field_mappings($member_id);
-    cns_set_custom_field($member_id, $cpf_id, intval($fields['field_' . strval($cpf_id)]) + intval($num_credits));
+    cns_set_custom_field($member_id, $cpf_id, strval($fields['field_' . strval($cpf_id)] + $num_credits));
 
     // Update the row in the credit_purchases table
     $GLOBALS['SITE_DB']->query_update('credit_purchases', array('purchase_validated' => 1), array('purchase_id' => intval($purchase_id)));

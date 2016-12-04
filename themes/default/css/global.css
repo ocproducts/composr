@@ -350,6 +350,7 @@ iframe {
 /*{+START,IF,{$MOBILE}}*/
 	select {
 		max-width: 100px;
+		white-space: nowrap !important;
 	}
 
 	/* This prevents automatic zooming when selecting inputs */
@@ -2936,6 +2937,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	padding-right: 5px;
 	background-origin: content-box;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	min-height: 26px;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.staff_actions {
@@ -4342,7 +4344,7 @@ figure {
 }
 
 a[rel="lightbox"] {
-	display: inline-block; /* Stops "_" showing when we use white-space */
+	text-decoration: none; /* Stops "_" showing when we use white-space */
 }
 
 .attachment img {

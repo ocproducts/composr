@@ -32,36 +32,36 @@ class Hook_cns_cpf_filter_options
     {
         $cpf = array();
 
-        if (get_option('cpf_enable_phone') == '1') {
-            $cpf = array_merge($cpf, array('mobile_phone_number' => true));
+        if (get_option('cpf_enable_name') == '1') {
+            $cpf = array_merge($cpf, array('firstname' => true, 'lastname' => true));
         }
 
         if (get_option('cpf_enable_street_address') == '1') {
             $cpf = array_merge($cpf, array('street_address' => true));
         }
 
-        if (get_option('cpf_enable_state') == '1') {
-            $cpf = array_merge($cpf, array('state' => true));
+        if (get_option('cpf_enable_city') == '1') {
+            $cpf = array_merge($cpf, array('city' => true));
         }
 
         if (get_option('cpf_enable_county') == '1') {
             $cpf = array_merge($cpf, array('county' => true));
         }
 
-        if (get_option('cpf_enable_country') == '1') {
-            $cpf = array_merge($cpf, array('country' => true));
+        if (get_option('cpf_enable_state') == '1') {
+            $cpf = array_merge($cpf, array('state' => true));
         }
 
         if (get_option('cpf_enable_post_code') == '1') {
             $cpf = array_merge($cpf, array('post_code' => true));
         }
 
-        if (get_option('cpf_enable_city') == '1') {
-            $cpf = array_merge($cpf, array('city' => true));
+        if (get_option('cpf_enable_country') == '1') {
+            $cpf = array_merge($cpf, array('country' => true));
         }
 
-        if (get_option('cpf_enable_name') == '1') {
-            $cpf = array_merge($cpf, array('firstname' => true, 'lastname' => true));
+        if (get_option('cpf_enable_phone') == '1') {
+            $cpf = array_merge($cpf, array('mobile_phone_number' => true));
         }
 
         return $cpf;

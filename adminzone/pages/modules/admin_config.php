@@ -651,11 +651,11 @@ class Module_admin_config
             (substr(cms_srv('SERVER_SOFTWARE'), 0, 6) == 'Apache') &&
             (
                 (!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) ||
-                (strpos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) ||
+                (stripos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) ||
                 ((function_exists('apache_get_modules')) && (!in_array('mod_rewrite', apache_get_modules())))
             )
         ) {
-            $http_result = http_get_contents(get_base_url() . '/sitemap.htm', array('trigger_error' => false, 'no_redirect' => true));
+            $http_result = http_get_contents(get_base_url() . '/pg/keymap', array('trigger_error' => false, 'no_redirect' => true));
             if (($http_result->data != '') && ($http_result->message == '404')) {
                 warn_exit(do_lang_tempcode('BEFORE_MOD_REWRITE'));
             }

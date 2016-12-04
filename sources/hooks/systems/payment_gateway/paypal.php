@@ -21,8 +21,19 @@
 /**
  * Hook class.
  */
-class Hook_ecommerce_via_paypal
+class Hook_payment_gateway_paypal
 {
+    /**
+     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+     *
+     * @param  float $amount A transaction amount.
+     * @return float The fee
+     */
+    public function get_transaction_fee($amount)
+    {
+        return round(0.25 + 0.034 * $amount, 2);
+    }
+
     /**
      * Get the PayPal payment address.
      *
@@ -30,7 +41,7 @@ class Hook_ecommerce_via_paypal
      */
     protected function _get_payment_address()
     {
-        return trim(ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn'));
+        return ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
     }
 
     /**
@@ -55,30 +66,86 @@ class Hook_ecommerce_via_paypal
      */
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
+        // https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/formbasics/
+
         $payment_address = $this->_get_payment_address();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
 
-        $user_details = array();
-        if (!is_guest()) {
-            $user_details['first_name'] = get_cms_cpf('firstname');
-            $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zip'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-        }
+        // We only need this record so that we can know what member made the payment; but as we're using it we'll pass this as the custom value
+        $trans_id = $this->generate_trans_id();
+        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+            'id' => $trans_id,
+            'e_type_code' => $type_code,
+            'e_purchase_id' => $purchase_id,
+            'e_item_name' => $item_name,
+            'e_member_id' => get_member(),
+            'e_amount' => float_to_raw_string($amount),
+            'e_currency' => $currency,
+            'e_ip_address' => get_ip_address(),
+            'e_session_id' => get_session_id(),
+            'e_time' => time(),
+            'e_length' => null,
+            'e_length_units' => '',
+        ));
 
-        return do_template('ECOM_BUTTON_VIA_PAYPAL', array(
+        return do_template('ECOM_TRANSACTION_BUTTON_VIA_PAYPAL', array(
             '_GUID' => 'b0d48992ed17325f5e2330bf90c85762',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
-            'MEMBER_ADDRESS' => $user_details,
+            'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
+        ));
+    }
+
+    /**
+     * Make a transaction (payment) button for multiple shopping cart items.
+     * Optional method, provides more detail than make_transaction_button.
+     *
+     * @param  array $items Items array.
+     * @param  Tempcode $currency Currency symbol.
+     * @param  AUTO_LINK $order_id Order ID.
+     * @return Tempcode The button.
+     */
+    public function make_cart_transaction_button($items, $currency, $order_id)
+    {
+        $payment_address = $this->_get_payment_address();
+
+        $form_url = $this->_get_remote_form_url();
+
+        $notification_text = do_lang_tempcode('CHECKOUT_NOTIFICATION_TEXT', strval($order_id));
+
+        // We only need this record so that we can know what member made the payment; but as we're using it we'll pass this as the custom value
+        $trans_id = $this->generate_trans_id();
+        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+            'id' => $trans_id,
+            'e_type_code' => 'cart_orders',
+            'e_purchase_id' => strval($order_id),
+            'e_item_name' => '',
+            'e_member_id' => get_member(),
+            'e_amount' => '',
+            'e_currency' => $currency,
+            'e_ip_address' => get_ip_address(),
+            'e_session_id' => get_session_id(),
+            'e_time' => time(),
+            'e_length' => null,
+            'e_length_units' => '',
+        ));
+
+        return do_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(
+            '_GUID' => '89b7edf976ef0143dd8dfbabd3378c95',
+            'ITEMS' => $items,
+            'CURRENCY' => $currency,
+            'PAYMENT_ADDRESS' => $payment_address,
+            'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
+            'ORDER_ID' => strval($order_id),
+            'TRANS_ID' => $trans_id,
+            'NOTIFICATION_TEXT' => $notification_text,
         ));
     }
 
@@ -97,10 +164,25 @@ class Hook_ecommerce_via_paypal
      */
     public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
     {
-        // NB: We don't support PayPal's "recur_times", but that's fine because it's really not that useful (we can just set a long non-recurring subscription to the same effect)
+        // We only need this record so that we can know what member made the payment; but as we're using it we'll pass this as the custom value
+        $trans_id = $this->generate_trans_id();
+        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+            'id' => $trans_id,
+            'e_type_code' => $type_code,
+            'e_purchase_id' => $purchase_id,
+            'e_item_name' => $item_name,
+            'e_member_id' => get_member(),
+            'e_amount' => float_to_raw_string($amount),
+            'e_currency' => $currency,
+            'e_ip_address' => get_ip_address(),
+            'e_session_id' => get_session_id(),
+            'e_time' => time(),
+            'e_length' => null,
+            'e_length_units' => '',
+        ));
 
         $payment_address = $this->_get_payment_address();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL', array(
             '_GUID' => '7c8b9ce1f60323e118da1bef416adff3',
             'TYPE_CODE' => $type_code,
@@ -108,11 +190,36 @@ class Hook_ecommerce_via_paypal
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
         ));
+    }
+
+    /**
+     * Get a member address/etc for use in payment buttons.
+     *
+     * @return array A map of member address details (form field name => address value).
+     */
+    protected function _build_member_address()
+    {
+        $member_address = array();
+        if (!is_guest()) {
+            $member_address['first_name'] = get_cms_cpf('firstname');
+            $member_address['last_name'] = get_cms_cpf('lastname');
+            $address_lines = explode("\n", get_cms_cpf('street_address'));
+            $member_address['address1'] = $address_lines[0];
+            unset($address_lines[0]);
+            $member_address['address2'] = implode(', ', $address_lines);
+            $member_address['city'] = get_cms_cpf('city');
+            $member_address['state'] = get_cms_cpf('state');
+            $member_address['zip'] = get_cms_cpf('post_code');
+            $member_address['country'] = get_cms_cpf('country');
+        }
+        return $member_address;
     }
 
     /**
@@ -123,39 +230,29 @@ class Hook_ecommerce_via_paypal
      */
     public function make_cancel_button($purchase_id)
     {
-        return do_template('ECOM_CANCEL_BUTTON_VIA_PAYPAL', array('_GUID' => '091d7449161eb5c4f6129cf89e5e8e7e', 'PURCHASE_ID' => $purchase_id));
-    }
-
-    /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
-     *
-     * @param  string $trans_id Transaction ID to cancel.
-     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
-     */
-    public function auto_cancel($trans_id)
-    {
-        return null;
-    }
-
-    /**
-     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
-     *
-     * @param  float $amount A transaction amount.
-     * @return float The fee
-     */
-    public function get_transaction_fee($amount)
-    {
-        return round(0.25 + 0.034 * $amount, 2);
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL', array('_GUID' => '091d7449161eb5c4f6129cf89e5e8e7e', 'PURCHASE_ID' => $purchase_id));
     }
 
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+     * @return ?array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response (null: no transaction; will only return null when $silent_fail is set).
      */
-    public function handle_transaction()
+    public function handle_ipn_transaction($silent_fail)
     {
-        $purchase_id = post_param_integer('custom', '-1');
+        $custom = post_param_string('custom', '-1');
+
+        $trans_expecting_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $custom), '', 1);
+        if (!array_key_exists(0, $trans_expecting_rows)) {
+            if ($silent_fail) {
+                return null;
+            }
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+        $trans_expecting_row = $trans_expecting_rows[0];
+
+        $purchase_id = $trans_expecting_row['e_purchase_id'];
 
         // Read in stuff we'll just log
         $reason_code = post_param_string('reason_code', '');
@@ -192,7 +289,8 @@ class Hook_ecommerce_via_paypal
         switch ($txn_type) {
             // Product
             case 'web_accept':
-                $item_name = post_param_string('item_name');
+                //$item_name = post_param_string('item_name');  Actually we'd rather get it from the transaction row in case we want to customise what was sent to the gateway
+                $item_name = $trans_expecting_row['e_item_name'];
                 break;
 
             // Subscription
@@ -231,6 +329,9 @@ class Hook_ecommerce_via_paypal
             case 'send_money':
             case 'virtual_terminal':
             default:
+                if ($silent_fail) {
+                    return null;
+                }
                 exit(); // Non-supported for IPN in Composr
         }
         $payment_status = post_param_string('payment_status', '');
@@ -243,11 +344,17 @@ class Hook_ecommerce_via_paypal
                     case 'subscr_signup':
                         // SECURITY: Check it's a kind of subscription we would actually have generated
                         if (post_param_integer('recurring') != 1) {
+                            if ($silent_fail) {
+                                return null;
+                            }
                             fatal_ipn_exit(do_lang('IPN_SUB_RECURRING_WRONG'));
                         }
 
                         // SECURITY: Check user is not giving themselves a free trial (we don't support trials)
                         if ((post_param_string('amount1', '') != '') || (post_param_string('amount2', '') != '') || (post_param_string('mc_amount1', '') != '') || (post_param_string('mc_amount2', '') != '') || (post_param_string('period1', '') != '') || (post_param_string('period2', '') != '')) {
+                            if ($silent_fail) {
+                                return null;
+                            }
                             fatal_ipn_exit(do_lang('IPN_BAD_TRIAL'));
                         }
 
@@ -259,9 +366,15 @@ class Hook_ecommerce_via_paypal
                         break;
 
                     case 'subscr_payment':
+                        if ($silent_fail) {
+                            return null;
+                        }
                         exit(); // We don't need to track individual payments
 
                     case 'subscr_failed':
+                        if ($silent_fail) {
+                            return null;
+                        }
                         exit(); // PayPal auto-cancels at a configured point ("To avoid unnecessary cancellations, you can specify that PayPal should reattempt failed payments before canceling subscriptions."). So, we only listen to the actual cancellation signal.
 
                     case 'subscr_modify':
@@ -270,6 +383,9 @@ class Hook_ecommerce_via_paypal
                         break;
 
                     case 'subscr_cancel':
+                        if ($silent_fail) {
+                            return null;
+                        }
                         exit(); // We ignore cancel transactions as we don't want to process them immediately - we just let things run until the end-of-term (see below). Maybe ideally we would process these in Composr as a separate state, but it would over-complicate things
 
                     case 'subscr_eot': // NB: An 'eot' means "end of *final* term" (i.e. if a payment fail / cancel / natural last term, has happened). PayPal's terminology is a little dodgy here.
@@ -299,12 +415,18 @@ class Hook_ecommerce_via_paypal
             case 'Canceled_Reversal':
             case 'Voided':
             case 'Processed': // Mass-payments
+                if ($silent_fail) {
+                    return null;
+                }
                 exit(); // Non-supported for IPN in Composr
         }
 
         // SECURITY: Ignore sandbox transactions if we are not in test mode
         if (post_param_integer('test_ipn', 0) == 1) {
             if (!ecommerce_test_mode()) {
+                if ($silent_fail) {
+                    return null;
+                }
                 exit();
             }
         }
@@ -312,7 +434,7 @@ class Hook_ecommerce_via_paypal
         // SECURITY: Post back to PayPal system to validate
         if ((!ecommerce_test_mode()) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())/*allow debugging if your test IP was intentionally back-doored*/)) {
             require_code('files');
-            $pure_post = isset($GLOBALS['PURE_POST']) ? $GLOBALS['PURE_POST'] : $_POST;
+            $pure_post = empty($GLOBALS['PURE_POST']) ? $_POST : $GLOBALS['PURE_POST'];
             $x = 0;
             $res = mixed();
             do { // Try up to 3 times
@@ -321,9 +443,15 @@ class Hook_ecommerce_via_paypal
                 $x++;
             } while (($res === null) && ($x < 3));
             if ($res === null) {
+                if ($silent_fail) {
+                    return null;
+                }
                 fatal_ipn_exit(do_lang('IPN_SOCKET_ERROR'));
             }
             if (!(strcmp($res, 'VERIFIED') == 0)) {
+                if ($silent_fail) {
+                    return null;
+                }
                 fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . $res . ' - ' . flatten_slashed_array($pure_post, true), stripos($res, '<html') !== false);
             }
         }
@@ -335,56 +463,19 @@ class Hook_ecommerce_via_paypal
             $primary_paypal_email = $this->_get_payment_address();
         }
         if ($receiver_email != $primary_paypal_email && $receiver_email != $this->_get_payment_address()) {
+            if ($silent_fail) {
+                return null;
+            }
             fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR', $receiver_email, $primary_paypal_email));
         }
 
-        // Shopping cart
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if ($trans_expecting_row['e_type_code'] == 'cart_orders') {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
         return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period);
-    }
-
-    /**
-     * Make a transaction (payment) button for multiple shopping cart items.
-     * Optional method, provides more detail than make_transaction_button.
-     *
-     * @param  array $items Items array.
-     * @param  Tempcode $currency Currency symbol.
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return Tempcode The button.
-     */
-    public function make_cart_transaction_button($items, $currency, $order_id)
-    {
-        $payment_address = $this->_get_payment_address();
-
-        $ipn_url = $this->_get_remote_form_url();
-
-        $notification_text = do_lang_tempcode('CHECKOUT_NOTIFICATION_TEXT', strval($order_id));
-
-        $user_details = array();
-
-        if (!is_guest()) {
-            $user_details['first_name'] = get_cms_cpf('firstname');
-            $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('street_address');
-            $user_details['city'] = get_cms_cpf('city');
-            $user_details['state'] = get_cms_cpf('state');
-            $user_details['zip'] = get_cms_cpf('post_code');
-            $user_details['country'] = get_cms_cpf('country');
-        }
-
-        return do_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(
-            '_GUID' => '89b7edf976ef0143dd8dfbabd3378c95',
-            'ITEMS' => $items,
-            'CURRENCY' => $currency,
-            'PAYMENT_ADDRESS' => $payment_address,
-            'IPN_URL' => $ipn_url,
-            'ORDER_ID' => strval($order_id),
-            'NOTIFICATION_TEXT' => $notification_text,
-            'MEMBER_ADDRESS' => $user_details,
-        ));
     }
 
     /**
@@ -393,26 +484,26 @@ class Hook_ecommerce_via_paypal
      * @param  AUTO_LINK $order_id Order ID.
      * @return ?mixed Address ID (null: No address record found).
      */
-    public function store_shipping_address($order_id)
+    protected function store_shipping_address($order_id)
     {
         if (post_param_string('address_name', null) === null) {
             return null;
         }
 
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
-            $shipping_address = array();
-            $shipping_address['order_id'] = $order_id;
-            $shipping_address['address_name'] = post_param_string('address_name', '');
-            $shipping_address['address_street'] = post_param_string('address_street', '');
-            $shipping_address['address_zip'] = post_param_string('address_zip', '');
-            $shipping_address['address_city'] = post_param_string('address_city', '');
-            $shipping_address['address_state'] = '';
-            $shipping_address['address_country'] = post_param_string('address_country', '');
-            $shipping_address['receiver_email'] = post_param_string('payer_email', '');
-            $shipping_address['contact_phone'] = post_param_string('contact_phone', '');
-            $shipping_address['first_name'] = post_param_string('first_name', '');
-            $shipping_address['last_name'] = post_param_string('last_name', '');
-
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
+            $shipping_address = array(
+                'a_order_id' => $order_id,
+                'a_firstname' => post_param_string('first_name', ''),
+                'a_lastname' => post_param_string('last_name', ''),
+                'a_street_address' => trim(post_param_string('address_name', '') . "\n" . post_param_string('address_street', '')),
+                'a_city' => post_param_string('address_city', ''),
+                'a_county' => '',
+                'a_state' => '',
+                'a_post_code' => post_param_string('address_zip', ''),
+                'a_country' => post_param_string('address_country', ''),
+                'a_email' => post_param_string('payer_email', ''),
+                'a_phone' => post_param_string('contact_phone', ''),
+            );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }
 
@@ -427,5 +518,20 @@ class Hook_ecommerce_via_paypal
     public function get_callback_url_message()
     {
         return get_param_string('message', null, INPUT_FILTER_GET_COMPLEX);
+    }
+
+    /**
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
+     *
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
+     */
+    public function auto_cancel($subscription_id)
+    {
+        // To implement this automatically we need to implement the REST API with oAuth, which is quite a lot of work.
+        // Should work for make_subscription_button-created subscriptions though, as long as they start "I-" not "S-"
+        // http://stackoverflow.com/questions/3809587/can-you-cancel-a-paypal-automatic-payment-via-api-subscription-created-via-hos
+
+        return null;
     }
 }

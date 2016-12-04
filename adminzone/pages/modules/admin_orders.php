@@ -99,7 +99,7 @@ class Module_admin_orders
 
         $action = either_param_string('action', '');
 
-        if ($type == 'order_det' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
+        if ($type == 'order_details' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
             breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')), array('_SELF:_SELF:show_orders', do_lang_tempcode('ORDERS'))));
         }
 
@@ -113,7 +113,7 @@ class Module_admin_orders
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
-        if ($type == 'order_det') {
+        if ($type == 'order_details') {
             $this->title = get_screen_title('MY_ORDER_DETAILS');
         }
 
@@ -174,7 +174,7 @@ class Module_admin_orders
         if ($type == 'show_orders') {
             return $this->show_orders();
         }
-        if ($type == 'order_det') {
+        if ($type == 'order_details') {
             return $this->order_details();
         }
         if ($type == 'order_act') {
@@ -297,7 +297,7 @@ class Module_admin_orders
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {
-                $view_url = build_url(array('page' => '_SELF', 'type' => 'order_det', 'id' => $row['id']), '_SELF');
+                $view_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
 
                 $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
@@ -320,8 +320,12 @@ class Module_admin_orders
             $actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array('_GUID' => '19ad8393aa5dba3f2f768818f22d8837', 'ORDER_TITLE' => $order_title, 'ORDER_ACTUALISE_URL' => $order_actualise_url, 'ORDER_STATUS' => $order_status));
 
             $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['c_member']);
-            $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['c_member']), get_module_zone('members'));
-            $member = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
+            if (($submitted_by === null) || (is_guest($row['c_member']))) {
+                $member = do_lang('UNKNOWN');
+            } else {
+                $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['c_member']), get_module_zone('members'));
+                $member = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
+            }
 
             $order_date = hyperlink($view_url, get_timezoned_date_time($row['add_date'], false), false, true);
 
@@ -416,7 +420,11 @@ class Module_admin_orders
         $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $id), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         $product_entries = new Tempcode();
         foreach ($rows as $row) {
-            $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['p_id']), get_module_zone('catalogues'));
+            if ($row['p_type'] == 'catalogue_items') {
+                $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['p_id']), get_module_zone('catalogues'));
+            } else {
+                $product_info_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $row['p_id']), get_module_zone('purchase'));
+            }
 
             $product_name = $row['p_name'];
 
@@ -460,21 +468,23 @@ class Module_admin_orders
         ));
 
         // Shipping address display
-        $row = $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('order_id' => $id), '', 1);
+        $row = $GLOBALS['SITE_DB']->query_select('shopping_order_addresses', array('*'), array('a_order_id' => $id), '', 1);
         if (array_key_exists(0, $row)) {
+            require_lang('cns_special_cpf');
+
             $address = $row[0];
             $shipping_address = do_template('ECOM_SHIPPING_ADDRESS', array(
                 '_GUID' => '332bc2e28a75cff64e6856bbeda6102e',
-                'FIRST_NAME' => $address['first_name'],
-                'LAST_NAME' => $address['last_name'],
-                'ADDRESS_NAME' => $address['address_name'],
-                'ADDRESS_STREET' => $address['address_street'],
-                'ADDRESS_CITY' => $address['address_city'],
-                'ADDRESS_STATE' => $address['address_state'],
-                'ADDRESS_ZIP' => $address['address_zip'],
-                'ADDRESS_COUNTRY' => $address['address_country'],
-                'RECEIVER_EMAIL' => $address['receiver_email'],
-                'CONTACT_PHONE' => $address['contact_phone'],
+                'FIRSTNAME' => $address['a_firstname'],
+                'LASTNAME' => $address['a_lastname'],
+                'STREET_ADDRESS' => $address['a_street_address'],
+                'CITY' => $address['a_city'],
+                'COUNTY' => $address['a_county'],
+                'STATE' => $address['a_state'],
+                'POST_CODE' => $address['a_post_code'],
+                'COUNTRY' => $address['a_country'],
+                'EMAIL' => $address['a_email'],
+                'PHONE' => $address['a_phone'],
             ));
         } else {
             $shipping_address = new Tempcode();
@@ -555,11 +565,11 @@ class Module_admin_orders
         if ($last_action == 'dispatched') {
             // Display dispatch mail preview
             $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $id), '', 1);
-            $order_det = $res[0];
+            $order_details = $res[0];
 
-            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_det['c_member']);
+            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['c_member']);
 
-            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_det['c_member']));
+            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_details['c_member']));
 
             $fields->attach(form_input_text(do_lang_tempcode('DISPATCH_MAIL_PREVIEW'), do_lang_tempcode('DISPATCH_MAIL_PREVIEW_DESCRIPTION'), 'dispatch_mail_content', $message, true));
 
@@ -619,13 +629,13 @@ class Module_admin_orders
         }
 
         $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $order_id), '', 1);
-        $order_det = $res[0];
+        $order_details = $res[0];
 
-        if (is_guest($order_det['c_member'])) {
+        if (is_guest($order_details['c_member'])) {
             attach_message(do_lang_tempcode('NO_NOTE_GUEST'), 'warn');
         } else {
             require_code('notifications');
-            dispatch_notification('order_dispatched', null, do_lang('ORDER_DISPATCHED_MAIL_SUBJECT', get_site_name(), strval($order_id), null, get_lang($order_det['c_member'])), $message, array($order_det['c_member']), A_FROM_SYSTEM_PRIVILEGED);
+            dispatch_notification('order_dispatched', null, do_lang('ORDER_DISPATCHED_MAIL_SUBJECT', get_site_name(), strval($order_id), null, get_lang($order_details['c_member'])), $message, array($order_details['c_member']), A_FROM_SYSTEM_PRIVILEGED);
         }
     }
 
@@ -753,7 +763,7 @@ class Module_admin_orders
         $qry = 'SELECT t1.*,(t2.included_tax*t2.p_quantity) AS tax_amt,t3.*
             FROM ' . get_table_prefix() . 'shopping_order t1
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id
-            LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.order_id
+            LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.a_order_id
             WHERE ' . $cond;
         $rows = $GLOBALS['SITE_DB']->query($qry);
         remove_duplicate_rows($rows);
@@ -770,29 +780,35 @@ class Module_admin_orders
 
             // Put address together
             $address = array();
-            if ($order['first_name'] . $order['last_name'] != '') {
-                $address[] = trim($order['first_name'] . ' ' . $order['last_name']);
+            if ($order['a_firstname'] . $order['a_lastname'] != '') {
+                $address[] = trim($order['a_firstname'] . ' ' . $order['a_lastname']);
             }
-            if ($order['address_name'] != '') {
-                $address[] = $order['address_name'];
+            if ($order['a_street_address'] != '') {
+                $address[] = $order['a_street_address'];
             }
-            if ($order['address_city'] != '') {
-                $address[] = $order['address_city'];
+            if ($order['a_city'] != '') {
+                $address[] = $order['a_city'];
             }
-            if ($order['address_state'] != '') {
-                $address[] = $order['address_state'];
+            if ($order['a_county'] != '') {
+                $address[] = $order['a_county'];
             }
-            if ($order['address_zip'] != '') {
-                $address[] = $order['address_zip'];
+            if ($order['a_state'] != '') {
+                $address[] = $order['a_state'];
             }
-            if ($order['address_country'] != '') {
-                $address[] = $order['address_country'];
+            if ($order['a_post_code'] != '') {
+                $address[] = $order['a_post_code'];
             }
-            if ($order['contact_phone'] != '') {
-                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['contact_phone'];
+            if ($order['a_country'] != '') {
+                $address[] = $order['a_country'];
+            }
+            if ($order['a_email'] != '') {
+                $address[] = do_lang('EMAIL_ADDRESS') . ': ' . $order['a_email'];
+            }
+            if ($order['a_phone'] != '') {
+                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['a_phone'];
             }
             $full_address = implode("\n", $address);
-            $orders[do_lang('FULL_ADDRESS')] = $full_address;
+            $orders[do_lang('SHIPPING_ADDRESS')] = $full_address;
 
             $data[] = $orders;
         }

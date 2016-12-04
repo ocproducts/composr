@@ -1,5 +1,5 @@
 {+START,SET,media}
-	<embed src="{URL*}" type="image/svg+xml" width="{WIDTH*}" height="{HEIGHT*}"></embed>
+	<embed src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="image/svg+xml" width="{WIDTH*}" height="{HEIGHT*}"></embed>
 
 	{+START,IF_NON_PASSED_OR_FALSE,FRAMED}
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}

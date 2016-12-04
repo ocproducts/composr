@@ -732,8 +732,11 @@ function _find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects =
 
     if (addon_installed('redirects_editor')) {
         if ($consider_redirects) {
-            $redirects = $GLOBALS['SITE_DB']->query_select('redirects', array('*'), array('r_from_zone' => $zone));
-            foreach ($redirects as $r) {
+            static $redirects = array();
+            if (!isset($redirects[$zone])) {
+                $redirects[$zone] = $GLOBALS['SITE_DB']->query_select('redirects', array('*'), array('r_from_zone' => $zone));
+            }
+            foreach ($redirects[$zone] as $r) {
                 if ($r['r_is_transparent'] == 0) {
                     //unset($pages[$r['r_from_page']]); // We don't want to link to anything that is a full redirect    -  Actually, we don't want to hide things too much, could be confusing
                 } else {

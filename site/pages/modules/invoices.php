@@ -45,8 +45,9 @@ class Module_invoices
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 3;
         $info['locked'] = false;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -66,16 +67,22 @@ class Module_invoices
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('invoices', array(
-            'id' => '*AUTO', // linked to IPN with this
-            'i_type_code' => 'ID_TEXT',
-            'i_member_id' => 'MEMBER',
-            'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
-            'i_amount' => 'SHORT_TEXT', // can't always find this from i_type_code
-            'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
-            'i_time' => 'TIME',
-            'i_note' => 'LONG_TEXT'
-        ));
+        if ($upgrade_from === null) {
+            $GLOBALS['SITE_DB']->create_table('invoices', array(
+                'id' => '*AUTO',
+                'i_type_code' => 'ID_TEXT',
+                'i_member_id' => 'MEMBER',
+                'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
+                'i_amount' => 'SHORT_TEXT', // can't always find this from i_type_code
+                'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
+                'i_time' => 'TIME',
+                'i_note' => 'LONG_TEXT'
+            ));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->create_index('invoices', 'i_member_id', array('i_member_id'));
+        }
     }
 
     /**
@@ -167,11 +174,11 @@ class Module_invoices
         $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_member_id' => $member_id), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $type_code = $row['i_type_code'];
-            $object = find_product($type_code);
-            if ($object === null) {
+            $product_object = find_product($type_code);
+            if ($product_object === null) {
                 continue;
             }
-            $products = $object->get_products(false, $type_code);
+            $products = $product_object->get_products(false, $type_code);
 
             $invoice_title = $products[$type_code][4];
             $date = get_timezoned_date_time($row['i_time'], false);
@@ -182,7 +189,7 @@ class Module_invoices
             if (perform_local_payment()) {
                 $transaction_button = hyperlink(build_url(array('page' => '_SELF', 'type' => 'pay', 'id' => $row['id']), '_SELF'), do_lang_tempcode('MAKE_PAYMENT'), false, false);
             } else {
-                $transaction_button = make_transaction_button(substr(get_class($object), 5), $invoice_title, strval($row['id']), floatval($row['i_amount']), $currency);
+                $transaction_button = make_transaction_button(substr(get_class($product_object), 5), $invoice_title, strval($row['id']), floatval($row['i_amount']), $currency);
             }
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => $transaction_button,
@@ -205,7 +212,7 @@ class Module_invoices
     }
 
     /**
-     * Show my invoices.
+     * Pay invoice.
      *
      * @return Tempcode The interface.
      */
@@ -213,23 +220,31 @@ class Module_invoices
     {
         $id = get_param_integer('id');
 
-        if ((!tacit_https()) && (!ecommerce_test_mode())) {
-            warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
-        }
-
-        $post_url = build_url(array('page' => 'purchase', 'type' => 'finish'), get_module_zone('purchase'));
-
         $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $row = $rows[0];
         $type_code = $row['i_type_code'];
-        $object = find_product($type_code);
-        $products = $object->get_products(false, $type_code);
+        $product_object = find_product($type_code);
+        $products = $product_object->get_products(false, $type_code);
         $invoice_title = $products[$type_code][4];
 
-        list($fields, $hidden) = get_transaction_form_fields(null, strval($id), $invoice_title, float_to_raw_string($row['i_amount']), get_option('currency'), null, '');
+        $post_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $type_code), get_module_zone('purchase'));
+
+        $needs_shipping_address = (method_exists($product_object, 'needs_shipping_address')) && ($product_object->needs_shipping_address());
+
+        list($fields, $hidden) = get_transaction_form_fields(
+            $type_code,
+            $invoice_title,
+            strval($id),
+            float_to_raw_string($row['i_amount']),
+            get_option('currency'),
+            null,
+            '',
+            get_option('payment_gateway'),
+            $needs_shipping_address
+        );
 
         $text = do_lang_tempcode('TRANSACT_INFO');
 

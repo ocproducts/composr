@@ -153,9 +153,6 @@ class Hook_addon_registry_shopping
             'themes/default/templates/ECOM_ORDERS_SCREEN.tpl',
             'themes/default/templates/ECOM_SHIPPING_ADDRESS.tpl',
             'themes/default/templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl',
-            'themes/default/templates/ECOM_ITEM_DETAILS.tpl',
-            'themes/default/templates/ECOM_SHOPPING_CART_PROCEED.tpl',
-            'themes/default/templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl',
             'themes/default/templates/ECOM_SHOPPING_CART_SCREEN.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl',
@@ -177,11 +174,9 @@ class Hook_addon_registry_shopping
             'templates/ECOM_ADMIN_ORDERS_SCREEN.tpl' => 'administrative__ecom_admin_orders_screen',
             'templates/ECOM_SHIPPING_ADDRESS.tpl' => 'administrative__ecom_admin_orders_details_screen',
             'templates/ECOM_ADMIN_ORDERS_DETAILS_SCREEN.tpl' => 'administrative__ecom_admin_orders_details_screen',
-            'templates/ECOM_ITEM_DETAILS.tpl' => 'ecommerce_item_details',
             'templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl' => 'ecom_cart_button_via_paypal',
-            'templates/ECOM_SHOPPING_CART_PROCEED.tpl' => 'shopping_cart_screen',
             'templates/ECOM_SHOPPING_CART_SCREEN.tpl' => 'shopping_cart_screen',
             'templates/ECOM_ORDERS_SCREEN.tpl' => 'ecom_orders_screen',
             'templates/ECOM_ORDERS_DETAILS_SCREEN.tpl' => 'ecom_orders_details_screen',
@@ -197,23 +192,6 @@ class Hook_addon_registry_shopping
             'templates/CATALOGUE_products_GRID_ENTRY_FIELD.tpl' => 'grid_category_screen__products',
             'templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl' => 'grid_category_screen__products',
             'templates/RESULTS_products_TABLE.tpl' => 'results_products_table',
-            'templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl' => 'shopping_cart_stage_pay',
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__shopping_cart_stage_pay()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('ECOM_SHOPPING_CART_STAGE_PAY', array(
-                'TRANSACTION_BUTTON' => placeholder_button(),
-            )), null, '', true)
         );
     }
 
@@ -317,17 +295,18 @@ class Hook_addon_registry_shopping
             'ORDER_STATUS' => lorem_word(),
         ));
 
+        require_lang('cns_special_cpf');
         $shipping_address = do_lorem_template('ECOM_SHIPPING_ADDRESS', array(
-            'FIRST_NAME' => lorem_phrase(),
-            'LAST_NAME' => lorem_phrase(),
-            'ADDRESS_NAME' => lorem_phrase(),
-            'ADDRESS_STREET' => lorem_phrase(),
-            'ADDRESS_CITY' => lorem_phrase(),
-            'ADDRESS_STATE' => lorem_phrase(),
-            'ADDRESS_ZIP' => lorem_phrase(),
-            'ADDRESS_COUNTRY' => lorem_phrase(),
-            'RECEIVER_EMAIL' => lorem_phrase(),
-            'CONTACT_PHONE' => lorem_phrase(),
+            'FIRSTNAME' => lorem_phrase(),
+            'LASTNAME' => lorem_phrase(),
+            'STREET_ADDRESS' => lorem_phrase(),
+            'CITY' => lorem_phrase(),
+            'COUNTY' => lorem_phrase(),
+            'STATE' => lorem_phrase(),
+            'ZIP' => lorem_phrase(),
+            'COUNTRY' => lorem_phrase(),
+            'EMAIL' => lorem_phrase(),
+            'PHONE' => lorem_phrase(),
         ));
 
         return array(
@@ -357,22 +336,6 @@ class Hook_addon_registry_shopping
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__ecommerce_item_details()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('ECOM_ITEM_DETAILS', array(
-                'FIELDS' => placeholder_fields(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
     public function tpl_preview__ecom_cart_button_via_paypal()
     {
         $items = array();
@@ -388,7 +351,8 @@ class Hook_addon_registry_shopping
                 'ITEMS' => $items,
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_word(),
-                'IPN_URL' => placeholder_url(),
+                'FORM_URL' => placeholder_url(),
+                'TRANS_ID' => placeholder_id(),
                 'ORDER_ID' => placeholder_id(),
                 'NOTIFICATION_TEXT' => lorem_sentence_html(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -477,27 +441,24 @@ class Hook_addon_registry_shopping
         ));
         //results_table ends
 
-        $proceed_box = do_lorem_template('ECOM_SHOPPING_CART_PROCEED', array(
-            'SUB_TOTAL' => float_format(floatval(placeholder_number())),
-            'SHIPPING_COST' => float_format(floatval(placeholder_number())),
-            'GRAND_TOTAL' => float_format(floatval(placeholder_number())),
-            'PROCEED' => lorem_phrase(),
-            'CURRENCY' => lorem_word(),
-            'PAYMENT_FORM' => placeholder_form(),
-        ));
-
         return array(
             lorem_globalise(do_lorem_template('ECOM_SHOPPING_CART_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'RESULTS_TABLE' => $results_table,
-                'FORM_URL' => placeholder_url(),
-                'CONT_SHOPPING_URL' => placeholder_url(),
+                'UPDATE_CART_URL' => placeholder_url(),
+                'CONTINUE_SHOPPING_URL' => placeholder_url(),
                 'MESSAGE' => lorem_phrase(),
-                'PRO_IDS' => placeholder_id(),
+                'PRODUCT_IDS' => placeholder_id(),
                 'EMPTY_CART_URL' => placeholder_url(),
-                'PROCEED_BOX' => $proceed_box,
                 'ALLOW_OPTOUT_TAX' => lorem_phrase(),
                 'ALLOW_OPTOUT_TAX_VALUE' => lorem_phrase(),
+                'SUB_TOTAL' => float_format(floatval(placeholder_number())),
+                'SHIPPING_COST' => float_format(floatval(placeholder_number())),
+                'GRAND_TOTAL' => float_format(floatval(placeholder_number())),
+                'PROCEED' => lorem_phrase(),
+                'CURRENCY' => lorem_word(),
+                'PAYMENT_FORM' => placeholder_form(),
+                'FINISH_URL' => placeholder_url(),
             )), null, '', true)
         );
     }

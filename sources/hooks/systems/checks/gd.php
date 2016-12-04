@@ -34,6 +34,10 @@ class Hook_check_gd
         if (!function_exists('imagecreatefromstring')) {
             $warning[] = do_lang_tempcode('NO_GD_ON_SERVER');
         } else {
+            if ($this->get_gd_version() < 2.0) {
+                $warning[] = do_lang_tempcode('OLD_GD_ON_SERVER');
+            }
+
             if (!function_exists('imagepng')) {
                 $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_PNG');
             }
@@ -45,5 +49,22 @@ class Hook_check_gd
             }
         }
         return $warning;
+    }
+
+    /**
+     * Get the version number of GD on the system. It should only be called if GD is known to be on the system, and in use
+     *
+     * @return float The version of GD installed
+     */
+    private function get_gd_version()
+    {
+        $info = gd_info();
+        $matches = array();
+        if (preg_match('#(\d(\.|))+#', $info['GD Version'], $matches) != 0) {
+            $version = $matches[0];
+        } else {
+            $version = $info['version'];
+        }
+        return floatval($version);
     }
 }

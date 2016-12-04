@@ -23,10 +23,9 @@ Cheque processing is relatively straight forward, but more infrastructure is nee
 1) By getting an agent to fully handle the transaction and relay the funds
 2) By having a merchant account with a bank, using the banks infrastructure and your bank account to manage the transaction yourself
 
-Composr, by default, allows payment via {$IS_MAINTAINED,gateway_paypal,PayPal} & {$IS_MAINTAINED,gateway_worldpay,WorldPay} & {$IS_MAINTAINED,gateway_secpay,SecPay} & {$IS_MAINTAINED,gateway_ccbill,CCBill}, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional.
+Composr, by default, allows payment via {$IS_MAINTAINED,gateway_paypal,PayPal} & {$IS_MAINTAINED,gateway_worldpay,WorldPay} & {$IS_MAINTAINED,gateway_secpay,SecPay} & {$IS_MAINTAINED,gateway_ccbill,CCBill} & {$IS_MAINTAINED,gateway_authorize,Authorize.Net}, although it could be extended to support any kind of payment gateway if extended and customised by an appropriate professional. PayPal is fully supported; others are not regularly tested and intended for developers (usage instructions are included as comments within Composr's source code for the particular payment gateway).
 
 PayPal was chosen because it is without doubt the leading form of payment on the Internet, easy to setup, and flexible in that it can provide support for funding direct from bank accounts, or cheque, as well as debit and credit card processing. Lots of people do not like PayPal policies, but we have no official position on this -- development priorities simply follow funding.
-WorldPay and SecPay are popular alternatives to PayPal. There are many other alternatives that Composr doesn't currently support, but could.
 [/surround]
 
 [title="3"]Specific gateway notes[/title]
@@ -130,7 +129,7 @@ The option requirements for PayPal are as follows:
 </tbody></table>
 [/html]
 
-Documentation for other Payment gateways is provided in notes at the top of the [tt]sources/hooks/systems/ecommerce_via/<gateway>.php[/tt] file. Payment systems tend to be a bit complex and ones other than PayPal are best set up by programmers who know the particular ways messages and security works between your site and the gateway.
+Documentation for other Payment gateways is provided in notes at the top of the [tt]sources/hooks/systems/payment_gateway/<gateway>.php[/tt] file. Payment systems tend to be a bit complex and ones other than PayPal are best set up by programmers who know the particular ways messages and security works between your site and the gateway.
 
 [title="3"]Test mode[/title]
 
@@ -245,6 +244,9 @@ You can delete a usergroup subscription from the bottom of its edit form.
 
 You can manually put someone into a subscription using a "Manual transaction". If you do so, it is up to you to manually expire members if they cease payments. You can do this from:
 Admin Zone > Audit > eCommerce > View manual subscriptions
+
+Note that for some payment gateways you need to be mindful about how subscription cancellation happens. At the time of writing only PayPal automatically cancels the subscription (and hence usergroup membership) within Composr once a subscription is remotely terminated. Some payment gateways can automatically cancel a subscription when a user [i]locally[/i] requests it in Composr, and in such a case Composr will automatically cancel the subscription on its end too. So, unless you're using PayPal, if you get an e-mail from a payment gateway saying a subscription is terminated you should manually make sure the user is kicked out of the subscription usergroup within Composr.
+Be very careful when deleting users because subscriptions will be left hanging when you do and would need to be manually cleaned up.
 [/surround]
 
 [title="2"]Invoices[/title]
@@ -377,11 +379,154 @@ While Composr supports manual transactions to be entered. This is possible in th
 Manual transactions may also be used to input transactions that are totally external to Composr, and thus otherwise immeasurable by the charting. For example, an organisations expenditure may be recorded by manually inputting a negative transaction for the special 'Other' product.
 [/surround]
 
+[title="2"]Local payments[/title]
+
+Composr supports taking in payments 'locally' (i.e. not redirecting to a third-party site to take the payment). Not all the payment gateways within Composr allow local payments though, either due to the gateways not supporting it or just because it has not yet been implemented. At the time of writing the SecPay and Authorize.Net gateways support it.
+
+Local payments should be considered with great caution because it requires a high level of PCI compliance, a very complex and expensive (increasingly so) process that carries legal liability.
+
+You will need a more expensive webhost that provides PCI compliance.
+
+We have summarised the PCI compliance rules below in a way streamlined toward Composr. This summary is not a full representation of PCI compliance and you should read through everything yourself.
+
+{|
+! Headline
+! Rule
+! Applies to webhost
+! Applies to website
+|-
+! Hardware firewall
+| Have a hardware firewall that sits in front of all inbound traffic. Every protocol allowed through the firewall must have a strict justification. The webhost must maintain full schematic documentation around the firewall, including all possible data flows. Everything must be reviewed every 6 months.
+| Yes
+| No
+|-
+! Software firewall
+| Any computer used to connect to the webhosting must have a software firewall enabled (e.g. the ones that come with Windows and MacOS).
+| Yes
+| Yes
+|-
+! Antivirus
+| Your webhosting servers, and any computer used to connect to the webhosting, must have anti-virus software enabled. This must be kept updated, do periodic scans and keep logs which are retained.
+| Yes
+| Yes
+|-
+! Penetration testing
+| A PCI-approved scanning vendor must perform quarterly penetration testing on the network, repeating it until it passes.
+| Yes
+| No
+|-
+! Intrusion detection (1)
+| Run fully-updated intrusion detection systems; any attacks or failures recorded and reported to management in a timely manner. Run a change detection system on core operating system files at least weekly.
+| Yes
+| No
+|-
+! Intrusion detection (2)
+| Enable "Hacker/bot detected" notifications on an active administrator account in Composr. Run the [tt]rootkit_detector[/tt] addon at least weekly.
+| No
+| Yes
+|-
+! Accurate logging
+| Normal system logging must be fully enabled, not tampered with, and kept for at least a year. The last 3 months of logging must be immediately available. The system clock must be synched to an online source.
+| Yes
+| Yes
+|-
+! Active security auditing
+| Logs must be reviewed daily and any attacks or failures recorded and reported to management in a timely manner.
+| Yes
+| Yes
+|-
+! Limit access
+| Only people needing the access may be given it to the extent that they need that access.
+| Yes
+| Yes
+|-
+! Separate accounts
+| Each user must have their own account.
+| Yes
+| Yes
+|-
+! No default access
+| No default passwords or unnecessary privileged default accounts may be in place.
+| Yes
+| No
+|-
+! Disable inactive accounts
+| Inactive accounts must be disabled after 90 days using the Composr "Password expiry days" option.
+| No
+| Yes
+|-
+! Stay patched
+| Maintain an inventory of all relevant hardware and software items. Assess the security of each item. Keep all items patched for vulnerabilities, preferably via automatic nightly updates. Discard or replace anything that cannot be patched.
+| Yes
+| Yes
+|-
+! Secure shared hosting
+| If using shared hosting then webhosting accounts must be fully isolated from each other, using a suEXEC-style system. This is basic and already recommended under our webhosting recommendations. Additionally consideration needs to be given to ensure log files are both maintained and isolated.
+| Yes
+| No
+|-
+! VPN
+| Low level access to the webhosting (e.g. an SSH shell, phpMyAdmin, or a webhosting control panel) must require a VPN involving a secure key as well as the regular passwords. Each individual accessing user must have their own secure key.
+| Yes
+| No
+|-
+! Two-factor-authentication
+| Within Composr the "Enquire on new IPs" option must be enabled on any administrative usergroups. All administrative users must understand why this is the case via a documented policy.
+| No
+| Yes
+|-
+! Database isolation
+| The web server and MySQL server must be different machines [this actually comes from PA DSS].
+| Yes
+| No
+|-
+! Physical security
+| The physical facilities must be kept secure with access control, ID badges, and video cameras. Sensitive areas in the facility must only be accessible to those that need it. The webhost must immediately revoke access for terminated employees or visitors leaving. Visitors must be audited in a log book (saying visitor name, company, and authorising employee). This book must be kept for at least 3 months.
+| Yes
+| No
+|-
+! Secure backups
+| All physical backup media must be kept securely, strongly encrypted, access-limited, and destroyed when no longer needed.
+| Yes
+| Yes
+|-
+! No wifi
+| Look for, and maintain an inventory of, any wifi networks connected to the webhosting network, on a quarterly basis. Any unauthorised networks must be recorded and reported to management in a timely manner.
+| Yes
+| No
+|-
+! SSL
+| Use an SSL certificate for at least access to the [tt]purchase[/tt], [tt]shopping[/tt], [tt]invoices[/tt], [tt]members[/tt], [tt]join[/tt] and [tt]login[/tt] modules. Preferably just use an HTTPS base URL.
+| No
+| Yes
+|-
+! Avoid storing card data
+| Only enable the "Store credit card numbers" option if it is important to your business.
+| No
+| Yes
+|-
+! Screen developers
+| Ensure any developers hired are highly competent at secure coding.
+| No
+| Yes
+|-
+! Information Security Policy
+| Maintain an Information Security Policy. This must be in writing, cover all aspects of PCI compliance, kept updated, disseminated across staff, reviewed at least yearly, and compliance checked at least quarterly. It should include risk assessments, usage policies. There needs to be a process for initiating a timely forensic investigation in the case of a breach.
+| Yes
+| Yes
+|-
+! Screen staff
+| Staff should be screened for criminal records, credit history, and employment history.
+| Yes
+| Yes
+|}
+
 [concepts
  1_key="PayPal"           1_value="The most popular online payment gateway"
- 2_key="Payment gateway"  2_value="The infrastructure for performing advanced financial transactions"
+ 2_key="Payment gateway"  2_value="A third-party infrastructure for performing eCommerce transactions"
  3_key="Instant Payment Notification"  3_value="A system, originally created by PayPal, for determining the progress of a financial transaction or ongoing subscription."
- 4_key="Product"           4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
+ 4_key="Product"          4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
+ 5_key="PCI"              5_value="The trade body for regulating eCommerce standards. When we refer to PCI compliance we are typically referring to PCI Data Security Standard (PCI DSS)."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

@@ -51,7 +51,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>{!RECEIVER_DETAILS}</th>
+				<th>{!SHIPPING_ADDRESS}</th>
 				<td>
 					{SHIPPING_ADDRESS}
 				</td>

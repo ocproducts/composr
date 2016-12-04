@@ -140,5 +140,7 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
         decache_private_topics($pt_to);
     }
 
+    set_value('cns_topic_count', strval(intval(get_value('cns_topic_count')) + 1));
+
     return $topic_id;
 }

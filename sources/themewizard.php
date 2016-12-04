@@ -277,7 +277,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
     // Load background image
     $imgs = array();
     foreach (array('logo' => $logo_theme_image, 'background' => $background_theme_image, 'standalone' => 'logo/standalone_logo') as $id => $theme_image) {
-        $url = find_theme_image($theme_image, false, false, $theme);
+        $url = find_theme_image($theme_image, false, false, $theme, null, null, true);
         $file_path_stub = convert_url_to_path($url);
         if ($file_path_stub !== null) {
             if (!file_exists($file_path_stub)) {
@@ -291,18 +291,21 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         if ($img === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($url)), false, true);
         }
+        imagepalettetotruecolor($img);
         $imgs[$id] = $img;
     }
     if ($standalone_version) {
+        // Based on 'background' image, but must be the size of 'standalone' image...
         $canvas = imagecreatetruecolor(imagesx($imgs['standalone']), imagesy($imgs['standalone']));
-        imagealphablending($canvas, true);
         imagecopy($canvas, $imgs['background'], 0, 0, 0, 0, imagesx($imgs['standalone']), imagesy($imgs['standalone']));
+
         imagedestroy($imgs['background']);
+        imagedestroy($imgs['standalone']);
     } else {
         $canvas = $imgs['background'];
-        imagealphablending($canvas, true);
+        imagedestroy($imgs['standalone']);
     }
-    imagedestroy($imgs['standalone']);
+    imagealphablending($canvas, true);
 
     // Add logo onto the canvas
     imagecopy($canvas, $imgs['logo'], intval($logowizard_details['logo_x_offset']), intval($logowizard_details['logo_y_offset']), 0, 0, imagesx($imgs['logo']), imagesy($imgs['logo']));
@@ -1373,10 +1376,10 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
     } else {
         $image = $path;
     }
+    imagepalettetotruecolor($image);
 
     $width = imagesx($image);
     $height = imagesy($image);
-    imagepalettetotruecolor($image);
     imagealphablending($image, false);
     imagesavealpha($image, true);
 
@@ -1523,9 +1526,9 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
     } else {
         $image = $path;
     }
+    imagepalettetotruecolor($image);
     $width = imagesx($image);
     $height = imagesy($image);
-    imagepalettetotruecolor($image);
 
     if ($colour_b2_new === null) {
         $colour_b_orig_r = $colour_b1_orig_r;

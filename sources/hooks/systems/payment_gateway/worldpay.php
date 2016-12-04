@@ -21,18 +21,30 @@
 /**
  * Hook class.
  */
-class Hook_ecommerce_via_worldpay
+class Hook_payment_gateway_worldpay
 {
+    // This is the Hosted Payment Pages API http://support.worldpay.com/support/kb/gg/hpp/Content/Home.htm
     // Requires:
     //  the "Payment Response URL" set in control panel should be set to "http://<WPDISPLAY ITEM=MC_callback>"
     //  the "Payment Response enabled?" and "Enable Recurring Payment Response" and "Enable the Shopper Response" should all be ticked (checked)
     //  the "Payment Response password" is the Composr "Callback password" option; it may be blank
-    //  the "Installation ID" (a number given to you) is the Composr "Gateway username" and also "Testing mode gateway username" (it's all the same installation ID)
+    //  the "Installation ID" (a number given to you) is the Composr "Gateway username" option and also "Testing mode gateway username" option (it's all the same installation ID)
     //  the "MD5 secret for transactions" is the Composr "Gateway digest code" option; it may be blank
     //  the account must be set as 'live' in control panel once testing is done
     //  the "Shopper Redirect URL" should be left blank - arbitrary URLs are not supported, and Composr automatically injects a redirect response into Payment Response URL
     //  Logos, refund policies, and contact details [e-mail, phone, postal], may need coding into the templates (Worldpay have policies and checks). ECOM_LOGOS_WORLDPAY.tpl is included into the payment process automatically and does much of this
     //  FuturePay must be enabled for subscriptions to work (contact WorldPay about it)
+
+    /**
+     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
+     *
+     * @param  float $amount A transaction amount.
+     * @return float The fee.
+     */
+    public function get_transaction_fee($amount)
+    {
+        return 0.045 * $amount; // for credit card. Debit card is a flat 50p
+    }
 
     /**
      * Get the gateway username.
@@ -41,7 +53,7 @@ class Hook_ecommerce_via_worldpay
      */
     protected function _get_username()
     {
-        return ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn');
+        return ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
     }
 
     /**
@@ -61,7 +73,7 @@ class Hook_ecommerce_via_worldpay
      */
     public function get_logos()
     {
-        $inst_id = ecommerce_test_mode() ? get_option('ipn_test') : get_option('ipn');
+        $inst_id = $this->_get_username();
         $address = str_replace("\n", '<br />', escape_html(get_option('pd_address')));
         $email = get_option('pd_email');
         $number = get_option('pd_number');
@@ -92,14 +104,17 @@ class Hook_ecommerce_via_worldpay
     public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
     {
         $username = $this->_get_username();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
         $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
         $trans_id = $this->generate_trans_id();
-        $digest_option = get_option('ipn_digest');
+        $digest_option = get_option('payment_gateway_digest');
         //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency);  Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency);
+
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
+            'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
@@ -111,18 +126,21 @@ class Hook_ecommerce_via_worldpay
             'e_length' => null,
             'e_length_units' => '',
         ));
-        return do_template('ECOM_BUTTON_VIA_WORLDPAY', array(
+
+        return do_template('ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY', array(
             '_GUID' => '56c78a4e16c0e7f36fcfbe57d37bc3d3',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'DIGEST' => $digest,
             'TEST_MODE' => ecommerce_test_mode(),
-            'PURCHASE_ID' => $trans_id, // cartID in Worldpay, has to be unique so we generate a transaction ID and store true purchase_id within that
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
             'EMAIL_ADDRESS' => $email_address,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
         ));
     }
 
@@ -141,8 +159,10 @@ class Hook_ecommerce_via_worldpay
      */
     public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
     {
+        // https://support.worldpay.com/support/kb/bg/recurringpayments/rpfp.html
+
         $username = $this->_get_username();
-        $ipn_url = $this->_get_remote_form_url();
+        $form_url = $this->_get_remote_form_url();
         $trans_id = $this->generate_trans_id();
         $length_units_2 = '1';
         $first_repeat = time();
@@ -164,11 +184,14 @@ class Hook_ecommerce_via_worldpay
                 $first_repeat = 60 * 60 * 24 * 365 * $length;
                 break;
         }
-        $digest_option = get_option('ipn_digest');
+        $digest_option = get_option('payment_gateway_digest');
         //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
+
+        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
         $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
             'id' => $trans_id,
+            'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
             'e_item_name' => $item_name,
             'e_member_id' => get_member(),
@@ -180,21 +203,50 @@ class Hook_ecommerce_via_worldpay
             'e_length' => null,
             'e_length_units' => '',
         ));
+
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY', array(
             '_GUID' => '1f88716137762a467edbf5fbb980c6fe',
             'TYPE_CODE' => $type_code,
+            'ITEM_NAME' => $item_name,
+            'PURCHASE_ID' => $purchase_id,
+            'TRANS_ID' => $trans_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
-            'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => strval($trans_id),
             'AMOUNT' => float_to_raw_string($amount),
             'FIRST_REPEAT' => date('Y-m-d', $first_repeat),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
-            'IPN_URL' => $ipn_url,
+            'FORM_URL' => $form_url,
+            'MEMBER_ADDRESS' => $this->_build_member_address(),
         ));
+    }
+
+    /**
+     * Get a member address/etc for use in payment buttons.
+     *
+     * @return array A map of member address details (form field name => address value).
+     */
+    protected function _build_member_address()
+    {
+        $member_address = array();
+        if (!is_guest()) {
+            $member_address['name'] = trim(get_cms_cpf('firstname') . ' ' . get_cms_cpf('lastname'));
+            $address_lines = explode("\n", get_cms_cpf('street_address'));
+            $member_address['address1'] = $address_lines[0];
+            $member_address['address2'] = $address_lines[1];
+            unset($address_lines[1]);
+            unset($address_lines[0]);
+            $member_address['address3'] = implode(', ', $address_lines);
+            $member_address['town'] = get_cms_cpf('city');
+            $member_address['region'] = get_cms_cpf('state');
+            $member_address['postcode'] = get_cms_cpf('post_code');
+            $member_address['country'] = get_cms_cpf('country');
+            $member_address['tel'] = get_cms_cpf('mobile_phone_number');
+            $member_address['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+        }
+        return $member_address;
     }
 
     /**
@@ -205,65 +257,46 @@ class Hook_ecommerce_via_worldpay
      */
     public function make_cancel_button($purchase_id)
     {
-        $cancel_url = build_url(array('page' => 'subscriptions', 'type' => 'cancel', 'id' => $purchase_id), get_module_zone('subscriptions'));
-        return do_template('ECOM_CANCEL_BUTTON_VIA_WORLDPAY', array('_GUID' => '187fba57424e7850b9e21fc147de48eb', 'CANCEL_URL' => $cancel_url, 'PURCHASE_ID' => $purchase_id));
-    }
-
-    /**
-     * Find whether the hook auto-cancels (if it does, auto cancel the given trans-ID).
-     *
-     * @param  string $trans_id Transaction ID to cancel.
-     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
-     */
-    public function auto_cancel($trans_id)
-    {
-        return false;
-    }
-
-    /**
-     * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
-     *
-     * @param  float $amount A transaction amount.
-     * @return float The fee.
-     */
-    public function get_transaction_fee($amount)
-    {
-        return 0.045 * $amount; // for credit card. Debit card is a flat 50p
+        return do_template('ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_WORLDPAY', array('_GUID' => '187fba57424e7850b9e21fc147de48eb', 'PURCHASE_ID' => $purchase_id));
     }
 
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return array A long tuple of collected data.
+     * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+     * @return ?array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response (null: no transaction; will only return null when $silent_fail is set).
      */
-    public function handle_transaction()
+    public function handle_ipn_transaction($silent_fail)
     {
-        // Test case...
-        //$_POST = unserialize('a:36:{s:8:"testMode";s:3:"100";s:8:"authCost";s:4:"15.0";s:8:"currency";s:3:"GBP";s:7:"address";s:1:"a";s:13:"countryString";s:11:"South Korea";s:10:"callbackPW";s:10:"s35645dxr4";s:12:"installation";s:5:"84259";s:3:"fax";s:1:"a";s:12:"countryMatch";s:1:"B";s:7:"transId";s:9:"222873126";s:3:"AVS";s:4:"0000";s:12:"amountString";s:11:"&#163;15.00";s:8:"postcode";s:1:"a";s:7:"msgType";s:10:"authResult";s:4:"name";s:1:"a";s:3:"tel";s:1:"a";s:11:"transStatus";s:1:"Y";s:4:"desc";s:15:"Property Advert";s:8:"cardType";s:10:"Mastercard";s:4:"lang";s:2:"en";s:9:"transTime";s:13:"1171243476007";s:16:"authAmountString";s:11:"&#163;15.00";s:10:"authAmount";s:4:"15.0";s:9:"ipAddress";s:12:"84.9.162.135";s:4:"cost";s:4:"15.0";s:6:"instId";s:5:"84259";s:6:"amount";s:4:"15.0";s:8:"compName";s:32:"The Accessible Property Register";s:7:"country";s:2:"KR";s:11:"MC_callback";s:63:"www.kivi.co.uk/ClientFiles/APR/data/ecommerce.php?from=worldpay";s:14:"rawAuthMessage";s:22:"cardbe.msg.testSuccess";s:5:"email";s:16:"vaivak@gmail.com";s:12:"authCurrency";s:3:"GBP";s:11:"rawAuthCode";s:1:"A";s:6:"cartId";s:32:"3ecd645f632f0304067fb565e71b4dcd";s:8:"authMode";s:1:"A";}');
-        //$_GET = unserialize('a:3:{s:4:"from";s:8:"worldpay";s:7:"msgType";s:10:"authResult";s:12:"installation";s:5:"84259";}');
+        // http://support.worldpay.com/support/kb/bg/paymentresponse/pr0000.html
 
         $code = post_param_string('transStatus');
         if ($code == 'C') {
+            if ($silent_fail) {
+                return null;
+            }
             exit(); // Cancellation signal, won't process
         }
 
         $txn_id = post_param_string('transId');
         $cart_id = post_param_string('cartId');
         if (post_param_string('futurePayType', '') == 'regular') {
-            $subscription = true;
+            $is_subscription = true;
         } else {
-            $subscription = false;
+            $is_subscription = false;
         }
 
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $cart_id), '', 1);
-        if (!array_key_exists(0, $transaction_rows)) {
+        $trans_expecting_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $cart_id), '', 1);
+        if (!array_key_exists(0, $trans_expecting_rows)) {
+            if ($silent_fail) {
+                return null;
+            }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
-        $transaction_row = $transaction_rows[0];
+        $trans_expecting_row = $trans_expecting_rows[0];
 
-        $member_id = $transaction_row['e_member_id'];
-        $item_name = $subscription ? '' : $transaction_row['e_item_name'];
-        $purchase_id = $transaction_row['e_purchase_id'];
+        $item_name = $is_subscription ? '' : $trans_expecting_row['e_item_name'];
+        $purchase_id = $trans_expecting_row['e_purchase_id'];
 
         $success = ($code == 'Y');
         $message = post_param_string('rawAuthMessage');
@@ -274,36 +307,38 @@ class Hook_ecommerce_via_worldpay
         $memo = '';
         $mc_gross = post_param_string('authAmount');
         $mc_currency = post_param_string('authCurrency');
-        $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
+        $parent_txn_id = '';
+        $period = '';
 
-        if (post_param_string('callbackPW') != get_option('callback_password')) {
-            fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
-        }
-
-        if ($success) {
-            require_code('notifications');
-            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+        // SECURITY: Check password
+        if (post_param_string('callbackPW') != get_option('payment_gateway_callback_password')) {
+            if ($silent_fail) {
+                return null;
+            }
+            fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . flatten_slashed_array($_POST, true));
         }
 
         if (addon_installed('shopping')) {
-            $this->store_shipping_address($purchase_id);
+            if ($trans_expecting_row['e_type_code'] == 'cart_orders') {
+                $this->store_shipping_address(intval($purchase_id));
+            }
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '', '');
+        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $trans_expecting_row['e_member_id']);
     }
 
     /**
      * Show a payment response after IPN runs (for hooks that handle redirects in this way).
      *
-     * @param  ID_TEXT $product Product.
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id Purchase ID.
      * @return string The response.
      */
-    public function show_payment_response($product, $purchase_id)
+    public function show_payment_response($type_code, $purchase_id)
     {
         $txn_id = post_param_string('transId');
         $message = do_lang('TRANSACTION_ID_WRITTEN', $txn_id);
-        $url = build_url(array('page' => 'purchase', 'type' => 'finish', 'message' => $message, 'product' => $product, 'purchase_id' => $purchase_id, 'from' => 'worldpay'), get_module_zone('purchase'));
+        $url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $type_code, 'message' => $message, 'from' => 'worldpay'), get_module_zone('purchase'));
         return '<meta http-equiv="refresh" content="0;url=' . escape_html($url->evaluate()) . '" />';
     }
 
@@ -313,29 +348,46 @@ class Hook_ecommerce_via_worldpay
      * @param  AUTO_LINK $order_id Order ID
      * @return ?mixed Address ID (null: No address record found).
      */
-    public function store_shipping_address($order_id)
+    protected function store_shipping_address($order_id)
     {
-        if (post_param_string('first_name', null) === null) {
-            return null;
-        }
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
+            $_name = explode(' ', post_param_string('delvName', ''));
+            $name = array();
+            if (count($_name) > 0) {
+                $name[1] = $_name[count($_name) - 1];
+                unset($_name[count($_name) - 1]);
+            }
+            $name[0] = implode(' ', $_name);
 
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('order_id' => $order_id)) === null) {
-            $shipping_address = array();
-            $shipping_address['order_id'] = $order_id;
-            $shipping_address['address_name'] = post_param_string('delvName', '');
-            $shipping_address['address_street'] = post_param_string('delvAddress', '');
-            $shipping_address['address_zip'] = post_param_string('delvPostcode', '');
-            $shipping_address['address_city'] = post_param_string('city', '');
-            $shipping_address['address_state'] = '';
-            $shipping_address['address_country'] = post_param_string('delvCountryString', '');
-            $shipping_address['receiver_email'] = post_param_string('email', '');
-            $shipping_address['contact_phone'] = post_param_string('tel', '');
-            $shipping_address['first_name'] = post_param_string('delvName', '');
-            $shipping_address['last_name'] = '';
-
+            $shipping_address = array(
+                'a_order_id' => $order_id,
+                'a_firstname' => $name[0],
+                'a_lastname' => $name[1],
+                'a_street_address' => trim(post_param_string('delvAddress1', '') . ' ' . post_param_string('delvAddress2', '') . ' ' . post_param_string('delvAddress3', '')),
+                'a_city' => post_param_string('city', ''),
+                'a_county' => '',
+                'a_state' => '',
+                'a_post_code' => post_param_string('delvPostcode', ''),
+                'a_country' => post_param_string('delvCountryString', ''),
+                'a_email' => post_param_string('email', ''),
+                'a_phone' => post_param_string('tel', ''),
+            );
             return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
         }
 
         return null;
+    }
+
+    /**
+     * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
+     *
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
+     */
+    public function auto_cancel($subscription_id)
+    {
+        // They created a username and password initially. They need to login using this at https://futurepay.worldpay.com/fp/jsp/common/login_shopper.jsp
+
+        return false;
     }
 }

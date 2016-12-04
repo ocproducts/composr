@@ -66,6 +66,16 @@ function handle_product_orders($purchase_id, $details, $type_code, $payment_stat
 class Hook_ecommerce_cart_orders
 {
     /**
+     * Find whether a shipping address is needed.
+     *
+     * @return boolean Whether a shipping address is needed.
+     */
+    public function needs_shipping_address()
+    {
+        return true;
+    }
+
+    /**
      * Get the products handled by this eCommerce hook.
      *
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
@@ -154,10 +164,10 @@ class Hook_ecommerce_cart_orders
 
             require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($item['p_type']));
 
-            $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($item['p_type']));
+            $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($item['p_type']));
 
-            //if any of the product's dispatch type is manual, return type as 'manual'
-            if ($object->get_product_dispatch_type() == 'manual') {
+            // If any of the product's dispatch type is manual, return type as 'manual'
+            if ($product_object->get_product_dispatch_type() == 'manual') {
                 return 'manual';
             }
         }

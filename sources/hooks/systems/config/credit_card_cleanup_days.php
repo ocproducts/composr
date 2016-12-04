@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_vpn_password
+class Hook_config_credit_card_cleanup_days
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,13 @@ class Hook_config_vpn_password
     public function get_details()
     {
         return array(
-            'human_name' => 'VPN_PASSWORD',
-            'type' => 'line',
+            'human_name' => 'CREDIT_CARD_CLEANUP_DAYS',
+            'type' => 'tick',
             'category' => 'ECOMMERCE',
-            'group' => 'PAYMENT_GATEWAY',
-            'explanation' => 'CONFIG_OPTION_vpn_password',
+            'group' => 'SHOPPING',
+            'explanation' => 'CONFIG_OPTION_credit_card_cleanup_days',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +50,6 @@ class Hook_config_vpn_password
      */
     public function get_default()
     {
-        return '';
+        return '365';
     }
 }

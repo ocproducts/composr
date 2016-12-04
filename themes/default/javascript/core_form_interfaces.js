@@ -482,7 +482,7 @@
                 imageSources = JSON.parse(params.imageSources || '{}');
             }
 
-            if (window.jQuery && (selectEl.options.length > 20)/*only for long lists*/ && (!selectEl.options[0].value.match(/^\d+$/)/*not for lists of numbers*/)) {
+            if (window.jQuery && (typeof window.jQuery(selectEl).select2 != 'undefined') && (selectEl.options.length > 20)/*only for long lists*/ && (!$cms.dom.html(selectEl.options[1]).match(/^\d+$/)/*not for lists of numbers*/)) {
                 window.jQuery(selectEl).select2(select2Options);
             }
 

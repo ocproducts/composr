@@ -111,6 +111,8 @@ function resizeImage($image, $width, $height, $scale)
             $source = imagecreatefromwebp($image);
             break;
     }
+    imagepalettetotruecolor($image);
+
     imagecopyresampled($newImage, $source, 0, 0, 0, 0, $newImageWidth, $newImageHeight, $width, $height);
 
     switch ($imageType) {
@@ -140,12 +142,15 @@ function resizeImage($image, $width, $height, $scale)
 //You do not need to alter these functions
 function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start_width, $start_height, $scale)
 {
+    imagepalettetotruecolor($image);
+
     list($imagewidth, $imageheight, $imageType) = getimagesize($image);
     $imageType = image_type_to_mime_type($imageType);
-
     $newImageWidth = ceil($width * $scale);
     $newImageHeight = ceil($height * $scale);
+
     $newImage = imagecreatetruecolor($newImageWidth, $newImageHeight);
+
     switch ($imageType) {
         case "image/gif":
             $source = imagecreatefromgif($image);

@@ -25,10 +25,6 @@
  */
 function modsecurity_workaround_enable()
 {
-    if (get_option('complex_uploader') == '0') {
-        return;
-    }
-
     require_code('form_templates');
 
     global $MODSECURITY_WORKAROUND_ENABLED;

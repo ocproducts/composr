@@ -5,11 +5,11 @@
 
 {$SET,player_width,}
 {+START,IF_NON_EMPTY,{WIDTH}}
-	{$SET,player_width,{$MIN,1000,{WIDTH%}}},
+	{$SET,player_width,{$MIN,950,{WIDTH%}}},
 {+END}
 {$SET,player_height,}
 {+START,IF_NON_EMPTY,{HEIGHT}}
-	{$SET,player_height,{$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,1000,{WIDTH}}},{HEIGHT%}}},
+	{$SET,player_height,{$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT%}}},
 {+END}
 
 {$SET,duration,}
@@ -30,8 +30,8 @@
 		{+END}
 	{+END}
 
-	<meta itemprop="width" content="{WIDTH*}" />
-	<meta itemprop="height" content="{HEIGHT*}" />
+	<meta itemprop="width" content="{$MIN*,950,{WIDTH}}" />
+	<meta itemprop="height" content="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" />
 	{+START,IF_NON_EMPTY,{LENGTH}}
 		<meta itemprop="duration" content="T{LENGTH*}S" />
 	{+END}
@@ -39,6 +39,7 @@
 	<meta itemprop="embedURL" content="{URL*}" />
 
 	<div class="webstandards_checker_off" id="{$GET%,player_id}"></div>
+
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<figcaption class="associated_details">
 			{$PARAGRAPH,{DESCRIPTION}}
@@ -50,7 +51,7 @@
 
 <div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
 {+START,IF,{$GET,raw_video}}
-	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{WIDTH*}" height="{HEIGHT*}" controls="controls">
+	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls">
 		<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
 		<span>{DESCRIPTION}</span>
 	</video>

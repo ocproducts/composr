@@ -555,8 +555,12 @@ function resize_rep_image($rep_image)
 {
     if (($rep_image != '') && (get_value('resize_rep_images') !== '0')) {
         require_code('images');
+        $_rep_image = $rep_image;
+        if (url_is_local($rep_image)) {
+            $_rep_image = get_custom_base_url() . '/' . $rep_image;
+        }
         $rep_image_path = get_custom_file_base() . '/uploads/repimages/' . basename(rawurldecode($rep_image));
-        $rep_image = convert_image($rep_image, $rep_image_path, null, null, intval(get_option('thumb_width')), true, null, false, true);
+        $rep_image = convert_image($_rep_image, $rep_image_path, null, null, intval(get_option('thumb_width')), true, null, false, true);
     }
 
     return $rep_image;

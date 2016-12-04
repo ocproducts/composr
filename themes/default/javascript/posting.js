@@ -99,7 +99,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
          */
 
         // Add any defaults into URL
-        defaults.thumb = '1';
+        defaults.thumb = ($cms.$CONFIG_OPTION.simplified_attachments_ui && is_image && !multi) ? '0' : '1';
         defaults.type = ''; // =autodetect rendering type
 
         // Shall we show the options overlay?

@@ -13,7 +13,7 @@ social	forum
 xml_fields	filtering
 banner	advert	advertising	advertise
 masthead	header
-news	blogs	press release
+news	blogs	press release	journal
 check-in	workflow	unvalidated	validation	valid	approve	approval	approved	live	accept	posted	online	active	activate	activation	visible	verify	publish/* screened*/ // i.e. Composr validation
 webstandards	check	conformance
 theme	skin	style
@@ -111,7 +111,7 @@ survey	quiz	competition	test	questionnaire
 swf	flash
 friend	buddy	follower
 like	love	rate
-subscribe	subscription
+subscribe	subscription	recurring
 attach	embed
 smf	simple machines forum
 ipb	invision

@@ -30,6 +30,45 @@
 	width: 100%;
 }
 
+.local_payment_merchant_details_wrap {
+	border: 1px dashed {$GET,point_of_interest_border};
+	background-color: {$GET,point_of_interest_background};
+}
+
+.local_payment_merchant_details {
+	display: table;
+	width: 100%;
+}
+
+.local_payment_merchant_details>div {
+	display: table-row;
+}
+
+.local_payment_transact_info, .payment_processor_links, .local_payment_verified_account_logo {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0.5em;
+}
+
+.local_payment_transact_info {
+}
+
+.payment_processor_links {
+	background: url('{$IMG;,ecommerce/checkmark}') no-repeat left center;
+	padding-left: 24px;
+}
+
+.local_payment_verified_account_logo {
+}
+
+.local_payment_merchant_details p, .local_payment_merchant_details_simple p {
+	margin: 0;
+}
+
+.local_payment_merchant_details_wrap + .ecommerce_button, .local_payment_merchant_details + .ecommerce_button {
+	margin-top: 1em;
+}
+
 /*
 =========================
 =========Buttons=========

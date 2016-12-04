@@ -159,8 +159,12 @@ class Module_admin_stats
             'clear' => array('CLEAR_STATISTICS', 'menu/adminzone/audit/statistics/clear_stats'),
         );
 
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
-        if ($test !== null) {
+        static $has_geolocation_data = null;
+        if ($has_geolocation_data === null) {
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
+            $has_geolocation_data = ($test !== null);
+        }
+        if ($has_geolocation_data) {
             $ret['install_data'] = array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate');
         }
 

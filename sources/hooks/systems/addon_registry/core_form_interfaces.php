@@ -135,6 +135,7 @@ class Hook_addon_registry_core_form_interfaces
             'themes/default/templates/FORM_SCREEN_FIELDS_SET.tpl',
             'themes/default/templates/FORM_SCREEN_INPUT_ALL_AND_NOT.tpl',
             'themes/default/templates/FORM_SCREEN_INPUT_DATE.tpl',
+            'themes/default/templates/FORM_SCREEN_INPUT_DATE_COMPONENTS.tpl',
             'themes/default/templates/FORM_SCREEN_INPUT_FLOAT.tpl',
             'themes/default/templates/FORM_SCREEN_INPUT_HIDDEN.tpl',
             'themes/default/templates/FORM_SCREEN_INPUT_HIDDEN_2.tpl',
@@ -624,6 +625,7 @@ class Hook_addon_registry_core_form_interfaces
             'templates/POSTING_FIELD.tpl' => 'form_screen',
             'templates/FORM_SCREEN_INPUT_TIME.tpl' => 'form_screen_1',
             'templates/FORM_SCREEN_INPUT_DATE.tpl' => 'form_screen_1',
+            'templates/FORM_SCREEN_INPUT_DATE_COMPONENTS.tpl' => 'form_screen_1',
             'templates/FORM_SCREEN_INPUT_INTEGER.tpl' => 'form_screen_2',
             'templates/FORM_SCREEN_INPUT_DIMENSIONS.tpl' => 'form_screen_2',
             'templates/FORM_SCREEN_INPUT_FLOAT.tpl' => 'form_screen_1',
@@ -732,6 +734,7 @@ class Hook_addon_registry_core_form_interfaces
             'REQUIRED' => '',
             'NAME' => $name . '1',
             'DEFAULT' => '',
+            'SIZE' => '40',
         ));
         $input1 = do_lorem_template('FORM_SCREEN_FIELDS_SET_ITEM', array(
             'SET_NAME' => $name,
@@ -984,6 +987,32 @@ class Hook_addon_registry_core_form_interfaces
             'MAX_DATE_DAY' => '',
             'MAX_DATE_MONTH' => '',
             'MAX_DATE_YEAR' => '',
+        ));
+        $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
+            'REQUIRED' => true,
+            'SKIP_LABEL' => false,
+            'NAME' => $name,
+            'PRETTY_NAME' => lorem_word(),
+            'DESCRIPTION' => lorem_sentence_html(),
+            'DESCRIPTION_SIDE' => '',
+            'INPUT' => $input,
+            'COMCODE' => '',
+        )));
+
+        $name = placeholder_random_id();
+        $input = do_lorem_template('FORM_SCREEN_INPUT_DATE_COMPONENTS', array(
+            'REQUIRED' => true,
+            'TABINDEX' => placeholder_number(),
+            'NAME' => $name,
+            'PRETTY_NAME' => lorem_word(),
+            'WANT_YEAR' => true,
+            'START_YEAR' => strval(intval(date('Y')) - 1),
+            'END_YEAR' => strval(intval(date('Y')) + 1),
+            'YEAR' => date('Y'),
+            'WANT_MONTH' => true,
+            'MONTH' => '1',
+            'WANT_DAY' => true,
+            'DAY' => '1',
         ));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,

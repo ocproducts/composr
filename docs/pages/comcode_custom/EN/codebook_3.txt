@@ -641,6 +641,7 @@ The 'keep' parameters available are:
  - [tt]keep_infinite_scroll[/tt] -- set this to '0' or '1' to temporarily change the infinite scrolling setting
  - [tt]keep_type_strictness[/tt] -- set this to '0' to disable developer type strictness checks on ocProducts PHP
  - [tt]keep_xss_detect[/tt] -- set this to '0' to disable developer XSS detection on ocProducts PHP (this has nothing to do with live security, it just aids debugging)
+ - [tt]keep_ecommerce_local_test[/tt] -- set this to '1' to test local payment in dev-mode (without needing SSL)
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr

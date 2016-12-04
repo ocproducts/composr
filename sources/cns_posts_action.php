@@ -434,6 +434,8 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     require_code('autosave');
     clear_cms_autosave();
 
+    set_value('cns_post_count', strval(intval(get_value('cns_post_count')) + 1));
+
     cms_profile_end_for('cns_make_post', '#' . strval($post_id));
 
     return $post_id;

@@ -54,8 +54,7 @@ if ($field_id !== null) {
     if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
         log_hack_attack_and_exit('ORDERBY_HACK');
     }
-    global $NON_CANONICAL_PARAMS;
-    $NON_CANONICAL_PARAMS[] = 'sort';
+    inform_non_canonical_parameter('sort');
     $orderby = 'CAST(field_' . $field_id . ' AS UNSIGNED)';
     switch ($sortable) {
         case 'username':

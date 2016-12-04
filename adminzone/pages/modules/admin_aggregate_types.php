@@ -129,7 +129,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
         }
 
         if ($type == 'sync') {
-            inform_non_canonical_parameter('sync_type');
+            inform_non_canonical_parameter('sync_type', false);
 
             $this->title = get_screen_title('SYNCHRONISE_AGGREGATE_TYPES');
         }

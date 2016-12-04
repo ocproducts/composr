@@ -442,8 +442,8 @@ class Module_admin_ecommerce_logs
         $custom_expiry = post_param_date('cexpiry');
         $mc_currency = get_option('currency');
 
-        $object = find_product($type_code);
-        $products = $object->get_products(true);
+        $product_object = find_product($type_code);
+        $products = $product_object->get_products(true);
         if ($mc_gross == '') {
             $mc_gross = $products[$type_code][1];
             if (isset($products[$type_code][5])) {
@@ -478,7 +478,7 @@ class Module_admin_ecommerce_logs
                     's_time' => time(),
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
-                    's_via' => 'manual',
+                    's_payment_gateway' => 'manual',
                     's_length' => $products[$type_code][3]['length'],
                     's_length_units' => $products[$type_code][3]['length_units'],
                 ), true));
@@ -508,7 +508,7 @@ class Module_admin_ecommerce_logs
             }
         }
 
-        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual');
+        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual', null, false, true);
 
         $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url !== null) {
@@ -580,7 +580,7 @@ class Module_admin_ecommerce_logs
         $transactions = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'transactions WHERE t_time<' . strval($to) . ' AND ' . db_string_equal_to('t_status', 'Completed') . ' ORDER BY t_time');
         foreach ($transactions as $transaction) {
             if ($transaction['t_time'] > $from) {
-                $types['TRANS']['AMOUNT'] += get_transaction_fee($transaction['t_amount'], $transaction['t_via']);
+                $types['TRANS']['AMOUNT'] += get_transaction_fee($transaction['t_amount'], $transaction['t_payment_gateway']);
             }
 
             if ($unpaid_invoices_count) {
@@ -598,7 +598,7 @@ class Module_admin_ecommerce_logs
             $types['CLOSING']['AMOUNT'] += $transaction['t_amount'];
 
             if ($transaction['t_time'] < $from) {
-                $types['OPENING']['AMOUNT'] += $transaction['t_amount'] - get_transaction_fee($transaction['t_amount'], $transaction['t_via']);
+                $types['OPENING']['AMOUNT'] += $transaction['t_amount'] - get_transaction_fee($transaction['t_amount'], $transaction['t_payment_gateway']);
                 continue;
             }
 
@@ -710,7 +710,7 @@ class Module_admin_ecommerce_logs
     {
         disable_php_memory_limit();
 
-        $where = array('s_via' => 'manual');
+        $where = array('s_payment_gateway' => 'manual');
         if (get_param_integer('all', 0) == 1) {
             $where = null;
         }
@@ -778,7 +778,7 @@ class Module_admin_ecommerce_logs
         $repost_id = post_param_integer('id', null);
         if (($repost_id !== null) && ($repost_id == $id)) {
             require_code('ecommerce');
-            handle_confirmed_transaction(strval($id), '', 'SCancelled', '', '', '', '', '', '', '', '', 'manual'); // Runs a cancel
+            handle_confirmed_transaction(strval($id), '', 'SCancelled', '', '', '', '', '', '', '', '', 'manual', null, false, true); // Runs a cancel
             return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
         }
 

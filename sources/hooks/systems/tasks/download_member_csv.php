@@ -223,21 +223,21 @@ class Hook_task_download_member_csv
                     $term_start_time = date('Y/m/d', tz_time($sub['term_start_time'], get_site_timezone()));
                     $term_end_time = date('Y/m/d', tz_time($sub['term_end_time'], get_site_timezone()));
                     $expiry_time = date('Y/m/d', tz_time($sub['expiry_time'], get_site_timezone()));
-                    $via = do_lang('PAYMENT_GATEWAY_' . $sub['via']);
+                    $payment_gateway = do_lang('PAYMENT_GATEWAY_' . $sub['via']);
                     $state = do_lang('PAYMENT_STATE_' . $sub['state']);
                 } else {
                     $start_time = '';
                     $term_start_time = '';
                     $term_end_time = '';
                     $expiry_time = '';
-                    $via = '';
+                    $payment_gateway = '';
                     $state = '';
                 }
                 $m[$item_name . ' (' . do_lang('SUBSCRIPTION_START_TIME') . ')'] = $start_time;
                 $m[$item_name . ' (' . do_lang('SUBSCRIPTION_TERM_START_TIME') . ')'] = $term_start_time;
                 $m[$item_name . ' (' . do_lang('SUBSCRIPTION_TERM_END_TIME') . ')'] = $term_end_time;
                 $m[$item_name . ' (' . do_lang('SUBSCRIPTION_EXPIRY_TIME') . ')'] = $expiry_time;
-                $m[$item_name . ' (' . do_lang('PAYMENT_GATEWAY') . ')'] = $via;
+                $m[$item_name . ' (' . do_lang('PAYMENT_GATEWAY') . ')'] = $payment_gateway;
                 $m[$item_name . ' (' . do_lang('STATUS') . ')'] = $state;
             }
         }

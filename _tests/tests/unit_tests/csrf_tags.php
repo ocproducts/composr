@@ -47,19 +47,13 @@ class csrf_tags_test_set extends cms_test_case
                     }
 
                     if (in_array($f, array(
-                        'ECOM_BUTTON_VIA_CCBILL.tpl',
-                        'ECOM_BUTTON_VIA_PAYPAL.tpl',
-                        'ECOM_BUTTON_VIA_SECPAY.tpl',
-                        'ECOM_BUTTON_VIA_WORLDPAY.tpl',
-                        'ECOM_CART_BUTTON_VIA_PAYPAL.tpl',
-                        'ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL.tpl',
-                        'ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL.tpl',
-                        'ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl',
-                        'ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY.tpl',
                         'INSTALLER_STEP_1.tpl',
                         'INSTALLER_STEP_2.tpl',
                         'INSTALLER_STEP_3.tpl',
                     ))) {
+                        continue;
+                    }
+                    if (preg_match('#^ECOM_.*_VIA_.*#', $f) != 0) {
                         continue;
                     }
 

@@ -218,7 +218,7 @@ class Module_admin_cns_merge_members
         $fields = cns_get_custom_fields_member($from_id);
         foreach ($fields as $key => $val) {
             if ($val != '') {
-                cns_set_custom_field($to_id, $key, $val);
+                cns_set_custom_field($to_id, $key, is_integer($val) ? strval($val) : $val);
             }
         }
 
