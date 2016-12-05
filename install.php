@@ -1734,7 +1734,7 @@ if (!function_exists(\'git_repos\')) {
 
     // Derive a random session cookie name, to stop conflicts between sites
     if (!isset($_POST['session_cookie'])) {
-        fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . preg_replace('#[^\w]#', '', uniqid('', true)) . "';\n");
+        fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . md5($base_url) . "';\n");
     }
 
     // On the live GAE, we need to switch in different settings to the local dev server
