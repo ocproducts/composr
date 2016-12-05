@@ -1,14 +1,15 @@
-<section class="box box___block_main_search"><div class="box_inner">
+{$REQUIRE_JAVASCRIPT,search}
+<section class="box box___block_main_search" data-view="BlockMainSearch" data-view-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}"><div class="box_inner">
 	<h3>{TITLE*}</h3>
 
-	<form role="search" title="{TITLE*}" onsubmit="if (this.elements.content === undefined) { $cms.ui.disableFormButtons(this); return true; } if (check_field_for_blankness(this.elements.content, event)) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
+	<form role="search" title="{TITLE*}" class="js-form-submit-main-search" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
 		{$HIDDENS_FOR_GET_FORM,{URL},content}
 
 		<div>
 			{+START,IF,{$EQ,{INPUT_FIELDS},1}}
 				<div class="constrain_field">
 					<label class="accessibility_hidden" for="main_search_content">{!SEARCH}</label>
-					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field" onkeyup="update_ajax_search_list(this,event{+START,IF_PASSED,SEARCH_TYPE},'{SEARCH_TYPE;^*}'{+END});" type="search" id="main_search_content" name="content" value="" />
+					<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field js-keyup-update-ajax-search-list-with-type" type="search" id="main_search_content" name="content" value="" />
 				</div>
 			{+END}
 			{+START,IF,{$NEQ,{INPUT_FIELDS},1}}
@@ -17,10 +18,10 @@
 						<div class="search_option float_surrounder">
 							<label for="search_{_loop_key*}">{LABEL*}:</label><br />
 							{+START,IF,{$EQ,{_loop_key},content}}
-								<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" onkeyup="update_ajax_search_list(this,event);" type="text" id="search_{_loop_key*}" name="content" value="{$_GET*,content}" />
+								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="js-keyup-update-ajax-search-list" type="text" id="search_{_loop_key*}" name="content" value="{$_GET*,content}" />
 							{+END}
 							{+START,IF,{$NEQ,{_loop_key},content}}
-								<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" type="text" id="search_{_loop_key*}" name="option_{_loop_key*}" value="{$_GET*,option_{_loop_key}}" />
+								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" type="text" id="search_{_loop_key*}" name="option_{_loop_key*}" value="{$_GET*,option_{_loop_key}}" />
 							{+END}
 						</div>
 					{+END}

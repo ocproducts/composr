@@ -1,21 +1,11 @@
-<div class="constrain_field">
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
+<div class="constrain_field" data-tpl="formScreenInputPassword" data-tpl-params="{+START,PARAMS_JSON,VALUE,NAME}{_*}{+END}">
 	{+START,IF,{$MATCH_KEY_MATCH,:join}}
-		<div style="display: none" onmouseover="if (typeof this.parentNode.title!='undefined') this.parentNode.title=''; activate_tooltip(this,event,'{!PASSWORD_STRENGTH}','auto');" id="password_strength_{NAME*}" class="password_strength">
+		<div style="display: none" id="password_strength_{NAME*}" class="password_strength js-mouseover-activate-password-strength-tooltip">
 			<div class="password_strength_inner"></div>
 		</div>
 	{+END}
 
-	<input{+START,IF,{$EQ,{NAME},edit_password}} autocomplete="off"{+START,IF,{$MOBILE}} autocorrect="off"{+END}{+END} onchange="password_strength(this);" size="30" maxlength="255" tabindex="{TABINDEX*}" class="input_password{REQUIRED*}" type="password" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
-
-	{+START,IF,{$AND,{$EQ,{VALUE},},{$EQ,{NAME},edit_password}}}
-		<script type="text/javascript">// <![CDATA[
-			// Work around annoying Firefox bug. It ignores autocomplete="off" if a password was already saved somehow
-			$(function () {
-				window.setTimeout(function() {
-					document.getElementById('{NAME;/}').value='';
-				},300);
-			} );
-		//]]></script>
-	{+END}
+	<input {+START,IF,{$EQ,{NAME},edit_password}} autocomplete="off"{+START,IF,{$MOBILE}} autocorrect="off"{+END}{+END} size="30" maxlength="255" tabindex="{TABINDEX*}" class="input_password{REQUIRED*} js-input-change-check-password-strength" type="password" id="{NAME*}" name="{NAME*}" value="{VALUE*}" />
 </div>
 

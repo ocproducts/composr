@@ -51,7 +51,7 @@
 						{+START,LOOP,QUIZZES}
 							<tr>
 								<td>
-									<a onmouseover="activate_tooltip(this,event,'{QUIZ_START_TEXT;^*}','auto');" href="{QUIZ_URL*}">{QUIZ_NAME*}</a>
+									<a data-mouseover-activate-tooltip="['{QUIZ_START_TEXT;^*}','auto']" href="{QUIZ_URL*}">{QUIZ_NAME*}</a>
 								</td>
 
 								<td>

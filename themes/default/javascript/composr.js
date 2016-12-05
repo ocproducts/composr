@@ -21,7 +21,7 @@ var encodeUC = encodeURIComponent,
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
     // Clever helper for merging arrays using `[].push`
-        merge = Function.bind.call(Function.apply, emptyArr.push),
+        pushArray = Function.bind.call(Function.apply, emptyArr.push),
 
     // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
     // Opera 8.0+
@@ -263,10 +263,14 @@ var encodeUC = encodeURIComponent,
         return ++_uniqueId;
     }
 
-    // Used to uniquely identify objects/functions
+    /**
+     * Used to uniquely identify objects/functions
+     * @param {object|function} obj
+     * @returns {number}
+     */
     function uid(obj) {
         if ((obj == null) || ((typeof obj !== 'object') && (typeof obj !== 'function'))) {
-            throw new Error('$cms.uid(obj): Invalid value provided for `obj`.');
+            throw new TypeError('$cms.uid(): Paremeter `obj` must be an object or a function.');
         }
 
         if (hasOwn(obj, $cms.id)) {
@@ -284,6 +288,10 @@ var encodeUC = encodeURIComponent,
 
     function returnFalse() {
         return false;
+    }
+
+    function returnFirst(first) {
+        return first;
     }
 
     function isObj(val) {
@@ -1676,6 +1684,14 @@ var encodeUC = encodeURIComponent,
         return $cms.dom.on(el, event, selector, data, callback, 1);
     };
 
+    /**
+     * @param el {Window|Document|Element}
+     * @param event {string|object}
+     * @param selector {string|function}
+     * @param [data] {object|function}
+     * @param [callback] {function}
+     * @param [one] {number}
+     */
     $cms.dom.on = function (el, event, selector, data, callback, one) {
         var autoRemove, delegator;
 
@@ -1838,7 +1854,7 @@ var encodeUC = encodeURIComponent,
     };
 
     $cms.dom.isCss = function (el, property, values) {
-        values = (typeof values === 'string') ? [values] : (values || []);
+        values = arrVal(values);
 
         return values.includes($cms.dom.css(el, property));
     };
@@ -1932,7 +1948,7 @@ var encodeUC = encodeURIComponent,
             duration = undefined;
         }
 
-        duration = Number.isFinite(duration = Math.floor(duration)) ? duration : 400;
+        duration = Number.isFinite(+duration) ? +duration : 400;
 
         var target = $cms.dom.css(el, 'opacity');
 
@@ -1970,7 +1986,7 @@ var encodeUC = encodeURIComponent,
             duration = undefined;
         }
 
-        duration = Number.isFinite(duration = Math.floor(duration)) ? duration : 400;
+        duration = Number.isFinite(+duration) ? +duration : 400;
 
         if ('animate' in emptyEl) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
@@ -2415,7 +2431,32 @@ var encodeUC = encodeURIComponent,
     });
 
     /* Tempcode filters ported to JS */
-    $cms.filter = {};
+    $cms.filter = function $cms_filter(str, filters) {
+        str = strVal(str);
+        filters = strVal(filters);
+
+        for (var i = 0; i < filters.length; i++) {
+            switch (filters[i]) {
+                case '&':
+                    str = $cms.filter.url(str);
+                    break;
+
+                case '~':
+                    str = $cms.filter.nl(str);
+                    break;
+
+                case '|':
+                    str = $cms.filter.id(str);
+                    break;
+
+                case '=':
+                    str = $cms.filter.html(str);
+                    break;
+            }
+        }
+
+        return str;
+    };
 
     // JavaScript port of php's urlencode function
     // Credit: http://locutus.io/php/url/urlencode/
@@ -2447,7 +2488,7 @@ var encodeUC = encodeURIComponent,
     };
 
     // JS port of the tempcode filter '~' (NL_ESCAPED)
-    $cms.filter.crLf = function $cms_filter_crLf(str) {
+    $cms.filter.nl = $cms.filter.crLf = function $cms_filter_ln(str) {
         return strVal(str).replace(/[\r\n]/g, '');
     };
 
@@ -5065,7 +5106,7 @@ function clear_out_tooltips(tooltip_being_opened) {
 //  force_width is set to true if you want width to not be a max width
 //  win is the window to open in
 //  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
-function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, global, have_links) {
+function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
     event || (event = {});
     width || (width = 'auto');
     pic || (pic = '');
@@ -5074,7 +5115,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     no_delay = !!no_delay;
     lights_off = !!lights_off;
     force_width = !!force_width;
-    global || (global = window);
+    win || (win = window);
     have_links = !!have_links;
 
     if (!window.page_loaded || !tooltip) {
@@ -5098,18 +5139,18 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     if (!have_links) {
         if (!el.onmouseout) {
             el.onmouseout = function () {
-                global.deactivate_tooltip(el);
+                win.deactivate_tooltip(el);
             };
         }
         if (!el.onmousemove) {
             el.onmousemove = function (event) {
-                global.reposition_tooltip(el, event, false, false, null, false, global);
+                win.reposition_tooltip(el, event, false, false, null, false, win);
             };
         }
     } else {
         el.old_onclick = el.onclick;
         el.onclick = function () {
-            global.deactivate_tooltip(el);
+            win.deactivate_tooltip(el);
         };
     }
 
@@ -5131,55 +5172,57 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
         children[i].setAttribute('title', '');
     }
 
-    var tooltip_element;
+    var tooltipEl;
     if ((el.tooltip_id !== undefined) && ($cms.dom.id(el.tooltip_id))) {
-        tooltip_element = global.$cms.dom.id(el.tooltip_id);
-        tooltip_element.style.display = 'none';
-        $cms.dom.html(tooltip_element, '');
+        tooltipEl = win.$cms.dom.$('#' + el.tooltip_id);
+        tooltipEl.style.display = 'none';
+        $cms.dom.html(tooltipEl, '');
         window.setTimeout(function () {
-            reposition_tooltip(el, event, bottom, true, tooltip_element, force_width);
+            reposition_tooltip(el, event, bottom, true, tooltipEl, force_width);
         });
     } else {
-        tooltip_element = global.document.createElement('div');
-        tooltip_element.role = 'tooltip';
-        tooltip_element.style.display = 'none';
+        tooltipEl = win.document.createElement('div');
+        tooltipEl.role = 'tooltip';
+        tooltipEl.style.display = 'none';
         var rt_pos = tooltip.indexOf('results_table');
-        tooltip_element.className = 'tooltip ' + ((rt_pos == -1 || rt_pos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (have_links ? ' have_links' : '');
+        tooltipEl.className = 'tooltip ' + ((rt_pos == -1 || rt_pos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (have_links ? ' have_links' : '');
         if (el.className.substr(0, 3) == 'tt_') {
-            tooltip_element.className += ' ' + el.className;
+            tooltipEl.className += ' ' + el.className;
         }
-        if (tooltip.length < 50) tooltip_element.style.wordWrap = 'normal'; // Only break words on long tooltips. Otherwise it messes with alignment.
+        if (tooltip.length < 50) tooltipEl.style.wordWrap = 'normal'; // Only break words on long tooltips. Otherwise it messes with alignment.
         if (force_width) {
-            tooltip_element.style.width = width;
+            tooltipEl.style.width = width;
         } else {
             if (width == 'auto') {
-                var new_auto_width = get_window_width(global) - 30 - window.mouse_x;
+                var new_auto_width = get_window_width(win) - 30 - window.mouse_x;
                 if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
-                tooltip_element.style.maxWidth = new_auto_width + 'px';
+                tooltipEl.style.maxWidth = new_auto_width + 'px';
             } else {
-                tooltip_element.style.maxWidth = width;
+                tooltipEl.style.maxWidth = width;
             }
-            tooltip_element.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
+            tooltipEl.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
         }
-        if ((height) && (height != 'auto')) {
-            tooltip_element.style.maxHeight = height;
-            tooltip_element.style.overflow = 'auto';
+        if (height && (height !== 'auto')) {
+            tooltipEl.style.maxHeight = height;
+            tooltipEl.style.overflow = 'auto';
         }
-        tooltip_element.style.position = 'absolute';
-        tooltip_element.id = 't_' + Math.floor(Math.random() * 1000);
-        el.tooltip_id = tooltip_element.id;
-        reposition_tooltip(el, event, bottom, true, tooltip_element, force_width);
-        document.body.appendChild(tooltip_element);
+        tooltipEl.style.position = 'absolute';
+        tooltipEl.id = 't_' + Math.floor(Math.random() * 1000);
+        el.tooltip_id = tooltipEl.id;
+        reposition_tooltip(el, event, bottom, true, tooltipEl, force_width);
+        document.body.appendChild(tooltipEl);
     }
-    tooltip_element.ac = el;
+    tooltipEl.ac = el;
 
     if (pic) {
-        var img = global.document.createElement('img');
+        var img = win.document.createElement('img');
         img.src = pic;
         img.className = 'tooltip_img';
-        if (lights_off) img.className += ' faded_tooltip_img';
-        tooltip_element.appendChild(img);
-        tooltip_element.className += ' tooltip_with_img';
+        if (lights_off) {
+            img.className += ' faded_tooltip_img';
+        }
+        tooltipEl.appendChild(img);
+        tooltipEl.className += ' tooltip_with_img';
     }
 
     var event_copy = { // Needs to be copied as it will get erased on IE after this function ends
@@ -5191,11 +5234,8 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     };
 
     // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
-    var bi = $cms.dom.id('main_website_inner');
-    if (!bi) {
-        bi = document.body;
-    }
-    if ((window.TouchEvent !== undefined) && (!bi.onmouseover)) {
+    var bi = $cms.dom.$('#main_website_inner') || document.body;
+    if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
         bi.onmouseover = function () {
             return true;
         };
@@ -5206,21 +5246,21 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
             return;
         }
 
-        if ((!el.tooltip_on) || (tooltip_element.childNodes.length === 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
-            $cms.dom.appendHtml(tooltip_element, tooltip);
+        if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
+            $cms.dom.appendHtml(tooltipEl, tooltip);
 
         el.tooltip_on = true;
-        tooltip_element.style.display = 'block';
-        if (tooltip_element.style.width == 'auto')
-            tooltip_element.style.width = ($cms.dom.contentWidth(tooltip_element) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+        tooltipEl.style.display = 'block';
+        if (tooltipEl.style.width == 'auto')
+            tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
         if (!no_delay) {
             // If delayed we will sub in what the currently known global mouse coordinate is
-            event_copy.pageX = global.mouse_x;
-            event_copy.pageY = global.mouse_y;
+            event_copy.pageX = win.mouse_x;
+            event_copy.pageY = win.mouse_y;
         }
 
-        reposition_tooltip(el, event_copy, bottom, true, tooltip_element, force_width, global);
+        reposition_tooltip(el, event_copy, bottom, true, tooltipEl, force_width, win);
     }, no_delay ? 0 : 666);
 }
 function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
@@ -5323,7 +5363,7 @@ function deactivate_tooltip(el, tooltip_element) {
         return;
     }
 
-    tooltip_element || (tooltip_element = $cms.dom.id(el.tooltip_id));
+    tooltip_element || (tooltip_element = $cms.dom.$('#' + el.tooltip_id));
 
     if (tooltip_element) {
         $cms.dom.hide(tooltip_element);
@@ -6577,7 +6617,8 @@ function faux_open(url, name, options, target, cancel_text) {
 
     function update_ajax_search_list(target, e, search_type) {
         var special = 'search';
-        if (search_type !== undefined) {
+        search_type = strVal(search_type);
+        if (search_type) {
             special += '&search_type=' + encodeUC(search_type);
         }
         update_ajax_member_list(target, special, false, e);
@@ -6845,20 +6886,22 @@ function faux_open(url, name, options, target, cancel_text) {
 
 "use strict";
 
-function password_strength(ob) {
-    if (ob.name.includes('2') || ob.name.includes('confirm')) {
+function password_strength(el) {
+    if (el.name.includes('2') || el.name.includes('confirm')) {
         return;
     }
 
-    var _ind = $cms.dom.id('password_strength_' + ob.id);
-    if (!_ind) return;
+    var _ind = $cms.dom.$('#password_strength_' + el.id);
+    if (!_ind) {
+        return;
+    }
     var ind = _ind.querySelector('div');
-    var post = 'password=' + encodeUC(ob.value);
-    if (ob.form && ob.form.elements['username'] !== undefined) {
-        post += '&username=' + ob.form.elements['username'].value;
+    var post = 'password=' + encodeUC(el.value);
+    if (el.form && (el.form.elements.username !== undefined)) {
+        post += '&username=' + el.form.elements['username'].value;
     } else {
-        if (ob.form && ob.form.elements['edit_username'] !== undefined) {
-            post += '&username=' + ob.form.elements['edit_username'].value;
+        if (el.form && el.form.elements.edit_username !== undefined) {
+            post += '&username=' + el.form.elements['edit_username'].value;
         }
     }
     var strength = load_snippet('password_strength', post);
@@ -6871,7 +6914,7 @@ function password_strength(ob) {
         ind.style.backgroundColor = 'red';
     else
         ind.style.backgroundColor = 'orange';
-    ind.parentNode.style.display = (ob.value.length == 0) ? 'none' : 'block';
+    ind.parentNode.style.display = (el.value.length == 0) ? 'none' : 'block';
 }
 
 

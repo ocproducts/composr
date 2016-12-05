@@ -158,11 +158,11 @@
 								{+START,IF_NON_EMPTY,{FIRST_POST}{COMMENT_TEXT}}
 									<ul class="associated_links_block_group">
 										{+START,IF_NON_EMPTY,{FIRST_POST}}
-											<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="activate_tooltip(this,event,'{FIRST_POST*~;^}','320px',null,null,false,true);">{!cns:FIRST_POST}</a></li>
+											<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" onblur="this.onmouseout(event);" data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
 										{+END}
 
 										{+START,IF_NON_EMPTY,{COMMENT_TEXT}}
-											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="activate_tooltip(this,event,'{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true);">{!HOVER_MOUSE_IMPORTANT}</a></li>
+											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{!HOVER_MOUSE_IMPORTANT}</a></li>
 										{+END}
 									</ul>
 								{+END}

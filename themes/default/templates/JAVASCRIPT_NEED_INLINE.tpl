@@ -1,4 +1,2 @@
-<script>// <![CDATA[
-	{CODE/}
-//]]></script>
+<script>{CODE/}</script>
 

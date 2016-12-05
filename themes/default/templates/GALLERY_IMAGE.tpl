@@ -46,7 +46,7 @@
 {+END}
 
 {+START,IF,{$EQ,{_GUID},carousel}}
-	<a onmouseover="activate_tooltip(this,event,'{$GET;^*,TOOLTIP}','auto',null,null,false,true);" href="{VIEW_URL*}"><img alt="{TITLE}" height="140" src="{$THUMBNAIL*,{THUMB_URL},140x140,website_specific,,,height}" /></a>
+	<a data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]" href="{VIEW_URL*}"><img alt="{TITLE}" height="140" src="{$THUMBNAIL*,{THUMB_URL},140x140,website_specific,,,height}" /></a>
 {+END}
 
 {+START,IF,{$NEQ,{_GUID},carousel}}
@@ -58,7 +58,7 @@
 			{+END}
 		{+END}
 
-		<div class="img_thumb_wrap" onmouseover="activate_tooltip(this,event,'{$GET;^*,TOOLTIP}','auto',null,null,false,true);">
+		<div class="img_thumb_wrap" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}','auto',null,null,false,true]">
 			<a href="{VIEW_URL*}">{$TRIM,{THUMB}}</a>
 		</div>
 

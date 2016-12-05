@@ -17,7 +17,7 @@
 
 <h2>{!OPTION_GROUPS}</h2>
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off" data-submit-pd="1" onsubmit="modsecurity_workaround(this);">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
