@@ -5,6 +5,24 @@
 
 /* Web UI */
 
+#noti_Container {
+	position:relative;
+	width:16px;
+	height:16px;
+}
+.noti_bubble {
+	position:absolute;
+	top: -6px;
+	right:-9px;
+	padding:1px 2px 1px 2px;
+	background-color:red;
+	color:white;
+	font-weight:bold;
+	font-size:0.55em;
+	border-radius:30px;
+	box-shadow:1px 1px 1px gray;
+}
+
 @keyframes countanimation {
 	0%   {opacity: 0.5;}
 	25%  {opacity: 0;}
@@ -26,8 +44,8 @@
 	background-repeat: no-repeat;
 	outline: 0;
 	animation-name: countanimation;
-        animation-duration: 2s;
-        animation-iteration-count: infinite;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
 }
 #web_notifications_button {
 	background-image: url('{$IMG;,icons/24x24/tool_buttons/notifications}');
