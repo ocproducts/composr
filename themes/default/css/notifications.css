@@ -5,6 +5,14 @@
 
 /* Web UI */
 
+@keyframes countanimation {
+	0%   {opacity: 0.5;}
+	25%  {opacity: 0;}
+	50%  {opacity: 0.5;}
+	75%  {opacity: 1;}
+	100% {opacity: 0.5;}
+}
+
 #web_notifications_button, #pts_button {
 	color: {$GET,heading_text};
 	display: inline-block;
@@ -17,6 +25,9 @@
 	vertical-align: middle;
 	background-repeat: no-repeat;
 	outline: 0;
+	animation-name: countanimation;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
 }
 #web_notifications_button {
 	background-image: url('{$IMG;,icons/24x24/tool_buttons/notifications}');
@@ -44,6 +55,7 @@
 
 .count_0 {
 	{$BETA_CSS_PROPERTY,opacity: 0.5;}
+	{$BETA_CSS_PROPERTY,animation-iteration-count: 0; -webkit-animation-play-state: paused; animation-play-state: paused;}
 }
 
 .notification {
