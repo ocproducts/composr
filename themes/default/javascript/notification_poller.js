@@ -97,6 +97,7 @@ function _poll_for_notifications(raw_ajax_result)
 			unread=raw_ajax_result.getElementsByTagName('unread_web_notifications');
 			set_inner_html(spot,get_inner_html(display[0]));
 			set_inner_html(button.childNodes[0],get_inner_html(unread[0]));
+			set_inner_html(document.getElementById('web_notifications_num'),get_inner_html(unread[0]));
 			button.className='count_'+get_inner_html(unread[0]);
 		}
 	}
@@ -111,6 +112,7 @@ function _poll_for_notifications(raw_ajax_result)
 			unread=raw_ajax_result.getElementsByTagName('unread_pts');
 			set_inner_html(spot,get_inner_html(display[0]));
 			set_inner_html(button.childNodes[0],get_inner_html(unread[0]));
+			set_inner_html(document.getElementById('pts_num'),get_inner_html(unread[0]));
 			button.className='count_'+get_inner_html(unread[0]);
 		}
 	}
