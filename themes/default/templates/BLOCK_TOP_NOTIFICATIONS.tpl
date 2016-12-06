@@ -20,7 +20,7 @@
 		</ul>
 	</div></div>
 </div>
-<a title="{!notifications:NOTIFICATIONS}" id="web_notifications_button" class="leave_native_tooltip count_{NUM_UNREAD_WEB_NOTIFICATIONS%}" &#111;nclick="return toggle_web_notifications(event);" href="{$PAGE_LINK*,_SEARCH:notifications:browse}"><span aria-label="{!COUNT_TOTAL} {!notifications:NOTIFICATIONS}">{NUM_UNREAD_WEB_NOTIFICATIONS*}</span>
+<a title="{!notifications:NOTIFICATIONS}" id="web_notifications_button" class="leave_native_tooltip count_{NUM_UNREAD_WEB_NOTIFICATIONS%}" onclick="return toggle_web_notifications(event);" href="{$PAGE_LINK*,_SEARCH:notifications:browse}"><span aria-label="{!COUNT_TOTAL} {!notifications:NOTIFICATIONS}">{NUM_UNREAD_WEB_NOTIFICATIONS*}</span>
 <div id="noti_Container">
 <div class="noti_bubble">{NUM_UNREAD_WEB_NOTIFICATIONS*}</div>
 </div>
@@ -43,7 +43,7 @@
 			</ul>
 		</div></div>
 	</div>
-<a title="{!cns:PRIVATE_TOPICS}" id="pts_button" class="leave_native_tooltip count_{NUM_UNREAD_PTS%}" &#111;nclick="return toggle_pts(event);" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}"><span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span>
+<a title="{!cns:PRIVATE_TOPICS}" id="pts_button" class="leave_native_tooltip count_{NUM_UNREAD_PTS%}" onclick="return toggle_pts(event);" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}"><span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span>
 <div id="noti_Container">
 <div class="noti_bubble">{NUM_UNREAD_PTS*}</div>
 </div>
