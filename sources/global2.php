@@ -1102,15 +1102,19 @@ function in_safe_mode()
         }
     }
 
+    $backdoor_ip = ((isset($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == ''));
+
     global $CHECKING_SAFEMODE, $REQUIRED_CODE;
-    if (!isset($REQUIRED_CODE['lang']) || !$REQUIRED_CODE['lang']) {
-        return false; // Too early. We can get in horrible problems when doing get_member() below if lang hasn't loaded yet
-    }
-    if ($CHECKING_SAFEMODE) {
-        return false; // Stops infinite loops (e.g. Check safe mode > Check access > Check usergroups > Check implicit usergroup hooks > Check whether to look at custom implicit usergroup hooks [i.e. if not in safe mode])
+    if (!$backdoor_ip) {
+        if (!isset($REQUIRED_CODE['lang']) || !$REQUIRED_CODE['lang']) {
+            return false; // Too early. We can get in horrible problems when doing get_member() below if lang hasn't loaded yet
+        }
+        if ($CHECKING_SAFEMODE) {
+            return false; // Stops infinite loops (e.g. Check safe mode > Check access > Check usergroups > Check implicit usergroup hooks > Check whether to look at custom implicit usergroup hooks [i.e. if not in safe mode])
+        }
     }
     $CHECKING_SAFEMODE = true;
-    $ret = ((get_param_integer('keep_safe_mode', 0) == 1) && ((isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
+    $ret = ((get_param_integer('keep_safe_mode', 0) == 1) && ($backdoor_ip || (isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
     $CHECKING_SAFEMODE = false;
     return $ret;
 }

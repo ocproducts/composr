@@ -34,7 +34,7 @@ class Hook_cleanup_orphaned_lang_strings
             return null;
         }
 
-        if ($GLOBALS['SITE_DB']->query_select_value('translate', 'COUNT(*)') > 10000) {
+        if (($GLOBALS['SITE_DB']->query_select_value('translate', 'COUNT(*)') > 10000) && (get_value('innodb') !== '1')) {
             return null; // Too much, and we don't have much use for it outside development anyway
         }
 
