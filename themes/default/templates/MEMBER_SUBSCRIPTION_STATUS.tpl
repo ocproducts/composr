@@ -33,7 +33,7 @@
 					<tr>
 						<th>
 							{+START,IF_PASSED,USERGROUP_SUBSCRIPTION_DESCRIPTION}
-								<span class="comcode_concept_inline" onmouseover="activate_tooltip(this,event,'{USERGROUP_SUBSCRIPTION_DESCRIPTION;^*}','auto');">{ITEM_NAME*}</span>
+								<span class="comcode_concept_inline" data-mouseover-activate-tooltip="['{USERGROUP_SUBSCRIPTION_DESCRIPTION;^*}','auto']">{ITEM_NAME*}</span>
 							{+END}
 							{+START,IF_NON_PASSED,USERGROUP_SUBSCRIPTION_DESCRIPTION}
 								{ITEM_NAME*}

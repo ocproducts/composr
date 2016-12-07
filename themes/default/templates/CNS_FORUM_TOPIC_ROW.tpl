@@ -11,7 +11,7 @@
 
 	<td class="cns_forum_topic_row_preview cns_column2">
 		{+START,IF,{$NOT,{$MOBILE}}}
-			<a class="cns_forum_topic_row_preview_button" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="activate_tooltip(this,event,'{$TRUNCATE_LEFT*~;^,{POST},1000,0,1}','30%',null,null,null,true);" href="{URL*}">{!PREVIEW} <span style="display: none">{ID*}</span></a>
+			<a class="cns_forum_topic_row_preview_button" onblur="this.onmouseout(event);" data-focus-activate-tooltip="['{$TRUNCATE_LEFT*~;^,{POST},1000,0,1}','30%',null,null,null,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT*~;^,{POST},1000,0,1}','30%',null,null,null,true]" href="{URL*}">{!PREVIEW} <span style="display: none">{ID*}</span></a>
 
 			<div class="cns_forum_topic_title_bits">
 				<span class="cns_forum_topic_title_bits_left">

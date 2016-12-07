@@ -1,5 +1,5 @@
 <div class="vertical_align">
-	<form title="{!ACTION}: {ORDER_TITLE*}" method="post" action="{ORDER_ACTUALISE_URL*}" onsubmit="return confirm_admin_order_actions(this.elements['action'].value,this);" autocomplete="off">
+	<form title="{!ACTION}: {ORDER_TITLE*}" method="post" action="{ORDER_ACTUALISE_URL*}" data-submit-pd="1" onsubmit="confirm_admin_order_actions(this.elements['action'].value,this);" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<label class="accessibility_hidden" for="action">{!ACTION}</label>

@@ -1,12 +1,6 @@
 (function ($cms) {
     'use strict';
 
-    $cms.views.FormStandardEnd = FormStandardEnd;
-    $cms.views.PostingForm = PostingForm;
-    $cms.views.FromScreenInputUpload = FromScreenInputUpload;
-    $cms.views.FormScreenInputPermission = FormScreenInputPermission;
-    $cms.views.FormScreenInputPermissionOverride = FormScreenInputPermissionOverride;
-
     // Templates:
     // POSTING_FORM
     // - POSTING_FIELD
@@ -234,6 +228,36 @@
             }
         }
     });
+
+    $cms.views.FormStandardEnd = FormStandardEnd;
+    $cms.views.PostingForm = PostingForm;
+    $cms.views.FromScreenInputUpload = FromScreenInputUpload;
+    $cms.views.FormScreenInputPermission = FormScreenInputPermission;
+    $cms.views.FormScreenInputPermissionOverride = FormScreenInputPermissionOverride;
+
+    $cms.templates.formScreenInputPassword = function (params) {
+        var container = this,
+            value = strVal(params.value),
+            name = strVal(params.name);
+
+        if ((value === '') && (name === 'edit_password')) {
+            // Work around annoying Firefox bug. It ignores autocomplete="off" if a password was already saved somehow
+            window.setTimeout(function () {
+                $cms.dom.$('#{NAME;/}').value = '';
+            }, 300);
+        }
+
+        $cms.dom.on(container, 'mouseover', '.js-mouseover-activate-password-strength-tooltip', function (e, el) {
+            if (el.parentNode.title !== undefined) {
+                el.parentNode.title = '';
+            }
+            activate_tooltip(el, e, '{!PASSWORD_STRENGTH}', 'auto');
+        });
+
+        $cms.dom.on(container, 'change', '.js-input-change-check-password-strength', function (e, input) {
+            password_strength(input);
+        });
+    };
 
     $cms.templates.comcodeEditor = function (params) {
         var container = this,

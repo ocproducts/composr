@@ -153,7 +153,18 @@
         },
 
         blockSideShoutbox: function blockSideShoutbox(params) {
+            var container = this;
+
             internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
+
+            $cms.dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
+
+                if (check_field_for_blankness(form.elements.shoutbox_message, e)) {
+                    $cms.ui.disableFormButtons(form);
+                } else {
+                    e.preventDefault();
+                }
+            });
         },
 
         chatSitewideIm: function chatSitewideIm(params) {
@@ -200,8 +211,8 @@
 
 
 // Constants
-window.MESSAGE_CHECK_INTERVAL = {$ROUND%,{$MAX,3000,{$CONFIG_OPTION,chat_message_check_interval}}};
-window.TRANSITORY_ALERT_TIME = {$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_time}};
+window.MESSAGE_CHECK_INTERVAL = +'{$ROUND%,{$MAX,3000,{$CONFIG_OPTION,chat_message_check_interval}}}';
+window.TRANSITORY_ALERT_TIME = +'{$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_time}}';
 window.LOGS_DOWNLOAD_INTERVAL = 3000;
 
 // Tracking variables

@@ -19,4 +19,10 @@
     });
 
     $cms.views.PurchaseWizardScreen = PurchaseWizardScreen;
+
+    $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params) {
+        var container = this;
+
+        //$cms.dom.on();
+    };
 }(window.$cms));

@@ -1,5 +1,24 @@
 (function ($cms) {
 
+    $cms.templates.memberTooltip = function (params) {
+        var container = this,
+            submitter = strVal(params.submitter);
+
+        $cms.dom.on(container, 'mouseover', '.js-mouseover-activate-member-tooltip', function (e, el) {
+            el.cancelled = false;
+            load_snippet('member_tooltip&member_id=' + submitter, null, function (result) {
+                if (!el.cancelled) {
+                    activate_tooltip(el, e, result.responseText, 'auto', null, null, false, true);
+                }
+            });
+        });
+
+        $cms.dom.on(container, 'mouseout', '.js-mouseout-deactivate-member-tooltip', function (e, el) {
+            deactivate_tooltip(el);
+            el.cancelled = true;
+        });
+    };
+
     $cms.templates.resultsLauncherContinue = function (params) {
         var link = this,
             max = params.max,

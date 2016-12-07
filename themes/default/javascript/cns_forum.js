@@ -18,6 +18,14 @@
         }
     });
 
+    $cms.templates.cnsVforumFiltering = function cnsVforumFiltering() {
+        var container = this;
+
+        $cms.dom.on(container, 'change', '.js-select-change-form-submit', function (e, select) {
+            select.form.submit();
+        });
+    };
+
     $cms.templates.cnsForumInGrouping = function cnsForumInGrouping(params) {
         var container = this,
             forumRulesUrl = params.forumRulesUrl,

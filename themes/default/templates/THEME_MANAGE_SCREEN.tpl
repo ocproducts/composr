@@ -31,7 +31,7 @@
 							{+END}
 						{+END}
 
-						<strong class="comcode_concept_inline" onmouseover="activate_tooltip(this, event, '{$GET;^*,TOOLTIP}', 'auto');">{TITLE*}</strong>
+						<strong class="comcode_concept_inline" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}', 'auto']">{TITLE*}</strong>
 						<dl>
 							{+START,IF_PASSED,SEED}
 								<dt>{!SEED_COLOUR}:</dt><dd><strong style="background: white; color: #{SEED*}">{SEED*}</strong></dd>

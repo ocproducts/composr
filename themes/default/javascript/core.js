@@ -329,6 +329,8 @@
                 'click [data-cms-js]': 'preventDefault',
                 'submit [data-cms-js]': 'preventDefault',
 
+                'submit [data-submit-pd]': 'submitPreventDefault',
+
                 // Simulated href for non <a> elements
                 'click [data-cms-href]': 'cmsHref',
 
@@ -338,6 +340,9 @@
 
                 // Disable button after click
                 'click [data-disable-on-click]': 'disableButton',
+
+                // Submit form when the change event is fired on an input element
+                'change [data-change-submit-form]': 'changeSubmitForm',
 
                 // Disable form buttons
                 'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
@@ -355,6 +360,11 @@
 
                 // Go back in browser history
                 'click [data-cms-btn-go-back]': 'goBackInHistory',
+
+                'mouseover [data-mouseover-activate-tooltip]': 'mouseoverActivateTooltip',
+                'focus [data-focus-activate-tooltip]': 'focusActivateTooltip',
+
+                'blur [data-blur-deactivate-tooltip]': 'blurDeactivateTooltip',
 
                 // "Rich semantic tooltips"
                 'click [data-cms-rich-tooltip]': 'activateRichTooltip',
@@ -460,7 +470,14 @@
 
         // Implementation for [data-cms-js]
         preventDefault: function (e, el) {
-            if (boolVal(el.dataset.cmsJs)) {
+            if (el.dataset.cmsJs !== '0') {
+                e.preventDefault();
+            }
+        },
+
+        // Implementation for [data-submit-pd]
+        submitPreventDefault: function (e, form) {
+            if (form.dataset.submitPd !== '0') {
                 e.preventDefault();
             }
         },
@@ -500,6 +517,13 @@
         // Implementation for [data-disable-on-click]
         disableButton: function (e, target) {
             $cms.ui.disableButton(target);
+        },
+
+        // Implementation for [data-change-submit-form]
+        changeSubmitForm: function (e, input) {
+            if (input.form != null) {
+                input.form.submit();
+            }
         },
 
         // Implementation for form[data-disable-buttons-on-submit]
@@ -569,6 +593,31 @@
 
         goBackInHistory: function () {
             window.history.back();
+        },
+
+        // Implementation for [data-mouseover-activate-tooltip]
+        mouseoverActivateTooltip: function (e, el) {
+            var args = arrVal($cms.dom.data(el, 'mouseoverActivateTooltip'));
+
+            args.unshift(el);
+            args.unshift(e);
+
+            activate_tooltip.apply(undefined, args);
+        },
+
+        // Implementation for [data-focus-activate-tooltip]
+        focusActivateTooltip: function (e, el) {
+            var args = arrVal($cms.dom.data(el, 'focusActivateTooltip'));
+
+            args.unshift(el);
+            args.unshift(e);
+
+            activate_tooltip.apply(undefined, args);
+        },
+
+        // Implementation for [data-blur-deactivate-tooltip]
+        blurDeactivateTooltip: function (e, el) {
+            deactivate_tooltip(el);
         },
 
         activateRichTooltip: function (e, el) {

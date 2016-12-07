@@ -227,6 +227,27 @@
         }
     });
 
+    $cms.templates.comcodeMemberLink = function comcodeMemberLink(params) {
+        var container = this;
+
+        $cms.dom.on(container, 'mouseover', '.js-mouseover-comcode-member-link', activateComcodeMemberLink);
+        $cms.dom.on(container, 'focus', '.js-focus-comcode-member-link', activateComcodeMemberLink);
+
+        function activateComcodeMemberLink(e, el) {
+            el.cancelled = false;
+            load_snippet('member_tooltip&member_id=' + params.memberId, null, function (result) {
+                if (!el.cancelled) {
+                    activate_tooltip(el, e, result.responseText, 'auto', null, null, false, true);
+                }
+            })
+        }
+
+        $cms.dom.on(container, 'mouseout', '.js-mouseout-comcode-member-link', function (e, el) {
+            deactivate_tooltip(el);
+            el.cancelled = true;
+        });
+    };
+
     $cms.extend($cms.templates, {
         attachments: function attachments(params) {
             var container = this;
@@ -242,8 +263,6 @@
 
             window.rebuild_attachment_button_for_next = rebuild_attachment_button_for_next;
             function rebuild_attachment_button_for_next(posting_field_name, attachment_upload_button) {
-                var filter = (params.filter != null) ? params.filter : null;
-
                 if (posting_field_name !== params.postingFieldName) {
                     return false;
                 }
@@ -253,7 +272,7 @@
                 }
                 window.attachment_upload_button = attachment_upload_button;
 
-                prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, filter, window.attachment_upload_button);
+                prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, strVal(params.filter), window.attachment_upload_button);
             }
 
             if (params.simpleUi) {
@@ -531,7 +550,7 @@
 
             // Tie into callback event to see when finished, for our slideshows}
             // API: https://developers.google.com/youtube/iframe_api_reference}
-            var youtube_callback_{$GET%,player_id} = function () {
+            var youtube_callback = function () {
                 var slideshow_mode = document.getElementById('next_slide');
                 var player = new YT.Player(element.id, {
                     width: params.width,
@@ -559,10 +578,9 @@
                 first_script_tag.parentNode.insertBefore(tag, first_script_tag);
                 window.done_youtube_player_init = true;
 
-                window.onYouTubeIframeAPIReady = youtube_callback_{$GET%,player_id};
-            } else
-            {
-                youtube_callback_{$GET%,player_id}();
+                window.onYouTubeIframeAPIReady = youtube_callback;
+            } else {
+                youtube_callback();
             }
         },
 
