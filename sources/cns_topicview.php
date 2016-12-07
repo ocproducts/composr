@@ -402,6 +402,10 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         // Post query
         $where = 'p_intended_solely_for=' . strval(get_member());
         $query = 'SELECT p.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
+
+        $topic_info = array(
+            't_is_open' => 1,
+        );
     }
 
     // Posts
@@ -414,7 +418,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         if (($start == 0) && (count($_postdetailss) < $max)) {
             $out['max_rows'] = $max; // We know that they're all on this screen
         } else {
-            $out['max_rows'] = (is_null($topic_id) || $topic_info['t_cache_num_posts'] < 500)? $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $where) : $topic_info['t_cache_num_posts']/*for performance reasons*/;
+            $out['max_rows'] = (is_null($topic_id) || $topic_info['t_cache_num_posts'] < 500) ? $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $where) : $topic_info['t_cache_num_posts']/*for performance reasons*/;
         }
         $posts = array();
         // Precache member/group details in one fell swoop
