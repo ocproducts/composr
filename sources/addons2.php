@@ -136,7 +136,7 @@ function reinstall_addon_soft($addon, $ini_info = null)
 }
 
 /**
- * Completely uninstall the specified addon from the system.
+ * Uninstall the specified addon.
  *
  * @param  ID_TEXT $addon The addon name
  */
@@ -734,7 +734,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
 }
 
 /**
- * Uninstall an addon.
+ * Completely uninstall the specified addon from the system.
  *
  * @param  string $addon Name of the addon
  * @param  boolean $clear_caches Whether to clear caches
@@ -763,7 +763,27 @@ function uninstall_addon($addon, $clear_caches = true)
                 $matches = array();
                 if (preg_match('#([^/]*)/?pages/modules(_custom)?/(.*)\.php#', $filename, $matches) != 0) {
                     if ($matches[2] != '_custom' || ($matches[2] == '_custom' && !is_file(get_file_base() . '/' . str_replace('_custom/', '/', $filename)))) {
-                        uninstall_module($matches[1], $matches[3]);
+                        $zone = $matches[1];
+                        $module = $matches[3];
+                        uninstall_module($zone, $module);
+
+                        // Remove from menu too
+                        $menu_sql = 'SELECT id FROM ' . get_table_prefix() . 'menu_items WHERE ';
+                        $menu_sql .= db_string_equal_to('i_url', $zone . ':' . $module);
+                        $menu_sql .= ' OR ';
+                        $menu_sql .= 'i_url LIKE \'' . db_encode_like($zone . ':' . $module . ':%') . '\'';
+                        if (($zone == 'site') && (get_option('collapse_user_zones') == '1')) {
+                            $zone = '';
+                            $menu_sql .= ' OR ';
+                            $menu_sql .= db_string_equal_to('i_url', $zone . ':' . $module);
+                            $menu_sql .= ' OR ';
+                            $menu_sql .= 'i_url LIKE \'' . db_encode_like($zone . ':' . $module . ':%') . '\'';
+                        }
+                        $menu_items = $GLOBALS['SITE_DB']->query($menu_sql);
+                        foreach ($menu_items as $menu_item) {
+                            require_code('menus2');
+                            delete_menu_item($menu_item['id']);
+                        }
                     }
                 }
                 if (preg_match('#sources(_custom)?/blocks/(.*)\.php#', $filename, $matches) != 0) {
