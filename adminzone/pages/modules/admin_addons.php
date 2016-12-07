@@ -71,7 +71,7 @@ class Module_admin_addons
 
         if (!$GLOBALS['DEV_MODE']) {
             require_code('files');
-            deldir_contents(get_custom_file_base() . '/exports/addons', true);
+            //deldir_contents(get_custom_file_base() . '/exports/addons', true);    This just messes with the build process and is not useful
         }
     }
 
