@@ -96,10 +96,10 @@ When you choose to manage images in the default theme, you will be warned agains
 Choose [tt]logo/-logo[/tt] (the logo for the Welcome Zone, and the logo for any zone that does not have its own) from the drop-down list presented. After clicking the button you will see the current image; all you need to do is create your own replacement on your computer (as a [tt].jpeg[/tt]/[tt].jpg[/tt], [tt].gif[/tt] or [tt].png[/tt] file) and choose to browse for it to upload. You do not need to erase the current URL, as your upload will replace it, and you definitely should leave the 'Name' field unchanged.
 
 Your choice of image file formats:
- - Use either [tt].png[/tt], [tt].jpg[/tt], or [tt].gif[/tt] files.
+ - Use either [tt].png[/tt], [tt].jpg[/tt], or [tt].gif[/tt] files:
   - [tt].jpg[/tt] is usually the best choice for a logo, because the file size can be very low. Be aware though that the JPEG format is a 'lossy' format, i.e. the higher the compression, the lower the quality of the image. JPEG does not support transparency.
-  - [tt].png[/tt] never loses quality, and also supports transparency -- but the sizes are a bit larger
-  - [tt].gif[/tt] is only really a good idea if you need animation, which is unlikely for a logo
+  - [tt].png[/tt] never loses quality, and also supports transparency -- but the sizes are a bit larger.
+  - [tt].gif[/tt] is only really a good idea if you need animation, which is unlikely for a logo. Soon will be able to do animation with [tt].png[/tt] via [url="APNG"]http://caniuse.com/#feat=apng[/url].
  - Do not ever try and use [tt].bmp[/tt] files with Composr, as they do not have proper compression, and are designed for Windows only.
 [/surround]
 

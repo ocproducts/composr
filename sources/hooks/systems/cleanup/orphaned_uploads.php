@@ -30,18 +30,6 @@ class Hook_cleanup_orphaned_uploads
      */
     public function info()
     {
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
-        $urlpaths = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name', 'm_table'), array('m_type' => 'URLPATH'));
-        $count = 0;
-        foreach ($urlpaths as $urlpath) {
-            $count += $GLOBALS['SITE_DB']->query_select_value($urlpath['m_table'], 'COUNT(*)');
-            if ($count > 10000) {
-                return null; // Too much!
-            }
-        }
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
-
         $info = array();
         $info['title'] = do_lang_tempcode('ORPHANED_UPLOADS');
         $info['description'] = do_lang_tempcode('DESCRIPTION_ORPHANED_UPLOADS');
