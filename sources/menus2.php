@@ -194,15 +194,18 @@ function add_menu_item_simple($menu, $parent, $caption, $url = '', $expanded = 0
 /**
  * Delete a menu item, without giving tedious/unnecessary detail.
  *
- * @param  SHORT_TEXT $url The URL (in entry point form).
+ * @param  SHORT_TEXT $url The URL (in entry point form), or a caption.
  */
 function delete_menu_item_simple($url)
 {
-    $GLOBALS['SITE_DB']->query_delete('menu_items', array('i_url' => $url));
+    $_id = $GLOBALS['SITE_DB']->query_select('menu_items', array('id'), array('i_url' => $url));
+    foreach ($_id as $id) {
+        delete_menu_item($id['id']);
+    }
 
     $_id = $GLOBALS['SITE_DB']->query_select('menu_items', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('i_caption') => $url));
     foreach ($_id as $id) {
-        $GLOBALS['SITE_DB']->query_delete('menu_items', array('i_caption' => $id['id']));
+        delete_menu_item($id['id']);
     }
 }
 

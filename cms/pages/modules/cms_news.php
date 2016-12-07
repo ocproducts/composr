@@ -979,8 +979,6 @@ class Module_cms_news_cat extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        require_code('themes2');
-
         $title = post_param_string('title');
 
         require_code('themes2');
@@ -1010,8 +1008,6 @@ class Module_cms_news_cat extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        require_code('themes2');
-
         $title = post_param_string('title');
 
         if (!fractional_edit()) {

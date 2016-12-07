@@ -30,7 +30,6 @@ class Hook_preview_video
      */
     public function applies()
     {
-        require_code('uploads');
         $applies = (get_page_name() == 'cms_galleries') && ((get_param_string('type', '') == 'add_other') || (get_param_string('type', '') == '_edit_other'));
         return array($applies, null, false);
     }
@@ -43,45 +42,24 @@ class Hook_preview_video
     public function run()
     {
         require_code('uploads');
+        require_code('galleries');
+        require_code('galleries2');
 
         $cat = post_param_string('cat');
 
-        $urls = get_url('url', 'file', 'uploads/galleries', 0, CMS_UPLOAD_VIDEO, true, '', 'file2');
-        if ($urls[0] == '') {
-            if (post_param_integer('id', null) !== null) {
-                $rows = $GLOBALS['SITE_DB']->query_select('videos', array('url', 'thumb_url'), array('id' => post_param_integer('id')), '', 1);
-                $urls = $rows[0];
-
-                $url = $urls['url'];
-                $thumb_url = $urls['thumb_url'];
-            } else {
-                warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
-            }
+        require_code(_get_module_path(get_module_zone('cms_galleries'), 'cms_galleries'));
+        if (class_exists('Mx_' . filter_naughty_harsh('cms_galleries'))) {
+            $object = object_factory('Mx_' . filter_naughty_harsh('cms_galleries'));
         } else {
-            $url = $urls[0];
-            $thumb_url = $urls[1];
+            $object = object_factory('Module_' . filter_naughty_harsh('cms_galleries'));
         }
+        $object->alt_crud_module = class_exists('Mx_cms_galleries_alt') ? new Mx_cms_galleries_alt() : new Module_cms_galleries_alt();
+        list($width, $height, $length) = $object->alt_crud_module->get_special_video_info();
 
-        $length = post_param_integer('video_length', null);
-        $width = post_param_integer('video_width', null);
-        $height = post_param_integer('video_height', null);
-        require_code('galleries');
-        require_code('galleries2');
-        $test = is_file(get_custom_base_url() . '/' . rawurldecode($url)) ? get_video_details(get_custom_base_url() . '/' . rawurldecode($url), basename($url)) : false;
-        if ($test !== false) {
-            list($_width, $_height, $_length) = $test;
-        } else {
-            list($_width, $_height, $_length) = array(intval(get_option('video_width_setting')), intval(get_option('video_height_setting')), 0);
-        }
-        if ($length === null) {
-            $length = $_length;
-        }
-        if ($width === null) {
-            $width = $_width;
-        }
-        if ($height === null) {
-            $height = $_height;
-        }
+        $filename = '';
+        $thumb_url = '';
+        $url = post_param_multi_source_upload('video', 'uploads/auto_thumbs', false, false, $filename, $thumb_url);
+
         $preview = show_gallery_video_media($url, $thumb_url, $width, $height, $length, get_member());
 
         return array($preview, null);

@@ -27,7 +27,7 @@ if (!function_exists('init__comcode_renderer')) {
                 \$urls_gal = get_url('', 'file' . \$_id, 'uploads/galleries', 0, CMS_UPLOAD_ANYTHING, true, '', '', true, true, true, true);
                 require_code('galleries2');
 
-                \$description = post_param_string('caption' . \$_id, array_key_exists('description', \$attributes)?\$attributes['description']:'');
+                \$description = post_param_string('caption' . \$_id, array_key_exists('description', \$attributes) ? \$attributes['description'] : '');
 
                 if (is_video(\$urls_gal[0], has_privilege(\$source_member, 'comcode_dangerous'))) {
                     \$video_width = array_key_exists('width', \$attributes) ? intval(\$attributes['width']) : null;

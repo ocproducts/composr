@@ -53,6 +53,9 @@ class Module_shopping
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order_addresses');
 
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'shopping'));
+
+        require_code('menus2');
+        delete_menu_item_simple('_SEARCH:catalogues:index:products');
     }
 
     /**

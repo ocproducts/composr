@@ -43,7 +43,7 @@ class Hook_preview_cns_emoticon
     {
         require_code('uploads');
 
-        $urls = get_url('', 'file', 'temp', 0, CMS_UPLOAD_IMAGE, false);
+        $urls = get_url('', 'file', 'uploads/auto_thumbs', 0, CMS_UPLOAD_IMAGE, false);
         if ($urls[0] == '') {
             if (post_param_integer('id', null) !== null) {
                 $rows = $GLOBALS['SITE_DB']->query_select('cns_emoticons', array('e_theme_img_code'), array('id' => post_param_integer('id')), '', 1);

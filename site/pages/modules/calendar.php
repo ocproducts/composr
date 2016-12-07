@@ -328,7 +328,7 @@ class Module_calendar
             if ($private !== 1) {
                 $title_to_use = do_lang_tempcode('CALENDAR_EVENT_VCAL', make_fractionable_editable('event', $id, $_title));
             } else {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username(/*($event['e_member_calendar'] === null)?$event['e_submitter']:$event['e_member_calendar']*/$event['e_submitter'], true);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username(/*($event['e_member_calendar'] === null) ? $event['e_submitter'] : $event['e_member_calendar']*/$event['e_submitter'], true);
                 $title_to_use = do_lang_tempcode('_CALENDAR_EVENT_VCAL', escape_html($username), make_fractionable_editable('event', $id, $_title));
             }
             $title_to_use_2 = do_lang('CALENDAR_EVENT', $_title);
