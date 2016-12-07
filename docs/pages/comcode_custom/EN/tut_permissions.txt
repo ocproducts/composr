@@ -165,11 +165,11 @@ Please note that when using 'SU':
 
 [media width="150" description="FirePHP in action" float="right"]data_custom/images/docs/tut_permissions/firephp.png[/media]
 Composr has a special feature to help you diagnose problems with your permission settings.
-1) To use this feature you need to be using [url="Firefox"]http://www.mozilla.com/en-US/[/url] and have the [url="Firebug"]https://addons.mozilla.org/en-US/firefox/addon/1843[/url] and [url="FirePHP"]https://addons.mozilla.org/en-US/firefox/addon/6149[/url] addons installed
-2) Once the addons are both installed, make sure that all the debugging panes (Console, HTML, CSS, Script, DOM, Net) for Firebug are enabled for your website (to bring up Firebug access: Tools > Web Developer > Firebug > Open Firebug, from the Firefox menus)
-3) Using an admin login, bring up your website and add [tt]&keep_firephp=1&keep_su=test[/tt] to the end of the URL (change [tt]test[/tt] to the username you want to test with)
+1) To use this feature you are best using Google Chrome and have the [url="FirePHP4Chrome"]https://chrome.google.com/webstore/detail/firephp4chrome/gpgbmonepdpnacijbbdijfbecmgoojma[/url] addon installed
+2) Using an admin login, bring up your website and add [tt]&keep_firephp=1&keep_su=test[/tt] to the end of the URL (change [tt]test[/tt] to the username you want to test with)
+3) You should find messages added to Chrome's Console  (find it @ View --> Developer --> JavaScript Console)
 
-You will then find that details of all the permission checks used to generate the Composr screen are logged to the Firebug/FirePHP Console. By looking to see what permission checks pass or fail you can work out what settings you might want to change.
+By looking to see what permission checks pass or fail you can work out what settings you might want to change.
 
 There are FirePHP equivalents in other browsers, but for simplicity we have focused the above instructions on the official/original Firefox addon.
 

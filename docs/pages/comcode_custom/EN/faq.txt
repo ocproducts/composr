@@ -470,7 +470,7 @@ Instead, you can create a mini-block, and then place that mini-block into a temp
 
 [title="3"]Is there a CSS map?[/title]
 
-No, there is too much CSS to feasibly make a map as is often used for forum software. Instead, we would recommend using the Firefox 'Firebug' extension (or similar for other browsers) to identify what CSS is used where.
+No, there is too much CSS to feasibly make a map as is often used for forum software. Instead, we would recommend using your web browser's developer tools to identify what CSS is used where.
 
 [title="3"]How can I change how times are displayed?[/title]
 

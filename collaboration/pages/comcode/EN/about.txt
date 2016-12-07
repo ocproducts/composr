@@ -10,7 +10,7 @@ To become a super-member, a member must {+START,IF,{$CNS}}[page="_SEARCH:groups:
 
 As a super-member, you are a member of an exclusive group and you have been given the trust to have greater access and resources than normal members.
 
-Some of the services we may offer ([b]DEFAULT. PLEASE EDIT AS REQUIRED[/b]):
+Some of the services we may offer ([b]DEFAULT. WEBMASTER SHOULD EDIT AS REQUIRED[/b]):
  - Access to a file storage service, with remote linking enabled
  - Forum hosting (usually as a sub-forum of our main forums - which brings a lot of interest to your project)
  - News posting/coverage, of your projects

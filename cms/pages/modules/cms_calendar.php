@@ -1472,8 +1472,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        require_code('themes2');
-
         $metadata = actual_metadata_get_fields('calendar_type', null);
 
         require_code('themes2');
@@ -1499,8 +1497,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        require_code('themes2');
-
         $metadata = actual_metadata_get_fields('calendar_type', $id);
 
         if (fractional_edit()) {
