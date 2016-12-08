@@ -82,7 +82,7 @@ class Block_top_login
         $this_url = $_this_url->evaluate();
         $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
         $full_link = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $this_url), get_module_zone('login'));
-        $join_url = (get_forum_type() != 'none') ? $GLOBALS['FORUM_DRIVER']->join_url() : '';
+        $join_url = (get_forum_type() != 'none') ? $GLOBALS['FORUM_DRIVER']->join_url(true) : '';
         return do_template('BLOCK_TOP_LOGIN', array('_GUID' => '9d1547632875ecd466ced4f90a866df9', 'TITLE' => $title, 'FULL_LOGIN_URL' => $full_link, 'JOIN_URL' => $join_url, 'LOGIN_URL' => $login_url));
     }
 }

@@ -286,10 +286,23 @@ class Module_join
         }
 
         // Alert user to situation
-        $redirect = get_param_string('redirect', '');
         $map = array('page' => 'login', 'type' => 'browse');
-        if ($redirect != '') {
-            $map['redirect'] = $redirect;
+        $page_after_join = get_option('page_after_join');
+        if ($page_after_join == '') {
+            $redirect = get_param_string('redirect', '');
+            if ($redirect != '') {
+                $map['redirect'] = $redirect;
+            }
+        } else {
+            if (strpos($page_after_join, ':') === false) {
+                $zone = get_page_zone($page_after_join, false);
+                if ($zone === null) {
+                    $zone = 'site';
+                }
+                $map['redirect'] = static_evaluate_tempcode(build_url(array('page' => $page_after_join), $zone));
+            } else {
+                $map['redirect'] = page_link_to_url($page_after_join);
+            }
         }
         $url = build_url($map, get_module_zone('login'));
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESSFUL_CONFIRM'));

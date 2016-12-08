@@ -1146,8 +1146,11 @@ class CMS_Topic
         if (is_guest()) {
             $redirect = get_self_url(true, true);
             $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
-            $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
-            $join_bits = do_lang_tempcode('JOIN_OR_LOGIN', escape_html($join_url), escape_html(is_object($login_url) ? $login_url->evaluate() : $login_url));
+            $join_url = $GLOBALS['FORUM_DRIVER']->join_url(true);
+            if (!is_string($join_url)) {
+                $join_url = make_string_tempcode($join_url);
+            }
+            $join_bits = do_lang_tempcode('JOIN_OR_LOGIN', escape_html($join_url->evaluate()), escape_html($login_url->evaluate()));
         }
 
         $reviews_rating_criteria = array();
