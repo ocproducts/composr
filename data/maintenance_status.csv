@@ -88,7 +88,7 @@ detect_mobile,Mobile user agent detection,ocProducts,,Not regularly tested. Coul
 standard_opengraph,OpenGraph,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
 browser_firefox,Firefox support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 browser_safari,Safari support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
-browser_android_legacy,Android Browser support,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
+browser_android_legacy,Android Browser support (pre-Chrome),ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
 browser_ios,Mobile Safari (iOS) support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 browser_android_chrome,Mobile Chrome (Android & iOS) support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 browser_microsoft,IE/Microsoft Edge support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
