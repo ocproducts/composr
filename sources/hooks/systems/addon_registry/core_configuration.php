@@ -105,6 +105,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/sitemap/config_category.php',
             'sources/hooks/systems/config/csp_enabled.php',
             'sources/hooks/systems/config/csp_exceptions.php',
+            'sources/hooks/systems/config/page_after_login.php',
             'sources/hooks/systems/config/csrf_token_expire_fresh.php',
             'sources/hooks/systems/config/csrf_token_expire_new.php',
             'sources/hooks/systems/config/header_menu_call_string.php',

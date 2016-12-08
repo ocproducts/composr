@@ -109,13 +109,17 @@ class Forum_driver_base
     /**
      * Get a URL to a forum join page.
      *
+     * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
      * @return mixed The URL
      */
-    public function join_url()
+    public function join_url($tempcode_okay = false)
     {
-        $url = $this->_join_url();
+        $url = $this->_join_url($tempcode_okay);
         if ((get_forum_type() != 'none') && (get_forum_type() != 'cns') && (get_option('forum_in_portal') == '1')) {
             $url = build_url(array('page' => 'forums', 'url' => $url), get_module_zone('forums'));
+            if (!$tempcode_okay) {
+                $url = $url->evaluate();
+            }
         }
         return $url;
     }

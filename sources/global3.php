@@ -3469,9 +3469,17 @@ function get_login_url()
     }
     $this_url = $_this_url->evaluate();
 
-    $full_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $this_url), get_module_zone('login'));
+    $url_map = array('page' => 'login', 'type' => 'browse');
+    if ((has_interesting_post_fields()) || (get_option('page_after_login') == '')) {
+        $url_map['redirect'] = $this_url;
+    }
+    $full_url = build_url($url_map, get_module_zone('login'));
 
-    $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
+    $url_map = array('page' => 'login', 'type' => 'login', 'redirect' => $this_url);
+    if ((has_interesting_post_fields()) || (get_option('page_after_login') == '')) {
+        $url_map['redirect'] = $this_url;
+    }
+    $login_url = build_url($url_map, get_module_zone('login'));
 
     $join_url = mixed();
     switch (get_forum_type()) {
@@ -3484,7 +3492,10 @@ function get_login_url()
             break;
 
         default:
-            $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
+            $join_url = $GLOBALS['FORUM_DRIVER']->join_url(true);
+            if (!is_string($join_url)) {
+                $join_url = make_string_tempcode($join_url);
+            }
             break;
     }
 

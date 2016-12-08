@@ -1,14 +1,24 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Disaster recovery[/title]
 
-[i]The Composr 'error log' screen points to this tutorial. If you think you have found a bug, please [page=":contact:free"]report it[/page]. The rest of this tutorial deals with potential disaster situations -- an error in the error log does not imply a disaster has happened.[/i]
+[i]The Composr 'error log' screen points to this tutorial (as well as the 'critical error' screen). If you think you have found a bug, please [page=":contact:free"]report it[/page]. The rest of this tutorial deals with potential disaster situations -- an error in the error log does not imply a disaster has happened.[/i]
 
 This tutorial will go through some solutions to 'disastrous' scenarios that could happen on an unstable web server configuration. It does not cover all that could go wrong by any means, as there are literally an infinite number of things that could go wrong if Composr is running in an unreliable environment.
 
 I am going to assume that you have access to phpMyAdmin for the purposes of this tutorial. phpMyAdmin is a user-friendly web-based frontend to MySQL, and is available from most hosting control panels. For more information, see the [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page] tutorial.
 
-If you need a quick data rescue, consider [page=":support"]using ocProducts support[/page] (you can submit an emergency ticket, so long as you have some credit in your support account). Or, your preferred third-party developer.
+If you need a quick data rescue, consider [page=":support"]using ocProducts support[/page] (it will be handled more quickly if you already have support credits in your account). Or, your preferred third-party developer.
 
 [contents]decimal,lower-alpha[/contents]
+
+[title="2"]Viewing the error log[/title]
+
+You may view the Composr error log even if Composr won't start. Just look at the contents of the [tt]data_custom/errorlog.php[/tt] file manually (don't run it, open it in a text editor). The error log often contains clues to what is causing a problem.
+
+[title="2"]Clearing caches[/title]
+
+Changes in the database or to files may be obscured by cacheing. If you have a problem so severe that you cannot get into the Admin Zone, you can clear cacheing either:
+1) from the upgrader tool (accessible via [tt]http://yourbaseurl/upgrader.php[/tt])
+2) opening up a command prompt to your base directory and running [tt]sh decache.sh[/tt] (Linux/Mac only) -- this works if the upgrader won't run; it doesn't immediately clear database cacheing, but it adds a flag for Composr to do that automatically next time the site is loaded
 
 [title="2"]Repairing a corrupted copy of Composr[/title]
 
@@ -30,7 +40,7 @@ If you've set up a theme, that is activated, and you've edited it in such a way 
 
 If you still are logged in as admin or the default theme is accessible from guest accounts, use the 'Safe mode' link you were asked to bookmark during the Setup Wizard -- this will allow you to use your website, using the default theme. If you have forgotten the link, it's any link to your website with [tt]&keep_theme=default[/tt] added to the end of the URL.
 
-If you are not logged in as admin, connect to your web server using FTP, then rename all the folders inside the [tt]themes[/tt] folder except [tt]default[/tt]. For instance, if you have folders [tt]my_theme[/tt] and [tt]another_theme[/tt] and [tt]default[/tt], rename the first two to [tt]my_theme.old[/tt] and [tt]another_theme.old[/tt], but leave [tt]default[/tt] along. This renaming will essentially temporarily erase your themes and force Composr to use the default theme regardless of permissions. Now change the theme selection on your site back back to default, rename your theme folders back to their prior names (remove the [tt].old[/tt] suffix you added), fix your theme, and then restore your theme selection.
+If you are not logged in as admin, connect to your web server using FTP, then rename all the folders inside the [tt]themes[/tt] folder except [tt]default[/tt] and [tt]admin[/tt]. For instance, if you have folders [tt]my_theme[/tt], [tt]another_theme[/tt], [tt]default[/tt], and [tt]admin[/tt], rename the first two to [tt]my_theme.old[/tt] and [tt]another_theme.old[/tt], but leave [tt]default[/tt] and [tt]admin[/tt] alone. This renaming will essentially temporarily erase your themes and force Composr to use the default theme regardless of permissions. Now change the theme selection on your site back back to default, rename your theme folders back to their prior names (remove the [tt].old[/tt] suffix you added), fix your theme, and then restore your theme selection.
 
 [title="2"]Changing an account password[/title]
 
@@ -118,12 +128,18 @@ If you have associated an account with Facebook, you can remove it by doing a pa
 
 If you find an addon is crashing your site, the safe mode link ([tt]http://yourbaseurl/index.php?keep_safe_mode=1[/tt]) can help. It should let you into your site to uninstall the addon causing the problem.
 
-The above requires for to be logged in at admin, which you may not be or be able to do. You can usually also uninstall an addon by examining the raw TAR file from the addon directory. Any files inside it should be deleted manually from your website.
+The above requires for to be logged in at admin, which you may not be or be able to do. If you can't then you can force Safe Mode on using the [tt]http://yourbaseurl/config_editor.php[/tt] script. Load up the [tt]http://yourbaseurl/config_editor.php[/tt] script, login, look for the "Whether Composr is to be forced into Safe Mode, meaning no custom files will load and most caching will be disabled" option, tick (check) the option, and then save the configuration. Turn the option back off after you've solved your problem.
 
 [title="2"]Disabling URL Schemes[/title]
 
 URL Schemes are subject to your webhost supporting rewrites and not doing any strange redirects or filter rules. It is possible you could enable them, and then find they don't work and that you can't get back at the configuration to disable them. We try and detect them working before we allow the option to be changed, but the detection may not be perfect. Or, they may work, then your host may change something, causing them to stop working.
-You can use the [tt]http://yourbaseurl/config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]http://yourbaseurl/config_editor.php[/tt] script, login, look for the "Whether to block the URL Scheme (mod_rewrite)" option, set it to [tt]1[/tt], and then save the configuration.
+You can use the [tt]http://yourbaseurl/config_editor.php[/tt] script in order to turn them off, overriding the main configuration setting. Load up the [tt]http://yourbaseurl/config_editor.php[/tt] script, login, look for the "Whether to block the URL Scheme (mod_rewrite)" option, tick (check) the option, and then save the configuration.
+
+[title="2"]Closing the site[/title]
+
+If you can't access the Admin Zone then the upgrader tool (accessible via [tt]http://yourbaseurl/upgrader.php[/tt]) can close the site while you're working on problems. If that won't work reliably you can create a [tt]closed.html[/tt] file in your base directory which will automatically be displayed to all users accessing Composr.
+
+If failover-mode is configured you can activate it manually from within the [tt]http://yourbaseurl/config_editor.php[/tt] script.
 
 [title="2"]See also[/title]
 

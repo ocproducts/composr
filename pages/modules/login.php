@@ -260,7 +260,7 @@ class Module_login
         if (!is_guest()) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         }
-        return do_template('LOGIN_SCREEN', array('_GUID' => '0940dbf2c42493c53b7e99eb50ca51f1', 'EXTRA' => $extra, 'USERNAME' => $username, 'JOIN_URL' => $GLOBALS['FORUM_DRIVER']->join_url(), 'TITLE' => $this->title, 'LOGIN_URL' => $login_url, 'PASSION' => $passion));
+        return do_template('LOGIN_SCREEN', array('_GUID' => '0940dbf2c42493c53b7e99eb50ca51f1', 'EXTRA' => $extra, 'USERNAME' => $username, 'JOIN_URL' => $GLOBALS['FORUM_DRIVER']->join_url(true), 'TITLE' => $this->title, 'LOGIN_URL' => $login_url, 'PASSION' => $passion));
     }
 
     /**
@@ -278,6 +278,19 @@ class Module_login
             $url = enforce_sessioned_url(either_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL)); // Now that we're logged in, we need to ensure the redirect URL contains our new session ID
 
             if (!has_interesting_post_fields()) {
+                $page_after_login = get_option('page_after_login');
+                if ($page_after_login != '') {
+                    if (strpos($page_after_login, ':') === false) {
+                        $zone = get_page_zone($page_after_login, false);
+                        if ($zone === null) {
+                            $zone = 'site';
+                        }
+                        $url = static_evaluate_tempcode(build_url(array('page' => $page_after_login), $zone));
+                    } else {
+                        $url = page_link_to_url($page_after_login);
+                    }
+                }
+
                 require_code('site2');
                 assign_refresh($url, 0.0);
                 $post = new Tempcode();

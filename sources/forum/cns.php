@@ -586,12 +586,13 @@ class Forum_driver_cns extends Forum_driver_base
     /**
      * Get a URL to the registration page (for people to create member accounts).
      *
-     * @return URLPATH The URL to the registration page
+     * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
+     * @return mixed The URL to the registration page
      */
-    protected function _join_url()
+    protected function _join_url($tempcode_okay = false)
     {
         $page = '_SELF';
-        if (has_interesting_post_fields()) {
+        if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
             $page = '';
         }
         $_redirect_url = build_url(array('page' => $page), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
@@ -599,11 +600,19 @@ class Forum_driver_cns extends Forum_driver_base
 
         $redirect_url = get_param_string('redirect_passon', get_param_string('redirect', $redirect_url, INPUT_FILTER_URL_INTERNAL), INPUT_FILTER_URL_INTERNAL);
 
-        $_url = build_url(array('page' => 'join', 'redirect' => (get_page_name() == 'recommend') ? null : $redirect_url), get_module_zone('join'), array('keep_session' => 1, 'redirect' => 1));
-        $url = $_url->evaluate();
-        if (get_option('forum_in_portal') == '0') {
-            $url = str_replace(get_base_url(), get_forum_base_url(), $url);
+        $url_map = array('page' => 'join');
+        if ((get_page_name() != 'recommend') && (get_option('page_after_join') == '')) {
+            $url_map['redirect'] = $redirect_url;
         }
+        $url = build_url($url_map, get_module_zone('join'), array('keep_session' => 1, 'redirect' => 1));
+
+        if ((!$tempcode_okay) || (get_option('forum_in_portal') == '0')) {
+            $url = $url->evaluate();
+            if (get_option('forum_in_portal') == '0') {
+                $url = str_replace(get_base_url(), get_forum_base_url(), $url);
+            }
+        }
+
         return $url;
     }
 

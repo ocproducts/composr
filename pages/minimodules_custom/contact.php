@@ -53,7 +53,7 @@ if (is_guest()) {
     if ($type == 'support' || $type == 'upgrade' || $type == 'installation' || $type == 'sponsor') {
         access_denied('NOT_AS_GUEST');
     } else {
-        $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
+        $join_url = $GLOBALS['FORUM_DRIVER']->join_url(true);
         if (!is_object($join_url)) {
             $join_url = make_string_tempcode($join_url);
         }

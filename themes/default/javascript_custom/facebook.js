@@ -80,6 +80,10 @@ function facebook_init(app_id, channel_url, just_logged_out, serverside_fbuid, h
 
 function facebook_trigger_refresh(home_page_url) {
     window.setTimeout(function () { // Firefox needs us to wait a bit
+        if (typeof document.getElementsByTagName('failover')[0] != 'undefined') {
+            return;
+        }
+
         if ((window.location.href.indexOf('login') != -1) && (window == window.top)) {
             window.location = home_page_url; // If currently on login screen, should go to home page not refresh
         } else {
