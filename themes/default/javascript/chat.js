@@ -20,12 +20,14 @@
     }
 
     $cms.inherits(ChatRoomScreen, $cms.View, {
-        events: {
-            'click .js-btn-toggle-chat-comcode-panel': 'toggleChatPanel',
-            'click select.js-select-click-font-change': 'fontChange',
-            'change select.js-select-change-font-change': 'fontChange',
-            'submit form.js-form-submit-check-chat-options': 'checkChatOptions',
-            'click .js-click-post-chat-message': 'postChatMessage'
+        events: function () {
+            return {
+                'click .js-btn-toggle-chat-comcode-panel': 'toggleChatPanel',
+                'click select.js-select-click-font-change': 'fontChange',
+                'change select.js-select-change-font-change': 'fontChange',
+                'submit form.js-form-submit-check-chat-options': 'checkChatOptions',
+                'click .js-click-post-chat-message': 'postChatMessage'
+            };
         },
 
         toggleChatPanel: function () {
@@ -55,157 +57,169 @@
         }
     });
 
-    $cms.extend($cms.templates, {
-        chatSound: function (params) { // Prepares chat sounds
-            if (window.prepared_chat_sounds) {
-                return;
-            }
-            window.prepared_chat_sounds = true;
+    $cms.templates.chatSound = function (params) { // Prepares chat sounds
+        if (window.prepared_chat_sounds) {
+            return;
+        }
+        window.prepared_chat_sounds = true;
 
-            window.soundManager.setup({
-                url: $cms.baseUrl('data'),
-                debugMode: false,
-                onready: function () {
-                    var soundEffects = params.soundEffects,
-                        i;
+        window.soundManager.setup({
+            url: $cms.baseUrl('data'),
+            debugMode: false,
+            onready: function () {
+                var soundEffects = params.soundEffects,
+                    i;
 
-                    for (i in soundEffects) {
-                        window.soundManager.createSound(soundEffects[i].key, soundEffects[i].value);
-                    }
-                }
-            });
-        },
-
-        chatFriends: function (params) {
-            var friends = params.friends, friend;
-
-            for (var i = 0; i < friends.length; i++) {
-                friend = friends[i];
-
-                if (friend.onlineText !== '{!ACTIVE;^}') {
-                    document.getElementById('friend_img_' + friend.memberId).className = 'friend_inactive';
+                for (i in soundEffects) {
+                    window.soundManager.createSound(soundEffects[i].key, soundEffects[i].value);
                 }
             }
-        },
+        });
+    };
 
-        chatLobbyImArea: function chatLobbyImArea(params) {
-            var container = this,
-                chatroomId = strVal(params.chatroomId);
+    $cms.templates.chatFriends = function (params) {
+        var friends = params.friends, friend;
 
-            $cms.load.then(function () {
-                try {
-                    $cms.dom.$('#post_' + chatroomId).focus();
-                } catch (e) {}
-                $cms.dom.$('#post_' + chatroomId).value = read_cookie('last_chat_msg_' + chatroomId);
-            });
+        for (var i = 0; i < friends.length; i++) {
+            friend = friends[i];
 
-            $cms.dom.on(container, 'click', '.js-click-chatroom-chat-post', function (e) {
-                chat_post(e, chatroomId, 'post_' + chatroomId, '', '');
-            });
-
-            $cms.dom.on(container, 'click', '.js-click-open-chat-emoticons-popup', function () {
-                var openFunc = (window.opener ? window.open : window.faux_open),
-                    popupUrl = strVal(params.emoticonsPopupUrl);
-
-                openFunc(maintain_theme_in_link(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
-            });
-
-            $cms.dom.on(container, 'click', '.js-click-close-chat-conversation', function () {
-                close_chat_conversation(chatroomId);
-            });
-        },
-
-        chatLobbyScreen: function chatLobbyScreen(params) {
-            if ($cms.$IS_GUEST) {
-                return;
-            }
-
-            window.im_area_template = params.imAreaTemplate;
-            window.im_participant_template = params.imParticipantTemplate;
-            window.top_window = window;
-
-            function begin_im_chatting() {
-                window.load_from_room_id = -1;
-                if ((window.chat_check)) {
-                    chat_check(true, 0);
-                } else {
-                    window.setTimeout(begin_im_chatting, 500);
-                }
-            }
-
-            begin_im_chatting();
-        },
-
-        chatSitewideImPopup: function chatSitewideImPopup() {
-            window.detect_if_chat_window_closed_checker = window.setInterval(function () {
-                if ( detect_if_chat_window_closed !== undefined) {
-                    detect_if_chat_window_closed();
-                }
-            }, 5);
-        },
-
-        blockMainFriendsList: function blockMainFriendsList(params) {
-            params || (params = {});
-
-            if (params.wrapperId &&  params.blockCallUrl) {
-                internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
-            }
-        },
-
-        blockSideShoutbox: function blockSideShoutbox(params) {
-            var container = this;
-
-            internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
-
-            $cms.dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
-
-                if (check_field_for_blankness(form.elements.shoutbox_message, e)) {
-                    $cms.ui.disableFormButtons(form);
-                } else {
-                    e.preventDefault();
-                }
-            });
-        },
-
-        chatSitewideIm: function chatSitewideIm(params) {
-            if (!params.matched) {
-                return;
-            }
-
-            window.im_area_template = params.imAreaTemplate;
-            window.im_participant_template = params.imParticipantTemplate;
-            window.top_window = window;
-            window.lobby_link = params.lobbyLink;
-            window.participants = '';
-
-            $cms.ready.then(function () {
-                if (!window.load_from_room_id) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
-                    begin_im_chatting();
-                }
-            });
-
-            function begin_im_chatting() {
-                window.load_from_room_id = -1;
-                if ((window.chat_check)) {
-                    chat_check(true, 0);
-                } else {
-                    window.setTimeout(begin_im_chatting, 100);
-                }
-            }
-        },
-
-        chatSetEffectsSettingBlock: function chatSetEffectsSettingBlock(params) {
-            if (!$cms.$IS_HTTPAUTH_LOGIN) {
-                var btnSubmitId = 'upload_' + params.key;
-
-                if (params.memberId) {
-                    btnSubmitId += '_' + params.memberId;
-                }
-
-                preinit_file_input('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
+            if (friend.onlineText !== '{!ACTIVE;^}') {
+                document.getElementById('friend_img_' + friend.memberId).className = 'friend_inactive';
             }
         }
-    });
+    };
+
+    $cms.templates.chatLobbyImArea = function (params) {
+        var container = this,
+            chatroomId = strVal(params.chatroomId);
+
+        $cms.load.then(function () {
+            try {
+                $cms.dom.$('#post_' + chatroomId).focus();
+            } catch (e) {
+            }
+            $cms.dom.$('#post_' + chatroomId).value = read_cookie('last_chat_msg_' + chatroomId);
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-chatroom-chat-post', function (e) {
+            chat_post(e, chatroomId, 'post_' + chatroomId, '', '');
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-open-chat-emoticons-popup', function () {
+            var openFunc = (window.opener ? window.open : window.faux_open),
+                popupUrl = strVal(params.emoticonsPopupUrl);
+
+            openFunc(maintain_theme_in_link(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-close-chat-conversation', function () {
+            close_chat_conversation(chatroomId);
+        });
+    };
+
+    $cms.templates.chatLobbyScreen = function (params) {
+        var container = this;
+
+        if ($cms.$IS_GUEST) {
+            return;
+        }
+
+        window.im_area_template = params.imAreaTemplate;
+        window.im_participant_template = params.imParticipantTemplate;
+        window.top_window = window;
+
+        function begin_im_chatting() {
+            window.load_from_room_id = -1;
+            if ((window.chat_check)) {
+                chat_check(true, 0);
+            } else {
+                window.setTimeout(begin_im_chatting, 500);
+            }
+        }
+
+        begin_im_chatting();
+
+        $cms.dom.on(container, 'submit', '.js-form-submit-add-friend', function (e, form) {
+            load_snippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements.friend_username.value), function (ajax_result) {
+                $cms.dom.html($cms.dom.$('#friends_wrap'), ajax_result.responseText);
+                form.elements.friend_username.value = '';
+            });
+        });
+    };
+
+    $cms.templates.chatSitewideImPopup = function (params) {
+        window.detect_if_chat_window_closed_checker = window.setInterval(function () {
+            if (detect_if_chat_window_closed !== undefined) {
+                detect_if_chat_window_closed();
+            }
+        }, 5);
+    };
+
+    $cms.templates.blockMainFriendsList = function (params) {
+        var container = this;
+
+        if (params.wrapperId && params.blockCallUrl) {
+            internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
+        }
+
+        $cms.dom.on(container, 'keyup', '.js-input-friends-search', function (e, input) {
+            update_ajax_search_list(input, e);
+        });
+    };
+
+    $cms.templates.blockSideShoutbox = function (params) {
+        var container = this;
+
+        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
+
+        $cms.dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
+
+            if (check_field_for_blankness(form.elements.shoutbox_message, e)) {
+                $cms.ui.disableFormButtons(form);
+            } else {
+                e.preventDefault();
+            }
+        });
+    };
+
+    $cms.templates.chatSitewideIm = function (params) {
+        if (!params.matched) {
+            return;
+        }
+
+        window.im_area_template = params.imAreaTemplate;
+        window.im_participant_template = params.imParticipantTemplate;
+        window.top_window = window;
+        window.lobby_link = params.lobbyLink;
+        window.participants = '';
+
+        $cms.ready.then(function () {
+            if (!window.load_from_room_id) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
+                begin_im_chatting();
+            }
+        });
+
+        function begin_im_chatting() {
+            window.load_from_room_id = -1;
+            if ((window.chat_check)) {
+                chat_check(true, 0);
+            } else {
+                window.setTimeout(begin_im_chatting, 100);
+            }
+        }
+    };
+
+    $cms.templates.chatSetEffectsSettingBlock = function (params) {
+        if (!$cms.$IS_HTTPAUTH_LOGIN) {
+            var btnSubmitId = 'upload_' + params.key;
+
+            if (params.memberId) {
+                btnSubmitId += '_' + params.memberId;
+            }
+
+            preinit_file_input('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
+        }
+    };
 
 }(window.$cms));
 

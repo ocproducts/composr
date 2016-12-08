@@ -8,7 +8,7 @@ function esClass(options) {
     options = objVal(options);
     staticProps = objVal(options.static);
     protoProps = objVal(options.prototype);
-    Constructor = $cms.hasOwn(protoProps, 'constructor') ? protoProps.constructor : function Constructor() {};
+    Constructor = $cms.hasOwn(protoProps, 'constructor') ? protoProps.constructor : function Constructor() { if (Constructor.base) { Constructor.base.call(undefined, this, arguments); } };
     ParentConstructor = options.extends;
 
     if (typeof Constructor !== 'function') {

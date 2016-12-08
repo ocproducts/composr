@@ -126,7 +126,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'staff_tooltips_url_patterns' => $this->staff_tooltips_url_patterns($value['IS_STAFF'] === '1')
         ];
 
-        return json_encode($value, JSON_NUMERIC_CHECK);
+        return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
     }
 
     private function staff_tooltips_url_patterns($is_staff) {

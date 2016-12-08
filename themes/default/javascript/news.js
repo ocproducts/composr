@@ -107,7 +107,7 @@
         },
 
         blockBottomNews: function blockBottomNews(params) {
-            var newsTickerText = $cms.filter.crLf(params.newsTickerText);
+            var newsTickerText = $cms.filter.nl(params.newsTickerText);
 
             window.tick_pos = window.tick_pos || [];
             var ticktickticker = $cms.dom.$('#ticktickticker_news' + params.bottomNewsId);

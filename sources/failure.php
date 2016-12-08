@@ -450,7 +450,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
     if ($support_match_key_messages === null) {
         $support_match_key_messages = in_array($text_eval, array(do_lang('NO_ENTRIES'), do_lang('NO_CATEGORIES')));
     }
-    $tmp = _look_for_match_key_message($text_eval, false, !$support_match_key_messages);
+    // @TODO: Commented out by Salman for causing infinite MySQL query loop
+    $tmp = null;//_look_for_match_key_message($text_eval, false, !$support_match_key_messages);
     if ($tmp !== null) {
         $text = $tmp;
     }

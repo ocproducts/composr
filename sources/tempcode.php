@@ -525,7 +525,7 @@ function closure_params_json($param, $args, $main_function)
 
     $output = evaluate_tempcode_elements($output);
     $output = camel_case_array_keys($output);
-    $output = json_encode($output, JSON_NUMERIC_CHECK);
+    $output = json_encode($output, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
     $ps = ['_' => $output]; // "{_}" paremeter inside the directive block represents the JSON output
     $args[0] = $ps + $args[0]; // Combine arrays

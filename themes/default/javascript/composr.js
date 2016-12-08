@@ -38,8 +38,6 @@ var encodeUC = encodeURIComponent,
         isChrome = !!window.chrome && !!window.chrome.webstore;
 
     // Too useful to not have globally!
-    window.falsy = falsy;
-    window.boolVal = boolVal;
     window.intVal = intVal;
     window.strVal = strVal;
     window.arrVal = arrVal;
@@ -163,6 +161,8 @@ var encodeUC = encodeURIComponent,
         random: random,
         camelCase: camelCase,
 
+        uspFromUrl: uspFromUrl,
+
         each: each,
         extend: extend,
         extendOwn: extendOwn,
@@ -178,21 +178,18 @@ var encodeUC = encodeURIComponent,
         defineEW: defineEW,
         defineW: defineW,
 
-        boolVal: boolVal,
         intVal: intVal,
         strVal: strVal,
         format: format,
 
         inherits: inherits,
 
-        qsFromUrl: qsFromUrl,
-        uspFromUrl: uspFromUrl,
-        paramsFromUsp: paramsFromUsp,
-
         baseUrl: baseUrl,
         img: img,
         navigate: navigate,
         log: log,
+        info: info,
+        warn: warn,
         dir: dir,
         assert: assert,
         error: error,
@@ -233,27 +230,28 @@ var encodeUC = encodeURIComponent,
         delete $cms._resolveLoad;
     });
 
-    $cms.qs = qsFromUrl(window.location.href);
-    $cms.usp = uspFromUrl($cms.qs);
-    $cms.qsParams = paramsFromUsp($cms.usp);
+    $cms.usp = uspFromUrl(window.location.href);
 
+    // usp with only the `keep_*` parameters
     $cms.uspKeep = new URLSearchParams();
+    // this always has `keep_session` where possible
     $cms.uspKeepSession = new URLSearchParams();
 
-    each($cms.qsParams, function (key, value) {
-        if (key.startsWith('keep_')) {
-            $cms.uspKeep.set(key, value);
-            $cms.uspKeepSession.set(key, value);
+    eachIter($cms.usp.entries(), function (entry) {
+        var name = entry[0],
+            value = entry[1];
+
+        if (name.startsWith('keep_')) {
+            $cms.uspKeep.set(name, value);
+            $cms.uspKeepSession.set(name, value);
         }
     });
 
     var sessionId = get_session_id();
+
     if (sessionId && !$cms.uspKeepSession.has('keep_session')) {
         $cms.uspKeepSession.set('keep_session', sessionId);
     }
-
-    $cms.qsKeep = $cms.uspKeep.toString();
-    $cms.qsKeepSession = $cms.uspKeepSession.toString();
 
     function noop() {}
 
@@ -270,7 +268,7 @@ var encodeUC = encodeURIComponent,
      */
     function uid(obj) {
         if ((obj == null) || ((typeof obj !== 'object') && (typeof obj !== 'function'))) {
-            throw new TypeError('$cms.uid(): Paremeter `obj` must be an object or a function.');
+            throw new TypeError('$cms.uid(): Parameter `obj` must be an object or a function.');
         }
 
         if (hasOwn(obj, $cms.id)) {
@@ -328,7 +326,7 @@ var encodeUC = encodeURIComponent,
     }
 
     function hasMatchingKey(obj, keys) {
-        keys || (keys = []);
+        keys = arrVal(keys);
 
         for (var i = 0, len = keys.length; i < len; i++) {
             if (keys[i] in obj) {
@@ -413,8 +411,7 @@ var encodeUC = encodeURIComponent,
 
     function isArrayLike(obj, minLength) {
         var len;
-
-        minLength = intVal(minLength);
+        minLength = Numver.isFinite(+minLength) ? +minLength : 0;
 
         return (obj != null)
             && (typeof obj === 'object')
@@ -427,8 +424,8 @@ var encodeUC = encodeURIComponent,
     // Returns a random integer between min (inclusive) and max (inclusive)
     // Using Math.round() will give you a non-uniform distribution!
     function random(min, max) {
-        min = intVal(min);
-        max = intVal(max) || 1000000000000000;
+        min = Number.isFinite(+min) ? +mix : 0;
+        max = Number.isFinite(+max) ? +max : 1000000000000;
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -445,46 +442,34 @@ var encodeUC = encodeURIComponent,
         return obj;
     }
 
-    function each(obj, callback, args) {
+    function each(obj, callback) {
         if (obj == null) {
             return obj;
         }
 
-        var len = obj.length,
-            isObj = (typeof len !== 'number') || (typeof obj === 'function'),
-            name, i;
-
-        if (args) {
-            if (isObj) {
-                for (name in obj) {
-                    if (callback.apply(obj[name], args) === false) {
-                        break;
-                    }
-                }
-            } else {
-                for (i = 0; i < len; i++) {
-                    if (callback.apply(obj[i], args) === false) {
-                        break;
-                    }
-                }
-            }
-        } else { // A special, fast, case for the most common use of each
-            if (isObj) {
-                for (name in obj) {
-                    if (callback.call(obj[name], name, obj[name]) === false) {
-                        break;
-                    }
-                }
-            } else {
-                for (i = 0; i < len; i++) {
-                    if (callback.call(obj[i], i, obj[i]) === false) {
-                        break;
-                    }
-                }
+        for (var name in obj) {
+            if (callback.call(obj, name, obj[name]) === false) {
+                break;
             }
         }
 
         return obj;
+    }
+
+    function eachIter(iterable, callback) {
+        var item, i = 0;
+
+        if (iterable == null) {
+            return iterable;
+        }
+
+        while (!(item = iterable.next()).done) {
+            if (callback.call(undefined, item.value, i++) === false) {
+                break;
+            }
+        }
+
+        return iterable;
     }
 
     var EXTEND_DEEP = 1,
@@ -576,9 +561,9 @@ var encodeUC = encodeURIComponent,
         var key, descriptors, descriptor;
 
         if (typeof mask !== 'number') {
-            obj = mask;
-            props = obj;
             value = props;
+            props = obj;
+            obj = mask;
             mask = DEFINE_CONFIGURABLE | DEFINE_WRITABLE;
         }
 
@@ -592,7 +577,7 @@ var encodeUC = encodeURIComponent,
             descriptor.configurable = !!(mask & DEFINE_CONFIGURABLE);
             descriptor.enumerable = !!(mask & DEFINE_ENUMERABLE);
             if (descriptor.writeable !== undefined) {
-                // ^ True if it's not an accessor property, otherwise we just let descriptor.get/set pass-through
+                // ^ It's not an accessor property, otherwise we just let descriptor.get/set pass-through
                 descriptor.writeable = !!(mask & DEFINE_WRITABLE);
             }
             descriptors[key] = descriptor;
@@ -647,7 +632,7 @@ var encodeUC = encodeURIComponent,
 
     /**
      * @param val
-     * @returns {Boolean}
+     * @returns { Boolean }
      */
     function boolVal(val) {
         var p;
@@ -656,22 +641,22 @@ var encodeUC = encodeURIComponent,
 
     /**
      * Port of PHP's empty() function
-     * @returns {Boolean}
+     * @returns { Boolean }
      */
-    function falsy(val) {
-        var p;
-        return !val || (val === '0') || ((typeof val === 'object') && ((p = isPlainObj(val)) || isArrayLike(val)) && (p ? !hasEnumerable(val) : (val.length === 0)));
-    }
+    //function falsy(val) {
+    //    var p;
+    //    return !val || (val === '0') || ((typeof val === 'object') && ((p = isPlainObj(val)) || isArrayLike(val)) && (p ? !hasEnumerable(val) : (val.length === 0)));
+    //}
 
     /**
-     * @returns {Number}
+     * @returns { Number }
      */
     function intVal(val) {
         return ((val != null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     /**
-     * @returns {Array}
+     * @returns { Array }
      */
     function arrVal(val) {
         var isArr;
@@ -688,7 +673,7 @@ var encodeUC = encodeURIComponent,
     }
 
     /**
-     * @returns {Object}
+     * @returns { Object }
      */
     function objVal(val, defaultPropertyName) {
         if (!isObj(val) || Array.isArray(val)) {
@@ -700,7 +685,7 @@ var encodeUC = encodeURIComponent,
 
     /**
      * Sensible PHP-like string coercion
-     * @returns {String}
+     * @returns { string }
      */
     function strVal(val) {
         if (!val) {
@@ -721,7 +706,7 @@ var encodeUC = encodeURIComponent,
 
     /**
      * String interpolation
-     * @returns {String}
+     * @returns {string}
      */
     function format(str, values) {
         str = strVal(str);
@@ -772,26 +757,62 @@ var encodeUC = encodeURIComponent,
             : '';
     }
 
-    // Extracts query string from url
-    function qsFromUrl(url) {
-        var query = (url || '').split('?', 2)[1]; // Grab query string
+    /**
+     * Extracts query string from a url
+     * @param {string} url
+     * @returns {string}
+     */
+    function queryStringFromUrl(url) {
+        var query = strVal(url).split('?', 2)[1]; // Grab query string
         return (query || '').split('#')[0]; // Remove hash fragment (if any)
     }
 
-    // Returns an `URLSearchParams` instance
+    /**
+     * Returns a `URLSearchParams` instance
+     * @param {string} url
+     * @returns { URLSearchParams }
+     */
     function uspFromUrl(url) {
-        var query = $cms.qsFromUrl(url);
+        var query = queryStringFromUrl(url);
         return new URLSearchParams(query);
     }
 
-    function paramsFromUsp(usp) {
-        var entriesIterator = usp.entries(),
-            entry, params = {};
+    /**
+     * @param usp
+     * @returns { { } }
+     */
+    function entriesFromUsp(usp) {
+        var entries = arrayFromIterable(usp.entries()),
+            i, entryName, entryValue, params = {};
 
-        while (entry = entriesIterator.next().value) {
-            params[entry[0]] = entry[1];
+        for (i = 0; i < entries.length; i++) {
+            entryName = entries[i][0];
+            entryValue = entries[i][1];
+
+            if (!(entryName in params)) {
+                params[entryName] = entryValue;
+            } else { // Multiple values
+                if (!Array.isArray(params[entryName])) {
+                    params[entryName] = [params[entryName]];
+                }
+
+                params[entryName].push(entryValue);
+            }
         }
+
         return params;
+    }
+
+    function arrayFromIterable(iterable) {
+        var item, array = [];
+
+        if (iterable != null) {
+            while (!(item = iterable.next()).done) {
+                array.push(item.value);
+            }
+        }
+
+        return array;
     }
 
     /* Generate url */
@@ -863,6 +884,18 @@ var encodeUC = encodeURIComponent,
     function log() {
         if ($cms.$DEV_MODE) {
             return console.log.apply(undefined, arguments);
+        }
+    }
+
+    function info() {
+        if ($cms.$DEV_MODE) {
+            return console.info.apply(undefined, arguments);
+        }
+    }
+
+    function warn() {
+        if ($cms.$DEV_MODE) {
+            return console.warn.apply(undefined, arguments);
         }
     }
 
@@ -1011,7 +1044,7 @@ var encodeUC = encodeURIComponent,
             if (!isDate(details.expires)) {
                 // Expiry specified in days
                 var expires = new Date();
-                expires.setDate(expires.getDate() + intVal(details.expires)); // Add days to date
+                expires.setDate(expires.getDate() + (Number.isFinite(+details.expires) ? +details.expires : 0)); // Add days to date
                 details.expires = expires;
             }
 
@@ -1216,6 +1249,11 @@ var encodeUC = encodeURIComponent,
     // Special attributes that should be set via method calls
     var methodAttributes = { val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 };
 
+    /**
+     * @param tag
+     * @param properties
+     * @returns { Element }
+     */
     $cms.dom.create = function (tag, properties) {
         var el = document.createElement(tag);
 
@@ -1262,7 +1300,7 @@ var encodeUC = encodeURIComponent,
 
     var rgxNotWhite = /\S+/g;
     function Data() {
-        this.expando = $cms.id + Data.uid++;
+        this.expando = $cms.id + '-data-' + Data.uid++;
     }
     Data.uid = 1;
     define(Data.prototype, {
@@ -1277,7 +1315,7 @@ var encodeUC = encodeURIComponent,
                 // but we should not, see #8335.
                 // Always return an empty object.
                 if (!isNode(owner) || isDocOrEl(owner)) {
-                    defineC(owner, this.expando, value);
+                    define(owner, this.expando, value);
                 }
             }
 
@@ -1397,6 +1435,7 @@ var encodeUC = encodeURIComponent,
     }
 
     var domData = new Data();
+
     /* Data retrieval and storage */
     $cms.dom.data = function (el, key, value) {
         var name, data;
@@ -1432,7 +1471,13 @@ var encodeUC = encodeURIComponent,
             }
             // Attempt to "discover" the data in
             // HTML5 custom data-* attrs
-            data = dataAttr(el, key);
+
+            try {
+                data = dataAttr(el, key);
+            } catch (e) {
+                $cms.warn('$cms.dom.data(): Exception while parsing JSON in data attribute "' + key + '" of', el, e);
+            }
+
             if (data !== undefined) {
                 return data;
             }
@@ -1555,6 +1600,18 @@ var encodeUC = encodeURIComponent,
         return parents;
     };
 
+    $cms.dom.hasParent = function (el, parentEl, context) {
+        while (el && (el !== context)) {
+            if (el === parentEl) {
+                return true;
+            }
+
+            el = el.parentElement;
+        }
+
+        return false;
+    };
+
     $cms.dom.next = function (el, selector) {
         var sibling = el.nextElementSibling;
 
@@ -1597,10 +1654,16 @@ var encodeUC = encodeURIComponent,
 
     $cms.dom.append = function (el, newChild) {
         el.appendChild(newChild);
+        if (isDocOrEl(newChild)) {
+            $cms.attachBehaviors(newChild);
+        }
     };
 
     $cms.dom.prepend = function (el, newChild) {
         el.insertBefore(newChild, el.firstChild);
+        if (isDocOrEl(newChild)) {
+            $cms.attachBehaviors(newChild);
+        }
     };
 
     var eventHandlers = {},
@@ -1794,6 +1857,9 @@ var encodeUC = encodeURIComponent,
         // handle focus(), blur() by calling them directly
         if ((event.type in focusEvents) && (typeof el[event.type] === 'function')) {
             return el[event.type]();
+        } else if ((event.type === 'click') && (el.localName === 'input') && (el.type === 'checkbox') && el.click) {
+            // For checkbox, fire native event so checked state will be right
+            return el.click();
         } else {
             return el.dispatchEvent(event)
         }
@@ -1824,10 +1890,10 @@ var encodeUC = encodeURIComponent,
             if (typeof property === 'string') {
                 return el.style[camelize(property)] || computedStyle(el, property);
             } else if (Array.isArray(property)) {
-                var computedStyle = computedStyle(el),
+                var cs = computedStyle(el),
                     props = {};
                 property.forEach(function (prop) {
-                    props[prop] = (el.style[camelize(prop)] || computedStyle.getPropertyValue(prop));
+                    props[prop] = (el.style[camelize(prop)] || cs.getPropertyValue(prop));
                 });
                 return props;
             }
@@ -1853,6 +1919,12 @@ var encodeUC = encodeURIComponent,
         el.style.cssText += ';' + css;
     };
 
+    /**
+     * @param {Element} el
+     * @param {string} property
+     * @param {string|Array} values
+     * @returns {boolean}
+     */
     $cms.dom.isCss = function (el, property, values) {
         values = arrVal(values);
 
@@ -2229,7 +2301,7 @@ var encodeUC = encodeURIComponent,
     $cms.behaviors || ($cms.behaviors = {});
 
     $cms.attachBehaviors = function (context, settings) {
-        var behaviors, name;
+        var name;
 
         if (!isDocOrEl(context)) {
             throw new Error('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
@@ -2238,21 +2310,19 @@ var encodeUC = encodeURIComponent,
         settings || (settings = $cms.settings);
 
         // Execute all of them.
-        behaviors = $cms.behaviors;
-
-        for (name in behaviors) {
-            if (isObj(behaviors[name]) && (typeof behaviors[name].attach === 'function')) {
-                //try {
-                behaviors[name].attach(context, settings);
-                //} catch (e) {
-                //    $cms.error('Error while attaching behavior \'' + name + '\'', e);
-                //}
+        for (name in $cms.behaviors) {
+            if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
+                try {
+                    $cms.behaviors[name].attach(context, settings);
+                } catch (e) {
+                    $cms.error('Error while attaching behavior \'' + name + '\' to', context, '\n', e);
+                }
             }
         }
     };
 
     $cms.detachBehaviors = function (context, settings, trigger) {
-        var behaviors, name;
+        var name;
 
         if (!isDocOrEl(context)) {
             throw new TypeError('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
@@ -2262,15 +2332,13 @@ var encodeUC = encodeURIComponent,
         trigger || (trigger = 'unload');
 
         // Detach all of them.
-        behaviors = $cms.behaviors;
-
-        for (name in behaviors) {
-            if (isObj(behaviors[name]) && (typeof behaviors[name].detach === 'function')) {
-                // try {
-                behaviors[name].detach(context, settings, trigger);
-                // } catch (e) {
-                //    $cms.error('Error while detaching behavior \'' + name + '\' of addon \'' + addon + '\'', e);
-                //}
+        for (name in $cms.behaviors) {
+            if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].detach === 'function')) {
+                try {
+                    $cms.behaviors[name].detach(context, settings, trigger);
+                } catch (e) {
+                    $cms.error('Error while detaching behavior \'' + name + '\' from', context, '\n', e);
+                }
             }
         }
     };
@@ -2289,9 +2357,11 @@ var encodeUC = encodeURIComponent,
     // Initialize
     $cms.View = View;
     function View(params, viewOptions) {
-        // The default `tagName` of a View's element is `"div"`.
-        this.tagName = 'div';
-
+        /** Defaults to 'div'.
+         * @var {string} */
+        this.tagName = '';
+        /** @var { HTMLElement } */
+        this.el = null;
         this.initialize.apply(this, arguments);
     }
 
@@ -2299,7 +2369,7 @@ var encodeUC = encodeURIComponent,
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
     define(View.prototype, {
         initialize: function (params, viewOptions) {
-            this.params = params || {};
+            this.params = objVal(params);
 
             if (isObj(viewOptions)) {
                 for (var key in viewOptionsList) {
@@ -2418,7 +2488,7 @@ var encodeUC = encodeURIComponent,
                 if (this.className) {
                     attrs.class = result(this, 'className');
                 }
-                this.setElement($cms.dom.create(result(this, 'tagName'), attrs));
+                this.setElement($cms.dom.create(result(this, 'tagName') || 'div', attrs));
             } else {
                 this.setElement(result(this, 'el'));
             }
@@ -2430,7 +2500,12 @@ var encodeUC = encodeURIComponent,
         clear_out_tooltips();
     });
 
-    /* Tempcode filters ported to JS */
+    /**
+     * Tempcode filters ported to JS
+     * @param str
+     * @param {string} filters
+     * @returns {string}
+     */
     $cms.filter = function $cms_filter(str, filters) {
         str = strVal(str);
         filters = strVal(filters);
@@ -2458,8 +2533,12 @@ var encodeUC = encodeURIComponent,
         return str;
     };
 
-    // JavaScript port of php's urlencode function
-    // Credit: http://locutus.io/php/url/urlencode/
+    /**
+     * JavaScript port of php's urlencode function
+     * Credit: http://locutus.io/php/url/urlencode/
+     * @param str
+     * @returns {string}
+     */
     function urlencode(str) {
         return ((str != null) && (str = strVal(str))) ?
             encodeUC(str)
@@ -2473,9 +2552,15 @@ var encodeUC = encodeURIComponent,
             : '';
     }
 
-    // JS port of the cms_url_encode function used by the tempcode filter '&' (UL_ESCAPED)
+    /**
+     * JS port of the cms_url_encode function used by the tempcode filter '&' (UL_ESCAPED)
+     * @param urlPart
+     * @param [canTryUrlSchemes]
+     * @returns {string}
+     */
     $cms.filter.url = function $cms_filter_url(urlPart, canTryUrlSchemes) {
-        var urlPartEncoded = urlencode(strVal(urlPart));
+        urlPart = strVal(urlPart);
+        var urlPartEncoded = urlencode(urlPart);
         canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.canTryUrlSchemes;
 
         if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
@@ -2487,8 +2572,12 @@ var encodeUC = encodeURIComponent,
         return urlPartEncoded;
     };
 
-    // JS port of the tempcode filter '~' (NL_ESCAPED)
-    $cms.filter.nl = $cms.filter.crLf = function $cms_filter_ln(str) {
+    /**
+     * JS port of the tempcode filter '~' (NL_ESCAPED)
+     * @param str
+     * @returns {string}
+     */
+    $cms.filter.nl = function $cms_filter_nl(str) {
         return strVal(str).replace(/[\r\n]/g, '');
     };
 
@@ -2503,7 +2592,11 @@ var encodeUC = encodeURIComponent,
         '/': '__'
     };
 
-    // JS port of the tempcode filter '|' (ID_ESCAPED)
+    /**
+     * JS port of the tempcode filter '|' (ID_ESCAPED)
+     * @param str
+     * @returns {string}
+     */
     $cms.filter.id = function $cms_filter_id(str) {
         var i, char, ascii, out = '';
 
@@ -2540,7 +2633,11 @@ var encodeUC = encodeURIComponent,
         return out;
     };
 
-    // JS port of the tempcode filter '=' (FORCIBLY_ENTITY_ESCAPED)
+    /**
+     * JS port of the tempcode filter '=' (FORCIBLY_ENTITY_ESCAPED)
+     * @param str
+     * @returns {string}
+     */
     $cms.filter.html = function $cms_filter_html(str) {
         return ((str != null) && (str = strVal(str))) ?
             str.replace(/&/g, '&amp;')
@@ -2551,23 +2648,6 @@ var encodeUC = encodeURIComponent,
             : '';
     };
 
-    $cms.parseDataObject = function (data, defaults) {
-        data = strVal(data).trim();
-
-        if ((data !== '') && (data !== '{}') && (data !== '[]') && (data !== '1')) {
-            try {
-                data = JSON.parse(data);
-
-                if (isObj(data)) {
-                    return defaults ? Object.assign({}, defaults, data) : data;
-                }
-            } catch (ex) {
-                $cms.error('$cms.parseDataArgs(), error parsing JSON: ' + data, ex);
-            }
-        }
-
-        return defaults || {};
-    };
 
     $cms.ui || ($cms.ui = {});
 
@@ -3360,7 +3440,7 @@ var encodeUC = encodeURIComponent,
         });
     }
 
-    inherits(TreeList, $cms.View, {
+    $cms.inherits(TreeList, $cms.View, {
         specialKeyPressed: false,
 
         tree_list_data: '',
@@ -4017,7 +4097,7 @@ var encodeUC = encodeURIComponent,
                 null,
                 'dialogWidth=' + dialog_width + ';dialogHeight=' + dialog_height + ';status=no;unadorned=yes',
                 function (result) {
-                    if ((result === undefined) || (result === null)) {
+                    if (result == null) {
                         callback(button_set[0]); // just pressed 'cancel', so assume option 0
                     } else {
                         callback(result);
@@ -4084,10 +4164,11 @@ var encodeUC = encodeURIComponent,
     }
 
     var ajaxInstances,
-        ajaxCallbacks;
+        ajaxCallbacks,
+        networkDownAlerted = false;
 
-    function do_ajax_request(url, callback__method, post) { // Note: 'post' is not an array, it's a string (a=b)
-        var async = !!callback__method, index, result;
+    function do_ajax_request(url, callbackMethod, post) { // Note: 'post' is not an array, it's a string (a=b)
+        var async = !!callbackMethod, index, result;
 
         if (!url.includes('://') && url.startsWith('/')) {
             url = window.location.protocol + '//' + window.location.host + url;
@@ -4099,7 +4180,7 @@ var encodeUC = encodeURIComponent,
         index = ajaxInstances.length;
 
         ajaxInstances[index] = new XMLHttpRequest();
-        ajaxCallbacks[index] = callback__method;
+        ajaxCallbacks[index] = callbackMethod;
 
         if (async) {
             ajaxInstances[index].onreadystatechange = readyStateChangeListener;
@@ -4131,7 +4212,7 @@ var encodeUC = encodeURIComponent,
             ajaxCallbacks || (ajaxCallbacks = []);
 
             // Check if any ajax requests are complete
-            ajaxInstances.some(function (xhr, i) {
+            ajaxInstances.forEach(function (xhr, i) {
                 if (!xhr || (xhr.readyState !== 4)) { // 4 = DONE
                     return; // (continue)
                 }
@@ -4147,12 +4228,7 @@ var encodeUC = encodeURIComponent,
                     }
 
                     // XML result. Handle with a potentially complex call
-                    var xml;
-                    if (xhr.responseXML && xhr.responseXML.firstChild) {
-                        xml = xhr.responseXML;
-                    } else {
-                        xml = handleErrorsInResult(xhr);
-                    }
+                    var xml = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : handleErrorsInResult(xhr);
 
                     if (xml) {
                         xml.validateOnParse = false;
@@ -4163,22 +4239,21 @@ var encodeUC = encodeURIComponent,
                     }
                 } else {
                     // HTTP error...
-
                     callAjaxMethod(ajaxCallbacks[i], null, null);
 
                     try {
                         if ((xhr.status === 0) || (xhr.status === 12029)) {// 0 implies site down, or network down
-                            if (!window.network_down && !window.unloaded) {
+                            if (!networkDownAlerted && !window.unloaded) {
                                 if (xhr.status === 12029) {
                                     window.fauxmodal_alert('{!NETWORK_DOWN;^}');
                                 }
-                                window.network_down = true;
+                                networkDownAlerted = true;
                             }
                         } else {
-                            $cms.log('{!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.');
+                            $cms.error('do_ajax_request(): {!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.', xhr);
                         }
                     } catch (e) {
-                        $cms.log('{!PROBLEM_RETRIEVING_XML;^}'); // This is probably clicking back
+                        $cms.error('do_ajax_request(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
                     }
                 }
             });
@@ -4188,9 +4263,10 @@ var encodeUC = encodeURIComponent,
             ajaxInstances || (ajaxInstances = []);
             ajaxCallbacks || (ajaxCallbacks = []);
 
-            var method = null;
-            var methodEl = ajaxResultFrame.querySelector('method');
-            if (methodEl || (ajaxCallbacks[i])) {
+            var method = null,
+                methodEl = ajaxResultFrame.querySelector('method');
+
+            if (methodEl || ajaxCallbacks[i]) {
                 method = methodEl ? eval('return ' + merge_text_nodes(methodEl)) : ajaxCallbacks[i];
             }
 
@@ -4232,7 +4308,7 @@ var encodeUC = encodeURIComponent,
             }
 
             if (xhr.responseText && xhr.responseText.includes('<html')) {
-                $cms.log(xhr);
+                $cms.error('do_ajax_request(): ', xhr);
                 fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
@@ -4240,12 +4316,13 @@ var encodeUC = encodeURIComponent,
         function callAjaxMethod(method, ajaxResultFrame, ajaxResult) {
             if (Array.isArray(method)) {
                 if (ajaxResultFrame != null) {
-                    method = (method[0] === undefined) ? null : method[0];
+                    method = (method[0] !== undefined) ? method[0] : null;
                 } else {
-                    method = (method[1] === undefined) ? null : method[1];
+                    method = (method[1] !== undefined) ? method[1] : null;
                 }
-            } else {
-                if (ajaxResultFrame == null) method = null; // No failure method given, so don't call
+            } else if (ajaxResultFrame == null)  {
+                // No failure method given, so don't call
+                method = null;
             }
 
             if (method != null) {
@@ -5329,8 +5406,11 @@ function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_
 
     // Work out which direction to render in
     var width = $cms.dom.contentWidth(tooltip_element);
-    if (tooltip_element.style.width == 'auto') {
-        if (width < 200) width = 200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
+    if (tooltip_element.style.width === 'auto') {
+        if (width < 200) {
+            // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
+            width = 200;
+        }
     }
     var height = tooltip_element.offsetHeight;
     var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
@@ -5518,34 +5598,13 @@ function maintain_theme_in_link(url) {
 
 /* Get URL stub to propagate keep_* parameters */
 function keep_stub(starting) {// `starting` set to true means "Put a '?' for the first parameter"
-    var keep = $cms.qsKeepSession;
+    var keep = $cms.uspKeepSession.toString();
 
     if (!keep) {
         return '';
     }
 
     return (starting ? '?' : '&') + keep;
-}
-
-function keep_stub_with_context(context) {
-    context || (context = '');
-
-    var starting = !context || !context.includes('?');
-
-    var to_add = '', i,
-        bits = (window.location.search || '?').substr(1).split('&'),
-        gapSymbol;
-
-    for (i = 0; i < bits.length; i++) {
-        if (bits[i].startsWith('keep_')) {
-            if (!context || (!context.includes('?' + bits[i]) && !context.includes('&' + bits[i]))) {
-                gapSymbol = ((to_add === '') && starting) ? '?' : '&';
-                to_add += gapSymbol + bits[i];
-            }
-        }
-    }
-
-    return to_add;
 }
 
 /* Import an XML node into the current document */
@@ -6969,16 +7028,20 @@ function set_field_error(the_element, error_msg) {
             }
         }
     }
-    if ((window.is_wysiwyg_field !== undefined) && (is_wysiwyg_field(the_element))) the_element = the_element.parentNode;
+    if ((window.is_wysiwyg_field !== undefined) && (is_wysiwyg_field(the_element))) {
+        the_element = the_element.parentNode;
+    }
+
     the_element.classList.remove('input_erroneous');
+
     if (error_msg != '') {
         the_element.classList.add('input_erroneous');
     }
 
     function get_errormsg_element(id) {
-        var errormsg_element = $cms.dom.id('error_' + id);
+        var errormsg_element = $cms.dom.$('#error_' + id);
         if (!errormsg_element) {
-            errormsg_element = $cms.dom.id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+            errormsg_element = $cms.dom.$('#error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
         }
         return errormsg_element;
     }
@@ -7064,7 +7127,9 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
 
     if (form.onsubmit) {
         var test = form.onsubmit.call(form, event, true);
-        if (!test) return false;
+        if (!test) {
+            return false;
+        }
     }
 
     if ((has_separate_preview) || (window.has_separate_preview)) {

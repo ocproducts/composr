@@ -1,25 +1,18 @@
 (function ($cms) {
-    $cms.views.Menu = Menu;
-    $cms.views.DropdownMenu = DropdownMenu;
-    $cms.views.PopupMenu = PopupMenu;
-    $cms.views.PopupMenuBranch = PopupMenuBranch;
-    $cms.views.TreeMenu = TreeMenu;
-    $cms.views.MobileMenu = MobileMenu;
-    $cms.views.SelectMenu = SelectMenu;
 
-    function Menu() {
+
+    function Menu(params) {
         Menu.base(this, 'constructor', arguments);
 
-        this.menuId = this.params.menuId;
+        /** @var {string} */
+        this.menuId = params.menuId;
 
-        if (this.params.javascriptHighlighting && this.menuId) {
+        if (params.javascriptHighlighting && this.menuId) {
             menuActiveSelection(this.menuId);
         }
     }
 
-    $cms.inherits(Menu, $cms.View, {
-        menuId: null
-    });
+    $cms.inherits(Menu, $cms.View);
 
     // Templates:
     // MENU_dropdown.tpl
@@ -29,9 +22,11 @@
     }
 
     $cms.inherits(DropdownMenu, Menu, {
-        events: {
-            'click .js-click-unset-active-menu': 'unsetActiveMenu',
-            'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu'
+        events: function () {
+            return {
+                'click .js-click-unset-active-menu': 'unsetActiveMenu',
+                'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu'
+            };
         },
 
         unsetActiveMenu: function () {
@@ -40,20 +35,22 @@
         }
     });
 
-    function PopupMenu() {
+    function PopupMenu(params) {
         PopupMenu.base(this, 'constructor', arguments);
 
-        this.menuId = this.params.menuId;
-        if (this.params.javascriptHighlighting && this.menuId) {
+        this.menuId = params.menuId;
+
+        if (params.javascriptHighlighting && this.menuId) {
             menuActiveSelection(this.menuId);
         }
     }
 
     $cms.inherits(PopupMenu, Menu, {
-        menuId: null,
-        events: {
-            'click .js-click-unset-active-menu': 'unsetActiveMenu',
-            'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu'
+        events: function () {
+            return {
+                'click .js-click-unset-active-menu': 'unsetActiveMenu',
+                'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu'
+            };
         },
 
         unsetActiveMenu: function () {
@@ -72,13 +69,12 @@
     }
 
     $cms.inherits(PopupMenuBranch, $cms.View, {
-        rand: null,
-        menu: null,
-        popup: null,
-        events: {
-            'focus .js-focus-pop-up-menu': 'popUpMenu',
-            'mousemove .js-mousemove-pop-up-menu': 'popUpMenu',
-            'mouseover .js-mouseover-set-active-menu': 'setActiveMenu'
+        events: function () {
+            return {
+                'focus .js-focus-pop-up-menu': 'popUpMenu',
+                'mousemove .js-mousemove-pop-up-menu': 'popUpMenu',
+                'mouseover .js-mouseover-set-active-menu': 'setActiveMenu'
+            };
         },
         popUpMenu: function () {
             pop_up_menu(this.popup, null, this.menu + '_p');
@@ -115,9 +111,11 @@
     }
 
     $cms.inherits(MobileMenu, Menu, {
-        events: {
-            'click .js-click-toggle-content': 'toggleContent',
-            'click .js-click-toggle-sub-menu': 'toggleSubMenu'
+        events: function () {
+            return {
+                'click .js-click-toggle-content': 'toggleContent',
+                'click .js-click-toggle-sub-menu': 'toggleSubMenu'
+            };
         },
         toggleContent: function (e) {
             e.preventDefault();
@@ -147,8 +145,10 @@
     }
 
     $cms.inherits(SelectMenu, Menu, {
-        events: {
-            'change .js-change-redirect-to-value': 'redirect'
+        events: function () {
+            return {
+                'change .js-change-redirect-to-value': 'redirect'
+            };
         },
         redirect: function (e, changed) {
             if (changed.value) {
@@ -156,6 +156,14 @@
             }
         }
     });
+
+    $cms.views.Menu = Menu;
+    $cms.views.DropdownMenu = DropdownMenu;
+    $cms.views.PopupMenu = PopupMenu;
+    $cms.views.PopupMenuBranch = PopupMenuBranch;
+    $cms.views.TreeMenu = TreeMenu;
+    $cms.views.MobileMenu = MobileMenu;
+    $cms.views.SelectMenu = SelectMenu;
 
     $cms.templates.menuEditorScreen = function (params) {
         var container = this,
@@ -229,103 +237,215 @@
         }
     };
 
-    $cms.extend($cms.templates, {
-        menuEditorBranchWrap: function (params) {
-            var container = this,
-                sIndex = +params.branchType || 0;
+    $cms.templates.menuEditorBranchWrap= function (params) {
+        var container = this,
+            sIndex = Number.isFinite(+params.branchType) ? +params.branchType : 0;
 
-            if (params.clickableSections) {
-                sIndex = (sIndex === 0) ? 0 : (sIndex - 1);
+        if (params.clickableSections) {
+            sIndex = (sIndex === 0) ? 0 : (sIndex - 1);
+        }
+
+        document.getElementById('branch_type_' + params.i).selectedIndex = sIndex;
+
+        $cms.dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
+            delete_menu_branch(clicked);
+        });
+
+
+        function delete_menu_branch(ob) {
+            var id = ob.id.substring(4, ob.id.length);
+
+            if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) || (ob.form.elements['branch_type_' + id] != 'page')) {
+                var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
+                generate_question_ui(
+                    '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
+                    choices,
+                    '{!menus:DELETE_MENU_ITEM;^}',
+                    null,
+                    function (result) {
+                        if (result.toLowerCase() == '{!DELETE;^}'.toLowerCase()) {
+                            delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                        } else if (result.toLowerCase() == '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
+                            var choices = {buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}'};
+                            for (var i = 0; i < window.all_menus.length; i++) {
+                                choices['buttons__choose___' + i] = window.all_menus[i];
+                            }
+                            generate_question_ui(
+                                '{!menus:CONFIRM_MOVE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
+                                choices,
+                                '{!menus:MOVE_MENU_ITEM;^}',
+                                null,
+                                function (result) {
+                                    if (result.toLowerCase() != '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
+                                        var post = '', name, value;
+                                        for (var i = 0; i < ob.form.elements.length; i++) {
+                                            name = ob.form.elements[i].name;
+                                            if (name.substr(name.length - (('_' + id).length)) == '_' + id) {
+                                                if (ob.localName == 'select') {
+                                                    value = ob.form.elements[i].value;
+                                                    window.myValue = ob.options[ob.selectedIndex].value;
+                                                } else {
+                                                    if ((ob.type.toLowerCase() == 'checkbox') && (!ob.checked)) continue;
+
+                                                    value = ob.form.elements[i].value;
+                                                }
+                                                if (post != '') post += '&';
+                                                post += name + '=' + encodeURIComponent(value);
+                                            }
+                                        }
+                                        do_ajax_request('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + keep_stub(), null, post);
+                                        delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                                    }
+                                }
+                            );
+                        }
+                    }
+                );
+            } else {
+                window.fauxmodal_confirm(
+                    '{!CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
+                    function (result) {
+                        if (result)
+                            delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                    }
+                );
+            }
+        }
+    };
+
+    $cms.templates.menuSitemap = function (params) {
+        var menuId = strVal(params.menuSitemapId),
+            content;
+
+        try {
+            content = arrVal($cms.parseJson(params.content));
+        } catch (ignore) {
+            content = [];
+        }
+
+        generate_menu_sitemap($cms.dom.$('#' + menuId), content, 0);
+
+        // ==============================
+        // DYNAMIC TREE CREATION FUNCTION
+        // ==============================
+        function generate_menu_sitemap(targetEl, structure, theLevel) {
+            theLevel = Number.isFinite(+theLevel) ? +theLevel : 0;
+
+            if (theLevel === 0) {
+                $cms.dom.empty(targetEl);
+                var ul = document.createElement('ul');
+                targetEl.appendChild(ul);
+                targetEl = ul;
             }
 
-            document.getElementById('branch_type_' + params.i).selectedIndex = sIndex;
+            var node;
+            for (var i = 0; i < structure.length; i++) {
+                node = structure[i];
+                _generate_menu_sitemap(targetEl, node, theLevel);
+            }
 
-            $cms.dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
-                delete_menu_branch(clicked);
-            });
+            function _generate_menu_sitemap(target, node, theLevel) {
+                theLevel = Number.isFinite(+theLevel) ? +theLevel : 0;
 
+                var li = $cms.dom.create('li', {
+                    'data-view': 'ToggleableTray',
+                    id: 'sitemap_menu_branch_' + $cms.random(),
+                    class: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has_img' : 'has_no_img')
+                });
 
-            function delete_menu_branch(ob) {
-                var id = ob.id.substring(4, ob.id.length);
+                var span = $cms.dom.create('span');
+                $cms.dom.append(li, span);
 
-                if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) || (ob.form.elements['branch_type_' + id] != 'page')) {
-                    var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
-                    generate_question_ui(
-                        '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
-                        choices,
-                        '{!menus:DELETE_MENU_ITEM;^}',
-                        null,
-                        function (result) {
-                            if (result.toLowerCase() == '{!DELETE;^}'.toLowerCase()) {
-                                delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
-                            } else if (result.toLowerCase() == '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
-                                var choices = {buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}'};
-                                for (var i = 0; i < window.all_menus.length; i++) {
-                                    choices['buttons__choose___' + i] = window.all_menus[i];
-                                }
-                                generate_question_ui(
-                                    '{!menus:CONFIRM_MOVE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
-                                    choices,
-                                    '{!menus:MOVE_MENU_ITEM;^}',
-                                    null,
-                                    function (result) {
-                                        if (result.toLowerCase() != '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
-                                            var post = '', name, value;
-                                            for (var i = 0; i < ob.form.elements.length; i++) {
-                                                name = ob.form.elements[i].name;
-                                                if (name.substr(name.length - (('_' + id).length)) == '_' + id) {
-                                                    if (ob.localName == 'select') {
-                                                        value = ob.form.elements[i].value;
-                                                        window.myValue = ob.options[ob.selectedIndex].value;
-                                                    } else {
-                                                        if ((ob.type.toLowerCase() == 'checkbox') && (!ob.checked)) continue;
+                if (node.img) {
+                    $cms.dom.append(span, $cms.dom.create('img', { src: node.img, srcset: node.img_2x + ' 2x' }));
+                    $cms.dom.append(span, document.createTextNode(' '));
+                }
 
-                                                        value = ob.form.elements[i].value;
-                                                    }
-                                                    if (post != '') post += '&';
-                                                    post += name + '=' + encodeURIComponent(value);
-                                                }
-                                            }
-                                            do_ajax_request('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + keep_stub(), null, post);
-                                            delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
-                                        }
-                                    }
-                                );
-                            }
-                        }
-                    );
-                } else {
-                    window.fauxmodal_confirm(
-                        '{!CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
-                        function (result) {
-                            if (result)
-                                delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
-                        }
-                    );
+                var a = $cms.dom.create(node.url ? 'a' : 'span');
+                if (node.url) {
+                    if (node.tooltip) {
+                        a.title = node.caption + ': ' + node.tooltip;
+                    }
+                    a.href = node.url;
+                }
+
+                $cms.dom.append(span, a);
+                $cms.dom.html(a, node.caption);
+                $cms.dom.append(target, li);
+
+                if (node.children && node.children.length) {
+                    var ul = $cms.dom.create('ul', {
+                        id: 'sitemap_menu_children_' + $cms.random(),
+                        class: 'toggleable_tray'
+                    });
+                    // Show expand icon...
+                    $cms.dom.append(span, document.createTextNode(' '));
+
+                    var expand = $cms.dom.create('a', {
+                        class: 'toggleable_tray_button js-btn-tray-toggle',
+                        href: '#!'
+                    });
+
+                    var expandImg = $cms.dom.create('img');
+                    if (theLevel < 2) {// High-levels start expanded
+                        expandImg.alt = "{!CONTRACT^#}";
+                        expandImg.src = $cms.img("{$IMG#,1x/trays/contract}");
+                        expandImg.srcset = $cms.img("{$IMG#,2x/trays/contract}") + ' 2x';
+                    } else {
+                        expandImg.alt = "{!EXPAND^#}";
+                        expandImg.src = $cms.img("{$IMG#,1x/trays/expand}");
+                        expandImg.srcset = $cms.img("{$IMG#,2x/trays/expand}") + ' 2x';
+                        ul.style.display = 'none';
+                    }
+
+                    $cms.dom.append(expand, expandImg);
+                    $cms.dom.append(span, expand);
+
+                    // Show children...
+                    $cms.dom.append(li, ul);
+                    generate_menu_sitemap(ul, node.children, theLevel + 1);
                 }
             }
-        },
+        }
+    };
 
-        menuSitemap: function (params) {
-            generate_menu_sitemap(params.menuSitemapId, params.content);
-        },
+    $cms.templates.pageLinkChooser= function pageLinkChooser(params) {
+        var container = this,
+            ajax_url = 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1';
 
-        pageLinkChooser: function pageLinkChooser(params) {
-            var ajax_url = 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1';
+        if (params.pageType !== undefined) {
+            ajax_url += '&page_type=' + params.pageType;
+        }
 
-            if (params.pageType !== undefined) {
-                ajax_url += '&page_type=' + params.pageType;
+        $cms.createTreeList(params.name, ajax_url, '', '', false, null, false, true);
+
+        $cms.dom.on(container, 'change', '.js-input-page-link-chooser', function (e, input) {
+            if (!params.asField || (params.asField === '0')) {
+                window.returnValue = input.value;
+                if (window.faux_close !== undefined) {
+                    window.faux_close();
+                } else {
+                    window.close();
+                }
             }
 
-            $cms.createTreeList(params.name, ajax_url, '', '', false, null, false, true);
-        }
-    });
+            if (params.getTitleToo && (params.getTitleToo !== '0')) {
+                if (input.selected_title === undefined) {
+                    input.value = '';
+                    /*was autocomplete, unwanted*/
+                } else {
+                    input.value += ' ' + input.selected_title;
+                }
+            }
+        });
+    };
 
     function menuActiveSelection(menu_id) {
-        var menu_element = document.getElementById(menu_id);
-        var possibilities = [], is_selected, url;
+        var menu_element = document.getElementById(menu_id),
+            possibilities = [], is_selected, url, min_score, i;
+
         if (menu_element.localName === 'select') {
-            for (var i = 0; i < menu_element.options.length; i++) {
+            for (i = 0; i < menu_element.options.length; i++) {
                 url = menu_element.options[i].value;
                 is_selected = menuItemIsSelected(url);
                 if (is_selected !== null) {
@@ -342,8 +462,8 @@
                     return a.score - b.score
                 });
 
-                var min_score = possibilities[0].score;
-                for (var i = 0; i < possibilities.length; i++) {
+                min_score = possibilities[0].score;
+                for (i = 0; i < possibilities.length; i++) {
                     if (possibilities[i].score != min_score) break;
                     possibilities[i].element.selected = true;
                 }
@@ -377,8 +497,8 @@
                     return a.score - b.score
                 });
 
-                var min_score = possibilities[0].score;
-                for (var i = 0; i < possibilities.length; i++) {
+                min_score = possibilities[0].score;
+                for (i = 0; i < possibilities.length; i++) {
                     if (possibilities[i].score != min_score) {
                         break;
                     }
@@ -390,7 +510,9 @@
     }
 
     function menuItemIsSelected(url) {
-        if (url == '') {
+        url = strVal(url);
+
+        if (url === '') {
             return null;
         }
 
@@ -401,7 +523,7 @@
         var global_breadcrumbs = document.getElementById('global_breadcrumbs');
 
         if (global_breadcrumbs) {
-            var links = global_breadcrumbs.getElementsByTagName('a');
+            var links = global_breadcrumbs.querySelectorAll('a');
             for (var i = 0; i < links.length; i++) {
                 if (url == links[links.length - 1 - i].href) {
                     return i + 1;
@@ -487,12 +609,12 @@
         var p = el.parentNode;
 
         // Our own position computation as we are positioning relatively, as things expand out
-        if (window.getComputedStyle(p.parentNode).getPropertyValue('position') === 'absolute') {
+        if ($cms.dom.isCss(p.parentElement, 'position', 'absolute')) {
             l += p.offsetLeft;
             t += p.offsetTop;
         } else {
             while (p) {
-                if (p && (window.getComputedStyle(p).getPropertyValue('position') === 'relative')) {
+                if (p && $cms.dom.isCss(p, 'position', 'relative')) {
                     break;
                 }
 
@@ -500,12 +622,12 @@
                 t += p.offsetTop - sts(p.style.borderTop);
                 p = p.offsetParent;
 
-                if (p && (window.getComputedStyle(p).getPropertyValue('position') === 'absolute')) {
+                if (p && $cms.dom.isCss(p, 'position', 'absolute')) {
                     break;
                 }
             }
         }
-        if (place == 'below') {
+        if (place === 'below') {
             t += el.parentNode.offsetHeight;
         } else {
             l += el.parentNode.offsetWidth;

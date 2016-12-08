@@ -9,34 +9,26 @@
     });
 
     Object.assign($cms.behaviors, {
+        // Implementation for [data-view]
         initializeViews: {
             attach: function (context) {
                 $cms.dom.$$$(context, '[data-view]').forEach(function (el) {
-                    var ViewClass = $cms.views[el.dataset.view], view,
-                        params = $cms.parseDataObject(el.dataset.viewParams),
-                        viewOptions = { el: el };
+                    var params = objVal($cms.dom.data(el, 'viewParams')),
+                        view, viewOptions = { el: el };
 
-                        view = new ViewClass(params, viewOptions);
+                        view = new $cms.views[el.dataset.view](params, viewOptions);
                         $cms.viewInstances[$cms.uid(view)] = view;
                 });
             }
         },
 
+        // Implementation for [data-tpl]
         initializeTemplates: {
             attach: function (context) {
                 $cms.dom.$$$(context, '[data-tpl]').forEach(function (el) {
-                    var template = el.dataset.tpl, params;
-
-                    if ((el.localName === 'script') && (el.type === 'application/json')) {
-                        // Arguments provided inside the <script> tag.
-                        params = el.textContent.trim();
-                    } else {
-                        // Arguments provided in the data-tpl-params attribute.
-                        params = el.dataset.tplParams;
-                    }
-
-                    params = $cms.parseDataObject(params);
-                    $cms.templates[template].apply(el, [params]);
+                    var template = el.dataset.tpl,
+                        params = objVal($cms.dom.data(el, 'tplParams'));
+                    $cms.templates[template].call(el, params);
                 });
             }
         },
@@ -154,25 +146,23 @@
             }
         },
 
+        // Implementation for [data-cms-select2]
         select2Plugin: {
             attach: function (context) {
                 var els = $cms.dom.$$$(context, '[data-cms-select2]');
 
                 // Select2 plugin hook
                 els.forEach(function (el) {
-                    var options = {};
+                    var options = objVal($cms.dom.data(el, 'cmsSelect2'));
 
-                    if (el.dataset.cmsSelect2.trim()) {
-                        options = JSON.parse(el.dataset.cmsSelect2);
-                    }
-
-                    if (typeof window.jQuery(el).select2 != 'undefined') {
+                    if (window.jQuery && window.jQuery.fn.select2) {
                         window.jQuery(el).select2(options);
                     }
                 });
             }
         },
 
+        // Implementation for img[data-gd-text]
         gdTextImages: {
             attach: function (context) {
                 var els = $cms.dom.$$$(context, 'img[data-gd-text]');
@@ -184,8 +174,26 @@
         }
     });
 
-    $cms.views.Global = Global;
-    $cms.views.ToggleableTray = ToggleableTray;
+    function keep_stub_with_context(context) {
+        context || (context = '');
+
+        var starting = !context || !context.includes('?');
+
+        var to_add = '', i,
+            bits = (window.location.search || '?').substr(1).split('&'),
+            gapSymbol;
+
+        for (i = 0; i < bits.length; i++) {
+            if (bits[i].startsWith('keep_')) {
+                if (!context || (!context.includes('?' + bits[i]) && !context.includes('&' + bits[i]))) {
+                    gapSymbol = ((to_add === '') && starting) ? '?' : '&';
+                    to_add += gapSymbol + bits[i];
+                }
+            }
+        }
+
+        return to_add;
+    }
 
     function Global() {
         var view = this;
@@ -203,7 +211,7 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if (boolVal($cms.usp.get('wide_print'))) {
+        if ($cms.usp.get('wide_print') && ($cms.usp.get('wide_print') !== '0')) {
             try {
                 window.print();
             } catch (ignore) {}
@@ -334,6 +342,8 @@
                 // Simulated href for non <a> elements
                 'click [data-cms-href]': 'cmsHref',
 
+                'click [data-click-fwd]': 'clickForward',
+
                 // Toggle classes on mouseover/out
                 'mouseover [data-mouseover-class]': 'mouseoverClass',
                 'mouseout [data-mouseout-class]': 'mouseoutClass',
@@ -389,6 +399,7 @@
             if (!stuck_navs.length) {
                 return;
             }
+
             $cms.dom.on(window, 'scroll', function () {
                 for (var i = 0; i < stuck_navs.length; i++) {
                     var stuck_nav = stuck_navs[i],
@@ -492,6 +503,25 @@
             }
         },
 
+        // Implementation for [data-click-fwd="{ child: '.some-selector' }"]
+        clickForward: function (e, el) {
+            var options = objVal($cms.dom.data(el, 'clickFwd'), 'child'),
+                child = strVal(options.child), // Selector for target child element
+                except = strVal(options.except), // Optional selector for excluded elements to let pass-through
+                childEl = $cms.dom.$(el, child);
+
+            if (!childEl) {
+                // Nothing to do
+                return;
+            }
+
+            if (!childEl.contains(e.target) && (!except || !$cms.dom.closest(e.target, except, el))) {
+                // ^ Make sure the child isn't the current event's target already, and check for excluded elements to let pass-through
+                e.preventDefault();
+                $cms.dom.trigger(childEl, 'click');
+            }
+        },
+
         // Implementation for [data-mouseover-class="{ 'some-class' : 1|0 }"]
         mouseoverClass: function (e, target) {
             var classes = objVal($cms.dom.data(target, 'mouseoverClass')), key;
@@ -553,7 +583,7 @@
 
         // Implemenetation for [data-open-as-overlay]
         openOverlay: function (e, el) {
-            var opts, url = (el.href === undefined) ? el.action : el.href;
+            var options, url = (el.href === undefined) ? el.action : el.href;
 
             if (!($cms.$CONFIG_OPTION.js_overlays)) {
                 return;
@@ -565,10 +595,10 @@
 
             e.preventDefault();
 
-            opts = $cms.parseDataObject(el.dataset.openAsOverlay);
-            opts.el = el;
+            options = objVal($cms.dom.data(el, 'openAsOverlay'));
+            options.el = el;
 
-            openLinkAsOverlay(opts);
+            openLinkAsOverlay(options);
         },
 
         // Implementation for `click a[rel*="lightbox"]`
@@ -647,7 +677,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.$JS_ON || $cms.usp.has('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
+            if ($cms.$JS_ON || $cms.usp.get('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
                 return;
             }
 
@@ -1294,6 +1324,9 @@
             }
         }
     }
+
+    $cms.views.Global = Global;
+    $cms.views.ToggleableTray = ToggleableTray;
 
     $cms.extend($cms.templates, {
         forumsEmbed: function () {

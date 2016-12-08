@@ -1,1 +1,1 @@
-<script type="application/json" data-tpl="chatSound">{+START,PARAMS_JSON,SOUND_EFFECTS}{_/}{+END}</script>
+<script type="application/json" data-tpl="chatSound" data-tpl-params="{+START,PARAMS_JSON,SOUND_EFFECTS}{_*}{+END}">{}</script>

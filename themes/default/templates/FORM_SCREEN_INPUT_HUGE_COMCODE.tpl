@@ -35,6 +35,4 @@
 	</td>
 </tr>
 
-<script type="application/json" data-tpl="formScreenInputHugeComcode">
-	{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id,REQUIRED}{_/}{+END}
-</script>
+<script type="application/json" data-tpl="formScreenInputHugeComcode" data-tpl-params="{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id,REQUIRED}{_*}{+END}">{}</script>

@@ -508,7 +508,7 @@
                 window.tick_pos[my_id] = params.width;
                 $cms.dom.html(el, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
                     'style="text-indent: ' + width + 'px; width: ' + width + 'px;" id="' + my_id + '"><span>' +
-                    $cms.filter.crLf(params.text) + '<\/span><\/div>'
+                    $cms.filter.nl(params.text) + '<\/span><\/div>'
                 );
                 window.focused = true;
                 window.addEventListener('focus', function () {
@@ -523,7 +523,7 @@
             } else {
                 $cms.dom.html(el, '<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" ' +
                     'onmouseout="this.setAttribute(\'scrolldelay\',' + (100 / params.speed) + ');" scrollamount="2" scrolldelay="' + (100 / params.speed) + '" ' +
-                    'width="' + width + '">' + $cms.filter.crLf(params.text) + '<\/marquee>');
+                    'width="' + width + '">' + $cms.filter.nl(params.text) + '<\/marquee>');
             }
         },
 

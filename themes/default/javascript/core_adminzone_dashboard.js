@@ -121,8 +121,8 @@
         },
 
         headlessSubmit: function (e) {
-            var blockName = $cms.filter.crLf(this.params.blockName),
-                map = $cms.filter.crLf(this.params.map);
+            var blockName = $cms.filter.nl(this.params.blockName),
+                map = $cms.filter.nl(this.params.map);
 
             if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
                 e.preventDefault();
@@ -142,8 +142,8 @@
         },
 
         headlessSubmit: function (e) {
-            var blockName = $cms.filter.crLf(this.params.blockName),
-                map = $cms.filter.crLf(this.params.map);
+            var blockName = $cms.filter.nl(this.params.blockName),
+                map = $cms.filter.nl(this.params.map);
 
             if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
                 e.preventDefault();
@@ -156,81 +156,79 @@
     $cms.views.BlockMainStaffWebsiteMonitoring = BlockMainStaffWebsiteMonitoring;
     $cms.views.BlockMainNotes = BlockMainNotes;
 
-    $cms.extend($cms.templates, {
-        blockMainStaffChecklist: function () {
-            var container = this,
-                showAllLink = document.getElementById('checklist_show_all_link'),
-                hideDoneLink = document.getElementById('checklist_hide_done_link');
 
+    $cms.templates.blockMainStaffChecklist = function () {
+        var container = this,
+            showAllLink = document.getElementById('checklist_show_all_link'),
+            hideDoneLink = document.getElementById('checklist_hide_done_link');
+
+        set_task_hiding(true);
+
+        $cms.dom.on(container, 'click', '.js-click-enable-task-hiding', function () {
             set_task_hiding(true);
+        });
 
-            $cms.dom.on(container, 'click', '.js-click-enable-task-hiding', function () {
-                set_task_hiding(true);
-            });
+        $cms.dom.on(container, 'click', '.js-click-disable-task-hiding', function () {
+            set_task_hiding(false);
+        });
 
-            $cms.dom.on(container, 'click', '.js-click-disable-task-hiding', function () {
-                set_task_hiding(false);
-            });
+        $cms.dom.on(container, 'submit', '.js-submit-custom-task', function (e, form) {
+            submit_custom_task(form);
+        });
 
-            $cms.dom.on(container, 'submit', '.js-submit-custom-task', function (e, form) {
-                submit_custom_task(form);
-            });
+        function set_task_hiding(hide_enable) {
+            hide_enable = !!hide_enable;
 
-            function set_task_hiding(hide_enable) {
-                hide_enable = !!hide_enable;
+            new Image().src = $IMG_checklist_cross2;
+            new Image().src = $IMG_checklist_toggleicon2;
 
-                new Image().src = $IMG_checklist_cross2;
-                new Image().src = $IMG_checklist_toggleicon2;
+            var i, checklist_rows = document.querySelectorAll('.checklist_row'), row_imgs, src;
 
-                var i, checklist_rows = document.querySelectorAll('.checklist_row'), row_imgs, src;
-
-                for (i = 0; i < checklist_rows.length; i++) {
-                    row_imgs = checklist_rows[i].getElementsByTagName('img');
-                    if (hide_enable) {
-                        src = row_imgs[row_imgs.length - 1].getAttribute('src');
-                        if (row_imgs[row_imgs.length - 1].origsrc) {
-                            src = row_imgs[row_imgs.length - 1].origsrc;
-                        }
-                        if (src && src.includes('checklist1')) {
-                            $cms.dom.hide(checklist_rows[i]);
-                            checklist_rows[i].classList.add('task_hidden');
-                        } else {
-                            checklist_rows[i].classList.remove('task_hidden');
-                        }
+            for (i = 0; i < checklist_rows.length; i++) {
+                row_imgs = checklist_rows[i].getElementsByTagName('img');
+                if (hide_enable) {
+                    src = row_imgs[row_imgs.length - 1].getAttribute('src');
+                    if (row_imgs[row_imgs.length - 1].origsrc) {
+                        src = row_imgs[row_imgs.length - 1].origsrc;
+                    }
+                    if (src && src.includes('checklist1')) {
+                        $cms.dom.hide(checklist_rows[i]);
+                        checklist_rows[i].classList.add('task_hidden');
                     } else {
-                        if (!$cms.dom.isDisplayed(checklist_rows[i])) {
-                            clear_transition_and_set_opacity(checklist_rows[i], 0.0);
-                            fade_transition(checklist_rows[i], 100, 30, 4);
-                        }
-                        $cms.dom.show(checklist_rows[i]);
                         checklist_rows[i].classList.remove('task_hidden');
                     }
+                } else {
+                    if (!$cms.dom.isDisplayed(checklist_rows[i])) {
+                        clear_transition_and_set_opacity(checklist_rows[i], 0.0);
+                        fade_transition(checklist_rows[i], 100, 30, 4);
+                    }
+                    $cms.dom.show(checklist_rows[i]);
+                    checklist_rows[i].classList.remove('task_hidden');
                 }
-
-                $cms.dom.toggle(showAllLink, hide_enable);
-                $cms.dom.toggle(hideDoneLink, !hide_enable);
             }
 
-            function submit_custom_task(form) {
-                var new_task = load_snippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
-
-                form.elements.recur_every.value = '';
-                form.elements.recur_interval.value = '';
-                form.elements.new_task.value = '';
-
-                $cms.dom.appendHtml(document.getElementById('custom_tasks_go_here'), new_task);
-            }
-        },
-
-        blockMainStaffActions: function (params) {
-            internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
-        },
-
-        blockMainStaffTips: function (params) {
-            internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
+            $cms.dom.toggle(showAllLink, hide_enable);
+            $cms.dom.toggle(hideDoneLink, !hide_enable);
         }
-    });
 
+        function submit_custom_task(form) {
+            var new_task = load_snippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
+
+            form.elements.recur_every.value = '';
+            form.elements.recur_interval.value = '';
+            form.elements.new_task.value = '';
+
+            $cms.dom.appendHtml(document.getElementById('custom_tasks_go_here'), new_task);
+        }
+    };
+
+    $cms.templates.blockMainStaffActions = function (params) {
+        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
+    };
+
+    $cms.templates.blockMainStaffTips = function (params) {
+        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
+    };
 
     function ajax_form_submit__admin__headless(form, block_name, map) {
         var post = '';

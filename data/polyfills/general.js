@@ -1,11 +1,11 @@
 (function (){
     'use strict';
-    // Credit for `isSymbol` and `define`: https://github.com/inexorabletash/polyfill/blob/master/es6.js
+    // Credit for `isSymbol` and `definePolyfill`: https://github.com/inexorabletash/polyfill/blob/master/es6.js
     function isSymbol(s) {
         return (typeof s === 'symbol') || (('Symbol' in window) && (Object.prototype.toString.call(s) === '[object Symbol]'));
     }
 
-    function define(obj, prop, value, override) {
+    function definePolyfill(obj, prop, value, override) {
         var isFunc = typeof value === 'function';
 
         if ((prop in obj) && !override && !window.OVERRIDE_NATIVE_FOR_TESTING) {
@@ -26,28 +26,28 @@
     }
 
     // 20.1.2.6 Number.MAX_SAFE_INTEGER
-    define(Number, 'MAX_SAFE_INTEGER', 9007199254740991); // 2^53-1
+    definePolyfill(Number, 'MAX_SAFE_INTEGER', 9007199254740991); // 2^53-1
 
     // 20.1.2.8 Number.MIN_SAFE_INTEGER
-    define(Number, 'MIN_SAFE_INTEGER', -9007199254740991); // -2^53+1
+    definePolyfill(Number, 'MIN_SAFE_INTEGER', -9007199254740991); // -2^53+1
 
     // Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN
-    define(Number, 'isNaN', function isNaN(value) {
+    definePolyfill(Number, 'isNaN', function isNaN(value) {
         return value !== value;
     });
 
     // Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isFinite
-    define(Number, 'isFinite', function isFinite(value) {
+    definePolyfill(Number, 'isFinite', function isFinite(value) {
         return (typeof value === 'number') && window.isFinite(value);
     });
 
     // Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger
-    define(Number, 'isInteger', function isInteger(value) {
+    definePolyfill(Number, 'isInteger', function isInteger(value) {
         return Number.isFinite(value) && (Math.floor(value) === value);
     });
 
     // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/includes
-    define(String.prototype, 'includes', function includes(search, start) {
+    definePolyfill(String.prototype, 'includes', function includes(search, start) {
         start = +start || 0;
 
         if ((start + search.length) > this.length) {
@@ -58,14 +58,14 @@
     });
 
     // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
-    define(String.prototype, 'startsWith', function startsWith(searchString, position) {
+    definePolyfill(String.prototype, 'startsWith', function startsWith(searchString, position) {
         position = +position || 0;
         return this.substr(position, searchString.length) === searchString;
     });
 
 
     // Credit: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith
-    define(String.prototype, 'endsWith', function endsWith(searchString, position) {
+    definePolyfill(String.prototype, 'endsWith', function endsWith(searchString, position) {
         var subjectString = this.toString();
         if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
             position = subjectString.length;
@@ -76,7 +76,7 @@
     });
 
     // Credit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
-    define(Array.prototype, 'includes', function includes(searchElement /*, fromIndex*/) {
+    definePolyfill(Array.prototype, 'includes', function includes(searchElement /*, fromIndex*/) {
         var isSearchNaN = Number.isNaN(searchElement); // Needs a special check since NaN !== NaN
 
         if (this == null) {

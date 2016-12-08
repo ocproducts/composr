@@ -88,8 +88,9 @@ function load_commandr() {
                 {
                     if (img) {
                         img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
-                        if (img.srcset !== undefined)
+                        if (img.srcset !== undefined) {
                             img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_on}') + ' 2x';
+                        }
                         clear_transition(img);
                         img.style.opacity = 1.0;
                     }

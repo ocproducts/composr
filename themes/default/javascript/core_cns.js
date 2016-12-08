@@ -6,6 +6,10 @@
         $cms.dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
             document.getElementById('proceed_button').disabled = !checkbox.checked;
         });
+
+        $cms.dom.on(container, 'click', '.js-click-set-top-location', function (e, target) {
+            window.top.location = strVal(target.dataset.tpTopLocation);
+        });
     };
 
     $cms.templates.cnsMemberProfileScreen = function cnsMemberProfileScreen(params) {
@@ -48,4 +52,19 @@
         });
     };
 
+    $cms.templates.cnsViewGroupScreen = function cnsViewGroupScreen(params) {
+        var container = this;
+
+        $cms.dom.on(container, 'submit', '.js-form-submit-add-member-to-group', function (e, form) {
+            if (check_field_for_blankness(form.elements.username, e)) {
+                $cms.ui.disableFormButtons(form);
+            } else {
+                e.preventDefault();
+            }
+        });
+
+        $cms.dom.on(container, 'keyup', '.js-input-add-member-username', function (e, input) {
+            update_ajax_member_list(input, null, false, e);
+        });
+    };
 }(window.$cms));

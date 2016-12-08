@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 <div data-tpl="formScreen" data-tpl-params="{+START,PARAMS_JSON,URL,IFRAME_URL,SKIPPABLE}{_*}{+END}">
 
 {TITLE}
@@ -17,7 +18,7 @@
 
 {$REQUIRE_JAVASCRIPT,checking}
 {+START,IF_NON_PASSED,IFRAME_URL}
-<form title="{!PRIMARY_PAGE_FORM}" id="main_form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END}{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}{+START,IF_NON_PASSED,TARGET} target="_top"{+END} autocomplete="off"{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} onsubmit="return modsecurity_workaround(this);"{+END}>
+<form title="{!PRIMARY_PAGE_FORM}" id="main_form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END}{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}{+START,IF_NON_PASSED,TARGET} target="_top"{+END} autocomplete="off"{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} data-submit-pd="1" onsubmit="modsecurity_workaround(this);"{+END}>
 	{+START,IF_NON_PASSED_OR_FALSE,GET}{$INSERT_SPAMMER_BLACKHOLE}{+END}
 
 	{+START,IF_PASSED_AND_TRUE,GET}{$HIDDENS_FOR_GET_FORM,{URL}}{+END}
@@ -33,7 +34,7 @@
 		<div class="skip_step_button_wrap{+START,IF,{$IN_STR,{FIELDS},required_star}} skip_step_button_wrap_with_req_note{+END}">
 			<div>
 				<input type="hidden" id="{SKIPPABLE*}" name="{SKIPPABLE*}" value="0" />
-				<input onclick="document.getElementById('{SKIPPABLE;*}').value='1';" data-disable-on-click="1" tabindex="151" class="button_screen_item buttons__skip" type="submit" value="{!SKIP}" />
+				<input data-disable-on-click="1" tabindex="151" class="button_screen_item buttons__skip js-btn-skip-step" type="submit" value="{!SKIP}" />
 			</div>
 		</div>
 	{+END}

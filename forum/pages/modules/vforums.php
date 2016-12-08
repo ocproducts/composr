@@ -409,7 +409,12 @@ class Module_vforums
             'BUTTONS' => $_buttons,
             'TOPIC_WRAPPER' => $topic_wrapper,
             'FORUM_GROUPINGS' => '',
-        ) + $extra_tpl_map;
+        );
+
+        if (is_array($extra_tpl_map)) {
+            $tpl_map = $tpl_map + $extra_tpl_map;
+        }
+
         return do_template('CNS_FORUM', $tpl_map);
     }
 }

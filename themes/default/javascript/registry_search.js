@@ -27,7 +27,7 @@
             var params = this.params;
 
             if (params.searchType !== undefined) {
-                update_ajax_search_list(input, e, $cms.filter.crLf(params.searchType));
+                update_ajax_search_list(input, e, $cms.filter.nl(params.searchType));
             } else {
                 update_ajax_search_list(input, e);
             }

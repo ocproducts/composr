@@ -35,7 +35,7 @@
 
     $cms.templates.blockTopSearch = function (params) {
         var container = this,
-            searchType = $cms.filter.crLf(params.searchType);
+            searchType = $cms.filter.nl(params.searchType);
 
 
         $cms.dom.on(container, 'submit', '.js-submit-check-search-content-element', function (e, form) {

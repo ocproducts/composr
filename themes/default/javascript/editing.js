@@ -33,18 +33,20 @@ function toggle_wysiwyg(name) {
                 '{!comcode:DISABLE_WYSIWYG;^}',
                 '{!comcode:DISCARD_WYSIWYG_CHANGES;^}',
                 function (saving_cookies) {
-                    if (!saving_cookies) return;
+                    if (!saving_cookies) {
+                        return;
+                    }
 
-                    if (saving_cookies.toLowerCase() == '{!javascript:WYSIWYG_DISABLE_ONCE;^}'.toLowerCase()) {
+                    if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE;^}'.toLowerCase()) {
                         _toggle_wysiwyg(name);
                     }
 
-                    if (saving_cookies.toLowerCase() == '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}'.toLowerCase()) {
+                    if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}'.toLowerCase()) {
                         _toggle_wysiwyg(name);
                         set_cookie('use_wysiwyg', '-1', 3000);
                     }
 
-                    if (saving_cookies.toLowerCase() == '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'.toLowerCase()) {
+                    if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'.toLowerCase()) {
                         _toggle_wysiwyg(name);
                         set_cookie('use_wysiwyg', '0', 3000);
                     }

@@ -4629,7 +4629,7 @@ function ecv_ENSURE_PROTOCOL_SUITABILITY($lang, $escaped, $param)
  */
 function ecv_JSON_ENCODE($lang, $escaped, $param)
 {
-    $value = json_encode($param[0]);
+    $value = json_encode($param[0], JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -4649,7 +4649,7 @@ function ecv_JSON_ENCODE($lang, $escaped, $param)
  */
 function ecv_JSON_DECODE($lang, $escaped, $param)
 {
-    $value = json_encode($param[0]);
+    $value = json_decode($param[0]);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

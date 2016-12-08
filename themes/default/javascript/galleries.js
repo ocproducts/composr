@@ -128,11 +128,13 @@
 
             slideshow_show_slide(window.slideshow_current_position); // To ensure next is preloaded
         },
-        events: {
-            'change .js-change-reset-slideshow-countdown': 'resetCountdown',
-            'mousedown .js-mousedown-stop-slideshow-timer': 'stopTimer',
-            'click .js-click-slideshow-backward': 'slideshowBackward',
-            'click .js-click-slideshow-forward': 'slideshowForward'
+        events: function () {
+            return {
+                'change .js-change-reset-slideshow-countdown': 'resetCountdown',
+                'mousedown .js-mousedown-stop-slideshow-timer': 'stopTimer',
+                'click .js-click-slideshow-backward': 'slideshowBackward',
+                'click .js-click-slideshow-forward': 'slideshowForward'
+            };
         },
         resetCountdown: function () {
             reset_slideshow_countdown();

@@ -19,4 +19,12 @@
     });
 
     $cms.views.XmlConfigScreen = XmlConfigScreen;
+
+    $cms.templates.configCategoryScreen = function configCategoryScreen() {
+        var container = this;
+
+        $cms.dom.on(container, 'submit', '.js-form-primary-page', function (e, form) {
+            modsecurity_workaround(form);
+        });
+    };
 }(window.$cms));

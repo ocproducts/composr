@@ -30,7 +30,7 @@
 	{+END}
 
 	<p>
-		<button type="button" data-disable-on-click="1" onclick="window.top.location='{$PAGE_LINK;*,:}';" class="button_screen buttons__no">{!I_DISAGREE}</button>
+		<button type="button" data-disable-on-click="1" class="button_screen buttons__no js-click-set-top-location" data-tp-top-location="{$PAGE_LINK*,:}">{!I_DISAGREE}</button>
 
 		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__yes" type="submit" value="{!PROCEED}" disabled="disabled" id="proceed_button" />
 	</p>

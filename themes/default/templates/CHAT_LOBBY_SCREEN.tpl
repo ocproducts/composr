@@ -1,5 +1,5 @@
 {$REQUIRE_JAVASCRIPT,chat}
-<div data-tpl="chatLobbyScreen" data-tpl-params="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_/}{+END}">
+<div data-tpl="chatLobbyScreen" data-tpl-params="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_*}{+END}">
 {TITLE}
 
 {+START,IF,{$HAS_FORUM,1}}
@@ -98,7 +98,7 @@
 					{+START,IF_NON_EMPTY,{URL_ADD_FRIEND}}
 						<p>{!MUST_ADD_CONTACTS}</p>
 
-						<form onsubmit="var _this=this; load_snippet('im_friends_rejig&amp;member_id={MEMBER_ID%}','add='+encodeURIComponent(this.elements['friend_username'].value),function(ajax_result) { $cms.dom.html(document.getElementById('friends_wrap'),ajax_result.responseText); _this.elements['friend_username'].value=''; }); return false;" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
+						<form class="js-form-submit-add-friend" data-submit-pd="1" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>

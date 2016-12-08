@@ -296,8 +296,6 @@
         formScreen: function (params) {
             var container = this;
 
-            params = params || {};
-
             try_to_simplify_iframe_form();
 
             if (params.iframeUrl) {
@@ -311,6 +309,10 @@
                     form.target = checkbox.checked ? '_blank' : 'iframe_under';
                 });
             }
+
+            $cms.dom.on(container, 'click', '.js-btn-skip-step', function () {
+                $cms.dom.$('#' + params.skippable).value = '1';
+            });
         },
 
         formScreenField_input: function (params) {
