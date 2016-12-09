@@ -168,7 +168,7 @@ class Hook_fields_float
         $ret = post_param_string($tmp_name, $editing ? STRING_MAGIC_NULL : '');
 
         if (($ret != STRING_MAGIC_NULL) && ($ret != '')) {
-            $ret = float_to_raw_string(float_unformat($ret));
+            $ret = float_to_raw_string(float_unformat($ret), 30);
         }
 
         return $ret;

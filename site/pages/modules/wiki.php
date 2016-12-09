@@ -76,6 +76,8 @@ class Module_wiki
     {
         require_lang('wiki');
 
+        require_code('lang3');
+
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('wiki_children', array(
                 'parent_id' => '*AUTO_LINK',

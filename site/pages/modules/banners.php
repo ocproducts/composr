@@ -76,6 +76,7 @@ class Module_banners
         if (is_null($upgrade_from)) {
             require_lang('banners');
             require_code('banners');
+            require_code('lang3');
 
             $GLOBALS['SITE_DB']->create_table('banners', array(
                 'name' => '*ID_TEXT',

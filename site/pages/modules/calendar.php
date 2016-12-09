@@ -140,6 +140,7 @@ class Module_calendar
                 't_external_feed' => 'URLPATH',
             ));
             $default_types = array('system_command', 'general', 'birthday', 'public_holiday', 'vacation', 'appointment', 'commitment', 'anniversary');
+            require_code('lang3');
             foreach ($default_types as $type) {
                 $map = array(
                     't_external_feed' => '',
