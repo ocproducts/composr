@@ -542,6 +542,41 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
 }
 
 /**
+ * Find if some Comcode tag sequence in the parsing stream is white-listed.
+ *
+ * @param  string $tag The tag being converted
+ * @param  integer $marker The position this tag occurred at in the Comcode
+ * @param  string $comcode The whole chunk of Comcode
+ * @return boolean Whether it is
+ *
+ * @ignore
+ */
+function comcode_white_listed($tag, $marker, $comcode)
+{
+    static $comcode_parsing_hooks = null;
+    if ($comcode_parsing_hooks === null) {
+        $comcode_parsing_hooks = find_all_hook_obs('systems', 'comcode_parsing', 'Hook_comcode_parsing_');
+    }
+
+    if (!empty($comcode_parsing_hooks)) {
+        $start_pos = strrpos(substr($comcode, 0, $marker), '[' . $tag);
+        $end_pos = $marker - $start_pos;
+        $comcode_portion_at_and_after = substr($comcode, $start_pos);
+        $comcode_portion = substr($comcode_portion_at_and_after, 0, $end_pos);
+
+        foreach ($comcode_parsing_hooks as $comcode_parsing_ob) {
+            if (method_exists($comcode_parsing_ob, 'comcode_white_listed')) {
+                if ($comcode_parsing_ob->comcode_white_listed($comcode_portion)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
  * Get Tempcode for a Comcode tag. This function should always return (errors should be placed in the Comcode output stream), for stability reasons (i.e. if you're submitting something, you can't have the whole submit process die half way through in an unstructured fashion).
  *
  * @param  string $tag The tag being converted
@@ -578,7 +613,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
     // No permission
     global $DANGEROUS_TAGS, $STRUCTURE_LIST, $COMCODE_PARSE_TITLE;
-    if ((isset($DANGEROUS_TAGS[$tag])) && (!$comcode_dangerous)) {
+    if ((isset($DANGEROUS_TAGS[$tag])) && (!$comcode_dangerous) && (!comcode_white_listed($tag, $marker, $comcode))) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($source_member);
         if ($username === null) {
             $username = do_lang('UNKNOWN');

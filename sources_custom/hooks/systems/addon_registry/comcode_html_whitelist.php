@@ -137,8 +137,7 @@ Alternatively you can also use regular expressions (explained here: http://php.n
         return array(
             'sources_custom/hooks/systems/addon_registry/comcode_html_whitelist.php',
             'adminzone/pages/comcode_custom/EN/comcode_whitelist.txt',
-            'sources_custom/comcode_renderer.php',
-            'sources_custom/comcode_compiler.php',
+            'sources_custom/hooks/systems/comcode_parsing/comcode_html_whitelist.php',
             'sources_custom/hooks/systems/page_groupings/comcode_whitelist.php',
             'text_custom/comcode_whitelist.txt',
         );
