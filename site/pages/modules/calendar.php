@@ -1644,7 +1644,7 @@ class Module_calendar
     {
         $this->title = get_screen_title('SUBSCRIBE_EVENT');
 
-        $seconds_before = intval(floatval(post_param_string('hours_before')) * 3600.0);
+        $seconds_before = intval(float_unformat(post_param_string('hours_before')) * 3600.0);
 
         $id = get_param_integer('id'); // The event ID
         $events = $GLOBALS['SITE_DB']->query_select('calendar_events', array('*'), array('id' => get_param_integer('id')), '', 1);

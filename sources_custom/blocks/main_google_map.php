@@ -191,8 +191,8 @@ class Block_main_google_map
                 $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
             }
             $CAT_FIELDS_CACHE[$catalogue_name] = $fields;
-            $_latitude_key = 'FIELD_1';
-            $_longitude_key = 'FIELD_2';
+            $_latitude_key = 'FIELD_1_PLAIN';
+            $_longitude_key = 'FIELD_2_PLAIN';
             foreach ($fields as $field) {
                 if (get_translated_text($field['cf_name']) == $latitude_key) {
                     $_latitude_key = '_FIELD_' . strval($field['id']);
@@ -210,14 +210,8 @@ class Block_main_google_map
                 $breadcrumbs = null;
                 $details = get_catalogue_entry_map($entry_row, $catalogue_row, 'CATEGORY', $catalogue_name, null, null, null, false, false, null, $breadcrumbs, true);
 
-                $latitude = $details[$_latitude_key];
-                $longitude = $details[$_longitude_key];
-                if (is_object($latitude)) {
-                    $latitude = $latitude->evaluate();
-                }
-                if (is_object($longitude)) {
-                    $longitude = $longitude->evaluate();
-                }
+                $latitude = $details[$_latitude_key . '_PURE'];
+                $longitude = $details[$_longitude_key . '_PURE'];
 
                 if ((is_numeric($latitude)) && (is_numeric($longitude))) {
                     $details['LATITUDE'] = $latitude;
