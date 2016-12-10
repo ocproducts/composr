@@ -1935,7 +1935,9 @@ function _read_in_headers($line)
                 $cookie_parts[trim($temp[0])] = trim(rawurldecode($temp[1]));
             }
         }
-        $cookie_parts['domain'] = get_cookie_domain();
+        if (function_exists('get_cookie_domain')) {
+            $cookie_parts['domain'] = get_cookie_domain();
+        }
 
         $HTTP_NEW_COOKIES[$cookie_key] = $cookie_parts;
     }
