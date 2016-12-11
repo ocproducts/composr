@@ -453,7 +453,7 @@ class Module_admin
         if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_cleanup'))) {
             $content[$current_results_type] = new Tempcode();
             $hooks = find_all_hooks('systems', 'cleanup');
-            foreach (array_keys($hooks) as $hook) { // TODO: Fix in v11
+            foreach (array_keys($hooks) as $hook) {
                 require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
                 $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
                 if (is_null($object)) {
@@ -462,7 +462,7 @@ class Module_admin
                 $info = $object->info(true);
                 $n = $info['title'];
                 if ($this->_keyword_match(is_object($n) ? $n->evaluate() : $n)) {
-                    $_url = build_url(array('page' => 'admin_cleanup', 'tick' => $hook), get_module_zone('admin_cleanup')); // TODO: Fix in v11
+                    $_url = build_url(array('page' => 'admin_cleanup', 'tick' => $hook), get_module_zone('admin_cleanup'));
                     $breadcrumbs = new Tempcode();
                     $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'fc53a1d45fe6a80308bf509b896d2763', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
                 }
@@ -1169,7 +1169,7 @@ class Module_admin
             return $this->search();
         }
 
-        $javascript = 'document.getElementById(\'search_content\').value=\'' . addslashes($raw_search_string) . '\';'; // TODO: Fix in v11
+        $javascript = 'document.getElementById(\'search_content\').value=\'' . addslashes($raw_search_string) . '\';';
 
         return do_template('INDEX_SCREEN_FANCIER_SCREEN', array(
             '_GUID' => 'b34d4765744c359a25a0b71449eafed1',

@@ -1324,10 +1324,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     $matches = array();
 
                                                     if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $_line, $matches) != 0) {
-                                                        $HTTP_FILENAME = $matches[1];
+                                                        _read_in_headers($_line);
                                                     }
                                                     if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $_line, $matches) != 0) {
-                                                        $HTTP_NEW_COOKIES[trim(rawurldecode($matches[1]))] = trim($matches[2]);
+                                                        _read_in_headers($_line);
                                                     }
                                                     if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
                                                         if (is_null($HTTP_FILENAME)) {

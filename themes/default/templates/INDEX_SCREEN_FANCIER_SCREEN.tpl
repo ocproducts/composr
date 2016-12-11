@@ -1,6 +1,5 @@
 {TITLE}
 
-{$,TODO: Fix in v11}
 {+START,IF_PASSED,JAVASCRIPT}
 	<script>// <![CDATA[
 		{JAVASCRIPT/}
