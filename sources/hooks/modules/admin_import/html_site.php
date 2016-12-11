@@ -386,7 +386,7 @@ class Hook_html_site
                 }
             }
             // Strip bits
-            $site_name = trim(preg_replace('#^[\|\-�,]#', '', preg_replace('#[\|\-�,]$#', '', trim($lcs))));
+            $site_name = trim(preg_replace('#^[\|\-–—,]#', '', preg_replace('#[\|\-–—,]$#', '', trim($lcs))));
             // Save as site name
             set_option('site_name', $site_name);
         }
@@ -424,7 +424,7 @@ class Hook_html_site
                 $matches = array();
                 $page_title = null;
                 if (preg_match('#<title>(.*)</title>#', $filtered, $matches) != 0) {
-                    $page_title = preg_replace('#( [\|\-�] )?' . preg_quote($site_name) . '( [\|\-�] )?#', '', $matches[1]);
+                    $page_title = preg_replace('#( [\|\-–—] )?' . preg_quote($site_name) . '( [\|\-–—] )?#', '', $matches[1]);
                 }
                 $page_keywords = null;
                 if (preg_match('#<meta name="keywords" content="([^"]*)"#', $filtered, $matches) != 0) {

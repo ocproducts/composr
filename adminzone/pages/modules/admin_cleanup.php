@@ -119,6 +119,8 @@ class Module_admin_cleanup
 
         $fields_cache = new Tempcode();
         $fields_optimise = new Tempcode();
+        $fields_cache_expand = true;
+        $fields_optimise_expand = false;
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
             $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
@@ -127,19 +129,26 @@ class Module_admin_cleanup
             }
             $output = $object->info();
             if (!is_null($output)) {
-                $tick = form_input_tick($output['title'], $output['description'], $hook, false);
+                $is_ticked = (get_param_string('tick', null) === $hook);
+                $tick = form_input_tick($output['title'], $output['description'], $hook, $is_ticked);
                 if ($output['type'] == 'cache') {
                     $fields_cache->attach($tick);
+                    if ($is_ticked) {
+                        $fields_cache_expand = true;
+                    }
                 } else {
                     $fields_optimise->attach($tick);
+                    if ($is_ticked) {
+                        $fields_optimise_expand = true;
+                    }
                 }
             }
         }
 
         $fields = new Tempcode();
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('CACHES_PAGE_EXP_OPTIMISERS'), 'HELP' => '')));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' => !$fields_optimise_expand, 'TITLE' => do_lang_tempcode('CACHES_PAGE_EXP_OPTIMISERS'), 'HELP' => '')));
         $fields->attach($fields_optimise);
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'TITLE' => do_lang_tempcode('CACHES_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CACHES_PAGE_CACHES'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'SECTION_HIDDEN' => !$fields_cache_expand, 'TITLE' => do_lang_tempcode('CACHES_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CACHES_PAGE_CACHES'))));
         $fields->attach($fields_cache);
 
         return do_template('FORM_SCREEN', array('_GUID' => '85bfdf171484604594a157aa8983f920', 'SKIP_WEBSTANDARDS' => true, 'TEXT' => do_lang_tempcode('CACHES_PAGE'), 'SUBMIT_ICON' => 'menu__adminzone__tools__cleanup', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url));
