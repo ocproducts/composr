@@ -9701,7 +9701,6 @@ function string_scan($lang, $do_guessing = false)
         date_verbose_date
         date_verbose_joiner
         date_verbose_time
-        date_withinday
         date_withinweek_date
         date_withinweek_joiner
         dictionary
@@ -9717,7 +9716,6 @@ function string_scan($lang, $do_guessing = false)
         links__CATALOGUE_ENTRY
         links__CATALOGUE_INDEX
         locale
-        time_hour_and_mins
     ')));
 
     // Start with what we know

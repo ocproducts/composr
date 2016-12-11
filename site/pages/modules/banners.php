@@ -544,7 +544,7 @@ class Module_banners
                 if ($sortable == 'day') {
                     $period = get_timezoned_date($row['c_date_and_time'], false);
                 } else {
-                    $period = locale_filter(cms_strftime('%B %Y', $row['c_date_and_time']));
+                    $period = cms_strftime('%B %Y', $row['c_date_and_time']);
                 }
 
                 if (!isset($tally_sets[$period])) {
