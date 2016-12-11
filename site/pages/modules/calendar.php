@@ -1152,6 +1152,9 @@ class Module_calendar
         $week_date = locale_filter(date(do_lang('calendar_day_of_month'), $period_start));
         $week_count = intval(get_week_number_for($period_start, true));
         $day_of_week = date('D', $period_start);
+        if (!isset($ex_array[$day_of_week])) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
         for ($x = 0; $x < $ex_array[$day_of_week]; $x++) {
             $days->attach(do_template('CALENDAR_MONTH_DAY', array('_GUID' => '783ff6377292cc0400638c8857446a16', 'CURRENT' => false, 'DAY_URL' => '', 'CLASS' => '', 'DAY' => '', 'ENTRIES' => $empty_entry)));
         }
