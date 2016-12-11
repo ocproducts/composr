@@ -9815,6 +9815,7 @@ function string_scan($lang, $do_guessing = false)
         calendar_month_in_year
         calendar_month_in_year_verbose
         charset
+        date_concise_near_date
         date_no_year
         date_date
         date_joiner
