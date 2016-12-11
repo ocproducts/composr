@@ -30,6 +30,7 @@ echo '<hr />';
 require_code('addons2');
 require_code('version');
 require_code('version2');
+require_code('tar');
 
 if (php_function_allowed('set_time_limit')) {
     @set_time_limit(0);
@@ -38,6 +39,8 @@ if (php_function_allowed('set_time_limit')) {
 $only = get_param_string('only', null);
 
 $done_addon = false;
+
+$done_message = false;
 
 $addons = find_all_hooks('systems', 'addon_registry');
 foreach ($addons as $name => $place) {
@@ -54,16 +57,40 @@ foreach ($addons as $name => $place) {
 
     $addon_info = read_addon_info($name);
 
-    // Archive it off to exports/addons
     $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '-' . get_version_branch(floatval($addon_info['version'])) . '.tar';
+    $full_path = get_custom_file_base() . '/exports/addons/' . $file;
 
+    // Copy through times from previous build IF the files didn't change (as git munges mtimes)
+    if (is_file($full_path)) {
+        $tar_file = tar_open($full_path, 'rb');
+        $directory = list_to_map('path', tar_get_directory($tar_file));
+    } else {
+        $tar_file = null;
+        $directory = array();
+
+        if (!$done_message) {
+            attach_message(comcode_to_tempcode('At least one addon file isn\'t on disk already. If this build is updating addons already released for this major/minor version you should put the addons in [tt]exports/addons[/tt] so that mtimes can be set properly, then refresh.'), 'warn');
+            $done_message = true;
+        }
+    }
+
+    // Build up file list
     $new_addon_files = array();
+    $mtimes = array();
     foreach ($addon_info['files'] as $_file) {
-        if (substr($_file, -9) != '.editfrom') {// This would have been added back in automatically
+        if (substr($_file, -9) != '.editfrom') { // This would have been added back in automatically
+            if (isset($directory[$_file])) {
+                $file_info = tar_get_file($tar_file, $_file);
+                if ($file_info['data'] == file_get_contents(get_file_base() . '/' . $_file)) {
+                    $mtimes[$_file] = $directory[$_file]['mtime'];
+                }
+            }
+
             $new_addon_files[] = $_file;
         }
     }
 
+    // Archive it off to exports/addons
     create_addon(
         $file,
         $new_addon_files,
@@ -77,10 +104,15 @@ foreach ($addons as $name => $place) {
         implode("\n", $addon_info['copyright_attribution']),
         $addon_info['licence'],
         $addon_info['description'],
-        'exports/addons'
+        'exports/addons',
+        $mtimes
     );
 
     $done_addon = true;
+
+    if ($tar_file !== null) {
+        tar_close($tar_file);
+    }
 
     echo nl2br(escape_html(update_addon_descriptions($file, $name, $addon_info['description'])));
 }

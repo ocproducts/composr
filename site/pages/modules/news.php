@@ -105,6 +105,7 @@ class Module_news
             ));
             $GLOBALS['SITE_DB']->create_index('news_categories', 'ncs', array('nc_owner'));
 
+            require_code('lang3');
             $default_categories = array('general', 'technology', 'difficulties', 'community', 'entertainment', 'business', 'art');
             require_lang('news');
             foreach ($default_categories as $category) {
