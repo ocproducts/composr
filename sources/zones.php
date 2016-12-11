@@ -1024,7 +1024,7 @@ function block_cache_default($codename)
             return '2';
         }
     }
-    return '1';
+    return '1'; // NB: If the block doesn't support caching then nothing will be cached even if it is set to 1, UNLESS quick caching is also requested
 }
 
 /**

@@ -98,7 +98,7 @@ class sitemap_test_set extends cms_test_case
             }
 
             if (in_array($link[0], $applicable_page_groupings)) {
-                if (($link[0] == '') && (is_array($link[2][1])) && ((!isset($link[2][1]['type'])) || (!in_array($link[2][1]['type'], $applicable_page_groupings)))) {
+                if (($link[0] == '') && (is_array($link[2])) && ((!isset($link[2][1]['type'])) || (!in_array($link[2][1]['type'], $applicable_page_groupings)))) {
                     continue;
                 }
 

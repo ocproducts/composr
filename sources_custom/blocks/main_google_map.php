@@ -210,14 +210,8 @@ class Block_main_google_map
                 $breadcrumbs = null;
                 $details = get_catalogue_entry_map($entry_row, $catalogue_row, 'CATEGORY', $catalogue_name, null, null, null, false, false, null, $breadcrumbs, true);
 
-                $latitude = $details[$_latitude_key];
-                $longitude = $details[$_longitude_key];
-                if (is_object($latitude)) {
-                    $latitude = $latitude->evaluate();
-                }
-                if (is_object($longitude)) {
-                    $longitude = $longitude->evaluate();
-                }
+                $latitude = $details[$_latitude_key . '_PURE'];
+                $longitude = $details[$_longitude_key . '_PURE'];
 
                 if ((is_numeric($latitude)) && (is_numeric($longitude))) {
                     $details['LATITUDE'] = $latitude;

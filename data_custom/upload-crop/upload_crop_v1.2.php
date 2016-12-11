@@ -115,7 +115,6 @@ function resizeImage($image, $width, $height, $scale)
             break;
     }
 
-    // TODO: Upgrade to imagepalettetotruecolor in v11
     $transparent = imagecolortransparent($image);
     if ($transparent != -1) {
         imagealphablending($newImage, false);
@@ -156,7 +155,6 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
 
     $newImage = imagecreatetruecolor($newImageWidth, $newImageHeight);
 
-    // TODO: Upgrade to imagepalettetotruecolor in v11
     $transparent = imagecolortransparent($image);
     if ($transparent != -1) {
         imagealphablending($newImage, false);

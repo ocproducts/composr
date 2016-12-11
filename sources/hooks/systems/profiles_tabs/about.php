@@ -199,7 +199,7 @@ class Hook_profiles_tabs_about
             } elseif (is_integer($value)) {
                 $value = strval($value);
             } elseif (is_float($value)) {
-                $value = float_to_raw_string($value);
+                $value = float_to_raw_string($value, 30);
             }
 
             if ((get_option('show_empty_cpfs') == '1') || (((!is_object($value)) && ($value != '')) || ((is_object($value)) && (!$value->is_empty())))) {

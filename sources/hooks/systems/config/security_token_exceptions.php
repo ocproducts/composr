@@ -53,6 +53,7 @@ class Hook_config_security_token_exceptions
     {
         return 'purchase
 subscriptions
-invoices';
+invoices
+forums';
     }
 }

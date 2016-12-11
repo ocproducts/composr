@@ -642,31 +642,6 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
 }
 
 /**
- * Convert the specified language string ID to the default content, and return the language key.
- *
- * @param  ID_TEXT $field_name The field name
- * @param  ID_TEXT $code The language string ID
- * @param  boolean $comcode Whether the given codes value is to be parsed as Comcode
- * @param  integer $level The level of importance this language string holds
- * @return array The language string ID save fields
- */
-function lang_code_to_default_content($field_name, $code, $comcode = false, $level = 2)
-{
-    $insert_map = insert_lang($field_name, do_lang($code), $level, null, $comcode);
-    if (multi_lang_content()) {
-        $langs = find_all_langs();
-        foreach ($langs as $lang => $lang_type) {
-            if ($lang != user_lang()) {
-                if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) {// Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
-                    insert_lang($field_name, do_lang($code, '', '', '', $lang), $level, null, true, $insert_map[$field_name], $lang);
-                }
-            }
-        }
-    }
-    return $insert_map;
-}
-
-/**
  * Require all the open language files. This doesn't hurt performance a lot.
  *
  * @param  ?LANGUAGE_NAME $lang The language to require open files from (null: uses the current language)
