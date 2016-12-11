@@ -522,6 +522,7 @@ header h1 {
 .logo_outer {
 	display: block;
 	margin: 0;
+	overflow: hidden;
 }
 .logo_outer a, .logo_outer img {
 	display: block;
@@ -529,6 +530,7 @@ header h1 {
 .logo_outer .logo {
 	width: 100%;
 	height: auto;
+	padding: 0; /* Only needed because some external CSS may mess with the common name of ".logo" */
 }
 
 .global_navigation {

@@ -72,6 +72,8 @@ class Module_admin_awards extends Standard_crud_module
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
+        require_code('lang3');
+
         if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('award_archive', array(
                 'a_type_id' => '*AUTO_LINK',

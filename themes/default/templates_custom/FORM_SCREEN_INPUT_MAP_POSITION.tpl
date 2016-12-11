@@ -96,7 +96,7 @@
 <script>// <![CDATA[
 $cms.ready.then(function() {
 		window.setTimeout(function() {
-			google.load('maps','3', {callback: google_map_users_initialize, other_params:''});
+			google.load('maps','3', {callback: google_map_users_initialize, other_params:'{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_map_key}}key={$CONFIG_OPTION;/,google_map_key}{+END}'});
 		},0);
 	});
 //]]></script>

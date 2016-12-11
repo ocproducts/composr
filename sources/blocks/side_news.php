@@ -201,7 +201,7 @@ class Block_side_news
 
                 $news_title = get_translated_tempcode('news', $just_news_row, 'title');
 
-                $date = locale_filter(date('d M', utctime_to_usertime($myrow['date_and_time'])));
+                $date = cms_strftime(do_lang('date_concise_near_date'), utctime_to_usertime($myrow['date_and_time']));
 
                 $summary = get_translated_tempcode('news', $just_news_row, 'news');
                 if ($summary->is_empty()) {

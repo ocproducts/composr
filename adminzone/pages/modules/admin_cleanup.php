@@ -118,16 +118,25 @@ class Module_admin_cleanup
         $js = '';
         $_fields_cache = array();
         $_fields_optimise = array();
+        $fields_cache_expand = true;
+        $fields_optimise_expand = false;
         $hooks = find_all_hook_obs('systems', 'cleanup', 'Hook_cleanup_');
         foreach ($hooks as $hook => $object) {
             $output = $object->info();
             if ($output !== null) {
-                $tick = form_input_tick($output['title'], $output['description'], 'cleanup_' . $hook, false);
+                $is_ticked = (get_param_string('tick', null) === $hook);
+                $tick = form_input_tick($output['title'], $output['description'], 'cleanup_' . $hook, $is_ticked);
                 if ($output['type'] == 'cache') {
                     $_fields_cache[$output['title']->evaluate()] = $tick;
                     $js .= 'var ob=document.getElementById(\'cleanup_' . $hook . '\'); ob.checked=!ob.checked;';
+                    if ($is_ticked) {
+                        $fields_cache_expand = true;
+                    }
                 } else {
                     $_fields_optimise[$output['title']->evaluate()] = $tick;
+                    if ($is_ticked) {
+                        $fields_optimise_expand = true;
+                    }
                 }
             }
         }
@@ -147,10 +156,10 @@ class Module_admin_cleanup
 
         $fields = new Tempcode();
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_CACHES', escape_html($js)))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'SECTION_HIDDEN' =>  !$fields_cache_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_CACHES', escape_html($js)))));
         $fields->attach($fields_cache);
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_OPTIMISERS'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_OPTIMISERS'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' =>  !$fields_optimise_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_OPTIMISERS'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_OPTIMISERS'))));
         $fields->attach($fields_optimise);
 
         return do_template('FORM_SCREEN', array('_GUID' => '85bfdf171484604594a157aa8983f920', 'SKIP_WEBSTANDARDS' => true, 'TEXT' => '', 'SUBMIT_ICON' => 'menu__adminzone__tools__cleanup', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url));

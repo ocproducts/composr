@@ -1090,7 +1090,7 @@ function addon_installed($addon, $non_bundled_too = false)
 }
 
 /**
- * Convert a float to a "technical string representation of a float".
+ * Convert a float to a "technical string representation of a float". Inverted with floatval.
  *
  * @param  float $num The number
  * @param  integer $decs_wanted The number of decimals to keep
@@ -1119,7 +1119,7 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
 }
 
 /**
- * Format the given float number as a nicely formatted string.
+ * Format the given float number as a nicely formatted string (using the locale). Inverted with float_unformat.
  *
  * @param  float $val The value to format
  * @param  integer $decs_wanted The number of fractional digits
@@ -1152,7 +1152,44 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
 }
 
 /**
- * Format the given integer number as a nicely formatted string.
+ * Take the given formatted float number and convert it to a native float. The inverse of float_format.
+ *
+ * @param  string $str The formatted float number using the locale.
+ * @param  boolean $no_thousands_sep Whether we do *not* expect a thousands separator, which means we can be a bit smarter.
+ * @return float Native float
+ */
+function float_unformat($str, $no_thousands_sep = false)
+{
+    $locale = localeconv();
+
+    // Simplest case?
+    if (preg_match('#^\d+$#', $str) != 0) { // E.g. "123"
+        return floatval($str);
+    }
+
+    if ($no_thousands_sep) {
+        // We can assume a "." is a decimal point then?
+        if (preg_match('#^\d+\.\d+$#', $str) != 0) { // E.g. "123.456"
+            return floatval($str);
+        }
+    }
+
+    // Looks like English-format? It couldn't be anything else because thousands_sep always comes before decimal_point
+    if (preg_match('#^[\d,]+\.\d+$#', $str) != 0) { // E.g. "123,456.789"
+        return floatval($str);
+    }
+
+    // Now it must e E.g. "123.456,789" or "123.456", or something from another language which uses other separators...
+
+    if ($locale['thousands_sep'] != '') {
+        $str = str_replace($locale['thousands_sep'], '', $str);
+    }
+    $str = str_replace($locale['decimal_point'], '.', $str);
+    return floatval($str);
+}
+
+/**
+ * Format the given integer number as a nicely formatted string (using the locale).
  *
  * @param  integer $val The value to format
  * @return string Nicely formatted string

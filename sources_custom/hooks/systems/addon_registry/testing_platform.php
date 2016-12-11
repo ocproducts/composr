@@ -397,6 +397,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/lang_spelling.php',
             '_tests/tests/unit_tests/lang_administrative_split.php',
             '_tests/tests/unit_tests/lang_no_unused.php',
+            '_tests/tests/unit_tests/lang_descriptions.php',
             '_tests/tests/unit_tests/cqc_explicit_fail.php',
             '_tests/tests/unit_tests/menu.php',
             '_tests/tests/unit_tests/antispam.php',

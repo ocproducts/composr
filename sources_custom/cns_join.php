@@ -22,16 +22,13 @@ function init__cns_join($in)
     } else {
         $extra_code = '$hidden->attach(get_referrer_field(false));';
     }
-
-    $from = '$fields->attach(do_template(\'FORM_SCREEN_FIELD_SPACER\', array(\'_GUID\' => \'a8197832e4467b08e953535202235501\', \'TITLE\' => do_lang_tempcode(\'SPECIAL_REGISTRATION_FIELDS\'))));';
-
-    $in = str_replace($from, $from . ' ' . $extra_code, $in);
+    $in = str_replace('/*PSEUDO-HOOK: cns_join_form special fields*/', $extra_code, $in);
 
     // Better referral detection, and proper qualification management
-    $in = str_replace("\$GLOBALS['FORUM_DB']->query_update('f_invites', array('i_taken' => 1), array('i_email_address' => \$email_address, 'i_taken' => 0) ,'', 1);", 'set_from_referrer_field();', $in);
+    $in = str_replace('/*PSEUDO-HOOK: cns_join_actual referrals*/', 'set_from_referrer_field();', $in);
 
     // Handle signup referrals
-    $in = str_replace('return array($message);', 'require_code(\'referrals\'); assign_referral_awards($member_id, \'join\'); return array($message);', $in);
+    $in = str_replace('/*PSEUDO-HOOK: cns_join_actual ends*/', 'require_code(\'referrals\'); assign_referral_awards($member_id, \'join\');', $in);
 
     return $in;
 }

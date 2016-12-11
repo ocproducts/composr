@@ -111,6 +111,14 @@ Panel pages won't show if:
 3) they are left/right and [tt]&keep_wide=1[/tt]/[tt]&wide=1[/tt] is attached to the URL (i.e. these URL parameters disable panels)
 4) [tt]&keep_wide_high=1[/tt]/[tt]&wide_high=1[/tt] is attached to the URL (in this case the header and footer won't show either)
 
+Site owners often want panels disabled on certain pages only. This can be done by surrounding the panel contents with Tempcode like...
+[code="Tempcode"]
+{+START,IF,{$NEQ,{$PAGE},example_page_1,example_page_2,example_page_3}}
+...
+{+END}
+[/code]
+In this case the panel won't show for any of those 3 example pages.
+
 [title="4"]The default theme's panel support[/title]
 
 The special names identifying the panels supported by the default theme are:

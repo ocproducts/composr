@@ -87,6 +87,7 @@ class Module_catalogues
         require_lang('catalogues');
         require_code('catalogues');
         require_code('catalogues2');
+        require_code('lang3');
 
         if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('catalogues', array(

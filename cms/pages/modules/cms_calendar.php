@@ -930,7 +930,7 @@ class Module_cms_calendar extends Standard_crud_module
                     $members[] = get_member();
                 }
                 if (count($members) != 0) { // Now add their reminders
-                    $secs_before = floatval(post_param_string('hours_before', '1.0')) * 3600.0;
+                    $secs_before = float_unformat(post_param_string('hours_before', '1.0')) * 3600.0;
 
                     $filled1 = array();
                     $filled2 = array();
@@ -981,7 +981,7 @@ class Module_cms_calendar extends Standard_crud_module
                     }
 
                     if ($privacy_ok) {
-                        $secs_before = floatval(post_param_string('hours_before', '1.0')) * 3600.0;
+                        $secs_before = float_unformat(post_param_string('hours_before', '1.0')) * 3600.0;
                         $GLOBALS['SITE_DB']->query_insert('calendar_reminders', array(
                             'e_id' => $id,
                             'n_member_id' => $member,

@@ -88,6 +88,8 @@ class Hook_addon_registry_data_mappr
     {
         return 'Shows different catalogue entries\' longitude/latitude values as pins on a {$IS_MAINTAINED,google_maps,Google map}. Clicking on the pin shows the catalogue entry in a little box (as a link to the entry).
 
+You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map).
+
 The names of the fields to take longitude/latitude from are configured inside block parameters.
 
 Example:
@@ -161,6 +163,7 @@ When you add the block you see various block parameters to be filled in includin
             'sources_custom/blocks/main_google_map.php',
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP.tpl',
             'sources_custom/hooks/systems/fields/float.php',
+            'sources_custom/hooks/systems/config/google_map_key.php',
             'themes/default/templates_custom/FORM_SCREEN_INPUT_MAP_POSITION.tpl',
             'themes/default/images_custom/star_highlight.png',
             'sources_custom/catalogues2.php',

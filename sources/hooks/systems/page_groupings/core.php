@@ -117,7 +117,7 @@ class Hook_page_groupings_core
             (get_forum_type() != 'cns') ? null : array('social', 'menu/social/members', array('members', array(), get_module_zone('members')), do_lang_tempcode('cns:MEMBER_DIRECTORY')),
             (get_forum_type() != 'cns') ? null : array('social', 'menu/social/users_online', array('users_online', array(), get_module_zone('users_online')), do_lang_tempcode('USERS_ONLINE')),
 
-            (get_forum_type() == 'cns' || get_forum_type() == 'none') ? null : array('social', 'menu/social/forum/forums', get_forum_base_url(), do_lang_tempcode('SECTION_FORUMS')),
+            (get_forum_type() == 'cns' || get_forum_type() == 'none') ? null : array('social', 'menu/social/forum/forums', (get_option('forum_in_portal') == '1') ? build_url(array('page' => 'forums'), get_module_zone('forums')) : (get_forum_base_url() . '/'), do_lang_tempcode('SECTION_FORUMS')),
             (get_forum_type() == 'cns' || get_forum_type() == 'none') ? null : array('social', 'menu/social/members', $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id), do_lang_tempcode('MY_PROFILE')),
             (get_forum_type() == 'cns' || get_forum_type() == 'none') ? null : array('site_meta', 'menu/site_meta/user_actions/join', $GLOBALS['FORUM_DRIVER']->join_url(), do_lang_tempcode('_JOIN')),
             (get_forum_type() == 'cns' || get_forum_type() == 'none') ? null : array('social', 'menu/social/users_online', $GLOBALS['FORUM_DRIVER']->users_online_url(), do_lang_tempcode('USERS_ONLINE')),

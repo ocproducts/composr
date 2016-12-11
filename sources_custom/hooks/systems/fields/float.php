@@ -225,6 +225,12 @@ class Hook_fields_float
             $default = post_param_string('longitude', STRING_MAGIC_NULL);
         }
 
-        return post_param_string($tmp_name, $default);
+        $ret = post_param_string($tmp_name, $default);
+
+        if (($ret != STRING_MAGIC_NULL) && ($ret != '')) {
+            $ret = float_to_raw_string(float_unformat($ret, $_cf_name == 'cms_latitude' || $_cf_name == 'cms_longitude'), 30);
+        }
+
+        return $ret;
     }
 }

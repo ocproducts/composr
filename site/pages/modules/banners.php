@@ -76,6 +76,7 @@ class Module_banners
         if ($upgrade_from === null) {
             require_lang('banners');
             require_code('banners');
+            require_code('lang3');
 
             $GLOBALS['SITE_DB']->create_table('banners', array(
                 'name' => '*ID_TEXT',
@@ -543,7 +544,7 @@ class Module_banners
                 if ($sortable == 'day') {
                     $period = get_timezoned_date($row['c_date_and_time']);
                 } else {
-                    $period = locale_filter(cms_strftime('%B %Y', $row['c_date_and_time']));
+                    $period = cms_strftime('%B %Y', $row['c_date_and_time']);
                 }
 
                 if (!isset($tally_sets[$period])) {

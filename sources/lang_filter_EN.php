@@ -285,20 +285,24 @@ class LangFilter_EN extends LangFilter
         if (!empty($key) && $is_american && strtolower($key[0]) == $key[0]) {
             // Day comes after month
             switch ($key . '=' . $value) {
-                case 'calendar_date=Y-m-d': // ISO (International) style
-                    $value = 'm-d-Y';
+                case 'calendar_date=%Y-%m-%d': // ISO (International) style
+                    $value = '%m-%d-%Y';
                     break;
 
-                case 'calendar_date_verbose=l jS F Y':
-                    $value = 'l F jS Y';
+                case 'calendar_date_verbose=%a %e%k %B %Y':
+                    $value = '%a %B %e%k %Y';
                     break;
 
-                case 'calendar_date_range_single_long=g:i a (jS M)':
-                    $value = 'g:i a (M jS)';
+                case 'calendar_date_range_single_long=%i:%M %p (%e%k %b)':
+                    $value = '%i:%M %p (%b %e%k)';
                     break;
 
                 case 'date_date=%e%k %B %Y':
                     $value = '%B %e%k %Y';
+                    break;
+
+                case 'date_no_year=%e%k %B':
+                    $value = '%B %e%k';
                     break;
 
                 case 'locale=en-GB':

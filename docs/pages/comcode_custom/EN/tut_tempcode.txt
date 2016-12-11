@@ -741,10 +741,6 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>{$DEV_MODE}</td>
 			<td>Whether development mode is on (adds in extra errors, to pick up on coding standard violations)</td>
 		</tr>
-		<tr style="background: #FFDDDD">
-			<td>{$IS_FRIEND,2,3}</td>
-			<td>Detect if the second parameter/member ID (or current member if no second parameter) has befriended the first parameter/member ID.</td>
-		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$BROWSER_MATCHES,wysiwyg}</td>
 			<td>Find whether the current browser matches a named property / has a feature. Possible properties: wysiwyg, windows, mac, linux, mobile, ie, ie8, ie8+, ie9, ie9+, gecko, safari (covers Google Chrome also), ios, android, bot</td>
@@ -800,6 +796,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		<tr style="background: #DDFFDD">
 			<td>{$CHARSET}</td>
 			<td>Get the character set</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DECIMAL_POINT}</td>
+			<td>Find the decimal point character for the current locale (e.g. <kbd>.</kbd>)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$HEADER_TEXT}</td>
@@ -1016,6 +1016,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		<tr style="background: #DDFFDD">
 			<td>{$STOCK_CHECK,Product id}</td>
 			<td>Get the stock count for an eCommerce product</td>
+		</tr>
+		<tr style="background: #FFDDDD">
+			<td>{$IS_FRIEND,2,3}</td>
+			<td>Detect if the second parameter/member ID (or current member if no second parameter) has befriended the first parameter/member ID.</td>
 		</tr>
 	</tbody>
 </table>

@@ -361,7 +361,7 @@ function _get_timezoned_date_time($include_time, $timestamp, $use_contextual_dat
         }
     }
 
-    return locale_filter($ret);
+    return $ret;
 }
 
 /**
@@ -405,11 +405,9 @@ function get_timezoned_time($timestamp, $use_contextual_times = true, $utc_time 
         $use_contextual_times = false;
     }
 
-    $date_string = do_lang('date_withinday_time');
+    $date_string = do_lang('date_time');
     $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
-    $ret = cms_strftime($date_string, $usered_timestamp);
-
-    return locale_filter($ret);
+    return cms_strftime($date_string, $usered_timestamp);
 }
 
 /**

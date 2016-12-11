@@ -1,5 +1,12 @@
 {TITLE}
 
+{$,TODO: Fix in v11}
+{+START,IF_PASSED,JAVASCRIPT}
+	<script>// <![CDATA[
+		{JAVASCRIPT/}
+	//]]></script>
+{+END}
+
 {+START,IF_NON_EMPTY,{PRE}}
 	<div class="index_screen_fancier_screen_pre" itemprop="description">
 		{PRE}

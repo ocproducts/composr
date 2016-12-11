@@ -16,7 +16,7 @@
 
 		<div>
 			<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
-			<input maxlength="8" data-cms-invalid-pattern="[^\-\d\.]" size="7" id="give_amount" class="input_integer_required" placeholder="{!AMOUNT}" type="text" name="amount" />
+			<input maxlength="8" data-cms-invalid-pattern="[^\-\d\\{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input_integer_required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 			<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
 			<input maxlength="255" size="26" id="give_reason" class="input_line_required" placeholder="{!REASON}" type="text" name="reason" />
@@ -46,7 +46,7 @@
 		<div>
 			<div class="points_give_shared_options">
 				<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
-				<input maxlength="10" data-cms-invalid-pattern="[^\-\d\.]" size="7" id="give_amount" class="input_integer_required" placeholder="{!AMOUNT}" type="text" name="amount" />
+				<input maxlength="10" data-cms-invalid-pattern="[^\-\d\\{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input_integer_required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 				<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
 				<input maxlength="255" size="18" id="give_reason" class="input_line_required" placeholder="{!REASON}" type="text" name="reason" />

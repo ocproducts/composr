@@ -87,6 +87,7 @@ Composr recommends:
   - FTP &dagger;
   - pSpell or Enchant, with matching aspell/hunspell installs and dictionaries (spellchecking)
   - iconv or mbstring (Unicode support)
+  - intl (Strong transliteration of non-European languages for quality URL moniker generation)
   - FreeType (with the build-option for GD). FreeType allows us to draw text onto graphics using TrueType fonts.
   - ZIP
   - cURL

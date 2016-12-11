@@ -243,7 +243,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         $member_value = $member_mappings[$key];
         if (!is_string($member_value)) {
             if (is_float($member_value)) {
-                $member_value = float_to_raw_string($member_value);
+                $member_value = float_to_raw_string($member_value, 30);
             } elseif ($member_value !== null) {
                 $member_value = strval($member_value);
             }

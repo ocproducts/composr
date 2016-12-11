@@ -3640,7 +3640,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
         if ((!array_key_exists(2, $param)) || ($param[2] === '1')) {
             $timestamp = utctime_to_usertime($timestamp);
         }
-        $value = locale_filter(cms_strftime($param[0], $timestamp));
+        $value = cms_strftime($param[0], $timestamp);
         if ($value === $param[0]) { // If no conversion happened then the syntax must have been for 'date' not 'strftime'
             $value = date($param[0], $timestamp);
         }

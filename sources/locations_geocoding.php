@@ -61,7 +61,7 @@ function geocode($location, &$error_msg = null)
  */
 function reverse_geocode($latitude, $longitude, &$error_msg = null)
 {
-    $url_params = '&latlng=' . urlencode(float_to_raw_string($latitude)) . ',' . urlencode(float_to_raw_string($longitude));
+    $url_params = '&latlng=' . urlencode(float_to_raw_string($latitude, 30)) . ',' . urlencode(float_to_raw_string($longitude, 30));
     $result = _google_geocode($url_params, $error_msg);
     if ($result === null) {
         return null;

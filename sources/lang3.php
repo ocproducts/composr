@@ -206,6 +206,58 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
 }
 
 /**
+ * Take a .ini language string and save it into a translated language string in the database, for all translations.
+ *
+ * @param  ID_TEXT $field_name The field name
+ * @param  ID_TEXT $code The language string codename
+ * @param  boolean $comcode Whether the given codes value is to be parsed as Comcode
+ * @param  integer $level The level of importance this language string holds
+ * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @return array The language string ID save fields
+ */
+function lang_code_to_default_content($field_name, $code, $comcode = false, $level = 2, $connection = null)
+{
+    $insert_map = insert_lang($field_name, do_lang($code), $level, null, $comcode);
+    if (multi_lang_content()) {
+        $langs = find_all_langs();
+        foreach ($langs as $lang => $lang_type) {
+            if ($lang != user_lang()) {
+                if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) { // Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
+                    insert_lang($field_name, do_lang($code, '', '', '', $lang), $level, $connection, true, $insert_map[$field_name], $lang);
+                }
+            }
+        }
+    }
+    return $insert_map;
+}
+
+/**
+ * Take a static string and save it into a translated language string in the database, for all translations.
+ *
+ * @param  ID_TEXT $field_name The field name
+ * @param  ID_TEXT $str The static string
+ * @param  boolean $comcode Whether the given codes value is to be parsed as Comcode
+ * @param  integer $level The level of importance this language string holds
+ * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @return array The language string ID save fields
+ */
+function lang_code_to_static_content($field_name, $str, $comcode = false, $level = 2, $connection = null)
+{
+    $insert_map = insert_lang($field_name, $str, $level, null, $comcode);
+    if (multi_lang_content()) {
+        $langs = find_all_langs();
+        foreach ($langs as $lang => $lang_type) {
+            if ($lang != user_lang()) {
+                if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) { // Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
+                    insert_lang($field_name, $str, $level, $connection, true, $insert_map[$field_name], $lang);
+                }
+            }
+        }
+    }
+    return $insert_map;
+}
+
+/**
  * Insert a language string into the translation table, and returns the ID.
  *
  * @param  ID_TEXT $field_name The field name
