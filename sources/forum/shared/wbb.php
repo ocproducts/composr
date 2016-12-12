@@ -923,8 +923,10 @@ class Forum_driver_wbb_shared extends Forum_driver_base
             return $out;
         }
 
-        require_code('users_active_actions');
-        cms_eatcookie('cookiehash');
+        if (substr(get_member_cookie(), 0, 5) != 'cms__') {
+            require_code('users_active_actions');
+            cms_eatcookie('cookiehash');
+        }
 
         $out['id'] = $row['userid'];
         return $out;

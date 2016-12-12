@@ -76,8 +76,9 @@ class Database_Static_mysql_dbx extends Database_super_mysql
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         @dbx_query($db, 'SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"');
-        @dbx_query($db, 'SET WAIT_TIMEOUT=28800');
-        @dbx_query($db, 'SET SQL_BIG_SELECTS=1');
+        @dbx_query($db, 'SET wait_timeout=28800');
+        @dbx_query($db, 'SET sql_big_selects=1');
+        @dbx_query($db, 'SET max_allowed_packet=104857600');
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
             @dbx_query($db, 'SET sql_mode=\'STRICT_ALL_TABLES\'');
         } else {
@@ -181,7 +182,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
                 return null;
             }
             if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
+                /*@mysql_query('SET max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
 
                 if ($get_insert_id) {
                     fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
