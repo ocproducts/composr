@@ -1356,7 +1356,6 @@ class Module_admin_themes
             $edit_one, // Edit one
             null, // View this
             null, // View archive
-            null, // Add to category
             null, // Add one category
             null, // Edit one category
             null, // Edit this category

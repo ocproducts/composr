@@ -369,11 +369,10 @@ class Module_admin_cns_members
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'step1'), '_SELF'), // Add one
-            null,// Edit this
+            null, // Edit this
             null, // Edit one
             array('members', array('type' => 'view', 'id' => $id), get_module_zone('members')), // View this
             array('members', array('type' => 'browse'), get_module_zone('members'), do_lang_tempcode('MEMBERS')), // View archive
-            null, // Add to category
             null, // Add one category
             null, // Edit one category
             null, // Edit this category

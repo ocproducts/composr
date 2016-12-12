@@ -879,7 +879,6 @@ class Module_cms_banners_cat extends Standard_crud_module
                 has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit'), '_SELF', do_lang_tempcode('EDIT_BANNER')) : null, // Edit one
                 null, // View this
                 null, // View archive
-                null, // Add to category
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => 'add_category'), '_SELF', do_lang_tempcode('ADD_BANNER_TYPE')) : null, // Add one category
                 has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit_category'), '_SELF', do_lang_tempcode('EDIT_BANNER_TYPE')) : null, // Edit one category
                 null, // Edit this category
@@ -907,7 +906,6 @@ class Module_cms_banners_cat extends Standard_crud_module
             has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit'), '_SELF', do_lang_tempcode('EDIT_BANNER')) : null, // Edit one
             (($id === null) || (/*Don't go direct to view if simplified do-next on as too unnatural*/get_option('simplified_donext') == '1')) ? null : array('banners', array('type' => 'view', 'source' => $id), get_module_zone('banners')), // View this
             array('admin_banners', array('type' => 'browse'), get_module_zone('admin_banners')), // View archive
-            null, // Add to category
             has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => 'add_category'), '_SELF', do_lang_tempcode('ADD_BANNER_TYPE')) : null, // Add one category
             has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit_category'), '_SELF', do_lang_tempcode('EDIT_BANNER_TYPE')) : null, // Edit one category
             has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_banners') ? array('_SELF', array('type' => '_edit_category', 'id' => $type), '_SELF', do_lang_tempcode('EDIT_THIS_BANNER_TYPE')) : null, // Edit this category

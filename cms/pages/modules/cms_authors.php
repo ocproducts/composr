@@ -383,7 +383,6 @@ class Module_cms_authors
             has_privilege(get_member(), 'edit_midrange_content', 'cms_authors') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one
             ($author === null) ? null : array('authors', array('type' => 'browse', 'id' => $author), get_module_zone('authors')), // View this
             null, // View archive
-            null, // Add to category
             null, // Add one category
             null, // Edit one category
             null, // Edit this category

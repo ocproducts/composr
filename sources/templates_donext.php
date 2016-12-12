@@ -89,7 +89,6 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
  * @param  ?array $url_edit_one The URL used to 'edit-one' (null: impossible)  (format: array of page, param, zone[, custom label])
  * @param  ?array $url_view_this The URL used to 'view-this' (null: impossible)  (format: array of page, param, zone[, custom label])
  * @param  ?array $url_view_archive The URL used to 'view-archive' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_add_to_category The URL used to 'add-to-category' (null: impossible)  (format: array of page, param, zone[, custom label])
  * @param  ?array $url_add_one_category The URL used to 'add-one-category' (null: impossible)  (format: array of page, param, zone[, custom label])
  * @param  ?array $url_edit_one_category The URL used to 'edit-one-category' (null: impossible)  (format: array of page, param, zone[, custom label])
  * @param  ?array $url_edit_this_category The URL used to 'edit-this-category' (null: impossible)  (format: array of page, param, zone[, custom label])
@@ -105,7 +104,7 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
  * @param  ?string $category_content_type Category content type (null: unknown)
  * @return Tempcode The do next manager
  */
-function do_next_manager($title, $text, $main = array(), $main_title = null, $url_add_one = null, $url_edit_this = null, $url_edit_one = null, $url_view_this = null, $url_view_archive = null, $url_add_to_category = null, $url_add_one_category = null, $url_edit_one_category = null, $url_edit_this_category = null, $url_view_this_category = null, $entry_extras = array(), $category_extras = array(), $additional_extras = array(), $additional_title = null, $intro = null, $entries_title = null, $categories_title = null, $entry_content_type = null, $category_content_type = null)
+function do_next_manager($title, $text, $main = array(), $main_title = null, $url_add_one = null, $url_edit_this = null, $url_edit_one = null, $url_view_this = null, $url_view_archive = null, $url_add_one_category = null, $url_edit_one_category = null, $url_edit_this_category = null, $url_view_this_category = null, $entry_extras = array(), $category_extras = array(), $additional_extras = array(), $additional_title = null, $intro = null, $entries_title = null, $categories_title = null, $entry_content_type = null, $category_content_type = null)
 {
     if ($intro === null) {
         $intro = new Tempcode();
@@ -132,7 +131,6 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
 
     // Entry stuff
     $entry_passed = array(
-        'menu/_generic_admin/add_to_category',
         'menu/_generic_admin/add_one',
         'menu/_generic_admin/edit_this',
         'menu/_generic_admin/edit_one',
@@ -144,9 +142,6 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
         $x = null;
         $auto_add = mixed();
         switch ($option) {
-            case 'menu/_generic_admin/add_to_category':
-                $x = $url_add_to_category;
-                break;
             case 'menu/_generic_admin/add_one':
                 $x = $url_add_one;
                 if (($current_page_type == '_add') || ($current_page_type == '_add_entry')) {

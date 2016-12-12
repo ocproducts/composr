@@ -1576,7 +1576,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
                 has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit') + $extra, '_SELF', do_lang_tempcode('EDIT_CALENDAR_EVENT')) : null, // Edit one
                 null, // View this
                 array('calendar', $archive_map + $extra, get_module_zone('calendar'), do_lang('CALENDAR')), // View archive
-                null, // Add to category
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'add_category') + $extra, '_SELF', do_lang_tempcode('ADD_EVENT_TYPE')) : null, // Add one category
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit_category') + $extra, '_SELF', do_lang_tempcode('EDIT_EVENT_TYPE')) : null, // Edit one category
                 null, // Edit this category
@@ -1604,7 +1603,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
             has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit') + $extra, '_SELF', do_lang_tempcode('EDIT_CALENDAR_EVENT')) : null, // Edit one
             ($id === null) ? null : array('calendar', array('type' => 'view', 'id' => $id) + $extra, get_module_zone('calendar')), // View this
             array('calendar', $archive_map + $extra, get_module_zone('calendar'), do_lang('CALENDAR')), // View archive
-            null, // Add to category
             has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'add_category') + $extra, '_SELF', do_lang_tempcode('ADD_EVENT_TYPE')) : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit_category') + $extra, '_SELF', do_lang_tempcode('EDIT_EVENT_TYPE')) : null, // Edit one category
             has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar', array('calendar', 'type') + $extra) ? array('_SELF', array('type' => '_edit_category', 'id' => $type) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_EVENT_TYPE')) : null, // Edit this category

@@ -1094,7 +1094,6 @@ class Module_cms_downloads_cat extends Standard_crud_module
                 has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one
                 null, // View this
                 array('downloads', array('type' => 'browse'), get_module_zone('downloads')), // View archive
-                null, // Add to category
                 has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'add_category'), '_SELF') : null, // Add one category
                 has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit_category'), '_SELF') : null, // Edit one category
                 null, // Edit this category
@@ -1130,12 +1129,11 @@ class Module_cms_downloads_cat extends Standard_crud_module
             array(),
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
-            ($id === null) ? null : array('_SELF', array('type' => 'add', 'cat' => $category_id), '_SELF'), // Add one
+            array('_SELF', array('type' => 'add', 'cat' => $category_id), '_SELF'), // Add one
             (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads', array('downloads', $category_id)))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF'), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one
             ($id === null) ? null : array('downloads', array('type' => 'entry', 'id' => $id), get_module_zone('downloads')), // View this
             array('downloads', array('type' => 'browse'), get_module_zone('downloads')), // View archive
-            ($id !== null) ? null : array('_SELF', array('type' => 'add', 'cat' => $category_id), '_SELF'), // Add to category
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'add_category'), '_SELF') : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit_category'), '_SELF') : null, // Edit one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => '_edit_category', 'id' => $category_id), '_SELF') : null, // Edit this category

@@ -2323,7 +2323,6 @@ if (fn) {
                 null, // Edit one
                 null, // View this
                 array('galleries', array('type' => 'browse'), get_module_zone('galleries'), do_lang_tempcode('GALLERIES')), // View archive
-                null, // Add to category
                 has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_galleries') ? array('_SELF', array('type' => 'add_category'), '_SELF', do_lang('ADD_GALLERY')) : null, // Add one category
                 has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_galleries') ? array('_SELF', array('type' => 'edit_category'), '_SELF', do_lang('EDIT_GALLERY')) : null, // Edit one category
                 ($cat === null) ? null : array('_SELF', array('type' => '_edit_category', 'id' => $cat), '_SELF', do_lang_tempcode('EDIT_THIS_GALLERY')), // Edit this category
@@ -2371,7 +2370,6 @@ if (fn) {
             null, // Edit one
             ($id === null) ? null : array('galleries', array('type' => $video ? 'video' : 'image', 'id' => $id, 'wide' => 1), get_module_zone('galleries')), // View this
             array('galleries', array('type' => 'browse'), get_module_zone('galleries'), do_lang_tempcode('GALLERIES')), // View archive
-            null, // Add to category
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_galleries') ? array('_SELF', array('type' => 'add_category'), '_SELF', do_lang('ADD_GALLERY')) : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_galleries') ? array('_SELF', array('type' => 'edit_category'), '_SELF', do_lang('EDIT_GALLERY')) : null, // Edit one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_galleries') ? array('_SELF', array('type' => '_edit_category', 'id' => $cat), '_SELF', do_lang_tempcode('EDIT_THIS_GALLERY')) : null, // Edit this category

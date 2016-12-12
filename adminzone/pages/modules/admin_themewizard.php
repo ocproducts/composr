@@ -371,7 +371,6 @@ class Module_admin_themewizard
             null, // Edit one
             null, // View this
             null, // View archive
-            null, // Add to category
             null, // Add one category
             null, // Edit one category
             null, // Edit this category

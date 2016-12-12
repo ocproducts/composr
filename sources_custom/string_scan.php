@@ -5355,7 +5355,6 @@ function string_scan($lang, $do_guessing = false)
         NEXT_ITEM_add_one_image
         NEXT_ITEM_add_one_video
         NEXT_ITEM_add_to_catalogue
-        NEXT_ITEM_add_to_category
         NEXT_ITEM_add_video_to_this
         NEXT_ITEM_adminzone
         NEXT_ITEM_edit_one
