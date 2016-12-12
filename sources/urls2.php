@@ -180,7 +180,7 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
             $key = strval($key);
         }
 
-        if ((($exclude !== null) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/)) {
+        if ((($exclude !== null) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/) || ($key == 'csrf_token')) {
             continue;
         }
 
