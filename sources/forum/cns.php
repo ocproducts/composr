@@ -1538,7 +1538,6 @@ class Forum_driver_cns extends Forum_driver_base
     {
         // User
         cms_setcookie(get_member_cookie(), strval($id));
-        $_COOKIE[get_member_cookie()] = strval($id);
 
         // Password
         $password_hashed_salted = $this->get_member_row_field($id, 'm_pass_hash_salted');
@@ -1547,7 +1546,6 @@ class Forum_driver_cns extends Forum_driver_base
             $password_hashed_salted = md5($password_hashed_salted); // can't do direct representation for this, would be a plain text cookie; so in forum_authorise_login we expect it to be md5'd and compare thusly (as per non-cookie call to that function)
         }
         cms_setcookie(get_pass_cookie(), $password_hashed_salted);
-        $_COOKIE[get_pass_cookie()] = $password_hashed_salted;
     }
 
     /**

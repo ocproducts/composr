@@ -258,8 +258,10 @@ class Forum_driver_vb22 extends forum_driver_vb_shared
             return $out;
         }
 
-        require_code('users_active_actions');
-        cms_eatcookie('sessionhash');
+        if (substr(get_member_cookie(), 0, 5) != 'cms__') {
+            require_code('users_active_actions');
+            cms_eatcookie('sessionhash');
+        }
 
         $out['id'] = $row['userid'];
         return $out;

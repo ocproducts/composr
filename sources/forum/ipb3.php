@@ -894,12 +894,10 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
     {
         // User
         cms_setcookie(get_member_cookie(), strval($id));
-        $_COOKIE[get_member_cookie()] = strval($id);
 
         // Password
         $_password = $this->get_member_row_field($id, 'member_login_key');
         cms_setcookie(get_pass_cookie(), $_password);
-        $_COOKIE[get_pass_cookie()] = $_password;
 
         // Set stronghold
         global $SITE_INFO;
@@ -1004,9 +1002,11 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
             }
         }
 
-        $pos = strpos(get_member_cookie(), 'member_id');
-        require_code('users_active_actions');
-        cms_eatcookie(substr(get_member_cookie(), 0, $pos) . 'session_id');
+        if (substr(get_member_cookie(), 0, 5) != 'cms__') {
+            $pos = strpos(get_member_cookie(), 'member_id');
+            require_code('users_active_actions');
+            cms_eatcookie(substr(get_member_cookie(), 0, $pos) . 'session_id');
+        }
 
         $out['id'] = $row['member_id'];
         return $out;
