@@ -18,122 +18,12 @@
  * @package    core_forum_drivers
  */
 
-/*EXTRA FUNCTIONS: crypt*/
-
-/**
- * phpBB: Encode hash
- *
- * @param  string $input To encode
- * @param  integer $count How many chars to encode
- * @param  string $itoa64 Lookup table used internally
- * @return string The encoded output
- *
- * @ignore
- */
-function _hash_encode64($input, $count, &$itoa64)
-{
-    $output = '';
-    $i = 0;
-
-    do {
-        $value = ord($input[$i]);
-        $i++;
-        $output .= $itoa64[$value & 0x3f];
-
-        if ($i < $count) {
-            $value |= ord($input[$i]) << 8;
-        }
-
-        $output .= $itoa64[($value >> 6) & 0x3f];
-
-        if ($i >= $count) {
-            $i++;
-            break;
-        }
-        $i++;
-
-        if ($i < $count) {
-            $value |= ord($input[$i]) << 16;
-        }
-
-        $output .= $itoa64[($value >> 12) & 0x3f];
-
-        if ($i >= $count) {
-            $i++;
-            break;
-        }
-        $i++;
-
-        $output .= $itoa64[($value >> 18) & 0x3f];
-    } while ($i < $count);
-
-    return $output;
-}
-
-/**
- * phpBB: The crypt function/replacement
- * Get the rows for the top given number of posters on the forum.
- *
- * @param  string $password To encode
- * @param  string $setting Encode settings in special format
- * @param  string $itoa64 Lookup table used internally
- * @return ~string The encoded output (false: error)
- * @ignore
- */
-function _hash_crypt_private($password, $setting, &$itoa64)
-{
-    $output = '*';
-
-    if (substr($setting, 0, 3) == '$H$') {
-        $count_log2 = strpos($itoa64, $setting[3]);
-
-        if ($count_log2 < 7 || $count_log2 > 30) {
-            return $output;
-        }
-
-        $count = 1 << $count_log2;
-        $salt = substr($setting, 4, 8);
-
-        if (strlen($salt) != 8) {
-            return $output;
-        }
-
-        /**
-         * We're kind of forced to use MD5 here since it's the only
-         * cryptographic primitive available in all versions of PHP
-         * currently in use.  To implement our own low-level crypto
-         * in PHP would result in much worse performance and
-         * consequently in lower iteration counts and hashes that are
-         * quicker to crack (by non-PHP code).
-         */
-        $hash = pack('H*', md5($salt . $password));
-        do {
-            $hash = pack('H*', md5($hash . $password));
-            --$count;
-        } while ($count > 0);
-
-        $output = substr($setting, 0, 12);
-        $output .= _hash_encode64($hash, 16, $itoa64);
-    }
-
-    if ((substr($setting, 0, 3) == '$2y') || (substr($setting, 0, 3) == '$2a$')) {
-        $hash = $setting;
-        $salt = substr($hash, 0, 29);
-        $output = crypt($password, $salt);
-        if (strlen($output) < 60) {
-            return false;
-        }
-    }
-
-    return $output;
-}
-
 /**
  * Forum driver class.
  *
  * @package    core_forum_drivers
  */
-class Forum_driver_phpbb3 extends Forum_driver_base
+class Forum_driver_aef extends Forum_driver_base
 {
     /**
      * Check the connected DB is valid for this forum driver.
@@ -142,8 +32,8 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function check_db()
     {
-        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, null, true);
-        return $test !== null;
+        $test = $this->connection->query('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'users', null, null, true);
+        return !is_null($test);
     }
 
     /**
@@ -154,7 +44,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_top_posters($limit)
     {
-        return $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'users WHERE user_id<>' . strval($this->get_guest_id()) . ' ORDER BY user_posts DESC', $limit);
+        return $this->connection->query("SELECT u.*,count(p.pid) AS submited_posts FROM " . $this->connection->get_table_prefix() . "users AS u LEFT JOIN " . $this->connection->get_table_prefix() . "posts AS p ON ( u.id=p.poster_id ) WHERE u.id<>" . strval($this->get_guest_id()) . " GROUP BY u.id,u.language,u.ppic,u.avatar_type,u.avatar,u.username,u.email,u.hideemail,u.r_time,u.temp_ban_time,u.temp_ban,u.user_theme,u.u_member_group");
     }
 
     /**
@@ -165,7 +55,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function forum_get_lang($member)
     {
-        return $this->get_member_row_field($member, 'user_lang');
+        return $this->get_member_row_field($member, 'language');
     }
 
     /**
@@ -195,7 +85,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_guest_id()
     {
-        return 1;
+        return (-1);
     }
 
     /**
@@ -206,7 +96,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     public function get_drivered_table_prefix()
     {
         global $SITE_INFO;
-        return $SITE_INFO['phpbb_table_prefix'];
+        return $SITE_INFO['aef_table_prefix'];
     }
 
     /**
@@ -218,7 +108,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function install_create_custom_field($name, $length)
     {
-        $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'users ADD cms_' . $name . ' TEXT', null, null, true);
+        $this->connection->query('ALTER TABLE ' . $this->connection->get_table_prefix() . 'users ADD cms_' . $name . ' TEXT', null, null, true);
         return true;
     }
 
@@ -236,10 +126,10 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     {
         global $PROBED_FORUM_CONFIG;
         $a = array();
-        $a['name'] = 'phpbb_table_prefix';
-        $a['default'] = array_key_exists('sql_tbl_prefix', $PROBED_FORUM_CONFIG) ? $PROBED_FORUM_CONFIG['sql_tbl_prefix'] : 'phpbb_';
+        $a['name'] = 'aef_table_prefix';
+        $a['default'] = array_key_exists('sql_tbl_prefix', $PROBED_FORUM_CONFIG) ? $PROBED_FORUM_CONFIG['sql_tbl_prefix'] : 'aef_';
         $a['description'] = do_lang('MOST_DEFAULT');
-        $a['title'] = 'phpBB ' . do_lang('TABLE_PREFIX');
+        $a['title'] = 'AEF ' . do_lang('TABLE_PREFIX');
         return array($a);
     }
 
@@ -252,40 +142,18 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     public function install_test_load_from($path)
     {
         global $PROBED_FORUM_CONFIG;
-        if (@file_exists($path . '/config.php')) {
-            global $FILE_BASE;
-            $cms_path = str_replace('\\', '/', $FILE_BASE);
-            $path = str_replace('\\', '/', $path);
-            $lcs = ''; // longest common substring
-            for ($i = 0; $i < min(strlen($cms_path), strlen($path)); $i++) {
-                if ($cms_path[$i] == $path[$i]) {
-                    $lcs .= $path[$i];
-                } else {
-                    break;
-                }
+        if (@file_exists($path . '/universal.php')) {
+            $globals = array();
+            @include($path . '/universal.php');
+            if (array_key_exists('database', $globals)) {
+                $PROBED_FORUM_CONFIG['sql_database'] = $globals['database'];
+                $PROBED_FORUM_CONFIG['sql_user'] = $globals['user'];
+                $PROBED_FORUM_CONFIG['sql_pass'] = $globals['password'];
+                $PROBED_FORUM_CONFIG['board_url'] = $globals['url'];
+                $PROBED_FORUM_CONFIG['sql_tbl_prefix'] = $globals['dbprefix'];
+                $PROBED_FORUM_CONFIG['cookie_member_id'] = $globals['cookie_name'] . '[loguid]';
+                $PROBED_FORUM_CONFIG['cookie_member_hash'] = $globals['cookie_name'] . '[logpass]';
             }
-            $str_diff_forum = substr($path, strlen($lcs));
-            $str_diff_site = substr($cms_path, strlen($lcs));
-
-            $base_url = get_base_url();
-            if (substr($base_url, -strlen($str_diff_site)) == $str_diff_site) { // hopefully what didn't make it in the lcs is on the end of the base URL - allowing us to get a lock
-                $base_url = substr($base_url, 0, strlen($base_url) - strlen($str_diff_site)) . $str_diff_forum;
-            } else {
-                $base_url = '';
-            }
-
-            $dbname = '';
-            $dbuser = '';
-            $dbpasswd = '';
-            $table_prefix = '';
-            @include($path . '/config.php');
-            $PROBED_FORUM_CONFIG['sql_database'] = $dbname;
-            $PROBED_FORUM_CONFIG['sql_user'] = $dbuser;
-            $PROBED_FORUM_CONFIG['sql_pass'] = $dbpasswd;
-            $PROBED_FORUM_CONFIG['board_url'] = $base_url;
-            $PROBED_FORUM_CONFIG['sql_tbl_prefix'] = $table_prefix;
-            $PROBED_FORUM_CONFIG['cookie_member_id'] = 'phpbb_u';
-            $PROBED_FORUM_CONFIG['cookie_member_hash'] = 'phpbb_k';
             return true;
         }
         return false;
@@ -299,26 +167,25 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     public function install_get_path_search_list()
     {
         return array(
-            0 => 'forums',
-            1 => 'forum',
-            2 => 'boards',
-            3 => 'board',
-            4 => 'phpBB',
-            5 => 'phpBB2',
+            0 => '/',
+            1 => 'aef',
+            2 => 'forum',
+            3 => 'forums',
+            4 => 'board',
+            5 => 'boards',
             6 => 'upload',
             7 => 'uploads',
-            8 => 'phpbb',
-            9 => 'phpbb2',
-            10 => '../forums',
-            11 => '../forum',
-            12 => '../boards',
-            13 => '../board',
-            14 => '../phpBB',
-            15 => '../phpBB2',
-            16 => '../upload',
-            17 => '../uploads',
-            18 => '../phpbb',
-            19 => '../phpbb2');
+            8 => '../forums',
+            9 => '../forum',
+            10 => '../boards',
+            11 => '../board',
+            12 => '../aef',
+            13 => '../upload',
+            14 => '../uploads',
+            15 => '../themes',
+            16 => '../theme',
+            17 => '../main'
+        );
     }
 
     /**
@@ -329,12 +196,12 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_emoticon_chooser($field_name = 'post')
     {
-        require_code('comcode_compiler');
-        $emoticons = $this->db->query_select('smilies', array('code'), null, 'GROUP BY code');
+        $emoticons = $this->connection->query_select('smileys', array('*'), array('smstatus' => 0));
         $em = new Tempcode();
+        require_code('comcode_compiler');
         foreach ($emoticons as $emo) {
-            $code = $emo['code'];
-            $em->attach(do_template('EMOTICON_CLICK_CODE', array('_GUID' => '6eef1777ed25b62f2c47964eebb655ac', 'FIELD_NAME' => $field_name, 'CODE' => $code, 'IMAGE' => apply_emoticons($code))));
+            $code = $emo['smcode'];
+            $em->attach(do_template('EMOTICON_CLICK_CODE', array('_GUID' => '681b0be397b1892c1ee76e58409822f3', 'FIELD_NAME' => $field_name, 'CODE' => $code, 'IMAGE' => apply_emoticons($code))));
         }
 
         return $em;
@@ -348,7 +215,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function pin_topic($id, $pin = true)
     {
-        $this->db->query_update('topics', array('topic_type' => $pin ? 1 : 0), array('topic_id' => $id), '', 1);
+        $this->connection->query_update('topics', array('t_sticky' => $pin ? 1 : 0), array('tid' => $id), '', 1);
     }
 
     /**
@@ -360,7 +227,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function set_custom_field($member, $field, $value)
     {
-        $this->db->query_update('users', array('cms_' . $field => $value), array('user_id' => $member), '', null, null, false, true);
+        $this->connection->query_update('users', array('cms_' . $field => $value), array('id' => $member), '', null, null, false, true);
     }
 
     /**
@@ -389,7 +256,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_mrow($name)
     {
-        $rows = $this->db->query_select('users', array('*'), array('username_clean' => strtolower($name)), '', 1);
+        $rows = $this->connection->query_select('users', array('*'), array('username' => $name), '', 1);
         if (!array_key_exists(0, $rows)) {
             return null;
         }
@@ -404,11 +271,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function mrow_group($r)
     {
-        $id = $r['user_id'];
-
-        // The first usergroup they're joined to
-        $group = $this->db->query_select_value_if_there('user_group u LEFT JOIN ' . $this->db->get_table_prefix() . 'groups g ON u.group_id=g.group_id', 'g.group_id AS group_id', array('user_id' => $id, 'user_pending' => 0));
-        return $group;
+        return $r['u_member_group'];
     }
 
     /**
@@ -419,7 +282,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function mrow_id($r)
     {
-        return $r['user_id'];
+        return $r['id'];
     }
 
     /**
@@ -430,7 +293,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function mrow_lastvisit($r)
     {
-        return $r['user_lastvisit'];
+        return $r['lastlogin_1']; // could be used `lastlogin` field for last login
     }
 
     /**
@@ -452,7 +315,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function mrow_email($r)
     {
-        return $r['user_email'];
+        return $r['email'];
     }
 
     /**
@@ -463,19 +326,25 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function member_home_url($id)
     {
-        return get_forum_base_url() . '/memberlist.php?mode=editprofile';
+        return get_forum_base_url() . '/index.php?act=usercp';
     }
 
     /**
      * Get the photo thumbnail URL for the specified member ID.
      *
      * @param  MEMBER $member The member ID
-     * @param  boolean $full Get full photo
      * @return URLPATH The URL (blank: none)
      */
-    public function get_member_photo_url($member, $full = false)
+    public function get_member_photo_url($member)
     {
-        return '';
+        $pic = $this->get_member_row_field($member, 'ppic');
+        if (is_null($pic)) {
+            $pic = '';
+        } elseif ((url_is_local($pic)) && ($pic != '')) {
+            $pic = ((get_forum_base_url() != get_base_url()) ? get_forum_base_url() : get_custom_base_url()) . '/uploads/personalpic/' . $pic;
+        }
+
+        return $pic;
     }
 
     /**
@@ -486,22 +355,20 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_member_avatar_url($member)
     {
-        $options = $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'config WHERE ' . db_string_equal_to('config_name', 'avatar_path') . ' OR ' . db_string_equal_to('config_name', 'avatar_gallery_path'));
-        $avatar_path = $options[0]['config_value'];
-        $avatar_gallery_path = $options[1]['config_value'];
+        $avatar_path = get_forum_base_url();
 
-        $type = $this->get_member_row_field($member, 'user_avatar_type');
-        $filename = $this->get_member_row_field($member, 'user_avatar');
+        $type = $this->get_member_row_field($member, 'avatar_type');
+        $filename = $this->get_member_row_field($member, 'avatar');
 
         switch ($type) {
-            case '1': // Upload
-                return get_forum_base_url() . '/' . $avatar_path . '/' . $filename;
-            case '2': // Remote
+            case '1': // Avatar from Avatars Gallery
+                return get_forum_base_url() . '/avatars/' . $filename;
+            case '2': // URL of Remote image Avatar
                 return $filename;
-            case '3': // Gallery
-                return get_forum_base_url() . '/' . $avatar_gallery_path . '/' . $filename;
+            case '3': // Uploaded Avatar
+                return get_forum_base_url() . '/uploads/avatars/' . $filename;
         }
-        return '';
+        return ''; // the avatar is not set
     }
 
     /**
@@ -512,7 +379,8 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _member_profile_url($id)
     {
-        return get_forum_base_url() . '/memberlist.php?mode=viewprofile&u=' . strval($id);
+        //return get_forum_base_url().'/index.php?act=usercp&ucpact=profile'; //this is the user control panel profile
+        return get_forum_base_url() . '/index.php?mid=' . strval($id);
     }
 
     /**
@@ -522,7 +390,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _join_url()
     {
-        return get_forum_base_url() . '/ucp.php?mode=register';
+        return get_forum_base_url() . '/index.php?act=register';
     }
 
     /**
@@ -532,7 +400,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _users_online_url()
     {
-        return get_forum_base_url() . '/viewonline.php';
+        return get_forum_base_url() . '/index.php?act=active';
     }
 
     /**
@@ -543,7 +411,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _member_pm_url($id)
     {
-        return get_forum_base_url() . '/ucp.php?i=pm&mode=compose&u=' . strval($id);
+        return get_forum_base_url() . '/index.php?act=usercp&ucpact=writepm&to=' . strval($id);
     }
 
     /**
@@ -554,7 +422,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _forum_url($id)
     {
-        return get_forum_base_url() . '/viewforum.php?f=' . strval($id);
+        return get_forum_base_url() . '/index.php?fid=' . strval($id);
     }
 
     /**
@@ -565,7 +433,12 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function forum_id_from_name($forum_name)
     {
-        return is_numeric($forum_name) ? intval($forum_name) : $this->db->query_select_value_if_there('forums', 'forum_id', array('forum_name' => $forum_name));
+        $forum_id = $this->connection->query_select_value_if_there('forums', 'fid', array('fname' => $forum_name));
+        if (!is_null($forum_id)) {
+            return $forum_id;
+        }
+
+        return $forum_id;
     }
 
     /**
@@ -577,7 +450,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     protected function _phpbb_ip($ip)
     {
         $ip_apart = explode('.', $ip);
-        $_ip = dechex(intval($ip_apart[0])) . dechex(intval($ip_apart[1])) . dechex(intval($ip_apart[2])) . dechex(intval($ip_apart[3]));
+        $_ip = dechex($ip_apart[0]) . dechex($ip_apart[1]) . dechex($ip_apart[2]) . dechex($ip_apart[3]);
         return $_ip;
     }
 
@@ -620,36 +493,31 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         $__post = comcode_to_tempcode($_post);
         $post = $__post->evaluate();
 
-        if ($time === null) {
+        if (is_null($time)) {
             $time = time();
         }
-        if ($ip === null) {
+        if (is_null($ip)) {
             $ip = get_ip_address();
         }
         $forum_id = $this->forum_id_from_name($forum_name);
-        if ($forum_id === null) {
-            warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
+        if (is_null($forum_id)) {
+            warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)));
         }
-        $test = $this->db->query_select('forums', array('*'), null, '', 1);
-        $fm = array_key_exists('hide_forum_in_cat', $test[0]);
+        $test = $this->connection->query_select('forums', array('*'), null, '', 1);
+        $fm = array_key_exists('status', $test[0]);
+        $ip_address = $ip;
+        $local_ip_address = '127.0.0.1';
+
         $topic_id = $this->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);
-        $ip_address = $this->_phpbb_ip($ip);
-        $local_ip_address = $this->_phpbb_ip('127.0.0.1');
-        $is_new = ($topic_id === null);
+
+        $is_new = is_null($topic_id);
         if ($is_new) {
-            $map = array('forum_id' => $forum_id, 'topic_title' => $content_title . ', ' . $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, 'topic_poster' => $member, 'topic_time' => $time, 'topic_views' => 0, 'topic_replies' => 0, 'topic_replies_real' => 0, 'topic_status' => 0, 'topic_type' => 0, 'topic_first_post_id' => 0, 'topic_last_post_id' => 0, 'topic_moved_id' => 0);
+            $map = array('t_bid' => $forum_id, 'topic' => $content_title, 't_mem_id' => $member, 'n_views' => 0, 'n_posts' => 0, 't_status' => 1, 'type_image' => 0, 'first_post_id' => 0, 'last_post_id' => 0, 't_description' => $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier_encapsulation_prefix . ': ' . $topic_identifier);
+
             if ($fm) {
-                $map = array_merge($map, array('answer_status' => 0, 'topic_attachment' => 0, 'topic_icon' => 0, 'rating_rank_id' => 0, 'title_compl_infos' => null, 'topic_priority' => 0));
+                $map = array_merge($map, array('t_status' => 0));
             }
-            $topic_id = $this->db->query_insert('topics', $map, true);
-            $home_link = hyperlink($content_url, $content_title, false, true);
-            $map = array('topic_id' => $topic_id, 'forum_id' => $forum_id, 'poster_id' => -1, 'post_text' => do_lang('SPACER_POST', $home_link->evaluate(), '', '', get_site_default_lang()), 'post_time' => $time, 'poster_ip' => $local_ip_address, 'post_username' => $this->get_username($member), 'enable_bbcode' => 1, 'enable_smilies' => 1, 'enable_sig' => 1, 'post_edit_time' => 0, 'post_edit_count' => 0);
-            if ($fm) {
-                $map = array_merge($map, array('post_attachment' => 0, 'post_edit_user' => null, 'post_icon' => 0, 'post_bluecard' => null, 'rating_rank_id' => 0, 'user_avatar' => null, 'user_avatar_type' => 0, 'urgent_post' => 0));
-            }
-            $post_id = $this->db->query_insert('posts', $map, true);
-            $this->db->query_update('topics', array('topic_first_post_id' => $post_id), array('topic_id' => $topic_id), '', 1);
-            $this->db->query('UPDATE ' . $this->db->get_table_prefix() . 'forums SET forum_topics_real=(forum_topics_real+1),forum_topics=(forum_topics+1),forum_posts=(forum_posts+1) WHERE forum_id=' . strval($forum_id), 1);
+            $topic_id = $this->connection->query_insert('topics', $map, true);
         }
 
         $GLOBALS['LAST_TOPIC_ID'] = $topic_id;
@@ -659,13 +527,14 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             return array($topic_id, false);
         }
 
-        $map = array('topic_id' => $topic_id, 'forum_id' => $forum_id, 'poster_id' => $member, 'post_text' => $post, 'post_time' => $time, 'poster_ip' => $ip_address, 'post_username' => $this->get_username($member), 'enable_bbcode' => 1, 'enable_smilies' => 1, 'enable_sig' => 1, 'post_edit_time' => 0, 'post_edit_count' => 0);
+        $map = array('post_tid' => $topic_id, 'post_fid' => $forum_id, 'poster_id' => $member, 'ptime' => $time, 'poster_ip' => $ip_address, 'gposter_name' => '', 'use_smileys' => 1, 'modtime' => 'now()', 'post_title' => $post_title, 'post' => $post);
         if ($fm) {
-            $map = array_merge($map, array('post_attachment' => 0, 'post_edit_user' => null, 'post_icon' => 0, 'post_bluecard' => null, 'rating_rank_id' => 0, 'user_avatar' => null, 'user_avatar_type' => 0, 'urgent_post' => 0));
+            $map = array_merge($map, array('num_attachments' => 0, 'modifiers_id' => ''));
         }
-        $post_id = $this->db->query_insert('posts', $map, true);
-        $this->db->query('UPDATE ' . $this->db->get_table_prefix() . 'forums SET forum_posts=(forum_posts+1), forum_last_post_id=' . strval($post_id) . ' WHERE forum_id=' . strval($forum_id), 1);
-        $this->db->query('UPDATE ' . $this->db->get_table_prefix() . 'topics SET topic_replies=(topic_replies+1), topic_replies_real=(topic_replies_real+1), topic_last_post_id=' . strval($post_id) . ' WHERE topic_id=' . strval($topic_id), 1);
+        $post_id = $this->connection->query_insert('posts', $map, true);
+
+        $this->connection->query('UPDATE ' . $this->connection->get_table_prefix() . 'topics SET first_post_id=' . strval($post_id) . ', last_post_id=' . strval($post_id) . ' WHERE tid=' . strval($topic_id), 1);
+        $this->connection->query('UPDATE ' . $this->connection->get_table_prefix() . 'forums SET ntopic=(ntopic+1),nposts=(nposts+1), f_last_pid=' . strval($post_id) . ' WHERE fid=' . strval($forum_id), 1);
 
         return array($topic_id, false);
     }
@@ -683,24 +552,28 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_forum_topic_posts($topic_id, &$count, $max = 100, $start = 0, $mark_read = true, $reverse = false)
     {
-        if ($topic_id === null) {
+        if (is_null($topic_id)) {
             return (-2);
         }
-        $order = $reverse ? 'post_time DESC' : 'post_time';
-        $rows = $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'posts p WHERE topic_id=' . strval($topic_id) . ' AND post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' ORDER BY ' . $order, $max, $start);
-        $count = $this->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'posts p WHERE topic_id=' . strval($topic_id) . ' AND post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\'');
+        $order = $reverse ? 'ptime DESC' : 'ptime';
+        $rows = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'posts p WHERE post_tid=' . strval($topic_id) . ' AND post NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' ORDER BY ' . $order, $max, $start);
+        $count = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'posts p WHERE post_tid=' . strval($topic_id) . ' AND post NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\'');
+
         $out = array();
         foreach ($rows as $myrow) {
             $temp = array();
-            $temp['title'] = $myrow['post_subject'];
-            if ($temp['title'] === null) {
+
+            $temp['title'] = $myrow['post_title'];
+            if (is_null($temp['title'])) {
                 $temp['title'] = '';
             }
-            push_lax_comcode(true);
-            $temp['message'] = comcode_to_tempcode($this->_cleanup_post($myrow['bbcode_uid'], $myrow['post_text']), $myrow['poster_id']);
-            pop_lax_comcode();
+            global $LAX_COMCODE;
+            $temp2 = $LAX_COMCODE;
+            $LAX_COMCODE = true;
+            $temp['message'] = $myrow['post'];
+            $LAX_COMCODE = $temp2;
             $temp['member'] = $myrow['poster_id'];
-            $temp['date'] = $myrow['post_time'];
+            $temp['date'] = $myrow['ptime'];
 
             $out[] = $temp;
         }
@@ -717,7 +590,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function topic_url($id, $forum)
     {
-        return get_forum_base_url() . '/viewtopic.php?t=' . strval($id);
+        return get_forum_base_url() . '/index.php?tid=' . strval($id);
     }
 
     /**
@@ -729,11 +602,11 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function post_url($id, $forum)
     {
-        $topic_id = $this->db->query_select_value_if_there('posts', 'tid', array('pid' => $id));
-        if ($topic_id === null) {
+        $topic_id = $this->connection->query_select_value_if_there('posts', 'post_tid', array('pid' => $id));
+        if (is_null($topic_id)) {
             return '?';
         }
-        $url = get_forum_base_url() . '/viewtopic.php?t=' . strval($topic_id) . '#' . strval($id);
+        $url = get_forum_base_url() . '/index.php?tid=' . strval($topic_id) . '&tpg=1#p' . strval($id);
         return $url;
     }
 
@@ -751,10 +624,10 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         } else {
             $forum_id = $this->forum_id_from_name($forum);
         }
-        if ($forum_id === null) {
-            return null;
-        }
-        return $this->db->query_value_if_there('SELECT topic_id FROM ' . $this->db->get_table_prefix() . 'topics WHERE forum_id=' . strval($forum_id) . ' AND (' . db_string_equal_to('topic_title', $topic_identifier) . ' OR topic_title LIKE \'%: #' . db_encode_like($topic_identifier) . '\')');
+        $query = 'SELECT tid FROM ' . $this->connection->get_table_prefix() . 'topics WHERE t_bid=' . strval($forum_id);
+        $query .= ' AND (' . db_string_equal_to('t_description', $topic_identifier) . ' OR t_description LIKE \'%: #' . db_encode_like($topic_identifier) . '\')';
+
+        return $this->connection->query_value_if_there($query);
     }
 
     /**
@@ -782,30 +655,33 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     public function show_forum_topics($name, $limit, $start, &$max_rows, $filter_topic_title = '', $show_first_posts = false, $date_key = 'lasttime', $hot = false, $filter_topic_description = '')
     {
         if (is_integer($name)) {
-            $id_list = 'forum_id=' . strval($name);
+            $id_list = 't_bid=' . strval($name);
         } elseif (!is_array($name)) {
             $id = $this->forum_id_from_name($name);
-            if ($id === null) {
+            if (is_null($id)) {
                 return null;
             }
-            $id_list = 'forum_id=' . strval($id);
+            $id_list = 't_bid=' . strval($id);
         } else {
             $id_list = '';
             foreach (array_keys($name) as $id) {
                 if ($id_list != '') {
                     $id_list .= ' OR ';
                 }
-                $id_list .= 'forum_id=' . strval($id);
+                $id_list .= 't_bid=' . strval($id);
             }
             if ($id_list == '') {
                 return null;
             }
         }
 
-        $topic_filter = ($filter_topic_title != '') ? 'AND topic_title LIKE \'' . db_encode_like($filter_topic_title) . '\'' : '';
-        $topic_filter .= ' ORDER BY ' . (($date_key == 'lasttime') ? 'topic_last_post_id' : 'topic_time') . ' DESC';
-        $rows = $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'topics WHERE (' . $id_list . ') ' . $topic_filter, $limit, $start);
-        $max_rows = $this->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'topics WHERE (' . $id_list . ') ' . $topic_filter);
+        $topic_filter = ($filter_topic_title != '') ? 'AND topic LIKE \'' . db_encode_like($filter_topic_title) . '\'' : '';
+        if ($filter_topic_description != '') {
+            $topic_filter .= ' AND t_description LIKE \'' . db_encode_like($filter_topic_description) . '\'';
+        }
+        $topic_filter .= ' ORDER BY ' . (($date_key == 'lasttime') ? 'last_post_id' : 'last_post_id') . ' DESC'; // there is no 'topic_time' or something like it, so we will sort by the 'last_post_id' field
+        $rows = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'topics WHERE (' . $id_list . ') ' . $topic_filter, $limit, $start);
+        $max_rows = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'topics WHERE (' . $id_list . ') ' . $topic_filter);
         $i = 0;
         $firsttime = array();
         $username = array();
@@ -815,10 +691,25 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         while (array_key_exists($i, $rows)) {
             $r = $rows[$i];
 
-            $id = $r['topic_id'];
-            $firsttime[$id] = $r['topic_time'];
+            $id = $r['tid'];
 
-            $post_rows = $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'posts p WHERE topic_id=' . strval($id) . ' AND post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' ORDER BY post_time DESC', 1);
+            $topic_first_post_id = $r['first_post_id']; // because there is no info in topics for time we will use the first and last posts in the topic
+            $topic_first_post_row = $this->connection->query_select('posts', array('*'), array('pid' => $topic_first_post_id));
+            $topic_first_post_row = (!empty($topic_first_post_row[0])) ? $topic_first_post_row[0] : array();
+
+            $topic_last_post_id = $r['last_post_id'];
+            $topic_last_post_row = $this->connection->query_select('posts', array('*'), array('pid' => $topic_last_post_id));
+            $topic_last_post_row = (!empty($topic_last_post_row[0])) ? $topic_last_post_row[0] : array();
+
+            $r['topic_time'] = $topic_first_post_row['ptime'];
+            $r['topic_poster'] = $topic_first_post_row['poster_id'];
+            $r['last_poster'] = $topic_last_post_row['poster_id'];
+            $r['last_time'] = $topic_last_post_row['ptime'];
+
+            $firsttime[$id] = $topic_first_post_row['ptime'];
+
+            $post_rows = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'posts p WHERE post_tid=' . strval($id) . ' AND post NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' ORDER BY ptime DESC', 1);
+
             if (!array_key_exists(0, $post_rows)) {
                 $i++;
                 continue;
@@ -826,8 +717,8 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             $r2 = $post_rows[0];
 
             $username[$id] = $this->get_username($r2['poster_id']);
-            $memberid[$id] = $r2['poster_id'];
-            $datetimes[$id] = $r2['post_time'];
+            $username[$id] = $r2['poster_id'];
+            $datetimes[$id] = $r2['ptime'];
             $rs[$id] = $r;
 
             $i++;
@@ -836,38 +727,42 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             arsort($datetimes);
             $i = 0;
             $out = array();
+            if (count($datetimes) > 0) {
+                foreach ($datetimes as $id => $datetime) {
+                    $r = $rs[$id];
 
-            foreach ($datetimes as $id => $datetime) {
-                $r = $rs[$id];
+                    $out[$i] = array();
+                    $out[$i]['id'] = $id;
+                    $out[$i]['num'] = $r['n_posts'] + 1;
+                    $out[$i]['title'] = $r['topic'];
+                    $out[$i]['description'] = $r['t_description'];
+                    $out[$i]['firsttime'] = $r['topic_time'];
+                    $out[$i]['firstusername'] = $this->get_username($r['topic_poster']);
+                    $out[$i]['lastusername'] = $this->get_username($r['last_poster']);//$username[$id];
+                    $out[$i]['firstmemberid'] = $r['topic_poster'];
+                    $out[$i]['lastmemberid'] = $r['last_poster'];//$memberid[$id];
+                    $out[$i]['lasttime'] = $r['last_time'];//$datetime;
+                    $out[$i]['closed'] = ($r['t_status'] == 1);
 
-                $out[$i] = array();
-                $out[$i]['id'] = $id;
-                $out[$i]['num'] = $r['topic_replies_real'] + 1;
-                $out[$i]['title'] = $r['topic_title'];
-                $out[$i]['description'] = $r['topic_title'];
-                $out[$i]['firsttime'] = $r['topic_time'];
-                $out[$i]['firstusername'] = $this->get_username($r['topic_poster']);
-                $out[$i]['lastusername'] = $username[$id];
-                $out[$i]['firstmemberid'] = $r['topic_poster'];
-                $out[$i]['lastmemberid'] = $memberid[$id];
-                $out[$i]['lasttime'] = $datetime;
-                $out[$i]['closed'] = ($r['topic_status'] == 1);
+                    $fp_rows = $this->connection->query('SELECT post_title,post,poster_id FROM ' . $this->connection->get_table_prefix() . 'posts p WHERE post NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' AND ptime=' . strval($firsttime[$id]) . ' AND post_tid=' . strval($id), 1);
 
-                $fp_rows = $this->db->query('SELECT post_subject,post_text,bbcode_uid,poster_id FROM ' . $this->db->get_table_prefix() . 'posts p WHERE post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' AND post_time=' . strval($firsttime[$id]) . ' AND topic_id=' . strval($id), 1);
-                if (!array_key_exists(0, $fp_rows)) {
-                    unset($out[$i]);
-                    continue;
-                }
-                $out[$i]['firsttitle'] = $fp_rows[0]['post_subject'];
-                if ($show_first_posts) {
-                    push_lax_comcode(true);
-                    $out[$i]['firstpost'] = comcode_to_tempcode($this->_cleanup_post($fp_rows[0]['bbcode_uid'], $fp_rows[0]['post_text']), $fp_rows[0]['poster_id']);
-                    pop_lax_comcode();
-                }
+                    if (!array_key_exists(0, $fp_rows)) {
+                        unset($out[$i]);
+                        continue;
+                    }
+                    $out[$i]['firsttitle'] = $fp_rows[0]['post_title'];
+                    if ($show_first_posts) {
+                        global $LAX_COMCODE;
+                        $temp = $LAX_COMCODE;
+                        $LAX_COMCODE = true;
+                        $out[$i]['firstpost'] = $fp_rows[0]['post'];
+                        $LAX_COMCODE = $temp;
+                    }
 
-                $i++;
-                if ($i == $limit) {
-                    break;
+                    $i++;
+                    if ($i == $limit) {
+                        break;
+                    }
                 }
             }
 
@@ -877,26 +772,9 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     }
 
     /**
-     * Cleanup a post to match Comcode.
+     * Get an array of members who are in at least one of the given array of groups.
      *
-     * @param  string $uid Bbcode embedded UID (which we strip)
-     * @param  string $text The post
-     * @return string Cleaned post
-     */
-    protected function _cleanup_post($uid, $text)
-    {
-        if ($uid != '') {
-            $text = str_replace(':' . $uid, '', $text);
-        }
-        $text = preg_replace('#<!-- s([^\s]*) --><img src="\{SMILIES_PATH\}/[^"]*" alt="([^\s]*)" title="[^"]*" /><!-- s([^\s]*) -->#U', '${1}', $text);
-        $text = preg_replace('#\[(/?\w+):[^\]]*\]#', '[${1}]', $text);
-        return html_entity_decode($text, ENT_QUOTES);
-    }
-
-    /**
-     * Get an array of members who are in at least one of the given array of usergroups.
-     *
-     * @param  array $groups The array of usergroups
+     * @param  array $groups The array of groups
      * @param  ?integer $max Return up to this many entries for primary members and this many entries for secondary members (null: no limit, only use no limit if querying very restricted usergroups!)
      * @param  integer $start Return primary members after this offset and secondary members after this offset
      * @return ?array The array of members (null: no members)
@@ -908,12 +786,14 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             if ($_groups != '') {
                 $_groups .= ' OR ';
             }
-            $_groups .= 'g.group_id=' . strval($group);
+            $_groups .= 'u.u_member_group=' . strval($group);
         }
         if ($_groups == '') {
             return array();
         }
-        return $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'user_group g LEFT JOIN ' . $this->db->get_table_prefix() . 'users u ON u.user_id=g.user_id WHERE (' . $_groups . ') AND user_pending=0 ORDER BY g.group_id ASC', $max, $start, false, true);
+
+        // Query looks like this: SELECT * FROM `aef_users` u LEFT JOIN aef_user_groups g on u.`u_member_group`=g.member_group WHERE u.`u_member_group`=0
+        return $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'users u LEFT JOIN ' . $this->connection->get_table_prefix() . 'user_groups g ON u.u_member_group=g.member_group WHERE ' . $_groups . ' ORDER BY u.u_member_group ASC', $max, $start, false, true);
     }
 
     /**
@@ -924,7 +804,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_previous_member($member)
     {
-        $tempid = $this->db->query_value_if_there('SELECT user_id FROM ' . $this->db->get_table_prefix() . 'users WHERE user_id<' . strval($member) . ' AND user_id>0 ORDER BY user_id DESC');
+        $tempid = $this->connection->query_value_if_there('SELECT id FROM ' . $this->connection->get_table_prefix() . 'users WHERE id<' . strval($member) . ' AND id>0 ORDER BY id DESC');
         return $tempid;
     }
 
@@ -937,7 +817,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_next_member($member)
     {
-        $tempid = $this->db->query_value_if_there('SELECT user_id FROM ' . $this->db->get_table_prefix() . 'users WHERE user_id>' . strval($member) . ' ORDER BY user_id');
+        $tempid = $this->connection->query_value_if_there('SELECT id FROM ' . $this->connection->get_table_prefix() . 'users WHERE id>' . strval($member) . ' ORDER BY id');
         return $tempid;
     }
 
@@ -949,8 +829,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function probe_ip($ip)
     {
-        $_ip = $this->_phpbb_ip($ip);
-        return $this->db->query_select('posts', array('DISTINCT poster_id AS id'), array('poster_ip' => $_ip));
+        return $this->connection->query_select('posts', array('DISTINCT poster_id AS id'), array('poster_ip' => $ip));
     }
 
     /**
@@ -976,7 +855,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_member_email_address($member)
     {
-        return $this->get_member_row_field($member, 'user_email');
+        return $this->get_member_row_field($member, 'email');
     }
 
     /**
@@ -987,8 +866,8 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_member_email_allowed($member)
     {
-        $v = $this->get_member_row_field($member, 'user_viewemail');
-        if ($v == 1) {
+        $v = $this->get_member_row_field($member, 'hideemail');
+        if ($v == 0) {
             return true;
         }
         return false;
@@ -1002,7 +881,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_member_join_timestamp($member)
     {
-        return $this->get_member_row_field($member, 'user_regdate');
+        return $this->get_member_row_field($member, 'r_time');
     }
 
     /**
@@ -1014,7 +893,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_matching_members($pattern, $limit = null)
     {
-        $rows = $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'users WHERE username LIKE \'' . db_encode_like(strtolower($pattern)) . '\' AND user_id<>' . strval($this->get_guest_id()) . ' ORDER BY user_lastvisit DESC', $limit);
+        $rows = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'users WHERE username LIKE \'' . db_encode_like($pattern) . '\' AND id<>' . strval($this->get_guest_id()) . ' ORDER BY lastlogin_1 DESC', $limit); // it could be ordered by 'lastlogin' too
         sort_maps_by($rows, 'username');
         return $rows;
     }
@@ -1027,7 +906,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_post_count($member)
     {
-        return $this->get_member_row_field($member, 'user_posts');
+        return $this->get_member_row_field($member, 'posts');
     }
 
     /**
@@ -1038,7 +917,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_topic_count($member)
     {
-        return $this->db->query_select_value('topics', 'COUNT(*)', array('topic_poster' => $member));
+        return $this->connection->query_select_value('topics', 'COUNT(*)', array('t_mem_id' => $member));
     }
 
     /**
@@ -1049,11 +928,17 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function is_banned($member)
     {
-        $banned = $this->db->query_select_value_if_there('banlist', 'ban_userid', array('ban_userid' => $member));
-        if ($banned !== null) {
-            return true;
+        $ban_time = $this->get_member_row_field($member, 'temp_ban_time'); // when is banned user
+        $ban_period = $this->get_member_row_field($member, 'temp_ban'); // how many days is banned
+        $ban_till = $ban_time + $ban_period; // the member is banned until this date/time
+
+        if (empty($ban_till)) {
+            return false; // the member is never banned
+        } elseif ($ban_till < time()) {
+            return false; // the ban time is over
+        } else {
+            return true; // the member is still banned
         }
-        return false;
     }
 
     /**
@@ -1063,7 +948,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_emo_dir()
     {
-        return get_forum_base_url() . '/images/smilies/';
+        return get_forum_base_url() . '/smileys/';
     }
 
     /**
@@ -1073,20 +958,18 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function find_emoticons()
     {
-        if ($this->EMOTICON_CACHE !== null) {
+        if (!is_null($this->EMOTICON_CACHE)) {
             return $this->EMOTICON_CACHE;
         }
-        $rows = $this->db->query_select('smilies', array('*'), null, '', null, null, true);
-        if ($rows === null) {
-            $rows = array();
-        }
+        $rows = $this->connection->query_select('smileys', array('*'));
         $this->EMOTICON_CACHE = array();
         foreach ($rows as $myrow) {
-            $src = $myrow['smiley_url'];
+            $src = $myrow['smfile'];
+            $smfolder = $myrow['smfolder'];
             if (url_is_local($src)) {
-                $src = $this->get_emo_dir() . $src;
+                $src = $this->get_emo_dir() . $smfolder . '/' . $src;
             }
-            $this->EMOTICON_CACHE[$myrow['code']] = array('EMOTICON_IMG_CODE_DIR', $src, $myrow['code']);
+            $this->EMOTICON_CACHE[$myrow['smcode']] = array('EMOTICON_IMG_CODE_DIR', $src, $myrow['smcode']);
         }
         uksort($this->EMOTICON_CACHE, '_strlen_sort');
         $this->EMOTICON_CACHE = array_reverse($this->EMOTICON_CACHE);
@@ -1100,10 +983,10 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_skin_list()
     {
-        $table = 'styles';
-        $codename = 'style_name';
+        $table = 'themes';
+        $codename = 'th_name';
 
-        $rows = $this->db->query_select($table, array($codename));
+        $rows = $this->connection->query_select($table, array($codename));
         return collapse_1d_complexity($codename, $rows);
     }
 
@@ -1126,23 +1009,27 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         if (!$skip_member_specific) {
             $member = get_member();
             if ($member > 0) {
-                $skin = $this->get_member_row_field($member, 'user_style');
+                $skin = $this->get_member_row_field($member, 'user_theme');
             } else {
                 $skin = 0;
             }
             if ($skin > 0) { // User has a custom theme
-                $phpbb = $this->db->query_select_value_if_there('styles', 'style_name', array('style_id' => $skin));
-                if ($phpbb !== null) {
-                    $def = array_key_exists($phpbb, $map) ? $map[$phpbb] : $phpbb;
+                $user_theme = $this->connection->query("SELECT * FROM " . $this->connection->get_table_prefix() . "themes t LEFT JOIN " . $this->connection->get_table_prefix() . "theme_registry tr ON tr.thid =t.thid WHERE t.thid=" . strval($skin));
+
+                $user_theme = (!empty($user_theme[0])) ? $user_theme[0] : '';
+                $user_theme = (!empty($user_theme['user_theme'])) ? $user_theme['user_theme'] : '';
+
+                if (!is_null($user_theme)) {
+                    $def = array_key_exists($user_theme, $map) ? $map[$user_theme] : $user_theme;
                 }
             }
         }
 
         // Look for a skin according to our site name (we bother with this instead of 'default' because Composr itself likes to never choose a theme when forum-theme integration is on: all forum [via map] or all Composr seems cleaner, although it is complex)
         if ((!(strlen($def) > 0)) || (!file_exists(get_custom_file_base() . '/themes/' . $def))) {
-            $phpbb = $this->db->query_select_value_if_there('styles', 'style_name', array('style_name' => get_site_name()));
-            if ($phpbb !== null) {
-                $def = array_key_exists($phpbb, $map) ? $map[$phpbb] : $phpbb;
+            $aeftheme = $this->connection->query_select_value_if_there('themes', 'th_name', array('th_name' => get_site_name()));
+            if (!is_null($aeftheme)) {
+                $def = array_key_exists($aeftheme, $map) ? $map[$aeftheme] : $aeftheme;
             }
         }
 
@@ -1162,7 +1049,11 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _is_staff($member)
     {
-        return (array_intersect($this->get_members_groups($member), $this->get_moderator_groups()) != array());
+        $user_level = $this->get_member_row_field($member, 'u_member_group');
+        if (in_array($user_level, array(1, 2, 3))) {
+            return true; // return all administrators + all moderators
+        }
+        return false;
     }
 
     /**
@@ -1173,7 +1064,21 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _is_super_admin($member)
     {
-        return (array_intersect($this->get_members_groups($member), $this->get_super_admin_groups()) != array());
+        $user_level = $this->get_member_row_field($member, 'u_member_group');
+        if ($user_level == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * If we can't get a list of admins via a usergroup query, we have to disable the staff filter - else the staff filtering can cause disaster at the point of being turned on (because it can't automatically sync).
+     *
+     * @return boolean Whether to disable the staff filter
+     */
+    protected function _disable_staff_filter()
+    {
+        return true;
     }
 
     /**
@@ -1183,7 +1088,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_num_users_forums()
     {
-        return $this->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'sessions WHERE session_time>' . strval(time() - 60 * intval(get_option('users_online_time'))));
+        return $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'sessions WHERE time>' . strval(time() - 60 * intval(get_option('users_online_time'))));
     }
 
     /**
@@ -1191,9 +1096,9 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      *
      * @return integer The number of members
      */
-    public function get_num_members()
+    public function get_members()
     {
-        return $this->db->query_select_value('users', 'COUNT(*)') - 1;
+        return $this->connection->query_select_value('users', 'COUNT(*)') - 1;
     }
 
     /**
@@ -1201,13 +1106,9 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      *
      * @return integer The number of topics
      */
-    public function get_num_topics()
+    public function get_topics()
     {
-        static $num_topics = null;
-        if ($num_topics === null) {
-            $num_topics = $this->db->query_select_value('topics', 'COUNT(*)');
-        }
-        return $num_topics;
+        return $this->connection->query_select_value('topics', 'COUNT(*)');
     }
 
     /**
@@ -1217,11 +1118,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_num_forum_posts()
     {
-        static $num_posts = null;
-        if ($num_posts === null) {
-            $num_posts = $this->db->query_select_value('posts', 'COUNT(*)');
-        }
-        return $num_posts;
+        return $this->connection->query_select_value('posts', 'COUNT(*)');
     }
 
     /**
@@ -1231,7 +1128,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_num_new_forum_posts()
     {
-        return $this->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'posts WHERE post_time>' . strval(time() - 60 * 60 * 24));
+        return $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'posts WHERE ptime>' . strval(time() - 60 * 60 * 24));
     }
 
     /**
@@ -1242,33 +1139,33 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_member_from_username($name)
     {
-        return $this->db->query_select_value_if_there('users', 'user_id', array('username_clean' => strtolower($name)));
+        return $this->connection->query_select_value_if_there('users', 'id', array('username' => $name));
     }
 
     /**
-     * Get the IDs of the admin usergroups.
+     * Get the IDs of the admin groups.
      *
-     * @return array The admin usergroup IDs
+     * @return array The admin group IDs
      */
     protected function _get_super_admin_groups()
     {
-        $admin_group = $this->db->query_select_value_if_there('groups', 'group_id', array('group_name' => 'ADMINISTRATORS'), 'ORDER BY group_id DESC');
-        if ($admin_group === null) {
+        $admin_group = $this->connection->query_select_value_if_there('user_groups', 'member_group', array('mem_gr_name' => 'Administrator'), 'ORDER BY member_group DESC');
+        if (is_null($admin_group)) {
             return array();
         }
         return array($admin_group);
     }
 
     /**
-     * Get the IDs of the moderator usergroups.
-     * It should not be assumed that a member only has one usergroup - this depends upon the forum the driver works for. It also does not take the staff site filter into account.
+     * Get the IDs of the moderator groups.
+     * It should not be assumed that a member only has one group - this depends upon the forum the driver works for. It also does not take the staff site filter into account.
      *
-     * @return array The moderator usergroup IDs
+     * @return array The moderator group IDs
      */
     protected function _get_moderator_groups()
     {
-        $moderator_group = $this->db->query_value_if_there('SELECT group_id FROM ' . $this->db->get_table_prefix() . 'groups WHERE group_name=\'GLOBAL_MODERATORS\'');
-        if ($moderator_group === null) {
+        $moderator_group = $this->connection->query_value_if_there('SELECT member_group FROM ' . $this->connection->get_table_prefix() . 'user_groups WHERE mem_gr_name LIKE \'%Moderator%\'');
+        if (is_null($moderator_group)) {
             return array();
         }
         return array($moderator_group);
@@ -1281,8 +1178,12 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_usergroup_list()
     {
-        $results = $this->db->query('SELECT group_id,group_name FROM ' . $this->db->get_table_prefix() . 'groups');
-        $results2 = collapse_2d_complexity('group_id', 'group_name', $results);
+        $results = $this->connection->query('SELECT member_group,mem_gr_name FROM ' . $this->connection->get_table_prefix() . 'user_groups WHERE post_count=-1');
+        $mod_results = array();
+        foreach ($results as $key => $value) {
+            $mod_results[] = array('group_id' => $value['member_group'], 'group_name' => $value['mem_gr_name']);
+        }
+        $results2 = collapse_2d_complexity('group_id', 'group_name', $mod_results);
         return $results2;
     }
 
@@ -1294,40 +1195,48 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_members_groups($member)
     {
-        //if ($member == $this->get_guest_id()) return array(1); May not hold true
+        if ($member == $this->get_guest_id()) {
+            return array(-1);
+        }
 
-        $groups = collapse_1d_complexity('group_id', $this->db->query_select('user_group', array('group_id'), array('user_pending' => 0, 'user_id' => $member)));
-        $groups[] = $this->get_member_row_field($member, 'group_id');
+        $groups = collapse_1d_complexity('u_member_group', $this->connection->query_select('users', array('u_member_group'), array('id' => $member)));
+
         if (count($groups) <= 1) {
             $all_groups = $this->get_usergroup_list();
-            if ((count($groups) == 0) || (!array_key_exists($groups[0], $all_groups))) {
-                $groups[] = 1;
+
+            $group = (!empty($groups[0]) || $groups[0] == 0) ? $groups[0] : '';
+
+            if (!array_key_exists($group, $all_groups)) {
+                $groups[] = -1;
             }
         }
+
         return $groups;
     }
 
     /**
-     * The hashing algorithm of this forum driver. NOT used for cookie logins for this forum driver (cookies store a generated session ID).
+     * generates random strings
      *
-     * @param  string $data The data to hash (the password in actuality)
-     * @param  string $key The string converted member-ID in actuality, although this function is more general. For cookie logins, 'ys'
-     * @param  boolean $just_first Whether to just get the old style hash
-     * @return string The hashed data
+     * @param   integer $length The length of the generated string
+     * @return  string  The generated string
      */
-    public function forum_md5($data, $key, $just_first = false)
+    public function generateRandStr($length)
     {
-        $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        $hash = $GLOBALS['FORUM_DB']->query_select_value_if_there('users', 'user_password', array('username_clean' => strtolower($key)));
-        if ($hash === null) {
-            return '';
+        $randstr = "";
+
+        for ($i = 0; $i < $length; $i++) {
+            $randnum = mt_rand(0, 61);
+
+            if ($randnum < 10) {
+                $randstr .= chr($randnum + 48);
+            } elseif ($randnum < 36) {
+                $randstr .= chr($randnum + 55);
+            } else {
+                $randstr .= chr($randnum + 61);
+            }
         }
 
-        $test = _hash_crypt_private($data, $hash, $itoa64);
-        if ($test === false) {
-            return '';
-        }
-        return $test;
+        return strtolower($randstr);
     }
 
     /**
@@ -1339,56 +1248,62 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function forum_create_cookie($id, $name, $password)
     {
-        $member_cookie_name = get_member_cookie();
-        $colon_pos = strpos($member_cookie_name, ':');
-        if ($colon_pos !== false) {
-            $base = substr($member_cookie_name, 0, $colon_pos);
-            $real_member_cookie = substr($member_cookie_name, $colon_pos + 1);
-            $real_pass_cookie = substr(get_pass_cookie(), $colon_pos + 1);
-            $real_session_cookie = 'sid';
-        } else {
-            $real_member_cookie = $member_cookie_name;
-            $real_pass_cookie = get_pass_cookie();
-            $real_session_cookie = preg_replace('#\_u$#', '_sid', $real_member_cookie);
+        global $SITE_INFO;
+
+        $cookie_prefix = preg_replace('/\[logpass\]/', '', $SITE_INFO['pass_cookie']);
+
+        unset($name);
+        unset($password);
+
+        $row = $this->get_member_row($id);
+        $logpass = $row['cookpass']; // cookie var [logpass]
+        $loguid = $row['id']; // cookie var [loguid]
+        if (empty($logpass)) { // this means that it is not set
+            $logpass = $this->generateRandStr(32);
+            $this->connection->query_update('users', array('cookpass' => $logpass), array('id' => $id), '', 1);
         }
 
-        require_code('crypt');
+        // Set a COOKIE of User ID
+        cms_setcookie($cookie_prefix . '[loguid]', $loguid);
 
-        $hash = substr(get_rand_password(), 0, 17);
-        $this->db->query_insert('sessions_keys', array('key_id' => md5($hash), 'user_id' => $id, 'last_ip' => ip2long(get_ip_address()), 'last_login' => time()));
+        // Set a CookPass
+        cms_setcookie($cookie_prefix . '[logpass]', $logpass);
 
-        if (substr($member_cookie_name, 0, 5) != 'cms__') {
-            $session_id = get_rand_password();
-            $this->db->query_insert('sessions', array(
-                'session_id' => $session_id,
-                'session_user_id' => $id,
-                'session_forum_id' => 0,
-                'session_last_visit' => time(),
-                'session_start' => time(),
-                'session_time' => time(),
-                'session_ip' => get_ip_address(),
-                'session_browser' => get_browser_string(),
-                'session_forwarded_for' => '',
-                'session_page' => '',
-                'session_viewonline' => 1,
-                'session_autologin' => 1,
-                'session_admin' => $this->_is_super_admin($id),
-            ));
-        } else {
-            $session_id = null;
-        }
+        if (substr(get_member_cookie(), 0, 5) != 'cms__') {
+            $session_row = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'sessions WHERE uid=' . strval($id), 1);
+            $session_row = (!empty($session_row[0])) ? $session_row[0] : array();
+            $session_id = (!empty($session_row['sid'])) ? $session_row['sid'] : '';
 
-        $cookie = serialize(array($real_member_cookie => strval($id), $real_pass_cookie => $hash, $real_session_cookie => $session_id));
-
-        if ($colon_pos !== false) {
-            cms_setcookie($base, $cookie);
-        } else {
-            cms_setcookie($real_member_cookie, strval($id));
-            cms_setcookie($real_pass_cookie, $hash);
-            if ($session_id !== null) {
-                cms_setcookie($real_session_cookie, $session_id);
+            if (!empty($session_id)) {
+                $this->connection->query_update('sessions', array('time' => time()), array('uid' => $id), '', 1);
+            } else {
+                $session_id = strtolower($this->generateRandStr(32));
+                $this->connection->query_insert('sessions', array('sid' => $session_id, 'uid' => $id, 'time' => time(), 'data' => '', 'ip' => $row['r_ip']));
             }
+
+            // Now lets try and set a COOKIE of AEF Session ID
+            cms_setcookie($cookie_prefix . '[aefsid]', $session_id);
         }
+    }
+
+    /**
+     * Get a custom md5 for a string
+     *
+     * @param  string $string The inputted string
+     * @param  SHORT_TEXT $member The username
+     * @param  SHORT_TEXT $salt The salt
+     * @return string The md5-ed string
+     */
+    public function forum_md5($string, $member = '', $salt = '')
+    {
+        if (empty($salt) && !empty($member)) {
+            $member_row = $this->get_member_row($this->get_member_from_username($member));
+            $salt = (!empty($member_row['salt'])) ? $member_row['salt'] : '';
+        }
+        $string = addslashes(trim($string));
+        $string = (!empty($salt)) ? md5($salt . $string) : md5($string);
+
+        return $string;
     }
 
     /**
@@ -1405,13 +1320,23 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $cookie_login = false)
     {
+        ////////////////////////////////////////////
+        // When a user is considered to be logged-in
+        // 1 - Has Session VAR UID
+        // 2 - Has a Cookie for login information
+        ////////////////////////////////////////////
+
+        global $SITE_INFO;
+
+        $cookie_prefix = preg_replace('/\[logpass\]/', '', $SITE_INFO['pass_cookie']); // get cookie prefix
+
         $out = array();
         $out['id'] = null;
 
-        if ($userid === null) {
-            $rows = $this->db->query_select('users', array('*'), array('username_clean' => strtolower($username)), '', 1);
+        if (is_null($userid)) {
+            $rows = $this->connection->query_select('users', array('*'), array('username' => $username), '', 1);
             if (array_key_exists(0, $rows)) {
-                $this->MEMBER_ROWS_CACHED[$rows[0]['user_id']] = $rows[0];
+                $this->MEMBER_ROWS_CACHED[$rows[0]['id']] = $rows[0];
             }
         } else {
             $rows = array();
@@ -1423,30 +1348,26 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             return $out;
         }
         $row = $rows[0];
-        if ($this->is_banned($row['user_id'])) { // All hands to the guns
+        if ($this->is_banned($row['id'])) { // All hands to the guns
             $out['error'] = do_lang_tempcode('YOU_ARE_BANNED');
             return $out;
         }
+
         if ($cookie_login) {
-            $lookup = $this->db->query_select_value_if_there('sessions_keys', 'user_id', array('key_id' => md5($password_raw)));
-            if ($row['user_id'] !== $lookup) {
+            $cookpass = (!empty($_COOKIE[$cookie_prefix . '[logpass]'])) ? $_COOKIE[$cookie_prefix . '[logpass]'] : '';
+            $lookup = $this->connection->query_select_value_if_there('users', 'id', array('cookpass' => $cookpass, 'id' => $row['id']));
+            if ($row['id'] !== $lookup) {
                 $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                 return $out;
             }
         } else {
-            if ($row['user_password'] != $password_hashed) {
+            if ($row['password'] != $password_hashed) {
                 $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : 'MEMBER_BAD_PASSWORD');
                 return $out;
             }
         }
 
-        $pos = strpos(get_member_cookie(), '_data:userid');
-        require_code('users_active_actions');
-        if ($pos !== false) {
-            cms_eatcookie(substr(get_member_cookie(), 0, $pos) . '_sid');
-        }
-
-        $out['id'] = $row['user_id'];
+        $out['id'] = $row['id'];
         return $out;
     }
 
@@ -1458,9 +1379,9 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function get_member_ip($member)
     {
-        $ip = $this->db->query_select_value_if_there('posts', 'poster_ip', array('poster_id' => $member));
-        if ($ip !== null) {
-            return $this->_un_phpbb_ip($ip);
+        $ip = $this->connection->query_select_value_if_there('posts', 'poster_ip', array('poster_id' => $member));
+        if (!is_null($ip)) {
+            return $ip; // the IP is not stored in phpBB format
         }
         return '';
     }
@@ -1477,7 +1398,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             return $this->MEMBER_ROWS_CACHED[$member];
         }
 
-        $rows = $this->db->query_select('users', array('*'), array('user_id' => $member), '', 1);
+        $rows = $this->connection->query_select('users', array('*'), array('id' => $member), '', 1);
         if (!array_key_exists(0, $rows)) {
             return null;
         }
@@ -1495,6 +1416,6 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     public function get_member_row_field($member, $field)
     {
         $row = $this->get_member_row($member);
-        return ($row === null) ? null : $row[$field];
+        return is_null($row) ? null : $row[$field];
     }
 }

@@ -975,7 +975,7 @@ class Virtual_shell
             $this->output[STREAM_STDERR] = '';
 
             if ($commandr_output === null) {
-                $this->output[STREAM_STDERR] = do_lang('SUCCESS');
+                $this->output[STREAM_STDOUT] = do_lang('SUCCESS');
             } else {
                 $this->output[STREAM_STDHTML] = $this->_array_to_html($commandr_output);
             }

@@ -1182,14 +1182,12 @@ class Forum_driver_vb3 extends Forum_driver_base
     {
         // User
         cms_setcookie(get_member_cookie(), strval($id));
-        $_COOKIE[get_member_cookie()] = strval($id);
 
         // Password
         $password_hashed = $this->get_member_row_field($id, 'password');
         global $SITE_INFO;
         $_password = md5($password_hashed . $SITE_INFO['vb_unique_id']);
         cms_setcookie(get_pass_cookie(), $_password);
-        $_COOKIE[get_pass_cookie()] = $_password;
     }
 
     /**
@@ -1237,8 +1235,10 @@ class Forum_driver_vb3 extends Forum_driver_base
             return $out;
         }
 
-        require_code('users_active_actions');
-        cms_eatcookie('sessionhash');
+        if (substr(get_member_cookie(), 0, 5) != 'cms__') {
+            require_code('users_active_actions');
+            cms_eatcookie('sessionhash');
+        }
 
         $out['id'] = $row['userid'];
         return $out;
