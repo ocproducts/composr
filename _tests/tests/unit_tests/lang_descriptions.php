@@ -53,4 +53,22 @@ class lang_descriptions_test_set extends cms_test_case
             }
         }
     }
+
+    public function testNoNonsenseSections()
+    {
+        foreach (array_keys($this->lang_files) as $file) {
+            $path_a = get_custom_file_base() . '/lang_custom/' . fallback_lang() . '/' . $file . '.ini';
+            $path_b = get_file_base() . '/lang/' . fallback_lang() . '/' . $file . '.ini';
+            foreach (array($path_a, $path_b) as $path) {
+                if (is_file($path)) {
+                    $c = file_get_contents($path);
+                    $matches = array();
+                    $num_matches = preg_match_all('#^\[(\w+)\]$#m', $c, $matches);
+                    for ($i = 0; $i < $num_matches; $i++) {
+                        $this->assertTrue(in_array($matches[1][$i], array('descriptions', 'strings', 'runtime_processing')), 'Unknown language section ' . $matches[1][$i] . ' in ' . $path);
+                    }
+                }
+            }
+        }
+    }
 }
