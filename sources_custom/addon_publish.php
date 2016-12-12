@@ -128,10 +128,39 @@ function find_addon_category_download_category($category_name, $parent_id = null
     return $id;
 }
 
-function get_addons_list_under_category($category_name)
+function get_addons_list_under_category($category_name, $version_branch)
 {
-    $addons_here = array();
+    static $addons_in_cats = null;
+    if ($addons_in_cats === null) {
+        require_code('tar');
+        require_code('files');
 
+        foreach (array('uploads/downloads', 'exports/addons') as $dir) {
+            $dh = opendir(get_custom_file_base() . '/' . $dir);
+            while (($file = readdir($dh)) !== false) {
+                $matches = array();
+                if (preg_match('#^(\w+)-' . preg_quote($version_branch, '#') . '.tar#', $file, $matches) != 0) {
+                    $path = get_custom_file_base() . '/' . $dir . '/' . $file;
+                    $tar = tar_open($path, 'rb');
+                    $info_file = tar_get_file($tar, 'addon.inf', true);
+                    $ini_info = better_parse_ini_file(null, $info_file['data']);
+                    tar_close($tar);
+                    $_category_name = $ini_info['category'];
+
+                    $addon = $matches[1];
+                    if (!isset($addons_in_cats[$_category_name])) {
+                        $addons_in_cats[$_category_name] = array();
+                    }
+                    $addons_in_cats[$_category_name][] = $addon;
+                }
+            }
+            closedir($dh);
+        }
+    }
+
+    $addons_here = isset($addons_in_cats[$category_name]) ? $addons_in_cats[$category_name] : array();
+
+    // Look in local filesystem too
     $addons = find_all_hooks('systems', 'addon_registry');
     foreach ($addons as $addon => $place) {
         if ($place == 'sources_custom') {
@@ -175,3 +204,29 @@ function find_addon_category_list()
     return array_unique($categories);
 }
 
+function generate_addon_description($info)
+{
+    $description = $info['description'];
+
+    $dependencies = implode(', ', $info['dependencies']);
+    if ($dependencies != '') {
+        $description .= "\n\n[title=\"2\"]System Requirements / Dependencies[/title]\n\n" . $dependencies;
+    }
+
+    $incompatibilities = implode(', ', $info['incompatibilities']);
+    if ($incompatibilities != '') {
+        $description .= "\n\n[title=\"2\"]Incompatibilities[/title]\n\n" . $incompatibilities;
+    }
+
+    $licence = $info['licence'];
+    if ($licence != '') {
+        $description .= "\n\n[title=\"2\"]Licence[/title]\n\n" . $licence;
+    }
+
+    $copyright_attribution = implode(', ', $info['copyright_attribution']);
+    if ($copyright_attribution != '') {
+        $description .= "\n\n[title=\"2\"]Additional credits/attributions[/title]\n\n" . $copyright_attribution;
+    }
+
+    return $description;
+}
