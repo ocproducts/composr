@@ -31,6 +31,7 @@ require_code('addons2');
 require_code('version');
 require_code('version2');
 require_code('tar');
+require_code('addon_publish');
 
 if (php_function_allowed('set_time_limit')) {
     @set_time_limit(0);
@@ -90,6 +91,8 @@ foreach ($addons as $name => $place) {
         }
     }
 
+    $old_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
+
     // Archive it off to exports/addons
     create_addon(
         $file,
@@ -114,10 +117,20 @@ foreach ($addons as $name => $place) {
         tar_close($tar_file);
     }
 
-    echo nl2br(escape_html(update_addon_descriptions($file, $name, $addon_info['description'])));
+    clearstatcache();
+    $new_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
+
+    if ($old_time !== $new_time) {
+        if ($old_time === false) {
+            echo '<p>New addon with description:</p><div class="whitespace_visible">' . escape_html(generate_addon_description($addon_info)) . '</div>';
+            
+        } else {
+            echo nl2br(escape_html(update_addon_descriptions($file, $name, generate_addon_description($addon_info))));
+        }
+    }
 }
 if ($done_addon) {
-    echo "<p>Addons have been exported to <kbd>export/addons/</kbd></p>\n";
+    echo "<hr /><p>Addons have been exported to <kbd>export/addons/</kbd></p>\n";
 }
 
 if (get_param_integer('export_themes', 0) == 1) {
@@ -195,6 +208,8 @@ if (get_param_integer('export_themes', 0) == 1) {
         $_GET['keep_theme_test'] = '1';
         $_GET['theme'] = $theme;
 
+        $old_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
+
         create_addon(
             $file,
             $files2,
@@ -211,15 +226,20 @@ if (get_param_integer('export_themes', 0) == 1) {
             'exports/addons'
         );
 
-        echo nl2br(escape_html(update_addon_descriptions($file, $name, $description)));
+        clearstatcache();
+        $new_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
+
+        if ($old_time !== $new_time) {
+            echo nl2br(escape_html(update_addon_descriptions($file, $name, $description)));
+        }
     }
 
     if ($only !== null) {
-        echo "<p>All themes have been exported to <kbd>export/addons/</kbd></p>\n";
+        echo "<hr /><p>All themes have been exported to <kbd>export/addons/</kbd></p>\n";
     }
 }
 
-echo "<hr /><p><strong>Done</strong></p>\n";
+echo "<hr /><p><strong>Done. To deploy live upload changed files from <kbd>export/addons/</kbd> to <kbd>uploads/downloads/</kbd> on live (and add download entries for any new addons using the descriptions given and other correct details &mdash; or use the <kbd>publish_addons_as_downloads</kbd> page).</strong></p>\n";
 
 function update_addon_descriptions($file, $name, $description)
 {

@@ -340,8 +340,8 @@ function get_minimum_search_length()
     if (is_null($min_word_length)) {
         $min_word_length = 4;
         if (substr(get_db_type(), 0, 5) == 'mysql') {
-            $_min_word_length = $GLOBALS['SITE_DB']->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', null, null);
-            if (array_key_exists(0, $_min_word_length)) {
+            $_min_word_length = $GLOBALS['SITE_DB']->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', null, null, true);
+            if (isset($_min_word_length[0])) {
                 $min_word_length = intval($_min_word_length[0]['Value']);
             }
         }

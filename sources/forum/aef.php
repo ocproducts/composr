@@ -1269,23 +1269,21 @@ class Forum_driver_aef extends Forum_driver_base
         // Set a CookPass
         cms_setcookie($cookie_prefix . '[logpass]', $logpass);
 
-        $session_row = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'sessions WHERE uid=' . strval($id), 1);
-        $session_row = (!empty($session_row[0])) ? $session_row[0] : array();
-        $session_id = (!empty($session_row['sid'])) ? $session_row['sid'] : '';
+        if (substr(get_member_cookie(), 0, 5) != 'cms__') {
+            $session_row = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'sessions WHERE uid=' . strval($id), 1);
+            $session_row = (!empty($session_row[0])) ? $session_row[0] : array();
+            $session_id = (!empty($session_row['sid'])) ? $session_row['sid'] : '';
 
-        if (!empty($session_id)) {
-            $this->connection->query_update('sessions', array('time' => time()), array('uid' => $id), '', 1);
-        } else {
-            $session_id = strtolower($this->generateRandStr(32));
-            $this->connection->query_insert('sessions', array('sid' => $session_id, 'uid' => $id, 'time' => time(), 'data' => '', 'ip' => $row['r_ip']));
+            if (!empty($session_id)) {
+                $this->connection->query_update('sessions', array('time' => time()), array('uid' => $id), '', 1);
+            } else {
+                $session_id = strtolower($this->generateRandStr(32));
+                $this->connection->query_insert('sessions', array('sid' => $session_id, 'uid' => $id, 'time' => time(), 'data' => '', 'ip' => $row['r_ip']));
+            }
+
+            // Now lets try and set a COOKIE of AEF Session ID
+            cms_setcookie($cookie_prefix . '[aefsid]', $session_id);
         }
-
-        // Now lets try and set a COOKIE of AEF Session ID
-        @cms_setcookie($cookie_prefix . '[aefsid]', $session_id);
-
-        $_COOKIE[$cookie_prefix . '[logpass]'] = $logpass;
-        $_COOKIE[$cookie_prefix . '[loguid]'] = strval($loguid);
-        $_COOKIE[$cookie_prefix . '[aefsid]'] = $session_id;
     }
 
     /**

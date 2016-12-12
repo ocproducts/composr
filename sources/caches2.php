@@ -176,9 +176,9 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
             'identifier' => md5($cache_identifier)
         ), '', 1);
         $GLOBALS['SITE_DB']->query_insert('cache', array(
+            'cached_for' => $codename,
             'dependencies' => $dependencies,
             'lang' => $lang,
-            'cached_for' => $codename,
             'identifier' => md5($cache_identifier),
             'the_theme' => $theme,
             'staff_status' => $staff_status,
