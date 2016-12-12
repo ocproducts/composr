@@ -1124,7 +1124,6 @@ class Forum_driver_smf2 extends Forum_driver_base
         $data = array($id, $_password, (time() + get_cookie_days() * 24 * 60 * 60), 3);
 
         cms_setcookie($stub, serialize($data));
-        $_COOKIE[$stub] = strval($id);
     }
 
     /**
@@ -1183,8 +1182,10 @@ class Forum_driver_smf2 extends Forum_driver_base
             return $out;
         }
 
-        require_code('users_active_actions');
-        cms_eatcookie('PHPSESSID');
+        if (substr(get_member_cookie(), 0, 5) != 'cms__') {
+            require_code('users_active_actions');
+            cms_eatcookie('PHPSESSID');
+        }
 
         $out['id'] = $row['id_member'];
         return $out;

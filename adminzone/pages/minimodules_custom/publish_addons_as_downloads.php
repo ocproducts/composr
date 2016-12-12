@@ -56,7 +56,7 @@ if (get_param_integer('import_addons', 1) == 1) {
     $categories = find_addon_category_list();
     foreach ($categories as $category) {
         $cat_id = find_addon_category_download_category($category, $c_main_id);
-        $addon_arr = get_addons_list_under_category($category);
+        $addon_arr = get_addons_list_under_category($category, $version_branch);
         foreach ($addon_arr as $addon) {
             $addon_count++;
             publish_addon($addon, $version_branch, $cat_id);
@@ -97,14 +97,17 @@ if (get_param_integer('import_themes', 1) == 1) {
 function publish_addon($addon, $version_branch, $cat_id)
 {
     $file = $addon . '-' . $version_branch . '.tar';
-    $from = get_custom_file_base() . '/exports/addons/' . $addon . '-' . $version_branch . '.tar';
+
+    $from = get_custom_file_base() . '/exports/addons/' . $file;
     $to = get_custom_file_base() . '/uploads/downloads/' . $file;
-    @unlink($to);
-    if (!file_exists($from)) {
-        warn_exit('Missing: ' . $from);
-    }
-    if (!file_exists($to)) {
+
+    if ((file_exists($from)) && (file_exists($to))) {
+        @unlink($to);
         copy($from, $to);
+    } elseif (file_exists($from)) {
+        copy($from, $to);
+    } elseif (!file_exists($to)) {
+        warn_exit('Missing: ' . $from);
     }
 
     $addon_url = 'uploads/downloads/' . urlencode($file);
@@ -115,30 +118,16 @@ function publish_addon($addon, $version_branch, $cat_id)
     if (is_null($test)) {
         $tar = tar_open($from, 'rb');
         $info_file = tar_get_file($tar, 'addon.inf', true);
-        $info = better_parse_ini_file(null, $info_file['data']);
+        $ini_info = better_parse_ini_file(null, $info_file['data']);
         tar_close($tar);
 
-        $name = titleify($info['name']);
-        $description = $info['description'];
-        $author = $info['author'];
-        $dependencies = $info['dependencies'];
-        $incompatibilities = $info['incompatibilities'];
-        $category = $info['category'];
-        $licence = $info['licence'];
-        $copyright_attribution = $info['copyright_attribution'];
+        $addon_info = read_addon_info($addon, false, null, $ini_info);
 
-        if ($dependencies != '') {
-            $description .= "\n\n[title=\"2\"]System Requirements / Dependencies[/title]\n\n" . $dependencies;
-        }
-        if ($incompatibilities != '') {
-            $description .= "\n\n[title=\"2\"]Incompatibilities[/title]\n\n" . $incompatibilities;
-        }
-        if ($licence != '') {
-            $description .= "\n\n[title=\"2\"]Licence[/title]\n\n" . $licence;
-        }
-        if ($copyright_attribution != '') {
-            $description .= "\n\n[title=\"2\"]Additional credits/attributions[/title]\n\n" . $copyright_attribution;
-        }
+        $name = titleify($addon_info['name']);
+        $author = $addon_info['author'];
+        $category = $addon_info['category'];
+
+        $description = generate_addon_description($addon_info);
 
         $download_owner = $GLOBALS['FORUM_DRIVER']->get_member_from_username($author);
         if (is_null($download_owner)) {
@@ -155,11 +144,21 @@ function publish_addon($addon, $version_branch, $cat_id)
 
 function publish_theme($file, $version_branch, $cat_id)
 {
+    $addon = basename($file, '.tar');
+    $new_file = $addon . '-' . $version_branch . '.tar';
+
     $from = get_custom_file_base() . '/exports/addons/' . $file;
-    $new_file = basename($file, '.tar') . '-' . $version_branch . '.tar';
     $to = get_custom_file_base() . '/uploads/downloads/' . $new_file;
-    @unlink($to);
-    copy($from, $to);
+
+    if ((file_exists($from)) && (file_exists($to))) {
+        @unlink($to);
+        copy($from, $to);
+    } elseif (file_exists($from)) {
+        copy($from, $to);
+    } elseif (!file_exists($to)) {
+        warn_exit('Missing: ' . $from);
+    }
+
     $addon_url = 'uploads/downloads/' . urlencode($new_file);
 
     $fsize = filesize(get_file_base() . '/' . urldecode($addon_url));
@@ -168,12 +167,14 @@ function publish_theme($file, $version_branch, $cat_id)
     if (is_null($test)) {
         $tar = tar_open($from, 'rb');
         $info_file = tar_get_file($tar, 'addon.inf', true);
-        $info = better_parse_ini_file(null, $info_file['data']);
+        $ini_info = better_parse_ini_file(null, $info_file['data']);
         tar_close($tar);
 
-        $name = $info['name'];
-        $description = $info['description'];
-        $author = $info['author'];
+        $addon_info = read_addon_info($addon, false, null, $ini_info);
+
+        $name = $addon_info['name'];
+        $description = $addon_info['description'];
+        $author = $addon_info['author'];
 
         $download_owner = $GLOBALS['FORUM_DRIVER']->get_member_from_username($author);
         if (is_null($download_owner)) {

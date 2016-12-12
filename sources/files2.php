@@ -1340,7 +1340,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                         $HTTP_DOWNLOAD_URL = $matches[1];
                                                         if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
                                                             $bak = $HTTP_FILENAME;
-                                                            $text = $no_redirect ? mixed() : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                                            $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                                                            $text = $no_redirect ? mixed() : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
                                                             if (is_null($HTTP_FILENAME)) {
                                                                 $HTTP_FILENAME = $bak;
                                                             }
@@ -1594,7 +1595,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             $matches[1] = qualify_url($matches[1], $url);
                         }
                         $bak = $HTTP_FILENAME;
-                        $text = $no_redirect ? null : _http_download_file($matches[2], $byte_limit, $trigger_error, false, $ua, null, collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                        $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                        $text = $no_redirect ? null : _http_download_file($matches[2], $byte_limit, $trigger_error, false, $ua, null, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
                         if ($no_redirect) {
                             $HTTP_DOWNLOAD_URL = $matches[2];
                         }
@@ -1623,7 +1625,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             $bak = $HTTP_FILENAME;
                             $HTTP_DOWNLOAD_URL = $matches[1];
                             if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
-                                $text = $no_redirect ? null : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                                $text = $no_redirect ? null : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
                                 if (is_null($HTTP_FILENAME)) {
                                     $HTTP_FILENAME = $bak;
                                 }
@@ -1706,7 +1709,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 return null;
                             case '405':
                                 if ($byte_limit == 0 && !$no_redirect && empty($post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
-                                    $text = _http_download_file($url, 1, $trigger_error, false, $ua, $post_params, collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                    $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                                    $text = _http_download_file($url, 1, $trigger_error, false, $ua, $post_params, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
                                     $DOWNLOAD_LEVEL--;
                                     if ($put !== null) {
                                         fclose($put);

@@ -752,10 +752,18 @@ function step_4()
         $PROBED_FORUM_CONFIG['board_url'] = (strlen($append) < 15) ? (substr($base_url, 0, strlen($base_url) - ($i - strlen($board_path))) . ((((strlen($append) > 0) && ($append[0] == '/'))) ? '' : '/') . $append) : ($base_url . '/forums');
     }
 
-    if (!array_key_exists('cookie_member_id', $PROBED_FORUM_CONFIG)) {
+    if (array_key_exists('cookie_member_id', $PROBED_FORUM_CONFIG)) {
+        if (($forum_type != 'cns') && ($forum_type != 'none')) {
+            $PROBED_FORUM_CONFIG['cookie_member_id'] = 'cms__' . $PROBED_FORUM_CONFIG['cookie_member_id'];
+        }
+    } else {
         $PROBED_FORUM_CONFIG['cookie_member_id'] = 'cms_member_id';
     }
-    if (!array_key_exists('cookie_member_hash', $PROBED_FORUM_CONFIG)) {
+    if (array_key_exists('cookie_member_hash', $PROBED_FORUM_CONFIG)) {
+        if (($forum_type != 'cns') && ($forum_type != 'none')) {
+            $PROBED_FORUM_CONFIG['cookie_member_hash'] = 'cms__' . $PROBED_FORUM_CONFIG['cookie_member_hash'];
+        }
+    } else {
         $PROBED_FORUM_CONFIG['cookie_member_hash'] = 'cms_member_hash';
     }
 

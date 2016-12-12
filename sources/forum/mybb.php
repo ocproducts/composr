@@ -1212,26 +1212,26 @@ class Forum_driver_mybb extends Forum_driver_base
         $loguid = $row['uid']; //member ID
 
         //Set a User COOKIE
-        cms_setcookie('mybbuser', $loguid . '_' . $loginkey);
+        $member_cookie_name = get_member_cookie();
+        cms_setcookie($member_cookie_name, $loguid . '_' . $loginkey);
 
-        $current_ip = get_ip_address();
+        if (substr($member_cookie_name, 0, 5) != 'cms__') {
+            $current_ip = get_ip_address();
 
-        $session_row = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'sessions WHERE ' . db_string_equal_to('ip', $current_ip), 1);
-        $session_row = (!empty($session_row[0])) ? $session_row[0] : array();
-        $session_id = (!empty($session_row['sid'])) ? $session_row['sid'] : '';
+            $session_row = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'sessions WHERE ' . db_string_equal_to('ip', $current_ip), 1);
+            $session_row = (!empty($session_row[0])) ? $session_row[0] : array();
+            $session_id = (!empty($session_row['sid'])) ? $session_row['sid'] : '';
 
-        if (!empty($session_id)) {
-            $this->connection->query_update('sessions', array('time' => time(), 'uid' => $loguid), array('sid' => $session_id), '', 1);
-        } else {
-            $session_id = md5(strval(time()));
-            $this->connection->query_insert('sessions', array('sid' => $session_id, 'uid' => $id, 'time' => time(), 'ip' => $current_ip));
+            if (!empty($session_id)) {
+                $this->connection->query_update('sessions', array('time' => time(), 'uid' => $loguid), array('sid' => $session_id), '', 1);
+            } else {
+                $session_id = md5(strval(time()));
+                $this->connection->query_insert('sessions', array('sid' => $session_id, 'uid' => $id, 'time' => time(), 'ip' => $current_ip));
+            }
+
+            //Now lets try and set a COOKIE of MyBB Session ID
+            cms_setcookie('sid', $session_id);
         }
-
-        //Now lets try and set a COOKIE of MyBB Session ID
-        @cms_setcookie('sid', $session_id);
-
-        $_COOKIE['mybbuser'] = strval($loguid) . '_' . $loginkey;
-        $_COOKIE['sid'] = $session_id;
     }
 
     /**

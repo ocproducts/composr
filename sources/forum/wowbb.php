@@ -1099,9 +1099,11 @@ class Forum_driver_wowbb extends Forum_driver_base
             $name = $this->get_username($id);
         }
 
+        $member_cookie_name = preg_replace('#\|.*$#', '', get_member_cookie());
+
         $data = $name . '||' . md5($password) . '||0||||||||';
-        cms_setcookie('wowbb', $data);
-        $_COOKIE['wowbb'] = $data;
+
+        cms_setcookie($member_cookie_name, $data);
     }
 
     /**
