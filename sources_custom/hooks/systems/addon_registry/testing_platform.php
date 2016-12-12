@@ -438,6 +438,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/_installer.php',
             '_tests/tests/unit_tests/_installer_xml_db.php',
             '_tests/tests/unit_tests/_installer_forum_drivers.php',
+            '_tests/tests/unit_tests/_setup_wizard.php',
             '_tests/tests/unit_tests/demonstratr.php',
             '_tests/tests/unit_tests/override_issues.php',
             '_tests/tests/unit_tests/js_ssl_issues.php',
