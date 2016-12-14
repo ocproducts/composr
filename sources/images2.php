@@ -430,6 +430,9 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             }
 
             $transparent = imagecolortransparent($source);
+            if ($transparent >= imagecolorstotal($source)) { // Workaround for corrupt images
+                $transparent = -1;
+            }
             if ($transparent != -1) {
                 $_transparent = imagecolorsforindex($source, $transparent);
                 $__transparent = imagecolorallocatealpha($dest, $_transparent['red'], $_transparent['green'], $_transparent['blue'], 127);
@@ -681,6 +684,9 @@ function adjust_pic_orientation($source, $exif)
                 }
 
                 $transparent = imagecolortransparent($source);
+                if ($transparent >= imagecolorstotal($source)) { // Workaround for corrupt images
+                    $transparent = -1;
+                }
                 if ($transparent != -1) {
                     $_transparent = imagecolorsforindex($source, $transparent);
                     $__transparent = imagecolorallocatealpha($dest, $_transparent['red'], $_transparent['green'], $_transparent['blue'], 127);
@@ -776,6 +782,9 @@ function remove_white_edges($source)
     }
 
     $transparent = imagecolortransparent($source);
+    if ($transparent >= imagecolorstotal($source)) { // Workaround for corrupt images
+        $transparent = -1;
+    }
     if ($transparent != -1) {
         $_transparent = imagecolorsforindex($source, $transparent);
         $__transparent = imagecolorallocatealpha($dest, $_transparent['red'], $_transparent['green'], $_transparent['blue'], 127);

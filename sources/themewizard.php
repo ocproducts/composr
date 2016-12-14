@@ -329,6 +329,9 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
 
         imagealphablending($canvas, false);
         $transparent = imagecolortransparent($imgs['background']);
+        if ($transparent >= imagecolorstotal($imgs['background'])) { // Workaround for corrupt images
+            $transparent = -1;
+        }
         if ($transparent != -1) {
             $_transparent = imagecolorsforindex($imgs['background'], $transparent);
             imagecolortransparent($canvas, imagecolorallocate($canvas, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
@@ -1438,6 +1441,9 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
                 imagealphablending($image, false);
 
                 $transparent = imagecolortransparent($_image);
+                if ($transparent >= imagecolorstotal($_image)) { // Workaround for corrupt images
+                    $transparent = -1;
+                }
                 if ($transparent != -1) {
                     $_transparent = imagecolorsforindex($_image, $transparent);
                     imagecolortransparent($image, imagecolorallocate($image, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
@@ -1619,6 +1625,9 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
                 imagesavealpha($image, true);
 
                 $transparent = imagecolortransparent($_image);
+                if ($transparent >= imagecolorstotal($_image)) { // Workaround for corrupt images
+                    $transparent = -1;
+                }
                 if ($transparent != -1) {
                     $_transparent = imagecolorsforindex($_image, $transparent);
                     imagecolortransparent($image, imagecolorallocate($image, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
