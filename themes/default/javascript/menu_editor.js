@@ -140,22 +140,139 @@ function exists_child(elements,parent)
 {
 	for (var i=0;i<elements.length;i++)
 	{
-		if ((elements[i].name.substr(0,7)=='parent_') && (elements[i].value==parent)) return true;
+		if ((elements[i].name.substr(0,'parent_'.length)=='parent_') && (elements[i].value==parent)) return true;
 	}
 	return false;
 }
 
-function is_child(elements,possible_parent,possible_child)
+function is_child(elements,possible_parent,possible_child,do_recursion)
 {
 	for (var i=0;i<elements.length;i++)
 	{
-		if ((elements[i].name.substr(7)==possible_child) && (elements[i].name.substr(0,7)=='parent_'))
+		if ((elements[i].name.substr('parent_'.length)==possible_child) && (elements[i].name.substr(0,'parent_'.length)=='parent_'))
 		{
 			if (elements[i].value==possible_parent) return true;
-			return is_child(elements,possible_parent,elements[i].value);
+			if (do_recursion)
+			{
+				return is_child(elements,possible_parent,elements[i].value,do_recursion);
+			}
 		}
 	}
 	return false;
+}
+
+function prepare_drag_ordering(event,menu_item_id)
+{
+	var menu_item=document.getElementById('branch_wrap_'+menu_item_id);
+
+	var drop_started=function() {
+		menu_item.style.width=find_width(menu_item)+'px';
+		menu_item.style.position='absolute';
+		menu_item.className='menu_editor_branch being_dragged';
+		event.dataTransfer.effectAllowed='move';
+	};
+	drop_started();
+
+	var drop_finished=function() {
+		menu_item.style.width='auto';
+		menu_item.style.position='static';
+		menu_item.style.left='auto';
+		menu_item.style.top='auto';
+		menu_item.className='menu_editor_branch';
+	};
+
+	var form=document.getElementById('edit_form');
+	var elements=form.getElementsByTagName('input');
+	for (var i=0;i<elements.length;i++)
+	{
+		if (elements[i].name.substr(0,'url_'.length)=='url_')
+		{
+			var _menu_item_id=elements[i].name.substr('url_'.length);
+
+			var _menu_item=document.getElementById('branch_wrap_'+_menu_item_id);
+			var _menu_item_above=document.getElementById('branch_wrap_above_'+_menu_item_id);
+			var _menu_item_below=document.getElementById('branch_wrap_below_'+_menu_item_id);
+
+			var may_be_dragged=
+				((_menu_item_id!=menu_item_id) && (!is_child(elements,menu_item_id,_menu_item_id,true)) &&
+				(!is_child(elements,_menu_item_id,menu_item_id,false)));
+
+			var scoped=function(_menu_item,_menu_item_above,_menu_item_below) {
+				if (may_be_dragged)
+				{
+					var enter=function(event,type,ob) {
+						if (!event) event=window.event;
+						event.preventDefault();
+
+						menu_item.style.left=(find_pos_x(_menu_item))+'px';
+						menu_item.style.top=(find_pos_y(_menu_item))+'px';
+						menu_item.style.width=(find_width(_menu_item)-2)+'px';
+
+						if (type!='under') ob.className='drag_drop_position_barrier drag_drop_position_barrier_active';
+					};
+
+					var leave=function(event,type,ob) {
+						if (!event) event=window.event;
+						event.preventDefault();
+
+						if (type!='under') ob.className='drag_drop_position_barrier';
+					};
+
+					var over=function(event,type,ob) {
+						if (!event) event=window.event;
+						event.preventDefault();
+						event.dataTransfer.dropEffect='move';
+					};
+
+					var drop=function(event,type,ob) {
+						if (!event) event=window.event;
+						event.preventDefault();
+						event.stopPropagation();
+
+						drop_finished();
+
+						window.alert('Drop '+type);//TODO
+					};
+
+					_menu_item.ondragenter=function(event) { enter(event,'under',_menu_item); };
+					_menu_item.ondragleave=function(event) { leave(event,'under',_menu_item); };
+					_menu_item.ondragover=function(event) { over(event,'under',_menu_item); };
+					_menu_item.ondrop=function(event) { drop(event,'under',_menu_item); };
+
+					_menu_item_above.ondragenter=function(event) { enter(event,'above',_menu_item_above); };
+					_menu_item_above.ondragleave=function(event) { leave(event,'above',_menu_item_above); };
+					_menu_item_above.ondragover=function(event) { over(event,'above',_menu_item_above); };
+					_menu_item_above.ondrop=function(event) { drop(event,'above',_menu_item_above); };
+
+					_menu_item_below.ondragenter=function(event) { enter(event,'below',_menu_item_below); };
+					_menu_item_below.ondragleave=function(event) { leave(event,'below',_menu_item_below); };
+					_menu_item_below.ondragover=function(event) { over(event,'below',_menu_item_below); };
+					_menu_item_below.ondrop=function(event) { drop(event,'below',_menu_item_below); };
+				} else
+				{
+					_menu_item.ondragenter=null;
+					_menu_item.ondragleave=null;
+					_menu_item.ondragover=null;
+					_menu_item.ondrop=null;
+
+					_menu_item_above.ondragenter=null;
+					_menu_item_above.ondragleave=null;
+					_menu_item_above.ondragover=null;
+					_menu_item_above.ondrop=null;
+
+					_menu_item_below.ondragenter=null;
+					_menu_item_below.ondragleave=null;
+					_menu_item_below.ondragover=null;
+					_menu_item_below.ondrop=null;
+				}
+			};
+			scoped(_menu_item,_menu_item_above,_menu_item_below);
+		}
+	}
+
+	menu_item.ondragend=function(event) { // drop cancelled
+		drop_finished();
+	};
 }
 
 function handle_ordering(t,up,down)
@@ -180,10 +297,10 @@ function handle_ordering(t,up,down)
 		// Find previous branch with same parent (if exists)
 		for (i=0;i<form.elements.length;i++)
 		{
-			if ((form.elements[i].name.substr(0,7)=='parent_') &&
+			if ((form.elements[i].name.substr(0,'parent_'.length)=='parent_') &&
 				 (form.elements[i].value==parent_num))
 			{
-				bindex=form.elements[i].name.substr(7,form.elements[i].name.length);
+				bindex=form.elements[i].name.substr('parent_'.length,form.elements[i].name.length);
 				b=window.parseInt(form.elements['order_'+bindex].value);
 				if ((b<num) && (b>best))
 				{
@@ -199,10 +316,10 @@ function handle_ordering(t,up,down)
 		// Find next branch with same parent (if exists)
 		for (i=0;i<form.elements.length;i++)
 		{
-			if ((form.elements[i].name.substr(0,7)=='parent_') &&
+			if ((form.elements[i].name.substr(0,'parent_'.length)=='parent_') &&
 				 (form.elements[i].value==parent_num))
 			{
-				bindex=form.elements[i].name.substr(7,form.elements[i].name.length);
+				bindex=form.elements[i].name.substr('parent_'.length,form.elements[i].name.length);
 				b=window.parseInt(form.elements['order_'+bindex].value);
 				if ((b>num) && ((b<best) || (best==-1)))
 				{
@@ -223,7 +340,7 @@ function handle_ordering(t,up,down)
 				var us=elements[i];
 				for (b=up?(i-1):(i+1);up?(b>0):(b<elements.length);up?b--:b++)
 				{
-					if ((!is_child(elements,index,elements[b].name.substr(7))) && (elements[b].name.substr(0,7)=='parent_') && ((up) || (document.getElementById('branch_type_'+elements[b].name.substr(7)).selectedIndex==0) || (!exists_child(elements,elements[b].name.substr(7)))))
+					if ((!is_child(elements,index,elements[b].name.substr('parent_'.length),true)) && (elements[b].name.substr(0,'parent_'.length)=='parent_') && ((up) || (document.getElementById('branch_type_'+elements[b].name.substr('parent_'.length)).selectedIndex==0) || (!exists_child(elements,elements[b].name.substr('parent_'.length)))))
 					{
 						var target=elements[b];
 						var main=us.parentNode.parentNode;
@@ -392,10 +509,10 @@ function check_menu()
 	var i,id,name,the_parent,ignore,caption,url,branch_type;
 	for (i=0;i<form.elements.length;i++)
 	{
-		name=form.elements[i].name.substr(0,7);
+		name=form.elements[i].name.substr(0,'parent_'.length);
 		if (name=='parent_') // We don't care about this, but it does tell us we have found a menu branch ID
 		{
-			id=form.elements[i].name.substring(7,form.elements[i].name.length);
+			id=form.elements[i].name.substring('parent_'.length,form.elements[i].name.length);
 
 			// Is this visible? (if it is we need to check the IDs
 			the_parent=form.elements[i];
@@ -497,7 +614,8 @@ function delete_menu_branch(ob)
 						}
 					);
 				}
-			}
+			},
+			'500'
 		);
 	} else
 	{

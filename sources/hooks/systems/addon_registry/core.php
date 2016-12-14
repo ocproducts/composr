@@ -662,6 +662,8 @@ class Hook_addon_registry_core
             'sources/temporal2.php',
             'sources/blocks/main_comcode_page_children.php',
             'sources/blocks/main_include_module.php',
+            'themes/default/images/icons/16x16/move.png',
+            'themes/default/images/icons/32x32/move.png',
             'themes/default/images/icons/16x16/filetypes/email_link.png',
             'themes/default/images/icons/16x16/filetypes/external_link.png',
             'themes/default/images/icons/16x16/filetypes/feed.png',
