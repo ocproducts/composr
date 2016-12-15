@@ -7,11 +7,9 @@
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to top right\, {$GET,main_background}\, {$GET,main_2_background});}
 }
 
-.login_page {
-	background: url('{$IMG;,background_image}') no-repeat 20px 44px;
-}
 /*{+START,CSS_MODE,desktop}*/
 	.login_page {
+		background: url('{$IMG;,background_image}') no-repeat 20px 44px;
 		text-align: center;
 		width: 80%;
 		padding: 0.5em;

@@ -19,13 +19,13 @@
 				<table class="map_table autosized_table login_page_form">
 					<tbody>
 						<tr>
-							<th class="de_th"><label for="login_username">{$LOGIN_LABEL}</label>:</th>
+							<th class="de_th"><label for="login_username">{$LOGIN_LABEL}:</label></th>
 							<td>
 								<input maxlength="80" type="text" value="{USERNAME*}" id="login_username" name="login_username" size="25" />
 							</td>
 						</tr>
 						<tr>
-							<th class="de_th"><label for="password">{!PASSWORD}</label>:</th>
+							<th class="de_th"><label for="password">{!PASSWORD}:</label></th>
 							<td>
 								<input maxlength="255" type="password" id="password" name="password" size="25" />
 							</td>
