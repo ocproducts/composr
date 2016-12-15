@@ -6,6 +6,8 @@
 
 [title]Community stars[/title]
 
+{$BLOCK,block=main_patreon_sponsors}
+
 <div class="cntRow">
 	<p>Each time you are give points in our community, you are assigned a role in relation to the points you receive:</p>
 
