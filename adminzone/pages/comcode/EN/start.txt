@@ -17,6 +17,15 @@
 [title="2"]Other Websites[/title]
 
 {| 60%:37% wide floats
-| [block defer="1"]main_staff_website_monitoring[/block][title="3"]Recommend Composr[/title]Know someone who needs a website? [page=":recommend:browse:cms=1"]Recommend Composr[/page] and they'll be sent a link to your own site too.
+| [block defer="1"]main_staff_website_monitoring[/block]
+
+[title="3"]Recommend Composr[/title]
+
+Know someone who needs a website? [page=":recommend:browse:cms=1"]Recommend Composr[/page] and they'll be sent a link to your own site too.
+
+[title="3"]Sponsors[/title]
+
+[surround="vertical_alignment"]Check out our [page="adminzone:admin_version"]sponsors[/page]. We love them :wub:.[/surround]
+
 | [block defer="1"]main_staff_links[/block]
 |}
