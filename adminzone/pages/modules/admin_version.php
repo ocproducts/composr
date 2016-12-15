@@ -1012,12 +1012,12 @@ class Module_admin_version
     {
         $level = get_param_integer('level', 50);
 
-        if (addon_installed('composr_homesite')) {
+        if (addon_installed('composr_homesite') && false/*we don't want this to run*/) {
             require_code('patreons');
             $patreons = get_patreons_on_minimum_level($level);
         } else {
             require_code('json'); // TODO: Remove in v11
-            $patreons = json_decode('http://compo.sr/data_custom/patreons.php?level=' . strval($level));
+            $patreons = json_decode(http_download_file('http://compo.sr/data_custom/patreons.php?level=' . strval($level)));
         }
 
         $_patreons = array();
