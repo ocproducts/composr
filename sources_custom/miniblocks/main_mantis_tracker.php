@@ -56,27 +56,42 @@ if ($credits_per_hour == 0) {
 // Patreons...
 
 require_code('patreons');
-$patreons = get_patreons_on_minimum_level(10);
+$patreons = get_patreons_on_minimum_level(3);
 if (count($patreons) > 0) {
-    $patreon_bonuses = '(';
-    $patreon_bonuses .= 'SELECT COUNT(*)*9 FROM mantis_bug_monitor_table yy WHERE yy.bug_id=a.id AND yy.user_id IN (';
+    $patreon_bonuses_a = '(';
+    $patreon_bonuses_a .= 'SELECT COUNT(*)*3 FROM mantis_bug_monitor_table yy WHERE yy.bug_id=a.id AND yy.user_id IN ('; // 4-1=3
     foreach ($patreons as $i => $patron) {
         if ($i != 0) {
-            $patreon_bonuses .= ',';
+            $patreon_bonuses_a .= ',';
         }
-        $patreon_bonuses .= '(SELECT uu.id FROM mantis_user_table uu WHERE ' . db_string_equal_to('uu.username', $patron['username']) . ')';
+        $patreon_bonuses_a .= '(SELECT uu.id FROM mantis_user_table uu WHERE ' . db_string_equal_to('uu.username', $patron['username']) . ')';
     }
-    $patreon_bonuses .= ')';
-    $patreon_bonuses .= ')';
+    $patreon_bonuses_a .= ')';
+    $patreon_bonuses_a .= ')';
 } else {
-    $patreon_bonuses = '0';
+    $patreon_bonuses_a = '0';
+}
+$patreons = get_patreons_on_minimum_level(10);
+if (count($patreons) > 0) {
+    $patreon_bonuses_b = '(';
+    $patreon_bonuses_b .= 'SELECT COUNT(*)*11 FROM mantis_bug_monitor_table yy WHERE yy.bug_id=a.id AND yy.user_id IN ('; // 15-4-1=11
+    foreach ($patreons as $i => $patron) {
+        if ($i != 0) {
+            $patreon_bonuses_b .= ',';
+        }
+        $patreon_bonuses_b .= '(SELECT uu.id FROM mantis_user_table uu WHERE ' . db_string_equal_to('uu.username', $patron['username']) . ')';
+    }
+    $patreon_bonuses_b .= ')';
+    $patreon_bonuses_b .= ')';
+} else {
+    $patreon_bonuses_b = '0';
 }
 
 // Build up SQL...
 
 $select = 'a.*,b.description,d.name AS category';
 $select .= ',(SELECT COUNT(*) FROM mantis_bugnote_table x WHERE x.bug_id=a.id) AS num_comments';
-$select .= ',(SELECT COUNT(*) FROM mantis_bug_monitor_table y WHERE y.bug_id=a.id)+' . $patreon_bonuses . ' AS num_votes';
+$select .= ',(SELECT COUNT(*) FROM mantis_bug_monitor_table y WHERE y.bug_id=a.id)+' . $patreon_bonuses_a . '+' . $patreon_bonuses_b . ' AS num_votes';
 $select .= ',(SELECT SUM(amount) FROM mantis_sponsorship_table z WHERE z.bug_id=a.id) AS money_raised';
 $select .= ',CAST(c.value AS DECIMAL) as hours';
 $select .= ',CAST(c.value AS DECIMAL)*' . strval($credits_per_hour) . '*' . float_to_raw_string($s_credit_value) . ' AS currency_needed';
