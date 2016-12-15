@@ -927,6 +927,9 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	}
 
 	.global_side_panel {
+		width: 100%;
+	}
+	.global_side_panel.with_both_panels {
 		width: 50%;
 	}
 

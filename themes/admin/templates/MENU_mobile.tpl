@@ -9,14 +9,14 @@
 			{+START,INCLUDE,ADMIN_ZONE_SEARCH}{+END}
 		</div>
 
-		<ul class="nl" id="r_{MENU|*}_d">
+		<ul class="nl" id="r_{MENU|*}_d_mobile">
 			{CONTENT}
 		</ul>
 	</nav>
 
 	{+START,IF_PASSED_AND_TRUE,JAVASCRIPT_HIGHLIGHTING}
 		<script>// <![CDATA[
-			menu_active_selection('r_{MENU|}_d');
+			menu_active_selection('r_{MENU|}_d_mobile');
 		//]]></script>
 	{+END}
 {+END}
