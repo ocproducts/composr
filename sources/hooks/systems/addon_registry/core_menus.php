@@ -266,6 +266,7 @@ class Hook_addon_registry_core_menus
                         'CHILD_BRANCH_TEMPLATE' => $child_branch_template,
                         'ROOT_BRANCH' => $root_branch,
                         'TITLE' => lorem_title(),
+                        'TOTAL_ITEMS' => placeholder_number(),
                     )
                 ), null, '', true),
         );

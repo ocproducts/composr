@@ -5,7 +5,7 @@
 	{WARNING_DETAILS}
 {+END}
 
-<div class="menu_editor_page docked" id="menu_editor_wrap">
+<div class="menu_editor_page{+START,IF,{$GT,{TOTAL_ITEMS},10}} docked{+END}" id="menu_editor_wrap">
 	<form title="" action="{URL*}" method="post" autocomplete="off">
 		<!-- In separate form due to mod_security -->
 		<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
