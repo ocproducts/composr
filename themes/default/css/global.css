@@ -926,8 +926,12 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	}
 
+	.global_side_panel .stuck_nav { /* overrides possibility from the inline style the stuck_nav JS puts there */
+		position: static !important;
+		width: 100% !important;
+	}
 	.global_side_panel {
-		width: 100%;
+		width: 100% !important;
 	}
 	.global_side_panel.with_both_panels {
 		width: 50%;
@@ -1343,6 +1347,10 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 	.help_icon {
 		display: block;
 		margin-top: 0.5em;
+	}
+	input[type="checkbox"] + input[type="hidden"] + .help_icon {
+		display: inline;
+		margin-top: 0;
 	}
 /*{+END}*/
 
@@ -3007,22 +3015,18 @@ div .post_buttons>*, div .buttons_group_faded>* {
 		margin: 0 0 1em 13.5em;
 	}
 /*{+END}*//*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
-	.comments_posting_form_end {
-		margin: 0 0 1em 1em;
-		padding: 0;
+
+/*{+START,CSS_MODE,desktop}*/
+	.comments_posting_form_end input {
+		float: left;
+		margin-right: 0.5em !important;
+	}
+
+	.comments_posting_form_end #submit_button {
+		float: right;
+		margin-right: 1em !important;
 	}
 /*{+END}*/
-
-.comments_posting_form_end input {
-	float: left;
-	margin-right: 0.5em !important;
-}
-
-.comments_posting_form_end #submit_button {
-	float: right;
-	margin-right: 1em !important;
-}
 
 .comments_captcha {
 	width: 210px;

@@ -50,6 +50,6 @@ class Hook_config_threaded_buttons
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

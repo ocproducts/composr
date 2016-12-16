@@ -5,7 +5,7 @@
 				<col class="cns_forum_topic_wrapper_column_column1 column_desktop" />
 			{+END}
 			<col class="cns_forum_topic_wrapper_column_column2" />
-			<col class="cns_forum_topic_wrapper_column_column3" />
+			<col class="cns_forum_topic_wrapper_column_column3 column_desktop" />
 			<col class="cns_forum_topic_wrapper_column_column4 column_desktop" />
 			<col class="cns_forum_topic_wrapper_column_column5 column_desktop" />
 			{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
@@ -25,8 +25,8 @@
 				{+END}
 			{+END}
 			<th>{!TITLE}</th>
-			<th>{!STARTER}{STARTER_TITLE*}</th>
 			{+START,IF,{$NOT,{$MOBILE}}}
+				<th class="cell_desktop">{!STARTER}{STARTER_TITLE*}</th>
 				<th class="cell_desktop">{!COUNT_POSTS}</th>
 				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
 					<th class="cell_desktop">{!COUNT_VIEWS}</th>
@@ -53,8 +53,8 @@
 				{+END}
 			{+END}
 			<td class="cns_column1"></td>
-			<td class="cns_column1"></td>
 			{+START,IF,{$NOT,{$MOBILE}}}
+				<td class="cns_column1 cell_desktop"></td>
 				<td class="cns_column1 cell_desktop"></td>
 				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
 					<td class="cns_column1 cell_desktop"></td>

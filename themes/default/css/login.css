@@ -87,6 +87,14 @@ table.login_page_form {
 	font-size: 0.85em;
 	{$BETA_CSS_PROPERTY,opacity: 0.9;}
 }
+/*{+START,CSS_MODE,mobile}*/
+	.login_note a {
+		padding-right: 0.5em;
+	}
+	.login_note br {
+		display: none;
+	}
+/*{+END}*/
 
 .login_note a {
 	font-size: 1.1em;

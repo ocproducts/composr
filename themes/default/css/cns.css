@@ -67,7 +67,7 @@ This file defines styles for Conversr (abbreviated as CNS).
 	}
 
 	.cns_forum_grouping_column2, .cns_forum_grouping_column3, .cns_forum_grouping_column4, .cns_forum_grouping_column5 {
-		width: auto;
+		width: 50% !important;
 	}
 /*{+END}*/
 
@@ -750,6 +750,12 @@ hr.cns_sig_barrier {
 .cns_unread_topic_title {
 	font-weight: bold;
 }
+
+/*{+START,CSS_MODE,mobile}*/
+	.cns_buttons_screen .buttons__search {
+		display: none;
+	}
+/*{+END}*/
 
 /*
 =========================

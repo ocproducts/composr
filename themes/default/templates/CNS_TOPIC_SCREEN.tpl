@@ -89,7 +89,7 @@
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 					<div class="inline">
-						<label for="tma_type" class="accessibility_hidden">{!TOPIC_ACTIONS}:</label>
+						<label for="tma_type">{!TOPIC_ACTIONS}:</label>
 						<select class="dropdown_actions" id="tma_type" name="type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}

@@ -6,6 +6,17 @@
 /* General form-related styles */
 
 /*{+START,CSS_MODE,mobile}*/
+	.form_table, .form_table>tbody, .form_table>thead, .form_table>tbody>tr, .form_table>thead>tr, .form_table>tr, .form_table>tbody>tr>th, .form_table>thead>tr>th, .form_table>tr>th, .form_table>tbody>tr>td, .form_table>thead>tr>td, .form_table>tr>td {
+		display: block;
+		width: auto;
+	}
+
+	.form_table>tbody>tr>th label:after, .form_table>thead>tr>th label:after, .form_table>tr>th label:after {
+		content: ":";
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,mobile}*/
 	label {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when touching inputs}
 	}
@@ -292,12 +303,6 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 .input_author_required, .input_username_required, .input_email_required, .input_codename_required,
 .input_tick_required, .input_float_required, .input_text_required, .input_upload_required {
 }
-
-/*{+START,CSS_MODE,mobile}*/
-	.form_table_field_input input {
-		max-width: 170px !important;
-	}
-/*{+END}*/
 
 .input_dimensions {
 	display: inline-block;

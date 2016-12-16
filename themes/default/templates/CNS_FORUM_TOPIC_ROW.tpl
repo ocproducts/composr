@@ -58,6 +58,7 @@
 					<li><span class="field_name">{!COUNT_POSTS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}</li>
 					<li><span class="field_name">{!COUNT_VIEWS}:</span> {$PREG_REPLACE,\,\d\d\d$,k,{NUM_VIEWS*}}</li>
 				</ul>
+				<span class="field_name">{!STARTER}:</span> {POSTER}
 			</div>
 
 			<div class="cns_forum_topic_title_bits_left">
@@ -72,7 +73,7 @@
 		</div>
 	</td>
 
-	<td class="cns_forum_topic_row_poster cns_column3">
+	<td class="cns_forum_topic_row_poster cns_column3 cell_desktop">
 		{POSTER}
 	</td>
 
