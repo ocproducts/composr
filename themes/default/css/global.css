@@ -1574,7 +1574,7 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box, .right .box, .left .box {
+td>.box:first-child, .fake_table_cell>.box:first-child, .fake_table_cell>div:first-child>.box:first-child, .fake_table_cell>div:first-child>div:first-child>.box:first-child, .left .box, .right .box {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -2281,8 +2281,12 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	.responsive_table>thead {
 		display: none;
 	}
+	.responsive_table>tbody>tr, .responsive_table>tr {
+		border-bottom: 1px solid {$GET,standard_border};
+		margin-bottom: 1em;
+	}
 	.responsive_table>tbody>tr>th::before, .responsive_table>tbody>tr>td::before, .responsive_table>tr>th::before, .responsive_table>tr>td::before {
-		content: attr(data-th);
+		content: attr(data-th) ":";
 		font-weight: bold;
 		width: 6.5em;
 		display: inline-block;
@@ -2291,12 +2295,11 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		border-left: 1px solid {$GET,standard_border};
 		border-radius: 0 !important;
 	}
+	.responsive_table>tbody>tr>th:empty, .responsive_table>tbody>tr>td:empty, .responsive_table>tr>th:empty, .responsive_table>tr>td:empty {
+		display: none;
+	}
 	.responsive_table>tbody>tr:last-child>td, .responsive_table>tbody>tr.last>td, .responsive_table>tbody>tr:last-child>th {
 		border-bottom: 0;
-	}
-	.responsive_table>tbody>tr>th:last-child, .responsive_table>tbody>tr>td:last-child, .responsive_table>tr>th:last-child, .responsive_table>tr>td:last-child {
-		border-bottom: 1px solid {$GET,standard_border};
-		margin-bottom: 1em;
 	}
 /*{+END}*/
 

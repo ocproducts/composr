@@ -87,7 +87,7 @@ class Block_main_staff_checklist
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_UPTIME_MONITOR') . '"]https://uptimerobot.com/[/url]',
                 // NB: Google and Bing submission is automatic, via Sitemaps feature
-                '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="https://compo.sr/uploads/website_specific/compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:20px;" allowTransparency="true"></iframe>[/html]',
+                '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="https://compo.sr/uploads/website_specific/compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:330px; height:20px;" allowTransparency="true"></iframe>[/html]',
                 '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'contributions'), 'site') . '[/url]',
             );
             foreach ($tasks as $task) {

@@ -17,6 +17,10 @@
 /*{+END}*/
 
 /*{+START,CSS_MODE,mobile}*/
+	.filedump_filter {
+		line-height: 1.8em;
+	}
+
 	.filedump_filter .type_filter_filedump, .filedump_filter .sort_filedump {
 		padding-left: 0 !important;
 	}

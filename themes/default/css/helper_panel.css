@@ -13,12 +13,18 @@
 /*{+END}*/
 
 .global_helper_panel {
-	padding: 1em;
 	position: relative;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.global_helper_panel {
+		padding: 1em;
 		min-height: 450px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.global_helper_panel {
+		padding: 0 1em;
+		clear: both;
 	}
 /*{+END}*/
 
@@ -44,6 +50,11 @@
 	{$BETA_CSS_PROPERTY,border-top-left-radius: 15px;}
 	{$BETA_CSS_PROPERTY,border-bottom-left-radius: 15px;}
 }
+/*{+START,CSS_MODE,mobile}*/
+	.global_helper_panel_wrap {
+		margin-top: 3em;
+	}
+/*{+END}*/
 
 #helper_panel_toggle {
 	outline: 0;
@@ -69,10 +80,10 @@
 		display: none;
 	}
 	.helper_panel_hidden #helper_panel_toggle {
-		background: url('{$IMG;,1x/trays/contract}') no-repeat;
+		background: url('{$IMG;,1x/trays/expand}') no-repeat;
 	}
 	.helper_panel_visible #helper_panel_toggle {
-		background: url('{$IMG;,1x/trays/expand}') no-repeat;
+		background: url('{$IMG;,1x/trays/contract}') no-repeat;
 	}
 /*{+END}*/
 

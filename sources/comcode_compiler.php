@@ -1474,6 +1474,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         $pos = $end_tbl + 3;
                                         $differented = true;
                                     }
+
+                                    $just_ended = true;
                                 }
 
                                 // Advertising

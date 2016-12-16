@@ -164,27 +164,6 @@ function script_load_stuff()
 		});
 	}
 
-	// Responsive table prep work
-	var responsive_tables=get_elements_by_class_name(document,'responsive_table');
-	for (var i=0;i<responsive_tables.length;i++)
-	{
-		var trs=responsive_tables[i].getElementsByTagName('tr');
-		var ths_first_row=trs[0].getElementsByTagName('th');
-		for (var j=0;j<trs.length;j++)
-		{
-			var ths=trs[j].getElementsByTagName('th');
-			for (var k=0;k<ths.length;k++)
-			{
-				ths[k].setAttribute('data-th',ths_first_row[k].textContent);
-			}
-			var tds=trs[j].getElementsByTagName('td');
-			for (var k=0;k<tds.length;k++)
-			{
-				tds[k].setAttribute('data-th',ths_first_row[k].textContent);
-			}
-		}
-	}
-
 	// Tooltips close on browser resize
 	add_event_listener_abstract(window,'resize',function() {
 		clear_out_tooltips(null);
@@ -285,6 +264,27 @@ function new_html__initialise(element)
 {
 	switch (element.nodeName.toLowerCase())
 	{
+		case 'table':
+			// Responsive table prep work
+			if (element.className.indexOf('responsive_table')!=-1)
+			{
+				var trs=element.getElementsByTagName('tr');
+				var ths_first_row=trs[0].getElementsByTagName('th');
+				for (var i=0;i<trs.length;i++)
+				{
+					var ths=trs[i].getElementsByTagName('th');
+					for (var j=0;j<ths.length;j++)
+					{
+						ths[j].setAttribute('data-th',ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,''))
+					}
+					var tds=trs[i].getElementsByTagName('td');
+					for (var j=0;j<tds.length;j++)
+					{
+						tds[j].setAttribute('data-th',ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,''));
+					}
+				}
+			}
+
 		case 'img':
 			/* GD text maybe can do with transforms */
 			if (element.className=='gd_text')
