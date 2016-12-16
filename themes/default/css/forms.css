@@ -198,10 +198,6 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 .form_table_field_input select, .form_table_field_input input, .form_table_field_input img {
 	vertical-align: middle;
 }
-.form_table_field_input .wide_field {
-	max-width: 100%;
-	box-sizing: border-box;
-}
 /*{+START,CSS_MODE,desktop}*/
 	.form_table_field_input .wide_field {
 		width: 26em;
@@ -212,6 +208,10 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 		width: 100%;
 	}
 /*{+END}*/
+.form_table_field_input .wide_field {
+	max-width: 100%;
+	box-sizing: border-box;
+}
 
 /* Tone it all down for forms inside tabs */
 .tab_surround tbody th, .tab_surround tbody td, .tab_surround .form_table .required {
@@ -259,9 +259,6 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	border: 1px solid {$GET,pale_border};
 	max-width: 100%;
 	max-height: 100%;
-}
-.innocuous_fieldset.has_preview .wide_field {
-	max-width: 300px;
 }
 
 /* Particular input types */

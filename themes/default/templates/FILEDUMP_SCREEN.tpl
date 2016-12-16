@@ -1,6 +1,6 @@
 {TITLE}
 
-<div>
+<div class="filedump_screen">
 	<div class="float_surrounder"><div class="tabs" role="tablist">
 		<a aria-controls="g_thumbnails" role="tab" href="#" id="t_thumbnails" class="tab tab_active tab_first" onclick="event.returnValue=false; select_tab('g','thumbnails'); return false;"><span>{!VIEW_THUMBNAILS}</span></a>
 
