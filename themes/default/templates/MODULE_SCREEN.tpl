@@ -4,7 +4,7 @@
 	{!WARNING_MODULES}
 </p>
 
-<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table">
+<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table">
 	<thead>
 		<tr>
 			<th>

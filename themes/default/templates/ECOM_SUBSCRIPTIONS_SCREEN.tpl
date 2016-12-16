@@ -3,7 +3,7 @@
 <p>{!SUBSCRIPTIONS_SCREEN}</p>
 
 {+START,IF_NON_EMPTY,{SUBSCRIPTIONS}}
-	<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table" itemprop="significantLinks">
+	<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table" itemprop="significantLinks">
 		<thead>
 			<tr>
 				<th>

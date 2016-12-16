@@ -146,7 +146,7 @@
 
 		<div class="buildr_in_room">
 			<div class="wide_table_wrap">
-				<table class="columned_table wide_table results_table autosized_table">
+				<table class="columned_table wide_table results_table autosized_table responsive_table">
 					<thead>
 						<tr>
 							<th colspan="3" class="buildr_posttop">
@@ -176,7 +176,7 @@
 			{+START,IF_NON_EMPTY,{ITEMS}}
 				<br />
 
-				<table class="columned_table buildr_centered_contents wide_table results_table">
+				<table class="columned_table buildr_centered_contents wide_table results_table responsive_table">
 					<thead>
 						<tr>
 							<th colspan="2" class="buildr_posttop">
@@ -199,7 +199,7 @@
 			{+START,IF_NON_EMPTY,{ITEMS_SALE}}
 				<br />
 
-				<table class="columned_table buildr_centered_contents wide_table results_table">
+				<table class="columned_table buildr_centered_contents wide_table results_table responsive_table">
 					<thead>
 						<tr>
 							<th colspan="3" class="buildr_posttop">
@@ -263,7 +263,7 @@
 		</h2>
 
 		<div class="toggleable_tray" style="{$JS_ON,{HIDE_ACTIONS*},}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
-			<table class="columned_table results_table wide_table autosized_table">
+			<table class="columned_table results_table wide_table autosized_table responsive_table">
 				<colgroup>
 					<col style="width: 20%" />
 					<col style="width: 20%" />
@@ -293,7 +293,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -324,7 +324,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -355,7 +355,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF:confirm}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -386,7 +386,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -417,7 +417,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF:confirm}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -449,7 +449,7 @@
 			<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<table class="columned_table results_table wide_table autosized_table">
+				<table class="columned_table results_table wide_table autosized_table responsive_table">
 					<colgroup>
 						<col style="width: 20%" />
 						<col style="width: 20%" />
@@ -488,7 +488,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -519,7 +519,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -550,7 +550,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -581,7 +581,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -612,7 +612,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -643,7 +643,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />
@@ -674,7 +674,7 @@
 				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table">
+					<table class="columned_table results_table wide_table autosized_table responsive_table">
 						<colgroup>
 							<col style="width: 20%" />
 							<col style="width: 20%" />

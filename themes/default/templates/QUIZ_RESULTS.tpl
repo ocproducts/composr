@@ -1,4 +1,4 @@
-<div class="wide_table_wrap"><table class="columned_table results_table wide_table autosized_table">
+<div class="wide_table_wrap"><table class="columned_table results_table wide_table autosized_table responsive_table">
 	<colgroup>
 		<col class="quiz_done_results_col_was_correct" />
 		<col class="quiz_done_results_col_question" />

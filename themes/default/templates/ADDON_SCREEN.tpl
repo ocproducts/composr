@@ -25,7 +25,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="not_too_tall_addons">
-		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table zebra">
+		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table zebra responsive_table">
 			<thead>
 				<tr>
 					<th>

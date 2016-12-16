@@ -111,7 +111,7 @@ function script_load_stuff()
 		}
 	}
 
-	// Pinning to top if scroll out
+	// Pinning to top if scroll out (LEGACY: CSS is going to have a better solution to this soon)
 	var stuck_navs=get_elements_by_class_name(document,'stuck_nav');
 	if (stuck_navs.length>0)
 	{
@@ -162,6 +162,27 @@ function script_load_stuff()
 				}
 			}
 		});
+	}
+
+	// Responsive table prep work
+	var responsive_tables=get_elements_by_class_name(document,'responsive_table');
+	for (var i=0;i<responsive_tables.length;i++)
+	{
+		var trs=responsive_tables[i].getElementsByTagName('tr');
+		var ths_first_row=trs[0].getElementsByTagName('th');
+		for (var j=0;j<trs.length;j++)
+		{
+			var ths=trs[j].getElementsByTagName('th');
+			for (var k=0;k<ths.length;k++)
+			{
+				ths[k].setAttribute('data-th',ths_first_row[k].textContent);
+			}
+			var tds=trs[j].getElementsByTagName('td');
+			for (var k=0;k<tds.length;k++)
+			{
+				tds[k].setAttribute('data-th',ths_first_row[k].textContent);
+			}
+		}
 	}
 
 	// Tooltips close on browser resize

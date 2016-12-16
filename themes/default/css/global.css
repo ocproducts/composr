@@ -383,9 +383,11 @@ iframe {
 	}
 
 	/* This prevents automatic zooming when selecting inputs */
-	input[type="text"], input[type="password"], input[type="color"], input[type="email"], input[type="number"], input[type="range"], input[type="search"], input[type="tel"], input[type="url"], select, textarea {
-		font-size: 16px !important;
-	}
+	/*{+START,IF,{$MOBILE}}*/
+		input[type="text"], input[type="password"], input[type="color"], input[type="email"], input[type="number"], input[type="range"], input[type="search"], input[type="tel"], input[type="url"], select, textarea {
+			font-size: 16px !important;
+		}
+	/*{+END}*/
 
 	/* On mobiles we want maximum fluidity */
 	table, table.do_next_section {
@@ -2268,6 +2270,35 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .field_sup_column {
 	width: 10em;
 }
+
+/* This relies on some JavaScript running too, to set the data attributes; works great though for properly marked up thead'd tables*/
+/*{+START,CSS_MODE,mobile}*/
+	.responsive_table, .responsive_table>tbody, .responsive_table>tbody>tr, .responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tr, .responsive_table>tr>th, .responsive_table>tr>td {
+		display: block;
+		width: auto;
+		overflow: hidden;
+	}
+	.responsive_table>thead {
+		display: none;
+	}
+	.responsive_table>tbody>tr>th::before, .responsive_table>tbody>tr>td::before, .responsive_table>tr>th::before, .responsive_table>tr>td::before {
+		content: attr(data-th);
+		font-weight: bold;
+		width: 6.5em;
+		display: inline-block;
+	}
+	.responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tr>th, .responsive_table>tr>td {
+		border-left: 1px solid {$GET,standard_border};
+		border-radius: 0 !important;
+	}
+	.responsive_table>tbody>tr:last-child>td, .responsive_table>tbody>tr.last>td, .responsive_table>tbody>tr:last-child>th {
+		border-bottom: 0;
+	}
+	.responsive_table>tbody>tr>th:last-child, .responsive_table>tbody>tr>td:last-child, .responsive_table>tr>th:last-child, .responsive_table>tr>td:last-child {
+		border-bottom: 1px solid {$GET,standard_border};
+		margin-bottom: 1em;
+	}
+/*{+END}*/
 
 /*
 =========================

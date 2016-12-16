@@ -8,7 +8,7 @@
 {+START,IF_NON_EMPTY,{GIFTS}}
 	{$, Old table style
 		<div class="wide_table_wrap">
-			<table class="wide_table results_table autosized_table">
+			<table class="wide_table results_table autosized_table responsive_table">
 				<thead>
 					<tr style="border: 1px solid #ccc; background-color: #E3EAF6;">
 						<th colspan="2">{!GIFT}</th>
