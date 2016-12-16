@@ -78,16 +78,9 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 }
 
 /*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
-.global_breadcrumbs {
-	padding: 18px 0 7px 0;
-}
-
-/*{+START,CSS_MODE,desktop}*/
-	.global_middle {
-		padding-left: 0;
-		padding-right: 0;
+	.global_breadcrumbs {
+		padding: 18px 0 7px 0;
 	}
-/*{+END}*/
 /*{+END}*/
 
 #panel_left{

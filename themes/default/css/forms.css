@@ -9,6 +9,7 @@
 	.form_table, .form_table>tbody, .form_table>thead, .form_table>tbody>tr, .form_table>thead>tr, .form_table>tr, .form_table>tbody>tr>th, .form_table>thead>tr>th, .form_table>tr>th, .form_table>tbody>tr>td, .form_table>thead>tr>td, .form_table>tr>td {
 		display: block;
 		width: auto;
+		overflow: hidden;
 	}
 
 	.form_table>tbody>tr>th label:after, .form_table>thead>tr>th label:after, .form_table>tr>th label:after {

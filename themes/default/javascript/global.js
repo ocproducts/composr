@@ -835,35 +835,6 @@ function doc_onmouseover(i)
 /* Tidying up after the page is rendered */
 function script_page_rendered()
 {
-	// Move the help panel if needed
-	/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
-		if (get_window_width()<990)
-		{
-			var panel_right=document.getElementById('panel_right');
-			if (panel_right)
-			{
-				var divs=panel_right.getElementsByTagName('div');
-				if ((divs[0]) && (divs[0].className.indexOf('global_helper_panel')!=-1))
-				{
-					var middle=get_elements_by_class_name(panel_right.parentNode,'global_middle')[0];
-					if (middle)
-					{
-						middle.style.marginRight='0';
-						var boxes=get_elements_by_class_name(panel_right,'standardbox_curved'),i;
-						for (i=0;i<boxes.length;i++)
-						{
-							boxes[i].style.width='auto';
-						}
-						panel_right.className+=' horiz_helper_panel';
-						panel_right.parentNode.removeChild(panel_right);
-						middle.parentNode.appendChild(panel_right);
-						document.getElementById('helper_panel_toggle').style.display='none';
-						get_elements_by_class_name(panel_right,'global_helper_panel')[0].style.minHeight='0';
-					}
-				}
-			}
-		}
-	/*{+END}*/
 }
 
 // The help panel
@@ -877,7 +848,7 @@ function helper_panel(show)
 	var i;
 	if (show)
 	{
-		panel_right.className=panel_right.className.replace(/ helper_panel_hidden/g,'');
+		panel_right.className='global_side_panel helper_panel_visible';
 
 		helper_panel_contents.setAttribute('aria-expanded','true');
 		helper_panel_contents.style.display='block';
@@ -911,7 +882,8 @@ function helper_panel(show)
 }
 function _hide_helper_panel(middles,panel_right,global_message,helper_panel_contents,helper_panel_toggle)
 {
-	panel_right.className+=' helper_panel_hidden';
+	panel_right.className='global_side_panel helper_panel_hidden';
+
 	helper_panel_contents.setAttribute('aria-expanded','false');
 	helper_panel_contents.style.display='none';
 	set_cookie('hide_helper_panel','1',100);

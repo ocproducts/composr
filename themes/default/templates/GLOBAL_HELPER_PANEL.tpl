@@ -6,8 +6,16 @@
 	<a id="helper_panel_toggle" href="#" onclick="return helper_panel(true);"><img title="{!HELP_OR_ADVICE}: {!SHOW}" alt="{!HELP_OR_ADVICE}: {!SHOW}" src="{$IMG*,icons/14x14/helper_panel_show}" srcset="{$IMG*,icons/28x28/helper_panel_show} 2x" /></a>
 	{+END}
 
-	<div id="helper_panel_contents"{+START,IF,{$HIDE_HELP_PANEL}} style="display: none" aria-expanded="false"{+END}>
+	<div class="block_mobile">
 		<h2>{!HELP_OR_ADVICE}</h2>
+	</div>
+
+	<div id="helper_panel_contents"{+START,IF,{$HIDE_HELP_PANEL}} style="display: none" aria-expanded="false"{+END}>
+		{+START,IF,{$NOT,{$MOBILE}}}
+			<div class="block_desktop">
+				<h2>{!HELP_OR_ADVICE}</h2>
+			</div>
+		{+END}
 
 		<div class="global_helper_panel">
 			{+START,IF_NON_EMPTY,{$HELPER_PANEL_TEXT}}

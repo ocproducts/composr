@@ -969,8 +969,8 @@ function toggle_subordinate_fields(pic,help_id)
 			pic.srcset=((pic.srcset.indexOf('themewizard.php')!=-1)?pic.srcset.replace('expand','contract'):'{$IMG;,2x/trays/contract} 2x').replace(/^https?:/,window.location.protocol);
 		pic.setAttribute('alt','{!CONTRACT;^}');
 		pic.setAttribute('title','{!CONTRACT;^}');
-		new_state=(field_input.nodeName.toLowerCase()=='tr')?'table-row':'block';
-		new_state_2='block';
+		new_state=''; // default state from CSS
+		new_state_2=''; // default state from CSS
 		new_state_3='1px dashed';
 	} else /* Contracting now */
 	{
