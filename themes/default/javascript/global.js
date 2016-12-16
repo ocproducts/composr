@@ -70,6 +70,11 @@ function script_load_stuff()
 	{
 		new_html__initialise(document.images[i]);
 	}
+	var tables=document.getElementsByTagName('table');
+	for (i=0;i<tables.length;i++)
+	{
+		new_html__initialise(tables[i]);
+	}
 
 	// Column height balancing
 	var cols=document.getElementsByClassName('col_balance_height');

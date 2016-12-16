@@ -25,6 +25,7 @@ function open_link_as_overlay(ob,width,height,target)
 {
 	/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
 		if ((typeof width=='undefined') || (!width)) var width='800';
+		if (width.match(/^\d+$/)) width=Math.min(window.parseInt(width),get_window_width()-60)+'';
 		if ((typeof height=='undefined') || (!height)) var height='auto';
 		var url=(typeof ob.href=='undefined')?ob.action:ob.href;
 		if (/:\/\/(.[^/]+)/.exec(url)[1]!=window.location.hostname) return true; // Cannot overlay, different domain
