@@ -2,7 +2,7 @@
 
 <h2>{!DETAILS}</h2>
 
-<div class="wide_table_wrap"><table class="map_table results_table wide_table spaced_table">
+<div class="wide_table_wrap"><table class="map_table results_table wide_table spaced_table mobile_friendly">
 	<colgroup>
 		<col class="field_name_column" />
 		<col class="field_value_column" />

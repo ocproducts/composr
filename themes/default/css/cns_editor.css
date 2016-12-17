@@ -44,6 +44,13 @@
 	padding-{!en_left}: 25px;
 }
 
-.cns_edit_forum_under {
-	padding-{!en_left}: 50px;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.cns_edit_forum_under {
+		padding-{!en_left}: 50px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_edit_forum_under {
+		padding-{!en_left}: 10px;
+	}
+/*{+END}*/
