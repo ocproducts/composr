@@ -101,7 +101,9 @@ class Module_admin_phpinfo
         if (php_function_allowed('phpinfo')) {
             // PHP-info...
 
+            echo '<div style="overflow: auto; width: 100%">';
             phpinfo();
+            echo '</div>';
         } else {
             // Alternative to PHP-info...
 
@@ -123,7 +125,8 @@ class Module_admin_phpinfo
         // Gather and cleanup the above...
 
         require_code('xhtml');
-        $out = xhtmlise_html(ob_get_contents());
+        $out = '<div style="overflow: auto; width: calc(100vw - 4em)">'; // Workaround to stretching problem with "pre" and tables
+        $out .= xhtmlise_html(ob_get_contents());
         ob_end_clean();
 
         $out = preg_replace('#<!DOCTYPE[^>]*>#s', '', preg_replace('#</body[^>]*>#', '', preg_replace('#<body[^>]*>#', '', preg_replace('#</html[^>]*>#', '', preg_replace('#<html[^>]*>#', '', $out)))));
@@ -192,10 +195,12 @@ class Module_admin_phpinfo
             foreach ($commands as $command) {
                 $output = @shell_exec($command);
                 if (!empty($output)) {
-                    $out .= '<p style="margin-bottom: 0"><strong>' . escape_html($command) . '</strong>:</p><p style="margin-top: 0; font-family: courier; white-space: pre; overflow: auto; width: 100%">' . escape_html($output) . '</p>';
+                    $out .= '<p style="margin-bottom: 0"><strong>' . escape_html($command) . '</strong>:</p><p style="margin-top: 0; font-family: courier; white-space: pre !important; overflow: auto; width: 100%">' . escape_html($output) . '</p>';
                 }
             }
         }
+
+        $out .= '</div>';
 
         // Output...
 

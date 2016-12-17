@@ -381,7 +381,7 @@ iframe {
 		max-width: 100px;
 		white-space: nowrap !important;
 	}
-	select[size] { /* Not a drop-down */
+	select[size]/* Not a drop-down */, .form_table_field_input select {
 		max-width: 100%;
 	}
 

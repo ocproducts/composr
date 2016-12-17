@@ -36,16 +36,23 @@
 	overflow: hidden;
 }
 
-.do_next_item, .do_theme_item {
-	background-color: {$GET,area_background};
-	padding: 0.5em 0.1em;
+.do_next_item {
 	border-right: 1px dotted {$GET,standard_border};
 	border-bottom: 1px dotted {$GET,standard_border};
+	background-color: {$GET,area_background};
+	height: 110px;
+}
+.do_theme_items>div {
+	float: left;
+	width: 80px;
+	min-height: 90px;
+}
+.do_next_item, .do_theme_items>div {
+	padding: 0.5em 0.1em;
 	text-align: center;
 	font-size: 0.9em;
 	{$BETA_CSS_PROPERTY,transition: background-color 0.5s linear;}
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	height: 110px;
 }
 
 .do_next_item>div {
@@ -62,9 +69,12 @@
 	vertical-align: middle;
 }
 
-.do_next_item:hover, .do_theme_item:hover {
+.do_next_item:hover, .do_theme_items>div:hover {
 	background-color: {$GET,area_hover_background};
 	cursor: pointer;
+}
+.do_theme_items>div:hover {
+	outline: 1px dotted {$GET,standard_border};
 }
 
 .do_next_item {
@@ -72,11 +82,7 @@
 	float: left;
 }
 
-.do_theme_item {
-	width: 15.5%;
-}
-
-.do_next_item a, .do_theme_item a {
+.do_next_item a, .do_theme_items a {
 	text-decoration: none;
 }
 

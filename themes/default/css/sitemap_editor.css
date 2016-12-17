@@ -4,14 +4,16 @@
 */
 
 .tree_list__root_tree_list {
-	height: 358px;
 	overflow: auto;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.tree_list__root_tree_list {
+		height: 358px;
+	}
+/*{+END}*/
 
 .sitemap_left {
-	width: 50%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	padding-right: 1em;
 }
 
 .pt_editor, .sitemap_editor {
@@ -20,11 +22,20 @@
 }
 
 .sitemap_right {
-	float: {!en_right};
-	width: 50%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
 
+/*{+START,CSS_MODE,desktop}*/
+	.sitemap_left {
+		width: 50%;
+		padding-right: 1em;
+	}
+
+	.sitemap_right {
+		float: {!en_right};
+		width: 50%;
+	}
+/*{+END}*/
 
 /*
 =========================
@@ -60,11 +71,13 @@
 	font-size: 0.9em;
 }
 
-.pte_help_box {
-	float: {!en_right};
-	width: 24em;
-	margin-{!en_left}: 1em;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.pte_help_box {
+		float: {!en_right};
+		width: 24em;
+		margin-{!en_left}: 1em;
+	}
+/*{+END}*/
 
 .pte_set_box {
 	margin-top: 1em;
@@ -123,5 +136,4 @@
 .generate_page_sitemap_screen ul.page_structure ul.menu_links .breadcrumbs span:last-child {
 	font-weight: normal;
 }
-
 

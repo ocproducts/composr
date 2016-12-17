@@ -77,6 +77,7 @@ For example:
 	text-align: center;
 	color: {$GET,area_text};
 	max-width: 107px;
+	margin: 0 auto;
 }
 
 .menu_type__dropdown a.toplevel_link span {

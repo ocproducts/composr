@@ -45,11 +45,20 @@
 #news_ticker {
 	position: absolute;
 	z-index: 100;
-	width: 446px;
 	height: auto;
 	overflow: hidden;
 	min-height: 116px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker {
+		width: 446px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker {
+		width: 100%;
+	}
+/*{+END}*/
 #news_ticker h1 {
 	color: {$GET,bubble_text};
 	font-weight: bold;
@@ -58,35 +67,71 @@
 	padding: 11px 15px;
 	margin: 0;
 	background: url('{$IMG;,realtime_rain/news-header}') no-repeat 0 0;
-	width: 416px;
 	border: 0;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker h1 {
+		width: 416px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker h1 {
+		width: 100%;
+	}
+/*{+END}*/
 #news_ticker .news_inside {
 	background: url('{$IMG;,realtime_rain/news-bg}') repeat-y center top;
 	overflow: hidden;
-	width: 446px;
 	margin: 0 auto;
 	padding: 0;
 	float: left;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker .news_inside {
+		width: 446px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker .news_inside {
+		width: 100%;
+		background-position: left top;
+	}
+/*{+END}*/
 #news_ticker .news_content {
 	overflow: hidden;
 	height: auto;
-	width: 401px;
 	color: {$GET,bubble_text};
 	font-size: 0.75em;
-	padding: 0 10px;
-	margin: 0 auto;
+	padding: 0 20px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker .news_content {
+		width: 401px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker .news_content {
+		width: 100%;
+	}
+/*{+END}*/
 #news_ticker .news_content p {
 	font-size: 0.95em;
 }
 #news_ticker .news_footer {
 	background: url('{$IMG;,realtime_rain/news-bot}') no-repeat;
 	height: 21px;
-	width: 446px;
 	float: left;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker .news_footer {
+		width: 446px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker .news_footer {
+		width: 100%;
+	}
+/*{+END}*/
 
 #news_ticker, #time_line:hover {
 	{$BETA_CSS_PROPERTY,opacity: 0.5;}
@@ -104,11 +149,13 @@
 	bottom: 10px;
 	z-index: 100;
 }
-#timer_inner {
-	width: 962px;
-	margin: 0 auto;
-}
-#real_time_indicator {
+/*{+START,CSS_MODE,desktop}*/
+	#timer_inner {
+		width: 962px;
+		margin: 0 auto;
+	}
+/*{+END}*/
+	#real_time_indicator {
 	background: url('{$IMG;,realtime_rain/realtime-bubble}') no-repeat 0 0;
 	overflow: hidden;
 	font-size: 0.75em;
@@ -122,12 +169,21 @@
 	text-align: center;
 }
 #timer {
-	width: 952px;
 	height: 38px;
 	background: url('{$IMG;,realtime_rain/timer-bg}') no-repeat;
 	margin-top: 5px;
 	padding: 8px 0 0 10px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#timer {
+		width: 952px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	#timer {
+		width: 100%;
+	}
+/*{+END}*/
 #pause_but {
 	float: left;
 	margin-right: 50px;

@@ -38,6 +38,12 @@
 	.helper_panel_hidden {
 		width: 30px !important;
 	}
+
+	.page_running_admin_phpinfo .helper_panel {
+		position: absolute;
+		right: 0;
+		margin-top: 3em;
+	}
 /*{+END}*/
 
 .global_helper_panel_wrap {

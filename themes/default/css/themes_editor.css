@@ -68,6 +68,21 @@
 	font-size: 0.9em;
 }
 
+.theme_details {
+	min-width: 7em;
+}
+
+.theme_details .seed {
+	background: white;
+}
+.theme_details .seed strong {
+	white-space: nowrap !important;
+}
+
+.manage_theme_export {
+	min-width: 6em;
+}
+
 .manage_theme_export * {
 	vertical-align: middle;
 }

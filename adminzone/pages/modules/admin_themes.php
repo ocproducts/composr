@@ -463,8 +463,7 @@ class Module_admin_themes
             $screen_preview_url = build_url(array('page' => '_SELF', 'type' => 'screen_previews', 'keep_theme' => $theme), '_SELF');
 
             // Theme date
-            $date = filemtime(($theme == 'default') ? (get_file_base() . '/themes/default') : (get_custom_file_base() . '/themes/' . $theme));
-            $_date = ($theme == 'default') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date($date, false)));
+            $date = $this->_get_theme_date($theme);
 
             // Where the theme is used
             $zone_list = new Tempcode();
@@ -510,7 +509,7 @@ class Module_admin_themes
                 '_GUID' => 'c65c7f3f87d62ad425c7a104a6018840',
                 'SEED' => $seed,
                 'THEME_USAGE' => $theme_usage,
-                'DATE' => $_date,
+                'DATE' => $date,
                 'RAW_DATE' => strval($date),
                 'NAME' => $theme,
                 'DESCRIPTION' => $details['description'],
@@ -605,7 +604,7 @@ class Module_admin_themes
      */
     public function save_theme_changes($theme)
     {
-        if (!file_exists((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
+        if (!file_exists((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
@@ -616,8 +615,8 @@ class Module_admin_themes
         }
         erase_persistent_cache();
 
-        $before = better_parse_ini_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        $myfile = @fopen((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        $before = better_parse_ini_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        $myfile = @fopen((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
         @flock($myfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
             ftruncate($myfile, 0);
@@ -644,7 +643,7 @@ class Module_admin_themes
         }
         @flock($myfile, LOCK_UN);
         fclose($myfile);
-        sync_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        sync_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
 
         require_code('permissions2');
         set_category_permissions_from_environment('theme', $theme);
@@ -757,7 +756,7 @@ class Module_admin_themes
     {
         $theme = get_param_string('theme', false, true);
 
-        $ini_file = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
+        $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (!file_exists($ini_file)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -789,7 +788,22 @@ class Module_admin_themes
 
         $javascript = 'var themee=document.getElementById(\'theme\'), themet=document.getElementById(\'title\'), copy=document.getElementById(\'copy\'); if (copy) copy.onchange=function() { if (copy.checked && themee.value.indexOf(\'-copy\')==-1) { themee.value+=\'-copy\'; themet.value+=\' copy\'; } };';
 
-        return do_template('FORM_SCREEN', array('_GUID' => '2734c55cd4d7cfa785d307d932ce8af1', 'JAVASCRIPT' => $javascript, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('DESCRIPTION_EDIT_THEME'), 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
+        // Theme date
+        $date = $this->_get_theme_date($theme);
+
+        return do_template('FORM_SCREEN', array('_GUID' => '2734c55cd4d7cfa785d307d932ce8af1', 'JAVASCRIPT' => $javascript, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('DESCRIPTION_EDIT_THEME', $date), 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
+    }
+
+    /**
+     * Find a theme date.
+     *
+     * @param ID_TEXT The theme codename
+     * @return string The theme date
+     */
+    protected function _get_theme_date($theme)
+    {
+        $date = filemtime((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme);
+        return ($theme == 'default' || $theme == 'admin') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date($date, false)));
     }
 
     /**
