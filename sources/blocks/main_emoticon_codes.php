@@ -66,51 +66,25 @@ class Block_main_emoticon_codes
         require_code('comcode_compiler');
         require_code('comcode_renderer');
 
-        $emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons(get_member());
-
         $num_columns = array_key_exists('num_columns', $map) ? intval($map['num_columns']) : 4;
-
-        $rows = array();
 
         global $EMOTICON_LEVELS;
 
-        $num = count($emoticons);
-        $keys = array_keys($emoticons);
-        $values = array_values($emoticons);
-        $i = 0;
-        while ($i < $num) {
-            $columns = array();
+        $_emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons(get_member());
+        $emoticons = array();
 
-            for ($j = 0; $j < $num_columns; $j++) {
-                if (!isset($keys[$i])) {
-                    $columns[] = array(
-                        'CODE' => '',
-                        'TPL' => '',
-                    );
-                    continue;
-                }
-
-                $code = $keys[$i];
-                $imgcode = $values[$i];
-
-                if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) { // If within a displayable level
-                    $columns[] = array(
-                        'CODE' => $code,
-                        'TPL' => do_emoticon($imgcode),
-                    );
-                }
-
-                $i++;
+        foreach ($_emoticons as $code => $imgcode) {
+            if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) { // If within a displayable level
+                $emoticons[] = array(
+                    'CODE' => $code,
+                    'TPL' => do_emoticon($imgcode),
+                );
             }
-
-            $rows[] = array(
-                'COLUMNS' => $columns,
-            );
         }
 
         return do_template('BLOCK_MAIN_EMOTICON_CODES', array(
             '_GUID' => '56c12281d7e3662b13a7ad7d9958a65c',
-            'ROWS' => $rows,
+            'EMOTICONS' => $emoticons,
             'NUM_COLUMNS' => strval($num_columns),
         ));
     }

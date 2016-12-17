@@ -9,21 +9,27 @@ Private messages are inline, and due to the way that they are handled, you may h
 
 Please note that staff may view private messages if they so choose to. For this reason, it is not advisable to put information of a sensitive nature, such as passwords, into a private message.
 
-[semihtml]<table class="map_table wide_table"><tr><td>[code="Comcode"][private="Philip"]This message would not be displayed to anyone except Philip.[/private][/code]</td><td><div class="box"><div class="box_inner">Private message from Jim:<br /><blockquote>This message would not be displayed to anyone except Philip.</blockquote></div></div></td></tr></table>[/semihtml]
+{| floats 50%:47%
+| [code="Comcode"][private="Philip"]This message would not be displayed to anyone except Philip.[/private][/code]
+| [semihtml]<div class="box"><div class="box_inner">Private message from Jim:<br /><blockquote>This message would not be displayed to anyone except Philip.</blockquote></div></div>[/semihtml]
+|}
 
 [title="2"]Bots[/title]
 
 You can send messages (commands) to the website itself, and any other bots we might have installed on our site. The bot will respond automatically to your commands, following its programming.
 To do this, just send a private message to 'bot'. We suggest you start with a message of 'help' which is a command that will cause all bots to identify themselves and the commands that they support.
 
-[semihtml]<table class="map_table wide_table"><tr><td>[code="Comcode"][private="bot"]help[/private][/code]</td></tr></table>[/semihtml]
+[code="Comcode"][private="bot"]help[/private][/code]
 
 [title="2"]Invitations[/title]
 
 Invitations act in much the same way as private messages, apart from the fact that they can be sent to multiple people at once, and their display format is designed specifically for displaying a link to a chatroom -- it displays a fixed message, and a link.
 Invitations should not be used in conjunction with IM conversations -- they are intended only for inviting people active in chatrooms in to other chatrooms. You can invite people to an IM conversation from your the friend list in the chat lobby. You can manually invite people who are not already in a chatroom via first engaging them in an IM, or by sending them a PT (Private Topic).
 
-[semihtml]<table class="map_table wide_table"><tr><td>[code="Comcode"][invite="Philip,Allen,Chris"]My Chatroom Name[/invite][/code]</td><td><div class="box"><div class="box_inner">Jim has invited you to join him/her in General Chat<br /><ul class="actions_list" role="navigation"><li class="actions_list_strong"><a href="http://example.com">Join them</a></li></ul></div></div></td></tr></table>[/semihtml]
+{| floats 50%:47%
+| [code="Comcode"][invite="Philip,Allen,Chris"]My Chatroom Name[/invite][/code]
+| [semihtml]<div class="box"><div class="box_inner">Jim has invited you to join him/her in General Chat<br /><ul class="actions_list" role="navigation"><li class="actions_list_strong"><a href="http://example.com">Join them</a></li></ul></div></div>[/semihtml]
+|}
 
 [title="2"]New Rooms[/title]
 

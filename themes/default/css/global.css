@@ -381,6 +381,9 @@ iframe {
 		max-width: 100px;
 		white-space: nowrap !important;
 	}
+	select[size] { /* Not a drop-down */
+		max-width: 100%;
+	}
 
 	/* This prevents automatic zooming when selecting inputs */
 	/*{+START,IF,{$MOBILE}}*/
@@ -839,6 +842,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 .global_middle img {
 	max-width: 100%;
+	height: auto;
 }
 
 .global_side_panel h2 {
@@ -1574,7 +1578,9 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box:first-child, .fake_table_cell>.box:first-child, .fake_table_cell>div:first-child>.box:first-child, .fake_table_cell>div:first-child>div:first-child>.box:first-child, .left .box, .right .box {
+td>.box:first-child, .fake_table_cell>.box:first-child, .fake_table_cell>div:first-child>.box:first-child, .fake_table_cell>div:first-child>div:first-child>.box:first-child, .left .box, .right .box,
+td>.comcode_code:first-child, .fake_table_cell>.comcode_code:first-child, .fake_table_cell>div:first-child>.comcode_code:first-child, .fake_table_cell>div:first-child>div:first-child>.comcode_code:first-child, .left .comcode_code, .right .comcode_code,
+td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fake_table_cell>div:first-child>.comcode_quote:first-child, .fake_table_cell>div:first-child>div:first-child>.comcode_quote:first-child, .left .comcode_quote, .right .comcode_quote {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -2305,6 +2311,19 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	}
 	.responsive_table>tbody>tr:last-child>td, .responsive_table>tbody>tr.last>td, .responsive_table>tbody>tr:last-child>th {
 		border-bottom: 0;
+	}
+
+	.responsive_table_bolded_first_column>tbody>tr>th:first-child, .responsive_table_bolded_first_column>tbody>tr>td:first-child, .responsive_table_bolded_first_column>tr>th:first-child, .responsive_table_bolded_first_column>tr>td:first-child {
+		font-weight: bold;
+	}
+	.responsive_table_bolded_first_column>tbody>tr>th[data-th]::before, .responsive_table_bolded_first_column>tbody>tr>td[data-th]::before, .responsive_table_bolded_first_column>tr>th[data-th]::before, .responsive_table_bolded_first_column>tr>td[data-th]::before {
+		font-weight: normal; /* Overridden from above */
+	}
+
+	.responsive_table_separate_lines>tbody>tr>th[data-th]::before, .responsive_table_separate_lines>tbody>tr>td[data-th]::before, .responsive_table_separate_lines>tr>th[data-th]::before, .responsive_table_separate_lines>tr>td[data-th]::before {
+		width: auto;
+		display: block;
+		margin-bottom: 0.5em;
 	}
 /*{+END}*/
 
@@ -3565,9 +3584,11 @@ ul.buttons_group, ul.associated_links_block_group {
 	margin: 10px 0 0 5px;
 }
 
-.quite_wide_field {
-	width: 88%;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.quite_wide_field {
+		width: 88%;
+	}
+/*{+END}*/
 
 .box___confirm_screen {
 	margin-bottom: 2em;

@@ -428,6 +428,7 @@ class Hook_addon_registry_core_notifications
             'AUTO_NOTIFICATION_CONTRIB_CONTENT' => false,
             'SMART_TOPIC_NOTIFICATION_CONTENT' => false,
             'MEMBER_ID' => placeholder_id(),
+            'ADVANCED_COLUMN' => true,
         ));
         $out = do_lorem_template('NOTIFICATIONS_MANAGE_SCREEN', array(
             'TITLE' => lorem_title(),
