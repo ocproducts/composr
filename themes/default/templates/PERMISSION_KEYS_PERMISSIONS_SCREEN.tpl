@@ -8,7 +8,7 @@
 			{!PAGE_MATCH_KEY_ACCESS_TEXT}
 		</p>
 
-		<div class="wide_table_wrap"><table class="columned_table wide_table results_table privileges">
+		<div class="wide_table_wrap"><table class="columned_table wide_table results_table privileges responsive_table">
 			<colgroup>
 				<col class="match_key_name_column" />
 				{COLS}

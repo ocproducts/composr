@@ -492,6 +492,7 @@ function string_scan($lang, $do_guessing = false)
         BREADCRUMB_OVERRIDES
         IMPORTANCE_BUY
         IMPORTANCE_MODULUS
+        MASS_PERMISSION_SETTING
         USER_INTERACTION
         USER_INTERACTION_COMMENTING
         USER_INTERACTION_RATING
@@ -8100,6 +8101,7 @@ function string_scan($lang, $do_guessing = false)
         HOURS_AGO
         HOVER_FOR_FULL
         HOVER_MOUSE_IMPORTANT
+        TAP_MOUSE_IMPORTANT
         HOW_REMOVE_CHAT_NOTIFICATION
         IDENTIFIER
         ID_NUM

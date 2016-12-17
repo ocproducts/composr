@@ -158,11 +158,11 @@
 								{+START,IF_NON_EMPTY,{FIRST_POST}{COMMENT_TEXT}}
 									<ul class="associated_links_block_group">
 										{+START,IF_NON_EMPTY,{FIRST_POST}}
-											<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{FIRST_POST*~;^}','320px',null,null,false,true);">{!cns:FIRST_POST}</a></li>
+											<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onclick="this.onmouseover(event); return false;" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{FIRST_POST*~;^}','320px',null,null,false,true);">{!cns:FIRST_POST}</a></li>
 										{+END}
 
 										{+START,IF_NON_EMPTY,{COMMENT_TEXT}}
-											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true);">{!HOVER_MOUSE_IMPORTANT}</a></li>
+											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onclick="this.onmouseover(event); return false;" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true);">{+START,IF,{$MOBILE}}<span class="inline_desktop">{!HOVER_MOUSE_IMPORTANT}</span>{+END}<span class="inline_mobile">{!TAP_MOUSE_IMPORTANT}</span></a></li>
 										{+END}
 									</ul>
 								{+END}

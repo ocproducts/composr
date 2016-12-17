@@ -3,11 +3,11 @@
 //]]></script>
 
 <div class="permissions_matrix_wrap" id="enter_the_matrix">
-	<table class="columned_table autosized_table results_table">
+	<table class="columned_table autosized_table results_table responsive_table">
 		<thead>
 			<tr>
 				<th class="group_header">
-					<span class="heading_group">{!USERGROUP}</span> <span class="heading_presets">{!PINTERFACE_PRESETS}</span>
+					<span class="heading_group">{!USERGROUP}</span> <span class="heading_presets"><span class="inline_mobile"> &amp; </span>{!PINTERFACE_PRESETS}</span>
 				</th>
 
 				<th class="view_header">
@@ -22,8 +22,7 @@
 
 				{+START,IF,{$IS_NON_EMPTY,{OVERRIDES}}}
 					{+START,IF,{$JS_ON}}
-						<th>
-						</th>
+						<th></th>
 					{+END}
 				{+END}
 			</tr>
@@ -32,17 +31,19 @@
 		<tbody>
 			{PERMISSION_ROWS}
 
+			{$,Mass-set}
 			<tr>
 				<td class="form_table_field_name">
+					<span class="inline_mobile"><em>{!MASS_PERMISSION_SETTING}</em></span>
 				</td>
 
 				<td class="form_table_field_input">
-					<input class="button_micro" type="button" value="+/-" onclick="permissions_toggle(this.parentNode);" />
+					<input class="button_micro" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" onclick="permissions_toggle(this.parentNode);" />
 				</td>
 
 				{+START,LOOP,OVERRIDES}
 					<td class="form_table_field_input">
-						<input class="button_micro" type="button" value="+/-" onclick="permissions_toggle(this.parentNode);" />
+						<input class="button_micro" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" onclick="permissions_toggle(this.parentNode);" />
 					</td>
 				{+END}
 

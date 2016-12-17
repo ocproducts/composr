@@ -27,6 +27,13 @@
 }
 
 /*{+START,CSS_MODE,mobile}*/
+	.login_page_form, .login_page_form>tbody, .login_page_form>thead, .login_page_form>tbody>tr, .login_page_form>thead>tr, .login_page_form>tr, .login_page_form>tbody>tr>th, .login_page_form>thead>tr>th, .login_page_form>tr>th, .login_page_form>tbody>tr>td, .login_page_form>thead>tr>td, .login_page_form>tr>td {
+		display: block;
+		width: auto;
+		overflow: hidden;
+		text-align: left;
+	}
+
 	.login_page_form label {
 		display: inline-block;
 	}

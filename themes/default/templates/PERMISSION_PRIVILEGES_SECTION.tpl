@@ -1,6 +1,6 @@
 <!--<h2>{CURRENT_SECTION}</h2> Actually we only show one section at a time now-->
 
-<div class="wide_table_wrap"><table class="form_table columned_table wide_table privileges">
+<div class="wide_table_wrap"><table class="form_table columned_table wide_table privileges responsive_table">
 	<colgroup>
 		<col class="permission_field_name_column" />
 		{COLS}

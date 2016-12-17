@@ -40,7 +40,7 @@
 
 		<div id="mini_form_hider" style="display: none" class="float_surrounder">
 			<div class="menu_editor_rh_side">
-				<img onkeypress="this.onclick(event);" onclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) { e.className='menu_editor_page docked'; this.src='{$IMG;*,1x/arrow_box_hover}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box_hover} 2x'; } else { e.className='menu_editor_page'; this.src='{$IMG;*,1x/arrow_box}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box} 2x'; }" class="dock_button" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
+				<img onclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) { e.className='menu_editor_page docked'; this.src='{$IMG;*,1x/arrow_box_hover}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box_hover} 2x'; } else { e.className='menu_editor_page'; this.src='{$IMG;*,1x/arrow_box}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box} 2x'; }" class="dock_button" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
 
 				<h2>{!CHOOSE_ENTRY_POINT}</h2>
 

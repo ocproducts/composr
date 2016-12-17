@@ -199,7 +199,7 @@ class Hook_addon_registry_core_addon_management
                 'COPYRIGHT_ATTRIBUTION' => lorem_phrase(),
                 'LICENCE' => lorem_phrase(),
                 'ACTIONS' => $actions,
-                'TYPE' => lorem_phrase(),
+                'TYPE' => 'uninstall',
                 'PASSTHROUGH' => lorem_phrase(),
                 'UPDATED' => false,
             )));

@@ -274,18 +274,14 @@ function new_html__initialise(element)
 			if (element.className.indexOf('responsive_table')!=-1)
 			{
 				var trs=element.getElementsByTagName('tr');
-				var ths_first_row=trs[0].getElementsByTagName('th');
+				var ths_first_row=trs[0].cells;
 				for (var i=0;i<trs.length;i++)
 				{
-					var ths=trs[i].getElementsByTagName('th');
-					for (var j=0;j<ths.length;j++)
-					{
-						ths[j].setAttribute('data-th',ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,''))
-					}
-					var tds=trs[i].getElementsByTagName('td');
+					var tds=trs[i].cells;
 					for (var j=0;j<tds.length;j++)
 					{
-						tds[j].setAttribute('data-th',ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,''));
+						var data=ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,'');
+						if (data!='') tds[j].setAttribute('data-th',data);
 					}
 				}
 			}

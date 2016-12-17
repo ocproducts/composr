@@ -2277,6 +2277,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		display: block;
 		width: auto;
 		overflow: hidden;
+		text-align: left !important;
 	}
 	.responsive_table>thead {
 		display: none;
@@ -2285,7 +2286,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		border-bottom: 1px solid {$GET,standard_border};
 		margin-bottom: 1em;
 	}
-	.responsive_table>tbody>tr>th::before, .responsive_table>tbody>tr>td::before, .responsive_table>tr>th::before, .responsive_table>tr>td::before {
+	.responsive_table>tbody>tr>th[data-th]::before, .responsive_table>tbody>tr>td[data-th]::before, .responsive_table>tr>th[data-th]::before, .responsive_table>tr>td[data-th]::before {
 		content: attr(data-th) ":";
 		font-weight: bold;
 		width: 6.5em;
@@ -2294,6 +2295,10 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	.responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tr>th, .responsive_table>tr>td {
 		border-left: 1px solid {$GET,standard_border};
 		border-radius: 0 !important;
+	}
+	.responsive_table>tbody>tr>th .field_name, .responsive_table>tbody>tr>td .field_name, .responsive_table>tr>th .field_name, .responsive_table>tr>td .field_name {
+		font-weight: normal;
+		font-style: italic;
 	}
 	.responsive_table>tbody>tr>th:empty, .responsive_table>tbody>tr>td:empty, .responsive_table>tr>th:empty, .responsive_table>tr>td:empty {
 		display: none;

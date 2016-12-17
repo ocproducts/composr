@@ -40,6 +40,12 @@
 					<th>
 						{!STATUS}
 					</th>
+					<th class="column_mobile">
+						{!DESCRIPTION}
+					</th>
+					<th class="column_mobile">
+						{!FILES}
+					</th>
 					<th>
 						{!ACTIONS}
 					</th>
