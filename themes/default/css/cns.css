@@ -763,6 +763,10 @@ hr.cns_sig_barrier {
 =========================
 */
 
+.responsive_table .cns_rank_image {
+	display: inline;
+}
+
 .group_add_member form * {
 	vertical-align: middle;
 }

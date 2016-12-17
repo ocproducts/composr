@@ -3,27 +3,18 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.award_extra_details {
-	float: left;
-}
-
 /*{+START,CSS_MODE,desktop}*/
+	.award_extra_details {
+		float: left;
+	}
+
 	.award_extra_details {
 		width: 200px;
 	}
-/*{+END}*/
 
-.award_main {
-	border-left: 1px solid {$GET,standard_border};
-	padding-left: 2em;
-}
-/*{+START,CSS_MODE,desktop}*/
 	.award_main {
+		border-left: 1px solid {$GET,standard_border};
+		padding-left: 2em;
 		margin-left: 220px;
-	}
-/*{+END}*/
-/*{+START,CSS_MODE,mobile}*/
-	.award_main {
-		float: left;
 	}
 /*{+END}*/

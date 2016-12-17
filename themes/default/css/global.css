@@ -1903,7 +1903,6 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .compacted_subbox_stream h3+.meta_details, .compacted_subbox_stream .newscat_img+.meta_details {
 	border-bottom: 0;
-	margin-top: -0.8em;
 	margin-bottom: 0.5em;
 }
 .box_inner>h3+.meta_details {
@@ -2297,6 +2296,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		font-weight: bold;
 		width: 7em;
 		display: inline-block;
+		vertical-align: top;
 	}
 	.responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tr>th, .responsive_table>tr>td {
 		border-left: 1px solid {$GET,standard_border};
@@ -2621,6 +2621,15 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin: 0.5em;
 	padding: 0.5em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.index_screen_fancier_entry.box {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: none;
+	}
+/*{+END}*/
 .index_screen_fancier_entry_link {
 	font-weight: bold;
 	margin-bottom: 0.3em;
