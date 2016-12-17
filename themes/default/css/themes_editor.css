@@ -21,10 +21,12 @@
 	height: 300px;
 }
 
-.theme_wizard_info_box {
-	float: {!en_right};
-	text-align: center;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.theme_wizard_info_box {
+		float: {!en_right};
+		text-align: center;
+	}
+/*{+END}*/
 
 .theme_manage_table {
 	margin: 1em 0;
@@ -127,9 +129,24 @@
 /* Logo Wizard */
 
 .theme_image__background_theme_image .radio_list_picture {
-	max-width: 50%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
+/*{+START,CSS_MODE,desktop}*/
+	.theme_image__background_theme_image .radio_list_picture {
+		max-width: 50%;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.theme_image__background_theme_image .radio_list_picture {
+		max-width: 100%;
+		padding: 0;
+		margin: 0;
+	}
+
+	.theme_image__background_theme_image .radio_list_picture .selectable_theme_image {
+		padding: 0;
+	}
+/*{+END}*/
 .theme_image__logo_theme_image .radio_list_picture img, .theme_image__background_theme_image .radio_list_picture img {
 	max-width: 100%;
 }

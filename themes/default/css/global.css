@@ -3366,6 +3366,11 @@ ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associ
 		content: "( " !important;
 	}
 /*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
+		content: "" !important;
+	}
+/*{+END}*/
 ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 	font-size: 0.8em;
@@ -3421,7 +3426,10 @@ ul.associated_links_block_group.horizontal_links>li:before,
 	.horizontal_meta_details li:before,
 	.horizontal_links>li:before,
 	.horizontal_ticker li:before {
-		padding: 0 0.2em 0 0.1em;
+		padding: 0 0.2em 0 0;
+		margin-left: -0.2em;
+		content: "|" !important;
+		font-size: 0.8em;
 	}
 /*{+END}*/
 .horizontal_meta_details li:before {

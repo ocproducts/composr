@@ -10,13 +10,15 @@
 .purchase_terms {
 	width: 100%;
 	font-family: Courier, monospace;
-	white-space: pre-wrap;
+	white-space: pre-wrap !important;
 	margin: 1em 0;
 }
 
-.purchase_screen_contents {
-	min-height: 18em;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.purchase_screen_contents {
+		min-height: 18em;
+	}
+/*{+END}*/
 
 .subscriptions_cancel_button {
 	text-align: {!en_right};

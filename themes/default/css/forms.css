@@ -22,7 +22,8 @@
 		border-right: 0;
 	}
 
-	.form_table>tbody>tr>th label:after, .form_table>thead>tr>th label:after, .form_table>tr>th label:after {
+	.form_table>tbody>tr>th label:after, .form_table>thead>tr>th label:after, .form_table>tr>th label:after,
+	.form_table>tbody>tr>th .faux_label:after, .form_table>thead>tr>th .faux_label:after, .form_table>tr>th .faux_label:after {
 		content: ":";
 	}
 /*{+END}*/
