@@ -9,10 +9,9 @@
     }
 
     $cms.inherits(GlobalHelperPanel, $cms.View, {
-        contentsEl: null,
-        events: {
+        events: $cms.cloner({
             'click .js-click-toggle-helper-panel': 'toggleHelperPanel'
-        },
+        }),
         toggleHelperPanel: function () {
             var show = $cms.dom.notDisplayed(this.contentsEl);
             helper_panel(show);

@@ -205,9 +205,9 @@ function received_events(ajax_result_frame, ajax_result) {
                                                 return function () {
                                                     if (window.paused) return;
 
-                                                    var left = (sts(next_icon.style.left) + next_icon.x_vector);
+                                                    var left = ((parseInt(next_icon.style.left) || 0) + next_icon.x_vector);
                                                     next_icon.style.left = left + 'px';
-                                                    var top = (sts(next_icon.style.top) + next_icon.y_vector);
+                                                    var top = ((parseInt(next_icon.style.top) || 0) + next_icon.y_vector);
                                                     next_icon.style.top = top + 'px';
                                                     clear_transition_and_set_opacity(next_icon, next_icon.opacity);
                                                     next_icon.opacity *= 0.98;
@@ -240,12 +240,14 @@ function received_events(ajax_result_frame, ajax_result) {
 }
 
 function animate_down(e, avoid_remove) {
-    if (window.paused) return;
+    if (window.paused) {
+        return;
+    }
 
     var bubbles = document.getElementById('bubbles_go_here');
     var max_height = bubbles.parentNode.offsetHeight;
     var jump_speed = 1;
-    var new_pos = sts(e.style.top) + jump_speed;
+    var new_pos = (parseInt(e.style.top) || 0) + jump_speed;
     e.style.top = new_pos + 'px';
 
     if ((new_pos > max_height) || (!e.parentNode)) {
@@ -270,7 +272,7 @@ function animate_down(e, avoid_remove) {
 }
 
 function time_now() {
-    return Math.round(((new Date()).getTime() - Date.UTC(1970, 0, 1)) / 1000);
+    return Math.round(Date.now() / 1000);
 }
 
 function timeline_click(timeline, prospective) {

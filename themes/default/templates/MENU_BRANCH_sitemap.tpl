@@ -1,5 +1,4 @@
 {$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}
-
 {+START,IF,{$NOT,{$GET,js_menu}}}
 	<li class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has_img}">
 		<span>
@@ -18,15 +17,6 @@
 		{+END}
 	</li>
 {+END}
-
 {+START,IF,{$GET,js_menu}}
-	{$?,{FIRST},[}{
-		"caption": "{CAPTION#^}",
-		"tooltip": "{TOOLTIP#^}",
-		"url": "{URL#^}",
-		"img": "{IMG#^}",
-		"img_2x": "{IMG_2X#^}",
-		"current": {$?,{CURRENT},true,false},
-		"children": {$?,{$IS_EMPTY,{CHILDREN}},[],{CHILDREN}}
-	}{$?,{LAST},],\,}
+{$?,{FIRST},[}{"caption": "{CAPTION#^}", "tooltip": "{TOOLTIP#^}", "url": "{URL#^}", "img": "{IMG#^}", "img_2x": "{IMG_2X#^}", "current": {$?,{CURRENT},true,false}, "children": {$?,{$IS_EMPTY,{CHILDREN}},[],{CHILDREN}}}{$?,{LAST},],\,}
 {+END}

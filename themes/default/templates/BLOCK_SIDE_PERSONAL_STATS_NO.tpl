@@ -1,8 +1,9 @@
+{$REQUIRE_JAVASCRIPT,core}
 {+START,IF,{$NOR,{$GET,login_screen},{$MATCH_KEY_MATCH,_WILD:login}}}
-	<section class="box box___block_side_personal_stats_no"><div class="box_inner">
+	<section class="box box___block_side_personal_stats_no" data-tpl="blockSidePersonalStatsNo"><div class="box_inner">
 		{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
 
-		<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
+		<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'])) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>

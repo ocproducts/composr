@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,ajax}
+{$REQUIRE_JAVASCRIPT,galleries}
 <div data-view="GalleryNav" data-view-params="{+START,PARAMS_JSON,_X,_N,SLIDESHOW}{_*}{+END}">
 	{+START,IF,{SLIDESHOW}}
 		<label for="slideshow_from" class="slideshow_speed">

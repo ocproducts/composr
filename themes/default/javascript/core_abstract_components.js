@@ -57,8 +57,6 @@
     };
 
     $cms.templates.handleConflictResolution = function (params) {
-        params = params || {};
-
         if (params.pingUrl) {
             do_ajax_request(params.pingUrl);
 

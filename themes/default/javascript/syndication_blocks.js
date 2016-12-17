@@ -1,6 +1,7 @@
 (function ($cms) {
     'use strict';
 
+    // Implementation for [data-cms-news-scroller]
     $cms.behaviors.initializeNewsScroller = {
         attach: function (context) {
             $cms.dom.$$$(context, '[data-cms-news-scroller]').forEach(function (scrollerEl) {
@@ -26,11 +27,11 @@
                     }, scrollInterval);
                 }, 2000);
 
-                $cms.dom.on(scrollerEl, 'mouseover', function () {
-                    scrollerEl.paused = true;
-                });
-                $cms.dom.on(scrollerEl, 'mouseout', function () {
-                    scrollerEl.paused = false;
+                $cms.dom.on(scrollerEl, 'mouseover mouseout', function (e) {
+                    if (e.relatedTarget && scrollerEl.contains(e.relatedTarget)) {
+                        return;
+                    }
+                    scrollerEl.paused = (e.type === 'mouseover');
                 });
             });
         }

@@ -675,7 +675,7 @@ function do_attachment(field_name, id, description) {
         return;
     }
 
-    description || (description = '');
+    description = strVal(description);
 
     var element = get_main_cms_window().document.getElementById(field_name);
 

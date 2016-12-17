@@ -16,8 +16,8 @@
                     var params = objVal($cms.dom.data(el, 'viewParams')),
                         view, viewOptions = { el: el };
 
-                        view = new $cms.views[el.dataset.view](params, viewOptions);
-                        $cms.viewInstances[$cms.uid(view)] = view;
+                    view = new $cms.views[el.dataset.view](params, viewOptions);
+                    $cms.viewInstances[$cms.uid(view)] = view;
                 });
             }
         },
@@ -28,7 +28,12 @@
                 $cms.dom.$$$(context, '[data-tpl]').forEach(function (el) {
                     var template = el.dataset.tpl,
                         params = objVal($cms.dom.data(el, 'tplParams'));
-                    $cms.templates[template].call(el, params);
+
+                    try {
+                        $cms.templates[template].call(el, params, el);
+                    } catch (ex) {
+                        $cms.error('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the function of template "' + template + '" for', el, ex);
+                    }
                 });
             }
         },
@@ -125,7 +130,7 @@
                 inputs.forEach(function (input) {
                     if (input.type === 'checkbox') {
                         // Implementatioin for input[data-cms-unchecked-is-indeterminate]
-                        if (input.dataset.cmsUncheckedIsIndeterminate) {
+                        if (input.dataset.cmsUncheckedIsIndeterminate != null) {
                             input.indeterminate = !input.checked;
                         }
                     }
@@ -149,15 +154,16 @@
         // Implementation for [data-cms-select2]
         select2Plugin: {
             attach: function (context) {
+                if (!window.jQuery || !window.jQuery.fn.select2) {
+                    return;
+                }
+
                 var els = $cms.dom.$$$(context, '[data-cms-select2]');
 
                 // Select2 plugin hook
                 els.forEach(function (el) {
                     var options = objVal($cms.dom.data(el, 'cmsSelect2'));
-
-                    if (window.jQuery && window.jQuery.fn.select2) {
-                        window.jQuery(el).select2(options);
-                    }
+                    window.jQuery(el).select2(options);
                 });
             }
         },
@@ -195,8 +201,10 @@
         return to_add;
     }
 
-    function Global() {
-        var view = this;
+    /**
+     * @constructor
+     * */
+    $cms.views.Global = function Global() {
         Global.base(this, 'constructor', arguments);
 
         if ($cms.$CONFIG_OPTION.detect_javascript) {
@@ -214,12 +222,14 @@
         if ($cms.usp.get('wide_print') && ($cms.usp.get('wide_print') !== '0')) {
             try {
                 window.print();
-            } catch (ignore) {}
+            } catch (ignore) {
+            }
         }
 
         if (($cms.$ZONE === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
             var page = $cms.filter.url($cms.$PAGE);
-            load_snippet('background_template_compilation&page=' + page, '', function () {});
+            load_snippet('background_template_compilation&page=' + page, '', function () {
+            });
         }
 
         if (((window === window.top) && !window.opener) || (window.name === '')) {
@@ -255,8 +265,6 @@
         window.mouse_x = 0;
         window.mouse_y = 0;
 
-        window.addEventListener('click', capture_click_key_states, true); // Workaround for a dodgy firefox extension
-
         this.stuckNavs();
 
         // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
@@ -269,8 +277,7 @@
         };
 
         // Monitor pasting, for anti-spam reasons
-        window.addEventListener('paste', function(event) {
-            if (!event) event = window.event;
+        window.addEventListener('paste', function (event) {
             var clipboard_data = event.clipboardData || window.clipboardData;
             var pasted_data = clipboard_data.getData('Text');
             if (pasted_data && pasted_data.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
@@ -280,6 +287,7 @@
 
         window.page_loaded = true;
 
+        var view = this;
         /* Tidying up after the page is rendered */
         $cms.load.then(function () {
             // When images etc have loaded
@@ -318,9 +326,9 @@
         if ($cms.$IS_STAFF) {
             this.loadStuffStaff()
         }
-    }
+    };
 
-    $cms.inherits(Global, $cms.View, {
+    $cms.inherits($cms.views.Global, $cms.View, /** @lends $cms.views.Global.prototype */{
         events: function () {
             return {
                 // Show a confirmation dialog for clicks on a link (is higher up for priority)
@@ -337,6 +345,7 @@
                 'click [data-cms-js]': 'preventDefault',
                 'submit [data-cms-js]': 'preventDefault',
 
+                'submit [data-click-pd]': 'clickPreventDefault',
                 'submit [data-submit-pd]': 'submitPreventDefault',
 
                 // Simulated href for non <a> elements
@@ -417,7 +426,7 @@
                     if (panel_bottom) {
                         footer_height += panel_bottom.offsetHeight;
                     }
-                    if (stuck_nav_height < get_window_height() - footer_height)  {// If there's space in the window to make it "float" between header/footer
+                    if (stuck_nav_height < get_window_height() - footer_height) {// If there's space in the window to make it "float" between header/footer
                         var extra_height = (window.pageYOffset - pos_y);
                         if (extra_height > 0) {
                             var width = $cms.dom.contentWidth(stuck_nav);
@@ -482,6 +491,13 @@
         // Implementation for [data-cms-js]
         preventDefault: function (e, el) {
             if (el.dataset.cmsJs !== '0') {
+                e.preventDefault();
+            }
+        },
+
+        // Implementation for [data-click-pd]
+        clickPreventDefault: function (e, el) {
+            if (el.dataset.clickPd !== '0') {
                 e.preventDefault();
             }
         },
@@ -612,7 +628,7 @@
             if (el.querySelector('img, video')) {
                 openImageIntoLightbox(el);
             } else {
-                openLinkAsOverlay({el: el});
+                openLinkAsOverlay({ el: el });
             }
 
             function openImageIntoLightbox(el) {
@@ -1075,7 +1091,7 @@
         }
     });
 
-    function ToggleableTray() {
+    $cms.views.ToggleableTray = function ToggleableTray() {
         ToggleableTray.base(this, 'constructor', arguments);
 
         this.contentEl = this.$('.toggleable_tray');
@@ -1085,9 +1101,9 @@
         if (this.cookieId) {
             this.handleTrayCookie(this.cookieId);
         }
-    }
+    };
 
-    $cms.inherits(ToggleableTray, $cms.View, {
+    $cms.inherits($cms.views.ToggleableTray, $cms.View, /** @lends $cms.views.ToggleableTray.prototype */{
         events: {
             'click .js-btn-tray-toggle': 'toggle',
             'click .js-btn-tray-accordion': 'toggleAccordionItems'
@@ -1249,7 +1265,7 @@
         }
 
         function toggleable_tray_animate(final_height, animate_dif, orig_overflow, animate_ticks) {
-            var current_height = ((element.style.height === 'auto') || (element.style.height === '')) ? element.offsetHeight : sts(element.style.height);
+            var current_height = ((element.style.height === 'auto') || (element.style.height === '')) ? element.offsetHeight : (parseInt(element.style.height) || 0);
 
             if (((current_height > final_height) && (animate_dif < 0)) || ((current_height < final_height) && (animate_dif > 0))) {
                 var num = Math.max(current_height + animate_dif, 0);
@@ -1325,9 +1341,6 @@
         }
     }
 
-    $cms.views.Global = Global;
-    $cms.views.ToggleableTray = ToggleableTray;
-
     $cms.extend($cms.templates, {
         forumsEmbed: function () {
             var frame = this;
@@ -1397,7 +1410,8 @@
             if ((document.activeElement === undefined) || (document.activeElement !== $cms.dom.id('password'))) {
                 try {
                     $cms.dom.id('login_username').focus();
-                } catch (e) {}
+                } catch (e) {
+                }
             }
         },
 
@@ -1435,6 +1449,10 @@
                 e.preventDefault();
             }
         });
+    };
+
+    $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
+
     };
 
     function gdImageTransform(el) {
@@ -1534,10 +1552,12 @@
 
         // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
         if (!el.onmouseout) {
-            el.onmouseout = function () {};
+            el.onmouseout = function () {
+            };
         }
         if (!el.onmousemove) {
-            el.onmouseover = function () {};
+            el.onmouseover = function () {
+            };
         }
 
         // And now define nice listeners for it all...
@@ -1580,7 +1600,9 @@
         try {
             has_loaded = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host != '');
         }
-        catch (e) {};
+        catch (e) {
+        }
+        ;
         return has_loaded;
     }
 
@@ -1589,7 +1611,9 @@
         try {
             has_ownership = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
         }
-        catch (e) {};
+        catch (e) {
+        }
+        ;
         return has_ownership;
     }
 

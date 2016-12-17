@@ -43,7 +43,8 @@ var encodeUC = encodeURIComponent,
     window.arrVal = arrVal;
     window.objVal = objVal;
 
-    $cms = Object.assign($cms, {
+    /** @namespace */
+    $cms = Object.assign($cms, /** @lends $cms */ {
         // Unique for each copy of Composr on the page
         id: 'composr' + ('' + Math.random()).substr(2),
 
@@ -167,6 +168,7 @@ var encodeUC = encodeURIComponent,
         extend: extend,
         extendOwn: extendOwn,
         extendDeep: extendDeep,
+        cloner: cloner,
         defaults: defaults,
 
         define: define,
@@ -529,6 +531,14 @@ var encodeUC = encodeURIComponent,
             _extend(target, arguments[i], EXTEND_DEEP);
         }
         return target
+    }
+
+    // Returns a function that always returns a deep-clone of `obj`
+    function cloner(obj) {
+        obj = objVal(obj);
+        return function cloned() {
+            return extendDeep({}, obj);
+        };
     }
 
     // Apply `options` to the `defaults` object. Only copies over properties with keys already defined in the `defaults` object.
@@ -970,9 +980,7 @@ var encodeUC = encodeURIComponent,
      * @returns {*}
      */
     function base(SuperClass, that, method, args) {
-        var prop;
-        prop = SuperClass.prototype[method];
-        return (args && args.length) ? prop.apply(that, args) : prop.call(that);
+        return (args && args.length) ? SuperClass.prototype[method].apply(that, args) : SuperClass.prototype[method].call(that);
     }
 
     /* Cookies */
@@ -1168,7 +1176,28 @@ var encodeUC = encodeURIComponent,
         }
     }());
 
-    /* DOM helper methods */
+    function domArg(windowOrNodeOrSelector) {
+        if (windowOrNodeOrSelector != null) {
+            if (isWindow(windowOrNodeOrSelector)) {
+                return windowOrNodeOrSelector
+            }
+
+            if (isNode(windowOrNodeOrSelector)) {
+                return windowOrNodeOrSelector;
+            }
+
+            if (typeof windowOrNodeOrSelector === 'string') {
+                return $cms.dom.$(windowOrNodeOrSelector);
+            }
+        }
+
+        throw new TypeError('domArg(): Argument 1 must be a {' + 'Window|Node|string}, "' + typeName(windowOrNodeOrSelector) + '" provided.');
+    }
+
+    /**
+     * DOM helper methods
+     * @namespace
+     * */
     $cms.dom || ($cms.dom = {});
 
     function computedStyle(el, property) {
@@ -1187,7 +1216,7 @@ var encodeUC = encodeURIComponent,
 
     // Returns a single matching child element, `context` defaults to 'document'
     var rgxIdSelector = /^\#[\w\-]+$/;
-    $cms.dom.$ = function (context, selector) {
+    $cms.dom.$ = function $(context, selector) {
         if (selector === undefined) {
             selector = context;
             context = document;
@@ -1198,7 +1227,7 @@ var encodeUC = encodeURIComponent,
 
     // `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
     var rgxSimpleSelector = /^[\#\.]?[\w\-]+$/;
-    $cms.dom.$$ = function (context, selector) {
+    $cms.dom.$$ = function $$(context, selector) {
         var found;
 
         if (selector === undefined) {
@@ -1226,12 +1255,12 @@ var encodeUC = encodeURIComponent,
         return toArray(context.querySelectorAll(selector));
     };
 
-    $cms.dom.last = function (context, selector) {
+    $cms.dom.last = function last(context, selector) {
         return $cms.dom.$$(context, selector).pop();
     };
 
     // This one (3 dollars) also includes the context element (at offset 0) if it matches the selector
-    $cms.dom.$$$ = function (context, selector) {
+    $cms.dom.$$$ = function $$$(context, selector) {
         if (selector === undefined) {
             selector = context;
             context = document;
@@ -1287,7 +1316,7 @@ var encodeUC = encodeURIComponent,
             return values;
         }
 
-        el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el)) : value);
+        el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
     };
 
     $cms.dom.text = function (el, text) {
@@ -1295,15 +1324,16 @@ var encodeUC = encodeURIComponent,
             return el.textContent;
         }
 
-        el.textContent = strVal((typeof text === 'function') ? text.call(el, el.textContent) : text);
+        el.textContent = strVal((typeof text === 'function') ? text.call(el, el.textContent, el) : text);
     };
 
     var rgxNotWhite = /\S+/g;
+    /** @class */
     function Data() {
         this.expando = $cms.id + '-data-' + Data.uid++;
     }
     Data.uid = 1;
-    define(Data.prototype, {
+    define(Data.prototype, /** @lends Data.prototype */ {
         cache: function (owner) {
             // Check if the owner object already has a cache
             var value = owner[this.expando];
@@ -1475,7 +1505,7 @@ var encodeUC = encodeURIComponent,
             try {
                 data = dataAttr(el, key);
             } catch (e) {
-                $cms.warn('$cms.dom.data(): Exception while parsing JSON in data attribute "' + key + '" of', el, e);
+                $cms.warn('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
             }
 
             if (data !== undefined) {
@@ -1748,7 +1778,7 @@ var encodeUC = encodeURIComponent,
     };
 
     /**
-     * @param el {Window|Document|Element}
+     * @param el { Window|Document|Element }
      * @param event {string|object}
      * @param selector {string|function}
      * @param [data] {object|function}
@@ -2295,16 +2325,20 @@ var encodeUC = encodeURIComponent,
         return result.join('&');
     };
 
+    /** @namespace */
     $cms.settings || ($cms.settings = {});
 
-    /* Addons will add "behaviors" under this object */
+    /**
+     * Addons will add "behaviors" under this object
+     * @namespace
+     * */
     $cms.behaviors || ($cms.behaviors = {});
 
     $cms.attachBehaviors = function (context, settings) {
         var name;
 
         if (!isDocOrEl(context)) {
-            throw new Error('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
+            throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
 
         settings || (settings = $cms.settings);
@@ -2315,7 +2349,7 @@ var encodeUC = encodeURIComponent,
                 try {
                     $cms.behaviors[name].attach(context, settings);
                 } catch (e) {
-                    $cms.error('Error while attaching behavior \'' + name + '\' to', context, '\n', e);
+                    $cms.error('$cms.attachBehaviors(): Error while attaching behavior \'' + name + '\' to', context, '\n', e);
                 }
             }
         }
@@ -2325,7 +2359,7 @@ var encodeUC = encodeURIComponent,
         var name;
 
         if (!isDocOrEl(context)) {
-            throw new TypeError('Invalid argument type: \'context\' must be of type HTMLDocument or HTMLElement');
+            throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
 
         settings || (settings = $cms.settings);
@@ -2337,29 +2371,36 @@ var encodeUC = encodeURIComponent,
                 try {
                     $cms.behaviors[name].detach(context, settings, trigger);
                 } catch (e) {
-                    $cms.error('Error while detaching behavior \'' + name + '\' from', context, '\n', e);
+                    $cms.error('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
                 }
             }
         }
     };
 
-    /* Addons will add template related methods under this object */
+    /**
+     * Addons will add template related methods under this object
+     * @namespace
+     */
     $cms.templates || ($cms.templates = {});
 
-    /* Addons will add $cms.View subclasses under this object */
+    /**
+     * Addons will add $cms.View subclasses under this object
+     * @namespace
+     */
     $cms.views || ($cms.views = {});
 
+    /**
+     * @namespace
+     */
     $cms.viewInstances || ($cms.viewInstances = {});
 
     // List of view options that can be set as properties.
     var viewOptionsList = { el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 };
 
-    // Initialize
-    $cms.View = View;
-    function View(params, viewOptions) {
-        /** Defaults to 'div'.
-         * @var {string} */
-        this.tagName = '';
+    /** @class */
+    $cms.View = function View(params, viewOptions) {
+        /** @var {string} */
+        this.tagName = 'div';
         /** @var { HTMLElement } */
         this.el = null;
         this.initialize.apply(this, arguments);
@@ -2367,7 +2408,7 @@ var encodeUC = encodeURIComponent,
 
     // Cached regex to split keys for `delegate`.
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
-    define(View.prototype, {
+    define($cms.View.prototype, /** @lends $cms.View.prototype */{
         initialize: function (params, viewOptions) {
             this.params = objVal(params);
 
@@ -2405,7 +2446,7 @@ var encodeUC = encodeURIComponent,
         // attached to it. Exposed for subclasses using an alternative DOM
         // manipulation API.
         _removeElement: function () {
-            this.el.parentNode && this.el.parentNode.removeChild(this.el);
+            this.el && this.el.parentNode && this.el.parentNode.removeChild(this.el);
         },
 
         // Change the view's element (`this.el` property) and re-delegate the
@@ -2493,11 +2534,6 @@ var encodeUC = encodeURIComponent,
                 this.setElement(result(this, 'el'));
             }
         }
-    });
-
-    // Tooltips close on browser resize
-    $cms.dom.on(window, 'resize', function () {
-        clear_out_tooltips();
     });
 
     /**
@@ -2653,7 +2689,7 @@ var encodeUC = encodeURIComponent,
 
     var tempDisabledButtons = {};
 
-    $cms.ui.disableButton = function (btn, permanent) {
+    $cms.ui.disableButton = function disableButton(btn, permanent) {
         permanent = !!permanent;
 
         if (btn.form && (btn.form.target === '_blank')) {
@@ -2678,13 +2714,13 @@ var encodeUC = encodeURIComponent,
         function enableDisabledButton() {
             if (tempDisabledButtons[uid]) {
                 btn.disabled = false;
-                btn.style.cursor = 'default';
+                btn.style.removeProperty('cursor');
                 delete tempDisabledButtons[uid];
             }
         }
     };
 
-    $cms.ui.disableFormButtons = function (form, permanent) {
+    $cms.ui.disableFormButtons = function disableFormButtons(form, permanent) {
         var buttons = $cms.dom.$$(form, 'input[type="submit"], input[type="button"], input[type="image"], button');
 
         buttons.forEach(function (btn) {
@@ -2693,7 +2729,7 @@ var encodeUC = encodeURIComponent,
     };
 
     // This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
-    $cms.ui.disableSubmitAndPreviewButtons = function (permanent) {
+    $cms.ui.disableSubmitAndPreviewButtons = function disableSubmitAndPreviewButtons(permanent) {
         // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
         var buttons = $cms.dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
 
@@ -2706,7 +2742,7 @@ var encodeUC = encodeURIComponent,
         });
     };
 
-    $cms.openModalWindow = function (options) {
+    $cms.openModalWindow = function openModalWindow(options) {
         return new $cms.views.ModalWindow(options);
     };
 
@@ -2728,9 +2764,8 @@ var encodeUC = encodeURIComponent,
      HEAVILY Modified by ocProducts for composr.
 
      */
-
-    $cms.views.ModalWindow = ModalWindow;
-    function ModalWindow(params) {
+    /** @class */
+    $cms.views.ModalWindow = function ModalWindow(params) {
         ModalWindow.base(this, 'constructor', arguments);
 
         bindAll(this, 'close', 'option', 'reset_dimensions', 'init_box', 'inject', 'remove', 'element', 'getPageSize');
@@ -2785,7 +2820,7 @@ var encodeUC = encodeURIComponent,
         this.init_box();
     }
 
-    $cms.inherits(ModalWindow, $cms.View, {
+    $cms.inherits($cms.views.ModalWindow, $cms.View, /** @lends $cms.views.ModalWindow.prototype */ {
         // Methods...
         close: function (win) {
             if (this.boxWrapperEl) {
@@ -4224,7 +4259,7 @@ var encodeUC = encodeURIComponent,
                 if (xhr.status && okStatusCodes.includes(xhr.status)) {
                     // Process the result
                     if ((!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
-                        return callAjaxMethod(ajaxCallbacks[i], xhr, null);
+                        return callAjaxMethod(ajaxCallbacks[i], xhr);
                     }
 
                     // XML result. Handle with a potentially complex call
@@ -4235,11 +4270,11 @@ var encodeUC = encodeURIComponent,
                         processRequestChange(xml.documentElement || xml, i);
                     } else {
                         // Error parsing
-                        return callAjaxMethod(ajaxCallbacks[i], null, null);
+                        return callAjaxMethod(ajaxCallbacks[i]);
                     }
                 } else {
                     // HTTP error...
-                    callAjaxMethod(ajaxCallbacks[i], null, null);
+                    callAjaxMethod(ajaxCallbacks[i]);
 
                     try {
                         if ((xhr.status === 0) || (xhr.status === 12029)) {// 0 implies site down, or network down
@@ -4275,7 +4310,7 @@ var encodeUC = encodeURIComponent,
                 // Either an error or a message was returned. :(
                 var message = messageEl.firstChild.data;
 
-                callAjaxMethod(method, null, null);
+                callAjaxMethod(method);
 
                 if (ajaxResultFrame.querySelector('error')) {
                     // It's an error :|
@@ -4289,7 +4324,7 @@ var encodeUC = encodeURIComponent,
 
             var ajaxResultEl = ajaxResultFrame.querySelector('result');
             if (!ajaxResultEl) {
-                callAjaxMethod(method, null, null);
+                callAjaxMethod(method);
                 return;
             }
 
@@ -4352,7 +4387,7 @@ var encodeUC = encodeURIComponent,
         var form = $cms.dom.$('form#comments_form');
 
         var parent_id_field;
-        if (form.elements['parent_id'] === undefined) {
+        if (form.elements.parent_id === undefined) {
             parent_id_field = document.createElement('input');
             parent_id_field.type = 'hidden';
             parent_id_field.name = 'parent_id';
@@ -4411,8 +4446,6 @@ function noop() {}
     window.check_field_for_blankness = check_field_for_blankness;
     window.manage_scroll_height = manage_scroll_height;
     window.get_main_cms_window = get_main_cms_window;
-    window.sts = sts;
-    window.capture_click_key_states = capture_click_key_states;
     window.magic_keypress = magic_keypress;
     window.escape_html = escape_html;
     window.escape_comcode = escape_comcode;
@@ -4439,32 +4472,26 @@ function noop() {}
 
     /* Very simple form control flow */
     function check_field_for_blankness(field, event) {
-        if (!field) { // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
-            return true;
-        }
-        if (field.nodeName === undefined) { // Also bizarre
+        if (!field) {
+            // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
             return true;
         }
 
         var value = field.value,
-            ee = $cms.dom.$('#error_' + field.id);
+            errorEl = $cms.dom.$('#error_' + field.id);
 
-        if ((value.replace(/\s/g, '') === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
-            if (event) {
-                cancel_bubbling(event);
-            }
-
-            if (ee !== null) {
-                ee.style.display = 'block';
-                $cms.dom.html(ee, '{!REQUIRED_NOT_FILLED_IN;^}');
+        if ((value.trim() === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
+            if (errorEl !== null) {
+                errorEl.style.display = 'block';
+                $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
             }
 
             window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
             return false;
         }
 
-        if (ee !== null) {
-            ee.style.display = 'none';
+        if (errorEl != null) {
+            errorEl.style.display = 'none';
         }
 
         return true;
@@ -4513,16 +4540,7 @@ function noop() {}
         return window;
     }
 
-    /* Find the size of a dimensions in pixels without the px (not general purpose, just to simplify code) */
-    function sts(src) {
-        return (src && src.includes('px')) ? parseInt(src.replace('px', '')) : 0;
-    }
-
     /* Find if the user performed the Composr "magic keypress" to initiate some action */
-    function capture_click_key_states(event) {
-        window.capture_event = event;
-    }
-
     function magic_keypress(event) {
         // Cmd+Shift works on Mac - cannot hold down control or alt in Mac firefox at least
         if (window.capture_event !== undefined) {
@@ -4545,6 +4563,11 @@ function noop() {}
 
         return count >= 2;
     }
+
+    // Workaround for a dodgy firefox extension
+    window.addEventListener('click', function (e) {
+        window.capture_event = e;
+    }, true);
 
     /* Data escaping */
     function escape_html(value) {
@@ -5169,6 +5192,13 @@ function clear_out_tooltips(tooltip_being_opened) {
         deactivate_tooltip(el.ac, el);
     });
 }
+
+$cms.ready.then(function () {
+    // Tooltips close on browser resize
+    $cms.dom.on(window, 'resize', function () {
+        clear_out_tooltips();
+    });
+});
 
 /* Tooltips that can work on any element with rich HTML support */
 //  ac is the object to have the tooltip
@@ -7547,7 +7577,7 @@ function disable_preview_scripts(context) {
 
     elements = $cms.dom.$$(context, 'button, input[type="button"], input[type="image"]');
     for (i = 0; i < elements.length; i++) {
-        elements[i].onclick = nope;
+        elements[i].onclick = alertNotInPreviewMode;
     }
 
     // Make sure links in the preview don't break it - put in a new window
@@ -7562,7 +7592,7 @@ function disable_preview_scripts(context) {
         }
     }
 
-    function nope() {
+    function alertNotInPreviewMode() {
         window.fauxmodal_alert('{!NOT_IN_PREVIEW_MODE;^}');
         return false;
     }

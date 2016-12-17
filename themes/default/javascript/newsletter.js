@@ -37,7 +37,7 @@
             nid = strVal(params.nid);
 
         $cms.dom.on(container, 'submit', '.js-form-submit-newsletter-check-email-field', function (e, form) {
-            if ((check_field_for_blankness(form.elements['address' + nid], e)) && (form.elements['address' + nid].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+            if ((check_field_for_blankness(form.elements['address' + nid])) && (form.elements['address' + nid].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
                 $cms.ui.disableFormButtons(form);
                 return;
             }

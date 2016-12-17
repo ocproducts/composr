@@ -1,8 +1,7 @@
 (function ($cms) {
 
-    $cms.templates.memberTooltip = function (params) {
-        var container = this,
-            submitter = strVal(params.submitter);
+    $cms.templates.memberTooltip = function (params, container) {
+        var submitter = strVal(params.submitter);
 
         $cms.dom.on(container, 'mouseover', '.js-mouseover-activate-member-tooltip', function (e, el) {
             el.cancelled = false;
@@ -40,7 +39,7 @@
         });
     };
 
-    $cms.templates.doNextItem = function (params) {
+    $cms.templates.doNextItem = function doNextItem(params) {
         var container = this,
             rand = params.randDoNextItem,
             url = params.url,
@@ -133,96 +132,92 @@
         }
     };
 
-    $cms.extend($cms.templates, {
-        internalizedAjaxScreen: function (params) {
-            var element = this;
+    $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params) {
+        var element = this;
 
-            internalise_ajax_block_wrapper_links(params.url, element, ['.*'], { }, false, true);
+        internalise_ajax_block_wrapper_links(params.url, element, ['.*'], {}, false, true);
 
-            if ((typeof params.changeDetectionUrl === 'string') && (params.changeDetectionUrl !== '') && (Number(params.refreshTime) > 0)) {
-                window.detect_interval = window.setInterval(function () {
-                    detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
-                        if ((!document.getElementById('post')) || (document.getElementById('post').value === '')) {
-                            var _detectedChange = detectedChange;
-                            call_block(params.url, '', element, false, _detectedChange, true, null, true);
-                        }
-                    });
-                }, params.refreshTime * 1000);
-            }
-        },
-
-        ajaxPagination: function (params) {
-            var wrapperEl = $cms.dom.id(params.wrapperId),
-                blockCallUrl = params.blockCallUrl,
-                infiniteScrollCallUrl = params.infiniteScrollCallUrl,
-                infiniteScrollFunc;
-
-            internalise_ajax_block_wrapper_links(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
-
-            if (infiniteScrollCallUrl) {
-                infiniteScrollFunc = internalise_infinite_scrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
-
-                $cms.dom.on(window, {
-                    scroll:  infiniteScrollFunc,
-                    touchmove: infiniteScrollFunc,
-                    keydown: infinite_scrolling_block,
-                    mousedown: infinite_scrolling_block_hold,
-                    mousemove: function () {
-                        // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                        infinite_scrolling_block_unhold(infiniteScrollFunc);
+        if (params.changeDetectionUrl && (Number(params.refreshTime) > 0)) {
+            window.detect_interval = window.setInterval(function () {
+                detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
+                    if ((!document.getElementById('post')) || (document.getElementById('post').value === '')) {
+                        var _detectedChange = detectedChange;
+                        call_block(params.url, '', element, false, _detectedChange, true, null, true);
                     }
                 });
+            }, params.refreshTime * 1000);
+        }
+    };
 
-                infiniteScrollFunc();
-            }
-        },
+    $cms.templates.ajaxPagination = function ajaxPagination(params) {
+        var wrapperEl = $cms.dom.id(params.wrapperId),
+            blockCallUrl = params.blockCallUrl,
+            infiniteScrollCallUrl = params.infiniteScrollCallUrl,
+            infiniteScrollFunc;
 
-        confirmScreen: function confirmScreen(params) {
-            params = params || {};
+        internalise_ajax_block_wrapper_links(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
 
-            if (params.javascript != null) {
-                eval.call(window, params.javascript);
-            }
-        },
+        if (infiniteScrollCallUrl) {
+            infiniteScrollFunc = internalise_infinite_scrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
 
-        warnScreen: function warnScreen() {
-            if ((window.trigger_resize != null) && (window.top !== window)) {
-                trigger_resize();
-            }
-        },
-
-        fatalScreen: function fatalScreen() {
-            if ((window.trigger_resize != null) && (window.top !== window)) {
-                trigger_resize();
-            }
-        },
-
-        columnedTableScreen: function columnedTableScreen(params) {
-            params = params || {};
-
-            if (params.javascript != null) {
-                eval.call(window, params.javascript);
-            }
-        },
-
-        questionUiButtons: function () {
-            var container = this;
-
-            $cms.dom.on(container, 'click', '.js-click-close-window-with-val', function (e, clicked) {
-                window.returnValue = clicked.dataset.tpReturnValue;
-
-                if (window.faux_close !== undefined) {
-                    window.faux_close();
-                } else {
-                    try {
-                        window.get_main_cms_window().focus();
-                    } catch (ignore) {}
-
-                    window.close();
+            $cms.dom.on(window, {
+                scroll: infiniteScrollFunc,
+                touchmove: infiniteScrollFunc,
+                keydown: infinite_scrolling_block,
+                mousedown: infinite_scrolling_block_hold,
+                mousemove: function () {
+                    // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
+                    infinite_scrolling_block_unhold(infiniteScrollFunc);
                 }
             });
+
+            infiniteScrollFunc();
         }
-    });
+    };
+
+    $cms.templates.confirmScreen = function confirmScreen(params) {
+        if (params.javascript != null) {
+            eval.call(window, params.javascript);
+        }
+    };
+
+    $cms.templates.warnScreen = function warnScreen() {
+        if ((window.trigger_resize != null) && (window.top !== window)) {
+            trigger_resize();
+        }
+    };
+
+    $cms.templates.fatalScreen = function fatalScreen() {
+        if ((window.trigger_resize != null) && (window.top !== window)) {
+            trigger_resize();
+        }
+    };
+
+    $cms.templates.columnedTableScreen = function columnedTableScreen(params) {
+        params = params || {};
+
+        if (params.javascript != null) {
+            eval.call(window, params.javascript);
+        }
+    };
+
+    $cms.templates.questionUiButtons = function questionUiButtons() {
+        var container = this;
+
+        $cms.dom.on(container, 'click', '.js-click-close-window-with-val', function (e, clicked) {
+            window.returnValue = clicked.dataset.tpReturnValue;
+
+            if (window.faux_close !== undefined) {
+                window.faux_close();
+            } else {
+                try {
+                    window.get_main_cms_window().focus();
+                } catch (ignore) {}
+
+                window.close();
+            }
+        });
+    };
 
     function detectChange(change_detection_url, refresh_if_changed, callback) {
         do_ajax_request(change_detection_url, function (result) {
@@ -230,7 +225,7 @@
             if (response == '1') {
                 window.clearInterval(window.detect_interval);
 
-                console.log('Change detected');
+                $cms.log('detectChange(): Change detected');
 
                 callback();
             }
@@ -238,17 +233,21 @@
     }
 
     function detectedChange() {
-        console.log('Change notification running');
+        $cms.log('detectedChange(): Change notification running');
 
         try {
             window.focus();
-        } catch (e) {}
+        } catch (e) {
+        }
 
         if (window.soundManager !== undefined) {
-            var sound_url = 'data/sounds/message_received.mp3';
-            var base_url = ((sound_url.indexOf('data_custom') == -1) && (sound_url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;}' : '{$CUSTOM_BASE_URL_NOHTTP;}';
-            var sound_object = window.soundManager.createSound({url: base_url + '/' + sound_url});
-            if (sound_object) sound_object.play();
+            var sound_url = 'data/sounds/message_received.mp3',
+                base_url = ((sound_url.indexOf('data_custom') === -1) && (sound_url.indexOf('uploads/') === -1)) ? '{$BASE_URL_NOHTTP;}' : '{$CUSTOM_BASE_URL_NOHTTP;}',
+                sound_object = window.soundManager.createSound({ url: base_url + '/' + sound_url });
+
+            if (sound_object) {
+                sound_object.play();
+            }
         }
     }
 

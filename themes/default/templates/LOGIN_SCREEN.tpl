@@ -10,7 +10,7 @@
 		</div></div>
 	{+END}
 
-	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" target="_top" autocomplete="on">
+	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'])) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" target="_top" autocomplete="on">
 		<div>
 			{$INSERT_SPAMMER_BLACKHOLE}
 

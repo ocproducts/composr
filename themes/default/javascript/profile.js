@@ -1,6 +1,6 @@
 "use strict";
 
-function decrypt_data(encrypted_data) {
+function decrypt_data() {
     if (document.getElementById('decryption_overlay')) {
         return;
     }
@@ -62,7 +62,7 @@ function decrypt_data(encrypted_data) {
     button.value = '{!INPUTSYSTEM_CANCEL;^}';
     // Remove the form when it's cancelled
     button.addEventListener('click', function () {
-        document.querySelector('body').removeChild(container);
+        document.body.removeChild(container);
         return false;
     });
     proceed_div.appendChild(button);
@@ -75,19 +75,16 @@ function decrypt_data(encrypted_data) {
     // Hide the form upon submission
     button.addEventListener('click', function () {
         container.style.display = 'none';
-        return true;
     });
     proceed_div.appendChild(button);
 
     form.appendChild(proceed_div);
 
-    document.querySelector('body').appendChild(container);
+    document.body.appendChild(container);
 
     window.setTimeout(function () {
         try {
             input.focus();
-        }
-        catch (e) {
-        }
+        } catch (e) {}
     }, 0);
 }

@@ -11,7 +11,7 @@
 
 	{+START,IF_EMPTY,{$_POST,decrypt}}
 		<p>
-			<a href="javascript:decrypt_data('{CONTENT;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA}">{!encryption:DECRYPT_DATA}</a>
+			<a href="#!" onclick="decrypt_data();" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA}">{!encryption:DECRYPT_DATA}</a>
 		</p>
 	{+END}
 </div></div>

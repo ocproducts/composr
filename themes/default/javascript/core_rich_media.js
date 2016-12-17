@@ -47,8 +47,6 @@
     }
 
     $cms.inherits(Carousel, $cms.View, {
-        mainEl: null,
-
         createFaders: function () {
             var mainEl = this.mainEl;
             var left = document.createElement('img');

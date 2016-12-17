@@ -4,66 +4,43 @@
 // MENU FUNCTIONS
 // ==============
 
-function menu_editor_add_new_page() {
-    var form = document.getElementById('edit_form');
 
-    window.fauxmodal_prompt(
-        '{$?,{$CONFIG_OPTION,collapse_user_zones},{!javascript:ENTER_ZONE_SPZ;^},{!javascript:ENTER_ZONE;^}}',
-        '',
-        function (zone) {
-            if (zone !== null) {
-                window.fauxmodal_prompt(
-                    '{!javascript:ENTER_PAGE;^}',
-                    '',
-                    function (page) {
-                        if (page !== null) {
-                            form.elements['url'].value = zone + ':' + page;
-                        }
-                    },
-                    '{!menus:SPECIFYING_NEW_PAGE;^}'
-                );
-            }
-        },
-        '{!menus:SPECIFYING_NEW_PAGE;^}'
-    );
-}
-
-function make_field_selected(ob) {
-    if (ob.className === 'menu_editor_selected_field') {
+function make_field_selected(el) {
+    if (el.className === 'menu_editor_selected_field') {
         return;
     }
 
-    ob.className = 'menu_editor_selected_field';
+    el.className = 'menu_editor_selected_field';
     var changed = false;
-    for (var i = 0; i < ob.form.elements.length; i++) {
-        if ((ob.form.elements[i].className === 'menu_editor_selected_field') && (ob.form.elements[i] !== ob)) {
-            ob.form.elements[i].className = '';
+    for (var i = 0; i < el.form.elements.length; i++) {
+        if ((el.form.elements[i].className === 'menu_editor_selected_field') && (el.form.elements[i] !== el)) {
+            el.form.elements[i].className = '';
             changed = true;
         }
     }
 
-    copy_fields_into_bottom(ob.id.substr(8), changed);
+    copy_fields_into_bottom(el.id.substr(8), changed);
 }
 
 function copy_fields_into_bottom(i, changed) {
     window.current_selection = i;
-    var form = document.getElementById('edit_form');
+    var form = $cms.dom.id('edit_form');
 
-    form.elements['caption_long'].value = document.getElementById('caption_long_' + i).value;
+    form.elements['caption_long'].value = $cms.dom.id('caption_long_' + i).value;
     form.elements['caption_long'].onchange = function () {
-        document.getElementById('caption_long_' + i).value = this.value;
-        document.getElementById('caption_long_' + i).disabled = (this.value == '');
+        $cms.dom.id('caption_long_' + i).value = this.value;
+        $cms.dom.id('caption_long_' + i).disabled = (this.value == '');
     };
 
-    form.elements['url'].value = document.getElementById('url_' + i).value;
+    form.elements['url'].value = $cms.dom.id('url_' + i).value;
     form.elements['url'].onchange = function () {
-        document.getElementById('url_' + i).value = this.value;
+        $cms.dom.id('url_' + i).value = this.value;
     };
 
-    form.elements['page_only'].value = document.getElementById('page_only_' + i).value;
+    form.elements['page_only'].value = $cms.dom.id('page_only_' + i).value;
     form.elements['page_only'].onchange = function () {
-        document.getElementById('page_only_' + i).value = this.value;
-        document.getElementById('page_only_' + i).disabled = (this.value == '');
+        $cms.dom.id('page_only_' + i).value = this.value;
+        $cms.dom.id('page_only_' + i).disabled = (this.value === '');
     };
 
     var s;
@@ -71,49 +48,51 @@ function copy_fields_into_bottom(i, changed) {
         if (document.getElementById('theme_img_code_' + i).value == form.elements['theme_img_code'].options[s].value) break;
     if (s == form.elements['theme_img_code'].options.length) {
         s = 0;
-        fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, document.getElementById('theme_img_code_' + i).value));
+        fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.dom.id('theme_img_code_' + i).value));
     }
     form.elements['theme_img_code'].selectedIndex = s;
     form.elements['theme_img_code'].onchange = function () {
-        document.getElementById('theme_img_code_' + i).value = this.options[this.selectedIndex].value;
-        document.getElementById('theme_img_code_' + i).disabled = (this.selectedIndex == 0);
+        $cms.dom.id('theme_img_code_' + i).value = this.options[this.selectedIndex].value;
+        $cms.dom.id('theme_img_code_' + i).disabled = (this.selectedIndex == 0);
     };
-    if ($(form.elements['theme_img_code']).select2 !== undefined) {
-        $(form.elements['theme_img_code']).trigger('change');
+    if (window.jQuery && window.jQuery.fn.select2) {
+        window.jQuery(form.elements['theme_img_code']).trigger('change');
     }
 
-    form.elements['new_window'].checked = document.getElementById('new_window_' + i).value == '1';
+    form.elements['new_window'].checked = $cms.dom.id('new_window_' + i).value == '1';
     form.elements['new_window'].onclick = function () {
-        document.getElementById('new_window_' + i).value = this.checked ? '1' : '0';
-        document.getElementById('new_window_' + i).disabled = !this.checked;
+        $cms.dom.id('new_window_' + i).value = this.checked ? '1' : '0';
+        $cms.dom.id('new_window_' + i).disabled = !this.checked;
     };
 
-    form.elements['check_perms'].checked = document.getElementById('check_perms_' + i).value == '1';
+    form.elements['check_perms'].checked = $cms.dom.id('check_perms_' + i).value == '1';
     form.elements['check_perms'].onclick = function () {
-        document.getElementById('check_perms_' + i).value = this.checked ? '1' : '0';
-        document.getElementById('check_perms_' + i).disabled = !this.checked;
+        $cms.dom.id('check_perms_' + i).value = this.checked ? '1' : '0';
+        $cms.dom.id('check_perms_' + i).disabled = !this.checked;
     };
 
     //$cms.dom.html(form.elements['branch_type'],$cms.dom.html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
-    form.elements['branch_type'].selectedIndex = document.getElementById('branch_type_' + i).selectedIndex;
+    form.elements['branch_type'].selectedIndex = $cms.dom.id('branch_type_' + i).selectedIndex;
     form.elements['branch_type'].onchange = function (event) {
-        document.getElementById('branch_type_' + i).selectedIndex = this.selectedIndex;
-        if (document.getElementById('branch_type_' + i).onchange) document.getElementById('branch_type_' + i).onchange(event);
+        $cms.dom.id('branch_type_' + i).selectedIndex = this.selectedIndex;
+        if ($cms.dom.id('branch_type_' + i).onchange) {
+            $cms.dom.id('branch_type_' + i).onchange(event);
+        }
     };
-    if ( $(form.elements['branch_type']).select2 !== undefined) {
-        $(form.elements['branch_type']).trigger('change');
+    if (window.jQuery && window.jQuery.fn.select2) {
+        window.jQuery(form.elements['branch_type']).trigger('change');
     }
 
-    form.elements['include_sitemap'].selectedIndex = document.getElementById('include_sitemap_' + i).value;
+    form.elements['include_sitemap'].selectedIndex = $cms.dom.id('include_sitemap_' + i).value;
     form.elements['include_sitemap'].onchange = function (event) {
-        document.getElementById('include_sitemap_' + i).value = this.selectedIndex;
-        document.getElementById('include_sitemap_' + i).disabled = (this.selectedIndex == 0);
+        $cms.dom.id('include_sitemap_' + i).value = this.selectedIndex;
+        $cms.dom.id('include_sitemap_' + i).disabled = (this.selectedIndex == 0);
     };
-    if ( $(form.elements['include_sitemap']).select2 !== undefined) {
-        $(form.elements['include_sitemap']).trigger('change');
+    if (window.jQuery && window.jQuery.fn.select2) {
+        window.jQuery(form.elements['include_sitemap']).trigger('change');
     }
 
-    var mfh = document.getElementById('mini_form_hider');
+    var mfh = $cms.dom.id('mini_form_hider');
 
     mfh.style.display = 'block';
 
@@ -168,15 +147,15 @@ function is_child(elements, possible_parent, possible_child) {
 }
 
 function handle_ordering(t, up, down) {
-    if ((up) || (down)) {
-        var form = document.getElementById('edit_form');
+    if (up || down) {
+        var form = $cms.dom.id('edit_form');
 
         // Find the num
         var index = t.id.substring(t.id.indexOf('_') + 1, t.id.length);
         var num = window.parseInt(form.elements['order_' + index].value);
 
         // Find the parent
-        var parent_num = document.getElementById('parent_' + index).value;
+        var parent_num = $cms.dom.id('parent_' + index).value;
 
         var i, b, bindex;
         var best = -1, bestindex = -1;
@@ -200,7 +179,7 @@ function handle_ordering(t, up, down) {
     if (down) {// Down
         // Find next branch with same parent (if exists)
         for (i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].name.substr(0, 7) == 'parent_') &&
+            if ((form.elements[i].name.substr(0, 7) === 'parent_') &&
                 (form.elements[i].value == parent_num)) {
                 bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
                 b = window.parseInt(form.elements['order_' + bindex].value);
@@ -246,8 +225,8 @@ function handle_ordering(t, up, down) {
 function swap_names(t, a, b, t2, values_also) {
     if (t2 === undefined) t2 = '';
     if (values_also === undefined) values_also = false;
-    var _a = document.getElementById(t + '_' + a + t2);
-    var _b = document.getElementById(t + '_' + b + t2);
+    var _a = $cms.dom.id(t + '_' + a + t2);
+    var _b = $cms.dom.id(t + '_' + b + t2);
     _a.name = t + '_' + b + t2;
     _b.name = t + '_' + a + t2;
     _a.id = t + '_' + b + t2;
@@ -258,8 +237,8 @@ function swap_names(t, a, b, t2, values_also) {
         _b.value = temp;
     }
 
-    var _al = document.getElementById('label_' + t + '_' + a + t2);
-    var _bl = document.getElementById('label_' + t + '_' + b + t2);
+    var _al = $cms.dom.id('label_' + t + '_' + a + t2);
+    var _bl = $cms.dom.id('label_' + t + '_' + b + t2);
     if (_al) {
         _al.setAttribute('for', t + '_' + b + t2);
         _bl.setAttribute('for', t + '_' + a + t2);
@@ -269,12 +248,12 @@ function swap_names(t, a, b, t2, values_also) {
 }
 
 function magic_copier(object, caption, url, error_message, confirm_message) {
-    var e = parent.document.getElementsByName('selected');
+    var els = parent.document.getElementsByName('selected');
 
     var i, num, yes = false, target_type;
-    for (i = 0; i < e.length; i++) {
-        if (e[i].checked) {
-            num = e[i].value.substring(9, e[i].value.length);
+    for (i = 0; i < els.length; i++) {
+        if (els[i].checked) {
+            num = els[i].value.substring(9, els[i].value.length);
             target_type = parent.document.getElementById('branch_type_' + num);
             if ((target_type.value == 'page') || (target_type.getElementsByTagName('option').length < 3)) {
                 if (parent.document.getElementById('url_' + num).value == '') {
@@ -291,7 +270,10 @@ function magic_copier(object, caption, url, error_message, confirm_message) {
             yes = true;
         }
     }
-    if (!yes) window.fauxmodal_alert('{!javascript:RADIO_NOTHING_SELECTED;^}');
+
+    if (!yes) {
+        window.fauxmodal_alert('{!javascript:RADIO_NOTHING_SELECTED;^}');
+    }
 
     return false;
 }
@@ -301,77 +283,25 @@ function _do_magic_copier(num, url, caption) {
     parent.document.getElementById('caption_' + num).value = caption;
 }
 
-function menu_editor_branch_type_change(id) {
-    var disabled = (document.getElementById('branch_type_' + id).value != 'page');
-    /*document.getElementById('new_window_'+id).disabled=disabled;
-     document.getElementById('check_perms_'+id).disabled=disabled;
-     document.getElementById('url_'+id).disabled=disabled;*/
-    var sub = document.getElementById('branch_' + id + '_follow_1');
-    if (sub) {
-        sub.style.display = disabled ? 'block' : 'none';
-    }
-    sub = document.getElementById('branch_' + id + '_follow_2');
-    if (sub) sub.style.display = disabled ? 'block' : 'none';
-}
 
 function delete_branch(id) {
-    var branch = document.getElementById(id);
+    var branch = $cms.dom.id(id);
     branch.parentNode.removeChild(branch);
 }
 
-function add_new_menu_item(parent_id, clickable_sections) {
-    var insert_before_id = 'branches_go_before_' + parent_id;
-
-    var template = document.getElementById('template').value;
-
-    var before = document.getElementById(insert_before_id);
-    var new_id = 'm_' + Math.floor(Math.random() * 10000);
-    var template2 = template.replace(/replace\_me\_with\_random/gi, new_id);
-    var highest_order_element = document.getElementById('highest_order');
-    var new_order = highest_order_element.value + 1;
-    highest_order_element.value++;
-    template2 = template2.replace(/replace\_me\_with\_order/gi, new_order);
-    template2 = template2.replace(/replace\_me\_with\_parent/gi, parent_id);
-
-    // Backup form branches
-    var form = document.getElementById('edit_form');
-    var _elements_bak = form.elements, elements_bak = [];
-    var i;
-    for (i = 0; i < _elements_bak.length; i++) {
-        elements_bak.push([_elements_bak[i].name, _elements_bak[i].value]);
-    }
-
-    $cms.dom.appendHtml(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
-
-    // Restore form branches
-    for (i = 0; i < elements_bak.length; i++) {
-        if (elements_bak[i][0]) {
-            form.elements[elements_bak[i][0]].value = elements_bak[i][1];
-        }
-    }
-
-    if (!clickable_sections) menu_editor_branch_type_change(new_id);
-
-    //document.getElementById('selected_'+new_id).checked=true;
-
-    document.getElementById('mini_form_hider').style.display = 'none';
-
-    return false;
-}
-
 function check_menu() {
-    var form = document.getElementById('edit_form');
+    var form = $cms.dom.id('edit_form');
     var i, id, name, the_parent, ignore, caption, url, branch_type;
     for (i = 0; i < form.elements.length; i++) {
         name = form.elements[i].name.substr(0, 7);
-        if (name == 'parent_') // We don't care about this, but it does tell us we have found a menu branch ID
-        {
+        if (name == 'parent_') {// We don't care about this, but it does tell us we have found a menu branch ID
+
             id = form.elements[i].name.substring(7, form.elements[i].name.length);
 
             // Is this visible? (if it is we need to check the IDs
             the_parent = form.elements[i];
-            do
-            {
+            do {
+
                 if (the_parent.style.display == 'none') {
                     ignore = true;
                     break;
@@ -380,18 +310,18 @@ function check_menu() {
             }
             while (the_parent.parentNode);
 
-            if (!ignore) // It's the real deal
-            {
+            if (!ignore) {// It's the real deal
+
                 // Check we have a caption
-                caption = document.getElementById('caption_' + id);
-                url = document.getElementById('url_' + id);
+                caption = $cms.dom.id('caption_' + id);
+                url = $cms.dom.id('url_' + id);
                 if ((caption.value == '') && (url.value != '')) {
                     window.fauxmodal_alert('{!MISSING_CAPTION_ERROR;^}');
                     return false;
                 }
 
                 // If we are a page, check we have a URL
-                branch_type = document.getElementById('branch_type_' + id);
+                branch_type = $cms.dom.id('branch_type_' + id);
                 if (branch_type.options[branch_type.selectedIndex].value == 'page') {
                     if ((caption.value != '') && (url.value == '')) {
                         window.fauxmodal_alert('{!MISSING_URL_ERROR;^}');

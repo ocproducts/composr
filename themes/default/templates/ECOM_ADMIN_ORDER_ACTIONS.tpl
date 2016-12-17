@@ -1,10 +1,11 @@
-<div class="vertical_align">
-	<form title="{!ACTION}: {ORDER_TITLE*}" method="post" action="{ORDER_ACTUALISE_URL*}" data-submit-pd="1" onsubmit="confirm_admin_order_actions(this.elements['action'].value,this);" autocomplete="off">
+{$REQUIRE_JAVASCRIPT,shopping}
+<div class="vertical_align" data-tpl="ecomAdminOrderActions">
+	<form title="{!ACTION}: {ORDER_TITLE*}" method="post" action="{ORDER_ACTUALISE_URL*}" data-submit-pd="1" class="js-submit-confirm-admin-order-actions" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<label class="accessibility_hidden" for="action">{!ACTION}</label>
 
-		<select onchange="if (this.selectedIndex!=0) this.form.submit();" name="action" id="action" class="orders_actions_dropdown">
+		<select name="action" id="action" class="orders_actions_dropdown js-select-change-action-submit-form">
 			<option value="">{!CHOOSE}&hellip;</option>
 
 			<option value="add_note">{!ADD_NOTE}</option>

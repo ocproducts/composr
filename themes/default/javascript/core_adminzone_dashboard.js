@@ -17,14 +17,14 @@
     }
 
     $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, {
-        events: {
+        events: ({
             'mouseover': 'mouseover',
             'mouseout': 'mouseout',
 
             'click .js-click-confirm-delete': 'confirmDelete',
             'click .js-click-mark-task': 'markTask',
             'keypress .js-keypress-mark-task': 'markTask'
-        },
+        }),
 
         mouseover: function () {
             this.imgChecklistCross.src = $IMG_checklist_cross2;
@@ -74,10 +74,10 @@
     }
 
     $cms.inherits(BlockMainStaffLinks, $cms.View, {
-        events: {
+        events: ({
             'click .js-click-staff-block-flip': 'staffBlockFlip',
             'click .js-click-form-submit-headless': 'formSubmitHeadless'
-        },
+        }),
         staffBlockFlip: function () {
             var rand = this.params.randStaffLinks,
                 show = this.$('#staff_links_list_' + rand + '_form'),
@@ -106,12 +106,10 @@
     }
 
     $cms.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, {
-        tableEl: null,
-        formEl: null,
-        events: {
+        events: ({
             'click .js-click-staff-block-flip': 'staffBlockFlip',
             'click .js-click-headless-submit': 'headlessSubmit'
-        },
+        }),
 
         staffBlockFlip: function () {
             var isTableDisplayed = $cms.dom.isDisplayed(this.tableEl);
@@ -136,10 +134,9 @@
     }
 
     $cms.inherits(BlockMainNotes, $cms.View, {
-        formEl: null,
-        events: {
+        events: ({
             'click .js-click-headless-submit': 'headlessSubmit'
-        },
+        }),
 
         headlessSubmit: function (e) {
             var blockName = $cms.filter.nl(this.params.blockName),

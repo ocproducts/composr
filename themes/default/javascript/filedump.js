@@ -2,15 +2,19 @@
     'use strict';
 
     $cms.extend($cms.templates, {
-        filedumpEmbedScreen: function filedumpEmbedScreen(params) {
+        filedumpEmbedScreen: function filedumpEmbedScreen(params, container) {
             if (params && (params.generated !== undefined)) {
-                var el = document.getElementById('generated_comcode');
+                var el = $cms.dom.$('#generated_comcode');
                 try {
                     el.focus();
                 } catch (e) {}
 
                 el.select();
             }
+
+            $cms.dom.on(container, 'click', '.js-click-input-img-size-select', function (e, input) {
+                input.select();
+            });
         },
 
         filedumpScreen: function filedumpScreen(params) {

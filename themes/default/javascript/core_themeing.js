@@ -31,15 +31,17 @@
     }
 
     $cms.inherits(ThemeTemplateEditorTab, $cms.View, {
-        events: {
-            'keydown .js-ta-tpl-editor': 'editorKeyPress',
-            'click .js-btn-save-content': 'saveContent',
-            'click .js-btn-live-preview': 'livePreview',
-            'click .js-btn-screen-preview': 'screenPreview',
-            'click .js-a-editarea-search': 'editareaSearch',
-            'click .js-a-insert-guid': 'insertGuid',
-            'click .js-a-tpl-editor-add-tab' : 'addEditorTab',
-            'click .js-btn-equation-helper': 'cssEquationHelper'
+        events: function () {
+            return {
+                'keydown .js-ta-tpl-editor': 'editorKeyPress',
+                'click .js-btn-save-content': 'saveContent',
+                'click .js-btn-live-preview': 'livePreview',
+                'click .js-btn-screen-preview': 'screenPreview',
+                'click .js-a-editarea-search': 'editareaSearch',
+                'click .js-a-insert-guid': 'insertGuid',
+                'click .js-a-tpl-editor-add-tab': 'addEditorTab',
+                'click .js-btn-equation-helper': 'cssEquationHelper'
+            };
         },
 
         editorKeyPress: function (e) {
@@ -149,7 +151,7 @@
                 }
             }, 1000);
 
-            window.jQuery('.template_editor_file_selector').resizable();
+            window.jQuery && window.jQuery.fn.resizable && window.jQuery('.template_editor_file_selector').resizable();
 
             template_editor_assign_unload_event();
         },

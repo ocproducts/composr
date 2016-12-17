@@ -1,4 +1,5 @@
-<div class="float_surrounder">
+{$REQUIRE_JAVASCRIPT,core_cns}
+<div class="float_surrounder" data-tpl="cnsMemberProfileAbout">
 	<div class="cns_profile_column">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
 			<div class="cns_member_profile_avatar">
@@ -11,7 +12,7 @@
 		<ul class="compact_list">
 			<li><span class="role"{+START,IF_PASSED,ON_PROBATION} style="text-decoration: line-through"{+END}>{PRIMARY_GROUP}</span></li>
 			{+START,LOOP,SECONDARY_GROUPS}
-				<li{+START,IF_PASSED,ON_PROBATION}{+START,IF,{$NEQ,{$CONFIG_OPTION,probation_usergroup},{_loop_key},{_loop_var}}} style="text-decoration: line-through"{+END}{+END}><a href="{$PAGE_LINK*,_SEARCH:groups:view:{_loop_key}}">{_loop_var*}</a></li>
+				<li {+START,IF_PASSED,ON_PROBATION}{+START,IF,{$NEQ,{$CONFIG_OPTION,probation_usergroup},{_loop_key},{_loop_var}}} style="text-decoration: line-through"{+END}{+END}><a href="{$PAGE_LINK*,_SEARCH:groups:view:{_loop_key}}">{_loop_var*}</a></li>
 			{+END}
 		</ul>
 
@@ -50,7 +51,9 @@
 			{+START,IF_NON_EMPTY,{ACTIONS_content}}
 				<div data-view="ToggleableTray">
 					<h2 class="js-tray-header">
-						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">
+							<img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" />
+						</a>
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CONTENT}</a>
 					</h2>
 
@@ -140,7 +143,7 @@
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
+													{!encryption:DATA_ENCRYPTED} <a href="#!" class="js-click-member-profile-about-decrypt-data" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
 												{+END}
 												<!-- {$,Break out of non-terminated comments in CPF} -->
 											</span>
@@ -205,7 +208,7 @@
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
+													{!encryption:DATA_ENCRYPTED} <a href="#!" class="js-click-member-profile-about-decrypt-data" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>
 												{+END}
 												<!-- {$,Break out of non-terminated comments in CPF} -->
 											</span>

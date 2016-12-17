@@ -1,6 +1,4 @@
 (function ($cms) {
-
-
     function Menu(params) {
         Menu.base(this, 'constructor', arguments);
 
@@ -29,9 +27,11 @@
             };
         },
 
-        unsetActiveMenu: function () {
-            window.active_menu = null;
-            recreate_clean_timeout();
+        unsetActiveMenu: function (e, target) {
+            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
+                window.active_menu = null;
+                recreate_clean_timeout();
+            }
         }
     });
 
@@ -53,10 +53,11 @@
             };
         },
 
-        unsetActiveMenu: function () {
-            window.active_menu = null;
-
-            recreate_clean_timeout();
+        unsetActiveMenu: function (e, target) {
+            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
+                window.active_menu = null;
+                recreate_clean_timeout();
+            }
         }
     });
 
@@ -165,9 +166,8 @@
     $cms.views.MobileMenu = MobileMenu;
     $cms.views.SelectMenu = SelectMenu;
 
-    $cms.templates.menuEditorScreen = function (params) {
-        var container = this,
-            menuEditorWrapEl = $cms.dom.$(container, '.js-el-menu-editor-wrap');
+    $cms.templates.menuEditorScreen = function (params, container) {
+        var menuEditorWrapEl = $cms.dom.$(container, '.js-el-menu-editor-wrap');
 
         window.all_menus = params.allMenus;
 
@@ -185,7 +185,27 @@
         }
 
         $cms.dom.on(container, 'click', '.js-click-menu-editor-add-new-page', function () {
-            menu_editor_add_new_page();
+            var form = $cms.dom.id('edit_form');
+
+            window.fauxmodal_prompt(
+                '{$?,{$CONFIG_OPTION,collapse_user_zones},{!javascript:ENTER_ZONE_SPZ;^},{!javascript:ENTER_ZONE;^}}',
+                '',
+                function (zone) {
+                    if (zone !== null) {
+                        window.fauxmodal_prompt(
+                            '{!javascript:ENTER_PAGE;^}',
+                            '',
+                            function (page) {
+                                if (page !== null) {
+                                    form.elements['url'].value = zone + ':' + page;
+                                }
+                            },
+                            '{!menus:SPECIFYING_NEW_PAGE;^}'
+                        );
+                    }
+                },
+                '{!menus:SPECIFYING_NEW_PAGE;^}'
+            );
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-modsecurity-workaround', function (e, form) {
@@ -237,18 +257,26 @@
         }
     };
 
-    $cms.templates.menuEditorBranchWrap= function (params) {
-        var container = this,
-            sIndex = Number.isFinite(+params.branchType) ? +params.branchType : 0;
+    $cms.templates.menuEditorBranchWrap = function menuEditorBranchWrap(params, container) {
+        var id = strVal(params.i),
+            sIndex = +params.branchType || 0;
 
         if (params.clickableSections) {
             sIndex = (sIndex === 0) ? 0 : (sIndex - 1);
         }
 
-        document.getElementById('branch_type_' + params.i).selectedIndex = sIndex;
+        document.getElementById('branch_type_' + id).selectedIndex = sIndex;
 
         $cms.dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
             delete_menu_branch(clicked);
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-menu-editor-branch-type-change', function () {
+            menu_editor_branch_type_change(id);
+        });
+
+        $cms.dom.on(container, 'change', '.js-change-menu-editor-branch-type-change', function () {
+            menu_editor_branch_type_change(id);
         });
 
 
@@ -313,15 +341,70 @@
         }
     };
 
+    $cms.templates.menuEditorBranch = function menuEditorBranch(params, container) {
+        var parentId = strVal(params.i),
+            clickableSections = !!params.clickableSections && (params.clickableSections !== '0');
+
+        $cms.dom.on(container, 'click', '.js-click-add-new-menu-item', function () {
+            var insert_before_id = 'branches_go_before_' + parentId;
+
+            var template = $cms.dom.id('template').value;
+
+            var before = $cms.dom.id(insert_before_id);
+            var new_id = 'm_' + Math.floor(Math.random() * 10000);
+            var template2 = template.replace(/replace\_me\_with\_random/gi, new_id);
+            var highest_order_element = $cms.dom.id('highest_order');
+            var new_order = highest_order_element.value + 1;
+            highest_order_element.value++;
+            template2 = template2.replace(/replace\_me\_with\_order/gi, new_order);
+            template2 = template2.replace(/replace\_me\_with\_parent/gi, parentId);
+
+            // Backup form branches
+            var form = $cms.dom.id('edit_form');
+            var _elements_bak = form.elements, elements_bak = [];
+            var i;
+            for (i = 0; i < _elements_bak.length; i++) {
+                elements_bak.push([_elements_bak[i].name, _elements_bak[i].value]);
+            }
+
+            $cms.dom.appendHtml(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
+
+            // Restore form branches
+            for (i = 0; i < elements_bak.length; i++) {
+                if (elements_bak[i][0]) {
+                    form.elements[elements_bak[i][0]].value = elements_bak[i][1];
+                }
+            }
+
+            if (!clickableSections) {
+                menu_editor_branch_type_change(new_id);
+            }
+
+            $cms.dom.id('mini_form_hider').style.display = 'none';
+        });
+    };
+
+
+    function menu_editor_branch_type_change(id) {
+        var disabled = (document.getElementById('branch_type_' + id).value !== 'page');
+        var sub = $cms.dom.id('branch_' + id + '_follow_1');
+        if (sub) {
+            sub.style.display = disabled ? 'block' : 'none';
+        }
+        sub = $cms.dom.id('branch_' + id + '_follow_2');
+        if (sub) {
+            sub.style.display = disabled ? 'block' : 'none';
+        }
+    }
+
     $cms.templates.menuSitemap = function (params) {
-        var menuId = strVal(params.menuSitemapId),
-            content;
+        var menuId = strVal(params.menuSitemapId), content;
 
         try {
-            content = arrVal($cms.parseJson(params.content));
-        } catch (ignore) {
-            content = [];
-        }
+            content = $cms.parseJson(params.content);
+        } catch (ignore) {}
+
+        content = arrVal(content);
 
         generate_menu_sitemap($cms.dom.$('#' + menuId), content, 0);
 
@@ -329,12 +412,12 @@
         // DYNAMIC TREE CREATION FUNCTION
         // ==============================
         function generate_menu_sitemap(targetEl, structure, theLevel) {
-            theLevel = Number.isFinite(+theLevel) ? +theLevel : 0;
+            theLevel = +theLevel || 0;
 
             if (theLevel === 0) {
                 $cms.dom.empty(targetEl);
                 var ul = document.createElement('ul');
-                targetEl.appendChild(ul);
+                $cms.dom.append(targetEl, ul);
                 targetEl = ul;
             }
 
@@ -345,7 +428,7 @@
             }
 
             function _generate_menu_sitemap(target, node, theLevel) {
-                theLevel = Number.isFinite(+theLevel) ? +theLevel : 0;
+                theLevel = +theLevel || 0;
 
                 var li = $cms.dom.create('li', {
                     'data-view': 'ToggleableTray',
@@ -409,7 +492,7 @@
         }
     };
 
-    $cms.templates.pageLinkChooser= function pageLinkChooser(params) {
+    $cms.templates.pageLinkChooser = function pageLinkChooser(params) {
         var container = this,
             ajax_url = 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1';
 
@@ -534,7 +617,6 @@
         return null;
     }
 
-
     window.menu_hold_time = 500;
     window.active_menu = null;
     window.last_active_menu = null;
@@ -619,7 +701,7 @@
                 }
 
                 l += p.offsetLeft;
-                t += p.offsetTop - sts(p.style.borderTop);
+                t += p.offsetTop - (parseInt(p.style.borderTop) || 0);
                 p = p.offsetParent;
 
                 if (p && $cms.dom.isCss(p, 'position', 'absolute')) {

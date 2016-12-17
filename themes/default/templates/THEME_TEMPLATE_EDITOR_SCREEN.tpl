@@ -1,10 +1,9 @@
-<div data-tpl="themeTemplateEditorScreen" data-tpl-params="{+START,PARAMS_JSON,THEME,ACTIVE_GUID,LIVE_PREVIEW_URL,FILES_TO_LOAD}{_*}{+END}">
-{TITLE}
-
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,jquery_ui}
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 {$REQUIRE_CSS,jquery_ui}
+<div data-tpl="themeTemplateEditorScreen" data-tpl-params="{+START,PARAMS_JSON,THEME,ACTIVE_GUID,LIVE_PREVIEW_URL,FILES_TO_LOAD}{_*}{+END}">
+{TITLE}
 
 {+START,IF,{$CONFIG_OPTION,editarea}}
 	<script src="{$BASE_URL*}/data/ace/ace.js"></script>

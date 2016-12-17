@@ -25,7 +25,7 @@
                 }
 
                 // Self destruct loader after this first run
-                window[tabFunc] = $cms.noop;
+                window[tabFunc] = function () {};
 
                 load_snippet('profile_tab&tab=' + params.tabCode + '&member_id=' + params.memberId + window.location.search.replace('?', '&'), null, function (result) {
                     $cms.dom.html(document.getElementById('g_' + params.tabCode), result.responseText);
@@ -49,6 +49,12 @@
             if (tab) {
                 select_tab('g', tab);
             }
+        });
+    };
+
+    $cms.templates.cnsMemberProfileAbout = function cnsMemberProfileAbout(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
+            decrypt_data();
         });
     };
 

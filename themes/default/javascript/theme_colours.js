@@ -13,11 +13,9 @@ function hex_to_dec(number) {
     return parseInt(number, 16);
 }
 
-if (window.names_to_numbers === undefined) {
-    window.names_to_numbers = {length: 0};
-    window.last_cc = {};
-    window.last_cc_i = {};
-}
+window.names_to_numbers || (window.names_to_numbers = {});
+window.last_cc || (window.last_cc = {});
+window.last_cc_i || (window.last_cc_i = {});
 
 function make_colour_chooser(name, color, context, tabindex, label, className) {
     label || (label = '&lt;color-' + name + '&gt;');
@@ -101,16 +99,26 @@ function do_color_chooser_element(element) {
 
     var source = document.getElementById('cc_source_' + id);
     var bg_color = source.style.backgroundColor;
-    if ((bg_color.substr(0, 1) != '#') && (bg_color.substr(0, 3) != 'rgb')) bg_color = '#000000';
-    if (bg_color.substr(0, 1) == '#') bg_color = 'rgb(' + hex_to_dec(bg_color.substr(1, 2)) + ',' + hex_to_dec(bg_color.substr(3, 2)) + ',' + hex_to_dec(bg_color.substr(5, 2)) + ')';
+    if ((bg_color.substr(0, 1) !== '#') && (bg_color.substr(0, 3) != 'rgb')) {
+        bg_color = '#000000';
+    }
+    if (bg_color.substr(0, 1) === '#') {
+        bg_color = 'rgb(' + hex_to_dec(bg_color.substr(1, 2)) + ',' + hex_to_dec(bg_color.substr(3, 2)) + ',' + hex_to_dec(bg_color.substr(5, 2)) + ')';
+    }
     var s_rgb = bg_color.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
     var rgb = s_rgb.split(',');
     rgb[0] = Math.round(rgb[0] / 4) * 4;
     rgb[1] = Math.round(rgb[1] / 4) * 4;
     rgb[2] = Math.round(rgb[2] / 4) * 4;
-    if (rgb[0] >= 256) rgb[0] = 252;
-    if (rgb[1] >= 256) rgb[1] = 252;
-    if (rgb[2] >= 256) rgb[2] = 252;
+    if (rgb[0] >= 256) {
+        rgb[0] = 252;
+    }
+    if (rgb[1] >= 256) {
+        rgb[1] = 252;
+    }
+    if (rgb[2] >= 256) {
+        rgb[2] = 252;
+    }
 
     element.style.color = 'rgb(' + (255 - rgb[0]) + ',' + (255 - rgb[1]) + ',' + (255 - rgb[2]) + ')';
     source.style.color = element.style.color;
@@ -142,7 +150,9 @@ function do_color_chooser_element(element) {
             tid = 'cc_col_' + d + '_' + i + '#' + id;
 
             style = ((i == rgb[d]) ? '' : 'cursor: pointer; ') + 'background-color: ' + bg + ';';
-            if (selected) style += 'outline: 3px solid gray; position: relative;';
+            if (selected) {
+                style += 'outline: 3px solid gray; position: relative;';
+            }
             innert = innert + '<div onclick="do_color_change(event);" class="css_colour_strip" style="' + style + '" id="' + tid + '"></div>';
         }
         $cms.dom.html(c[d], innert);
