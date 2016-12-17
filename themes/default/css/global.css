@@ -1374,13 +1374,18 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 
 .trinav_wrap {
 	overflow: hidden;
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});}
-	{$BETA_CSS_PROPERTY,border-radius: 20px;}
 	color: {$GET,heading_text};
 }
 /*{+START,CSS_MODE,desktop}*/
 	.trinav_wrap {
+		{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});}
+		{$BETA_CSS_PROPERTY,border-radius: 20px;}
 		margin-bottom: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trinav_wrap {
+		{$BETA_CSS_PROPERTY,background: {$GET,main_2_background};}
 	}
 /*{+END}*/
 .trinav_wrap.nograd {

@@ -58,6 +58,16 @@
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
 }
 
+/*{+START,CSS_MODE,mobile}*/
+	.chat_posting_area .left, .chat_posting_area .right {
+		float: none;
+	}
+
+	.chat_posting_area .right {
+		margin-top: 0.25em;
+	}
+/*{+END}*/
+
 .chat_posting_area textarea, .chat_posting_area input, .chat_posting_area img {
 	vertical-align: middle;
 }
