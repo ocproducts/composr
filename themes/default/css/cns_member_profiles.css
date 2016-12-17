@@ -91,9 +91,13 @@ table.cns_profile_about_section {
 
 table.cns_profile_about_section th {
 	padding: 0.5em 0;
-	border-right: 1px solid {$GET,pale_border};
 	font-weight: bold !important;
 }
+/*{+START,CSS_MODE,desktop}*/
+	table.cns_profile_about_section th {
+		border-right: 1px solid {$GET,pale_border};
+	}
+/*{+END}*/
 
 table.cns_profile_about_section td {
 	padding: 0.5em;

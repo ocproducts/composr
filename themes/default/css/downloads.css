@@ -67,6 +67,12 @@
 	}
 /*{+END}*/
 
+/*{+START,CSS_MODE,mobile}*/
+	.download_metadata .right {
+		float: none;
+	}
+/*{+END}*/
+
 .download_metadata .ratings, .download_metadata .trackbacks {
 	width: 100%;
 }
@@ -98,6 +104,11 @@
 .download_stats_wrapper {
 	margin-top: 1em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.download_stats_wrapper {
+		margin-bottom: 1em;
+	}
+/*{+END}*/
 
 .download_stats th, .download_stats td {
 	background-color: {$GET,area_background};
