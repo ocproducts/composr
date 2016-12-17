@@ -2289,7 +2289,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	.responsive_table>tbody>tr>th[data-th]::before, .responsive_table>tbody>tr>td[data-th]::before, .responsive_table>tr>th[data-th]::before, .responsive_table>tr>td[data-th]::before {
 		content: attr(data-th) ":";
 		font-weight: bold;
-		width: 6.5em;
+		width: 7em;
 		display: inline-block;
 	}
 	.responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tr>th, .responsive_table>tr>td {
@@ -2691,6 +2691,15 @@ div.ajax_loading, p.ajax_loading {
 }
 .tree_list_nonhighlighted a {
 }
+
+.tree_list_node {
+	display: inline-block;
+}
+/*{+START,CSS_MODE,mobile}*/
+	.tree_list_node, .tree_list_nonhighlighted, .tree_list_highlighted {
+		margin: 1em 0;
+	}
+/*{+END}*/
 
 .software_chat {
 	margin: 20px;

@@ -38,8 +38,17 @@
 	border: 0;
 	border-bottom: 1px dashed {$GET,commandr_border_color};
 	font-family: monospace;
-	width: 400px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#commandr_command {
+		width: 400px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#commandr_command {
+		width: 100%;
+	}
+/*{+END}*/
 
 .past_command {
 	color: {$GET,commandr_faded_text};

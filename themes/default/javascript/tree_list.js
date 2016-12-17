@@ -223,7 +223,7 @@ tree_list.prototype.render_tree=function(xml,html,element)
 		}
 		node_self_wrap=document.createElement('div');
 		node_self=document.createElement('div');
-		node_self.style.display='inline-block';
+		node_self.className='tree_list_node';
 		node_self_wrap.appendChild(node_self);
 		node_self.object=this;
 		colour=(node.getAttribute('selectable')=='true' || this.all_nodes_selectable)?'native_ui_foreground':'locked_input_field';

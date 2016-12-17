@@ -12,6 +12,16 @@
 		overflow: hidden;
 	}
 
+	.form_table {
+		border-bottom: 0 !important;
+	}
+
+	.form_table>tbody>tr>th, .form_table>thead>tr>th, .form_table>tr>th, .form_table>tbody>tr>td, .form_table>thead>tr>td, .form_table>tr>td {
+		border-top: 0;
+		border-left: 0;
+		border-right: 0;
+	}
+
 	.form_table>tbody>tr>th label:after, .form_table>thead>tr>th label:after, .form_table>tr>th label:after {
 		content: ":";
 	}

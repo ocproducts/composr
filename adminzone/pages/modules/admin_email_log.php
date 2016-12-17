@@ -304,7 +304,7 @@ class Module_admin_email_log
 
         $fields['_COMCODE'] = do_template('WITH_WHITESPACE', array('_GUID' => 'a141337923279a8a12646d0e29230f60', 'CONTENT' => $row['m_message']));
 
-        return map_table_screen($this->title, $fields);
+        return map_table_screen($this->title, $fields, true);
     }
 
     /**

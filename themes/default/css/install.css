@@ -17,29 +17,48 @@
 	background-repeat: no-repeat;
 }
 
-.installer_main {
-	text-align: center;
-	margin: 2.5em 0 1em 0;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.installer_main {
+		text-align: center;
+		margin: 2.5em 0 1em 0;
+	}
+/*{+END}*/
 
 .installer_main img {
 	display: inline-block;
 	{$BETA_CSS_PROPERTY,box-shadow: 0 0 25px 2px {$GET,standard_border};}
-	margin-bottom: 2.6em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.installer_main img {
+		width: 100%;
+		height: auto;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.installer_main img {
+		margin-bottom: 2.6em;
+	}
+/*{+END}*/
 
 .installer_main_inner>.box {
 	{$BETA_CSS_PROPERTY,box-shadow: 0 0 25px 2px {$GET,standard_border};}
 }
 
-.installer_main_inner {
-	width: 80%;
-	margin: 0 10%;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.installer_main_inner {
+		width: 80%;
+		margin: 0 10%;
+	}
 
-.installer_main_min {
-	min-height: 350px;
-}
+	.installer_main_min {
+		min-height: 350px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.installer_main_inner {
+		margin: 3px;
+	}
+/*{+END}*/
 
 .installer_main_min th, .installer_main_min td {
 	vertical-align: middle;
@@ -144,6 +163,10 @@ textarea.mono_textbox {
 	padding: 5px;
 }
 
+#install_newsletter + p {
+	margin-top: 0;
+}
+
 /* Step 2 */
 
 .installer_terms_title {
@@ -160,9 +183,13 @@ textarea.mono_textbox {
 	text-align: {!en_left};
 	border: 1px solid {$GET,standard_border};
 	border-collapse: collapse;
-	width: 90%;
-	margin: 0 auto;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.installer_forums {
+		width: 90%;
+		margin: 0 auto;
+	}
+/*{+END}*/
 
 .installer_forums th {
 	padding: 0;
@@ -175,25 +202,29 @@ textarea.mono_textbox {
 
 .installer_forums th>div {
 	text-align: {!en_left};
-	width: 75%;
-	height: 100%;
-	margin: 0 auto;
-	border-bottom: 1px dotted {$GET,standard_border};
 	font-weight: bold;
 	padding: 0.5em;
-	background-color: {$GET,area_faded_background};
 }
+/*{+START,CSS_MODE,desktop}*/
+	.installer_forums th>div {
+		width: 75%;
+		height: 100%;
+		margin: 0 auto;
+		border-bottom: 1px dotted {$GET,standard_border};
+		background-color: {$GET,area_faded_background};
+	}
 
-.installer_forums th>div.left {
-	border-left: 1px dotted {$GET,standard_border};
-	float: right;
-}
+	.installer_forums th>div.left {
+		border-left: 1px dotted {$GET,standard_border};
+		float: right;
+	}
 
-.installer_forums th>div.right {
-	border-right: 1px dotted {$GET,standard_border};
-	float: left;
-	text-align: right;
-}
+	.installer_forums th>div.right {
+		border-right: 1px dotted {$GET,standard_border};
+		float: left;
+		text-align: right;
+	}
+/*{+END}*/
 
 .installer_forum_list {
 	background-color: {$GET,area_background};
@@ -209,9 +240,13 @@ textarea.mono_textbox {
 
 .installer_section {
 	text-align: {!en_left};
-	width: 75%;
-	margin: 2em auto;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.installer_section {
+		width: 75%;
+		margin: 2em auto;
+	}
+/*{+END}*/
 
 .installer_section kbd {
 	word-wrap: break-word;
