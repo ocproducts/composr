@@ -102,7 +102,7 @@ function received_events(ajax_result_frame,ajax_result)
 			cloned_message.id=_cloned_message.getAttribute('id');
 			cloned_message.className=_cloned_message.getAttribute('class');
 			set_inner_html(cloned_message,get_inner_html(_cloned_message));
-			left_pos+=200;
+			left_pos+=(get_window_width()>900)?200:20;
 			if (left_pos>=window_width) break; // Too much!
 			window.setTimeout(function() {
 				window.pending_eval_function(cloned_message);

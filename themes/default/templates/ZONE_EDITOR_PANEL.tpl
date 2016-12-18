@@ -1,3 +1,7 @@
+<div class="block_mobile">
+	<h2>{ID*}</h2>
+</div>
+
 {$,Tab buttons}
 <div class="float_surrounder">
 	<div class="ze_tabs tabs" role="tablist">

@@ -3,25 +3,32 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-#ze_panels_wrap {
-	min-height: 520px;
-}
+/*{+START,CSS_MODE,desktop}*/
+	#ze_panels_wrap {
+		min-height: 520px;
+	}
 
-#p_panel_left {
-	left: 0;
-	border-right: 3px solid {$GET,tab_border};
-	z-index: 10;
-}
+	#p_panel_left {
+		left: 0;
+		border-right: 3px solid {$GET,tab_border};
+		z-index: 10;
+	}
 
-#p_panel_right {
-	right: 0;
-	border-left: 3px solid {$GET,tab_border};
-	z-index: 10;
-}
+	#p_panel_right {
+		right: 0;
+		border-left: 3px solid {$GET,tab_border};
+		z-index: 10;
+	}
+/*{+END}*/
 
 .ze_tabs {
 	background-color: {$GET,native_ui_background};
 }
+/*{+START,CSS_MODE,mobile}*/
+	.ze_tabs {
+		display: inline-block;
+	}
+/*{+END}*/
 
 .ze_tabs .tab {
 	min-width: 3.4em;
@@ -35,27 +42,36 @@
 }
 
 .ze_panel {
-	width: 19em;
-	position: absolute;
 	overflow-x: hidden;
 	overflow-y: auto;
 	outline: 0;
-	height: 520px;
-	background-color: {$GET,area_background};
-	border-bottom: 3px solid {$GET,tab_border};
 }
+/*{+START,CSS_MODE,desktop}*/
+	.ze_panel {
+		width: 19em;
+		position: absolute;
+		height: 520px;
+		border-bottom: 3px solid {$GET,tab_border};
+		background-color: {$GET,area_background};
+	}
 
-.ze_panel_expanded {
-	width: 45em;
-}
+	.ze_panel_expanded {
+		width: 45em;
+	}
 
-.ze_middle {
-	margin: 0 19em;
-}
+	.ze_middle {
+		margin: 0 19em;
+	}
 
-#p_panel_right .tab {
-	float: right;
-}
+	#p_panel_right .tab {
+		float: right;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.ze_panel {
+		width: auto !important;
+	}
+/*{+END}*/
 
 .ze_textarea {
 	width: 100%;
@@ -67,3 +83,9 @@
 	height: 320px;
 }
 
+/*{+START,CSS_MODE,mobile}*/
+	.zone_editor_form .proceed_button>span {
+		display: block;
+		margin: 1em 0;
+	}
+/*{+END}*/

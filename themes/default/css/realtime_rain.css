@@ -43,7 +43,6 @@
 }
 
 #news_ticker {
-	position: absolute;
 	z-index: 100;
 	height: auto;
 	overflow: hidden;
@@ -51,6 +50,7 @@
 }
 /*{+START,CSS_MODE,desktop}*/
 	#news_ticker {
+		position: absolute;
 		width: 446px;
 	}
 /*{+END}*/
@@ -77,6 +77,8 @@
 /*{+START,CSS_MODE,mobile}*/
 	#news_ticker h1 {
 		width: 100%;
+		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		background-size: 100% 100%;
 	}
 /*{+END}*/
 #news_ticker .news_inside {
@@ -84,10 +86,10 @@
 	overflow: hidden;
 	margin: 0 auto;
 	padding: 0;
-	float: left;
 }
 /*{+START,CSS_MODE,desktop}*/
 	#news_ticker .news_inside {
+		float: left;
 		width: 446px;
 	}
 /*{+END}*/
@@ -95,6 +97,7 @@
 	#news_ticker .news_inside {
 		width: 100%;
 		background-position: left top;
+		background-size: 100% 100%;
 	}
 /*{+END}*/
 #news_ticker .news_content {
@@ -130,6 +133,7 @@
 /*{+START,CSS_MODE,mobile}*/
 	#news_ticker .news_footer {
 		width: 100%;
+		background-size: 100% 100%;
 	}
 /*{+END}*/
 
@@ -172,16 +176,19 @@
 	height: 38px;
 	background: url('{$IMG;,realtime_rain/timer-bg}') no-repeat;
 	margin-top: 5px;
-	padding: 8px 0 0 10px;
 }
 /*{+START,CSS_MODE,desktop}*/
 	#timer {
 		width: 952px;
+		padding: 8px 0 0 10px;
 	}
 /*{+END}*/
-/*{+START,CSS_MODE,desktop}*/
+/*{+START,CSS_MODE,mobile}*/
 	#timer {
+		padding: 4px 0 0 10px;
+		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 		width: 100%;
+		background-size: 100% 100%;
 	}
 /*{+END}*/
 #pause_but {
@@ -200,6 +207,11 @@
 	display: block;
 	margin-top: 7px;
 }
+/*{+START,CSS_MODE,mobile}*/
+	#time_line img {
+		width: 200px;
+	}
+/*{+END}*/
 #next_but {
 	float: left;
 	padding: 5px 0 0 5px;
@@ -272,6 +284,7 @@
 	font-weight: normal;
 	float: left;
 	font-size: 1.15em;
+	border-bottom: 0;
 }
 .bubble .email_icon {
 	height: 39px;
