@@ -71,7 +71,7 @@ function copy_fields_into_bottom(i,changed)
 	if (s==form.elements['theme_img_code'].options.length)
 	{
 		s=0;
-		fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/,document.getElementById('theme_img_code_'+i).value));
+		fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/,escape_html(document.getElementById('theme_img_code_'+i).value)),null,null,true);
 	}
 	form.elements['theme_img_code'].selectedIndex=s;
 	form.elements['theme_img_code'].onchange=function() { document.getElementById('theme_img_code_'+i).value=this.options[this.selectedIndex].value; document.getElementById('theme_img_code_'+i).disabled=(this.selectedIndex==0); };
@@ -140,7 +140,7 @@ function exists_child(elements,parent)
 {
 	for (var i=0;i<elements.length;i++)
 	{
-		if ((elements[i].name.substr(0,7)=='parent_') && (elements[i].value==parent)) return true;
+		if ((elements[i].name.substr(0,'parent_'.length)=='parent_') && (elements[i].value==parent)) return true;
 	}
 	return false;
 }
@@ -149,7 +149,7 @@ function is_child(elements,possible_parent,possible_child)
 {
 	for (var i=0;i<elements.length;i++)
 	{
-		if ((elements[i].name.substr(7)==possible_child) && (elements[i].name.substr(0,7)=='parent_'))
+		if ((elements[i].name.substr('parent_'.length)==possible_child) && (elements[i].name.substr(0,'parent_'.length)=='parent_'))
 		{
 			if (elements[i].value==possible_parent) return true;
 			return is_child(elements,possible_parent,elements[i].value);
@@ -180,10 +180,10 @@ function handle_ordering(t,up,down)
 		// Find previous branch with same parent (if exists)
 		for (i=0;i<form.elements.length;i++)
 		{
-			if ((form.elements[i].name.substr(0,7)=='parent_') &&
+			if ((form.elements[i].name.substr(0,'parent_'.length)=='parent_') &&
 				 (form.elements[i].value==parent_num))
 			{
-				bindex=form.elements[i].name.substr(7,form.elements[i].name.length);
+				bindex=form.elements[i].name.substr('parent_'.length,form.elements[i].name.length);
 				b=window.parseInt(form.elements['order_'+bindex].value);
 				if ((b<num) && (b>best))
 				{
@@ -199,10 +199,10 @@ function handle_ordering(t,up,down)
 		// Find next branch with same parent (if exists)
 		for (i=0;i<form.elements.length;i++)
 		{
-			if ((form.elements[i].name.substr(0,7)=='parent_') &&
+			if ((form.elements[i].name.substr(0,'parent_'.length)=='parent_') &&
 				 (form.elements[i].value==parent_num))
 			{
-				bindex=form.elements[i].name.substr(7,form.elements[i].name.length);
+				bindex=form.elements[i].name.substr('parent_'.length,form.elements[i].name.length);
 				b=window.parseInt(form.elements['order_'+bindex].value);
 				if ((b>num) && ((b<best) || (best==-1)))
 				{
@@ -223,7 +223,7 @@ function handle_ordering(t,up,down)
 				var us=elements[i];
 				for (b=up?(i-1):(i+1);up?(b>0):(b<elements.length);up?b--:b++)
 				{
-					if ((!is_child(elements,index,elements[b].name.substr(7))) && (elements[b].name.substr(0,7)=='parent_') && ((up) || (document.getElementById('branch_type_'+elements[b].name.substr(7)).selectedIndex==0) || (!exists_child(elements,elements[b].name.substr(7)))))
+					if ((!is_child(elements,index,elements[b].name.substr('parent_'.length))) && (elements[b].name.substr(0,'parent_'.length)=='parent_') && ((up) || (document.getElementById('branch_type_'+elements[b].name.substr('parent_'.length)).selectedIndex==0) || (!exists_child(elements,elements[b].name.substr('parent_'.length)))))
 					{
 						var target=elements[b];
 						var main=us.parentNode.parentNode;
@@ -392,10 +392,10 @@ function check_menu()
 	var i,id,name,the_parent,ignore,caption,url,branch_type;
 	for (i=0;i<form.elements.length;i++)
 	{
-		name=form.elements[i].name.substr(0,7);
+		name=form.elements[i].name.substr(0,'parent_'.length);
 		if (name=='parent_') // We don't care about this, but it does tell us we have found a menu branch ID
 		{
-			id=form.elements[i].name.substring(7,form.elements[i].name.length);
+			id=form.elements[i].name.substring('parent_'.length,form.elements[i].name.length);
 
 			// Is this visible? (if it is we need to check the IDs
 			the_parent=form.elements[i];
@@ -507,7 +507,8 @@ function delete_menu_branch(ob)
 			{
 				if (result)
 					delete_branch('branch_wrap_'+ob.name.substr(4,ob.name.length));
-			}
+			},
+			'500'
 		);
 	}
 }

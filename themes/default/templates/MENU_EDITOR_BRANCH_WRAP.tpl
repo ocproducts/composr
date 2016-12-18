@@ -1,5 +1,5 @@
 <div class="menu_editor_branch" id="branch_wrap_{I*}">
-	<div id="branch_{I*}">
+	<div class="menu_editor_branch_inner" id="branch_{I*}">
 		<label id="label_caption_{I*}" for="caption_{I*}">{!CAPTION}: </label>
 		<input maxlength="255" onfocus="make_field_selected(this);" ondblclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) smooth_scroll(find_pos_y(document.getElementsByTagName('h2')[2]));" type="text" value="{CAPTION*}" id="caption_{I*}" name="caption_{I*}" />
 
@@ -21,10 +21,10 @@
 			<option value="branch_plus">{!EXPANDED_BRANCH}</option>
 		</select>
 
+		<input class="menu___generic_admin__delete button_micro horiz_field_sep" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" onclick="delete_menu_branch(this);" />
+
 		<input type="image" class="horiz_field_sep" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" onkeypress="if (enter_pressed()) this.onclick(event);" onclick="handle_ordering(this,false,true); return false;" />
 		<input type="image" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" onkeypress="if (enter_pressed()) this.onclick(event);" onclick="handle_ordering(this,true,false); return false;" />
-
-		<input class="menu___generic_admin__delete button_micro horiz_field_sep" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" onclick="delete_menu_branch(this);" />
 	</div>
 
 	<script>// <![CDATA[

@@ -5,7 +5,7 @@
 	{WARNING_DETAILS}
 {+END}
 
-<div class="menu_editor_page docked" id="menu_editor_wrap">
+<div class="menu_editor_page{+START,IF,{$GT,{TOTAL_ITEMS},10}} docked{+END}" id="menu_editor_wrap">
 	<form title="" action="{URL*}" method="post" autocomplete="off">
 		<!-- In separate form due to mod_security -->
 		<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
@@ -40,7 +40,7 @@
 
 		<div id="mini_form_hider" style="display: none" class="float_surrounder">
 			<div class="menu_editor_rh_side">
-				<img onclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) { e.className='menu_editor_page docked'; this.src='{$IMG;*,1x/arrow_box_hover}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box_hover} 2x'; } else { e.className='menu_editor_page'; this.src='{$IMG;*,1x/arrow_box}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box} 2x'; }" class="dock_button" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
+				<img onclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) { e.className='menu_editor_page docked'; this.src='{$IMG;*,1x/arrow_box_hover}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box_hover} 2x'; } else { e.className='menu_editor_page non_docked'; this.src='{$IMG;*,1x/arrow_box}'; if (typeof this.srcset!='undefined') this.srcset='{$IMG;*,2x/arrow_box} 2x'; }" class="dock_button" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
 
 				<h2>{!CHOOSE_ENTRY_POINT}</h2>
 
