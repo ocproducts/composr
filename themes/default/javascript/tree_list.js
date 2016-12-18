@@ -292,7 +292,7 @@ tree_list.prototype.render_tree=function(xml,html,element)
 			new_html.role='treeitem';
 			new_html.id=this.name+'tree_list_c_'+node.getAttribute('id');
 			new_html.style.display=((!initially_expanded) || (node.getAttribute('has_children')!='true'))?'none':'block';
-			new_html.style.padding/*{$?,{$EQ,{!en_left},left},Left,Right}*/='15px';
+			new_html.style.padding/*{$?,{$LTR},Left,Right}*/='15px';
 			var selected=((this.use_server_id?node.getAttribute('serverid'):node.getAttribute('id'))==element.value && element.value!='') || node.getAttribute('selected')=='yes';
 			if (selectable)
 			{

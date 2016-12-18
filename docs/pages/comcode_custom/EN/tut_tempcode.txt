@@ -722,6 +722,14 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>The inverse of <kbd>{$MOBILE}</kbd></td>
 		</tr>
 		<tr style="background: #DDFFDD">
+			<td>{$LTR}</td>
+			<td>If the current language pack is left-to-right (most packs are)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$RTL}</td>
+			<td>If the current language pack is right-to-left (Arabic etc)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
 			<td>{$THEME}</td>
 			<td>The user's current theme</td>
 		</tr>
