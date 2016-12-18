@@ -951,9 +951,16 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	}
 /*{+END}*/
 
-.global_messages {
-	margin: 0 1em;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.global_messages {
+		margin: 0 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.global_messages {
+		margin: 0 2px;
+	}
+/*{+END}*/
 .global_middle_faux .global_messages {
 	margin: 0; /* Probably inside a frame, hence already indented outside said frame */
 }
@@ -2133,15 +2140,15 @@ table.scrollable_inside {
 /*{+START,CSS_MODE,mobile}*/
 	/* Deconstructs map table to blocks, for easy layout fit */
 
-	.map_table.mobile_friendly, .map_table.mobile_friendly tbody, .map_table.mobile_friendly tr, .map_table.mobile_friendly th, .map_table.mobile_friendly td {
+	.map_table.responsive_blocked_table, .map_table.responsive_blocked_table tbody, .map_table.responsive_blocked_table tr, .map_table.responsive_blocked_table th, .map_table.responsive_blocked_table td {
 		display: block;
 	}
 
-	.results_table.mobile_friendly tr {
+	.results_table.responsive_blocked_table tr {
 		margin-bottom: 0.5em;
 	}
 
-	.results_table.mobile_friendly th, .results_table.mobile_friendly td {
+	.results_table.responsive_blocked_table th, .results_table.responsive_blocked_table td {
 		border-radius: 0 !important;
 		border-left: 1px solid {$GET,standard_border} !important;
 		border-right: 1px solid {$GET,standard_border} !important;
@@ -2150,11 +2157,11 @@ table.scrollable_inside {
 		text-align: left !important;
 	}
 
-	.map_table.mobile_friendly th:first-child, .map_table.mobile_friendly td:first-child {
+	.map_table.responsive_blocked_table th:first-child, .map_table.responsive_blocked_table td:first-child {
 		border-top: 1px solid {$GET,standard_border} !important;
 	}
 
-	.map_table.mobile_friendly th:last-child, .map_table.mobile_friendly td:last-child {
+	.map_table.responsive_blocked_table th:last-child, .map_table.responsive_blocked_table td:last-child {
 		border-bottom: 1px solid {$GET,standard_border} !important;
 	}
 /*{+END}*/

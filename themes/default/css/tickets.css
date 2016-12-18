@@ -3,6 +3,16 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
+.ticket_filters label {
+	min-width: 10em;
+	display: inline-block;
+}
+
+.ticket_filters .ticket_type_filter, .ticket_filters .open_ticket_filter, .ticket_filters .filter_button {
+	margin-left: 0;
+	display: block;
+}
+
 .support_tickets th {
 	text-align: left !important;
 }

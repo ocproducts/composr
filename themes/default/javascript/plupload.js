@@ -13557,8 +13557,9 @@ function prepare_simplified_file_input(page_type,name,_btn_submit_id,posting_fie
 	{
 		var new_button=button.cloneNode(true);
 		var button_parent=button.parentNode;
+		var sibling=button.nextSibling.nextSibling;
 		button_parent.removeChild(button);
-		button_parent.appendChild(new_button);
+		button_parent.insertBefore(new_button,sibling);
 	}
 
 	// Remove shiv code from old instances too

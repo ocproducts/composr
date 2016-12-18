@@ -9,8 +9,8 @@
 		<form title="{!FILTER}" class="float_surrounder" id="ticket_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" onsubmit="try { window.scrollTo(0,0); } catch(e) {}" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},ticket_type_id,open}
 
-			<div class="float_surrounder">
-				<div class="inline">
+			<div class="float_surrounder ticket_filters">
+				<div class="inline ticket_type_filter">
 					<label class="field_name" for="ticket_type_id">{!TICKET_TYPE}:</label>
 					<select id="ticket_type_id" name="ticket_type_id" class="input_list_required">
 						<option value="">&mdash;</option>
@@ -20,12 +20,12 @@
 					</select>
 				</div>
 
-				<div class="inline spaced">
+				<div class="inline spaced open_ticket_filter">
 					<label class="field_name" for="open">{!OPEN_TICKETS_ONLY}:</label>
 					<input type="checkbox" id="open" name="open" value="1"{+START,IF,{$_GET,open}} checked="checked"{+END} />
 				</div>
 
-				<div class="inline spaced">
+				<div class="inline spaced filter_button">
 					<input onclick="disable_button_just_clicked(this);" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}" />
 				</div>
 			</div>

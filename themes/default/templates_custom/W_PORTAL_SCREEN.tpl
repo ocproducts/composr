@@ -17,7 +17,7 @@
 		<input type="hidden" name="param" value="{PARAM*}" />
 	{+END}
 
-	<div class="wide_table_wrap"><table class="map_table autosized_table results_table wide_table mobile_friendly"><tbody>
+	<div class="wide_table_wrap"><table class="map_table autosized_table results_table wide_table responsive_blocked_table"><tbody>
 		<tr>
 			<th>{!NAME}</th>
 			<td><label class="accessibility_hidden" for="name">{!NAME}</label><input type="text" size="20" name="name" id="name" value="{NAME*}" /></td>
