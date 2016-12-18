@@ -19,10 +19,6 @@
 	text-align: center;
 }
 
-.search_tabular_header {
-	padding: 1em 0;
-}
-
 .google_search_button {
 	white-space: nowrap;
 }
@@ -49,10 +45,10 @@
 }
 
 .search_for_search_domain_more {
-	text-align: {!en_right};
+	float: {!en_right};
 }
 
-.search_for_search_domain, .search_for_search_domain_checkbox, .search_for_search_domain_more {
+.search_for_search_domain, .search_for_search_domain_checkbox {
 	vertical-align: middle;
 }
 

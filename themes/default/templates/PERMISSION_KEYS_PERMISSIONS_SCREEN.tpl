@@ -17,7 +17,7 @@
 
 			<thead>
 				<tr>
-					<th></th>
+					<th class="permission_header_cell">{!MATCH_KEY}</th>
 					{HEADER_CELLS}
 				</tr>
 			</thead>

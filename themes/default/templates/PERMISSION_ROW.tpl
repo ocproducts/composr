@@ -10,7 +10,7 @@
 			{+END}
 		{+END}
 
-		<span class="inline_mobile">
+		<span class="block_mobile">
 			{DESCRIPTION}
 		</span>
 	</th>

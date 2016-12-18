@@ -2293,7 +2293,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		text-align: left !important;
 	}
 	.responsive_table>thead {
-		display: none;
+		display: none !important;
 	}
 	.responsive_table>tbody>tr, .responsive_table>tr {
 		border-bottom: 1px solid {$GET,standard_border};

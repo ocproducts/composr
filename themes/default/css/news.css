@@ -97,6 +97,17 @@
 	height: 24em;
 }
 
+/*{+START,CSS_MODE,mobile}*/
+	.news_entry_screen .lined_up_boxes {
+		overflow: visible;
+	}
+
+	.news_entry_screen .lined_up_boxes>*{
+		float: none;
+		margin-top: 1em;
+	}
+/*{+END}*/
+
 /* Fader block */
 
 .box___block_main_image_fader_news .box_inner {

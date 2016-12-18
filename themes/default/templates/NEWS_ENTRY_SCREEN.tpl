@@ -1,4 +1,4 @@
-<div itemscope="itemscope" itemtype="http://schema.org/{$?,{BLOG},BlogPosting,NewsArticle}">
+<div class="news_entry_screen" itemscope="itemscope" itemtype="http://schema.org/{$?,{BLOG},BlogPosting,NewsArticle}">
 	{TITLE}
 
 	{+START,IF_PASSED,WARNING_DETAILS}
