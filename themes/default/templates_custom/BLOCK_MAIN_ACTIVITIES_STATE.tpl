@@ -29,7 +29,7 @@
 
 		<div class="status_box_outer">
 			<label class="accessibility_hidden" for="activity_status">{!TYPE_HERE}</label>
-			<textarea{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} class="status_box fade_input field_input_non_filled" name="status" id="activity_status" rows="2">{!TYPE_HERE}</textarea>
+			<textarea{+START,IF,{$DESKTOP}} onkeyup="manage_scroll_height(this);"{+END} class="status_box fade_input field_input_non_filled" name="status" id="activity_status" rows="2">{!TYPE_HERE}</textarea>
 		</div>
 	</form>
 </div>

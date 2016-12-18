@@ -7,7 +7,7 @@
 	{MESSAGE}
 	<div class="wide_table_wrap">
 		<table class="columned_table cart_table results_table responsive_table">
-			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$EQ,{$LANG},EN}}{+START,IF_NON_EMPTY,{WIDTHS}}
+			{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$LANG},EN}}{+START,IF_NON_EMPTY,{WIDTHS}}
 				<colgroup>
 					{+START,LOOP,WIDTHS}
 						<col style="width: {_loop_var}{+START,IF,{$NOT,{$IN_STR,{_loop_var},px,%}}}px{+END}" />

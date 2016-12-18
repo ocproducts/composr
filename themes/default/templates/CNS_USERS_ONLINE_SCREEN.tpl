@@ -9,7 +9,7 @@
 			<th>
 				{!LAST_ACTIVITY}
 			</th>
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
 					<th class="cell_desktop">
 						{!LOCATION}
@@ -58,7 +58,7 @@
 						</p>
 					{+END}
 				</td>
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$HAS_PRIVILEGE,show_user_browsing}}
 						<td class="cell_desktop">
 							{$GET,location}

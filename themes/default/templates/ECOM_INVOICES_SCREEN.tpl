@@ -6,7 +6,7 @@
 			<th>{!NAME}</th>
 			<th>{!AMOUNT}</th>
 			<th>{!DATE_TIME}</th>
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<th class="cell_desktop">{!STATUS}</th>
 			{+END}
 			<th>{!ACTIONS}</th>
@@ -31,7 +31,7 @@
 				<td>
 					{TIME*}
 				</td>
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					<td class="cell_desktop">
 						{STATE*}
 					</td>

@@ -15,7 +15,7 @@
 
 	<p class="lonely_label"><label for="bans">{!BANNED_ADDRESSES}:</label></p>
 	<div>
-		<textarea{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} cols="30" rows="14" class="wide_field textarea_scroll" id="bans" name="bans">{BANS*}</textarea>
+		<textarea{+START,IF,{$DESKTOP}} onkeyup="manage_scroll_height(this);"{+END} cols="30" rows="14" class="wide_field textarea_scroll" id="bans" name="bans">{BANS*}</textarea>
 	</div>
 
 	<p class="lonely_label"><label for="locked_bans">{!EXTERNALLY_BANNED_ADDRESSES}:</label></p>

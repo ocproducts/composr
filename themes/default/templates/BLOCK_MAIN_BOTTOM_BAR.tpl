@@ -2,7 +2,7 @@
 	<h2>{!_STATISTICS}</h2>
 
 	<div class="wide_table_wrap"><table class="map_table cns_stats_table wide_table">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="cns_bottom_bar_left_column" />
 				<col class="cns_bottom_bar_right_column" />

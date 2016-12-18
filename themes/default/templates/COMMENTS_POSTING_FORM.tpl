@@ -24,7 +24,7 @@
 		<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="{$JS_ON,display: {DISPLAY*},}">
 			<div class="comments_posting_form_inner">
 				<div class="wide_table_wrap"><table class="map_table wide_table">
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="comments_field_name_column" />
 							<col class="comments_field_input_column" />
@@ -162,7 +162,7 @@
 										{+END}
 
 										{+START,IF_NON_EMPTY,{COMMENT_TEXT}}
-											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onclick="this.onmouseover(event); return false;" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true);">{+START,IF,{$NOT,{$MOBILE}}}<span class="inline_desktop">{!HOVER_MOUSE_IMPORTANT}</span>{+END}<span class="inline_mobile">{!TAP_MOUSE_IMPORTANT}</span></a></li>
+											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onclick="this.onmouseover(event); return false;" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true);">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!HOVER_MOUSE_IMPORTANT}</span>{+END}<span class="inline_mobile">{!TAP_MOUSE_IMPORTANT}</span></a></li>
 										{+END}
 									</ul>
 								{+END}
@@ -174,7 +174,7 @@
 									</div>
 								{+END}
 
-								{+START,IF,{$NOT,{$MOBILE}}}
+								{+START,IF,{$DESKTOP}}
 									{+START,IF,{$JS_ON}}
 										{+START,IF_NON_EMPTY,{EM}}
 											<div class="comments_posting_form_emoticons block_desktop">
@@ -193,7 +193,7 @@
 
 							<td>
 								<div>
-									<textarea{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="wide_field" onfocus="if ((this.value.replace(/\s/g,'')=='{POST_WARNING;^*}'.replace(/\s/g,'') &amp;&amp; '{POST_WARNING;^*}'!='') || (typeof this.strip_on_focus!='undefined' &amp;&amp; this.value==this.strip_on_focus)) this.value=''; this.className='field_input_filled';" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}" name="post" id="post">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
+									<textarea{+START,IF,{$DESKTOP}} onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="wide_field" onfocus="if ((this.value.replace(/\s/g,'')=='{POST_WARNING;^*}'.replace(/\s/g,'') &amp;&amp; '{POST_WARNING;^*}'!='') || (typeof this.strip_on_focus!='undefined' &amp;&amp; this.value==this.strip_on_focus)) this.value=''; this.className='field_input_filled';" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}" name="post" id="post">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
 								</div>
 
 								<div id="error_post" style="display: none" class="input_error_here"></div>
@@ -254,7 +254,7 @@
 					{+END}
 
 					<div class="proceed_button buttons_group">
-						{+START,IF,{$NOT,{$MOBILE}}}
+						{+START,IF,{$DESKTOP}}
 							{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
 								<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} mobile_inline" type="button" value="{!PREVIEW}" />
 							{+END}{+END}{+END}
@@ -262,7 +262,7 @@
 
 						{+START,IF_PASSED,MORE_URL}
 							{+START,IF,{$JS_ON}}
-								<button tabindex="6" accesskey="y" onclick="move_to_full_editor(this,'{MORE_URL;*}');" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button">{+START,IF,{$NOT,{$MOBILE}}}<span class="inline_desktop">{!FULL_EDITOR}</span>{+END}<span class="inline_mobile">{!MORE}</span></button>
+								<button tabindex="6" accesskey="y" onclick="move_to_full_editor(this,'{MORE_URL;*}');" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!FULL_EDITOR}</span>{+END}<span class="inline_mobile">{!MORE}</span></button>
 							{+END}
 						{+END}
 
@@ -273,7 +273,7 @@
 						{+END}
 
 						{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-						<button onclick="handle_comments_posting_form_submit(this,event);" tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END}>{+START,IF,{$NOT,{$MOBILE}}}<span class="inline_desktop">{$GET,button_title}</span>{+END}<span class="inline_mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
+						<button onclick="handle_comments_posting_form_submit(this,event);" tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END}>{+START,IF,{$DESKTOP}}<span class="inline_desktop">{$GET,button_title}</span>{+END}<span class="inline_mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
 					</div>
 				</div>
 			</div>

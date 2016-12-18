@@ -1,7 +1,7 @@
 {+START,SET,TOOLTIP}
 	<div class="gallery_tooltip">
 		<table class="map_table results_table">
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="gallery_entry_field_name_column" />
 					<col class="gallery_entry_field_value_column" />

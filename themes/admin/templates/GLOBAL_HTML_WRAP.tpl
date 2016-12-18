@@ -32,7 +32,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				{+START,IF,{$NOT,{$HAS_ZONE_ACCESS,adminzone}}}
 					{$SET,admin_menu_string,site:start\,include=node\,title={!HOME}\,icon=close + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1}
 				{+END}
-				{+START,IF,{$NOT,{$MOBILE}}}<div class="block_desktop">{$BLOCK,block=menu,param={$GET,admin_menu_string},type=dropdown}</div>{+END}
+				{+START,IF,{$DESKTOP}}<div class="block_desktop">{$BLOCK,block=menu,param={$GET,admin_menu_string},type=dropdown}</div>{+END}
 				<div class="block_mobile">{$BLOCK,block=menu,param={$GET,admin_menu_string},type=mobile}</div>
 
 				<div class="admin_navigation_inner">
@@ -140,13 +140,13 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							{+END}
 						{+END}
 					{+END}
-					{+START,IF_NON_EMPTY,{$TRIM,{$GET,FOOTER_BUTTONS}}}{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF_NON_EMPTY,{$TRIM,{$GET,FOOTER_BUTTONS}}}{+START,IF,{$DESKTOP}}
 						<ul class="horizontal_buttons">
 							{$GET,FOOTER_BUTTONS}
 						</ul>
 					{+END}{+END}
 
-					{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
+					{+START,IF,{$DESKTOP}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
 						<form onsubmit="return staff_actions_select(this);" title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_no_xhtml=1,special_page_type=<null>,keep_cache=<null>,wide_high=1}}
 

@@ -73,7 +73,7 @@ You can use the Tempcode [tt]{$MOBILE}[/tt] symbol to make changes based on what
 {+START,IF,{$MOBILE}}
 This shows to mobile devices.
 {+END}
-{+START,IF,{$NOT,{$MOBILE}}}
+{+START,IF,{$DESKTOP}}
 This does not show to mobile devices.
 {+END}
 [/code]
@@ -171,7 +171,7 @@ This is the code Composr now uses in [tt]HTML_HEAD.tpl[/tt]:
 		<meta name="viewport" content="width=285, user-scalable=yes" />
 	{+END}
 {+END}
-{+START,IF,{$NOT,{$MOBILE}}}
+{+START,IF,{$DESKTOP}}
 	{+START,IF,{$CONFIG_OPTION,fixed_width}}
 		<meta name="viewport" content="width=982, user-scalable=yes" />
 	{+END}
@@ -190,7 +190,7 @@ I'm going to simplify things down a bit for my explanation, removing the stuff i
 {+START,IF,{$MOBILE}}
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 {+END}
-{+START,IF,{$NOT,{$MOBILE}}}
+{+START,IF,{$DESKTOP}}
 	{+START,IF,{$CONFIG_OPTION,fixed_width}}
 		<meta name="viewport" content="width=982, user-scalable=yes" />
 	{+END}

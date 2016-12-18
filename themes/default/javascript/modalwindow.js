@@ -666,7 +666,7 @@ function ModalWindow()
 				this.box_wrapper.style.position='absolute';
 				this.box_wrapper.style.height=((dim.page_height>(detected_box_height+bottom_gap+_box_pos_left))?dim.page_height:(detected_box_height+bottom_gap+_box_pos_left))+'px';
 				this.top_window.document.body.style.overflow='';
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					this.box_wrapper.childNodes[0].style.position='absolute';
 					box_pos_top={$?,{$MOBILE},0,this.WINDOW_TOP_GAP}+'px';
 					this.box_wrapper.childNodes[0].style.top=box_pos_top;

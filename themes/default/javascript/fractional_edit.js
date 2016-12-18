@@ -69,7 +69,7 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 			input.style.left='0px';
 			input.style.width=get_window_width()+'px';
 		/*{+END}*/
-		/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		/*{+START,IF,{$DESKTOP}}*/
 			input.style.left=(x)+'px';
 			input.style.width=width+'px';
 		/*{+END}*/

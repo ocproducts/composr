@@ -20,7 +20,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				<a accesskey="s" class="accessibility_hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
 				{$,The banner}
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{$SET-,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
 					{+START,IF_NON_EMPTY,{$GET,BANNER}}
 						<div class="global_banner block_desktop">{$GET,BANNER}</div>
@@ -32,7 +32,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 				{$,Main menu}
 				<div class="global_navigation">
-					{+START,IF,{$NOT,{$MOBILE}}}<div class="block_desktop">{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}</div>{+END}
+					{+START,IF,{$DESKTOP}}<div class="block_desktop">{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=dropdown}</div>{+END}
 					<div class="block_mobile">{$BLOCK,block=menu,param={$CONFIG_OPTION,header_menu_call_string},type=mobile}</div>
 
 					<div class="global_navigation_inner">
@@ -44,7 +44,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						{+END}
 
 						{$,Search box for logged in users [could show to guests, except space is lacking]}
-						{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$NOT,{$MOBILE}},{$NOT,{$IS_GUEST}}}}
+						{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$DESKTOP},{$NOT,{$IS_GUEST}}}}
 							<div class="top_form block_desktop">
 								{$BLOCK,block=top_search,failsafe=1}
 							</div>
@@ -153,7 +153,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							{+END}
 						{+END}
 					{+END}
-					{+START,IF_NON_EMPTY,{$TRIM,{$GET,FOOTER_BUTTONS}}}{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF_NON_EMPTY,{$TRIM,{$GET,FOOTER_BUTTONS}}}{+START,IF,{$DESKTOP}}
 						<ul class="horizontal_buttons">
 							{$GET,FOOTER_BUTTONS}
 						</ul>
@@ -170,7 +170,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						</form>
 					{+END}
 
-					{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
+					{+START,IF,{$DESKTOP}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
 						<form onsubmit="return staff_actions_select(this);" title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_no_xhtml=1,special_page_type=<null>,keep_cache=<null>,wide_high=1}}
 

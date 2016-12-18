@@ -24,7 +24,7 @@
 				{CATEGORY*}
 			</p>
 		{+END}
-		<p{+START,IF,{$NOT,{$MOBILE}}} onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,description}','50%');"{+END}>
+		<p{+START,IF,{$DESKTOP}} onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,description}','50%');"{+END}>
 			{PRETTY_NAME}
 		</p>
 		{+START,SET,FILE_LIST_PRE}
@@ -37,9 +37,9 @@
 				{+END}
 			</ul>
 		{+END}
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<div class="block_desktop">
-				<p{+START,IF,{$NOT,{$MOBILE}}} onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,FILE_LIST_PRE}{$GET;^*,FILE_LIST}','50%');"{+END}>
+				<p{+START,IF,{$DESKTOP}} onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,FILE_LIST_PRE}{$GET;^*,FILE_LIST}','50%');"{+END}>
 					{+START,IF_PASSED,FILENAME}
 						{FILENAME*}
 					{+END}

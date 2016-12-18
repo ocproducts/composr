@@ -18,7 +18,7 @@
 					{!DATE}
 				</th>
 
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					<th class="cell_desktop">
 						{!PAYMENT_GATEWAY}
 					</th>
@@ -64,7 +64,7 @@
 						{+END}
 					</td>
 
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<td class="cell_desktop">
 							{VIA*}
 						</td>

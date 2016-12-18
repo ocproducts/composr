@@ -58,7 +58,7 @@
 					{+START,IF,{ADVANCED_COLUMN}}
 						{+START,SET,advanced_link}
 							{+START,IF,{SUPPORTS_CATEGORIES}}
-								<span class="associated_link"><a onclick="return open_link_as_overlay(this,null,null,'_self');" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{+START,IF,{$NOT,{$MOBILE}}}<span class="inline_desktop">{!ADVANCED}</span>{+END}<span class="inline_mobile">{!MORE}</span></a></span>
+								<span class="associated_link"><a onclick="return open_link_as_overlay(this,null,null,'_self');" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!ADVANCED}</span>{+END}<span class="inline_mobile">{!MORE}</span></a></span>
 							{+END}
 						{+END}
 						<td class="associated_details">{$TRIM,{$GET,advanced_link}}</td>

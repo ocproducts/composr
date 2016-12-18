@@ -15,7 +15,7 @@
 				<h3>{!DETAILS}</h3>
 
 				<table class="map_table results_table">
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="gallery_entry_field_name_column" />
 							<col class="gallery_entry_field_value_column" />

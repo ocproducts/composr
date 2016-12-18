@@ -11,7 +11,7 @@
 	{+END}
 
 	<div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="catalogue_fieldmap_field_name_column" />
 				<col class="catalogue_fieldmap_field_value_column" />

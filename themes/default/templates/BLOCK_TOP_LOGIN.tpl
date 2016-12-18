@@ -2,7 +2,7 @@
 	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="inline top_login" autocomplete="on">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<div class="inline_desktop">
 				<div class="accessibility_hidden"><label for="s_login_username">{$LOGIN_LABEL}</label></div>
 				<input maxlength="80" size="10" accesskey="l" class="field_input_non_filled" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" value="{!USERNAME}" id="s_login_username" name="login_username" />
@@ -20,7 +20,7 @@
 
 		<ul class="horizontal_links">
 			{+START,IF_NON_EMPTY,{JOIN_URL}}<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/join}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/join} 2x" /> <a href="{JOIN_URL*}">{!_JOIN}</a></li>{+END}
-			<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/login}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/login} 2x" /> <a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,IF,{$NOT,{$MOBILE}}}<span class="inline_desktop">{!OPTIONS}</span>{+END}<span class="inline_mobile">{!_LOGIN}</span></a></li>
+			<li><img alt="" src="{$IMG*,icons/24x24/menu/site_meta/user_actions/login}" srcset="{$IMG*,icons/48x48/menu/site_meta/user_actions/login} 2x" /> <a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!OPTIONS}</span>{+END}<span class="inline_mobile">{!_LOGIN}</span></a></li>
 		</ul>
 	</form>
 {+END}

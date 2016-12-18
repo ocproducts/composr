@@ -3,7 +3,7 @@
 		{PERMISSION*}
 
 		{+START,IF_PASSED,DESCRIPTION}
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<span class="inline_desktop">
 					<img class="button_icon" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{DESCRIPTION;^*}','auto');" alt="{!HELP}" />
 				</span>

@@ -1,5 +1,5 @@
 <tr>
-	{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$DESKTOP}}
 		<td class="cns_forum_new_post_indicator cns_column1 cell_desktop">
 			<img width="32" height="32" title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" src="{$IMG*,cns_general/{NEW_POST_OR_NOT*}}" />
 		</td>
@@ -36,7 +36,7 @@
 			</ul>
 		</div>
 	</td>
-	{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$DESKTOP}}
 		<td class="cns_forum_num_topics cns_column4 cell_desktop">
 			{$PREG_REPLACE,\,\d\d\d$,k,{NUM_TOPICS*}}
 		</td>

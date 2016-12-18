@@ -1007,7 +1007,7 @@ function show_upload_syndication_options(name,syndication_json,no_quota)
 							/*{+START,IF,{$MOBILE}}*/
 								window.open(url);
 							/*{+END}*/
-							/*{+START,IF,{$NOT,{$MOBILE}}}*/
+							/*{+START,IF,{$DESKTOP}}*/
 								faux_open(url,null,'width=960;height=500','_top');
 							/*{+END}*/
 							if (!pre_disabled)

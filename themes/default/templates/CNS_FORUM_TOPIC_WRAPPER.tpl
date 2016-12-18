@@ -1,5 +1,5 @@
 <div class="wide_table_wrap"><table class="columned_table wide_table cns_topic_list">
-	{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$DESKTOP}}
 		<colgroup>
 			{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
 				<col class="cns_forum_topic_wrapper_column_column1 column_desktop" />
@@ -19,13 +19,13 @@
 
 	<thead>
 		<tr>
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
 					<th class="cns_forum_box_left cell_desktop"></th>
 				{+END}
 			{+END}
 			<th>{!TITLE}</th>
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<th class="cell_desktop">{!STARTER}{STARTER_TITLE*}</th>
 				<th class="cell_desktop">{!COUNT_POSTS}</th>
 				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
@@ -33,7 +33,7 @@
 				{+END}
 			{+END}
 			<th{+START,IF_EMPTY,{MODERATOR_ACTIONS}} class="cns_forum_box_right"{+END}>{!LAST_POST}</th>
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 					<th class="cns_forum_box_right cell_desktop">
 						<a href="#" onclick="event.returnValue=false; mark_all_topics(event); return false;"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
@@ -47,13 +47,13 @@
 		{TOPICS}
 
 		<tr class="cns_table_footer">
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
 					<td class="cns_column1 cns_forum_box_bleft cell_desktop"></td>
 				{+END}
 			{+END}
 			<td class="cns_column1"></td>
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<td class="cns_column1 cell_desktop"></td>
 				<td class="cns_column1 cell_desktop"></td>
 				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
@@ -61,7 +61,7 @@
 				{+END}
 			{+END}
 			<td class="cns_column1{+START,IF,{$IS_EMPTY,{MODERATOR_ACTIONS}}} cns_forum_box_bright{+END}"></td>
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 					<td class="cns_column1 cns_forum_box_bright cell_desktop"></td>
 				{+END}{+END}

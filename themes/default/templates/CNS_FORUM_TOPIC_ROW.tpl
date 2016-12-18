@@ -1,5 +1,5 @@
 <tr>
-	{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$DESKTOP}}
 		{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
 			<td class="cns_forum_topic_row_emoticon cns_column1 cell_desktop">
 				{+START,IF_NON_EMPTY,{EMOTICON}}
@@ -10,7 +10,7 @@
 	{+END}
 
 	<td class="cns_forum_topic_row_preview cns_column2">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<div class="block_desktop">
 				<a class="cns_forum_topic_row_preview_button" onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$TRUNCATE_LEFT*~;^,{POST},1000,0,1}','30%',null,null,null,true);" href="{URL*}">{!PREVIEW} <span style="display: none">{ID*}</span></a>
 
@@ -77,7 +77,7 @@
 		{POSTER}
 	</td>
 
-	{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$DESKTOP}}
 		<td class="cns_forum_topic_row_num_posts cns_column4 cell_desktop">
 			{$PREG_REPLACE,\,\d\d\d$,k,{NUM_POSTS*}}
 		</td>
@@ -92,7 +92,7 @@
 		{LAST_POST}
 	</td>
 
-	{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$NOT,{$_GET,overlay}}}
+	{+START,IF,{$DESKTOP}}{+START,IF,{$NOT,{$_GET,overlay}}}
 		{MARKER}
 	{+END}{+END}
 </tr>

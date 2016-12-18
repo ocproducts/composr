@@ -2,7 +2,7 @@
 	<h2>{!DETAILS}</h2>
 
 	<div class="wide_table_wrap"><table class="map_table wide_table results_table">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="field_name_column" />
 				<col class="field_value_column" />

@@ -4,7 +4,7 @@
 
 		<div class="im_post_bits">
 			<label class="accessibility_hidden" for="post_{CHATROOM_ID*}">{!MESSAGE}</label>
-			<textarea class="input_required im_post_field" onkeypress="if (enter_pressed(event)) { cancel_bubbling(event); return false; } return true;" onkeyup="{+START,IF,{$NOT,{$MOBILE}}}manage_scroll_height(this); {+END}if (enter_pressed(event)) { set_cookie('last_chat_msg_{CHATROOM_ID;*}',''); return chat_post(event,{CHATROOM_ID*},'post_{CHATROOM_ID*}','',''); return true; } else { set_cookie('last_chat_msg_{CHATROOM_ID;*}',this.value); } " id="post_{CHATROOM_ID*}" name="post_{CHATROOM_ID*}" cols="30" rows="1"></textarea>
+			<textarea class="input_required im_post_field" onkeypress="if (enter_pressed(event)) { cancel_bubbling(event); return false; } return true;" onkeyup="{+START,IF,{$DESKTOP}}manage_scroll_height(this); {+END}if (enter_pressed(event)) { set_cookie('last_chat_msg_{CHATROOM_ID;*}',''); return chat_post(event,{CHATROOM_ID*},'post_{CHATROOM_ID*}','',''); return true; } else { set_cookie('last_chat_msg_{CHATROOM_ID;*}',this.value); } " id="post_{CHATROOM_ID*}" name="post_{CHATROOM_ID*}" cols="30" rows="1"></textarea>
 
 			{+START,IF,{$AND,{$CNS},{$JS_ON}}}
 				<a rel="nofollow" class="horiz_field_sep" href="#" title="{!EMOTICONS} {!LINK_NEW_WINDOW}" onclick="(window.opener?window.open:window.faux_open)(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post_{CHATROOM_ID*}{$KEEP;*,0,1}'),'emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>

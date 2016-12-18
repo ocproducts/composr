@@ -39,7 +39,7 @@ To place the code on a page edit the page to put it on and paste it in between C
 To place the code in a template edit the template and paste in the code. To replace the default banner slot that would be the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template and you would replace this bit of code:
 [code="HTML"]
 {$,The banner}
-{+START,IF,{$NOT,{$MOBILE}}}
+{+START,IF,{$DESKTOP}}
 	{$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
 	{+START,IF_NON_EMPTY,{$GET,BANNER}}
 		<div class="global_banner">{$GET,BANNER}</div>

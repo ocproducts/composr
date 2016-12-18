@@ -1,6 +1,6 @@
 <div class="wide_table_wrap" itemprop="mainContentOfPage" content="true" itemscope="itemscope" itemtype="http://schema.org/Table">
 	<table class="columned_table results_table wide_table responsive_table">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				{$SET,INC,0}
 				{+START,WHILE,{$NEQ,{$GET,INC},{FIELD_COUNT}}}

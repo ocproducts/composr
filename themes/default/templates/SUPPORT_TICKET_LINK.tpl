@@ -18,7 +18,7 @@
 		{TICKET_TYPE_NAME*}
 	</td>
 
-	{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$DESKTOP}}
 		<td class="ticket_num_posts cell_desktop">
 			{NUM_POSTS*}
 		</td>

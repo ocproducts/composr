@@ -1,5 +1,5 @@
 {+START,IF,{$EQ,{$PAGE},admin,cms}}
-	{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$DESKTOP}}
 		<div class="block_desktop">
 			{TITLE}
 		</div>

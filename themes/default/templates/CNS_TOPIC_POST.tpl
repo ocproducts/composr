@@ -14,7 +14,7 @@
 	<div class="cns_forum_box_right cns_post_details" role="note">
 		<div class="cns_post_details_date">
 			{$SET,post_date,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
-			{+START,IF,{$NOT,{$MOBILE}}}<span class="inline_desktop">{!POSTED_TIME_SIMPLE,{$GET,post_date}}</span>{+END}<span class="inline_mobile">{$GET,post_date}</span>
+			{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!POSTED_TIME_SIMPLE,{$GET,post_date}}</span>{+END}<span class="inline_mobile">{$GET,post_date}</span>
 		</div>
 
 		{+START,IF_NON_EMPTY,{POSTER}}
@@ -32,7 +32,7 @@
 			{+END}
 		{+END}
 
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<div class="cns_post_details_grapple block_desktop">
 				{+START,IF_NON_EMPTY,{URL}}
 					{+START,IF_NON_EMPTY,{POST_ID*}}
@@ -65,7 +65,7 @@
 
 	<div class="cns_topic_post_area cns_post_main_column">
 		<div class="float_surrounder">
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				{+START,IF,{$JS_ON}}{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
 					<div id="cell_mark_{ID*}" class="cns_off mass_select_marker block_desktop">
 						<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">

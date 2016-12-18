@@ -23,7 +23,7 @@
 			{+START,LOOP,THEMES}
 				<tr{+START,IF,{$GET,done_one_theme}} class="thick_border"{+END}>
 					<td role="note" class="theme_details">
-						{+START,IF,{$NOT,{$MOBILE}}}
+						{+START,IF,{$DESKTOP}}
 							<div class="block_desktop">
 								{+START,SET,TOOLTIP}
 									<kbd>{NAME*}</kbd>, {!BY_SIMPLE,<em>{AUTHOR`}</em>}

@@ -9,7 +9,7 @@
 	{+END}
 
 	<div class="inline_lined_up">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
 				<img class="cns_member_box_avatar inline_desktop" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" title="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" />
 			{+END}

@@ -1,6 +1,6 @@
 {+START,IF,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}}}
 	<div class="wide_table_wrap"><table class="map_table form_table wide_table">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="attachments_field_name_column column_desktop" />
 				<col class="attachments_field_input_column" />
@@ -9,7 +9,7 @@
 
 		<tbody>
 			<tr>
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					<th class="form_table_field_name vertical_alignment cell_desktop">
 						{!ATTACHMENT,{I*}}
 

@@ -11,7 +11,7 @@
 	</div>
 
 	<div id="helper_panel_contents"{+START,IF,{$HIDE_HELP_PANEL}} style="display: none" aria-expanded="false"{+END}>
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<div class="block_desktop">
 				<h2>{!HELP_OR_ADVICE}</h2>
 			</div>

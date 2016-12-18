@@ -18,7 +18,7 @@
 <tr class="field_input">
 	<td id="form_table_field_input__{$GET,randomised_id}" colspan="2" class="form_table_huge_field{+START,IF,{REQUIRED}} required{+END}">
 		<div id="container_for_{NAME*}" class="container_for_wysiwyg">
-			<textarea{+START,IF,{$NOT,{$MOBILE}}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END} tabindex="{TABINDEX*}" class="{+START,IF,{SCROLLS}}textarea_scroll{+END} input_text{_REQUIRED} wide_field" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}">{DEFAULT*}</textarea>
+			<textarea{+START,IF,{$DESKTOP}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END} tabindex="{TABINDEX*}" class="{+START,IF,{SCROLLS}}textarea_scroll{+END} input_text{_REQUIRED} wide_field" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}">{DEFAULT*}</textarea>
 
 			{+START,IF,{$IN_STR,{REQUIRED},wysiwyg}}
 				<script>// <![CDATA[

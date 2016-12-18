@@ -109,7 +109,7 @@
 
 			<div class="wide_table_wrap">
 				<table class="map_table wide_table cns_profile_fields cns_profile_about_section mobile_friendly">
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns_profile_about_field_name_column" />
 							<col class="cns_profile_about_field_value_column" />
@@ -174,7 +174,7 @@
 
 					<div class="wide_table_wrap">
 						<table class="map_table wide_table cns_profile_fields cns_profile_about_section mobile_friendly">
-							{+START,IF,{$NOT,{$MOBILE}}}
+							{+START,IF,{$DESKTOP}}
 								<colgroup>
 									<col class="cns_profile_about_field_name_column" />
 									<col class="cns_profile_about_field_value_column" />
@@ -228,7 +228,7 @@
 
 			<div class="wide_table_wrap">
 				<table class="map_table wide_table cns_profile_details cns_profile_about_section mobile_friendly">
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns_profile_about_field_name_column" />
 							<col class="cns_profile_about_field_value_column" />
@@ -324,7 +324,7 @@
 
 			<div class="wide_table_wrap">
 				<table class="map_table wide_table cns_profile_tracking cns_profile_about_section mobile_friendly">
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns_profile_about_field_name_column" />
 							<col class="cns_profile_about_field_value_column" />

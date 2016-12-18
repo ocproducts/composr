@@ -24,7 +24,7 @@
 		<div class="trinav_right" onclick="/*Access-note: code has other activation*/ cancel_bubbling(event);">
 			{$,Start slideshow}
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
 						<a class="button_screen buttons__slideshow inline_desktop" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					{+END}{+END}

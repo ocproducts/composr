@@ -12,7 +12,7 @@
 	{+START,SET,boxes}
 		<div class="gallery_entry_details right">
 			<table class="columned_table map_table results_table" role="note">
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="gallery_entry_field_name_column" />
 						<col class="gallery_entry_field_value_column" />
