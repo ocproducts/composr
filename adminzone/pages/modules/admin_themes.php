@@ -1621,6 +1621,7 @@ class Module_admin_themes
                 array('LANG', '0'),
                 array('BASE_URL', '0'),
                 array('MOBILE', '0'),
+                array('DESKTOP', '0'),
                 array('SITE_NAME', '0'),
                 array('STAFF_ADDRESS', '0'),
                 array('MEMBER', '0'),
