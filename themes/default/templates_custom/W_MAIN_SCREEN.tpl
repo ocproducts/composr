@@ -1,125 +1,121 @@
 {TITLE}
 
-<section class="box"><div class="box_inner">
-	<h3>{!NAVIGATION}</h3>
+<section class="box box__realm_main"><div class="box_inner">
+	<h2>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h2>
 
-	<section class="box box__realm_main"><div class="box_inner">
-		<h3>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h3>
+	<div class="buildr_navigation">
+		<p class="accessibility_hidden">
+			{!W_MOVEMENT_TABLE}
+		</p>
 
-		<div class="buildr_navigation">
-			<p class="accessibility_hidden">
-				{!W_MOVEMENT_TABLE}
-			</p>
-
-			<table class="results_table">
-				<thead>
-					<tr>
-						<th colspan="3" style="text-align: center">
-							{!NAVIGATION}
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							&nbsp;
-						</td>
-						<td>
-							<div style="text-align: center">
-								{+START,IF,{HAS_UP_ROOM}}
-									<div>
-										&uarr;<br />
-										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="up" /><input class="button_hyperlink" type="submit" value="{UP_ROOM*}" /></form>
-									</div>
-								{+END}
-								{+START,IF,{$NOT,{HAS_UP_ROOM}}}
-									<div class="buildr_fadedtext">
-										&uarr;<br />
-										<em>{!W_NO_ROOM}</em>
-									</div>
-								{+END}
-							</div>
-						</td>
-						<td>
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td>
-							{+START,IF,{HAS_LEFT_ROOM}}
-								<div style="text-align: right">
-									&larr;&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="left" /><input class="button_hyperlink" type="submit" value="{LEFT_ROOM*}" /></form>
-								</div>
-							{+END}
-							{+START,IF,{$NOT,{HAS_LEFT_ROOM}}}
-								<div style="text-align: right" class="buildr_fadedtext">
-									&larr;&nbsp;<em>{!W_NO_ROOM}</em>
-								</div>
-							{+END}
-						</td>
-						<td>
-							&nbsp;
-						</td>
-						<td>
-							{+START,IF,{HAS_RIGHT_ROOM}}
-								<div style="text-align: left">
-									&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="right" /><input class="button_hyperlink" type="submit" value="{RIGHT_ROOM*}" /></form>&nbsp;&rarr;
-								</div>
-							{+END}
-							{+START,IF,{$NOT,{HAS_RIGHT_ROOM}}}
-								<div style="text-align: left" class="buildr_fadedtext">
-									&nbsp;<em>{!W_NO_ROOM}</em>&nbsp;&rarr;
-								</div>
-							{+END}
-						</td>
-					</tr>
-					<tr>
-						<td>
-							&nbsp;
-						</td>
-						<td>
-							<div style="text-align: center">
-								{+START,IF,{HAS_DOWN_ROOM}}
+		<table class="results_table">
+			<thead>
+				<tr>
+					<th colspan="3" class="head">
+						{!NAVIGATION}
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						&nbsp;
+					</td>
+					<td>
+						<div style="text-align: center">
+							{+START,IF,{HAS_UP_ROOM}}
 								<div>
-									<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button_hyperlink" type="submit" value="{DOWN_ROOM*}" /></form><br />
-									<div class="buildr_arrow">
-										&darr;
-									</div>
+									&uarr;<br />
+									<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="up" /><input class="button_hyperlink" type="submit" value="{UP_ROOM*}" /></form>
 								</div>
-								{+END}
-								{+START,IF,{$NOT,{HAS_DOWN_ROOM}}}
+							{+END}
+							{+START,IF,{$NOT,{HAS_UP_ROOM}}}
 								<div class="buildr_fadedtext">
-									<em>{!W_NO_ROOM}</em><br />
-									<div class="buildr_arrow">
-										&darr;
-									</div>
+									&uarr;<br />
+									<em>{!W_NO_ROOM}</em>
 								</div>
-								{+END}
+							{+END}
+						</div>
+					</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{+START,IF,{HAS_LEFT_ROOM}}
+							<div style="text-align: right">
+								&larr;&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="left" /><input class="button_hyperlink" type="submit" value="{LEFT_ROOM*}" /></form>
 							</div>
-						</td>
-						<td>
-							&nbsp;
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+						{+END}
+						{+START,IF,{$NOT,{HAS_LEFT_ROOM}}}
+							<div style="text-align: right" class="buildr_fadedtext">
+								&larr;&nbsp;<em>{!W_NO_ROOM}</em>
+							</div>
+						{+END}
+					</td>
+					<td>
+						&nbsp;
+					</td>
+					<td>
+						{+START,IF,{HAS_RIGHT_ROOM}}
+							<div style="text-align: left">
+								&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="right" /><input class="button_hyperlink" type="submit" value="{RIGHT_ROOM*}" /></form>&nbsp;&rarr;
+							</div>
+						{+END}
+						{+START,IF,{$NOT,{HAS_RIGHT_ROOM}}}
+							<div style="text-align: left" class="buildr_fadedtext">
+								&nbsp;<em>{!W_NO_ROOM}</em>&nbsp;&rarr;
+							</div>
+						{+END}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp;
+					</td>
+					<td>
+						<div style="text-align: center">
+							{+START,IF,{HAS_DOWN_ROOM}}
+							<div>
+								<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button_hyperlink" type="submit" value="{DOWN_ROOM*}" /></form><br />
+								<div class="buildr_arrow">
+									&darr;
+								</div>
+							</div>
+							{+END}
+							{+START,IF,{$NOT,{HAS_DOWN_ROOM}}}
+							<div class="buildr_fadedtext">
+								<em>{!W_NO_ROOM}</em><br />
+								<div class="buildr_arrow">
+									&darr;
+								</div>
+							</div>
+							{+END}
+						</div>
+					</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-		<div class="buildr_room_info">
-			<p>
-				<em>{ROOM_TEXT}</em>
-			</p>
-			{+START,IF_NON_EMPTY,{PIC_URL}}
-				<img alt="{!W_ROOM_PICTURE}" style="{WIDTH*}" src="{PIC_URL*}" />
-			{+END}
+	<div class="buildr_room_info">
+		<p>
+			<em>{ROOM_TEXT}</em>
+		</p>
+		{+START,IF_NON_EMPTY,{PIC_URL}}
+			<img alt="{!W_ROOM_PICTURE}" style="{WIDTH*}" src="{PIC_URL*}" />
+		{+END}
 
-			{+START,IF_NON_EMPTY,{PORTALS}}
-				<h3>{!W_PORTALS}</h3>
+		{+START,IF_NON_EMPTY,{PORTALS}}
+			<h3>{!W_PORTALS}</h3>
 
-				{PORTALS}
-			{+END}
-		</div>
-	</div></section>
+			{PORTALS}
+		{+END}
+	</div>
 </div></section>
 
 <br />
@@ -129,7 +125,7 @@
 
 	<div class="float_surrounder">
 		<div class="buildr_room_chat results_table">
-			<div class="buildr_posttop">{!MESSAGES}</div>
+			<h4 class="buildr_posttop">{!MESSAGES}</h4>
 			<div>
 				<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!MESSAGES}" src="{$FIND_SCRIPT*,wmessages}{$KEEP*,1}">{!MESSAGES}</iframe> {EMOTICON_CHOOSER}
 			</div>
@@ -145,14 +141,11 @@
 		</div>
 
 		<div class="buildr_in_room">
+			<h4>{!W_MEMBERS_IN_ROOM}</h4>
+
 			<div class="wide_table_wrap">
 				<table class="columned_table wide_table results_table autosized_table responsive_table">
 					<thead>
-						<tr>
-							<th colspan="3" class="buildr_posttop">
-								{!W_MEMBERS_IN_ROOM}
-							</th>
-						</tr>
 						<tr>
 							<th>
 								{!NAME}
@@ -174,15 +167,10 @@
 	{+START,IF_NON_EMPTY,{ITEMS}{ITEMS_SALE}}
 		<div class="float_surrounder">
 			{+START,IF_NON_EMPTY,{ITEMS}}
-				<br />
+				<h4>{!W_ITEMS_IN_ROOM}</h4>
 
 				<table class="columned_table buildr_centered_contents wide_table results_table responsive_table">
 					<thead>
-						<tr>
-							<th colspan="2" class="buildr_posttop">
-								{!W_ITEMS_IN_ROOM}
-							</th>
-						</tr>
 						<tr>
 							<th>
 								{!NAME}
@@ -197,15 +185,10 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{ITEMS_SALE}}
-				<br />
+				<h4>{!W_ITEMS_FOR_SALE_IN_ROOM}</h4>
 
 				<table class="columned_table buildr_centered_contents wide_table results_table responsive_table">
 					<thead>
-						<tr>
-							<th colspan="3" class="buildr_posttop">
-								{!W_ITEMS_FOR_SALE_IN_ROOM}
-							</th>
-						</tr>
 						<tr>
 							<th>
 								{!NAME}
@@ -228,28 +211,28 @@
 <br />
 
 <div class="buildr_centered_contents">
-	<section class="box"><div class="box_inner">
+	<section class="box"><div class="box_inner buildr_icons_wrap">
 		<h3>{!W_TOOLS}</h3>
 
-		<div class="buildr_icon" style="width: 14%;">
+		<div class="buildr_icon">
 			<a title="{!W_INVENTORY} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SELF:_SELF:inventory}"><img alt="{!W_INVENTORY}" src="{$IMG*,buildr/inventory}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:inventory}">{!W_INVENTORY}</a>
 		</div>
-		<div class="buildr_icon" style="width: 14%;">
+		<div class="buildr_icon">
 			<a title="{!W_MAP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,map}{$KEEP*,1,1}"><img alt="{!W_MAP}" src="{$IMG*,buildr/map}" /></a><br /><a href="{$FIND_SCRIPT*,map}{$KEEP*,1,1}">{!W_MAP}</a>
 		</div>
-		<div class="buildr_icon" style="width: 14%;">
+		<div class="buildr_icon">
 			<a href="{$PAGE_LINK*,_SELF:_SELF:realms}"><img alt="{!W_REALMS}" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:realms}">{!W_REALMS}</a>
 		</div>
-		<div class="buildr_icon" style="width: 14%;">
+		<div class="buildr_icon">
 			<a href="{$PAGE_LINK*,_SELF:_SELF}"><img alt="{!W_REFRESH}" src="{$IMG*,buildr/refresh}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF}">{!W_REFRESH}</a>
 		</div>
-		<div class="buildr_icon" style="width: 14%;">
+		<div class="buildr_icon">
 			<a href="{$PAGE_LINK*,_SELF:_SELF:confirm:btype=emergency}"><img alt="{!W_TELEPORT}" src="{$IMG*,buildr/emergencyteleport}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:emergency}">{!W_TELEPORT}</a>
 		</div>
-		<div class="buildr_icon" style="width: 14%;">
+		<div class="buildr_icon">
 			<a title="{!RULES} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SELF:rules}"><img alt="{!RULES}" src="{$IMG*,buildr/rules}" /></a><br /><a href="{$PAGE_LINK*,_SELF:rules}">{!RULES}</a>
 		</div>
-		<div class="buildr_icon" style="width: 14%;">
+		<div class="buildr_icon">
 			<a title="{!HELP} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SELF:docs}"><img alt="{!HELP}" src="{$IMG*,buildr/help}" /></a><br /><a href="{$PAGE_LINK*,_SELF:docs}">{!HELP}</a>
 		</div>
 	</div></section>
@@ -263,44 +246,38 @@
 		</h2>
 
 		<div class="toggleable_tray" style="{$JS_ON,{HIDE_ACTIONS*},}"{+START,IF,{HIDE_ACTIONS}} aria-expanded="false"{+END}>
-			<table class="columned_table results_table wide_table autosized_table responsive_table">
-				<colgroup>
-					<col style="width: 20%" />
-					<col style="width: 20%" />
-					<col style="width: 20%" />
-					<col style="width: 20%" />
-					<col style="width: 20%" />
-				</colgroup>
-				<tr class="buildr_posttop">
-					<th>
-						{!ACTION}
-					</th>
-					<th>
-						{!W_TARGET_PERSON}
-					</th>
-					<th>
-						{!W_ITEM_INVOLVED}
-					</th>
-					<th>
-						{!W_PARAMETER}
-					</th>
-					<th>
-						{!PROCEED}
-					</th>
-				</tr>
-			</table>
-			{+START,IF_NON_EMPTY,{ITEMS_HELD}}
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
+			<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
+				{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
+				<table class="columned_table results_table wide_table autosized_table responsive_table">
+					<colgroup>
+						<col style="width: 20%" />
+						<col style="width: 20%" />
+						<col style="width: 20%" />
+						<col style="width: 20%" />
+						<col style="width: 20%" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th>
+								{!ACTION}
+							</th>
+							<th>
+								{!W_TARGET_PERSON}
+							</th>
+							<th>
+								{!W_ITEM_INVOLVED}
+							</th>
+							<th>
+								{!W_PARAMETER}
+							</th>
+							<th>
+								{!PROCEED}
+							</th>
+						</tr>
+					</thead>
+
+					{+START,IF_NON_EMPTY,{ITEMS_HELD}}
 						<tr>
 							<td>
 								{!W_DROP}
@@ -319,19 +296,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_GIVE}
@@ -350,19 +315,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF:confirm}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_PICKPOCKET}
@@ -381,19 +334,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_USE}
@@ -412,19 +353,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF:confirm}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_DELETE_MATCHING_MESSAGES}
@@ -443,20 +372,8 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-			{+END}
-			<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-				{$INSERT_SPAMMER_BLACKHOLE}
+					{+END}
 
-				<table class="columned_table results_table wide_table autosized_table responsive_table">
-					<colgroup>
-						<col style="width: 20%" />
-						<col style="width: 20%" />
-						<col style="width: 20%" />
-						<col style="width: 20%" />
-						<col style="width: 20%" />
-					</colgroup>
 					<tr>
 						<td>
 							{!W_FIND_PERSON}
@@ -475,27 +392,8 @@
 							<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 						</td>
 					</tr>
-				</table>
-			</form>
-			{+START,IF,{IS_STAFF}}
-				<table class="columned_table results_table wide_table">
-					<tr>
-						<td colspan="5">
-							&nbsp;
-						</td>
-					</tr>
-				</table>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
+					{+START,IF,{IS_STAFF}}
 						<tr>
 							<td>
 								{!W_TELEPORT_PERSON}
@@ -514,19 +412,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_IMPRISON_PERSON}
@@ -545,19 +431,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_HURT_PERSON}
@@ -576,19 +450,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_HEAL_PERSON}
@@ -607,19 +469,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_BAN_PERSON}
@@ -638,19 +488,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_UNBAN_PERSON}
@@ -669,19 +507,7 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<table class="columned_table results_table wide_table autosized_table responsive_table">
-						<colgroup>
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-							<col style="width: 20%" />
-						</colgroup>
 						<tr>
 							<td>
 								{!W_TAKE_FROM_PERSON}
@@ -700,9 +526,9 @@
 								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
-					</table>
-				</form>
-			{+END}
+					{+END}
+				</table>
+			</form>
 		</div>
 	</div>
 
@@ -716,7 +542,7 @@
 			</h2>
 
 			<div class="toggleable_tray" style="{$JS_ON,{HIDE_ADDITIONS*},}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
-				<div class="float_surrounder">
+				<div class="float_surrounder buildr_icons_wrap">
 					<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 						<a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}"><img alt="{!W_ADD_REALM}" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}">{!W_ADD_REALM}</a>
 					</div>
@@ -741,7 +567,7 @@
 
 	<div class="box box___w_main_screen">
 		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#" onclick="toggleable_tray(this.parentNode.parentNode); set_cookie('hideMod',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;">{!W_ENVIRONMENT_MODIFICATIONS}</a>
+			<a class="toggleable_tray_button" href="#" onclick="toggleable_tray(this.parentNode.parentNode); return false;">{!W_ENVIRONMENT_MODIFICATIONS}</a>
 			{+START,IF,{$JS_ON}}
 				<a class="toggleable_tray_button" href="#" onclick="toggleable_tray(this.parentNode.parentNode); set_cookie('hideMod',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			{+END}
@@ -766,7 +592,7 @@
 
 			{+START,IF,{$OR,{$IS_NON_EMPTY,{IS_ROOM_OWNER}},{$IS_NON_EMPTY,{IS_REALM_OWNER}}}}
 				<br />
-				<div class="float_surrounder">
+				<div class="float_surrounder buildr_icons_wrap">
 					{+START,IF,{IS_ROOM_OWNER}}
 						<div class="buildr_icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
 							<a href="{$PAGE_LINK*,_SELF:_SELF:editroom}"><img alt="{!W_EDIT_ROOM}" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:editroom}">{!W_EDIT_ROOM}</a>

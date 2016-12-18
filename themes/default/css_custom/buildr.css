@@ -3,17 +3,36 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.buildr_navigation {
-	float: {!en_left};
-	width: 400px;
+/*{+START,CSS_MODE,desktop}*/
+	.buildr_navigation {
+		float: {!en_left};
+		width: 400px;
+	}
+/*{+END}*/
+
+.buildr_navigation .head {
+	text-align: center;
+}
+
+.buildr_navigation tbody>tr:first-child>td {
+	{$BETA_CSS_PROPERTY,border-radius: 0 !important;}
 }
 
 .buildr_navigation table {
-	margin-left: 20px;
-	margin-right: 20px;
-	width: 360px;
 	direction: ltr;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.buildr_navigation table {
+		margin-left: 1em;
+		margin-right: 1em;
+		width: 360px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.buildr_navigation table {
+		width: 100%;
+	}
+/*{+END}*/
 
 .buildr_navigation td {
 	width: 90px;
@@ -22,39 +41,61 @@
 	vertical-align: middle;
 }
 
-.buildr_room_info {
-	margin-{!en_left}: 400px;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.buildr_room_info {
+		margin-{!en_left}: 400px;
+	}
 
-.buildr_room_chat {
-	float: {!en_right};
-	width: 500px;
-	margin-top: 0;
-}
+	.buildr_room_chat {
+		float: {!en_right};
+		width: 500px;
+		margin-top: 0;
+	}
+/*{+END}*/
 
 .buildr_room_chat iframe {
 	width: 100%;
 	height: 100px;
 }
 
-.buildr_in_room {
-	margin-{!en_right}: 510px;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.buildr_in_room {
+		margin-{!en_right}: 510px;
+	}
+/*{+END}*/
 
 .buildr_inventory {
 	margin-top: 20px;
 }
 
-.buildr_icon {
-	float: {!en_left};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.buildr_icon {
+		float: {!en_left};
+	}
+
+	.buildr_icons_wrap .buildr_icon {
+		width: 14%;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.buildr_icons_wrap {
+		text-align: center;
+	}
+
+	.buildr_icons_wrap .buildr_icon {
+		margin-left: 0.5em;
+		margin-bottom: 0.5em;
+		display: inline-block;
+		vertical-align: top;
+	}
+/*{+END}*/
 
 .buildr_centered_contents {
 	text-align: center;
 }
 
 .buildr_avatar {
-	margin-bottom: 10px;
+	margin-bottom: 1em;
 	float: {!en_right};
 }
 

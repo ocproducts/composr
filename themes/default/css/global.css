@@ -2131,25 +2131,31 @@ table.scrollable_inside {
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	/* Deconstructs table to blocks, for easy layout fit */
+	/* Deconstructs map table to blocks, for easy layout fit */
 
 	.map_table.mobile_friendly, .map_table.mobile_friendly tbody, .map_table.mobile_friendly tr, .map_table.mobile_friendly th, .map_table.mobile_friendly td {
 		display: block;
+	}
+
+	.results_table.mobile_friendly tr {
+		margin-bottom: 0.5em;
 	}
 
 	.results_table.mobile_friendly th, .results_table.mobile_friendly td {
 		border-radius: 0 !important;
 		border-left: 1px solid {$GET,standard_border} !important;
 		border-right: 1px solid {$GET,standard_border} !important;
-	}
-
-	.map_table.mobile_friendly th {
+		border-top: 0 !important;
 		border-bottom: 0 !important;
 		text-align: left !important;
 	}
 
-	.map_table.mobile_friendly td {
-		border-top: 0 !important;
+	.map_table.mobile_friendly th:first-child, .map_table.mobile_friendly td:first-child {
+		border-top: 1px solid {$GET,standard_border} !important;
+	}
+
+	.map_table.mobile_friendly th:last-child, .map_table.mobile_friendly td:last-child {
+		border-bottom: 1px solid {$GET,standard_border} !important;
 	}
 /*{+END}*/
 
