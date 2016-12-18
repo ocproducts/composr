@@ -43,7 +43,7 @@
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr>
-					<td colspan="{$?,{$MOBILE},3,4}">
+					<td class="responsive_table_no_prefix" colspan="{$?,{$MOBILE},3,4}">
 						{NOTE*}
 					</td>
 				</tr>

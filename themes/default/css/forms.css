@@ -944,6 +944,22 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 	}
 }
 
+/*{+START,CSS_MODE,mobile}*/
+	.cke_toolbar, .cke_toolgroup {
+		float: none !important;
+		background: none !important;
+	}
+
+	a.cke_button, .cke_button_icon {
+		float: none !important;
+		min-height: 28px;
+	}
+
+	.cke_toolbar_break, .cke_toolbar_separator {
+		display: none !important;
+	}
+/*{+END}*/
+
 /* Other styles */
 
 body#wysiwyg_editor {

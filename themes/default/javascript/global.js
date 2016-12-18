@@ -280,8 +280,11 @@ function new_html__initialise(element)
 					var tds=trs[i].cells;
 					for (var j=0;j<tds.length;j++)
 					{
-						var data=(typeof ths_first_row[j]=='undefined')?'':ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,'');
-						if (data!='') tds[j].setAttribute('data-th',data);
+						if (tds[i].className.indexOf('responsive_table_no_prefix')==-1)
+						{
+							var data=(typeof ths_first_row[j]=='undefined')?'':ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,'');
+							if (data!='') tds[j].setAttribute('data-th',data);
+						}
 					}
 				}
 			}

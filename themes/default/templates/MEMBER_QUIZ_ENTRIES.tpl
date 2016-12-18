@@ -101,8 +101,7 @@
 					{+START,IF_NON_EMPTY,{DELETE_URL}}
 						<tfoot>
 							<tr>
-								<td colspan="6">
-								</td>
+								<td colspan="6"></td>
 
 								<td>
 									<input type="submit" value="{!DELETE}" />

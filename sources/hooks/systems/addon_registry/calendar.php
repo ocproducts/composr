@@ -656,6 +656,8 @@ class Hook_addon_registry_calendar
 
                     $month = do_lorem_template('CALENDAR_YEAR_MONTH', array(
                         'ENTRIES' => $_entries,
+                        'MONTH_NAME' => lorem_word(),
+                        'MONTH_URL' => placeholder_url(),
                     ));
                     $months .= $month->evaluate() /*XHTMLXHTML*/;
                 }

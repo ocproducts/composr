@@ -4,7 +4,7 @@
 		<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_TAGS,{PRETTY_NAME*}}" />
 
 		<p class="field_name lonely_label">
-			<label for="{NAME*}">{PRETTY_NAME*}:</label>
+			<label for="{NAME*}">{PRETTY_NAME*}<span class="inline_desktop">:</span></label>
 		</p>
 
 		{+START,IF,{REQUIRED}}

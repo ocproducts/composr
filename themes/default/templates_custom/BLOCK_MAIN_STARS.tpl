@@ -27,7 +27,7 @@
 
 	{+START,IF_EMPTY,{STARS}}
 		<tr>
-			<td colspan="3" style="font-weight: bold; padding: 10px">Nobody yet &ndash; could you be here?</td>
+			<td class="responsive_table_no_prefix" colspan="3" style="font-weight: bold; padding: 10px">Nobody yet &ndash; could you be here?</td>
 		</tr>
 	{+END}
 </table></div>

@@ -1270,6 +1270,7 @@ class Module_calendar
             $entries = array();
             $priorities = array();
 
+            // Headers with months put out every 3 months (i.e. 3 per row)
             if ((($i - 1) % 3 == 0) && ($i != 1)) {
                 if ($i == 4) {
                     list($month_a, $month_b, $month_c) = array(do_lang_tempcode('JANUARY'), do_lang_tempcode('FEBRUARY'), do_lang_tempcode('MARCH'));
@@ -1290,6 +1291,7 @@ class Module_calendar
                 $months = '';
             }
 
+            // Events in month
             foreach ($happenings as $happening) {
                 list($e_id, $event, $from, $to, $real_from, $real_to, $utc_real_from) = $happening;
                 $date = date('m', $from);
@@ -1340,6 +1342,8 @@ class Module_calendar
                     }
                 }
             }
+
+            // Days in month...
 
             $_period_start = mktime(0, 0, 0, $i, 1, intval($explode[0]));
             $_period_end = mktime(0, 0, 0, $i + 1, 0, intval($explode[0]));
@@ -1407,9 +1411,17 @@ class Module_calendar
                 $_entries->attach(do_template('CALENDAR_YEAR_MONTH_DAY_ROW', array('_GUID' => '5c7fa5d50e1e9eb30f0a19cc7da03c4b', 'ENTRIES' => $__entries)));
             }
 
-            $month = do_template('CALENDAR_YEAR_MONTH', array('_GUID' => '58c9f4cc04186dce6e7ea3dd8ec9269b', 'ENTRIES' => $_entries));
+            // Render month...
+
+            $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => 'month', 'id' => $explode[0] . '-' . strval($i)));
+            $month_url = build_url($map, '_SELF');
+            $month_name = strftime('%B', $_period_start);
+
+            $month = do_template('CALENDAR_YEAR_MONTH', array('_GUID' => '58c9f4cc04186dce6e7ea3dd8ec9269b', 'ENTRIES' => $_entries, 'MONTH_NAME' => $month_name, 'MONTH_URL' => $month_url));
             $months .= $month->evaluate(); // XHTMLXHTML
         }
+
+        // Final row of months...
 
         $map = array_merge($filter, array('page' => '_SELF', 'type' => 'browse', 'view' => 'month', 'id' => $explode[0] . '-' . strval($i - 3)));
         $month_a_url = build_url($map, '_SELF');
@@ -1420,7 +1432,14 @@ class Module_calendar
         list($month_a, $month_b, $month_c) = array(do_lang_tempcode('OCTOBER'), do_lang_tempcode('NOVEMBER'), do_lang_tempcode('DECEMBER'));
         $month_rows->attach(do_template('CALENDAR_YEAR_MONTH_ROW', array('_GUID' => 'd169c06319ca2c089faa6fbb92b39115', 'MONTHS' => $months, 'MONTH_A_URL' => $month_a_url, 'MONTH_B_URL' => $month_b_url, 'MONTH_C_URL' => $month_c_url, 'MONTH_A' => $month_a, 'MONTH_B' => $month_b, 'MONTH_C' => $month_c)));
 
-        return do_template('CALENDAR_YEAR', array('_GUID' => 'ee8f09d406eff18637b37b762bad62cd', 'MONTH_ROWS' => $month_rows, 'PERIOD_START' => strval($period_start), 'PERIOD_END' => strval($period_end)));
+        // Render...
+
+        return do_template('CALENDAR_YEAR', array(
+            '_GUID' => 'ee8f09d406eff18637b37b762bad62cd',
+            'MONTH_ROWS' => $month_rows,
+            'PERIOD_START' => strval($period_start),
+            'PERIOD_END' => strval($period_end),
+        ));
     }
 
     /**

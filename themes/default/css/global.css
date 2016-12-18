@@ -1364,6 +1364,9 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 		display: block;
 		margin-top: 0.5em;
 	}
+	.lonely_label + span + .help_icon {
+		margin-left: 0.5em;
+	}
 	input[type="checkbox"] + input[type="hidden"] + .help_icon {
 		display: inline;
 		margin-top: 0;
@@ -2140,7 +2143,7 @@ table.scrollable_inside {
 /*{+START,CSS_MODE,mobile}*/
 	/* Deconstructs map table to blocks, for easy layout fit */
 
-	.map_table.responsive_blocked_table, .map_table.responsive_blocked_table tbody, .map_table.responsive_blocked_table tr, .map_table.responsive_blocked_table th, .map_table.responsive_blocked_table td {
+	.map_table.responsive_blocked_table, .map_table.responsive_blocked_table tbody, .map_table.responsive_blocked_table tfoot, .map_table.responsive_blocked_table tr, .map_table.responsive_blocked_table th, .map_table.responsive_blocked_table td {
 		display: block;
 	}
 
@@ -2299,7 +2302,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 /* This relies on some JavaScript running too, to set the data attributes; works great though for properly marked up thead'd tables*/
 /*{+START,CSS_MODE,mobile}*/
-	.responsive_table, .responsive_table>tbody, .responsive_table>tbody>tr, .responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tr, .responsive_table>tr>th, .responsive_table>tr>td {
+	.responsive_table, .responsive_table>tbody, .responsive_table>tbody>tr, .responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tfoot, .responsive_table>tfoot>tr, .responsive_table>tfoot>tr>th, .responsive_table>tfoot>tr>td, .responsive_table>tr, .responsive_table>tr>th, .responsive_table>tr>td {
 		display: block;
 		width: auto;
 		overflow: hidden;
@@ -2308,18 +2311,18 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	.responsive_table>thead {
 		display: none !important;
 	}
-	.responsive_table>tbody>tr, .responsive_table>tr {
+	.responsive_table>tbody>tr, .responsive_table>tfoot>tr, .responsive_table>tr {
 		border-bottom: 1px solid {$GET,standard_border};
 		margin-bottom: 1em;
 	}
-	.responsive_table>tbody>tr>th[data-th]::before, .responsive_table>tbody>tr>td[data-th]::before, .responsive_table>tr>th[data-th]::before, .responsive_table>tr>td[data-th]::before {
+	.responsive_table>tbody>tr>th[data-th]::before, .responsive_table>tbody>tr>td[data-th]::before, .responsive_table>tfoot>tr>th[data-th]::before, .responsive_table>tfoot>tr>td[data-th]::before, .responsive_table>tr>th[data-th]::before, .responsive_table>tr>td[data-th]::before {
 		content: attr(data-th) ":";
 		font-weight: bold;
 		width: 7em;
 		display: inline-block;
 		vertical-align: top;
 	}
-	.responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tr>th, .responsive_table>tr>td {
+	.responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tfoot>tr>th, .responsive_table>tfoot>tr>td, .responsive_table>tr>th, .responsive_table>tr>td {
 		border-left: 1px solid {$GET,standard_border};
 		border-radius: 0 !important;
 	}
@@ -2327,10 +2330,10 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		font-weight: normal;
 		font-style: italic;
 	}
-	.responsive_table>tbody>tr>th:empty, .responsive_table>tbody>tr>td:empty, .responsive_table>tr>th:empty, .responsive_table>tr>td:empty {
+	.responsive_table>tbody>tr>th:empty, .responsive_table>tbody>tr>td:empty, .responsive_table>tfoot>tr>th:empty, .responsive_table>tfoot>tr>td:empty, .responsive_table>tr>th:empty, .responsive_table>tr>td:empty {
 		display: none;
 	}
-	.responsive_table>tbody>tr:last-child>td, .responsive_table>tbody>tr.last>td, .responsive_table>tbody>tr:last-child>th {
+	.responsive_table>tbody>tr:last-child>td, .responsive_table>tbody>tr.last>td, .responsive_table>tfoot>tr:last-child>td, .responsive_table>tfoot>tr.last>td, .responsive_table>tbody>tr:last-child>th {
 		border-bottom: 0;
 	}
 
@@ -2342,14 +2345,14 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		padding: 0 !important;
 	}
 
-	.responsive_table_bolded_first_column>tbody>tr>th:first-child, .responsive_table_bolded_first_column>tbody>tr>td:first-child, .responsive_table_bolded_first_column>tr>th:first-child, .responsive_table_bolded_first_column>tr>td:first-child {
+	.responsive_table_bolded_first_column>tbody>tr>th:first-child, .responsive_table_bolded_first_column>tbody>tr>td:first-child, .responsive_table_bolded_first_column>tfoot>tr>th:first-child, .responsive_table_bolded_first_column>tfoot>tr>td:first-child, .responsive_table_bolded_first_column>tr>th:first-child, .responsive_table_bolded_first_column>tr>td:first-child {
 		font-weight: bold;
 	}
-	.responsive_table_bolded_first_column>tbody>tr>th[data-th]::before, .responsive_table_bolded_first_column>tbody>tr>td[data-th]::before, .responsive_table_bolded_first_column>tr>th[data-th]::before, .responsive_table_bolded_first_column>tr>td[data-th]::before {
+	.responsive_table_bolded_first_column>tbody>tr>th[data-th]::before, .responsive_table_bolded_first_column>tbody>tr>td[data-th]::before, .responsive_table_bolded_first_column>tfoot>tr>th[data-th]::before, .responsive_table_bolded_first_column>tfoot>tr>td[data-th]::before, .responsive_table_bolded_first_column>tr>th[data-th]::before, .responsive_table_bolded_first_column>tr>td[data-th]::before {
 		font-weight: normal; /* Overridden from above */
 	}
 
-	.responsive_table_separate_lines>tbody>tr>th[data-th]::before, .responsive_table_separate_lines>tbody>tr>td[data-th]::before, .responsive_table_separate_lines>tr>th[data-th]::before, .responsive_table_separate_lines>tr>td[data-th]::before {
+	.responsive_table_separate_lines>tbody>tr>th[data-th]::before, .responsive_table_separate_lines>tbody>tr>td[data-th]::before, .responsive_table_separate_lines>tfoot>tr>th[data-th]::before, .responsive_table_separate_lines>tfoot>tr>td[data-th]::before, .responsive_table_separate_lines>tr>th[data-th]::before, .responsive_table_separate_lines>tr>td[data-th]::before {
 		width: auto;
 		display: block;
 		margin-bottom: 0.5em;
@@ -2483,23 +2486,23 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	/*	max-width: 540px; Looks bad on forumview */
 }
 
-.pagination * {
+.pagination nav>* {
 	vertical-align: middle;
 }
 .pagination .inline, .pagination nav {
 	display: inline-block;
 }
 
-.pagination a,
-.pagination span,
+.pagination nav>a,
+.pagination nav>span,
 .results_launcher a,
 .results_launcher span {
 	border: 1px solid {$GET,standard_border};
 	border-left: 0;
 	background-color: {$GET,area_background};
 }
-.pagination a:first-child,
-.pagination span:first-child,
+.pagination nav>a:first-child,
+.pagination nav>span:first-child,
 .results_launcher a:first-child,
 .results_launcher span:first-child,
 .pagination .first-child,
@@ -2542,10 +2545,10 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	display: inline;
 }
 
-.pagination a,
-.pagination a:visited,
-.pagination a:hover,
-.pagination span,
+.pagination nav>a,
+.pagination nav>a:visited,
+.pagination nav>a:hover,
+.pagination nav>span,
 .results_launcher a,
 .results_launcher a:visited,
 .results_launcher a:hover,
@@ -2554,15 +2557,15 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	text-decoration: none;
 	margin-top: 0;
 }
-.pagination a:hover,
+.pagination nav>a:hover,
 .results_launcher a:hover {
 	background-color: {$GET,area_hover_2_background};
 }
 /*{+START,CSS_MODE,desktop}*/
-	.pagination a,
-	.pagination a:visited,
-	.pagination a:hover,
-	.pagination span,
+	.pagination nav>a,
+	.pagination nav>a:visited,
+	.pagination nav>a:hover,
+	.pagination nav>span,
 	.results_launcher a,
 	.results_launcher a:visited,
 	.results_launcher a:hover,
@@ -2571,10 +2574,10 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.pagination a,
-	.pagination a:visited,
-	.pagination a:hover,
-	.pagination span,
+	.pagination nav>a,
+	.pagination nav>a:visited,
+	.pagination nav>a:hover,
+	.pagination nav>span,
 	.results_launcher a,
 	.results_launcher a:visited,
 	.results_launcher a:hover,

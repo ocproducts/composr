@@ -3,13 +3,15 @@
 <p>{!CLASSIFIEDS_MY_ADVERTS_TEXT}</p>
 
 <table class="columned_table wide_table results_table autosized_table spaced_table responsive_table">
-	<tr>
-		<th>{!TITLE}</th>
-		<th>{!COUNT_VIEWS}</th>
-		<th>{!ADDED}</th>
-		<th>{!CLASSIFIED_EXPIRES_ON}</th>
-		<th>{!CLASSIFIED_ACTIVE}</th>
-	</tr>
+	<thead>
+		<tr>
+			<th>{!TITLE}</th>
+			<th>{!COUNT_VIEWS}</th>
+			<th>{!ADDED}</th>
+			<th>{!CLASSIFIED_EXPIRES_ON}</th>
+			<th>{!CLASSIFIED_ACTIVE}</th>
+		</tr>
+	</thead>
 	{+START,LOOP,ADS}
 		{$SET,cycle,{$CYCLE,results_table_zebra,zebra_0,zebra_1}}
 
@@ -42,7 +44,7 @@
 		</tr>
 		{+START,IF_NON_EMPTY,{TRANSACTION_DETAILS}}
 			<tr class="{$GET,cycle}">
-				<td colspan="5">
+				<td class="responsive_table_no_prefix" colspan="5">
 					{+START,LOOP,TRANSACTION_DETAILS}
 						<p class="mini_indent">
 							<span class="right">{T_STATUS*} ({$?,{$IS_EMPTY,{T_VIA}},{!ecommerce:MANUAL_TRANSACTION},{T_VIA*}})</span>

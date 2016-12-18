@@ -4,8 +4,16 @@
 */
 
 /*{+START,CSS_MODE,mobile}*/
+	.calendar_week th, .calendar_month th, .calendar_day th {
+		min-height: 9em;
+		vertical-align: bottom;
+	}
 	.calendar_week th a, .calendar_month th a, .calendar_day th a, .calendar_week th span, .calendar_month th span, .calendar_day th span {
 		writing-mode: tb-rl;
+	}
+
+	.calendar_week th, .calendar_week td {
+		text-align: center;
 	}
 /*{+END}*/
 
@@ -24,23 +32,21 @@ abbr.dtstart, abbr.dtend {
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.calendar_year_wrap {
+	.calendar_year_wrap, .calendar_year_wrap>tbody, .calendar_year_wrap>tbody>tr, .calendar_year_wrap>tbody>tr>td {
 		display: block;
 	}
 
-	.calendar_year_wrap>tbody>tr {
-		display: block;
+	.calendar_year_wrap>tbody>tr>.fake_th {
+		display: none;
 	}
 
 	.calendar_year_wrap>tbody>tr>td {
-		display: block;
-		padding: 3em;
 		overflow: hidden;
+		border: 0;
 	}
 /*{+END}*/
 
 .calendar_year_month {
-	height: 150px;
 	vertical-align: top;
 	text-align: center;
 	padding: 0.5em;
@@ -48,6 +54,7 @@ abbr.dtstart, abbr.dtend {
 /*{+START,CSS_MODE,desktop}*/
 	.calendar_year_month {
 		width: 33%;
+		height: 150px;
 	}
 /*{+END}*/
 
@@ -61,8 +68,11 @@ abbr.dtstart, abbr.dtend {
 	width: 33%;
 }
 
-.calendar_year_month_day {
+.calendar_year_month th, .calendar_year_month_table .day_spacer, .calendar_year_month_day {
 	width: {$DIV_FLOAT,100,7}%;
+}
+
+.calendar_year_month_table .day_spacer, .calendar_year_month_day {
 	height: 1.8em;
 	border: 1px solid {$GET,standard_border};
 }
@@ -240,6 +250,12 @@ abbr.dtstart, abbr.dtend {
 		width: 50%;
 		padding: 0.5em;
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.event_interest_box {
+		float: none;
+		margin-bottom: 0.5em;
 	}
 /*{+END}*/
 

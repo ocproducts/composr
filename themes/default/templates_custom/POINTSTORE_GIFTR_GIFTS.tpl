@@ -11,7 +11,8 @@
 			<table class="wide_table results_table autosized_table responsive_table">
 				<thead>
 					<tr>
-						<th colspan="2">{!GIFT}</th>
+						<th></th>
+						<th>{!GIFT}</th>
 						<th width="33%">{!PRICE}</th>
 						<th width="33%">{!ACTIONS}</th>
 					</tr>
@@ -55,7 +56,7 @@
 		<form style="float: left; margin-top: 3px" title="{!CATEGORY}" action="{$SELF_URL*,,,,category=<null>,start=0}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<p>
+			<div>
 				<label for="category">{!CATEGORY}</label>
 				<select id="category" name="category">
 					<option value="">{!ALL_EM}</option>
@@ -63,7 +64,7 @@
 						<option{+START,IF,{$EQ,{_loop_var},{CATEGORY}}} selected="selected"{+END}>{_loop_var*}</option>
 					{+END}
 				</select><input onclick="disable_button_just_clicked(this);" class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
-			</p>
+			</div>
 		</form>
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
