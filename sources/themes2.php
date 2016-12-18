@@ -190,7 +190,7 @@ function actual_add_theme($name)
 {
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-    if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default')) {
+    if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default' || $name == 'admin')) {
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
     }
 
@@ -488,7 +488,7 @@ function resize_rep_image($rep_image)
  */
 function find_images_do_dir($theme, $subdir, $langs)
 {
-    $full = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
+    $full = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
     $out = array();
 
     $_dir = @opendir($full);

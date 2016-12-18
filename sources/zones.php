@@ -421,7 +421,9 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
 
     global $MODULES_ZONES_CACHE;
     if ((isset($MODULES_ZONES_CACHE[$_zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$_zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$_zone][$type])) && ($type === 'modules')/*don't want to look at cached failure for different page type*/)) {
-        return $MODULES_ZONES_CACHE[$_zone][$type][$module_name];
+        if (is_string($MODULES_ZONES_CACHE[$_zone][$type][$module_name])/*should always be a string, but possible weird bug*/) {
+            return $MODULES_ZONES_CACHE[$_zone][$type][$module_name];
+        }
     }
 
     $error = false; // hack for now

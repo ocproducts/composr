@@ -842,7 +842,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
     $where = ' WHERE ' . $where;
     $event_count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e' . $privacy_join . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types t ON e.e_type=t.id' . $where);
     if ($event_count > intval(get_option('general_safety_listing_limit')) * 5) {
-        attach_message(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'inform');
+        attach_message(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'notice');
         return array();
     }
     $events = $GLOBALS['SITE_DB']->query('SELECT *,e.id AS e_id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e' . $privacy_join . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types t ON e.e_type=t.id' . $where);

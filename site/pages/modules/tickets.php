@@ -705,7 +705,7 @@ class Module_tickets
                     $post_templates2 = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
                     $post_templates2->attach($_post_templates);
 
-                    $post_templates = do_template('CNS_POST_TEMPLATE_SELECT', array('_GUID' => 'b670b322b96041db458057432e33cdca', 'LIST' => $post_templates2, 'RESETS' => true));
+                    $post_templates = do_template('CNS_POST_TEMPLATE_SELECT', array('_GUID' => 'b670b322b96041db458057432e33cdca', 'SKIP_LABEL' => true, 'LIST' => $post_templates2, 'RESETS' => true));
                 }
             }
 

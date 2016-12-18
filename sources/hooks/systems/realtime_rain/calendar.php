@@ -43,6 +43,10 @@ class Hook_realtime_rain_calendar
                 $timestamp = $row[2];
                 $member_id = $row[1]['e_submitter'];
 
+                if ($timestamp[2] < $timestamp) {
+                    continue;
+                }
+
                 $drops[] = rain_get_special_icons(null, $timestamp) + array(
                         'TYPE' => 'calendar',
                         'FROM_MEMBER_ID' => strval($member_id),

@@ -2694,7 +2694,9 @@ function ecv2_REM($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        $value = strval(intval($param[0]) % intval($param[1]));
+        if (intval($param[1]) != 0) {
+            $value = strval(intval($param[0]) % intval($param[1]));
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {
