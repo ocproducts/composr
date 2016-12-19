@@ -1611,12 +1611,16 @@ function illustrate_frame_load(pf,frame)
 		}
 		head+=cssText+'<\/style>';
 
-		if (!window.frames[frame]) return;
-		if (!window.frames[frame].document) return;
-		var doc=window.frames[frame].document;
-		if (!doc) return;
-		var de=doc.documentElement;
-		if (!de) return;
+		try
+		{
+			if (!window.frames[frame]) return;
+			if (!window.frames[frame].document) return;
+			var doc=window.frames[frame].document;
+			if (!doc) return;
+			var de=doc.documentElement;
+			if (!de) return;
+		}
+		catch (e) { return; } // May be connection interference somehow
 		var body=de.getElementsByTagName('body');
 		if (body.length==0)
 		{
