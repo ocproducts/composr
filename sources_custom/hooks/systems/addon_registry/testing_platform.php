@@ -388,6 +388,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/galleries.php',
             '_tests/tests/unit_tests/template_no_unused.php',
             '_tests/tests/unit_tests/forum_poll.php',
+            '_tests/tests/unit_tests/addon_references.php',
             '_tests/tests/unit_tests/git_conflicts.php',
             '_tests/tests/unit_tests/lang_html_safe.php',
             '_tests/tests/unit_tests/lang_duplication.php',
