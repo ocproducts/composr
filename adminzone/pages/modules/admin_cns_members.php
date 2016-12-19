@@ -65,7 +65,7 @@ class Module_admin_cns_members
 
         if ($support_crosslinks) {
             if (has_privilege(get_member(), 'member_maintenance')) {
-                $ret['_SEARCH:members:browse'] = array('MEMBERS', 'menu/adminzone/tools/users/member_edit');
+                $ret['_SEARCH:members:browse'] = array('MEMBER_DIRECTORY', 'menu/adminzone/tools/users/member_edit');
             }
             $ret['_SEARCH:admin_cns_merge_members:browse'] = array('MERGE_MEMBERS', 'menu/adminzone/tools/users/merge_members');
             if (addon_installed('cns_cpfs')) {
@@ -84,7 +84,7 @@ class Module_admin_cns_members
             if (addon_installed('staff')) {
                 $ret['_SEARCH:admin_staff:browse'] = array('STAFF', 'menu/site_meta/staff');
             }*/
-            if (addon_installed('warnings')) {
+            if (addon_installed('cns_warnings')) {
                 $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'tabs/member_account/warnings');
             }
         }
