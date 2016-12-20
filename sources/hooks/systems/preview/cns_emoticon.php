@@ -18,6 +18,8 @@
  * @package    core_cns
  */
 
+// NOTE: This hook is not currently used, as admin_cns_emoticons disables the previewing.
+
 /**
  * Hook class.
  */
