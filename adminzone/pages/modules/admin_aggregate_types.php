@@ -31,6 +31,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     public $orderer = 'aggregate_label';
     public $title_is_multi_lang = false;
     public $table = 'aggregate_type_instances';
+    public $do_preview = null;
 
     public $add_one_label = null;
     public $edit_this_label = null;
