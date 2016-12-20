@@ -44,20 +44,24 @@ class Hook_task_find_orphaned_uploads
             foreach ($ofs as $of) {
                 $url = $of[$urlpath['m_name']];
                 if (url_is_local($url)) {
-                    $known_urls[rawurldecode($url)] = 1;
+                    $known_urls[rawurldecode($url)] = true;
                 } else {
                     if (substr($url, 0, strlen($base_url)) == $base_url) {
-                        $known_urls[substr($url, strlen($base_url) + 1)] = 1;
+                        $known_urls[rawurldecode(substr($url, strlen($base_url) + 1))] = true;
                     }
                 }
             }
         }
 
         $all_files = $this->do_dir('uploads');
+        sort($all_files);
         $orphaned = array();
         foreach ($all_files as $file) {
             if (!array_key_exists($file, $known_urls)) {
-                $orphaned[] = array('URL' => get_custom_base_url() . '/' . str_replace('%2F', '/', rawurlencode($file)));
+                $orphaned[] = array(
+                    'URL' => get_custom_base_url() . '/' . str_replace('%2F', '/', rawurlencode($file)),
+                    'PATH' => $file,
+                );
             }
         }
 
@@ -89,7 +93,7 @@ class Hook_task_find_orphaned_uploads
 
                 if ($file[0] != '.') {
                     if (is_file($_dir . '/' . $file)) {
-                        $out[] = $_dir . '/' . $file;
+                        $out[] = $dir . '/' . $file;
                     } elseif (is_dir($_dir . '/' . $file)) {
                         $out = array_merge($out, $this->do_dir($dir . (($dir != '') ? '/' : '') . $file));
                     }

@@ -155,6 +155,9 @@ function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_c
             fatal_exit('Key too long at ' . integer_format($key_size) . ' bytes [' . $id_name . ']'); // 252 for firebird
         }
         if (($total_size >= DB_MAX_ROW_SIZE) && ($table_name != 'f_member_custom_fields')) {
+            if ($return_on_error) {
+                return false;
+            }
             fatal_exit('Fieldset (row) too long at ' . integer_format($total_size) . ' bytes [' . $id_name . ']');
         }
         if ($key_size_unicode >= DB_MAX_KEY_SIZE_UNICODE) {
@@ -164,6 +167,9 @@ function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_c
             fatal_exit('Unicode version of key too long at ' . integer_format($key_size_unicode) . ' bytes [' . $id_name . ']'); // 252 for firebird
         }
         if (($total_size_unicode >= DB_MAX_ROW_SIZE_UNICODE) && ($table_name != 'f_member_custom_fields')) {
+            if ($return_on_error) {
+                return false;
+            }
             fatal_exit('Unicode version of fieldset (row) too long at ' . integer_format($total_size_unicode) . ' bytes [' . $id_name . ']');
         }
     }

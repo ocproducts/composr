@@ -157,7 +157,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
     if (!$quick) {
         Self_learning_cache::erase_smart_cache();
 
-        if (addon_installed('!ssl')) {
+        if (addon_installed('ssl')) {
             require_code('caches3');
             erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
         }
@@ -190,7 +190,7 @@ function actual_add_theme($name)
 {
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-    if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default')) {
+    if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default' || $name == 'admin')) {
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
     }
 
@@ -277,7 +277,7 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
 
     Self_learning_cache::erase_smart_cache();
 
-    if (addon_installed('!ssl')) {
+    if (addon_installed('ssl')) {
         require_code('caches3');
         erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
     }
@@ -488,7 +488,7 @@ function resize_rep_image($rep_image)
  */
 function find_images_do_dir($theme, $subdir, $langs)
 {
-    $full = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
+    $full = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
     $out = array();
 
     $_dir = @opendir($full);

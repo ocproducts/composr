@@ -47,7 +47,7 @@
 }
 
 .text_output {
-	white-space: pre;
+	white-space: pre !important;
 	overflow-x: auto;
 }
 

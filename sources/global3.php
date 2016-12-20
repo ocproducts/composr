@@ -757,7 +757,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
     }
 
     $prefix_default = get_file_base() . '/themes/';
-    $prefix = ($theme == 'default') ? $prefix_default : (get_custom_file_base() . '/themes/');
+    $prefix = ($theme == 'default' || $theme == 'admin') ? $prefix_default : (get_custom_file_base() . '/themes/');
 
     if (!isset($FILE_ARRAY)) {
         if ((is_file($prefix . $theme . '/' . $directory . '_custom/' . $codename . $suffix)) && (!in_safe_mode()) && (!$non_custom_only)) {
@@ -837,7 +837,7 @@ function is_wide()
 
     // Need to check it is allowed
     $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
-    $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
+    $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
     if (is_file($ini_path)) {
         require_code('files');
         $details = better_parse_ini_file($ini_path);
@@ -2563,7 +2563,7 @@ function is_mobile($user_agent = null, $truth = false)
 
     global $SITE_INFO;
     if (((!isset($SITE_INFO['assume_full_mobile_support'])) || ($SITE_INFO['assume_full_mobile_support'] != '1')) && (isset($GLOBALS['FORUM_DRIVER'])) && (!$truth) && (running_script('index')) && (($theme = $GLOBALS['FORUM_DRIVER']->get_theme()) != 'default')) {
-        $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
+        $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (is_file($ini_path)) {
             require_code('files');
             $details = better_parse_ini_file($ini_path);
