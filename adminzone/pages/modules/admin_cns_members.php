@@ -276,7 +276,7 @@ class Module_admin_cns_members
 
         $submit_name = do_lang_tempcode('ADD_MEMBER');
         $url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF');
-        return do_template('FORM_SCREEN', array('_GUID' => '3724dec184e27bb1bfebc5712e8faec2', 'PREVIEW' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
+        return do_template('FORM_SCREEN', array('_GUID' => '3724dec184e27bb1bfebc5712e8faec2', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
     }
 
     /**
