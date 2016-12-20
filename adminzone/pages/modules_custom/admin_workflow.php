@@ -24,7 +24,7 @@ class Module_admin_workflow extends Standard_crud_module
     public $select_name = 'NAME';
     public $menu_label = 'WORKFLOW';
     public $appended_actions_already = true;
-    public $do_preview = false;
+    public $do_preview = null;
 
     /**
      * Find details of the module.

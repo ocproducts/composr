@@ -30,6 +30,7 @@ class Module_cms_tutorials extends Standard_crud_module
     public $select_name = 'TUTORIALS';
     public $orderer = 't_title';
     public $table = 'tutorials_external';
+    public $do_preview = null;
 
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
