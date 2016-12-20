@@ -52,7 +52,7 @@ class Hook_profiles_tabs_related
             return array($title, null, $order, '');
         }
 
-        require_css('member_directory_boxes');
+        require_css('cns_member_directory');
 
         $cpf_value = get_cms_cpf(do_lang('RELATED_CPF'), $member_id_of);
         $filter = do_lang('RELATED_CPF') . '=' . $cpf_value . ',id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ',id<>' . strval($member_id_of);

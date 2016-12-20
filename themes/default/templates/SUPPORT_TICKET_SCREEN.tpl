@@ -45,7 +45,7 @@
 				<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical_alignment" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					{$REQUIRE_JAVASCRIPT,people_lists}
+					{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 
 					<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
 					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username" type="text" id="assign_username" name="username" value="{$USERNAME*}" />

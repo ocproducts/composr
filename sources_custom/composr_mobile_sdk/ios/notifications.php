@@ -102,7 +102,7 @@ class IOSPushNotifications
             return $push;
         }
 
-        require_code('apns/ApnsPHP/Autoload');
+        require_code('composr_mobile_sdk/ios/ApnsPHP/Autoload');
 
         date_default_timezone_set(get_site_timezone());
 
