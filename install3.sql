@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS cms_f_posts;
 CREATE TABLE cms_f_posts (
      id integer unsigned auto_increment NOT NULL,
      p_title varchar(255) NOT NULL,
-     p_post integer unsigned NOT NULL,
+     p_post longtext NOT NULL,
      p_ip_address varchar(40) NOT NULL,
      p_time integer unsigned NOT NULL,
      p_poster integer NOT NULL,
@@ -61,12 +61,14 @@ CREATE TABLE cms_f_posts (
      p_is_emphasised tinyint(1) NOT NULL,
      p_skip_sig tinyint(1) NOT NULL,
      p_parent_id integer NULL,
+     p_post__text_parsed longtext NOT NULL,
+     p_post__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_posts (id, p_title, p_post, p_ip_address, p_time, p_poster, p_intended_solely_for, p_poster_name_if_guest, p_validated, p_topic_id, p_cache_forum_id, p_last_edit_time, p_last_edit_by, p_is_emphasised, p_skip_sig, p_parent_id, p_post__text_parsed, p_post__source_user) VALUES (1, 'Welcome to the forums', 'This is the inbuilt forum system (known as Conversr).\n\nA forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\n\nComposr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1481577719, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:7:{i:0;a:5:{i:0;s:39:\\\"string_attach_584f14f79cb292.19414584_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:1;a:5:{i:0;s:39:\\\"string_attach_584f14f79cb292.19414584_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:2;a:5:{i:0;s:39:\\\"string_attach_584f14f79cb292.19414584_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:3;a:5:{i:0;s:39:\\\"string_attach_584f14f79cb292.19414584_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:4;a:5:{i:0;s:39:\\\"string_attach_584f14f79cb292.19414584_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:5;a:5:{i:0;s:39:\\\"string_attach_584f14f79cb292.19414584_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:6;a:5:{i:0;s:39:\\\"string_attach_584f14f79cb292.19414584_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:7:{s:39:\\\"string_attach_584f14f79cb292.19414584_1\\\";s:121:\\\"\\$tpl_funcs[\'string_attach_584f14f79cb292.19414584_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_584f14f79cb292.19414584_2\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_584f14f79cb292.19414584_2\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_584f14f79cb292.19414584_3\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_584f14f79cb292.19414584_3\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_584f14f79cb292.19414584_4\\\";s:210:\\\"\\$tpl_funcs[\'string_attach_584f14f79cb292.19414584_4\']=\\\"echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_584f14f79cb292.19414584_5\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_584f14f79cb292.19414584_5\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_584f14f79cb292.19414584_6\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_584f14f79cb292.19414584_6\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_584f14f79cb292.19414584_7\\\";s:329:\\\"\\$tpl_funcs[\'string_attach_584f14f79cb292.19414584_7\']=\\\"echo \\\\\\\"Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_posts (id, p_title, p_post, p_ip_address, p_time, p_poster, p_intended_solely_for, p_poster_name_if_guest, p_validated, p_topic_id, p_cache_forum_id, p_last_edit_time, p_last_edit_by, p_is_emphasised, p_skip_sig, p_parent_id, p_post__text_parsed, p_post__source_user) VALUES (1, 'Welcome to the forums', 'This is the inbuilt forum system (known as Conversr).\n\nA forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\n\nComposr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1482270610, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:7:{i:0;a:5:{i:0;s:39:\\\"string_attach_5859a792570ce7.16718208_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:1;a:5:{i:0;s:39:\\\"string_attach_5859a792570ce7.16718208_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:2;a:5:{i:0;s:39:\\\"string_attach_5859a792570ce7.16718208_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:3;a:5:{i:0;s:39:\\\"string_attach_5859a792570ce7.16718208_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:4;a:5:{i:0;s:39:\\\"string_attach_5859a792570ce7.16718208_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:5;a:5:{i:0;s:39:\\\"string_attach_5859a792570ce7.16718208_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}i:6;a:5:{i:0;s:39:\\\"string_attach_5859a792570ce7.16718208_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:7:{s:39:\\\"string_attach_5859a792570ce7.16718208_1\\\";s:121:\\\"\\$tpl_funcs[\'string_attach_5859a792570ce7.16718208_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5859a792570ce7.16718208_2\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5859a792570ce7.16718208_2\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5859a792570ce7.16718208_3\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5859a792570ce7.16718208_3\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5859a792570ce7.16718208_4\\\";s:210:\\\"\\$tpl_funcs[\'string_attach_5859a792570ce7.16718208_4\']=\\\"echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5859a792570ce7.16718208_5\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5859a792570ce7.16718208_5\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5859a792570ce7.16718208_6\\\";s:74:\\\"\\$tpl_funcs[\'string_attach_5859a792570ce7.16718208_6\']=\\\"echo \\\\\\\"<br />\\\\\\\";\\\";\\n\\\";s:39:\\\"string_attach_5859a792570ce7.16718208_7\\\";s:329:\\\"\\$tpl_funcs[\'string_attach_5859a792570ce7.16718208_7\']=\\\"echo \\\\\\\"Composr provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_f_read_logs;
@@ -131,7 +133,7 @@ CREATE TABLE cms_f_topics (
      t_cache_first_post_id integer NULL,
      t_cache_first_time integer unsigned NULL,
      t_cache_first_title varchar(255) NOT NULL,
-     t_cache_first_post integer unsigned NULL,
+     t_cache_first_post longtext NOT NULL,
      t_cache_first_username varchar(80) NOT NULL,
      t_cache_first_member_id integer NULL,
      t_cache_last_post_id integer NULL,
@@ -140,12 +142,14 @@ CREATE TABLE cms_f_topics (
      t_cache_last_username varchar(80) NOT NULL,
      t_cache_last_member_id integer NULL,
      t_cache_num_posts integer NOT NULL,
+     t_cache_first_post__text_parsed longtext NOT NULL,
+     t_cache_first_post__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1481577719, 'Welcome to the forums', '', 'System', 1, 1, 1481577719, 'Welcome to the forums', 'System', 1, 1, '', 1);
+INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1482270610, 'Welcome to the forums', '', 'System', 1, 1, 1482270610, 'Welcome to the forums', 'System', 1, 1, '', 1);
 
 
 DROP TABLE IF EXISTS cms_f_usergroup_sub_mails;
@@ -157,8 +161,8 @@ CREATE TABLE cms_f_usergroup_sub_mails (
      m_usergroup_sub_id integer NOT NULL,
      m_ref_point varchar(80) NOT NULL,
      m_ref_point_offset integer NOT NULL,
-     m_subject integer unsigned NOT NULL,
-     m_body integer unsigned NOT NULL,
+     m_subject longtext NOT NULL,
+     m_body longtext NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -170,18 +174,20 @@ DROP TABLE IF EXISTS cms_f_usergroup_subs;
 
 CREATE TABLE cms_f_usergroup_subs (
      id integer unsigned auto_increment NOT NULL,
-     s_title integer unsigned NOT NULL,
-     s_description integer unsigned NOT NULL,
+     s_title longtext NOT NULL,
+     s_description longtext NOT NULL,
      s_cost varchar(255) NOT NULL,
      s_length integer NOT NULL,
      s_length_units varchar(255) NOT NULL,
      s_auto_recur tinyint(1) NOT NULL,
      s_group_id integer NOT NULL,
      s_enabled tinyint(1) NOT NULL,
-     s_mail_start integer unsigned NOT NULL,
-     s_mail_end integer unsigned NOT NULL,
-     s_mail_uhoh integer unsigned NOT NULL,
+     s_mail_start longtext NOT NULL,
+     s_mail_end longtext NOT NULL,
+     s_mail_uhoh longtext NOT NULL,
      s_uses_primary tinyint(1) NOT NULL,
+     s_description__text_parsed longtext NOT NULL,
+     s_description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -217,8 +223,8 @@ DROP TABLE IF EXISTS cms_f_welcome_emails;
 CREATE TABLE cms_f_welcome_emails (
      id integer unsigned auto_increment NOT NULL,
      w_name varchar(255) NOT NULL,
-     w_subject integer unsigned NOT NULL,
-     w_text integer unsigned NOT NULL,
+     w_subject longtext NOT NULL,
+     w_text longtext NOT NULL,
      w_send_time integer NOT NULL,
      w_newsletter integer NULL,
      w_usergroup integer NULL,
@@ -265,7 +271,7 @@ CREATE TABLE cms_filedump (
      id integer unsigned auto_increment NOT NULL,
      name varchar(80) NOT NULL,
      path varchar(255) NOT NULL,
-     description integer unsigned NOT NULL,
+     description longtext NOT NULL,
      the_member integer NOT NULL,
 
     PRIMARY KEY (id)
@@ -278,8 +284,8 @@ DROP TABLE IF EXISTS cms_galleries;
 
 CREATE TABLE cms_galleries (
      name varchar(80) NOT NULL,
-     description integer unsigned NOT NULL,
-     fullname integer unsigned NOT NULL,
+     description longtext NOT NULL,
+     fullname longtext NOT NULL,
      add_date integer unsigned NOT NULL,
      rep_image varchar(255) NOT NULL,
      parent_id varchar(80) NOT NULL,
@@ -296,12 +302,16 @@ CREATE TABLE cms_galleries (
      flow_mode_interface tinyint(1) NOT NULL,
      gallery_views integer NOT NULL,
      g_owner integer NULL,
+     description__text_parsed longtext NOT NULL,
+     description__source_user integer DEFAULT 1 NOT NULL,
+     fullname__text_parsed longtext NOT NULL,
+     fullname__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (name)
 ) engine=MyISAM;
 
 
-INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1481577733, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_584f15020251b4.93331439_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_584f15020251b4.93331439_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_584f15020251b4.93331439_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_584f15020251b4.93331439_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_584f15020251b4.93331439_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_584f15020251b4.93331439_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1482270616, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5859a7961a3cc3.40103547_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5859a7961a3cc3.40103547_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5859a7961a3cc3.40103547_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5859a7961a3cc3.40103547_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5859a7961a3cc3.40103547_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5859a7961a3cc3.40103547_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_gifts;
@@ -314,8 +324,10 @@ CREATE TABLE cms_gifts (
      amount integer NOT NULL,
      gift_from integer NOT NULL,
      gift_to integer NOT NULL,
-     reason integer unsigned NOT NULL,
+     reason longtext NOT NULL,
      anonymous tinyint(1) NOT NULL,
+     reason__text_parsed longtext NOT NULL,
+     reason__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -3696,7 +3708,7 @@ CREATE TABLE cms_images (
      cat varchar(80) NOT NULL,
      url varchar(255) NOT NULL,
      thumb_url varchar(255) NOT NULL,
-     description integer unsigned NOT NULL,
+     description longtext NOT NULL,
      allow_rating tinyint(1) NOT NULL,
      allow_comments tinyint NOT NULL,
      allow_trackbacks tinyint(1) NOT NULL,
@@ -3706,7 +3718,9 @@ CREATE TABLE cms_images (
      add_date integer unsigned NOT NULL,
      edit_date integer unsigned NULL,
      image_views integer NOT NULL,
-     title integer unsigned NOT NULL,
+     title longtext NOT NULL,
+     description__text_parsed longtext NOT NULL,
+     description__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -3869,8 +3883,10 @@ DROP TABLE IF EXISTS cms_match_key_messages;
 
 CREATE TABLE cms_match_key_messages (
      id integer unsigned auto_increment NOT NULL,
-     k_message integer unsigned NOT NULL,
+     k_message longtext NOT NULL,
      k_match_key varchar(255) NOT NULL,
+     k_message__text_parsed longtext NOT NULL,
+     k_message__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
