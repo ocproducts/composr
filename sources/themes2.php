@@ -576,7 +576,7 @@ function resize_rep_image($rep_image)
  */
 function find_images_do_dir($theme, $subdir, $langs)
 {
-    $full = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
+    $full = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
     $out = array();
 
     $_dir = @opendir($full);

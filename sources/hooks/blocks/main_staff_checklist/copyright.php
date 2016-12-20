@@ -37,7 +37,7 @@ class Hook_checklist_copyright
             return array();
         }
 
-        if (strpos($copyright, '$CURRENT_YEAR=') === false) {
+        if (strpos($copyright, '$CURRENT_YEAR=') !== false) {
             return array();
         }
 

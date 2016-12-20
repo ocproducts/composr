@@ -88,7 +88,7 @@
 					<td class="answer">= {MULT_POINTS_RATING*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}
-			{+START,IF,{$NEQ,{POINTS_CREDITS},0}}{+START,IF,{$ADDON_INSTALLED,support_credits}}
+			{+START,IF,{$NEQ,{POINTS_CREDITS},0}}{+START,IF,{$ADDON_INSTALLED,composr_homesite_support_credits}}
 				<tr>
 					<td>&bull;&nbsp;{!SPECIAL_CPF__cms_support_credits}:</td>
 					<td class="equation">{POINTS_GAINED_CREDITS*} &times; {POINTS_CREDITS*} {!POINTS_UNIT}</td>

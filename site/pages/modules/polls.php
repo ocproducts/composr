@@ -276,7 +276,6 @@ class Module_polls
     public function view()
     {
         $id = $this->id;
-        $_GET['poll_id'] = strval($id);
         $myrow = $this->myrow;
         $_title = $this->_title;
 
@@ -319,7 +318,7 @@ class Module_polls
         }
 
         // Load poll
-        $poll_details = do_block('main_poll');
+        $poll_details = do_block('main_poll', array('param' => strval($id)));
 
         // Render
         return do_template('POLL_SCREEN', array(

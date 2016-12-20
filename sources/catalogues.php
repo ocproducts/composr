@@ -698,6 +698,10 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
 
     $num_entries = mixed();
 
+    if ($order_by == 'rating') { // LEGACY
+        $order_by = 'average_rating';
+    }
+
     $cf_type = is_numeric($order_by) ? $fields[intval($order_by)]['cf_type'] : '';
     $can_do_db_sorting = ($order_by != 'distance');
 

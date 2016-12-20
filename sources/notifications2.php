@@ -212,7 +212,7 @@ function notifications_ui($member_id_of)
         $auto_monitor_contrib_content = strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_auto_monitor_contrib_content'));
     }
 
-    $custom_fields = $GLOBALS['FORUM_DRIVER']->get_custom_fields(get_member());
+    $custom_fields = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member_id_of);
     $smart_topic_notification_content = (array_key_exists('smart_topic_notification', $custom_fields)) && ($custom_fields['smart_topic_notification'] == '1');
 
     return do_template('NOTIFICATIONS_MANAGE', array(

@@ -412,8 +412,7 @@ function get_timezoned_time($timestamp, $use_contextual_times = true, $utc_time 
 
 /**
  * Format a local time/date according to locale settings. Combines best features of 'strftime' and 'date'.
- * %i is 'g' in date
- * %k is 'S' in date
+ * %o is 'S' in date
  *
  * @param  string $format The formatting string.
  * @param  ?TIME $timestamp The timestamp (null: now). Assumed to already be timezone-shifted as required
@@ -431,12 +430,12 @@ function cms_strftime($format, $timestamp = null)
     }
     if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);
-        $format = str_replace('%i', '%#I', $format);
+        $format = str_replace('%l', '%#I', $format);
     } else {
         $format = str_replace('%e', '%-d', $format);
-        $format = str_replace('%i', '%-I', $format);
+        $format = str_replace('%l', '%-I', $format);
     }
-    $format = str_replace('%k', date('S'/*English ordinal suffix for the day of the month, 2 characters*/, $timestamp), $format);
+    $format = str_replace('%o', date('S'/*English ordinal suffix for the day of the month, 2 characters*/, $timestamp), $format);
     $ret = strftime($format, $timestamp);
     if ($ret === false) {
         $ret = '';

@@ -983,6 +983,22 @@ class Module_admin_version
         }
     }
 
+    /**
+     * Find entry-points available within this module.
+     *
+     * @param  boolean $check_perms Whether to check permissions.
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     */
+    public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
+    {
+        return array(
+            'browse' => array('PROJECT_SPONSORS', 'menu/_generic_spare/6'),
+        );
+    }
+
     public $title;
 
     /**
@@ -992,6 +1008,9 @@ class Module_admin_version
      */
     public function pre_run()
     {
+        require_lang('version');
+        $this->title = get_screen_title('PROJECT_SPONSORS');
+
         return null;
     }
 
@@ -1002,7 +1021,19 @@ class Module_admin_version
      */
     public function run()
     {
-        // This used to be a real module, before Composr was free
-        return new Tempcode();
+        $level = get_param_integer('level', 50);
+
+        $patreons = json_decode(http_download_file('http://compo.sr/data_custom/patreons.php?level=' . strval($level)));
+
+        $_patreons = array();
+        foreach ($patreons as $patron) {
+            $_patreons[] = array(
+                'NAME' => $patron['name'],
+                'USERNAME' => $patron['username'],
+                'MONTHLY' => strval($patron['monthly']),
+            );
+        }
+
+        return do_template('SPONSORS_SCREEN', array('TITLE' => $this->title, 'PATREONS' => $_patreons));
     }
 }

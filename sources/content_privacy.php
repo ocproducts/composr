@@ -193,8 +193,8 @@ function privacy_limits_for($content_type, $content_id, $strict_all = false)
         }
     }
 
-    $GLOBALS['SITE_DB']->query_select('content_privacy__members', array('member_id'), array('content_type' => $content_type, 'content_id' => $content_id));
-    $members = array_merge($members, collapse_1d_complexity('member_id', $friends));
+    $individuals = $GLOBALS['SITE_DB']->query_select('content_privacy__members', array('member_id'), array('content_type' => $content_type, 'content_id' => $content_id));
+    $members = array_merge($members, collapse_1d_complexity('member_id', $individuals));
 
     return $members;
 }

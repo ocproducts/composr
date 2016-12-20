@@ -385,13 +385,8 @@ class Module_cms_calendar extends Standard_crud_module
                 $types[$row['e_type']] = $type;
             }
 
-            $start_day_of_month = find_concrete_day_of_month($row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type'], ($row['e_start_hour'] === null) ? find_timezone_start_hour_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_hour'], ($row['e_start_minute'] === null) ? find_timezone_start_minute_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_minute'], $row['e_timezone'], $row['e_do_timezone_conv'] == 1);
-            $time_raw = mktime($row['e_start_hour'], $row['e_start_minute'], 0, $row['e_start_month'], $start_day_of_month, $row['e_start_year']);
-            if ($row['e_start_hour'] === null) {
-                $date = get_timezoned_date($time_raw);
-            } else {
-                $date = get_timezoned_date_time($time_raw);
-            }
+            list(, $time_raw) = find_event_start_timestamp($row);
+            $date = get_timezoned_date($time_raw, $row['e_start_hour'] !== null, false, false, true);
 
             $fields->attach(results_entry(array(protect_from_escaping(hyperlink(build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar')), get_translated_text($row['e_title']), false, true)), $date, $type, ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }

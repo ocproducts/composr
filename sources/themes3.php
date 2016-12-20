@@ -186,7 +186,7 @@ function actual_rename_theme($theme, $to)
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    if ((file_exists(get_custom_file_base() . '/themes/' . $to)) || ($to == 'default')) {
+    if ((file_exists(get_custom_file_base() . '/themes/' . $to)) || ($to == 'default' || $to == 'admin')) {
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
     }
 
@@ -224,7 +224,7 @@ function actual_copy_theme($theme, $to)
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    if ((file_exists(get_custom_file_base() . '/themes/' . $to)) || ($to == 'default')) {
+    if ((file_exists(get_custom_file_base() . '/themes/' . $to)) || ($to == 'default' || $to == 'admin')) {
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
     }
 

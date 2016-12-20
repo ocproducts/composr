@@ -1517,7 +1517,7 @@ class Module_calendar
             $event = adjust_event_dates_for_a_recurrence($day, $event, get_users_timezone());
         }
         list($time_raw, $from) = find_event_start_timestamp($event);
-        $day_formatted = cms_strftime(do_lang('calendar_date'), $from);
+        $day_formatted = cms_strftime(do_lang('calendar_date_verbose'), $from);
         if (($event['e_end_year'] !== null) && ($event['e_end_month'] !== null) && ($event['e_end_day'] !== null)) {
             list($to_raw, $to) = find_event_end_timestamp($event);
 

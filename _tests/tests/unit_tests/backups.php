@@ -66,7 +66,7 @@ $SITE_INFO[\'table_prefix\'] = \'bt_\';
         for ($i = 0; $i < 2; $i++) {
             $test = cms_http_request(get_base_url() . '/exports/backups/test/restore.php?time_limit=1000', array('trigger_error' => false, 'post_params' => array(), 'timeout' => 100.0));
             $success = (strpos($test, do_lang('backups:BACKUP_RESTORE_SUCCESS')) !== false);
-            $this->assertTrue($success, 'Failed to run restorer script on iteration ' . strval($i + 1));
+            $this->assertTrue($success, 'Failed to run restorer script on iteration ' . strval($i + 1) . ' [' . $test . ']');
             if (!$success) {
                 return;
             }

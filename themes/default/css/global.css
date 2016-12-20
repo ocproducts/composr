@@ -1822,7 +1822,7 @@ h3 .toggleable_tray_button img {
 .whitespace_visible {
 	overflow: auto;
 	outline: 0;
-	white-space: pre-wrap;
+	white-space: pre-wrap !important;
 }
 .whitespace_visible.code {
 	font-family: 'Courier New', 'Courier', monospace;

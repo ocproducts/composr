@@ -994,7 +994,7 @@ class Module_admin_addons
 
         // ... but the theme might already define some of this
         if ($theme !== null) {
-            $ini_file = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+            $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
             if (file_exists($ini_file)) {
                 $details = better_parse_ini_file($ini_file);
                 if (array_key_exists('title', $details)) {

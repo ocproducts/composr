@@ -263,7 +263,7 @@ class Module_admin_themewizard
         if ((!is_alphanumeric($themename, true)) || (strlen($themename) > 40)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
-        if ((file_exists(get_custom_file_base() . '/themes/' . $themename)) || ($themename == 'default')) {
+        if ((file_exists(get_custom_file_base() . '/themes/' . $themename)) || ($themename == 'default' || $themename == 'admin')) {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($themename)));
         }
 

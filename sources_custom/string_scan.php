@@ -141,6 +141,8 @@ function string_scan($lang, $do_guessing = false)
         TICKETS_STAFF
         NO_CNS
         DOCS
+        PROJECT_SPONSORS
+        PROJECT_SPONSORS_LABEL
         CONFIG_OPTION_complex_lists
         COMPLEX_LISTS
         HERE_SURVEY_RESULTS
