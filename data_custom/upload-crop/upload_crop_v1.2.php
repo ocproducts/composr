@@ -116,6 +116,9 @@ function resizeImage($image, $width, $height, $scale)
     }
 
     $transparent = imagecolortransparent($image);
+    if ($transparent >= imagecolorstotal($image)) { // Workaround for corrupt images
+        $transparent = -1;
+    }
     if ($transparent != -1) {
         imagealphablending($newImage, false);
         $_transparent = imagecolorsforindex($image, $transparent);
@@ -156,6 +159,9 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
     $newImage = imagecreatetruecolor($newImageWidth, $newImageHeight);
 
     $transparent = imagecolortransparent($image);
+    if ($transparent >= imagecolorstotal($image)) { // Workaround for corrupt images
+        $transparent = -1;
+    }
     if ($transparent != -1) {
         imagealphablending($newImage, false);
         $_transparent = imagecolorsforindex($image, $transparent);

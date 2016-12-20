@@ -1,6 +1,6 @@
 {+START,IF,{$TAPATALK}}
 	<blockquote>
-		{CONTENT}
+		{$PREG_REPLACE,<blockquote.*>.*</blockquote>,,{CONTENT},s}
 	</blockquote>
 {+END}
 
@@ -8,7 +8,12 @@
 	<blockquote class="comcode_quote"{+START,IF_PASSED,CITE} cite="{CITE*}"{+END}>
 		<div class="comcode_quote_inner">
 			<div class="float_surrounder">
-				{CONTENT}
+				{+START,IF,{$MOBILE}}
+					{$PREG_REPLACE,<blockquote.*>.*</blockquote>,,{CONTENT},s}
+				{+END}
+				{+START,IF,{$NOT,{$MOBILE}}}
+					{CONTENT}
+				{+END}
 			</div>
 		</div>
 	</blockquote>

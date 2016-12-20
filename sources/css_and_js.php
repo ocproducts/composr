@@ -296,7 +296,7 @@ function _css_cms_include($matches)
 
     $theme = $matches[1];
     $c = $matches[3];
-    if (($theme == 'default') && ($matches[2] == 'css')) {
+    if (($theme == 'default' || $theme == 'admin') && ($matches[2] == 'css')) {
         $full_path = get_file_base() . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($matches[2]) . '/' . filter_naughty($c) . '.css';
     } else {
         $full_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($matches[2]) . '/' . filter_naughty($c) . '.css';

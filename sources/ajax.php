@@ -465,7 +465,7 @@ function ajax_tree_script()
     require_code('xml');
     header('Content-Type: text/xml');
     $hook = filter_naughty_harsh(get_param_string('hook'));
-    require_code('hooks/systems/ajax_tree/' . $hook);
+    require_code('hooks/systems/ajax_tree/' . $hook, true);
     $object = object_factory('Hook_' . $hook, true);
     if ($object === null) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));

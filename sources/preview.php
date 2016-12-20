@@ -163,7 +163,9 @@ function build_preview($multi_return = false)
                 'f_colour',
                 'f_size',
                 'http_referer',
+                'session_id',
                 'csrf_token',
+                'y' . md5(get_site_name() . ': antispam'),
             )) ||
             (strpos($key, 'hour') !== false) ||
             (strpos($key, 'access_') !== false) ||

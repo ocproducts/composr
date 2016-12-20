@@ -10,7 +10,7 @@
 .purchase_terms {
 	width: 100%;
 	font-family: Courier, monospace;
-	white-space: pre-wrap;
+	white-space: pre-wrap !important;
 	margin: 1em 0;
 }
 

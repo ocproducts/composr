@@ -246,8 +246,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
         }
     }
 
-    $myfunc = 'do_runtime_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/
-    ;
+    $myfunc = 'do_runtime_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/;
     if ($name === '?' && $type === TC_SYMBOL) {
         $name = 'TERNARY';
     }

@@ -254,7 +254,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
                 $_width = get_option('attachment_default_width');
             }
             if (empty($_height)) {
-                $_width = get_option('attachment_default_height');
+                $_height = get_option('attachment_default_height');
             }
         }
 

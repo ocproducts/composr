@@ -66,7 +66,7 @@ $SITE_INFO[\'table_prefix\'] = \'bt_\';
         for ($i = 0; $i < 2; $i++) {
             $test = http_download_file(get_base_url() . '/exports/backups/test/restore.php?time_limit=1000', null, null, false, 'Composr', array(), null, null, null, null, null, null, null, 100.0);
             $success = (strpos($test, do_lang('backups:BACKUP_RESTORE_SUCCESS')) !== false);
-            $this->assertTrue($success, 'Failed to run restorer script on iteration ' . strval($i + 1));
+            $this->assertTrue($success, 'Failed to run restorer script on iteration ' . strval($i + 1) . ' [' . $test . ']');
             if (!$success) {
                 return;
             }
