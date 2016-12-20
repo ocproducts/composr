@@ -36,6 +36,8 @@ class sitemap_test_set extends cms_test_case
         $zone = '_SEARCH';
         $meta_gather = SITEMAP_GATHER__ALL | SITEMAP_GEN_USE_PAGE_GROUPINGS;
 
+        $GLOBALS['SITE_DB']->query_delete('bookmarks'); // Interferes with rules
+
         $this->sitemap = retrieve_sitemap_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $options, $zone, $meta_gather);
         $this->flattened = $this->flatten_sitemap($this->sitemap);
 
