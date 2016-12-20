@@ -412,6 +412,8 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         decache('main_members');
     }
 
+    set_value('cns_member_count', strval(intval(get_value('cns_member_count')) + 1));
+
     require_code('sitemap_xml');
     notify_sitemap_node_add('SEARCH:members:view:' . strval($member_id), $join_time, null, SITEMAP_IMPORTANCE_LOW, 'monthly', true);
 
@@ -611,7 +613,12 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         'cf_show_on_join_form' => $show_on_join_form,
         'cf_options' => $options,
     );
-    $map += insert_lang('cf_name', $name, 2, $GLOBALS['FORUM_DB']);
+    if (substr($name, 0, 4) == 'cms_') {
+        require_code('lang3');
+        $map += lang_code_to_static_content('cf_name', $name, false, 2, $GLOBALS['FORUM_DB']);
+    } else {
+        $map += insert_lang('cf_name', $name, 2, $GLOBALS['FORUM_DB']);
+    }
     $map += insert_lang('cf_description', $description, 2, $GLOBALS['FORUM_DB']);
     $id = $GLOBALS['FORUM_DB']->query_insert('f_custom_fields', $map + array('cf_encrypted' => $encrypted), true, true);
     if (is_null($id)) {

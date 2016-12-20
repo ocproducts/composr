@@ -71,18 +71,34 @@ function can_static_cache()
     if (isset($_GET['redirect'])) {
         return false;
     }
-    /* Actually this stops very useful caching, esp on the forum - better to just reduce the cache time to a fraction of an hour
-    $url_easy = static_cache__get_self_url_easy();
-    if (strpos($url_easy, 'sort=') !== false) {
+
+    global $EXTRA_HEAD;
+    if ($EXTRA_HEAD !== null) {
+        if (strpos($EXTRA_HEAD->evaluate(), '<meta name="robots" content="noindex"') !== false) {
+            return false; // Too obscure to waste cache space with
+        }
+    }
+
+    global $NON_CANONICAL_PARAMS;
+    if ($NON_CANONICAL_PARAMS !== null) {
+        foreach ($NON_CANONICAL_PARAMS as $param => $block_page_from_static_cache_if_present) {
+            if (isset($_GET[$param])) {
+                if ($block_page_from_static_cache_if_present) {
+                    return false; // Too parameterised
+                }
+            }
+        }
+    }
+
+    if ((isset($_GET['page'])) && ($_GET['page'] == '404')) {
         return false;
     }
-    if (strpos($url_easy, 'start=') !== false) {
+
+    global $HTTP_STATUS_CODE;
+    if ($HTTP_STATUS_CODE == '404') {
         return false;
     }
-    if (strpos($url_easy, 'max=') !== false) {
-        return false;
-    }
-    */
+
     return true;
 }
 
@@ -220,8 +236,8 @@ function static_cache($mode)
         if (($mtime > time() - $expires) || (($mode & STATIC_CACHE__FAILOVER_MODE) != 0)) {
             // Only bots can do HTTP caching, as they won't try to login and end up reaching a previously cached page
             if ((($mode & STATIC_CACHE__FAST_SPIDER) != 0) && (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) && (function_exists('cms_srv'))) {
-                header("Pragma: public");
-                header("Cache-Control: max-age=" . strval($expires));
+                header('Pragma: public');
+                header('Cache-Control: max-age=' . strval($expires));
                 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $mtime) . ' GMT');
 
@@ -245,6 +261,7 @@ function static_cache($mode)
             }
             if (($mode & STATIC_CACHE__FAILOVER_MODE) != 0) {
                 $contents .= "\n\n" . '<!-- Served ' . htmlentities($fast_cache_path) . ' -->';
+                $contents .= '<failover />';
             }
             exit($contents);
         } else {

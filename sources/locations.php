@@ -68,7 +68,7 @@ function init__locations()
             'NE' => 'Niger',
             'NG' => 'Nigeria',
             'RW' => 'Rwanda',
-            'RE' => 'Réunion',
+            'RE' => (get_charset() == 'utf-8') ? 'Réunion' : 'Reunion',
             'SH' => 'Saint Helena',
             'SN' => 'Senegal',
             'SC' => 'Seychelles',
@@ -77,7 +77,7 @@ function init__locations()
             'ZA' => 'South Africa',
             'SD' => 'Sudan',
             'SZ' => 'Swaziland',
-            'ST' => 'São Tomé and Príncipe',
+            'ST' => (get_charset() == 'utf-8') ? 'São Tomé and Príncipe' : 'Sao Tome and Principe',
             'TZ' => 'Tanzania',
             'TG' => 'Togo',
             'TN' => 'Tunisia',
@@ -127,7 +127,7 @@ function init__locations()
             'PY' => 'Paraguay',
             'PE' => 'Peru',
             'PR' => 'Puerto Rico',
-            'BL' => 'Saint Barthélemy',
+            'BL' => (get_charset() == 'utf-8') ? 'Saint Barthélemy' : 'Saint Barthelemy',
             'KN' => 'Saint Kitts and Nevis',
             'LC' => 'Saint Lucia',
             'MF' => 'Saint Martin',
@@ -252,7 +252,7 @@ function init__locations()
             'SU' => 'Union of Soviet Socialist Republics',
             'GB' => 'United Kingdom',
             'VA' => 'Vatican City',
-            'AX' => 'Åland Islands',
+            'AX' => (get_charset() == 'utf-8') ? 'Åland Islands' : 'Aland Islands',
             'XK' => 'Kosovo', // Unofficial, http://geonames.wordpress.com/2010/03/08/xk-country-code-for-kosovo/. Currently not fully UN recognised, UN-controlled ex-part of Serbia
         ),
         'Oceania' => array(
@@ -489,20 +489,29 @@ function get_country()
  */
 function geolocate_ip($ip = null)
 {
+    static $result = array();
+
     if (is_null($ip)) {
         $ip = get_ip_address();
     }
 
+    if (array_key_exists($ip, $result)) {
+        return $result[$ip];
+    }
+
     if (!addon_installed('stats')) {
+        $result[$ip] = null;
         return null;
     }
 
     $long_ip = ip2long($ip);
     if ($long_ip === false) {
+        $result[$ip] = null;
         return null; // No IP6 support
     }
 
     if (running_script('install')) {
+        $result[$ip] = null;
         return null;
     }
 
@@ -510,12 +519,14 @@ function geolocate_ip($ip = null)
     $results = $GLOBALS['SITE_DB']->query($query);
 
     if (!array_key_exists(0, $results)) {
-        return null;
+        $result[$ip] = null;
     } elseif (!is_null($results[0]['country'])) {
-        return $results[0]['country'];
+        $result[$ip] = $results[0]['country'];
     } else {
-        return null;
+        $result[$ip] = null;
     }
+
+    return $result[$ip];
 }
 
 /**
@@ -528,7 +539,7 @@ function form_input_regions($regions = null)
 {
     require_code('form_templates');
     $list_groups = create_region_selection_list($regions);
-    return form_input_multi_list(do_lang_tempcode('FILTER_REGIONS'), do_lang_tempcode('DESCRIPTION_FILTER_REGIONS'), 'regions', $list_groups, null, 30);
+    return form_input_multi_list(do_lang_tempcode('FILTER_REGIONS'), do_lang_tempcode('DESCRIPTION_FILTER_REGIONS'), 'regions', $list_groups, null, 10);
 }
 
 /**

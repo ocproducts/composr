@@ -74,6 +74,7 @@ $featuretree = array(
         'money' => array(
             'Financial',
             array(
+                array('Support a developer on Patreon', 'The lead developer has a [url="Patreon"]https://www.patreon.com/composr[/url].'),
                 array('Sponsor a feature', 'Do you want something new implemented in Composr? Sponsor little projects listed on the [page="site:tracker"]tracker[/page] (payment is made via buying support credits).'),
             ),
         ),

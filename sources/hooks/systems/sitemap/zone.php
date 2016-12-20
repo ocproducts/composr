@@ -291,7 +291,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             foreach ($links as $link) {
                 list($page_grouping) = $link;
 
-                if ((is_array($link)) && (is_string($link[2][2]))) {
+                if ((is_array($link[2])) && (is_string($link[2][2]))) {
                     if (($page_grouping == '') || (in_array($page_grouping, $applicable_page_groupings))) {
                         $pages_found[$link[2][2] . ':' . $link[2][0]] = true;
                     }
@@ -406,6 +406,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                             if (preg_match('#^redirect:#', $page_type) != 0) {
                                 if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
                                     list(, $redir_zone, $redir_page) = explode(':', $page_type);
+                                    require_code('xml');
                                     $struct['title'] = make_string_tempcode(strip_html(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))) . ': ' . (is_string($page) ? $page : strval($page)));
                                 }
                             }

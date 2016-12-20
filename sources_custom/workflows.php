@@ -594,7 +594,7 @@ function workflow_update_handler()
         }
     }
     if (count($notes_approved) + count($notes_disapproved) > 0) {
-        $note_title = date('Y-m-d H:i') . ' ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        $note_title = get_timezoned_date(time(), false, false, false, true) . ' ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         $workflow_notes = $workflow_notes . "\n\n" . $note_title . "\n" . str_repeat('-', strlen($note_title));
 
         $notes_approved = array_map('get_translated_text', $notes_approved);
@@ -624,6 +624,7 @@ function workflow_update_handler()
 
     // Now use it to find this content's validation field...
 
+    require_code('content');
     $ob = get_content_object($content_details[0]['content_type']);
 
     // Grab information about the hook

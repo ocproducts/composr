@@ -2179,7 +2179,7 @@ class Module_admin_themes
             if (((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name'])))) || (post_param_string('path', '') != '')) {
                 $old_url = find_theme_image($old_id, true, true, $theme, ($lang == '') ? null : $lang);
                 if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name']))) || $old_url != post_param_string('path', ''))) {
-                    if (($theme == 'default') || (strpos($old_url, 'themes/default/') === false)) {
+                    if (($theme == 'default' || $theme == 'admin') || (strpos($old_url, 'themes/default/') === false)) {
                         $where_map = array('theme' => $theme, 'id' => $old_id);
                         if (($lang != '') && (!is_null($lang))) {
                             $where_map['lang'] = $lang;

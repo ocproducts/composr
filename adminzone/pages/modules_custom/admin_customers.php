@@ -843,7 +843,7 @@ class Module_admin_customers
             }
         }
 
-        cns_set_custom_field($member_id, $cpf_id, $new_amount);
+        cns_set_custom_field($member_id, $cpf_id, strval($new_amount));
 
         $GLOBALS['SITE_DB']->query_insert('credit_charge_log', array(
             'member_id' => $member_id,

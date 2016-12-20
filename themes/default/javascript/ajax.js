@@ -347,7 +347,6 @@ function call_block(url,new_block_params,target_div,append,callback,scroll_to_to
 			} else
 			{
 				loading_wrapper.style.position='relative';
-				loading_wrapper.style.overflow='hidden'; // Stops margin collapsing weirdness
 			}
 		}
 		var loading_image=document.createElement('img');
@@ -574,21 +573,41 @@ function process_request_changes()
 			if ((result.status) && ((result.status==200) || (result.status==500) || (result.status==400) || (result.status==401)))
 			{
 				// Process the result
-				if ((window.AJAX_METHODS[i]) && (typeof window.AJAX_METHODS[i]==='function') && (!result.responseXML/*Not payload handler and not stack trace*/ || result.responseXML.childNodes.length==0))
+				if (window.AJAX_METHODS[i])
 				{
-					return window.AJAX_METHODS[i](result);
+					// Text result? Handle with a very simple call
+					if ((!result.responseXML/*Not payload handler and not stack trace*/ || result.responseXML.childNodes.length==0))
+					{
+						return call_ajax_method(window.AJAX_METHODS[i],result,null);
+					}
 				}
+
 				var xml=handle_errors_in_result(result);
 				if (xml)
 				{
+					// XML result. Handle with a potentially complex call
 					xml.validateOnParse=false;
 					var ajax_result_frame=xml.documentElement;
 					if (!ajax_result_frame) ajax_result_frame=xml;
 					process_request_change(ajax_result_frame,i);
+				} else
+				{
+					// Error parsing
+					if (window.AJAX_METHODS[i])
+					{
+						call_ajax_method(window.AJAX_METHODS[i],null,null);
+					}
 				}
 			}
 			else
 			{
+				// HTTP error...
+
+				if (window.AJAX_METHODS[i])
+				{
+					call_ajax_method(window.AJAX_METHODS[i],null,null);
+				}
+
 				try
 				{
 					if ((result.status==0) || (result.status==12029)) // 0 implies site down, or network down
@@ -648,10 +667,18 @@ function process_request_change(ajax_result_frame,i)
 	if (!ajax_result_frame) return null; // Needed for Opera
 	if ((typeof window.AJAX_REQUESTS=='undefined') || (!window.AJAX_REQUESTS)) return null; // Probably the page is in process of being navigated away so window object is gone
 
+	var method=null;
+	if ((ajax_result_frame.getElementsByTagName('method')[0]) || (window.AJAX_METHODS[i]))
+	{
+		method=(ajax_result_frame.getElementsByTagName('method')[0])?eval('return '+merge_text_nodes(ajax_result_frame.getElementsByTagName('method')[0])):window.AJAX_METHODS[i];
+	}
+
 	if (ajax_result_frame.getElementsByTagName('message')[0])
 	{
 		// Either an error or a message was returned. :(
 		var message=ajax_result_frame.getElementsByTagName('message')[0].firstChild.data;
+
+		call_ajax_method(method,null,null);
 
 		if (ajax_result_frame.getElementsByTagName('error')[0])
 		{
@@ -665,17 +692,43 @@ function process_request_change(ajax_result_frame,i)
 	}
 
 	var ajax_result=ajax_result_frame.getElementsByTagName('result')[0];
-	if (!ajax_result) return null;
-
-	if ((ajax_result_frame.getElementsByTagName('method')[0]) || (window.AJAX_METHODS[i]))
+	if (!ajax_result)
 	{
-		var method=(ajax_result_frame.getElementsByTagName('method')[0])?eval('return '+merge_text_nodes(ajax_result_frame.getElementsByTagName('method')[0])):window.AJAX_METHODS[i];
-		if (typeof method.response!='undefined') method.response(ajax_result_frame,ajax_result);
-		else method(ajax_result_frame,ajax_result);
+		call_ajax_method(method,null,null);
+		return null;
+	}
 
-	}// else window.fauxmodal_alert('Method required: as it is non-blocking');
+	call_ajax_method(method,ajax_result_frame,ajax_result);
 
 	return null;
+}
+
+function call_ajax_method(method,ajax_result_frame,ajax_result)
+{
+	if (method instanceof Array)
+	{
+		if (ajax_result_frame!=null)
+		{
+			method=(typeof method[0]=='undefined')?null:method[0];
+		} else
+		{
+			method=(typeof method[1]=='undefined')?null:method[1];
+		}
+	} else
+	{
+		if (ajax_result_frame==null) method=null; // No failure method given, so don't call
+	}
+
+	if (method!=null)
+	{
+		if (typeof method.response!='undefined')
+		{
+			method.response(ajax_result_frame,ajax_result);
+		} else
+		{
+			method(ajax_result_frame,ajax_result);
+		}
+	}
 }
 
 function merge_text_nodes(childNodes)

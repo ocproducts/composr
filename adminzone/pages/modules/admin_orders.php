@@ -319,8 +319,12 @@ class Module_admin_orders
             $actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array('_GUID' => '19ad8393aa5dba3f2f768818f22d8837', 'ORDER_TITLE' => $order_title, 'ORDER_ACTUALISE_URL' => $order_actualise_url, 'ORDER_STATUS' => $order_status));
 
             $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['c_member']);
-            $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['c_member']), get_module_zone('members'));
-            $member = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
+            if (($submitted_by === null) || (is_guest($row['c_member']))) {
+                $member = do_lang('UNKNOWN');
+            } else {
+                $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['c_member']), get_module_zone('members'));
+                $member = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
+            }
 
             $order_date = hyperlink($view_url, get_timezoned_date($row['add_date'], true, false, true, true), false, true);
 
@@ -413,7 +417,11 @@ class Module_admin_orders
         $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $id), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         $product_entries = new Tempcode();
         foreach ($rows as $row) {
-            $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['p_id']), get_module_zone('catalogues'));
+            if ($row['p_type'] == 'catalogue_items') {
+                $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['p_id']), get_module_zone('catalogues'));
+            } else {
+                $product_info_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $row['p_id']), get_module_zone('purchase'));
+            }
 
             $product_name = $row['p_name'];
 

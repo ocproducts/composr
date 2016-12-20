@@ -76,6 +76,7 @@ class Module_banners
         if (is_null($upgrade_from)) {
             require_lang('banners');
             require_code('banners');
+            require_code('lang3');
 
             $GLOBALS['SITE_DB']->create_table('banners', array(
                 'name' => '*ID_TEXT',
@@ -272,6 +273,8 @@ class Module_banners
         }
 
         if ($type == 'view') {
+            inform_non_canonical_parameter('sort');
+
             $source = get_param_string('source');
 
             $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array('name' => $source), '', 1);
@@ -526,8 +529,6 @@ class Module_banners
             if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
                 log_hack_attack_and_exit('ORDERBY_HACK');
             }
-            global $NON_CANONICAL_PARAMS;
-            $NON_CANONICAL_PARAMS[] = 'sort';
 
             $hr = array(
                 do_lang_tempcode('DATE'),
@@ -543,7 +544,7 @@ class Module_banners
                 if ($sortable == 'day') {
                     $period = get_timezoned_date($row['c_date_and_time'], false);
                 } else {
-                    $period = locale_filter(cms_strftime('%B %Y', $row['c_date_and_time']));
+                    $period = cms_strftime('%B %Y', $row['c_date_and_time']);
                 }
 
                 if (!isset($tally_sets[$period])) {

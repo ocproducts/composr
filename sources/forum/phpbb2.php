@@ -1183,17 +1183,29 @@ class Forum_driver_phpbb2 extends Forum_driver_base
     {
         $member_cookie_name = get_member_cookie();
         $colon_pos = strpos($member_cookie_name, ':');
-        $base = substr($member_cookie_name, 0, $colon_pos);
-        $real_member_cookie = substr($member_cookie_name, $colon_pos + 1);
-        $real_pass_cookie = substr(get_pass_cookie(), $colon_pos + 1);
+        if ($colon_pos !== false) {
+            $base = substr($member_cookie_name, 0, $colon_pos);
+            $real_member_cookie = substr($member_cookie_name, $colon_pos + 1);
+            $real_pass_cookie = substr(get_pass_cookie(), $colon_pos + 1);
+        } else {
+            $real_member_cookie = $member_cookie_name;
+            $real_pass_cookie = get_pass_cookie();
+        }
 
         require_code('crypt');
         $hash = substr(get_rand_password(), 0, 17);
         $cookie = serialize(array($real_member_cookie => strval($id), $real_pass_cookie => $hash));
-        $this->connection->query_insert('sessions', array('session_id' => md5($hash), 'session_user_id' => $id, 'session_ip' => ip2long(get_ip_address()), 'session_time' => time()));
 
-        cms_setcookie($base, $cookie);
-        $_COOKIE[$base] = $cookie;
+        if ($colon_pos !== false) {
+            cms_setcookie($base, $cookie);
+        } else {
+            cms_setcookie($real_member_cookie, strval($id));
+            cms_setcookie($real_pass_cookie, $hash);
+        }
+
+        if (substr($real_member_cookie, 0, 5) != 'cms__') {
+            $this->connection->query_insert('sessions', array('session_id' => md5($hash), 'session_user_id' => $id, 'session_ip' => ip2long(get_ip_address()), 'session_time' => time()));
+        }
     }
 
     /**
@@ -1245,9 +1257,11 @@ class Forum_driver_phpbb2 extends Forum_driver_base
             }
         }
 
-        $pos = strpos(get_member_cookie(), '_data:userid');
-        require_code('users_active_actions');
-        cms_eatcookie(substr(get_member_cookie(), 0, $pos) . '_sid');
+        if (substr(get_member_cookie(), 0, 5) != 'cms__') {
+            $pos = strpos(get_member_cookie(), '_data:userid');
+            require_code('users_active_actions');
+            cms_eatcookie(substr(get_member_cookie(), 0, $pos) . '_sid');
+        }
 
         $out['id'] = $row['user_id'];
         return $out;

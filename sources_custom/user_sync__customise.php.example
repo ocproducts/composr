@@ -80,7 +80,6 @@ function get_user_sync_env()
         'payment_card_start_date' => array(),
         'payment_card_expiry_date' => array(),
         'payment_card_issue_number' => array(),
-        'payment_card_cv2' => array(),
     );
 
     $default_password = null; // NULL means random password

@@ -102,6 +102,7 @@ class Module_newsletter
             ));
 
             $map = array();
+            require_code('lang3');
             $map += lang_code_to_default_content('title', 'GENERAL');
             $map += lang_code_to_default_content('description', 'NEWSLETTER_GENERAL');
             $GLOBALS['SITE_DB']->query_insert('newsletters', $map);

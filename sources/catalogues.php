@@ -166,6 +166,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
         if (url_is_local($_rep_image)) {
             $_rep_image = get_custom_base_url() . '/' . $_rep_image;
         }
+        require_code('images');
         $rep_image = do_image_thumb($row['rep_image'], $_title, false);
     }
 
@@ -699,6 +700,10 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
     $fields = get_catalogue_fields($catalogue_name);
 
     $num_entries = mixed();
+
+    if ($order_by == 'rating') { // LEGACY
+        $order_by = 'average_rating';
+    }
 
     $cf_type = is_numeric($order_by) ? $fields[intval($order_by)]['cf_type'] : '';
     $can_do_db_sorting = ($order_by != 'distance');

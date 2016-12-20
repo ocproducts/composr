@@ -841,12 +841,7 @@ function check_variable_list($LOCAL_VARIABLES, $offset = -1)
                 $t = $t[0];
             }
 
-            if ($t[0] == '?') {
-                $t = substr($t, 1);
-            }
-            if ($t[0] == '~') {
-                $t = substr($t, 1);
-            }
+            $t = ltrim($t, '?~');
             if (substr($t, 0, 6) == 'object') {
                 $t = 'object';
             }
@@ -2103,7 +2098,7 @@ function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $ex
         $actual_type = $actual_type[0];
     }
 
-    if (($actual_type == 'mixed') || ($actual_type == '?mixed') || ($actual_type == '~mixed')) {
+    if (ltrim($actual_type, '~?') == 'mixed') {
         return true; // We can't check it
     }
 
@@ -2120,48 +2115,48 @@ function ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null, $ex
             $type = $type[0];
         }
 
-        if (($type == 'mixed') || ($type == '?mixed') || ($type == '~mixed') || ($type == 'resource') || ($type == '?resource') || ($type == '~resource')) {
+        if ((ltrim($type, '~?') == 'mixed') || (ltrim($type, '~?') == 'resource')) {
             return true; // Anything works!
         }
-        if ($type[0] == '?') {
-            $type = substr($type, 1);
-            $allowed_types['null'] = 1;
+        if (strpos($type, '?') !== false) {
+            $type = str_replace('?', '', $type);
+            $allowed_types['null'] = true;
         }
-        if ($type[0] == '~') {
-            $type = substr($type, 1);
-            $allowed_types['boolean-false'] = 1;
+        if (strpos($type, '~') !== false) {
+            $type = str_replace('~', '', $type);
+            $allowed_types['boolean-false'] = true;
         }
         if (substr($type, 0, 6) == 'object') {
             $type = 'object';
         }
         if ($type == 'REAL') {
-            $allowed_types['float'] = 1;
+            $allowed_types['float'] = true;
         }
         if (in_array($type, array('AUTO', 'INTEGER', 'UINTEGER', 'SHORT_TRANS', 'LONG_TRANS', 'SHORT_TRANS__COMCODE', 'LONG_TRANS__COMCODE', 'MEMBER', 'MEMBER', 'SHORT_INTEGER', 'AUTO_LINK', 'BINARY', 'GROUP', 'TIME'))) {
-            $allowed_types['integer'] = 1;
+            $allowed_types['integer'] = true;
         }
         if (in_array($type, array('LONG_TEXT', 'SHORT_TEXT', 'MINIID_TEXT', 'ID_TEXT', 'LANGUAGE_NAME', 'URLPATH', 'PATH', 'IP', 'EMAIL'))) {
-            $allowed_types['string'] = 1;
+            $allowed_types['string'] = true;
         }
         if (in_array($type, array('Tempcode'))) {
-            $allowed_types['object'] = 1;
+            $allowed_types['object'] = true;
         }
         if (in_array($type, array('list', 'map'))) {
-            $allowed_types['array'] = 1;
+            $allowed_types['array'] = true;
         }
-        $allowed_types[$type] = 1;
+        $allowed_types[$type] = true;
     }
 
     // Special cases for our actual type
-    if ($actual_type[0] == '?') {
-        //     if (isset($allowed_types['null'])) return true;    We can afford not to give this liberty due to is_null
-        $actual_type = substr($actual_type, 1);
+    if (strpos($actual_type, '?') !== false) {
+        //if (isset($allowed_types['null'])) return true;    We can afford not to give this liberty due to is_null
+        $actual_type = str_replace('?', '', $actual_type);
     }
-    if ($actual_type[0] == '~') {
+    if (strpos($actual_type, '~') !== false) {
         if (isset($allowed_types['boolean-false'])) {
             return true;
         }
-        $actual_type = substr($actual_type, 1);
+        $actual_type = str_replace('~', '', $actual_type);
     }
     if (substr($actual_type, 0, 6) == 'object') {
         $actual_type = 'object';

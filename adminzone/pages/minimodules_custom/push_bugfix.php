@@ -92,7 +92,8 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
     if ($affects != '') {
         $tracker_additional = 'Affects: ' . $affects;
     }
-    if ($tracker_id === null) {
+    $is_new_on_tracker = ($tracker_id === null);
+    if ($is_new_on_tracker) {
         // Make tracker issue
         $tracker_id = create_tracker_issue($version_dotted, $tracker_title, $tracker_message, $tracker_additional);
     } else {
@@ -100,11 +101,19 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
         $tracker_comment_message = 'Automated response: ' . $tracker_title . "\n\n" . $tracker_message . "\n\n" . $tracker_additional;
         create_tracker_post($tracker_id, $tracker_comment_message);
     }
-    $tracker_url = $REMOTE_BASE_URL . '/tracker/view.php?id=' . strval($tracker_id);
+    if ($tracker_id === null) {
+        $tracker_url = null;
+    } else {
+        $tracker_url = $REMOTE_BASE_URL . '/tracker/view.php?id=' . strval($tracker_id);
+    }
 
     // A git commit and push happens on the changed files, with the ID number of the tracker issue in it
     if ($git_commit_id == '') {
-        $git_commit_message = 'Commited fix to issue #' . strval($tracker_id) . ' (' . $tracker_url . '). [' . $title . ']';
+        if ($tracker_id === null) {
+            $git_commit_message = $title;
+        } else {
+            $git_commit_message = 'Committed fix to issue #' . strval($tracker_id) . ' (' . $tracker_url . '). [' . $title . ']';
+        }
         if ($submit_to == 'live') {
             $git_commit_id = do_git_commit($git_commit_message, $fixed_files);
         } else {
@@ -114,7 +123,7 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
     if ($git_commit_id !== null) {
         $git_url = 'https://github.com/ocproducts/composr/commit/' . $git_commit_id;
         if (post_param_string('git_commit_id', '') == '') {
-            $done['Commited to git'] = $git_url;
+            $done['Committed to git'] = $git_url;
         }
     } else {
         $git_url = null;
@@ -131,13 +140,15 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
     upload_to_tracker_issue($tracker_id, create_hotfix_tar($tracker_id, $fixed_files));
     // The tracker issue gets closed
     close_tracker_issue($tracker_id);
-    $done[(post_param_string('tracker_id', '') == '') ? 'Created new tracker issue' : 'Responded to existing tracker issue'] = $tracker_url;
+    if ($tracker_url !== null) {
+        $done[$is_new_on_tracker ? 'Created new tracker issue' : 'Responded to existing tracker issue'] = $tracker_url;
+    }
 
     // If a forum post ID was given, an automatic reply is given pointing to the tracker issue
     $post_id = post_param_integer('post_id', null);
     if ($post_id !== null) {
         $post_reply_title = 'Automated fix message';
-        $post_reply_message = 'This issue has now been filed on the tracker ' . ((post_param_string('tracker_id', '') == '') ? 'as' : 'in') . ' issue [url="#' . strval($tracker_id) . '"]' . $tracker_url . '[/url], with a fix.';
+        $post_reply_message = 'This issue has now been filed on the tracker ' . ($is_new_on_tracker ? 'as' : 'in') . ' issue [url="#' . strval($tracker_id) . '"]' . $tracker_url . '[/url], with a fix.';
         $post_important = 1;
         $reply_id = create_forum_post($post_id, $post_reply_title, $post_reply_message, $post_important);
         $reply_url = $REMOTE_BASE_URL . '/forum/topicview/findpost/' . strval($reply_id) . '.htm';
@@ -323,13 +334,21 @@ END;
 function create_tracker_issue($version_dotted, $tracker_title, $tracker_message, $tracker_additional)
 {
     $args = func_get_args();
-    return intval(make_call(__FUNCTION__, array('parameters' => $args)));
+    $result = make_call(__FUNCTION__, array('parameters' => $args));
+    if ($result === false) {
+        return null;
+    }
+    return intval($result);
 }
 
 function create_tracker_post($tracker_id, $tracker_comment_message)
 {
     $args = func_get_args();
-    make_call(__FUNCTION__, array('parameters' => $args));
+    $result = make_call(__FUNCTION__, array('parameters' => $args));
+    if ($result === false) {
+        return null;
+    }
+    return intval($result);
 }
 
 function do_git_commit($git_commit_message, $files)
@@ -363,7 +382,7 @@ function do_git_commit($git_commit_message, $files)
 function close_tracker_issue($tracker_id)
 {
     $args = func_get_args();
-    make_call(__FUNCTION__, array('parameters' => $args));
+    $result = make_call(__FUNCTION__, array('parameters' => $args));
 }
 
 function create_hotfix_tar($tracker_id, $files)
@@ -388,18 +407,26 @@ function create_hotfix_tar($tracker_id, $files)
 function create_forum_post($replying_to_post, $post_reply_title, $post_reply_message, $post_important)
 {
     $args = func_get_args();
-    return intval(make_call(__FUNCTION__, array('parameters' => $args)));
+    $result = make_call(__FUNCTION__, array('parameters' => $args));
+    if ($result === false) {
+        return null;
+    }
+    return intval($result);
 }
 
 function create_forum_topic($forum_id, $topic_title, $post)
 {
     $args = func_get_args();
-    return intval(make_call(__FUNCTION__, array('parameters' => $args)));
+    $result = make_call(__FUNCTION__, array('parameters' => $args));
+    if ($result === false) {
+        return null;
+    }
+    return intval($result);
 }
 
 function upload_to_tracker_issue($tracker_id, $tar_path)
 {
-    make_call('upload_to_tracker_issue', array('parameters' => array(strval($tracker_id))), $tar_path);
+    $result = make_call('upload_to_tracker_issue', array('parameters' => array(strval($tracker_id))), $tar_path);
 }
 
 function make_call($call, $params, $file = null)
@@ -415,11 +442,11 @@ function make_call($call, $params, $file = null)
     }
 
     $opts = array('http' =>
-                      array(
-                          'method' => 'POST',
-                          'header' => $header,
-                          'content' => $data_url,
-                      )
+        array(
+            'method' => 'POST',
+            'header' => $header,
+            'content' => $data_url,
+        )
     );
 
     $context = stream_context_create($opts);
@@ -428,6 +455,10 @@ function make_call($call, $params, $file = null)
     $call_url = $REMOTE_BASE_URL . '/data_custom/composr_homesite_web_service.php?call=' . urlencode($call);
 
     $result = @file_get_contents($call_url, false, $context);
+    if ($result == 'Access Denied' || $result == 'No master password defined in _config.php currently so cannot authenticate') {
+        echo '<p>' . $result . '</p>';
+        $result = false;
+    }
     if ($result === false) {
         echo '
             <form method="post" target="_blank" action="' . escape_html($call_url) . '">
@@ -452,9 +483,6 @@ function make_call($call, $params, $file = null)
             </form>
         ';
         $result = '';
-    }
-    if ($result == 'Access Denied') {
-        echo '<p>Access denied</p>';
     }
     return $result;
 }

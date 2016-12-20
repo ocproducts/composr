@@ -100,6 +100,7 @@ class Module_downloads
                 'add_date' => time(),
                 'notes' => '',
             );
+            require_code('lang3');
             $map += insert_lang_comcode('description', '', 3);
             $map += lang_code_to_default_content('category', 'DOWNLOADS_HOME');
             $id = $GLOBALS['SITE_DB']->query_insert('download_categories', $map, true);

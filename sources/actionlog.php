@@ -42,6 +42,7 @@ function actionlog_linkage($type, $a, $b, $_a, $_b)
         }
         $tmp_url = build_url(array('page' => 'admin_themes', 'type' => '_edit_templates', 'theme' => $b, 'f0file' => $a), get_module_zone('admin_themes'));
         $a = basename($a, '.tpl');
+        require_code('templates_interfaces');
         $_a = tpl_crop_text_mouse_over($a, 14);
         $_a = hyperlink($tmp_url, $_a, false, false, $type_str);
         return array($_a, $_b);

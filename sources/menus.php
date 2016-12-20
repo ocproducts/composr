@@ -68,7 +68,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 
     $content->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
 
-    if (strpos(serialize($root), 'keep_') === false) {
+    if (strpos(serialize($root), 'keep_') === false) {/*Will only work if there are no keep_ parameters within the menu itself, as the quick caching will get confused by that*/
         $content = apply_quick_caching($content);
     }
 
@@ -140,6 +140,11 @@ function _build_stored_menu($menu)
  */
 function _build_sitemap_menu($menu)
 {
+    static $cache = array();
+    if (isset($cache[$menu])) {
+        return $cache[$menu];
+    }
+
     require_code('sitemap');
 
     $root = _get_menu_root_wrapper();
@@ -259,6 +264,8 @@ function _build_sitemap_menu($menu)
                 break;
         }
     }
+
+    $cache[$menu] = $root;
 
     return $root;
 }

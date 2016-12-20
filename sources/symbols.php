@@ -1819,7 +1819,7 @@ function ecv_CANONICAL_URL($lang, $escaped, $param)
     if ($CANONICAL_URL === null) {
         $non_canonical = array();
         if (is_array($NON_CANONICAL_PARAMS)) {
-            foreach ($NON_CANONICAL_PARAMS as $n) {
+            foreach (array_keys($NON_CANONICAL_PARAMS) as $n) {
                 $non_canonical[$n] = null;
             }
         }
@@ -2032,6 +2032,7 @@ function ecv_MESSAGES_BOTTOM($lang, $escaped, $param)
         attach_message_su($messages_bottom);
     }
     if (get_param_string('special_page_type', '') == 'memory') {
+        require_code('view_modes');
         attach_message_memory_usage($messages_bottom);
     }
     $value = $messages_bottom->evaluate();
@@ -3599,7 +3600,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
         if ((!array_key_exists(2, $param)) || ($param[2] === '1')) {
             $timestamp = utctime_to_usertime($timestamp);
         }
-        $value = locale_filter(cms_strftime($param[0], $timestamp));
+        $value = cms_strftime($param[0], $timestamp);
         if ($value === $param[0]) {// If no conversion happened then the syntax must have been for 'date' not 'strftime'
             $value = date($param[0], $timestamp);
         }
@@ -3823,7 +3824,11 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        $value = float_to_raw_string(floatval($param[0]) / floatval($param[1]), 20, true);
+        if (floatval($param[1]) == 0.0) {
+            $value = 'divide-by-zero';
+        } else {
+            $value = float_to_raw_string(floatval($param[0]) / floatval($param[1]), 20, true);
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -3844,9 +3849,7 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
  */
 function ecv_DIV($lang, $escaped, $param)
 {
-    if (floatval($param[1]) == 0.0) {
-        $value = 'divide-by-zero';
-    } else {
+    if (isset($param[1])) {
         if (floatval($param[1]) == 0.0) {
             $value = 'divide-by-zero';
         } else {

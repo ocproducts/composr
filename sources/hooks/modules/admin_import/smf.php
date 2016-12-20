@@ -827,14 +827,12 @@ class Hook_smf
         require($file_base . '/Settings.php');
         $homeurl = $boardurl;
 
-        $forum_dir = preg_replace('#\\\\#', '/', $boarddir); //full path to the forum folder
+        $forum_dir = preg_replace('#\\\\#', '/', $boarddir); // Full path to the forum folder
 
-        $attachments_dir = $forum_dir . '/attachments/'; //forum attachments directory
+        $attachments_dir = $forum_dir . '/attachments/'; // Forum attachments directory
 
-        //start preparing the attachment file path by adding it's md5-ied filename and attachment id
-        $file_stripped = strtr($filename, 'äéöûü¿¡¬√ƒ≈«»… ÀÃÕŒœ—“”‘’÷ÿŸ⁄€‹›‡·‚„‰ÂÁËÈÍÎÏÌÓÔÒÚÛÙıˆ¯˘˙˚¸˝ˇ', 'SZszYAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy');
-        $file_stripped = strtr($file_stripped, array('ﬁ' => 'TH', '˛' => 'th', '–' => 'DH', '' => 'dh', 'ﬂ' => 'ss', 'å' => 'OE', 'ú' => 'oe', '∆' => 'AE', 'Ê' => 'ae', 'µ' => 'u'));
-        $file_stripped = preg_replace(array('/\s/', '/[^\w_\.\-]/'), array('_', ''), $file_stripped);
+        // Start preparing the attachment file path by adding it's md5-ied filename and attachment id
+        $file_stripped = preg_replace(array('/\s/', '/[^\w_\.\-]/'), array('_', ''), $filename);
         $filename_fixed = ((strlen($attachment_id) > 0) ? ($attachment_id . '_' . str_replace('.', '_', $file_stripped) . md5($file_stripped)) : (str_replace('.', '_', $file_stripped) . md5($file_stripped)));
         $file_path = $attachments_dir . $filename_fixed;
 

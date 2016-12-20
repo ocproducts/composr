@@ -760,7 +760,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
             if (strpos($storage_type, '_trans') !== false) {
                 $value = ((is_null($value)) || ($value === '0')) ? '' : get_translated_text($value, $GLOBALS['FORUM_DB']);
             } elseif (is_float($value)) {
-                $value = float_to_raw_string($value, 10, true);
+                $value = float_to_raw_string($value, 30, true);
             } elseif (is_integer($value)) {
                 $value = strval($value);
             }
@@ -1534,6 +1534,13 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
                     $change[$db_fieldname] = ($value == '') ? null : floatval($value);
                     break;
                 default:
+                    $change[$db_fieldname] = $value;
+                    break;
+            }
+        } elseif ($value === null) {
+            switch ($storage_type) {
+                case 'integer':
+                case 'float':
                     $change[$db_fieldname] = $value;
                     break;
             }

@@ -975,6 +975,8 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function _generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time)
     {
+        require_code('global4');
+
         $_hooks = find_all_hooks('modules', 'admin_newsletter');
 
         // Generate Comcode for content selected, drawing on hooks

@@ -300,9 +300,7 @@ But in 99% of cases it will need the [tt]*[/tt].
 
 [title="3"]Finding where Composr CSS is set[/title]
 
-If you are using Firefox, there is an excellent free extension called 'Firebug'. There are very similar tools built into all the other major browsers now.
-
-Simply right-click on what you want to see the style for and click 'Inspect' (or sometimes it is 'Inspect element').
+Web browsers now almost all contain excellent developer tools. Simply right-click on what you want to see the style for and click 'Inspect' (or sometimes it is 'Inspect element').
 
 It will tell you all the styles applied to that element, and the CSS selectors they come from, and the CSS file involved. It is then easy to search in the CSS to locate and alter that selector.
 
@@ -316,7 +314,7 @@ You could approach modifying parts of the default Composr styling in different w
 
 Given a certain part of the styling you could make the following choices...
 1) You could leave it alone, if it looks okay by default.
-2) You could choose to use Firebug to find the default styles/classes, and make some changes to the default.
+2) You could choose to use browser developer tools to find the default styles/classes, and make some changes to the default.
 3) You could go into the right template, and change a class name to point to your own class.
 4) You could completely rewrite the relevant template with your own XHTML (which of course will already be linked to your own CSS classes).
 

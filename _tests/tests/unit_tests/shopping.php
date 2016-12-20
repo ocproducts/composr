@@ -32,6 +32,7 @@ class shopping_test_set extends cms_test_case
         require_lang('catalogues');
         require_lang('shopping');
         require_lang('ecommerce');
+        require_code('lang3');
 
         // Cleanup if needed...
 

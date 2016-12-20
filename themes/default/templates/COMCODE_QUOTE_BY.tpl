@@ -2,7 +2,7 @@
 	<blockquote>
 		<h4>{+START,IF,{SAIDLESS}}{BY*}{+END}{+START,IF,{$NOT,{SAIDLESS}}}{!SAID,{BY*}}{+END}</h4>
 
-		{CONTENT}
+		{$PREG_REPLACE,<blockquote.*>.*</blockquote>,,{CONTENT},s}
 	</blockquote>
 {+END}
 
@@ -11,7 +11,12 @@
 		<h4>{+START,IF,{SAIDLESS}}{BY*}{+END}{+START,IF,{$NOT,{SAIDLESS}}}{!SAID,{BY*}}{+END}</h4>
 
 		<div class="comcode_quote_inner comcode_quote_inner_titled">
-			{CONTENT}
+			{+START,IF,{$MOBILE}}
+				{$PREG_REPLACE,<blockquote.*>.*</blockquote>,,{CONTENT},s}
+			{+END}
+			{+START,IF,{$NOT,{$MOBILE}}}
+				{CONTENT}
+			{+END}
 		</div>
 	</blockquote>
 {+END}

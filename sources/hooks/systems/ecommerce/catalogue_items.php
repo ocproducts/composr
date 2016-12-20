@@ -32,7 +32,7 @@ class Hook_ecommerce_catalogue_items
      */
     public function get_products($site_lang = false, $search = null, $search_item_names = false)
     {
-        if (is_null($search)) {
+        if ($search === null) {
             $cnt = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries t1 LEFT JOIN ' . get_table_prefix() . 'catalogues t2 ON t1.c_name=t2.c_name', 'COUNT(*)', array('c_ecommerce' => 1));
             if ($cnt > 50) {
                 return array(); // Too many to list
@@ -44,7 +44,7 @@ class Hook_ecommerce_catalogue_items
         $products = array();
 
         $where = array('c_ecommerce' => 1);
-        if (!is_null($search)) {
+        if ($search !== null) {
             if (!$search_item_names) {
                 if (!is_numeric($search)) {
                     return array();
@@ -67,7 +67,7 @@ class Hook_ecommerce_catalogue_items
 
                 $product_title = $field_rows[0]['effective_value_pure'];
 
-                if ((!is_null($search)) && ($search_item_names)) {
+                if (($search !== null) && ($search_item_names)) {
                     if ($product_title != $search) {
                         continue;
                     }
@@ -75,17 +75,17 @@ class Hook_ecommerce_catalogue_items
 
                 $item_price = '0.0';
                 if (array_key_exists(2, $field_rows)) {
-                    $item_price = is_object($field_rows[2]['effective_value']) ? $field_rows[2]['effective_value']->evaluate() : $field_rows[2]['effective_value'];
+                    $item_price = $field_rows[2]['effective_value_pure'];
                 }
 
                 $tax = 0.0;
                 if (array_key_exists(6, $field_rows)) {
-                    $tax = floatval(preg_replace('#[^\d\.]#', '', is_object($field_rows[6]['effective_value']) ? $field_rows[6]['effective_value']->evaluate() : $field_rows[6]['effective_value']));
+                    $tax = floatval(preg_replace('#[^\d\.]#', '', $field_rows[6]['effective_value_pure']));
                 }
 
                 $product_weight = 0.0;
                 if (array_key_exists(8, $field_rows)) {
-                    $product_weight = floatval(is_object($field_rows[8]['effective_value']) ? $field_rows[8]['effective_value']->evaluate() : $field_rows[8]['effective_value']);
+                    $product_weight = floatval($field_rows[8]['effective_value_pure']);
                 }
 
                 $price = float_to_raw_string($this->calculate_product_price(floatval($item_price), $tax, $product_weight));
@@ -128,11 +128,7 @@ class Hook_ecommerce_catalogue_items
         $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
         if (array_key_exists(5, $field_rows)) { // Check maintenance status
-            if (is_object($field_rows[5]['effective_value'])) {
-                $field_rows[5]['effective_value'] = $field_rows[5]['effective_value']->evaluate();
-            }
-
-            if ((is_null($field_rows[5]['effective_value'])) || ($field_rows[5]['effective_value'] == do_lang('YES', null, null, null, get_site_default_lang()))) {
+            if ((empty($field_rows[5]['effective_value_pure'])) || ($field_rows[5]['effective_value_pure'] == do_lang('YES'))) {
                 return ECOMMERCE_PRODUCT_AVAILABLE;
             }
         }
@@ -140,10 +136,7 @@ class Hook_ecommerce_catalogue_items
         if (!array_key_exists(3, $field_rows)) {
             return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
         }
-        if (is_object($field_rows[3]['effective_value'])) { // Check stock
-            $field_rows[3]['effective_value'] = $field_rows[3]['effective_value']->evaluate();
-        }
-        if ($field_rows[3]['effective_value'] != '') {
+        if (($field_rows[3]['effective_value_pure'] != '') && ($field_rows[3]['effective_value_pure'] != do_lang('NA'))) { // Check stock
             $available_stock = $this->get_available_quantity($type_code);
 
             return ($available_stock >= $req_quantity) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_OUT_OF_STOCK;
@@ -172,19 +165,13 @@ class Hook_ecommerce_catalogue_items
 
         $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
-        if (is_object($field_rows[5]['effective_value'])) {
-            $field_rows[5]['effective_value'] = $field_rows[5]['effective_value']->evaluate();
-        }
-        $stock_maintained = ($field_rows[5]['effective_value'] == do_lang('YES', null, null, null, get_site_default_lang()));
+        $stock_maintained = ($field_rows[5]['effective_value_pure'] == do_lang('YES'));
         if ($stock_maintained) {
             return null;
         }
 
-        if (is_object($field_rows[3]['effective_value'])) {
-            $field_rows[3]['effective_value'] = $field_rows[3]['effective_value']->evaluate();
-        }
-        if ($field_rows[3]['effective_value'] != '') {
-            $available_quantity = intval($field_rows[3]['effective_value']);
+        if (($field_rows[3]['effective_value_pure'] != '') && ($field_rows[3]['effective_value_pure'] != do_lang('NA'))) {
+            $available_quantity = intval($field_rows[3]['effective_value_pure']);
 
             // Locked order check
             $query = 'SELECT sum(t2.p_quantity) FROM ' . get_table_prefix() . 'shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND t2.p_id=' . strval(intval($type_code));
@@ -210,7 +197,7 @@ class Hook_ecommerce_catalogue_items
                     $where['ordered_by'] = get_member();
                 }
                 $cart_item_count = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'SUM(quantity)', $where);
-                if (is_null($cart_item_count)) {
+                if ($cart_item_count === null) {
                     $cart_item_count = 0;
                 }
             } else {
@@ -265,14 +252,14 @@ class Hook_ecommerce_catalogue_items
     {
         require_code('catalogues');
 
-        if (is_null($pid)) {
+        if ($pid === null) {
             $pid = either_param_integer('product_id');
         }
 
         $qty = post_param_integer('quantity', 1);
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $pid));
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
@@ -451,7 +438,7 @@ class Hook_ecommerce_catalogue_items
         );
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry['product_id']));
-        if (is_null($catalogue_name)) {
+        if ($catalogue_name === null) {
             $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('product_id' => $entry['product_id']));
             return new Tempcode();
         }
@@ -476,6 +463,7 @@ class Hook_ecommerce_catalogue_items
 
         $product_link = hyperlink($product_url, $entry['product_name'], false, true, do_lang('INDEX'));
 
+        require_code('templates_results_table');
         $shopping_cart->attach(
             results_entry(
                 array(
@@ -608,42 +596,30 @@ class Hook_ecommerce_catalogue_items
 
         $available_quantity = 0;
         if (array_key_exists(3, $field_rows)) { // Stock level
-            if (is_object($field_rows[3]['effective_value'])) {
-                $field_rows[3]['effective_value'] = $field_rows[3]['effective_value']->evaluate();
-            }
-
-            if ($field_rows[3]['effective_value'] == '') {
+            if (($field_rows[3]['effective_value_pure'] == '') || ($field_rows[3]['effective_value_pure'] == do_lang('NA'))) {
                 return;
             }
 
             $stock_field_id = $field_rows[3]['id'];
-            $available_quantity = intval($field_rows[3]['effective_value']);
+            $available_quantity = intval($field_rows[3]['effective_value_pure']);
         }
 
         $stock_maintained = false;
         if (array_key_exists(5, $field_rows)) { // Stock maintained
-            if (is_object($field_rows[5]['effective_value'])) {
-                $field_rows[5]['effective_value'] = $field_rows[5]['effective_value']->evaluate();
-            }
-
-            if (is_null($field_rows[5]['effective_value'])) {
+            if ((empty($field_rows[5]['effective_value_pure'])) || ($field_rows[5]['effective_value_pure'] === do_lang('NA'))) {
                 return;
             }
 
-            $stock_maintained = ($field_rows[5]['effective_value'] == do_lang('YES', null, null, null, get_site_default_lang()));
+            $stock_maintained = ($field_rows[5]['effective_value_pure'] == do_lang('YES'));
         }
 
         $stock_level_warn_threshold = 0;
         if (array_key_exists(4, $field_rows)) { // Stock level warn threshold
-            if (is_object($field_rows[4]['effective_value'])) {
-                $field_rows[4]['effective_value'] = $field_rows[4]['effective_value']->evaluate();
-            }
-
-            if (is_null($field_rows[4]['effective_value'])) {
+            if ((empty($field_rows[4]['effective_value_pure'])) || ($field_rows[4]['effective_value_pure'] === do_lang('NA'))) {
                 return;
             }
 
-            $stock_level_warn_threshold = intval($field_rows[4]['effective_value']);
+            $stock_level_warn_threshold = intval($field_rows[4]['effective_value_pure']);
         }
 
         $product_name = get_translated_text($row['cc_id']);
@@ -719,7 +695,7 @@ class Hook_ecommerce_catalogue_items
 
         $cart_url = build_url(array('page' => 'shopping', 'type' => 'add_item', 'hook' => 'catalogue_items'), '_SELF');
 
-        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($terms == '') ? (is_null($fields) ? 'pay' : 'details') : 'terms', 'type_code' => strval($id), 'id' => $id), '_SELF');
+        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($terms == '') ? (($fields === null) ? 'pay' : 'details') : 'terms', 'type_code' => strval($id), 'id' => $id), '_SELF');
 
         $map['CART_BUTTONS'] = do_template('ECOM_SHOPPING_CART_BUTTONS', array(
             '_GUID' => 'd4491c6e221b1f06375a6427da062bac',

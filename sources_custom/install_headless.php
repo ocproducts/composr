@@ -20,9 +20,19 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
     $success = _do_install_to($database, $username, $password, $table_prefix, $safe_mode, $forum_driver, $board_path, $board_prefix, $database_forums, $username_forums, $password_forums, $extra_settings, $db_type);
 
     if ($success && $do_index_test) {
-        $url = get_base_url() . '/index.php';
+        $url = get_base_url() . '/index.php?keep_no_query_limit=1';
         $data = http_download_file($url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 20.0);
         $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
+
+        if ((!$success) && (isset($_GET['debug']))) {
+            @var_dump(escape_html($data));
+            @var_dump($GLOBALS['HTTP_MESSAGE']);
+
+            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
+            @print(escape_html($error));
+
+            @ob_end_flush();
+        }
     }
 
     @unlink(get_file_base() . '/_config.php');
@@ -176,10 +186,18 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
             $GLOBALS['HTTP_MESSAGE'] = '500';
         }
         $success = ($GLOBALS['HTTP_MESSAGE'] == '200');
-        if (!$success) {
+
+        if ((!$success) && (isset($_GET['debug']))) {
+            @var_dump(escape_html($data));
+            @var_dump($GLOBALS['HTTP_MESSAGE']);
+
             $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
             @print(escape_html($error));
+
             @ob_end_flush();
+        }
+
+        if (!$success) {
             return false; // Don't keep installing if there's an error
         }
     }

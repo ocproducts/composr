@@ -116,11 +116,17 @@ function string_scan($lang, $do_guessing = false)
         UNKNOWN_CSS_MODE
         CORRUPT_CSS_MODE
         NEWS_SUMMARY_REQUIRED
+        BACKUP_RESTORE_SUCCESS
+        CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
         TICKETS_STAFF
         NO_CNS
         DOCS
+        PROJECT_SPONSORS
+        PROJECT_SPONSORS_LABEL
+        CONFIG_OPTION_complex_lists
+        COMPLEX_LISTS
         HERE_SURVEY_RESULTS
         HERE_TEST_RESULTS
         METADATA
@@ -9694,6 +9700,7 @@ function string_scan($lang, $do_guessing = false)
         calendar_month_in_year
         calendar_month_in_year_verbose
         charset
+        date_concise_near_date
         date_no_year
         date_regular_date
         date_regular_joiner
@@ -9701,7 +9708,6 @@ function string_scan($lang, $do_guessing = false)
         date_verbose_date
         date_verbose_joiner
         date_verbose_time
-        date_withinday
         date_withinweek_date
         date_withinweek_joiner
         dictionary
@@ -9717,7 +9723,6 @@ function string_scan($lang, $do_guessing = false)
         links__CATALOGUE_ENTRY
         links__CATALOGUE_INDEX
         locale
-        time_hour_and_mins
     ')));
 
     // Start with what we know

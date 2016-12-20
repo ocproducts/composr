@@ -36,6 +36,8 @@ class sitemap_test_set extends cms_test_case
         $zone = '_SEARCH';
         $meta_gather = SITEMAP_GATHER__ALL | SITEMAP_GEN_USE_PAGE_GROUPINGS;
 
+        $GLOBALS['SITE_DB']->query_delete('bookmarks'); // Interferes with rules
+
         $this->sitemap = retrieve_sitemap_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $options, $zone, $meta_gather);
         $this->flattened = $this->flatten_sitemap($this->sitemap);
 
@@ -98,7 +100,7 @@ class sitemap_test_set extends cms_test_case
             }
 
             if (in_array($link[0], $applicable_page_groupings)) {
-                if (($link[0] == '') && (is_array($link[2][1])) && ((!isset($link[2][1]['type'])) || (!in_array($link[2][1]['type'], $applicable_page_groupings)))) {
+                if (($link[0] == '') && (is_array($link[2])) && ((!isset($link[2][1]['type'])) || (!in_array($link[2][1]['type'], $applicable_page_groupings)))) {
                     continue;
                 }
 

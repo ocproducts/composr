@@ -1,5 +1,7 @@
 /*{$,Parser hint: .innerHTML okay}*/
 
+/*{+START,IF,{$CONFIG_OPTION,complex_lists}}*/
+
 /*
 Copyright 2012 Igor Vaynberg
 
@@ -3508,3 +3510,6 @@ the specific language governing permissions and limitations under the Apache Lic
     };
 
 }(jQuery));
+
+/*{+END}*/
+

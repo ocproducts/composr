@@ -633,6 +633,7 @@ header h1 {
 .logo_outer {
 	display: block;
 	margin: 0;
+	overflow: hidden;
 }
 .logo_outer a, .logo_outer img {
 	display: block;
@@ -640,6 +641,7 @@ header h1 {
 .logo_outer .logo {
 	width: 100%;
 	height: auto;
+	padding: 0; /* Only needed because some external CSS may mess with the common name of ".logo" */
 }
 
 .global_navigation {
@@ -2001,7 +2003,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .whitespace_visible {
 	overflow: auto;
 	outline: 0;
-	white-space: pre-wrap;
+	white-space: pre-wrap !important;
 }
 .whitespace_visible.code {
 	font-family: 'Courier New', 'Courier', monospace;
@@ -3325,6 +3327,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	padding-right: 5px;
 	background-origin: content-box;
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	min-height: 26px;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.staff_actions {
@@ -4751,7 +4754,7 @@ figure {
 }
 
 a[rel="lightbox"] {
-	display: inline-block; /* Stops "_" showing when we use white-space */
+	text-decoration: none; /* Stops "_" showing when we use white-space */
 }
 
 .attachment img {

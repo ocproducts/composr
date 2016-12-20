@@ -1,6 +1,6 @@
 <script src="https://www.google.com/jsapi"></script>
 {+START,IF,{CLUSTER}}
-	<script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js"></script>
+	<script src="https://raw.githubusercontent.com/printercu/google-maps-utility-library-v3-read-only/master/markerclustererplus/src/markerclusterer_packed.js"></script>
 {+END}
 <script>// <![CDATA[
 	function google_map_users_initialize()
@@ -147,7 +147,7 @@
 
 	<script>// <![CDATA[
 		add_event_listener_abstract(window,'load',function() {
-			google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
+			google.load('maps','3',{callback: google_map_users_initialize,other_params:'{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_map_key}}key={$CONFIG_OPTION;/,google_map_key}{+END}'{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 		});
 	//]]></script>
 

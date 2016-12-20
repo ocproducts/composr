@@ -181,7 +181,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
     if ($poster_name == '') {
         $poster_name = $this_ref->get_username($member_id);
     }
-    $post_id = cns_make_post($topic_id, $post_title, $post, 0, $is_starter, $validated, 0, $poster_name, $ip, $time_post, $member_id, ($staff_only ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null), null, null, false, $update_caching, $forum_id, $support_attachments, $content_title, 0, null, false, $skip_post_checks, false, false, $parent_id, false);
+    $post_id = cns_make_post($topic_id, $post_title, $post, 0, $is_starter, $validated, 0, $poster_name, $ip, $time_post, $member_id, ($staff_only ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null), null, null, false, $update_caching, $forum_id, $support_attachments, $content_title, 0, null, false, $skip_post_checks, false, false, $parent_id, /*$send_notification=*/false);
     $GLOBALS['LAST_POST_ID'] = $post_id;
 
     if ($is_new) {
@@ -278,6 +278,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
     } else {
         $topic_filter_sup = '';
     }
+    $topic_filter_sup .= ' AND t_validated=1';
     if (($filter_topic_title == '') && ($filter_topic_description == '')) {
         if (($filter_topic_title == '') && ($filter_topic_description == '')) {
             $query = 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics top';

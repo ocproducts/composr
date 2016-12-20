@@ -76,6 +76,8 @@ class Module_wiki
     {
         require_lang('wiki');
 
+        require_code('lang3');
+
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('wiki_children', array(
                 'parent_id' => '*AUTO_LINK',
@@ -305,7 +307,7 @@ class Module_wiki
             global $CANONICAL_URL, $NON_CANONICAL_PARAMS;
             $non_canonical = array();
             if (is_array($NON_CANONICAL_PARAMS)) {
-                foreach ($NON_CANONICAL_PARAMS as $n) {
+                foreach (array_keys($NON_CANONICAL_PARAMS) as $n) {
                     $non_canonical[$n] = null;
                 }
             }
@@ -731,6 +733,7 @@ class Module_wiki
             escape_html($date),
             $action,
         );
+        require_code('templates_results_table');
         return results_entry($_revision, false);
     }
 

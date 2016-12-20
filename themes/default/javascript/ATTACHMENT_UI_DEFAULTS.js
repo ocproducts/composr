@@ -20,6 +20,13 @@ if (multi{+START,IF,{$CONFIG_OPTION,simplified_attachments_ui}} || is_image{+END
 	show_overlay=false;
 }
 
+{+START,IF,{$CONFIG_OPTION,simplified_attachments_ui}}
+	if (is_image && !multi)
+	{
+		defaults.thumb='0';
+	}
+{+END}
+
 if (is_image)
 {
 	tag='attachment_safe';

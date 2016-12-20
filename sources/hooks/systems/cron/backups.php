@@ -57,10 +57,7 @@ class Hook_cron_backups
                     $file = 'database_' . $end;
                 }
 
-                $MB2_FILE = $file;
-                $MB2_B_TYPE = $b_type;
-                $MB2_MAX_SIZE = $max_size;
-                register_shutdown_function('make_backup');
+                register_shutdown_function('make_backup', $file, $b_type, $max_size);
 
                 if ($backup_recurrance_days == 0) {
                     delete_value('backup_schedule_time');

@@ -87,13 +87,13 @@ function cleanup(){
 			$clean_thatstack="delete from thatstack where enteredtime < date_add(now(), interval - " . MINUTESTOKEEPDATA . " minute)";
 			$clean_thatindex="delete from thatindex where enteredtime < date_add(now(), interval - " . MINUTESTOKEEPDATA . " minute)";
 
-			$selectcode = mysql_query($clean_dstore);
+			$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $GLOBALS['SITE_DB']->connection_write[0], $clean_dstore);
 			if ($selectcode){
 			}
-			$selectcode = mysql_query($clean_thatstack);
+			$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $clean_thatstack);
 			if ($selectcode){
 			}
-			$selectcode = mysql_query($clean_thatindex);
+			$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $clean_thatindex);
 			if ($selectcode){
 			}
 
@@ -103,7 +103,7 @@ function cleanup(){
 
 			$clean_convlog="delete from conversationlog where enteredtime < date_add(now(), interval - " . MINUTESTOKEEPCHATLOG . " minute) and " . whichbots();
 
-			$selectcode = mysql_query($clean_convlog);
+			$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $clean_convlog);
 			if ($selectcode){
 			}
 
@@ -231,13 +231,13 @@ function getsize(){
 
 	$query="select count(*) from templates where " . whichbots();
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return 0;
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 				return $q[0];
 			}
 		}
@@ -274,13 +274,13 @@ function botget($name){
 
 	$query="select value from bot where name='$name' and bot = $selectbot";
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return "";
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 				return $q[0];
 			}
 		}
@@ -309,13 +309,13 @@ function bget($name){
 
 	$query="select value from dstore where name='$name' and uid='$uid' order by id desc limit 1";
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return DEFAULTPREDICATEVALUE;
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 				return $q[0];
 			}
 		}
@@ -346,7 +346,7 @@ function bset($name,$value){
 	$value=addslashes($value);
 
 	$query="insert into dstore (uid,name,value) values ('$uid','$name','$value')";
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
 	}
 
@@ -379,7 +379,7 @@ function addinputs($inputsarray){
 	}
 
 	$query=substr($query,0,(strlen($query)-1));
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
 	}
 
@@ -404,10 +404,10 @@ function addthats($inputsarray){
 
 	$query="insert into thatindex (uid) values ('$uid')";
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
 	}
-	$thatidx=mysql_insert_id();
+	$thatidx=mysqli_insert_id($GLOBALS['SITE_DB']->connection_write[0]);
 
 	$query="insert into thatstack (thatid,value) values ";
 
@@ -424,7 +424,7 @@ function addthats($inputsarray){
 
 	$query=substr($query,0,(strlen($query)-1));
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
 	}
 
@@ -451,7 +451,7 @@ function logconversation($input,$response){
 	$response=addslashes($response);
 
 	$query="insert into conversationlog (uid,input,response,bot) values ('$uid','$input','$response',$selectbot)";
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
 	}
 
@@ -479,13 +479,13 @@ function getthat($index,$offset){
 	$query="select id from thatindex where uid='$uid' order by id desc limit $index,1";
 
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return "";
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 				$thatid=$q[0];
 			}
 		}
@@ -495,13 +495,13 @@ function getthat($index,$offset){
 	$query="select value from thatstack where thatid=$thatid order by id desc limit $offset,1";
 
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return "";
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 				return $q[0];
 			}
 		}
@@ -527,13 +527,13 @@ function getinput($index){
 
 	$query="select value from dstore where uid='$uid' and name='input' order by id desc limit $index,$offset";
 
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
-		if(!mysql_numrows($selectcode)){
+		if(!mysqli_num_rows($selectcode)){
 			return "";
 		}
 		else{
-			while ($q = mysql_fetch_array($selectcode)){
+			while ($q = mysqli_fetch_array($selectcode)){
 				return $q[0];
 			}
 		}
@@ -715,7 +715,7 @@ function insertgossip($gossip){
 	$gossip=addslashes($gossip);
 
 	$query="insert into gossip (gossip,bot) values ('$gossip'," . $selectbot . ")";
-	$selectcode = mysql_query($query);
+	$selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $query);
 	if ($selectcode){
 	}
 
@@ -961,9 +961,9 @@ function lookupbotid($botname){
 
 	$name=addslashes($botname);
     $q="select id from bots where botname='$name'";
-    $selectcode = mysql_query($q);
+    $selectcode = mysqli_query($GLOBALS['SITE_DB']->connection_write[0], $q);
     if ($selectcode) {
-        while ($q = mysql_fetch_array($selectcode)){
+        while ($q = mysqli_fetch_array($selectcode)){
                 return $q["id"];
         }
     }

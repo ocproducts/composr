@@ -841,15 +841,15 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
     global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES;
 
     // Dodgy mouse events.
-    if ((isset($attributes['onclick'])) && (strpos($attributes['onclick'], '/*Access-note: code has other activation*/') === false) && ((!isset($attributes['onmouseover'])) || (strpos($attributes['onmouseover'], 'activate_rich_semantic_tooltip') === false)) && (!isset($attributes['onkeypress'])) && (!isset($attributes['onkeydown'])) && (!isset($attributes['onkeyup'])) && (!in_array($tag, array('a', 'input', 'textarea', 'select', 'button')))) {
-        $errors[] = array('WCAG_MOUSE_EVENT_UNMATCHED');
+    if ((isset($attributes['onclick'])) && (strpos($attributes['onclick'], '/*Access-note: checked*/') === false) && (strpos($attributes['onclick'], '/*Access-note: code has other activation*/') === false) && ((!isset($attributes['onmouseover'])) || (strpos($attributes['onmouseover'], 'activate_rich_semantic_tooltip') === false)) && (!isset($attributes['onkeypress'])) && (!isset($attributes['onkeydown'])) && (!isset($attributes['onkeyup'])) && (!in_array($tag, array('a', 'input', 'textarea', 'select', 'button')))) {
+        $errors[] = array('WCAG_MOUSE_EVENT_UNMATCHED', 'onclick');
     }
     if ($GLOBALS['WEBSTANDARDS_MANUAL']) {
-        if ((isset($attributes['onmouseover'])) && (!isset($attributes['onfocus'])) && (in_array($tag, array('a', 'area', 'button', 'input', 'label', 'select', 'textarea')))) {
-            $errors[] = array('WCAG_MOUSE_EVENT_UNMATCHED');
+        if ((isset($attributes['onmouseover'])) && (strpos($attributes['onmouseover'], '/*Access-note: checked*/') === false) && (!isset($attributes['onfocus'])) && (in_array($tag, array('a', 'area', 'button', 'input', 'label', 'select', 'textarea')))) {
+            $errors[] = array('WCAG_MOUSE_EVENT_UNMATCHED', 'onmouseover');
         }
-        if ((isset($attributes['onmouseout'])) && (!isset($attributes['onblur'])) && (in_array($tag, array('a', 'area', 'button', 'input', 'label', 'select', 'textarea')))) {
-            $errors[] = array('WCAG_MOUSE_EVENT_UNMATCHED');
+        if ((isset($attributes['onmouseout'])) && (strpos($attributes['onmouseout'], '/*Access-note: checked*/') === false) && (!isset($attributes['onblur'])) && (in_array($tag, array('a', 'area', 'button', 'input', 'label', 'select', 'textarea')))) {
+            $errors[] = array('WCAG_MOUSE_EVENT_UNMATCHED', 'onmouseout');
         }
     }
 

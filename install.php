@@ -136,7 +136,7 @@ if (array_key_exists('default_lang', $_POST)) {
 }
 $USER_LANG_CACHED = $INSTALL_LANG;
 
-// Languages we can use
+// Language files we can use
 require_lang('global');
 require_lang('critical_error');
 require_lang('installer');
@@ -410,6 +410,8 @@ function step_1()
         }
     }
 
+    // Language selection...
+
     if (file_exists('lang_custom/langs.ini')) {
         $lookup = better_parse_ini_file(get_custom_file_base() . '/lang_custom/langs.ini');
     } else {
@@ -459,6 +461,8 @@ function step_1()
             $tlanguages->attach($entry);
         }
     }
+
+    // UI...
 
     $url = 'install.php?step=2';
     if (in_safe_mode()) {
@@ -575,7 +579,7 @@ function step_3()
             } else {
                 $version = array_key_exists($forum . '_version', $forum_info) ? do_lang('VERSION_NUM', $forum_info[$forum . '_version']) : do_lang('VERSION_NUM', do_lang('NA'));
             }
-            $extra2 = '';//(($first && !$rec) || $rec)?'checked="checked"':'';
+            $extra2 = '';//(($first && !$rec) || $rec) ? 'checked="checked"' : '';
             $versions->attach(do_template('INSTALLER_FORUM_CHOICE_VERSION', array('_GUID' => '159a5a7cd1397620ef34e98c3b06cd7f', 'IS_DEFAULT' => ($DEFAULT_FORUM == $forum) || ($first && !$rec), 'CLASS' => $class, 'NAME' => $forum, 'VERSION' => $version, 'EXTRA' => $extra2)));
             $first = false;
 
@@ -748,10 +752,18 @@ function step_4()
         $PROBED_FORUM_CONFIG['board_url'] = (strlen($append) < 15) ? (substr($base_url, 0, strlen($base_url) - ($i - strlen($board_path))) . ((((strlen($append) > 0) && ($append[0] == '/'))) ? '' : '/') . $append) : ($base_url . '/forums');
     }
 
-    if (!array_key_exists('cookie_member_id', $PROBED_FORUM_CONFIG)) {
+    if (array_key_exists('cookie_member_id', $PROBED_FORUM_CONFIG)) {
+        if (($forum_type != 'cns') && ($forum_type != 'none')) {
+            $PROBED_FORUM_CONFIG['cookie_member_id'] = 'cms__' . $PROBED_FORUM_CONFIG['cookie_member_id'];
+        }
+    } else {
         $PROBED_FORUM_CONFIG['cookie_member_id'] = 'cms_member_id';
     }
-    if (!array_key_exists('cookie_member_hash', $PROBED_FORUM_CONFIG)) {
+    if (array_key_exists('cookie_member_hash', $PROBED_FORUM_CONFIG)) {
+        if (($forum_type != 'cns') && ($forum_type != 'none')) {
+            $PROBED_FORUM_CONFIG['cookie_member_hash'] = 'cms__' . $PROBED_FORUM_CONFIG['cookie_member_hash'];
+        }
+    } else {
         $PROBED_FORUM_CONFIG['cookie_member_hash'] = 'cms_member_hash';
     }
 
@@ -769,21 +781,20 @@ function step_4()
     $db_site_user = $PROBED_FORUM_CONFIG['sql_user'];
     $db_site_password = $PROBED_FORUM_CONFIG['sql_pass'];
     $db_site = $PROBED_FORUM_CONFIG['sql_database'];
-    $db_forums_host = $db_site_host;
-    $db_forums_user = $db_site_user;
-    $db_forums_password = $db_site_password;
-    $db_forums = $db_site;
     $board_prefix = $PROBED_FORUM_CONFIG['board_url'];
     $member_cookie = $PROBED_FORUM_CONFIG['cookie_member_id'];
     $pass_cookie = $PROBED_FORUM_CONFIG['cookie_member_hash'];
+    $multi_lang_content = file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0;
+    $domain = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
 
     $specifics = $GLOBALS['FORUM_DRIVER']->install_specifics();
 
     // Now we've gone through all the work of detecting it, lets grab from _config.php to see what we had last time we installed
     global $SITE_INFO;
     if ((file_exists(get_file_base() . '/_config.php')) && (filesize(get_file_base() . '/_config.php') != 0)) {
+        // De-set what we know we can't re-use because we have better info now
         require_once(get_file_base() . '/_config.php');
-        if ($PROBED_FORUM_CONFIG['sql_database'] != '') {
+        if (($PROBED_FORUM_CONFIG['sql_database'] != '') && ($forum_type != 'cns') && ($forum_type != 'none')) {
             if ((!array_key_exists('forum_type', $SITE_INFO)) || ($SITE_INFO['forum_type'] != $forum_type)) { // Don't want to throw detected versions of these away
                 unset($SITE_INFO['user_cookie']);
                 unset($SITE_INFO['pass_cookie']);
@@ -803,7 +814,52 @@ function step_4()
             unset($SITE_INFO['db_site']);
         }
         unset($SITE_INFO['base_url']);
+
+        // Copy from last time
+        if (isset($SITE_INFO['cookie_domain'])) {
+            $cookie_domain = $SITE_INFO['cookie_domain'];
+        }
+        if (isset($SITE_INFO['cookie_path'])) {
+            $cookie_path = $SITE_INFO['cookie_path'];
+        }
+        if (isset($SITE_INFO['cookie_days'])) {
+            $cookie_days = $SITE_INFO['cookie_days'];
+        }
+        if (isset($SITE_INFO['table_prefix'])) {
+            $table_prefix = $SITE_INFO['table_prefix'];
+        }
+        if (isset($SITE_INFO['db_site_host'])) {
+            $db_site_host = $SITE_INFO['db_site_host'];
+        }
+        if (isset($SITE_INFO['db_site_user'])) {
+            $db_site_user = $SITE_INFO['db_site_user'];
+        }
+        if (isset($SITE_INFO['db_site_password'])) {
+            $db_site_password = $SITE_INFO['db_site_password'];
+        }
+        if (isset($SITE_INFO['db_site'])) {
+            $db_site = $SITE_INFO['db_site'];
+        }
+        if (isset($SITE_INFO['member_cookie'])) {
+            $member_cookie = $SITE_INFO['member_cookie'];
+        }
+        if (isset($SITE_INFO['pass_cookie'])) {
+            $pass_cookie = $SITE_INFO['pass_cookie'];
+        }
+        if (isset($SITE_INFO['domain'])) {
+            $domain = $SITE_INFO['domain'];
+        }
+        if (!file_exists(get_file_base() . '/.git')) {
+            if (isset($SITE_INFO['multi_lang_content'])) {
+                $multi_lang_content = intval($SITE_INFO['multi_lang_content']);
+            }
+        }
     }
+
+    $db_forums_host = $db_site_host;
+    $db_forums_user = $db_site_user;
+    $db_forums_password = $db_site_password;
+    $db_forums = $db_site;
 
     $sections = new Tempcode();
 
@@ -839,7 +895,6 @@ function step_4()
         }
     }
 
-    $domain = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
     $ftp_folder = '/' . $webdir_stub . basename(cms_srv('SCRIPT_NAME'));
     $ftp_domain = $domain;
 
@@ -878,7 +933,7 @@ function step_4()
     $options->attach(make_option(do_lang_tempcode('MASTER_PASSWORD'), example('', 'CHOOSE_MASTER_PASSWORD'), 'master_password', $master_password, true));
     require_lang('config');
     $options->attach(make_tick(do_lang_tempcode('SEND_ERROR_EMAILS_OCPRODUCTS'), example('', 'CONFIG_OPTION_send_error_emails_ocproducts'), 'send_error_emails_ocproducts', 1));
-    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0));
+    $options->attach(make_tick(do_lang_tempcode('MULTI_LANG_CONTENT'), example('', 'MULTI_LANG_CONTENT_TEXT'), 'multi_lang_content', $multi_lang_content));
     $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('_GUID' => 'f051465e86a7a53ec078e0d9de773993', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
     $hidden->attach(form_input_hidden('self_learning_cache', '1'));
 
@@ -1718,7 +1773,7 @@ if (!function_exists(\'git_repos\')) {
 
     // Derive a random session cookie name, to stop conflicts between sites
     if (!isset($_POST['session_cookie'])) {
-        fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . preg_replace('#[^\w]#', '', uniqid('', true)) . "';\n");
+        fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . md5($base_url) . "';\n");
     }
 
     // On the live GAE, we need to switch in different settings to the local dev server
@@ -1869,7 +1924,6 @@ function step_5_core()
         'm_name' => '*ID_TEXT',
         'm_type' => 'ID_TEXT'
     ));
-    $GLOBALS['SITE_DB']->create_index('db_meta', 'findtransfields', array('m_type'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('db_meta_indices');
     $GLOBALS['SITE_DB']->create_table('db_meta_indices', array(
@@ -1877,6 +1931,8 @@ function step_5_core()
         'i_name' => '*ID_TEXT',
         'i_fields' => '*ID_TEXT',
     ));
+
+    $GLOBALS['SITE_DB']->create_index('db_meta', 'findtransfields', array('m_type'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('translate');
     $GLOBALS['SITE_DB']->create_table('translate', array(
@@ -2549,11 +2605,11 @@ function handle_self_referencing_embedment()
 
             case 'logo':
                 header('Content-type: image/png');
-                if (!file_exists(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png')) {
-                    $out = file_array_get('themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png');
+                if (!file_exists(get_file_base() . '/themes/default/images/' . fallback_lang() . '/logo/standalone_logo.png')) {
+                    $out = file_array_get('themes/default/images/' . fallback_lang() . '/logo/standalone_logo.png');
                     echo $out;
                 } else {
-                    print(file_get_contents(get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/logo/standalone_logo.png'));
+                    print(file_get_contents(get_file_base() . '/themes/default/images/' . fallback_lang() . '/logo/standalone_logo.png'));
                     exit();
                 }
                 exit();

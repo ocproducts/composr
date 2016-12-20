@@ -164,7 +164,7 @@ function url_default_parameters__disable()
 /**
  * Find a default property, defaulting to the average of what is there already, or the given default if really necessary.
  *
- * @param  integer $setting The current setting (null: we have to work it out); if non-null, the function will immediately return
+ * @param  ?integer $setting The current setting (null: we have to work it out); if non-null, the function will immediately return
  * @param  ID_TEXT $db_property The property
  * @param  ID_TEXT $table The table to average within
  * @param  integer $default The last-resort default
@@ -2282,7 +2282,7 @@ function form_input_float($pretty_name, $description, $name, $default, $required
     $required = filter_form_field_required($name, $required);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_FLOAT', array('_GUID' => '6db802ae840bfe7e87881f95c79133c4', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : float_to_raw_string($default, 10, true)));
+    $input = do_template('FORM_SCREEN_INPUT_FLOAT', array('_GUID' => '6db802ae840bfe7e87881f95c79133c4', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : float_format($default, 10, true)));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 

@@ -136,7 +136,7 @@ function reinstall_addon_soft($addon, $ini_info = null)
 }
 
 /**
- * Completely uninstall the specified addon from the system.
+ * Uninstall the specified addon.
  *
  * @param  ID_TEXT $addon The addon name
  */
@@ -444,8 +444,9 @@ function find_addon_dependencies_on($addon)
  * @param  string $licence Addon licence
  * @param  string $description Addon description
  * @param  PATH $dir Directory to save to
+ * @param  ?array $mtimes A map of file mtimes to use (null: none)
  */
-function create_addon($file, $files, $addon, $incompatibilities, $dependencies, $author, $organisation, $version, $category, $copyright_attribution, $licence, $description, $dir = 'exports/addons')
+function create_addon($file, $files, $addon, $incompatibilities, $dependencies, $author, $organisation, $version, $category, $copyright_attribution, $licence, $description, $dir = 'exports/addons', $mtimes = null)
 {
     require_code('tar');
 
@@ -470,35 +471,14 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
 
         if ((get_param_integer('keep_theme_test', 0) == 1) && (file_exists($themed_version))) {
             $mode = fileperms($themed_version);
-            $mtime = 0;
-            //if ((file_exists(get_file_base() . '/.git')) && (filemtime($themed_version) > 60 * 60 * 24 - 31 * 4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/)) {
-            //    require_code('json');
-            //    $_themed_version = dirname($val) . '/' . $themed_suffix . basename($val);
-            //    $json_data = @json_decode(http_download_file('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $_themed_version));
-            //    if (isset($json_data->commits[0]->committed_date)) {
-            //        $mtime = strtotime($json_data->commits[0]->committed_date);
-            //    }
-            //}
-            if ($mtime == 0) {
-                $mtime = filemtime($themed_version);
-            }
+            $mtime = isset($mtimes[$val]) ? $mtimes[$val] : filemtime($themed_version);
             if ($mtime > $max_mtime) {
                 $max_mtime = $mtime;
             }
             tar_add_file($tar, $val, $themed_version, $mode, $mtime, true);
         } else {
             $mode = fileperms($full);
-            $mtime = 0;
-            //if ((file_exists(get_file_base() . '/.git')) && (filemtime($full) > 60 * 60 * 24 - 31 * 4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/)) {
-            //    require_code('json');
-            //    $json_data = @json_decode(http_download_file('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $val));
-            //    if (isset($json_data->commits[0]->committed_date)) {
-            //        $mtime = strtotime($json_data->commits[0]->committed_date);
-            //    }
-            //}
-            if ($mtime == 0) {
-                $mtime = filemtime($full);
-            }
+            $mtime = isset($mtimes[$val]) ? $mtimes[$val] : filemtime($full);
             if ($mtime > $max_mtime) {
                 $max_mtime = $mtime;
             }
@@ -547,7 +527,10 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
 
     tar_close($tar);
 
-    @touch($_full, $max_mtime);
+    $touch_result = @touch($_full, $max_mtime);
+    if ($GLOBALS['DEV_MODE'] && !$touch_result) {
+        warn_exit(comcode_to_tempcode('You need to fix file ownership of the existing tar files. Run a command like [tt]sudo chown _www exports/addons/*.tar[/tt]'));
+    }
 
     fix_permissions($_full);
     sync_file($_full);
@@ -734,7 +717,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
 }
 
 /**
- * Uninstall an addon.
+ * Completely uninstall the specified addon from the system.
  *
  * @param  string $addon Name of the addon
  * @param  boolean $clear_caches Whether to clear caches
@@ -763,7 +746,27 @@ function uninstall_addon($addon, $clear_caches = true)
                 $matches = array();
                 if (preg_match('#([^/]*)/?pages/modules(_custom)?/(.*)\.php#', $filename, $matches) != 0) {
                     if ($matches[2] != '_custom' || ($matches[2] == '_custom' && !is_file(get_file_base() . '/' . str_replace('_custom/', '/', $filename)))) {
-                        uninstall_module($matches[1], $matches[3]);
+                        $zone = $matches[1];
+                        $module = $matches[3];
+                        uninstall_module($zone, $module);
+
+                        // Remove from menu too
+                        $menu_sql = 'SELECT id FROM ' . get_table_prefix() . 'menu_items WHERE ';
+                        $menu_sql .= db_string_equal_to('i_url', $zone . ':' . $module);
+                        $menu_sql .= ' OR ';
+                        $menu_sql .= 'i_url LIKE \'' . db_encode_like($zone . ':' . $module . ':%') . '\'';
+                        if (($zone == 'site') && (get_option('collapse_user_zones') == '1')) {
+                            $zone = '';
+                            $menu_sql .= ' OR ';
+                            $menu_sql .= db_string_equal_to('i_url', $zone . ':' . $module);
+                            $menu_sql .= ' OR ';
+                            $menu_sql .= 'i_url LIKE \'' . db_encode_like($zone . ':' . $module . ':%') . '\'';
+                        }
+                        $menu_items = $GLOBALS['SITE_DB']->query($menu_sql);
+                        foreach ($menu_items as $menu_item) {
+                            require_code('menus2');
+                            delete_menu_item($menu_item['id']);
+                        }
                     }
                 }
                 if (preg_match('#sources(_custom)?/blocks/(.*)\.php#', $filename, $matches) != 0) {

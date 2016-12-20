@@ -15,3 +15,7 @@
 | [block defer="1"]main_staff_links[/block]
 |}
 [title="2"]Recommend Composr[/title]Know someone who needs a website? [page=":recommend:browse:cms=1"]Recommend Composr[/page] and they'll be sent a link to your own site too.
+
+[title="3"]Sponsors[/title]
+
+[surround="vertical_alignment"]Check out our [page="adminzone:admin_version"]sponsors[/page]. We love them :wub:.[/surround]

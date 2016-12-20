@@ -105,7 +105,8 @@ function reprocess_url($url, $operation_base_url)
         }
     }
     require_code('character_sets');
-    $document = convert_to_internal_encoding(http_download_file($url, null, true, false, $ua, $post_relayed, $cookies_relayed, $accept, $accept_charset, $accept_language));
+    $_document = http_download_file($url, null, true, false, $ua, $post_relayed, $cookies_relayed, $accept, $accept_charset, $accept_language);
+    $document = convert_to_internal_encoding($_document);
 
     global $HTTP_DOWNLOAD_MIME_TYPE;
     if (($HTTP_DOWNLOAD_MIME_TYPE != 'text/html') && ($HTTP_DOWNLOAD_MIME_TYPE != 'application/xhtml+xml')) {
@@ -116,24 +117,14 @@ function reprocess_url($url, $operation_base_url)
     // Were we asked to set any cookies?
     if ($url_bits['host'] == $url_bits_2['host']) {
         global $HTTP_NEW_COOKIES;
-        if (!is_null($HTTP_NEW_COOKIES)) {
-            foreach ($HTTP_NEW_COOKIES as $key => $val) {
-                $parts = explode('; ', $val);
-                foreach ($parts as $i => $part) {
-                    if ($i != 0) {
-                        $temp = explode('=', $part, 2);
-                        if (array_key_exists(1, $temp)) {
-                            $parts[trim($temp[0])] = trim(rawurldecode($temp[1]));
-                        }
-                    }
-                }
-                /*$parts['domain'] = $url_bits_2['host']; // To fix an inconvenience caused by mismatching cookie settings (e.g. cookie on subdomain)
-                echo($key . '->' . trim(rawurldecode($parts[0])));
-                print_r($parts);
-                exit();*/
-                $parts['domain'] = get_cookie_domain();
-                setcookie($key, trim(rawurldecode($parts[0])), array_key_exists('expires', $parts) ? strtotime($parts['expires']) : 0, array_key_exists('path', $parts) ? $parts['path'] : '', array_key_exists('domain', $parts) ? $parts['domain'] : '');
-            }
+        foreach ($HTTP_NEW_COOKIES as $cookie_key => $cookie_parts) {
+            setcookie(
+                $cookie_key,
+                $cookie_parts['value'],
+                array_key_exists('expires', $cookie_parts) ? strtotime($cookie_parts['expires']) : 0,
+                array_key_exists('path', $cookie_parts) ? $cookie_parts['path'] : '',
+                array_key_exists('domain', $cookie_parts) ? $cookie_parts['domain'] : ''
+            );
         }
     }
 
@@ -161,26 +152,48 @@ function reprocess_url($url, $operation_base_url)
     // Link filtering, so as to make non-external/non-new-window hyperlinks link through the Composr module
     $_self_url = build_url(array('page' => '_SELF'), '_SELF', null, false, true);
     $self_url = $_self_url->evaluate();
-    $expressions = array('(src)="([^"]*)"', '(src)=\'([^\'])*\'', '(href)="([^"]*)"', '(href)=\'([^\'])*\'', '(data)="([^"]*)"', '(data)=\'([^\']*)\'', '(action)="([^"]*)"', '(action)=\'([^\']*)\'');
+    $expressions = array(
+        '(src)="([^"]*)"', '(src)=\'([^\'])*\'',
+        '(href)="([^"]*)"', '(href)=\'([^\'])*\'',
+        '(data)="([^"]*)"', '(data)=\'([^\']*)\'',
+        '(action)="([^"]*)"', '(action)=\'([^\']*)\'',
+    );
     foreach ($expressions as $expression) {
         $all_matches = array();
-        $count = preg_match_all('#(<[^>]*)' . $expression . '([^>]*>)#i', $body, $all_matches);
-        if ($count != 0) {
-            for ($i = 0; $i < count($all_matches[0]); $i++) {
-                $m_to_replace = $all_matches[0][$i];
-                $m_type = trim(@html_entity_decode($all_matches[2][$i], ENT_QUOTES, get_charset()));
-                $m_url = trim(@html_entity_decode($all_matches[3][$i], ENT_QUOTES, get_charset()));
-                if (url_is_local($m_url)) {
-                    $m_url = qualify_url($m_url, $url_base);
-                }
-                $non_local = substr($m_url, 0, strlen($operation_base_url)) != $operation_base_url;
-                if (($m_type == 'src') || ($m_type == 'data') || ($non_local)) {
-                    $new_url = $m_url;
-                } else {
-                    $new_url = $self_url . '&url=' . rawurlencode($m_url);
-                }
-                $body = str_replace($m_to_replace, $all_matches[1][$i] . $m_type . '="' . escape_html($new_url) . '"' . $all_matches[4][$i], $body);
+        $count = preg_match_all('#(<[^>]*)' . $expression . '([^>]*>)#i', $body, $all_matches, PREG_OFFSET_CAPTURE);
+        for ($i = $count - 1; $i >= 0 ; $i--) {
+            $m_to_replace = $all_matches[0][$i][0];
+            $offset = $all_matches[0][$i][1];
+            $offset_end = $offset + strlen($m_to_replace);
+
+            $m_type = trim(@html_entity_decode($all_matches[2][$i][0], ENT_QUOTES, get_charset()));
+            $m_url = trim(@html_entity_decode($all_matches[3][$i][0], ENT_QUOTES, get_charset()));
+            if (url_is_local($m_url)) {
+                $m_url = qualify_url($m_url, $url_base);
             }
+            $is_non_local = substr($m_url, 0, strlen($operation_base_url)) != $operation_base_url;
+            if (($m_type == 'src') || ($m_type == 'data') || ($is_non_local)) {
+                $new_url = $m_url;
+            } else {
+                $new_url = $self_url . '&url=' . rawurlencode($m_url);
+            }
+
+            if ((strtolower($m_type) == 'action') && (strpos($new_url, '?') !== false)) {
+                if (preg_match('#<form.*\smethod="get".*>#i', $m_to_replace) != 0) {
+                    $extra_get_fields = array();
+                    parse_str(preg_replace('#^.*\?#', '', $new_url), $extra_get_fields);
+
+                    $_extra_get_fields = '';
+                    foreach ($extra_get_fields as $get_key => $get_val) {
+                        $_extra_get_fields .= '<input type="hidden" name="' . escape_html($get_key) . '" value="' . escape_html($get_val) . '" />';
+                    }
+                    $body = substr($body, 0, $offset_end) . $_extra_get_fields . substr($body, $offset_end);
+                    $new_url = preg_replace('#\?.*$#', '', $new_url);
+                }
+            }
+
+            $m_replace_with = $all_matches[1][$i][0] . $m_type . '="' . escape_html($new_url) . '"' . $all_matches[4][$i][0];
+            $body = substr($body, 0, $offset) . $m_replace_with . substr($body, $offset_end);
         }
     }
 

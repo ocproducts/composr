@@ -314,17 +314,17 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         if ($send_notification) {
             $post_comcode = get_translated_text($map['p_post'], $GLOBALS['FORUM_DB']);
 
-            require_code('cns_posts_action2');
-            cms_profile_start_for('cns_make_post:cns_send_topic_notification');
-            cns_send_topic_notification($url, $topic_id, $forum_id, $anonymous ? db_get_first_id() : $poster, $is_starter, $post_comcode, $topic_title, $intended_solely_for, $is_pt);
-            cms_profile_end_for('cns_make_post:cns_send_topic_notification');
-
             // Send a notification for the inline PP
             if (!is_null($intended_solely_for)) {
                 require_code('notifications');
                 $msubject = do_lang('NEW_PERSONAL_POST_SUBJECT', $topic_title, null, null, get_lang($intended_solely_for));
                 $mmessage = do_notification_lang('NEW_PERSONAL_POST_MESSAGE', comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($anonymous ? db_get_first_id() : $poster, true)), comcode_escape($topic_title), array(comcode_escape($url), $post_comcode, strval($anonymous ? db_get_first_id() : $poster)), get_lang($intended_solely_for));
                 dispatch_notification('cns_new_pt', null, $msubject, $mmessage, array($intended_solely_for), $anonymous ? db_get_first_id() : $poster);
+            } else {
+                require_code('cns_posts_action2');
+                cms_profile_start_for('cns_make_post:cns_send_topic_notification');
+                cns_send_topic_notification($url, $topic_id, $forum_id, $anonymous ? db_get_first_id() : $poster, $is_starter, $post_comcode, $topic_title, $intended_solely_for/*limits to this*/, $is_pt);
+                cms_profile_end_for('cns_make_post:cns_send_topic_notification');
             }
         }
     }
@@ -453,6 +453,8 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
     // Tidy up auto-save
     require_code('autosave');
     clear_cms_autosave();
+
+    set_value('cns_post_count', strval(intval(get_value('cns_post_count')) + 1));
 
     cms_profile_end_for('cns_make_post', '#' . strval($post_id));
 

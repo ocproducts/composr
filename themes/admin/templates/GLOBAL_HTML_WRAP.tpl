@@ -26,14 +26,16 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			<a accesskey="s" class="accessibility_hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
 			<div class="admin_navigation">
+				{$REQUIRE_CSS,menu__sitemap}
+				{$REQUIRE_JAVASCRIPT,menu_sitemap}
 				{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
 					{$SET,admin_menu_string,adminzone:start,include=node,title={!menus:DASHBOARD},icon=menu/adminzone/start + adminzone:,include=children,max_recurse_depth=4,use_page_groupings=1 + cms:,include=node,max_recurse_depth=3,use_page_groupings=1}
 				{+END}
 				{+START,IF,{$NOT,{$HAS_ZONE_ACCESS,adminzone}}}
 					{$SET,admin_menu_string,site:start\,include=node\,title={!HOME}\,icon=close + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1}
 				{+END}
-				{+START,IF,{$DESKTOP}}<div class="block_desktop">{$BLOCK,block=menu,param={$GET,admin_menu_string},type=dropdown}</div>{+END}
-				<div class="block_mobile">{$BLOCK,block=menu,param={$GET,admin_menu_string},type=mobile}</div>
+				{+START,IF,{$DESKTOP}}<div class="block_desktop">{$BLOCK-,block=menu,param={$GET,admin_menu_string},type=dropdown}</div>{+END}
+				<div class="block_mobile">{$BLOCK-,block=menu,param={$GET,admin_menu_string},type=mobile}</div>
 
 				<div class="admin_navigation_inner">
 					<span>{$?,{$EQ,{$ZONE},adminzone},{!ADMIN_ZONE},{!CMS}}</span>
@@ -184,10 +186,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 								<li><a onclick="return open_link_as_overlay(this);" href="{$PAGE_LINK*,_SELF:login{$?,{$NOR,{$GET,login_screen},{$_POSTED},{$EQ,{$PAGE},login,join}},:redirect={$SELF_URL&*,1}}}">{!_LOGIN}</a></li>
 							{+END}
 							{+START,IF,{$CONFIG_OPTION,mobile_support}}
-								{+START,IF,{$MOBILE,1}}
+								{+START,IF,{$MOBILE}}
 									<li><a href="{$SELF_URL*,1,0,0,keep_mobile=0}">{!NONMOBILE_VERSION}</a>
 								{+END}
-								{+START,IF,{$NOT,{$MOBILE,1}}}
+								{+START,IF,{$NOT,{$MOBILE}}}
 									<li><a href="{$SELF_URL*,1,0,0,keep_mobile=1}">{!MOBILE_VERSION}</a></li>
 								{+END}
 							{+END}

@@ -40,6 +40,8 @@ class Hook_task_export_catalogue
         $ini_set = array();
         $ini_set['ocproducts.xss_detect'] = '0';
 
+        require_code('catalogues');
+
         $catalogue_row = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array('c_name' => $catalogue_name), '', null, null, true);
         if (is_null($catalogue_row)) {
             $catalogue_row = array();

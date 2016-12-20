@@ -395,9 +395,8 @@ class Module_cms_calendar extends Standard_crud_module
                 $types[$row['e_type']] = $type;
             }
 
-            $start_day_of_month = find_concrete_day_of_month($row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type'], is_null($row['e_start_hour']) ? find_timezone_start_hour_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_hour'], is_null($row['e_start_minute']) ? find_timezone_start_minute_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_minute'], $row['e_timezone'], $row['e_do_timezone_conv'] == 1);
-            $time_raw = mktime($row['e_start_hour'], $row['e_start_minute'], 0, $row['e_start_month'], $start_day_of_month, $row['e_start_year']);
-            $date = get_timezoned_date($time_raw, !is_null($row['e_start_hour']));
+            list(, $time_raw) = find_event_start_timestamp($row);
+            $date = get_timezoned_date($time_raw, !is_null($row['e_start_hour']), false, false, true);
 
             $fields->attach(results_entry(array(protect_from_escaping(hyperlink(build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar')), get_translated_text($row['e_title']), false, true)), $date, $type, ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
@@ -936,7 +935,7 @@ class Module_cms_calendar extends Standard_crud_module
                     $members[] = get_member();
                 }
                 if (count($members) != 0) { // Now add their reminders
-                    $secs_before = floatval(post_param_string('hours_before', '1.0')) * 3600.0;
+                    $secs_before = float_unformat(post_param_string('hours_before', '1.0')) * 3600.0;
 
                     $filled1 = array();
                     $filled2 = array();
@@ -987,7 +986,7 @@ class Module_cms_calendar extends Standard_crud_module
                     }
 
                     if ($privacy_ok) {
-                        $secs_before = floatval(post_param_string('hours_before', '1.0')) * 3600.0;
+                        $secs_before = float_unformat(post_param_string('hours_before', '1.0')) * 3600.0;
                         $GLOBALS['SITE_DB']->query_insert('calendar_reminders', array(
                             'e_id' => $id,
                             'n_member_id' => $member,
@@ -1472,8 +1471,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        require_code('themes2');
-
         $metadata = actual_metadata_get_fields('calendar_type', null);
 
         require_code('themes2');
@@ -1499,8 +1496,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        require_code('themes2');
-
         $metadata = actual_metadata_get_fields('calendar_type', $id);
 
         if (fractional_edit()) {

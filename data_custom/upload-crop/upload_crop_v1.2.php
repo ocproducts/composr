@@ -114,6 +114,17 @@ function resizeImage($image, $width, $height, $scale)
             $source = imagecreatefrompng($image);
             break;
     }
+
+    $transparent = imagecolortransparent($image);
+    if ($transparent >= imagecolorstotal($image)) { // Workaround for corrupt images
+        $transparent = -1;
+    }
+    if ($transparent != -1) {
+        imagealphablending($newImage, false);
+        $_transparent = imagecolorsforindex($image, $transparent);
+        imagecolortransparent($newImage, imagecolorallocate($newImage, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
+    }
+
     imagecopyresampled($newImage, $source, 0, 0, 0, 0, $newImageWidth, $newImageHeight, $width, $height);
 
     switch ($imageType) {
@@ -142,10 +153,21 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
 {
     list($imagewidth, $imageheight, $imageType) = getimagesize($image);
     $imageType = image_type_to_mime_type($imageType);
-
     $newImageWidth = ceil($width * $scale);
     $newImageHeight = ceil($height * $scale);
+
     $newImage = imagecreatetruecolor($newImageWidth, $newImageHeight);
+
+    $transparent = imagecolortransparent($image);
+    if ($transparent >= imagecolorstotal($image)) { // Workaround for corrupt images
+        $transparent = -1;
+    }
+    if ($transparent != -1) {
+        imagealphablending($newImage, false);
+        $_transparent = imagecolorsforindex($image, $transparent);
+        imagecolortransparent($newImage, imagecolorallocate($newImage, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
+    }
+
     switch ($imageType) {
         case "image/gif":
             $source = imagecreatefromgif($image);

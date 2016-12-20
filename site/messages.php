@@ -50,4 +50,5 @@ require($FILE_BASE . '/sources/global.php');
 
 require_code('chat');
 safe_ini_set('ocproducts.xss_detect', '0');
+
 messages_script();

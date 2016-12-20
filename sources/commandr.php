@@ -108,7 +108,7 @@ function commandr_script()
             while (true) { // Goes on until ctrl+C
                 fwrite($stdout, "\n> ");
 
-                $command = fgets($stdin, 102400);
+                $command = fgets($stdin);
                 if (trim($command) == 'exit') {
                     break;
                 }
@@ -1019,7 +1019,7 @@ class Virtual_shell
             $this->output[STREAM_STDERR] = '';
 
             if (is_null($commandr_output)) {
-                $this->output[STREAM_STDERR] = do_lang('SUCCESS');
+                $this->output[STREAM_STDOUT] = do_lang('SUCCESS');
             } else {
                 $this->output[STREAM_STDHTML] = $this->_array_to_html($commandr_output);
             }

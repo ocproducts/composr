@@ -2714,11 +2714,9 @@ function ecv2_REM($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        if (intval($param[1]) == 0) {
-            return '';
+        if (intval($param[1]) != 0) {
+            $value = strval(intval($param[0]) % intval($param[1]));
         }
-
-        $value = strval(intval($param[0]) % intval($param[1]));
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -3359,7 +3357,7 @@ function ecv2_VIEWS($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[2])) {
-        $id_field = /*isset($param[4])?$param[4]:*/
+        $id_field = /*isset($param[4]) ? $param[4] : */
             'id'; // Not allowed on fields other than 'id', for security reasons
         if (preg_match('#^\w*views\w*$#', $param[1]) != 0) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there($param[0], $param[1], array($id_field => $param[2]));
@@ -3985,6 +3983,29 @@ function ecv2_AUTHOR_MEMBER($lang, $escaped, $param)
             $value = strval($member_id);
         }
     }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv2_DECIMAL_POINT($lang, $escaped, $param)
+{
+    $value = '';
+
+    $locale = localeconv();
+    $value = $locale['decimal_point'];
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

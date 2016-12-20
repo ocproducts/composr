@@ -67,6 +67,8 @@ function do_work()
     set_option('post_read_history_days', '0'); // Needed for a little sanity in recent post retrieval
     set_option('enable_sunk', '0');
 
+    require_code('crypt');
+
     set_mass_import_mode();
 
     // members (remember to test the username autocompleter, and birthdays)

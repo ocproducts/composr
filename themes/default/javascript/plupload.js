@@ -13096,14 +13096,14 @@ function begin_form_uploading(e,ob,recurse)
 		{
 			if ((btn_submit.form.onsubmit) && (false===btn_submit.form.onsubmit())) return false;
 			if (!ret) return false;
-			if (!recurse) btn_submit.form.submit();
+			if (!recurse) submit_form_with_the_upload(btn_submit);
 			return true;
 		}
 
 		var ret2=ob.original_click_handler(e,ob,btn_submit.form,true);
 		if (ret2 && !ret)
 			window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN^;^}');
-		if (!recurse && ret && ret2) btn_submit.form.submit();
+		if (!recurse && ret && ret2) submit_form_with_the_upload(btn_submit);
 		return ret && ret2;
 	}
 
@@ -13140,18 +13140,25 @@ function begin_form_uploading(e,ob,recurse)
 		if (typeof ob.original_click_handler=='undefined')
 		{
 			if ((btn_submit.form.onsubmit) && (false===btn_submit.form.onsubmit())) return false;
-			if (!recurse) btn_submit.form.submit();
+			if (!recurse) submit_form_with_the_upload(btn_submit);
 			return true;
 		}
 
 		if (ob.original_click_handler(e,ob,btn_submit.form,true))
 		{
-			if (!recurse) btn_submit.form.submit();
+			if (!recurse) submit_form_with_the_upload(btn_submit);
 			return true;
 		}
 	}
 
 	return false;
+}
+
+function submit_form_with_the_upload(btn_submit)
+{
+	if (btn_submit.form.target=='preview_iframe')
+		illustrate_frame_load(document.getElementById('preview_iframe'),'preview_iframe',50);
+	btn_submit.form.submit();
 }
 
 function dispatch_for_page_type(page_type,name,file_name,posting_field_name,num_files)
@@ -13340,13 +13347,13 @@ function upload_finished(ob,file,data)
 		{
 			if (ob.original_click_handler(null,ob,btn_submit.form,true))
 			{
-				btn_submit.form.submit();
+				submit_form_with_the_upload(btn_submit);
 				return true;
 			}
 		} else
 		{
 			if ((btn_submit.form.onsubmit) && (false===btn_submit.form.onsubmit())) return;
-			btn_submit.form.submit();
+			submit_form_with_the_upload(btn_submit);
 		}
 	}
 }
@@ -13685,6 +13692,10 @@ function FileProgress(file,targetID)
 		this.fileProgressWrapper.id=this.fileProgressID;
 
 		this.fileProgressElement=document.createElement('div');
+		this.fileProgressElement.setAttribute('role', 'progressbar');
+		this.fileProgressElement.setAttribute('aria-valuemin', '0');
+		this.fileProgressElement.setAttribute('aria-valuemax', '100');
+		this.fileProgressElement.setAttribute('aria-valuenow', '0');
 		this.fileProgressElement.className='progressContainer';
 
 		var progressCancel=document.createElement('a');
@@ -13730,12 +13741,14 @@ FileProgress.prototype.setProgress=function (percentage) {
 	this.fileProgressElement.className='progressContainer green';
 	this.fileProgressElement.childNodes[3].className='progressBarInProgress';
 	this.fileProgressElement.childNodes[3].style.width=percentage+'%';
+	this.fileProgressElement.setAttribute('aria-valuenow', percentage);
 };
 FileProgress.prototype.setComplete=function () {
 	this.appear();
 	this.fileProgressElement.className='progressContainer blue';
 	this.fileProgressElement.childNodes[3].className='progressBarComplete';
 	this.fileProgressElement.childNodes[3].style.width='';
+	this.fileProgressElement.setAttribute('aria-valuenow', '100');
 	this.completed=true;
 	this.fileProgressElement.completed=this.completed;
 };
@@ -13744,6 +13757,7 @@ FileProgress.prototype.setError=function () {
 	this.fileProgressElement.className='progressContainer red';
 	this.fileProgressElement.childNodes[3].className='progressBarError';
 	this.fileProgressElement.childNodes[3].style.width='';
+	this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
 	var oSelf=this;
 	setTimeout(function () {
@@ -13755,6 +13769,7 @@ FileProgress.prototype.setCancelled=function () {
 	this.fileProgressElement.className='progressContainer';
 	this.fileProgressElement.childNodes[3].className='progressBarError';
 	this.fileProgressElement.childNodes[3].style.width='';
+	this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
 	var oSelf=this;
 	setTimeout(function () {

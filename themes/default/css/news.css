@@ -47,6 +47,10 @@
 	width: 100px;
 }
 
+.global_side_panel .newscat_img {
+	display: none;
+}
+
 .newscat_img img {
 	max-width: 100px;
 }

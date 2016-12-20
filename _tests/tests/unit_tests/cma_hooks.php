@@ -25,6 +25,8 @@ class cma_hooks_test_set extends cms_test_case
     {
         parent::setUp();
 
+        require_code('content');
+
         $this->all_keys = array();
 
         $cma_hooks = find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware');

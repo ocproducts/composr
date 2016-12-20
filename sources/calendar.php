@@ -160,7 +160,7 @@ function date_from_week_of_year($year, $week)
 /**
  * Find a list of pairs specifying the times the event occurs, for 20 years into the future, in user-time.
  *
- * @param  ID_TEXT $timezone The timezone for the event (null: current user's timezone)
+ * @param  ID_TEXT $timezone The timezone for the event
  * @param  BINARY $do_timezone_conv Whether the time should be converted to the viewer's own timezone
  * @param  integer $start_year The year the event starts at. This and the below are in server time
  * @param  integer $start_month The month the event starts at
@@ -599,24 +599,24 @@ function date_range($from, $to, $do_time = true, $force_absolute = false, $timez
     if (($to - $from > 60 * 60 * 24) || (!$do_time) || ($force_absolute)) {
         if (!$do_time) {
             if ($force_absolute) { // Absolute, no time (with length)
-                $date1 = locale_filter(date(do_lang('calendar_date_verbose'), $from));
-                $date2 = locale_filter(date(do_lang('calendar_date_verbose'), $to));
+                $date1 = cms_strftime(do_lang('calendar_date_verbose'), $from);
+                $date2 = cms_strftime(do_lang('calendar_date_verbose'), $to);
             } else {
                 return $_length; // No time (with length)
             }
         } else { // Absolute, time (with length)
-            $date1 = locale_filter(date(do_lang(($to - $from > 60 * 60 * 24 * 5) ? 'calendar_date_range_single_long' : 'calendar_date_range_single'), $from));
-            $date2 = locale_filter(date(do_lang(($to - $from > 60 * 60 * 24 * 5) ? 'calendar_date_range_single_long' : 'calendar_date_range_single'), $to));
+            $date1 = cms_strftime(do_lang(($to - $from > 60 * 60 * 24 * 5) ? 'calendar_date_range_single_long' : 'calendar_date_range_single'), $from);
+            $date2 = cms_strftime(do_lang(($to - $from > 60 * 60 * 24 * 5) ? 'calendar_date_range_single_long' : 'calendar_date_range_single'), $to);
         }
     } else { // Just time (with length)
         $pm_a = date('a', $from);
         $pm_b = date('a', $to);
         if ($pm_a == $pm_b) {
-            $date1 = locale_filter(cms_strftime(do_lang('calendar_minute_ampm_known'), $from));
-            $date2 = locale_filter(cms_strftime(do_lang('calendar_minute'), $to));
+            $date1 = cms_strftime(do_lang('calendar_minute_ampm_known'), $from);
+            $date2 = cms_strftime(do_lang('calendar_minute'), $to);
         } else {
-            $date1 = locale_filter(cms_strftime(do_lang('calendar_minute'), $from));
-            $date2 = locale_filter(cms_strftime(do_lang('calendar_minute'), $to));
+            $date1 = cms_strftime(do_lang('calendar_minute'), $from);
+            $date2 = cms_strftime(do_lang('calendar_minute'), $to);
         }
         $_date1 = str_replace(do_lang('calendar_minute_no_minutes'), '', $date1);
         $_date2 = str_replace(do_lang('calendar_minute_no_minutes'), '', $date2);
@@ -624,7 +624,7 @@ function date_range($from, $to, $do_time = true, $force_absolute = false, $timez
             $date1 = $_date1;
             $date2 = $_date2;
         }
-        $date = locale_filter(date(do_lang('calendar_date_verbose'), $from));
+        $date = cms_strftime(do_lang('calendar_date_verbose'), $from);
         return do_lang('EVENT_TIME_RANGE_WITHIN_DAY' . (($timezone == '') ? '' : '_WITH_TIMEZONE'), $date, $date1, array($date2, $_length, $timezone));
     }
 
@@ -842,7 +842,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
     $where = ' WHERE ' . $where;
     $event_count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e' . $privacy_join . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types t ON e.e_type=t.id' . $where);
     if ($event_count > intval(get_option('general_safety_listing_limit')) * 5) {
-        attach_message(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'inform');
+        attach_message(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'notice');
         return array();
     }
     $events = $GLOBALS['SITE_DB']->query('SELECT *,e.id AS e_id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e' . $privacy_join . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types t ON e.e_type=t.id' . $where);
@@ -1477,13 +1477,13 @@ function monthly_spec_type_chooser($day_of_month, $month, $year, $default_monthl
         $timestamp = mktime(0, 0, 0, $month, $day_of_month, $year);
 
         if (substr($monthly_spec_type, 0, 4) == 'dow_') {
-            $nth = locale_filter(date('jS', mktime(0, 0, 0, 1, intval(floatval($day) / 7.0) + 1, $year))); // Bit of a hack. Uses the date locales nth stuff, even when it's not actually a day-of-month here.
+            $nth = cms_strftime('%e%o', mktime(0, 0, 0, 1, intval(floatval($day) / 7.0) + 1, $year)); // Bit of a hack. Uses the date locales nth stuff, even when it's not actually a day-of-month here.
         } else {
-            $nth = locale_filter(date('jS', mktime(0, 0, 0, $month, $day, $year))); // Bit of a hack. Uses the date locales nth stuff, even when it's not actually a day-of-month here.
+            $nth = cms_strftime('%e%o', mktime(0, 0, 0, $month, $day, $year)); // Bit of a hack. Uses the date locales nth stuff, even when it's not actually a day-of-month here.
         }
-        $dow = locale_filter(date('l', $timestamp));
+        $dow = cms_strftime('%a', $timestamp);
 
-        $month_name = locale_filter(date('M', $timestamp));
+        $month_name = cms_strftime('%b', $timestamp);
 
         $text = do_lang_tempcode('CALENDAR_MONTHLY_RECURRENCE_CONCRETE_' . $monthly_spec_type, escape_html($nth), escape_html($dow), escape_html($month_name));
         $description = do_lang_tempcode('CALENDAR_MONTHLY_RECURRENCE_' . $monthly_spec_type);
@@ -1682,7 +1682,7 @@ function end_find_concrete_day_of_month_wrap($event)
 /**
  * Find details of when an event happens. Preferably the next recurrence, but if it is in the past, the first.
  *
- * @param  ID_TEXT $timezone The timezone for the event (null: current user's timezone)
+ * @param  ?ID_TEXT $timezone The timezone for the event (null: current user's timezone)
  * @param  BINARY $do_timezone_conv Whether the time should be converted to the viewer's own timezone
  * @param  integer $start_year The year the event starts at. This and the below are in server time
  * @param  integer $start_month The month the event starts at
@@ -1705,6 +1705,10 @@ function end_find_concrete_day_of_month_wrap($event)
  */
 function get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences, $force_first = false)
 {
+    if ($timezone === null) {
+        $timezone = get_users_timezone();
+    }
+
     if ($force_first) {
         $times = array();
     } else {
@@ -1726,9 +1730,9 @@ function get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year
     $do_time = !is_null($start_hour);
     if (is_null($to)) {
         if (!$do_time) {
-            $written_date = locale_filter(date(do_lang('calendar_date_verbose'), $from));
+            $written_date = cms_strftime(do_lang('calendar_date_verbose'), $from);
         } else {
-            $written_date = locale_filter(date(do_lang(($to - $from > 60 * 60 * 24 * 5) ? 'calendar_date_range_single_long' : 'calendar_date_range_single'), $from));
+            $written_date = cms_strftime(do_lang(($to - $from > 60 * 60 * 24 * 5) ? 'calendar_date_range_single_long' : 'calendar_date_range_single'), $from);
         }
     } else {
         $written_date = date_range($from, $to, $do_time, true);

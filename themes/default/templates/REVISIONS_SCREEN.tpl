@@ -22,9 +22,11 @@
 			</div>
 			<script>// <![CDATA[
 				add_event_listener_abstract(window,'load',function() {
-					$("#resource_types").select2({
-						dropdownAutoWidth: true
-					});
+					if (typeof $("#resource_types").select2!='undefined') {
+						$("#resource_types").select2({
+							dropdownAutoWidth: true
+						});
+					}
 				});
 			//]]></script>
 

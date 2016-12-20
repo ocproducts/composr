@@ -285,24 +285,28 @@ class LangFilter_EN extends LangFilter
         if (!empty($key) && $is_american && strtolower($key[0]) == $key[0]) {
             // Day comes after month
             switch ($key . '=' . $value) {
-                case 'calendar_date=Y-m-d': // ISO (International) style
-                    $value = 'm-d-Y';
+                case 'calendar_date=%Y-%m-%d': // ISO (International) style
+                    $value = '%m-%d-%Y';
                     break;
 
-                case 'calendar_date_verbose=l jS F Y':
-                    $value = 'l F jS Y';
+                case 'calendar_date_verbose=%a %e%o %B %Y':
+                    $value = '%a %B %e%o %Y';
                     break;
 
-                case 'calendar_date_range_single_long=g:i a (jS M)':
-                    $value = 'g:i a (M jS)';
+                case 'calendar_date_range_single_long=%l:%M %p (%e%o %b)':
+                    $value = '%l:%M %p (%b %e%o)';
                     break;
 
-                case 'date_regular_date=%e%k %B %Y':
-                    $value = '%B %e%k %Y';
+                case 'date_regular_date=%e%o %B %Y':
+                    $value = '%B %e%o %Y';
                     break;
 
-                case 'date_verbose_date=%a %e%k %B %Y':
-                    $value = '%a %B %e%k %Y';
+                case 'date_no_year=%e%o %B':
+                    $value = '%B %e%o';
+                    break;
+
+                case 'date_verbose_date=%a %e%o %B %Y':
+                    $value = '%a %B %e%o %Y';
                     break;
 
                 case 'locale=en-GB':

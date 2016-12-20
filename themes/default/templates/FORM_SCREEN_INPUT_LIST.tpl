@@ -24,7 +24,7 @@
 
 		add_event_listener_abstract(window,'load',function() {
 			var element=document.getElementById("{NAME#/}");
-			if ((element.options.length>20)/*only for long lists*/ && (!element.options[0].value.match(/^\d+$/)/*not for lists of numbers*/))
+			if ((element.options.length>20)/*only for long lists*/ && (!get_inner_html(element.options[1]).match(/^\d+$/)/*not for lists of numbers*/))
 			{
 				if (typeof $(element).select2!='undefined')
 				{
@@ -35,10 +35,6 @@
 						dropdownAutoWidth: true,
 						containerCssClass: 'wide_field'
 					});
-				} else
-				{
-					if (typeof window.console!='undefined')
-						console.log('select2 is missing');
 				}
 			}
 		});

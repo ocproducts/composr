@@ -1083,7 +1083,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $username = post_param_string('username');
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
             if (is_null($member_id)) {
-                require_code('cns_member_action');
+                require_code('cns_members_action');
                 $member_id = cns_make_member($username, uniqid('', true), '', array(), null, null, null, array(), null, null, 1, null, null, '', null, '', 0, 0, 1, '', '', '', 1, 1, null, 1, 1, null, '', false);
             }
         } else {

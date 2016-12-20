@@ -705,7 +705,7 @@ class Module_tickets
                     $post_templates2 = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
                     $post_templates2->attach($_post_templates);
 
-                    $post_templates = do_template('CNS_POST_TEMPLATE_SELECT', array('_GUID' => 'b670b322b96041db458057432e33cdca', 'LIST' => $post_templates2, 'RESETS' => true));
+                    $post_templates = do_template('CNS_POST_TEMPLATE_SELECT', array('_GUID' => 'b670b322b96041db458057432e33cdca', 'SKIP_LABEL' => true, 'LIST' => $post_templates2, 'RESETS' => true));
                 }
             }
 
@@ -936,7 +936,7 @@ class Module_tickets
         // Category filter
         $where_clause = 'r.' . $info['category'] . '=' . strval($catalogue_id);
         $boolean_operator = 'OR';
-        $content_where = build_content_where($content, true, $boolean_operator);
+        list($content_where) = build_content_where($content, true, $boolean_operator);
         $hook_results = $object->run($content, false, 'ASC', $max, 0, false, $content_where, '', null, null, 'relevance', null, $boolean_operator, $where_clause, null, true);
         if ((is_null($hook_results)) || (count($hook_results) == 0)) {
             return null;

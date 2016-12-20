@@ -250,10 +250,15 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
                 }
 
                 if (!$skip_children) {
+                    static $child_rows = array();
                     $start = 0;
                     do {
-                        $child_rows = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page'), $where, 'ORDER BY p_order,the_page', SITEMAP_MAX_ROWS_PER_LOOP, $start);
-                        foreach ($child_rows as $child_row) {
+                        $sz = serialize($where + array('_start' => $start));
+
+                        if (!isset($child_rows[$sz])) {
+                            $child_rows[$sz] = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page'), $where, 'ORDER BY p_order,the_page', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+                        }
+                        foreach ($child_rows[$sz] as $child_row) {
                             $child_page_link = $zone . ':' . $child_row['the_page'];
                             $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $child_row);
                             if ($child_node !== null) {
@@ -261,7 +266,7 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
                             }
                         }
                         $start += SITEMAP_MAX_ROWS_PER_LOOP;
-                    } while (count($child_rows) > 0);
+                    } while (count($child_rows[$sz]) > 0);
                 }
             }
             $struct['children'] = $children;

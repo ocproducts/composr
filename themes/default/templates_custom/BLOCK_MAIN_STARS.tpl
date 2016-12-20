@@ -11,7 +11,7 @@
 		<tr>
 			<td>
 				{+START,IF_NON_EMPTY,{AVATAR_URL}}
-					<img style="max-width: 100%" alt="" src="{AVATAR_URL*}" />
+					<img style="max-width: 100%" alt="" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" />
 				{+END}
 			</td>
 			<td>

@@ -278,6 +278,12 @@ function _load_blank_output_state($just_tempcode = false, $true_blank = false)
 
     if (!$just_tempcode) {
         global $HTTP_STATUS_CODE;
+        /** Record of the HTTP status code being set.
+         *
+         * @sets_output_state
+         *
+         * @global string $HTTP_STATUS_CODE
+         */
         $HTTP_STATUS_CODE = '200';
 
         global $METADATA;
@@ -751,7 +757,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
     }
 
     $prefix_default = get_file_base() . '/themes/';
-    $prefix = ($theme == 'default') ? $prefix_default : (get_custom_file_base() . '/themes/');
+    $prefix = ($theme == 'default' || $theme == 'admin') ? $prefix_default : (get_custom_file_base() . '/themes/');
 
     if (!isset($FILE_ARRAY)) {
         if ((is_file($prefix . $theme . '/' . $directory . '_custom/' . $codename . $suffix)) && (!in_safe_mode()) && (!$non_custom_only)) {
@@ -831,7 +837,7 @@ function is_wide()
 
     // Need to check it is allowed
     $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
-    $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
+    $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
     if (is_file($ini_path)) {
         require_code('files');
         $details = better_parse_ini_file($ini_path);
@@ -1131,7 +1137,7 @@ function addon_installed($addon, $non_bundled_too = false)
 }
 
 /**
- * Convert a float to a "technical string representation of a float".
+ * Convert a float to a "technical string representation of a float". Inverted with floatval.
  *
  * @param  float $num The number
  * @param  integer $decs_wanted The number of decimals to keep
@@ -1160,7 +1166,7 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
 }
 
 /**
- * Format the given float number as a nicely formatted string.
+ * Format the given float number as a nicely formatted string (using the locale). Inverted with float_unformat.
  *
  * @param  float $val The value to format
  * @param  integer $decs_wanted The number of fractional digits
@@ -1193,7 +1199,44 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
 }
 
 /**
- * Format the given integer number as a nicely formatted string.
+ * Take the given formatted float number and convert it to a native float. The inverse of float_format.
+ *
+ * @param  string $str The formatted float number using the locale.
+ * @param  boolean $no_thousands_sep Whether we do *not* expect a thousands separator, which means we can be a bit smarter.
+ * @return float Native float
+ */
+function float_unformat($str, $no_thousands_sep = false)
+{
+    $locale = localeconv();
+
+    // Simplest case?
+    if (preg_match('#^\d+$#', $str) != 0) { // E.g. "123"
+        return floatval($str);
+    }
+
+    if ($no_thousands_sep) {
+        // We can assume a "." is a decimal point then?
+        if (preg_match('#^\d+\.\d+$#', $str) != 0) { // E.g. "123.456"
+            return floatval($str);
+        }
+    }
+
+    // Looks like English-format? It couldn't be anything else because thousands_sep always comes before decimal_point
+    if (preg_match('#^[\d,]+\.\d+$#', $str) != 0) { // E.g. "123,456.789"
+        return floatval($str);
+    }
+
+    // Now it must e E.g. "123.456,789" or "123.456", or something from another language which uses other separators...
+
+    if ($locale['thousands_sep'] != '') {
+        $str = str_replace($locale['thousands_sep'], '', $str);
+    }
+    $str = str_replace($locale['decimal_point'], '.', $str);
+    return floatval($str);
+}
+
+/**
+ * Format the given integer number as a nicely formatted string (using the locale).
  *
  * @param  integer $val The value to format
  * @return string Nicely formatted string
@@ -2410,7 +2453,7 @@ function browser_matches($code, $comcode = null)
     $is_safari = strpos($browser, 'applewebkit') !== false;
     $is_chrome = strpos($browser, 'chrome/') !== false;
     $is_gecko = (strpos($browser, 'gecko') !== false) && !$is_safari;
-    $is_ie = ((strpos($browser, 'msie') !== false) || (strpos($browser, 'trident') !== false));
+    $is_ie = ((strpos($browser, 'msie') !== false) || (strpos($browser, 'trident') !== false) || (strpos($browser, 'edge/') !== false));
     $is_ie8 = (strpos($browser, 'msie 8') !== false) && ($is_ie);
     $is_ie9 = (strpos($browser, 'msie 9') !== false) && ($is_ie);
     $is_ie8_plus = $is_ie; // Below IE8 not supported/recognised
@@ -2520,7 +2563,7 @@ function is_mobile($user_agent = null, $truth = false)
 
     global $SITE_INFO;
     if (((!isset($SITE_INFO['assume_full_mobile_support'])) || ($SITE_INFO['assume_full_mobile_support'] != '1')) && (isset($GLOBALS['FORUM_DRIVER'])) && (!$truth) && (running_script('index')) && (($theme = $GLOBALS['FORUM_DRIVER']->get_theme()) != 'default')) {
-        $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
+        $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (is_file($ini_path)) {
             require_code('files');
             $details = better_parse_ini_file($ini_path);
