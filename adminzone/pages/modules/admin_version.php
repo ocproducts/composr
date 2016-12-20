@@ -1001,6 +1001,8 @@ class Module_admin_version
     {
         require_lang('version');
         $this->title = get_screen_title('PROJECT_SPONSORS');
+
+        return null;
     }
 
     /**
@@ -1012,13 +1014,8 @@ class Module_admin_version
     {
         $level = get_param_integer('level', 50);
 
-        if (addon_installed('composr_homesite')) {
-            require_code('patreons');
-            $patreons = get_patreons_on_minimum_level($level);
-        } else {
-            require_code('json'); // TODO: Remove in v11
-            $patreons = json_decode('http://compo.sr/data_custom/patreons.php?level=' . strval($level));
-        }
+        require_code('json');
+        $patreons = json_decode(http_download_file('http://compo.sr/data_custom/patreons.php?level=' . strval($level)));
 
         $_patreons = array();
         foreach ($patreons as $patron) {

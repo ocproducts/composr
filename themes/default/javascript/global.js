@@ -1577,6 +1577,8 @@ function animate_frame_load(pf,frame,leave_gap_top,leave_height)
 }
 function illustrate_frame_load(pf,frame)
 {
+	pf.style.height='80px';
+
 	/*{+START,IF,{$CONFIG_OPTION,enable_animations}}*/
 		var head='<style>',cssText='';
 		if (!browser_matches('ie8'))
@@ -1611,12 +1613,20 @@ function illustrate_frame_load(pf,frame)
 		}
 		head+=cssText+'<\/style>';
 
-		if (!window.frames[frame]) return;
-		if (!window.frames[frame].document) return;
-		var doc=window.frames[frame].document;
-		if (!doc) return;
-		var de=doc.documentElement;
-		if (!de) return;
+		try
+		{
+			if (!window.frames[frame]) return;
+			if (!window.frames[frame].document) return;
+			var doc=window.frames[frame].document;
+			if (!doc) return;
+			var de=doc.documentElement;
+			if (!de) return;
+		}
+		catch (e) // May be connection interference somehow
+		{
+			pf.scrolling='auto';
+			return;
+		}
 		var body=de.getElementsByTagName('body');
 		if (body.length==0)
 		{

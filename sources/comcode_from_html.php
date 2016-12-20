@@ -516,6 +516,11 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         $semihtml = preg_replace('#<h1[^>]* style="([^"<>]*)"[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '<h1><span class="inner"><span style="display: inline-block; ${1}">${2}</span></span></h1>', $semihtml);
         $semihtml = preg_replace('#<h1[^>]* style="([^"<>]*)"[^>]*>(.*)</h1>#Us', '<h1><span class="inner"><span style="display: block; ${1}">${2}</span></span></h1>', $semihtml);
 
+        // We really need anything inside <kbd> to go back to [tt] so it doesn't get parsed within semihtml
+        $array_html_preg_replace = array();
+        $array_html_preg_replace[] = array('#^<kbd>(.*)</kbd>$#siU', "[tt]\${1}[/tt]");
+        $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
+
         if (strpos($semihtml, '[contents') !== false) { // Contents tag needs proper Comcode titles
             $semihtml = convert_html_headers_to_titles($semihtml);
         }

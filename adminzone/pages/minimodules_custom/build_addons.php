@@ -145,7 +145,7 @@ if (get_param_integer('export_themes', 0) == 1) {
             continue;
         }
 
-        if ($theme == 'default') {
+        if ($theme == 'default' || $theme == 'admin') {
             continue;
         }
 
@@ -158,7 +158,7 @@ if (get_param_integer('export_themes', 0) == 1) {
         $copyright_attribution = '';
         $licence = '(Unstated)';
         $description = '';
-        $ini_file = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+        $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
         if (file_exists($ini_file)) {
             $details = better_parse_ini_file($ini_file);
 

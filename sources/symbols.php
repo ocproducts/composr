@@ -3777,7 +3777,11 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        $value = float_to_raw_string(floatval($param[0]) / floatval($param[1]), 20, true);
+        if (floatval($param[1]) == 0.0) {
+            $value = 'divide-by-zero';
+        } else {
+            $value = float_to_raw_string(floatval($param[0]) / floatval($param[1]), 20, true);
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -3798,9 +3802,7 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
  */
 function ecv_DIV($lang, $escaped, $param)
 {
-    if (floatval($param[1]) == 0.0) {
-        $value = 'divide-by-zero';
-    } else {
+    if (isset($param[1])) {
         if (floatval($param[1]) == 0.0) {
             $value = 'divide-by-zero';
         } else {

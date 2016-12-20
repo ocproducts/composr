@@ -353,6 +353,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         global $RECORDED_LANG_STRINGS, $LANGS_REQUESTED;
         require_lang('lang');
         require_code('form_templates');
+        require_code('lang2');
         $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
         require_code('lang_compile');
         $fields = new Tempcode();
