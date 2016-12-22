@@ -30,3 +30,5 @@ If you ever receive an error about a missing page or file, it is probably becaus
 [title="3"]Official shared demo[/title]
 
 We have a [url="http://shareddemo.composr.info/"]second shared demo[/url], populated with example content.
+
+Log in with the username [tt]admin[/tt] and the password [tt]demo123[/tt].
