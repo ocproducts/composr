@@ -102,7 +102,6 @@ class Database_Static_mysqli extends Database_super_mysql
         if (function_exists('mysqli_set_charset')) {
             mysqli_set_charset($db_link, $SITE_INFO['database_charset']);
         } else {
-            @mysqli_query($db_link, 'SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"');
         }
 
         return array($db_link, $db_name);

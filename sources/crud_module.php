@@ -683,7 +683,6 @@ abstract class Standard_crud_module
             $this->do_next_editing_categories ? null : ((($this->permissions_require !== null) && (!has_privilege(get_member(), 'edit_own_' . $this->permissions_require . 'range_content', ($this->privilege_page_name === null) ? get_page_name() : $this->privilege_page_name))) ? null : array('_SELF', array('type' => $this->get_screen_type_for('edit', $this->type_code)), '_SELF', ($this->edit_one_label !== null) ? $this->edit_one_label : null)), // Edit one
             $this->do_next_editing_categories ? null : ($id === null) ? null : $view_url, // View this
             $archive_url, // View archive
-            null, // Add to category
             (!$this->do_next_editing_categories) ? null : array('_SELF', array('type' => $this->get_screen_type_for('add', $this->type_code)), '_SELF', ($this->add_one_cat_label !== null) ? $this->add_one_cat_label : null), // Add one category
             (!$this->do_next_editing_categories) ? null : ((($this->permissions_require !== null) && (!has_privilege(get_member(), 'edit_own_' . $this->permissions_require . 'range_content', ($this->privilege_page_name === null) ? get_page_name() : $this->privilege_page_name))) ? null : array('_SELF', array('type' => $this->get_screen_type_for('edit', $this->type_code)), '_SELF', ($this->edit_one_cat_label !== null) ? $this->edit_one_cat_label : null)), // Edit one category
             (!$this->do_next_editing_categories) ? null : ((($id === null) || (($this->permissions_require !== null) && (!has_privilege(get_member(), 'edit_own_' . $this->permissions_require . 'range_content', ($this->privilege_page_name === null) ? get_page_name() : $this->privilege_page_name)))) ? null : array('_SELF', array('type' => $this->get_screen_type_for('_edit', $this->type_code), 'id' => $id), '_SELF', ($this->edit_this_cat_label !== null) ? $this->edit_this_cat_label : null)), // Edit this category
@@ -941,6 +940,7 @@ abstract class Standard_crud_module
                 '_GUID' => 'adf73fdfccb387640340f15d5d6dae54' . get_class($this),
                 'HIDDEN' => $hidden,
                 'TITLE' => $this->title,
+                'PREVIEW' => $this->do_preview,
                 'TEXT' => $this->add_text,
                 'URL' => $post_url,
                 'FIELDS' => $fields->evaluate()/*FUDGE*/,
@@ -1496,6 +1496,7 @@ abstract class Standard_crud_module
                 '_GUID' => '584d7dc7c2c13939626102374f13f508' . get_class($this),
                 'HIDDEN' => $hidden,
                 'TITLE' => $this->title,
+                'PREVIEW' => $this->do_preview,
                 'TEXT' => $this->add_text,
                 'URL' => $post_url,
                 'FIELDS' => $fields->evaluate()/*FUDGE*/,

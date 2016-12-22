@@ -1362,7 +1362,6 @@ class Module_admin_setupwizard
             null,
             null,
             null,
-            null,
             array(),
             array(),
             array(),

@@ -68,9 +68,8 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 
     $content->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
 
-    if (strpos(serialize($root), 'keep_') === false) {
-        // @TODO: Commented out by Salman, this call breaks JSON output in the tempcode and makes too many assumptions about any string containing '&keep_'
-        //$content = apply_quick_caching($content);
+    if (strpos(serialize($root), 'keep_') === false) {/*Will only work if there are no keep_ parameters within the menu itself, as the quick caching will get confused by that*/
+        $content = apply_quick_caching($content);
     }
 
     // Edit link

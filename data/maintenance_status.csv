@@ -88,7 +88,7 @@ detect_mobile,Mobile user agent detection,ocProducts,,Not regularly tested. Coul
 standard_opengraph,OpenGraph,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
 browser_firefox,Firefox support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 browser_safari,Safari support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
-browser_android_legacy,Android Browser support,ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
+browser_android_legacy,Android Browser support (pre-Chrome),ocProducts,,Not regularly tested. Could potentially break due to third-party changes.,No
 browser_ios,Mobile Safari (iOS) support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 browser_android_chrome,Mobile Chrome (Android & iOS) support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 browser_microsoft,IE/Microsoft Edge support,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
@@ -99,6 +99,7 @@ fields_xml,Field filter feature,ocProducts,,Not regularly tested.,No
 context,Magic click / context menu features,ocProducts,,Not regularly tested.,No
 php,Maintain with new versions of PHP,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 mysql,Maintain with new versions of MySQL,ocProducts,,Could potentially break due to third-party changes.,No
+mariadb,Maintain support for MariaDB,,,Could potentially break due to third-party changes, although they do claim MySQL-compatibility.,No
 options_hidden,Hidden options,ocProducts,,Not regularly tested.,No
 options_dev,Development options in config_editor.php,ocProducts,,Not regularly tested.,No
 facebook,Facebook login integration and syndication,ocProducts,ocProducts,Could potentially break due to third-party changes.,Yes

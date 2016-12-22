@@ -207,7 +207,7 @@ class Module_vforums
         $title = do_lang_tempcode('INVOLVED_TOPICS');
 
         $_condition = 'pos.p_poster=' . strval(get_member());
-        if ($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 1000) { // Too many posts, so make time-sensitive
+        if (($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 1000) && (get_value('innodb') !== '1')) { // Too many posts, so make time-sensitive
             $_condition .= ' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 90);
         }
         $condition = array($_condition);

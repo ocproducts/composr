@@ -92,10 +92,38 @@ class Module_forums
     {
         $base_url = get_forum_base_url();
 
-        $forums = get_param_string('url', $base_url . '/', INPUT_FILTER_URL_GENERAL);
+        $access_url = get_param_string('url', $base_url . '/', INPUT_FILTER_URL_GENERAL);
 
-        if (substr($forums, 0, strlen($base_url)) != $base_url) {
-            $base_url = rtrim($forums, '/');
+        foreach ($_GET as $key => $val) {
+            if (is_array($val)) {
+                foreach ($val as $_key => $_val) { // We'll only support one level deep.
+                    if (get_magic_quotes_gpc()) {
+                        $_val = stripslashes($_val);
+                    }
+
+                    if (strpos($access_url, '?') === false) {
+                        $access_url .= '?';
+                    } else {
+                        $access_url .= '&';
+                    }
+                    $access_url .= $key . '[' . $_key . ']' . '=' . urlencode($_val);
+                }
+            } else {
+                if (get_magic_quotes_gpc()) {
+                    $val = stripslashes($val);
+                }
+
+                if (strpos($access_url, '?') === false) {
+                    $access_url .= '?';
+                } else {
+                    $access_url .= '&';
+                }
+                $access_url .= $key . '=' . urlencode($val);
+            }
+        }
+
+        if (substr($access_url, 0, strlen($base_url)) != $base_url) {
+            $base_url = rtrim($access_url, '/');
             if ((strpos($base_url, '.php') !== false) || (strpos($base_url, '?') !== false)) {
                 $base_url = dirname($base_url);
             }
@@ -106,12 +134,14 @@ class Module_forums
 
         $old_method = false;
         if ($old_method) {
-            return do_template('FORUMS_EMBED', array('_GUID' => '159575f6b83c5366d29e184a8dd5fc49', 'FORUMS' => $forums));
+            return do_template('FORUMS_EMBED', array('_GUID' => '159575f6b83c5366d29e184a8dd5fc49', 'FORUMS' => $access_url));
         }
 
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
         require_code('integrator');
-        return do_template('COMCODE_SURROUND', array('_GUID' => '4d5a8ce37df94f7d61f1a96f5689b9c0', 'CLASS' => 'float_surrounder', 'CONTENT' => protect_from_escaping(reprocess_url($forums, $base_url))));
+        $result = reprocess_url($access_url, $base_url);
+
+        return do_template('COMCODE_SURROUND', array('_GUID' => '4d5a8ce37df94f7d61f1a96f5689b9c0', 'CLASS' => 'float_surrounder', 'CONTENT' => protect_from_escaping($result)));
     }
 }

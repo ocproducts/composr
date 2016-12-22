@@ -165,7 +165,7 @@ We support almost everything in Tapatalk, but there are just a few exceptions:
  - Soft deletion of posts and topics (we achieve these via multi-moderations/post-history in Composr, but those are not supported) -- manually move to Trash instead
  - Ignoring users within topics (it\'s probably a bad idea because topics would get very confusing)
  - "Active members" (we felt it would end up a bit arbitrary and unnecessary -- there\'s no clear understood definition of what an active member is)
- - Password protected forums (we have an acceptance message with a corresponding question in Composr – but there\'s no way to display the message, so we cannot map it directly as a password feature – and pure password protection is better replaced with proper use of forum permissions anyway)
+ - Password protected forums (we have an acceptance message with a corresponding question in Composr -- but there\'s no way to display the message, so we cannot map it directly as a password feature -- and pure password protection is better replaced with proper use of forum permissions anyway)
  - You cannot view a private topic that you\'ve already left
  - You cannot leave a private topic that you are an original participant in
 

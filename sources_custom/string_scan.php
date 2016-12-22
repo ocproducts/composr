@@ -141,6 +141,8 @@ function string_scan($lang, $do_guessing = false)
         TICKETS_STAFF
         NO_CNS
         DOCS
+        PROJECT_SPONSORS
+        PROJECT_SPONSORS_LABEL
         CONFIG_OPTION_complex_lists
         COMPLEX_LISTS
         HERE_SURVEY_RESULTS
@@ -5355,7 +5357,6 @@ function string_scan($lang, $do_guessing = false)
         NEXT_ITEM_add_one_image
         NEXT_ITEM_add_one_video
         NEXT_ITEM_add_to_catalogue
-        NEXT_ITEM_add_to_category
         NEXT_ITEM_add_video_to_this
         NEXT_ITEM_adminzone
         NEXT_ITEM_edit_one
@@ -9815,6 +9816,7 @@ function string_scan($lang, $do_guessing = false)
         calendar_month_in_year
         calendar_month_in_year_verbose
         charset
+        date_concise_near_date
         date_no_year
         date_date
         date_joiner

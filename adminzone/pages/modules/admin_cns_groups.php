@@ -430,8 +430,8 @@ class Module_admin_cns_groups extends Standard_crud_module
                 protect_from_escaping(cns_get_group_link($row['id'])),
                 ($row['g_is_presented_at_install'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
                 ($row['g_is_default'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
-                //($row['g_is_private_club']==1)?do_lang_tempcode('YES'):do_lang_tempcode('NO'),
-                //($row['g_group_leader'] === null)?do_lang_tempcode('NA_EM'):make_string_tempcode($GLOBALS['FORUM_DRIVER']->get_username($row['g_group_leader'])),
+                //($row['g_is_private_club'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
+                //($row['g_group_leader'] === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode($GLOBALS['FORUM_DRIVER']->get_username($row['g_group_leader'])),
                 ($row['g_open_membership'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
             );
             if (addon_installed('points')) {

@@ -1341,7 +1341,7 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
                 break;
             }
         }
-        if ((count($potential['parameters']) < count($params)) && (!$potential['parameters'][count($potential['parameters']) - 1]['is_variadic']/*not a variadic function*/)) {
+        if ((count($potential['parameters']) < count($params)) && (count($potential['parameters']) != 0) && (!$potential['parameters'][count($potential['parameters']) - 1]['is_variadic']/*not a variadic function*/)) {
             log_warning('Too many parameters to function \'' . $function . '\'', $c_pos);
         }
 

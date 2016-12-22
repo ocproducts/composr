@@ -5211,8 +5211,17 @@ function illustrate_frame_load(iframeId) {
         return;
     }
 
-    doc = iframe.contentDocument;
-    de = doc.documentElement;
+    iframe.style.height = '80px';
+
+    try {
+        doc = iframe.contentDocument;
+        de = doc.documentElement;
+    }
+    catch (e) {
+        // May be connection interference somehow
+        iframe.scrolling = 'auto';
+        return;
+    }
 
     head = '<style>';
 

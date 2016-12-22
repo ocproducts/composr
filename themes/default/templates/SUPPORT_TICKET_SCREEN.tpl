@@ -43,7 +43,7 @@
 
 		{+START,IF,{$HAS_PRIVILEGE,support_operator}}
 			{$REQUIRE_JAVASCRIPT,people_lists}
-			<li>
+`			<li>
 				<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical_alignment" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -78,7 +78,7 @@
 		{+START,IF_NON_EMPTY,{POST_TEMPLATES}}
 			<tr>
 				<th class="de_th">
-					<span class="field_name"><label for="ticket_type_id">{!cns_post_templates:POST_TEMPLATE}:</label></span>
+					<span class="field_name"><label for="post_template">{!cns_post_templates:POST_TEMPLATE}:</label></span>
 				</th>
 				<td>
 					{POST_TEMPLATES}

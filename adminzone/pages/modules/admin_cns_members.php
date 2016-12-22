@@ -65,7 +65,7 @@ class Module_admin_cns_members
 
         if ($support_crosslinks) {
             if (has_privilege(get_member(), 'member_maintenance')) {
-                $ret['_SEARCH:members:browse'] = array('MEMBERS', 'menu/adminzone/tools/users/member_edit');
+                $ret['_SEARCH:members:browse'] = array('MEMBER_DIRECTORY', 'menu/adminzone/tools/users/member_edit');
             }
             $ret['_SEARCH:admin_cns_merge_members:browse'] = array('MERGE_MEMBERS', 'menu/adminzone/tools/users/merge_members');
             if (addon_installed('cns_cpfs')) {
@@ -81,7 +81,7 @@ class Module_admin_cns_members
                 $ret['_SEARCH:admin_ecommerce:browse'] = array('CUSTOM_PRODUCT_USERGROUP', 'menu/adminzone/audit/ecommerce/ecommerce');
             }
             $ret['_SEARCH:admin_cns_groups:browse'] = array('USERGROUPS', 'menu/social/groups');*/
-            if (addon_installed('warnings')) {
+            if (addon_installed('cns_warnings')) {
                 $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'tabs/member_account/warnings');
             }
         }
@@ -243,7 +243,7 @@ class Module_admin_cns_members
                 addon_installed('cns_cpfs') ? array('menu/adminzone/tools/users/custom_profile_fields', array('admin_cns_customprofilefields', array('type' => 'browse'), get_module_zone('admin_cns_customprofilefields')), do_lang_tempcode('CUSTOM_PROFILE_FIELDS'), 'DOC_CUSTOM_PROFILE_FIELDS') : null,
                 addon_installed('welcome_emails') ? array('menu/adminzone/setup/welcome_emails', array('admin_cns_welcome_emails', array('type' => 'browse'), get_module_zone('admin_cns_welcome_emails')), do_lang_tempcode('WELCOME_EMAILS'), 'DOC_WELCOME_EMAILS') : null,
                 addon_installed('securitylogging') ? array('menu/adminzone/tools/users/investigate_user', array('admin_lookup', array(), get_module_zone('admin_lookup')), do_lang_tempcode('INVESTIGATE_USER'), 'DOC_INVESTIGATE_USER') : null,
-                array('tabs/member_account/warnings', array('warnings', array('type' => 'edit'), get_module_zone('warnings')), do_lang_tempcode('WARNINGS')),
+                addon_installed('cns_warnings') ? array('tabs/member_account/warnings', array('warnings', array('type' => 'edit'), get_module_zone('warnings')), do_lang_tempcode('WARNINGS')) : null,
                 array('menu/adminzone/security/usergroups_temp', array('admin_group_member_timeouts', array('type' => 'browse'), get_module_zone('admin_group_member_timeouts')), do_lang_tempcode('GROUP_MEMBER_TIMEOUTS'), 'DOC_GROUP_MEMBER_TIMEOUTS'),
                 addon_installed('ecommerce') ? array('menu/adminzone/audit/ecommerce/ecommerce', array('admin_ecommerce', array('type' => 'browse'), get_module_zone('admin_ecommerce')), do_lang_tempcode('CUSTOM_PRODUCT_USERGROUP'), 'DOC_ECOMMERCE') : null,
                 array('menu/social/groups', array('admin_cns_groups', array('type' => 'browse'), get_module_zone('admin_cns_groups'), do_lang_tempcode('SWITCH_SECTION_WARNING')), do_lang_tempcode('USERGROUPS'), 'DOC_GROUPS'),
@@ -271,7 +271,7 @@ class Module_admin_cns_members
 
         $submit_name = do_lang_tempcode('ADD_MEMBER');
         $url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF');
-        return do_template('FORM_SCREEN', array('_GUID' => '3724dec184e27bb1bfebc5712e8faec2', 'PREVIEW' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
+        return do_template('FORM_SCREEN', array('_GUID' => '3724dec184e27bb1bfebc5712e8faec2', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
     }
 
     /**
@@ -369,11 +369,10 @@ class Module_admin_cns_members
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'step1'), '_SELF'), // Add one
-            null,// Edit this
+            null, // Edit this
             null, // Edit one
             array('members', array('type' => 'view', 'id' => $id), get_module_zone('members')), // View this
             array('members', array('type' => 'browse'), get_module_zone('members'), do_lang_tempcode('MEMBERS')), // View archive
-            null, // Add to category
             null, // Add one category
             null, // Edit one category
             null, // Edit this category

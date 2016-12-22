@@ -3640,7 +3640,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
         if ((!array_key_exists(2, $param)) || ($param[2] === '1')) {
             $timestamp = utctime_to_usertime($timestamp);
         }
-        $value = locale_filter(cms_strftime($param[0], $timestamp));
+        $value = cms_strftime($param[0], $timestamp);
         if ($value === $param[0]) { // If no conversion happened then the syntax must have been for 'date' not 'strftime'
             $value = date($param[0], $timestamp);
         }
@@ -3864,7 +3864,11 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        $value = float_to_raw_string(floatval($param[0]) / floatval($param[1]), 20, true);
+        if (floatval($param[1]) == 0.0) {
+            $value = 'divide-by-zero';
+        } else {
+            $value = float_to_raw_string(floatval($param[0]) / floatval($param[1]), 20, true);
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -3885,9 +3889,7 @@ function ecv_DIV_FLOAT($lang, $escaped, $param)
  */
 function ecv_DIV($lang, $escaped, $param)
 {
-    if (floatval($param[1]) == 0.0) {
-        $value = 'divide-by-zero';
-    } else {
+    if (isset($param[1])) {
         if (floatval($param[1]) == 0.0) {
             $value = 'divide-by-zero';
         } else {

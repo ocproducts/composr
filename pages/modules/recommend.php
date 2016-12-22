@@ -349,6 +349,7 @@ class Module_recommend
             'JAVASCRIPT' => $javascript,
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
+            'PREVIEW' => true,
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,
             'URL' => $post_url,

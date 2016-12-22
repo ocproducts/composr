@@ -216,6 +216,7 @@
 	font-weight: normal;
 	float: left;
 	font-size: 1.15em;
+	border-bottom: 0;
 }
 .bubble .email_icon {
 	height: 39px;

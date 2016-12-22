@@ -38,6 +38,7 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     public $title_is_multi_lang = false;
     public $donext_entry_content_type = 'forum_grouping';
     public $donext_category_content_type = null;
+    public $do_preview = null;
 
     /**
      * Find entry-points available within this module.

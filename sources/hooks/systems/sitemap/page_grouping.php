@@ -79,7 +79,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
             list($_page_grouping) = $link;
 
             if (($_page_grouping == '') || ($_page_grouping == $page_grouping)) {
-                if ((is_array($link)) && (is_string($link[2][2]))) {
+                if ((is_array($link[2])) && (is_string($link[2][2]))) {
                     $pages_found[$link[2][2] . ':' . $link[2][0]] = true;
                 }
             }

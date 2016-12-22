@@ -88,7 +88,7 @@ The advice here is simple: use PNG, JPEG or GIF formats, but never other formats
 
 Usually you should always use PNG.
 There are two exceptional cases though:
-1) If you need animation, use GIF
+1) If you need animation, use GIF (soon will be able to do animation using [url="APNG"]http://caniuse.com/#feat=apng[/url] though)
 2) If you do not need transparency, and don't mind some quality loss, use JPEG
 
 [title="3"]Sound and Video[/title]

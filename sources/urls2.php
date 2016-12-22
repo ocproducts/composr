@@ -180,7 +180,7 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
             $key = strval($key);
         }
 
-        if ((($exclude !== null) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/)) {
+        if ((($exclude !== null) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/) || ($key == 'csrf_token')) {
             continue;
         }
 
@@ -460,6 +460,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
                     }
                 }
 
+                foreach ($attributes as &$attribute) {
+                    $attribute = cms_url_decode_post_process(urldecode($attribute));
+                }
+
                 break 2;
             }
         }
@@ -475,7 +479,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
             $_bit = explode('=', $bit, 2);
 
             if (count($_bit) == 2) {
-                $attributes[$_bit[0]] = $_bit[1];
+                $attributes[$_bit[0]] = cms_url_decode_post_process($_bit[1]);
                 if (strpos($attributes[$_bit[0]], ':') !== false) {
                     if ($perfect_only) {
                         return ''; // Could not convert this URL to a page-link, because it contains a colon
@@ -501,7 +505,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         $page_link .= ':';
     }
     if (array_key_exists('id', $attributes)) {
-        $page_link .= ':' . urldecode($attributes['id']);
+        $page_link .= ':' . $attributes['id'];
     }
     foreach ($attributes as $key => $val) {
         if (!is_string($val)) {
@@ -509,7 +513,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
 
         if (($key != 'page') && ($key != 'type') && ($key != 'id')) {
-            $page_link .= ':' . $key . '=' . urldecode($val);
+            $page_link .= ':' . $key . '=' . cms_url_encode($val);
         }
     }
 
@@ -776,11 +780,23 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
  */
 function _generate_moniker($moniker_src)
 {
-    $moniker_src = strip_comcode($moniker_src);
+    $moniker = strip_comcode($moniker_src);
 
     $max_moniker_length = intval(get_option('max_moniker_length'));
 
-    $moniker = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $moniker_src);
+    // Transliteration first
+    if (get_charset() == 'utf-8') {
+        if (function_exists('transliterator_transliterate')) {
+            $moniker = transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $moniker);
+        } elseif ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
+            $moniker = iconv('utf-8', 'ASCII//TRANSLIT//IGNORE', $moniker);
+        } else {
+            // German has inbuilt transliteration
+            $moniker = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $moniker);
+        }
+    }
+
+    // Then strip down / substitute to force it to be URL-ready
     $moniker = str_replace("'", '', $moniker);
     $moniker = strtolower(preg_replace('#[^A-Za-z\d\-]#', '-', $moniker));
     if (strlen($moniker) > $max_moniker_length) {
@@ -792,6 +808,8 @@ function _generate_moniker($moniker_src)
     }
     $moniker = preg_replace('#\-+#', '-', $moniker);
     $moniker = rtrim($moniker, '-');
+
+    // A bit lame, but maybe we'll have to
     if ($moniker == '') {
         $moniker = 'untitled';
     }

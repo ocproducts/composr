@@ -371,8 +371,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $fr[] = ($row['cf_public_view'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = ($row['cf_required'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = ($row['cf_show_on_join_form'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
-            //$fr[]=($row['cf_show_in_posts']==1)?do_lang_tempcode('YES'):do_lang_tempcode('NO');
-            //$fr[]=($row['cf_show_in_post_previews']==1)?do_lang_tempcode('YES'):do_lang_tempcode('NO');
+            //$fr[]=($row['cf_show_in_posts']==1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
+            //$fr[]=($row['cf_show_in_post_previews']==1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = protect_from_escaping($orderer);
             if ($used) {
                 $edit_link = hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id']));

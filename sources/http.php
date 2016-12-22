@@ -270,6 +270,7 @@ abstract class HttpDownloader
     protected $do_ip_forwarding = null;
     protected $connecting_url = null;
     protected $raw_payload = null;
+    protected $sent_http_post_content = false;
     protected $put = null;
     protected $put_path = null;
     protected $put_no_delete = null;
@@ -388,6 +389,7 @@ abstract class HttpDownloader
         // More preprocessing...
 
         $this->raw_payload = '';
+        $this->sent_http_post_content = false;
         $this->put = mixed();
         $this->put_path = mixed();
         $this->put_no_delete = false;
@@ -404,7 +406,7 @@ abstract class HttpDownloader
                     $_postdetails_params = $this->post_params['_'];
                 } else {
                     if (count($this->post_params) > 0) {
-                        $_postdetails_params .= '&' . http_build_query($this->post_params);
+                        $_postdetails_params .= http_build_query($this->post_params);
                     }
                 }
             }
@@ -425,6 +427,7 @@ abstract class HttpDownloader
                 if (!$this->add_content_type_header_manually) {
                     $this->raw_payload .= "\r\n\r\n";
                 }
+                $this->sent_http_post_content = true;
             } else { // If files, use more complex multipart/form-data
                 if (strtolower($this->http_verb) == 'put') {
                     $this->put_no_delete = (count($this->post_params) == 0) && (count($this->files) == 1); // Can we just use the one referenced file as a direct PUT
@@ -702,6 +705,28 @@ abstract class HttpDownloader
         }
         if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $line, $matches) != 0) {
             $this->new_cookies[trim(rawurldecode($matches[1]))] = trim($matches[2]);
+
+            $cookie_key = trim(rawurldecode($matches[1]));
+
+            $cookie_value = trim($matches[2]);
+            $_cookie_parts = explode('; ', $cookie_value);
+
+            $cookie_parts = array();
+
+            $cookie_parts['key'] = $cookie_key;
+            $cookie_parts['value'] = trim(rawurldecode(array_shift($_cookie_parts)));
+
+            foreach ($_cookie_parts as $i => $part) {
+                $temp = explode('=', $part, 2);
+                if (array_key_exists(1, $temp)) {
+                    $cookie_parts[trim($temp[0])] = trim(rawurldecode($temp[1]));
+                }
+            }
+            if (function_exists('get_cookie_domain')) {
+                $cookie_parts['domain'] = get_cookie_domain();
+            }
+
+            $this->new_cookies[$cookie_key] = $cookie_parts;
         }
         if (preg_match("#^Content-Length: ([^;\r\n]*)\r\n#i", $line, $matches) != 0) {
             $this->download_size = intval($matches[1]);
@@ -919,10 +944,10 @@ class HttpDownloaderCurl extends HttpDownloader
                 $matches = array();
 
                 if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $_line, $matches) != 0) {
-                    $this->filename = $matches[1];
+                    $this->read_in_headers($_line);
                 }
                 if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $_line, $matches) != 0) {
-                    $this->new_cookies[trim(rawurldecode($matches[1]))] = trim($matches[2]);
+                    $this->read_in_headers($_line);
                 }
                 if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
                     if ($this->filename === null) {
@@ -1061,7 +1086,9 @@ class HttpDownloaderSockets extends HttpDownloader
             $out .= 'Host: ' . $this->url_parts['host'] . "\r\n";
             $out .= $this->get_header_string();
             $out .= $this->raw_payload;
-            $out .= 'Connection: Close' . "\r\n\r\n";
+            if (!$this->sent_http_post_content) {
+                $out .= 'Connection: Close' . "\r\n\r\n";
+            }
             @fwrite($mysock, $out);
             if ($this->put !== null) {
                 rewind($this->put);

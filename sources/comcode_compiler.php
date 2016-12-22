@@ -329,6 +329,8 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  */
 function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $db, $flags = 0, $highlight_bits = array(), $on_behalf_of_member = null)
 {
+    $comcode_parsing_hooks = find_all_hook_obs('systems', 'comcode_parsing', 'Hook_comcode_parsing_');
+
     init_valid_comcode_tags();
     init_potential_js_naughty_array();
 
@@ -427,6 +429,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         '<span style="font-size:\s*[\d\.]+(em|px|pt)?;?">',
         '</span>',
     );
+    foreach ($comcode_parsing_hooks as $comcode_parsing_ob) {
+        if (method_exists($comcode_parsing_ob, 'get_allowed_html_seqs')) {
+            $allowed_html_seqs = array_merge($allowed_html_seqs, $comcode_parsing_ob->get_allowed_html_seqs());
+        }
+    }
 
     $link_terminator_strs = array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'", '&nbsp;');
     if (get_charset() == 'utf-8') {
@@ -2143,6 +2150,22 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
         }
         $ahead = substr($comcode, $pos, $ahead_end - $pos);
 
+        global $OBSCURE_REPLACEMENTS;
+        $OBSCURE_REPLACEMENTS = array();
+        $extra_allowed_html_seqs = array();
+        static $comcode_parsing_hooks = null;
+        if ($comcode_parsing_hooks === null) {
+            $comcode_parsing_hooks = find_all_hook_obs('systems', 'comcode_parsing', 'Hook_comcode_parsing_');
+        }
+        foreach ($comcode_parsing_hooks as $comcode_parsing_ob) {
+            if (method_exists($comcode_parsing_ob, 'get_allowed_html_seqs')) {
+                $extra_allowed_html_seqs = array_merge($extra_allowed_html_seqs, $comcode_parsing_ob->get_allowed_html_seqs());
+            }
+        }
+        foreach ($extra_allowed_html_seqs as $allowed_html_seq) {
+            $ahead = preg_replace_callback('#' . $allowed_html_seq . '#', '_obscure_html_callback', $ahead);
+        }
+
         require_code('input_filter');
         hard_filter_input_data__html($ahead);
 
@@ -2150,6 +2173,22 @@ function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html
         $comcode = substr($comcode, 0, $pos) . $ahead . substr($comcode, $ahead_end);
         $len = strlen($comcode);
     }
+}
+
+/**
+ * Used by filter_html to temporarily obscure white-listed complex HTML so it doesn't get mangled by the input filter.
+ *
+ * @param  array $matches Array of matches
+ * @return string Substituted text
+ *
+ * @ignore
+ */
+function _obscure_html_callback($matches)
+{
+    global $OBSCURE_REPLACEMENTS;
+    $rep = uniqid('', true);
+    $OBSCURE_REPLACEMENTS[$rep] = $matches[0];
+    return $rep;
 }
 
 /**

@@ -56,7 +56,7 @@ foreach ($advertiser_sessions as $session) {
         echo '<strong>Tracking information for <em>' . $from . '</em> visitor</strong> (' . $session['ip'] . ')&hellip;<br />';
         $places = $GLOBALS['SITE_DB']->query('SELECT the_page,date_and_time,referer FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE member_id=' . strval($member_id) . ' AND date_and_time>=' . strval($session['date_and_time']) . ' ORDER BY date_and_time');
         foreach ($places as $place) {
-            echo '<p>' . escape_html($place['the_page']) . ' at ' . date('Y-m-d H:i:s', $place['date_and_time']) . ' (from ' . escape_html(substr($place['referer'], 0, 200)) . ')</p>';
+            echo '<p>' . escape_html($place['the_page']) . ' at ' . get_timezoned_date_time($place['date_and_time'], false) . ' (from ' . escape_html(substr($place['referer'], 0, 200)) . ')</p>';
         }
     }
 

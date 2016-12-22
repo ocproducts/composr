@@ -200,7 +200,7 @@ function wysiwyg_set_readonly(name, readonly) {
     }
 
     var editor = window.wysiwyg_editors[name];
-    if (editor.document.$.body) {
+    if (editor.document && editor.document.$ && editor.document.$.body) {
         editor.document.$.body.readOnly = readonly;
         editor.document.$.body.contentEditable = !readonly;
         editor.document.$.body.designMode = readonly ? 'off' : 'on';

@@ -91,7 +91,6 @@ class Hook_sw_catalogues
                 require_lang('catalogues');
                 require_code('menus2');
                 delete_menu_item_simple(do_lang('DEFAULT_CATALOGUE_PROJECTS_TITLE'));
-                delete_menu_item_simple('_SEARCH:catalogues:projects:index');
                 delete_menu_item_simple('_SEARCH:cms_catalogues:add_entry:catalogue_name=projects');
                 delete_menu_item_simple('_SEARCH:catalogues:index:projects');
             }

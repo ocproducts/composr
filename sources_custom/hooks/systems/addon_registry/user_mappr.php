@@ -90,6 +90,8 @@ class Hook_addon_registry_user_mappr
 
 The addon adds extra custom profile fields to store members coordinates to store their latitude and logitude. The addon can automatically populate the members when members visit the block page (only supported by browsers that support the HTML 5 Location API, e.g. Firefox). Members can edit their locations in their profile.
 
+You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map).
+
 Coordinates of the Google map centre point and zoom level are configurable. You can find the coordinates by using the option in Google Maps Labs or via http://itouchmap.com/latlong.html.
 
 Parameters:
@@ -148,7 +150,9 @@ Parameters:
             'lang_custom/EN/google_map_users.ini',
             'sources_custom/blocks/main_google_map_users.php',
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP_USERS.tpl',
+            'themes/default/templates_custom/FORM_SCREEN_INPUT_MAP_POSITION.tpl',
             'sources_custom/hooks/systems/fields/float.php',
+            'sources_custom/hooks/systems/config/google_map_key.php',
             'data_custom/set_coordinates.php',
             'sources_custom/hooks/systems/cns_cpf_filter/latitude.php',
             'data_custom/get_member_tooltip.php',

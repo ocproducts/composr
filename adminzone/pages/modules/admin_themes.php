@@ -382,7 +382,7 @@ class Module_admin_themes
             $screen_preview_url = build_url(array('page' => '_SELF', 'type' => 'screen_previews', 'keep_theme' => $theme), '_SELF');
 
             // Theme date
-            $date = filemtime(($theme == 'default') ? (get_file_base() . '/themes/default') : (get_custom_file_base() . '/themes/' . $theme));
+            $date = filemtime(($theme == 'default' || $theme == 'admin') ? (get_file_base() . '/themes/default') : (get_custom_file_base() . '/themes/' . $theme));
             $_date = ($theme == 'default') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date($date)));
 
             // Where the theme is used
@@ -600,7 +600,7 @@ class Module_admin_themes
     {
         $theme = $this->theme;
 
-        $ini_file = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
+        $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (!file_exists($ini_file)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -706,7 +706,7 @@ class Module_admin_themes
      */
     private function save_theme_changes($theme)
     {
-        if (!file_exists((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
+        if (!file_exists((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
@@ -718,8 +718,8 @@ class Module_admin_themes
 
         erase_persistent_cache();
 
-        $before = better_parse_ini_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        $myfile = @fopen((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        $before = better_parse_ini_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        $myfile = @fopen((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
         @flock($myfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
             ftruncate($myfile, 0);
@@ -746,7 +746,7 @@ class Module_admin_themes
         }
         @flock($myfile, LOCK_UN);
         fclose($myfile);
-        sync_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        sync_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
 
         require_code('permissions2');
         set_category_permissions_from_environment('theme', $theme);
@@ -1122,7 +1122,7 @@ class Module_admin_themes
             if (((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name'])))) || (post_param_string('path', '') != '')) {
                 $old_url = find_theme_image($old_id, true, true, $theme, ($lang == '') ? null : $lang);
                 if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name']))) || $old_url != post_param_string('path', ''))) {
-                    if (($theme == 'default') || (strpos($old_url, 'themes/default/') === false)) {
+                    if (($theme == 'default' || $theme == 'admin') || (strpos($old_url, 'themes/default/') === false)) {
                         $where_map = array('theme' => $theme, 'id' => $old_id);
                         if (($lang != '') && ($lang !== null)) {
                             $where_map['lang'] = $lang;
@@ -1356,7 +1356,6 @@ class Module_admin_themes
             $edit_one, // Edit one
             null, // View this
             null, // View archive
-            null, // Add to category
             null, // Add one category
             null, // Edit one category
             null, // Edit this category

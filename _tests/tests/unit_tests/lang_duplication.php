@@ -36,6 +36,12 @@ class lang_duplication_test_set extends cms_test_case
 
         $all_keys = array();
 
+        $exceptions = array(
+            'GOOGLE_MAP',
+            'GOOGLE_MAP_KEY',
+            'CONFIG_OPTION_google_map_key',
+        );
+
         $lang_files = get_lang_files(fallback_lang());
         foreach (array_keys($lang_files) as $file) {
             $path = get_file_base() . '/lang/EN/' . $file . '.ini';
@@ -47,6 +53,10 @@ class lang_duplication_test_set extends cms_test_case
             _get_lang_file_map($path, $input, 'strings', false, true, 'EN');
 
             foreach ($input as $key => $val) {
+                if (in_array($key, $exceptions)) {
+                    continue;
+                }
+
                 if (isset($vals[$val])) {
                     //@var_dump($key);
                 } else {

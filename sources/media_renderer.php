@@ -250,7 +250,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
             $test = cms_getimagesize(is_object($attributes['thumb_url']) ? $attributes['thumb_url']->evaluate() : $attributes['thumb_url']);
             if ($test === false) {
                 $_width = get_option('attachment_default_width');
-                $_width = get_option('attachment_default_height');
+                $_height = get_option('attachment_default_height');
             } else {
                 list($_width, $_height) = array_map('strval', $test);
             }

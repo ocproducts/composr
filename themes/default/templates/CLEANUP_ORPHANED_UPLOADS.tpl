@@ -3,7 +3,7 @@
 		<h3>{!ORPHANED_UPLOADS}</h3>
 
 		{+START,LOOP,FOUND}
-			<p><a href="{URL*}">{URL*}</a></p>
+			<p><a href="{URL*}">{PATH*}</a></p>
 		{+END}
 	</div></section>
 {+END}

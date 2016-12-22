@@ -721,7 +721,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
             if (strpos($storage_type, '_trans') !== false) {
                 $value = (($value === null) || ($value === '0')) ? '' : get_translated_text($value, $GLOBALS['FORUM_DB']);
             } elseif (is_float($value)) {
-                $value = float_to_raw_string($value, 10, true);
+                $value = float_to_raw_string($value, 30, true);
             } elseif (is_integer($value)) {
                 $value = strval($value);
             }

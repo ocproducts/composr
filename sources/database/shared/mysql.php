@@ -148,9 +148,9 @@ class Database_super_mysql extends DatabaseDriver
 
         $queries = array();
 
-        $queries[] = 'SET WAIT_TIMEOUT=28800';
-
-        $queries[] = 'SET SQL_BIG_SELECTS=1';
+        $queries[] = 'SET wait_timeout=28800';
+        $queries[] = 'SET sql_big_selects=1';
+        $queries[] = 'SET max_allowed_packet=104857600';
 
         $queries[] = $this->strict_mode_query(true);
         // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
@@ -193,7 +193,7 @@ class Database_super_mysql extends DatabaseDriver
                 return false;
             }
             if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
+                /*@mysql_query('SET max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
 
                 if ($get_insert_id) {
                     $this->failed_query_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));

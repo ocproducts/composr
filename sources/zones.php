@@ -421,7 +421,9 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
 
     global $MODULES_ZONES_CACHE;
     if ((isset($MODULES_ZONES_CACHE[$_zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$_zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$_zone][$type])) && ($type === 'modules')/*don't want to look at cached failure for different page type*/)) {
-        return $MODULES_ZONES_CACHE[$_zone][$type][$module_name];
+        if (is_string($MODULES_ZONES_CACHE[$_zone][$type][$module_name])/*should always be a string, but possible weird bug*/) {
+            return $MODULES_ZONES_CACHE[$_zone][$type][$module_name];
+        }
     }
 
     $error = false; // hack for now
@@ -1047,7 +1049,7 @@ function block_cache_default($codename)
             return '2';
         }
     }
-    return '1';
+    return '1'; // NB: If the block doesn't support caching then nothing will be cached even if it is set to 1, UNLESS quick caching is also requested
 }
 
 /**
@@ -1271,6 +1273,14 @@ function apply_quick_caching($_cache)
 
     $has_keep_parameters = has_keep_parameters();
 
+    if ($has_keep_parameters) {
+        $keep_first_has_escaping = symbol_tempcode('KEEP', array('0'), array(ENTITY_ESCAPED));
+        $keep_non_first_has_escaping = symbol_tempcode('KEEP', array('1'), array(ENTITY_ESCAPED));
+
+        $keep_first_has_no_escaping = symbol_tempcode('KEEP', array('0'), array(NULL_ESCAPED));
+        $keep_non_first_has_no_escaping = symbol_tempcode('KEEP', array('1'), array(NULL_ESCAPED));
+    }
+
     $matches = array();
     $num_matches = preg_match_all('#(((\?)|(&(amp;)?))keep\_[^="\']*=[^&"\']*)+#', $cache, $matches, PREG_OFFSET_CAPTURE); // We assume that the keep_* parameters always come last, which holds true in Composr
     for ($i = 0; $i < $num_matches; $i++) {
@@ -1285,11 +1295,11 @@ function apply_quick_caching($_cache)
 
         $has_escaping = (preg_match('#&\w+;#', $matches[0][$i][0]) !== 0);
 
-        if ($has_keep_parameters) {
+        if ($has_keep_parameters) { // NB: has_keep_parameters() is in cache signature of 'menu' block, so this is safe for menus, keep_* will still work with this quick caching when both on and off
             if ($matches[0][$i][0][0] === '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
-                $sym_params = array('0');
+                $sym_params = $has_escaping ? $keep_first_has_escaping : $keep_first_has_no_escaping;
             } else { // All parameters are keep_*
-                $sym_params = array('1');
+                $sym_params = $has_escaping ? $keep_non_first_has_escaping : $keep_non_first_has_no_escaping;
             }
             $keep = symbol_tempcode('KEEP', $sym_params, $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
             $new_tempcode->attach($keep);

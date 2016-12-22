@@ -54,7 +54,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $f) {
-            if ((substr($f, -4) == '.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_custom') === false) && (strpos($f, 'sources/forum/') === false) && (strpos($f, 'exports/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'permissioncheckslog.php')) {
+            if ((substr($f, -4) == '.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_custom') === false) && (strpos($f, 'sources/forum/') === false) && (strpos($f, 'exports/') === false) && ($f != '_config.php') && (basename($f) != 'errorlog.php') && (basename($f) != 'permissioncheckslog.php')) {
                 $c = file_get_contents(get_file_base() . '/' . $f);
                 $matches = array();
                 $num_matches = preg_match_all('#(\$SITE_INFO|\$GLOBALS\[\'SITE_INFO\'\])\[\'([^\'"]+)\'\]#', $c, $matches);

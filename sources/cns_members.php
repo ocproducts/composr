@@ -226,8 +226,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
     $custom_fields = array();
     $member_mappings = cns_get_custom_field_mappings($member_id);
     $member_value = mixed(); // Initialise type to mixed
-    $all_cpf_permissions = ((get_member() == $member_id) || $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) ?/*no restricts if you are the member or a super-admin*/
-        array() : list_to_map('field_id', $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id)));
+    $all_cpf_permissions = ((get_member() == $member_id) || $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) ?/*no restricts if you are the member or a super-admin*/array() : list_to_map('field_id', $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id)));
 
     require_code('fields');
 
@@ -243,7 +242,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         $member_value = $member_mappings[$key];
         if (!is_string($member_value)) {
             if (is_float($member_value)) {
-                $member_value = float_to_raw_string($member_value);
+                $member_value = float_to_raw_string($member_value, 30);
             } elseif ($member_value !== null) {
                 $member_value = strval($member_value);
             }

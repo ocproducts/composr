@@ -558,7 +558,7 @@ function post_fields_relay()
  */
 function fu_link($url, $text, $disabled = false, $js = '')
 {
-    $hidden = (strpos($url, 'http://compo.sr') !== false) ? '' : post_fields_relay();
+    $hidden = (strpos($url, 'http://compo.sr') !== false || strpos($url, '/index.php') !== false) ? '' : post_fields_relay();
     if (get_param_integer('keep_safe_mode', 0) == 1) {
         $url .= '&keep_safe_mode=1';
     }
@@ -569,7 +569,12 @@ function fu_link($url, $text, $disabled = false, $js = '')
     if ($text == do_lang('MORE_OPTIONS')) {
         $class = 'buttons__back';
     }
-    return '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">' . $hidden . '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button_screen_item" type="submit" value="' . escape_html($text) . '" /></form>';
+
+    $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
+    $ret .= $hidden;
+    $ret .= '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button_screen_item" type="submit" value="' . escape_html($text) . '" />';
+    $ret .= '</form>';
+    return $ret;
 }
 
 /**

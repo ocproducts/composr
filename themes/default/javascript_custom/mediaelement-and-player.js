@@ -1,5 +1,4 @@
 /*{$,Parser hint: .innerHTML okay}*/
-/*{$,Parser hint: pure}*/
 
 /*!
  *
@@ -970,7 +969,7 @@ mejs.MediaElementDefaults = {
 	// overrides the type specified, useful for dynamic instantiation
 	type: '',
 	// path to Flash and Silverlight plugins
-	pluginPath: '{$BASE_URL;}/data_custom/mediaelement',
+	pluginPath: '{$BASE_URL;}/data_custom/mediaelement/',
 	// name of flash file
 	flashName: 'flashmediaelement.swf',
 	// streamer for RTMP streaming
@@ -1921,7 +1920,7 @@ window.MediaElement = mejs.MediaElement;
             "language" : (exports.i18n && exports.i18n.locale.language) || '',
             "strings" : (exports.i18n && exports.i18n.locale.strings) || {}
         },
-        "ietf_lang_regex" : /^(x\-)?[a-z]{2,}(\-\w{2,})?(\-\w{2,})?$/,
+        "ietf_lang_regex" : /^(x\-)?[a-z]\{2,}(\-\w\{2,})?(\-\w\{2,})?$/,
         "methods" : {}
     };
 // start i18n
@@ -5376,7 +5375,7 @@ if (typeof jQuery != 'undefined') {
 	*/
 	mejs.TrackFormatParser = {
 		webvtt: {
-			pattern_timecode: /^((?:[0-9]{1,2}:)?[0-9]{2}:[0-9]{2}([,.][0-9]{1,3})?) --\> ((?:[0-9]{1,2}:)?[0-9]{2}:[0-9]{2}([,.][0-9]{3})?)(.*)$/,
+			pattern_timecode: /^((?:[0-9]\{1,2}:)?[0-9]\{2}:[0-9]\{2}([,.][0-9]\{1,3})?) --\> ((?:[0-9]\{1,2}:)?[0-9]\{2}:[0-9]\{2}([,.][0-9]\{3})?)(.*)$/,
 
 			parse: function(trackText) {
 				var

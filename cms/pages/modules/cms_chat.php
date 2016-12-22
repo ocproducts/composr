@@ -563,7 +563,6 @@ class Module_cms_chat
                 array('_SELF', array('type' => 'room', 'id' => $room_id), '_SELF'), // Edit one
                 null, // View this
                 array('_SELF', array(), '_SELF'), // View archive
-                null, // Add to category
                 null, // Add one category
                 null, // Edit one category
                 null, // Edit this category
@@ -628,7 +627,6 @@ class Module_cms_chat
             array('_SELF', array('type' => 'room', 'id' => $room_id), '_SELF'), // Edit one
             null, // View this
             array('_SELF', array(), '_SELF'), // View archive
-            null, // Add to category
             null, // Add one category
             null, // Edit one category
             null, // Edit this category

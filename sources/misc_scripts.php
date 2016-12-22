@@ -125,7 +125,7 @@ function gd_text_script()
             require_code('themewizard');
             $fg_color = find_theme_seed($theme);
         } else {
-            $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+            $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
             if (is_file($ini_path)) {
                 require_code('files');
                 $map = better_parse_ini_file($ini_path);
