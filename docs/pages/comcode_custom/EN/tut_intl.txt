@@ -428,6 +428,8 @@ Using additional Tempcode, we could do additional deep remapping.
 	{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns_topic_poster_rank_images">{RANK_IMAGES}</div>{+END}
 [/code]
 
+This will remap the title based on what it already is. For each of the possible values ("Acteur" and "Policier" in our example) it will provide the gendered options for it.
+
 [concepts
  1_key="Language string"       1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"
  2_key="Character set"         2_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
