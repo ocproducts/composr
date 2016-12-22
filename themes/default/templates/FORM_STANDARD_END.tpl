@@ -43,7 +43,7 @@
 		<input class="button_screen buttons__back" type="button" data-cms-btn-go-back="1" value="{!GO_BACK}" />
 	{+END}
 	{+START,IF_PASSED,BACK_URL}
-		<input class="button_screen buttons__back" type="button" onclick="if (this.form.method === 'get') { window.location='{BACK_URL;^*}'; } else { this.form.action='{BACK_URL;^*}'; this.form.submit(); }" value="{!GO_BACK}" />
+		<input class="button_screen buttons__back" type="button" onclick="if (this.form.method.toLowerCase() === 'get') { window.location='{BACK_URL;^*}'; } else { this.form.action='{BACK_URL;^*}'; this.form.submit(); }" value="{!GO_BACK}" />
 	{+END}
 
 	{+START,IF_PASSED,EXTRA_BUTTONS}{EXTRA_BUTTONS}{+END}

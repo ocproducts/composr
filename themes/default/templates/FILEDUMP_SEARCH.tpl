@@ -1,12 +1,12 @@
 <div class="float_surrounder">
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		{$SET,search_url,{$SELF_URL}}
-		<form class="filedump_filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" onsubmit="action.href+=window.location.hash; if (this.elements['search'].value=='{!SEARCH;*}') this.elements['search'].value='';" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse}" method="get" autocomplete="off">
+		<form class="filedump_filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse}" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$GET,search_url},search,type_filter,sort,place,recurse}
 
 			<p class="left">
 				<label class="accessibility_hidden" for="search_filedump_{I*}">{!SEARCH}</label>
-				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" value="{SEARCH*}" />
+				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" />
 
 				<label for="recurse_{I*}">{!INCLUDE_SUBFOLDERS}</label>
 				<input {+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_{I*}" value="1" />

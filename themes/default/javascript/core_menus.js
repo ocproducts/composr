@@ -267,6 +267,16 @@
 
         document.getElementById('branch_type_' + id).selectedIndex = sIndex;
 
+        $cms.dom.on(container, 'focus', '.js-focus-make-caption-field-selected', function (e, focused) {
+            make_field_selected(focused);
+        });
+
+        $cms.dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
+            if (!document.getElementById('menu_editor_wrap').classList.contains('docked')) {
+                smooth_scroll(find_pos_y(document.getElementsByTagName('h2')[2]));
+            }
+        });
+
         $cms.dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
             delete_menu_branch(clicked);
         });
@@ -279,6 +289,13 @@
             menu_editor_branch_type_change(id);
         });
 
+        $cms.dom.on(container, 'click', '.js-click-btn-move-down-handle-ordering', function (e, btn) {
+            handle_ordering(btn, false, true);
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-btn-move-up-handle-ordering', function (e, btn) {
+            handle_ordering(btn, true, false);
+        });
 
         function delete_menu_branch(ob) {
             var id = ob.id.substring(4, ob.id.length);

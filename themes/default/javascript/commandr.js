@@ -1,17 +1,28 @@
 'use strict';
 
 window.previous_commands || (window.previous_commands = []);
+(window.current_command !== undefined) ||  (window.current_command = null);
 
-if (window.current_command === undefined) {
-    window.current_command = null;
-}
+(function ($cms) {
+    'use strict';
+
+    $cms.templates.commandrCommands = function (params, container) {
+        $cms.dom.on(container, 'click', '.js-click-enter-command', function (e, target) {
+            var commandInput = $cms.dom.$('#commandr_command'),
+                command = strVal(target.dataset.tpCommand);
+            commandInput.value = command;
+            commandInput.focus();
+        });
+    };
+}(window.$cms));
 
 // Deal with Commandr history
 function commandr_handle_history(element, key_code, e) {
-    if ((key_code == 38) && (window.previous_commands.length > 0)) // Up button
-    {
+    if ((key_code == 38) && (window.previous_commands.length > 0)) {// Up button
         cancel_bubbling(e);
-        if (e.cancelable) e.preventDefault();
+        if (e.cancelable) {
+            e.preventDefault();
+        }
 
         if (window.current_command == null) {
             window.current_command = window.previous_commands.length - 1;
@@ -22,11 +33,12 @@ function commandr_handle_history(element, key_code, e) {
             element.value = window.previous_commands[window.current_command];
         }
         return false;
-    }
-    else if ((key_code == 40) && (window.previous_commands.length > 0)) // Down button
-    {
+    } else if ((key_code == 40) && (window.previous_commands.length > 0)) {// Down button
+
         cancel_bubbling(e);
-        if (e.cancelable) e.preventDefault();
+        if (e.cancelable) {
+            e.preventDefault();
+        }
 
         if (window.current_command != null) {
             if (window.current_command < window.previous_commands.length - 1) {

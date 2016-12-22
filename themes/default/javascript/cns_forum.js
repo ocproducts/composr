@@ -8,13 +8,31 @@
     }
 
     $cms.inherits(CnsForumTopicWrapper, $cms.View, {
-        events: {
-            'click .js-click-mark-all-topics': 'markAllTopics'
+        events: function () {
+            return {
+                'click .js-click-mark-all-topics': 'markAllTopics',
+                'change .js-select-change-submit-form': 'changeSubmit',
+                'click .js-click-btn-add-form-marked-posts': 'addFormMarkedPosts'
+            };
         },
+
         markAllTopics: function () {
             $cms.dom.$$('input[type="checkbox"][name^="mark_"]').forEach(function (checkbox) {
                 checkbox.click();
             });
+        },
+
+        changeSubmit: function (e, select) {
+            select.form.submit();
+        },
+
+        addFormMarkedPosts: function (e, btn) {
+            if (add_form_marked_posts(btn.form, 'mark_')) {
+                $cms.ui.disableButton(btn);
+            } else {
+                window.fauxmodal_alert('{!NOTHING_SELECTED;}');
+                e.preventDefault();
+            }
         }
     });
 
@@ -40,9 +58,8 @@
         });
     };
 
-    $cms.templates.cnsTopicScreen = function (params) {
-        var container = this,
-            markedPostActionsForm = container.querySelector('form.js-form-marked-post-actions');
+    $cms.templates.cnsTopicScreen = function (params, /**Element*/container) {
+        var markedPostActionsForm = container.querySelector('form.js-form-marked-post-actions');
 
         if ((params.serializedOptions !== undefined) && (params.hash !== undefined)) {
             window.comments_serialized_options = params.serializedOptions;
@@ -51,7 +68,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-check-marked-form-and-submit', function (e, clicked) {
             if (!add_form_marked_posts(markedPostActionsForm, 'mark_')) {
-                window.fauxmodal_alert('{!NOTHING_SELECTED=;}');
+                window.fauxmodal_alert('{!NOTHING_SELECTED;}');
                 e.preventDefault();
                 return;
             }
@@ -63,6 +80,14 @@
 
             $cms.ui.disableButton(clicked);
         });
+
+        $cms.dom.on(container, 'click', '.js-click-require-tma-type-selection', function (e, btn) {
+            if ($cms.dom.$('#tma_type').selectedIndex !== -1) {
+                $cms.ui.disableButton(btn);
+            } else {
+                e.preventDefault();
+            }
+        })
     };
 
     $cms.templates.cnsTopicPoll = function (params) {
@@ -117,6 +142,25 @@
 
         $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
             poll_for_notifications(true, true);
+        });
+    };
+
+    $cms.templates.cnsTopicPost = function cnsTopicPost(params, container) {
+        var id = strVal(params.id),
+            cell = $cms.dom.$('#cell_mark_' + id);
+
+
+        $cms.dom.on(container, 'click', '.js-click-checkbox-set-cell-mark-class', function (e, checkbox) {
+            cell.classList.toggle('cns_on', checkbox.checked);
+            cell.classList.toggle('cns_off', !checkbox.checked);
+        });
+    };
+
+    $cms.templates.cnsTopicMarker = function cnsTopicMarker(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-checkbox-set-row-mark-class', function (e, checkbox) {
+            var row = $cms.dom.closest(checkbox, 'tr');
+            row.classList.toggle('cns_on', checkbox.checked);
+            row.classList.toggle('cns_off', !checkbox.checked);
         });
     };
 

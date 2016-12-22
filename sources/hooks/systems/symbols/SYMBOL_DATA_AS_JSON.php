@@ -109,6 +109,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'background_template_compilation' => get_option('background_template_compilation'),
             'complex_uploader' => get_option('complex_uploader'),
             'collapse_user_zones' => get_option('collapse_user_zones'),
+            'sitewide_im' => get_option('sitewide_im'),
         ];
 
         $value['VALUE_OPTION'] = [

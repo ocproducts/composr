@@ -1,7 +1,5 @@
 {+START,IF_PASSED,JS}
-<script>// <![CDATA[
-	{JS/}
-//]]></script>
+<script>{JS/}</script>
 {+END}
 
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">

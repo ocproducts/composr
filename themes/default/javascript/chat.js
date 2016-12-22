@@ -12,7 +12,7 @@
 
     function ChatRoomScreen(params) {
         ChatRoomScreen.base(this, 'constructor', arguments);
-        this.chatroomId = params.chatroomId;
+        this.chatroomId = strVal(params.chatroomId);
 
         $cms.load.then(function () {
             chat_load(params.chatroomId);
@@ -26,12 +26,15 @@
                 'click select.js-select-click-font-change': 'fontChange',
                 'change select.js-select-change-font-change': 'fontChange',
                 'submit form.js-form-submit-check-chat-options': 'checkChatOptions',
-                'click .js-click-post-chat-message': 'postChatMessage'
+                'click .js-click-post-chat-message': 'postChatMessage',
+                'keypress .js-keypress-enter-post-chat': 'enterChatMessage',
+                'change .js-change-input-text-color': 'changeInputTextColor',
+                'click .js-click-open-emoticon-chooser-window': 'openEmoticonChooserWindow'
             };
         },
 
         toggleChatPanel: function () {
-            $cms.toggleableTray($cms.dom.id('chat_comcode_panel'));
+            $cms.toggleableTray($cms.dom.$('#chat_comcode_panel'));
         },
 
         fontChange: function (e, selectEl) {
@@ -54,10 +57,27 @@
 
         postChatMessage: function (e) {
             chat_post(e, this.chatroomId, 'post', this.$('#font_name').value, this.$('#text_colour').value);
+        },
+
+        enterChatMessage: function (e) {
+            if ($cms.dom.keyPressed(e, 'Enter')) {
+                this.postChatMessage(e);
+            }
+        },
+
+        changeInputTextColor: function (e, input) {
+            if (input.value && /^#[0-9A-F]{3}([0-9A-F]{3})?$/i.test(input.value)) {
+                input.style.color = input.value;
+                this.$('#colour').value = input.value;
+            }
+        },
+
+        openEmoticonChooserWindow: function () {
+            window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         }
     });
 
-    $cms.templates.chatSound = function (params) { // Prepares chat sounds
+    $cms.templates.chatSound = function chatSound(params) { // Prepares chat sounds
         if (window.prepared_chat_sounds) {
             return;
         }
@@ -77,21 +97,29 @@
         });
     };
 
-    $cms.templates.chatFriends = function (params) {
-        var friends = params.friends, friend;
+    $cms.templates.chatFriends = function chatFriends(params, container) {
+        var friends = arrVal(params.friends), friend;
 
         for (var i = 0; i < friends.length; i++) {
             friend = friends[i];
 
             if (friend.onlineText !== '{!ACTIVE;^}') {
-                document.getElementById('friend_img_' + friend.memberId).className = 'friend_inactive';
+                $cms.dom.$('#friend_img_' + friend.memberId).className = 'friend_inactive';
             }
         }
+
+
+        $cms.dom.on(container, 'click', '.js-click-start-friend-im', function (e, link) {
+            var memberId = strVal(link.dataset.tpMemberId);
+
+            if (start_im(memberId, true) === false) {
+                e.preventDefault();
+            }
+        });
     };
 
-    $cms.templates.chatLobbyImArea = function (params) {
-        var container = this,
-            chatroomId = strVal(params.chatroomId);
+    $cms.templates.chatLobbyImArea = function chatLobbyImArea(params, container) {
+        var chatroomId = strVal(params.chatroomId);
 
         $cms.load.then(function () {
             try {
@@ -115,11 +143,29 @@
         $cms.dom.on(container, 'click', '.js-click-close-chat-conversation', function () {
             close_chat_conversation(chatroomId);
         });
+
+        $cms.dom.on(container, 'keypress', '.js-keypress-eat-enter', function (e) {
+            if ($cms.dom.keyPressed(e, 'Enter')) {
+                e.preventDefault()
+            }
+        });
+
+        $cms.dom.on(container, 'keyup', '.js-keyup-textarea-chat-post', function (e, textarea) {
+            if (!$cms.$MOBILE) {
+                manage_scroll_height(textarea);
+            }
+
+            if ($cms.dom.keyPressed(e, 'Enter')) {
+                set_cookie('last_chat_msg_' + chatroomId, '');
+                chat_post(e, chatroomId, 'post_' + chatroomId, '', '');
+                e.preventDefault();
+            } else {
+                set_cookie('last_chat_msg_' + chatroomId, textarea.value);
+            }
+        });
     };
 
-    $cms.templates.chatLobbyScreen = function (params) {
-        var container = this;
-
+    $cms.templates.chatLobbyScreen = function chatLobbyScreen(params, container) {
         if ($cms.$IS_GUEST) {
             return;
         }
@@ -128,22 +174,65 @@
         window.im_participant_template = params.imParticipantTemplate;
         window.top_window = window;
 
-        function begin_im_chatting() {
-            window.load_from_room_id = -1;
-            if ((window.chat_check)) {
-                chat_check(true, 0);
-            } else {
-                window.setTimeout(begin_im_chatting, 500);
-            }
+        window.load_from_room_id = -1;
+        if ((window.chat_check)) {
+            chat_check(true, 0);
+        } else {
+            window.setTimeout(begin_im_chatting, 500);
         }
 
-        begin_im_chatting();
+        $cms.dom.on(container, 'click', '.js-click-btn-im-invite-ticked-people', function (e, btn) {
+            var people = get_ticked_people(btn.form);
+            if (people) {
+                invite_im(people);
+            }
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-btn-im-start-ticked-people', function (e, btn) {
+            var people = get_ticked_people(btn.form);
+            if (people) {
+                start_im(people);
+            }
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-btn-dump-friends-confirm', function (e, btn) {
+            var people = get_ticked_people(btn.form);
+            if (people) {
+                window.fauxmodal_confirm('{!Q_SURE=;}', function (result) {
+                    if (result) {
+                        $cms.ui.disableButton(btn);
+                        btn.form.submit();
+                    }
+                });
+            }
+        });
+
+        $cms.dom.on(container, 'keyup', '.js-keyup-input-update-ajax-member-list', function (e, btn) {
+            update_ajax_member_list(btn, null, false, e);
+        });
 
         $cms.dom.on(container, 'submit', '.js-form-submit-add-friend', function (e, form) {
             load_snippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements.friend_username.value), function (ajax_result) {
                 $cms.dom.html($cms.dom.$('#friends_wrap'), ajax_result.responseText);
                 form.elements.friend_username.value = '';
             });
+        });
+    };
+
+    $cms.templates.chatModerateScreen = function chatModerateScreen(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-btn-delete-marked-posts', function (e, btn) {
+            if (add_form_marked_posts(btn.form, 'del_')) {
+                $cms.ui.disableButton(btn);
+            } else {
+                window.fauxmodal_alert('{!NOTHING_SELECTED=;}');
+                e.preventDefault();
+            }
+        });
+    };
+
+    $cms.templates.chatLobbyImParticipant = function chatLobbyImParticipant(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-hide-self', function (e, clicked) {
+            $cms.dom.hide(clicked);
         });
     };
 
@@ -209,16 +298,28 @@
         }
     };
 
-    $cms.templates.chatSetEffectsSettingBlock = function (params) {
+    $cms.templates.chatSetEffectsSettingBlock = function (params, container) {
+        var key = strVal(params.key),
+            memberId = strVal(params.memberId);
+
         if (!$cms.$IS_HTTPAUTH_LOGIN) {
             var btnSubmitId = 'upload_' + params.key;
 
-            if (params.memberId) {
-                btnSubmitId += '_' + params.memberId;
+            if (memberId) {
+                btnSubmitId += '_' + memberId;
             }
 
             preinit_file_input('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
         }
+
+        $cms.dom.on(container, 'click', '.js-click-require-sound-selection', function () {
+            var select = $cms.dom.$('#select_' + key +  (memberId ? ('_' + memberId) : ''));
+            if (select.value === '') {
+                window.fauxmodal_alert('{!PLEASE_SELECT_SOUND;}');
+            } else {
+                play_sound_url(select.value);
+            }
+        });
     };
 
 }(window.$cms));
@@ -230,19 +331,19 @@ window.TRANSITORY_ALERT_TIME = +'{$ROUND%,{$CONFIG_OPTION,chat_transitory_alert_
 window.LOGS_DOWNLOAD_INTERVAL = 3000;
 
 // Tracking variables
-var last_message_id = -1;
-var last_timestamp = 0;
-var last_event_id = -1;
-var message_checking = false;
-var no_im_html = '';
-var text_colour;
-var opened_popups = {};
-var load_from_room_id = null;
-var already_received_room_invites = {};
-var already_received_contact_alert = {};
-var instant_go = false;
-var is_shutdown = false;
-var all_conversations = {};
+window.last_message_id = -1;
+window.last_timestamp = 0;
+window.last_event_id = -1;
+window.message_checking = false;
+window.no_im_html = '';
+window.text_colour = null;
+window.opened_popups = {};
+window.load_from_room_id = null;
+window.already_received_room_invites = {};
+window.already_received_contact_alert = {};
+window.instant_go = false;
+window.is_shutdown = false;
+window.all_conversations = {};
 
 // Code...
 
@@ -297,7 +398,9 @@ function chat_load(room_id) {
     if (window.location.href.indexOf('keep_chattest') == -1) begin_chatting(room_id);
 
     window.text_colour = document.getElementById('text_colour');
-    if (window.text_colour) window.text_colour.style.color = text_colour.value;
+    if (window.text_colour) {
+        window.text_colour.style.color = text_colour.value;
+    }
 
     manage_scroll_height(document.getElementById('post'));
 }
@@ -347,7 +450,9 @@ function get_ticked_people(form) {
 }
 
 function do_input_private_message(field_name) {
-    if (window.insert_textbox === undefined) return;
+    if (window.insert_textbox === undefined) {
+        return;
+    }
     window.fauxmodal_prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
@@ -357,7 +462,9 @@ function do_input_private_message(field_name) {
                     '{!MESSAGE;^}',
                     '',
                     function (vb) {
-                        if (vb != null) insert_textbox(document.getElementById(field_name), '[private="' + va + '"]' + vb + '[/private]');
+                        if (vb != null) {
+                            insert_textbox(document.getElementById(field_name), '[private="' + va + '"]' + vb + '[/private]');
+                        }
                     },
                     '{!chat:INPUT_CHATCODE_private_message;^}'
                 );
@@ -368,7 +475,9 @@ function do_input_private_message(field_name) {
 }
 
 function do_input_invite(field_name) {
-    if (window.insert_textbox === undefined) return;
+    if (window.insert_textbox === undefined) {
+        return;
+    }
     window.fauxmodal_prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
@@ -389,7 +498,9 @@ function do_input_invite(field_name) {
 }
 
 function do_input_new_room(field_name) {
-    if (window.insert_textbox === undefined) return;
+    if (window.insert_textbox === undefined) {
+        return;
+    }
     window.fauxmodal_prompt(
         '{!chat:ENTER_CHATROOM;^}',
         '',
@@ -412,74 +523,69 @@ function do_input_new_room(field_name) {
 // Post a chat message
 function chat_post(event, current_room_id, field_name, font_name, font_colour) {
     // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
-    if (window.do_ajax_request) {
-        var element = document.getElementById(field_name);
-        cancel_bubbling(event);
-        var message_text = element.value;
+    var element = document.getElementById(field_name);
+    cancel_bubbling(event);
+    var message_text = element.value;
 
-        if (message_text != '') {
-            if (window.top_window.cc_timer) {
-                window.top_window.clearTimeout(window.top_window.cc_timer);
-                window.top_window.cc_timer = null;
-            }
-
-            // Reinvite last left member if necessary
-            if ((element.force_invite !== undefined) && (element.force_invite !== null)) {
-                invite_im(element.force_invite);
-                element.force_invite = null;
-            }
-
-            // Send it through XMLHttpRequest, and append the results.
-            var url = '{$FIND_SCRIPT;,messages}?action=post';
-            element.disabled = true;
-            window.top_window.currently_sending_message = true;
-            var func = function (result) {
-                window.top_window.currently_sending_message = false;
-                element.disabled = false;
-                var responses = result.getElementsByTagName('result');
-                if (responses[0]) {
-                    process_chat_xml_messages(responses[0], true);
-
-                    window.setTimeout(function () {
-                        element.value = '';
-                    }, 20);
-                    element.style.height = 'auto';
-
-                    play_chat_sound('message_sent');
-                } else {
-                    window.fauxmodal_alert('{!MESSAGE_POSTING_ERROR;^}');
-                }
-
-                // Reschedule the next check (cc_timer was reset already higher up in function)
-                window.top_window.cc_timer = window.top_window.setTimeout(function () {
-                    window.top_window.chat_check(false, window.top_window.last_message_id, window.top_window.last_event_id);
-                }, window.MESSAGE_CHECK_INTERVAL);
-
-                try {
-                    element.focus();
-                }
-                catch (e) {
-                }
-            };
-            var error_func = function () {
-                window.top_window.currently_sending_message = false;
-                element.disabled = false;
-
-                // Reschedule the next check (cc_timer was reset already higher up in function)
-                window.top_window.cc_timer = window.top_window.setTimeout(function () {
-                    window.top_window.chat_check(false, window.top_window.last_message_id, window.top_window.last_event_id);
-                }, window.MESSAGE_CHECK_INTERVAL);
-            };
-            var full_url = maintain_theme_in_link(url + window.top_window.keep_stub(false));
-            var post_data = 'room_id=' + encodeURIComponent(current_room_id) + '&message=' + encodeURIComponent(message_text) + '&font=' + encodeURIComponent(font_name) + '&colour=' + encodeURIComponent(font_colour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id);
-            do_ajax_request(full_url, [func, error_func], post_data);
+    if (message_text != '') {
+        if (window.top_window.cc_timer) {
+            window.top_window.clearTimeout(window.top_window.cc_timer);
+            window.top_window.cc_timer = null;
         }
 
-        return false;
-    } else {
-        // Let the form be submitted the old-fashioned way.
-        return true;
+        // Reinvite last left member if necessary
+        if ((element.force_invite !== undefined) && (element.force_invite !== null)) {
+            invite_im(element.force_invite);
+            element.force_invite = null;
+        }
+
+        // Send it through XMLHttpRequest, and append the results.
+        var url = '{$FIND_SCRIPT;,messages}?action=post';
+        element.disabled = true;
+        window.top_window.currently_sending_message = true;
+        var func = function (result) {
+            window.top_window.currently_sending_message = false;
+            element.disabled = false;
+            var responses = result.getElementsByTagName('result');
+            if (responses[0]) {
+                process_chat_xml_messages(responses[0], true);
+
+                window.setTimeout(function () {
+                    element.value = '';
+                }, 20);
+                element.style.height = 'auto';
+
+                play_chat_sound('message_sent');
+            } else {
+                window.fauxmodal_alert('{!MESSAGE_POSTING_ERROR;^}');
+            }
+
+            // Reschedule the next check (cc_timer was reset already higher up in function)
+            window.top_window.cc_timer = window.top_window.setTimeout(function () {
+                window.top_window.chat_check(false, window.top_window.last_message_id, window.top_window.last_event_id);
+            }, window.MESSAGE_CHECK_INTERVAL);
+
+            try {
+                element.focus();
+            }
+            catch (e) {
+            }
+        };
+        var error_func = function () {
+            window.top_window.currently_sending_message = false;
+            element.disabled = false;
+
+            // Reschedule the next check (cc_timer was reset already higher up in function)
+            window.top_window.cc_timer = window.top_window.setTimeout(function () {
+                window.top_window.chat_check(false, window.top_window.last_message_id, window.top_window.last_event_id);
+            }, window.MESSAGE_CHECK_INTERVAL);
+        };
+        var full_url = maintain_theme_in_link(url + window.top_window.keep_stub(false));
+        var post_data = 'room_id=' + encodeURIComponent(current_room_id) + '&message=' + encodeURIComponent(message_text) + '&font=' + encodeURIComponent(font_name) + '&colour=' + encodeURIComponent(font_colour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id);
+        do_ajax_request(full_url, [func, error_func], post_data);
     }
+
+    return false;
 }
 
 // Check for new messages
@@ -1012,10 +1118,17 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
 }
 
 function start_im(people, just_refocus) {
-    if ((browser_matches('non_concurrent')) && (!document.getElementById('chat_lobby_convos_tabs'))) return true; // Let it navigate to chat lobby
+    if ((browser_matches('non_concurrent')) && !document.getElementById('chat_lobby_convos_tabs')) {
+        // Let it navigate to chat lobby
+        return true;
+    }
 
-    var message = (people.indexOf(',') == -1) ? '{!ALREADY_HAVE_THIS_SINGLE;^}' : '{!ALREADY_HAVE_THIS;^}';
-    if ((window.top_window.all_conversations[people] !== undefined) && (window.top_window.all_conversations[people] !== null)) {
+    people = strVal(people);
+    just_refocus = !!just_refocus;
+
+    var message = people.includes(',') ? '{!ALREADY_HAVE_THIS;^}' : '{!ALREADY_HAVE_THIS_SINGLE;^}';
+
+    if (window.top_window.all_conversations[people] != null) {
         if (just_refocus) {
             try {
                 var room_id = window.top_window.all_conversations[people];
@@ -1025,9 +1138,7 @@ function start_im(people, just_refocus) {
                     window.top_window.opened_popups['room_' + room_id].focus();
                 }
                 return false;
-            }
-            catch (e) {
-            }
+            } catch (ignore) {}
         }
 
         window.fauxmodal_confirm(
@@ -1039,6 +1150,7 @@ function start_im(people, just_refocus) {
     } else {
         _start_im(people, true); // true, because an IM may exist we don't have open, so let that be recycled
     }
+
     return false;
 }
 

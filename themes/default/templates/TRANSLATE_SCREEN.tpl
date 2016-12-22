@@ -14,7 +14,7 @@
 	</p>
 {+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off" data-cms-js="1" class="js-form-submit-modsecurity-workaround">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off" data-submit-pd="1" class="js-form-submit-modsecurity-workaround">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="wide_table_wrap really_long_table_wrap"><table class="autosized_table columned_table results_table wide_table">

@@ -46,7 +46,12 @@
         });
     }
 
-    $cms.inherits(Carousel, $cms.View, {
+    $cms.inherits(Carousel, $cms.View, /**@lends Carousel.prototype*/{
+        events: {
+            'mousedown .js-btn-car-move': 'move',
+            'keypress .js-btn-car-move': 'move'
+        },
+
         createFaders: function () {
             var mainEl = this.mainEl;
             var left = document.createElement('img');
@@ -77,11 +82,6 @@
             if (right.style.position === 'absolute'){// Ditto
                 right.style.visibility = (mainEl.scrollLeft + mainEl.offsetWidth >= mainEl.scrollWidth - 1) ? 'hidden' : 'visible';
             }
-        },
-
-        events: {
-            'mousedown .js-btn-car-move': 'move',
-            'keypress .js-btn-car-move': 'move'
         },
 
         move: function (e, btn) {
@@ -246,141 +246,161 @@
         });
     };
 
-    $cms.extend($cms.templates, {
-        attachments: function attachments(params) {
-            var container = this;
+    $cms.templates.comcodeMessage = function comcodeMessage(params, container) {
+        var name = strVal(params.name);
 
-            window.attachment_template = params.attachmentTemplate;
-            window.max_attachments = +params.maxAttachments || 0;
-            window.num_attachments = +params.numAttachments || 0;
+        $cms.dom.on(container, 'click', '.js-link-click-open-emoticon-chooser-window', function (e, link) {
+            var url = maintain_theme_in_link(link.href);
+            window.faux_open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+        });
 
-            $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
-                e.preventDefault();
-                window.faux_open(maintain_theme_in_link(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
+        $cms.dom.on(contaienr, 'click', '.js-click-toggle-wysiwyg', function () {
+            toggle_wysiwyg(name);
+        });
+    };
+
+    $cms.templates.attachments = function attachments(params) {
+        var container = this;
+
+        window.attachment_template = params.attachmentTemplate;
+        window.max_attachments = +params.maxAttachments || 0;
+        window.num_attachments = +params.numAttachments || 0;
+
+        $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
+            e.preventDefault();
+            window.faux_open(maintain_theme_in_link(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
+        });
+
+        window.rebuild_attachment_button_for_next = rebuild_attachment_button_for_next;
+        function rebuild_attachment_button_for_next(posting_field_name, attachment_upload_button) {
+            if (posting_field_name !== params.postingFieldName) {
+                return false;
+            }
+
+            if (attachment_upload_button === undefined) {
+                attachment_upload_button = window.attachment_upload_button; // Use what was used last time
+            }
+            window.attachment_upload_button = attachment_upload_button;
+
+            prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, strVal(params.filter), window.attachment_upload_button);
+        }
+
+        if (params.simpleUi) {
+            window.num_attachments = 1;
+
+            $cms.load.then(function () {
+                if (document.getElementById('attachment_upload_button')) {
+                    window.rebuild_attachment_button_for_next(params.postingFieldName, 'attachment_upload_button');
+                }
             });
+        }
+    };
 
-            window.rebuild_attachment_button_for_next = rebuild_attachment_button_for_next;
-            function rebuild_attachment_button_for_next(posting_field_name, attachment_upload_button) {
-                if (posting_field_name !== params.postingFieldName) {
-                    return false;
-                }
+    $cms.templates.comcodeImg = function comcodeImg(params) {
+        var img = this,
+            refreshTime = +params.refreshTime || 0;
 
-                if (attachment_upload_button === undefined) {
-                    attachment_upload_button = window.attachment_upload_button; // Use what was used last time
-                }
-                window.attachment_upload_button = attachment_upload_button;
+        if ((typeof params.rollover === 'string') && (params.rollover !== '')) {
+            create_rollover(img.id, params.rollover);
+        }
 
-                prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, strVal(params.filter), window.attachment_upload_button);
-            }
-
-            if (params.simpleUi) {
-                window.num_attachments = 1;
-
-                $cms.load.then(function () {
-                    if (document.getElementById('attachment_upload_button')) {
-                        window.rebuild_attachment_button_for_next(params.postingFieldName, 'attachment_upload_button');
-                    }
-                });
-            }
-        },
-
-        comcodeImg: function comcodeImg(params) {
-            var img = this,
-                refreshTime = +params.refreshTime || 0;
-
-            if ((typeof params.rollover === 'string') && (params.rollover !== '')) {
-                create_rollover(img.id, params.rollover);
-            }
-
-            if (refreshTime > 0) {
-                window.setInterval(function () {
-                    if (!img.timer) img.timer = 0;
-                    img.timer += refreshTime;
-
-                    if (img.src.indexOf('?') == -1) {
-                        img.src += '?time=' + img.timer;
-                    } else if (img.src.indexOf('time=') == -1) {
-                        img.src += '&time=' + img.timer;
-                    } else {
-                        img.src = img.src.replace(/time=\d+/, 'time=' + img.timer);
-                    }
-                }, refreshTime)
-            }
-        },
-
-        comcodeRandom: function comcodeRandom(params) {
-            var rand, part, use, comcoderandom;
-
-            rand = window.parseInt(Math.random() * params.max);
-
-            for (var key in params.parts) {
-                part = params.parts[key];
-                use = part.val;
-
-                if (part.num > rand) {
-                    break;
-                }
-            }
-
-            comcoderandom = document.getElementById('comcoderandom' + params.randIdRandom);
-            $cms.dom.html(comcoderandom, use);
-        },
-
-        comcodePulse: function (params) {
-            var id = 'pulse_wave_' + params.randIdPulse;
-
-            window[id] = [0, params.maxColor, params.minColor, params.speed, []];
-            window.setInterval(function() {
-                process_wave(document.getElementById(id));
-            }, params.speed);
-        },
-
-        comcodeShocker: function (params) {
-            var id = params.randIdShocker,
-                parts = param.parts || [], part,
-                time = +params.time;
-
-            window.shocker_parts || (window.shocker_parts = {});
-            window.shocker_pos || (window.shocker_pos = {});
-
-            window.shocker_parts[id] = [];
-            window.shocker_pos[id] = 0;
-
-            for (var i = 0, len = parts.length; i < len; i++) {
-                part = parts[i];
-                window.shocker_parts[id].push([part.left, part.right]);
-            }
-
-            shocker_tick(id, time, params.maxColor, params.minColor);
+        if (refreshTime > 0) {
             window.setInterval(function () {
-                shocker_tick(id, time, params.maxColor, params.minColor);
-            }, time);
-        },
+                if (!img.timer) img.timer = 0;
+                img.timer += refreshTime;
 
-        comcodeSectionController: function (params) {
-            var container = this,
-                passId = $cms.filter.id(params.passId),
-                id = 'a' + passId + '_sections';
+                if (img.src.indexOf('?') == -1) {
+                    img.src += '?time=' + img.timer;
+                } else if (img.src.indexOf('time=') == -1) {
+                    img.src += '&time=' + img.timer;
+                } else {
+                    img.src = img.src.replace(/time=\d+/, 'time=' + img.timer);
+                }
+            }, refreshTime)
+        }
+    };
 
-            window[id] = [];
+    $cms.templates.comcodeRandom = function comcodeRandom(params) {
+        var rand, part, use, comcoderandom;
 
-            for (var i = 0, len = params.sections.length; i < len; i++) {
-                window[id].push(params.sections[i]);
+        rand = window.parseInt(Math.random() * params.max);
+
+        for (var key in params.parts) {
+            part = params.parts[key];
+            use = part.val;
+
+            if (part.num > rand) {
+                break;
+            }
+        }
+
+        comcoderandom = document.getElementById('comcoderandom' + params.randIdRandom);
+        $cms.dom.html(comcoderandom, use);
+    };
+
+    $cms.templates.comcodePulse = function (params) {
+        var id = 'pulse_wave_' + params.randIdPulse;
+
+        window[id] = [0, params.maxColor, params.minColor, params.speed, []];
+        window.setInterval(function() {
+            process_wave(document.getElementById(id));
+        }, params.speed);
+    };
+
+    $cms.templates.comcodeShocker = function (params) {
+        var id = params.randIdShocker,
+            parts = param.parts || [], part,
+            time = +params.time;
+
+        window.shocker_parts || (window.shocker_parts = {});
+        window.shocker_pos || (window.shocker_pos = {});
+
+        window.shocker_parts[id] = [];
+        window.shocker_pos[id] = 0;
+
+        for (var i = 0, len = parts.length; i < len; i++) {
+            part = parts[i];
+            window.shocker_parts[id].push([part.left, part.right]);
+        }
+
+        shocker_tick(id, time, params.maxColor, params.minColor);
+        window.setInterval(function () {
+            shocker_tick(id, time, params.maxColor, params.minColor);
+        }, time);
+    };
+
+    $cms.templates.comcodeSectionController = function (params) {
+        var container = this,
+            passId = $cms.filter.id(params.passId),
+            id = 'a' + passId + '_sections';
+
+        window[id] = [];
+
+        for (var i = 0, len = params.sections.length; i < len; i++) {
+            window[id].push(params.sections[i]);
+        }
+
+        flip_page(0, passId, id);
+
+        $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
+            var flipTo = (clicked.dataset.vwFlipTo !== undefined) ? clicked.dataset.vwFlipTo : 0;
+            if ($cms.isNumeric(flipTo)) {
+                flipTo = +flipTo;
             }
 
-            flip_page(0, passId, id);
+            flip_page(flipTo, passId, id);
+        });
+    };
 
-            $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
-                var flipTo = (clicked.dataset.vwFlipTo !== undefined) ? clicked.dataset.vwFlipTo : 0;
-                if ($cms.isNumeric(flipTo)) {
-                    flipTo = +flipTo;
-                }
+    $cms.templates.emoticonClickCode = function emoticonClickCode(params, container) {
+        var fieldName = strVal(params.fieldName);
 
-                flip_page(flipTo, passId, id);
-            });
-        },
+        $cms.dom.on(container, 'click', function () {
+            do_emoticon(fieldName, container, false)
+        });
+    };
 
-        comcodeOverlay: function comcodeOverlay(params) {
+    $cms.templates.comcodeOverlay = function comcodeOverlay(params) {
             var container = this, id = params.id;
 
             $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
@@ -430,9 +450,9 @@
                     }
                 }, params.timein + 100);
             }
-        },
+        };
 
-        comcodeBigTabsController: function (params) {
+    $cms.templates.comcodeBigTabsController = function (params) {
             var container = this,
                 passId = $cms.filter.id(params.passId),
                 id = passId + '_' + params.bigTabSets,
@@ -483,9 +503,9 @@
 
                 flip_page(flipTo, id, fullId);
             });
-        },
+        };
 
-        comcodeTabBody: function (params) {
+    $cms.templates.comcodeTabBody = function (params) {
             var title = $cms.filter.id(params.title);
 
             if (params.blockCallUrl) {
@@ -493,9 +513,9 @@
                     call_block(params.blockCallUrl, '', document.getElementById('g_' + title));
                 };
             }
-        },
+        };
 
-        comcodeTicker: function (params) {
+    $cms.templates.comcodeTicker = function (params) {
             var el = document.getElementById('ticktickticker' + params.randIdTicker),
                 width = $cms.filter.id(params.width);
 
@@ -523,9 +543,9 @@
                     'onmouseout="this.setAttribute(\'scrolldelay\',' + (100 / params.speed) + ');" scrollamount="2" scrolldelay="' + (100 / params.speed) + '" ' +
                     'width="' + width + '">' + $cms.filter.nl(params.text) + '<\/marquee>');
             }
-        },
+        };
 
-        comcodeJumping: function (params) {
+    $cms.templates.comcodeJumping = function (params) {
             var id = parseInt(Math.random() * 10000);
 
             jumper_parts[id] = [];
@@ -541,9 +561,9 @@
             window.setInterval(function () {
                 jumper_tick(id);
             }, params.time);
-        },
+        };
 
-        mediaYoutube: function (params) {
+    $cms.templates.mediaYoutube = function (params) {
             var element = this;
 
             // Tie into callback event to see when finished, for our slideshows}
@@ -580,9 +600,9 @@
             } else {
                 youtube_callback();
             }
-        },
+        };
 
-        mediaRealmedia: function (params) {
+    $cms.templates.mediaRealmedia = function (params) {
             // Tie into callback event to see when finished, for our slideshows
             // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
             $cms.load.then(function () {
@@ -598,9 +618,9 @@
                     }, 1000);
                 }
             });
-        },
+        };
 
-        mediaQuicktime: function (params) {
+    $cms.templates.mediaQuicktime = function (params) {
             // Tie into callback event to see when finished, for our slideshows
             // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
             $cms.load.then(function () {
@@ -614,9 +634,9 @@
                     }, 1000);
                 }
             });
-        },
+        };
 
-        mediaVideoGeneral: function (params) {
+    $cms.templates.mediaVideoGeneral = function (params) {
             // Tie into callback event to see when finished, for our slideshows
             // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
             // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
@@ -649,9 +669,9 @@
                     }, 1000);
                 }
             });
-        },
+        };
 
-        mediaVimeo: function (params) {
+    $cms.templates.mediaVimeo = function (params) {
             // Tie into callback event to see when finished, for our slideshows}
             if (document.getElementById('next_slide')) {
                 stop_slideshow_timer();
@@ -662,90 +682,90 @@
                     player.contentWindow.postMessage(JSON.stringify({method: 'addEventListener', value: 'finish'}), 'https://player.vimeo.com/video/' + params.remoteId);
                 }, 1000);
             }
-        },
+        };
 
         // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
         // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
-        mediaAudioWebsafe: function (params) {
-            var playerOptions = {
-                width: params.width,
-                height: params.height,
-                autostart: false,
-                file: params.url,
-                type: params.type,
-                image: params.thumbUrl,
-                flashplayer: params.flashplayer,
-                events: {
-                    onComplete: function () {
-                        if (document.getElementById('next_slide')) {
-                            player_stopped();
-                        }
-                    },
-                    onReady: function () {
-                        if (document.getElementById('next_slide')) {
-                            stop_slideshow_timer();
-                            jwplayer(params.playerId).play(true);
-                        }
+    $cms.templates.mediaAudioWebsafe = function (params) {
+        var playerOptions = {
+            width: params.width,
+            height: params.height,
+            autostart: false,
+            file: params.url,
+            type: params.type,
+            image: params.thumbUrl,
+            flashplayer: params.flashplayer,
+            events: {
+                onComplete: function () {
+                    if (document.getElementById('next_slide')) {
+                        player_stopped();
+                    }
+                },
+                onReady: function () {
+                    if (document.getElementById('next_slide')) {
+                        stop_slideshow_timer();
+                        jwplayer(params.playerId).play(true);
                     }
                 }
-            };
-
-            if (params.duration) {
-                playerOptions.duration = params.duration;
             }
+        };
 
-            if (!($cms.$CONFIG_OPTION.show_inline_stats)) {
-                playerOptions.events.onPlay = function () {
-                    ga_track(null, '{!AUDIO;^}', params.url);
-                };
-            }
-
-            jwplayer(params.playerId).setup(playerOptions);
-        },
-
-        // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
-        // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
-        mediaVideoWebsafe: function (params) {
-            var playerOptions = {
-                autostart: false,
-                file: params.url,
-                type: params.type,
-                image: params.thumbUrl,
-                flashplayer: params.flashplayer,
-                events: {
-                    onComplete: function () {
-                        if (document.getElementById('next_slide')) player_stopped();
-                    },
-                    onReady: function () {
-                        if (document.getElementById('next_slide')) {
-                            stop_slideshow_timer();
-                            jwplayer(params.playerId).play(true);
-                        }
-                    }
-                }
-            };
-
-            if (params.duration) {
-                playerOptions.duration = params.duration;
-            }
-
-            if (params.playerWidth) {
-                playerOptions.width = params.playerWidth;
-            }
-
-            if (params.playerHeight) {
-                playerOptions.height = params.playerHeight;
-            }
-
-            if (!$cms.$CONFIG_OPTION.show_inline_stats) {
-                playerOptions.events.onPlay = function () {
-                    ga_track(null, '{!VIDEO;^}', params.url);
-                };
-            }
-
-            jwplayer(params.playerId).setup(playerOptions);
+        if (params.duration) {
+            playerOptions.duration = params.duration;
         }
-    });
+
+        if (!($cms.$CONFIG_OPTION.show_inline_stats)) {
+            playerOptions.events.onPlay = function () {
+                ga_track(null, '{!AUDIO;^}', params.url);
+            };
+        }
+
+        jwplayer(params.playerId).setup(playerOptions);
+    };
+
+        // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
+        // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
+    $cms.templates.mediaVideoWebsafe = function (params) {
+        var playerOptions = {
+            autostart: false,
+            file: params.url,
+            type: params.type,
+            image: params.thumbUrl,
+            flashplayer: params.flashplayer,
+            events: {
+                onComplete: function () {
+                    if (document.getElementById('next_slide')) player_stopped();
+                },
+                onReady: function () {
+                    if (document.getElementById('next_slide')) {
+                        stop_slideshow_timer();
+                        jwplayer(params.playerId).play(true);
+                    }
+                }
+            }
+        };
+
+        if (params.duration) {
+            playerOptions.duration = params.duration;
+        }
+
+        if (params.playerWidth) {
+            playerOptions.width = params.playerWidth;
+        }
+
+        if (params.playerHeight) {
+            playerOptions.height = params.playerHeight;
+        }
+
+        if (!$cms.$CONFIG_OPTION.show_inline_stats) {
+            playerOptions.events.onPlay = function () {
+                ga_track(null, '{!VIDEO;^}', params.url);
+            };
+        }
+
+        jwplayer(params.playerId).setup(playerOptions);
+    };
+
 
     function shocker_tick(id, time, min_color, max_color) {
         if ((document.hidden !== undefined) && (document.hidden)) return;

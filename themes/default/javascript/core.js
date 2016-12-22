@@ -8,7 +8,7 @@
         $cms.attachBehaviors(document);
     });
 
-    Object.assign($cms.behaviors, {
+    Object.assign($cms.behaviors, /** @lends $cms.behaviors */{
         // Implementation for [data-view]
         initializeViews: {
             attach: function (context) {
@@ -202,7 +202,7 @@
     }
 
     /**
-     * @constructor
+     * @class
      * */
     $cms.views.Global = function Global() {
         Global.base(this, 'constructor', arguments);
@@ -342,9 +342,6 @@
                 // Prevent form submission for forms with a placeholder action
                 'submit form[action$="#!"]': 'preventDefault',
                 // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
-                'click [data-cms-js]': 'preventDefault',
-                'submit [data-cms-js]': 'preventDefault',
-
                 'submit [data-click-pd]': 'clickPreventDefault',
                 'submit [data-submit-pd]': 'submitPreventDefault',
 
@@ -370,6 +367,9 @@
                 'input input[data-cms-invalid-pattern]': 'invalidPattern',
                 'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
                 'keypress input[data-cms-invalid-pattern]': 'invalidPattern',
+
+                'change textarea[data-textarea-auto-height]': 'textareaAutoHeight',
+                'keyup textarea[data-textarea-auto-height]': 'textareaAutoHeight',
 
                 // Open page in overlay
                 'click [data-open-as-overlay]': 'openOverlay',
@@ -488,13 +488,6 @@
             fauxmodal_alert(options.notice);
         },
 
-        // Implementation for [data-cms-js]
-        preventDefault: function (e, el) {
-            if (el.dataset.cmsJs !== '0') {
-                e.preventDefault();
-            }
-        },
-
         // Implementation for [data-click-pd]
         clickPreventDefault: function (e, el) {
             if (el.dataset.clickPd !== '0') {
@@ -595,6 +588,15 @@
                 // pattern matched, prevent input
                 e.preventDefault();
             }
+        },
+
+        // Implementation for textarea[data-textarea-auto-height]
+        textareaAutoHeight: function (e, textarea) {
+            if ($cms.$MOBILE) {
+                return;
+            }
+
+            manage_scroll_height(textarea);
         },
 
         // Implemenetation for [data-open-as-overlay]
@@ -1091,7 +1093,11 @@
         }
     });
 
-    $cms.views.ToggleableTray = function ToggleableTray() {
+    $cms.views.ToggleableTray = ToggleableTray;
+    /**
+     * @class
+     */
+    function ToggleableTray() {
         ToggleableTray.base(this, 'constructor', arguments);
 
         this.contentEl = this.$('.toggleable_tray');
@@ -1101,9 +1107,9 @@
         if (this.cookieId) {
             this.handleTrayCookie(this.cookieId);
         }
-    };
+    }
 
-    $cms.inherits($cms.views.ToggleableTray, $cms.View, /** @lends $cms.views.ToggleableTray.prototype */{
+    $cms.inherits($cms.views.ToggleableTray, $cms.View, /** @lends ToggleableTray.prototype */{
         events: {
             'click .js-btn-tray-toggle': 'toggle',
             'click .js-btn-tray-accordion': 'toggleAccordionItems'
@@ -1341,104 +1347,129 @@
         }
     }
 
-    $cms.extend($cms.templates, {
-        forumsEmbed: function () {
-            var frame = this;
-            window.setInterval(function () {
-                resize_frame(frame.name);
-            }, 500);
-        },
+    $cms.templates.forumsEmbed = function () {
+        var frame = this;
+        window.setInterval(function () {
+            resize_frame(frame.name);
+        }, 500);
+    };
 
-        massSelectFormButtons: function (params) {
-            var delBtn = this,
-                form = delBtn.form;
+    $cms.templates.massSelectFormButtons = function (params) {
+        var delBtn = this,
+            form = delBtn.form;
 
-            $cms.dom.on(delBtn, 'click', function () {
-                confirm_delete(form, true, function () {
-                    var idEl = $cms.dom.id('id'),
-                        ids = (idEl.value === '') ? [] : idEl.value.split(',');
+        $cms.dom.on(delBtn, 'click', function () {
+            confirm_delete(form, true, function () {
+                var idEl = $cms.dom.id('id'),
+                    ids = (idEl.value === '') ? [] : idEl.value.split(',');
 
-                    for (var i = 0; i < ids.length; i++) {
-                        prepareMassSelectMarker('', params.type, ids[i], true);
-                    }
+                for (var i = 0; i < ids.length; i++) {
+                    prepareMassSelectMarker('', params.type, ids[i], true);
+                }
 
-                    form.method = 'post';
-                    form.action = params.actionUrl;
-                    form.target = '_top';
-                    form.submit();
-                });
+                form.method = 'post';
+                form.action = params.actionUrl;
+                form.target = '_top';
+                form.submit();
             });
+        });
 
-            $cms.dom.id('id').fakeonchange = initialiseButtonVisibility;
-            initialiseButtonVisibility();
+        $cms.dom.id('id').fakeonchange = initialiseButtonVisibility;
+        initialiseButtonVisibility();
 
-            function initialiseButtonVisibility() {
-                var id = $cms.dom.$('#id'),
-                    ids = (id.value === '') ? [] : id.value.split(/,/);
+        function initialiseButtonVisibility() {
+            var id = $cms.dom.$('#id'),
+                ids = (id.value === '') ? [] : id.value.split(/,/);
 
-                $cms.dom.$('#submit_button').disabled = (ids.length !== 1);
-                $cms.dom.$('#mass_select_button').disabled = (ids.length === 0);
+            $cms.dom.$('#submit_button').disabled = (ids.length !== 1);
+            $cms.dom.$('#mass_select_button').disabled = (ids.length === 0);
+        }
+    };
+
+    $cms.templates.massSelectDeleteForm = function () {
+        var form = this;
+        $cms.dom.on(form, 'submit', function (e) {
+            e.preventDefault();
+            confirm_delete(form, true);
+        });
+    };
+
+    $cms.templates.uploadSyndicationSetupScreen = function (params) {
+        var win_parent = window.parent || window.opener,
+            id = 'upload_syndicate__' + params.hook + '__' + params.name,
+            el = win_parent.document.getElementById(id);
+
+        el.checked = true;
+
+        var win = window;
+        window.setTimeout(function () {
+            if (win.faux_close !== undefined) {
+                win.faux_close();
+            } else {
+                win.close();
             }
-        },
+        }, 4000);
+    };
 
-        massSelectDeleteForm: function () {
-            var form = this;
-            $cms.dom.on(form, 'submit', function (e) {
+    $cms.templates.loginScreen = function loginScreen(params, container) {
+        if ((document.activeElement != null) || (document.activeElement !== $cms.dom.$('#password'))) {
+            try {
+                $cms.dom.$('#login_username').focus();
+            } catch (ignore) {}
+        }
+
+        $cms.dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
+            if (check_field_for_blankness(form.elements.login_username)) {
+                $cms.ui.disableFormButtons(form);
+            } else {
                 e.preventDefault();
-                confirm_delete(form, true);
-            });
-        },
-
-        uploadSyndicationSetupScreen: function (params) {
-            var win_parent = window.parent || window.opener,
-                id = 'upload_syndicate__' + params.hook + '__' + params.name,
-                el = win_parent.document.getElementById(id);
-
-            el.checked = true;
-
-            var win = window;
-            window.setTimeout(function () {
-                if (win.faux_close !== undefined) {
-                    win.faux_close();
-                } else {
-                    win.close();
-                }
-            }, 4000);
-        },
-
-        loginScreen: function loginScreen() {
-            if ((document.activeElement === undefined) || (document.activeElement !== $cms.dom.id('password'))) {
-                try {
-                    $cms.dom.id('login_username').focus();
-                } catch (e) {
-                }
             }
-        },
+        });
+    };
 
-        ipBanScreen: function () {
-            var container = this,
-                textarea = this.querySelector('#bans');
-            manage_scroll_height(textarea);
+    $cms.templates.blockTopLogin = function (blockTopLogin, container) {
+        $cms.dom.on(container, 'submit', '.js-form-top-login', function (e, form) {
+            if (check_field_for_blankness(form.elements.login_username)) {
+                $cms.ui.disableFormButtons(form);
+            } else {
+                e.preventDefault();
+            }
+        });
 
-            if (!($cms.$MOBILE)) {
-                $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
-                    manage_scroll_height(textarea);
+        $cms.dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
+            if (checkbox.checked) {
+                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                    if (!answer) {
+                        checkbox.checked = false;
+                    }
                 });
             }
-        },
+        });
+    };
 
-        jsBlock: function jsBlock(params) {
-            call_block(params.blockCallUrl, '', $cms.dom.id(params.jsBlockId), false, null, false, null, false, false);
-        },
+    $cms.templates.ipBanScreen = function () {
+        var container = this,
+            textarea = this.querySelector('#bans');
+        manage_scroll_height(textarea);
 
-        massSelectMarker: function (params) {
-            var container = this;
-
-            $cms.dom.on(container, 'click', '.js-chb-prepare-mass-select', function (e, checkbox) {
-                prepareMassSelectMarker(params.supportMassSelect, params.type, params.id, checkbox.checked);
+        if (!($cms.$MOBILE)) {
+            $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
+                manage_scroll_height(textarea);
             });
         }
-    });
+    };
+
+    $cms.templates.jsBlock = function jsBlock(params) {
+        call_block(params.blockCallUrl, '', $cms.dom.id(params.jsBlockId), false, null, false, null, false, false);
+    };
+
+    $cms.templates.massSelectMarker = function (params) {
+        var container = this;
+
+        $cms.dom.on(container, 'click', '.js-chb-prepare-mass-select', function (e, checkbox) {
+            prepareMassSelectMarker(params.supportMassSelect, params.type, params.id, checkbox.checked);
+        });
+    };
 
 
     $cms.templates.blockTopPersonalStats = function () {
@@ -1452,7 +1483,13 @@
     };
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
-
+        $cms.dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
+            if (check_field_for_blankness(form.elements.login_username)) {
+                $cms.ui.disableFormButtons(form);
+            } else {
+                e.preventDefault();
+            }
+        });
     };
 
     function gdImageTransform(el) {
@@ -1602,7 +1639,6 @@
         }
         catch (e) {
         }
-        ;
         return has_loaded;
     }
 
@@ -1613,7 +1649,6 @@
         }
         catch (e) {
         }
-        ;
         return has_ownership;
     }
 

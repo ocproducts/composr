@@ -1,5 +1,4 @@
-var encodeUC = encodeURIComponent,
-    decodeUC = decodeURIComponent;
+var encodeUC = encodeURIComponent;
 
 (function ($cms, symbols) {
     'use strict';
@@ -57,6 +56,7 @@ var encodeUC = encodeURIComponent,
         $DEV_MODE: boolVal(symbols.DEV_MODE),
         $JS_ON: boolVal(symbols.JS_ON),
         $MOBILE: boolVal(symbols.MOBILE),
+        $DESKTOP: !boolVal(symbols.MOBILE),
         $FORCE_PREVIEWS: boolVal(symbols.FORCE_PREVIEWS),
 
         $VERSION: strVal(symbols.VERSION),
@@ -106,6 +106,7 @@ var encodeUC = encodeURIComponent,
             wysiwyg: boolVal(symbols.CONFIG_OPTION.wysiwyg),
             complex_uploader: boolVal(symbols.CONFIG_OPTION.complex_uploader),
             collapse_user_zones: boolVal(symbols.CONFIG_OPTION.collapse_user_zones),
+            sitewide_im: boolVal(symbols.CONFIG_OPTION.sitewide_im),
 
             thumb_width: symbols.CONFIG_OPTION.thumb_width,
             js_captcha: symbols.CONFIG_OPTION.js_captcha,
@@ -789,7 +790,7 @@ var encodeUC = encodeURIComponent,
 
     /**
      * @param usp
-     * @returns { { } }
+     * @returns {object}
      */
     function entriesFromUsp(usp) {
         var entries = arrayFromIterable(usp.entries()),
@@ -988,7 +989,7 @@ var encodeUC = encodeURIComponent,
     // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
     function CookieMonster() {}
 
-    define(CookieMonster.prototype, {
+    define(CookieMonster.prototype, /** @lends CookieMonster.prototype */ {
         get: function get(cookieName) {
             cookieName = strVal(cookieName);
             if (cookieName) {
@@ -1206,6 +1207,12 @@ var encodeUC = encodeURIComponent,
     }
 
     // Returns a single matching child element, defaults to 'document' as parent
+    /**
+     *
+     * @param context
+     * @param id
+     * @returns {*}
+     */
     $cms.dom.id = function (context, id) {
         if (id === undefined) {
             id = context;
@@ -1216,6 +1223,12 @@ var encodeUC = encodeURIComponent,
 
     // Returns a single matching child element, `context` defaults to 'document'
     var rgxIdSelector = /^\#[\w\-]+$/;
+    /**
+     *
+     * @param context
+     * @param selector
+     * @returns {*}
+     */
     $cms.dom.$ = function $(context, selector) {
         if (selector === undefined) {
             selector = context;
@@ -1225,8 +1238,14 @@ var encodeUC = encodeURIComponent,
         return (rgxIdSelector.test(selector) && ('getElementById' in context)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
     };
 
-    // `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
+    /* `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.*/
     var rgxSimpleSelector = /^[\#\.]?[\w\-]+$/;
+    /**
+     *
+     * @param context
+     * @param selector
+     * @returns {*}
+     */
     $cms.dom.$$ = function $$(context, selector) {
         var found;
 
@@ -1255,11 +1274,22 @@ var encodeUC = encodeURIComponent,
         return toArray(context.querySelectorAll(selector));
     };
 
+    /**
+     *
+     * @param context
+     * @param selector
+     * @returns {T|*}
+     */
     $cms.dom.last = function last(context, selector) {
         return $cms.dom.$$(context, selector).pop();
     };
 
-    // This one (3 dollars) also includes the context element (at offset 0) if it matches the selector
+    /**
+     * This one (3 dollars) also includes the context element (at offset 0) if it matches the selector
+     * @param context
+     * @param selector
+     * @returns {*}
+     */
     $cms.dom.$$$ = function $$$(context, selector) {
         if (selector === undefined) {
             selector = context;
@@ -1280,14 +1310,15 @@ var encodeUC = encodeURIComponent,
 
     /**
      * @param tag
+     * @param attributes
      * @param properties
      * @returns { Element }
      */
-    $cms.dom.create = function (tag, properties) {
-        var el = document.createElement(tag);
+    $cms.dom.create = function (tag, attributes, properties) {
+        var el = document.createElement(strVal(tag));
 
-        if (properties) {
-            each(properties, function (key, value) {
+        if (isObj(attributes)) {
+            each(attributes, function (key, value) {
                 if (key in methodAttributes) {
                     $cms.dom[key](el, value);
                 } else {
@@ -1296,16 +1327,26 @@ var encodeUC = encodeURIComponent,
             });
         }
 
+        if (isObj(properties)) {
+            Object.assign(el, properties);
+        }
+
         return el;
     };
 
+    /**
+     *
+     * @param el
+     * @param value
+     * @returns {*}
+     */
     $cms.dom.val = function (el, value) {
         if (value === undefined) {
             if ((el.localName !== 'select') || !el.multiple) {
                 return el.value;
             }
 
-            // Special case: <select[multiple]>
+            // Special case: <select [multiple]>
             var values = [], i;
             for (i = 0; i < el.options.length; i++) {
                 if (el.options[i].selected) {
@@ -1319,6 +1360,12 @@ var encodeUC = encodeURIComponent,
         el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
     };
 
+    /**
+     *
+     * @param el
+     * @param text
+     * @returns {string|*}
+     */
     $cms.dom.text = function (el, text) {
         if (text === undefined) {
             return el.textContent;
@@ -1466,7 +1513,13 @@ var encodeUC = encodeURIComponent,
 
     var domData = new Data();
 
-    /* Data retrieval and storage */
+    /**
+     * Data retrieval and storage
+     * @param el
+     * @param key
+     * @param value
+     * @returns {*}
+     */
     $cms.dom.data = function (el, key, value) {
         var name, data;
 
@@ -1521,10 +1574,21 @@ var encodeUC = encodeURIComponent,
         domData.set(el, key, strVal(value));
     };
 
+    /**
+     *
+     * @param el
+     * @param key
+     */
     $cms.dom.removeData = function (el, key) {
         domData.remove(el, key);
     };
 
+    /**
+     *
+     * @param el
+     * @param value
+     * @returns {*}
+     */
     $cms.dom.width = function (el, value) {
         var offset;
 
@@ -1537,6 +1601,12 @@ var encodeUC = encodeURIComponent,
         $cms.dom.css(el, 'width', (typeof value === 'function') ? value.call(el, $cms.dom.width(el)) : value);
     };
 
+    /**
+     *
+     * @param el
+     * @param value
+     * @returns {*}
+     */
     $cms.dom.height = function (el, value) {
         var offset;
 
@@ -1549,6 +1619,12 @@ var encodeUC = encodeURIComponent,
         $cms.dom.css(el, 'height', (typeof value === 'function') ? value.call(el, $cms.dom.height(el)) : value);
     };
 
+    /**
+     *
+     * @param el
+     * @param coordinates
+     * @returns {*}
+     */
     $cms.dom.offset = function (el, coordinates) {
         if (coordinates === undefined) {
             if (!document.documentElement.contains(el)) {
@@ -1578,6 +1654,11 @@ var encodeUC = encodeURIComponent,
         $cms.dom.css(el, props);
     };
 
+    /**
+     *
+     * @param el
+     * @returns { Element }
+     */
     $cms.dom.offsetParent = function (el) {
         var parent = el.offsetParent || el.ownerDocument.body;
         while (parent && (parent.localName !== 'html') && (parent.localName !== 'body') && ($cms.dom.css(parent, 'position') === 'static')) {
@@ -1586,6 +1667,11 @@ var encodeUC = encodeURIComponent,
         return parent;
     };
 
+    /**
+     *
+     * @param iframe
+     * @returns {boolean}
+     */
     $cms.dom.hasIframeAccess = function (iframe) {
         try {
             return (iframe.contentWindow['access' + random()] = true) === true;
@@ -1600,11 +1686,23 @@ var encodeUC = encodeURIComponent,
         : 'matches';
 
     // Check if the given element matches selector
+    /**
+     *
+     * @param el
+     * @param selector
+     * @returns {boolean}
+     */
     $cms.dom.matches = function (el, selector) {
         return isEl(el) && ((selector === '*') || el[_matchesFnName](selector));
     };
 
-    // Gets closest parent (or itself) element matching selector
+    /**
+     * Gets closest parent (or itself) element matching selector
+     * @param el
+     * @param selector
+     * @param context
+     * @returns {*}
+     */
     $cms.dom.closest = function (el, selector, context) {
         while (el && (el !== context)) {
             if ($cms.dom.matches(el, selector)) {
@@ -1616,6 +1714,12 @@ var encodeUC = encodeURIComponent,
         return null;
     };
 
+    /**
+     *
+     * @param el
+     * @param selector
+     * @returns {Array}
+     */
     $cms.dom.parents = function (el, selector) {
         var parents = [],
             parent = isEl(el) && el.parentElement;
@@ -1630,6 +1734,13 @@ var encodeUC = encodeURIComponent,
         return parents;
     };
 
+    /**
+     *
+     * @param el
+     * @param parentEl
+     * @param context
+     * @returns {boolean}
+     */
     $cms.dom.hasParent = function (el, parentEl, context) {
         while (el && (el !== context)) {
             if (el === parentEl) {
@@ -1642,6 +1753,12 @@ var encodeUC = encodeURIComponent,
         return false;
     };
 
+    /**
+     *
+     * @param el
+     * @param selector
+     * @returns {*}
+     */
     $cms.dom.next = function (el, selector) {
         var sibling = el.nextElementSibling;
 
@@ -1660,6 +1777,12 @@ var encodeUC = encodeURIComponent,
         return null;
     };
 
+    /**
+     *
+     * @param el
+     * @param selector
+     * @returns {*}
+     */
     $cms.dom.prev = function (el, selector) {
         var sibling = el.previousElementSibling;
 
@@ -1678,10 +1801,21 @@ var encodeUC = encodeURIComponent,
         return null;
     };
 
+    /**
+     *
+     * @param parentNode
+     * @param childNode
+     * @returns {boolean|*}
+     */
     $cms.dom.contains = function (parentNode, childNode) {
         return (parentNode !== childNode) && parentNode.contains(childNode);
     };
 
+    /**
+     *
+     * @param el
+     * @param newChild
+     */
     $cms.dom.append = function (el, newChild) {
         el.appendChild(newChild);
         if (isDocOrEl(newChild)) {
@@ -1689,6 +1823,11 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param el
+     * @param newChild
+     */
     $cms.dom.prepend = function (el, newChild) {
         el.insertBefore(newChild, el.firstChild);
         if (isDocOrEl(newChild)) {
@@ -1773,16 +1912,12 @@ var encodeUC = encodeURIComponent,
         });
     }
 
-    $cms.dom.one = function (el, event, selector, data, callback) {
-        return $cms.dom.on(el, event, selector, data, callback, 1);
-    };
-
     /**
      * @param el { Window|Document|Element }
      * @param event {string|object}
-     * @param selector {string|function}
-     * @param [data] {object|function}
-     * @param [callback] {function}
+     * @param selector {string|function(Event, Window|Document|Element)}
+     * @param [data] {object|function(Event, Window|Document|Element)}
+     * @param [callback] {function(Event, Window|Document|Element)}
      * @param [one] {number}
      */
     $cms.dom.on = function (el, event, selector, data, callback, one) {
@@ -1823,7 +1958,7 @@ var encodeUC = encodeURIComponent,
 
                 if (match) {
                     var args = toArray(arguments);
-                    args[1] = match; // Set the element arg to the matched element
+                    args[1] = match; // Set the `element` arg to the matched element
                     return (autoRemove || callback).apply(match, args);
                 }
             };
@@ -1832,6 +1967,23 @@ var encodeUC = encodeURIComponent,
         addEvent(el, event, callback, data, selector, delegator || autoRemove);
     };
 
+    /**
+     * @param el { Window|Document|Element }
+     * @param event {string|object}
+     * @param selector {string|function(Event, Window|Document|Element)}
+     * @param [data] {object|function(Event, Window|Document|Element)}
+     * @param [callback] {function(Event, Window|Document|Element)}
+     */
+    $cms.dom.one = function (el, event, selector, data, callback) {
+        return $cms.dom.on(el, event, selector, data, callback, 1);
+    };
+
+    /**
+     * @param el { Window|Document|Element }
+     * @param event {string|object}
+     * @param selector {string|function(Event, Window|Document|Element)}
+     * @param [callback] {function(Event, Window|Document|Element)}
+     */
     $cms.dom.off = function (el, event, selector, callback) {
         if (event && (typeof event !== 'string')) {
             each(event, function (type, fn) {
@@ -1854,6 +2006,12 @@ var encodeUC = encodeURIComponent,
 
     var mouseEvents = { click: 1, mousedown: 1, mouseup: 1, mousemove: 1 };
 
+    /**
+     *
+     * @param type
+     * @param props
+     * @returns {*|Event}
+     */
     $cms.dom.createEvent = function (type, props) {
         if (isObj(type)) {
             props = type;
@@ -1878,6 +2036,13 @@ var encodeUC = encodeURIComponent,
         return event;
     };
 
+    /**
+     *
+     * @param el
+     * @param event
+     * @param args
+     * @returns {*}
+     */
     $cms.dom.trigger = function (el, event, args) {
         event = ((typeof event === 'string') || isPlainObj(event)) ? $cms.dom.createEvent(event) : event;
         if (args) {
@@ -1914,6 +2079,13 @@ var encodeUC = encodeURIComponent,
         return ((typeof value === 'number') && !(name in cssNumericProps)) ? (value + 'px') : value;
     }
 
+    /**
+     *
+     * @param el
+     * @param property
+     * @param value
+     * @returns {*}
+     */
     $cms.dom.css = function (el, property, value) {
         var key;
         if (value === undefined) {
@@ -1961,16 +2133,31 @@ var encodeUC = encodeURIComponent,
         return values.includes($cms.dom.css(el, property));
     };
 
+    /**
+     *
+     * @param el
+     * @returns {boolean}
+     */
     $cms.dom.isDisplayed = function (el) {
         return $cms.dom.css(el, 'display') !== 'none';
     };
 
+    /**
+     *
+     * @param el
+     * @returns {boolean}
+     */
     $cms.dom.notDisplayed = function (el) {
         return $cms.dom.css(el, 'display') === 'none';
     };
 
-    // Gets the 'initial' value for an element type's CSS property (only 'display' supported as of now)
     var _initial = {};
+    /**
+     * Gets the 'initial' value for an element type's CSS property (only 'display' supported as of now)
+     * @param el
+     * @param property
+     * @returns {*}
+     */
     $cms.dom.initial = function (el, property) {
         var tag = el.localName, doc;
 
@@ -1996,6 +2183,10 @@ var encodeUC = encodeURIComponent,
         return _initial[tag][property];
     };
 
+    /**
+     *
+     * @param el
+     */
     $cms.dom.show = function (el) {
         if (el.style.display === 'none') {
             el.style.removeProperty('display');
@@ -2006,10 +2197,19 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param el
+     */
     $cms.dom.hide = function (el) {
         $cms.dom.css(el, 'display', 'none');
     };
 
+    /**
+     *
+     * @param el
+     * @param show
+     */
     $cms.dom.toggle = function (el, show) {
         show = (show !== undefined) ? !!show : ($cms.dom.css(el, 'display') === 'none');
 
@@ -2020,6 +2220,11 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param el
+     * @param show
+     */
     $cms.dom.toggleWithAria = function (el, show) {
         show = (show !== undefined) ? !!show : ($cms.dom.css(el, 'display') === 'none');
 
@@ -2032,18 +2237,34 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param el
+     * @param disabled
+     */
     $cms.dom.toggleDisabled = function (el, disabled) {
         disabled = (disabled !== undefined) ? !!disabled : !el.disabled;
 
         el.disabled = disabled;
     };
 
+    /**
+     *
+     * @param el
+     * @param checked
+     */
     $cms.dom.toggleChecked = function (el, checked) {
         checked = (checked !== undefined) ? !!checked : !el.checked;
 
         el.checked = checked;
     };
 
+    /**
+     *
+     * @param el
+     * @param duration
+     * @param callback
+     */
     $cms.dom.fadeIn = function (el, duration, callback) {
         if ((typeof duration === 'function') && (callback === undefined)) {
             callback = duration;
@@ -2082,6 +2303,12 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param el
+     * @param duration
+     * @param callback
+     */
     $cms.dom.fadeOut = function (el, duration, callback) {
         if ((typeof duration === 'function') && (callback === undefined)) {
             callback = duration;
@@ -2109,11 +2336,22 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param keyboardEvent
+     * @param checkKey
+     * @returns {*}
+     */
     $cms.dom.keyPressed = function (keyboardEvent, checkKey) {
         var key = keyboardEvent.key;
 
         if (checkKey !== undefined) {
             // Key(s) to check against passed
+
+            if (typeof checkKey === 'number') {
+                checkKey = strVal(checkKey);
+            }
+
             if (typeof checkKey === 'string') {
                 return key === checkKey;
             }
@@ -2132,7 +2370,12 @@ var encodeUC = encodeURIComponent,
         return key;
     };
 
-    /* Returns the output character produced by a KeyboardEvent, or empty string if none */
+    /**
+     * Returns the output character produced by a KeyboardEvent, or empty string if none
+     * @param keyboardEvent
+     * @param checkOutput
+     * @returns {*}
+     */
     $cms.dom.keyOutput = function (keyboardEvent, checkOutput) {
         var key = keyboardEvent.key;
 
@@ -2176,6 +2419,13 @@ var encodeUC = encodeURIComponent,
         (value != null) ? el.setAttribute(name, value) : el.removeAttribute(name);
     }
 
+    /**
+     *
+     * @param el
+     * @param name
+     * @param value
+     * @returns {*|string}
+     */
     $cms.dom.attr = function attr(el, name, value) {
         var key;
 
@@ -2192,12 +2442,23 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param el
+     * @param name
+     */
     $cms.dom.removeAttr = function removeAttr(el, name) {
         name.split(' ').forEach(function (attribute) {
             setAttr(el, attribute, null)
         });
     };
 
+    /**
+     *
+     * @param el
+     * @param html
+     * @returns {string|*}
+     */
     $cms.dom.html = function (el, html) {
         // Parser hint: .innerHTML okay
         var i, len;
@@ -2219,10 +2480,19 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param el
+     */
     $cms.dom.empty = function (el) {
         $cms.dom.html(el, '');
     };
 
+    /**
+     *
+     * @param el
+     * @param html
+     */
     $cms.dom.prependHtml = function (el, html) {
         var prevChildrenLength = el.children.length, newChildrenLength, i, stop;
 
@@ -2240,6 +2510,11 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param el
+     * @param html
+     */
     $cms.dom.appendHtml = function (el, html) {
         var startIndex = el.children.length, newChildrenLength, i;
 
@@ -2257,7 +2532,12 @@ var encodeUC = encodeURIComponent,
         }
     };
 
-    /* Put some new HTML around the given element */
+    /**
+     * Put some new HTML around the given element
+     * @param el
+     * @param html
+     * @returns {*}
+     */
     $cms.dom.outerHtml = function (el, html) {
         var parent = el.parentNode,
             next = el.nextSibling,
@@ -2277,7 +2557,11 @@ var encodeUC = encodeURIComponent,
         }
     };
 
-    /* Returns the provided element's width excluding padding and borders */
+    /**
+     * Returns the provided element's width excluding padding and borders
+     * @param el
+     * @returns {number}
+     */
     $cms.dom.contentWidth = function (el) {
         var cs = computedStyle(el),
             padding = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight),
@@ -2286,7 +2570,11 @@ var encodeUC = encodeURIComponent,
         return el.offsetWidth - padding - border;
     };
 
-    /* Returns the provided element's height excluding padding and border */
+    /**
+     * Returns the provided element's height excluding padding and border
+     * @param el
+     * @returns {number}
+     */
     $cms.dom.contentHeight = function (el) {
         var cs = computedStyle(el),
             padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom),
@@ -2296,6 +2584,11 @@ var encodeUC = encodeURIComponent,
     };
 
     var serializeExcludedTypes = { submit: 1, reset: 1, button: 1, file: 1 };
+    /**
+     *
+     * @param form
+     * @returns {Array}
+     */
     $cms.dom.serializeArray = function (form) {
         var name, result = [];
 
@@ -2316,6 +2609,11 @@ var encodeUC = encodeURIComponent,
         return result;
     };
 
+    /**
+     *
+     * @param form
+     * @returns {string}
+     */
     $cms.dom.serialize = function (form) {
         var result = [];
 
@@ -2331,9 +2629,14 @@ var encodeUC = encodeURIComponent,
     /**
      * Addons will add "behaviors" under this object
      * @namespace
-     * */
+     */
     $cms.behaviors || ($cms.behaviors = {});
 
+    /**
+     *
+     * @param context
+     * @param settings
+     */
     $cms.attachBehaviors = function (context, settings) {
         var name;
 
@@ -2355,6 +2658,12 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param context
+     * @param settings
+     * @param trigger
+     */
     $cms.detachBehaviors = function (context, settings, trigger) {
         var name;
 
@@ -2403,8 +2712,9 @@ var encodeUC = encodeURIComponent,
         this.tagName = 'div';
         /** @var { HTMLElement } */
         this.el = null;
+
         this.initialize.apply(this, arguments);
-    }
+    };
 
     // Cached regex to split keys for `delegate`.
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
@@ -2689,6 +2999,10 @@ var encodeUC = encodeURIComponent,
 
     var tempDisabledButtons = {};
 
+    /**
+     * @param btn
+     * @param permanent
+     */
     $cms.ui.disableButton = function disableButton(btn, permanent) {
         permanent = !!permanent;
 
@@ -2720,6 +3034,11 @@ var encodeUC = encodeURIComponent,
         }
     };
 
+    /**
+     *
+     * @param form
+     * @param permanent
+     */
     $cms.ui.disableFormButtons = function disableFormButtons(form, permanent) {
         var buttons = $cms.dom.$$(form, 'input[type="submit"], input[type="button"], input[type="image"], button');
 
@@ -2728,7 +3047,10 @@ var encodeUC = encodeURIComponent,
         });
     };
 
-    // This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
+    /**
+     * This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
+     * @param permanent
+     */
     $cms.ui.disableSubmitAndPreviewButtons = function disableSubmitAndPreviewButtons(permanent) {
         // [accesskey="u"] identifies submit button, [accesskey="p"] identifies preview button
         var buttons = $cms.dom.$$('input[accesskey="u"], button[accesskey="u"], input[accesskey="p"], button[accesskey="p"]');
@@ -2742,6 +3064,11 @@ var encodeUC = encodeURIComponent,
         });
     };
 
+    /**
+     *
+     * @param options
+     * @returns {$cms.views.ModalWindow}
+     */
     $cms.openModalWindow = function openModalWindow(options) {
         return new $cms.views.ModalWindow(options);
     };
@@ -2764,8 +3091,10 @@ var encodeUC = encodeURIComponent,
      HEAVILY Modified by ocProducts for composr.
 
      */
+
+    $cms.views.ModalWindow = ModalWindow;
     /** @class */
-    $cms.views.ModalWindow = function ModalWindow(params) {
+    function ModalWindow(params) {
         ModalWindow.base(this, 'constructor', arguments);
 
         bindAll(this, 'close', 'option', 'reset_dimensions', 'init_box', 'inject', 'remove', 'element', 'getPageSize');
@@ -2820,7 +3149,7 @@ var encodeUC = encodeURIComponent,
         this.init_box();
     }
 
-    $cms.inherits($cms.views.ModalWindow, $cms.View, /** @lends $cms.views.ModalWindow.prototype */ {
+    $cms.inherits(ModalWindow, $cms.View, /** @lends ModalWindow.prototype */ {
         // Methods...
         close: function (win) {
             if (this.boxWrapperEl) {
@@ -3446,6 +3775,7 @@ var encodeUC = encodeURIComponent,
 
     $cms.views.TreeList = TreeList;
 
+    /** @class */
     function TreeList(params) {
         TreeList.base(this, 'constructor', arguments);
 
@@ -3460,7 +3790,7 @@ var encodeUC = encodeURIComponent,
         $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
-        var url = baseUrl(this.ajax_url);
+        var url = $cms.baseUrl(this.ajax_url);
         if (params.root_id) {
             url += '&id=' + encodeUC(params.root_id);
         }
@@ -3475,7 +3805,7 @@ var encodeUC = encodeURIComponent,
         });
     }
 
-    $cms.inherits(TreeList, $cms.View, {
+    $cms.inherits(TreeList, $cms.View, /** @lends TreeList.prototype */ {
         specialKeyPressed: false,
 
         tree_list_data: '',
@@ -4501,7 +4831,7 @@ function noop() {}
     function manage_scroll_height(textAreaEl) {
         var scrollHeight = textAreaEl.scrollHeight,
             offsetHeight = textAreaEl.offsetHeight,
-            currentHeight = parseInt($cms.dom.css(textAreaEl, 'height'));
+            currentHeight = parseInt($cms.dom.css(textAreaEl, 'height')) || 0;
 
         if ((scrollHeight > 5) && (currentHeight < scrollHeight) && (offsetHeight < scrollHeight)) {
             $cms.dom.css(textAreaEl, {
@@ -5000,16 +5330,6 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     }, 30);
 }
 
-/* Helper to change class on checkbox check */
-function change_class(checkbox, cell, checkedClass, uncheckedClass) {
-    if (typeof cell === 'string') {
-        cell = $cms.dom.id(cell);
-    }
-
-    cell.classList.toggle(checkedClass, checkbox.checked);
-    cell.classList.toggle(uncheckedClass, !checkbox.checked);
-}
-
 /* Dimension functions */
 function register_mouse_listener(e) {
     register_mouse_listener = noop; // ensure this function is only executed once
@@ -5371,6 +5691,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     }, no_delay ? 0 : 666);
 }
 function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
+    bottom = !!bottom;
     win || (win = window);
 
     if (!starting) {// Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
@@ -5544,64 +5865,71 @@ function trigger_resize(and_subframes) {
     if (!window.parent || !window.parent.document) {
         return;
     }
-    var i, frames = window.parent.document.querySelectorAll('iframe');
+    var i, iframes = window.parent.document.querySelectorAll('iframe');
 
-    for (i = 0; i < frames.length; i++) {
-        if ((frames[i].src === window.location.href) || (frames[i].contentWindow === window) || ((frames[i].id != '') && (window.parent.frames[frames[i].id] !== undefined) && (window.parent.frames[frames[i].id] == window))) {
-            if (frames[i].style.height === '900px') {
-                frames[i].style.height = 'auto';
+    and_subframes = !!and_subframes;
+
+    for (i = 0; i < iframes.length; i++) {
+        if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id != '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] == window))) {
+            if (iframes[i].style.height === '900px') {
+                iframes[i].style.height = 'auto';
             }
-            window.parent.resize_frame(frames[i].name);
+            window.parent.resize_frame(iframes[i].name);
         }
     }
 
     if (and_subframes) {
-        frames = document.querySelectorAll('iframe');
-        for (i = 0; i < frames.length; i++) {
-            if ((frames[i].name != '') && ((frames[i].classList.contains('expandable_iframe')) || (frames[i].classList.contains('dynamic_iframe')))) {
-                resize_frame(frames[i].name);
+        iframes = document.querySelectorAll('iframe');
+        for (i = 0; i < iframes.length; i++) {
+            if ((iframes[i].name != '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
+                resize_frame(iframes[i].name);
             }
         }
     }
 }
 
 /* Marking things (to avoid illegally nested forms) */
-function add_form_marked_posts(work_on, prefix) {
-    var get = work_on.method.toLowerCase() === 'get',
-        elements = document.getElementsByTagName('input'),
-        i, append = '';
+function add_form_marked_posts(form, prefix) {
+    prefix = strVal(prefix);
+
+    var get = form.method.toLowerCase() === 'get',
+        i;
+
     if (get) {
-        for (i = 0; i < work_on.elements.length; i++) {
-            if (work_on.elements[i].name.match(new RegExp('&' + prefix.replace('_', '\_') + '\d+=1$', 'g'))) {
-                work_on.elements[i].parentNode.removeChild(work_on.elements[i]);
+        for (i = 0; i < form.elements.length; i++) {
+            if ((new RegExp('&' + prefix + '\d+=1$', 'g')).test(form.elements[i].name)) {
+                form.elements[i].parentNode.removeChild(form.elements[i]);
             }
         }
     } else {
         // Strip old marks out of the URL
-        work_on.action = work_on.action.replace('?', '&');
-        work_on.action = work_on.action.replace(new RegExp('&' + prefix.replace('_', '\_') + '\d+=1$', 'g'), '');
-        work_on.action = work_on.action.replace('&', '?'); // will just do first due to how JS works
+        form.action = form.action.replace('?', '&')
+            .replace(new RegExp('&' + prefix + '\d+=1$', 'g'), '')
+            .replace('&', '?'); // will just do first due to how JS works
     }
-    for (i = 0; i < elements.length; i++) {
-        if ((elements[i].type == 'checkbox') && (elements[i].name.substring(0, prefix.length) == prefix) && (elements[i].checked)) {
-            append += (((append === '') && !work_on.action.includes('?') && !work_on.action.includes('/pg/') && !get) ? '?' : '&') + elements[i].name + '=1';
-        }
+
+    var checkboxes = $cms.dom.$$('input[type="checkbox"][name^="' + prefix + '"]:checked'),
+        append = '';
+
+    for (i = 0; i < checkboxes.length; i++) {
+        append += (((append === '') && !form.action.includes('?') && !form.action.includes('/pg/') && !get) ? '?' : '&') + checkboxes[i].name + '=1';
     }
+
     if (get) {
         var bits = append.split('&');
         for (i = 0; i < bits.length; i++) {
             if (bits[i] !== '') {
-                var hidden = Object.assign(document.createElement('input'), {
+                $cms.dom.append(form, $cms.dom.create('input', {
                     name: bits[i].substr(0, bits[i].indexOf('=1')),
                     type: 'hidden',
                     value: '1'
-                });
-                work_on.appendChild(hidden);
+                }));
             }
         }
     } else {
-        work_on.action += append;
+        form.action += append;
     }
+
     return append !== '';
 }
 
@@ -5739,7 +6067,7 @@ function play_self_audio_link(ob) {
 
         window.clearInterval(timer);
         window.soundManager.setup({
-            url: baseUrl('data'),
+            url: $cms.baseUrl('data'),
             debugMode: false,
             onready: function () {
                 var sound_object = window.soundManager.createSound({url: ob.href});
@@ -5749,8 +6077,6 @@ function play_self_audio_link(ob) {
             }
         });
     }, 50);
-
-    return false;
 }
 
 ((function () {
@@ -6110,6 +6436,7 @@ function fauxmodal_confirm(question, callback, title, unescaped) {
 }
 
 function fauxmodal_alert(notice, callback, title, unescaped) {
+    notice = strVal(notice);
     callback || (callback = noop);
     title || (title = '{!MESSAGE;^}');
     unescaped = !!unescaped;

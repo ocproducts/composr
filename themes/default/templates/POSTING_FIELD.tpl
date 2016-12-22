@@ -40,17 +40,17 @@
 							<li><a class="link_exempt" title="{!FULL_COMCODE_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_comcode}">{!FULL_COMCODE_TUTORIAL}</a></li>
 							<li><a class="link_exempt" title="{!FULL_BLOCK_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_adv_comcode_pages}">{!FULL_BLOCK_TUTORIAL}</a></li>
 						{+END}
-						<li><a rel="nofollow" class="link_exempt" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-cms-js="1" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'field_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no');"><img src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" alt="" class="vertical_alignment" /></a></li>
+						<li><a rel="nofollow" class="link_exempt js-link-click-open-field-emoticon-chooser-window" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1"><img src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" alt="" class="vertical_alignment" /></a></li>
 					{+END}{+END}
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
-						<li><a id="toggle_wysiwyg_{NAME*}" href="#!" onclick="return toggle_wysiwyg('{NAME;*}');"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
+						<li><a id="toggle_wysiwyg_{NAME*}" href="#!" onclick="toggle_wysiwyg('{NAME;*}');"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>
 					{+END}
 				</ul>
 			</div>
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,posting_field}}}
-		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
+		<th {+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
 			{$GET,posting_field}
 		</th>
 	{+END}
@@ -72,7 +72,7 @@
 			</div>
 
 			<div id="container_for_{NAME*}" class="constrain_field container_for_wysiwyg">
-				<textarea{+START,IF,{$NOT,{$MOBILE}}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting_required{+END} wide_field posting_field_textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
+				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting_required{+END} wide_field posting_field_textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
 
 				{+START,IF_PASSED,WORD_COUNTER}
 					{$SET,word_count_id,{$RAND}}
@@ -84,9 +84,9 @@
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
 				{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
-					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
+					<div {+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
 						{+START,IF,{$CNS}}
-							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
+							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1"  title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
 
 						{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}}

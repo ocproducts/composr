@@ -6,15 +6,16 @@
 
 
 function make_field_selected(el) {
-    if (el.className === 'menu_editor_selected_field') {
+    if (el.classList.contains('menu_editor_selected_field')) {
         return;
     }
 
-    el.className = 'menu_editor_selected_field';
+    el.classList.add('menu_editor_selected_field');
+
     var changed = false;
     for (var i = 0; i < el.form.elements.length; i++) {
-        if ((el.form.elements[i].className === 'menu_editor_selected_field') && (el.form.elements[i] !== el)) {
-            el.form.elements[i].className = '';
+        if ((el.form.elements[i].classList.contains('menu_editor_selected_field')) && (el.form.elements[i] !== el)) {
+            el.form.elements[i].classList.remove('menu_editor_selected_field');
             changed = true;
         }
     }
@@ -28,19 +29,19 @@ function copy_fields_into_bottom(i, changed) {
 
     form.elements['caption_long'].value = $cms.dom.id('caption_long_' + i).value;
     form.elements['caption_long'].onchange = function () {
-        $cms.dom.id('caption_long_' + i).value = this.value;
-        $cms.dom.id('caption_long_' + i).disabled = (this.value == '');
+        $cms.dom.$('#caption_long_' + i).value = this.value;
+        $cms.dom.$('#caption_long_' + i).disabled = (this.value == '');
     };
 
     form.elements['url'].value = $cms.dom.id('url_' + i).value;
     form.elements['url'].onchange = function () {
-        $cms.dom.id('url_' + i).value = this.value;
+        $cms.dom.$('#url_' + i).value = this.value;
     };
 
     form.elements['page_only'].value = $cms.dom.id('page_only_' + i).value;
     form.elements['page_only'].onchange = function () {
-        $cms.dom.id('page_only_' + i).value = this.value;
-        $cms.dom.id('page_only_' + i).disabled = (this.value === '');
+        $cms.dom.$('#page_only_' + i).value = this.value;
+        $cms.dom.$('#page_only_' + i).disabled = (this.value === '');
     };
 
     var s;
@@ -52,8 +53,8 @@ function copy_fields_into_bottom(i, changed) {
     }
     form.elements['theme_img_code'].selectedIndex = s;
     form.elements['theme_img_code'].onchange = function () {
-        $cms.dom.id('theme_img_code_' + i).value = this.options[this.selectedIndex].value;
-        $cms.dom.id('theme_img_code_' + i).disabled = (this.selectedIndex == 0);
+        $cms.dom.$('#theme_img_code_' + i).value = this.options[this.selectedIndex].value;
+        $cms.dom.$('#theme_img_code_' + i).disabled = (this.selectedIndex == 0);
     };
     if (window.jQuery && window.jQuery.fn.select2) {
         window.jQuery(form.elements['theme_img_code']).trigger('change');
@@ -61,22 +62,22 @@ function copy_fields_into_bottom(i, changed) {
 
     form.elements['new_window'].checked = $cms.dom.id('new_window_' + i).value == '1';
     form.elements['new_window'].onclick = function () {
-        $cms.dom.id('new_window_' + i).value = this.checked ? '1' : '0';
-        $cms.dom.id('new_window_' + i).disabled = !this.checked;
+        $cms.dom.$('#new_window_' + i).value = this.checked ? '1' : '0';
+        $cms.dom.$('#new_window_' + i).disabled = !this.checked;
     };
 
     form.elements['check_perms'].checked = $cms.dom.id('check_perms_' + i).value == '1';
     form.elements['check_perms'].onclick = function () {
-        $cms.dom.id('check_perms_' + i).value = this.checked ? '1' : '0';
-        $cms.dom.id('check_perms_' + i).disabled = !this.checked;
+        $cms.dom.$('#check_perms_' + i).value = this.checked ? '1' : '0';
+        $cms.dom.$('#check_perms_' + i).disabled = !this.checked;
     };
 
     //$cms.dom.html(form.elements['branch_type'],$cms.dom.html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
     form.elements['branch_type'].selectedIndex = $cms.dom.id('branch_type_' + i).selectedIndex;
     form.elements['branch_type'].onchange = function (event) {
-        $cms.dom.id('branch_type_' + i).selectedIndex = this.selectedIndex;
-        if ($cms.dom.id('branch_type_' + i).onchange) {
-            $cms.dom.id('branch_type_' + i).onchange(event);
+        $cms.dom.$('#branch_type_' + i).selectedIndex = this.selectedIndex;
+        if ($cms.dom.$('#branch_type_' + i).onchange) {
+            $cms.dom.$('#branch_type_' + i).onchange(event);
         }
     };
     if (window.jQuery && window.jQuery.fn.select2) {
@@ -85,15 +86,14 @@ function copy_fields_into_bottom(i, changed) {
 
     form.elements['include_sitemap'].selectedIndex = $cms.dom.id('include_sitemap_' + i).value;
     form.elements['include_sitemap'].onchange = function (event) {
-        $cms.dom.id('include_sitemap_' + i).value = this.selectedIndex;
-        $cms.dom.id('include_sitemap_' + i).disabled = (this.selectedIndex == 0);
+        $cms.dom.$('#include_sitemap_' + i).value = this.selectedIndex;
+        $cms.dom.$('#include_sitemap_' + i).disabled = (this.selectedIndex == 0);
     };
     if (window.jQuery && window.jQuery.fn.select2) {
         window.jQuery(form.elements['include_sitemap']).trigger('change');
     }
 
-    var mfh = $cms.dom.id('mini_form_hider');
-
+    var mfh = $cms.dom.$('#mini_form_hider');
     mfh.style.display = 'block';
 
     if (!changed) {
@@ -146,16 +146,16 @@ function is_child(elements, possible_parent, possible_child) {
     return false;
 }
 
-function handle_ordering(t, up, down) {
+function handle_ordering(el, up, down) {
     if (up || down) {
-        var form = $cms.dom.id('edit_form');
+        var form = $cms.dom.$('#edit_form');
 
         // Find the num
-        var index = t.id.substring(t.id.indexOf('_') + 1, t.id.length);
-        var num = window.parseInt(form.elements['order_' + index].value);
+        var index = el.id.substring(el.id.indexOf('_') + 1, el.id.length);
+        var num = window.parseInt(form.elements['order_' + index].value) || 0;
 
         // Find the parent
-        var parent_num = $cms.dom.id('parent_' + index).value;
+        var parent_num = $cms.dom.$('#parent_' + index).value;
 
         var i, b, bindex;
         var best = -1, bestindex = -1;
@@ -164,10 +164,9 @@ function handle_ordering(t, up, down) {
     if (up) {// Up
         // Find previous branch with same parent (if exists)
         for (i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].name.substr(0, 7) == 'parent_') &&
-                (form.elements[i].value == parent_num)) {
+            if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parent_num)) {
                 bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
-                b = window.parseInt(form.elements['order_' + bindex].value);
+                b = window.parseInt(form.elements['order_' + bindex].value) || 0;
                 if ((b < num) && (b > best)) {
                     best = b;
                     bestindex = bindex;
@@ -179,8 +178,7 @@ function handle_ordering(t, up, down) {
     if (down) {// Down
         // Find next branch with same parent (if exists)
         for (i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].name.substr(0, 7) === 'parent_') &&
-                (form.elements[i].value == parent_num)) {
+            if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parent_num)) {
                 bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
                 b = window.parseInt(form.elements['order_' + bindex].value);
                 if ((b > num) && ((b < best) || (best == -1))) {
@@ -191,14 +189,14 @@ function handle_ordering(t, up, down) {
         }
     }
 
-    if (((up) || (down))/* && (best==-1)*/) {
-        var elements = form.getElementsByTagName('input');
+    if (up || down) {
+        var elements = form.querySelectorAll('input');
         for (i = 0; i < elements.length; i++) {
-            if (elements[i].name == 'parent_' + index) // Found our spot
-            {
+            if (elements[i].name == 'parent_' + index) {// Found our spot
+
                 var us = elements[i];
                 for (b = up ? (i - 1) : (i + 1); up ? (b > 0) : (b < elements.length); up ? b-- : b++) {
-                    if ((!is_child(elements, index, elements[b].name.substr(7))) && (elements[b].name.substr(0, 7) == 'parent_') && ((up) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex == 0) || (!exists_child(elements, elements[b].name.substr(7))))) {
+                    if ((!is_child(elements, index, elements[b].name.substr(7))) && (elements[b].name.startsWith('parent_') && ((up) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex == 0) || (!exists_child(elements, elements[b].name.substr(7))))) {
                         var target = elements[b];
                         var main = us.parentNode.parentNode;
                         var place = target.parentNode.parentNode;
@@ -223,8 +221,13 @@ function handle_ordering(t, up, down) {
 }
 
 function swap_names(t, a, b, t2, values_also) {
-    if (t2 === undefined) t2 = '';
-    if (values_also === undefined) values_also = false;
+    if (t2 === undefined) {
+        t2 = '';
+    }
+    if (values_also === undefined) {
+        values_also = false;
+    }
+
     var _a = $cms.dom.id(t + '_' + a + t2);
     var _b = $cms.dom.id(t + '_' + b + t2);
     _a.name = t + '_' + b + t2;
@@ -237,8 +240,8 @@ function swap_names(t, a, b, t2, values_also) {
         _b.value = temp;
     }
 
-    var _al = $cms.dom.id('label_' + t + '_' + a + t2);
-    var _bl = $cms.dom.id('label_' + t + '_' + b + t2);
+    var _al = $cms.dom.$('#label_' + t + '_' + a + t2);
+    var _bl = $cms.dom.$('#label_' + t + '_' + b + t2);
     if (_al) {
         _al.setAttribute('for', t + '_' + b + t2);
         _bl.setAttribute('for', t + '_' + a + t2);
@@ -290,7 +293,7 @@ function delete_branch(id) {
 }
 
 function check_menu() {
-    var form = $cms.dom.id('edit_form');
+    var form = $cms.dom.$('#edit_form');
     var i, id, name, the_parent, ignore, caption, url, branch_type;
     for (i = 0; i < form.elements.length; i++) {
         name = form.elements[i].name.substr(0, 7);
@@ -301,14 +304,12 @@ function check_menu() {
             // Is this visible? (if it is we need to check the IDs
             the_parent = form.elements[i];
             do {
-
                 if (the_parent.style.display == 'none') {
                     ignore = true;
                     break;
                 }
                 the_parent = the_parent.parentNode;
-            }
-            while (the_parent.parentNode);
+            } while (the_parent.parentNode);
 
             if (!ignore) {// It's the real deal
 

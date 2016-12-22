@@ -30,15 +30,23 @@
     }
 
     $cms.inherits(CommentsPostingForm, $cms.View, {
-        events: {
-            'click .js-btn-full-editor': 'moveToFullEditor',
-            'click .js-btn-submit-comments': 'clickBtnSubmit',
-            'click .js-click-do-form-preview': 'doFormPreview',
-            'submit .js-form-comments': 'submitFormComments',
+        events: function () {
+            return {
+                'click .js-btn-full-editor': 'moveToFullEditor',
+                'click .js-btn-submit-comments': 'clickBtnSubmit',
+                'click .js-click-do-form-preview': 'doFormPreview',
+                'submit .js-form-comments': 'submitFormComments',
 
-            'click .js-img-review-bar': 'reviewBarClick',
-            'mouseover .js-img-review-bar': 'reviewBarHover',
-            'mouseout .js-img-review-bar': 'reviewBarHover'
+                'click .js-img-review-bar': 'reviewBarClick',
+                'mouseover .js-img-review-bar': 'reviewBarHover',
+                'mouseout .js-img-review-bar': 'reviewBarHover',
+
+                'click .js-click-play-self-audio-link': 'playSelfAudioLink',
+
+                'focus .js-focus-textarea-post': 'focusTexareaPost',
+
+                'click .js-click-open-site-emoticon-chooser-window': 'openEmoticonChooserWindow'
+            };
         },
 
         initReviewRatings: function () {
@@ -79,6 +87,24 @@
                 rating = (e.type === 'mouseover') ? reviewBar.dataset.vwRating : undefined;
 
             this.displayReviewRating(container, rating);
+        },
+
+        playSelfAudioLink: function (e, link) {
+            e.preventDefault();
+            play_self_audio_link(link);
+        },
+
+        focusTexareaPost: function (e, textarea) {
+            if (((textarea.value.replace(/\s/g, '') === '{POST_WARNING;^}'.replace(/\s/g, '')) && ('{POST_WARNING;^}' !== '')) || ((textarea.strip_on_focus != null) && (textarea.value == textarea.strip_on_focus))) {
+                textarea.value = '';
+            }
+
+            textarea.classList.remove('field_input_non_filled');
+            textarea.classList.add('field_input_filled');
+        },
+
+        openEmoticonChooserWindow: function () {
+            window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         },
 
         clickBtnSubmit: function (e, button) {
@@ -206,11 +232,15 @@
             }
         },
 
-        commentsWrapper: function (params) {
+        commentsWrapper: function (params, container) {
             if ((params.serializedOptions !== undefined) && (params.hash !== undefined)) {
                 window.comments_serialized_options = params.serializedOptions;
                 window.comments_hash = params.hash;
             }
+
+            $cms.dom.on(container, 'change', '.js-change-select-submit-form', function (e, select) {
+                select.form.submit();
+            });
         },
 
         commentAjaxHandler: function (params) {

@@ -30,7 +30,7 @@
 			{CUSTOM_TASKS}
 		</div>
 
-		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" data-cms-js="1" class="add_custom_task js-submit-custom-task" autocomplete="off">
+		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" data-submit-pd="1" class="add_custom_task js-submit-custom-task" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="right">

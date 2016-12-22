@@ -80,6 +80,14 @@
         }
     };
 
+    $cms.templates.ecomAdminOrdersScreen = function ecomAdminOrdersScreen(params, container) {
+        $cms.dom.on(container, 'submit', '.js-submit-scroll-to-top', function (){
+            try {
+                window.scrollTo(0, 0);
+            } catch (ignore) {}
+        });
+    };
+
     $cms.templates.ecomAdminOrderActions = function ecomAdminOrderActions() {
         var container = this;
 

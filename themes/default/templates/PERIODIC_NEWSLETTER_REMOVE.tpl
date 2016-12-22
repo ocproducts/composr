@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,newsletter}
+<div data-tpl="periodicNewsletterRemove">
 {TITLE}
 
 <p>
@@ -11,10 +13,10 @@
 
 	<div>
 		<div class="proceed_button">
-			<input class="button_screen buttons__proceed" onclick="setTimeout(function (btn) { btn.disabled=true; }, 100, this);" accesskey="u" type="submit" value="{!PROCEED}" />
+			<input class="button_screen buttons__proceed js-click-btn-disable-self" accesskey="u" type="submit" value="{!PROCEED}" />
 		</div>
 	</div>
 </form>
 
 <a href="#!" data-cms-btn-go-back="1"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
-
+</div>

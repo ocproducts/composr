@@ -1,1 +1,1 @@
-<input type="image" data-cms-js="1" onclick="do_input_{B%}('{FIELD_NAME;*}');" title="{TITLE}" alt="{TITLE}" src="{$IMG*,comcodeeditor/{B}}" />
+<input type="image" data-click-pd="1" onclick="do_input_{B%}('{FIELD_NAME;*}');" title="{TITLE}" alt="{TITLE}" src="{$IMG*,comcodeeditor/{B}}" />

@@ -1,5 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
-<div>
+{$REQUIRE_JAVASCRIPT,cns_forum}
+<div data-tpl="cnsTopicPost" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
 <div>
 	<div class="cns_forum_box_left{+START,IF_NON_EMPTY,{CLASS}} {CLASS*}{+END}">
 		<h2 class="accessibility_hidden">
@@ -73,7 +74,7 @@
 
 							<div>
 								{+START,IF,{$NOT,{$IS_GUEST}}}<div class="accessibility_hidden"><label for="mark_{ID*}">{!FORUM_POST} {!MARKER} #{ID*}</label></div>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
-								<input {+START,IF,{$NOT,{$IS_GUEST}}} title="{!FORUM_POST} {!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on','cns_off')" />
+								<input {+START,IF,{$NOT,{$IS_GUEST}}} title="{!FORUM_POST} {!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" class="js-click-checkbox-set-cell-mark-class" />
 							</div>
 						</form>
 					</div>

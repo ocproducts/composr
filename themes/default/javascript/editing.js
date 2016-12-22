@@ -58,11 +58,13 @@ function toggle_wysiwyg(name) {
         return false;
     }
 
-    var ret = _toggle_wysiwyg(name);
+    _toggle_wysiwyg(name);
+
     if (read_cookie('use_wysiwyg') != '-1') {
         set_cookie('use_wysiwyg', '1', 3000);
     }
-    return ret;
+
+    return false;
 }
 
 function _toggle_wysiwyg(name) {

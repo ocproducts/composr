@@ -26,7 +26,7 @@
 <tr class="field_input">
 	<td id="form_table_field_input__{$GET,randomised_id}"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_huge_field{+START,IF,{REQUIRED}} required{+END}">
 		<div id="container_for_{NAME*}" class="constrain_field container_for_wysiwyg">
-			<textarea{+START,IF,{$NOT,{$MOBILE}}} onchange="manage_scroll_height(this);" onkeyup="manage_scroll_height(this);"{+END} tabindex="{TABINDEX*}" class="input_text{_REQUIRED} wide_field" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}" {+START,IF,{SCROLLS}}wrap="off"{+END}>{DEFAULT*}</textarea>
+			<textarea data-textarea-auto-height="" tabindex="{TABINDEX*}" class="input_text{_REQUIRED} wide_field" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}" {+START,IF,{SCROLLS}}wrap="off"{+END}>{DEFAULT*}</textarea>
 
 			{+START,IF_PASSED,DEFAULT_PARSED}
 				<textarea aria-hidden="true" cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>

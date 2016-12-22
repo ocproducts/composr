@@ -27,4 +27,12 @@
         internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
     };
 
+    $cms.templates.pollAnswer = function pollAnswer(params, container) {
+        var pollId = strVal(params.pid);
+
+        $cms.dom.on(container, 'click', '.js-click-enable-poll-input', function () {
+            $cms.dom.$('#poll' + pollId).disabled = false;
+        });
+    };
+
 }(window.$cms));

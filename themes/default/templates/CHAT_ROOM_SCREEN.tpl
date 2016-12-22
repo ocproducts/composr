@@ -1,11 +1,9 @@
-{$REQUIRE_JAVASCRIPT,chat}
-<div data-view="ChatRoomScreen" data-view-params="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
-{TITLE}
-
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,widget_color}
 {$REQUIRE_JAVASCRIPT,chat}
 {$REQUIRE_CSS,widget_color}
+<div data-view="ChatRoomScreen" data-view-params="{+START,PARAMS_JSON,CHATROOM_ID}{_*}{+END}">
+{TITLE}
 
 {+START,IF_NON_EMPTY,{INTRODUCTION}}<p>{INTRODUCTION}</p>{+END}
 
@@ -19,7 +17,7 @@
 
 				<div style="display: inline;">
 					<p class="accessibility_hidden"><label for="post">{!MESSAGE}</label></p>
-					<textarea style="font-family: {FONT_NAME_DEFAULT;*}" class="input_text_required"{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} onkeypress="if ($cms.dom.keyPressed(event, 'Enter')) return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').value,document.getElementById('text_colour').value); return true;" id="post" name="message" cols="{$?,{$MOBILE},37,39}" rows="1"></textarea>
+					<textarea style="font-family: '{FONT_NAME_DEFAULT;*}'" class="input_text_required js-keypress-enter-post-chat" data-textarea-auto-height="" id="post" name="message" cols="{$?,{$MOBILE},37,39}" rows="1"></textarea>
 					<input type="hidden" name="font" id="font" value="{FONT_NAME_DEFAULT*}" />
 					<input type="hidden" name="colour" id="colour" value="{TEXT_COLOUR_DEFAULT*}" />
 				</div>
@@ -34,7 +32,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{MICRO_BUTTONS}
 				{+START,IF,{$CNS}}
-					<a rel="nofollow" class="horiz_field_sep" tabindex="6" href="#!" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post{$KEEP;*}'),'emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no');" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
+					<a rel="nofollow" class="horiz_field_sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
 				{+END}
 			{+END}
 		</div>
@@ -82,7 +80,7 @@
 						<label for="text_colour">{!CHAT_OPTIONS_COLOUR_NAME}:</label>
 					</p>
 					<p>
-						<input size="10" maxlength="7" class="input_line_required" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}#{TEXT_COLOUR_DEFAULT*}{+END}" onchange="if (this.form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) { this.style.color=this.value; document.getElementById('colour').value=this.value; }" />
+						<input size="10" maxlength="7" class="input_line_required js-change-input-text-color" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}#{TEXT_COLOUR_DEFAULT*}{+END}" />
 					</p>
 				</div>
 

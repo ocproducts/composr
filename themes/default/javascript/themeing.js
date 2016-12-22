@@ -38,177 +38,7 @@ function template_editor_assign_unload_event() {
 
 /* Tab and file management */
 
-function add_template() {
-    window.fauxmodal_prompt(
-        '{!themes:INPUT_TEMPLATE_TYPE;^}',
-        'templates',
-        function (subdir) {
-            if (subdir !== null) {
-                if (subdir != 'templates' && subdir != 'css' && subdir != 'javascript' && subdir != 'text' && subdir != 'xml') {
-                    window.fauxmodal_alert('{!BAD_TEMPLATE_TYPE;^}');
-                    return;
-                }
 
-                window.fauxmodal_prompt(
-                    '{!themes:INPUT_TEMPLATE_NAME;^}',
-                    'example',
-                    function (file) {
-                        if (file !== null) {
-                            file = file.replace(/\..*$/, '');
-                            switch (subdir) {
-                                case 'templates':
-                                    file += '.tpl';
-                                    break;
-
-                                case 'css':
-                                    file += '.css';
-                                    break;
-
-                                case 'javascript':
-                                    file += '.js';
-                                    break;
-
-                                case 'text':
-                                    file += '.txt';
-                                    break;
-
-                                case 'xml':
-                                    file += '.xml';
-                                    break;
-                            }
-
-                            template_editor_add_tab(file);
-                        }
-                    },
-                    '{!themes:ADD_TEMPLATE;^}'
-                );
-            }
-        },
-        '{!themes:ADD_TEMPLATE;^}'
-    );
-
-    return false;
-}
-
-function template_editor_add_tab_wrap(file) {
-    template_editor_add_tab(document.getElementById('theme_files').value);
-}
-
-function template_editor_add_tab(file) {
-    var tab_title = file.replace(/^.*\//, '');
-
-    var file_id = file_to_file_id(file);
-
-    // Switch to tab if exists
-    if (document.getElementById('t_' + file_id)) {
-        select_tab('g', file_id);
-
-        template_editor_show_tab(file_id);
-
-        return;
-    }
-
-    // Create new tab header
-    var headers = document.getElementById('template_editor_tab_headers');
-    var header = document.createElement('a');
-    header.setAttribute('aria-controls', 'g_' + file_id);
-    header.setAttribute('role', 'tab');
-    header.setAttribute('href', '#');
-    header.id = 't_' + file_id;
-    header.className = 'tab file_nonchanged';
-    header.onclick = function (event) {
-        select_tab('g', file_id);
-
-        template_editor_show_tab(file_id);
-
-        return false;
-    };
-    var ext = (tab_title.indexOf('.') != -1) ? tab_title.substring(tab_title.indexOf('.') + 1, tab_title.length) : '';
-    if (ext != '') tab_title = tab_title.substr(0, tab_title.length - 4);
-    var icon_img = document.createElement('img');
-    if (ext == 'tpl') {
-        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/tpl}');
-        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/tpl}'));
-    }
-    if (ext == 'css') {
-        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/css}');
-        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/css}'));
-    }
-    if (ext == 'js') {
-        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/js}');
-        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/js}'));
-    }
-    if (ext == 'xml') {
-        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/xml}');
-        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/xml}'));
-    }
-    if (ext == 'txt' || ext == '') {
-        icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/page_txt}');
-        icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/page_txt}'));
-    }
-    icon_img.style.width = '16px';
-    header.appendChild(icon_img);
-    header.appendChild(document.createTextNode(' '));
-    var span = document.createElement('span');
-    span.textContent = tab_title;
-    header.appendChild(span);
-    var close_button = document.createElement('img');
-    close_button.src = $cms.img('{$IMG;,icons/16x16/close}');
-    if (close_button.srcset !== undefined) {
-        close_button.srcset = $cms.img('{$IMG;,icons/32x32/close}') + ' 2x';
-    }
-    close_button.alt = '{!CLOSE;^}';
-    close_button.style.paddingLeft = '5px';
-    close_button.style.width = '16px';
-    close_button.style.height = '16px';
-    close_button.style.verticalAlign = 'middle';
-    close_button.onclick = function (event) {
-        cancel_bubbling(event);
-        if (event.cancelable) {
-            event.preventDefault();
-        }
-
-        if (window.template_editor_open_files[file].unsaved_changes) {
-            fauxmodal_confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
-                if (result) {
-                    template_editor_tab_unload_content(file);
-                }
-            }, '{!Q_SURE;^}', true);
-        } else {
-            template_editor_tab_unload_content(file);
-        }
-    };
-    header.appendChild(close_button);
-    headers.appendChild(header);
-
-    // Create new tab body
-    var bodies = document.getElementById('template_editor_tab_bodies');
-    var body = document.createElement('div');
-    body.setAttribute('aria-labeledby', 't_' + file_id);
-    body.setAttribute('role', 'tabpanel');
-    body.id = 'g_' + file_id;
-    body.style.display = 'none';
-    var loading_image = document.createElement('img');
-    loading_image.className = 'ajax_loading';
-    loading_image.src = $cms.img('{$IMG;,loading}');
-    loading_image.style.height = '12px';
-    body.appendChild(loading_image);
-    bodies.appendChild(body);
-
-    // Set content
-    var url = template_editor_loading_url(file);
-    load_snippet(url, null, function (ajax_result) {
-        template_editor_tab_loaded_content(ajax_result, file);
-    });
-
-    // Cleanup
-    template_editor_clean_tabs();
-
-    // Select tab
-    select_tab('g', file_id);
-
-    template_editor_show_tab(file_id);
-}
 
 function template_editor_loading_url(file, revision_id) {
     var url = 'template_editor_load';
@@ -450,8 +280,6 @@ function insert_guid(file, guid) {
 }
 
 function template_insert_parameter(dropdown_name, file_id) {
-    var params = '';
-
     var textbox = document.getElementById('e_' + file_id);
 
     editarea_reverse_refresh('e_' + file_id);
@@ -985,7 +813,7 @@ function css_equation_helper(file_id, theme) {
 
 window.done_cleanup_template_markers = false;
 if (window.location.href.includes('keep_template_magic_markers=1')) {
-    $cms.ready(function () {
+    $cms.ready.then(function () {
         cleanup_template_markers(window);
     });
 }

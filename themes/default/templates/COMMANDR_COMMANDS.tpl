@@ -1,3 +1,6 @@
-<ul>
-	{+START,LOOP,COMMANDS}<li onclick="var c=document.getElementById('commandr_command'); c.value='{_loop_var;*} '; c.focus();">{_loop_var*}</li>{+END}
+{$REQUIRE_JAVASCRIPT,commandr}
+<ul data-tpl="commandrCommands">
+	{+START,LOOP,COMMANDS}
+        <li class="js-click-enter-command" data-tp-command="{_loop_var*}">{_loop_var*}</li>
+    {+END}
 </ul>

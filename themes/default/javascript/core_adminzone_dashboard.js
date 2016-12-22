@@ -74,10 +74,10 @@
     }
 
     $cms.inherits(BlockMainStaffLinks, $cms.View, {
-        events: ({
+        events: {
             'click .js-click-staff-block-flip': 'staffBlockFlip',
             'click .js-click-form-submit-headless': 'formSubmitHeadless'
-        }),
+        },
         staffBlockFlip: function () {
             var rand = this.params.randStaffLinks,
                 show = this.$('#staff_links_list_' + rand + '_form'),
@@ -134,9 +134,15 @@
     }
 
     $cms.inherits(BlockMainNotes, $cms.View, {
-        events: ({
-            'click .js-click-headless-submit': 'headlessSubmit'
-        }),
+        events: function () {
+            return {
+                'click .js-click-headless-submit': 'headlessSubmit',
+                'focus .js-focus-textarea-expand': 'textareaExpand',
+                'blur .js-blur-textarea-contract': 'textareaContract',
+                'mouseover .js-hover-disable-textarea-size-change': 'disableTextareaSizeChange',
+                'mouseout .js-hover-disable-textarea-size-change': 'disableTextareaSizeChange'
+            };
+        },
 
         headlessSubmit: function (e) {
             var blockName = $cms.filter.nl(this.params.blockName),
@@ -145,6 +151,20 @@
             if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
                 e.preventDefault();
             }
+        },
+
+        textareaExpand: function (e, textarea){
+            textarea.setAttribute('rows','23');
+        },
+
+        textareaContract: function (e, textarea){
+            if (!this.formEl.disable_size_change) {
+                textarea.setAttribute('rows','10');
+            }
+        },
+
+        disableTextareaSizeChange: function (e) {
+            this.formEl.disable_size_change = (e.type === 'mouseover');
         }
     });
 
@@ -152,7 +172,6 @@
     $cms.views.BlockMainStaffLinks = BlockMainStaffLinks;
     $cms.views.BlockMainStaffWebsiteMonitoring = BlockMainStaffWebsiteMonitoring;
     $cms.views.BlockMainNotes = BlockMainNotes;
-
 
     $cms.templates.blockMainStaffChecklist = function () {
         var container = this,
@@ -225,6 +244,20 @@
 
     $cms.templates.blockMainStaffTips = function (params) {
         internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
+    };
+
+    $cms.templates.blockMainStaffChecklistItem = function blockMainStaffChecklistItem(params, container) {
+        var $IMG_checklist_toggleicon = $cms.img('{$IMG;,checklist/toggleicon}'),
+            $IMG_checklist_toggleicon2 = $cms.img('{$IMG;,checklist/toggleicon2}');
+
+        $cms.dom.on(container, 'mouseover mouseout', function (e, target) {
+            var changeToggleIcon = $cms.dom.closest(target, '.js-hover-change-img-toggle-icon', container.parentNode);
+
+            if (changeToggleIcon && (!e.relatedTarget || !changeToggleIcon.contains(e.relatedTarget))) {
+                var imgToggleIcon = $cms.dom.$(container, '.js-img-toggle-icon');
+                imgToggleIcon.setAttribute('src', (e.type === 'mouseover') ? $IMG_checklist_toggleicon2 : $IMG_checklist_toggleicon);
+            }
+        });
     };
 
     function ajax_form_submit__admin__headless(form, block_name, map) {

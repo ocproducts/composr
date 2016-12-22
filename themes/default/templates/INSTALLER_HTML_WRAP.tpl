@@ -141,15 +141,6 @@
 			<img alt="Composr" src="{LOGO_URL*}" width="550" height="115" />
 		</div>
 
-		<script>
-			setTimeout(function () {
-				if (window.alert === null) {
-					/* Parser hint: .innerHTML okay */
-					document.getElementById('extra_errors').innerHTML = '<p class="installer_warning"><strong class="popup_blocker_warning">Your popup blocker is too aggressive<\/strong> (even error alerts cannot display). Please disable for the installer.<\/p>';
-				}
-			});
-		</script>
-
 		<div class="installer_main_inner">
 			<div class="box box___installer_html_wrap"><div class="box_inner">
 				<h1>{!INSTALLER,Composr}: {!INSTALLER_STEP,{STEP},10}</h1>

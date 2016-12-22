@@ -1,1 +1,1 @@
-<input type="image" data-cms-js="1" onclick="do_input_{B%}('post');" title="{TITLE*}" alt="{TITLE*}" src="{$IMG*,chatcodeeditor/{B}}" />
+<input type="image" data-click-pd="1" onclick="do_input_{B%}('post');" title="{TITLE*}" alt="{TITLE*}" src="{$IMG*,chatcodeeditor/{B}}" />

@@ -6,31 +6,28 @@
 {$REQUIRE_CSS,autocomplete}
 
 {+START,SET,CAPTCHA}
-	{+START,IF_PASSED,USE_CAPTCHA}
-		{+START,IF,{USE_CAPTCHA}}
-			<div class="comments_captcha">
-				<div class="box box___comments_posting_form__captcha"><div class="box_inner">
-					{+START,IF,{$CONFIG_OPTION,audio_captcha}}
-						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a onclick="play_self_audio_link(this);" data-cms-js="1" title="{!AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
-					{+END}
-					{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
-						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
-					{+END}
-					{+START,IF,{$CONFIG_OPTION,css_captcha}}
-						<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
-					{+END}
-					{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
-						<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}" />
-					{+END}
-					<input maxlength="6" size="8" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
-				</div></div>
-			</div>
-		{+END}
+	{+START,IF_PASSED_AND_TRUE,USE_CAPTCHA}
+		<div class="comments_captcha">
+			<div class="box box___comments_posting_form__captcha"><div class="box_inner">
+				{+START,IF,{$CONFIG_OPTION,audio_captcha}}
+					<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a class="js-click-play-self-audio-link" title="{!AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+				{+END}
+				{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
+					<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+				{+END}
+				{+START,IF,{$CONFIG_OPTION,css_captcha}}
+					<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
+				{+END}
+				{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
+					<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}" />
+				{+END}
+				<input maxlength="6" size="8" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
+			</div></div>
+		</div>
 	{+END}
 {+END}
 
-<div data-view="CommentsPostingForm"
-	  data-view-params="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,EMAIL_OPTIONAL,WYSIWYG,CAPTCHA}{_*}{+END}">
+<div data-view="CommentsPostingForm" data-view-params="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,EMAIL_OPTIONAL,WYSIWYG,CAPTCHA}{_*}{+END}">
 {+START,IF_NON_EMPTY,{COMMENT_URL}}
 <form role="form" title="{TITLE*}" class="comments_form js-form-comments" id="comments_form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
@@ -158,11 +155,11 @@
 								{+START,IF_NON_EMPTY,{FIRST_POST}{COMMENT_TEXT}}
 									<ul class="associated_links_block_group">
 										{+START,IF_NON_EMPTY,{FIRST_POST}}
-											<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" onblur="this.onmouseout(event);" data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
+											<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-blur-deactivate-tooltip data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
 										{+END}
 
 										{+START,IF_NON_EMPTY,{COMMENT_TEXT}}
-											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" onblur="this.onmouseout(event);" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{!HOVER_MOUSE_IMPORTANT}</a></li>
+											<li><a class="non_link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{!HOVER_MOUSE_IMPORTANT}</a></li>
 										{+END}
 									</ul>
 								{+END}
@@ -181,7 +178,7 @@
 												{EM}
 
 												{+START,IF,{$CNS}}
-													<p class="associated_link associated_links_block_group"><a rel="nofollow" tabindex="5" href="#!" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name=post{$KEEP;*}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;">{!EMOTICONS_POPUP}</a></p>
+													<p class="associated_link associated_links_block_group"><a rel="nofollow" tabindex="5" href="#!" class="js-click-open-site-emoticon-chooser-window">{!EMOTICONS_POPUP}</a></p>
 												{+END}
 											</div>
 										</div></div>
@@ -191,7 +188,7 @@
 
 							<td>
 								<div class="constrain_field">
-									<textarea name="post" id="post"{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="wide_field" onfocus="if ((this.value.replace(/\s/g,'')=='{POST_WARNING;^*}'.replace(/\s/g,'') &amp;&amp; '{POST_WARNING;^*}'!='') || (typeof this.strip_on_focus!='undefined' &amp;&amp; this.value==this.strip_on_focus)) this.value=''; this.className='field_input_filled';" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
+									<textarea name="post" id="post" data-textarea-auto-height="" accesskey="x" class="wide_field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
 								</div>
 
 								<div id="error_post" style="display: none" class="input_error_here"></div>

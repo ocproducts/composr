@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,wiki}
+<div data-tpl="wikiPost" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
 <div>
 	<div class="cns_forum_box_left cns_forum_box_right cns_post_details" role="note">
 		<a id="post_{ID*}"></a>
@@ -53,7 +55,7 @@
 						<form class="webstandards_checker_off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 							<div>
 								{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}">{!MARKER}<span class="accessibility_hidden"> #{ID*}</span>:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
-								<input onclick="var button=document.getElementById('wiki_merge_button'); button.classList.remove('button_faded'); button.style.display='inline';"{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on','cns_off')" />
+								<input class="js-click-checkbox-set-cell-mark-class js-click-show-wiki-merge-button" {+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />
 							</div>
 						</form>
 					</div>
@@ -74,3 +76,4 @@
 		</div>
 	</div>
 {+END}
+</div>

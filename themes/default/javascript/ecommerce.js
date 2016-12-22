@@ -20,9 +20,15 @@
 
     $cms.views.PurchaseWizardScreen = PurchaseWizardScreen;
 
-    $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params) {
-        var container = this;
+    $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params, container) {
+        $cms.dom.on(container, 'click', '.js-checkbox-click-toggle-proceed-btn', function (e, checkbox) {
+            $cms.dom.$('#proceed_button').disabled = !checkbox.checked;
+        });
 
-        //$cms.dom.on();
+        $cms.dom.on(container, 'click', '.js-click-btn-i-disagree', function (e, btn) {
+            if (btn.dataset.tpLocation) {
+                window.location = btn.dataset.tpLocation
+            }
+        });
     };
 }(window.$cms));

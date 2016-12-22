@@ -16,11 +16,11 @@
 
 				<div class="accessibility_hidden"><label for="n_block_{TITLE|}">{!NOTES}</label></div>
 				<div class="constrain_field">
-					<textarea onfocus="this.setAttribute('rows','23');" onblur="if (!this.form.disable_size_change) this.setAttribute('rows','10');" class="wide_field" cols="80" id="n_block_{TITLE|}" rows="10" name="new" {+START,IF,{SCROLLS}}wrap="off"{+END}>{CONTENTS*}</textarea>
+					<textarea class="wide_field js-focus-textarea-expand js-blur-textarea-contract" cols="80" id="n_block_{TITLE|}" rows="10" name="new" {+START,IF,{SCROLLS}}wrap="off"{+END}>{CONTENTS*}</textarea>
 				</div>
 
 				<div class="buttons_group">
-					<input data-disable-on-click="1" class="button_screen_item buttons__save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit" onmouseover="this.form.disable_size_change=true;" onmouseout="this.form.disable_size_change=false;" value="{!SAVE}" />
+					<input data-disable-on-click="1" class="button_screen_item buttons__save js-hover-disable-textarea-size-change {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-headless-submit{+END}" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
 		</div>

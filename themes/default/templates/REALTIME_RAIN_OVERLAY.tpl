@@ -2,7 +2,7 @@
 <div class="webstandards_checker_off" data-tpl="realtimeRainOverlay" data-tpl-params="{+START,PARAMS_JSON,MIN_TIME}{_*}{+END}">
 	<div id="real_time_surround">
 		<div id="real_time">
-			<div id="news_ticker" onmouseover="if (!window.paused) { this.pausing=true; window.paused=true; }" onmouseout="if (this.pausing) { this.pausing=false; window.paused=false; }">
+			<div id="news_ticker" class="js-hover-window-pause">
 				<h1>{!NEWS_FLASHES}</h1>
 
 				<div class="news_inside">
@@ -26,13 +26,15 @@
 			</div>
 
 			<div id="timer">
-				<div id="pause_but"><img onclick="toggle_window_pausing(this);" src="{$IMG*,realtime_rain/pause-but}" alt="{!PAUSE}" title="{!PAUSE}" /></div>
+				<div id="pause_but"><img class="js-click-toggle-window-pausing" src="{$IMG*,realtime_rain/pause-but}" alt="{!PAUSE}" title="{!PAUSE}" /></div>
 
-				<div id="pre_but"><img onclick="window.time_window=window.time_window/1.2;" src="{$IMG*,realtime_rain/pre}" alt="{!SLOW_DOWN}" title="{!SLOW_DOWN}" /></div>
+				<div id="pre_but"><img class="js-click-rain-slow-down" src="{$IMG*,realtime_rain/pre}" alt="{!SLOW_DOWN}" title="{!SLOW_DOWN}" /></div>
 
-				<div onmouseover="window.disable_real_time_indicator=true;" onmouseout="window.disable_real_time_indicator=false; set_time_line_position(window.current_time);" onmousemove="timeline_click(this,true);" onclick="timeline_click(this);" id="time_line"><img id="time_line_image" src="{$IMG*,realtime_rain/time-line}" alt="" /></div>
+				<div class="js-hover-toggle-real-time-indicator" onmouseover="set_time_line_position(window.current_time);" onmousemove="timeline_click(this,true);" onclick="timeline_click(this);" id="time_line">
+					<img id="time_line_image" src="{$IMG*,realtime_rain/time-line}" alt="" />
+				</div>
 
-				<div id="next_but"><img onclick="window.time_window=window.time_window*1.2;" src="{$IMG*,realtime_rain/next}" alt="{!SPEED_UP}" title="{!SPEED_UP}" /></div>
+				<div id="next_but"><img class="js-click-rain-speed-up" src="{$IMG*,realtime_rain/next}" alt="{!SPEED_UP}" title="{!SPEED_UP}" /></div>
 			</div>
 		</div></div>
 	</div>

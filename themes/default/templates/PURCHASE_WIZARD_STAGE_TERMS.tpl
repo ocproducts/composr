@@ -11,11 +11,11 @@
 	<div class="purchase_terms">{TERMS*}</div>
 
 	<p>
-		<input type="checkbox" id="confirm" name="confirm" value="1" onclick="document.getElementById('proceed_button').disabled=!this.checked;" /><label for="confirm">{!I_AGREE}</label>
+		<input type="checkbox" id="confirm" name="confirm" value="1" class="js-checkbox-click-toggle-proceed-btn" /><label for="confirm">{!I_AGREE}</label>
 	</p>
 
 	<p>
-		<button type="button" data-disable-on-click="1" onclick="window.location='{$PAGE_LINK;*,:}';" class="button_screen buttons__no">{!I_DISAGREE}</button>
+		<button type="button" data-disable-on-click="1" class="button_screen buttons__no js-click-btn-i-disagree" data-tp-location="{$PAGE_LINK*,:}">{!I_DISAGREE}</button>
 
 		<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__yes" type="submit" value="{!PROCEED}" disabled="disabled" id="proceed_button" />
 	</p>

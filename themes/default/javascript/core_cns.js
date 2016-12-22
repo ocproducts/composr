@@ -52,15 +52,19 @@
         });
     };
 
+    $cms.templates.cnsMemberDirectoryScreenFilter = function cnsMemberDirectoryScreenFilter(params, container) {
+        $cms.dom.on(container, 'keyup', '.js-keyup-input-filter-update-ajax-member-list', function (e, input) {
+            update_ajax_member_list(input, null, false, e);
+        });
+    };
+
     $cms.templates.cnsMemberProfileAbout = function cnsMemberProfileAbout(params, container) {
         $cms.dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
             decrypt_data();
         });
     };
 
-    $cms.templates.cnsViewGroupScreen = function cnsViewGroupScreen(params) {
-        var container = this;
-
+    $cms.templates.cnsViewGroupScreen = function cnsViewGroupScreen(params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-add-member-to-group', function (e, form) {
             if (check_field_for_blankness(form.elements.username, e)) {
                 $cms.ui.disableFormButtons(form);
@@ -71,6 +75,15 @@
 
         $cms.dom.on(container, 'keyup', '.js-input-add-member-username', function (e, input) {
             update_ajax_member_list(input, null, false, e);
+        });
+    };
+
+    $cms.templates.cnsEmoticonTable = function cnsEmoticonTable(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
+            var fieldName = target.dataset.tpFieldName;
+            if (fieldName) {
+                do_emoticon(fieldName, target, true)
+            }
         });
     };
 }(window.$cms));

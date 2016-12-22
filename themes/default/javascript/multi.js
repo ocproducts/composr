@@ -50,7 +50,6 @@ function ensure_next_field(this_field) {
         this_field = document.getElementById(this_id);
         var next_field_wrap = document.createElement('div');
         next_field_wrap.className = this_field.parentNode.className;
-        var next_field;
         if (this_field.localName == 'textarea') {
             next_field = document.createElement('textarea');
         } else {

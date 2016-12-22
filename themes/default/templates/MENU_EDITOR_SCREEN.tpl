@@ -13,7 +13,7 @@
 		<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
 	</form>
 
-	<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-cms-js="1">
+	<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" class="js-submit-modsecurity-workaround" data-submit-pd="1">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="float_surrounder menu_edit_main">

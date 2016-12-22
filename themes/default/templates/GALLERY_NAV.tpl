@@ -13,7 +13,7 @@
 		<div class="trinav_left" onclick="cancel_bubbling(event);">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
-				<a class="button_screen buttons__previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-cms-js="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
+				<a class="button_screen buttons__previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{BACK_URL}}
 				<span class="button_screen buttons__previous_none"><span>{!PREVIOUS}</span></span>
@@ -32,7 +32,7 @@
 
 			{$,Next}
 			{+START,IF_NON_EMPTY,{NEXT_URL}}
-				<a class="button_screen buttons__next {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-cms-js="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span></a>
+				<a class="button_screen buttons__next {+START,IF,{SLIDESHOW}}js-click-slideshow-forward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{NEXT_URL}}
 				<span class="button_screen buttons__next_none"><span>{!NEXT}</span></span>

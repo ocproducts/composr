@@ -85,11 +85,11 @@
 
 							<div class="friend_actions">
 								{+START,IF,{CAN_IM}}
-									<input class="button_screen_item menu___generic_admin__add_to_category" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" onclick="var people=get_ticked_people(this.form); if (people) invite_im(people);" />
-									<input class="button_screen_item menu__social__chat__chat" type="button" value="{!START_IM}" onclick="var people=get_ticked_people(this.form); if (people) start_im(people);" />
+									<input class="button_screen_item menu___generic_admin__add_to_category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
+									<input class="button_screen_item menu__social__chat__chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
 								{+END}
 								{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
-									<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DUMP_FRIENDS}" onclick="var people=get_ticked_people(this.form); if (!people) return false; var t=this; window.fauxmodal_confirm('{!Q_SURE=;}',function(result) { if (result) { $cms.ui.disableButton(t); t.form.submit(); } }); return false;" />
+									<input data-click-pd="1" class="button_screen_item menu___generic_admin__delete js-click-btn-dump-friends-confirm" type="submit" value="{!DUMP_FRIENDS}" />
 								{+END}
 							</div>
 						</form>
@@ -102,7 +102,8 @@
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>
-							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" /><input class="button_micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
+							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
+							<input class="button_micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
 						</form>
 					{+END}
 

@@ -1,1 +1,2 @@
-<a target="_self" href="#!" title="{CODE*}" onclick="do_emoticon('{FIELD_NAME;*}', this, false);">{$TRIM,{IMAGE}}</a>
+{$REQUIRE_JAVASCRIPT,core_rich_media}
+<a data-tpl="emoticonClickCode" data-tpl-params="{+START,PARAMS_JSON,FIELD_NAME}{_*}{+END}" target="_self" href="#!" title="{CODE*}">{$TRIM,{IMAGE}}</a>

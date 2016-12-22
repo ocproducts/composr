@@ -2,7 +2,7 @@
 <div class="menu_editor_branch" id="branch_wrap_{I*}" data-tpl="menuEditorBranchWrap" data-tpl-params="{+START,PARAMS_JSON,CLICKABLE_SECTIONS,BRANCH_TYPE,I}{_*}{+END}">
 	<div id="branch_{I*}">
 		<label id="label_caption_{I*}" for="caption_{I*}">{!CAPTION}: </label>
-		<input maxlength="255" onfocus="make_field_selected(this);" ondblclick="var e=document.getElementById('menu_editor_wrap'); if (e.className.indexOf(' docked')==-1) smooth_scroll(find_pos_y(document.getElementsByTagName('h2')[2]));" type="text" value="{CAPTION*}" id="caption_{I*}" name="caption_{I*}" />
+		<input maxlength="255" class="js-focus-make-caption-field-selected js-dblclick-scroll-to-heading"type="text" value="{CAPTION*}" id="caption_{I*}" name="caption_{I*}" />
 
 		<input type="hidden" id="caption_long_{I*}" name="caption_long_{I*}" value="{CAPTION_LONG*}"{+START,IF_EMPTY,{CAPTION_LONG}} disabled="disabled"{+END} />
 		<input type="hidden" id="url_{I*}" name="url_{I*}" value="{URL*}" />
@@ -22,8 +22,8 @@
 			<option value="branch_plus">{!EXPANDED_BRANCH}</option>
 		</select>
 
-		<input type="image" class="horiz_field_sep" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" data-click-pd="1" onclick="handle_ordering(this,false,true);;" />
-		<input type="image" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" data-click-pd="1" onclick="handle_ordering(this,true,false);" />
+		<input type="image" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" data-click-pd="1" class="horiz_field_sep js-click-btn-move-down-handle-ordering">
+		<input type="image" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" data-click-pd="1" class="js-click-btn-move-up-handle-ordering">
 
 		<input class="menu___generic_admin__delete button_micro horiz_field_sep js-click-delete-menu-branch" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" />
 	</div>
@@ -31,7 +31,6 @@
 	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_1" style="{DISPLAY*}">
 		{BRANCH}
 	</div>
-	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_2" style="{DISPLAY*}">
-	</div>
+	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_2" style="{DISPLAY*}"></div>
 </div>
 

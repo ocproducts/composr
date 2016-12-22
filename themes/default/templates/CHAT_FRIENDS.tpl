@@ -47,7 +47,7 @@
 			{+START,LOOP,FRIENDS}
 				<tr>
 					<td>
-						<img{+START,IF,{SIMPLER}} title="{ONLINE_TEXT*}"{+END} id="friend_img_{MEMBER_ID*}" alt="" src="{$IMG*,icons/24x24/menu/social/members}" />
+						<img {+START,IF,{SIMPLER}} title="{ONLINE_TEXT*}"{+END} id="friend_img_{MEMBER_ID*}" alt="" src="{$IMG*,icons/24x24/menu/social/members}" />
 					</td>
 
 					<td>
@@ -56,7 +56,7 @@
 						{+END}
 
 						{+START,IF,{CAN_IM}}
-							<a rel="friend" title="{$DISPLAYED_USERNAME*,{USERNAME}}: {!START_IM}" href="{$PAGE_LINK;*,_SEARCH:chat:enter_im={MEMBER_ID}}"{+START,IF,{$CONFIG_OPTION,sitewide_im}} onclick="if (typeof window.start_im=='undefined') return true; return start_im('{MEMBER_ID*}',true{$,{$?,{SIMPLER},true,false}});"{+END}>{$DISPLAYED_USERNAME*,{USERNAME}}</a>
+							<a rel="friend" title="{$DISPLAYED_USERNAME*,{USERNAME}}: {!START_IM}" href="{$PAGE_LINK;*,_SEARCH:chat:enter_im={MEMBER_ID}}" class="{+START,IF,{$CONFIG_OPTION,sitewide_im}}js-click-start-friend-im{+END}" data-tp-member-id="{MEMBER_ID*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>
 						{+END}
 						{+START,IF,{$NOT,{CAN_IM}}}
 							{$DISPLAYED_USERNAME*,{USERNAME}}

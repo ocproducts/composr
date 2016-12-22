@@ -47,5 +47,13 @@
         });
     };
 
+    $cms.templates.periodicNewsletterRemove = function periodicNewsletterRemove(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-btn-disable-self', function (e, btn) {
+            setTimeout(function () {
+                btn.disabled = true;
+            }, 100);
+        });
+    };
+
 }(window.$cms));
 
