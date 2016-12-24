@@ -7,13 +7,3 @@ php_value engine off
 <IfModule mod_php7.c>
 php_value engine off
 </IfModule>
-
-
-<IfModule mod_expires.c>
-<FilesMatch "^merged_">
-ExpiresActive On
-ExpiresByType application/javascript "now plus 1 months"
-ExpiresByType text/css "now plus 1 months"
-</FilesMatch>
-</IfModule>
-

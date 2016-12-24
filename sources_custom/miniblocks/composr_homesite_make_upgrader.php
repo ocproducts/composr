@@ -99,6 +99,7 @@ END;
         return;
     }
 
+    // Trim spaces and leading zeros
     $a = rtrim(preg_replace('#^(0\s)#', '', $a));
     $b = rtrim(preg_replace('#^(0\s)#', '', $b));
     $c = rtrim(preg_replace('#^(0\s)#', '', $c));
@@ -118,6 +119,7 @@ END;
 require_code('version2');
 $from_version = get_version_dotted__from_anything($from_version); // Canonicalise
 
+require_code('composr_homesite');
 require_code('uploads/website_specific/compo.sr/upgrades/make_upgrader.php');
 $ret = make_upgrade_get_path($from_version, $to_version);
 

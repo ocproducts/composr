@@ -14,6 +14,9 @@
  * @package    composr_homesite
  */
 
+// Example test URL:
+//  http://localhost/composr/uploads/website_specific/compo.sr/scripts/version.php?version=13&test_mode=1&html=1
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = realpath(__FILE__);
@@ -38,6 +41,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 require($FILE_BASE . '/sources/global.php');
 
 require_lang('composr_homesite');
+require_code('composr_homesite');
 
 header('Content-type: text/plain; charset=' . get_charset());
 if (get_param_integer('html', 0) == 1) {
@@ -68,7 +72,7 @@ qualifier_number: null or integer
 
 // Find our version
 $our_version = null;
-$download_row = find_download($version_pretty);
+$download_row = find_version_download($version_pretty, 'quick');
 if (!is_null($download_row)) {
     $our_version = array(
         'version' => $version_pretty,
@@ -134,9 +138,9 @@ foreach ($possible_next_versions as $pos_version) {
         continue;
     }
 
-    $row = find_version($pos_version);
+    $row = find_version_news($pos_version);
     if (!is_null($row)) {
-        $download_row = find_download($pos_version);
+        $download_row = find_version_download($pos_version, 'quick');
         $next_upgrade_version = array(
             'version' => $pos_version,
             'news_id' => $row['id'],
@@ -186,7 +190,7 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
                 $different = true;
             }
 
-            $news_row = find_version(preg_replace('#(\.0)+$#', '', $this_version));
+            $news_row = find_version_news(preg_replace('#(\.0)+$#', '', $this_version));
 
             // If different and better version
             $this_assembled = implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . preg_replace('#(\d+)#', '.$1', $this_qualifier)));
@@ -198,14 +202,15 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
                 }
 
                 if (is_null($found)) { // Only set $found if not already. We were iterating downloads in reverse order, so the newest is found first via this
-                    $found = array( // Outside
-                                    'version' => $this_version,
-                                    'news_id' => $news_row['id'],
-                                    'download_description' => '', // We set this blank here as if this is the latest version then the download description is only going to say that, which is not interesting to us.
-                                    'add_date' => $row['add_date'],
+                    $found = array(
+                        // Outside
+                        'version' => $this_version,
+                        'news_id' => $news_row['id'],
+                        'download_description' => '', // We set this blank here as if this is the latest version then the download description is only going to say that, which is not interesting to us.
+                        'add_date' => $row['add_date'],
                     );
-                } else {
-                    if (strlen($found['download_description']) < 3000) { // If was already found and we have release details in this download description, append it, it's still good advice for the upgrade level
+                } else { // If was already found and we have release details in this download description, append it, it's still good advice for the upgrade level
+                    if (strlen($found['download_description']) < 3000) {
                         if ($found['download_description'] != '') {
                             $found['download_description'] .= "\n---\n";
                         }
@@ -280,6 +285,7 @@ if ($has_jump) {
     $upgrade_type = array('major upgrade, may break compatibility of customisations', 'feature upgrade', 'easy patch upgrade');
     for ($i = 0; $i <= 2; $i++) {
         if (!is_null($higher_versions[$i])) {
+            // Mention discontinued versions
             $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2', '4', '5', '6', '7');
             $note = '';
             foreach ($discontinued as $d) {
@@ -290,6 +296,8 @@ if ($has_jump) {
                     $note = ' &ndash; <em>Note that the ' . $d . ' version line is no longer supported</em>';
                 }
             }
+
+            // Show upgrade paths...
 
             $tooltip = comcode_to_tempcode('[title="2"]Inbetween versions[/title]' . $higher_versions[$i]['download_description']);
 
@@ -309,20 +317,14 @@ if ($has_jump) {
                 $upgrade_script .= '?news_id=' . strval($higher_versions[$i]['news_id']);
             }
             $out = "
-			<span class=\"version_button\" id=\"link_pos_" . strval($i) . "\"></span>
-			<script>// <![CDATA[
-				var div=document.getElementById('link_pos_" . strval($i) . "');
-				var upgrader_link=get_base_url()+'/" . $upgrade_script . "';
-				var h='<form style=\"display: inline\" action=\"'+upgrader_link+'\" target=\"_blank\" method=\"post\"><input class=\"menu__adminzone__tools__upgrade button_screen_item\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_versions[$i]['version']) . "\" value=\"Launch upgrader\" /<\/form>';
-				if (window.setInnerHTML)
-				{
-					setInnerHTML(div,h);
-				} else
-				{
-					div.innerHTML=h;
-				}
-			//]]></script>
-			";
+                <span class=\"version_button\" id=\"link_pos_" . strval($i) . "\"></span>
+                <script>// <![CDATA[
+                    var div=document.getElementById('link_pos_" . strval($i) . "');
+                    var upgrader_link=get_base_url()+'/" . $upgrade_script . "';
+                    var h='<form style=\"display: inline\" action=\"'+upgrader_link+'\" target=\"_blank\" method=\"post\"><input class=\"menu__adminzone__tools__upgrade button_screen_item\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_versions[$i]['version']) . "\" value=\"Launch upgrader\" /<\/form>';
+                    div.innerHTML=h;
+                //]]></script>
+                ";
 
             // Next line of details
             echo '<span class="version_details">(' . $upgrade_type[$i] . ', released ' . display_time_period(time() - $higher_versions[$i]['add_date']) . ' ago)</span>';
@@ -336,12 +338,12 @@ if ($has_jump) {
 
             // Noscript version
             $out = "
-			<noscript>
-				<form style=\"display: inline\" action=\"../" . $upgrade_script . "\" target=\"_blank\" method=\"post\">
-					<input class=\"menu__adminzone__tools__upgrade button_screen_item\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_versions[$i]['version']) . "\" value=\"Launch upgrader\" />
-				</form>
-			</noscript>
-			";
+            <noscript>
+                <form style=\"display: inline\" action=\"../" . $upgrade_script . "\" target=\"_blank\" method=\"post\">
+                    <input class=\"menu__adminzone__tools__upgrade button_screen_item\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_versions[$i]['version']) . "\" value=\"Launch upgrader\" />
+                </form>
+            </noscript>
+            ";
             echo str_replace("\n", '', str_replace("\r", '', $out));
         }
     }
@@ -350,87 +352,4 @@ if ($has_jump) {
 function strip_download_description($d)
 {
     return static_evaluate_tempcode(comcode_to_tempcode(preg_replace('#A new version, [\.\d\w]+ is available\. #', '', preg_replace('# There may have been other upgrades since .* - see .+\.#', '', $d))));
-}
-
-function find_version($version_pretty)
-{
-    global $NEWS_ROWS;
-    load_news_rows();
-
-    foreach ($NEWS_ROWS as $news_row) {
-        if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released') {
-            return $news_row;
-        }
-        if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released!') { // Major releases have exclamation marks
-            return $news_row;
-        }
-    }
-
-    return null;
-}
-
-function find_download($version_pretty)
-{
-    global $DOWNLOAD_ROWS;
-    load_download_rows();
-
-    $download_row = null;
-    foreach ($DOWNLOAD_ROWS as $_download_row) {
-        if (((preg_replace('# \(.*#', '', $_download_row['nice_title']) == 'Composr Version ' . $version_pretty) || (preg_replace('#(\.0)* \(.*#', '', $_download_row['nice_title']) == 'Composr Version ' . preg_replace('#(\.0)*#', '', $version_pretty))) && (strpos($_download_row['nice_title'], 'manual') === false)) {
-            $download_row = $_download_row;
-            break;
-        }
-    }
-
-    return $download_row;
-}
-
-function load_news_rows()
-{
-    global $NEWS_ROWS;
-    if (!isset($NEWS_ROWS)) {
-        if (get_param_integer('test_mode', 0) == 1) { // Test data
-            $NEWS_ROWS = array(
-                array('id' => 2, 'nice_title' => 'Composr 3 released', 'add_date' => time() - 60 * 60 * 8),
-                array('id' => 3, 'nice_title' => '3.1 released', 'add_date' => time() - 60 * 60 * 5),
-                array('id' => 4, 'nice_title' => '3.1.1 released', 'add_date' => time() - 60 * 60 * 5),
-                array('id' => 5, 'nice_title' => 'Composr 3.2 beta1 released', 'add_date' => time() - 60 * 60 * 4),
-                array('id' => 6, 'nice_title' => 'Composr 3.2 released', 'add_date' => time() - 60 * 60 * 3),
-                array('id' => 7, 'nice_title' => 'Composr 4 released', 'add_date' => time() - 60 * 60 * 1),
-            );
-        } else {
-            $NEWS_ROWS = $GLOBALS['SITE_DB']->query_select('news', array('*', 'date_and_time AS add_date'), array('validated' => 1), 'ORDER BY add_date');
-            foreach ($NEWS_ROWS as $i => $row) {
-                $NEWS_ROWS[$i]['nice_title'] = get_translated_text($row['title']);
-            }
-        }
-    }
-}
-
-function load_download_rows()
-{
-    global $DOWNLOAD_ROWS;
-    if (!isset($DOWNLOAD_ROWS)) {
-        if (get_param_integer('test_mode', 0) == 1) { // Test data
-            $DOWNLOAD_ROWS = array(
-                array('id' => 20, 'nice_title' => 'Composr Version 3', 'add_date' => time() - 60 * 60 * 8, 'nice_description' => '[Test message] This is 3. Yo peeps. 3.1 is the biz.'),
-                array('id' => 30, 'nice_title' => 'Composr Version 3.1', 'add_date' => time() - 60 * 60 * 5, 'nice_description' => '[Test message] This is 3.1.1. 3.1.1 is out dudes.'),
-                array('id' => 35, 'nice_title' => 'Composr Version 3.1.1', 'add_date' => time() - 60 * 60 * 5, 'nice_description' => '[Test message] This is 3.1.1. 3.2 is out dudes.'),
-                array('id' => 40, 'nice_title' => 'Composr Version 3.2 beta1', 'add_date' => time() - 60 * 60 * 4, 'nice_description' => '[Test message] This is 3.2 beta1. 3.2 beta2 is out.'),
-                array('id' => 50, 'nice_title' => 'Composr Version 3.2', 'add_date' => time() - 60 * 60 * 3, 'nice_description' => '[Test message] This is 3.2. 4 is out.'),
-                array('id' => 60, 'nice_title' => 'Composr Version 4', 'add_date' => time() - 60 * 60 * 1, 'nice_description' => '[Test message] This is the 4 and you can find bug reports somewhere.'),
-            );
-        } else {
-            $sql = 'SELECT d.* FROM ' . get_table_prefix() . 'download_downloads d';
-            if (strpos(get_db_type(), 'mysql') !== false) {
-                $sql .= ' FORCE INDEX (recent_downloads)';
-            }
-            $sql .= ' WHERE validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('Composr Version %') . '\' ORDER BY add_date';
-            $DOWNLOAD_ROWS = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
-            foreach ($DOWNLOAD_ROWS as $i => $row) {
-                $DOWNLOAD_ROWS[$i]['nice_title'] = get_translated_text($row['name']);
-                $DOWNLOAD_ROWS[$i]['nice_description'] = get_translated_text($row['description']);
-            }
-        }
-    }
 }

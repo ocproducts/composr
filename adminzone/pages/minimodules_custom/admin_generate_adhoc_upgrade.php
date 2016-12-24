@@ -199,7 +199,7 @@ if ($type == 'auto_probe') {
                         $geshi = new GeSHi($caption, 'diff');
                         $geshi->set_header_type(GESHI_HEADER_DIV);
                         echo $geshi->parse_code();*/
-                        echo '<div style="overflow: auto; width: 100%; white-space: pre">' . ($caption) . '</div>';
+                        echo '<div style="overflow: auto; width: 100%; white-space: pre">' . $caption . '</div>';
                     }
                     echo '</li>';
                 }
