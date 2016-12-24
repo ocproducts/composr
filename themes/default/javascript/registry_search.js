@@ -35,7 +35,7 @@
             }
         },
         updateAuthorList: function (e, target) {
-            update_ajax_author_list(target, e);
+            update_ajax_member_list(target, 'author', false, e);
         },
         triggerResize: function () {
             trigger_resize();

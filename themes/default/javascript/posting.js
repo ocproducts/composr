@@ -2,8 +2,6 @@
 
 /* Form editing code (mostly stuff only used on posting forms) */
 
-require_javascript('ajax', window.do_ajax_request);
-
 // ===========
 // ATTACHMENTS
 // ===========
@@ -669,6 +667,23 @@ function do_input_i(field_name) {
     insert_textbox_wrapping(element, 'i', '');
 }
 
+
+function do_input_font(field_name) {
+    if (window.insert_textbox_wrapping === undefined) {
+        return;
+    }
+
+    var element = document.getElementById(field_name);
+    var form = element.form;
+    var face = form.elements['f_face'];
+    var size = form.elements['f_size'];
+    var colour = form.elements['f_colour'];
+    if ((face.value == '') && (size.value == '') && (colour.value == '')) {
+        window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
+        return;
+    }
+    insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + escape_comcode(face.value) + '\" color=\"' + escape_comcode(colour.value) + '\" size=\"' + escape_comcode(size.value) + '\"]', '[/font]');
+}
 
 // ==================
 // Auto-saving/drafts

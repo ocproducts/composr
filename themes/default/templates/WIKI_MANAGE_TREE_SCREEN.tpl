@@ -41,7 +41,7 @@
 			{$REQUIRE_JAVASCRIPT,tree_list}
 			{$REQUIRE_JAVASCRIPT,wiki}
 
-			<input style="display: none" type="text" id="mtp_tree" name="tree" value="" onchange="if (this.form.elements['tree'].value!='') document.getElementById('children').value+=this.value+'='+this.selected_title+'\n';" />
+			<input style="display: none" type="text" id="mtp_tree" name="tree" value="" class="js-change-input-tree-update-children-value" />
 			<div id="tree_list__root_mtp_tree">
 				<!-- List put in here -->
 			</div>

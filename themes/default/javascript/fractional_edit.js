@@ -2,7 +2,7 @@
 
 function fractional_edit(event, object, url, raw_text, edit_param_name, was_double_click, control_button, type) {
     was_double_click = !!was_double_click;
-    type || (type = 'line');
+    type = strVal(type) || 'line';
 
     if (raw_text.length > 255) {
         // Cannot process this

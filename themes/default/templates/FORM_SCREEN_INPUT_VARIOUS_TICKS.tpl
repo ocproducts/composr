@@ -40,16 +40,16 @@
 								{+START,IF,{$EQ,{_loop_key},0}}
 									<label for="{CUSTOM_NAME*}_value_{_loop_key*}">{!OTHER}</label>&hellip;<br />
 								{+END}
-								<input id="{CUSTOM_NAME*}_value_{_loop_key*}" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" value="" onkeypress="_ensure_next_field(event,this);" />
+								<input id="{CUSTOM_NAME*}_value_{_loop_key*}" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" class="js-keypress-input-ensure-next-field" />
 							</div></div>
 						{+END}
 					{+END}
 
 					{+START,IF,{$NOT,{CUSTOM_ACCEPT_MULTIPLE}}}
 						<div><div>
-							<input value="1" class="input_tick" onclick="document.getElementById('{CUSTOM_NAME%}_value').disabled=!this.checked;" id="{CUSTOM_NAME*}" name="{CUSTOM_NAME*}" type="checkbox" />
+							<input value="1" class="input_tick js-click-checkbox-toggle-value-field" id="{CUSTOM_NAME*}" name="{CUSTOM_NAME*}" type="checkbox" />
 							<label for="{CUSTOM_NAME*}">{!OTHER}</label> <label for="{CUSTOM_NAME*}_value"><span class="associated_details">({!PLEASE_STATE})</span></label>
-							<input id="{CUSTOM_NAME*}_value" name="{CUSTOM_NAME*}_value" value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" onchange="document.getElementById('{CUSTOM_NAME%}').checked=(this.value!=''); this.disabled=(this.value=='');" size="15" type="text" />
+							<input id="{CUSTOM_NAME*}_value" name="{CUSTOM_NAME*}_value" value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" class="js-change-input-toggle-value-checkbox" size="15" type="text" />
 						</div></div>
 					{+END}
 				</div>

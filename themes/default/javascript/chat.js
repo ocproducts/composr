@@ -118,6 +118,31 @@
         });
     };
 
+    $cms.templates.chatcodeEditorButton = function chatcodeEditorButton(params, btn) {
+        var b = strVal(params.b);
+
+        $cms.dom.on(btn, 'click', function () {
+            window['do_input_' + b]('post');
+        });
+    };
+
+    $cms.templates.chatcodeEditorMicroButton = function chatcodeEditorMicroButton(params, btn) {
+        var b = strVal(params.b);
+
+        $cms.dom.on(btn, 'click', function () {
+            window['do_input_' + b]('post');
+        });
+    };
+
+    $cms.templates.comcodeEditorMicroButton = function comcodeEditorMicroButton(params, btn) {
+        var b = strVal(params.b),
+            fieldName = strVal(params.fieldName);
+
+        $cms.dom.on(btn, 'click', function () {
+            window['do_input_' + b](fieldName);
+        });
+    };
+
     $cms.templates.chatLobbyImArea = function chatLobbyImArea(params, container) {
         var chatroomId = strVal(params.chatroomId);
 

@@ -13843,26 +13843,23 @@ FileProgress.prototype.disappear = function () {
 
 /* HTML5 UPLOAD */
 
-function initialise_html5_dragdrop_upload(key, key2) {
-    var ob = document.getElementById(key);
+function initialise_html5_dragdrop_upload(id, id2) {
+    var el = document.getElementById(id);
 
-    ob.ondragover = function (event) {
-        html5_upload_event_drag_over(event, ob, key2);
+    el.ondragover = function (event) {
+        html5_upload_event_drag_over(event);
     };
 
-    ob.ondrop = function (event) {
-        html5_upload_event_drop(event, ob, key2);
+    el.ondrop = function (event) {
+        html5_upload_event_drop(event, el, id2);
     };
 }
 
-function html5_upload_event_drag_over(event, ob, key2) {
-    if (( event.dataTransfer != undefined) && ( event.dataTransfer.types != undefined) && (event.dataTransfer.types[0].indexOf('text') == -1)) {
+function html5_upload_event_drag_over(event) {
+    if ((event.dataTransfer != null) && (event.dataTransfer.types != null) && !event.dataTransfer.types[0].includes('text')) {
         cancel_bubbling(event);
-        if ( event.preventDefault != undefined) {
-            event.preventDefault();
-        }
+        event.preventDefault();
     }
-
     // NB: don't use dropEffect, prevents drop on Firefox.
 }
 

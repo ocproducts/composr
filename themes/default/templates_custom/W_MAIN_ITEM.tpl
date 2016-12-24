@@ -8,7 +8,7 @@
 	</td>
 	{+END}
 	<td>
-		<form onblur="this.onmouseout(event);" onfocus="this.onmouseover(event);" onmouseover="activate_tooltip(this,event,'{DESCRIPTION;~*}','auto',null,null,null,true);" class="inline" action="{+START,IF_PASSED,COST}{$PAGE_LINK*,_SELF:_SELF:buy:item={NAME}:member={MEMBER}}{+END}{+START,IF_NON_PASSED,COST}{$PAGE_LINK*,_SELF:_SELF:take:item={NAME}:member={MEMBER}}{+END}" method="post" autocomplete="off"><input class="button_hyperlink" type="submit" value="{ACTION*}" /></form>
+		<form data-mouseover-activate-tooltip="['{DESCRIPTION;~*}','auto',null,null,null,true]" data-focus-activate-tooltip="['{DESCRIPTION;~*}','auto',null,null,null,true]" data-blur-deactivate-tooltip class="inline" action="{+START,IF_PASSED,COST}{$PAGE_LINK*,_SELF:_SELF:buy:item={NAME}:member={MEMBER}}{+END}{+START,IF_NON_PASSED,COST}{$PAGE_LINK*,_SELF:_SELF:take:item={NAME}:member={MEMBER}}{+END}" method="post" autocomplete="off"><input class="button_hyperlink" type="submit" value="{ACTION*}" /></form>
 
 		{+START,IF,{EDIT_ACCESS}}<a class="associated_link suggested_link" title="{!EDIT}: {NAME*}" href="{$PAGE_LINK*,_SELF:_SELF:edititemcopy:item={NAME}:member={MEMBER}}">{!EDIT}</a>{+END}
 

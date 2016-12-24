@@ -31,9 +31,21 @@
             }
         });
 
+        $cms.dom.on(container, 'mouseover', '.js-mouseover-set-time-line-position', function (){
+            set_time_line_position(window.current_time);
+        });
+
         $cms.dom.on(container, 'click', '.js-click-toggle-window-pausing', function (e, btn) {
             window.paused = !window.paused;
             btn.classList.toggle('paused', window.paused);
+        });
+
+        $cms.dom.on(container, 'mousemove', '.js-mousemove-timeline-click', function () {
+            timeline_click(true);
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-timeline-click', function () {
+            timeline_click(false);
         });
 
         $cms.dom.on(container, 'mouseover mouseout', '.js-hover-toggle-real-time-indicator', function (e, target) {
@@ -307,7 +319,9 @@ function time_now() {
     return Math.round(Date.now() / 1000);
 }
 
-function timeline_click(timeline, prospective) {
+function timeline_click(prospective) {
+    prospective = !!prospective;
+
     var pos = window.mouse_x - find_pos_x(document.getElementById('time_line_image'), true);
     var timeline_length = 808;
     var min_time = window.min_time;

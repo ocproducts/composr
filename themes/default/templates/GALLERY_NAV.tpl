@@ -3,14 +3,14 @@
 	{+START,IF,{SLIDESHOW}}
 		<label for="slideshow_from" class="slideshow_speed">
 			{!SPEED_IN_SECS}
-			<input type="number" name="slideshow_from" class="js-change-reset-slideshow-countdown js-mousedown-stop-slideshow-timer" onclick="cancel_bubbling(event);" onkeypress="cancel_bubbling(event);" id="slideshow_from" value="5" />
+			<input type="number" name="slideshow_from" class="js-change-reset-slideshow-countdown js-mousedown-stop-slideshow-timer" id="slideshow_from" value="5" />
 		</label>
 		<input type="hidden" id="next_slide" name="next_slide" value="{SLIDESHOW_NEXT_URL*}" />
 		<input type="hidden" id="previous_slide" name="previous_slide" value="{SLIDESHOW_PREVIOUS_URL*}" />
 	{+END}
 
 	<div class="trinav_wrap">
-		<div class="trinav_left" onclick="cancel_bubbling(event);">
+		<div class="trinav_left">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
 				<a class="button_screen buttons__previous {+START,IF,{SLIDESHOW}}js-click-slideshow-backward{+END}"{+START,IF,{SLIDESHOW}} data-click-pd="1"{+END} rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
@@ -20,7 +20,7 @@
 			{+END}
 		</div>
 
-		<div class="trinav_right" onclick="cancel_bubbling(event);">
+		<div class="trinav_right">
 			{$,Start slideshow}
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$NOT,{$MOBILE}}}

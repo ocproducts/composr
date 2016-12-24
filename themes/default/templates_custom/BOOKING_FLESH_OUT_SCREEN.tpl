@@ -30,7 +30,7 @@
 							{+START,IF,{$NOT,{SUPPLEMENT_SUPPORTS_QUANTITY}}}
 								{!I_WANT_THIS}
 
-								<input{+START,IF,{$GT,{SUPPLEMENT_QUANTITY},0}} checked="checked"{+END} onchange="recalculate_price(this.form);" type="checkbox" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" value="1" />
+								<input {+START,IF,{$GT,{SUPPLEMENT_QUANTITY},0}} checked="checked"{+END} onchange="recalculate_price(this.form);" type="checkbox" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" value="1" />
 							{+END}
 						</label>
 					</p>

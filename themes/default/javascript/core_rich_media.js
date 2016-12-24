@@ -259,6 +259,15 @@
         });
     };
 
+    $cms.templates.comcodeTabHead = function comcodeTabHead(params, container) {
+        var tabSets = $cms.filter.id(params.tabSets),
+            title = $cms.filter.id(params.title);
+
+        $cms.dom.on(container, 'click', function () {
+            select_tab('g', tabSets + '_' + title);
+        });
+    };
+
     $cms.templates.attachments = function attachments(params) {
         var container = this;
 
@@ -318,6 +327,19 @@
                 }
             }, refreshTime)
         }
+    };
+
+    $cms.templates.comcodeEditorButton = function comcodeEditorButton(params, btn) {
+        var isPostingField = !!params.isPostingField && (params.isPostingField !== '0'),
+            b = strVal(params.b),
+            fieldName = strVal(params.fieldName);
+
+        $cms.dom.on(btn, 'click', function () {
+            var mainWindow = btn.ownerDocument.defaultView || btn.ownerDocument.parentWindow;
+            if (!(browser_matches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img')))) {
+                mainWindow['do_input_' + b](fieldName);
+            }
+        });
     };
 
     $cms.templates.comcodeRandom = function comcodeRandom(params) {

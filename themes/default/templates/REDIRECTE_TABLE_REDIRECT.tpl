@@ -1,4 +1,5 @@
-<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
+{$REQUIRE_JAVASCRIPT,redirects_editor}
+<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}" data-tpl="redirecteTableRedirect">
 	<td>
 		<div class="accessibility_hidden"><label for="from_zone_{I*}">{!REDIRECT_FROM_ZONE}</label></div>
 		{+START,IF_NON_EMPTY,{FROM_ZONES}}
@@ -34,7 +35,9 @@
 	</td>
 	<td>
 		{+START,IF,{$NEQ,{I},new}}
-			<a href="#!" onclick="var t=this; window.fauxmodal_confirm('{!ARE_YOU_SURE_DELETE;}',function(result) { if (result) { t.parentNode.parentNode.parentNode.removeChild(t.parentNode.parentNode); } });"><img src="{$IMG*,icons/14x14/delete}" srcset="{$IMG*,icons/28x28/delete} 2x" alt="{!DELETE}" title="{!DELETE}" /></a>
+			<a href="#!" class="js-click-confirm-container-deletion">
+				<img src="{$IMG*,icons/14x14/delete}" srcset="{$IMG*,icons/28x28/delete} 2x" alt="{!DELETE}" title="{!DELETE}" />
+			</a>
 		{+END}
 	</td>
 </tr>

@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_themeing}
 {$,Will produce invalid XHTML, but we try and make it look nice}
 
 {+START,IF_NON_EMPTY,{$TRIM,{CONTENTS}}}
@@ -7,7 +8,9 @@
 
 	{+START,SET,tpl_marker_link}
 		{$,NB: We do not use an anchor tag because nested anchors make a mess}
-		<span data-mouseover-activate-tooltip="['&lt;p&gt;{!TEMPLATES_WITH_EDIT_LINKS_PARAMETERS;^*}&lt;/p&gt;{PARAM_INFO;^*}','800px',null,null,null,true]" class="template_edit_link associated_link"><span onkeypress="window.open('{EDIT_URL;*}'); cancel_bubbling(event)" onclick="window.open('{EDIT_URL;*}'); cancel_bubbling(event);"><kbd>{CODENAME*}.tpl</kbd></span></span>
+		<span data-tpl="templateEditLink" data-tpl-params="{+START,PARAMS_JSON,EDIT_URL}{_*}{+END}" data-mouseover-activate-tooltip="['&lt;p&gt;{!TEMPLATES_WITH_EDIT_LINKS_PARAMETERS;^*}&lt;/p&gt;{PARAM_INFO;^*}','800px',null,null,null,true]" class="template_edit_link associated_link">
+			<span class="js-click-open-edit-url js-keypress-open-edit-url"><kbd>{CODENAME*}.tpl</kbd></span>
+		</span>
 	{+END}
 
 	{+START,SET,tpl_marker_close}

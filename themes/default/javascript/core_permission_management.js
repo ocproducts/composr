@@ -12,11 +12,13 @@
     }
 
     $cms.inherits(PermissionsTreeEditorScreen, $cms.View, {
-        events: {
-            'click .js-click-update-group': 'updateGroupDisplayer',
-            'change .js-change-update-group': 'updateGroupDisplayer',
-            'click .js-click-set-permissions': 'setPermissions',
-            'change: .js-change-update-perm-box': 'updatePermissionBox'
+        events: function () {
+            return {
+                'click .js-click-update-group': 'updateGroupDisplayer',
+                'change .js-change-update-group': 'updateGroupDisplayer',
+                'click .js-click-set-permissions': 'setPermissions',
+                'change: .js-change-update-perm-box': 'updatePermissionBox'
+            };
         },
 
         updateGroupDisplayer: function (e, select) {
@@ -34,6 +36,36 @@
             update_permission_box(target);
         }
     });
+
+    $cms.templates.permissionRow = function permissionRow(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-input-toggle-value', function (e, input) {
+            input.value = (input.value === '-') ? '+' : '-';
+        });
+    };
+
+    $cms.templates.permissionKeysMessageRow = function permissionKeysMessageRow(params, container) {
+        $cms.dom.on(container, 'focus', '.js-focus-textarea-expand', function (e, textarea) {
+            textarea.setAttribute('rows', '10');
+        });
+
+        $cms.dom.on(container, 'blur', '.js-blur-textarea-contract', function (e, textarea) {
+            if (!textarea.form.disable_size_change) {
+                textarea.setAttribute('rows', '2');
+            }
+        });
+    };
+
+    $cms.templates.permissionKeysPermissionRow = function permissionKeysPermissionRow(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-btn-toggle-value', function (e, btn) {
+            btn.value = (btn.value === '-') ? '+' : '-';
+        });
+    };
+
+    $cms.templates.permissionKeysPermissionsScreen = function permissionKeysPermissionsScreen(params, container) {
+        $cms.dom.on(container, 'mouseover mouseout', '.js-btn-hover-toggle-disable-size-change', function (e, btn) {
+            btn.form.disable_size_change = (e.type === 'mouseover');
+        });
+    };
 
     // Selection changed, so update box
     function update_permission_box(setting) {

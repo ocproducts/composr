@@ -30,7 +30,7 @@
 
 				<div id="pre_but"><img class="js-click-rain-slow-down" src="{$IMG*,realtime_rain/pre}" alt="{!SLOW_DOWN}" title="{!SLOW_DOWN}" /></div>
 
-				<div class="js-hover-toggle-real-time-indicator" onmouseover="set_time_line_position(window.current_time);" onmousemove="timeline_click(this,true);" onclick="timeline_click(this);" id="time_line">
+				<div class="js-hover-toggle-real-time-indicator js-mouseover-set-time-line-position js-mousemove-timeline-click js-click-timeline-click" id="time_line">
 					<img id="time_line_image" src="{$IMG*,realtime_rain/time-line}" alt="" />
 				</div>
 

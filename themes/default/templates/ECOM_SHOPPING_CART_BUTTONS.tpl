@@ -7,7 +7,7 @@
 				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<input class="button_screen_item buttons__cart_add"{+START,IF,{OUT_OF_STOCK}} onclick="window.fauxmodal_alert('{!OUT_OF_STOCK;}'); return false;"{+END} type="submit" value="{!ADD_TO_CART}" />
+					<input class="button_screen_item buttons__cart_add"{+START,IF,{OUT_OF_STOCK}} data-click-alert="{!OUT_OF_STOCK*}" data-click-pd="1" {+END} type="submit" value="{!ADD_TO_CART}" />
 					<input type="hidden" id="quantity" name="quantity" value="1" />
 					<input type="hidden" name="product_id" value="{PRODUCT_ID*}" />
 				</form>

@@ -2,17 +2,20 @@
     'use strict';
 
     // Templates:
-    // POSTING_FORM
-    // - POSTING_FIELD
+    // POSTING_FORM.tpl
+    // - POSTING_FIELD.tpl
+    $cms.views.PostingForm = PostingForm;
     function PostingForm() {
         PostingForm.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(PostingForm, $cms.View, {
-        events: {
-            'submit .js-submit-modsec-workaround': 'workaround',
-            'click .js-click-toggle-subord-fields': 'toggleSubordinateFields',
-            'keypress .js-keypress-toggle-subord-fields': 'toggleSubordinateFields'
+        events: function () {
+            return {
+                'submit .js-submit-modsec-workaround': 'workaround',
+                'click .js-click-toggle-subord-fields': 'toggleSubordinateFields',
+                'keypress .js-keypress-toggle-subord-fields': 'toggleSubordinateFields'
+            };
         },
 
         workaround: function (e, target) {
@@ -25,6 +28,7 @@
         }
     });
 
+    $cms.views.FromScreenInputUpload = FromScreenInputUpload;
     function FromScreenInputUpload(params) {
         FromScreenInputUpload.base(this, 'constructor', arguments);
 
@@ -39,6 +43,7 @@
 
     $cms.inherits(FromScreenInputUpload, $cms.View);
 
+    $cms.views.FormScreenInputPermission = FormScreenInputPermission;
     function FormScreenInputPermission(params) {
         FormScreenInputPermission.base(this, 'constructor', arguments);
 
@@ -57,13 +62,12 @@
     }
 
     $cms.inherits(FormScreenInputPermission, $cms.View, {
-        groupId: null,
-        prefix: null,
-
-        events: {
-            'click .js-click-copy-perm-presets': 'copyPresets',
-            'change .js-change-copy-perm-presets': 'copyPresets',
-            'click .js-click-perm-repeating': 'permissionRepeating'
+        events: function () {
+            return {
+                'click .js-click-copy-perm-presets': 'copyPresets',
+                'change .js-change-copy-perm-presets': 'copyPresets',
+                'click .js-click-perm-repeating': 'permissionRepeating'
+            };
         },
 
         copyPresets: function (e, select) {
@@ -121,6 +125,7 @@
         }
     });
 
+    $cms.views.FormScreenInputPermissionOverride = FormScreenInputPermissionOverride;
     function FormScreenInputPermissionOverride(params) {
         FormScreenInputPermissionOverride.base(this, 'constructor', arguments);
 
@@ -142,13 +147,12 @@
     }
 
     $cms.inherits(FormScreenInputPermissionOverride, $cms.View, {
-        groupId: null,
-        prefix: null,
-
-        events: {
-            'click .js-click-perms-overridden': 'permissionsOverridden',
-            'change .js-change-perms-overridden': 'permissionsOverridden',
-            'mouseover .js-mouseover-show-perm-setting': 'showPermissionSetting'
+        events: function () {
+            return {
+                'click .js-click-perms-overridden': 'permissionsOverridden',
+                'change .js-change-perms-overridden': 'permissionsOverridden',
+                'mouseover .js-mouseover-show-perm-setting': 'showPermissionSetting'
+            };
         },
 
         permissionsOverridden: function () {
@@ -162,9 +166,11 @@
         }
     });
 
+    $cms.views.FormStandardEnd = FormStandardEnd;
     function FormStandardEnd(params) {
         FormStandardEnd.base(this, 'constructor', arguments);
 
+        this.backUrl = strVal(params.backUrl);
         this.form = $cms.dom.closest(this.el, 'form');
         this.btnSubmit = this.$('#submit_button');
 
@@ -190,12 +196,12 @@
     }
 
     $cms.inherits(FormStandardEnd, $cms.View, {
-        form: null,
-        btnSubmit: null,
-
-        events: {
-            'click .js-click-do-form-preview': 'doFormPreview',
-            'click .js-click-do-form-submit': 'doFormSubmit'
+        events: function () {
+            return {
+                'click .js-click-do-form-preview': 'doFormPreview',
+                'click .js-click-do-form-submit': 'doFormSubmit',
+                'click .js-click-btn-go-back': 'goBack'
+            };
         },
 
         doFormPreview: function (e) {
@@ -213,7 +219,16 @@
             }
         },
 
-        fixFormEnterKey: function (form) {
+        goBack: function (e, btn) {
+            if (btn.form.method.toLowerCase() === 'get') {
+                window.location = this.backUrl;
+            } else {
+                btn.form.action = this.backUrl;
+                btn.form.submit();
+            }
+        },
+
+        fixFormEnterKey: function () {
             var form = this.form;
             var submit = document.getElementById('submit_button');
             var inputs = form.getElementsByTagName('input');
@@ -230,21 +245,15 @@
         }
     });
 
-    $cms.views.FormStandardEnd = FormStandardEnd;
-    $cms.views.PostingForm = PostingForm;
-    $cms.views.FromScreenInputUpload = FromScreenInputUpload;
-    $cms.views.FormScreenInputPermission = FormScreenInputPermission;
-    $cms.views.FormScreenInputPermissionOverride = FormScreenInputPermissionOverride;
 
-    $cms.templates.formScreenInputPassword = function (params) {
-        var container = this,
-            value = strVal(params.value),
+    $cms.templates.formScreenInputPassword = function (params, container) {
+        var value = strVal(params.value),
             name = strVal(params.name);
 
         if ((value === '') && (name === 'edit_password')) {
             // Work around annoying Firefox bug. It ignores autocomplete="off" if a password was already saved somehow
             window.setTimeout(function () {
-                $cms.dom.$('#{NAME;/}').value = '';
+                $cms.dom.$('#' + name).value = '';
             }, 300);
         }
 
@@ -260,42 +269,32 @@
         });
     };
 
-    $cms.templates.comcodeEditor = function (params) {
-        var container = this,
-            postingField = strVal(params.postingField);
+    $cms.templates.comcodeEditor = function (params, container) {
+        var postingField = strVal(params.postingField);
 
         $cms.dom.on(container, 'click', '.js-click-do-input-font-posting-field', function () {
             do_input_font(postingField);
         });
-
-
-        function do_input_font(field_name) {
-            if (window.insert_textbox_wrapping === undefined) {
-                return;
-            }
-
-            var element = document.getElementById(field_name);
-            var form = element.form;
-            var face = form.elements['f_face'];
-            var size = form.elements['f_size'];
-            var colour = form.elements['f_colour'];
-            if ((face.value == '') && (size.value == '') && (colour.value == '')) {
-                window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
-                return;
-            }
-            insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + escape_comcode(face.value) + '\" color=\"' + escape_comcode(colour.value) + '\" size=\"' + escape_comcode(size.value) + '\"]', '[/font]');
-        }
     };
 
-    $cms.templates.form = function (params) {
-        if (!!params.isJoinForm) {
+    $cms.templates.form = function (params, container) {
+        var skippable =  strVal(params.skippable);
+
+        if (params.isJoinForm) {
             joinForm(params);
         }
+
+        $cms.dom.on(container, 'click', '.js-click-btn-skip-step', function () {
+            $cms.dom.$('#' + skippable).value = '1';
+        });
+
+        $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
+            e.preventDefault();
+            modsecurity_workaround(form);
+        });
     };
 
-    $cms.templates.formScreen = function (params) {
-        var container = this;
-
+    $cms.templates.formScreen = function (params, container) {
         try_to_simplify_iframe_form();
 
         if (params.iframeUrl) {
@@ -304,7 +303,7 @@
             }, 1500);
 
             $cms.dom.on(container, 'click', '.js-checkbox-will-open-new', function (e, checkbox) {
-                var form = $cms.dom.id(container, 'main_form');
+                var form = $cms.dom.$(container, '#main_form');
 
                 form.action = checkbox.checked ? params.url : params.iframeUrl;
                 form.elements.opens_below.value = checkbox.checked ? '0' : '1';
@@ -318,15 +317,13 @@
     };
 
     $cms.templates.formScreenField_input = function (params) {
-        var el = $cms.dom.id('form_table_field_input__' + params.randomisedId);
+        var el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
         if (el) {
             set_up_change_monitor(el.parentElement);
         }
     };
 
-    $cms.templates.formScreenFieldDescription = function formScreenFieldDescription() {
-        var img = this;
-
+    $cms.templates.formScreenFieldDescription = function formScreenFieldDescription(params, img) {
         $cms.dom.one(img, 'mouseover', function () {
             if (img.ttitle === undefined) {
                 img.ttitle = img.title;
@@ -361,7 +358,41 @@
     };
 
     $cms.templates.formScreenInputUsernameMulti = function formScreenInputUsernameMulti(params, container) {
+        $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
+            if (input.value === '') {
+                update_ajax_member_list(input, null, true, e);
+            }
+        });
 
+        $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
+            update_ajax_member_list(input, null, false, e);
+        });
+
+        $cms.dom.on(container, 'change', '.js-change-ensure-next-field', function (e, input) {
+            ensure_next_field(input)
+        });
+
+        $cms.dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, input) {
+            ensure_next_field(input)
+        });
+    };
+
+    $cms.templates.formScreenInputUsername = function formScreenInputUsername(params, container) {
+        $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
+            if (input.value === '') {
+                update_ajax_member_list(input, null, true, e);
+            }
+        });
+
+        $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
+            update_ajax_member_list(input, null, false, e);
+        });
+    };
+
+    $cms.templates.formScreenInputLineMulti = function (params, container) {
+        $cms.dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, input) {
+            _ensure_next_field(e, input);
+        });
     };
 
     $cms.templates.formScreenInputHugeComcode = function (params) {
@@ -382,7 +413,7 @@
 
     $cms.templates.formScreenInputAuthor = function formScreenInputAuthor(params, container) {
         $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-author-list', function (e, target) {
-            update_ajax_author_list(target, e);
+            update_ajax_member_list(target, 'author', false, e);
         });
     };
 
@@ -393,13 +424,22 @@
         do_color_chooser();
     };
 
-    $cms.templates.formScreenInputTreeList = function formScreenInputTreeList(params) {
-        var hook = $cms.filter.url(params.hook),
+    $cms.templates.formScreenInputTreeList = function formScreenInputTreeList(params, container) {
+        var name = strVal(params.name),
+            hook = $cms.filter.url(params.hook),
             rootId = $cms.filter.url(params.rootId),
             opts = $cms.filter.url(params.options),
-            multiSel = !!params.multiSelect;
+            multiSelect = !!params.multiSelect && (params.multiSelect !== '0');
 
-        $cms.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP, rootId, opts, multiSel, params.tabIndex, false, !!params.useServerId);
+        $cms.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP, rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
+
+        $cms.dom.on(container, 'change', '.js-input-change-update-mirror', function (e, input) {
+            var mirror = document.getElementById(name + '_mirror');
+            if (mirror) {
+                $cms.dom.toggle(mirror.parentElement, !!input.selected_title);
+                $cms.dom.html(mirror, input.selected_title ? escape_html(input.selected_title) : '{!NA_EM;}');
+            }
+        });
     };
 
     $cms.templates.formScreenInputPermissionMatrix = function (params) {
@@ -563,30 +603,33 @@
         var name = $cms.filter.id(params.name),
             code = $cms.filter.id(params.code),
             stem = name + '_' + code,
-            e = document.getElementById('w_' + stem),
-            img = e.querySelector('img'),
+            el = document.getElementById('w_' + stem),
+            img = el.querySelector('img'),
             input = document.getElementById('j_' + stem),
-            label = e.querySelector('label'),
+            label = el.querySelector('label'),
             form = input.form;
 
-        e.onkeypress = function (event) {
+        el.onkeypress = function (event) {
             if ($cms.dom.keyPressed(event, 'Enter')) {
-                return e.onclick.call([event]);
+                return el.onclick.call([event]);
             }
+
             return null;
         };
 
         function click_func(event) {
             choose_picture('j_' + stem, img, name, event);
 
-            if (window.main_form_very_simple !== undefined) form.submit();
+            if (window.main_form_very_simple !== undefined) {
+                form.submit();
+            }
 
             cancel_bubbling(event);
         }
 
         img.onkeypress = click_func;
         img.onclick = click_func;
-        e.onclick = click_func;
+        el.onclick = click_func;
 
         label.className = 'js_widget';
 
@@ -594,14 +637,21 @@
             if (this.disabled) {
                 return;
             }
-            if (window.deselect_alt_url !== undefined) {
-                deselect_alt_url(this.form);
-            }
+
+            deselect_alt_url(this.form);
+
             if (window.main_form_very_simple !== undefined) {
                 this.form.submit();
             }
             cancel_bubbling(event);
+        };
+
+        function deselect_alt_url(form) {
+            if (form.elements['alt_url'] != null) {
+                form.elements['alt_url'].value = '';
+            }
         }
+
     };
 
     $cms.templates.formScreenInputHuge_input = function (params) {
@@ -659,10 +709,12 @@
     };
 
     $cms.templates.postingField = function postingField(params, container) {
-        var postEl = document.getElementById(params.name);
+        var name = strVal(params.name),
+            initDragDrop = !!params.initDragDrop,
+            postEl = $cms.dom.$('#' + name);
 
         if (params.class.includes('wysiwyg')) {
-            if ((window.wysiwyg_on) && (wysiwyg_on())) {
+            if (window.wysiwyg_on && wysiwyg_on()) {
                 postEl.readOnly = true; // Stop typing while it loads
 
                 window.setTimeout(function () {
@@ -673,15 +725,15 @@
             }
 
             if (params.wordCounter !== undefined) {
-                setup_word_counter(document.getElementById('post'), document.getElementById('word_count_' + params.wordCountId));
+                setup_word_counter($cms.dom.$('#post'), $cms.dom.$('#word_count_' + params.wordCountId));
             }
         }
 
         manage_scroll_height(postEl);
-        set_up_comcode_autocomplete(params.name, true);
+        set_up_comcode_autocomplete(name, true);
 
-        if (params.initDragDrop) {
-            initialise_html5_dragdrop_upload('container_for_' + params.name, params.name);
+        if (initDragDrop) {
+            initialise_html5_dragdrop_upload('container_for_' + name, name);
         }
 
         $cms.dom.on(container, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
@@ -692,6 +744,10 @@
         $cms.dom.on(container, 'click', '.js-link-click-open-site-emoticon-chooser-window', function (e, link) {
             var url = maintain_theme_in_link(link.href);
             window.faux_open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-toggle-wysiwyg', function () {
+            toggle_wysiwyg(name);
         });
     };
 
@@ -877,14 +933,32 @@
         }
     };
 
-    $cms.templates.formScreenInputUploadMulti = function (params) {
+    $cms.templates.formScreenInputUploadMulti = function formScreenInputUploadMulti(params, container) {
+        var nameStub = strVal(params.nameStub),
+            index = strVal(params.i),
+            syndicationJson = strVal(params.syndicationJson);
+
         if (params.syndicationJson !== undefined) {
-            show_upload_syndication_options(params.nameStub, params.syndicationJson);
+            show_upload_syndication_options(nameStub, syndicationJson);
         }
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
-            preinit_file_input('upload_multi', params.nameStub + '_' + params.i, null, null, params.filter);
+            preinit_file_input('upload_multi', nameStub + '_' + index, null, null, params.filter);
         }
+
+        $cms.dom.on(container, 'change', '.js-input-change-ensure-next-field-upload', function (e, input) {
+            if (!$cms.dom.keyPressed(e, 'Tab')) {
+                ensure_next_field_upload(input);
+            }
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-clear-name-stub-input', function (e) {
+            var input = $cms.dom.$('#' + nameStub + '_' + index);
+            input.value = '';
+            if (input.fakeonchange) {
+                input.fakeonchange(e);
+            }
+        });
     };
 
     $cms.templates.formScreenInputRadioList = function (params) {
@@ -927,17 +1001,53 @@
         }
     };
 
-    $cms.templates.formScreenInputRadioListComboEntry = function formScreenInputRadioListComboEntry(params) {
-        var el = document.getElementById('j_' + $cms.filter.id(params.name) + '_other');
-        $cms.dom.trigger(el, 'change');
-
+    $cms.templates.formScreenInputMultiList = function formScreenInputMultiList(params, container) {
+        $cms.dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
+            _ensure_next_field(e, input)
+        });
     };
 
-    $cms.templates.formScreenInputVariousTricks = function formScreenInputVariousTricks(params) {
-        if (params && params.customName && !params.customAcceptMultiple) {
+    $cms.templates.formScreenInputTextMulti = function formScreenInputTextMulti(params, container) {
+        $cms.dom.on(container, 'keypress', '.js-keypress-textarea-ensure-next-field', function (e, textarea) {
+            if (!$cms.dom.keyPressed(e, 'Tab')) {
+                ensure_next_field(textarea);
+            }
+        });
+    };
+
+    $cms.templates.formScreenInputRadioListComboEntry = function formScreenInputRadioListComboEntry(params, container) {
+        var nameId = $cms.filter.id(params.name);
+
+        toggleOtherCustomInput();
+        $cms.dom.on(container, 'change', '.js-change-toggle-other-custom-input', function () {
+            toggleOtherCustomInput();
+        });
+
+        function toggleOtherCustomInput() {
+            $cms.dom.$('#j_' + nameId + '_other_custom').disabled = !$cms.dom.$('#j_' + nameId + '_other').checked;
+        }
+    };
+
+    $cms.templates.formScreenInputVariousTricks = function formScreenInputVariousTricks(params, container) {
+        var customName = strVal(params.customName);
+
+        if (customName && !params.customAcceptMultiple) {
             var el = document.getElementById(params.customName + '_value');
             $cms.dom.trigger(el, 'change');
         }
+
+        $cms.dom.on(container, 'click', '.js-click-checkbox-toggle-value-field', function (e, checkbox) {
+            document.getElementById(customName + '_value').disabled = !checkbox.checked;
+        });
+
+        $cms.dom.on(container, 'change', '.js-change-input-toggle-value-checkbox', function (e, input) {
+            document.getElementById(customName).checked = (input.value !== '');
+            input.disabled = (input.value === '');
+        });
+
+        $cms.dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
+            _ensure_next_field(e, input);
+        });
     };
 
     $cms.templates.formScreenInputText = function formScreenInputText(params) {
@@ -1458,3 +1568,117 @@
         }
     }
 }(window.$cms));
+
+
+
+// ===========
+// Multi-field
+// ===========
+
+function _ensure_next_field(event, el) {
+    if ($cms.dom.keyPressed(event, 'Enter')) {
+        goto_next_field(el);
+    } else if (!$cms.dom.keyPressed(event, 'Tab')) {
+        ensure_next_field(el);
+    }
+
+    function goto_next_field(thisField) {
+        var mid = thisField.id.lastIndexOf('_'),
+            name_stub = thisField.id.substring(0, mid + 1),
+            this_num = thisField.id.substring(mid + 1, thisField.id.length) - 0,
+            next_num = this_num + 1,
+            next_field = document.getElementById(name_stub + next_num);
+
+        if (next_field) {
+            try {
+                next_field.focus();
+            } catch (e) {}
+        }
+    }
+}
+
+function ensure_next_field(this_field) {
+    var mid = this_field.id.lastIndexOf('_'),
+        name_stub = this_field.id.substring(0, mid + 1),
+        this_num = this_field.id.substring(mid + 1, this_field.id.length) - 0,
+        next_num = this_num + 1,
+        next_field = document.getElementById(name_stub + next_num),
+        name = name_stub + next_num,
+        this_id = this_field.id;
+
+    if (!next_field) {
+        next_num = this_num + 1;
+        this_field = document.getElementById(this_id);
+        var next_field_wrap = document.createElement('div');
+        next_field_wrap.className = this_field.parentNode.className;
+        if (this_field.localName === 'textarea') {
+            next_field = document.createElement('textarea');
+        } else {
+            next_field = document.createElement('input');
+            next_field.setAttribute('size', this_field.getAttribute('size'));
+        }
+        next_field.className = this_field.className.replace(/\_required/g, '');
+        if (this_field.form.elements['label_for__' + name_stub + '0']) {
+            var nextLabel = document.createElement('input');
+            nextLabel.setAttribute('type', 'hidden');
+            nextLabel.value = this_field.form.elements['label_for__' + name_stub + '0'].value + ' (' + (next_num + 1) + ')';
+            nextLabel.name = 'label_for__' + name_stub + next_num;
+            next_field_wrap.appendChild(nextLabel);
+        }
+        next_field.setAttribute('tabindex', this_field.getAttribute('tabindex'));
+        next_field.setAttribute('id', name_stub + next_num);
+        if (this_field.onfocus) {
+            next_field.onfocus = this_field.onfocus;
+        }
+        if (this_field.onblur) {
+            next_field.onblur = this_field.onblur;
+        }
+        if (this_field.onkeyup) {
+            next_field.onkeyup = this_field.onkeyup;
+        }
+        next_field.onkeypress = function (event) {
+            _ensure_next_field(event, next_field);
+        };
+        if (this_field.onchange) {
+            next_field.onchange = this_field.onchange;
+        }
+        if (this_field.onrealchange != null) {
+            next_field.onchange = this_field.onrealchange;
+        }
+        if (this_field.localName !== 'textarea') {
+            next_field.type = this_field.type;
+        }
+        next_field.value = '';
+        next_field.name = (this_field.name.includes('[]') ? this_field.name : (name_stub + next_num));
+        next_field_wrap.appendChild(next_field);
+        this_field.parentNode.parentNode.insertBefore(next_field_wrap, this_field.parentNode.nextSibling);
+    }
+}
+
+function ensure_next_field_upload(this_field) {
+    var mid = this_field.name.lastIndexOf('_'),
+        name_stub = this_field.name.substring(0, mid + 1),
+        this_num = this_field.name.substring(mid + 1, this_field.name.length) - 0,
+        next_num = this_num + 1,
+        next_field = document.getElementById('multi_' + next_num),
+        name = name_stub + next_num,
+        this_id = this_field.id;
+
+    if (!next_field) {
+        next_num = this_num + 1;
+        this_field = document.getElementById(this_id);
+        var next_field = document.createElement('input');
+        next_field.className = 'input_upload';
+        next_field.setAttribute('id', 'multi_' + next_num);
+        next_field.onchange = _ensure_next_field_upload;
+        next_field.setAttribute('type', 'file');
+        next_field.name = name_stub + next_num;
+        this_field.parentNode.appendChild(next_field);
+    }
+
+    function _ensure_next_field_upload(event) {
+        if (!$cms.dom.keyPressed(event, 'Tab')) {
+            ensure_next_field_upload(this);
+        }
+    }
+}

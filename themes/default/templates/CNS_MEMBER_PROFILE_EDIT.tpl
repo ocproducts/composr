@@ -6,9 +6,10 @@
 	{+END}
 {+END}
 
+{$REQUIRE_JAVASCRIPT,core_cns}
 {$REQUIRE_JAVASCRIPT,checking}
 
-<form class="form_table" title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" enctype="multipart/form-data" id="main_form" autocomplete="off">
+<form data-tpl="cnsMemberProfileEdit" data-tpl-params="{+START,PARAMS_JSON,TAB_CODE}{_*}{+END}" class="form_table" title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" enctype="multipart/form-data" id="main_form" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{HIDDEN}
@@ -18,7 +19,10 @@
 			<div class="{$?,{$MOBILE},modern_tab_headers,modern_subtab_headers}">
 				{+START,LOOP,TABS}
 					<div id="t_edit__{$LCASE,{TAB_CODE|*}}"{+START,IF,{TAB_FIRST}} class="tab_active tab_first{+END}{+START,IF,{TAB_LAST}} tab_last{+END}">
-						<a aria-controls="g_edit__{$LCASE,{TAB_CODE|*}}" role="tab" href="#!" onclick="select_tab('g','edit__{$LCASE,{TAB_CODE|*}}');">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}<span>{TAB_TITLE*}</span></a>
+						<a class="js-click-select-edit-tab" aria-controls="g_edit__{$LCASE,{TAB_CODE|*}}" role="tab" href="#!">
+							{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}
+							<span>{TAB_TITLE*}</span>
+						</a>
 					</div>
 				{+END}
 			</div>

@@ -1,4 +1,5 @@
-<section id="tray_{!MEMBER|}" data-view="ToggleableTray" data-tray-cookie="{!MEMBER|}" class="box cns_information_bar_outer">
+{$REQUIRE_JAVASCRIPT,cns_forum}
+<section id="tray_{!MEMBER|}" data-tpl="cnsGuestBar" data-view="ToggleableTray" data-tray-cookie="{!MEMBER|}" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title js-tray-header">
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!_LOGIN}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
@@ -8,7 +9,7 @@
 	<div class="toggleable_tray js-tray-content">
 		<div class="cns_information_bar float_surrounder">
 			<div class="cns_guest_column cns_guest_column_a">
-				<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'])) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="inline" autocomplete="on">
+				<form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="inline js-submit-check-field-login-username" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>
@@ -17,7 +18,7 @@
 						<input maxlength="80" size="15" type="text" placeholder="{!USERNAME}" id="member_bar_login_username" name="login_username" />
 						<input maxlength="255" size="15" type="password" placeholder="{!PASSWORD}" value="" name="password" id="member_bar_s_password" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
-							<label for="remember">{!REMEMBER_ME}:</label> <input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} {+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) t.checked=false; });  }"{+END} type="checkbox" value="1" id="remember" name="remember" />
+							<label for="remember">{!REMEMBER_ME}:</label> <input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
 						{+END}
 						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 

@@ -6,12 +6,56 @@ window.previous_commands || (window.previous_commands = []);
 (function ($cms) {
     'use strict';
 
-    $cms.templates.commandrCommands = function (params, container) {
+    $cms.templates.commandrMain = function commandrMain(params, container) {
+        $cms.dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
+            commandr_form_submission($cms.dom.$('#commandr_command').value, form);
+        });
+
+        $cms.dom.on(container, 'keyup', '.js-keyup-input-commandr-handle-history', function (e, input) {
+            if (commandr_handle_history(input, e.keyCode ? e.keyCode : e.charCode, e) === false) {
+                e.preventDefault();
+            }
+        });
+    };
+
+    $cms.templates.commandrLs = function commandrLs(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-set-directory-command', function (e, clicked) {
+            var filename = strVal(clicked.dataset.tpFilename),
+                commandInput = $cms.dom.$('#commandr_command');
+
+            commandInput.value = 'cd "' + filename + '"';
+            $cms.dom.trigger(commandInput.nextElementSibling, 'click');
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-set-file-command', function (e, clicked) {
+            var filename = strVal(clicked.dataset.tpFilename),
+                commandInput = $cms.dom.$('#commandr_command')
+
+            if (commandInput.value !== '') {
+                commandInput.value = commandInput.value.replace(/\s*$/, '') + ' "' + filename + '"';
+                commandInput.focus();
+            } else {
+                commandInput.value = 'cat "' + filename + '"';
+                $cms.dom.trigger(commandInput.nextElementSibling, 'click');
+            }
+        });
+    };
+
+    $cms.templates.commandrCommands = function commandrCommands(params, container) {
         $cms.dom.on(container, 'click', '.js-click-enter-command', function (e, target) {
             var commandInput = $cms.dom.$('#commandr_command'),
                 command = strVal(target.dataset.tpCommand);
             commandInput.value = command;
             commandInput.focus();
+        });
+    };
+
+    $cms.templates.commandrEdit = function commandrEdit(params, container) {
+        var file = strVal(params.file);
+
+        $cms.dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
+            var command = 'write "' + file + '" "' + form.elements.edit_content.value.replace(/\\/g, '\\\\').replace(/</g, '\\<').replace(/>/g, '\\>').replace(/"/g, '\\"') + '"';
+            commandr_form_submission(command, form);
         });
     };
 }(window.$cms));
@@ -51,8 +95,7 @@ function commandr_handle_history(element, key_code, e) {
             }
         }
         return false;
-    }
-    else {
+    } else {
         window.current_command = null;
         return true;
     }

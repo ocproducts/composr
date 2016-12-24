@@ -136,6 +136,18 @@
         });
     };
 
+    $cms.templates.templateEditLink = function templateEditLink(params, container) {
+        var editUrl = strVal(params.editUrl);
+
+        $cms.dom.on(container, 'click', '.js-click-open-edit-url', function () {
+            window.open(editUrl);
+        });
+
+        $cms.dom.on(container, 'click', '.js-keypress-open-edit-url', function () {
+            window.open(editUrl);
+        });
+    };
+
     $cms.templates.themeTemplateEditorScreen = function themeTemplateEditorScreen(params, container) {
         window.template_editor_theme = params.theme;
 
@@ -232,6 +244,15 @@
 
         $cms.dom.on(container, 'click', function () {
             template_editor_restore_revision(file, revisionId);
+        });
+    };
+
+    $cms.templates.templateTreeItem = function templateTreeItem(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-checkbox-toggle-guid-input', function (e, checkbox) {
+            var el = $cms.dom.$('#f__id__guid');
+            if (el) {
+                el.disabled = !checkbox.checked;
+            }
         });
     };
 

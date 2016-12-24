@@ -1,1 +1,2 @@
-{+START,IF,{$NEQ,{B},invite,new_room}}<input type="image" data-click-pd="1" onclick="do_input_{B%}('post');" title="{TITLE}" alt="{TITLE}" src="{$IMG*,chatcodeeditor/{B}}" />{+END}
+{$REQUIRE_JAVASCRIPT,chat}
+{+START,IF,{$NEQ,{B},invite,new_room}}<input data-tpl="chatcodeEditorButton" data-tpl-params="{+START,PARAMS_JSON,B}{_*}{+END}" type="image" data-click-pd="1" title="{TITLE}" alt="{TITLE}" src="{$IMG*,chatcodeeditor/{B}}" />{+END}

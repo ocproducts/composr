@@ -1,9 +1,9 @@
-<div class="upload_field inline_block" data-tpl="formScreenInputUploadMulti"
-	 data-tpl-params="{+START,PARAMS_JSON,SYNDICATION_JSON,PLUPLOAD,NAME_STUB,I,FILTER}{_*}{+END}">
+<div class="upload_field inline_block" data-tpl="formScreenInputUploadMulti" data-tpl-params="{+START,PARAMS_JSON,SYNDICATION_JSON,PLUPLOAD,NAME_STUB,I,FILTER}{_*}{+END}">
 
 	<div class="accessibility_hidden"><label for="{NAME_STUB*}_{I*}">{!UPLOAD}</label></div>
 	<div class="vertical_alignment inline_block">
-		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*}" onchange="if (!$cms.dom.keyPressed(event, 'Tab')) ensure_next_field_upload(this);" type="file" id="{NAME_STUB*}_{I*}" name="{NAME_STUB*}_{I*}" />
+		<input tabindex="{TABINDEX*}" class="input_upload{REQUIRED*} js-input-change-ensure-next-field-upload" type="file" id="{NAME_STUB*}_{I*}" name="{NAME_STUB*}_{I*}" />
+
 		<input type="hidden" name="label_for_{NAME_STUB*}_{I*}" value="{!UPLOAD}" />
 
 		{+START,IF_NON_EMPTY,{EDIT}}
@@ -26,7 +26,7 @@
 			{+END}
 		{+END}
 
-		<input class="button_micro buttons__clear" type="button" id="clear_button_{NAME_STUB*}_{I*}" value="{!CLEAR}" onclick="var x=document.getElementById('{NAME_STUB;*}_{I;*}'); x.value=''; if (typeof x.fakeonchange!='undefined' && x.fakeonchange) x.fakeonchange(event); return false;" />
+		<input class="button_micro buttons__clear js-click-clear-name-stub-input" type="button" id="clear_button_{NAME_STUB*}_{I*}" value="{!CLEAR}" />
 
 		<!--Additional uploaders will auto-append here-->
 	</div>

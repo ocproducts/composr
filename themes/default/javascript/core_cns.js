@@ -52,6 +52,14 @@
         });
     };
 
+    $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
+        var tabCode = $cms.filter.id(params.tabCode).toLowerCase();
+
+        $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function () {
+            select_tab('g','edit__' + tabCode)
+        });
+    };
+
     $cms.templates.cnsMemberDirectoryScreenFilter = function cnsMemberDirectoryScreenFilter(params, container) {
         $cms.dom.on(container, 'keyup', '.js-keyup-input-filter-update-ajax-member-list', function (e, input) {
             update_ajax_member_list(input, null, false, e);

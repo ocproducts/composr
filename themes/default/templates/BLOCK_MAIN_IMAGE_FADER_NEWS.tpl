@@ -39,9 +39,9 @@
 
 <div class="pagination">
 	<nav class="float_surrounder">
-		<a href="#!" onclick=" window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(-1);" rel="prev" accesskey="j" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light">&laquo;&nbsp;{!PREVIOUS}</a>
-		<a href="#!" onclick="window.main_image_fader_news_pause_{$GET,RAND_FADER_NEWS}();" id="pause_button_{$GET,RAND_FADER_NEWS}" title="{!PAUSE}" class="light">{!PAUSE}</a>
-		<a href="#!" onclick="window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(1);" rel="next" accesskey="k" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light">{!NEXT}&nbsp;&raquo;</a>
+		<a href="#!" rel="prev" accesskey="j" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light js-click-btn-prev-cycle">&laquo;&nbsp;{!PREVIOUS}</a>
+		<a href="#!" id="pause_button_{$GET,RAND_FADER_NEWS}" title="{!PAUSE}" class="light js-click-btn-pause-cycle">{!PAUSE}</a>
+		<a href="#!" rel="next" accesskey="k" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light js-click-btn-next-cycle">{!NEXT}&nbsp;&raquo;</a>
 	</nav>
 </div>
 {+END}

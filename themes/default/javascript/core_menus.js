@@ -1,11 +1,16 @@
 (function ($cms) {
+
+    $cms.views.Menu = Menu;
     function Menu(params) {
         Menu.base(this, 'constructor', arguments);
 
         /** @var {string} */
-        this.menuId = params.menuId;
+        this.menu = strVal(params.menu);
 
-        if (params.javascriptHighlighting && this.menuId) {
+        /** @var {string} */
+        this.menuId = strVal(params.menuId);
+
+        if (params.javascriptHighlighting) {
             menuActiveSelection(this.menuId);
         }
     }
@@ -15,37 +20,80 @@
     // Templates:
     // MENU_dropdown.tpl
     // - MENU_BRANCH_dropdown.tpl
-    function DropdownMenu() {
+    $cms.views.DropdownMenu = DropdownMenu;
+    function DropdownMenu(params) {
         DropdownMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(DropdownMenu, Menu, {
+    $cms.inherits(DropdownMenu, Menu, /**@lends DropdownMenu.prototype*/{
         events: function () {
             return {
+                'mousemove .js-mousemove-timer-pop-up-menu': 'timerPopUpMenu',
+                'mouseout .js-mouseout-clear-pop-up-timer': 'clearPopUpTimer',
+                'focus .js-focus-pop-up-menu': 'focusPopUpMenu',
+                'mousemove .js-mousemove-pop-up-menu': 'popUpMenu',
+                'mouseover .js-mouseover-set-active-menu': 'setActiveMenu',
                 'click .js-click-unset-active-menu': 'unsetActiveMenu',
                 'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu'
             };
         },
 
+        timerPopUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu),
+                rand = strVal(target.dataset.vwRand);
+
+            if (!target.timer) {
+                target.timer = window.setTimeout(function () {
+                    pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+                }, 200);
+            }
+        },
+
+        clearPopUpTimer: function (e, target) {
+            if (target.timer) {
+                window.clearTimeout(target.timer);
+                target.timer = null;
+            }
+        },
+
+        focusPopUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu),
+                rand = strVal(target.dataset.vwRand);
+
+            pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+        },
+
+        popUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu),
+                rand = strVal(target.dataset.vwRand);
+
+            pop_up_menu(menu + '_dexpand_' + rand, null, menu + '_d', e);
+        },
+
+        setActiveMenu: function (e, target) {
+            if (!target.contains(e.relatedTarget)) {
+                var menu = $cms.filter.id(this.menu);
+
+                if (window.active_menu == null) {
+                    set_active_menu(target.id, menu + '_d');
+                }
+            }
+        },
+
         unsetActiveMenu: function (e, target) {
-            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
+            if (!target.contains(e.relatedTarget)) {
                 window.active_menu = null;
                 recreate_clean_timeout();
             }
         }
     });
 
+    $cms.views.PopupMenu = PopupMenu;
     function PopupMenu(params) {
         PopupMenu.base(this, 'constructor', arguments);
-
-        this.menuId = params.menuId;
-
-        if (params.javascriptHighlighting && this.menuId) {
-            menuActiveSelection(this.menuId);
-        }
     }
 
-    $cms.inherits(PopupMenu, Menu, {
+    $cms.inherits(PopupMenu, Menu, /**@lends PopupMenu.prototype*/{
         events: function () {
             return {
                 'click .js-click-unset-active-menu': 'unsetActiveMenu',
@@ -54,13 +102,14 @@
         },
 
         unsetActiveMenu: function (e, target) {
-            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
+            if (!target.contains(e.relatedTarget)) {
                 window.active_menu = null;
                 recreate_clean_timeout();
             }
         }
     });
 
+    $cms.views.PopupMenuBranch = PopupMenuBranch;
     function PopupMenuBranch() {
         PopupMenuBranch.base(this, 'constructor', arguments);
 
@@ -69,7 +118,7 @@
         this.popup = this.menu + '_pexpand_' + this.rand;
     }
 
-    $cms.inherits(PopupMenuBranch, $cms.View, {
+    $cms.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch.prototype*/{
         events: function () {
             return {
                 'focus .js-focus-pop-up-menu': 'popUpMenu',
@@ -87,11 +136,12 @@
         }
     });
 
+    $cms.views.TreeMenu = TreeMenu;
     function TreeMenu() {
         TreeMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(TreeMenu, Menu, {
+    $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu.prototype*/{
         events: {
             'click [data-menu-tree-toggle]': 'toggleMenu'
         },
@@ -99,19 +149,20 @@
         toggleMenu: function (e, target) {
             var menuId = target.dataset.menuTreeToggle;
 
-            $cms.toggleableTray($cms.dom.id(menuId));
+            $cms.toggleableTray($cms.dom.$('#' + menuId));
         }
     });
 
     // Templates:
     // MENU_mobile.tpl
     // - MENU_BRANCH_mobile.tpl
+    $cms.views.MobileMenu = MobileMenu;
     function MobileMenu() {
         MobileMenu.base(this, 'constructor', arguments);
         this.menuContentEl = this.$('.js-el-menu-content');
     }
 
-    $cms.inherits(MobileMenu, Menu, {
+    $cms.inherits(MobileMenu, Menu, /**@lends MobileMenu.prototype*/{
         events: function () {
             return {
                 'click .js-click-toggle-content': 'toggleContent',
@@ -123,29 +174,31 @@
             $cms.dom.toggle(this.menuContentEl);
         },
         toggleSubMenu: function (e, link) {
-            var rand = link.dataset.vwRand, href,
-                subEl = this.$('#' + this.menuId + '_pexpand_' + rand);
+            var rand = link.dataset.vwRand,
+                subEl = this.$('#' + this.menuId + '_pexpand_' + rand),
+                href;
 
-            if ($cms.dom.css(subEl, 'display') === 'none') {
-                subEl.style.display = $cms.dom.initial(subEl, 'display');
+            if ($cms.dom.notDisplayed(subEl)) {
+                $cms.dom.show(subEl);
             } else {
                 href = link.getAttribute('href');
                 // Second click goes to it
                 if (href && !href.startsWith('#')) {
                     return;
                 }
-                subEl.style.display = 'none';
+                $cms.dom.hide(subEl);
             }
 
             e.preventDefault();
         }
     });
 
+    $cms.views.SelectMenu = SelectMenu;
     function SelectMenu() {
         SelectMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(SelectMenu, Menu, {
+    $cms.inherits(SelectMenu, Menu, /**@lends SelectMenu.prototype*/{
         events: function () {
             return {
                 'change .js-change-redirect-to-value': 'redirect'
@@ -158,13 +211,6 @@
         }
     });
 
-    $cms.views.Menu = Menu;
-    $cms.views.DropdownMenu = DropdownMenu;
-    $cms.views.PopupMenu = PopupMenu;
-    $cms.views.PopupMenuBranch = PopupMenuBranch;
-    $cms.views.TreeMenu = TreeMenu;
-    $cms.views.MobileMenu = MobileMenu;
-    $cms.views.SelectMenu = SelectMenu;
 
     $cms.templates.menuEditorScreen = function (params, container) {
         var menuEditorWrapEl = $cms.dom.$(container, '.js-el-menu-editor-wrap');
@@ -188,7 +234,7 @@
             var form = $cms.dom.id('edit_form');
 
             window.fauxmodal_prompt(
-                '{$?,{$CONFIG_OPTION,collapse_user_zones},{!javascript:ENTER_ZONE_SPZ;^},{!javascript:ENTER_ZONE;^}}',
+                $cms.$CONFIG_OPTION.collapse_user_zones ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}',
                 '',
                 function (zone) {
                     if (zone !== null) {
@@ -197,7 +243,7 @@
                             '',
                             function (page) {
                                 if (page !== null) {
-                                    form.elements['url'].value = zone + ':' + page;
+                                    form.elements.url.value = zone + ':' + page;
                                 }
                             },
                             '{!menus:SPECIFYING_NEW_PAGE;^}'

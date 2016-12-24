@@ -126,6 +126,18 @@
         });
     };
 
+    $cms.templates.echomShoppingItemQuantityField = function echomShoppingItemQuantityField(params, container) {
+        $cms.dom.on(container, 'keypress', '.js-keypress-unfade-cart-update-button', function () {
+            document.getElementById('cart_update_button').classList.remove('button_faded');
+        });
+    };
+
+    $cms.templates.ecomShoppingItemRemoveField = function ecomShoppingItemRemoveField(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-unfade-cart-update-button', function () {
+            document.getElementById('cart_update_button').classList.remove('button_faded');
+        });
+    };
+
     window.checkout = checkout;
     function checkout(form_name, checkout_url) {
         var form = document.getElementById(form_name);

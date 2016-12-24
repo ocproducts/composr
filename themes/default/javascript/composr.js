@@ -107,6 +107,7 @@ var encodeUC = encodeURIComponent;
             complex_uploader: boolVal(symbols.CONFIG_OPTION.complex_uploader),
             collapse_user_zones: boolVal(symbols.CONFIG_OPTION.collapse_user_zones),
             sitewide_im: boolVal(symbols.CONFIG_OPTION.sitewide_im),
+            simplified_attachments_ui: boolVal(symbols.CONFIG_OPTION.simplified_attachments_ui),
 
             thumb_width: symbols.CONFIG_OPTION.thumb_width,
             js_captcha: symbols.CONFIG_OPTION.js_captcha,
@@ -116,7 +117,6 @@ var encodeUC = encodeURIComponent;
             fixed_width: symbols.CONFIG_OPTION.fixed_width,
             infinite_scrolling: symbols.CONFIG_OPTION.infinite_scrolling,
             eager_wysiwyg: symbols.CONFIG_OPTION.eager_wysiwyg,
-            simplified_attachments_ui: symbols.CONFIG_OPTION.simplified_attachments_ui,
             show_inline_stats: symbols.CONFIG_OPTION.show_inline_stats,
             notification_desktop_alerts: symbols.CONFIG_OPTION.notification_desktop_alerts,
             enable_theme_img_buttons: symbols.CONFIG_OPTION.enable_theme_img_buttons,
@@ -2486,6 +2486,17 @@ var encodeUC = encodeURIComponent;
      */
     $cms.dom.empty = function (el) {
         $cms.dom.html(el, '');
+    };
+
+    /**
+     *
+     * @param el
+     */
+    $cms.dom.remove = function (el) {
+        if (el) {
+            $cms.detachBehaviors(el);
+            el.parentNode.removeChild(el);
+        }
     };
 
     /**
@@ -4941,20 +4952,26 @@ function noop() {}
     }
 
     /* Browser sniffing */
+    /**
+     * @param {string} code
+     * @returns {boolean}
+     */
     function browser_matches(code) {
         var browser = navigator.userAgent.toLowerCase(),
             os = navigator.platform.toLowerCase() + ' ' + browser;
 
-        var is_safari = browser.includes('applewebkit');
-        var is_chrome = browser.includes('chrome/');
-        var is_gecko = browser.includes('gecko') && !is_safari;
-        var _is_ie = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/');
-        var is_ie_8 = browser.includes('msie 8') && (_is_ie);
-        var is_ie_8_plus = is_ie_8;
-        var is_ie_9 = browser.includes('msie 9') && (_is_ie);
-        var is_ie_9_plus = is_ie_9 && !is_ie_8;
+        var is_safari = browser.includes('applewebkit'),
+            is_chrome = browser.includes('chrome/'),
+            is_gecko = browser.includes('gecko') && !is_safari,
+            _is_ie = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/'),
+            is_ie_8 = browser.includes('msie 8') && (_is_ie),
+            is_ie_8_plus = is_ie_8,
+            is_ie_9 = browser.includes('msie 9') && (_is_ie),
+            is_ie_9_plus = is_ie_9 && !is_ie_8;
 
         switch (code) {
+            case 'simplified_attachments_ui':
+                return !is_ie_8 && !is_ie_9 && $cms.$CONFIG_OPTION.simplified_attachments_ui && $cms.$CONFIG_OPTION.complex_uploader;
             case 'non_concurrent':
                 return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
             case 'ios':
@@ -6447,7 +6464,7 @@ function fauxmodal_confirm(question, callback, title, unescaped) {
 function fauxmodal_alert(notice, callback, title, unescaped) {
     notice = strVal(notice);
     callback || (callback = noop);
-    title || (title = '{!MESSAGE;^}');
+    title = strVal(title) || '{!MESSAGE;^}';
     unescaped = !!unescaped;
 
     if (!$cms.$CONFIG_OPTION.js_overlays) {
@@ -6456,7 +6473,7 @@ function fauxmodal_alert(notice, callback, title, unescaped) {
         return;
     }
 
-    var my_alert = {
+    var myAlert = {
         type: 'alert',
         text: unescaped ? notice : escape_html(notice).replace(/\n/g, '<br />'),
         yes_button: '{!INPUTSYSTEM_OK;^}',
@@ -6465,7 +6482,8 @@ function fauxmodal_alert(notice, callback, title, unescaped) {
         title: title,
         cancel_button: null
     };
-    $cms.openModalWindow(my_alert);
+
+    $cms.openModalWindow(myAlert);
 }
 
 function fauxmodal_prompt(question, defaultValue, callback, title, input_type) {
@@ -6474,7 +6492,7 @@ function fauxmodal_prompt(question, defaultValue, callback, title, input_type) {
         return;
     }
 
-    var my_prompt = {
+    var myPrompt = {
         type: 'prompt',
         text: escape_html(question).replace(/\n/g, '<br />'),
         yes_button: '{!INPUTSYSTEM_OK;^}',
@@ -6490,9 +6508,9 @@ function fauxmodal_prompt(question, defaultValue, callback, title, input_type) {
         width: '450'
     };
     if (input_type) {
-        my_prompt.input_type = input_type;
+        myPrompt.input_type = input_type;
     }
-    $cms.openModalWindow(my_prompt);
+    $cms.openModalWindow(myPrompt);
 }
 
 function faux_showModalDialog(url, name, options, callback, target, cancel_text) {
@@ -7009,20 +7027,18 @@ function faux_open(url, name, options, target, cancel_text) {
     window.do_ajax_field_test = do_ajax_field_test;
     window.merge_text_nodes = merge_text_nodes;
     window.update_ajax_search_list = update_ajax_search_list;
-    window.update_ajax_author_list = update_ajax_author_list;
     window.update_ajax_member_list = update_ajax_member_list;
 
     /* Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message) */
     function do_ajax_field_test(url, post) {
-        var xmlhttp = do_ajax_request(url, null, post);
-        if ((xmlhttp.responseText != '') && (xmlhttp.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
-            if (xmlhttp.responseText != 'false') {
-                if (xmlhttp.responseText.length > 1000) {
-                    $cms.log(xmlhttp.responseText);
-
-                    fauxmodal_alert(xmlhttp.responseText, null, '{!ERROR_OCCURRED;^}', true);
+        var xhr = do_ajax_request(url, null, post);
+        if ((xhr.responseText != '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
+            if (xhr.responseText !== 'false') {
+                if (xhr.responseText.length > 1000) {
+                    $cms.log('do_ajax_field_test()', 'xhr.responseText:', xhr.responseText);
+                    window.fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
                 } else {
-                    window.fauxmodal_alert(xmlhttp.responseText);
+                    window.fauxmodal_alert(xhr.responseText);
                 }
             }
             return false;
@@ -7044,31 +7060,23 @@ function faux_open(url, name, options, target, cancel_text) {
         var special = 'search';
         search_type = strVal(search_type);
         if (search_type) {
-            special += '&search_type=' + encodeUC(search_type);
+            special += '&search_type=' + encodeURIComponent(search_type);
         }
         update_ajax_member_list(target, special, false, e);
-    }
-
-    function update_ajax_author_list(target, e) {
-        update_ajax_member_list(target, 'author', false, e);
     }
 
     var currentlyDoingListTimer = 0,
         currentListForEl = null;
 
     function update_ajax_member_list(target, special, delayed, event) {
-        if (event && $cms.dom.keyPressed(event, 'Enter')) {
-            return null;
-        }
-
-        if (target.disabled) {
+        if ((event && $cms.dom.keyPressed(event, 'Enter')) || target.disabled) {
             return;
         }
 
         if (!browser_matches('ios') && !target.onblur) {
             target.onblur = function () {
                 setTimeout(function () {
-                    close_down();
+                    close_down_ajax_list();
                 }, 300);
             }
         }
@@ -7092,15 +7100,15 @@ function faux_open(url, name, options, target, cancel_text) {
         var v = target.value;
 
         currentListForEl = target;
-        var url = '{$FIND_SCRIPT;,namelike}?id=' + encodeUC(v);
+        var script = '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(v);
         if (special) {
-            url = url + '&special=' + special;
+            script = script + '&special=' + special;
         }
 
-        do_ajax_request(url + keep_stub(), update_ajax_member_list_response);
+        do_ajax_request(script + keep_stub(), update_ajax_member_list_response);
 
-        function close_down() {
-            var current = $cms.dom.id('ajax_list');
+        function close_down_ajax_list() {
+            var current = $cms.dom.$('#ajax_list');
             if (current) {
                 current.parentNode.removeChild(current);
             }
@@ -7111,15 +7119,15 @@ function faux_open(url, name, options, target, cancel_text) {
                 return;
             }
 
-            close_down();
+            close_down_ajax_list();
 
-            var data_list = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
+            var isDataList = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
 
             //if (list_contents.childNodes.length==0) return;
-            var list = document.createElement(data_list ? 'datalist' : 'select');
+            var list = document.createElement(isDataList ? 'datalist' : 'select');
             list.className = 'people_list';
             list.setAttribute('id', 'ajax_list');
-            if (data_list) {
+            if (isDataList) {
                 currentListForEl.setAttribute('list', 'ajax_list');
             } else {
                 if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
@@ -7157,7 +7165,7 @@ function faux_open(url, name, options, target, cancel_text) {
             list.appendChild(item);
             currentListForEl.parentNode.appendChild(list);
 
-            if (data_list) {
+            if (isDataList) {
                 return;
             }
 

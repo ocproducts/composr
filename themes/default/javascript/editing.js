@@ -505,7 +505,7 @@ function wysiwyg_editor_init_for(element, id) {
     // Allow drag and drop uploading
     editor.on('contentDom', function () {
         editor.document.on('dragover', function (e) {
-            html5_upload_event_drag_over(e.data.$, element, element.id);
+            html5_upload_event_drag_over(e.data.$);
         });
 
         editor.document.on('drop', function (e) {
@@ -732,7 +732,7 @@ function set_textbox(element, text, html) {
  */
 function insert_textbox(element, text, sel, plain_insert, html) {
     plain_insert = !!plain_insert;
-    html || (html = '');
+    html = strVal(html);
 
     if (is_wysiwyg_field(element)) {
         var editor = window.wysiwyg_editors[element.id];
@@ -841,8 +841,7 @@ function get_selected_html(editor) {
         } else {// IE9 / standards (HTMLSelection object)
             try {
                 selected_text = $cms.dom.html(my_selection.getNative().getRangeAt(0).cloneContents());
-            } catch (e) {
-            }
+            } catch (e) {}
         }
     }
     return selected_text;

@@ -211,10 +211,12 @@
             this.detectJavascript();
         }
 
-        if ($cms.dom.id('global_messages_2')) {
-            var m1 = $cms.dom.id('global_messages');
-            if (!m1) return;
-            var m2 = $cms.dom.id('global_messages_2');
+        if ($cms.dom.$('#global_messages_2')) {
+            var m1 = $cms.dom.$('#global_messages');
+            if (!m1) {
+                return;
+            }
+            var m2 = $cms.dom.$('#global_messages_2');
             $cms.dom.appendHtml(m1, $cms.dom.html(m2));
             m2.parentNode.removeChild(m2);
         }
@@ -222,8 +224,7 @@
         if ($cms.usp.get('wide_print') && ($cms.usp.get('wide_print') !== '0')) {
             try {
                 window.print();
-            } catch (ignore) {
-            }
+            } catch (ignore) {}
         }
 
         if (($cms.$ZONE === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
@@ -319,7 +320,7 @@
             panel_right.classList.add('horiz_helper_panel');
             panel_right.parentNode.removeChild(panel_right);
             middle.parentNode.appendChild(panel_right);
-            $cms.dom.id('helper_panel_toggle').style.display = 'none';
+            $cms.dom.$('#helper_panel_toggle').style.display = 'none';
             helperPanel.style.minHeight = '0';
         });
 
@@ -333,6 +334,8 @@
             return {
                 // Show a confirmation dialog for clicks on a link (is higher up for priority)
                 'click [data-cms-confirm-click]': 'confirmClick',
+
+                'click [data-click-eval]': 'clickEval',
 
                 'click [data-click-alert]': 'showModalAlert',
                 'click [data-keypress-alert]': 'showModalAlert',
@@ -348,7 +351,7 @@
                 // Simulated href for non <a> elements
                 'click [data-cms-href]': 'cmsHref',
 
-                'click [data-click-fwd]': 'clickForward',
+                'click [data-click-forward]': 'clickForward',
 
                 // Toggle classes on mouseover/out
                 'mouseover [data-mouseover-class]': 'mouseoverClass',
@@ -363,6 +366,9 @@
                 // Disable form buttons
                 'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
 
+                //
+                'submit form[data-submit-modsecurity-workaround]': 'submitModsecurityWorkaround',
+
                 // Prevents input of matching characters
                 'input input[data-cms-invalid-pattern]': 'invalidPattern',
                 'keydown input[data-cms-invalid-pattern]': 'invalidPattern',
@@ -373,6 +379,8 @@
 
                 // Open page in overlay
                 'click [data-open-as-overlay]': 'openOverlay',
+
+                'click [data-click-faux-open]': 'clickFauxOpen',
 
                 // Lightboxes
                 'click a[rel*="lightbox"]': 'lightBoxes',
@@ -397,7 +405,14 @@
                 /* STAFF */
                 'click .js-click-load-software-chat': 'loadSoftwareChat',
 
-                'submit .js-submit-staff-actions-select': 'staffActionsSelect'
+                'submit .js-submit-staff-actions-select': 'staffActionsSelect',
+
+                'keypress .js-input-su-keypress-enter-submit-form': 'inputSuKeypress',
+
+                'click .js-global-click-load-realtime-rain': 'loadRealtimeRain',
+
+                'click .js-global-click-load-commandr': 'loadCommandr'
+
             };
         },
 
@@ -482,6 +497,15 @@
             });
         },
 
+        // Implementation for [data-click-eval="<code to eval>"]
+        clickEval: function (e, target) {
+            var code = strVal(target.dataset.clickEval);
+
+            if (code) {
+                window.eval.call(target, code);
+            }
+        },
+
         // Implementation for [data-click-alert] and [data-keypress-alert]
         showModalAlert: function (e, target) {
             var options = objVal($cms.dom.data(target, e.type + 'Alert'), 'notice');
@@ -512,9 +536,9 @@
             }
         },
 
-        // Implementation for [data-click-fwd="{ child: '.some-selector' }"]
+        // Implementation for [data-click-forward="{ child: '.some-selector' }"]
         clickForward: function (e, el) {
-            var options = objVal($cms.dom.data(el, 'clickFwd'), 'child'),
+            var options = objVal($cms.dom.data(el, 'clickForward'), 'child'),
                 child = strVal(options.child), // Selector for target child element
                 except = strVal(options.except), // Optional selector for excluded elements to let pass-through
                 childEl = $cms.dom.$(el, child);
@@ -524,7 +548,7 @@
                 return;
             }
 
-            if (!childEl.contains(e.target) && (!except || !$cms.dom.closest(e.target, except, el))) {
+            if (!childEl.contains(e.target) && (!except || !$cms.dom.closest(e.target, except, el.parentElement))) {
                 // ^ Make sure the child isn't the current event's target already, and check for excluded elements to let pass-through
                 e.preventDefault();
                 $cms.dom.trigger(childEl, 'click');
@@ -533,22 +557,24 @@
 
         // Implementation for [data-mouseover-class="{ 'some-class' : 1|0 }"]
         mouseoverClass: function (e, target) {
-            var classes = objVal($cms.dom.data(target, 'mouseoverClass')), key;
+            var classes = objVal($cms.dom.data(target, 'mouseoverClass')), key, bool;
 
             if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
                 for (key in classes) {
-                    target.classList.toggle(key, !!classes[key]);
+                    bool = !!classes[key] && (classes[key] !== '0');
+                    target.classList.toggle(key, bool);
                 }
             }
         },
 
         // Implementation for [data-mouseout-class="{ 'some-class' : 1|0 }"]
         mouseoutClass: function (e, target) {
-            var classes = objVal($cms.dom.data(target, 'mouseoutClass')), key;
+            var classes = objVal($cms.dom.data(target, 'mouseoutClass')), key, bool;
 
             if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
                 for (key in classes) {
-                    target.classList.toggle(key, !!classes[key]);
+                    bool = !!classes[key] && (classes[key] !== '0');
+                    target.classList.toggle(key, bool);
                 }
             }
         },
@@ -570,6 +596,12 @@
             $cms.ui.disableFormButtons(target);
         },
 
+        // Implementation for form[data-submit-modsecurity-workaround]
+        submitModsecurityWorkaround: function (e, form) {
+            e.preventDefault();
+            modsecurity_workaround(form);
+        },
+
         // Implementation for input[data-cms-invalid-pattern]
         invalidPattern: function (e, input) {
             var pattern = input.dataset.cmsInvalidPattern, regex;
@@ -580,7 +612,7 @@
 
             if (e.type === 'input') {
                 if (input.value.length === 0) {
-                    input.value = ''; // value.length is also 0 if invalid value is provided for input[type=number] et al., clear that
+                    input.value = ''; // value.length is also 0 if invalid value is entered for input[type=number] et al., clear that
                 } else if (regex.test(input.value)) {
                     input.value = input.value.replace(regex, '');
                 }
@@ -599,7 +631,7 @@
             manage_scroll_height(textarea);
         },
 
-        // Implemenetation for [data-open-as-overlay]
+        // Implementation for [data-open-as-overlay]
         openOverlay: function (e, el) {
             var options, url = (el.href === undefined) ? el.action : el.href;
 
@@ -617,6 +649,12 @@
             options.el = el;
 
             openLinkAsOverlay(options);
+        },
+
+        // Implementation for [data-click-faux-open]
+        clickFauxOpen: function (e, el) {
+            var args = arrVal($cms.dom.data(el, 'clickFauxOpen'));
+            window.faux_open.apply(undefined, args);
         },
 
         // Implementation for `click a[rel*="lightbox"]`
@@ -808,6 +846,24 @@
                 if (test) {
                     form.setAttribute('target', test.name);
                 }
+            }
+        },
+
+        inputSuKeypress: function (e, input) {
+            if ($cms.dom.keyPressed(e, 'Enter')) {
+                input.form.submit();
+            }
+        },
+
+        loadRealtimeRain: function () {
+            if (window.load_realtime_rain) {
+                load_realtime_rain();
+            }
+        },
+
+        loadCommandr: function () {
+            if (window.load_commandr) {
+                load_commandr();
             }
         },
 
@@ -1394,6 +1450,18 @@
         });
     };
 
+    $cms.templates.groupMemberTimeoutManageScreen = function groupMemberTimeoutManageScreen(params, container) {
+        $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
+            if (input.value === '') {
+                update_ajax_member_list(input, null, true, e);
+            }
+        });
+
+        $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
+            update_ajax_member_list(input, null, false, e)
+        });
+    };
+
     $cms.templates.uploadSyndicationSetupScreen = function (params) {
         var win_parent = window.parent || window.opener,
             id = 'upload_syndicate__' + params.hook + '__' + params.name,
@@ -1417,6 +1485,16 @@
                 $cms.dom.$('#login_username').focus();
             } catch (ignore) {}
         }
+
+        $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
+            if (checkbox.checked) {
+                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                    if (!answer) {
+                        checkbox.checked = false;
+                    }
+                });
+            }
+        });
 
         $cms.dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
             if (check_field_for_blankness(form.elements.login_username)) {
@@ -1447,12 +1525,11 @@
         });
     };
 
-    $cms.templates.ipBanScreen = function () {
-        var container = this,
-            textarea = this.querySelector('#bans');
+    $cms.templates.ipBanScreen = function (params, container) {
+        var textarea = commandrLs.querySelector('#bans');
         manage_scroll_height(textarea);
 
-        if (!($cms.$MOBILE)) {
+        if (!$cms.$MOBILE) {
             $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
                 manage_scroll_height(textarea);
             });
@@ -1488,6 +1565,16 @@
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
+            }
+        });
+
+        $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
+            if (checkbox.checked) {
+                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                    if (!answer) {
+                        checkbox.checked = false;
+                    }
+                });
             }
         });
     };

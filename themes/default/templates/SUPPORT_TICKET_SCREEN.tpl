@@ -48,7 +48,7 @@
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<label for="assign_username" class="accessibility_hidden">{!USERNAME}</label>
-					<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" onfocus="if (this.value=='') update_ajax_member_list(this,null,true,event);" onkeyup="update_ajax_member_list(this,null,false,event);" class="input_username" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
+					<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="input_username js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="assign_username" name="username" value="{$USERNAME*}" />
 					<input class="button_micro buttons__proceed" type="submit" value="{!ASSIGN_TO}" />
 				</form>
 			</li>
@@ -146,7 +146,7 @@
 {$SET,COMMENT_POSTING_ROWS,20}
 
 {+START,IF_NON_EMPTY,{COMMENT_FORM}}
-	<form title="{!PRIMARY_PAGE_FORM}" id="comments_form" onsubmit="return (check_field_for_blankness(this.elements['post'])) &amp;&amp; ((!this.elements['ticket_type_id']) || (check_field_for_blankness(this.elements['ticket_type_id'],event)));" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" id="comments_form" class="js-submit-check-post-and-ticket-type-id-fields" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{COMMENT_FORM}
