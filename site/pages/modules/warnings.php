@@ -559,13 +559,8 @@ class Module_warnings extends Standard_crud_module
 
             $fields->attach(form_input_line(do_lang_tempcode('SAVE_WARNING_DETAILS'), do_lang_tempcode('DESCRIPTION_SAVE_WARNING_DETAILS'), 'save', '', false));
 
-            // TODO: CSP
-            $this->javascript = '
-                document.getElementById(\'message\').disabled = true;
-                document.getElementById(\'add_private_topic\').onclick = function() {
-                    document.getElementById(\'message\').disabled = !document.getElementById(\'add_private_topic\').checked;
-                }
-            ';
+            require_javascript('cns_warnings');
+            $this->javascript = /**@lang JavaScript*/'$cms.functions.moduleWarningsGetFormFields();';
         }
 
         return array($fields, $hidden);

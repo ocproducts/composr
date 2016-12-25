@@ -64,28 +64,8 @@ function comcode_convert_script()
         $fields->attach(form_input_tick('Reindent output', '', 'reindent', false));
         $fields->attach(form_input_tick('Do intensive conversion', '', 'force', false));
 
-        ob_start();
-        ?>
-        /*<script>*/
-        (function (){
-            'use strict';
-            var form = $cms.dom.id('semihtml').form;
-
-            form.elements.from_html[0].onclick = refresh_locked_inputs;
-            form.elements.from_html[1].onclick = refresh_locked_inputs;
-            form.elements.from_html[2].onclick = refresh_locked_inputs;
-
-            function refresh_locked_inputs() {
-                var value = radio_value(form.elements['from_html']);
-                $cms.dom.id('semihtml').disabled = (value != 0);
-                $cms.dom.id('is_semihtml').disabled = (value != 0);
-                $cms.dom.id('lax').disabled = (value != 0);
-                $cms.dom.id('fix_bad_html').disabled = (value == 1);
-                $cms.dom.id('force').disabled = (value != 1);
-            }
-        }());
-        <?php
-        $javascript = ob_get_clean();
+        require_javascript('core_rich_media');
+        $javascript = /**@lang JavaScript*/'$cms.functions.comcodeToolsComcodeConvertScript()';
 
         $out2 = globalise(do_template('FORM_SCREEN', array(
             '_GUID' => 'dd82970fa1196132e07049871c51aab7',

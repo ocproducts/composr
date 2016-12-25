@@ -59,6 +59,8 @@ var encodeUC = encodeURIComponent;
         $DESKTOP: !boolVal(symbols.MOBILE),
         $FORCE_PREVIEWS: boolVal(symbols.FORCE_PREVIEWS),
 
+        $VERBOSE: true,
+
         $VERSION: strVal(symbols.VERSION),
         $PAGE: strVal(symbols.PAGE),
         $PAGE_TITLE: strVal(symbols.PAGE_TITLE),
@@ -108,6 +110,7 @@ var encodeUC = encodeURIComponent;
             collapse_user_zones: boolVal(symbols.CONFIG_OPTION.collapse_user_zones),
             sitewide_im: boolVal(symbols.CONFIG_OPTION.sitewide_im),
             simplified_attachments_ui: boolVal(symbols.CONFIG_OPTION.simplified_attachments_ui),
+            spam_heuristic_pasting: boolVal(symbols.CONFIG_OPTION.spam_heuristic_pasting),
 
             thumb_width: symbols.CONFIG_OPTION.thumb_width,
             js_captcha: symbols.CONFIG_OPTION.js_captcha,
@@ -122,7 +125,7 @@ var encodeUC = encodeURIComponent;
             enable_theme_img_buttons: symbols.CONFIG_OPTION.enable_theme_img_buttons,
             enable_previews: symbols.CONFIG_OPTION.enable_previews,
             background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation,
-            spam_heuristic_pasting: !!symbols.CONFIG_OPTION.spam_heuristic_pasting
+            topic_pin_max_days: symbols.CONFIG_OPTION.topic_pin_max_days
         },
         $VALUE_OPTION: {
             js_keep_params: symbols.VALUE_OPTION.js_keep_params,
@@ -184,6 +187,7 @@ var encodeUC = encodeURIComponent;
         intVal: intVal,
         strVal: strVal,
         format: format,
+        numberFormat: numberFormat,
 
         inherits: inherits,
 
@@ -666,6 +670,11 @@ var encodeUC = encodeURIComponent;
         return ((val != null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
+    function numberFormat(num) {
+        num = +num || 0;
+        return num.toLocaleString();
+    }
+
     /**
      * @returns { Array }
      */
@@ -893,7 +902,7 @@ var encodeUC = encodeURIComponent;
     }
 
     function log() {
-        if ($cms.$DEV_MODE) {
+        if ($cms.$DEV_MODE && $cms.$VERBOSE) {
             return console.log.apply(undefined, arguments);
         }
     }
@@ -1278,7 +1287,7 @@ var encodeUC = encodeURIComponent;
      *
      * @param context
      * @param selector
-     * @returns {T|*}
+     * @returns { Element }
      */
     $cms.dom.last = function last(context, selector) {
         return $cms.dom.$$(context, selector).pop();
@@ -2702,6 +2711,12 @@ var encodeUC = encodeURIComponent;
      * @namespace
      */
     $cms.templates || ($cms.templates = {});
+
+    /**
+     * Addons can add functions under this object
+     * @namespace
+     */
+    $cms.functions || ($cms.functions = {});
 
     /**
      * Addons will add $cms.View subclasses under this object
@@ -5412,7 +5427,7 @@ function get_window_scroll_width(win) {
 function get_window_scroll_height(win) {
     win || (win = window);
 
-    var rect_a = win.document.body.parentNode.getBoundingClientRect(),
+    var rect_a = win.document.body.parentElement.getBoundingClientRect(),
         rect_b = win.document.body.getBoundingClientRect(),
         a = (rect_a.bottom - rect_a.top),
         b = (rect_b.bottom - rect_b.top);
@@ -5423,38 +5438,38 @@ function get_window_scroll_height(win) {
 function find_pos_x(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
     not_relative = !!not_relative;
 
-    var ret = el.getBoundingClientRect().left + window.pageXOffset;
+    var left = el.getBoundingClientRect().left + window.pageXOffset;
 
     if (!not_relative) {
         var position;
         while (el) {
             if ($cms.dom.isCss(el, 'position', ['absolute', 'relative'])) {
-                ret -= find_pos_x(el, true);
+                left -= find_pos_x(el, true);
                 break;
             }
             el = el.parentElement;
         }
     }
 
-    return ret;
+    return left;
 }
 
 function find_pos_y(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
     not_relative = !!not_relative;
 
-    var ret = el.getBoundingClientRect().top + window.pageYOffset;
+    var top = el.getBoundingClientRect().top + window.pageYOffset;
 
     if (!not_relative) {
         var position;
         while (el) {
             if ($cms.dom.isCss(el, 'position', ['absolute', 'relative'])) {
-                ret -= find_pos_y(el, true);
+                top -= find_pos_y(el, true);
                 break;
             }
-            el = el.parentNode;
+            el = el.parentElement;
         }
     }
-    return ret;
+    return top;
 }
 
 (function (){
@@ -5503,19 +5518,21 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     }
 
     function _modsecurity_workaround(data) {
+        data = strVal(data);
+
         var remapper = {
-            '\\': '<',
-            '/': '>',
-            '<': '\'',
-            '>': '"',
-            '\'': '/',
-            '"': '\\',
-            '%': '&',
-            '&': '%'
-        };
-        var out = '';
-        var len = data.length, char;
-        for (var i = 0; i < len; i++) {
+                '\\': '<',
+                '/': '>',
+                '<': '\'',
+                '>': '"',
+                '\'': '/',
+                '"': '\\',
+                '%': '&',
+                '&': '%'
+            },
+            out = '',
+            char;
+        for (var i = 0; i < data.length; i++) {
             char = data[i];
             if (remapper[char] !== undefined) {
                 out += remapper[char];

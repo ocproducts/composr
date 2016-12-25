@@ -1148,7 +1148,8 @@ class Module_admin
             return $this->search();
         }
 
-        $javascript = 'document.getElementById(\'search_content\').value=\'' . addslashes($raw_search_string) . '\';'; // TODO: Fix in v11
+        $json_raw_search_string = json_encode(strval($raw_search_string));
+        $javascript = /**@lang JavaScript*/ "document.getElementById('search_content').value = {$json_raw_search_string};"; // TODO: Fix in v11
 
         return do_template('INDEX_SCREEN_FANCIER_SCREEN', array(
             '_GUID' => 'b34d4765744c359a25a0b71449eafed1',

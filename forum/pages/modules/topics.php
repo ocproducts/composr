@@ -2750,29 +2750,8 @@ END;
             }
             $fields->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('COPY_EXISTING_POLL'), 'existing', $list, null, false, false));
 
-            ob_start();
-            ?>/*<script>*/
-            (function (){
-                var existing = document.getElementById('existing'),
-                form = existing.form;
-
-                for (i = 0; i < form.elements.length; i++) {
-                    form.elements[i].addEventListener('change', pollFormElementsChangeListener);
-                }
-
-                function pollFormElementsChangeListener() {
-                    var disable_all = (existing.selectedIndex !== 0);
-                    var i;
-                    for (i = 0; i < form.elements.length; i++) {
-                        if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].getAttribute('type') === 'checkbox') || (form.elements[i].getAttribute('type') === 'text'))) {
-                            set_required(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
-                            set_locked(form.elements[i], disable_all);
-                        }
-                    }
-                }
-            }());/*</script>*/
-            <?php
-            $javascript = ob_get_clean();
+            require_javascript('cns_forum');
+            $javascript = /**@lang JavaScript*/'$cms.functions.moduleTopicsAddPoll();';
         }
 
         $title = get_screen_title('ADD_TOPIC_POLL');

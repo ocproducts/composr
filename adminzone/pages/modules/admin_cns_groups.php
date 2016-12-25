@@ -19,6 +19,7 @@
  */
 
 require_code('crud_module');
+require_javascript('core_cns');
 
 /**
  * Module page class.
@@ -27,7 +28,7 @@ class Module_admin_cns_groups extends Standard_crud_module
 {
     public $lang_type = 'GROUP';
     public $select_name = 'NAME';
-    public $javascript = /** @lang JavaScript */ "if (document.getElementById('delete')) { var form=document.getElementById('delete').form; var crf=function() { if (form.elements['new_usergroup']) form.elements['new_usergroup'].disabled=(form.elements['delete'] && !form.elements['delete'].checked); }; crf(); if (form.elements['delete']) form.elements['delete'].onchange=crf; } if (document.getElementById('is_presented_at_install')) { var form=document.getElementById('is_presented_at_install').form; var crf2=function() { if (form.elements['is_default']) form.elements['is_default'].disabled=(form.elements['is_presented_at_install'].checked); if (form.elements['is_presented_at_install'].checked) form.elements['is_default'].checked=false; }; crf2(); form.elements['is_presented_at_install'].onchange=crf2; var crf3=function() { if (form.elements['absorb']) form.elements['absorb'].disabled=(form.elements['is_private_club'] && form.elements['is_private_club'].checked); }; crf3(); if (form.elements['is_private_club']) form.elements['is_private_club'].onchange=crf3; }";
+    public $javascript = /** @lang JavaScript */ '$cms.functions.moduleAdminCnsGroups()';
     public $content_type = 'group';
     public $possibly_some_kind_of_upload = true;
     public $output_of_action_is_confirmation = true;
@@ -109,24 +110,8 @@ class Module_admin_cns_groups extends Standard_crud_module
         $this->edit_text = do_lang_tempcode('GROUP_TEXT');
 
         if ($type == 'add') {
-            require_javascript('ajax');
-            $script = find_script('snippet');
-            $this->javascript .= "
-                    var form=document.getElementById('main_form');
-                    form.old_submit=form.onsubmit;
-                    form.onsubmit=function() {
-                        document.getElementById('submit_button').disabled=true;
-                        var url='" . addslashes($script) . "?snippet=exists_usergroup&name='+encodeURIComponent(form.elements['name'].value);
-                        if (!do_ajax_field_test(url))
-                        {
-                            document.getElementById('submit_button').disabled=false;
-                            return false;
-                        }
-                        document.getElementById('submit_button').disabled=false;
-                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                        return true;
-                    };
-            ";
+            require_javascript('core_cns');
+            $this->javascript .= /**@lang JavaScript*/'$cms.functions.moduleAdminCnsGroupsRunStart()';
         }
 
         $this->add_one_label = do_lang_tempcode('ADD_GROUP');

@@ -575,18 +575,9 @@ class Module_admin_zones
     public function get_form_fields($in_zone_editor = false, $title = '', $default_page = DEFAULT_ZONE_PAGE_NAME, $header_text = '', $theme = null, $require_session = 0, $zone = null)
     {
         require_lang('permissions');
+        require_javascript('core_zone_editor');
 
-        $javascript = "
-            var zone=document.getElementById('new_zone');
-            if (!zone) zone=document.getElementById('zone');
-            if (zone)
-            {
-                zone.onblur=function() {
-                    var title=document.getElementById('title');
-                    if (title.value=='') title.value=zone.value.substr(0,1).toUpperCase()+zone.value.substring(1,zone.value.length).replace(/\_/g,' ');
-                }
-            }
-        ";
+        $javascript = /**@lang JavaScript*/'$cms.functions.moduleAdminZonesGetFormFields()';
 
         $fields = '';
         $hidden = new Tempcode();
@@ -709,24 +700,9 @@ class Module_admin_zones
         $submit_name = do_lang_tempcode('ADD_ZONE');
         $text = paragraph(do_lang_tempcode('ZONE_ADD_TEXT'));
 
-        require_javascript('ajax');
+        require_javascript('core_zone_editor');
         $script = find_script('snippet');
-        $javascript .= /** @lang JavaScript */"
-            var form=document.getElementById('main_form');
-            form.old_submit=form.onsubmit;
-            form.onsubmit=function() {
-                document.getElementById('submit_button').disabled=true;
-                var url='" . addslashes($script) . "?snippet=exists_zone&name='+encodeURIComponent(form.elements['zone'].value);
-                if (!do_ajax_field_test(url))
-                {
-                    document.getElementById('submit_button').disabled=false;
-                    return false;
-                }
-                document.getElementById('submit_button').disabled=false;
-                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                return true;
-            };
-        ";
+        $javascript .= /** @lang JavaScript */'$cms.functions.moduleAdminZonesAddZone();';
 
         return do_template('FORM_SCREEN', array('_GUID' => 'd8f08884cc370672c2e5604aefe78c6c', 'JAVASCRIPT' => $javascript, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUPPORT_AUTOSAVE' => true));
     }

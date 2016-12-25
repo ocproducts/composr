@@ -19,6 +19,7 @@
  */
 
 require_code('crud_module');
+require_javascript('catalogues');
 
 /**
  * Module page class.
@@ -210,22 +211,7 @@ class Module_cms_catalogues extends Standard_crud_module
         if ($type == 'add_catalogue') {
             require_javascript('ajax');
             $script = find_script('snippet');
-            $this->alt_crud_module->javascript .= "
-                    var form=document.getElementById('new_field_0_name').form;
-                    form.old_submit=form.onsubmit;
-                    form.onsubmit=function() {
-                        document.getElementById('submit_button').disabled=true;
-                        var url='" . addslashes($script) . "?snippet=exists_catalogue&name='+encodeURIComponent(form.elements['name'].value);
-                        if (!do_ajax_field_test(url))
-                        {
-                            document.getElementById('submit_button').disabled=false;
-                            return false;
-                        }
-                        document.getElementById('submit_button').disabled=false;
-                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                        return true;
-                    };
-            ";
+            $this->alt_crud_module->javascript .= /**@lang JavaScript*/'$cms.functions.moduleCmsCataloguesRunStartAddCatalogue();';
         }
 
         // Decide what to do
@@ -1013,33 +999,8 @@ class Module_cms_catalogues extends Standard_crud_module
         $update_handling_options->attach(form_input_radio_entry('update_handling', 'delete', false, do_lang_tempcode('UPDATE_HANDLING_DELETE')));
         $fields->attach(form_input_radio(do_lang_tempcode('CATALOGUE_CSV_UPDATE_HANDLING'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_UPDATE_HANDLING'), 'update_handling', $update_handling_options));
 
-        ob_start();
-        ?>/*<script>*/
-        (function () {
-            'use strict';
-            var key_field = document.getElementById('key_field'),
-                form = key_field.form;
-
-            key_field.onchange = update_key_settings;
-            update_key_settings();
-
-            function update_key_settings() {
-                var has_key = (key_field.value != '');
-
-                form.elements.new_handling[0].disabled = !has_key;
-                form.elements.new_handling[1].disabled = !has_key;
-
-                form.elements.delete_handling[0].disabled = !has_key;
-                form.elements.delete_handling[1].disabled = !has_key;
-
-                form.elements.update_handling[0].disabled = !has_key;
-                form.elements.update_handling[1].disabled = !has_key;
-                form.elements.update_handling[2].disabled = !has_key;
-                form.elements.update_handling[3].disabled = !has_key;
-            }
-        }());/*</script>*/
-        <?php
-        $javascript = ob_get_clean();
+        require_javascript('catalogues');
+        $javascript = /**@lang JavaScript*/'$cms.functions.cmsCataloguesImportCatalogue()';
 
         $fields->attach(form_input_codename(do_lang_tempcode('CATALOGUE_CSV_IMPORT_META_KEYWORDS_FIELD'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_IMPORT_META_KEYWORDS_FIELD'), 'meta_keywords_field', '', false));
         $fields->attach(form_input_codename(do_lang_tempcode('CATALOGUE_CSV_IMPORT_META_DESCRIPTION_FIELD'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_IMPORT_META_DESCRIPTION_FIELD'), 'meta_description_field', '', false));
@@ -1158,18 +1119,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     public $catalogue = true;
     public $content_type = 'catalogue_category';
     public $upload = 'image';
-    public $javascript = '
-        if (document.getElementById(\'move_days_lower\')) {
-            var mt=document.getElementById(\'move_target\');
-            var form=mt.form;
-            var crf=function() {
-                var s=(mt.selectedIndex==0);
-                form.elements[\'move_days_lower\'].disabled=s;
-                form.elements[\'move_days_higher\'].disabled=s;
-            };
-            crf();
-            mt.onclick=crf;
-        }';
+    public $javascript = /**@lang JavaScript*/'$cms.functions.moduleCmsCataloguesCat();';
     public $menu_label = 'CATALOGUES';
     public $table = 'catalogue_categories';
     public $title_is_multi_lang = false;
@@ -1568,7 +1518,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     public $is_tree_catalogue = false; // Set for usage by do-next-manager
     public $menu_label = 'CATALOGUES';
     public $table = 'catalogues';
-    public $javascript = "var fn=document.getElementById('title'); if (fn) { var form=fn.form; fn.onchange=function() { if ((form.elements['name']) && (form.elements['name'].value=='')) form.elements['name'].value=fn.value.toLowerCase().replace(/[^\w\d\.\-]/g,'_').replace(/\_+\$/,'').substr(0,80); }; }";
+    public $javascript = /**@lang JavaScript*/'$cms.functions.moduleCmsCataloguesAlt();';
     public $is_chained_with_parent_browse = true;
 
     /**

@@ -217,7 +217,8 @@ class DecisionTree
 
         $text = comcode_to_tempcode(isset($details['text']) ? $details['text'] : '', null, true);
 
-        $javascript = /** @lang JavaScript */ 'var main_form=document.getElementById(\'main_form\');';
+        require_javascript('core');
+        $javascript = '';
 
         // Screen messages
         foreach (array('inform', 'notice', 'warn') as $notice_type) {
@@ -235,7 +236,7 @@ class DecisionTree
                         $notice_title = do_lang('DYNAMIC_NOTICE_' . $notice_type);
 
                         $javascript .= /** @lang JavaScript */'
-                            var e=main_form.elements[\'' . addslashes($parameter) . '\'];
+                            var e=document.getElementById(\'main_form\').elements[\'' . addslashes($parameter) . '\'];
                             if (e.length === undefined) {
                                 e=[e];
                             }

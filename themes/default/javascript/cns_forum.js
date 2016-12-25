@@ -1,7 +1,6 @@
 (function ($cms) {
     'use strict';
 
-
     /** @class */
     $cms.views.CnsForumTopicWrapper = CnsForumTopicWrapper;
     function CnsForumTopicWrapper() {
@@ -36,6 +35,46 @@
             }
         }
     });
+
+    $cms.functions.moduleTopicsAddPoll = function moduleTopicsAddPoll() {
+        var existing = document.getElementById('existing'),
+            form = existing.form;
+
+        form.addEventListener('change', pollFormElementsChangeListener);
+
+        function pollFormElementsChangeListener() {
+            var disable_all = (existing.selectedIndex !== 0);
+            for (var i = 0; i < form.elements.length; i++) {
+                if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].getAttribute('type') === 'checkbox') || (form.elements[i].getAttribute('type') === 'text'))) {
+                    set_required(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
+                    set_locked(form.elements[i], disable_all);
+                }
+            }
+        }
+    };
+
+    $cms.functions.moduleAdminCnsForums = function moduleAdminCnsForums() {
+        if (document.getElementById('delete')) {
+            var form = document.getElementById('delete').form;
+            var crf = function () {
+                form.elements['target_forum'].disabled = (!form.elements['delete'].checked);
+                form.elements['delete_topics'].disabled = (!form.elements['delete'].checked);
+            };
+            crf();
+            form.elements['delete'].onchange = crf;
+        }
+    };
+
+    $cms.functions.moduleAdminCnsForumGroupings = function moduleAdminCnsForumGroupings() {
+        if (document.getElementById('delete')) {
+            var form = document.getElementById('delete').form;
+            var crf = function () {
+                form.elements['target_forum_grouping'].disabled = (!form.elements['delete'].checked);
+            };
+            crf();
+            form.elements['delete'].onchange = crf;
+        }
+    };
 
     $cms.templates.cnsVforumFiltering = function cnsVforumFiltering() {
         var container = this;

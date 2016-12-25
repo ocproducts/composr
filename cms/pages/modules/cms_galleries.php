@@ -213,22 +213,7 @@ class Module_cms_galleries extends Standard_crud_module
         if ($type == 'add_category') {
             require_javascript('ajax');
             $script = find_script('snippet');
-            $this->cat_crud_module->javascript .= "
-                    var form=document.getElementById('main_form');
-                    form.old_submit=form.onsubmit;
-                    form.onsubmit=function() {
-                        document.getElementById('submit_button').disabled=true;
-                        var url='" . addslashes($script) . "?snippet=exists_gallery&name='+encodeURIComponent(form.elements['name'].value);
-                        if (!do_ajax_field_test(url))
-                        {
-                            document.getElementById('submit_button').disabled=false;
-                            return false;
-                        }
-                        document.getElementById('submit_button').disabled=false;
-                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                        return true;
-                    };
-            ";
+            $this->cat_crud_module->javascript .= /**@lang JavaScript*/'$cms.functions.moduleCmsGalleriesRunStartAddCategory();';
         }
 
         // Decide what to do
@@ -1923,15 +1908,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
     public $content_type = 'gallery';
     public $menu_label = 'GALLERIES';
     public $table = 'galleries';
-    public $javascript = /** @lang JavaScript */ "var fn = document.getElementById('fullname');
-if (fn) {
-    var form = fn.form;
-    fn.onchange = function () {
-        if ((form.elements['name']) && (form.elements['name'].value == '')) {
-            form.elements['name'].value = fn.value.toLowerCase().replace(/[^\w\d\.\-]/g, '_').replace(/\_+\$/, '').substr(0, 80);
-        }
-    };
-}";
+    public $javascript = /** @lang JavaScript */ '$cms.functions.moduleCmsGalleriesCat();';
     public $is_chained_with_parent_browse = true;
 
     /**

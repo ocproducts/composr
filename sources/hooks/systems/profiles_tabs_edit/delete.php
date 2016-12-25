@@ -98,26 +98,8 @@ class Hook_profiles_tabs_edit_delete
         require_code('form_templates');
         $fields->attach(form_input_tick(do_lang_tempcode(($member_id_of != $member_id_viewing) ? 'DELETE_WITHOUT_MERGING' : 'DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
 
-        ob_start();
-        ?>/*<script>*/
-        (function (){
-            'use strict';
-            var suffix = $cms.filter.id(<?= json_encode(strval(do_lang('DELETE_MEMBER'))); ?>).toLowerCase();
-
-            window['load_tab__edit__' + suffix] = function() {
-                var submit_button = document.getElementById('submit_button'),
-                    delete_checkbox = document.getElementById('delete'),
-                    tab = document.getElementById('t_edit__' + suffix);
-
-                submit_button.disabled = !delete_checkbox.checked;
-
-                window.setInterval(function () {
-                    submit_button.disabled = !delete_checkbox.checked && tab.classList.contains('tab_active');
-                }, 100);
-            };
-        }());/*</script>*/
-        <?php
-        $javascript = ob_get_clean();
+        require_javascript('core_cns');
+        $javascript = /**@lang JavaScript*/'$cms.functions.hookProfilesTabsEditDeleteRenderTab();';
 
         return array($title, $fields, $text, $javascript, $order, null, 'tabs/member_account/edit/delete');
     }

@@ -107,6 +107,46 @@
         }
     });
 
+    $cms.functions.adminThemesEditTheme = function () {
+        var themee = document.getElementById('theme'),
+            themet = document.getElementById('title'),
+            copy = document.getElementById('copy');
+
+        if (copy) {
+            copy.onchange = function () {
+                if (copy.checked && !themee.value.includes('-copy')) {
+                    themee.value += '-copy';
+                    themet.value += ' copy';
+                }
+            };
+        }
+    };
+
+    $cms.functions.adminThemesAddTheme = function () {
+        var title = document.getElementById('title');
+        title.onchange = function () {
+            var codename = document.getElementById('theme');
+            if (codename.value == '') {
+                codename.value = title.value.replace(/[^a-zA-Z0-9]/g, '');
+            }
+        };
+        var form = document.getElementById('main_form');
+        form.old_submit = form.onsubmit;
+        form.onsubmit = function () {
+            document.getElementById('submit_button').disabled = true;
+            var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(form.elements['theme'].value);
+
+            if (!do_ajax_field_test(url)) {
+                document.getElementById('submit_button').disabled = false;
+                return false;
+            }
+            document.getElementById('submit_button').disabled = false;
+            if (form.old_submit) {
+                return form.old_submit();
+            }
+            return true;
+        };
+    };
 
     $cms.templates.tempcodeTesterScreen = function tempcodeTesterScreen(params, container) {
         $cms.dom.on(container, 'click', '.js-click-btn-tempcode-tester-do-preview', function (e, btn) {

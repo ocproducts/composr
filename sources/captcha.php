@@ -335,36 +335,6 @@ function captcha_ajax_check()
         return '';
     }
 
-    require_javascript('ajax');
-    $script = find_script('snippet');
-
-    ob_start();
-    ?>
-    /*<script>*/
-    (function () {
-        'use strict';
-        var form = document.getElementById('main_form');
-
-        if (!form) {
-            form = document.getElementById('posting_form');
-        }
-
-        form.old_submit_b = form.onsubmit;
-        form.onsubmit = function () {
-            document.getElementById('submit_button').disabled = true;
-            var url = <?php echo json_encode(strval($script)); ?> +'?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
-            if (!do_ajax_field_test(url)) {
-                document.getElementById('captcha').src += '&'; // Force it to reload latest captcha
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
-            if (typeof form.old_submit_b != 'undefined' && form.old_submit_b) {
-                return form.old_submit_b();
-            }
-            return true;
-        };
-    }());/*</script>*/
-    <?php
-    return ob_get_clean();
+    require_javascript('captcha');
+    return /**@lang JavaScript*/'$cms.functions.captchaCaptchaAjaxCheck()';
 }

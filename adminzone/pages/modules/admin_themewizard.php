@@ -214,35 +214,8 @@ class Module_admin_themewizard
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e809c785aff72bbfeec3829a0b2f464d', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
         $fields->attach(form_input_tick(do_lang_tempcode('INHERIT_CSS'), do_lang_tempcode('DESCRIPTION_INHERIT_CSS'), 'inherit_css', get_param_integer('inherit_css', 0) == 1));
 
-        require_javascript('ajax');
-        $script = find_script('snippet');
-        ob_start();
-        ?>/*<script>*/
-        (function (){
-            'use strict';
-            var form = document.getElementById('main_form');
-            form.elements['source_theme'].onchange = function () {
-                var default_theme = (form.elements['source_theme'].options[form.elements['source_theme'].selectedIndex].value == 'default');
-                form.elements['algorithm'][0].checked = default_theme;
-                form.elements['algorithm'][1].checked = !default_theme;
-            };
-            form.old_submit = form.onsubmit;
-            form.onsubmit = function () {
-                document.getElementById('submit_button').disabled = true;
-                var url = <? echo json_encode(strval($script)); ?> + '?snippet=exists_theme&name=' + encodeURIComponent(form.elements['themename'].value);
-                if (!do_ajax_field_test(url)) {
-                    document.getElementById('submit_button').disabled = false;
-                    return false;
-                }
-                document.getElementById('submit_button').disabled = false;
-                if (form.old_submit) {
-                    return form.old_submit();
-                }
-                return true;
-            };
-        }());/*</script>*/
-        <?php
-        $javascript = ob_get_clean();
+        require_javascript('themewizard');
+        $javascript = /**@lang JavaScript*/'$cms.functions.adminThemewizardStep1()';
         return do_template('FORM_SCREEN', array('_GUID' => '98963f4d7ff60744382f937e6cc5acbf', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'JAVASCRIPT' => $javascript, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
     }
 

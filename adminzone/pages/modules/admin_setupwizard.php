@@ -581,26 +581,8 @@ class Module_admin_setupwizard
             $fields .= static_evaluate_tempcode($hook_fields);
         }
 
-        ob_start();
-        ?>
-        /*<script>*/
-        (function (){
-            'use strict';
-
-            var cuz = document.getElementById("collapse_user_zones");
-            cuz.onchange = cuz_func;
-            cuz_func();
-
-            function cuz_func() {
-                var gza = document.getElementById("guest_zone_access");
-                gza.disabled = cuz.checked;
-                if (cuz.checked) {
-                    gza.checked = true;
-                }
-            }
-        }());/*</script>*/
-        <?php
-        $js = ob_get_clean();
+        require_code('setupwizard');
+        $js = /**@lang JavaScript*/'$cms.functions.adminSetupwizardStep5();';
         $inner = do_template('FORM', array(
             '_GUID' => 'f1e9a4d271c7d68ff9da6dc0438f6e3f',
             'SKIP_WEBSTANDARDS' => true,
@@ -781,19 +763,9 @@ class Module_admin_setupwizard
         $list->attach(form_input_list_entry('liberal', array_key_exists('rules', $field_defaults) ? ($field_defaults['rules'] == 'liberal') : false, do_lang_tempcode('SETUPWIZARD_RULES_liberal')));
         $list->attach(form_input_list_entry('corporate', array_key_exists('rules', $field_defaults) ? ($field_defaults['rules'] == 'corporate') : false, do_lang_tempcode('SETUPWIZARD_RULES_corporate')));
         $fields = form_input_list(do_lang_tempcode('RULES'), do_lang_tempcode('DESCRIPTION_RULES'), 'rules', $list, null, true);
-        ob_start();
-        ?>/*<script>*/
-        (function (){
-            'use strict';
-            document.getElementById('rules').onchange = function() {
-                var items = ['preview_box_balanced', 'preview_box_liberal', 'preview_box_corporate'];
-                for (var i = 0; i < items.length; i++) {
-                    document.getElementById(items[i]).style.display = (this.selectedIndex != i) ? 'none' : 'block';
-                }
-            }
-        }());/*</script>*/
-        <?php
-        $javascript = ob_get_clean();
+
+        require_code('setupwizard');
+        $javascript = /**@lang JavaScript*/'$cms.functions.adminSetupwizardStep7()';
         $form = do_template('FORM', array('_GUID' => 'bf01a2b90967e86213ae0672c36a4b4e', 'SKIPPABLE' => 'skip_7', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()), 'JAVASCRIPT' => $javascript));
 
         $balanced = comcode_to_tempcode($this->get_rules_file('balanced'), null, true);
@@ -853,16 +825,9 @@ class Module_admin_setupwizard
         $fields = new Tempcode();
         $fields->attach(form_input_tick(do_lang_tempcode('CLOSED_SITE'), do_lang_tempcode('CONFIG_OPTION_site_closed'), 'site_closed', true));
         $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), do_lang_tempcode('CONFIG_OPTION_closed'), 'closed', get_option('closed'), false));
-        ob_start();
-        ?>/*<script>*/
-        (function (){
-            'use strict';
-            document.getElementById('site_closed').onchange = function () {
-                document.getElementById('closed').disabled = !this.checked;
-            };
-        }());/*</script>*/
-        <?php
-        $javascript = ob_get_clean();
+
+        require_code('setupwizard');
+        $javascript = /**@lang JavaScript*/'$cms.functions.adminSetupwizardStep9()';
         $inner = do_template('FORM', array(
             '_GUID' => 'c405a64a08328f78ac0e3f22a8365411',
             'SKIP_WEBSTANDARDS' => true,

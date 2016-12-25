@@ -1,6 +1,13 @@
 (function ($cms) {
     'use strict';
 
+    $cms.functions.moduleWarningsGetFormFields = function moduleWarningsGetFormFields() {
+        document.getElementById('message').disabled = true;
+        document.getElementById('add_private_topic').onclick = function() {
+            document.getElementById('message').disabled = !document.getElementById('add_private_topic').checked;
+        }
+    };
+
     $cms.templates.cnsSavedWarning = function cnsSavedWarning(params) {
         var id = $cms.filter.id(params.title);
 

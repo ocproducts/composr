@@ -615,34 +615,8 @@ class Module_admin_cns_members
             }
             $fields->attach(form_input_radio(do_lang_tempcode('PRESET'), '', 'preset', $preset_radios, false));
 
-            ob_start();
-            ?>/*<script>*/
-            (function () {
-                'use strict';
-                var form = document.getElementById('filename').form;
-                crf();
-                for (var i = 0; i < form.elements['preset'].length; i++) {
-                    form.elements['preset'][i].onclick = crf;
-                }
-
-                function crf() {
-                    var preset = radio_value(form.elements['preset']);
-                    if (preset == '') {
-                        form.elements['fields_to_use'].disabled = false;
-                        form.elements['order_by'].disabled = false;
-                        form.elements['usergroups'].disabled = false;
-
-                        form.elements['filename'].value = form.elements['filename'].defaultValue;
-                    } else {
-                        form.elements['fields_to_use'].disabled = true;
-                        form.elements['order_by'].disabled = true;
-                        form.elements['usergroups'].disabled = true;
-                        form.elements['filename'].value = form.elements['filename'].defaultValue.replace(/^<?php echo strtolower(do_lang('MEMBERS')); ?>-/, preset + '-');
-                    }
-                }
-            }());/*</script>*/
-            <?php
-            $javascript = ob_get_clean();
+            require_javascript('core_cns');
+            $javascript = /**@lang JavaScript*/'$cms.functions.adminCnsMembersDownloadCsv()';
         }
 
         // Option to filter by whether members allow e-mails

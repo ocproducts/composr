@@ -266,19 +266,8 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
         }
     }
 
-    $javascript =  /** @lang JavaScript */ '
-        if (document.getElementById(\'campaignremaining\'))
-        {
-            var form=document.getElementById(\'campaignremaining\').form;
-            var crf=function() {
-                form.elements[\'campaignremaining\'].disabled=(!form.elements[\'the_type\'][1].checked);
-            };
-            crf();
-            form.elements[\'the_type\'][0].onclick=crf;
-            form.elements[\'the_type\'][1].onclick=crf;
-            form.elements[\'the_type\'][2].onclick=crf;
-        }
-    ';
+    require_javascript('banners');
+    $javascript =  /** @lang JavaScript */'$cms.functions.getBannerFormFields();';
 
     return array($fields, $javascript);
 }

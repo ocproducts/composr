@@ -225,6 +225,23 @@
         }
     });
 
+    $cms.functions.comcodeToolsComcodeConvertScript = function comcodeToolsComcodeConvertScript() {
+        var form = $cms.dom.$('#semihtml').form;
+
+        form.elements.from_html[0].onclick = refresh_locked_inputs;
+        form.elements.from_html[1].onclick = refresh_locked_inputs;
+        form.elements.from_html[2].onclick = refresh_locked_inputs;
+
+        function refresh_locked_inputs() {
+            var value = radio_value(form.elements['from_html']);
+            $cms.dom.$('#semihtml').disabled = (value != 0);
+            $cms.dom.$('#is_semihtml').disabled = (value != 0);
+            $cms.dom.$('#lax').disabled = (value != 0);
+            $cms.dom.$('#fix_bad_html').disabled = (value == 1);
+            $cms.dom.$('#force').disabled = (value != 1);
+        }
+    };
+
     $cms.templates.comcodeMemberLink = function comcodeMemberLink(params) {
         var container = this;
 

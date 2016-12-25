@@ -19,6 +19,7 @@
  */
 
 require_code('crud_module');
+require_javascript('custom_comcode');
 
 /**
  * Module page class.
@@ -31,39 +32,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
     public $select_name = 'TITLE';
     public $non_integer_id = true;
     public $menu_label = 'CUSTOM_COMCODE';
-    public $javascript = /** @lang JavaScript */"
-        var update_func=function() {
-            var e=document.getElementById('example');
-            e.value='['+tag.value;
-            var i=0,param;
-            do
-            {
-                param=document.getElementById('parameters_'+i);
-                if ((param) && (param.value!=''))
-                {
-                        e.value+=' '+param.value.replace('=','=\"')+'\"';
-                }
-                i++;
-            }
-            while (param!==null);
-            e.value+='][/'+tag.value+']';
-        };
-
-        var tag=document.getElementById('tag');
-        var i=0,param;
-        do
-        {
-            param=document.getElementById('parameters_'+i);
-            if (param) param.onblur=update_func;
-            i++;
-        }
-        while (param!==null);
-        tag.onblur=function() {
-            update_func();
-            var title=document.getElementById('title');
-            if (title.value=='') title.value=tag.value.substr(0,1).toUpperCase()+tag.value.substring(1,tag.value.length).replace(/\_/g,' ');
-        }
-        ";
+    public $javascript = /** @lang JavaScript */'$cms.functions.moduleAdminCustomComcode();';
     public $orderer = 'tag_title';
     public $title_is_multi_lang = true;
     public $donext_entry_content_type = 'custom_comcode_tag';
@@ -168,24 +137,8 @@ class Module_admin_custom_comcode extends Standard_crud_module
         $this->edit_one_label = do_lang_tempcode('EDIT_CUSTOM_COMCODE_TAG');
 
         if ($type == 'add') {
-            require_javascript('ajax');
-            $script = find_script('snippet');
-            $this->javascript .= "
-                    var form=document.getElementById('main_form');
-                    form.old_submit=form.onsubmit;
-                    form.onsubmit=function() {
-                        document.getElementById('submit_button').disabled=true;
-                        var url='" . addslashes($script) . "?snippet=exists_tag&name='+encodeURIComponent(form.elements['tag'].value);
-                        if (!do_ajax_field_test(url))
-                        {
-                            document.getElementById('submit_button').disabled=false;
-                            return false;
-                        }
-                        document.getElementById('submit_button').disabled=false;
-                        if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                        return true;
-                    };
-            ";
+            require_javascript('custom_comcode');
+            $this->javascript .= /**@lang JavaScript*/'$cms.functions.moduleAdminCustomComcodeRunStart();';
         }
 
         if ($type == 'browse') {

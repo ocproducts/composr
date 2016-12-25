@@ -110,6 +110,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'complex_uploader' => get_option('complex_uploader'),
             'collapse_user_zones' => get_option('collapse_user_zones'),
             'sitewide_im' => get_option('sitewide_im'),
+            'topic_pin_max_days' => get_option('topic_pin_max_days'),
         ];
 
         $value['VALUE_OPTION'] = [

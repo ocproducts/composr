@@ -167,6 +167,39 @@
         }
     });
 
+    $cms.functions.moduleAdminZonesGetFormFields = function moduleAdminZonesGetFormFields() {
+        var zone = document.getElementById('new_zone');
+        if (!zone) {
+            zone = document.getElementById('zone');
+        }
+        if (zone) {
+            zone.onblur = function () {
+                var title = document.getElementById('title');
+                if (title.value == '') {
+                    title.value = zone.value.substr(0, 1).toUpperCase() + zone.value.substring(1, zone.value.length).replace(/\_/g, ' ');
+                }
+            }
+        }
+    };
+
+    $cms.functions.moduleAdminZonesAddZone = function moduleAdminZonesAddZone() {
+        var form = document.getElementById('main_form');
+        form.old_submit = form.onsubmit;
+        form.onsubmit = function () {
+            document.getElementById('submit_button').disabled = true;
+            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_zone&name=' + encodeURIComponent(form.elements['zone'].value);
+            if (!do_ajax_field_test(url)) {
+                document.getElementById('submit_button').disabled = false;
+                return false;
+            }
+            document.getElementById('submit_button').disabled = false;
+            if (form.old_submit) {
+                return form.old_submit();
+            }
+            return true;
+        };
+    };
+
     function set_edited_panel(id) {
         var el, store;
 

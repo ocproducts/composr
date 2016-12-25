@@ -19,6 +19,7 @@
  */
 
 require_code('crud_module');
+require_javascript('ecommerce');
 
 /**
  * Module page class.
@@ -35,31 +36,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     public $donext_entry_content_type = 'usergroup_subscription';
     public $donext_category_content_type = null;
 
-    public $javascript = /** @lang JavaScript */ "
-        var _length_units=document.getElementById('length_units'),_length=document.getElementById('length');
-        var adjust_lengths=function()
-        {
-            var length_units=_length_units.options[_length_units.selectedIndex].value,length=_length.value;
-            if (document.getElementById('auto_recur').checked)
-            {
-                // Limits based on https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
-                if ((length_units=='d') && ((length<1) || (length>90)))
-                        _length.value=(length<1)?1:90;
-                if ((length_units=='w') && ((length<1) || (length>52)))
-                        _length.value=(length<1)?1:52;
-                if ((length_units=='m') && ((length<1) || (length>24)))
-                        _length.value=(length<1)?1:24;
-                if ((length_units=='y') && ((length<1) || (length>5)))
-                        _length.value=(length<1)?1:5;
-            } else
-            {
-                if (length<1)
-                    _length.value=1;
-            }
-        }
-        _length_units.onchange=adjust_lengths;
-        _length.onchange=adjust_lengths;
-    ";
+    public $javascript = /**@lang JavaScript*/ '$cms.functions.moduleAdminEcommerce();';
 
     /**
      * Find details of the module.

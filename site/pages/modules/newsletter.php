@@ -362,26 +362,8 @@ class Module_newsletter
 
         $text->attach(paragraph(do_lang_tempcode('CHANGE_SETTINGS_BY_RESUBSCRIBING')));
 
-        ob_start();
-        ?>/*<script>*/
-        (function (){
-            'use strict';
-            var form = document.getElementById('password').form;
-            form.old_submit = form.onsubmit;
-            form.onsubmit = function () {
-                if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
-                    window.fauxmodal_alert(<?php echo json_encode(strval(do_lang('PASSWORD_MISMATCH'))); ?>);
-                    return false;
-                }
-                if (typeof form.old_submit != 'undefined' && form.old_submit) {
-                    return form.old_submit();
-                }
-                return true;
-            };
-        }());/*</script>*/
-        <?php
-        $javascript = ob_get_clean();
-
+        require_javascript('newsletter');
+        $javascript = /**@lang JavaScript*/'$cms.functions.newsletterNewsletterForm()';
         return do_template('FORM_SCREEN', array('_GUID' => '24d7575465152f450c5a8e62650bf6c8', 'JAVASCRIPT' => $javascript, 'HIDDEN' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url, 'TITLE' => $this->title, 'TEXT' => $text));
     }
 

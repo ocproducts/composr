@@ -29,6 +29,8 @@
                     var template = el.dataset.tpl,
                         params = objVal($cms.dom.data(el, 'tplParams'));
 
+                    //$cms.log('$cms.behaviors.initializeTemplates.attach(): Initializing template "' + template + '"', arguments);
+
                     try {
                         $cms.templates[template].call(el, params, el);
                     } catch (ex) {
@@ -1402,6 +1404,25 @@
             }
         }
     }
+
+    $cms.functions.abstractFileManagerGetAfmForm = function abstractFileManagerGetAfmForm() {
+        var usesFtp = document.getElementById('uses_ftp');
+        if (!usesFtp) {
+            return;
+        }
+
+        ftp_ticker();
+        usesFtp.onclick = ftp_ticker;
+
+        function ftp_ticker() {
+            var form = usesFtp.form;
+            form.elements.ftp_domain.disabled = !usesFtp.checked;
+            form.elements.ftp_directory.disabled = !usesFtp.checked;
+            form.elements.ftp_username.disabled = !usesFtp.checked;
+            form.elements.ftp_password.disabled = !usesFtp.checked;
+            form.elements.remember_password.disabled = !usesFtp.checked;
+        }
+    };
 
     $cms.templates.forumsEmbed = function () {
         var frame = this;

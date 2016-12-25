@@ -1,6 +1,21 @@
 (function ($cms) {
     'use strict';
 
+    $cms.functions.newsletterNewsletterForm = function newsletterNewsletterForm() {
+        var form = document.getElementById('password').form;
+        form.old_submit = form.onsubmit;
+        form.onsubmit = function () {
+            if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
+                window.fauxmodal_alert('{!PASSWORD_MISMATCH;^}');
+                return false;
+            }
+            if (form.old_submit) {
+                return form.old_submit();
+            }
+            return true;
+        };
+    };
+
     $cms.templates.newsletterPreview = function (params) {
         var frame_id = 'preview_frame',
             html = strVal(params.htmlPreview);

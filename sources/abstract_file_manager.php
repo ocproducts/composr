@@ -104,30 +104,8 @@ function get_afm_form()
     $hidden = build_keep_post_fields();
     $hidden->attach(form_input_hidden('got_ftp_details', '1'));
 
-    ob_start();
-    ?>
-    /*<script>*/
-    (function (){
-        'use strict';
-        var uses_ftp = document.getElementById('uses_ftp');
-        if (!uses_ftp) {
-            return;
-        }
-
-        ftp_ticker();
-        uses_ftp.onclick = ftp_ticker;
-
-        function ftp_ticker() {
-            var form = uses_ftp.form;
-            form.elements.ftp_domain.disabled = !uses_ftp.checked;
-            form.elements.ftp_directory.disabled = !uses_ftp.checked;
-            form.elements.ftp_username.disabled = !uses_ftp.checked;
-            form.elements.ftp_password.disabled = !uses_ftp.checked;
-            form.elements.remember_password.disabled = !uses_ftp.checked;
-        }
-    }());
-    <?php
-    $javascript = ob_get_clean();
+    require_javascript('core');
+    $javascript = /**@lang JavaScript*/'$cms.functions.abstractFileManagerGetAfmForm()';
     $middle = do_template('FORM_SCREEN', array('_GUID' => 'c47a31fca47a7b22eeef3a6269cc2407', 'JAVASCRIPT' => $javascript, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => paragraph(do_lang_tempcode('TEXT_ABSTRACT_FILE_MANAGEMENT'))));
     $echo = globalise($middle, null, '', true);
     $echo->evaluate_echo();

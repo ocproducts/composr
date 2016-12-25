@@ -1,6 +1,39 @@
 (function ($cms) {
     'use strict';
 
+    $cms.functions.adminBackupInterfaceCalendar = function () {
+        var d_ob = [
+            $cms.dom.$('#schedule_day'),
+            $cms.dom.$('#schedule_month'),
+            $cms.dom.$('#schedule_year'),
+            $cms.dom.$('#schedule_hour'),
+            $cms.dom.$('#schedule_minute')
+        ];
+
+        var hide_func;
+        if (d_ob[0] != null) {
+            hide_func = function () {
+                $cms.dom.$('#recurrance_days').disabled = ((d_ob[0].selectedIndex + d_ob[1].selectedIndex + d_ob[2].selectedIndex + d_ob[3].selectedIndex + d_ob[4].selectedIndex) > 0);
+            };
+            d_ob[0].onchange = hide_func;
+            d_ob[1].onchange = hide_func;
+            d_ob[2].onchange = hide_func;
+            d_ob[3].onchange = hide_func;
+            d_ob[4].onchange = hide_func;
+        } else {
+            d_ob = [
+                $cms.dom.$('#schedule'),
+                $cms.dom.$('#schedule_time')
+            ];
+            hide_func = function () {
+                $cms.dom.$('#recurrance_days').disabled = ((d_ob[0].value != '') || (d_ob[1].value != ''));
+            };
+            d_ob[0].onchange = hide_func;
+            d_ob[1].onchange = hide_func;
+        }
+        hide_func();
+    };
+
     $cms.templates.backupLaunchScreen = function backupLaunchScreen() {
         var submit_button = $cms.dom.$('#submit_button'),
             max_size_field = $cms.dom.$('#max_size');
@@ -20,13 +53,13 @@
         button.className = 'button_micro buttons__proceed';
         button.value = '{!CALCULATE_SIZE;^}';
         button.onclick = function () {
-            var progress_ticker = document.createElement('img');
-            progress_ticker.setAttribute('src', '{$IMG;,loading}');
-            progress_ticker.style.verticalAlign = 'middle';
-            progress_ticker.style.marginLeft = '20px';
-            button.parentNode.appendChild(progress_ticker, button);
+            var progressTicker = document.createElement('img');
+            progressTicker.setAttribute('src', '{$IMG;,loading}');
+            progressTicker.style.verticalAlign = 'middle';
+            progressTicker.style.marginLeft = '20px';
+            button.parentNode.appendChild(progressTicker, button);
             window.fauxmodal_alert('{!CALCULATED_SIZE;^}'.replace('\{1\}', load_snippet('backup_size&max_size=' + encodeURIComponent(max_size_field.value))));
-            button.parentNode.removeChild(progress_ticker);
+            button.parentNode.removeChild(progressTicker);
         };
 
         max_size_field.parentNode.appendChild(button, max_size_field);

@@ -461,7 +461,10 @@
     }
 
     $cms.templates.menuSitemap = function (params) {
-        var menuId = strVal(params.menuSitemapId), content;
+        var menuId = strVal(params.menuSitemapId),
+            content;
+
+        console.log('menuSitemap!');
 
         try {
             content = $cms.parseJson(params.content);
@@ -555,9 +558,8 @@
         }
     };
 
-    $cms.templates.pageLinkChooser = function pageLinkChooser(params) {
-        var container = this,
-            ajax_url = 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1';
+    $cms.templates.pageLinkChooser = function pageLinkChooser(params, container) {
+        var ajax_url = 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1';
 
         if (params.pageType !== undefined) {
             ajax_url += '&page_type=' + params.pageType;

@@ -154,6 +154,58 @@
     $cms.views.BlockMainImageFader = BlockMainImageFader;
     $cms.views.GalleryNav = GalleryNav;
 
+    $cms.functions.moduleCmsQuiz = function moduleCmsQuiz() {
+        document.getElementById('type').onchange = hide_func;
+        hide_func();
+
+        function hide_func() {
+            var ob = document.getElementById('type');
+            if (ob.value == 'TEST') {
+                document.getElementById('percentage').disabled = false;
+                document.getElementById('num_winners').disabled = true;
+            }
+            if (ob.value == 'COMPETITION') {
+                document.getElementById('num_winners').disabled = false;
+                document.getElementById('percentage').disabled = true;
+            }
+            if (ob.value == 'SURVEY') {
+                document.getElementById('text').value = document.getElementById('text').value.replace(/ \[\*\]/g, '');
+                document.getElementById('num_winners').disabled = true;
+                document.getElementById('percentage').disabled = true;
+            }
+        }
+    };
+
+    $cms.functions.moduleCmsGalleriesCat = function moduleCmsGalleriesCat() {
+        var fn = document.getElementById('fullname');
+        if (fn) {
+            var form = fn.form;
+            fn.onchange = function () {
+                if ((form.elements['name']) && (form.elements['name'].value === '')) {
+                    form.elements['name'].value = fn.value.toLowerCase().replace(/[^\w\d\.\-]/g, '_').replace(/\_+$/, '').substr(0, 80);
+                }
+            };
+        }
+    };
+
+    $cms.functions.moduleCmsGalleriesRunStartAddCategory = function moduleCmsGalleriesRunStartAddCategory() {
+        var form = document.getElementById('main_form');
+        form.old_submit = form.onsubmit;
+        form.onsubmit = function () {
+            document.getElementById('submit_button').disabled = true;
+            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_gallery&name=' + encodeURIComponent(form.elements['name'].value);
+            if (!do_ajax_field_test(url)) {
+                document.getElementById('submit_button').disabled = false;
+                return false;
+            }
+            document.getElementById('submit_button').disabled = false;
+            if (form.old_submit) {
+                return form.old_submit();
+            }
+            return true;
+        };
+    };
+
     $cms.extend($cms.templates, {
         blockMainGalleryEmbed: function blockMainGalleryEmbed(params) {
             var container = this,

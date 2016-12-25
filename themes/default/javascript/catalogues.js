@@ -27,8 +27,10 @@
     }
 
     $cms.inherits(CatalogueEditingScreen, $cms.View, {
-        events: {
-            'submit .js-form-catalogue-edit': 'submit'
+        events: function () {
+            return {
+                'submit .js-form-catalogue-edit': 'submit'
+            };
         },
 
         submit: function (e, form) {
@@ -36,6 +38,69 @@
             modsecurity_workaround(form);
         }
     });
+
+    $cms.functions.cmsCataloguesImportCatalogue = function cmsCataloguesImportCatalogue() {
+        var key_field = document.getElementById('key_field'),
+            form = key_field.form;
+
+        key_field.onchange = update_key_settings;
+        update_key_settings();
+
+        function update_key_settings() {
+            var has_key = (key_field.value != '');
+
+            form.elements.new_handling[0].disabled = !has_key;
+            form.elements.new_handling[1].disabled = !has_key;
+
+            form.elements.delete_handling[0].disabled = !has_key;
+            form.elements.delete_handling[1].disabled = !has_key;
+
+            form.elements.update_handling[0].disabled = !has_key;
+            form.elements.update_handling[1].disabled = !has_key;
+            form.elements.update_handling[2].disabled = !has_key;
+            form.elements.update_handling[3].disabled = !has_key;
+        }
+    };
+
+    $cms.functions.moduleCmsCataloguesRunStartAddCatalogue = function moduleCmsCataloguesRunStartAddCatalogue() {
+        var form = document.getElementById('new_field_0_name').form;
+        form.old_submit = form.onsubmit;
+        form.onsubmit = function () {
+            document.getElementById('submit_button').disabled = true;
+            var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(form.elements['name'].value);
+            if (!do_ajax_field_test(url)) {
+                document.getElementById('submit_button').disabled = false;
+                return false;
+            }
+            document.getElementById('submit_button').disabled = false;
+            if (typeof form.old_submit != 'undefined' && form.old_submit) return form.old_submit();
+            return true;
+        };
+    };
+
+    $cms.functions.moduleCmsCataloguesCat = function moduleCmsCataloguesCat() {
+        if (document.getElementById('move_days_lower')) {
+            var mt = document.getElementById('move_target');
+            var form = mt.form;
+            var crf = function () {
+                var s = (mt.selectedIndex == 0);
+                form.elements['move_days_lower'].disabled = s;
+                form.elements['move_days_higher'].disabled = s;
+            };
+            crf();
+            mt.onclick = crf;
+        }
+    };
+
+    $cms.functions.moduleCmsCataloguesAlt = function moduleCmsCataloguesAlt() {
+        var fn = document.getElementById('title');
+        if (fn) {
+            var form = fn.form;
+            fn.onchange = function () {
+                if ((form.elements['name']) && (form.elements['name'].value == '')) form.elements['name'].value = fn.value.toLowerCase().replace(/[^\w\d\.\-]/g, '_').replace(/\_+$/, '').substr(0, 80);
+            };
+        }
+    };
 
     function catalogue_field_change_watching() {
         // Find all our ordering fields

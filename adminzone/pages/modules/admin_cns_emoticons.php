@@ -115,24 +115,8 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         require_code('cns_general_action2');
 
         if ($type == 'add') {
-            require_javascript('ajax');
-            $script = find_script('snippet');
-            $this->javascript = "
-                var form=document.getElementById('main_form');
-                form.old_submit=form.onsubmit;
-                form.onsubmit=function() {
-                    document.getElementById('submit_button').disabled=true;
-                    var url='" . addslashes($script) . "?snippet=exists_emoticon&name='+encodeURIComponent(form.elements['code'].value);
-                    if (!do_ajax_field_test(url))
-                    {
-                        document.getElementById('submit_button').disabled=false;
-                        return false;
-                    }
-                    document.getElementById('submit_button').disabled=false;
-                    if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                    return true;
-                };
-            ";
+            require_javascript('core_cns');
+            $this->javascript = /**@lang JavaScript*/'$cms.functions.moduleAdminCnsEmoticons();';
         }
 
         if ($type == 'browse') {

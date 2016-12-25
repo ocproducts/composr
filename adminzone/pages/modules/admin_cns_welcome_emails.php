@@ -158,21 +158,8 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
         cns_require_all_forum_stuff();
 
         if (get_forum_type() == 'cns') {
-            $this->javascript = '
-                    var newsletter_field=document.getElementById(\'newsletter\');
-                    var usergroup_field=newsletter_field.form.elements[\'usergroup\'];
-                    var update_newsletter_settings=function() {
-                        var has_newsletter=(newsletter_field.selectedIndex!=0);
-                        var has_usergroup=(usergroup_field.selectedIndex!=0);
-                        newsletter_field.form.elements[\'usergroup\'].disabled=has_newsletter;
-                        newsletter_field.form.elements[\'usergroup_type\'][0].disabled=has_newsletter || !has_usergroup;
-                        newsletter_field.form.elements[\'usergroup_type\'][1].disabled=has_newsletter || !has_usergroup;
-                        newsletter_field.form.elements[\'usergroup_type\'][2].disabled=has_newsletter || !has_usergroup;
-                    }
-                    newsletter_field.onchange=update_newsletter_settings;
-                    usergroup_field.onchange=update_newsletter_settings;
-                    update_newsletter_settings();
-            ';
+            require_javascript('welcome_emails');
+            $this->javascript = /**@lang JavaScript*/'$cms.functions.moduleAdminCnsWelcomeEmailsRunStart();';
         }
 
         $this->add_one_label = do_lang_tempcode('ADD_WELCOME_EMAIL');

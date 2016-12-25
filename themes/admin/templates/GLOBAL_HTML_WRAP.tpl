@@ -25,7 +25,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 			<a accesskey="s" class="accessibility_hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
-			<div{+START,IF,{$MOBILE}} class="global_navigation"{+END}>
+			<div {+START,IF,{$MOBILE}} class="global_navigation"{+END}>
 				{$REQUIRE_CSS,menu__sitemap}
 				{$REQUIRE_JAVASCRIPT,menu_sitemap}
 				{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
