@@ -215,8 +215,10 @@
     }
 
     $cms.inherits(AttachmentsBrowser, $cms.View, {
-        events: {
-            'click .js-click-do-attachment-and-close': 'doAttachmentAndClose'
+        events: function () {
+            return {
+                'click .js-click-do-attachment-and-close': 'doAttachmentAndClose'
+            };
         },
         doAttachmentAndClose: function () {
             var params = this.params,

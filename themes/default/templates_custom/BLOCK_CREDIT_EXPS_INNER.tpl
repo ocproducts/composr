@@ -8,7 +8,7 @@
 		<label for="type_code">{!SUPPORT_CREDITS_BUY}</label>
 		<select name="type_code" id="type_code" onchange="update_product_info_display();">
 			{+START,LOOP,CREDIT_KINDS}
-				<option{+START,IF,{$EQ,{NUM_CREDITS},50}} selected="selected"{+END} value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>
+				<option {+START,IF,{$EQ,{NUM_CREDITS},50}} selected="selected"{+END} value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>
 			{+END}
 		</select>
 	</div>

@@ -9,8 +9,10 @@
     }
 
     $cms.inherits(XmlConfigScreen, $cms.View, /**@lends XmlConfigScreen#*/{
-        events: {
-            'submit .js-form-xml-config': 'submit'
+        events: function () {
+            return {
+                'submit .js-form-xml-config': 'submit'
+            };
         },
 
         submit: function (e, form) {

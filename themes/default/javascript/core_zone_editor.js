@@ -207,12 +207,12 @@
 
         el = $cms.dom.$('teaxtarea#edit_' + id + '_textarea');
         if (el) {
-            store = $cms.dom.id('store_' + id);
+            store = $cms.dom.$('#store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
                 store.name = el.name;
                 store.id = 'store_' + id;
-                $cms.dom.id('edit_field_store').appendChild(store);
+                $cms.dom.$('#edit_field_store').appendChild(store);
             }
             store.value = get_textbox(el);
         }

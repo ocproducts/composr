@@ -217,7 +217,7 @@
         }
     });
 
-    $cms.extend($cms.templates, {
+    $cms.extend($cms.templates, /**@lends $cms.templates*/{
         ratingForm: function ratingForm(params) {
             var rating;
 

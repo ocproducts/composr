@@ -398,7 +398,7 @@
 
 		{+START,INCLUDE,STAFF_ACTIONS}
 			{+START,IF,{$ADDON_INSTALLED,tickets}}
-				1_URL={$PAGE_LINK,_SEARCH:report_content:content_type=member:content_id={ID}:redirect={$SELF_URL&}}
+				1_URL={$PAGE_LINK,_SEARCH:report_content:content_type=member:content_id={MEMBER_ID}:redirect={$SELF_URL&}}
 				1_TITLE={!report_content:REPORT_THIS}
 				1_ICON=buttons/report
 				1_REL=report

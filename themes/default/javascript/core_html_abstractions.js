@@ -8,14 +8,12 @@
 
                 try {
                     trigger_resize();
-                } catch (e) {
-                }
+                } catch (e) {}
 
                 window.setTimeout(function () { // Needed for IE10
                     try {
                         trigger_resize();
-                    } catch (e) {
-                    }
+                    } catch (e) {}
                 }, 1000);
             });
         }

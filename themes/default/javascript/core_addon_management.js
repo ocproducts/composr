@@ -15,9 +15,11 @@
     }
 
     $cms.inherits(AddonScreen, $cms.View, {
-        events: {
-            'click .js-click-check-uninstall-all': 'checkUninstallAll',
-            'mouseover .js-mouseover-activate-tooltip': 'activateTooltip'
+        events: function () {
+            return {
+                'click .js-click-check-uninstall-all': 'checkUninstallAll',
+                'mouseover .js-mouseover-activate-tooltip': 'activateTooltip'
+            };
         },
 
         checkUninstallAll: function () {

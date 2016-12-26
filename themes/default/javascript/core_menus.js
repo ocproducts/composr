@@ -25,7 +25,7 @@
         DropdownMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(DropdownMenu, Menu, /**@lends DropdownMenu.prototype*/{
+    $cms.inherits(DropdownMenu, Menu, /**@lends DropdownMenu#*/{
         events: function () {
             return {
                 'mousemove .js-mousemove-timer-pop-up-menu': 'timerPopUpMenu',
@@ -463,8 +463,6 @@
     $cms.templates.menuSitemap = function (params) {
         var menuId = strVal(params.menuSitemapId),
             content;
-
-        console.log('menuSitemap!');
 
         try {
             content = $cms.parseJson(params.content);

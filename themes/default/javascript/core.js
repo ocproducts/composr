@@ -48,7 +48,7 @@
                 anchors.forEach(function (anchor) {
                     var href = anchor.getAttribute('href') || '';
                     // So we can change base tag especially when on debug mode
-                    if (hasBaseEl && href.startsWith('#')) {
+                    if (hasBaseEl && href.startsWith('#') && (href !== '#!')) {
                         anchor.setAttribute('href', window.location.href.replace(/#.*$/, '') + href);
                     }
 
@@ -512,6 +512,10 @@
         showModalAlert: function (e, target) {
             var options = objVal($cms.dom.data(target, e.type + 'Alert'), 'notice');
             fauxmodal_alert(options.notice);
+        },
+
+        preventDefault: function (e) {
+            e.preventDefault();
         },
 
         // Implementation for [data-click-pd]
@@ -1740,25 +1744,6 @@
         );
     }
 
-    function has_iframe_loaded(iframe) {
-        var has_loaded = false;
-        try {
-            has_loaded = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host != '');
-        }
-        catch (e) {
-        }
-        return has_loaded;
-    }
-
-    function has_iframe_ownership(iframe) {
-        var has_ownership = false;
-        try {
-            has_ownership = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
-        }
-        catch (e) {
-        }
-        return has_ownership;
-    }
 
     function prepareMassSelectMarker(set, type, id, checked) {
         var mass_delete_form = $cms.dom.id('mass_select_form__' + set);
