@@ -23,7 +23,7 @@ We have many standardised ways of writing version numbers for different situatio
 
 Dotted: 10.3.beta4        (processable cleanly)
 Pretty: 10.3 beta4        (human-readable)
-Basis dotted: 10.3        (same as dotted or pretty, except for the end bit)
+Basis dotted: 10.3        (same as dotted or pretty, except for the end bit missing)
 Long dotted 10.3.0.beta4  (precision/specificity)
 General: 10.3             (simple float)
 Branch: 10.x              (when talking about development paths)
@@ -74,6 +74,7 @@ function get_future_version_information()
 
 /**
  * Get branch version number for a Composr version.
+ * This is not used for much, it's a very special case.
  *
  * @param  ?float $general General version number (null: on disk version)
  * @return string Branch version number
@@ -100,7 +101,7 @@ function get_version_dotted($main = null, $minor = null)
         $main = cms_version();
     }
     if (is_null($minor)) {
-        $minor = cms_version_minor();
+        $minor = cms_version_minor(); // May be a qualifier
     }
 
     return strval($main) . (($minor == '0') ? '' : ('.' . $minor));
@@ -108,7 +109,7 @@ function get_version_dotted($main = null, $minor = null)
 
 /**
  * Gets any random way of writing a version number (in all of Composr's history) and makes it a dotted style like "3.2.beta2".
- * Note that the dotted format is compatible with PHP's version_compare function.
+ * Note that the dotted format is not compatible with PHP's version_compare function directly but $long_dotted_number_with_qualifier from get_version_components__from_dotted() is.
  *
  * @param  string $any_format Any reasonable input
  * @return string Dotted version number
@@ -139,7 +140,7 @@ function get_version_dotted__from_anything($any_format)
  * Analyse a dotted version number into components.
  *
  * @param  string $dotted Dotted version number
- * @return array Tuple of components: dotted basis version (i.e. with no alpha/beta/RC component and no trailing zeros), qualifier (blank, or alpha, or beta, or RC), qualifier number (null if not an alpha/beta/RC), dotted version number with trailing zeros to always cover 3 components, general version number (i.e. float, no patch release and qualifier information, like cms_version_number)
+ * @return array Tuple of components: dotted basis version (i.e. with no alpha/beta/RC component and no trailing zeros), qualifier (blank, or alpha, or beta, or RC), qualifier number (null if not an alpha/beta/RC), dotted version number with trailing zeros to always cover 3 components, general version number (i.e. float, no patch release and qualifier information, like cms_version_number), dotted version number to cover 3 or 4 components (i.e. with qualifier if present)
  */
 function get_version_components__from_dotted($dotted)
 {
@@ -163,12 +164,18 @@ function get_version_components__from_dotted($dotted)
 
     $general_number = floatval(preg_replace('#\.\d+$#', '', $long_dotted_number)); // No third dot component
 
+    $long_dotted_number_with_qualifier = $long_dotted_number;
+    if ($qualifier !== null) {
+        $long_dotted_number_with_qualifier .= '.' . $qualifier . strval($qualifier_number);
+    }
+
     return array(
         $basis_dotted_number,
         $qualifier,
         $qualifier_number,
         $long_dotted_number,
         $general_number,
+        $long_dotted_number_with_qualifier,
     );
 }
 
@@ -176,21 +183,23 @@ function get_version_components__from_dotted($dotted)
  * Get a pretty version number for a Composr version.
  * This pretty style is not used in Composr code per se, but is shown to users and hence Composr may need to recognise it when searching news posts, download databases, etc.
  *
- * @param  string $pretty Pretty version number
- * @return string Dotted version number
+ * @param  string $pretty Dotted version number
+ * @return string Pretty version number
  */
-function get_version_pretty__from_dotted($pretty)
+function get_version_pretty__from_dotted($dotted)
 {
-    return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $pretty);
+    return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $dotted);
 }
 
 /**
  * Whether it is a substantial release (i.e. major new version).
  *
- * @param  string $dotted Pretty version number
+ * @param  string $dotted Dotted version number
  * @return boolean Whether it is
  */
 function is_substantial_release($dotted)
 {
-    return (substr($dotted, -2) == '.0') || (strpos($dotted, 'beta1') !== false) || (strpos($dotted, 'RC1') !== false);
+    list(, , , $long_dotted_number) = get_version_components__from_dotted($dotted);
+
+    return (substr($long_dotted_number, -2) == '.0') || (strpos($long_dotted_number, 'beta1') !== false) || (strpos($long_dotted_number, 'RC1') !== false);
 }

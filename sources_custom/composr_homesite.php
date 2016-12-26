@@ -48,25 +48,37 @@ function get_release_tree()
     $versions = array();
 
     global $DOWNLOAD_ROWS;
-    load_download_rows();
+    load_version_download_rows();
 
-    foreach ($DOWNLOAD_ROWS as $download) {
+    foreach ($DOWNLOAD_ROWS as $download_row) {
         $matches = array();
-        if (preg_match('#^Composr Version (.*) \(.*manual\)$#', $download['nice_title'], $matches) != 0) {
-            $version = get_version_dotted__from_anything($matches[1]);
-            $versions[$version] = $download;
+        if (preg_match('#^Composr Version (.*) \(.*manual\)$#', $download_row['nice_title'], $matches) != 0) {
+            $version_dotted = get_version_dotted__from_anything($matches[1]);
+            list(, $qualifier, $qualifier_number, $long_dotted_number, , $long_dotted_number_with_qualifier) = get_version_components__from_dotted($version_dotted);
+            $versions[$long_dotted_number_with_qualifier] = $download_row;
         }
     }
 
     uksort($versions, 'version_compare');
 
-    return $versions;
+    $_versions = array();
+    foreach ($versions as $long_dotted_number_with_qualifier => $download_row) {
+        $_versions[str_replace('.0', '', $long_dotted_number_with_qualifier)] = $download_row;
+    }
+
+    return $_versions;
+}
+
+function is_release_discontinued($version)
+{
+    $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2', '4', '5', '6', '7');
+    return (preg_match('#^' . implode('|', array_map('preg_quote', $discontinued)) . '($|\.)#', $version) != 0);
 }
 
 function find_version_download($version_pretty, $type = 'manual')
 {
     global $DOWNLOAD_ROWS;
-    load_download_rows();
+    load_version_download_rows();
 
     $download_row = null;
     foreach ($DOWNLOAD_ROWS as $download_row) {
@@ -79,7 +91,7 @@ function find_version_download($version_pretty, $type = 'manual')
     return null;
 }
 
-function load_download_rows()
+function load_version_download_rows()
 {
     global $DOWNLOAD_ROWS;
     if (!isset($DOWNLOAD_ROWS)) {
@@ -119,7 +131,7 @@ function load_download_rows()
 function find_version_news($version_pretty)
 {
     global $NEWS_ROWS;
-    load_news_rows();
+    load_version_news_rows();
 
     foreach ($NEWS_ROWS as $news_row) {
         if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released') {
@@ -133,19 +145,19 @@ function find_version_news($version_pretty)
     return null;
 }
 
-function load_news_rows()
+function load_version_news_rows()
 {
     global $NEWS_ROWS;
     if (!isset($NEWS_ROWS)) {
         if (get_param_integer('test_mode', 0) == 1) {
             // Test data
             $NEWS_ROWS = array(
-                array('id' => 2, 'nice_title' => 'Composr 3 released', 'add_date' => time() - 60 * 60 * 8),
-                array('id' => 3, 'nice_title' => '3.1 released', 'add_date' => time() - 60 * 60 * 5),
-                array('id' => 4, 'nice_title' => '3.1.1 released', 'add_date' => time() - 60 * 60 * 5),
-                array('id' => 5, 'nice_title' => 'Composr 3.2 beta1 released', 'add_date' => time() - 60 * 60 * 4),
-                array('id' => 6, 'nice_title' => 'Composr 3.2 released', 'add_date' => time() - 60 * 60 * 3),
-                array('id' => 7, 'nice_title' => 'Composr 4 released', 'add_date' => time() - 60 * 60 * 1),
+                array('id' => 2, 'nice_title' => 'Composr 13 released', 'add_date' => time() - 60 * 60 * 8),
+                array('id' => 3, 'nice_title' => '13.1 released', 'add_date' => time() - 60 * 60 * 5),
+                array('id' => 4, 'nice_title' => '13.1.1 released', 'add_date' => time() - 60 * 60 * 5),
+                array('id' => 5, 'nice_title' => 'Composr 13.2 beta1 released', 'add_date' => time() - 60 * 60 * 4),
+                array('id' => 6, 'nice_title' => 'Composr 13.2 released', 'add_date' => time() - 60 * 60 * 3),
+                array('id' => 7, 'nice_title' => 'Composr 14 released', 'add_date' => time() - 60 * 60 * 1),
             );
         } else {
             // Live data
@@ -356,7 +368,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
         attach_message('Running import command... ' . $cmd, 'inform');
     }
-    $output = '';
+    $output = array();
     $return_var = 0;
     $last_line = exec($cmd, $output, $return_var);
     if ($return_var != 0) {
