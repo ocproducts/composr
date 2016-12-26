@@ -116,6 +116,32 @@
         };
     };
 
+    $cms.functions.hookProfilesTabsEditSettingsRenderTab = function hookProfilesTabsEditSettingsRenderTab() {
+        var form = document.getElementById('email_address').form;
+        form.prior_profile_edit_submit = form.onsubmit;
+        form.onsubmit = function () {
+            if (form.elements['edit_password'] !== undefined) {
+                if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['edit_password'].value)) {
+                    document.getElementById('submit_button').disabled = false;
+                    window.fauxmodal_alert('{!PASSWORD_MISMATCH;^}');
+                    return false;
+                }
+
+                if (form.elements['edit_password'].value != '') {
+                    var url = '{$FIND_SCRIPT_NOHTTP;^,username_check}?';
+                    if (!do_ajax_field_test(url, 'password=' + encodeURIComponent(form.elements['edit_password'].value))) {
+                        document.getElementById('submit_button').disabled = false;
+                        return false;
+                    }
+                }
+            }
+            if (form.prior_profile_edit_submit) {
+                return form.prior_profile_edit_submit();
+            }
+            return true;
+        };
+    };
+
     $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen() {
         var container = this;
 

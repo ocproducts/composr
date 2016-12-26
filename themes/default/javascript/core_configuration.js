@@ -1,13 +1,14 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.XmlConfigScreen = XmlConfigScreen;
     function XmlConfigScreen() {
         XmlConfigScreen.base(this, 'constructor', arguments);
 
         ace_composr_loader('xml', 'xml');
     }
 
-    $cms.inherits(XmlConfigScreen, $cms.View, {
+    $cms.inherits(XmlConfigScreen, $cms.View, /**@lends XmlConfigScreen#*/{
         events: {
             'submit .js-form-xml-config': 'submit'
         },
@@ -18,11 +19,7 @@
         }
     });
 
-    $cms.views.XmlConfigScreen = XmlConfigScreen;
-
-    $cms.templates.configCategoryScreen = function configCategoryScreen() {
-        var container = this;
-
+    $cms.templates.configCategoryScreen = function configCategoryScreen(params, container) {
         $cms.dom.on(container, 'submit', '.js-form-primary-page', function (e, form) {
             modsecurity_workaround(form);
         });

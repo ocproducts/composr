@@ -9,9 +9,11 @@
     }
 
     $cms.inherits(GlobalHelperPanel, $cms.View, {
-        events: $cms.cloner({
-            'click .js-click-toggle-helper-panel': 'toggleHelperPanel'
-        }),
+        events: function () {
+            return {
+                'click .js-click-toggle-helper-panel': 'toggleHelperPanel'
+            };
+        },
         toggleHelperPanel: function () {
             var show = $cms.dom.notDisplayed(this.contentsEl);
             helper_panel(show);
@@ -34,6 +36,8 @@
 
     // The help panel
     function helper_panel(show) {
+        show = !!show;
+
         var panel_right = document.getElementById('panel_right'),
             helper_panel_contents = document.getElementById('helper_panel_contents'),
             helper_panel_toggle = document.getElementById('helper_panel_toggle');

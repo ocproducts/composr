@@ -39,9 +39,8 @@
         });
     };
 
-    $cms.templates.doNextItem = function doNextItem(params) {
-        var container = this,
-            rand = params.randDoNextItem,
+    $cms.templates.doNextItem = function doNextItem(params, container) {
+        var rand = params.randDoNextItem,
             url = params.url,
             target = params.target,
             warning = params.warning,

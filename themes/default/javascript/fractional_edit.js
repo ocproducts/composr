@@ -14,9 +14,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
     }
 
     cancel_bubbling(event);
-    if (event.cancelable) {
-        event.preventDefault();
-    }
+    event.preventDefault();
 
     // Position form
     var width = object.offsetWidth;
@@ -68,10 +66,8 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             break;
     }
     input.style.position = 'absolute';
-
     input.style.left = $cms.$MOBILE ? '0px' : (x + 'px');
     input.style.width = $cms.$MOBILE ? (get_window_width() + 'px') : (width + 'px');
-
     input.style.top = (y + 8) + 'px';
     input.style.margin = 0;
 

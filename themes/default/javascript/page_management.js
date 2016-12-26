@@ -4,9 +4,8 @@
     var $ADDON_INSTALLED_code_editor = !!+'{$ADDON_INSTALLED,code_editor}',
         $ADDON_INSTALLED_stats = !!+'{$ADDON_INSTALLED,stats}';
 
-    $cms.templates.sitemapEditorScreen = function sitemapEditorScreen(params) {
-        var container = this,
-            edit_zone_url = params.editZoneUrl,
+    $cms.templates.sitemapEditorScreen = function sitemapEditorScreen(params, container) {
+        var edit_zone_url = params.editZoneUrl,
             add_zone_url = params.addZoneUrl,
             zone_editor_url = params.zoneEditorUrl,
             permission_tree_editor_url = params.permissonTreeEditorUrl,
@@ -118,7 +117,7 @@
             }
 
             // Output
-            $cms.dom.html(target, '');
+            $cms.dom.empty(target);
             if (action_buildup) {
                 var actions = document.createElement('div');
                 $cms.dom.html(actions, actions_tpl.replace(/\[1\]/, action_buildup));

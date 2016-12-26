@@ -1,6 +1,7 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.BlockMainSearch = BlockMainSearch;
     function BlockMainSearch (params) {
         BlockMainSearch.base(this, 'constructor', arguments);
     }
@@ -30,8 +31,6 @@
             update_ajax_search_list(input, e);
         }
     });
-
-    $cms.views.BlockMainSearch = BlockMainSearch;
 
     $cms.templates.blockTopSearch = function (params) {
         var container = this,

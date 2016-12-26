@@ -28,7 +28,9 @@
         tag.onblur = function () {
             update_func();
             var title = document.getElementById('title');
-            if (title.value == '') title.value = tag.value.substr(0, 1).toUpperCase() + tag.value.substring(1, tag.value.length).replace(/\_/g, ' ');
+            if (title.value == '') {
+                title.value = tag.value.substr(0, 1).toUpperCase() + tag.value.substring(1, tag.value.length).replace(/\_/g, ' ');
+            }
         }
     };
 

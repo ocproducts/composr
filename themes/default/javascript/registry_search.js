@@ -10,7 +10,7 @@
         this.booleanOptionsEl = this.$('.js-el-boolean-options');
     }
 
-    $cms.inherits(SearchFormScreen, $cms.View, {
+    $cms.inherits(SearchFormScreen, $cms.View, /**@lends SearchFormScreen#*/{
         events: function () {
             return {
                 'keypress .js-keypress-enter-submit-primary-form': 'submitPrimaryForm',

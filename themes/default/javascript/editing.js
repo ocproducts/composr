@@ -27,7 +27,7 @@ function toggle_wysiwyg(name) {
                 {
                     buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
                     buttons__clear: '{!javascript:WYSIWYG_DISABLE_ONCE;^}',
-                    //buttons__no: '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}',		Too confusing, re-enable if you want it
+                    //buttons__no: '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}',	Too confusing, re-enable if you want it
                     buttons__yes: '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
                 },
                 '{!comcode:DISABLE_WYSIWYG;^}',

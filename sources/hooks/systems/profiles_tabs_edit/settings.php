@@ -269,36 +269,8 @@ class Hook_profiles_tabs_edit_settings
 
         $hidden->attach(form_input_hidden('submitting_settings_tab', '1'));
 
-        ob_start();
-        ?>/*<script>*/
-        (function (){
-            'use strict';
-            var form = document.getElementById('email_address').form;
-            form.prior_profile_edit_submit = form.onsubmit;
-            form.onsubmit = function () {
-                if (form.elements['edit_password'] !== undefined) {
-                    if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['edit_password'].value)) {
-                        document.getElementById('submit_button').disabled = false;
-                        window.fauxmodal_alert(<?= json_encode(strval(do_lang('PASSWORD_MISMATCH'))); ?>);
-                        return false;
-                    }
-
-                    if (form.elements['edit_password'].value != '') {
-                        var url = <?= json_encode(strval(find_script('username_check'))); ?> + '?';
-                        if (!do_ajax_field_test(url, 'password=' + encodeURIComponent(form.elements['edit_password'].value))) {
-                            document.getElementById('submit_button').disabled = false;
-                            return false;
-                        }
-                    }
-                }
-                if (form.prior_profile_edit_submit) {
-                    return form.prior_profile_edit_submit();
-                }
-                return true;
-            };
-        }());/*</script>*/
-        <?php
-        $javascript = ob_get_clean();
+        require_javascript('core_cns');
+        $javascript = /**@lang JavaScript*/'$cms.functions.hookProfilesTabsEditSettingsRenderTab();';
         $text = '';
 
         return array($title, $fields, $text, $javascript, $order, $hidden, 'tabs/member_account/edit/settings');

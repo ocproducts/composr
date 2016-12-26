@@ -52,12 +52,12 @@
         this.id = params.id;
 
         if (params.preview !== undefined) {
-            disable_preview_scripts($cms.dom.id('view_' + params.id));
+            disable_preview_scripts($cms.dom.$('#view_' + params.id));
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
             if ((window.wysiwyg_on) && (wysiwyg_on())) {
-                $cms.dom.id('edit_' + params.id + '_textarea').readOnly = true;
+                $cms.dom.$('#edit_' + params.id + '_textarea').readOnly = true;
             }
         }
     }

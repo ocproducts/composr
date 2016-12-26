@@ -42,64 +42,115 @@ var encodeUC = encodeURIComponent;
     window.arrVal = arrVal;
     window.objVal = objVal;
 
-    /** @namespace */
+    /** @namespace $cms */
     $cms = Object.assign($cms, /** @lends $cms */ {
         // Unique for each copy of Composr on the page
+        /**@var {string}*/
         id: 'composr' + ('' + Math.random()).substr(2),
 
         // Load up symbols data
+        /**@var {boolean}*/
         $IS_GUEST: boolVal(symbols.IS_GUEST),
+        /**@var {boolean}*/
         $IS_STAFF: boolVal(symbols.IS_STAFF),
+        /**@var {boolean}*/
         $IS_ADMIN: boolVal(symbols.IS_ADMIN),
+        /**@var {boolean}*/
         $IS_HTTPAUTH_LOGIN: boolVal(symbols.IS_HTTPAUTH_LOGIN),
+        /**@var {boolean}*/
         $IS_A_COOKIE_LOGIN: boolVal(symbols.IS_A_COOKIE_LOGIN),
+        /**@var {boolean}*/
         $DEV_MODE: boolVal(symbols.DEV_MODE),
+        /**@var {boolean}*/
         $JS_ON: boolVal(symbols.JS_ON),
+        /**@var {boolean}*/
         $MOBILE: boolVal(symbols.MOBILE),
+        /**@var {boolean}*/
         $DESKTOP: !boolVal(symbols.MOBILE),
+        /**@var {boolean}*/
         $FORCE_PREVIEWS: boolVal(symbols.FORCE_PREVIEWS),
-
+        /**@var {boolean}*/
         $VERBOSE: true,
 
+        /**@var {number}*/
+        $HTTP_STATUS_CODE: (+symbols.HTTP_STATUS_CODE || 0),
+        /**@var {number}*/
+        $GROUP_ID: (+symbols.GROUP_ID || 0),
+
+        /**@var {string}*/
         $VERSION: strVal(symbols.VERSION),
+        /**@var {string}*/
         $PAGE: strVal(symbols.PAGE),
+        /**@var {string}*/
         $PAGE_TITLE: strVal(symbols.PAGE_TITLE),
+        /**@var {string}*/
         $ZONE: strVal(symbols.ZONE),
+        /**@var {string}*/
         $MEMBER: strVal(symbols.MEMBER),
+        /**@var {string}*/
         $USERNAME: strVal(symbols.USERNAME),
+        /**@var {string}*/
         $AVATAR: strVal(symbols.AVATAR),
+        /**@var {string}*/
         $MEMBER_EMAIL: strVal(symbols.MEMBER_EMAIL),
+        /**@var {string}*/
         $PHOTO: strVal(symbols.PHOTO),
+        /**@var {string}*/
         $MEMBER_PROFILE_URL: strVal(symbols.MEMBER_PROFILE_URL),
+        /**@var {string}*/
         $FROM_TIMESTAMP: symbols.FROM_TIMESTAMP,
+        /**@var {string}*/
         $THEME: strVal(symbols.THEME),
+        /**@var {string}*/
         $LANG: strVal(symbols.LANG),
+        /**@var {string}*/
         $BROWSER_UA: strVal(symbols.BROWSER_UA),
+        /**@var {string}*/
         $OS: strVal(symbols.OS),
-        $USER_AGENT: symbols.USER_AGENT,
-        $IP_ADDRESS: symbols.IP_ADDRESS,
-        $TIMEZONE: symbols.TIMEZONE,
-        $HTTP_STATUS_CODE: symbols.HTTP_STATUS_CODE,
-        $CHARSET: symbols.CHARSET,
-        $KEEP: symbols.KEEP,
-        $PREVIEW_URL: symbols.PREVIEW_URL,
-        $SITE_NAME: symbols.SITE_NAME,
-        $COPYRIGHT: symbols.COPYRIGHT,
-        $DOMAIN: symbols.DOMAIN,
-        $FORUM_BASE_URL: symbols.FORUM_BASE_URL,
+        /**@var {string}*/
+        $USER_AGENT: strVal(symbols.USER_AGENT),
+        /**@var {string}*/
+        $IP_ADDRESS: strVal(symbols.IP_ADDRESS),
+        /**@var {string}*/
+        $TIMEZONE: strVal(symbols.TIMEZONE),
+        /**@var {string}*/
+        $CHARSET: strVal(symbols.CHARSET),
+        /**@var {string}*/
+        $KEEP: strVal(symbols.KEEP),
+        /**@var {string}*/
+        $PREVIEW_URL: strVal(symbols.PREVIEW_URL),
+        /**@var {string}*/
+        $SITE_NAME: strVal(symbols.SITE_NAME),
+        /**@var {string}*/
+        $COPYRIGHT: strVal(symbols.COPYRIGHT),
+        /**@var {string}*/
+        $DOMAIN: strVal(symbols.DOMAIN),
+        /**@var {string}*/
+        $FORUM_BASE_URL: strVal(symbols.FORUM_BASE_URL),
+        /**@var {string}*/
         $BASE_URL: strVal(symbols.BASE_URL),
+        /**@var {string}*/
         $BASE_URL_S: strVal(symbols.BASE_URL) + '/', // With trailing slash
+        /**@var {string}*/
         $BASE_URL_PRL: toProtocolRelative(symbols.BASE_URL), // Protocol relative
+        /**@var {string}*/
         $CUSTOM_BASE_URL: strVal(symbols.CUSTOM_BASE_URL),
+        /**@var {string}*/
         $BASE_URL_NOHTTP: strVal(symbols.BASE_URL_NOHTTP),
+        /**@var {string}*/
         $BASE_URL_NOHTTP_S: strVal(symbols.BASE_URL_NOHTTP) + '/', // With trailing slash
+        /**@var {string}*/
         $CUSTOM_BASE_URL_NOHTTP: strVal(symbols.CUSTOM_BASE_URL_NOHTTP),
+        /**@var {string}*/
         $BRAND_NAME: strVal(symbols.BRAND_NAME),
+        /**@var {string}*/
         $SESSION_COOKIE_NAME: strVal(symbols.SESSION_COOKIE_NAME),
-        $GROUP_ID: symbols.GROUP_ID,
+        /**@var {string}*/
         $COOKIE_PATH: strVal(symbols.COOKIE_PATH),
+        /**@var {string}*/
         $COOKIE_DOMAIN: strVal(symbols.COOKIE_DOMAIN),
 
+        /**@var {object}*/
         $CONFIG_OPTION: {
             js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
             enable_animations: boolVal(symbols.CONFIG_OPTION.enable_animations),
@@ -127,10 +178,12 @@ var encodeUC = encodeURIComponent;
             background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation,
             topic_pin_max_days: symbols.CONFIG_OPTION.topic_pin_max_days
         },
+        /**@var {object}*/
         $VALUE_OPTION: {
             js_keep_params: symbols.VALUE_OPTION.js_keep_params,
             commercial_spellchecker: symbols.VALUE_OPTION.commercial_spellchecker
         },
+        /**@var {object}*/
         $HAS_PRIVILEGE: {
             sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
         },
@@ -1206,7 +1259,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * DOM helper methods
-     * @namespace
+     * @namespace $cms.dom
      * */
     $cms.dom || ($cms.dom = {});
 
@@ -1924,9 +1977,9 @@ var encodeUC = encodeURIComponent;
     /**
      * @param el { Window|Document|Element }
      * @param event {string|object}
-     * @param selector {string|function(Event, Window|Document|Element)}
-     * @param [data] {object|function(Event, Window|Document|Element)}
-     * @param [callback] {function(Event, Window|Document|Element)}
+     * @param selector {string|function}
+     * @param [data] {object|function}
+     * @param [callback] {function}
      * @param [one] {number}
      */
     $cms.dom.on = function (el, event, selector, data, callback, one) {
@@ -1979,9 +2032,9 @@ var encodeUC = encodeURIComponent;
     /**
      * @param el { Window|Document|Element }
      * @param event {string|object}
-     * @param selector {string|function(Event, Window|Document|Element)}
-     * @param [data] {object|function(Event, Window|Document|Element)}
-     * @param [callback] {function(Event, Window|Document|Element)}
+     * @param selector {string|function}
+     * @param [data] {object|function}
+     * @param [callback] {function}
      */
     $cms.dom.one = function (el, event, selector, data, callback) {
         return $cms.dom.on(el, event, selector, data, callback, 1);
@@ -1990,8 +2043,8 @@ var encodeUC = encodeURIComponent;
     /**
      * @param el { Window|Document|Element }
      * @param event {string|object}
-     * @param selector {string|function(Event, Window|Document|Element)}
-     * @param [callback] {function(Event, Window|Document|Element)}
+     * @param selector {string|function}
+     * @param [callback] {function}
      */
     $cms.dom.off = function (el, event, selector, callback) {
         if (event && (typeof event !== 'string')) {
@@ -2019,7 +2072,7 @@ var encodeUC = encodeURIComponent;
      *
      * @param type
      * @param props
-     * @returns {*|Event}
+     * @returns { Event }
      */
     $cms.dom.createEvent = function (type, props) {
         if (isObj(type)) {
@@ -2643,12 +2696,12 @@ var encodeUC = encodeURIComponent;
         return result.join('&');
     };
 
-    /** @namespace */
+    /** @namespace $cms.settings */
     $cms.settings || ($cms.settings = {});
 
     /**
      * Addons will add "behaviors" under this object
-     * @namespace
+     * @namespace $cms.behaviors
      */
     $cms.behaviors || ($cms.behaviors = {});
 
@@ -2708,43 +2761,50 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Addons will add template related methods under this object
-     * @namespace
+     * @namespace $cms.templates
      */
     $cms.templates || ($cms.templates = {});
 
     /**
      * Addons can add functions under this object
-     * @namespace
+     * @namespace $cms.functions
      */
     $cms.functions || ($cms.functions = {});
 
     /**
      * Addons will add $cms.View subclasses under this object
-     * @namespace
+     * @namespace $cms.views
      */
     $cms.views || ($cms.views = {});
 
     /**
-     * @namespace
+     * @namespace $cms.viewInstances
      */
     $cms.viewInstances || ($cms.viewInstances = {});
 
     // List of view options that can be set as properties.
     var viewOptionsList = { el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 };
 
-    /** @class */
-    $cms.View = function View(params, viewOptions) {
+    /**
+     * @class
+     * @alias $cms.View
+     */
+    function View(params, viewOptions) {
         /** @var {string} */
         this.tagName = 'div';
         /** @var { HTMLElement } */
         this.el = null;
 
         this.initialize.apply(this, arguments);
-    };
+    }
+    $cms.View = View;
 
     // Cached regex to split keys for `delegate`.
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
-    define($cms.View.prototype, /** @lends $cms.View.prototype */{
+    define(View.prototype, /**@lends $cms.View#*/{
+        /**
+         * @method
+         */
         initialize: function (params, viewOptions) {
             this.params = objVal(params);
 
@@ -2758,21 +2818,35 @@ var encodeUC = encodeURIComponent;
 
             this._ensureElement();
         },
-
+        /**
+         * @method
+         */
         $: function (selector) {
             return $cms.dom.$(this.el, selector);
         },
+        /**
+         * @method
+         */
         $$: function (selector) {
             return $cms.dom.$$(this.el, selector);
         },
+        /**
+         * @method
+         */
         $$$: function (selector) {
             return $cms.dom.$$$(this.el, selector);
         },
+        /**
+         * @method
+         */
         $closest: function (el, selector) {
             return $cms.dom.closest(el, selector, this.el);
         },
 
         // Remove this view by taking the element out of the DOM.
+        /**
+         * @method
+         */
         remove: function () {
             this._removeElement();
             return this;
@@ -2781,12 +2855,18 @@ var encodeUC = encodeURIComponent;
         // Remove this view's element from the document and all event listeners
         // attached to it. Exposed for subclasses using an alternative DOM
         // manipulation API.
+        /**
+         * @method
+         */
         _removeElement: function () {
             this.el && this.el.parentNode && this.el.parentNode.removeChild(this.el);
         },
 
         // Change the view's element (`this.el` property) and re-delegate the
         // view's events on the new element.
+        /**
+         * @method
+         */
         setElement: function (element) {
             this.undelegateEvents();
             this._setElement(element);
@@ -2798,10 +2878,16 @@ var encodeUC = encodeURIComponent;
         // given `el`. `el` can be a CSS selector or an HTML element.
         // Subclasses can override this to utilize an
         // alternative DOM manipulation API and are only required to set the `this.el` property.
+        /**
+         * @method
+         */
         _setElement: function (el) {
             this.el = (typeof el === 'string') ? $cms.dom.$(el) : el;
         },
 
+        /**
+         * @method
+         */
         events: function () {
             return {};
         },
@@ -2812,6 +2898,9 @@ var encodeUC = encodeURIComponent;
         // Uses event delegation for efficiency.
         // Omitting the selector binds the event to `this.el`.
 
+        /**
+         * @method
+         */
         delegateEvents: function (events) {
             var key, method, match;
             events || (events = result(this, 'events'));
@@ -2834,6 +2923,9 @@ var encodeUC = encodeURIComponent;
         },
 
         // Add a single event listener to the view's element (or a child element using `selector`).
+        /**
+         * @method
+         */
         delegate: function (eventName, selector, listener) {
             $cms.dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
@@ -2842,6 +2934,9 @@ var encodeUC = encodeURIComponent;
         // Clears all callbacks previously bound to the view by `delegateEvents`.
         // You usually don't need to use this, but may wish to if you have multiple
         // views attached to the same DOM element.
+        /**
+         * @method
+         */
         undelegateEvents: function () {
             if (this.el) {
                 $cms.dom.off(this.el, '.delegateEvents' + uid(this));
@@ -2850,11 +2945,17 @@ var encodeUC = encodeURIComponent;
         },
 
         // A finer-grained `undelegateEvents` for removing a single delegated event. `selector` and `listener` are both optional.
+        /**
+         * @method
+         */
         undelegate: function (eventName, selector, listener) {
             $cms.dom.off(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
 
+        /**
+         * @method
+         */
         _ensureElement: function () {
             var attrs;
             if (!this.el) {
@@ -2874,11 +2975,12 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Tempcode filters ported to JS
+     * @namespace $cms.filter
      * @param str
      * @param {string} filters
      * @returns {string}
      */
-    $cms.filter = function $cms_filter(str, filters) {
+    $cms.filter = function filter(str, filters) {
         str = strVal(str);
         filters = strVal(filters);
 
@@ -2930,7 +3032,7 @@ var encodeUC = encodeURIComponent;
      * @param [canTryUrlSchemes]
      * @returns {string}
      */
-    $cms.filter.url = function $cms_filter_url(urlPart, canTryUrlSchemes) {
+    $cms.filter.url = function url(urlPart, canTryUrlSchemes) {
         urlPart = strVal(urlPart);
         var urlPartEncoded = urlencode(urlPart);
         canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.canTryUrlSchemes;
@@ -2949,7 +3051,7 @@ var encodeUC = encodeURIComponent;
      * @param str
      * @returns {string}
      */
-    $cms.filter.nl = function $cms_filter_nl(str) {
+    $cms.filter.nl = function nl(str) {
         return strVal(str).replace(/[\r\n]/g, '');
     };
 
@@ -2969,7 +3071,7 @@ var encodeUC = encodeURIComponent;
      * @param str
      * @returns {string}
      */
-    $cms.filter.id = function $cms_filter_id(str) {
+    $cms.filter.id = function id(str) {
         var i, char, ascii, out = '';
 
         str = strVal(str);
@@ -3010,7 +3112,7 @@ var encodeUC = encodeURIComponent;
      * @param str
      * @returns {string}
      */
-    $cms.filter.html = function $cms_filter_html(str) {
+    $cms.filter.html = function html(str) {
         return ((str != null) && (str = strVal(str))) ?
             str.replace(/&/g, '&amp;')
                 .replace(/"/g, '&quot;')
@@ -3020,7 +3122,9 @@ var encodeUC = encodeURIComponent;
             : '';
     };
 
-
+    /**
+     * @namespace $cms.ui
+     */
     $cms.ui || ($cms.ui = {});
 
     var tempDisabledButtons = {};
@@ -7616,7 +7720,7 @@ function clever_find_value(form, element) {
 }
 
 function check_form(the_form, for_preview) {
-    var delete_element = $cms.dom.id('delete');
+    var delete_element = $cms.dom.$('#delete');
     if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (the_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
         return true;
     }

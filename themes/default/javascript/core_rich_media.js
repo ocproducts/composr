@@ -16,8 +16,10 @@
     }
 
     $cms.inherits(Attachment, $cms.View, {
-        events: {
-            'change .js-inp-file-attachment': 'setAttachment'
+        events: function () {
+            return {
+                'change .js-inp-file-attachment': 'setAttachment'
+            };
         },
 
         setAttachment: function () {
@@ -28,13 +30,13 @@
     function Carousel(params) {
         Carousel.base(this, 'constructor', arguments);
 
-        var id = params.carouselId,
-            carousel_ns = document.getElementById('carousel_ns_' + id);
+        var carouselId = strVal(params.carouselId),
+            carouselNs = document.getElementById('carousel_ns_' + carouselId);
 
         this.mainEl = this.$('.main');
 
-        carousel_ns.parentNode.removeChild(carousel_ns);
-        this.mainEl.appendChild(carousel_ns);
+        carouselNs.parentNode.removeChild(carouselNs);
+        this.mainEl.appendChild(carouselNs);
         this.el.style.display = 'block';
 
         var view = this;
@@ -46,10 +48,12 @@
         });
     }
 
-    $cms.inherits(Carousel, $cms.View, /**@lends Carousel.prototype*/{
-        events: {
-            'mousedown .js-btn-car-move': 'move',
-            'keypress .js-btn-car-move': 'move'
+    $cms.inherits(Carousel, $cms.View, /**@lends Carousel#*/{
+        events: function () {
+            return {
+                'mousedown .js-btn-car-move': 'move',
+                'keypress .js-btn-car-move': 'move'
+            };
         },
 
         createFaders: function () {
@@ -94,28 +98,28 @@
         },
 
         carouselMove: function (amount) {
-            var view = this;
+
             amount = +amount;
 
             if (amount > 0) {
-                view.mainEl.scrollLeft += 3;
+                this.mainEl.scrollLeft += 3;
                 amount--;
                 if (amount < 0) {
                     amount = 0;
                 }
             } else {
-                view.mainEl.scrollLeft -= 3;
+                this.mainEl.scrollLeft -= 3;
                 amount++;
                 if (amount > 0) {
                     amount = 0;
                 }
             }
 
-            view.updateFaders();
-
+            this.updateFaders();
+            var that = this;
             if (amount !== 0) {
                 window.setTimeout(function () {
-                    view.carouselMove(amount);
+                    that.carouselMove(amount);
                 }, 10);
             }
         }
@@ -191,10 +195,10 @@
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
                     mediaSetHtml = '\
 					<figure class="attachment" ' + width + '>\
-						<figcaption>' + $cms.format('{!comcode:MEDIA_SET^;}', imgs.length) + '<\/figcaption>\
+						<figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', imgs.length) + '<\/figcaption>\
 						<div>\
 							<div class="attachment_details">\
-								<a onclick="open_images_into_lightbox(window.imgs); return false;" target="_blank" title="' + escape_html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
+								<a onclick="open_images_into_lightbox(window.imgs);" target="_blank" title="' + escape_html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
                                     <img ' + imgWidthHeight + ' src="' + escape_html(imgsThumbs[0]) + '" />\
                                 <\/a>\
 							<\/div>\

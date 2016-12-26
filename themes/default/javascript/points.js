@@ -1,13 +1,16 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.PointsGive = PointsGive;
     function PointsGive() {
         PointsGive.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(PointsGive, $cms.View, {
-        events: {
-            'submit .js-submit-check-form': 'checkForm'
+        events: function () {
+            return {
+                'submit .js-submit-check-form': 'checkForm'
+            };
         },
 
         checkForm: function (e, form) {
@@ -16,7 +19,5 @@
             }
         }
     });
-
-    $cms.views.PointsGive = PointsGive;
 
 }(window.$cms));

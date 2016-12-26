@@ -9,9 +9,11 @@
     }
 
     $cms.inherits(NotificationButtons, $cms.View, {
-        events: {
-            'submit .js-submit-show-disable-form': 'showDisableForm',
-            'submit .js-submit-show-enable-form': 'showEnableForm'
+        events: function () {
+            return {
+                'submit .js-submit-show-disable-form': 'showDisableForm',
+                'submit .js-submit-show-enable-form': 'showEnableForm'
+            };
         },
         showDisableForm: function () {
             $cms.dom.show(this.disableFormEl);
@@ -28,9 +30,7 @@
         notification_poller_init(params.timestamp);
     };
 
-    $cms.templates.blockTopNotifications = function blockTopNotifications(params) {
-        var container = this;
-
+    $cms.templates.blockTopNotifications = function blockTopNotifications(params, container) {
         window.max_notifications_to_show = +params.max || 0;
 
         $cms.dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
@@ -62,9 +62,8 @@
         });
     };
 
-    $cms.templates.notificationsManageScreen = function notificationsManageScreen() {
-        var container = this,
-            soundRadioEl = $cms.dom.$('#sound_' + read_cookie('sound', 'off'));
+    $cms.templates.notificationsManageScreen = function notificationsManageScreen(params, container) {
+        var soundRadioEl = $cms.dom.$('#sound_' + read_cookie('sound', 'off'));
 
         if (soundRadioEl) {
             soundRadioEl.checked = true;

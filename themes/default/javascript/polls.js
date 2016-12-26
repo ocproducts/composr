@@ -5,8 +5,10 @@
     }
 
     $cms.inherits(PollBox, $cms.View, {
-        events: {
-            'click .js-click-confirm-forfeit': 'confirmForfeit'
+        events: function () {
+            return {
+                'click .js-click-confirm-forfeit': 'confirmForfeit'
+            };
         },
         confirmForfeit: function (e, target) {
             var form = target.form;

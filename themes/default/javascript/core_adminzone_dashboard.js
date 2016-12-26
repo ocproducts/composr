@@ -17,14 +17,16 @@
     }
 
     $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, {
-        events: ({
-            'mouseover': 'mouseover',
-            'mouseout': 'mouseout',
+        events: function () {
+            return {
+                'mouseover': 'mouseover',
+                'mouseout': 'mouseout',
 
-            'click .js-click-confirm-delete': 'confirmDelete',
-            'click .js-click-mark-task': 'markTask',
-            'keypress .js-keypress-mark-task': 'markTask'
-        }),
+                'click .js-click-confirm-delete': 'confirmDelete',
+                'click .js-click-mark-task': 'markTask',
+                'keypress .js-keypress-mark-task': 'markTask'
+            };
+        },
 
         mouseover: function () {
             this.imgChecklistCross.src = $IMG_checklist_cross2;

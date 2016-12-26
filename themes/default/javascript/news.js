@@ -1,7 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.templates.blockMainImageFaderNews = function (params, container) {
+    $cms.templates.blockMainImageFaderNews = function blockMainImageFaderNews(params, container) {
         var rand = strVal(params.randFaderNews),
             news = strVal(params.news),
             itemsHtml = JSON.parse(strVal(params.newsItemsHtmlJson));
