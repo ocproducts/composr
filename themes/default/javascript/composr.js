@@ -315,6 +315,15 @@ var encodeUC = encodeURIComponent;
      */
     $cms.ui || ($cms.ui = {});
 
+    /** @namespace $cms.settings */
+    $cms.settings || ($cms.settings = {});
+
+    /**
+     * Addons will add "behaviors" under this object
+     * @namespace $cms.behaviors
+     */
+    $cms.behaviors || ($cms.behaviors = {});
+
     var domReadyPromise = new Promise(function (resolve) {
         if (document.readyState === 'interactive') {
             window.setTimeout(resolve);
@@ -2757,15 +2766,6 @@ var encodeUC = encodeURIComponent;
         return result.join('&');
     };
 
-    /** @namespace $cms.settings */
-    $cms.settings || ($cms.settings = {});
-
-    /**
-     * Addons will add "behaviors" under this object
-     * @namespace $cms.behaviors
-     */
-    $cms.behaviors || ($cms.behaviors = {});
-
     /**
      *
      * @param context
@@ -2825,8 +2825,8 @@ var encodeUC = encodeURIComponent;
 
     $cms.View = View;
     /**
-     * @class
      * @memberof $cms
+     * @class
      */
     function View(params, viewOptions) {
         /** @var {string} */
@@ -5261,7 +5261,7 @@ function load_snippet(snippet_hook, post, callback) {
     if (!url) {
         url = window.location.href;
     }
-    var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeUC(url) + '&title=' + encodeUC(title) + keep_stub(),
+    var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + keep_stub(),
         html = do_ajax_request(maintain_theme_in_link(url2), callback, post);
     if (callback) {
         return null;
@@ -5269,7 +5269,7 @@ function load_snippet(snippet_hook, post, callback) {
     return html.responseText;
 }
 function require_css(sheet) {
-    if ($cms.dom.id('loading_css_' + sheet)) {
+    if ($cms.dom.$('#loading_css_' + sheet)) {
         return;
     }
     var link = document.createElement('link');

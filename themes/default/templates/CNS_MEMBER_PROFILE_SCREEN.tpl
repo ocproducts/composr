@@ -2,7 +2,7 @@
 {$REQUIRE_CSS,modern_tabs}
 {$SET,name_set_elsewhere,1}
 
-<div class="vcard member_profile_screen" itemscope="itemscope" itemtype="http://schema.org/ProfilePage" data-tpl="cnsMemberProfileScreen" data-tpl-params="{+START,PARAMS_JSON,TABS,TAB_CODE,TAB_CONTENT,MEMBER_ID}{_*}{+END}">
+<div class="vcard member_profile_screen" itemscope="itemscope" itemtype="http://schema.org/ProfilePage" data-view="CnsMemberProfileScreen" data-view-params="{+START,PARAMS_JSON,TABS,TAB_CODE,TAB_CONTENT,MEMBER_ID}{_*}{+END}">
 	{TITLE}
 
 	<!-- Member: #{MEMBER_ID%} -->
@@ -12,7 +12,7 @@
 			<div class="modern_tab_headers" role="tablist">
 				{+START,LOOP,TABS}
 					<div id="t_{TAB_CODE*}"{+START,IF,{TAB_FIRST}} class="tab_active{+END}">
-						<a aria-controls="g_{TAB_CODE*}" role="tab" href="#!" class="js-click-select-tab-g" data-tp-tab="{TAB_CODE*}">
+						<a aria-controls="g_{TAB_CODE*}" role="tab" href="#!" class="js-click-select-tab-g" data-vw-tab="{TAB_CODE*}">
 							{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}<span>{TAB_TITLE*}</span>
 						</a>
 					</div>

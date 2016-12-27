@@ -699,34 +699,34 @@
             window.clearTimeout(clean_menus_timeout);
         }
         clean_menus_timeout = window.setTimeout(clean_menus, window.menu_hold_time);
+    }
 
-        function clean_menus() {
-            clean_menus_timeout = null;
+    function clean_menus() {
+        clean_menus_timeout = null;
 
-            var m = document.getElementById('r_' + last_active_menu);
-            if (!m) {
-                return;
+        var m = document.getElementById('r_' + last_active_menu);
+        if (!m) {
+            return;
+        }
+        var tags = m.querySelectorAll('.nlevel');
+        var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
+        var i, hideable;
+        for (i = tags.length - 1; i >= 0; i--) {
+            if (tags[i].localName != 'ul' && tags[i].localName != 'div') continue;
+
+            hideable = true;
+            if (e) {
+                t = e;
+                do
+                {
+                    if (tags[i].id == t.id) hideable = false;
+                    t = t.parentNode.parentNode;
+                }
+                while (t.id != 'r_' + last_active_menu);
             }
-            var tags = m.querySelectorAll('.nlevel');
-            var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
-            var i, hideable;
-            for (i = tags.length - 1; i >= 0; i--) {
-                if (tags[i].localName != 'ul' && tags[i].localName != 'div') continue;
-
-                hideable = true;
-                if (e) {
-                    t = e;
-                    do
-                    {
-                        if (tags[i].id == t.id) hideable = false;
-                        t = t.parentNode.parentNode;
-                    }
-                    while (t.id != 'r_' + last_active_menu);
-                }
-                if (hideable) {
-                    tags[i].style.left = '-999px';
-                    tags[i].style.display = 'none';
-                }
+            if (hideable) {
+                tags[i].style.left = '-999px';
+                tags[i].style.display = 'none';
             }
         }
     }

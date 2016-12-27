@@ -691,20 +691,26 @@
         mouseoverActivateTooltip: function (e, el) {
             var args = arrVal($cms.dom.data(el, 'mouseoverActivateTooltip'));
 
-            args.unshift(el);
-            args.unshift(e);
+            args.unshift(el, e);
 
-            activate_tooltip.apply(undefined, args);
+            try {
+                activate_tooltip.apply(undefined, args);
+            } catch (ex) {
+                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by activate_tooltip() called with args:', args);
+            }
         },
 
         // Implementation for [data-focus-activate-tooltip]
         focusActivateTooltip: function (e, el) {
             var args = arrVal($cms.dom.data(el, 'focusActivateTooltip'));
 
-            args.unshift(el);
-            args.unshift(e);
+            args.unshift(el, e);
 
-            activate_tooltip.apply(undefined, args);
+            try {
+                activate_tooltip.apply(undefined, args);
+            } catch (ex) {
+                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by activate_tooltip() called with args:', args);
+            }
         },
 
         // Implementation for [data-blur-deactivate-tooltip]
@@ -716,7 +722,14 @@
             if (el.ttitle === undefined) {
                 el.ttitle = el.title;
             }
-            activate_tooltip(el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, !!el.have_links);
+
+            var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, !!el.have_links];
+
+            try {
+                activate_tooltip.apply(undefined, args);
+            } catch (ex) {
+                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by activate_tooltip() called with args:', args);
+            }
         },
 
         // Implementatioin for input[data-cms-unchecked-is-indeterminate]

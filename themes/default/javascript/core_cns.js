@@ -1,6 +1,82 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.CnsMemberProfileScreen = CnsMemberProfileScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
+    function CnsMemberProfileScreen(params) {
+        CnsMemberProfileScreen.base(this, 'constructor', arguments);
+
+        this.memberId = strVal(params.memberId);
+        this.tabs = arrVal(params.tabs);
+
+        this.tabs.forEach((function (tab) {
+            var tabCode = strVal(tab.tabCode),
+                tabFunc = 'load_tab__' + tabCode;
+
+            if (tab.tabContent == null) {
+                window[tabFunc] = (function (automated) {
+                    // Self destruct loader after this first run
+                    window[tabFunc] = function () {};
+
+                    if (automated) {
+                        window.scrollTo(0, 0);
+                    }
+
+                    load_snippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, function (result) {
+                        $cms.dom.html($cms.dom.$('#g_' + tabCode), result.responseText);
+                        find_url_tab();
+                    });
+                }).bind(this);
+            }
+        }).bind(this));
+
+        if (this.tabs.length > 1) {
+            // we do not want it to scroll down
+            var oldHash = window.location.hash;
+            window.location.hash = '#';
+            find_url_tab(oldHash);
+        }
+    }
+
+    $cms.inherits(CnsMemberProfileScreen, $cms.View, /**@lends $cms.views.CnsMemberProfileScreen#*/ {
+        events: function () {
+            return {
+                'click .js-click-select-tab-g': 'onClickSelectTab'
+            };
+        },
+
+        onClickSelectTab: function (e, clicked) {
+            var tab = clicked.dataset.vwTab;
+            if (tab) {
+                select_tab('g', tab);
+            }
+        }
+    });
+
+    $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
+        var tabCode = $cms.filter.id(params.tabCode).toLowerCase();
+
+        $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function () {
+            select_tab('g','edit__' + tabCode)
+        });
+    };
+
+    $cms.templates.cnsMemberDirectoryScreenFilter = function cnsMemberDirectoryScreenFilter(params, container) {
+        $cms.dom.on(container, 'keyup', '.js-keyup-input-filter-update-ajax-member-list', function (e, input) {
+            update_ajax_member_list(input, null, false, e);
+        });
+    };
+
+    $cms.templates.cnsMemberProfileAbout = function cnsMemberProfileAbout(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
+            decrypt_data();
+        });
+    };
+
     $cms.functions.moduleAdminCnsGroups = function moduleAdminCnsGroups() {
         var form;
 
@@ -154,65 +230,6 @@
         });
     };
 
-    $cms.templates.cnsMemberProfileScreen = function cnsMemberProfileScreen(params) {
-        var container = this,
-            tabFunc = 'load_tab__' + params.tabCode;
-
-        if (params.tabContent === undefined) {
-            window[tabFunc] = function (automated) {
-                if (automated) {
-                    try {
-                        window.scrollTo(0, 0);
-                    } catch (e) {}
-                }
-
-                // Self destruct loader after this first run
-                window[tabFunc] = function () {};
-
-                load_snippet('profile_tab&tab=' + params.tabCode + '&member_id=' + params.memberId + window.location.search.replace('?', '&'), null, function (result) {
-                    $cms.dom.html(document.getElementById('g_' + params.tabCode), result.responseText);
-
-                    find_url_tab();
-                });
-            }
-        }
-
-        var tabs = +params.tabs || 0;
-
-        if (tabs > 1) {
-            // we do not want it to scroll down
-            var old_hash = window.location.hash;
-            window.location.hash = '#';
-            find_url_tab(old_hash);
-        }
-
-        $cms.dom.on(container, 'click', '.js-click-select-tab-g', function (e, clicked) {
-            var tab = clicked.dataset.tpTab;
-            if (tab) {
-                select_tab('g', tab);
-            }
-        });
-    };
-
-    $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
-        var tabCode = $cms.filter.id(params.tabCode).toLowerCase();
-
-        $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function () {
-            select_tab('g','edit__' + tabCode)
-        });
-    };
-
-    $cms.templates.cnsMemberDirectoryScreenFilter = function cnsMemberDirectoryScreenFilter(params, container) {
-        $cms.dom.on(container, 'keyup', '.js-keyup-input-filter-update-ajax-member-list', function (e, input) {
-            update_ajax_member_list(input, null, false, e);
-        });
-    };
-
-    $cms.templates.cnsMemberProfileAbout = function cnsMemberProfileAbout(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
-            decrypt_data();
-        });
-    };
 
     $cms.templates.cnsViewGroupScreen = function cnsViewGroupScreen(params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-add-member-to-group', function (e, form) {
