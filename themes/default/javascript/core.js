@@ -1272,7 +1272,7 @@
     });
 
     $cms.toggleableTray = toggleableTray;
-    function toggleableTray(element, noAnimate) {
+    function toggleableTray(element, noAnimateHeight) {
         var $IMG_expcon = '{$IMG;,1x/trays/expcon}',
             $IMG_expcon2 = '{$IMG;,1x/trays/expcon2}',
             $IMG_expand = '{$IMG;,1x/trays/expand}',
@@ -1291,7 +1291,7 @@
             return;
         }
 
-        noAnimate = $cms.$CONFIG_OPTION.enable_animations ? !!noAnimate : true;
+        noAnimateHeight = $cms.$CONFIG_OPTION.enable_animations ? !!noAnimateHeight : true;
 
         if (!element.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
             element = $cms.dom.$(element, '.toggleable_tray') || element;
@@ -1311,125 +1311,25 @@
         if ($cms.dom.notDisplayed(element)) {
             $cms.dom.show(element);
 
-            if (isDiv && !noAnimate && !isThemeWizard) {
-                $cms.dom.css(element, {
-                    visibility: 'hidden',
-                    width: element.offsetWidth + 'px',
-                    position: 'absolute' // So things do not just around now it is visible
-                });
+            clear_transition_and_set_opacity(element, 0.0);
+            fade_transition(element, 100, 30, 4);
 
-                if (pic) {
-                    set_tray_theme_image('expand', 'expcon', $IMG_expand, $IMG_expcon, $IMG_2x_expcon, $IMG_expcon2, $IMG_2x_expcon2);
-                }
-                setTimeout(function () {
-                    begin_toggleable_tray_animation(20, 70, -1);
-                }, 20);
-            } else {
-                clear_transition_and_set_opacity(element, 0.0);
-                fade_transition(element, 100, 30, 4);
-
-                if (pic) {
-                    set_tray_theme_image('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_2x_contract, $IMG_contract2, $IMG_2x_contract2);
-                }
+            if (pic) {
+                set_tray_theme_image('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_2x_contract, $IMG_contract2, $IMG_2x_contract2);
             }
         } else {
-            if (isDiv && !noAnimate && !isThemeWizard) {
-                if (pic) {
-                    set_tray_theme_image('contract', 'expcon', $IMG_contract, $IMG_expcon, $IMG_2x_expcon, $IMG_expcon2, $IMG_2x_expcon2);
-                }
-                setTimeout(function () {
-                    begin_toggleable_tray_animation(-20, 70, 0);
-                }, 20);
-            } else {
-                if (pic) {
-                    set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_2x_expand, $IMG_expand2, $IMG_2x_expand2);
-                    pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
-                    pic.title = '{!EXPAND;^}'; // Needs doing because convert_tooltip may not have run yet
-                    pic.cms_tooltip_title = '{!EXPAND;^}';
-                }
-                $cms.dom.hide(element);
+            if (pic) {
+                set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_2x_expand, $IMG_expand2, $IMG_2x_expand2);
+                pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
+                pic.title = '{!EXPAND;^}'; // Needs doing because convert_tooltip may not have run yet
+                pic.cms_tooltip_title = '{!EXPAND;^}';
             }
+            $cms.dom.hide(element);
         }
 
         trigger_resize(true);
 
         // Execution ends here
-
-        function begin_toggleable_tray_animation(animate_dif, animate_ticks, final_height) {
-            var full_height = $cms.dom.contentHeight(element);
-
-            if (final_height === -1) {// We are animating to full height - not a fixed height
-                final_height = full_height;
-                $cms.dom.css(element, {
-                    height: '0px',
-                    visibility: 'visible',
-                    position: 'static'
-                });
-            }
-
-            if (full_height > 300) {// Quick finish in the case of huge expand areas
-                toggleable_tray_done(animate_dif, 'hidden');
-                return;
-            }
-
-            element.style.outline = '1px dashed gray';
-
-            if (final_height === 0) {
-                clear_transition_and_set_opacity(element, 1.0);
-                fade_transition(element, 0, 30, 4);
-            } else {
-                clear_transition_and_set_opacity(element, 0.0);
-                fade_transition(element, 100, 30, 4);
-            }
-
-            var orig_overflow = element.style.overflow;
-            element.style.overflow = 'hidden';
-            window.setTimeout(function () {
-                toggleable_tray_animate(final_height, animate_dif, orig_overflow, animate_ticks);
-            }, animate_ticks);
-        }
-
-        function toggleable_tray_animate(final_height, animate_dif, orig_overflow, animate_ticks) {
-            var current_height = ((element.style.height === 'auto') || (element.style.height === '')) ? element.offsetHeight : (parseInt(element.style.height) || 0);
-
-            if (((current_height > final_height) && (animate_dif < 0)) || ((current_height < final_height) && (animate_dif > 0))) {
-                var num = Math.max(current_height + animate_dif, 0);
-
-                if (animate_dif > 0) {
-                    num = Math.min(num, final_height);
-                }
-                element.style.height = num + 'px';
-
-                window.setTimeout(function () {
-                    toggleable_tray_animate(final_height, animate_dif, orig_overflow, animate_ticks);
-                }, animate_ticks);
-            } else {
-                toggleable_tray_done(animate_dif, orig_overflow);
-            }
-        }
-
-        function toggleable_tray_done(animate_dif, orig_overflow) {
-            $cms.dom.css(element, {
-                height: 'auto',
-                overflow: orig_overflow,
-                outline: '0'
-            });
-
-            if (animate_dif < 0) {
-                element.style.display = 'none';
-            }
-
-            if (pic) {
-                if (animate_dif < 0) {
-                    set_tray_theme_image('expcon', 'expand', $IMG_expcon, $IMG_expand, $IMG_2x_expand, $IMG_expand2, $IMG_2x_expand2);
-                } else {
-                    set_tray_theme_image('expcon', 'contract', $IMG_expcon, $IMG_contract, $IMG_2x_contract, $IMG_contract2, $IMG_2x_contract2);
-                }
-                pic.setAttribute('alt', pic.getAttribute('alt').replace((animate_dif < 0) ? '{!CONTRACT;^}' : '{!EXPAND;^}', (animate_dif < 0) ? '{!EXPAND;^}' : '{!CONTRACT;^}'));
-                pic.cms_tooltip_title = (animate_dif < 0) ? '{!EXPAND;^}' : '{!CONTRACT;^}';
-            }
-            trigger_resize(true);
-        }
 
         function set_tray_theme_image(before_theme_img, after_theme_img, before1_url, after1_url, after1_url_2x, after2_url, after2_url_2x) {
             var is_1 = matches_theme_image(pic.src, before1_url);
