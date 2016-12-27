@@ -708,10 +708,16 @@
         });
     };
 
-    $cms.templates.postingField = function postingField(params, container) {
-        var name = strVal(params.name),
+    $cms.templates.postingField = function postingField(params/* has multiple containers */) {
+        var id = strVal(params.id),
+            name = strVal(params.name),
             initDragDrop = !!params.initDragDrop,
-            postEl = $cms.dom.$('#' + name);
+            postEl = $cms.dom.$('#' + name),
+            // Container elements:
+            labelRow = $cms.dom.$('#field-' + id +'-label'),
+            inputRow = $cms.dom.$('#field-' + id +'-input'),
+            attachmentsUiRow = $cms.dom.$('#field-' + id +'-attachments-ui'),
+            attachmentsUiInputRow = $cms.dom.$('#field-' + id +'-attachments-ui-input');
 
         if (params.class.includes('wysiwyg')) {
             if (window.wysiwyg_on && wysiwyg_on()) {
@@ -736,18 +742,18 @@
             initialise_html5_dragdrop_upload('container_for_' + name, name);
         }
 
-        $cms.dom.on(container, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
+        $cms.dom.on(labelRow, 'click', '.js-click-toggle-wysiwyg', function () {
+            toggle_wysiwyg(name);
+        });
+
+        $cms.dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
             var url = maintain_theme_in_link(link.href);
             window.faux_open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
-        $cms.dom.on(container, 'click', '.js-link-click-open-site-emoticon-chooser-window', function (e, link) {
+        $cms.dom.on(inputRow, 'click', '.js-link-click-open-site-emoticon-chooser-window', function (e, link) {
             var url = maintain_theme_in_link(link.href);
             window.faux_open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
-        });
-
-        $cms.dom.on(container, 'click', '.js-click-toggle-wysiwyg', function () {
-            toggle_wysiwyg(name);
         });
     };
 

@@ -179,6 +179,18 @@
                     gdImageTransform(img);
                 });
             }
+        },
+
+        // Implementation for [data-toggleable-tray]
+        toggleableTray: {
+            attach: function (context) {
+                var els = $cms.dom.$$$(context, '[data-toggleable-tray]');
+
+                els.forEach(function (el) {
+                    var options = objVal($cms.dom.data(el, 'toggleableTray')),
+                        tray = new $cms.views.ToggleableTray(options, { el: el });
+                });
+            }
         }
     });
 
@@ -204,7 +216,9 @@
     }
 
     /**
+     * @memberof $cms.views
      * @class
+     * @extends $cms.View
      * */
     $cms.views.Global = function Global() {
         Global.base(this, 'constructor', arguments);
@@ -331,7 +345,7 @@
         }
     };
 
-    $cms.inherits($cms.views.Global, $cms.View, /** @lends $cms.views.Global.prototype */{
+    $cms.inherits($cms.views.Global, $cms.View, /**@lends $cms.views.Global#*/{
         events: function () {
             return {
                 // Show a confirmation dialog for clicks on a link (is higher up for priority)
@@ -368,7 +382,7 @@
                 // Disable form buttons
                 'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
 
-                //
+                // mod_security workaround
                 'submit form[data-submit-modsecurity-workaround]': 'submitModsecurityWorkaround',
 
                 // Prevents input of matching characters
@@ -404,7 +418,11 @@
 
                 'click [data-click-ga-track]': 'gaTrackClick',
 
-                /* STAFF */
+                // Toggle tray
+                'click [data-click-tray-toggle]': 'clickTrayToggle',
+                'click [data-click-tray-accordion-toggle]': 'clickTrayAccordionToggle',
+
+                /* Footer links */
                 'click .js-click-load-software-chat': 'loadSoftwareChat',
 
                 'submit .js-submit-staff-actions-select': 'staffActionsSelect',
@@ -689,27 +707,27 @@
 
         // Implementation for [data-mouseover-activate-tooltip]
         mouseoverActivateTooltip: function (e, el) {
-            var args = arrVal($cms.dom.data(el, 'mouseoverActivateTooltip'));
+            var args = arrVal($cms.dom.data(el, 'mouseoverActivateTooltip'), true);
 
             args.unshift(el, e);
 
             try {
                 activate_tooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by activate_tooltip() called with args:', args);
+                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
             }
         },
 
         // Implementation for [data-focus-activate-tooltip]
         focusActivateTooltip: function (e, el) {
-            var args = arrVal($cms.dom.data(el, 'focusActivateTooltip'));
+            var args = arrVal($cms.dom.data(el, 'focusActivateTooltip'), true);
 
             args.unshift(el, e);
 
             try {
                 activate_tooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by activate_tooltip() called with args:', args);
+                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -728,7 +746,7 @@
             try {
                 activate_tooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by activate_tooltip() called with args:', args);
+                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -745,6 +763,29 @@
 
             e.preventDefault();
             ga_track(clicked, options.category, options.action);
+        },
+
+        // Implementation for [data-click-tray-toggle="<TRAY ID>"]
+        clickTrayToggle: function (e, clicked) {
+            var trayEl = $cms.dom.$(strVal(clicked.dataset.clickTrayToggle)),
+                trayCookie;
+
+            if (!trayEl) {
+                return
+            }
+
+            trayCookie = strVal(trayEl.dataset.trayCookie);
+
+            if (trayCookie) {
+                set_cookie('tray_' + trayCookie, $cms.dom.isDisplayed(trayEl) ? 'closed' : 'open');
+            }
+
+            $cms.toggleableTray(trayEl);
+        },
+
+        // Implementation for [data-click-tray-accordion-toggle]
+        clickTrayAccordionToggle: function () {
+
         },
 
         // Detecting of JavaScript support
@@ -1170,29 +1211,32 @@
 
     $cms.views.ToggleableTray = ToggleableTray;
     /**
+     * @memberof $cms.views
      * @class
+     * @extends $cms.View
      */
     function ToggleableTray() {
         ToggleableTray.base(this, 'constructor', arguments);
 
         this.contentEl = this.$('.toggleable_tray');
-        // cookieId is null for trays not saving a cookie
-        this.cookieId = this.el.dataset.trayCookie || null;
+        this.trayCookie = strVal(this.el.dataset.trayCookie);
 
-        if (this.cookieId) {
-            this.handleTrayCookie(this.cookieId);
+        if (this.trayCookie) {
+            this.handleTrayCookie(this.trayCookie);
         }
     }
 
-    $cms.inherits($cms.views.ToggleableTray, $cms.View, /** @lends ToggleableTray.prototype */{
-        events: {
-            'click .js-btn-tray-toggle': 'toggle',
-            'click .js-btn-tray-accordion': 'toggleAccordionItems'
+    $cms.inherits(ToggleableTray, $cms.View, /** @lends $cms.views.ToggleableTray# */{
+        events: function () {
+            return {
+                'click .js-btn-tray-toggle': 'toggle',
+                'click .js-btn-tray-accordion': 'toggleAccordionItems'
+            };
         },
 
         toggle: function () {
-            if (this.cookieId) {
-                set_cookie('tray_' + this.cookieId, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
+            if (this.trayCookie) {
+                set_cookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
             }
 
             $cms.toggleableTray(this.el);
@@ -1202,7 +1246,7 @@
             var nodes = $cms.dom.$$(el.parentNode.parentNode, '.toggleable_tray');
 
             nodes.forEach(function (node) {
-                if ((node.parentNode !== el) && (node.style.display !== 'none') && node.parentNode.classList.contains('js-tray-accordion-item')) {
+                if ((node.parentNode !== el) && $cms.dom.isDisplayed(node) && node.parentNode.classList.contains('js-tray-accordion-item')) {
                     $cms.toggleableTray(node, true);
                 }
             });
@@ -1219,16 +1263,16 @@
         },
 
         handleTrayCookie: function () {
-            var cookieValue = read_cookie('tray_' + this.cookieId);
+            var cookieValue = read_cookie('tray_' + this.trayCookie);
 
-            if (((this.contentEl.style.display === 'none') && (cookieValue === 'open')) || ((this.contentEl.style.display !== 'none') && (cookieValue === 'closed'))) {
+            if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
                 $cms.toggleableTray(this.contentEl, true);
             }
         }
     });
 
     $cms.toggleableTray = toggleableTray;
-    function toggleableTray(element, no_animate) {
+    function toggleableTray(element, noAnimate) {
         var $IMG_expcon = '{$IMG;,1x/trays/expcon}',
             $IMG_expcon2 = '{$IMG;,1x/trays/expcon2}',
             $IMG_expand = '{$IMG;,1x/trays/expand}',
@@ -1247,7 +1291,7 @@
             return;
         }
 
-        no_animate = $cms.$CONFIG_OPTION.enable_animations ? !!no_animate : true;
+        noAnimate = $cms.$CONFIG_OPTION.enable_animations ? !!noAnimate : true;
 
         if (!element.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
             element = $cms.dom.$(element, '.toggleable_tray') || element;
@@ -1267,7 +1311,7 @@
         if ($cms.dom.notDisplayed(element)) {
             $cms.dom.show(element);
 
-            if (isDiv && !no_animate && !isThemeWizard) {
+            if (isDiv && !noAnimate && !isThemeWizard) {
                 $cms.dom.css(element, {
                     visibility: 'hidden',
                     width: element.offsetWidth + 'px',
@@ -1289,7 +1333,7 @@
                 }
             }
         } else {
-            if (isDiv && !no_animate && !isThemeWizard) {
+            if (isDiv && !noAnimate && !isThemeWizard) {
                 if (pic) {
                     set_tray_theme_image('contract', 'expcon', $IMG_contract, $IMG_expcon, $IMG_2x_expcon, $IMG_expcon2, $IMG_2x_expcon2);
                 }

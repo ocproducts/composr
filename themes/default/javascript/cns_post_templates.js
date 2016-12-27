@@ -1,9 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.templates.cnsPostTemplateSelect = function (params) {
-        var container = this;
-
+    $cms.templates.cnsPostTemplateSelect = function (params, container) {
         $cms.dom.on(container, 'click', '.js-click-reset-and-insert-textbox', function (e, button) {
             var form = button.form,
                 ins = form.elements.post_template.value;

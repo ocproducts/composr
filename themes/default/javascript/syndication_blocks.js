@@ -28,7 +28,7 @@
                 }, 2000);
 
                 $cms.dom.on(scrollerEl, 'mouseover mouseout', function (e) {
-                    if (e.relatedTarget && scrollerEl.contains(e.relatedTarget)) {
+                    if (scrollerEl.contains(e.relatedTarget)) {
                         return;
                     }
                     scrollerEl.paused = (e.type === 'mouseover');

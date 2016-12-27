@@ -149,4 +149,4 @@
 	</tr>
 {+END}
 
-<script type="application/json" data-tpl="postingField" data-tpl-params="{+START,PARAMS_JSON,NAME,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_*}{+END}">{}</script>
+<script type="application/json" data-tpl="postingField" data-tpl-params="{+START,PARAMS_JSON,id,NAME,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_*}{+END}">{}</script>

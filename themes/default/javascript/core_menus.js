@@ -67,7 +67,7 @@
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            pop_up_menu(menu + '_dexpand_' + rand, null, menu + '_d', e);
+            pop_up_menu(menu + '_dexpand_' + rand, null, menu + '_d');
         },
 
         setActiveMenu: function (e, target) {
@@ -460,15 +460,9 @@
         }
     }
 
-    $cms.templates.menuSitemap = function (params) {
+    $cms.templates.menuSitemap = function (params, container) {
         var menuId = strVal(params.menuSitemapId),
-            content;
-
-        try {
-            content = $cms.parseJson(params.content);
-        } catch (ignore) {}
-
-        content = arrVal(content);
+            content = arrVal($cms.dom.data(container, 'tpMenuContent'));
 
         generate_menu_sitemap($cms.dom.$('#' + menuId), content, 0);
 
@@ -476,6 +470,7 @@
         // DYNAMIC TREE CREATION FUNCTION
         // ==============================
         function generate_menu_sitemap(targetEl, structure, theLevel) {
+            structure = arrVal(structure);
             theLevel = +theLevel || 0;
 
             if (theLevel === 0) {
@@ -494,10 +489,12 @@
             function _generate_menu_sitemap(target, node, theLevel) {
                 theLevel = +theLevel || 0;
 
+                var branchId = 'sitemap_menu_branch_' + $cms.random();
+
                 var li = $cms.dom.create('li', {
-                    'data-view': 'ToggleableTray',
-                    id: 'sitemap_menu_branch_' + $cms.random(),
-                    class: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has_img' : 'has_no_img')
+                    id: branchId,
+                    class: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has_img' : 'has_no_img'),
+                    'data-toggleable-tray': '{}'
                 });
 
                 var span = $cms.dom.create('span');
@@ -529,20 +526,21 @@
                     $cms.dom.append(span, document.createTextNode(' '));
 
                     var expand = $cms.dom.create('a', {
-                        class: 'toggleable_tray_button js-btn-tray-toggle',
-                        href: '#!'
+                        class: 'toggleable_tray_button',
+                        href: '#!',
+                        'data-click-tray-toggle': '#' + branchId
                     });
 
                     var expandImg = $cms.dom.create('img');
                     if (theLevel < 2) {// High-levels start expanded
-                        expandImg.alt = "{!CONTRACT^#}";
-                        expandImg.src = $cms.img("{$IMG#,1x/trays/contract}");
-                        expandImg.srcset = $cms.img("{$IMG#,2x/trays/contract}") + ' 2x';
+                        expandImg.alt = '{!CONTRACT;^}';
+                        expandImg.src = $cms.img('{$IMG;^,1x/trays/contract}');
+                        expandImg.srcset = $cms.img('{$IMG;^,2x/trays/contract}') + ' 2x';
                     } else {
-                        expandImg.alt = "{!EXPAND^#}";
-                        expandImg.src = $cms.img("{$IMG#,1x/trays/expand}");
-                        expandImg.srcset = $cms.img("{$IMG#,2x/trays/expand}") + ' 2x';
-                        ul.style.display = 'none';
+                        expandImg.alt = '{!EXPAND;^}';
+                        expandImg.src = $cms.img('{$IMG;^,1x/trays/expand}');
+                        expandImg.srcset = $cms.img('{$IMG;^,2x/trays/expand}') + ' 2x';
+                        $cms.dom.hide(ul);
                     }
 
                     $cms.dom.append(expand, expandImg);
@@ -557,25 +555,24 @@
     };
 
     $cms.templates.pageLinkChooser = function pageLinkChooser(params, container) {
-        var ajax_url = 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1';
+        var ajaxUrl = 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1';
 
-        if (params.pageType !== undefined) {
-            ajax_url += '&page_type=' + params.pageType;
+        if (params.pageType != null) {
+            ajaxUrl += '&page_type=' + params.pageType;
         }
 
-        $cms.createTreeList(params.name, ajax_url, '', '', false, null, false, true);
+        $cms.createTreeList(params.name, ajaxUrl, '', '', false, null, false, true);
 
         $cms.dom.on(container, 'change', '.js-input-page-link-chooser', function (e, input) {
-            if (!params.asField || (params.asField === '0')) {
-                window.returnValue = input.value;
-                if (window.faux_close !== undefined) {
+            if (!params.asField) {
+                if (window.faux_close) {
                     window.faux_close();
                 } else {
                     window.close();
                 }
             }
 
-            if (params.getTitleToo && (params.getTitleToo !== '0')) {
+            if (params.getTitleToo) {
                 if (input.selected_title === undefined) {
                     input.value = '';
                     /*was autocomplete, unwanted*/
@@ -587,7 +584,7 @@
     };
 
     function menuActiveSelection(menu_id) {
-        var menu_element = document.getElementById(menu_id),
+        var menu_element = $cms.dom.$('#' + menu_id),
             possibilities = [], is_selected, url, min_score, i;
 
         if (menu_element.localName === 'select') {
@@ -610,13 +607,15 @@
 
                 min_score = possibilities[0].score;
                 for (i = 0; i < possibilities.length; i++) {
-                    if (possibilities[i].score != min_score) break;
+                    if (possibilities[i].score != min_score) {
+                        break;
+                    }
                     possibilities[i].element.selected = true;
                 }
             }
         } else {
             var menu_items = menu_element.querySelectorAll('.non_current'), a;
-            for (var i = 0; i < menu_items.length; i++) {
+            for (i = 0; i < menu_items.length; i++) {
                 a = null;
                 for (var j = 0; j < menu_items[i].children.length; j++) {
                     if (menu_items[i].children[j].localName === 'a') {
@@ -627,7 +626,7 @@
                     continue;
                 }
 
-                url = (a.getAttribute('href') == '') ? '' : a.href;
+                url = (a.getAttribute('href') === '') ? '' : a.href;
                 is_selected = menuItemIsSelected(url);
                 if (is_selected !== null) {
                     possibilities.push({
@@ -704,7 +703,7 @@
     function clean_menus() {
         clean_menus_timeout = null;
 
-        var m = document.getElementById('r_' + last_active_menu);
+        var m = $cms.dom.$('#r_' + last_active_menu);
         if (!m) {
             return;
         }
@@ -717,12 +716,10 @@
             hideable = true;
             if (e) {
                 t = e;
-                do
-                {
+                do {
                     if (tags[i].id == t.id) hideable = false;
                     t = t.parentNode.parentNode;
-                }
-                while (t.id != 'r_' + last_active_menu);
+                } while (t.id != 'r_' + last_active_menu);
             }
             if (hideable) {
                 tags[i].style.left = '-999px';
@@ -731,11 +728,11 @@
         }
     }
 
-    function pop_up_menu(id, place, menu, event, outside_fixed_width) {
+    function pop_up_menu(id, place, menu, outside_fixed_width) {
         place || (place = 'right');
         outside_fixed_width = !!outside_fixed_width;
 
-        var el = document.getElementById(id);
+        var el = $cms.dom.$('#' + id);
 
         if (clean_menus_timeout) {
             window.clearTimeout(clean_menus_timeout);
@@ -824,10 +821,6 @@
         el.style.zIndex = 200;
 
         recreate_clean_timeout();
-
-        if (event) {
-            cancel_bubbling(event);
-        }
 
         return false;
     }

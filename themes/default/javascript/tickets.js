@@ -3,16 +3,14 @@
 
     $cms.templates.supportTicketsScreen = function (params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-scroll-to-top', function () {
-            try {
-                window.scrollTo(0, 0);
-            } catch (ignore) {}
+            window.scrollTo(0, 0);
         });
     };
 
     $cms.templates.supportTicketScreen = function supportTicketScreen(params, container) {
-        if ((typeof params.serializedOptions === 'string') && (typeof params.hash === 'string')) {
-            window.comments_serialized_options = params.serializedOptions;
-            window.comments_hash = params.hash;
+        if ((params.serializedOptions != null) && (params.hash != null)) {
+            window.comments_serialized_options = strVal(params.serializedOptions);
+            window.comments_hash = strVal(params.hash);
         }
 
         $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {

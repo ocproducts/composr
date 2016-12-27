@@ -1,5 +1,4 @@
-{$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}
-{+START,IF,{$NOT,{$GET,js_menu}}}
+{$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}{+START,IF,{$NOT,{$GET,js_menu}}}
 	<li class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has_img}">
 		<span>
 			{+START,IF_NON_EMPTY,{IMG}}<img alt="" src="{IMG*}" srcset="{IMG_2X*} 2x" />{+END}
@@ -17,6 +16,4 @@
 		{+END}
 	</li>
 {+END}
-{+START,IF,{$GET,js_menu}}
-{$?,{FIRST},[}{"caption": "{CAPTION#^}", "tooltip": "{TOOLTIP#^}", "url": "{URL#^}", "img": "{IMG#^}", "img_2x": "{IMG_2X#^}", "current": {$?,{CURRENT},true,false}, "children": {$?,{$IS_EMPTY,{CHILDREN}},[],{CHILDREN}}}{$?,{LAST},],\,}
-{+END}
+{+START,IF,{$GET,js_menu}}{$?,{FIRST},[}{"caption": {$JSON_ENCODE,{CAPTION}}, "tooltip": {$JSON_ENCODE,{TOOLTIP}}, "url": {$JSON_ENCODE,{URL}}, "img": {$JSON_ENCODE,{IMG}}, "img_2x": {$JSON_ENCODE,{IMG_2X}}, "current": {$?,{CURRENT},true,false}, "children": {$?,{$IS_EMPTY,{CHILDREN}},[],{$TRIM,{CHILDREN}}}}{$?,{LAST},],\,}{+END}

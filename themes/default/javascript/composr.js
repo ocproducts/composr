@@ -258,13 +258,6 @@ var encodeUC = encodeURIComponent;
         defaults: defaults,
 
         define: define,
-        defineC: defineC,
-        defineCE: defineCE,
-        defineCW: defineCW,
-        defineCEW: defineCEW,
-        defineE: defineE,
-        defineEW: defineEW,
-        defineW: defineW,
 
         intVal: intVal,
         strVal: strVal,
@@ -323,6 +316,12 @@ var encodeUC = encodeURIComponent;
      * @namespace $cms.behaviors
      */
     $cms.behaviors || ($cms.behaviors = {});
+
+    /**
+     * Browser feature detection
+     * @namespace $cms.support
+     */
+    $cms.support || ($cms.support = {});
 
     var domReadyPromise = new Promise(function (resolve) {
         if (document.readyState === 'interactive') {
@@ -403,7 +402,7 @@ var encodeUC = encodeURIComponent;
         }
 
         var id = uniqueId();
-        defineC(obj, $cms.id, id);
+        define(obj, $cms.id, id);
         return id;
     }
 
@@ -796,17 +795,19 @@ var encodeUC = encodeURIComponent;
     }
 
     /**
-     * @returns { Array }
+     * @returns { Array|* } array or array-like object
      */
-    function arrVal(val) {
+    function arrVal(val, clone) {
         var isArr;
+
+        clone = !!clone;
 
         if (val == null) {
             return [];
         }
 
         if ((typeof val === 'object') && ((isArr = Array.isArray(val)) || isArrayLike(val))) {
-            return isArr ? val : toArray(val);
+            return clone ? toArray(val) : val;
         }
 
         return [val];
@@ -1267,9 +1268,6 @@ var encodeUC = encodeURIComponent;
         return decodeUC(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
 
-    /* Browser feature detection */
-    $cms.support || ($cms.support = {});
-
     // If the browser has support for CSS transitions
     $cms.support.cssTransitions = ('transition' in emptyElStyle) || ('WebkitTransition' in emptyElStyle) || ('msTransition' in emptyElStyle);
 
@@ -1510,7 +1508,7 @@ var encodeUC = encodeURIComponent;
         this.expando = $cms.id + '-data-' + Data.uid++;
     }
     Data.uid = 1;
-    define(Data.prototype, /** @lends Data.prototype */ {
+    define(Data.prototype, /**@lends Data#*/ {
         cache: function (owner) {
             // Check if the owner object already has a cache
             var value = owner[this.expando];
