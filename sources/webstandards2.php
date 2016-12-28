@@ -199,10 +199,11 @@ function init__webstandards2()
     $enforce_align4 = '(top|bottom|left|right)';
     $enforce_valign = '(top|middle|bottom|baseline)';
     $enforce_number = '(-?[0-9]+)';
+    $enforce_fractional = '(-?[0-9]*(\.)[0-9]+?)';
     $enforce_inumber = '[0-9]+';
     $enforce_character = '.';
     $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
-    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_number . ')?\.' . $enforce_number . '(in|cm|mm|ex|em|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_fractional . ')(in|cm|mm|ex|px|em|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_pixels = '[0-9]+';
     $enforce_auto_or_length = '(auto|' . $enforce_length . ')';
@@ -210,11 +211,20 @@ function init__webstandards2()
     $enforce_normal_or_length = '(normal|' . $enforce_length . ')';
     $enforce_border_width = '(thin|medium|thick|' . $enforce_length . ')';
     $enforce_potential_4d_border_width = $enforce_border_width . '( ' . $enforce_border_width . '( ' . $enforce_border_width . '( ' . $enforce_border_width . '|)|)|)';
-    $enforce_css_color = '((rgb\(' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%\))|(rgb\(' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . '\))|(rgba\(' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%\))|(rgba\(' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . '\.\d+\))|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|' . $enforce_color . '|ActiveBorder|ActiveCaption|AppWorkspace|Background|Buttonface|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText)';
+    $color_types = array(
+        '(rgb\(' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?\))',
+        '(rgba\(' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*[01]?(\.\d+)?\))',
+        '(hsl\(' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?\))',
+        '(hsla\(' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*[01]?(\.\d+)?\))',
+        '(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])',
+        $enforce_color,
+        'ActiveBorder|ActiveCaption|AppWorkspace|Background|Buttonface|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText',
+    );
+    $enforce_css_color = '(' . implode('|', $color_types) . ')';
     $enforce_transparent_or_color = '(transparent|' . $enforce_css_color . ')';
-    $enforce_fraction = '(\d%|\d\d%|100%|0\.\d+|1\.0|0|1)';
-    $_enforce_font_list = "(cursive|fantasy|monospace|serif|sans-serif|Georgia|Times|Trebuchet|Tahoma|Geneva|Verdana|Arial|Helvetica|Courier|Courier New|Impact|'Georgia'|'Times'|'Trebuchet'|'Tahoma'|'Geneva'|'Verdana'|'Arial'|'Helvetica'|'Courier'|'Courier New'|'Impact')";
-    $enforce_font_list = '((([A-Za-z]+)|("[A-Za-z ]+")|(\'[A-Za-z ]+\')),\s*)*' . $_enforce_font_list;
+    $enforce_fraction = '(\d%|\d\d%|100%|0?\.\d+|1\.0|0|1)';
+    $_enforce_font_list = "((?i)cursive|fantasy|monospace|serif|sans-serif|Georgia|Times|Trebuchet|Tahoma|Geneva|Verdana|Arial|Helvetica|Courier|Courier New|Impact|'Georgia'|'Times'|'Trebuchet'|'Tahoma'|'Geneva'|'Verdana'|'Arial'|'Helvetica'|'Courier'|'Courier New'|'Impact'(?-i))";
+    $enforce_font_list = '((([\w\-]+)|("[\w\- ]+")|(\'[\w\- ]+\')),\s*)*' . $_enforce_font_list;
     $enforce_functional_url = '(url\(\'.+\'\)|url\(".+"\)|url\([^\(\);]+\))';
     $enforce_functional_url_or_none = '(' . $enforce_functional_url . '|none)';
     $enforce_border_style = '(none|dotted|dashed|solid|double|groove|ridge|inset|outset|transparent)'; // 'transparent' not supported in IE6
@@ -227,6 +237,7 @@ function init__webstandards2()
     $enforce_potential_4d_length_auto = $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '|)|)|)';
     $enforce_potential_4d_ilength = $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '|)|)|)';
     $enforce_potential_4d_ilength_auto = $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '|)|)|)';
+    $enforce_font_size = '(larger|smaller|xx-small|x-small|small|medium|large|x-large|xx-large|' . $enforce_length . '(/' . $enforce_length .')?)';
     $enforce_font_style = '(normal|italic|oblique)';
     $enforce_font_variant = '(normal|small-caps)';
     $enforce_font_weight = '(lighter|normal|bold|bolder|((\d)+))';
@@ -250,6 +261,7 @@ function init__webstandards2()
     $enforce_transition_property = '[\w,\-]+';
     $enforce_transform_origin = '(left|center|right|' . $enforce_length . ')';
     $enforce_transform_style = '(flat|preserve-3d)';
+    $enforce_transition = $enforce_transition_property . '( ' . $enforce_time . '( ' . $enforce_transition_timing_function . '( ' . $enforce_time . ')?)?)?';
 
     global $CSS_PROPERTIES;
     $CSS_PROPERTIES = array(
@@ -286,13 +298,13 @@ function init__webstandards2()
         'clear' => '(both|left|right|none)',
         'clip' => 'auto|(rect\(' . $enforce_potential_4d_length . '\))',
         'color' => $enforce_css_color,
-        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help' . ((!$is_ie) ? '|progress' : '') . ')', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
+        'cursor' => '(' . $enforce_functional_url . '|(?i)auto|crosshair|default|move|text|wait|help|n-resize|e-resize|s-resize|w-resize|ne-resize|nw-resize|se-resize|sw-resize|pointer|not-allowed|no-drop|vertical-text|all-scroll|col-resize|row-resize|none' . ((!$is_ie) ? '|progress' : '') . '(?-i))', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
         'direction' => '(ltr|rtl)',
         'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in' . ((!$is_ie) ? '|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption' : '') . ')',
         'float' => '(left|right|none)',
-        'font' => '((caption|icon|menu|message-box|small-caption|status-bar|' . $enforce_font_style . '|' . $enforce_font_variant . '|' . $enforce_font_weight . '|' . $enforce_length . '|' . $enforce_normal_or_length . '|' . $enforce_font_list . ')( |$))+',
+        'font' => '((caption|icon|menu|message-box|small-caption|status-bar|' . $enforce_font_style . '|' . $enforce_font_variant . '|' . $enforce_font_weight . '|' . $enforce_font_size . '|' . $enforce_normal_or_length . '|' . $enforce_font_list . ')( |$))+',
         'font-family' => $enforce_font_list,
-        'font-size' => 'larger|smaller|xx-small|x-small|small|medium|large|x-large|xx-large|' . $enforce_length,
+        'font-size' => $enforce_font_size,
         'font-style' => $enforce_font_style,
         'font-variant' => $enforce_font_variant,
         'font-weight' => $enforce_font_weight,
@@ -300,7 +312,7 @@ function init__webstandards2()
         'left' => $enforce_auto_or_length,
         'right' => $enforce_auto_or_length,
         'letter-spacing' => $enforce_normal_or_length,
-        'line-height' => $enforce_normal_or_length,
+        'line-height' => '(\d*(\.\d+)?|' . $enforce_normal_or_length . ')',
         'list-style' => '((' . $enforce_list_style_type . '|' . $enforce_list_style_position . '|' . $enforce_list_style_image . ')( |$))+',
         'list-style-image' => '(' . $enforce_functional_url . '|none)',
         'list-style-position' => $enforce_list_style_position,
@@ -336,7 +348,7 @@ function init__webstandards2()
         'quotes' => '.+ .+',
         'max-width' => '(none|' . $enforce_auto_or_length . ')',
         'min-width' => $enforce_auto_or_length,
-        'max-height' => $enforce_auto_or_length,
+        'max-height' => '(none|' . $enforce_auto_or_length . ')',
         'min-height' => $enforce_auto_or_length,
         'marker-offset' => $enforce_auto_or_length,
         'caption-side' => 'top|bottom|left|right',
@@ -355,7 +367,7 @@ function init__webstandards2()
         'box-sizing' => '(border-box|content-box|padding-box)', // should be vendor prefixed (for Firefox)
 
         // CSS3, not supported on IE8 but irrelevant as these just add flashiness; should be vendor prefixed
-        'background-size' => '(' . $enforce_length . ' ' . $enforce_length . ')',
+        'background-size' => '(cover|contain|((' . $enforce_length . ' )?' . $enforce_length . '))',
         'box-shadow' => '(none|(' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . '(,\s*' . $enforce_box_shadow . ')?)?)?))',
         'text-shadow' => '(none|(' . $enforce_length . ' ' . $enforce_length . '( ' . $enforce_length . ')?( ' . $enforce_css_color . ')?))',
         'border-radius' => $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . ')?)?)?',
@@ -367,11 +379,14 @@ function init__webstandards2()
         'transition-duration' => $enforce_time,
         'transition-timing-function' => $enforce_transition_timing_function,
         'transition-delay' => $enforce_time,
-        'transition' => $enforce_transition_property . '( ' . $enforce_time . '( ' . $enforce_transition_timing_function . '( ' . $enforce_time . ')?)?)?',
+        'transition' => $enforce_transition . '(\s*,\s*' . $enforce_transition . ')*',
         'background-origin' => '(border-box|content-box)', // padding-box not widely supported yet; may be droped from spec
         'transform' => '(none|\w+\([^\(\)]+\))',
         'transform-origin' => $enforce_transform_origin . '( ' . $enforce_transform_origin . '( ' . $enforce_transform_origin . ')?)?',
         'transform-style' => $enforce_transform_style,
+        'user-select' => '(none|auto|text|all|contain)',
+        'text-overflow' => '(clip|ellipsis|\'[^\']\')',
+        'touch-action' => '(auto|none|pan-x|pan-y|manipulation|pan-left|pan-right|pan-up|pan-down|pinch-zoom)',
 
         /* Purposely left out these CSS2 features due to very poor browser support (not just IE not having it) */
         /*
@@ -383,6 +398,7 @@ function init__webstandards2()
         'writing-mode' => '(tb-rl|lr-tb)', // A more complex W3C standard is underway. Only IE supports this one.
         'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
         'overflow-scrolling' => '(touch|auto)',
+        'text-size-adjust' => '(none|auto|\d%|\d\d%|100%)',
     );
 
     global $CSS_NON_IE_PROPERTIES;
@@ -1816,6 +1832,9 @@ function _webstandards_css_sheet($data)
                 }
                 if (($alpha_numeric) || ($next == ':') || ($next == '#')) {
                     $class_name .= $next;
+                } elseif ($comment_starting) {
+                    $status = CSS_IN_COMMENT;
+                    $class_before_comment = CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS;
                 } else {
                     // Test class name
                     $cnt = substr_count($class_name, ':');
@@ -2084,7 +2103,7 @@ function _check_css_value($key, $value, $_i)
         $reg_exp = $CSS_PROPERTIES[$key];
     }
 
-    if ((preg_match('#^' . $reg_exp . '$#s', $value) == 0) && ($value != 'xpx') && ($value != 'x') && ($value != 'inherit')) {
+    if ((preg_match('#^' . $reg_exp . '$#s', $value) == 0) && ($value != 'xpx') && ($value != 'x') && ($value != 'inherit') && ($value != 'initial') && (substr($value, 0, 5) != 'calc(')) {
         return array(0 => 'CSS_BAD_PROPERTY_VALUE', 1 => $key, 2 => $value, 3 => $reg_exp, 'pos' => $_i);
     }
 

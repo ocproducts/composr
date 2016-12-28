@@ -137,11 +137,28 @@ class css_and_js_test_set extends cms_test_case
 
     protected function cssTestForTheme($theme, $dir)
     {
+        $exceptions = array(
+            // Third-party code not confirming to Composr standards
+            'widget_color.css',
+            'widget_select2.css',
+            'unslider.css',
+            'skitter.css',
+            'mediaelementplayer.css',
+            'jquery_ui.css',
+        );
+
         $only = get_param_string('only', null);
+        if (($only !== null) && (in_array($only, $exceptions))) {
+            unset($exceptions[array_search($only, $exceptions)]);
+        }
 
         $dh = opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
         while (($f = readdir($dh)) !== false) {
             if ((substr($f, -4) == '.css') && ($f != 'svg.css'/*SVG-CSS*/) && ($f != 'no_cache.css')) {
+                if (in_array($f, $exceptions)) {
+                    continue;
+                }
+
                 $path = css_enforce(basename($f, '.css'), $theme);
                 if ($path == '') {
                     continue; // Nothing in file after minimisation

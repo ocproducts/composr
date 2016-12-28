@@ -19,8 +19,17 @@
  */
 
 /*
-Unsupported...
-(foo).bar;              [we can't take references from expressions]
+Unsupported for good reasons...
+
+(foo).bar;                                                                          [we can't take references from expressions]
+
+instance: new _shim[comp]()                                                         [we don't allow dynamic classnames
+
+do_cors: Test(window.XMLHttpRequest && 'withCredentials' in new XMLHttpRequest()),  [we don't allow 'in' with complex expressions]
+
+droppablesLoop: for ( i = 0; i < m.length; i++ ) { }                                [we don't allow commands as expressions]
+
+{ of: true }                                                                        [we don't allow properties that are keywords, except for 'undefined' as jQuery uses that]
 */
 
 /**
@@ -360,14 +369,7 @@ function _webstandards_js_parse_command_actual()
                 if ($next_2 == 'BRACKET_CLOSE') {
                     $control_commands = null;
                 } else {
-                    do {
-                        $control_commands[] = _webstandards_js_parse_command_actual();
-                        $next_2 = parser_peek();
-                        if ($next_2 == 'COMMA') {
-                            parser_next();
-                        }
-                    }
-                    while ($next_2 == 'COMMA');
+                    $control_commands = _webstandards_js_parse_comma_commands();
                     if (is_null($control_commands)) {
                         return null;
                     }
@@ -1392,7 +1394,7 @@ function _webstandards_js_parse_parameter($allow_expressions = true, $separator 
 
     $next = parser_next(true);
     if ($next[0] == 'undefined') {
-        $parameter = array('CALL_BY_VALUE', 'undefined', null, $GLOBALS['JS_PARSE_POSITION']);
+        $parameter = array('CALL_BY_VALUE', $next[0], null, $GLOBALS['JS_PARSE_POSITION']);
     } elseif (($next[0] == 'IDENTIFIER') || ((substr($next[0], -8) == '_literal') && ($separator == 'COLON'))) {
         $parameter = array('CALL_BY_VALUE', $next[1], null, $GLOBALS['JS_PARSE_POSITION']);
         if ($allow_expressions) {
