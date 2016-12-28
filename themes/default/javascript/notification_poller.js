@@ -6,9 +6,7 @@
 
 if (window.notifications_time_barrier === undefined) {
     window.notifications_already_presented = {};
-
     window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}';
-
     window.notifications_time_barrier = null;
 }
 
@@ -26,7 +24,7 @@ function notification_poller_init(time_barrier) {
 }
 
 function notifications_mark_all_read(event) {
-    var url = '{$FIND_SCRIPT;,notifications}?type=poller&type=mark_all_read';
+    var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=mark_all_read';
     if (window.max_notifications_to_show !== undefined) {
         url += '&max=' + window.max_notifications_to_show;
     }
@@ -49,7 +47,7 @@ function poll_for_notifications(forced_update, delay) {
         return;
     }
 
-    var url = '{$FIND_SCRIPT;,notifications}?type=poller&type=poller';
+    var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=poller';
     if (window.max_notifications_to_show !== undefined) {
         url += '&max=' + window.max_notifications_to_show;
     }

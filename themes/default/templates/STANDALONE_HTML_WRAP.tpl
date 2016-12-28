@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_html_abstractions}
 {$,This template is used for things like iframes used for previewing or for creating independent navigation areas in the site, or popups / overlays}
 <!DOCTYPE html>
 {$SET,is_preview,{$RUNNING_SCRIPT,preview}}

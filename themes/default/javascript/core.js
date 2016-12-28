@@ -16,8 +16,12 @@
                     var params = objVal($cms.dom.data(el, 'viewParams')),
                         view, viewOptions = { el: el };
 
-                    view = new $cms.views[el.dataset.view](params, viewOptions);
-                    $cms.viewInstances[$cms.uid(view)] = view;
+                    try {
+                        view = new $cms.views[el.dataset.view](params, viewOptions);
+                        $cms.viewInstances[$cms.uid(view)] = view;
+                    } catch (ex) {
+                        $cms.error('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
+                    }
                 });
             }
         },
@@ -29,12 +33,10 @@
                     var template = el.dataset.tpl,
                         params = objVal($cms.dom.data(el, 'tplParams'));
 
-                    //$cms.log('$cms.behaviors.initializeTemplates.attach(): Initializing template "' + template + '"', arguments);
-
                     try {
                         $cms.templates[template].call(el, params, el);
                     } catch (ex) {
-                        $cms.error('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the function of template "' + template + '" for', el, ex);
+                        $cms.error('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
                     }
                 });
             }
@@ -767,7 +769,8 @@
 
         // Implementation for [data-click-tray-toggle="<TRAY ID>"]
         clickTrayToggle: function (e, clicked) {
-            var trayEl = $cms.dom.$(strVal(clicked.dataset.clickTrayToggle)),
+            var trayId = strVal(clicked.dataset.clickTrayToggle),
+                trayEl = $cms.dom.$('#' + trayId),
                 trayCookie;
 
             if (!trayEl) {
@@ -1227,6 +1230,7 @@
     }
 
     $cms.inherits(ToggleableTray, $cms.View, /** @lends $cms.views.ToggleableTray# */{
+        /**@method*/
         events: function () {
             return {
                 'click .js-btn-tray-toggle': 'toggle',
@@ -1234,6 +1238,7 @@
             };
         },
 
+        /**@method*/
         toggle: function () {
             if (this.trayCookie) {
                 set_cookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
@@ -1242,6 +1247,7 @@
             $cms.toggleableTray(this.el);
         },
 
+        /**@method*/
         accordion: function (el) {
             var nodes = $cms.dom.$$(el.parentNode.parentNode, '.toggleable_tray');
 
@@ -1254,6 +1260,7 @@
             $cms.toggleableTray(el);
         },
 
+        /**@method*/
         toggleAccordionItems: function (e, btn) {
             var accordionItem = $cms.dom.closest(btn, '.js-tray-accordion-item');
 
@@ -1262,6 +1269,7 @@
             }
         },
 
+        /**@method*/
         handleTrayCookie: function () {
             var cookieValue = read_cookie('tray_' + this.trayCookie);
 
@@ -1272,66 +1280,54 @@
     });
 
     $cms.toggleableTray = toggleableTray;
-    function toggleableTray(element, noAnimateHeight) {
-        var $IMG_expcon = '{$IMG;,1x/trays/expcon}',
-            $IMG_expcon2 = '{$IMG;,1x/trays/expcon2}',
-            $IMG_expand = '{$IMG;,1x/trays/expand}',
+    // Toggle a ToggleableTray
+    function toggleableTray(el, noAnimateHeight) {
+        var $IMG_expand = '{$IMG;,1x/trays/expand}',
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
-            $IMG_contract2 = '{$IMG;,1x/trays/contract2}',
+            $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
 
-            $IMG_2x_expcon = '{$IMG;,2x/trays/expcon}',
-            $IMG_2x_expcon2 = '{$IMG;,2x/trays/expcon2}',
-            $IMG_2x_expand = '{$IMG;,2x/trays/expand}',
-            $IMG_2x_expand2 = '{$IMG;,2x/trays/expand2}',
-            $IMG_2x_contract = '{$IMG;,2x/trays/contract}',
-            $IMG_2x_contract2 = '{$IMG;,2x/trays/contract2}';
-
-        if (!element) {
+        if (!el) {
             return;
         }
 
-        noAnimateHeight = $cms.$CONFIG_OPTION.enable_animations ? !!noAnimateHeight : true;
+        //@TODO: Implement slide-up/down animation which is triggered by this boolean
+        //noAnimateHeight = $cms.$CONFIG_OPTION.enable_animations ? !!noAnimateHeight : true;
 
-        if (!element.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
-            element = $cms.dom.$(element, '.toggleable_tray') || element;
+        if (!el.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
+            el = $cms.dom.$(el, '.toggleable_tray') || el;
         }
 
-        var pic = $cms.dom.$(element.parentNode, '.toggleable_tray_button img') || $cms.dom.$('#e_' + element.id);
-
-        if (pic && (matches_theme_image(pic.src, $IMG_expcon) || matches_theme_image(pic.src, $IMG_expcon2))) {// Currently in action?
+        if (!el) {
             return;
         }
 
-        element.setAttribute('aria-expanded', 'true');
+        var pic = $cms.dom.$(el.parentNode, '.toggleable_tray_button img') || $cms.dom.$('img#e_' + el.id);
 
-        var isDiv = element.localName === 'div',
-            isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
+        el.setAttribute('aria-expanded', 'true');
 
-        if ($cms.dom.notDisplayed(element)) {
-            $cms.dom.show(element);
-
-            clear_transition_and_set_opacity(element, 0.0);
-            fade_transition(element, 100, 30, 4);
+        if ($cms.dom.notDisplayed(el)) {
+            $cms.dom.fadeIn(el);
 
             if (pic) {
-                set_tray_theme_image('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_2x_contract, $IMG_contract2, $IMG_2x_contract2);
+                set_tray_theme_image('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
         } else {
+            $cms.dom.hide(el);
+
             if (pic) {
-                set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_2x_expand, $IMG_expand2, $IMG_2x_expand2);
+                set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
-                pic.title = '{!EXPAND;^}'; // Needs doing because convert_tooltip may not have run yet
-                pic.cms_tooltip_title = '{!EXPAND;^}';
+                pic.title = '{!EXPAND;^}';
             }
-            $cms.dom.hide(element);
         }
 
         trigger_resize(true);
 
         // Execution ends here
 
-        function set_tray_theme_image(before_theme_img, after_theme_img, before1_url, after1_url, after1_url_2x, after2_url, after2_url_2x) {
+        var isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
+        function set_tray_theme_image(before_theme_img, after_theme_img, before1_url, after1_url, after2_url) {
             var is_1 = matches_theme_image(pic.src, before1_url);
 
             if (is_1) {
@@ -1345,22 +1341,6 @@
                     pic.src = pic.src.replace(before_theme_img + '2', after_theme_img + '2');
                 } else {
                     pic.src = $cms.img(after2_url);
-                }
-            }
-
-            if (pic.srcset !== undefined) {
-                if (is_1) {
-                    if (isThemeWizard) {
-                        pic.srcset = pic.srcset.replace(before_theme_img, after_theme_img);
-                    } else {
-                        pic.srcset = $cms.img(after1_url_2x);
-                    }
-                } else {
-                    if (isThemeWizard) {
-                        pic.srcset = pic.srcset.replace(before_theme_img + '2', after_theme_img + '2');
-                    } else {
-                        pic.srcset = $cms.img(after2_url_2x);
-                    }
                 }
             }
         }
@@ -1669,7 +1649,7 @@
         // And now define nice listeners for it all...
         var global = get_main_cms_window(true);
 
-        el.cms_tooltip_title = escape_html(title);
+        el.cms_tooltip_title = $cms.filter.html(title);
 
         $cms.dom.on(el, 'mouseover', function (event) {
             global.activate_tooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, global);

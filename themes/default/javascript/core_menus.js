@@ -528,7 +528,7 @@
                     var expand = $cms.dom.create('a', {
                         class: 'toggleable_tray_button',
                         href: '#!',
-                        'data-click-tray-toggle': '#' + branchId
+                        'data-click-tray-toggle': branchId
                     });
 
                     var expandImg = $cms.dom.create('img');

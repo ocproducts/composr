@@ -8,6 +8,7 @@
 	{$SET,force_previews,1}
 {+END}{+END}{+END}
 
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 <div data-view="FormStandardEnd" data-view-params="{+START,PARAMS_JSON,preview_url,force_previews,JAVASCRIPT,SECONDARY_FORM,SUPPORT_AUTOSAVE,FORM_NAME,SEPARATE_PREVIEW,BACK_URL}{_*}{+END}">
 {+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$CONFIG_OPTION,enable_previews}}
 	{+START,IF_NON_PASSED_OR_FALSE,SKIP_WEBSTANDARDS}{+START,IF,{$OR,{$CONFIG_OPTION,enable_markup_webstandards},{$CONFIG_OPTION,enable_spell_check},{$AND,{$HAS_PRIVILEGE,perform_keyword_check},{$CONFIG_OPTION,enable_keyword_density_check}}}}

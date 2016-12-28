@@ -582,6 +582,7 @@ class Module_admin_setupwizard
         }
 
         require_code('setupwizard');
+        require_javascript('setupwizard');
         $js = /**@lang JavaScript*/'$cms.functions.adminSetupwizardStep5();';
         $inner = do_template('FORM', array(
             '_GUID' => 'f1e9a4d271c7d68ff9da6dc0438f6e3f',
@@ -765,6 +766,7 @@ class Module_admin_setupwizard
         $fields = form_input_list(do_lang_tempcode('RULES'), do_lang_tempcode('DESCRIPTION_RULES'), 'rules', $list, null, true);
 
         require_code('setupwizard');
+        require_javascript('setupwizard');
         $javascript = /**@lang JavaScript*/'$cms.functions.adminSetupwizardStep7()';
         $form = do_template('FORM', array('_GUID' => 'bf01a2b90967e86213ae0672c36a4b4e', 'SKIPPABLE' => 'skip_7', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()), 'JAVASCRIPT' => $javascript));
 
@@ -827,6 +829,7 @@ class Module_admin_setupwizard
         $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), do_lang_tempcode('CONFIG_OPTION_closed'), 'closed', get_option('closed'), false));
 
         require_code('setupwizard');
+        require_javascript('setupwizard');
         $javascript = /**@lang JavaScript*/'$cms.functions.adminSetupwizardStep9()';
         $inner = do_template('FORM', array(
             '_GUID' => 'c405a64a08328f78ac0e3f22a8365411',

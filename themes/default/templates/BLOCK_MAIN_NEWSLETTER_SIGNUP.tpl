@@ -1,12 +1,10 @@
 {$REQUIRE_JAVASCRIPT,newsletter}
-<div data-tpl="blockMainNewsletterSignup" data-tpl-params="{+START,PARAMS_JSON,NID}{_*}{+END}">
+
 {+START,IF_PASSED,MSG}
-	<p>
-		{MSG}
-	</p>
+	<p>{MSG}</p>
 {+END}
 
-<section class="box box___block_main_newsletter_signup"><div class="box_inner">
+<section class="box box___block_main_newsletter_signup" data-tpl="blockMainNewsletterSignup" data-tpl-params="{+START,PARAMS_JSON,NID}{_*}{+END}"><div class="box_inner">
 	<h3>{!NEWSLETTER}{$?,{$NEQ,{NEWSLETTER_TITLE},{!GENERAL}},: {NEWSLETTER_TITLE*}}</h3>
 
 	<form class="js-form-submit-newsletter-check-email-field" title="{!NEWSLETTER}" action="{URL*}" method="post" autocomplete="off">
@@ -23,4 +21,3 @@
 		</p>
 	</form>
 </div></section>
-</div>

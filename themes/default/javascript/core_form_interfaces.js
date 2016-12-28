@@ -330,7 +330,7 @@
             }
             img.title = '';
             img.have_links = true;
-            img.dataset.cmsRichTooltip = '1';
+            img.setAttribute('data-cms-rich-tooltip', '1');
         });
     };
 
@@ -708,7 +708,7 @@
         });
     };
 
-    $cms.templates.postingField = function postingField(params/* has multiple containers */) {
+    $cms.templates.postingField = function postingField(params/* has mutiple containers */) {
         var id = strVal(params.id),
             name = strVal(params.name),
             initDragDrop = !!params.initDragDrop,
