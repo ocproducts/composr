@@ -74,6 +74,7 @@ function init__webstandards_js_lint()
                             'TypeError' => array('Error', array()),
                             'URIError' => array('Error', array()),
                             'Null' => array('Object', array()),
+                            'Infinity' => array('Object', array()),
                             'Undefined' => array('Object', array()),
                             // ArgumentError, AttributeError, ConstantError, DefinitionError, UninitializedError: exist in Mozilla javascript
 
@@ -299,7 +300,7 @@ function js_check_function($function)
 /**
  * Check a variable list for consistency.
  *
- * @param  list $JS_LOCAL_VARIABLES The variable list
+ * @param  array $JS_LOCAL_VARIABLES The variable list
  */
 function js_check_variable_list($JS_LOCAL_VARIABLES)
 {
@@ -365,11 +366,15 @@ function js_check_variable_list($JS_LOCAL_VARIABLES)
 /**
  * Check a parsed command.
  *
- * @param  list $command The command
+ * @param  array $command The command
  * @param  integer $depth The block depth we are searching at
  */
 function js_check_command($command, $depth)
 {
+    if (count($command) == 0) {
+        return;
+    }
+
     global $JS_LOCAL_VARIABLES, $CURRENT_CLASS;
     foreach ($command as $i => $c) {
         if ($c == array()) {
@@ -397,7 +402,7 @@ function js_check_command($command, $depth)
                 }
                 $JS_LOCAL_VARIABLES['__return']['mentions'][] = $c_pos;
                 if (count($command) - 1 > $i) {
-                    js_log_warning('CHECKER', 'There is unreachable code', $c_pos);
+                    // Annoying js_log_warning('CHECKER', 'There is unreachable code', $c_pos);
                 }
                 break;
             case 'SWITCH':
@@ -452,10 +457,14 @@ function js_check_command($command, $depth)
                 break;
             case 'FOR':
                 if (!is_null($c[1])) {
-                    js_check_command(array($c[1]), $depth + 1);
+                    foreach ($c[1] as $init_command) {
+                        js_check_command(array($init_command), $depth + 1);
+                    }
                 }
                 if (!is_null($c[3])) {
-                    js_check_command(array($c[3]), $depth + 1);
+                    foreach ($c[3] as $control_command) {
+                        js_check_command(array($control_command), $depth + 1);
+                    }
                 }
                 $passes = js_ensure_type(array('Boolean'), js_check_expression($c[2]), $c_pos, 'Loop conditionals must be Boolean (for)');
                 //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $c[2]);
@@ -520,7 +529,7 @@ function js_check_command($command, $depth)
 /**
  * Check an assignment statement.
  *
- * @param  list $c The complex assignment details
+ * @param  array $c The complex assignment details
  * @param  integer $c_pos The position this is at in the parse
  * @return string The assigned type
  */
@@ -538,7 +547,7 @@ function js_check_assignment($c, $c_pos)
             js_ensure_type(array('Array', 'Number', 'String'), $v_type, $c_pos, 'Can only perform addition to strings or arrays or numbers (not ' . $v_type . ')');
         }
     }
-    if (in_array($op, array('DIV_EQUAL', 'MUL_EQUAL', 'MINUS_EQUAL', 'SL_EQUAL', 'SR_EQUAL', 'ZSR_EQUAL', 'BW_AND_EQUAL', 'BW_OR_EQUAL'))) {
+    if (in_array($op, array('DIV_EQUAL', 'MUL_EQUAL', 'SUBTRACT_EQUAL', 'SL_EQUAL', 'SR_EQUAL', 'ZSR_EQUAL', 'BW_AND_EQUAL', 'BW_OR_EQUAL'))) {
         js_ensure_type(array('Number'), $e_type, $c_pos, 'Can only perform relative arithmetic with numbers (not ' . $e_type . ')');
         if ($target[0] == 'VARIABLE') {
             $v_type = js_get_variable_type($target);
@@ -567,7 +576,7 @@ function js_check_assignment($c, $c_pos)
 /**
  * Check an expression.
  *
- * @param  list $e The complex expression
+ * @param  array $e The complex expression
  * @param  boolean $secondary Whether the expression is being used as a command (i.e. whether the expression is not used for the result, but rather, the secondary consequences of calculating it)
  * @param  boolean $is_guarded Whether the expression is being guarded and hence is not a proper reference
  * @return string The type
@@ -649,7 +658,10 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
         js_ensure_type(array($type_a), $type_b, $c_pos, 'Comparators must have type symmetric operands (' . $type_a . ' vs ' . $type_b . ')');
         return 'Boolean';
     }
-    if (in_array($e[0], array('IS_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_NOT_EQUAL'))) {
+    if (in_array($e[0], array('IS_IDENTICAL', 'IS_NOT_IDENTICAL'))) {
+        return 'Boolean';
+    }
+    if (in_array($e[0], array('IS_EQUAL', 'IS_NOT_EQUAL'))) {
         $type_a = js_check_expression($e[1], false, $is_guarded);
         $type_b = js_check_expression($e[2]);
         if (($e[0] == 'IS_EQUAL') && ($e[2][0] == 'LITERAL') && ($e[2][1][0] == 'Boolean')) {
@@ -659,8 +671,12 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
         //if ($passes) js_infer_expression_type_to_variable_type($type_a, $e[2]);
         return 'Boolean';
     }
-    if ($e[0] == 'INSTANCEOF') {
-        js_check_variable($e[1], false, $is_guarded);
+    if (($e[0] == 'INSTANCEOF') || ($e[0] == 'IN')) {
+        if (($e[0] == 'IN') && ($e[1][0] == 'LITERAL')) {
+            js_ensure_type(array('String'), js_check_expression($e[1], false, $is_guarded), $c_pos, 'Can only use \'in\' on strings');
+        } else {
+            js_check_variable($e[1], false, $is_guarded);
+        }
         return 'Boolean';
     }
     $inner = $e;
@@ -758,7 +774,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
 /**
  * Check a function call.
  *
- * @param  list $c The (possibly complex) variable that is the function identifier
+ * @param  array $c The (possibly complex) variable that is the function identifier
  * @param  integer $c_pos The position this is at in the parse
  * @param  ?string $class The class the given variable is in (null: global/as-specified-internally-in-c)
  * @return ?string The return type (null: nothing returned)
@@ -782,7 +798,7 @@ function js_check_call($c, $c_pos, $class = null)
 /**
  * Check a variable.
  *
- * @param  list $variable The (possibly complex) variable
+ * @param  array $variable The (possibly complex) variable
  * @param  boolean $reference Whether the variable is being used referentially (i.e. not being set)
  * @param  boolean $function_duality Whether to return the type and function-return-type pair, rather than just the type
  * @param  ?string $class The class the variable is referencing within (null: global)
@@ -796,7 +812,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
 
     $identifier = $variable[1];
     if (is_array($identifier)) { // Normally just a string, but JS is awkward and allows expression :S
-        $exp_type = js_check_expression($identifier);
+        $exp_type = js_check_expression($identifier, false, true);
         $variable[1] = $exp_type;
         return js_check_variable($variable, $reference, $function_duality, null, false, $is_call);
     }
@@ -909,8 +925,16 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
             }
             return js_check_variable(array('VARIABLE', $variable[2][1][1], $variable[2][2], $variable[count($variable) - 1]), $reference, $function_duality, $_class, $_class == $identifier);
         }
+        if ($variable[2][0] == 'CALL') {
+            $ret = js_check_call($variable[2], $variable[3], js_get_variable_type($variable));
+            if ($ret === null) {
+                return '!Object';
+            }
+            return $ret;
+        }
 
-        exit(':( wrt ' . $variable[2][0]);
+        // Something very complex
+        return '!Object';
     }
 
     $function_return = isset($JS_LOCAL_VARIABLES[$identifier]['function_return']) ? $JS_LOCAL_VARIABLES[$identifier]['function_return'] : null;
@@ -930,7 +954,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
 /**
  * Scan through a complex variable, checking any expressions embedded in it.
  *
- * @param  list $variable The complex variable
+ * @param  array $variable The complex variable
  */
 function js_scan_extractive_expressions($variable)
 {
@@ -946,7 +970,7 @@ function js_scan_extractive_expressions($variable)
 /**
  * Get the type of a variable.
  *
- * @param  list $variable The variable
+ * @param  array $variable The variable
  * @return string The type
  */
 function js_get_variable_type($variable)
@@ -1002,7 +1026,7 @@ function js_add_variable_reference($identifier, $first_mention, $instantiation =
     if (!isset($JS_LOCAL_VARIABLES[$identifier])) {
         $JS_LOCAL_VARIABLES[$identifier] = array('function_return' => $function_return, 'is_global' => false, 'types' => array(), 'unused_value' => !$reference && !$instantiation, 'first_mention' => $first_mention);
 
-        if ((!$instantiation) && ($identifier != '__return') && (!is_numeric($identifier)) && (!$is_call)) {
+        if ((!$instantiation) && ($identifier != 'this') && ($identifier != '__return') && ($identifier != 'jQuery') && (!is_numeric($identifier)) && (!$is_call)) {
             js_log_warning('CHECKER', 'A variable (' . $identifier . ') was used without being declared', $first_mention);
         }
     } else {
@@ -1014,7 +1038,7 @@ function js_add_variable_reference($identifier, $first_mention, $instantiation =
  * If the given expression is a direct variable expression, this function will infer the type as the given type. This therefore allows type inferring on usage as well as on assignment.
  *
  * @param  string $type The type
- * @param  list $expr The expression
+ * @param  array $expr The expression
  */
 function js_infer_expression_type_to_variable_type($type, $expr)
 {
@@ -1029,7 +1053,7 @@ function js_infer_expression_type_to_variable_type($type, $expr)
 /**
  * Do type checking for something specific.
  *
- * @param  list $_allowed_types List of allowed types
+ * @param  array $_allowed_types List of allowed types
  * @param  string $actual_type Actual type involved
  * @param  integer $pos Current parse position
  * @param  ?string $alt_error Specific error message to give (null: use default)
@@ -1044,7 +1068,7 @@ function js_ensure_type($_allowed_types, $actual_type, $pos, $alt_error = null)
     global $JS_PROTOTYPES;
 
     // Tidy up our allow list to be a nice map
-    $allowed_types = array('Undefined' => true, 'Null' => true);
+    $allowed_types = array('Undefined' => true, 'Null' => true, 'Infinity' => true);
     foreach ($_allowed_types as $type) {
         if ($type == '') {
             continue; // Weird

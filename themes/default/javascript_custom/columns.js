@@ -406,7 +406,6 @@ add_event_listener_abstract(window,'real_load',function () {
 							targetHeight = targetHeight + 30;
 							if(loopCount == maxLoops-1) maxLoops++;
 						}else{
-							debugger;
 							loopCount = maxLoops;
 						}
 					}else if(max - min > 30) {

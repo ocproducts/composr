@@ -2285,7 +2285,7 @@ if (typeof jQuery != 'undefined') {
 		t.node = t.media = t.$media[0];
 
 		if(!t.node) {
-			return
+			return;
 		}
 
 		// check for existing player

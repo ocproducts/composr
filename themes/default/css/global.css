@@ -200,7 +200,7 @@ textarea, input, code {
 /* Our little 'typing' effect, shows a keyboard when focusing input fields */
 /*Doesn't look good in IE10 input[type="text"]:focus, input[type="password"]:focus {
 	background: url('{$IMG_INLINE;,keyboard}') right center no-repeat {$GET,native_ui_background};
-
+}
 input[type="text"][size="6"]:focus, input[type="text"][readonly="true"]:focus {
 	background-image: none;
 }*/

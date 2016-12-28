@@ -68,6 +68,21 @@ class template_previews_test_set extends cms_test_case
     {
         require_code('webstandards');
         require_lang('webstandards');
+        require_code('themes2');
+
+        $themes = find_all_themes();
+        foreach (array_keys($themes) as $theme) {
+            $this->screenPreviewTestForTheme($theme);
+        }
+
+        safe_ini_set('ocproducts.type_strictness', '0');
+        safe_ini_set('ocproducts.xss_detect', '0');
+    }
+
+    protected function screenPreviewTestForTheme($theme)
+    {
+        global $THEME_BEING_TESTED;
+        $THEME_BEING_TESTED = $theme;
 
         global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
@@ -96,7 +111,7 @@ class template_previews_test_set extends cms_test_case
             $hook = $list[0];
             $function = $list[1];
 
-            if (is_file(get_file_base() . '/_tests/screens_tested/' . $function . '.tmp')) {
+            if (is_file(get_file_base() . '/_tests/screens_tested/' . $theme . '__' . $function . '.tmp')) {
                 continue; // To make easier to debug through
             }
 
@@ -153,14 +168,13 @@ class template_previews_test_set extends cms_test_case
                 display_webstandards_results($_out, $result, false, false);
             } else {
                 if (!$flag) {
-                    fclose(fopen(get_file_base() . '/_tests/screens_tested/' . $function . '.tmp', 'wb'));
-                    fix_permissions(get_file_base() . '/_tests/screens_tested/' . $function . '.tmp');
+                    file_put_contents(get_file_base() . '/_tests/screens_tested/' . $theme . '__' . $function . '.tmp', '1');
+                    fix_permissions(get_file_base() . '/_tests/screens_tested/' . $theme . '__' . $function . '.tmp');
                 }
             }
         }
 
-        safe_ini_set('ocproducts.type_strictness', '0');
-        safe_ini_set('ocproducts.xss_detect', '0');
+        $THEME_BEING_TESTED = null;
     }
 
     public function testRepeatConsistency()
@@ -220,7 +234,7 @@ class template_previews_test_set extends cms_test_case
             $this->assertFalse($different, 'Screen preview not same each time, ' . $function);
 
             if (!$different) {
-                fclose(fopen(get_file_base() . '/_tests/screens_tested/consistency__' . $function . '.tmp', 'wb'));
+                file_put_contents(get_file_base() . '/_tests/screens_tested/consistency__' . $function . '.tmp', '1');
                 fix_permissions(get_file_base() . '/_tests/screens_tested/consistency__' . $function . '.tmp');
             } else {
                 $myfile = fopen(get_file_base() . '/_tests/screens_tested/v1__' . '.tmp', 'wb');
@@ -279,7 +293,7 @@ class template_previews_test_set extends cms_test_case
             $this->assertFalse($put_out, 'Messages put out by ' . $function . '  (' . strip_html($ATTACHED_MESSAGES->evaluate()) . ')');
 
             if (!$put_out) {
-                fclose(fopen(get_file_base() . '/_tests/screens_tested/nonemissing__' . $function . '.tmp', 'wb'));
+                file_put_contents(get_file_base() . '/_tests/screens_tested/nonemissing__' . $function . '.tmp', '1');
                 fix_permissions(get_file_base() . '/_tests/screens_tested/nonemissing__' . $function . '.tmp');
             }
 

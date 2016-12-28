@@ -334,7 +334,7 @@ function init__webstandards2()
         'z-index' => '(auto|(\d+))',
         'content' => '.+',
         'quotes' => '.+ .+',
-        'max-width' => $enforce_auto_or_length,
+        'max-width' => '(none|' . $enforce_auto_or_length . ')',
         'min-width' => $enforce_auto_or_length,
         'max-height' => $enforce_auto_or_length,
         'min-height' => $enforce_auto_or_length,
@@ -382,6 +382,7 @@ function init__webstandards2()
         /* These are non standard but we want them */
         'writing-mode' => '(tb-rl|lr-tb)', // A more complex W3C standard is underway. Only IE supports this one.
         'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
+        'overflow-scrolling' => '(touch|auto)',
     );
 
     global $CSS_NON_IE_PROPERTIES;
@@ -831,7 +832,7 @@ function init__webstandards2()
  * @param  map $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
- * @param  list $errors Errors detected so far. We will add to these and return
+ * @param  array $errors Errors detected so far. We will add to these and return
  * @return array Array of error information
  *
  * @ignore
@@ -1388,7 +1389,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
  * Checks the spelling of some text.
  *
  * @param  string $value The text
- * @return list Array of errors
+ * @return array Array of errors
  */
 function check_spelling($value)
 {
