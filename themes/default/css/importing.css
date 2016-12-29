@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.import_actions th, .import_line_more {
+.import_actions th {
 	text-align: {!en_right};
 }
 

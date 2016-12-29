@@ -37,7 +37,7 @@
 			<div class="download_box_pic"><a href="{URL*}">{IMGCODE}</a></div>
 		{+END}
 
-		<div class="download_box_description {+START,IF_NON_EMPTY,{IMGCODE}}pic{+END}">
+		<div class="download_box_description{+START,IF_NON_EMPTY,{IMGCODE}} pic{+END}">
 			{$PARAGRAPH,{$TRUNCATE_LEFT,{DESCRIPTION},460,0,1}}
 		</div>
 

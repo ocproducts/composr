@@ -848,6 +848,16 @@ body.popup_spacer h2 {
 	margin-{!en_left}: 10px;
 }
 
+.global_side_panel .hide_if_in_panel {
+	display: none;
+}
+.hide_if_not_in_panel {
+	display: none;
+}
+.global_side_panel .hide_if_not_in_panel {
+	display: block;
+}
+
 .global_messages {
 	margin: 0 1em;
 }
@@ -1693,9 +1703,6 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .fp_col_block .pagination {
 	float: none;
-}
-.fp_col_block .pagination_per_page {
-	display: none;
 }
 .fp_col_block form + span {
 	margin-left: 0;
@@ -2563,13 +2570,6 @@ div.ajax_loading, p.ajax_loading {
 	font-weight: bold;
 	padding-left: 0;
 	margin-bottom: 0.3em;
-}
-
-.post .post_avatar {
-	float: left;
-	margin: 0.5em 1em 0.5em 0;
-	width: 50px;
-	height: 50px;
 }
 
 .post .post_subline {
