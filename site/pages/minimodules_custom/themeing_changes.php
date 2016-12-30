@@ -49,25 +49,36 @@ foreach (array_keys($releases) as $version) {
     $version_new = $version;
 
     if ($css_path_old !== null) {
+        $out_for_jump = '';
+
         $dh = opendir($css_path_new);
         if ($dh !== false) {
+            $files = array();
             while (($f = readdir($dh)) !== false) {
+                $files[] = $f;
+            }
+            closedir($dh);
+            sort($files);
+
+            foreach ($files as $f) {
                 if ((substr($f, -4) == '.css') && (is_file($css_path_old . '/' . $f))) {
                     $diff = diff_simple($css_path_old . '/' . $f, $css_path_new . '/' . $f, true);
-                    if ($diff != '') {
-                        $out_for_jump = '';
-
-                        $out_for_jump .= '<h2>' . escape_html($version_old) . ' &rarr; ' . escape_html($version_new) . '</h2>';
-
+                    if (trim($diff) != '' && trim($diff) != '<br />') {
+                        $out_for_jump .= '<h3>' . escape_html($f) . '</h3>';
+                        $out_for_jump .= '<div style="overflow: auto;">';
                         $out_for_jump .= '<code style="white-space: pre">';
                         $out_for_jump .= $diff;
                         $out_for_jump .= '</code>';
-
-                        $out = $out_for_jump . $out;
+                        $out_for_jump .= '</div>';
                     }
                 }
             }
-            closedir($dh);
+        }
+
+        if ($out_for_jump != '') {
+            $out_for_jump = '<h2>' . escape_html($version_old) . ' &rarr; ' . escape_html($version_new) . '</h2>' . $out_for_jump;
+
+            $out = $out_for_jump . $out;
         }
     }
 
