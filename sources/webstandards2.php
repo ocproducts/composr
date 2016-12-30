@@ -237,7 +237,7 @@ function init__webstandards2()
     $enforce_potential_4d_length_auto = $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '|)|)|)';
     $enforce_potential_4d_ilength = $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '|)|)|)';
     $enforce_potential_4d_ilength_auto = $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '|)|)|)';
-    $enforce_font_size = '(larger|smaller|xx-small|x-small|small|medium|large|x-large|xx-large|' . $enforce_length . '(/' . $enforce_length .')?)';
+    $enforce_font_size = '(larger|smaller|xx-small|x-small|small|medium|large|x-large|xx-large|' . $enforce_length . '(/' . $enforce_length . ')?)';
     $enforce_font_style = '(normal|italic|oblique)';
     $enforce_font_variant = '(normal|small-caps)';
     $enforce_font_weight = '(lighter|normal|bold|bolder|((\d)+))';

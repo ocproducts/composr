@@ -183,7 +183,7 @@ function get_version_components__from_dotted($dotted)
  * Get a pretty version number for a Composr version.
  * This pretty style is not used in Composr code per se, but is shown to users and hence Composr may need to recognise it when searching news posts, download databases, etc.
  *
- * @param  string $pretty Dotted version number
+ * @param  string $dotted Dotted version number
  * @return string Pretty version number
  */
 function get_version_pretty__from_dotted($dotted)

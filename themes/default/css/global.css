@@ -152,6 +152,23 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 {$THEME_WIZARD_COLOR,#597bbf,cnspostindicator,65% (seed sat_to 100) + 35% WB}
 {$THEME_WIZARD_COLOR,#597bf7,cnsredirectindicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
 
+/* Range of bright varying colours */
+{$THEME_WIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
+{$THEME_WIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
+{$THEME_WIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
+{$THEME_WIZARD_COLOR,#5800fa,gcol_4,100% #5800FA}
+{$THEME_WIZARD_COLOR,#0099fa,gcol_5,100% #0099FA}
+{$THEME_WIZARD_COLOR,#859638,gcol_6,100% #859638}
+{$THEME_WIZARD_COLOR,#2bab03,gcol_7,100% #2BAB03}
+{$THEME_WIZARD_COLOR,#7d7e04,gcol_8,100% #7D7E04}
+{$THEME_WIZARD_COLOR,#966038,gcol_9,100% #966038}
+{$THEME_WIZARD_COLOR,#96384a,gcol_10,100% #96384A}
+{$THEME_WIZARD_COLOR,#963895,gcol_11,100% #963895}
+{$THEME_WIZARD_COLOR,#4e3896,gcol_12,100% #4E3896}
+{$THEME_WIZARD_COLOR,#386296,gcol_13,100% #386296}
+{$THEME_WIZARD_COLOR,#389596,gcol_14,100% #389596}
+{$THEME_WIZARD_COLOR,#389653,gcol_15,100% #389653}
+
 /*
 =========================
 ===Overridden Elements===

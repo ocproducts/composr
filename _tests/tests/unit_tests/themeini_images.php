@@ -24,6 +24,11 @@ class themeini_images_test_set extends cms_test_case
         $themes = find_all_themes();
         foreach (array_keys($themes) as $theme) {
             $ini_file = parse_ini_file(get_file_base() . '/themes/' . $theme . '/theme.ini');
+
+            if (!isset($ini_file['theme_wizard_images'])) {
+                continue;
+            }
+
             foreach (explode(',', $ini_file['theme_wizard_images']) as $theme_image) {
                 if (strpos($theme_image, '*') === false) {
                     $this->assertTrue(find_theme_image($theme_image, true) != '', 'Missing but referenced in theme.ini: ' . $theme_image);

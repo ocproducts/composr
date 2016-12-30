@@ -1308,8 +1308,8 @@ function _webstandards_js_parse_comma_variables($allow_blanks = false, $closer =
  * Return parse info for parse type.
  *
  * @param  boolean $allow_expressions Whether to allow expressions in this
- * @param  string $separator The token that sits as the 'separator' between name and value
  * @param  string $closer The token to close the list
+ * @param  string $separator The token that sits as the 'separator' between name and value
  * @return ?list Parse info (null: error)
  * @ignore
  */
