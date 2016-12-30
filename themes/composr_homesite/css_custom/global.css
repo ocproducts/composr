@@ -125,7 +125,8 @@ img, img a { border:none; outline:none; }
 	.dropMenu li a.active { color:#520F18; background-image:url('{$IMG;,composr_homesite/top-nav-active-bg}'); background-position:0px 0px; background-repeat:repeat-x; }
 	.dropMenu li:hover { position:relative; text-shadow:0 1px #FFCC33; background-image:url('{$IMG;,composr_homesite/top-nav-active-bg}'); background-position:0px 0px; background-repeat:repeat-x; }
 	.dropMenu li:hover ul { left:0px; top:64px; background:#E4A960; padding:0px; {$BETA_CSS_PROPERTY,border-radius:6px 0px 6px 6px;} padding-bottom:10px; }
-	.dropMenu li:hover ul li a { padding:5px; display:block; width:168px; text-indent:15px; background-color:#E4A960; color:#520F18; line-height:32px; }
+	.dropMenu li:hover ul li { float: none; }
+	.dropMenu li:hover ul li a { padding:5px 15px; display:block; white-space:nowrap; background-color:#E4A960; color:#520F18; line-height:32px; }
 	.dropMenu li:hover ul li a:hover { background:#DA7C25; text-shadow:none; color:#FFF; }
 {+END}
 
