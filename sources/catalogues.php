@@ -613,7 +613,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
  */
 function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
-    if (preg_match('#^((.*)\.)?field\_(\d+)#', $filter_key) != 0) {
+    if (preg_match('#^((.*)\.)?field\_(\d+)#', $filter_key) != 0) { // This is by field ID, not field sequence #
         $ret = _fields_api_filtercode($db, $info, $catalogue_name, $extra_join, $extra_select, $filter_key, $filter_val, $db_fields, $table_join_code);
         if (!is_null($ret)) {
             return $ret;
@@ -725,10 +725,11 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
             } else {
                 $virtual_order_by = 'r.ce_add_date'; // Should not happen
             }
-        } elseif (is_numeric($order_by)) { // Ah, so it's saying the nth field of this catalogue
+        } elseif ((is_numeric($order_by)) && (isset($fields[intval($order_by)]))) { // Ah, so it's saying the nth field of this catalogue
             $ob = object_factory('Hook_content_meta_aware_catalogue_entry');
             $info = $ob->info();
-            $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, 'field_' . $order_by, '', array(), 'r');
+            $order_by_field_id = $fields[intval($order_by)]['id'];
+            $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, 'field_' . $order_by_field_id, '', array(), 'r');
             if ($bits !== null) {
                 list($new_key,) = $bits;
                 if ((strpos($new_key, '.text_original') !== false) && (multi_lang_content())) {
@@ -745,6 +746,8 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
             } else {
                 $virtual_order_by = 'r.id';
             }
+        } else {
+            $virtual_order_by = 'r.id';
         }
     } else {
         $virtual_order_by = 'r.id';

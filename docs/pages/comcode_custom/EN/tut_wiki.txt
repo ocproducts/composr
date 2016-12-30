@@ -50,6 +50,14 @@ The 'Edit Wiki+ page' selection list (Content Management > Wiki+) may be used to
 
 In a typical setup, staff are given access to modify the Wiki+ tree, while ordinary users rely on the Comcode syntax to create new inline links. Whether ordinary users are given access to add new pages can vary substantially between deployments, depending heavily on what role Wiki+ is being used for.
 
+[title="3"]Moving pages[/title]
+
+Technically you can't actually move a Wiki+ page because Wiki+ pages have no actual fixed location to start with; because it's a network structure rather than a strict tree structure. When you place child links you are creating a path not a strict hierarchy.
+
+Composr will see how you got to a page to generate breadcrumbs, but direct links to a page will generate breadcrumbs using an arbitrary path though the network.
+
+If you want to force particular breadcrumbs make sure there is only one path to get to a page.
+
 [title="3"]Orphaned pages[/title]
 
 Orphaned pages are pages that are not linked into the tree. In other words, they cannot be found via tree navigation starting from the root Wiki+ page.

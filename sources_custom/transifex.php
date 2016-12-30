@@ -858,6 +858,14 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
         }
 
         $write_out = preg_replace('#^\# .*\n#m', '', $data_a['content'] . "\n" . $data_b['content']);
+
+        // Fix some common mistakes people make
+        if ($_f == 'global') {
+            $write_out = preg_replace('#^en_left=((?!left$)(?!right$).)*$#m', 'en_left=left', $write_out);
+            $write_out = preg_replace('#^en_right=((?!right$)(?!left$).)*$#m', 'en_right=right', $write_out);
+            $write_out = preg_replace('#^dir=((?!ltr$)(?!rtl$).)*$#m', 'dir=ltr', $write_out);
+        }
+
         $c = "[strings]\n" . trim($write_out) . "\n";
 
         if ($tar_file === null) {

@@ -161,6 +161,9 @@ class Module_admin_themes
         }
 
         if ($type == '_edit_css') {
+            require_code('input_filter_2');
+            modsecurity_workaround_enable();
+
             $theme = post_param_string('theme');
             $file = post_param_string('file');
  
