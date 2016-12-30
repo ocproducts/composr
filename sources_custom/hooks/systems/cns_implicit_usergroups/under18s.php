@@ -42,7 +42,7 @@ class Hook_implicit_usergroups_under18s
      */
     public function get_member_list($group_id)
     {
-        return array_to_map('id', $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where()));
+        return list_to_map('id', $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $this->_where()));
     }
 
     /**

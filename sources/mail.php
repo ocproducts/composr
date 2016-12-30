@@ -602,6 +602,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     require_code('site');
     require_code('mime_types');
+    require_code('type_sanitisation');
 
     if (is_null($as)) {
         $as = $GLOBALS['FORUM_DRIVER']->get_guest_id();
@@ -671,6 +672,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // To and from, and language
     $staff_address = get_option('staff_address');
+    if (!is_email_address($staff_address)) { // Required for security
+        $staff_address = '';
+    }
     if (is_null($to_email)) {
         $to_email = array($staff_address);
     }
@@ -705,6 +709,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
     if ($from_email == '') {
         $from_email = get_option('staff_address');
+    }
+    if (!is_email_address($from_email)) { // Required for security
+        $from_email = '';
     }
     if ($from_name == '') {
         $from_name = get_site_name();
@@ -1176,7 +1183,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
             $additional = '';
             if (get_option('enveloper_override') == '1') {
-                $additional = '-f ' . $website_email;
+                if (is_email_address($website_email)) { // Required for security
+                    $additional = '-f ' . $website_email;
+                }
             }
             $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
             if (($_to_name == '') || (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')) {
