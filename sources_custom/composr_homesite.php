@@ -15,6 +15,10 @@
 
 /*EXTRA FUNCTIONS: shell_exec*/
 
+/*
+Use &test_mode=1 for using non-live test data.
+*/
+
 function init__composr_homesite()
 {
     define('DEMONSTRATR_DEMO_LAST_DAYS', 30);
@@ -30,11 +34,167 @@ function get_latest_version_pretty()
         $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
         if ($version !== null) {
             require_code('version2');
-            $_version = preg_replace('# \(.*#', '', $version);
+            $_version = preg_replace('# \(.*#', '', get_translated_text($version));
             list(, , , , $version) = get_version_components__from_dotted(get_version_dotted__from_anything($_version));
         }
     }
     return is_null($version) ? null : float_format($version, 2, true);
+}
+
+function get_release_tree()
+{
+    require_code('version2');
+
+    $versions = array();
+
+    global $DOWNLOAD_ROWS;
+    load_version_download_rows();
+
+    foreach ($DOWNLOAD_ROWS as $download_row) {
+        $matches = array();
+        if (preg_match('#^Composr Version (.*) \(.*manual\)$#', $download_row['nice_title'], $matches) != 0) {
+            $version_dotted = get_version_dotted__from_anything($matches[1]);
+            list(, $qualifier, $qualifier_number, $long_dotted_number, , $long_dotted_number_with_qualifier) = get_version_components__from_dotted($version_dotted);
+            $versions[$long_dotted_number_with_qualifier] = $download_row;
+        }
+    }
+
+    uksort($versions, 'version_compare');
+
+    $_versions = array();
+    foreach ($versions as $long_dotted_number_with_qualifier => $download_row) {
+        $_versions[str_replace('.0', '', $long_dotted_number_with_qualifier)] = $download_row;
+    }
+
+    return $_versions;
+}
+
+function is_release_discontinued($version)
+{
+    $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2', '4', '5', '6', '7');
+    return (preg_match('#^' . implode('|', array_map('preg_quote', $discontinued)) . '($|\.)#', $version) != 0);
+}
+
+function find_version_download($version_pretty, $type = 'manual')
+{
+    global $DOWNLOAD_ROWS;
+    load_version_download_rows();
+
+    $download_row = null;
+    foreach ($DOWNLOAD_ROWS as $download_row) {
+        $nice_title_stripped = preg_replace('# \(.*\)$#', '', $download_row['nice_title']);
+        if (($nice_title_stripped == 'Composr Version ' . $version_pretty) && (strpos($download_row['nice_title'], $type) !== false)) {
+            return $download_row;
+        }
+    }
+
+    return null;
+}
+
+function load_version_download_rows()
+{
+    global $DOWNLOAD_ROWS;
+    if (!isset($DOWNLOAD_ROWS)) {
+        if (get_param_integer('test_mode', 0) == 1) {
+            // Test data
+            $DOWNLOAD_ROWS = array(
+                array('id' => 20, 'nice_title' => 'Composr Version 13 (manual)', 'add_date' => time() - 60 * 60 * 8, 'nice_description' => 'Manual installer (as opposed to the regular quick installer). Please note this isn\'t documentation.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/a.zip'),
+                array('id' => 30, 'nice_title' => 'Composr Version 13.1 (manual)', 'add_date' => time() - 60 * 60 * 5, 'nice_description' => '', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/b.zip'),
+                array('id' => 35, 'nice_title' => 'Composr Version 13.1.1 (manual)', 'add_date' => time() - 60 * 60 * 5, 'nice_description' => 'Manual installer (as opposed to the regular quick installer). Please note this isn\'t documentation.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/c.zip'),
+                array('id' => 40, 'nice_title' => 'Composr Version 13.2 beta1 (manual)', 'add_date' => time() - 60 * 60 * 4, 'nice_description' => 'Manual installer (as opposed to the regular quick installer). Please note this isn\'t documentation.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/d.zip'),
+                array('id' => 50, 'nice_title' => 'Composr Version 13.2 (manual)', 'add_date' => time() - 60 * 60 * 3, 'nice_description' => 'Manual installer (as opposed to the regular quick installer). Please note this isn\'t documentation.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/e.zip'),
+                array('id' => 60, 'nice_title' => 'Composr Version 14 (manual)', 'add_date' => time() - 60 * 60 * 1, 'nice_description' => 'Manual installer (as opposed to the regular quick installer). Please note this isn\'t documentation.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/f.zip'),
+
+                array('id' => 20, 'nice_title' => 'Composr Version 13 (quick)', 'add_date' => time() - 60 * 60 * 8, 'nice_description' => '[Test message] This is 3. Yo peeps. 3.1 is the biz.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/a.zip'),
+                array('id' => 30, 'nice_title' => 'Composr Version 13.1 (quick)', 'add_date' => time() - 60 * 60 * 5, 'nice_description' => '[Test message] This is 3.1.1. 3.1.1 is out dudes.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/b.zip'),
+                array('id' => 35, 'nice_title' => 'Composr Version 13.1.1 (quick)', 'add_date' => time() - 60 * 60 * 5, 'nice_description' => '[Test message] This is 3.1.1. 3.2 is out dudes.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/c.zip'),
+                array('id' => 40, 'nice_title' => 'Composr Version 13.2 beta1 (quick)', 'add_date' => time() - 60 * 60 * 4, 'nice_description' => '[Test message] This is 3.2 beta1. 3.2 beta2 is out.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/d.zip'),
+                array('id' => 50, 'nice_title' => 'Composr Version 13.2 (quick)', 'add_date' => time() - 60 * 60 * 3, 'nice_description' => '[Test message] This is 3.2. 4 is out.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/e.zip'),
+                array('id' => 60, 'nice_title' => 'Composr Version 14 (quick)', 'add_date' => time() - 60 * 60 * 1, 'nice_description' => '[Test message] This is the 4 and you can find bug reports somewhere.', 'url' => 'uploads/website_specific/compo.sr/upgrades/sample_data/f.zip'),
+            );
+        } else {
+            // Live data
+            $sql = 'SELECT d.* FROM ' . get_table_prefix() . 'download_downloads d';
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $sql .= ' FORCE INDEX (recent_downloads)';
+            }
+            $sql .= ' WHERE validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('Composr Version %') . '\' ORDER BY add_date';
+            $DOWNLOAD_ROWS = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+            foreach ($DOWNLOAD_ROWS as $i => $row) {
+                $DOWNLOAD_ROWS[$i]['nice_title'] = get_translated_text($row['name']);
+                $DOWNLOAD_ROWS[$i]['nice_description'] = get_translated_text($row['description']);
+            }
+        }
+    }
+}
+
+function find_version_news($version_pretty)
+{
+    global $NEWS_ROWS;
+    load_version_news_rows();
+
+    foreach ($NEWS_ROWS as $news_row) {
+        if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released') {
+            return $news_row;
+        }
+        if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released!') { // Major releases have exclamation marks
+            return $news_row;
+        }
+    }
+
+    return null;
+}
+
+function load_version_news_rows()
+{
+    global $NEWS_ROWS;
+    if (!isset($NEWS_ROWS)) {
+        if (get_param_integer('test_mode', 0) == 1) {
+            // Test data
+            $NEWS_ROWS = array(
+                array('id' => 2, 'nice_title' => 'Composr 13 released', 'add_date' => time() - 60 * 60 * 8),
+                array('id' => 3, 'nice_title' => '13.1 released', 'add_date' => time() - 60 * 60 * 5),
+                array('id' => 4, 'nice_title' => '13.1.1 released', 'add_date' => time() - 60 * 60 * 5),
+                array('id' => 5, 'nice_title' => 'Composr 13.2 beta1 released', 'add_date' => time() - 60 * 60 * 4),
+                array('id' => 6, 'nice_title' => 'Composr 13.2 released', 'add_date' => time() - 60 * 60 * 3),
+                array('id' => 7, 'nice_title' => 'Composr 14 released', 'add_date' => time() - 60 * 60 * 1),
+            );
+        } else {
+            // Live data
+            $NEWS_ROWS = $GLOBALS['SITE_DB']->query_select('news', array('*', 'date_and_time AS add_date'), array('validated' => 1), 'ORDER BY add_date');
+            foreach ($NEWS_ROWS as $i => $row) {
+                $NEWS_ROWS[$i]['nice_title'] = get_translated_text($row['title']);
+            }
+        }
+    }
+}
+
+// PROBING RELEASES
+// ----------------
+
+function recursive_unzip($zip_path, $unzip_path)
+{
+    $zip_handle = zip_open($zip_path);
+    while (($entry = (zip_read($zip_handle))) !== false) {
+        $entry_name = zip_entry_name($entry);
+        if (substr($entry_name, -1) != '/') {
+            $_entry = zip_entry_open($zip_handle, $entry);
+            if ($_entry !== false) {
+                @mkdir(dirname($unzip_path . '/' . $entry_name), 0777, true);
+                $out_file = fopen($unzip_path . '/' . $entry_name, 'wb');
+                while (true) {
+                    $it = zip_entry_read($entry, 1024);
+                    if (($it === false) || ($it == '')) {
+                        break;
+                    }
+                    fwrite($out_file, $it);
+                }
+                zip_entry_close($entry);
+                fclose($out_file);
+            }
+        }
+    }
+    zip_close($zip_handle);
 }
 
 // MAKING RELEASES
@@ -208,7 +368,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
         attach_message('Running import command... ' . $cmd, 'inform');
     }
-    $output = '';
+    $output = array();
     $return_var = 0;
     $last_line = exec($cmd, $output, $return_var);
     if ($return_var != 0) {

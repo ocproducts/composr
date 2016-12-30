@@ -85,15 +85,6 @@ a.top_left_toggleicon:hover {
 
 /* Tips */
 
-.tips_wrap {
-	padding: 0;
-	margin: 0;
-}
-
-.tips {
-	width: 100%;
-}
-
 .tips_trail {
 	bottom: 5px;
 	left: 15px;

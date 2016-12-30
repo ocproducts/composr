@@ -172,7 +172,7 @@ function js_compile($j, $js_cache_path, $minify = true)
     }
     $js_file = @fopen($js_cache_path, GOOGLE_APPENGINE ? 'wb' : 'at');
     if ($js_file === false) {
-        intelligent_write_error($js_cache_path . '.tmp');
+        intelligent_write_error($js_cache_path);
     }
     @flock($js_file, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
@@ -183,8 +183,7 @@ function js_compile($j, $js_cache_path, $minify = true)
     }
     @flock($js_file, LOCK_UN);
     fclose($js_file);
-    fix_permissions($js_cache_path . '.tmp');
-    @rename($js_cache_path . '.tmp', $js_cache_path);
+    fix_permissions($js_cache_path);
     sync_file($js_cache_path);
     if (!$success_status) {
         @touch($js_cache_path, time() - 60 * 60 * 24); // Fudge it so it's going to auto expire. We do have to write the file as it's referenced, but we want it to expire instantly so that any errors will reshow.
@@ -203,7 +202,12 @@ function js_compile($j, $js_cache_path, $minify = true)
 function compress_cms_stub_file($stub_file)
 {
     if (function_exists('gzencode')) {
-        $data = @file_get_contents($stub_file);
+        $tmp = fopen($stub_file, 'rb');
+        @flock($tmp, LOCK_SH);
+        $data = file_get_contents($stub_file);
+        @flock($tmp, LOCK_UN);
+        fclose($tmp);
+
         if ($data === false) {
             return;
         }
@@ -259,7 +263,7 @@ function css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $mi
     list($success_status, $out) = _css_compile($active_theme, $theme, $c, $full_path, $minify);
     $css_file = @fopen($css_cache_path, GOOGLE_APPENGINE ? 'wb' : 'at');
     if ($css_file === false) {
-        intelligent_write_error($css_cache_path . '.tmp');
+        intelligent_write_error($css_cache_path);
     }
     @flock($css_file, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
@@ -270,8 +274,7 @@ function css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $mi
     }
     @flock($css_file, LOCK_UN);
     fclose($css_file);
-    fix_permissions($css_cache_path . '.tmp');
-    @rename($css_cache_path . '.tmp', $css_cache_path);
+    fix_permissions($css_cache_path);
     sync_file($css_cache_path);
     if (!$success_status) {
         @touch($css_cache_path, time() - 60 * 60 * 24); // Fudge it so it's going to auto expire. We do have to write the file as it's referenced, but we want it to expire instantly so that any errors will reshow.

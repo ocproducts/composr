@@ -1,0 +1,9 @@
+# Some Apache setups will look at double extensions and execute any that look interesting to it - bad for security. Composr filters those though.
+
+<IfModule mod_php5.c>
+php_value engine off
+</IfModule>
+
+<IfModule mod_php7.c>
+php_value engine off
+</IfModule>
