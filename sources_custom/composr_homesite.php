@@ -75,7 +75,7 @@ function is_release_discontinued($version)
     return (preg_match('#^' . implode('|', array_map('preg_quote', $discontinued)) . '($|\.)#', $version) != 0);
 }
 
-function find_version_download($version_pretty, $type = 'manual')
+function find_version_download($version_pretty, $type_wanted = 'manual')
 {
     global $DOWNLOAD_ROWS;
     load_version_download_rows();
@@ -83,8 +83,11 @@ function find_version_download($version_pretty, $type = 'manual')
     $download_row = null;
     foreach ($DOWNLOAD_ROWS as $download_row) {
         $nice_title_stripped = preg_replace('# \(.*\)$#', '', $download_row['nice_title']);
-        if (($nice_title_stripped == 'Composr Version ' . $version_pretty) && (strpos($download_row['nice_title'], $type) !== false)) {
-            return $download_row;
+        if ($nice_title_stripped == 'Composr Version ' . $version_pretty) {
+            $is_manual = (strpos($download_row['nice_title'], 'manual') !== false);
+            if (($is_manual && $type_wanted == 'manual') || (!$is_manual && $type_wanted == 'quick')) {
+                return $download_row;
+            }
         }
     }
 

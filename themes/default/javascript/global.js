@@ -2157,7 +2157,9 @@ function _modsecurity_workaround(data)
 		'\'': '/',
 		'"': '\\',
 		'%': '&',
-		'&': '%'
+		'&': '%',
+		'@': ':',
+		':': '@',
 	};
 	var out='';
 	var len=data.length,character;

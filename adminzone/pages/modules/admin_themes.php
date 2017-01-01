@@ -139,6 +139,9 @@ class Module_admin_themes
         }
 
         if ($type == 'edit_css') {
+            require_code('input_filter_2');
+            modsecurity_workaround_enable();
+
             set_helper_panel_text(comcode_lang_string('DOC_CSS'));
             set_helper_panel_tutorial('tut_markup');
 
