@@ -68,24 +68,24 @@ function init__files()
 function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth = 0)
 {
     $num_bytes_to_save = strlen($contents);
-    $num_bytes_to_write = $num_bytes_to_save;
-    if (is_file($path)) {
-        $num_bytes_to_write -= filesize($path);
+
+    // If the directory is missing
+    if (!is_dir(dirname($path))) {
+        require_code('files2');
+        make_missing_directory(dirname($path));
     }
 
     // Error condition: If there's a lack of disk space
-    if (function_exists('diskfreespace')) {
-        $disk_space = diskfreespace(dirname($path));
+    if (function_exists('disk_free_space')) {
+        $num_bytes_to_write = $num_bytes_to_save;
+        if (is_file($path)) {
+            $num_bytes_to_write -= filesize($path);
+        }
+        $disk_space = disk_free_space(dirname($path));
         if ($disk_space < $num_bytes_to_write) {
             $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
             return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
         }
-    }
-
-    // Error condition: If the directory is missing
-    if (!is_dir(dirname($path))) {
-        require_code('files2');
-        make_missing_directory(dirname($path));
     }
 
     // Save

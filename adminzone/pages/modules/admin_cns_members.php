@@ -767,7 +767,9 @@ class Module_admin_cns_members
 
             $target_path = get_custom_file_base() . '/safe_mode_temp/' . basename($_FILES['file']['tmp_name']);
             require_code('files2');
-            make_missing_directory(dirname($target_path));
+            if (!file_exists(dirname($target_path))) {
+                make_missing_directory(dirname($target_path));
+            }
             copy($_FILES['file']['tmp_name'], $target_path);
             fix_permissions($target_path);
             sync_file($target_path);

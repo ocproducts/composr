@@ -1074,7 +1074,10 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
     } else {
         if (($file_size == 0) || (url_is_local($url))) {
             if (url_is_local($url)) {
-                $file_size = filesize(get_custom_file_base() . '/' . rawurldecode($url));
+                $file_size = @filesize(get_custom_file_base() . '/' . rawurldecode($url));
+                if ($file_size === false) {
+                    $file_size = 0;
+                }
             } else {
                 http_download_file($url, 0, false);
                 $file_size = $GLOBALS['HTTP_DOWNLOAD_SIZE'];

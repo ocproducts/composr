@@ -173,7 +173,9 @@ function _intelligent_write_error_inline($path)
 function cms_get_temp_dir()
 {
     $local_path = get_custom_file_base() . '/safe_mode_temp';
-    make_missing_directory($local_path);
+    if (!file_exists($local_path)) {
+        make_missing_directory($local_path);
+    }
     if (function_exists('sys_get_temp_dir')) {
         $server_path = sys_get_temp_dir();
     } else {
