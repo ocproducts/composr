@@ -75,13 +75,15 @@ function semi_dev_mode_startup()
 
             // Use the info from ocProduct's custom PHP version to make sure that all files that were created/modified got synched as they should have been.
             foreach ($_CREATED_FILES as $file) {
-                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (substr($file, -4) != '.tmp') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
+                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (is_file($file)) && (strpos($file, 'log') === false) && (strpos($file, 'tmp') === false) && (strpos($file, 'temp') === false) && (strpos($file, 'cache') === false) && (strpos($file, 'backup') === false) && (strpos($file, 'incoming') === false)) {
                     @exit(escape_html('File not permission-synched: ' . $file));
                 }
             }
             foreach ($_MODIFIED_FILES as $file) {
-                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (strpos($file, '_config.php') === false) && (strpos($file, 'failover_rewritemap') === false) && (substr($file, -4) != '.tmp') && (basename($file) != 'rate_limiter.php') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
-                    @exit(escape_html('File not change-synched: ' . $file));
+                if ((substr($file, 0, strlen(get_file_base())) == get_file_base()) && (is_file($file)) && (strpos($file, 'log') === false) && (strpos($file, 'tmp') === false) && (strpos($file, 'temp') === false) && (strpos($file, 'cache') === false) && (strpos($file, 'backup') === false) && (strpos($file, 'incoming') === false)) {
+                    if ((strpos($file, '_config.php') === false) && (strpos($file, 'failover_rewritemap') === false) && (basename($file) != 'rate_limiter.php')) {
+                        @exit(escape_html('File not change-synched: ' . $file));
+                    }
                 }
             }
 

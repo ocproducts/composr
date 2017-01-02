@@ -848,6 +848,7 @@ class Module_admin_setupwizard
         require_code('config2');
         require_code('themes2');
         require_lang('zones');
+        require_code('files');
 
         $header_text = post_param_string('header_text');
         $name = post_param_string('site_name');
@@ -911,15 +912,12 @@ class Module_admin_setupwizard
                 actual_edit_theme_image('logo/standalone_logo', $logo_save_theme, get_site_default_lang(), 'logo/standalone_logo', $path, true);
                 imagedestroy($logo);
             }
-            $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'wt');
-            fwrite($myfile, 'title=' . $name . "\n");
-            fwrite($myfile, 'description=' . do_lang('NA') . "\n");
-            fwrite($myfile, 'seed=' . post_param_string('seed_hex') . "\n");
-            if (fwrite($myfile, 'author=Composr' . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            fclose($myfile);
-            sync_file(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
+            $contents = '';
+            $contents .= 'title=' . $name . "\n";
+            $contents .= 'description=' . do_lang('NA') . "\n";
+            $contents .= 'seed=' . post_param_string('seed_hex') . "\n";
+            $contents .= 'author=Composr' . "\n";
+            cms_file_put_contents_safe(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             $THEME_IMAGES_CACHE['site'] = $old_img_codes_site; // Just so it renders with the old theme
         }
 
@@ -1060,23 +1058,13 @@ class Module_admin_setupwizard
         // Rules
         if (post_param_integer('skip_7', 0) == 0) {
             $full_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/_rules.txt';
-            if (!file_exists(dirname($full_path))) {
-                require_code('files2');
-                make_missing_directory(dirname($full_path));
-            }
             if (file_exists($full_path)) {
                 @copy($full_path, $full_path . '.' . strval(time()));
                 fix_permissions($full_path . '.' . strval(time()));
                 sync_file($full_path . '.' . strval(time()));
             }
-            $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($full_path);
             $rf = $this->get_rules_file(post_param_string('rules'));
-            if (fwrite($myfile, $rf) < strlen($rf)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            fclose($myfile);
-            fix_permissions($full_path);
-            sync_file($full_path);
+            cms_file_put_contents_safe($full_path, $rf, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
 
         $block_options = mixed();
@@ -1092,58 +1080,30 @@ class Module_admin_setupwizard
             foreach ($page_structure as $zone => $zone_pages) {
                 // Start
                 $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
-                if (!file_exists(dirname($full_path))) {
-                    require_code('files2');
-                    make_missing_directory(dirname($full_path));
-                }
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
+                    fix_permissions($full_path . '.' . strval(time()));
+                    sync_file($full_path . '.' . strval(time()));
                 }
-                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($full_path);
-                if ($myfile !== false) {
-                    if (fwrite($myfile, $zone_pages['start']) == 0) {
-                        if ($zone_pages['start'] != '') {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                        }
-                    }
-                    fclose($myfile);
-                    fix_permissions($full_path);
-                    sync_file($full_path);
-                }
+                cms_file_put_contents_safe($full_path, $zone_pages['start'], FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 // Left
                 $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
+                    fix_permissions($full_path . '.' . strval(time()));
+                    sync_file($full_path . '.' . strval(time()));
                 }
-                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-                if ($myfile !== false) {
-                    if (fwrite($myfile, $zone_pages['left']) == 0) {
-                        if ($zone_pages['left'] != '') {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                        }
-                    }
-                    fclose($myfile);
-                    fix_permissions($full_path);
-                    sync_file($full_path);
-                }
+                cms_file_put_contents_safe($full_path, $zone_pages['left'], FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 // Right
                 $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_right.txt';
                 if (file_exists($full_path)) {
                     @copy($full_path, $full_path . '.' . strval(time()));
+                    fix_permissions($full_path . '.' . strval(time()));
+                    sync_file($full_path . '.' . strval(time()));
                 }
-                $myfile = fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-                if ($myfile !== false) {
-                    if (fwrite($myfile, $zone_pages['right']) == 0) {
-                        if ($zone_pages['right'] != '') {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                        }
-                    }
-                    fclose($myfile);
-                    fix_permissions($full_path);
-                    sync_file($full_path);
-                }
+                cms_file_put_contents_safe($full_path, $zone_pages['right'], FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             }
         }
 

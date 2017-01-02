@@ -758,57 +758,39 @@ class Module_admin_lang
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
-        if (!file_exists(get_custom_file_base() . '/lang_custom/' . filter_naughty($lang))) {
-            require_code('files2');
-            make_missing_directory(get_custom_file_base() . '/lang_custom/' . filter_naughty($lang));
-        }
-
         $path = get_custom_file_base() . '/lang_custom/' . filter_naughty($lang) . '/' . filter_naughty($lang_file) . '.ini';
         $path_backup = $path . '.' . strval(time());
         if (file_exists($path)) {
             @copy($path, $path_backup) or intelligent_write_error($path_backup);
+            fix_permissions($path_backup);
             sync_file($path_backup);
         }
-        $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
-        if ($myfile === false) {
-            intelligent_write_error($path);
-        }
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        fwrite($myfile, "[descriptions]\n");
+        $contents = '';
+        $contents .= "[descriptions]\n";
         foreach ($descriptions as $key => $description) {
-            if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
+            $contents .= $key . '=' . $description . "\n";
         }
-        fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
-        fwrite($myfile, "[runtime_processing]\n");
+        $contents .= "\n"; // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+        $contents .= "[runtime_processing]\n";
         foreach ($runtime_processing as $key => $flag) {
-            if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
+            $contents .= $key . '=' . $flag . "\n";
         }
-        fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
-        fwrite($myfile, "[strings]\n");
+        $contents .= "\n"; // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+        $contents .= "[strings]\n";
         foreach (array_unique(array_merge(array_keys($for_base_lang), array_keys($for_base_lang_2))) as $key) {
             $val = post_param_string($key, null);
             if (($val === null) && (!array_key_exists($key, $for_base_lang))) {
                 $val = $for_base_lang_2[$key]; // Not in lang, but is in lang_custom, AND not set now - must copy though
             }
             if (($val !== null) && ((!array_key_exists($key, $for_base_lang)) || (str_replace("\n", '\n', $val) != $for_base_lang[$key]))) {
-                if (fwrite($myfile, $key . '=' . str_replace("\n", '\n', $val) . "\n") == 0) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                }
+                $contents .= $key . '=' . str_replace("\n", '\n', $val) . "\n";
             }
         }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        fix_permissions($path);
-        sync_file($path);
+        require_code('files');
+        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         $path_backup2 = $path . '.latest_in_cms_edit';
         @copy($path, $path_backup2) or intelligent_write_error($path_backup2);
+        fix_permissions($path_backup2);
         sync_file($path_backup2);
 
         log_it('TRANSLATE_CODE');
@@ -831,11 +813,6 @@ class Module_admin_lang
     public function set_lang_code_2()
     {
         $lang = post_param_string('lang');
-
-        if (!file_exists(get_custom_file_base() . '/lang_custom/' . filter_naughty($lang))) {
-            require_code('files2');
-            make_missing_directory(get_custom_file_base() . '/lang_custom/' . filter_naughty($lang));
-        }
 
         $lang_files = get_lang_files(fallback_lang());
 
@@ -868,42 +845,31 @@ class Module_admin_lang
                 $path_backup = $path . '.' . strval(time());
                 if (file_exists($path)) {
                     @copy($path, $path_backup) or intelligent_write_error($path_backup);
+                    fix_permissions($path_backup);
                     sync_file($path_backup);
                 }
-                $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
-                if ($myfile === false) {
-                    intelligent_write_error($path);
-                }
-                @flock($myfile, LOCK_EX);
-                if (!GOOGLE_APPENGINE) {
-                    ftruncate($myfile, 0);
-                }
+                $contents = '';
                 if (count($descriptions) != 0) {
-                    fwrite($myfile, "[descriptions]\n");
+                    $contents .= "[descriptions]\n";
                     foreach ($descriptions as $key => $description) {
-                        if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                        }
+                        $contents .= $key . '=' . $description . "\n";
                     }
-                    fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+                    $contents .= "\n"; // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
                 }
                 if (count($runtime_processing) != 0) {
-                    fwrite($myfile, "[runtime_processing]\n");
+                    $contents .= "[runtime_processing]\n";
                     foreach ($runtime_processing as $key => $flag) {
-                        if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                        }
+                        $contents .= $key . '=' . $flag . "\n";
                     }
-                    fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+                    $contents .= "\n"; // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
                 }
-                fwrite($myfile, "[strings]\n");
-                fwrite($myfile, $out);
-                @flock($myfile, LOCK_UN);
-                fclose($myfile);
-                fix_permissions($path);
-                sync_file($path);
+                $contents .= "[strings]\n";
+                $contents .= $out;
+                require_code('files');
+                cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 $path_backup2 = $path . '.latest_in_cms_edit';
                 @copy($path, $path_backup2) or intelligent_write_error($path_backup2);
+                fix_permissions($path_backup2);
                 sync_file($path_backup2);
             }
         }

@@ -1411,7 +1411,7 @@ function step_5_ftp()
         if ($file_size_before !== $file_size_after) {
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
         }
-        @flock($lock_myfile, LOCK_UN);
+        flock($lock_myfile, LOCK_UN);
         fclose($lock_myfile);
     } else {
         $overwrite_ok = true;
@@ -1691,13 +1691,11 @@ function step_5_write_config()
 
     // Open up _config.php
     $config_file = '_config.php';
-    $config_file_handle = fopen(get_file_base() . '/' . $config_file, GOOGLE_APPENGINE ? 'wb' : 'wt');
-    fwrite($config_file_handle, "<" . "?php\nglobal \$SITE_INFO;\n");
-    if ($config_file_handle === false) {
-        warn_exit(do_lang_tempcode('INSTALL_WRITE_ERROR', escape_html($config_file)));
-    }
+    $config_path = get_file_base() . '/' . $config_file;
 
-    fwrite($config_file_handle, '
+    $config_contents = "<" . "?php\nglobal \$SITE_INFO;\n";
+
+    $config_contents .= '
 
 if (!function_exists(\'git_repos\')) {
     /**
@@ -1715,7 +1713,7 @@ if (!function_exists(\'git_repos\')) {
     }
 }
 
-');
+';
 
     // Write in inputted settings
     foreach ($_POST as $key => $val) {
@@ -1768,12 +1766,12 @@ if (!function_exists(\'git_repos\')) {
             $val = $base_url;
         }
         $_val = addslashes(trim($val));
-        fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'] = \'' . $_val . "';\n");
+        $config_contents .= '$SITE_INFO[\'' . $key . '\'] = \'' . $_val . "';\n";
     }
 
     // Derive a random session cookie name, to stop conflicts between sites
     if (!isset($_POST['session_cookie'])) {
-        fwrite($config_file_handle, '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . md5($base_url) . "';\n");
+        $config_contents .= '$SITE_INFO[\'session_cookie\'] = \'cms_session__' . md5($base_url) . "';\n";
     }
 
     // On the live GAE, we need to switch in different settings to the local dev server
@@ -1806,12 +1804,16 @@ if (appengine_is_live()) {
 \$SITE_INFO['self_learning_cache'] = '1';
 \$SITE_INFO['charset'] = 'utf-8';
 ";
-        fwrite($config_file_handle, preg_replace('#^\t\t\t#m', '', $gae_live_code));
+        $config_contents .= preg_replace('#^\t\t\t#m', '', $gae_live_code);
     }
 
     // ---
 
-    fclose($config_file_handle);
+    $success_status = cms_file_put_contents_safe($config_path, $config_contents, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
+    if (!$success_status) {
+        warn_exit(do_lang_tempcode('INSTALL_WRITE_ERROR', escape_html($config_file)));
+    }
+
     require_once(get_file_base() . '/' . $config_file);
 
     global $FILE_ARRAY, $DIR_ARRAY;
@@ -1855,6 +1857,8 @@ if (appengine_is_live()) {
     }
 
     if (GOOGLE_APPENGINE) {
+        require_code('files');
+
         // Copy in default php.ini file
         @unlink(get_file_base() . '/php.ini');
         copy(get_file_base() . '/data/modules/google_appengine/php.gae.ini', get_file_base() . '/php.ini');
@@ -1862,7 +1866,7 @@ if (appengine_is_live()) {
         // Customise php.ini file
         $php_ini = file_get_contents(get_file_base() . '/php.ini');
         $php_ini = str_replace('<application>', post_param_string('gae_application'), $php_ini);
-        file_put_contents(get_file_base() . '/php.ini', $php_ini);
+        cms_file_put_contents_safe(get_file_base() . '/php.ini', $php_ini | FILE_WRITE_FIX_PERMISSIONS);
 
         // Copy in default YAML files
         $dh = opendir(get_file_base() . '/data/modules/google_appengine');
@@ -1876,7 +1880,7 @@ if (appengine_is_live()) {
         // Customise app.yaml file
         $app_yaml = file_get_contents(get_file_base() . '/app.yaml');
         $app_yaml = preg_replace('#^application: .*$#m', 'application: ' . post_param_string('gae_application'), $app_yaml);
-        file_put_contents(get_file_base() . '/app.yaml', $app_yaml);
+        cms_file_put_contents_safe(get_file_base() . '/app.yaml', $app_yaml | FILE_WRITE_FIX_PERMISSIONS);
     }
 
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '261a1eb80baed15cbbce1a684d4a354d', 'SOMETHING' => do_lang_tempcode('WROTE_CONFIGURATION'))));
@@ -3079,29 +3083,33 @@ ErrorDocument 404 {$base}/index.php?page=404
 </FilesMatch>
 END;
 
-    if ((is_writable_wrap(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {
+    if ((is_writable_wrap(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . '/.htaccess')) || (trim(file_get_contents(get_file_base() . '/.htaccess')) == ''))) {
         global $HTTP_MESSAGE;
 
         $base_url = post_param_string('base_url', get_base_url());
 
         foreach ($clauses as $i => $clause) {
             $myfile = fopen(get_file_base() . '/exports/addons/index.php', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            flock($myfile, LOCK_EX);
             fwrite($myfile, "<" . "?php
             @header('Expires: Mon, 20 Dec 1998 01:00:00 GMT');
             @header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
             @header('Pragma: no-cache'); // for proxies, and also IE
             ");
+            flock($myfile, LOCK_UN);
             fclose($myfile);
 
-            $myfile = fopen(get_file_base() . '/exports/addons' . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            $myfile = fopen(get_file_base() . '/exports/addons' . '/.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            flock($myfile, LOCK_EX);
             fwrite($myfile, $clause);
+            flock($myfile, LOCK_UN);
             fclose($myfile);
             $HTTP_MESSAGE = '';
             http_download_file($base_url . '/exports/addons/index.php', null, false);
             if ($HTTP_MESSAGE != '200') {
                 $clauses[$i] = null;
             }
-            unlink(get_file_base() . '/exports/addons' . DIRECTORY_SEPARATOR . '.htaccess');
+            unlink(get_file_base() . '/exports/addons/.htaccess');
         }
 
         $out = '';
@@ -3111,9 +3119,11 @@ END;
             }
         }
         if (is_suexec_like()) {
-            @unlink(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
-            $tmp = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', 'wb');
+            @unlink(get_file_base() . '/.htaccess');
+            $tmp = fopen(get_file_base() . '/.htaccess', 'wb');
+            flock($tmp, LOCK_EX);
             fwrite($tmp, $out);
+            flock($tmp, LOCK_UN);
             fclose($tmp);
         } else {
             @ftp_delete($conn, '.htaccess');

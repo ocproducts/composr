@@ -691,11 +691,7 @@ class Module_cms_comcode_pages
         $parsed = null;
         if ($contents == '') {
             if (is_file($file_base . '/' . $file_path)) {
-                $tmp = fopen($file_base . '/' . $file_path, 'rb');
-                @flock($tmp, LOCK_SH);
-                $contents = file_get_contents($file_base . '/' . $file_path);
-                @flock($tmp, LOCK_UN);
-                fclose($tmp);
+                $contents = cms_file_get_contents_safe($file_base . '/' . $file_path);
 
                 if (strpos($file_path, '_custom/') === false) {
                     global $LANG_FILTER_OB;
@@ -969,7 +965,7 @@ class Module_cms_comcode_pages
         if (post_param_integer('delete', 0) == 1) {
             check_delete_permission('high', $resource_owner);
             unlink(get_custom_file_base() . '/' . $path);
-            sync_file($path);
+            sync_file(get_custom_file_base() . '/' . $path);
 
             // Delete custom fields
             require_code('fields');

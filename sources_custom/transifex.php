@@ -36,6 +36,7 @@ function init__transifex()
     require_code('addons');
     require_code('lang_compile');
     require_code('lang2');
+    require_code('files');
     require_code('files2');
 
     global $OVERRIDE_PRIORITY_LANGUAGE_FILES;
@@ -754,9 +755,7 @@ END;
             $c = trim($c) . "\n\n";
 
             if ($tar_file === null) {
-                file_put_contents($full_path, $c);
-                fix_permissions($full_path);
-                sync_file($full_path);
+                cms_file_put_contents_safe($full_path, $c, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             } else {
                 tar_add_file($tar_file, $path, $c);
 
@@ -816,11 +815,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
         }
 
         if ($tar_file === null) {
-            @mkdir(dirname($trans_full_path), 0777, true);
-            fix_permissions(dirname($trans_full_path));
-            file_put_contents($trans_full_path, $c);
-            fix_permissions($trans_full_path);
-            sync_file($trans_full_path);
+            cms_file_put_contents_safe($trans_full_path, $c, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         } else {
             tar_add_file($tar_file, $trans_path, $c);
         }
@@ -869,11 +864,7 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
         $c = "[strings]\n" . trim($write_out) . "\n";
 
         if ($tar_file === null) {
-            @mkdir(dirname($trans_full_path), 0777, true);
-            fix_permissions(dirname($trans_full_path));
-            file_put_contents($trans_full_path, $c);
-            fix_permissions($trans_full_path);
-            sync_file($trans_full_path);
+            cms_file_put_contents_safe($trans_full_path, $c, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         } else {
             tar_add_file($tar_file, $trans_path, $c);
         }

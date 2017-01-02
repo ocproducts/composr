@@ -117,12 +117,16 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
     @mkdir($wip_path, 0777);
     make_upgrader_do_dir($wip_path, $new_base_path, $old_base_path);
     @copy($old_base_path . '/data/files.dat', $wip_path . '/data/files_previous.dat');
+    fix_permissions($wip_path . '/data/files_previous.dat');
     $log_file = fopen(get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tarring.log', GOOGLE_APPENGINE ? 'wb' : 'wt');
+    flock($log_file, LOCK_EX);
     $tar_handle = tar_open($tar_path . '.new', 'wb');
     tar_add_folder($tar_handle, $log_file, $wip_path, null, '', null, null, false, true);
     tar_close($tar_handle);
+    flock($log_file, LOCK_UN);
     fclose($log_file);
     @rename($tar_path . '.new', $tar_path);
+    sync_file($tar_path);
 
     // Clean up
     @deldir_contents($wip_path);
@@ -150,9 +154,10 @@ function make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $dir 
             // If it's empty still, delete it
             @rmdir($build_path . '/' . $pretend_dir . $file);
         } else {
-            $contents = file_get_contents($new_base_path . '/' . $dir . $file);
-            if ((strpos($dir, '/addon_registry') !== false) || (!file_exists($old_base_path . '/' . $pretend_dir . '/' . $file)) || (unixify_line_format($contents) != unixify_line_format(file_get_contents($old_base_path . '/' . $pretend_dir . '/' . $file)))) {
+            $contents = cms_file_get_contents_safe($new_base_path . '/' . $dir . $file);
+            if ((strpos($dir, '/addon_registry') !== false) || (!file_exists($old_base_path . '/' . $pretend_dir . '/' . $file)) || (unixify_line_format($contents) != unixify_line_format(cms_file_get_contents_safe($old_base_path . '/' . $pretend_dir . '/' . $file)))) {
                 copy($new_base_path . '/' . $dir . $file, $build_path . '/' . $pretend_dir . $file);
+                fix_permissions($build_path . '/' . $pretend_dir . $file);
                 touch($build_path . '/' . $pretend_dir . $file, filemtime($new_base_path . '/' . $dir . $file));
             }
         }

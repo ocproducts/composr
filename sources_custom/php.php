@@ -224,7 +224,8 @@ function get_php_file_api($filename, $include_code = true)
                                 }
                                 if ($found) {
                                     $lines[$i] = str_replace(trim(implode(' ', $parts)), $_description, $lines[$i]);
-                                    file_put_contents($full_path, implode('', $lines));
+                                    require_code('files');
+                                    cms_file_put_contents_safe($full_path, implode('', $lines), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                                 }
                             }
                         }

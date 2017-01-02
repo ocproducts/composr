@@ -530,10 +530,12 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                 $tmp_file = $actual_path;
                 if (filesize($actual_path) > 1024 * 1024 * 3) {
                     $myfile = fopen($actual_path, 'rb');
+                    flock($myfile, LOCK_SH);
                     $data = '';
                     for ($i = 0; $i < 384; $i++) {
                         $data .= fread($myfile, 8192);
                     }
+                    flock($myfile, LOCK_UN);
                     fclose($myfile);
                 } else {
                     $data = file_get_contents($actual_path);
@@ -733,7 +735,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                 $path = 'pdftohtml -i -noframes -stdout -hidden' . $enc . ' -q -xml ' . escapeshellarg_wrap($tmp_file);
                 if (stripos(PHP_OS, 'WIN') === 0) {
                     if (file_exists(get_file_base() . '/data_custom/pdftohtml.exe')) {
-                        $path = '"' . get_file_base() . DIRECTORY_SEPARATOR . 'data_custom' . DIRECTORY_SEPARATOR . '"' . $path;
+                        $path = '"' . get_file_base() . '/data_custom/' . '"' . $path;
                     }
                 }
                 $tmp_file_2 = cms_tempnam();

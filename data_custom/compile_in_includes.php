@@ -47,6 +47,8 @@ if ((!$undo) && (!$do)) {
 
 $file_base = dirname(dirname(__FILE__));
 
+require_code('files');
+
 require_code('files2');
 $files = get_directory_contents($file_base, '');
 
@@ -77,12 +79,11 @@ foreach ($files as $file) {
                 if ($marked_old) {
                     @unlink($file_orig);
                     rename($file_orig . '.orig-precompile', $file_orig);
+                    sync_file_move($file_orig . '.orig-precompile', $file_orig);
                 }
 
                 // Restore override
-                $myfile = fopen($file, 'wb');
-                fwrite($myfile, '<' . '?php' . "\n\n" . $file_data);
-                fclose($myfile);
+                cms_file_put_contents_safe($file, '<' . '?php' . "\n\n" . $file_data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             }
         }
 
@@ -167,9 +168,7 @@ foreach ($files as $file) {
                     if ($marked_old) {
                         echo 'Skipped due to inconsistency (PRIOR TO COMPILED segment mismatching new override code): ' . $file . "\n";
                     } else {
-                        $myfile = fopen($file, 'wb');
-                        fwrite($myfile, $new);
-                        fclose($myfile);
+                        cms_file_put_contents_safe($file, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                         echo 'Done: ' . $file . "\n";
                     }
@@ -180,6 +179,7 @@ foreach ($files as $file) {
                 // Remove original file, to stop Composr trying to load it
                 if (!$marked_old) {
                     rename($file_orig, $file_orig . '.orig-precompile');
+                    sync_file_move($file_orig, $file_orig . '.orig-precompile');
                 }
             }
         }

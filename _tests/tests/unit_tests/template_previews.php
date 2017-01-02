@@ -42,6 +42,7 @@ class template_previews_test_set extends cms_test_case
         $GLOBALS['OUTPUT_STREAMING'] = false;
 
         require_code('lorem');
+        require_code('files');
     }
 
     public function testNoMissingPreviews()
@@ -168,8 +169,7 @@ class template_previews_test_set extends cms_test_case
                 display_webstandards_results($_out, $result, false, false);
             } else {
                 if (!$flag) {
-                    file_put_contents(get_file_base() . '/_tests/screens_tested/' . $theme . '__' . $function . '.tmp', '1');
-                    fix_permissions(get_file_base() . '/_tests/screens_tested/' . $theme . '__' . $function . '.tmp');
+                    cms_file_put_contents_safe(get_file_base() . '/_tests/screens_tested/' . $theme . '__' . $function . '.tmp', '1', FILE_WRITE_FIX_PERMISSIONS);
                 }
             }
         }
@@ -234,18 +234,10 @@ class template_previews_test_set extends cms_test_case
             $this->assertFalse($different, 'Screen preview not same each time, ' . $function);
 
             if (!$different) {
-                file_put_contents(get_file_base() . '/_tests/screens_tested/consistency__' . $function . '.tmp', '1');
-                fix_permissions(get_file_base() . '/_tests/screens_tested/consistency__' . $function . '.tmp');
+                cms_file_put_contents_safe(get_file_base() . '/_tests/screens_tested/consistency__' . $function . '.tmp', '1', FILE_WRITE_FIX_PERMISSIONS);
             } else {
-                $myfile = fopen(get_file_base() . '/_tests/screens_tested/v1__' . '.tmp', 'wb');
-                fwrite($myfile, $_out1);
-                fclose($myfile);
-                fix_permissions(get_file_base() . '/_tests/screens_tested/v1__' . '.tmp');
-
-                $myfile = fopen(get_file_base() . '/_tests/screens_tested/v2__' . '.tmp', 'wb');
-                fwrite($myfile, $_out2);
-                fclose($myfile);
-                fix_permissions(get_file_base() . '/_tests/screens_tested/v2__' . '.tmp');
+                cms_file_put_contents_safe(get_file_base() . '/_tests/screens_tested/v1__' . '.tmp', $_out1, FILE_WRITE_FIX_PERMISSIONS);
+                cms_file_put_contents_safe(get_file_base() . '/_tests/screens_tested/v2__' . '.tmp', $_out2, FILE_WRITE_FIX_PERMISSIONS);
 
                 require_code('diff');
                 var_dump(diff_simple_2($_out1, $_out2));
@@ -293,8 +285,7 @@ class template_previews_test_set extends cms_test_case
             $this->assertFalse($put_out, 'Messages put out by ' . $function . '  (' . strip_html($ATTACHED_MESSAGES->evaluate()) . ')');
 
             if (!$put_out) {
-                file_put_contents(get_file_base() . '/_tests/screens_tested/nonemissing__' . $function . '.tmp', '1');
-                fix_permissions(get_file_base() . '/_tests/screens_tested/nonemissing__' . $function . '.tmp');
+                cms_file_put_contents_safe(get_file_base() . '/_tests/screens_tested/nonemissing__' . $function . '.tmp', '1', FILE_WRITE_FIX_PERMISSIONS);
             }
 
             unset($out1);

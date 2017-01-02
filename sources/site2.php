@@ -346,17 +346,13 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
     // Not cached :(
-    $tmp = fopen($file_base . '/' . $string, 'rb');
-    @flock($tmp, LOCK_SH);
-    $comcode = file_get_contents($file_base . '/' . $string);
+    $comcode = cms_file_get_contents_safe($file_base . '/' . $string);
     if (strpos($string, '_custom/') === false) {
         global $LANG_FILTER_OB;
         $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
     }
     apply_comcode_page_substitutions($comcode);
     $comcode = fix_bad_unicode($comcode);
-    @flock($tmp, LOCK_UN);
-    fclose($tmp);
 
     if (is_null($new_comcode_page_row['p_submitter'])) {
         $as_admin = true;
@@ -513,7 +509,7 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
 
     $_comcode_page_row = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $codename), '', 1);
 
-    $comcode = file_get_contents($file_base . '/' . $string);
+    $comcode = cms_file_get_contents_safe($file_base . '/' . $string);
     if (strpos($string, '_custom/') === false) {
         global $LANG_FILTER_OB;
         $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);

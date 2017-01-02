@@ -139,7 +139,8 @@ function rebuild_sitemap_set($set_number, $last_time)
 
     // Gzip
     if (function_exists('gzencode')) {
-        file_put_contents($sitemaps_out_path . '.gz', gzencode(file_get_contents($sitemaps_out_path), -1));
+        require_code('files');
+        cms_file_put_contents_safe($sitemaps_out_path . '.gz', gzencode(file_get_contents($sitemaps_out_path), -1), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }
 
