@@ -97,9 +97,8 @@ class RevisionEngineFiles
         $revision_path = zone_black_magic_filterer($revision_path);
 
         @unlink($revision_path);
-        @file_put_contents($revision_path, $original_text) or intelligent_write_error($revision_path);
-        fix_permissions($revision_path);
-        sync_file($revision_path);
+        require_code('files');
+        cms_file_put_contents_safe($revision_path, $original_text, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 
     /**
@@ -122,8 +121,6 @@ class RevisionEngineFiles
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         unlink($revision_path);
-
-        fix_permissions($revision_path);
         sync_file($revision_path);
     }
 

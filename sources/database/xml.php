@@ -1267,12 +1267,10 @@ class Database_Static_xml extends DatabaseDriver
             attach_message('File path too long on Windows (' . $path . ')', 'warn', false, true);
             return;
         }
-        $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        fwrite($myfile, "<composr>\n");
+
+        require_code('files');
+        $contents = '';
+        $contents .= "<composr>\n";
         $val = mixed();
         foreach ($record as $key => $val) {
             if (is_integer($val)) {
@@ -1284,14 +1282,10 @@ class Database_Static_xml extends DatabaseDriver
             elseif ($val === null) {
                 $val = '';
             }
-            fwrite($myfile, "\t<" . $key . ">" . xmlentities($val) . "</" . $key . ">\n");
+            $contents .= "\t<" . $key . ">" . xmlentities($val) . "</" . $key . ">\n";
         }
-        fwrite($myfile, "</composr>\n");
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        require_code('files');
-        fix_permissions($path);
-        sync_file($path);
+        $contents .= "</composr>\n";
+        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
 
@@ -1301,6 +1295,7 @@ class Database_Static_xml extends DatabaseDriver
             $new_path = $db[0] . '/' . $table_name . '/' . $new_guid . $suffix;
             if ($path != $new_path) {
                 rename($path, $new_path);
+                sync_file_move($path, $new_path);
             }
         }
     }
@@ -1313,29 +1308,7 @@ class Database_Static_xml extends DatabaseDriver
      */
     protected function _delete_record($path, $db)
     {
-        /* This generally is a bad idea. Things can get deleted then re-made, and we don't even need it. This command works better:
-        svn status | grep '\!.*\.xml' | awk '{print $2;}' | xargs svn rm
-        $svn_command = 'svn remove "' . str_replace('"', '\"', $path) . '"';
-        //@shell_exec($svn_command);   Can't do as it would not execute with the correct permissions
-        $new = !file_exists($db[0] . '/deletions.sh');
-        $command_file = @fopen($db[0] . '/deletions.sh', 'ab');
-        if ($command_file !== false) {
-            if ($new) {
-                fwrite($command_file, '#!/bin/sh' . "\n");
-            }
-            fwrite($command_file, $svn_command . "\n");
-            fclose($command_file);
-            require_code('files');
-            fix_permissions($db[0] . '/deletions.sh');
-            sync_file($db[0] . '/deletions.sh');
-        }
-        */
-
         if (file_exists($path)) {
-            $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
-            @flock($myfile, LOCK_EX);
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
             @unlink($path);
             sync_file($path);
         }
@@ -1462,6 +1435,7 @@ class Database_Static_xml extends DatabaseDriver
             case 'RENAME':
                 $new_table_name = $this->_parsing_read($at, $tokens, $query);
                 rename($db[0] . '/' . $table_name, $db[0] . '/' . $new_table_name);
+                sync_file_move($db[0] . '/' . $table_name, $db[0] . '/' . $new_table_name);
                 unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
                 break;
             case 'CHANGE':

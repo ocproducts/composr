@@ -56,11 +56,11 @@ if ($get_url != '') {
     $save_to_file = preg_replace('#\\\#', '/', realpath('./')) . '/queue/' . $input_file;
 
     //start upload
-    $read = fopen(str_replace(' ', '%20', $get_url), "rb");
+    $read = fopen(str_replace(' ', '%20', $get_url), 'rb');
 
     /* Open a file for writing */
-    $tmp_name = tempnam(('/tmp'), 'transcodereceive');
-    $fp = fopen($tmp_name, "wb");
+    $tmp_name = tempnam('/tmp', 'transcodereceive');
+    $fp = fopen($tmp_name, 'wb');
 
     /* Read the data 1 KB at a time
     and write to the file */

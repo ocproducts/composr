@@ -745,7 +745,7 @@ class Module_cms_galleries extends Standard_crud_module
             if (substr($x, 0, 5) == 'file_') {
                 $path = get_custom_file_base() . '/uploads/galleries/' . filter_naughty($file);
                 @unlink($path) or intelligent_write_error($path);
-                sync_file('uploads/galleries/' . $file);
+                sync_file($path);
             }
         }
 

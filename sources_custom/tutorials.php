@@ -129,7 +129,7 @@ function list_tutorials()
 
     $cache_path = get_custom_file_base() . '/uploads/website_specific/tutorial_sigs.dat';
     if ((is_file($cache_path)) && (filemtime($cache_path) > time() - 60 * 60/*1hr cache*/) && (get_param_integer('keep_tutorial_test', 0) == 0)) {
-        return unserialize(file_get_contents($cache_path));
+        return unserialize(cms_file_get_contents_safe($cache_path));
     }
 
     push_query_limiting(false);
@@ -159,9 +159,8 @@ function list_tutorials()
 
     //sort_maps_by($tutorials, 'title');    Breaks keys
 
-    file_put_contents($cache_path, serialize($tutorials));
-    fix_permissions($cache_path);
-    sync_file($cache_path);
+    require_code('files');
+    cms_file_put_contents_safe($cache_path, serialize($tutorials), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     return $tutorials;
 }

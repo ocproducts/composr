@@ -1639,7 +1639,7 @@ function _parse_literal()
         case 'IDENTIFIER':
             $_literal = pparse__parser_next(true);
             if (strtolower($_literal[1]) == $_literal[1]) {
-                _warning('Lower case constant, breaks convention. Likely a variable with a missing $');
+                parser_warning('Lower case constant, breaks convention. Likely a variable with a missing $');
             }
             $literal = array('CONSTANT', $_literal[1], $GLOBALS['I']);
             break;

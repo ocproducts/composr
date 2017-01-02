@@ -37,5 +37,5 @@
 .boxless_space .box___block_no_entries_image_of_the_day,
 .boxless_space .fp_col_block .box___poll_box,
 .boxless_space .fp_col_block .box___block_no_entries_poll {
-	/*min-height: 0;* /* boxless spaces don't need a min height */
+	/*min-height: 0; boxless spaces don't need a min height */
 }

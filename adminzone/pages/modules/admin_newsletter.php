@@ -340,9 +340,9 @@ class Module_admin_newsletter extends Standard_crud_module
         require_code('uploads');
         if (((is_plupload(true)) && (array_key_exists('file', $_FILES))) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
             $target_path = get_custom_file_base() . '/temp/' . basename($_FILES['file']['tmp_name']);
+            require_code('files2');
             if (!file_exists(dirname($target_path))) {
-                mkdir(dirname($target_path), 0777);
-                fix_permissions(dirname($target_path));
+                make_missing_directory(dirname($target_path));
             }
             copy($_FILES['file']['tmp_name'], $target_path);
             fix_permissions($target_path);
@@ -1247,7 +1247,7 @@ class Module_admin_newsletter extends Standard_crud_module
             if (((is_plupload(true)) && (array_key_exists('file', $_FILES))) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
                 $__csv_data = array();
                 safe_ini_set('auto_detect_line_endings', '1');
-                $myfile = fopen($_FILES['file']['tmp_name'], GOOGLE_APPENGINE ? 'rb' : 'rt');
+                $myfile = fopen($_FILES['file']['tmp_name'], 'rb');
                 $del = ',';
                 $csv_test_line = fgetcsv($myfile, 4096, $del);
                 if ((count($csv_test_line) == 1) && (strpos($csv_test_line[0], ';') !== false)) {

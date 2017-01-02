@@ -473,12 +473,9 @@ class Notification_dispatcher
                             continue;
                         }
                     }
+                    require_code('files');
                     $path = get_custom_file_base() . '/data_custom/modules/web_notifications';
-                    if (!file_exists($path)) {
-                        require_code('files2');
-                        make_missing_directory($path);
-                    }
-                    @file_put_contents($path . '/latest.dat', strval(time()));
+                    cms_file_put_contents_safe($path . '/latest.dat', strval(time()), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
                 }
 
                 inject_web_resources_context_to_comcode($message);

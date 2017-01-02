@@ -50,14 +50,15 @@ class cms_test_case extends WebTestCase
             $ret = parent::get($url, $parameters);
         }
 
+        require_code('files');
+
         // Save, so we can run webstandards checker on it later
         $path = get_file_base() . '/_tests/html_dump/' . get_class($this);
         if (!file_exists($path)) {
             mkdir($path, 0777);
         }
         $content = $this->_browser->getContent();
-        $file_put_contents($path . '/' . url_to_filename($url) . '.htm.tmp', $content);
-        fix_permissions($path . '/' . url_to_filename($url) . '.htm.tmp');
+        cms_file_put_contents_safe($path . '/' . url_to_filename($url) . '.htm.tmp', $content, FILE_WRITE_FIX_PERMISSIONS);
 
         // Save the text so we can run through Word's grammar checker
         $text_content = $content;
@@ -71,8 +72,7 @@ class cms_test_case extends WebTestCase
         $text_content = str_replace('&mdash;', '-', $text_content);
         $text_content = str_replace('&hellip;', '...', $text_content);
         $text_content = @html_entity_decode($text_content, ENT_QUOTES);
-        file_put_contents($path . '/' . url_to_filename($url) . '.txt.tmp', $text_content);
-        fix_permissions($path . '/' . url_to_filename($url) . '.txt.tmp');
+        cms_file_put_contents_safe($path . '/' . url_to_filename($url) . '.txt.tmp', $text_content, FILE_WRITE_FIX_PERMISSIONS);
 
         return $ret;
     }

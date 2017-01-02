@@ -34,6 +34,11 @@ function tar_open($path, $mode)
     } else {
         $exists = file_exists($path) && (strpos($mode, 'a') !== false);
         $myfile = @fopen($path, $mode);
+        if (substr($mode, 0, 1) == 'w') {
+            flock($myfile, LOCK_EX);
+        } else {
+            flock($myfile, LOCK_SH);
+        }
         if ($myfile === false) {
             if (substr($mode, 0, 1) == 'r') {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'), false, true);
@@ -52,7 +57,7 @@ function tar_open($path, $mode)
         $chunk = pack('a1024', '');
         if ($myfile !== null) {
             if (fwrite($myfile, $chunk) < strlen($chunk)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($resource['full'])), false, true);
             }
         }
         $resource['directory'] = array();
@@ -193,7 +198,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
         $dh = @opendir($_full);
         if ($dh === false) {
             if (fwrite($logfile, 'Could not access ' . $_full . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
             }
         }
     } else {
@@ -221,7 +226,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {
                     if (fwrite($logfile, 'Could not access ' . $full . "\n") == 0) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                     }
                     continue;
                 }
@@ -235,7 +240,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                         if ((($mtime > $threshold || $ctime > $threshold)) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) {
                             tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true, true);
                             if ($logfile !== null && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
-                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                             }
                         }
                         /* We don't store all this stuff, it's not in Composr's remit
@@ -285,7 +290,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
         $dh = @opendir($_full);
         if ($dh === false) {
             if (fwrite($logfile, 'Could not access ' . $_full . ' [case 2]' . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
             }
         }
     } else {
@@ -317,7 +322,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {
                     if (fwrite($logfile, 'Could not access ' . $full . "\n") == 0) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                     }
                     continue;
                 }
@@ -330,7 +335,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
                     if ((($full != $resource['full']) && (($max_size === null) || (filesize($full) < $max_size * 1024 * 1024))) && (!array_key_exists($_subpath, $avoid_backing_up))) {
                         tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true, true);
                         if ($logfile !== null && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
                         }
                     }
                 }
@@ -402,7 +407,10 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
                 if (substr($file['path'], -4) == '.txt') {
                     if (!$use_afm) {
                         if (file_exists(get_custom_file_base() . '/' . $path . $file['path'])) {
-                            copy(get_custom_file_base() . '/' . $path . $file['path'], get_custom_file_base() . '/' . $path . $file['path'] . '.' . strval(time()));
+                            $saveat = get_custom_file_base() . '/' . $path . $file['path'] . '.' . strval(time());
+                            copy(get_custom_file_base() . '/' . $path . $file['path'], $saveat);
+                            fix_permissions($saveat);
+                            sync_file($saveat);
                         }
                     } else {
                         if (file_exists(get_custom_file_base() . '/' . $path . $file['path'])) {
@@ -440,8 +448,9 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
                         intelligent_write_error(get_custom_file_base() . '/' . $path . $file['path']);
                     }
                 } else {
+                    flock($myfile, LOCK_EX);
                     if (fwrite($myfile, $data['data']) < strlen($data['data'])) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($resource['full'])), false, true);
                     }
                     $full_path = get_custom_file_base() . '/' . $path . $file['path'];
                     @chmod($full_path, $data['mode']);
@@ -480,6 +489,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
         if ($stuff['path'] == $path) {
             if ($write_data_to !== null) {
                 $outfile = fopen($write_data_to, 'wb');
+                flock($outfile, LOCK_EX);
             }
 
             if ($stuff['size'] == 0) {
@@ -500,7 +510,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
 
                     if ($write_data_to !== null) {
                         if (fwrite($outfile, $data) < strlen($data)) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($resource['full'])), false, true);
                         }
 
                         $data = '';
@@ -509,6 +519,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
             }
 
             if ($write_data_to !== null) {
+                flock($outfile, LOCK_UN);
                 fclose($outfile);
                 fix_permissions($path);
                 sync_file($path);
@@ -629,23 +640,25 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
         echo $chunk;
     } else {
         if (fwrite($myfile, $chunk) < strlen($chunk)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($resource['full'])), false, true);
         }
     }
 
     $block_size = file_size_to_tar_block_size($data_is_path ? filesize($data) : strlen($data));
     if ($data_is_path) {
         $infile = fopen($data, 'rb');
+        flock($infile, LOCK_SH);
         while (!feof($infile)) {
             $in = fread($infile, 8000);
             if ($myfile === null) {
                 echo $in;
             } else {
                 if (fwrite($myfile, $in) < strlen($in)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($resource['full'])), false, true);
                 }
             }
         }
+        flock($infile, LOCK_UN);
         fclose($infile);
         $extra_to_write = $block_size - filesize($data);
         if ($extra_to_write != 0) {
@@ -653,7 +666,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
                 echo pack('a' . strval($extra_to_write), '');
             } else {
                 if (fwrite($myfile, pack('a' . strval($extra_to_write), '')) == 0) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($resource['full'])), false, true);
                 }
             }
         }
@@ -663,7 +676,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
             echo $chunk;
         } else {
             if (fwrite($myfile, $chunk) < strlen($chunk)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($resource['full'])), false, true);
             }
         }
     }
@@ -702,13 +715,15 @@ function tar_close($resource)
         } else {
             $chunk = pack('a1024', '');
             if (fwrite($resource['myfile'], $chunk) < strlen($chunk)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($resource['full'])), false, true);
             }
 
+            flock($resource['myfile'], LOCK_UN);
             fclose($resource['myfile']);
             fix_permissions($resource['full']);
         }
     } else {
+        flock($resource['myfile'], LOCK_UN);
         fclose($resource['myfile']);
     }
 }

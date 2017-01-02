@@ -40,7 +40,7 @@ class Hook_task_install_geolocation_data
         // We need to read in IP_Country.txt, line-by-line...
 
         $path = get_file_base() . '/data/modules/admin_stats/IP_Country.txt';
-        $file = @fopen($path, GOOGLE_APPENGINE ? 'rb' : 'rt');
+        $file = @fopen($path, 'rb');
         if ($file === false) {
             warn_exit(do_lang_tempcode('READ_ERROR', escape_html($path)), false, true);
         }

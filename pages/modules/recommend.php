@@ -409,14 +409,11 @@ class Module_recommend
                     $possible_name_fields = array('Name', 'Forename', 'First Name', 'Display Name', 'First');
 
                     $fixed_contents = unixify_line_format(file_get_contents($_FILES['upload']['tmp_name']));
-                    $myfile = @fopen($_FILES['upload']['tmp_name'], 'wb');
-                    if ($myfile !== false) {
-                        fwrite($myfile, $fixed_contents);
-                        fclose($myfile);
-                    }
+                    require_code('files');
+                    cms_file_put_contents_safe($_FILES['upload']['tmp_name'], $fixed_contents, FILE_WRITE_FAILURE_SILENT);
 
                     safe_ini_set('auto_detect_line_endings', '1');
-                    $myfile = fopen($_FILES['upload']['tmp_name'], 'rt');
+                    $myfile = fopen($_FILES['upload']['tmp_name'], 'rb');
 
                     $del = ',';
 

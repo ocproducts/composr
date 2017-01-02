@@ -28,6 +28,7 @@
 function init__mail()
 {
     require_lang('mail');
+    require_code('type_sanitisation');
 
     global $SENDING_MAIL, $EMAIL_ATTACHMENTS;
     $SENDING_MAIL = false;
@@ -162,7 +163,9 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
         foreach ($to_emails as $i => $_to_email) {
             $additional = '';
             if (($this->enveloper_override) && ($this->website_email != '')) {
-                $additional = '-f ' . $this->website_email;
+                if (is_email_address($website_email)) { // Required for security
+                    $additional = '-f ' . $this->website_email;
+                }
             }
             $_to_name = $to_names[$i];
             if (($_to_email == $_to_name) || (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')) {
@@ -234,6 +237,9 @@ class Mail_dispatcher_smtp extends Mail_dispatcher_base
         }
         if (empty($smtp_from_address)) {
             $smtp_from_address = $this->website_email;
+        }
+        if (!is_email_address($smtp_from_address)) { // Required for security
+            $smtp_from_address = '';
         }
 
         $this->line_term = "\r\n";
@@ -460,6 +466,9 @@ abstract class Mail_dispatcher_base
         $website_email = isset($advanced_parameters['website_email']) ? $advanced_parameters['website_email'] : null; // Website e-mail address (null: default configured)
         if ($website_email !== null) {
             $this->website_email = $website_email;
+        }
+        if (!is_email_address($this->website_email)) { // Required for security
+            $this->website_email = '';
         }
 
         $this->priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
@@ -924,6 +933,9 @@ abstract class Mail_dispatcher_base
         $this->clean_parameter($subject_line);
 
         $staff_address = get_option('staff_address');
+        if (!is_email_address($staff_address)) { // Required for security
+            $staff_address = '';
+        }
 
         // To e-mail (an array)
         if ($to_emails === null) {
@@ -964,6 +976,9 @@ abstract class Mail_dispatcher_base
         // From e-mail
         if ($from_email == '') {
             $from_email = get_option('staff_address');
+        }
+        if (!is_email_address($from_email)) { // Required for security
+            $from_email = '';
         }
         $this->clean_parameter($from_email);
 

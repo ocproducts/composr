@@ -109,6 +109,8 @@ function publish_addon($addon, $version_branch, $cat_id)
     } elseif (!file_exists($to)) {
         warn_exit('Missing: ' . $from);
     }
+    fix_permissions($to);
+    sync_file($to);
 
     $addon_url = 'uploads/downloads/' . urlencode($file);
 
@@ -158,6 +160,8 @@ function publish_theme($file, $version_branch, $cat_id)
     } elseif (!file_exists($to)) {
         warn_exit('Missing: ' . $from);
     }
+    fix_permissions($to);
+    sync_file($to);
 
     $addon_url = 'uploads/downloads/' . urlencode($new_file);
 

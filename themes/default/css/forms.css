@@ -78,10 +78,6 @@ span.form_field_name {
 	/*display: inline-block;	Actually, this breaks vertical centring, so let it be inline*/
 }
 
-.locked_field {
-	opacity: 0.3;
-}
-
 /* Overrides .toggleable_tray_button */
 .form_table .toggleable_tray_button {
 	color: {$GET,heading_text} !important;

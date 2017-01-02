@@ -80,8 +80,6 @@ function png_compress($path, $lossy = false)
                     } else {
                         unlink($path . '.jpeg_tmp');
                     }
-                    fix_permissions($path . '.jpeg_tmp');
-                    sync_file($path . '.jpeg_tmp');
                 }
 
                 // Return
@@ -121,8 +119,6 @@ function png_compress($path, $lossy = false)
         } else {
             unlink($path . '.jpeg_tmp');
         }
-        fix_permissions($path . '.jpeg_tmp');
-        sync_file($path . '.jpeg_tmp');
     }
 
     fix_permissions($path);

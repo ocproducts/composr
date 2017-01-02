@@ -1058,12 +1058,8 @@ class Module_cms_catalogues extends Standard_crud_module
 
         // Fix up the CSV file to have unix style line endings
         $fixed_contents = unixify_line_format(file_get_contents($csv_name));
-        $myfile = @fopen($csv_name, 'wb');
-        if ($myfile !== false) {
-            fwrite($myfile, $fixed_contents);
-            fclose($myfile);
-        }
-        sync_file($csv_name);
+        require_code('files');
+        cms_file_put_contents_safe($csv_name, $fixed_contents, FILE_WRITE_FAILURE_SILENT);
 
         require_code('tasks');
         return call_user_func_array__long_task(do_lang('CATALOGUE_IMPORT'), $this->title, 'import_catalogue', array($catalogue_name, $key_field, $new_handling, $delete_handling, $update_handling, $meta_keywords_field, $meta_description_field, $notes_field, $allow_rating, $allow_comments, $allow_trackbacks, $csv_name));

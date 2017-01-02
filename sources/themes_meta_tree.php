@@ -629,7 +629,8 @@ class Meta_tree_builder
             $instance_calls .= implode(', ', $instance_call_parts) . "\n";
         }
         if ($instance_calls != '') {
-            file_put_contents($_path . '/_instance_calls.txt', $instance_calls);
+            require_code('files');
+            cms_file_put_contents_safe($_path . '/_instance_calls.txt', $instance_calls);
             fix_permissions($_path . '/_instance_calls.txt');
         }
 

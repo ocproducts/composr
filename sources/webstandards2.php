@@ -52,7 +52,7 @@ function init__webstandards2()
  * @param  map $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
- * @param  list $errors Errors detected so far. We will add to these and return
+ * @param  array $errors Errors detected so far. We will add to these and return
  * @return array Array of error information
  *
  * @ignore
@@ -608,7 +608,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
  * Checks the spelling of some text.
  *
  * @param  string $value The text
- * @return list Array of errors
+ * @return array Array of errors
  */
 function check_spelling($value)
 {
@@ -1014,6 +1014,9 @@ function _webstandards_css_sheet($data)
                 }
                 if (($alpha_numeric) || ($next == ':') || ($next == '#')) {
                     $class_name .= $next;
+                } elseif ($comment_starting) {
+                    $status = CSS_IN_COMMENT;
+                    $class_before_comment = CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS;
                 } else {
                     // Test class name
                     $cnt = substr_count($class_name, ':');

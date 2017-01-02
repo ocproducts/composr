@@ -85,7 +85,10 @@ function handle_permission_check_logging($member, $op, $params, $result)
             if (!is_string($self_url)) {
                 $self_url = get_self_url_easy(true); // A weirdness can happen here. If some kind of fatal error happens then output buffers can malfunction making it impossible to use Tempcode as above. So we fall back to this. (This function may be called in a fatal error).
             }
+            flock($PERMISSION_CHECK_LOGGER, LOCK_EX);
+            fseek($PERMISSION_CHECK_LOGGER, 0, SEEK_END);
             fwrite($PERMISSION_CHECK_LOGGER, "\n\n" . date('Y/m/d h:m:i') . ' -- ' . $self_url . ' -- ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . "\n");
+            flock($PERMISSION_CHECK_LOGGER, LOCK_UN);
         } else {
             $PERMISSION_CHECK_LOGGER = false;
         }

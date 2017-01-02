@@ -38,6 +38,7 @@ function get_video_details($file_path, $filename, $delay_errors = false)
     if ($file === false) {
         return false;
     }
+    flock($file, LOCK_SH);
 
     switch ($extension) {
         case 'wmv':
@@ -101,6 +102,7 @@ function get_video_details($file_path, $filename, $delay_errors = false)
             break;
     }
 
+    flock($file, LOCK_UN);
     fclose($file);
 
     if ($info === null) {
@@ -713,7 +715,9 @@ function create_video_thumb($src_url, $expected_output_path = null)
                     }
                     require_code('files');
                     $_expected_output_path = fopen($expected_output_path, 'wb');
+                    flock($_expected_output_path, LOCK_EX);
                     http_get_contents($ret, array('write_to_file' => $_expected_output_path));
+                    flock($_expected_output_path, LOCK_UN);
                     fclose($_expected_output_path);
 
                     return $ret;
@@ -737,8 +741,10 @@ function create_video_thumb($src_url, $expected_output_path = null)
             if ($expected_output_path !== null) {
                 require_code('files');
                 $_expected_output_path = @fopen($expected_output_path, 'wb');
+                flock($_expected_output_path, LOCK_EX);
                 if ($_expected_output_path !== false) {
                     http_get_contents($ret, array('write_to_file' => $_expected_output_path));
+                    flock($_expected_output_path, LOCK_UN);
                     fclose($_expected_output_path);
                 }
             }
@@ -837,7 +843,9 @@ function create_video_thumb($src_url, $expected_output_path = null)
         if ($expected_output_path !== null) {
             require_code('files');
             $_expected_output_path = fopen($expected_output_path, 'wb');
+            flock($_expected_output_path, LOCK_EX);
             http_get_contents($ret, array('write_to_file' => $_expected_output_path));
+            flock($_expected_output_path, LOCK_UN);
             fclose($_expected_output_path);
         }
     }

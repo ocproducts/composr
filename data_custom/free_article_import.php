@@ -80,7 +80,7 @@ foreach ($categories_default as $category) {
 
 // Import news
 $done = 0;
-$csvfile = fopen(get_custom_file_base() . '/data_custom/free_article_import__articles.csv', 'rt');
+$csvfile = fopen(get_custom_file_base() . '/data_custom/free_article_import__articles.csv', 'rb');
 fgetcsv($csvfile, 1024000); // Skip header row
 while (($r = fgetcsv($csvfile, 1024000)) !== false) {
     $url = $r[1];
@@ -300,8 +300,9 @@ function http_get_contents_cached($url, $referer = '', $cookies = null)
     } else {
         sleep(3);
 
+        require_code('files');
         $data = http_get_contents($url, array('ua' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36', 'cookies' => $cookies, 'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'accept_language' => 'en-US,en;q=0.8', 'referer' => $referer));
-        file_put_contents($cache_file, $data);
+        cms_file_put_contents_safe($cache_file, $data, FILE_WRITE_FIX_PERMISSIONS);
     }
     return $data;
 }

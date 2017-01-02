@@ -50,9 +50,7 @@ function catalogue_file_script()
     $field_id_field = get_param_string('field_id_field', null);
     $url_field = get_param_string('url_field');
     $ev = 'uploads/catalogues/' . $file;
-    if ($original_filename !== null) {
-        $ev .= '::' . $original_filename;
-    } else {
+    if ($original_filename === null) {
         $original_filename = basename($file);
     }
     $where = array($id_field => $entry_id);
@@ -62,6 +60,9 @@ function catalogue_file_script()
     $ev_check = $GLOBALS['SITE_DB']->query_select_value($table, $url_field, $where); // Has to return a result, will give a fatal error if not -- i.e. it implicitly checks the schema variables given
     if (!in_array($ev, explode("\n", preg_replace('#( |::).*$#m', '', $ev_check)))) {
         access_denied('I_ERROR'); // ID mismatch for the file requested, to give a security error
+    }
+    if ($original_filename !== null) {
+        $ev .= '::' . $original_filename;
     }
     if (($table == 'catalogue_efv_short' || $table == 'catalogue_efv_long') && (get_ip_address() != cms_srv('SERVER_ADDR')/*We need to allow media renderer to get through*/)) { // Now check the match, if we support checking on it
         $c_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => $entry_id));

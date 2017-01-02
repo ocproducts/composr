@@ -709,9 +709,10 @@ class Module_admin_import
 
         // _config.php
         global $FILE_BASE;
+        require_code('files');
         $config_file = '_config.php';
-        $config_file_handle = @fopen($FILE_BASE . '/' . $config_file, 'wb') or intelligent_write_error($FILE_BASE . '/' . $config_file);
-        fwrite($config_file_handle, "<" . "?php\n");
+        $config_contents = '';
+        $config_contents .= "<" . "?php\n";
         global $SITE_INFO;
         $SITE_INFO['forum_type'] = 'cns';
         $SITE_INFO['cns_table_prefix'] = $SITE_INFO['table_prefix'];
@@ -722,12 +723,10 @@ class Module_admin_import
         $SITE_INFO['forum_base_url'] = get_base_url();
         foreach ($SITE_INFO as $key => $val) {
             $_val = str_replace('\\', '\\\\', $val);
-            fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\']=\'' . $_val . "';\n");
+            $config_contents .= '$SITE_INFO[\'' . $key . '\']=\'' . $_val . "';\n";
         }
-        fwrite($config_file_handle, "?" . ">\n");
-        fclose($config_file_handle);
-        fix_permissions($FILE_BASE . '/' . $config_file);
-        sync_file($FILE_BASE . '/' . $config_file);
+        $config_contents .= "?" . ">\n";
+        cms_file_put_contents_safe($FILE_BASE . '/' . $config_file, $config_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         $out->attach(paragraph(do_lang_tempcode('CNS_CONVERTED_INFO')));
 
         // Add zone formally

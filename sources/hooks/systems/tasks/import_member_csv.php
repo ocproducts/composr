@@ -65,7 +65,7 @@ class Hook_task_import_member_csv
         $_csv_data = array();
 
         safe_ini_set('auto_detect_line_endings', '1');
-        $myfile = fopen($path, 'rt');
+        $myfile = fopen($path, 'rb');
         $del = ',';
         $csv_header = fgetcsv($myfile, 102400, $del);
         if ($csv_header === false) {

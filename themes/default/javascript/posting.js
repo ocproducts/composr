@@ -241,7 +241,7 @@ function generate_background_preview(post) {
         }
     }
     form_post = modsecurity_workaround_ajax(form_post.substr(1));
-    var preview_ret = do_ajax_request(form_preview_url + '&js_only=1&known_utf8=1', null, form_post);
+    var preview_ret = do_ajax_request(window.form_preview_url + '&js_only=1&known_utf8=1', null, form_post);
     eval(preview_ret.responseText.replace('<script>', '').replace('</script>', ''));
 }
 
@@ -332,7 +332,7 @@ function do_input_comcode(field_name, tag) {
     if (tag == null) {
         var element = document.getElementById(field_name);
         if (is_wysiwyg_field(element)) {
-            var selection = wysiwyg_editors[field_name].getSelection();
+            var selection = window.wysiwyg_editors[field_name].getSelection();
             var ranges = selection.getRanges();
             if ( ranges[0] !== undefined) {
                 var comcode_element = ranges[0].startContainer.$;

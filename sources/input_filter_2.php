@@ -43,6 +43,8 @@ function modsecurity_workaround_enable()
             '\\' => '"',
             '&' => '%',
             '%' => '&',
+            '@' => ':',
+            ':' => '@',
         );
         $len = strlen($data);
         for ($i = 0; $i < $len; $i++) {

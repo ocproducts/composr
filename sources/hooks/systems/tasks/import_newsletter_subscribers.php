@@ -44,15 +44,12 @@ class Hook_task_import_newsletter_subscribers
 
         if (filesize($path) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
             $fixed_contents = unixify_line_format(file_get_contents($path));
-            $myfile = @fopen($path, 'wb');
-            if ($myfile !== false) {
-                fwrite($myfile, $fixed_contents);
-                fclose($myfile);
-            }
+            require_code('files');
+            cms_file_put_contents_safe($path, $fixed_contents, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         }
 
         safe_ini_set('auto_detect_line_endings', '1');
-        $myfile = fopen($path, 'rt');
+        $myfile = fopen($path, 'rb');
         $del = ',';
         $csv_test_line = fgetcsv($myfile, 4096, $del);
         if ((count($csv_test_line) == 1) && (strpos($csv_test_line[0], ';') !== false)) {
@@ -204,7 +201,6 @@ class Hook_task_import_newsletter_subscribers
         log_it('IMPORT_NEWSLETTER_SUBSCRIBERS');
 
         @unlink($path);
-        sync_file($path);
         return array('text/html', $message);
     }
 }

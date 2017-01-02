@@ -93,8 +93,7 @@ function cms_get_temp_dir()
 {
     $local_path = get_custom_file_base() . '/temp';
     if (!file_exists($local_path)) {
-        mkdir($local_path, 0777);
-        fix_permissions($local_path);
+        make_missing_directory($local_path);
     }
     $server_path = sys_get_temp_dir();
     $problem_saving = ((get_option('force_local_temp_dir') == '1') || ((ini_get('open_basedir') != '') && (preg_match('#(^|:|;)' . preg_quote($server_path, '#') . '($|:|;|/)#', ini_get('open_basedir')) == 0)));
@@ -263,6 +262,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
     $outfile = mixed();
     if ($outfile_path !== null) {
         $outfile = fopen($outfile_path, 'w+b');
+        flock($outfile, LOCK_EX);
     }
 
     $out = '';
@@ -307,11 +307,18 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         if ($outfile !== null) {
             rewind($outfile);
             fpassthru($outfile);
+            flock($outfile, LOCK_UN);
             fclose($outfile);
             @unlink($outfile_path);
         }
         exit($out);
     }
+
+    if ($outfile !== null) {
+        flock($outfile, LOCK_UN);
+        fclose($outfile);
+    }
+
     return $out;
 }
 
@@ -329,6 +336,7 @@ function delete_csv_column($in_path, $column_name)
 
     // Find which field index this named column is
     $in_file = fopen($in_path, 'rb');
+    flock($in_file, LOCK_SH);
     $header_row = fgetcsv($in_file);
     $column_i = null;
     foreach ($header_row as $i => $h) {
@@ -369,6 +377,7 @@ function delete_csv_column($in_path, $column_name)
     }
 
     // Clean up; put temp file back over main file
+    flock($in_file, LOCK_UN);
     fclose($in_file);
     fclose($tmp_file);
     @unlink($in_path);

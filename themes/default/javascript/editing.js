@@ -102,7 +102,7 @@ function _toggle_wysiwyg(name) {
                 '{!comcode:DISCARD_WYSIWYG_CHANGES;^}',
                 function (prompt) {
                     if ((!prompt) || (prompt.toLowerCase() == '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase())) {
-                        if (saving_cookies)
+                        if (read_cookie('use_wysiwyg') == '0')
                             set_cookie('use_wysiwyg', '1', 3000);
                         return false;
                     }
@@ -762,7 +762,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
                 editor.document.getBody().appendHtml(insert);
             } else {
                 //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
-                var element_for_inserting = CKEDITOR.dom.element.createFromHtml(insert);
+                var element_for_inserting = window.CKEDITOR.dom.element.createFromHtml(insert);
                 editor.insertElement(element_for_inserting);
             }
 

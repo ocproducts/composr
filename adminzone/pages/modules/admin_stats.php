@@ -1515,9 +1515,8 @@ class Module_admin_stats
             while (false !== ($file = readdir($handle))) {
                 if ((!should_ignore_file(get_custom_file_base() . '/data_custom/modules/admin_stats/' . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_HIDDEN_FILES)) && ($file != 'IP_Country.txt') && (!is_dir($file))) {
                     $path = get_custom_file_base() . '/data_custom/modules/admin_stats/' . $file;
-                    @unlink($path)
-                    or intelligent_write_error($path);
-                    sync_file('data_custom/modules/admin_stats/' . $file);
+                    @unlink($path) or intelligent_write_error($path);
+                    sync_file($path);
                 }
             }
 
@@ -1741,16 +1740,8 @@ class Module_admin_stats
      */
     public function save_graph($path, $graph)
     {
+        require_code('files');
         $path = get_custom_file_base() . '/data_custom/modules/admin_stats/' . filter_naughty_harsh($path) . '.xml';
-        $file = @fopen($path, 'wb');
-        if ($file === false) {
-            intelligent_write_error($path);
-        }
-        if (fwrite($file, $graph) < strlen($graph)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-        }
-        @fclose($file);
-        fix_permissions($path);
-        sync_file($path);
+        cms_file_put_contents_safe($path, $graph, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }

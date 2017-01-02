@@ -383,7 +383,7 @@ function upgrade_script()
                                         } else {
                                             unlink(get_file_base() . '/imports/addons/' . $found . '.new.tar');
                                         }
-                                        sync_file('imports/addons/' . $found . '.tar');
+                                        sync_file(get_file_base() . '/imports/addons/' . $found . '.tar');
 
                                         echo do_lang('U_PACKING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
                                     }
@@ -401,8 +401,9 @@ function upgrade_script()
                         }
                         @unlink($temp_path);
                         $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
+                        require_code('files');
                         $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
-                        file_put_contents($tmp_data_path, serialize($data));
+                        cms_file_put_contents_safe($tmp_data_path, serialize($data));
                         global $SITE_INFO;
                         if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
                             $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
@@ -1318,10 +1319,10 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
                             if (($true_hash !== null) && ($hash_on_disk != $true_hash)) {
                                 if ((function_exists('diff_compute_new')) && (substr($file, -4) == '.css') && ($true_hash !== 2) && (file_exists($dir . $file . '.editfrom')) && (cms_is_writable($dir . $file))) {
                                     $new = diff_compute_new($equiv_file, $dir . $file . '.editfrom', $dir . $file);
-                                    file_put_contents($dir . $file . '.' . strval(time()), file_get_contents($dir . $file));
-                                    file_put_contents($dir . $file, $new);
+                                    cms_file_put_contents_safe($dir . $file . '.' . strval(time()), file_get_contents($dir . $file), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                                    cms_file_put_contents_safe($dir . $file, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                                     $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd> ' . do_lang('AUTO_MERGED') . '</li>';
-                                    file_put_contents($dir . $file . '.editfrom', file_get_contents($equiv_file));
+                                    cms_file_put_contents_safe($dir . $file . '.editfrom', file_get_contents($equiv_file), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                                 } else {
                                     $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
                                 }
@@ -1523,6 +1524,7 @@ function version_specific()
                 while (($f = readdir($dh)) !== false) {
                     if (substr($f, -4) == '.tar') {
                         @rename(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
+                        sync_file_move(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
                     }
                 }
             }
@@ -1534,7 +1536,9 @@ function version_specific()
             $GLOBALS['SITE_DB']->rename_table('adminlogs', 'actionlogs');
 
             @rename(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
+            sync_file_move(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
             @rename(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
+            sync_file_move(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
 
             $modules_renamed = array(
                 'cedi' => 'wiki',
@@ -1748,8 +1752,8 @@ function perform_search_replace($reps)
                     $contents_orig = $contents;
                     $contents = preg_replace(array_keys($reps), array_values($reps), $contents);
                     if ($contents != $contents_orig) {
-                        file_put_contents($path, $contents);
-                        sync_file($path);
+                        require_code('files');
+                        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
                 closedir($dh);
@@ -2270,7 +2274,8 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
 
                 // Save
                 if ($orig_css_file_contents != $css_file_contents) {
-                    @file_put_contents($css_dir . $css_file, $css_file_contents) or intelligent_write_error($css_dir . $css_file);
+                    require_code('files');
+                    cms_file_put_contents_safe($css_dir . $css_file, $css_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
 
                 $successes[] = do_lang_tempcode('CSS_FILE_UPGRADED', escape_html($css_file));
@@ -2379,7 +2384,8 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                         $successes[] = do_lang_tempcode('TEMPLATE_ALTERED', escape_html($templates_file));
 
                         // Save
-                        @file_put_contents($templates_dir . $templates_file, $templates_file_contents) or intelligent_write_error($templates_dir . $templates_file);
+                        require_code('files');
+                        cms_file_put_contents_safe($templates_dir . $templates_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
 

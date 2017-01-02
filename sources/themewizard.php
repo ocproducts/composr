@@ -107,7 +107,10 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
 
         if ($theme != 'default') {
             $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', 'ab');
+            flock($myfile, LOCK_EX);
+            fseek($myfile, 0, SEEK_END);
             fwrite($myfile, 'theme_wizard_images=' . $map['theme_wizard_images'] . "\n");
+            flock($myfile, LOCK_UN);
             fclose($myfile);
         }
     }
@@ -530,13 +533,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                         $changed_from_default_theme = true;
                     }
                     if ($changed_from_default_theme) {
-                        $fp = @fopen($saveat, 'wb') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet);
-                        if (fwrite($fp, $output) < strlen($output)) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-                        }
-                        fclose($fp);
-                        fix_permissions($saveat);
-                        sync_file($saveat);
+                        require_code('files');
+                        cms_file_put_contents_safe(get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet, $output, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                         if (!$inherit_css) {
                             $c_success = @copy(get_file_base() . '/themes/' . filter_naughty($source_theme) . '/css/' . $sheet, $saveat . '.editfrom');
                             if ($c_success !== false) {

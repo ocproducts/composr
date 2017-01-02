@@ -178,6 +178,7 @@ This addon does not contain the compo.sr install code and the overall site and t
             'themes/default/templates_custom/CMS_HOSTING_COPY_SUCCESS_SCREEN.tpl',
             'themes/default/templates_custom/CMS_SITE.tpl',
             'themes/default/templates_custom/CMS_SITES_SCREEN.tpl',
+            'site/pages/minimodules_custom/themeing_changes.php',
             'uploads/website_specific/compo.sr/.htaccess',
             'uploads/website_specific/compo.sr/logos/a.png',
             'uploads/website_specific/compo.sr/logos/b.png',

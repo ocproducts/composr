@@ -216,6 +216,22 @@ function fix_permissions($path, $perms = null)
 }
 
 /**
+ * Get the contents of a file, with locking support.
+ *
+ * @param  PATH $path File path.
+ * @return string File contents.
+ */
+function cms_file_get_contents_safe($path)
+{
+    $tmp = fopen($path, 'rb');
+    flock($tmp, LOCK_SH);
+    $contents = file_get_contents($path);
+    flock($tmp, LOCK_UN);
+    fclose($tmp);
+    return $contents;
+}
+
+/**
  * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
@@ -2109,9 +2125,9 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
     }
 
     global $SITE_INFO;
-    if ((!$force_db) && (((isset($SITE_INFO['known_suexec'])) && ($SITE_INFO['known_suexec'] == '1')) || (cms_is_writable(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')))) {
+    if ((!$force_db) && (((isset($SITE_INFO['known_suexec'])) && ($SITE_INFO['known_suexec'] == '1')) || (cms_is_writable(get_file_base() . '/.htaccess')))) {
         $bans = array();
-        $ban_count = preg_match_all('#\ndeny from (.*)#', file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), $bans);
+        $ban_count = preg_match_all('#\ndeny from (.*)#', cms_file_get_contents_safe(get_file_base() . '/.htaccess'), $bans);
         $ip_bans = array();
         for ($i = 0; $i < $ban_count; $i++) {
             $ip_bans[] = array('ip' => $bans[1][$i]);

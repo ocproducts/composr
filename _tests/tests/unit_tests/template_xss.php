@@ -18,13 +18,30 @@
  */
 class template_xss_test_set extends cms_test_case
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        require_code('themes2');
+        require_code('files');
+    }
+
     public function testHTMLCDataBreakout() // See http://css.dzone.com/articles/xss-still-tricky
     {
         $templates = array();
+
         $paths = array(
             get_file_base() . '/themes/default/templates',
             get_file_base() . '/themes/default/templates_custom',
         );
+        $themes = find_all_themes();
+        foreach (array_keys($themes) as $theme) {
+            $paths = array_merge($paths, array(
+                get_file_base() . '/themes/' . $theme . '/templates',
+                get_file_base() . '/themes/' . $theme . '/templates_custom',
+            ));
+        }
+
         foreach ($paths as $path) {
             $dh = opendir($path);
             while (($f = readdir($dh)) !== false) {
@@ -49,7 +66,7 @@ class template_xss_test_set extends cms_test_case
 
                             if (get_param_integer('save', 0) == 1) {
                                 $file_orig = str_replace($match, '{' . $matches[1][$i] . $matches[2][$i] . '/' . '}', $file_orig);
-                                file_put_contents($path . '/' . $f, $file_orig);
+                                cms_file_put_contents_safe($path . '/' . $f, $file_orig, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                             }
                         }
                     }
@@ -89,10 +106,19 @@ class template_xss_test_set extends cms_test_case
     public function testHTMLAttributeBreakout()
     {
         $templates = array();
+
         $paths = array(
             get_file_base() . '/themes/default/templates',
             get_file_base() . '/themes/default/templates_custom',
         );
+        $themes = find_all_themes();
+        foreach (array_keys($themes) as $theme) {
+            $paths = array_merge($paths, array(
+                get_file_base() . '/themes/' . $theme . '/templates',
+                get_file_base() . '/themes/' . $theme . '/templates_custom',
+            ));
+        }
+
         foreach ($paths as $path) {
             $dh = opendir($path);
             while (($f = readdir($dh)) !== false) {

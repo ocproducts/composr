@@ -317,7 +317,8 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
     $updated = preg_replace('#' . preg_quote($match_start, '#') . '.*' . preg_quote($match_end, '#') . '#s', 'xxxRULES-GO-HERExxx', $existing);
     $updated = str_replace('xxxRULES-GO-HERExxx', $new, $updated);
 
-    file_put_contents($file_path, $updated);
+    require_code('files');
+    cms_file_put_contents_safe($file_path, $updated, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     echo 'Done ' . $file_path . "\n";
 }

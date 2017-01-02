@@ -657,6 +657,8 @@ class Module_admin_themes
      */
     private function save_theme_changes($theme)
     {
+        require_code('files');
+
         if (!file_exists((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -670,33 +672,19 @@ class Module_admin_themes
         erase_persistent_cache();
 
         $before = better_parse_ini_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        $myfile = @fopen((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        if (fwrite($myfile, 'title=' . post_param_string('title') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        if (fwrite($myfile, 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
+        $path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+        $contents = '';
+        $contents .= 'title=' . post_param_string('title') . "\n";
+        $contents .= 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n";
         foreach ($before as $key => $val) {
             if (($key != 'title') && ($key != 'description') && ($key != 'author') && ($key != 'mobile_pages') && ($key != 'supports_wide')) {
-                fwrite($myfile, $key . '=' . $val . "\n");
+                $contents .= $key . '=' . $val . "\n";
             }
         }
-        if (fwrite($myfile, 'author=' . post_param_string('author') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        if (fwrite($myfile, 'mobile_pages=' . post_param_string('mobile_pages') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        if (fwrite($myfile, 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
+        $contents .= 'author=' . post_param_string('author') . "\n";
+        $contents .= 'mobile_pages=' . post_param_string('mobile_pages') . "\n";
+        $contents .= 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n";
+        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         sync_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
 
         require_code('permissions2');
@@ -714,19 +702,12 @@ class Module_admin_themes
                 $new_map[$val] = $theme;
             }
         }
-        $myfile = @fopen(get_file_base() . '/themes/map.ini', GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error(get_file_base() . '/themes/map.ini');
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
+        $path = get_file_base() . '/themes/map.ini';
+        $contents = '';
         foreach ($new_map as $key => $val) {
-            if (fwrite($myfile, $key . '=' . $val . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
+            $contents .= $key . '=' . $val . "\n";
         }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        sync_file('themes/map.ini');
+        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 
     /**

@@ -963,9 +963,8 @@ function find_unique_path($subdir, $filename = null, $lock_in = false)
     } while (is_file($path));
 
     if ($lock_in) {
-        file_put_contents($path, '');
-        sync_file($path);
-        fix_permissions($path);
+        require_code('files');
+        cms_file_put_contents_safe($path, '');
     }
 
     $url = str_replace('%2F', '/', rawurlencode($subdir . '/' . $adjusted_filename));

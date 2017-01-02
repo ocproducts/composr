@@ -70,7 +70,7 @@ function commandr_script()
         require_code('comcode_from_html');
         require_code('mail');
 
-        $stdin = @fopen('php://stdin', GOOGLE_APPENGINE ? 'rb' : 'rt');
+        $stdin = @fopen('php://stdin', 'rb');
         $stderr = @fopen('php://stderr', 'wb');
         $stdout = @fopen('php://stdout', 'wb');
         while (true) { // Goes on until ctrl+C

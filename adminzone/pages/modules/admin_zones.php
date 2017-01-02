@@ -353,11 +353,7 @@ class Module_admin_zones
                     $full_path = zone_black_magic_filterer((($page_info[0] == 'comcode' || $pure) ? get_file_base() : get_custom_file_base()) . '/' . $current_zone . '/pages/' . strtolower($page_info[0]) . '/' . get_site_default_lang() . '/' . $current_for . '.txt');
                 }
                 if (file_exists($full_path)) {
-                    $tmp = fopen($full_path, 'rb');
-                    @flock($tmp, LOCK_SH);
-                    $comcode = file_get_contents($full_path);
-                    @flock($tmp, LOCK_UN);
-                    fclose($tmp);
+                    $comcode = cms_file_get_contents_safe($full_path);
 
                     if (strpos($full_path, '_custom/') === false) {
                         global $LANG_FILTER_OB;
@@ -516,12 +512,6 @@ class Module_admin_zones
                 // Where to save to
                 $full_path = zone_black_magic_filterer(get_custom_file_base() . (((($redirect === null) ? $id : $redirect) == '') ? '' : '/') . (($redirect === null) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
 
-                // Make dir if needed
-                if (!file_exists(dirname($full_path))) {
-                    require_code('files2');
-                    make_missing_directory(dirname($full_path));
-                }
-
                 // Store revision
                 require_code('revisions_engine_files');
                 $revision_engine = new RevisionEngineFiles();
@@ -531,18 +521,8 @@ class Module_admin_zones
                 }
 
                 // Save
-                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'ab') or intelligent_write_error($full_path);
-                @flock($myfile, LOCK_EX);
-                if (!GOOGLE_APPENGINE) {
-                    ftruncate($myfile, 0);
-                }
-                if (fwrite($myfile, $comcode) < strlen($comcode)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-                }
-                @flock($myfile, LOCK_UN);
-                fclose($myfile);
-                fix_permissions($full_path);
-                sync_file($full_path);
+                require_code('files');
+                cms_file_put_contents_safe($full_path, $comcode, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 // De-cache
                 $caches = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array('the_zone' => ($redirect === null) ? $id : $redirect, 'the_page' => $for));

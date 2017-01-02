@@ -69,41 +69,12 @@ class Hook_snippet_template_editor_save
                 }
             } else {
                 // Save
-                $myfile = @fopen($custom_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
-                if ($myfile === false) {
-                    intelligent_write_error($custom_path);
-                }
-                @flock($myfile, LOCK_EX);
-                if (!GOOGLE_APPENGINE) {
-                    ftruncate($myfile, 0);
-                }
-                if (fwrite($myfile, $contents) < strlen($contents)) {
-                    fclose($myfile);
-                    unlink($custom_path);
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                }
-                @flock($myfile, LOCK_UN);
-                fclose($myfile);
-                sync_file($custom_path);
+                cms_file_put_contents_safe($custom_path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 // Make base-hash-thingy
                 if (is_file($original_path) && !is_file($custom_path . '.editfrom')) {
-                    $myfile = @fopen($custom_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'ab');
-                    if ($myfile === false) {
-                        intelligent_write_error($custom_path);
-                    }
-                    @flock($myfile, LOCK_EX);
-                    if (!GOOGLE_APPENGINE) {
-                        ftruncate($myfile, 0);
-                    }
                     $hash = file_get_contents($original_path);
-                    if (fwrite($myfile, $hash) < strlen($hash)) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                    }
-                    @flock($myfile, LOCK_UN);
-                    fclose($myfile);
-                    fix_permissions($custom_path . '.editfrom');
-                    sync_file($custom_path . '.editfrom');
+                    cms_file_put_contents_safe($custom_path . '.editfrom', $hash, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
             }
 

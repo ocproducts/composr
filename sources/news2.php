@@ -895,7 +895,9 @@ function _news_import_grab_image(&$data, $url)
     }
 
     $target_handle = fopen($target_path, 'wb') or intelligent_write_error($target_path);
+    flock($target_handle, LOCK_EX);
     $result = http_get_contents($url, array('trigger_error' => false, 'write_to_file' => $target_handle));
+    flock($target_handle, LOCK_UN);
     fclose($target_handle);
     sync_file($target_path);
     fix_permissions($target_path);

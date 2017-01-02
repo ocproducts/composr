@@ -34,7 +34,7 @@ function build_news_sitemap()
     cms_profile_start_for('build_news_sitemap');
 
     $sitemap_file = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
-    @flock($sitemap_file, LOCK_EX);
+    flock($sitemap_file, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
         ftruncate($sitemap_file, 0);
     }
@@ -133,7 +133,7 @@ function build_news_sitemap()
         </urlset>
     ');
 
-    @flock($sitemap_file, LOCK_UN);
+    flock($sitemap_file, LOCK_UN);
     fclose($sitemap_file);
     require_code('files');
     sync_file($path);
@@ -142,7 +142,8 @@ function build_news_sitemap()
     $target_url = get_custom_base_url() . '/data_custom/sitemaps/news_sitemap.xml';
 
     if (function_exists('gzencode')) {
-        file_put_contents($path . '.gz', gzencode(file_get_contents($path), -1));
+        require_code('files');
+        cms_file_put_contents_safe($path . '.gz', gzencode(file_get_contents($path), -1), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         $path .= '.gz';
         $target_url .= '.gz';
     }

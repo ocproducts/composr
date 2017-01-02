@@ -288,8 +288,7 @@ if (trim($post)!="")
     if (get_param_integer('save__mailer', 1) == 1) {
         require_code('crypt');
         $mailer_path = get_custom_file_base() . '/pages/html_custom/' . $lang . '/mailer_temp.htm';
-        @mkdir(dirname($mailer_path), 0777);
-        file_put_contents($mailer_path, $mailer_script);
+        cms_file_put_contents_safe($mailer_path, $mailer_script, FILE_WRITE_FIX_PERMISSIONS);
         $session_cookie_id = get_session_cookie();
         $data = http_get_contents(static_evaluate_tempcode(build_url(array('page' => 'mailer_temp', 'keep_lang' => (count($langs) != 1) ? $lang : null), '', null, false, false, true)), array('trigger_error' => false, 'post_params' => array($session_cookie_id => get_rand_password())));
         unlink($mailer_path);

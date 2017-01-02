@@ -39,6 +39,7 @@ class Hook_task_import_wordpress
         require_lang('news');
         require_code('news');
         require_code('news2');
+        require_code('files');
 
         log_it('IMPORT_NEWS');
 
@@ -268,19 +269,10 @@ class Hook_task_import_wordpress
                         ));
 
                         // Save to disk
-                        if (!file_exists(dirname($full_path))) {
-                            require_code('files2');
-                            make_missing_directory(dirname($full_path));
+                        $success_status = cms_file_put_contents_safe($full_path, $_content, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                        if (!$success_status) {
+                            return array(null, do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($full_path)));
                         }
-                        $myfile = @fopen($full_path, 'wb');
-                        if ($myfile === false) {
-                            intelligent_write_error($full_path);
-                        }
-                        if (fwrite($myfile, $_content) < strlen($_content)) {
-                            return array(null, do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                        }
-                        fclose($myfile);
-                        sync_file($full_path);
 
                         // Meta
                         if (array_key_exists('category', $post)) {
@@ -419,9 +411,7 @@ class Hook_task_import_wordpress
             $zone = $item['zone'];
             $page = $item['page'];
             _news_import_grab_images_and_fix_links($download_images == 1, $contents, $imported_news);
-            file_put_contents($item['path'], $contents);
-            sync_file($item['path']);
-            fix_permissions($item['path']);
+            cms_file_put_contents_safe($item['path'], $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             if ($item['parent_page'] !== null) {
                 $parent_page = mixed();
                 foreach ($imported_pages as $item2) {
