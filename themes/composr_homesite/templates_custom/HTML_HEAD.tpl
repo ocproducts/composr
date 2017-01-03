@@ -82,7 +82,7 @@
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid}" />
 {+END}
 {+START,IF_NON_EMPTY,{$METADATA,meta_description}}<meta property="og:description" content="{$METADATA*,meta_description}" />{+END}
-{+START,IF_NON_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$METADATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
+<meta property="og:image" content="{$IMG*,opengraph}" />
 {+START,IF_NON_EMPTY,{$METADATA,video}}<meta property="og:video" content="{$METADATA*,video}" /><meta property="og:video:width" content="{$METADATA*,video:width}" /><meta property="og:video:height" content="{$METADATA*,video:height}" /><meta property="og:video:type" content="{$METADATA*,video:type}" />{+END}
 <meta property="og:locale" content="{$REPLACE,-,_,{!locale}}" />
 {+START,IF,{$EQ,{$METADATA,type},Article}}
