@@ -133,7 +133,6 @@ function make_installers($skip_file_grab = false)
 
         // Build install.php, which has to have all our data.cms file offsets put into it (data.cms is an uncompressed zip, but the quick installer cheats - it can't truly read arbitrary zips)
         $code = file_get_contents(get_file_base() . '/install.php');
-        $auto_installer = fopen($builds_path . '/builds/' . $version_dotted . '/install.php', 'wb');
         $installer_start = "<" . "?php
             /* QUICK INSTALLER CODE starts */
 
@@ -183,15 +182,15 @@ function make_installers($skip_file_grab = false)
                 return {$file_count};
             }";
         $installer_start = preg_replace('#^\t{3}#m', '', $installer_start); // Format it correctly
-        fwrite($auto_installer, $installer_start);
+        $auto_installer_code = '';
+        $auto_installer_code .= $installer_start;
         global $MAKE_INSTALLERS__DIR_ARRAY;
         foreach ($MAKE_INSTALLERS__DIR_ARRAY as $dir) {
-            fwrite($auto_installer, '$DIR_ARRAY[]=\'' . $dir . '\';' . "\n");
+            $auto_installer_code .= '$DIR_ARRAY[]=\'' . $dir . '\';' . "\n";
         }
-        fwrite($auto_installer, '/* QUICK INSTALLER CODE ends */ ?' . '>');
-        fwrite($auto_installer, $code);
-        fclose($auto_installer);
-        fix_permissions($builds_path . '/builds/' . $version_dotted . '/install.php');
+        $auto_installer_code .= '/* QUICK INSTALLER CODE ends */ ?' . '>';
+        $auto_installer_code .= $code;
+        cms_file_put_contents_safe($builds_path . '/builds/' . $version_dotted . '/install.php', $auto_installer_code, FILE_WRITE_FIX_PERMISSIONS);
 
         @unlink($quick_zip);
 
@@ -662,10 +661,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
             }
 
             // Write the file out
-            $tmp = fopen($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 'wb');
-            fwrite($tmp, $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file]);
-            fclose($tmp);
-            fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
+            cms_file_put_contents_safe($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file], FILE_WRITE_FIX_PERMISSIONS);
         }
     }
 
@@ -698,12 +694,11 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
         $files[$file] = array(sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $contents))));
     }
 
+    require_code('files');
+
     $file_manifest = serialize($files);
 
-    $myfile = fopen(get_file_base() . '/data/files.dat', 'wb');
-    fwrite($myfile, $file_manifest);
-    fclose($myfile);
-    fix_permissions(get_file_base() . '/data/files.dat');
+    cms_file_put_contents_safe(get_file_base() . '/data/files.dat', $file_manifest, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     $MAKE_INSTALLERS__FILE_ARRAY['data/files.dat'] = $file_manifest;
 
@@ -711,10 +706,7 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
     require_code('version2');
     $version_branch = get_version_branch();
     $builds_path = get_builds_path();
-    $tmp = fopen($builds_path . '/builds/build/' . $version_branch . '/data/files.dat', 'wb');
-    fwrite($tmp, $file_manifest);
-    fclose($tmp);
-    fix_permissions($builds_path . '/builds/build/' . $version_branch . '/data/files.dat');
+    cms_file_put_contents_safe($builds_path . '/builds/build/' . $version_branch . '/data/files.dat', $file_manifest, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 }
 
 function make_database_manifest() // Builds db_meta.dat, which is used for database integrity checks
@@ -878,12 +870,9 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
     );
 
     // Save
+    require_code('files');
     $path = get_file_base() . '/data/db_meta.dat';
-    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-    fwrite($myfile, serialize($data));
-    fclose($myfile);
-    fix_permissions($path);
-    sync_file($path);
+    cms_file_put_contents_safe($path, serialize($data), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 }
@@ -920,18 +909,17 @@ function make_install_sql()
     // Build SQL dump
     require_code('database_toolkit');
     $st = get_sql_dump(true, false, null, null, null, false, $conn);
-    $myfile = fopen(get_file_base() . '/install.sql', 'wb');
+    $sql_contents = '';
     foreach ($st as $s) {
-        fwrite($myfile, $s);
-        fwrite($myfile, "\n\n");
+        $sql_contents .= $s;
+        $sql_contents .= "\n\n";
     }
-    fclose($myfile);
-    fix_permissions(get_file_base() . '/install.sql');
-    sync_file(get_file_base() . '/install.sql');
+    require_code('files');
+    cms_file_put_contents_safe(get_file_base() . '/install.sql', $sql_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     // Run some checks to make sure our process is not buggy...
 
-    $contents = file_get_contents(get_file_base() . '/install.sql');
+    $contents = cms_file_get_contents_safe(get_file_base() . '/install.sql');
 
     // Not with forced charsets or other contextual noise
     if (strpos($contents, "\n" . 'SET') !== false) {
@@ -984,7 +972,7 @@ function make_install_sql()
     );
 
     // Check we can find split points
-    $contents = file_get_contents(get_file_base() . '/install.sql');
+    $contents = cms_file_get_contents_safe(get_file_base() . '/install.sql');
     foreach ($split_points as $p) {
         if ($p != '') {
             if (strpos($contents, $p) === false) {
@@ -1010,9 +998,8 @@ function make_install_sql()
         } else {
             $segment = substr($contents, $from);
         }
-        file_put_contents(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment);
-        fix_permissions(get_file_base() . '/install' . strval($i + 1) . '.sql');
-        sync_file(get_file_base() . '/install' . strval($i + 1) . '.sql');
+        require_code('files');
+        cms_file_put_contents_safe(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }
 

@@ -29,14 +29,16 @@ function init__composr_homesite()
 
 function get_latest_version_pretty()
 {
-    static $version = false;
-    if ($version === false) {
+    static $version = null;
+    static $fetched_version = false;
+    if (!$fetched_version) {
         $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
         if ($version !== null) {
             require_code('version2');
             $_version = preg_replace('# \(.*#', '', get_translated_text($version));
             list(, , , , $version) = get_version_components__from_dotted(get_version_dotted__from_anything($_version));
         }
+        $fetched_version = true;
     }
     return is_null($version) ? null : float_format($version, 2, true);
 }
@@ -75,7 +77,7 @@ function is_release_discontinued($version)
     return (preg_match('#^' . implode('|', array_map('preg_quote', $discontinued)) . '($|\.)#', $version) != 0);
 }
 
-function find_version_download($version_pretty, $type = 'manual')
+function find_version_download($version_pretty, $type_wanted = 'manual')
 {
     global $DOWNLOAD_ROWS;
     load_version_download_rows();
@@ -83,8 +85,11 @@ function find_version_download($version_pretty, $type = 'manual')
     $download_row = null;
     foreach ($DOWNLOAD_ROWS as $download_row) {
         $nice_title_stripped = preg_replace('# \(.*\)$#', '', $download_row['nice_title']);
-        if (($nice_title_stripped == 'Composr Version ' . $version_pretty) && (strpos($download_row['nice_title'], $type) !== false)) {
-            return $download_row;
+        if ($nice_title_stripped == 'Composr Version ' . $version_pretty) {
+            $is_manual = (strpos($download_row['nice_title'], 'manual') !== false);
+            if (($is_manual && $type_wanted == 'manual') || (!$is_manual && $type_wanted == 'quick')) {
+                return $download_row;
+            }
         }
     }
 
@@ -182,6 +187,7 @@ function recursive_unzip($zip_path, $unzip_path)
             if ($_entry !== false) {
                 @mkdir(dirname($unzip_path . '/' . $entry_name), 0777, true);
                 $out_file = fopen($unzip_path . '/' . $entry_name, 'wb');
+                flock($out_file, LOCK_EX);
                 while (true) {
                     $it = zip_entry_read($entry, 1024);
                     if (($it === false) || ($it == '')) {
@@ -190,6 +196,7 @@ function recursive_unzip($zip_path, $unzip_path)
                     fwrite($out_file, $it);
                 }
                 zip_entry_close($entry);
+                flock($out_file, LOCK_UN);
                 fclose($out_file);
             }
         }
@@ -499,11 +506,6 @@ function reset_base_config_file($server)
     global $SITE_INFO;
 
     $path = special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/_config.php';
-    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'at');
-    @flock($myfile, LOCK_EX);
-    if (!GOOGLE_APPENGINE) {
-        ftruncate($myfile, 0);
-    }
     $contents = "<" . "?php
 global \$SITE_INFO;
 
@@ -572,9 +574,8 @@ if (\$_SERVER['HTTP_HOST'] == 'composr.info') {
 \$SITE_INFO['custom_user_" . db_escape_string($row['s_codename']) . "'] = true;
 ";
     }
-    fwrite($myfile, $contents);
-    @flock($myfile, LOCK_UN);
-    fclose($myfile);
+    require_code('files');
+    cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 }
 
 /**
@@ -583,6 +584,8 @@ if (\$_SERVER['HTTP_HOST'] == 'composr.info') {
 function reset_aliases()
 {
     return; // Needs customising for each deployment; Demonstratr personal demos currently not supporting email hosting
+
+    require_code('files');
 
     // Rebuild virtualdomains
     $vds = explode("\n", file_get_contents(special_demonstratr_dir() . '/virtualdomains'));
@@ -599,14 +602,8 @@ function reset_aliases()
             $text .= $site['s_domain_name'] . ':' . 'alias-demonstratr_' . $site['s_codename'] . "\n";
         }
     }
-    $myfile = fopen(special_demonstratr_dir() . '/virtualdomains', GOOGLE_APPENGINE ? 'wb' : 'at');
-    @flock($myfile, LOCK_EX);
-    if (!GOOGLE_APPENGINE) {
-        ftruncate($myfile, 0);
-    }
-    fwrite($myfile, $text);
-    @flock($myfile, LOCK_UN);
-    fclose($myfile);
+    $path = special_demonstratr_dir() . '/virtualdomains';
+    cms_file_put_contents_safe($path, $text, FILE_WRITE_FIX_PERMISSIONS);
 
     // Rebuild rcpthosts
     $vds = explode("\n", file_get_contents(special_demonstratr_dir() . '/rcpthosts'));
@@ -623,14 +620,8 @@ function reset_aliases()
             $hosts[$site['s_domain_name']] = true;
         }
     }
-    $myfile = fopen(special_demonstratr_dir() . '/rcpthosts', GOOGLE_APPENGINE ? 'wb' : 'at');
-    @flock($myfile, LOCK_EX);
-    if (!GOOGLE_APPENGINE) {
-        ftruncate($myfile, 0);
-    }
-    fwrite($myfile, implode("\n", array_keys($hosts)) . "\n");
-    @flock($myfile, LOCK_UN);
-    fclose($myfile);
+    $path = special_demonstratr_dir() . '/rcpthosts';
+    cms_file_put_contents_safe($path, implode("\n", array_keys($hosts)) . "\n", FILE_WRITE_FIX_PERMISSIONS);
 
     // Go through aliases directory and remove Demonstratr aliases
     $a_path = special_demonstratr_dir() . '/alias';
@@ -645,14 +636,8 @@ function reset_aliases()
     // Rebuild alias files
     $emails = $GLOBALS['SITE_DB']->query_select('sites_email', array('*'));
     foreach ($emails as $email) {
-        $myfile = fopen($a_path . '/.qmail-demonstratr_' . filter_naughty($email['s_codename']) . '_' . filter_naughty(str_replace('.', ':', $email['s_email_from'])), GOOGLE_APPENGINE ? 'wb' : 'at');
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        fwrite($myfile, '&' . $email['s_email_to']);
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
+        $path = $a_path . '/.qmail-demonstratr_' . filter_naughty($email['s_codename']) . '_' . filter_naughty(str_replace('.', ':', $email['s_email_from']));
+        cms_file_put_contents_safe($path, '&' . $email['s_email_to'], FILE_WRITE_FIX_PERMISSIONS);
     }
 
     shell_exec(special_demonstratr_dir() . '/reset_aliases');
@@ -818,7 +803,7 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
     //$master_conn->query('DROP USER \'demonstratr_site_' . $codename . '\'');
 
     $GLOBALS['SITE_DB']->query_delete('sites_deletion_codes', array('s_codename' => $codename), '', 1);
-    $GLOBALS['SITE_DB']->query_update('sites_email', array('s_codename' => $codename . '__expired_' . strval(rand(0, 100))), array('s_codename' => $codename), '', 1, null, false, true);
+    $GLOBALS['SITE_DB']->query_update('sites_email', array('s_codename' => $codename . '__expired_' . strval(mt_rand(0, 100))), array('s_codename' => $codename), '', 1, null, false, true);
 
     // Directory entry
     $GLOBALS['SITE_DB']->query_delete('sites', array('s_codename' => $codename), '', 1);

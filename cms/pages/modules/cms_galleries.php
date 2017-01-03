@@ -506,7 +506,7 @@ class Module_cms_galleries extends Standard_crud_module
                                 $more = zip_entry_read($entry);
                                 if ($more !== false) {
                                     if (fwrite($myfile2, $more) < strlen($more)) {
-                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE_TMP'));
                                     }
                                 }
                             } while (($more !== false) && ($more != ''));
@@ -969,7 +969,7 @@ class Module_cms_galleries extends Standard_crud_module
             if (substr($x, 0, 5) == 'file_') {
                 $path = get_custom_file_base() . '/uploads/galleries/' . filter_naughty($file);
                 @unlink($path) or intelligent_write_error($path);
-                sync_file('uploads/galleries/' . $file);
+                sync_file($path);
             }
         }
 

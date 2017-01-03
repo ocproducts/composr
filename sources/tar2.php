@@ -67,7 +67,7 @@ function convert_zip_to_tar($in_path, $out_path = null)
         do {
             $more = zip_entry_read($entry);
             if (fwrite($temp_file, $more) < strlen($more)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($out_path)));
             }
         } while (($more !== false) && ($more != ''));
         fclose($temp_file);

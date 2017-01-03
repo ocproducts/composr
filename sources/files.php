@@ -47,7 +47,124 @@ function init__files()
         define('IGNORE_CUSTOM_DIR_GROWN_CONTENTS', 32768);
         define('IGNORE_NONBUNDLED_VERY_SCATTERED', 65536);
         define('IGNORE_NONBUNDLED_EXTREMELY_SCATTERED', 131072);
+
+        define('FILE_WRITE_FAILURE_SILENT', 0);
+        define('FILE_WRITE_FAILURE_SOFT', 1);
+        define('FILE_WRITE_FAILURE_HARD', 2);
+        define('FILE_WRITE_FIX_PERMISSIONS', 4);
+        define('FILE_WRITE_SYNC_FILE', 8);
     }
+}
+
+/**
+ * Write out to a file, with lots of error checking and locking.
+ *
+ * @param  PATH $path File path.
+ * @param  string $contents File contents.
+ * @param  integer $flags FILE_WRITE_* flags.
+ * @param  integer $retry_depth How deep it is into retrying if somehow the data did not get written.
+ * @return boolean Success status.
+ */
+function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth = 0)
+{
+    $num_bytes_to_save = strlen($contents);
+
+    $exists_already = file_exists($path);
+
+    if ($exists_already) {
+        // If the directory is missing
+        if (!is_dir(dirname($path))) {
+            require_code('files2');
+            make_missing_directory(dirname($path));
+        }
+    }
+
+    // Error condition: If there's a lack of disk space
+    if (php_function_allowed('disk_free_space')) {
+        $num_bytes_to_write = $num_bytes_to_save;
+        if (is_file($path)) {
+            $num_bytes_to_write -= filesize($path);
+        }
+        static $disk_space = null;
+        if ($disk_space === null) {
+            $disk_space = disk_free_space(dirname($path));
+        }
+        if ($disk_space < $num_bytes_to_write) {
+            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+            return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
+        }
+    }
+
+    // Save
+    $num_bytes_written = @file_put_contents($path, $contents, LOCK_EX);
+    if (php_function_allowed('disk_free_space')) {
+        $disk_space -= $num_bytes_written;
+    }
+
+    // Error condition: If it failed to save
+    if ($num_bytes_written === false) {
+        $error_message = intelligent_write_error_inline($path);
+        return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
+    }
+
+    // Error condition: If it did not save all bytes
+    if ($num_bytes_written < $num_bytes_to_save) {
+        if ($exists_already) {
+            @unlink($path);
+        }
+
+        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
+    }
+
+    // Error condition: If somehow it said it saved but didn't actually (maybe a race condition on servers with buggy locking)
+    if (filesize($path) != $num_bytes_to_save) {
+        if ($retry_depth < 5) {
+            return cms_file_put_contents_safe($path, $contents, $flags, $retry_depth + 1);
+        }
+
+        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
+    }
+
+    // Extra requested operations
+    if (($flags & FILE_WRITE_FIX_PERMISSIONS) != 0) {
+        fix_permissions($path);
+    }
+    if (($flags & FILE_WRITE_SYNC_FILE) != 0) {
+        sync_file($path);
+    }
+
+    return true;
+}
+
+/**
+ * If cms_file_put_contents_safe has failed, process the error messaging.
+ *
+ * @param  Tempcode $error_message Error message.
+ * @param  PATH $path File path.
+ * @param  integer $flags FILE_WRITE_* flags.
+ * @return boolean Success status (always false).
+ */
+function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 2)
+{
+    static $looping = false;
+    if ($looping) {
+        critical_error('PASSON', do_lang('WRITE_ERROR', escape_html($path))); // Bail out hard if would cause a loop
+    }
+    $looping = true;
+
+    if (($flags & FILE_WRITE_FAILURE_SOFT) != 0) {
+        attach_message($error_message, 'warn');
+    }
+
+    if (($flags & FILE_WRITE_FAILURE_HARD) != 0) {
+        warn_exit($error_message);
+    }
+
+    $looping = false;
+
+    return false;
 }
 
 /**
@@ -152,7 +269,7 @@ function better_parse_ini_file($filename, $file = null)
         if (@is_array($FILE_ARRAY)) {
             $file = file_array_get($filename);
         } else {
-            $file = file_get_contents($filename);
+            $file = cms_file_get_contents_safe($filename);
         }
     }
 

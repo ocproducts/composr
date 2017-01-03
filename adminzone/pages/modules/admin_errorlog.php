@@ -94,8 +94,10 @@ class Module_admin_errorlog
             if (is_readable(get_custom_file_base() . '/data_custom/errorlog.php')) {
                 if (filesize(get_custom_file_base() . '/data_custom/errorlog.php') > 1024 * 1024) {
                     $myfile = fopen(get_custom_file_base() . '/data_custom/errorlog.php', GOOGLE_APPENGINE ? 'rb' : 'rt');
+                    flock($myfile, LOCK_SH);
                     fseek($myfile, -1024 * 500, SEEK_END);
                     $lines = explode("\n", fread($myfile, 1024 * 500));
+                    flock($myfile, LOCK_UN);
                     fclose($myfile);
                     unset($lines[0]);
                     $lines[] = '...';
@@ -191,11 +193,13 @@ class Module_admin_errorlog
         if (is_readable(get_custom_file_base() . '/data_custom/permissioncheckslog.php')) {
             $myfile = @fopen(get_custom_file_base() . '/data_custom/permissioncheckslog.php', GOOGLE_APPENGINE ? 'rb' : 'rt');
             if ($myfile !== false) {
+                flock($myfile, LOCK_SH);
                 fseek($myfile, -40000, SEEK_END);
                 $data = '';
                 while (!feof($myfile)) {
                     $data .= fread($myfile, 8192);
                 }
+                flock($myfile, LOCK_UN);
                 fclose($myfile);
                 $lines = explode("\n", $data);
                 if (count($lines) != 0) {

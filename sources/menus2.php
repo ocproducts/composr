@@ -48,11 +48,10 @@ function export_menu_csv($file_path = null)
 
     $data = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
 
+    require_code('files');
     require_code('files2');
     $csv = make_csv($data, 'data.csv', false, false);
-    file_put_contents($file_path, $csv);
-    fix_permissions($file_path);
-    sync_file($file_path);
+    cms_file_put_contents_safe($file_path, $csv, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 }
 
 /**

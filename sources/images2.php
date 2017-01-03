@@ -140,11 +140,8 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
                 $from_file = false;
                 $exif = false;
             } else {
-                $myfile = fopen($to, 'wb');
-                fwrite($myfile, $from_file);
-                fclose($myfile);
-                fix_permissions($to);
-                sync_file($to);
+                require_code('files');
+                cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 $exif = function_exists('exif_read_data') ? @exif_read_data($to) : false;
                 if ($ext == 'svg') { // SVG is pass-through
                     return true;
@@ -234,13 +231,12 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
 
                 if ($using_path) {
                     copy($from, $to);
+                    fix_permissions($to);
+                    sync_file($to);
                 } else {
-                    $_to = @fopen($to, 'wb') or intelligent_write_error($to);
-                    fwrite($_to, $from_file);
-                    fclose($_to);
+                    require_code('files');
+                    cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
-                fix_permissions($to);
-                sync_file($to);
                 return true;
             }
         }

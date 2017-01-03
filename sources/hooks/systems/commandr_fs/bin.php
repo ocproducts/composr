@@ -181,14 +181,8 @@ class Hook_commandr_fs_bin
         }
 
         if ((is_dir($path)) && (((file_exists($path . '/' . $file_name)) && (is_writable_wrap($path . '/' . $file_name))) || ((!file_exists($path . '/' . $file_name)) && (is_writable_wrap($path))))) {
-            $fh = @fopen($path . '/' . $file_name, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($path . '/' . $file_name);
-            $output = fwrite($fh, $contents);
-            fclose($fh);
-            if ($output < strlen($contents)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            fix_permissions($path . '/' . $file_name);
-            sync_file($path . '/' . $file_name);
+            require_code('files');
+            $output = cms_file_put_contents_safe($path . '/' . $file_name, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             return $output;
         } else {
             return false; // File doesn't exist

@@ -4274,7 +4274,7 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	vertical-align: middle;
 	position: relative;
 	top: -0.3em;
-	margin-top: 0.25em; /* Expands the whole line just enough so that our top offset doesn't cause an overflow */
+	margin-top: 0.26em; /* Expands the whole line just enough so that our top offset doesn't cause an overflow */
 }
 .comcode_member_link img {
 	cursor: inherit;

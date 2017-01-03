@@ -80,7 +80,6 @@ class Hook_task_import_catalogue
             if (!array_key_exists($key_field, $csv_field_titles)) {
                 fclose($handle);
                 @unlink($csv_name);
-                sync_file($csv_name);
                 return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_KEY_FIELD'));
             }
             $found_key = false;
@@ -93,7 +92,6 @@ class Hook_task_import_catalogue
             if (!$found_key) {
                 fclose($handle);
                 @unlink($csv_name);
-                sync_file($csv_name);
                 return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_KEY_FIELD'));
             }
         }
@@ -105,19 +103,16 @@ class Hook_task_import_catalogue
         if (($meta_keywords_field != '') && (!array_key_exists($meta_keywords_field, $csv_field_titles))) {
             fclose($handle);
             @unlink($csv_name);
-            sync_file($csv_name);
             return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_META_KEYWORDS_FIELD'));
         }
         if (($meta_description_field != '') && (!array_key_exists($meta_description_field, $csv_field_titles))) {
             fclose($handle);
             @unlink($csv_name);
-            sync_file($csv_name);
             return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_META_DESCRIPTION_FIELD'));
         }
         if (($notes_field != '') && (!array_key_exists($notes_field, $csv_field_titles))) {
             fclose($handle);
             @unlink($csv_name);
-            sync_file($csv_name);
             return array(null, do_lang_tempcode('CATALOGUES_IMPORT_MISSING_NOTES_FIELD'));
         }
 
@@ -131,7 +126,6 @@ class Hook_task_import_catalogue
             if (!is_null($test)) {
                 fclose($handle);
                 @unlink($csv_name);
-                sync_file($csv_name);
                 return $test;
             }
         }
@@ -151,7 +145,6 @@ class Hook_task_import_catalogue
 
         fclose($handle);
         @unlink($csv_name);
-        sync_file($csv_name);
         return null;
     }
 

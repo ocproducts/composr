@@ -78,6 +78,7 @@ if (!function_exists('mu_result')) {
 
 $to_version_dotted = $map['param'];
 
+require_code('version2');
 $to_version_pretty = get_version_pretty__from_dotted($to_version_dotted);
 
 echo <<<END

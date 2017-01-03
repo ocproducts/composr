@@ -243,7 +243,7 @@ function enable_content_translation()
 function _update_base_config_for_content_translation($new_setting)
 {
     $config_path = get_file_base() . '/_config.php';
-    $config_file = file_get_contents($config_path);
+    $config_file = cms_file_get_contents_safe($config_path);
     $has = '$SITE_INFO[\'multi_lang_content\'] = \'' . ($new_setting ? '0' : '1') . '\';';
     $wants = '$SITE_INFO[\'multi_lang_content\'] = \'' . ($new_setting ? '1' : '0') . '\';';
     if (strpos($config_file, $has) !== false || strpos($config_file, $wants) !== false) {
@@ -252,6 +252,6 @@ function _update_base_config_for_content_translation($new_setting)
     } else {
         $config_file = rtrim($config_file) . "\n" . $wants . "\n";
     }
-    file_put_contents($config_path, $config_file);
-    sync_file($config_path);
+    require_code('files');
+    cms_file_put_contents_safe($config_path, $config_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 }

@@ -88,12 +88,8 @@ function cache_and_carry($func, $args, $timeout = null)
     $ret = mixed();
 
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
-    if (!file_exists(dirname($path))) {
-        mkdir(dirname($path), 0777);
-        fix_permissions(dirname($path));
-    }
     if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {
-        $_ret = file_get_contents($path);
+        $_ret = cms_file_get_contents_safe($path);
         if ($func == 'http_download_file') {
             $ret = @unserialize($_ret);
         } else {
@@ -101,15 +97,14 @@ function cache_and_carry($func, $args, $timeout = null)
         }
     } else {
         $_ret = call_user_func_array($func, $args);
+        require_code('files');
         if ($func == 'http_download_file') {
             $ret = array($_ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
-            @file_put_contents($path, serialize($ret), LOCK_EX);
+            cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         } else {
             $ret = is_string($_ret) ? $_ret : serialize($_ret);
-            @file_put_contents($path, $ret, LOCK_EX);
+            cms_file_put_contents_safe($path, $ret, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         }
-        fix_permissions($path);
-        sync_file($path);
     }
     return $ret;
 }
@@ -179,8 +174,7 @@ function cms_get_temp_dir()
 {
     $local_path = get_custom_file_base() . '/safe_mode_temp';
     if (!file_exists($local_path)) {
-        mkdir($local_path, 0777);
-        fix_permissions($local_path);
+        make_missing_directory($local_path);
     }
     if (function_exists('sys_get_temp_dir')) {
         $server_path = sys_get_temp_dir();
@@ -353,6 +347,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
     $outfile = mixed();
     if (!is_null($outfile_path)) {
         $outfile = fopen($outfile_path, 'w+b');
+        flock($outfile, LOCK_EX);
     }
 
     $out = '';
@@ -397,11 +392,18 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         if (!is_null($outfile)) {
             rewind($outfile);
             fpassthru($outfile);
+            flock($outfile, LOCK_UN);
             fclose($outfile);
             @unlink($outfile_path);
         }
         exit($out);
     }
+
+    if ($outfile !== null) {
+        flock($outfile, LOCK_UN);
+        fclose($outfile);
+    }
+
     return $out;
 }
 
@@ -419,6 +421,7 @@ function delete_csv_column($in_path, $column_name)
 
     // Find which field index this named column is
     $in_file = fopen($in_path, 'rb');
+    flock($in_file, LOCK_SH);
     $header_row = fgetcsv($in_file);
     $column_i = null;
     foreach ($header_row as $i => $h) {
@@ -459,6 +462,7 @@ function delete_csv_column($in_path, $column_name)
     }
 
     // Clean up; put temp file back over main file
+    flock($in_file, LOCK_UN);
     fclose($in_file);
     fclose($tmp_file);
     @unlink($in_path);

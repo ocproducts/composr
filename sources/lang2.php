@@ -45,24 +45,21 @@ function inline_language_editing($codename, $lang)
     // Tack language strings onto this file
     list($codename, $value) = explode('=', $codename, 2);
     $myfile = fopen($save_path, 'at');
+    flock($myfile, LOCK_EX);
+    fseek($myfile, 0, SEEK_END);
     fwrite($myfile, "\n" . $codename . '=' . $value);
+    flock($myfile, LOCK_UN);
     fclose($myfile);
     // Fake-load the string
     $LANGUAGE_STRINGS_CACHE[$lang][$codename] = $value;
     // Go through all required files, doing a string replace if needed
     $included_files = get_included_files();
     foreach ($included_files as $inc) {
-        $orig_contents = file_get_contents($inc);
+        $orig_contents = cms_file_get_contents_safe($inc);
         $contents = str_replace("'" . $codename . '=' . $value . "'", "'" . $codename . "'", $orig_contents);
         if ($orig_contents != $contents) {
-            $myfile = fopen($inc, GOOGLE_APPENGINE ? 'wb' : 'at');
-            @flock($myfile, LOCK_EX);
-            if (!GOOGLE_APPENGINE) {
-                ftruncate($myfile, 0);
-            }
-            fwrite($myfile, $contents);
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
+            require_code('files');
+            cms_file_put_contents_safe($inc, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
     }
 }

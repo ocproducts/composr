@@ -761,17 +761,14 @@ class Module_admin_cns_members
         if ((is_plupload(true)) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
             if (filesize($_FILES['file']['tmp_name']) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
                 $fixed_contents = unixify_line_format(file_get_contents($_FILES['file']['tmp_name']));
-                $myfile = @fopen($_FILES['file']['tmp_name'], 'wb');
-                if ($myfile !== false) {
-                    fwrite($myfile, $fixed_contents);
-                    fclose($myfile);
-                }
+                require_code('files');
+                cms_file_put_contents_safe($_FILES['upload']['tmp_name'], $fixed_contents, FILE_WRITE_FAILURE_SILENT);
             }
 
             $target_path = get_custom_file_base() . '/safe_mode_temp/' . basename($_FILES['file']['tmp_name']);
+            require_code('files2');
             if (!file_exists(dirname($target_path))) {
-                mkdir(dirname($target_path), 0777);
-                fix_permissions(dirname($target_path));
+                make_missing_directory(dirname($target_path));
             }
             copy($_FILES['file']['tmp_name'], $target_path);
             fix_permissions($target_path);

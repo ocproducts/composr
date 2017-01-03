@@ -36,9 +36,9 @@ function load_breadcrumb_substitutions($segments)
         $substitutions = persistent_cache_get('BREADCRUMBS_CACHE');
     }
     if ($substitutions === null) {
-        $data = @file_get_contents(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
+        $data = @cms_file_get_contents_safe(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
         if ($data === false) {
-            $data = @file_get_contents(get_file_base() . '/data/xml_config/breadcrumbs.xml');
+            $data = @cms_file_get_contents_safe(get_file_base() . '/data/xml_config/breadcrumbs.xml');
         }
         if ($data === false) {
             $data = '';
