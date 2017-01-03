@@ -1571,6 +1571,7 @@ function step_5_ftp()
 
         if ($i + 1 == $count) {
             $done_all = true;
+            $i++;
             break; // That's them all
         }
     }
@@ -3066,8 +3067,8 @@ RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)$ index.php\?page=$1&type=$2 [L,QSA]
 #RewriteRule ^([^/\&\?]+)$ index.php\?page=$1 [L,QSA]
-/*REWRITE RULES END*/
 END;
+    /*REWRITE RULES END*/
 
     $clauses[] = <<<END
 order allow,deny
@@ -3104,6 +3105,7 @@ END;
             fwrite($myfile, $clause);
             flock($myfile, LOCK_UN);
             fclose($myfile);
+            usleep(100000); // 100ms, some servers are slow to update
             $HTTP_MESSAGE = '';
             http_download_file($base_url . '/exports/addons/index.php', null, false);
             if ($HTTP_MESSAGE != '200') {

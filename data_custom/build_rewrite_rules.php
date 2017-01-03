@@ -148,7 +148,7 @@ write_to('plain.htaccess', 'Apache', '<IfModule mod_rewrite.c>', '</IfModule>', 
 write_to('recommended.htaccess', 'Apache', '<IfModule mod_rewrite.c>', '</IfModule>', 0, $rewrite_rules);
 
 // Write rules to install.php (quick installer)
-write_to('install.php', 'Apache', '/*REWRITE RULES START*/$clauses[]=<<<END', 'END;/*REWRITE RULES END*/', 0, $rewrite_rules);
+write_to('install.php', 'Apache', '/*REWRITE RULES START*/$clauses[]=<<<END', "END;\n\t/*REWRITE RULES END*/", 0, $rewrite_rules);
 
 // Write rules to web.config (new IIS)
 write_to('web.config', 'IIS', '<rules>', '</rules>', 4, $rewrite_rules);

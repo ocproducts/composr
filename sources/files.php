@@ -69,19 +69,26 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 {
     $num_bytes_to_save = strlen($contents);
 
-    // If the directory is missing
-    if (!is_dir(dirname($path))) {
-        require_code('files2');
-        make_missing_directory(dirname($path));
+    $exists_already = file_exists($path);
+
+    if ($exists_already) {
+        // If the directory is missing
+        if (!is_dir(dirname($path))) {
+            require_code('files2');
+            make_missing_directory(dirname($path));
+        }
     }
 
     // Error condition: If there's a lack of disk space
-    if (function_exists('disk_free_space')) {
+    if (php_function_allowed('disk_free_space')) {
         $num_bytes_to_write = $num_bytes_to_save;
         if (is_file($path)) {
             $num_bytes_to_write -= filesize($path);
         }
-        $disk_space = disk_free_space(dirname($path));
+        static $disk_space = null;
+        if ($disk_space === null) {
+            $disk_space = disk_free_space(dirname($path));
+        }
         if ($disk_space < $num_bytes_to_write) {
             $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
             return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
@@ -90,6 +97,9 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 
     // Save
     $num_bytes_written = @file_put_contents($path, $contents, LOCK_EX);
+    if (php_function_allowed('disk_free_space')) {
+        $disk_space -= $num_bytes_written;
+    }
 
     // Error condition: If it failed to save
     if ($num_bytes_written === false) {
@@ -99,6 +109,10 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 
     // Error condition: If it did not save all bytes
     if ($num_bytes_written < $num_bytes_to_save) {
+        if ($exists_already) {
+            @unlink($path);
+        }
+
         $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
