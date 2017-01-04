@@ -510,7 +510,7 @@ function build_page_link($vars, $zone_name = '', $skip = null, $hash = '')
 
             if (isset($val->codename/*faster than is_object*/)) {
                 $page_link .= ':' . $key . '=';
-                $page_link .= $val->evaluate();
+                $page_link .= urlencode($val->evaluate());
             } else {
                 $page_link .= ':' . $key . '=' . (($val === null) ? '<null>' : urlencode($val));
             }

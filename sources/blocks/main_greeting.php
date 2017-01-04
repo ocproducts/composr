@@ -64,7 +64,7 @@ class Block_main_greeting
                 } else {
                     $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
                 }
-                $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $_this_url), get_module_zone('login'));
+                $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $_this_url->evaluate()), get_module_zone('login'));
                 $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
                 $join_bits = do_lang_tempcode('JOIN_OR_LOGIN', escape_html($join_url), escape_html(is_object($login_url) ? $login_url->evaluate() : $login_url));
 
