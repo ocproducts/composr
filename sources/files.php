@@ -71,7 +71,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 
     $exists_already = file_exists($path);
 
-    if ($exists_already) {
+    if (!$exists_already) {
         // If the directory is missing
         if (!is_dir(dirname($path))) {
             require_code('files2');
@@ -87,18 +87,22 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
         }
         static $disk_space = null;
         if ($disk_space === null) {
-            $disk_space = disk_free_space(dirname($path));
+            $disk_space = @disk_free_space(dirname($path));
         }
-        if ($disk_space < $num_bytes_to_write) {
-            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
-            return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
+        if ($disk_space !== false) {
+            if ($disk_space < $num_bytes_to_write) {
+                $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+                return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
+            }
         }
     }
 
     // Save
     $num_bytes_written = @file_put_contents($path, $contents, LOCK_EX);
     if (php_function_allowed('disk_free_space')) {
-        $disk_space -= $num_bytes_written;
+        if ($disk_space !== false) {
+            $disk_space -= $num_bytes_written;
+        }
     }
 
     // Error condition: If it failed to save
@@ -118,6 +122,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
     }
 
     // Error condition: If somehow it said it saved but didn't actually (maybe a race condition on servers with buggy locking)
+    clearstatcache();
     if (filesize($path) != $num_bytes_to_save) {
         if ($retry_depth < 5) {
             return cms_file_put_contents_safe($path, $contents, $flags, $retry_depth + 1);

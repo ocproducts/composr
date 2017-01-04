@@ -69,7 +69,7 @@ function upgrade_script()
                     clear_caches_1();
 
                     $l_choices = do_lang('FU_CHOICES');
-                    $oc = (get_option('site_closed') == '0') ? do_lang('SITE_OPEN') : do_lang('SITE_CLOSED');
+                    $oc = (get_option('site_closed') == '0') ? do_lang('OPEN') : do_lang('CLOSED');
                     $a = float_to_raw_string(cms_version_number(), 10, true);
                     $b = get_value('version');
                     if ($b === null) {

@@ -56,7 +56,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{FIELD_1}}
-				<p class="product-ids sku">{!PRODUCT_CODE}: <kbd>{FIELD_1}</kbd>{$,Product code}</p>
+				<p class="product-ids sku">{!ECOM_CAT_sku}: <kbd>{FIELD_1}</kbd>{$,Product code}</p>
 			{+END}
 			{+START,IF_NON_EMPTY,{FIELD_3}}
 				<p class="stock_level">{!STOCK}: <kbd>{$NUMBER_FORMAT*,{$STOCK_CHECK,{ID}}}</kbd>{$,Stock level}</p>
