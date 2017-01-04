@@ -464,6 +464,8 @@ class Hook_addon_registry_core
             'sources/hooks/systems/resource_meta_aware/index.html',
             'sources_custom/hooks/systems/resource_meta_aware/index.html',
             'sources/hooks/systems/commandr_fs_extended_member/group_timeouts.php',
+            'sources/hooks/systems/config/block_top_login.php',
+            'sources/hooks/systems/config/block_top_personal_stats.php',
             'sources/block_add.php',
             'themes/default/css/carousels.css',
             'themes/default/css/adminzone.css',

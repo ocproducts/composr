@@ -163,7 +163,7 @@ function cleanup_theme_images($old_url)
             $encoded_path = substr($path, 0, strrpos($path, '/') + 1) . rawurlencode(substr($path, strrpos($path, '/') + 1));
             if ((!in_array($path, $files_referenced)) && (!in_array($encoded_path, $files_referenced)) && (($old_url == $path) || ($old_url == $encoded_path))) {
                 @unlink(get_custom_file_base() . '/' . $path);
-                sync_file($path);
+                sync_file(get_custom_file_base() . '/' . $path);
             }
         }
     }

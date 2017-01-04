@@ -301,7 +301,10 @@ function cron_bridge_script($caller)
         // Run, with basic locking support
         if ($GLOBALS['DEV_MODE'] || get_value_newer_than('cron_currently_running__' . $hook, time() - 60 * 5, true) !== '1' || get_param_integer('force', 0) == 1) {
             if (!is_null($log_file)) {
+                flock($log_file, LOCK_EX);
+                fseek($log_file, 0, SEEK_END);
                 fwrite($log_file, date('Y-m-d H:i:s') . '  STARTING ' . $hook . "\n");
+                flock($log_file, LOCK_UN);
             }
 
             set_value('cron_currently_running__' . $hook, '1', true);
@@ -311,11 +314,17 @@ function cron_bridge_script($caller)
             set_value('cron_currently_running__' . $hook, '0', true);
 
             if (!is_null($log_file)) {
+                flock($log_file, LOCK_EX);
+                fseek($log_file, 0, SEEK_END);
                 fwrite($log_file, date('Y-m-d H:i:s') . '  FINISHED ' . $hook . "\n");
+                flock($log_file, LOCK_UN);
             }
         } else {
             if (!is_null($log_file)) {
+                flock($log_file, LOCK_EX);
+                fseek($log_file, 0, SEEK_END);
                 fwrite($log_file, date('Y-m-d H:i:s') . '  WAS LOCKED ' . $hook . "\n");
+                flock($log_file, LOCK_UN);
             }
         }
     }

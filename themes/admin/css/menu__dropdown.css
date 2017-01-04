@@ -63,7 +63,6 @@ For example:
 	text-decoration: none;
 	text-align: center;
 	color: {$GET,area_text};
-	max-width: 107px;
 }
 
 .menu_type__dropdown a.toplevel_link span {
@@ -108,7 +107,6 @@ For example:
 	min-height: 20px;
 
 	/* We do want wrapping for this, as menu labels could be longer than the available space between the start of the dropdown label and the edge of the fixed width */
-	max-width: 18em;
 	white-space: normal;
 }
 

@@ -124,11 +124,11 @@ function _delete_attachment($id, $connection)
     if ((url_is_local($attachment_info['a_url'])) && (substr($attachment_info['a_url'], 0, 19) == 'uploads/attachments')) {
         $url = rawurldecode($attachment_info['a_url']);
         @unlink(get_custom_file_base() . '/' . $url);
-        sync_file($url);
+        sync_file(get_custom_file_base() . '/' . $url);
         if (($attachment_info['a_thumb_url'] != '') && (strpos($attachment_info['a_thumb_url'], 'uploads/filedump/') === false)) {
             $thumb_url = rawurldecode($attachment_info['a_thumb_url']);
             @unlink(get_custom_file_base() . '/' . $thumb_url);
-            sync_file($thumb_url);
+            sync_file(get_custom_file_base() . '/' . $thumb_url);
         }
     }
 

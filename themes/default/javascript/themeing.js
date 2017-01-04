@@ -260,7 +260,7 @@ function load_contextual_css_editor(file)
 				if (new_value!=last_css)
 				{
 					var url='{$BASE_URL_NOHTTP;}/data/snippet.php?snippet=css_compile__text'+keep_stub();
-					do_ajax_request(url,receive_compiled_css,'css='+window.encodeURIComponent(new_value));
+					do_ajax_request(url,receive_compiled_css,modsecurity_workaround_ajax('css='+window.encodeURIComponent(new_value)));
 				}
 				last_css=new_value;
 			}

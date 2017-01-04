@@ -339,7 +339,7 @@ class Hook_phpbb2
                         $filename = $row['user_avatar'];
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($file_base . '/' . $avatar_path . '/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . $filename;
-                            sync_file($avatar_url);
+                            sync_file(get_custom_file_base() . '/' . $avatar_url);
                         } else {
                             if ($STRICT_FILE) {
                                 warn_exit(do_lang_tempcode('MISSING_AVATAR', escape_html($filename)));
@@ -354,7 +354,7 @@ class Hook_phpbb2
                         $filename = $row['user_avatar'];
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($file_base . '/' . $avatar_gallery_path . '/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . substr($filename, strrpos($filename, '/'));
-                            sync_file($avatar_url);
+                            sync_file(get_custom_file_base() . '/' . $avatar_url);
                         } else {
                             // Try as a pack avatar then
                             $striped_filename = str_replace('/', '_', $filename);
@@ -715,7 +715,7 @@ class Hook_phpbb2
                 $new_filename = find_derivative_filename('uploads/attachments', $row['physical_filename']);
                 $target_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
                 if ((@rename($source_path, $target_path))) {
-                    sync_file($target_path);
+                    sync_file(get_custom_file_base() . '/' . $target_path);
 
                     $url = 'uploads/attachments/' . urlencode($new_filename);
                     $thumb_url = '';

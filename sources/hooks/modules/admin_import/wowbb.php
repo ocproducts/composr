@@ -589,13 +589,8 @@ class Hook_wowbb
     {
         $filename = find_derivative_filename('uploads/' . $sections, $filename);
         $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename . '.dat';
-        $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename . '.dat')));
-        if (fwrite($myfile, $data) < strlen($data)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        fclose($myfile);
-        fix_permissions($path);
-        sync_file($path);
+        require_code('files');
+        cms_file_put_contents_safe($path, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         $url = 'uploads/' . $sections . '/' . $filename . '.dat';
 

@@ -1054,7 +1054,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             }
 
             if ($zone == '(template)') { // Special undocumented feature used by tutorial(s)
-                $temp_tpl = comcode_to_tempcode(file_get_contents(get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/' . filter_naughty($codename) . '.txt'));
+                $temp_tpl = comcode_to_tempcode(cms_file_get_contents_safe(get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/' . filter_naughty($codename) . '.txt'));
                 break;
             }
 
@@ -1474,7 +1474,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 foreach ($pages as $pg_name => $pg_type) {
                     if (substr($pg_name, 0, strlen($prefix)) == $prefix) {
                         $i = count($STRUCTURE_LIST);
-                        comcode_to_tempcode(file_get_contents(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, null, $connection, false, false, false, true, false, null, $on_behalf_of_member);
+                        comcode_to_tempcode(cms_file_get_contents_safe(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, null, $connection, false, false, false, true, false, null, $on_behalf_of_member);
                         $page_url = build_url(array('page' => $pg_name), $s_zone);
                         while (array_key_exists($i, $STRUCTURE_LIST)) {
                             $urls_for[] = $page_url;
@@ -2051,18 +2051,13 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 } else {
                     $new_filename = $md5 . '.' . get_file_extension($original_filename);
                 }
+                require_code('files');
                 $path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
-                $myfile = @fopen($path, 'wb');
-                if ($myfile === false) {
+                $success_status = cms_file_put_contents_safe($path, $file, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                if (!$success_status) {
                     $temp_tpl = do_template('WARNING_BOX', array('_GUID' => '428a36aa6cea693d01429f3d21caac36', 'WARNING' => intelligent_write_error_inline($path)));
                     break;
                 }
-                if (fwrite($myfile, $file) < strlen($file)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                }
-                fclose($myfile);
-                fix_permissions($path);
-                sync_file($path);
                 $_size = strlen($file);
                 $url = 'uploads/attachments/' . $new_filename;
                 if (is_forum_db($connection)) {

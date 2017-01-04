@@ -139,6 +139,9 @@ class Module_admin_themes
         }
 
         if ($type == 'edit_css') {
+            require_code('input_filter_2');
+            modsecurity_workaround_enable();
+
             set_helper_panel_text(comcode_lang_string('DOC_CSS'));
             set_helper_panel_tutorial('tut_markup');
 
@@ -161,6 +164,9 @@ class Module_admin_themes
         }
 
         if ($type == '_edit_css') {
+            require_code('input_filter_2');
+            modsecurity_workaround_enable();
+
             $theme = post_param_string('theme');
             $file = post_param_string('file');
  
@@ -605,6 +611,8 @@ class Module_admin_themes
      */
     public function save_theme_changes($theme)
     {
+        require_code('files');
+
         if (!file_exists((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -617,34 +625,19 @@ class Module_admin_themes
         erase_persistent_cache();
 
         $before = better_parse_ini_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        $myfile = @fopen((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        if (fwrite($myfile, 'title=' . post_param_string('title') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        if (fwrite($myfile, 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
+        $path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+        $contents = '';
+        $contents .= 'title=' . post_param_string('title') . "\n";
+        $contents .= 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n";
         foreach ($before as $key => $val) {
             if (($key != 'title') && ($key != 'description') && ($key != 'author') && ($key != 'mobile_pages') && ($key != 'supports_wide')) {
-                fwrite($myfile, $key . '=' . $val . "\n");
+                $contents .= $key . '=' . $val . "\n";
             }
         }
-        if (fwrite($myfile, 'author=' . post_param_string('author') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        if (fwrite($myfile, 'mobile_pages=' . post_param_string('mobile_pages') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        if (fwrite($myfile, 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        sync_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        $contents .= 'author=' . post_param_string('author') . "\n";
+        $contents .= 'mobile_pages=' . post_param_string('mobile_pages') . "\n";
+        $contents .= 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n";
+        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         require_code('permissions2');
         set_category_permissions_from_environment('theme', $theme);
@@ -664,19 +657,12 @@ class Module_admin_themes
                 $new_map[$val] = $theme;
             }
         }
-        $myfile = @fopen(get_file_base() . '/themes/map.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_file_base() . '/themes/map.ini');
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
+        $path = get_file_base() . '/themes/map.ini';
+        $contents = '';
         foreach ($new_map as $key => $val) {
-            if (fwrite($myfile, $key . '=' . $val . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
+            $contents .= $key . '=' . $val . "\n";
         }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        sync_file('themes/map.ini');
+        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 
     /**
@@ -1055,11 +1041,7 @@ class Module_admin_themes
         if (!file_exists($path)) {
             $path = get_file_base() . '/themes/default/css/' . $file;
         }
-        $tmp = fopen($path, 'rb');
-        @flock($tmp, LOCK_SH);
-        $css = unixify_line_format(file_get_contents($path));
-        @flock($tmp, LOCK_UN);
-        fclose($tmp);
+        $css = unixify_line_format(cms_file_get_contents_safe($path));
 
         if (addon_installed('actionlog')) {
             require_code('revisions_engine_files');
@@ -1158,10 +1140,6 @@ class Module_admin_themes
 
         // Convert from current path to save path
         $custom_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/' . $file;
-        if (!file_exists(dirname($custom_path))) {
-            require_code('files2');
-            make_missing_directory(dirname($custom_path));
-        }
 
         // Store revision
         require_code('revisions_engine_files');
@@ -1175,43 +1153,18 @@ class Module_admin_themes
         }
         $revision_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
 
+        require_code('files');
+
         // Save
-        $myfile = @fopen($custom_path, GOOGLE_APPENGINE ? 'wb' : 'at');
-        if ($myfile === false) {
-            intelligent_write_error($custom_path);
-        }
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        if (fwrite($myfile, $css) < strlen($css)) {
-            fclose($myfile);
-            unlink($custom_path);
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
+        cms_file_put_contents_safe($custom_path, $css, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         sync_file($custom_path);
 
         // Make base-hash-thingy
         $base_path = get_file_base() . '/themes/default/css/' . $file;
         if (is_file($base_path)) {
-            $myfile = @fopen($custom_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
-            if ($myfile === false) {
-                intelligent_write_error($custom_path);
-            }
-            @flock($myfile, LOCK_EX);
-            if (!GOOGLE_APPENGINE) {
-                ftruncate($myfile, 0);
-            }
+            $custom_path_edit_from = $custom_path . '.editfrom';
             $hash = file_get_contents($base_path);
-            if (fwrite($myfile, $hash) < strlen($hash)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            fix_permissions($custom_path . '.editfrom');
-            sync_file($custom_path . '.editfrom');
+            cms_file_put_contents_safe($custom_path_edit_from, $hash, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
 
         require_code('caches3');
@@ -1544,11 +1497,7 @@ class Module_admin_themes
             // Old contents (for very easy compare to base file in default theme)
             $_path = get_file_base() . '/themes/default/' . $file;
             if (file_exists($_path)) {
-                $tmp = fopen($_path, 'rb');
-                @flock($tmp, LOCK_SH);
-                $old_contents = file_get_contents($_path);
-                @flock($tmp, LOCK_UN);
-                fclose($tmp);
+                $old_contents = cms_file_get_contents_safe($_path);
             } else {
                 $old_contents = '';
             }
@@ -1783,10 +1732,6 @@ class Module_admin_themes
                 $file = str_replace($directory . '/', $directory . '_custom/', $_file);
             }
             $full_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . $file;
-            if (!file_exists(dirname($full_path))) {
-                require_code('files2');
-                make_missing_directory(dirname($full_path));
-            }
 
             // Store revision
             if (file_exists($full_path)) {
@@ -1815,42 +1760,15 @@ class Module_admin_themes
 
                 $file = $_file;
             } else {
-                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at');
-                if ($myfile === false) {
-                    intelligent_write_error($full_path);
-                }
-                @flock($myfile, LOCK_EX);
-                if (!GOOGLE_APPENGINE) {
-                    ftruncate($myfile, 0);
-                }
-                if (fwrite($myfile, $new) < strlen($new)) {
-                    fclose($myfile);
-                    unlink($full_path);
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                }
-                @flock($myfile, LOCK_UN);
-                fclose($myfile);
-                fix_permissions($full_path);
-                sync_file($full_path);
+                require_code('files');
+
+                cms_file_put_contents_safe($full_path, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 if (file_exists(get_file_base() . '/themes/default/' . post_param_string('f' . $i . 'file'))) {
                     // Make base-hash-thingy
-                    $myfile = @fopen($full_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
-                    if ($myfile === false) {
-                        intelligent_write_error($full_path);
-                    }
-                    @flock($myfile, LOCK_EX);
-                    if (!GOOGLE_APPENGINE) {
-                        ftruncate($myfile, 0);
-                    }
+                    $full_path_edit_from = $full_path . '.editfrom';
                     $hash = file_get_contents(get_file_base() . '/themes/default/' . post_param_string('f' . $i . 'file'));
-                    if (fwrite($myfile, $hash) < strlen($hash)) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                    }
-                    @flock($myfile, LOCK_UN);
-                    fclose($myfile);
-                    fix_permissions($full_path . '.editfrom');
-                    sync_file($full_path . '.editfrom');
+                    cms_file_put_contents_safe($full_path_edit_from, $hash, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
             }
             log_it('EDIT_TEMPLATES', $file, $theme);

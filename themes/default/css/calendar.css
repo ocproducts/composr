@@ -390,13 +390,6 @@ td.day_spacer:hover {
 		margin: 1em 0;
 	}
 
-	.event_subscribe {
-		font-size: 0.85em;
-		font-weight: bold;
-		margin-top: 0.25em;
-		line-height: 2em;
-	}
-
 	.event_subscriptions>li {
 		font-size: 0.95em;
 		vertical-align: middle;

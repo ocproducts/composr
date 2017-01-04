@@ -878,11 +878,11 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
 
         $email_address_required = member_field_is_required($member_id, 'email_address');
 
-        if ((!is_null($email_address)) && ($email_address != '') && (!is_email_address($email_address))) {
+        if ((!is_null($email_address)) && ($email_address != '') && ($email_address != STRING_MAGIC_NULL) && (!is_email_address($email_address))) {
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != ''))
+        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != STRING_MAGIC_NULL))
         {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if ((!is_null($test)) && ($test != $member_id)) {
@@ -1853,8 +1853,8 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
 
     // Cleanup old avatar
     if ((url_is_local($old)) && ((substr($old, 0, 20) == 'uploads/cns_avatars/') || (substr($old, 0, 16) == 'uploads/avatars/')) && ($old != $avatar_url)) {
-        sync_file(rawurldecode($old));
         @unlink(get_custom_file_base() . '/' . rawurldecode($old));
+        sync_file(rawurldecode($old));
     }
 
     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_avatar_url' => $avatar_url), array('id' => $member_id), '', 1);

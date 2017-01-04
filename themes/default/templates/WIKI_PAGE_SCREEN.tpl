@@ -55,29 +55,31 @@
 		</div>
 	{+END}
 
-	{+START,IF,{$AND,{$NOT,{$PREG_MATCH,(^|&|\?)te\_\d+=1,{$QUERY_STRING}}},{HIDE_POSTS}}}
-		<div>
-			<p class="toggleable_tray_title">
-				<a class="toggleable_tray_button" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#" onclick="return toggleable_tray('hidden_posts');"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-				<a class="toggleable_tray_button" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#" onclick="return toggleable_tray('hidden_posts');">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})
-			</p>
-			<div class="toggleable_tray" id="hidden_posts" style="display: {$JS_ON,none,block}" aria-expanded="false">
-	{+END}
-
-	{+START,IF_EMPTY,{POSTS}}
-		<p class="nothing_here">{!NO_POSTS}</p>
-	{+END}
-	{+START,IF_NON_EMPTY,{POSTS}}
-		<div class="wide_table_wrap"><div class="map_table results_table wide_table cns_topic wiki_table">
+	{+START,IF,{$OR,{$IS_NON_EMPTY,{POSTS}},{$NOT,{HIDE_POSTS}}}}
+		{+START,IF,{HIDE_POSTS}}
 			<div>
-				{POSTS}
-			</div>
-		</div></div>
-	{+END}
+				<p class="toggleable_tray_title">
+					<a class="toggleable_tray_button" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#" onclick="return toggleable_tray('hidden_posts');"><img alt="{!EXPAND}: {!DISCUSSION}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+					<a class="toggleable_tray_button" title="{!DISCUSSION}: {!EXPAND}/{!CONTRACT}" href="#" onclick="return toggleable_tray('hidden_posts');">{!DISCUSSION}</a> ({!POST_PLU,{NUM_POSTS*}})
+				</p>
+				<div class="toggleable_tray" id="hidden_posts" style="display: {$JS_ON,none,block}" aria-expanded="false">
+		{+END}
 
-	{+START,IF,{$AND,{$NOT,{$PREG_MATCH,(^|&|\?)te\_\d+=1,{$QUERY_STRING}}},{HIDE_POSTS}}}
+		{+START,IF_EMPTY,{POSTS}}
+			<p class="nothing_here">{!NO_POSTS}</p>
+		{+END}
+		{+START,IF_NON_EMPTY,{POSTS}}
+			<div class="wide_table_wrap"><div class="map_table results_table wide_table cns_topic wiki_table">
+				<div>
+					{POSTS}
+				</div>
+			</div></div>
+		{+END}
+
+		{+START,IF,{HIDE_POSTS}}
+				</div>
 			</div>
-		</div>
+		{+END}
 	{+END}
 
 	<div class="buttons_group">

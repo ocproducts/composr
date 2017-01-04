@@ -69,7 +69,7 @@ function upgrade_script()
                     clear_caches_1();
 
                     $l_choices = do_lang('FU_CHOICES');
-                    $oc = (get_option('site_closed') == '0') ? do_lang('SITE_OPEN') : do_lang('SITE_CLOSED');
+                    $oc = (get_option('site_closed') == '0') ? do_lang('OPEN') : do_lang('CLOSED');
                     $a = float_to_raw_string(cms_version_number(), 10, true);
                     $b = get_value('version');
                     if ($b === null) {
@@ -384,7 +384,7 @@ function upgrade_script()
                                         } else {
                                             unlink(get_file_base() . '/imports/addons/' . $found . '.new.tar');
                                         }
-                                        sync_file('imports/addons/' . $found . '.tar');
+                                        sync_file(get_file_base() . '/imports/addons/' . $found . '.tar');
 
                                         echo do_lang('U_PACKING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
                                     }
@@ -402,10 +402,9 @@ function upgrade_script()
                         }
                         @unlink($temp_path);
                         $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
+                        require_code('files');
                         $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
-                        $tmp_data_file = fopen($tmp_data_path, 'wb');
-                        fwrite($tmp_data_file, serialize($data));
-                        fclose($tmp_data_file);
+                        cms_file_put_contents_safe($tmp_data_path, serialize($data));
                         global $SITE_INFO;
                         if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
                             $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
@@ -1326,16 +1325,10 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
                             if ((!is_null($true_hash)) && ($hash_on_disk != $true_hash)) {
                                 if ((function_exists('diff_compute_new')) && (substr($file, -4) == '.css') && ($true_hash !== 2) && (file_exists($dir . $file . '.editfrom')) && (is_writable_wrap($dir . $file))) {
                                     $new = diff_compute_new($equiv_file, $dir . $file . '.editfrom', $dir . $file);
-                                    $myfile = fopen($dir . $file . '.' . strval(time()), 'wb');
-                                    fwrite($myfile, file_get_contents($dir . $file));
-                                    fclose($myfile);
-                                    $myfile = fopen($dir . $file, 'wb');
-                                    fwrite($myfile, $new);
-                                    fclose($myfile);
+                                    cms_file_put_contents_safe($dir . $file . '.' . strval(time()), file_get_contents($dir . $file), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                                    cms_file_put_contents_safe($dir . $file, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                                     $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd> ' . do_lang('AUTO_MERGED') . '</li>';
-                                    $myfile = fopen($dir . $file . '.editfrom', 'wb');
-                                    fwrite($myfile, file_get_contents($equiv_file));
-                                    fclose($myfile);
+                                    cms_file_put_contents_safe($dir . $file . '.editfrom', file_get_contents($equiv_file), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                                 } else {
                                     $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
                                 }
@@ -1538,6 +1531,7 @@ function version_specific()
                 while (($f = readdir($dh)) !== false) {
                     if (substr($f, -4) == '.tar') {
                         @rename(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
+                        sync_file_move(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
                     }
                 }
             }
@@ -1549,7 +1543,9 @@ function version_specific()
             $GLOBALS['SITE_DB']->rename_table('adminlogs', 'actionlogs');
 
             @rename(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
+            sync_file_move(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
             @rename(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
+            sync_file_move(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
 
             $modules_renamed = array(
                 'cedi' => 'wiki',
@@ -1739,8 +1735,8 @@ function perform_search_replace($reps)
                     $contents_orig = $contents;
                     $contents = preg_replace(array_keys($reps), array_values($reps), $contents);
                     if ($contents != $contents_orig) {
-                        file_put_contents($path, $contents);
-                        sync_file($path);
+                        require_code('files');
+                        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
                 closedir($dh);
@@ -2262,9 +2258,8 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
 
                 // Save
                 if ($orig_css_file_contents != $css_file_contents) {
-                    $outfile = @fopen($css_dir . $css_file, 'wb') or intelligent_write_error($css_dir . $css_file);
-                    fwrite($outfile, $css_file_contents);
-                    fclose($outfile);
+                    require_code('files');
+                    cms_file_put_contents_safe($css_dir . $css_file, $css_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
 
                 $successes[] = do_lang_tempcode('CSS_FILE_UPGRADED', escape_html($css_file));
@@ -2372,9 +2367,8 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                         $successes[] = do_lang_tempcode('TEMPLATE_ALTERED', escape_html($templates_file));
 
                         // Save
-                        $outfile = @fopen($templates_dir . $templates_file, 'wb') or intelligent_write_error($templates_dir . $templates_file);
-                        fwrite($outfile, $templates_file_contents);
-                        fclose($outfile);
+                        require_code('files');
+                        cms_file_put_contents_safe($templates_dir . $templates_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
 

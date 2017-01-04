@@ -63,7 +63,7 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     }
 
     // Read a raw
-    $sheet = file_get_contents($full_path);
+    $sheet = cms_file_get_contents_safe($full_path);
 
     // Re-seed
     if (addon_installed('themewizard')) {
@@ -89,19 +89,18 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     $tmp_filename = $css_file . '__tmp_copy_' . uniqid('', true);
     $temp_file = get_custom_file_base() . '/themes/' . $destination_theme . '/css_custom/' . $tmp_filename . '.css';
     $myfile = @fopen($temp_file, GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error($temp_file);
-    @flock($myfile, LOCK_EX);
+    flock($myfile, LOCK_EX);
     if (!GOOGLE_APPENGINE) {
         ftruncate($myfile, 0);
     }
     fwrite($myfile, $sheet);
-    @flock($myfile, LOCK_UN);
 
     // Load up as Tempcode
     $_sheet = _css_compile($destination_theme, $destination_theme, $tmp_filename, $temp_file, false);
+    flock($myfile, LOCK_UN);
     fclose($myfile);
     fix_permissions($temp_file);
     @unlink($temp_file);
-    sync_file($temp_file);
     $sheet = $_sheet[1];
 
     return $sheet;
@@ -170,22 +169,8 @@ function js_compile($j, $js_cache_path, $minify = true)
     } else {
         $contents = '/* DO NOT EDIT. THIS IS A CACHE FILE AND WILL GET OVERWRITTEN RANDOMLY.' . "\n" . 'INSTEAD EDIT THE TEMPLATE FROM WITHIN THE ADMIN ZONE, OR BY MANUALLY EDITING A JAVASCRIPT_CUSTOM OVERRIDE. */' . "\n\n" . $out;
     }
-    $js_file = @fopen($js_cache_path, GOOGLE_APPENGINE ? 'wb' : 'at');
-    if ($js_file === false) {
-        intelligent_write_error($js_cache_path . '.tmp');
-    }
-    @flock($js_file, LOCK_EX);
-    if (!GOOGLE_APPENGINE) {
-        ftruncate($js_file, 0);
-    }
-    if (fwrite($js_file, $contents) < strlen($contents)) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-    }
-    @flock($js_file, LOCK_UN);
-    fclose($js_file);
-    fix_permissions($js_cache_path . '.tmp');
-    @rename($js_cache_path . '.tmp', $js_cache_path);
-    sync_file($js_cache_path);
+    require_code('files');
+    $success_status = cms_file_put_contents_safe($js_cache_path, $contents, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     if (!$success_status) {
         @touch($js_cache_path, time() - 60 * 60 * 24); // Fudge it so it's going to auto expire. We do have to write the file as it's referenced, but we want it to expire instantly so that any errors will reshow.
     } else {
@@ -203,27 +188,14 @@ function js_compile($j, $js_cache_path, $minify = true)
 function compress_cms_stub_file($stub_file)
 {
     if (function_exists('gzencode')) {
-        $data = @file_get_contents($stub_file);
+        $data = cms_file_get_contents_safe($stub_file);
+
         if ($data === false) {
             return;
         }
 
-        $myfile = @fopen($stub_file . '.gz', GOOGLE_APPENGINE ? 'wb' : 'ab');
-        if ($myfile !== false) {
-            $compressed = gzencode($data, 9);
-
-            @flock($myfile, LOCK_EX);
-            if (!GOOGLE_APPENGINE) {
-                ftruncate($myfile, 0);
-            }
-            if (fwrite($myfile, $compressed) < strlen($compressed)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            fclose($myfile);
-
-            fix_permissions($stub_file . '.gz');
-            sync_file($stub_file . '.gz');
-        }
+        require_code('files');
+        cms_file_put_contents_safe($stub_file . '.gz', gzencode($data, 9), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }
 
@@ -249,30 +221,16 @@ function css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $mi
             $global_full_path = get_file_base() . '/themes/' . $d_theme . $found[1] . 'global' . $found[2];
         }
 
-        if (strpos(file_get_contents($global_full_path), '{$THEME_WIZARD_COLOR,') !== false) {
+        if (strpos(cms_file_get_contents_safe($global_full_path), '{$THEME_WIZARD_COLOR,') !== false) {
             require_code('tempcode_compiler');
-            $temp = template_to_tempcode(file_get_contents($global_full_path), 0, false, $c, $active_theme, user_lang());
+            $temp = template_to_tempcode(cms_file_get_contents_safe($global_full_path), 0, false, $c, $active_theme, user_lang());
             $temp->evaluate(); // We just need it to evaluate, not do anything with it
         }
     }
 
     list($success_status, $out) = _css_compile($active_theme, $theme, $c, $full_path, $minify);
-    $css_file = @fopen($css_cache_path, GOOGLE_APPENGINE ? 'wb' : 'at');
-    if ($css_file === false) {
-        intelligent_write_error($css_cache_path . '.tmp');
-    }
-    @flock($css_file, LOCK_EX);
-    if (!GOOGLE_APPENGINE) {
-        ftruncate($css_file, 0);
-    }
-    if (fwrite($css_file, $out) < strlen($out)) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-    }
-    @flock($css_file, LOCK_UN);
-    fclose($css_file);
-    fix_permissions($css_cache_path . '.tmp');
-    @rename($css_cache_path . '.tmp', $css_cache_path);
-    sync_file($css_cache_path);
+    require_code('files');
+    $success_status = cms_file_put_contents_safe($css_cache_path, $out, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     if (!$success_status) {
         @touch($css_cache_path, time() - 60 * 60 * 24); // Fudge it so it's going to auto expire. We do have to write the file as it's referenced, but we want it to expire instantly so that any errors will reshow.
     } else {

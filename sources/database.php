@@ -1146,7 +1146,10 @@ class DatabaseConnector
         global $QUERY_COUNT, $NO_QUERY_LIMIT, $QUERY_LOG, $QUERY_LIST, $DEV_MODE, $IN_MINIKERNEL_VERSION, $QUERY_FILE_LOG, $UPON_QUERY_HOOKS_CACHE;
 
         if ($QUERY_FILE_LOG !== null) {
+            flock($QUERY_FILE_LOG, LOCK_EX);
+            fseek($QUERY_FILE_LOG, 0, SEEK_END);
             fwrite($QUERY_FILE_LOG, $query . ';' . "\n\n");
+            flock($QUERY_FILE_LOG, LOCK_UN);
         }
 
         if ($DEV_MODE) {
@@ -1183,7 +1186,10 @@ class DatabaseConnector
             $log_path = get_custom_file_base() . '/data_custom/big_query_screens.log';
             if (is_writable_wrap($log_path)) {
                 $myfile = fopen($log_path, 'at');
+                flock($myfile, LOCK_EX);
+                fseek($myfile, 0, SEEK_END);
                 fwrite($myfile, get_self_url_easy(true) . "\n");
+                flock($myfile, LOCK_UN);
                 fclose($myfile);
             }
             if ($DEV_MODE) {

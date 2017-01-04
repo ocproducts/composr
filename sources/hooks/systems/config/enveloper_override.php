@@ -36,7 +36,7 @@ class Hook_config_enveloper_override
             'category' => 'SITE',
             'group' => 'EMAIL',
             'explanation' => 'CONFIG_OPTION_enveloper_override',
-            'shared_hosting_restricted' => '0',
+            'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 6,
 

@@ -3,11 +3,6 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.charge_amount {
-	background-color: {$GET,native_ui_alertfield_background};
-	color: {$GET,native_ui_alertfield_foreground};
-}
-
 .box___points_profile {
 	background-image: none !important;
 }

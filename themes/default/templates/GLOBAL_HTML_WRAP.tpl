@@ -36,26 +36,26 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 					<div class="global_navigation_inner">
 						{$,Login form for guests}
-						{+START,IF,{$IS_GUEST}}
+						{+START,IF,{$IS_GUEST}}{+START,IF,{$CONFIG_OPTION,block_top_login}}
 							<div class="top_form">
 								{$BLOCK,block=top_login}
 							</div>
-						{+END}
+						{+END}{+END}
 
 						{$,Search box for logged in users [could show to guests, except space is lacking]}
-						{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$NOT,{$MOBILE}},{$NOT,{$IS_GUEST}}}}
+						{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$NOT,{$MOBILE}},{$NOT,{$IS_GUEST}}}}{+START,IF,{$CONFIG_OPTION,block_top_search}}
 							<div class="top_form">
 								{$BLOCK,block=top_search,failsafe=1}
 							</div>
-						{+END}
+						{+END}{+END}
 
-						{+START,IF,{$NOT,{$IS_GUEST}}}
+						{+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$OR,{$CONFIG_OPTION,block_top_notifications},{$CONFIG_OPTION,block_top_personal_stats}}}
 							<div class="top_buttons">
-								{$BLOCK,block=top_notifications}
+								{+START,IF,{$CONFIG_OPTION,block_top_notifications}}{$BLOCK,block=top_notifications}{+END}
 
-								{$BLOCK,block=top_personal_stats}
+								{+START,IF,{$CONFIG_OPTION,block_top_personal_stats}}{$BLOCK,block=top_personal_stats}{+END}
 							</div>
-						{+END}
+						{+END}{+END}
 					</div>
 				</div>
 			</header>
