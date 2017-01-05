@@ -210,6 +210,10 @@ $out = '';
 $path_old = null;
 $version_old = null;
 foreach (array_keys($releases) as $version) {
+    if (!in_array($version, $versions_interested_in)) {
+        continue;
+    }
+
     $path_new = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/full/' . $version;
     $version_new = $version;
 
