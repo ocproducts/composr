@@ -74,7 +74,7 @@ function get_release_tree()
 function is_release_discontinued($version)
 {
     $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2', '4', '5', '6', '7');
-    return (preg_match('#^' . implode('|', array_map('preg_quote', $discontinued)) . '($|\.)#', $version) != 0);
+    return (preg_match('#^(' . implode('|', array_map('preg_quote', $discontinued)) . ')($|\.)#', $version) != 0);
 }
 
 function find_version_download($version_pretty, $type_wanted = 'manual')
