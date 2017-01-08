@@ -358,6 +358,8 @@ class Hook_addon_registry_core_comcode_pages
             return;
         }
 
+        // TODO: In v11 'start' is now the right constant; also update featuretray block accordingly
+
         require_code('zones2');
         require_code('zones3');
         require_code('abstract_file_manager');
