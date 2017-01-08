@@ -1131,7 +1131,7 @@ class Module_cms_comcode_pages
                 $page_contents = get_translated_text($page['string_index']);
             } else {
                 $located = _request_page($page['the_page'], $page['the_zone']);
-                if ($located !== false && $located[0] != 'REDIRECT') {
+                if ($located !== false && $located[0] != 'REDIRECT' && isset($located[4])) {
                     $path = get_custom_file_base() . '/' . $located[4];
                     if (!is_file($path)) {
                         $path = get_file_base() . '/' . $located[4];

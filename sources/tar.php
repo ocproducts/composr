@@ -34,17 +34,17 @@ function tar_open($path, $mode)
     } else {
         $exists = file_exists($path) && (strpos($mode, 'a') !== false);
         $myfile = @fopen($path, $mode);
-        if (substr($mode, 0, 1) == 'w') {
-            flock($myfile, LOCK_EX);
-        } else {
-            flock($myfile, LOCK_SH);
-        }
         if ($myfile === false) {
             if (substr($mode, 0, 1) == 'r') {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             } else {
                 intelligent_write_error($path);
             }
+        }
+        if (substr($mode, 0, 1) == 'w') {
+            flock($myfile, LOCK_EX);
+        } else {
+            flock($myfile, LOCK_SH);
         }
     }
     $resource = array();

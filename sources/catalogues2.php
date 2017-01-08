@@ -1028,7 +1028,14 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
                 }
             }
         }
-        seo_meta_set_for_implicit('catalogue_entry', strval($id), $seo_source_map, '');
+        foreach ($fields as $field_id => $cf_type) {
+            if (($cf_type == 'long_trans') || ($cf_type == 'long_text') || ($cf_type == 'posting_field')) {
+                $meta_description = isset($map[$field_id]) ? $map[$field_id] : '';
+                break;
+            }
+        }
+
+        seo_meta_set_for_implicit('catalogue_entry', strval($id), $seo_source_map, $meta_description);
     } else {
         seo_meta_set_for_explicit('catalogue_entry', strval($id), $meta_keywords, $meta_description);
     }
