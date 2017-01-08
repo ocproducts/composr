@@ -1,0 +1,13 @@
+[title]Lorem ipsum dolor[/title]
+
+Popup:
+[block type="popup"]menu[/block]
+
+Select:
+[block type="select"]menu[/block]
+
+Embossed:
+[block type="embossed"]menu[/block]
+
+Tree:
+[block type="tree"]menu[/block]

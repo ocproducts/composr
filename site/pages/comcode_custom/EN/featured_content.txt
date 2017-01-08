@@ -1,0 +1,5 @@
+[title]Lorem ipsum dolor[/title]
+
+[block="General Chat"]main_forum_topics[/block]
+
+[block]main_content[/block]
