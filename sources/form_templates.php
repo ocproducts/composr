@@ -1519,7 +1519,7 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
         $is_image = is_image($default);
         $existing_url = $default;
         if (url_is_local($existing_url)) {
-            $htaccess_path = get_custom_file_base() . '/' . dirname(rawurldecode($existing_url)) . DIRECTORY_SEPARATOR . '.htaccess';
+            $htaccess_path = get_custom_file_base() . '/' . dirname(rawurldecode($existing_url)) . '/.htaccess';
             if ((is_file($htaccess_path)) && (strpos(file_get_contents($htaccess_path), 'deny from all') !== false)) {
                 $existing_url = '';
             } else {

@@ -1073,10 +1073,11 @@ function save_static_caching($out, $mime_type = 'text/html')
                             } else {
                                 $rewritemap_file = get_file_base() . '/data_custom/failover_rewritemap.txt';
                             }
-                            $rewritemap_file_contents = file_get_contents($rewritemap_file);
+                            $rewritemap_file_contents = cms_file_get_contents_safe($rewritemap_file);
                             if (strpos($rewritemap_file_contents, "\n" . $url_stem . ' ') === false) {
+                                require_code('files');
                                 $rewritemap_file_contents .= "\n" . $url_stem . ' ' . $fast_cache_path . '__failover_mode' . $file_extension;
-                                file_put_contents($rewritemap_file, $rewritemap_file_contents, LOCK_EX);
+                                cms_file_put_contents_safe($rewritemap_file, $rewritemap_file_contents, FILE_WRITE_FIX_PERMISSIONS);
                             }
                         }
                     }
@@ -1095,32 +1096,12 @@ function save_static_caching($out, $mime_type = 'text/html')
  */
 function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip)
 {
-    if (!is_dir(get_custom_file_base() . '/caches/guest_pages/')) {
-        if (@mkdir(get_custom_file_base() . '/caches/guest_pages/', 0777)) {
-            fix_permissions(get_custom_file_base() . '/caches/guest_pages/');
-            sync_file(get_custom_file_base() . '/caches/guest_pages/');
-        } else {
-            intelligent_write_error($fast_cache_path);
-        }
-    }
-
-    $myfile = @fopen($fast_cache_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
-    if ($myfile === false) {
-        intelligent_write_error($fast_cache_path);
-    }
-    flock($myfile, LOCK_EX);
-    if (!GOOGLE_APPENGINE) {
-        ftruncate($myfile, 0);
-    }
+    require_code('files');
     if ((function_exists('gzencode')) && (php_function_allowed('ini_set')) && ($support_gzip)) {
-        fwrite($myfile, gzencode($out_evaluated, 9));
+        cms_file_put_contents_safe($fast_cache_path, gzencode($out_evaluated, 9), FILE_WRITE_FIX_PERMISSIONS);
     } else {
-        fwrite($myfile, $out_evaluated);
+        cms_file_put_contents_safe($fast_cache_path, $out_evaluated, FILE_WRITE_FIX_PERMISSIONS);
     }
-    flock($myfile, LOCK_UN);
-    fclose($myfile);
-    fix_permissions($fast_cache_path);
-    sync_file($fast_cache_path);
 }
 
 /**

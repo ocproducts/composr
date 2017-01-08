@@ -58,11 +58,13 @@ class lang_duplication_test_set extends cms_test_case
                 }
 
                 if (isset($vals[$val])) {
-                    //@var_dump($key);
+                    if (get_param_integer('debug', 0) == 1) {
+                        @print('<p><strong>' . escape_html($val) . '</strong>:<br />' . escape_html($file . ':' . $key . ' = ' . implode(' = ', $vals[$val])) . '</p>');
+                    }
                 } else {
                     $vals[$val] = array();
                 }
-                $vals[$val][] = $key;
+                $vals[$val][] = $file . ':' . $key;
 
                 if (isset($all_keys[$key])) {
                     $this->assertTrue(false, 'Duplication for key ' . $key . ' string');

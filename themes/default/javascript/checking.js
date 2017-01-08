@@ -537,7 +537,7 @@ function check_field(the_element,the_form,for_preview)
 function check_form(the_form,for_preview)
 {
 	var delete_element=document.getElementById('delete');
-	if ((!for_preview) && (delete_element!=null) && (((first_class_name(delete_element.className)=='input_radio') && (the_element.value!='0')) || (first_class_name(delete_element.className)=='input_tick')) && (delete_element.checked))
+	if ((!for_preview) && (delete_element!=null) && (((first_class_name(delete_element.className)=='input_radio') && (delete_element.value!='0')) || (first_class_name(delete_element.className)=='input_tick')) && (delete_element.checked))
 	{
 		return true;
 	}

@@ -485,7 +485,7 @@ if (window.alert!==null)
 END;
                     return;
                 }
-                @flock($myfile, LOCK_EX);
+                flock($myfile, LOCK_EX);
                 ftruncate($myfile, 0);
                 if (fwrite($myfile, $file) === false) {
                     fclose($myfile);
@@ -503,7 +503,7 @@ if (window.alert!==null)
 END;
                     return;
                 }
-                @flock($myfile, LOCK_UN);
+                flock($myfile, LOCK_UN);
                 fclose($myfile);
             } else { // Via FTP
                 $path2 = tempnam((((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0))) ? get_custom_file_base() . '/safe_mode_temp/' : '/tmp/'), 'cmsce');
@@ -565,7 +565,9 @@ END;
                 if (is_null($conn)) { // Via direct access
                     $myfile = @fopen($save_path . '.editfrom', 'wt');
                     if ($myfile !== false) {
+                        flock($myfile, LOCK_EX);
                         fwrite($myfile, $hash);
+                        flock($myfile, LOCK_UN);
                         fclose($myfile);
                     }
                 } else { // Via FTP

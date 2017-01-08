@@ -161,6 +161,7 @@ class Hook_addon_registry_core_notifications
             'sources_custom/hooks/systems/notification_types_extended/index.html',
             'sources/hooks/systems/rss/web_notifications.php',
             'sources/hooks/systems/commandr_fs_extended_member/notifications_enabled.php',
+            'sources/hooks/systems/config/block_top_notifications.php',
         );
     }
 

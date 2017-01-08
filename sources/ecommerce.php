@@ -403,9 +403,12 @@ function handle_transaction_script()
 {
     if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');
+        flock($myfile, LOCK_EX);
+        fseek($myfile, 0, SEEK_END);
         fwrite($myfile, serialize($_POST) . "\n");
         fwrite($myfile, serialize($_GET) . "\n");
         fwrite($myfile, "\n\n");
+        flock($myfile, LOCK_UN);
         fclose($myfile);
     }
 

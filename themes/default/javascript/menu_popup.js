@@ -143,7 +143,7 @@ function pop_up_menu(id,place,menu,event,outside_fixed_width)
 			}
 		} else
 		{ // NB: For non-below, we can't assume 'left' is absolute, as it is actually relative to parent node which is itself positioned
-			if (find_pos_x(e.parentNode,true)+e_width+e_parent_width+10>full_width) pos_left-=e_width+e_parent_width;
+			if ((find_pos_x(e.parentNode,true)+e_width+e_parent_width+10>full_width) && (pos_left-e_width-e_parent_width>0)) pos_left-=e_width+e_parent_width;
 		}
 		e.style.left=pos_left+'px';
 	};

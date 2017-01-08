@@ -91,6 +91,10 @@ foreach ($addons as $name => $place) {
         }
     }
 
+    if ($tar_file !== null) {
+        tar_close($tar_file);
+    }
+
     $old_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
 
     // Archive it off to exports/addons
@@ -112,10 +116,6 @@ foreach ($addons as $name => $place) {
     );
 
     $done_addon = true;
-
-    if ($tar_file !== null) {
-        tar_close($tar_file);
-    }
 
     clearstatcache();
     $new_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);

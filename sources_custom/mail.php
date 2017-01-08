@@ -61,6 +61,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     require_code('site');
     require_code('mime_types');
+    require_code('type_sanitisation');
 
     if (is_null($as)) {
         $as = $GLOBALS['FORUM_DRIVER']->get_guest_id();
@@ -130,6 +131,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // To and from, and language
     $staff_address = get_option('staff_address');
+    if (!is_email_address($staff_address)) { // Required for security
+        $staff_address = '';
+    }
     if (is_null($to_email)) {
         $to_email = array($staff_address);
     }
@@ -165,6 +169,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     if ($from_email == '') {
         $from_email = get_option('staff_address');
     }
+    if (!is_email_address($from_email)) { // Required for security
+        $from_email = '';
+    }
     if ($from_name == '') {
         $from_name = get_site_name();
     }
@@ -189,6 +196,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Misc settings
     $website_email = get_option('website_email');
+    if (!is_email_address($website_email)) { // Required for security
+        $website_email = '';
+    }
     if ($website_email == '') {
         $website_email = $from_email;
     }

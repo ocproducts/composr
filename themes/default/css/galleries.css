@@ -200,19 +200,11 @@
 	max-width: 150px; /* Smaller, for carousel */
 }
 
-.flow_mode_video {
-	margin-bottom: 1em;
-}
-
 /* Viewing entries */
 
 .gallery_entry_screen {
 	width: 100%;
 	min-height: 100%;
-}
-
-.nav_mid {
-	margin-top: 0.5em;
 }
 
 .slideshow_speed {
@@ -244,13 +236,6 @@
 	}
 /*{+END}*/
 
-/* The timer countdown */
-.changer {
-	font-weight: bold;
-	font-family: Courier, monospace;
-	font-size: 1.2em;
-}
-
 /* side_galleries block */
 
 .side_galleries_block p {
@@ -277,21 +262,6 @@
 }
 
 /* Image fader block */
-
-.image_fader_box {
-	position: relative;
-	border: 1px solid {$GET,standard_border};
-	display: inline-block;
-}
-
-.image_fader_box img {
-	display: block;
-}
-
-/* If nested in a box already */
-.box_inner>.image_fader_box {
-	border: 0;
-}
 
 .gallery_tease_pic_wrap {
 	margin-bottom: 1.5em;

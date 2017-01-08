@@ -50,10 +50,6 @@
 	vertical-align: top;
 }
 
-.download_gallery_image span.block {
-	display: block;
-}
-
 .download_gallery_image img {
 	width: 150px;
 }

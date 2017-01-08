@@ -548,6 +548,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
 
     // Add in attachments
     foreach ($attachments as $filename => $filedata) {
+        require_code('files');
         $new_filename = preg_replace('#\..*#', '', $filename) . '.dat';
         do {
             $new_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
@@ -555,9 +556,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
                 $new_filename = uniqid('', true) . '_' . preg_replace('#\..*#', '', $filename) . '.dat';
             }
         } while (file_exists($new_path));
-        file_put_contents($new_path, $filedata);
-        sync_file($new_path);
-        fix_permissions($new_path);
+        cms_file_put_contents_safe($new_path, $filedata, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
             'a_member_id' => $member_id,

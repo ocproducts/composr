@@ -341,15 +341,13 @@ class Module_admin_themewizard
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
         make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark == 1, $inherit_css == 1);
-        $myfile = @fopen(get_custom_file_base() . '/themes/' . filter_naughty($themename) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($themename) . '/theme.ini');
-        fwrite($myfile, 'title=' . $themename . "\n");
-        fwrite($myfile, 'description=' . do_lang('NA') . "\n");
-        fwrite($myfile, 'seed=' . $seed . "\n");
-        if (fwrite($myfile, 'author=' . $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        fclose($myfile);
-        sync_file('themes/' . filter_naughty($themename) . '/theme.ini');
+        require_code('files');
+        $contents = '';
+        $contents .= 'title=' . $themename . "\n";
+        $contents .= 'description=' . do_lang('NA') . "\n";
+        $contents .= 'seed=' . $seed . "\n";
+        $contents .= 'author=' . $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true) . "\n";
+        cms_file_put_contents_safe(get_custom_file_base() . '/themes/' . filter_naughty($themename) . '/theme.ini', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         // We're done
         $message = do_lang_tempcode('THEMEWIZARD_4_DESCRIBE', escape_html('#' . $seed), escape_html($themename));

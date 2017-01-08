@@ -380,6 +380,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/downloads.php',
             '_tests/tests/unit_tests/downloads_category.php',
             '_tests/tests/unit_tests/ecommerce.php',
+            '_tests/tests/unit_tests/css_file.php',
             '_tests/tests/unit_tests/emoticon.php',
             '_tests/tests/unit_tests/community_billboard.php',
             '_tests/tests/unit_tests/forum.php',

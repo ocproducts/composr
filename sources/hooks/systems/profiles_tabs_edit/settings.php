@@ -144,9 +144,7 @@ class Hook_profiles_tabs_edit_settings
 
             require_code('cns_members_action');
 
-            $email_address = trim(post_param_string('email_address', member_field_is_required($member_id_of, 'email_address', null, $member_id_viewing) ? false : ''));
-
-            $theme = post_param_string('theme', null);
+            $email_address = trim(post_param_string('email_address', member_field_is_required($member_id_of, 'email_address', null, $member_id_viewing) ? false : (fractional_edit() ? STRING_MAGIC_NULL : '')));
 
             if (fractional_edit()) {
                 $preview_posts = null;
@@ -154,27 +152,33 @@ class Hook_profiles_tabs_edit_settings
                 $views_signatures = null;
                 $timezone = null;
                 $auto_mark_read = null;
+                $theme = null;
+
+                $dob_day = INTEGER_MAGIC_NULL;
+                $dob_month = INTEGER_MAGIC_NULL;
+                $dob_year = INTEGER_MAGIC_NULL;
             } else {
+                $theme = post_param_string('theme', null);
                 $preview_posts = post_param_integer('preview_posts', 0);
                 $auto_monitor_contrib_content = null;//post_param_integer('auto_monitor_contrib_content',0);   Moved to notifications tab
                 $views_signatures = post_param_integer('views_signatures', 0);
                 $timezone = post_param_string('timezone', get_site_timezone());
                 $auto_mark_read = post_param_integer('auto_mark_read', 0);
-            }
 
-            require_code('temporal2');
-            list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
-            if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
-                if (member_field_is_required($member_id_of, 'dob', null, $member_id_viewing)) {
-                    warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
+                require_code('temporal2');
+                list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
+                if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
+                    if (member_field_is_required($member_id_of, 'dob', null, $member_id_viewing)) {
+                        warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
+                    }
+
+                    $dob_day = null;
+                    $dob_month = null;
+                    $dob_year = null;
                 }
-
-                $dob_day = null;
-                $dob_month = null;
-                $dob_year = null;
             }
 
-            cns_edit_member($member_id_of, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $actual_custom_fields, $theme, post_param_integer('reveal_age', 0), $views_signatures, $auto_monitor_contrib_content, post_param_string('language', null), post_param_integer('allow_emails', 0), post_param_integer('allow_emails_from_staff', 0), $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
+            cns_edit_member($member_id_of, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $actual_custom_fields, $theme, post_param_integer('reveal_age', fractional_edit() ? INTEGER_MAGIC_NULL : 0), $views_signatures, $auto_monitor_contrib_content, post_param_string('language', fractional_edit() ? STRING_MAGIC_NULL : null), post_param_integer('allow_emails', fractional_edit() ? INTEGER_MAGIC_NULL : 0), post_param_integer('allow_emails_from_staff', fractional_edit() ? INTEGER_MAGIC_NULL : 0), $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
 
             if (addon_installed('content_reviews')) {
                 require_code('content_reviews2');

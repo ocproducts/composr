@@ -383,7 +383,7 @@ class Module_admin_backup
         if (!@unlink($path)) {
             warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path)));
         }
-        sync_file('exports/backups/' . $file);
+        sync_file($path);
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

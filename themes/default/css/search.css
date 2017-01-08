@@ -95,6 +95,10 @@
 	vertical-align: middle;
 }
 
+.search_sort {
+	max-width: 100%;
+}
+
 /*{+START,CSS_MODE,desktop}*/
 	#search_sort, #search_direction {
 		max-width: 100%;

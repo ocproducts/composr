@@ -346,15 +346,17 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     );
 
                     $out_file = @fopen($place, 'wb') or intelligent_write_error($place);
+                    flock($out_file, LOCK_EX);
                     $more = mixed();
                     do {
                         $more = zip_entry_read($entry['zip_entry']);
                         if ($more !== false) {
                             if (fwrite($out_file, $more) < strlen($more)) {
-                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($place)));
                             }
                         }
                     } while (($more !== false) && ($more != ''));
+                    flock($out_file, LOCK_UN);
                     fclose($out_file);
 
                     zip_entry_close($entry['zip_entry']);

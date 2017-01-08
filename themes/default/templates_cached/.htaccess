@@ -1,4 +1,4 @@
-# Some Apache setups will look at double extensions and execute any that look interesting to it - bad for security. Since v5 ocP filters those though.
+# Some Apache setups will look at double extensions and execute any that look interesting to it - bad for security. Composr filters those though.
 
 <IfModule mod_php5.c>
 php_value engine off

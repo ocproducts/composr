@@ -48,11 +48,10 @@ function export_menu_csv($file_path = null)
 
     $data = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
 
+    require_code('files');
     require_code('files2');
     $csv = make_csv($data, 'data.csv', false, false);
-    file_put_contents($file_path, $csv);
-    fix_permissions($file_path);
-    sync_file($file_path);
+    cms_file_put_contents_safe($file_path, $csv, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 }
 
 /**
@@ -310,8 +309,13 @@ function edit_menu_item($id, $menu, $order, $parent, $caption, $url, $check_perm
  */
 function delete_menu_item($id)
 {
-    $_caption = $GLOBALS['SITE_DB']->query_select_value('menu_items', 'i_caption', array('id' => $id));
-    $_caption_long = $GLOBALS['SITE_DB']->query_select_value('menu_items', 'i_caption_long', array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('i_caption', 'i_caption_long'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+    $_caption = $rows[0]['i_caption'];
+    $_caption_long = $rows[0]['i_caption_long'];
+
     $GLOBALS['SITE_DB']->query_delete('menu_items', array('id' => $id), '', 1);
     $caption = get_translated_text($_caption);
     delete_lang($_caption);
@@ -337,7 +341,7 @@ function delete_menu($menu_id)
 
     // Erase old stuff
     foreach ($old_menu_bits as $menu_item_id => $lang_code) {
-        $GLOBALS['SITE_DB']->query_delete('menu_items', array('id' => $menu_item_id));
+        $GLOBALS['SITE_DB']->query_delete('menu_items', array('id' => $menu_item_id), '', 1);
         delete_lang($lang_code['i_caption']);
         delete_lang($lang_code['i_caption_long']);
     }

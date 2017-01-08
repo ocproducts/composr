@@ -800,9 +800,15 @@ function _generate_moniker($moniker_src)
     // Transliteration first
     if (get_charset() == 'utf-8') {
         if (function_exists('transliterator_transliterate')) {
-            $moniker = transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $moniker);
+            $_moniker = @transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $moniker);
+            if (!empty($_moniker)) {
+                $moniker = $_moniker;
+            }
         } elseif ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
-            $moniker = iconv('utf-8', 'ASCII//TRANSLIT//IGNORE', $moniker);
+            $_moniker = @iconv('utf-8', 'ASCII//TRANSLIT//IGNORE', $moniker);
+            if (!empty($_moniker)) {
+                $moniker = $_moniker;
+            }
         } else {
             // German has inbuilt transliteration
             $moniker = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $moniker);

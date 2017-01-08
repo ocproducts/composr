@@ -165,6 +165,7 @@ In mobile mode:
 /* Footer */
 {$THEME_WIZARD_COLOR,#8ba4ca,footer_tinting,61% seed + 39% WB}
 {$THEME_WIZARD_COLOR,#ffffff,footer_text,100% WB}
+{$THEME_WIZARD_COLOR,#dbe6f7,inverted_text,35% footer_tinting + 65% WB}
 
 /* Used for image generation */
 {$THEME_WIZARD_COLOR,#e8edf6,washed_out,10% (seed sat_to 85) + 90% WB}
@@ -180,6 +181,23 @@ In mobile mode:
 {$THEME_WIZARD_COLOR,#0a1e47,special_middle,45% (seed sat_to 85) + 65% BW}
 {$THEME_WIZARD_COLOR,#597bbf,cnspostindicator,65% (seed sat_to 100) + 35% WB}
 {$THEME_WIZARD_COLOR,#597bf7,cnsredirectindicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
+
+/* Range of bright varying colours */
+{$THEME_WIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
+{$THEME_WIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
+{$THEME_WIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
+{$THEME_WIZARD_COLOR,#5800fa,gcol_4,100% #5800FA}
+{$THEME_WIZARD_COLOR,#0099fa,gcol_5,100% #0099FA}
+{$THEME_WIZARD_COLOR,#859638,gcol_6,100% #859638}
+{$THEME_WIZARD_COLOR,#2bab03,gcol_7,100% #2BAB03}
+{$THEME_WIZARD_COLOR,#7d7e04,gcol_8,100% #7D7E04}
+{$THEME_WIZARD_COLOR,#966038,gcol_9,100% #966038}
+{$THEME_WIZARD_COLOR,#96384a,gcol_10,100% #96384A}
+{$THEME_WIZARD_COLOR,#963895,gcol_11,100% #963895}
+{$THEME_WIZARD_COLOR,#4e3896,gcol_12,100% #4E3896}
+{$THEME_WIZARD_COLOR,#386296,gcol_13,100% #386296}
+{$THEME_WIZARD_COLOR,#389596,gcol_14,100% #389596}
+{$THEME_WIZARD_COLOR,#389653,gcol_15,100% #389653}
 
 /*
 =========================
@@ -230,7 +248,7 @@ textarea, input, code {
 /* Our little 'typing' effect, shows a keyboard when focusing input fields */
 /*Doesn't look good in IE10 input[type="text"]:focus, input[type="password"]:focus {
 	background: url('{$IMG_INLINE;,keyboard}') right center no-repeat {$GET,native_ui_background};
-
+}
 input[type="text"][size="6"]:focus, input[type="text"][readonly="true"]:focus {
 	background-image: none;
 }*/
@@ -963,7 +981,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		margin: 0 2px;
 	}
 /*{+END}*/
-.global_middle_faux .global_messages {
+	.global_middle_faux .global_messages {
 	margin: 0; /* Probably inside a frame, hence already indented outside said frame */
 }
 
@@ -1878,9 +1896,6 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .fp_col_block .pagination {
 	float: none;
-}
-.fp_col_block .pagination_per_page {
-	display: none;
 }
 .fp_col_block form + span {
 	margin-left: 0;
@@ -2928,13 +2943,6 @@ div.ajax_loading, p.ajax_loading {
 	margin-bottom: 0.3em;
 }
 
-.post .post_avatar {
-	float: left;
-	margin: 0.5em 1em 0.5em 0;
-	width: 50px;
-	height: 50px;
-}
-
 .post .post_subline {
 	margin: 0 0 1em 0;
 	font-size: 0.9em;
@@ -3566,6 +3574,9 @@ ul.buttons_group, ul.associated_links_block_group {
 }
 .force_margin {
 	margin-top: 1.5em !important;
+}
+.global_side_panel .force_margin {
+	margin-top: 1em !important;
 }
 
 .associated_link.suggested {
@@ -4671,6 +4682,9 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	text-align: left;
 	display: inline-block;
 }
+.ticker * {
+	text-indent: 0;
+}
 
 .shocker {
 	text-align: right;
@@ -4693,7 +4707,7 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	vertical-align: middle;
 	position: relative;
 	top: -0.3em;
-	margin-top: 0.25em; /* Expands the whole line just enough so that our top offset doesn't cause an overflow */
+	margin-top: 0.26em; /* Expands the whole line just enough so that our top offset doesn't cause an overflow */
 }
 .comcode_member_link img {
 	cursor: inherit;

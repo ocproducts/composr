@@ -250,15 +250,17 @@ class Module_admin_cns_emoticons extends Standard_crud_module
                                     make_missing_directory(dirname($path));
                                 }
                                 $outfile = @fopen($path, 'wb') or intelligent_write_error($path);
+                                flock($outfile, LOCK_EX);
 
                                 $more = mixed();
                                 do {
                                     $more = zip_entry_read($entry);
                                     if (fwrite($outfile, $more) < strlen($more)) {
-                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path)));
                                     }
                                 } while (($more !== false) && ($more != ''));
 
+                                flock($outfile, LOCK_UN);
                                 fclose($outfile);
                                 fix_permissions($path);
                                 sync_file($path);
