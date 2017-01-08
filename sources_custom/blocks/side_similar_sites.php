@@ -70,6 +70,9 @@ class Block_side_similar_sites
         $set_search_url = 'related:' . $criteria;
 
         $search_results_array = $this->retrieveGoogleSearch($set_search_terms, $set_search_url);
+        if (!isset($search_results_array)) {
+            return do_lang_tempcode('INTERNAL_ERROR');
+        }
 
         $out = '<ul>';
         $links_count = 0;
@@ -98,6 +101,6 @@ class Block_side_similar_sites
 
         $returned_google_search_arr = json_decode($returned_google_search, true);
 
-        return $returned_google_search_arr['responseData']['results'];
+        return isset($returned_google_search_arr['responseData']['results']) ? null : $returned_google_search_arr['responseData']['results'];
     }
 }

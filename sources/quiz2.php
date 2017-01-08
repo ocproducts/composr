@@ -348,6 +348,9 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
     if (is_null($add_time)) {
         $add_time = time();
     }
+    if ($open_time === null) {
+        $open_time = time();
+    }
 
     if (!addon_installed('unvalidated')) {
         $validated = 1;

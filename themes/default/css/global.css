@@ -3151,6 +3151,9 @@ ul.buttons_group, ul.associated_links_block_group {
 .force_margin {
 	margin-top: 1.5em !important;
 }
+.global_side_panel .force_margin {
+	margin-top: 1em !important;
+}
 
 .associated_link.suggested {
 	font-weight: bold;
@@ -4251,6 +4254,9 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	overflow: hidden;
 	text-align: left;
 	display: inline-block;
+}
+.ticker * {
+	text-indent: 0;
 }
 
 .shocker {
