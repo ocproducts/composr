@@ -115,6 +115,8 @@ function string_scan($lang, $do_guessing = false)
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
         UNKNOWN_CSS_MODE
         CORRUPT_CSS_MODE
+        INSTALL_TEST_CONTENT
+        DESCRIPTION_INSTALL_TEST_CONTENT
         BLOCKS_AT_TOP
         BLOCK_TOP_LOGIN
         BLOCK_TOP_NOTIFICATIONS

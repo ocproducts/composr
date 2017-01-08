@@ -69,7 +69,7 @@ class Block_main_forum_topics
         require_css('news');
 
         // Read in variables
-        $forum_name = array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE');
+        $forum_name = empty($map['forum']) ? do_lang('DEFAULT_FORUM_TITLE') : $map['forum'];
         $limit = array_key_exists('limit', $map) ? intval($map['limit']) : 6;
         $hot = array_key_exists('hot', $map) ? intval($map['hot']) : 0;
         $date_key = array_key_exists('date_key', $map) ? $map['date_key'] : 'lasttime';
@@ -116,7 +116,7 @@ class Block_main_forum_topics
         }
 
         // Block title
-        $forum_name = array_key_exists('param', $map) ? $map['param'] : do_lang('DEFAULT_FORUM_TITLE');
+        $forum_name = empty($map['param']) ? do_lang('DEFAULT_FORUM_TITLE') : $map['param'];
         if ((is_numeric($forum_name)) && (get_forum_type() == 'cns')) {
             $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => intval($forum_name)));
             if (is_null($forum_name)) {

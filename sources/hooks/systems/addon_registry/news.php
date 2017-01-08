@@ -609,4 +609,39 @@ class Hook_addon_registry_news
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('news2');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('news', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_news($record['id']);
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('news_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('nc_title') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_news_category($record['id']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('news2');
+
+        $news_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'MIN(id)');
+        if ($news_category_id === null) {
+            $news_category_id = add_news_category(lorem_phrase(), 'newscats/general', '');
+            require_code('permissions2');
+            set_global_category_access('news', $news_category_id);
+        }
+
+        add_news(lorem_phrase(), lorem_chunk(), $GLOBALS['FORUM_DRIVER']->get_username(get_member()), 1, 1, 1, 1, '', lorem_paragraph(), db_get_first_id());
+    }
 }

@@ -49,7 +49,7 @@ class Block_main_db_notes
      */
     public function run($map)
     {
-        $file = array_key_exists('param', $map) ? $map['param'] : 'admin_notes';
+        $file = empty($map['param']) ? 'admin_notes' : $map['param'];
         $title = array_key_exists('title', $map) ? $map['title'] : do_lang('NOTES');
         $scrolls = array_key_exists('scrolls', $map) ? $map['scrolls'] : '0';
 

@@ -396,4 +396,27 @@ class Hook_addon_registry_polls
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('polls2');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('poll', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('question') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_poll($record['id']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('polls2');
+
+        add_poll(lorem_phrase(), lorem_phrase() . ' 1', lorem_phrase() . ' 2');
+    }
 }

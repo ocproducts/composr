@@ -359,4 +359,47 @@ class Hook_addon_registry_wiki
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('wiki');
+        require_lang('wiki');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => lorem_phrase() . ' 1'));
+        foreach ($to_delete as $record) {
+            wiki_delete_page($record['id']);
+        }
+        $to_delete = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => lorem_phrase() . ' 2'));
+        foreach ($to_delete as $record) {
+            wiki_delete_page($record['id']);
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('the_message') => lorem_paragraph()));
+        foreach ($to_delete as $record) {
+            wiki_delete_post($record['id']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('wiki');
+        require_lang('wiki');
+
+        $page_a = wiki_add_page(lorem_phrase() . ' 1', lorem_chunk(), '', 1);
+        $page_b = wiki_add_page(lorem_phrase() . ' 2', lorem_chunk(), '', 0);
+        require_code('permissions2');
+        set_global_category_access('wiki_page', $page_a);
+        set_global_category_access('wiki_page', $page_b);
+        $GLOBALS['SITE_DB']->query_insert('wiki_children', array('child_id' => $page_a, 'parent_id' => db_get_first_id(), 'the_order' => 1, 'title' => lorem_phrase() . ' 1'));
+        $GLOBALS['SITE_DB']->query_insert('wiki_children', array('child_id' => $page_b, 'parent_id' => db_get_first_id(), 'the_order' => 2, 'title' => lorem_phrase() . ' 2'));
+
+        wiki_add_post($page_a, lorem_paragraph());
+        wiki_add_post($page_b, lorem_paragraph());
+    }
 }

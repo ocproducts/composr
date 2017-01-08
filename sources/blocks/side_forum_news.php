@@ -69,7 +69,7 @@ class Block_side_forum_news
         require_css('news');
         require_lang('news');
 
-        $limit = array_key_exists('param', $map) ? intval($map['param']) : 6;
+        $limit = empty($map['param']) ? 6 : intval($map['param']);
         $forum_name = array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS');
 
         $date_key = array_key_exists('date_key', $map) ? $map['date_key'] : 'firsttime';
@@ -83,6 +83,9 @@ class Block_side_forum_news
             $forum_names = array_map('strval', selectcode_to_idlist_using_db($forum_name, 'id', 'f_forums', 'f_forums', 'f_parent_forum', 'f_parent_forum', 'id', true, true, $GLOBALS['FORUM_DB']));
         } else {
             $forum_names = explode(',', $forum_name);
+        }
+        if (($forum_name == do_lang('NEWS')) && (get_forum_type() == 'cns') && ($GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name) === null)) {
+            $forum_names = array(do_lang('DEFAULT_FORUM_TITLE'));
         }
         foreach ($forum_names as $forum_name) {
             $forum_name = trim($forum_name);

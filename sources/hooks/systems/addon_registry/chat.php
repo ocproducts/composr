@@ -751,4 +751,56 @@ class Hook_addon_registry_chat
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('chat2');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('chat_messages', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('the_message') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_chat_messages(array('id' => $record['id']));
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id'), array('room_name' => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_chatroom($record['id']);
+        }
+
+        $test_member = $GLOBALS['FORUM_DRIVER']->get_member_from_username('test');
+        if (($test_member !== null) && ($test_member != get_member())) {
+            friend_remove(get_member(), $test_member);
+            friend_remove($test_member, get_member());
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('chat2');
+
+        $room_id = add_chatroom(lorem_phrase(), lorem_phrase(), get_member(), '', '', '', '', fallback_lang());
+
+        $map = array(
+            'system_message' => 0,
+            'ip_address' => get_ip_address(),
+            'room_id' => $room_id,
+            'member_id' => get_member(),
+            'date_and_time' => time(),
+            'text_colour' => get_option('chat_default_post_colour'),
+            'font_name' => get_option('chat_default_post_font'),
+        );
+        $map += insert_lang_comcode('the_message', lorem_phrase(), 4);
+        $GLOBALS['SITE_DB']->query_insert('chat_messages', $map);
+
+        $test_member = $GLOBALS['FORUM_DRIVER']->get_member_from_username('test');
+        if (($test_member !== null) && ($test_member != get_member())) {
+            friend_add(get_member(), $test_member);
+            friend_add($test_member, get_member());
+        }
+    }
 }

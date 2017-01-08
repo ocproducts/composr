@@ -71,7 +71,7 @@ class Block_main_forum_news
         require_css('news');
         require_code('xhtml');
 
-        $num_topics = array_key_exists('param', $map) ? intval($map['param']) : 14;
+        $num_topics = empty($map['param']) ? 14 : intval($map['param']);
         $forum_name = array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS');
 
         $optimise = (array_key_exists('optimise', $map)) && ($map['optimise'] == '1');
@@ -88,6 +88,9 @@ class Block_main_forum_news
             $forum_names = selectcode_to_idlist_using_db($forum_name, 'id', 'f_forums', 'f_forums', 'f_parent_forum', 'f_parent_forum', 'id', true, true, $GLOBALS['FORUM_DB']);
         } else {
             $forum_names = explode(',', $forum_name);
+        }
+        if (($forum_name == do_lang('NEWS')) && (get_forum_type() == 'cns') && ($GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name) === null)) {
+            $forum_names = array(do_lang('DEFAULT_FORUM_TITLE'));
         }
         foreach ($forum_names as $forum_name) {
             $forum_name = is_integer($forum_name) ? strval($forum_name) : trim($forum_name);

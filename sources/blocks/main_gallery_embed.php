@@ -81,7 +81,15 @@ class Block_main_gallery_embed
         $root = ((array_key_exists('root', $map)) && ($map['root'] != '')) ? $map['root'] : get_param_string('keep_gallery_root', null);
         $guid = array_key_exists('guid', $map) ? $map['guid'] : '';
 
-        $cat = array_key_exists('param', $map) ? $map['param'] : 'root';
+        if (empty($map['param'])) {
+            $cat = $GLOBALS['SITE_DB']->query_select_value('images', 'cat', null, 'GROUP BY cat ORDER BY COUNT(*) DESC');
+            if ($cat === null) {
+                $cat = 'root';
+            }
+        } else {
+            $cat = $map['param'];
+        }
+
         $cat_raw = trim($cat, '>*');
         if ($cat == 'root') {
             $cat_select = db_string_equal_to('cat', $cat);

@@ -53,6 +53,8 @@ class Module_admin_setupwizard
     {
         return array(
             'browse' => array('SETUPWIZARD', 'menu/adminzone/setup/setupwizard'),
+            'install_test_content' => array('INSTALL_TEST_CONTENT', 'menu/_generic_admin/add_one_category'),
+            'uninstall_test_content' => array('UNINSTALL_TEST_CONTENT', 'menu/_generic_admin/delete'),
         );
     }
 
@@ -83,7 +85,14 @@ class Module_admin_setupwizard
             $step = min(10, intval(substr($type, 4)));
         }
 
-        $this->title = get_screen_title('SETUPWIZARD');
+        if ($type == 'install_test_content') {
+            $this->title = get_screen_title('INSTALL_TEST_CONTENT');
+        }
+        elseif ($type == 'uninstall_test_content') {
+            $this->title = get_screen_title('UNINSTALL_TEST_CONTENT');
+        } else {
+            $this->title = get_screen_title('SETUPWIZARD');
+        }
 
         return null;
     }
@@ -133,6 +142,12 @@ class Module_admin_setupwizard
         }
         if ($type == 'step11') {
             return $this->step11();
+        }
+        if ($type == 'install_test_content') {
+            return $this->install_test_content();
+        }
+        if ($type == 'uninstall_test_content') {
+            return $this->uninstall_test_content();
         }
 
         return new Tempcode();
@@ -557,6 +572,7 @@ class Module_admin_setupwizard
             $hook_fields = $hook->get_fields($field_defaults);
             $fields .= static_evaluate_tempcode($hook_fields);
         }
+        $fields .= static_evaluate_tempcode(form_input_tick(do_lang_tempcode('INSTALL_TEST_CONTENT'), do_lang_tempcode('DESCRIPTION_INSTALL_TEST_CONTENT'), 'install_test_content', true));
 
         $js = 'var cuz=document.getElementById("collapse_user_zones"); var cuz_func=function() { var gza=document.getElementById("guest_zone_access"); gza.disabled=cuz.checked; if (cuz.checked) gza.checked=true; }; cuz.onchange=cuz_func; cuz_func();';
 
@@ -1055,6 +1071,11 @@ class Module_admin_setupwizard
 
         $collapse_zones = post_param_integer('collapse_user_zones', 0) == 1;
 
+        // Install test content
+        if (post_param_integer('install_test_content', 0) == 1) {
+            install_test_content();
+        }
+
         // Rules
         if (post_param_integer('skip_7', 0) == 0) {
             $full_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/_rules.txt';
@@ -1153,5 +1174,43 @@ class Module_admin_setupwizard
             null, null, null, null, null, null, null, null, null, null, null, null, null, null,
             paragraph(do_lang_tempcode('SETUPWIZARD_10_DESCRIBE'))
         );
+    }
+
+    /**
+     * Install test content.
+     *
+     * @return Tempcode The UI
+     */
+    public function install_test_content()
+    {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
+            $post_url = build_url(array('page' => '_SELF', 'type' => 'install_test_content'), '_SELF');
+
+            return do_template('CONFIRM_SCREEN', array('TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => '', 'FIELDS' => ''));
+        }
+
+        require_code('setupwizard');
+        install_test_content();
+
+        return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
+     * Uninstall test content.
+     *
+     * @return Tempcode The UI
+     */
+    public function uninstall_test_content()
+    {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
+            $post_url = build_url(array('page' => '_SELF', 'type' => 'uninstall_test_content'), '_SELF');
+
+            return do_template('CONFIRM_SCREEN', array('TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => '', 'FIELDS' => ''));
+        }
+
+        require_code('setupwizard');
+        uninstall_test_content();
+
+        return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
     }
 }

@@ -66,7 +66,7 @@ class Block_main_newsletter_signup
         require_lang('newsletter');
         require_css('newsletter');
 
-        $newsletter_id = array_key_exists('param', $map) ? intval($map['param']) : db_get_first_id();
+        $newsletter_id = empty($map['param']) ? db_get_first_id() : intval($map['param']);
 
         $_newsletter_title = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletters', 'title', array('id' => $newsletter_id));
         if (is_null($_newsletter_title)) {
