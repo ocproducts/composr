@@ -142,6 +142,8 @@ function phase_1_pre()
         <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
         <li>Run the <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'plug_guid'), 'adminzone'))) . '" target="_blank">plug_guid</a> tool to build needed GUIDs into the PHP.</li>
         <li>Test with a non-Conversr forum driver (e.g. phpBB)</li>
+        <li>Run all the <kbd>_</kbd> prefixed unit tests individually</li>
+        <li>Install test content then view the <kbd>lorem:start</kbd>, <kbd>lorem:lorem</kbd> and <kbd>lorem:menus</kbd> pages to ensure blocks are working</li>
         <li>Test with the none forum driver (no forums and members)</li>
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
         <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
@@ -308,7 +310,7 @@ function phase_2()
                 <li>Make sure translations are updated for the previous version, by calling <kbd>data_custom/transifex_pull.php?version=&lt;oldversion&gt;</kbd></li>
                 <li>Push new language data by calling <kbd>data_custom/transifex_push.php</kbd></li>
             </ul></li>
-            <li><strong>Personal demos</strong>: Update Demonstratr by generating an upgrade file, extracting using wget&amp;tar, then calling <a target="_blank" href="http://shareddemo.composr.info/data_custom/demonstratr_upgrade.php">the upgrade script</a> (<kbd>demonstratr_upgrade.php</kbd> contains some usage documentation)</li>
+            <li><strong>Personal demos</strong>: Update Demonstratr by git merge, then calling <a target="_blank" href="http://shareddemo.composr.info/data_custom/demonstratr_upgrade.php">the upgrade script</a> (<kbd>demonstratr_upgrade.php</kbd> contains some usage documentation); recreate <kbd>template.sql</kbd> using the <kbd>demonstratr_build_database</kbd> script</li>
         ';
     } else {
         echo '

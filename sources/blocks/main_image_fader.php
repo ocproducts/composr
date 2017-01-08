@@ -71,7 +71,15 @@ class Block_main_image_fader
         require_code('galleries');
         require_javascript('dyn_comcode');
 
-        $cat = empty($map['param']) ? 'root' : $map['param'];
+        if (empty($map['param'])) {
+            $cat = $GLOBALS['SITE_DB']->query_select_value('images', 'cat', null, 'GROUP BY cat ORDER BY COUNT(*) DESC');
+            if ($cat === null) {
+                $cat = 'root';
+            }
+        } else {
+            $cat = $map['param'];
+        }
+
         $mill = array_key_exists('time', $map) ? intval($map['time']) : 8000; // milliseconds between animations
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
         $order = array_key_exists('order', $map) ? $map['order'] : '';

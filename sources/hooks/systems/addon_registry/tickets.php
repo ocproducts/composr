@@ -349,4 +349,43 @@ class Hook_addon_registry_tickets
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('tickets');
+        require_code('tickets2');
+        require_lang('tickets');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('ticket_types', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_ticket_type($record['id']);
+        }
+
+        // Ticket deletion will be via different hook (as it's a topic); not so important to clean this up either
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('tickets');
+        require_code('tickets2');
+        require_lang('tickets');
+
+        $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'MIN(id)');
+        if ($ticket_type_id === null) {
+            $ticket_type_id = add_ticket_type(lorem_phrase());
+        }
+
+        set_mass_import_mode(false); // Needed for $update_caching
+        $ticket_id = uniqid('', true);
+        $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
+        $home_url = $_home_url->evaluate();
+        ticket_add_post(get_member(), $ticket_id, $ticket_type_id, lorem_phrase(), lorem_chunk(), $home_url, false); // TODO: Fix in v11
+        set_mass_import_mode(true);
+    }
 }

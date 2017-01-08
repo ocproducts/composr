@@ -156,4 +156,27 @@ class Hook_addon_registry_bookmarks
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('bookmarks');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('bookmarks', array('id'), array('b_title' => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_bookmark($record['id']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('bookmarks');
+
+        add_bookmark(get_member(), '', lorem_phrase(), ':lorem');
+    }
 }

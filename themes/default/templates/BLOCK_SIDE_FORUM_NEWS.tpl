@@ -13,15 +13,12 @@
 					</p>
 
 					<div role="note">
-						<ul class="horizontal_meta_details tiny_paragraph associated_details">
+						<ul class="compact_list tiny_paragraph associated_details">
 							<li>{!BY_SIMPLE,{$DISPLAYED_USERNAME*,{FIRSTUSERNAME}}}</li>
 							<li>{!_COMMENTS,{$SUBTRACT,{REPLIES},1}}</li>
+							<li><span class="must_show_together">{!LAST_POST}:</span> <span class="must_show_together">{DATE*}</span></li>
 						</ul>
 					</div>
-
-					<p class="tiny_paragraph associated_details">
-						<span class="field_name">{!LAST_POST}:</span> {DATE*}
-					</p>
 				</div></div>
 			{+END}
 		</div>

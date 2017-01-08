@@ -52,7 +52,7 @@ class Block_main_contact_us
         require_lang('messaging');
         require_code('feedback');
 
-        $type = array_key_exists('param', $map) ? $map['param'] : do_lang('GENERAL');
+        $type = empty($map['param']) ? do_lang('GENERAL') : $map['param'];
 
         $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
         $body_suffix = array_key_exists('body_suffix', $map) ? $map['body_suffix'] : '';

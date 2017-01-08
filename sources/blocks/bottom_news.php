@@ -66,7 +66,7 @@ class Block_bottom_news
      */
     public function run($map)
     {
-        $max = array_key_exists('param', $map) ? intval($map['param']) : 5;
+        $max = empty($map['param']) ? 5 : intval($map['param']);
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
         $blogs = array_key_exists('blogs', $map) ? intval($map['blogs']) : -1;
         $select_and = array_key_exists('select_and', $map) ? $map['select_and'] : '';

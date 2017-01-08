@@ -67,7 +67,7 @@ class Block_side_galleries
         require_code('galleries');
         require_css('galleries');
 
-        $parent_id = array_key_exists('param', $map) ? $map['param'] : 'root';
+        $parent_id = empty($map['param']) ? 'root' : $map['param'];
 
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
 

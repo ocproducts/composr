@@ -450,6 +450,9 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     if (is_null($file)) {
         $file = $new_file; // Not renamed
     }
+    if ($parent_page === null) {
+        $parent_page = '';
+    }
 
     // Check page name
     require_code('type_sanitisation');

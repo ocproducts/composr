@@ -788,4 +788,39 @@ class Hook_addon_registry_calendar
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('calendar2');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('calendar_events', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('e_title') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_calendar_event($record['id']);
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('t_title') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_event_type($record['id']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('calendar2');
+
+        $event_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_types', 'MAX(id)');
+        if ($event_type_id !== db_get_first_id()) {
+            $event_type_id = add_event_type(lorem_phrase(), 'calendar/general');
+            require_code('permissions2');
+            set_global_category_access('calendar', $event_type_id);
+        }
+
+        add_calendar_event($event_type_id, '', null, 0, lorem_phrase(), lorem_chunk(), 1, intval(date('Y')), intval(date('m')), intval(date('d')), 'day_of_month', 0, 0);
+    }
 }

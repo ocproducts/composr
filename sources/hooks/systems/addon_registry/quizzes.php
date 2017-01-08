@@ -509,4 +509,28 @@ class Hook_addon_registry_quizzes
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('quiz2');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('quizzes', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('q_name') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_quiz($record['id']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('quiz2');
+        require_lang('quiz');
+
+        add_quiz(lorem_phrase(), null, lorem_paragraph(), lorem_paragraph(), lorem_paragraph(), '', 50, null, null, 0, 0, 'SURVEY', 1, do_lang('EXAMPLE_QUESTIONS'));
+    }
 }
