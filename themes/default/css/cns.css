@@ -374,6 +374,9 @@ div.cns_table_footer>div>div {
 	.cns_topic .cns_topic_post_member_details img {
 		max-width: 100%;
 	}
+	.cns_topic .cns_topic_post_member_details img:not([height]) {
+		height: auto;
+	}
 /*{+END}*/
 
 .cns_topic_poster_name {
@@ -388,6 +391,9 @@ div.cns_table_footer>div>div {
 .cns_topic_post_avatar {
 	margin: 0 auto;
 	max-width: 100%;
+}
+.cns_topic_post_avatar:not([height]) {
+	height: auto;
 }
 
 .cns_post_main_column {

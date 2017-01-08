@@ -70,10 +70,12 @@
 	margin-{!en_right}: 0.5em;
 	margin-top: 1em;
 	max-width: 100%;
+	height: auto;
 }
 
 .theme_image_preview_wide {
 	max-width: 100%;
+	height: auto;
 }
 
 .css_editor_selector_tips {
@@ -127,6 +129,7 @@
 }
 .theme_image__logo_theme_image .radio_list_picture img, .theme_image__background_theme_image .radio_list_picture img {
 	max-width: 100%;
+	height: auto;
 }
 
 .page_running_admin_themewizard .radio_list label {

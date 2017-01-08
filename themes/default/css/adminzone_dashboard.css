@@ -139,3 +139,6 @@ a.top_left_toggleicon:hover {
 .staff_new_versions .img_wrap img {
 	max-width: 100%;
 }
+.staff_new_versions .img_wrap img:not([height]) {
+	height: auto;
+}

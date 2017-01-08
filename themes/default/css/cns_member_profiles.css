@@ -74,6 +74,9 @@
 	border: 1px solid {$GET,standard_border};
 	max-width: 100%;
 }
+.cns_member_profile_photo img:not([height]) {
+	height: auto;
+}
 
 table.cns_profile_about_section {
 	border-collapse: collapse;

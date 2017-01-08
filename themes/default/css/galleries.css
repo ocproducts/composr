@@ -290,6 +290,9 @@
 .global_side_panel .img_thumb_wrap .img_thumb {
 	max-width: 100%;
 }
+.global_side_panel .img_thumb_wrap .img_thumb:not([height]) {
+	height: auto;
+}
 
 /* Miscellaneous media handling */
 

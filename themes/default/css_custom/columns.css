@@ -45,3 +45,6 @@
 .column img {
 	max-width: 100%;
 }
+.column img:not([height]) {
+	height: auto;
+}

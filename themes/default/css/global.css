@@ -752,6 +752,9 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 .zone_running_docs .comcode_page img {
 	max-width: 100%;
 }
+.zone_running_docs .comcode_page img:not([height]) {
+	height: auto;
+}
 
 /*{+START,IF,{$MOBILE}}*/
 	.global_middle, .panel_solo {
@@ -1170,10 +1173,16 @@ div.edited {
 	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
 	max-width: 100%;
 }
+.media_box>a>img:not([height]), .media_box>img:not([height]) {
+	height: auto;
+}
 
 .scale_down { /* Membership of this class is used as a tag to turn on image scale-to-fit */
 	max-width: 100%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+.scale_down:not([height]) {
+	height: auto;
 }
 
 /* Used in a few places to make member links stand out */
@@ -1415,6 +1424,9 @@ th.metadata_title {
 .img_thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
 	max-width: 100%;
+}
+.img_thumb:not([height]) {
+	height: auto;
 }
 .img_thumb:hover, body.touch_enabled .img_thumb {
 	{$BETA_CSS_PROPERTY,opacity: 1.0;}
@@ -3242,6 +3254,9 @@ ul.buttons_group, ul.associated_links_block_group {
 .box___confirm_screen img {
 	max-width: 100%;
 }
+.box___confirm_screen img:not([height]) {
+	height: auto;
+}
 
 /*
 =========================
@@ -4345,7 +4360,9 @@ a[rel="lightbox"] {
 .attachment img {
 	vertical-align: middle;
 	max-width: 100%;
-	/*height: auto; Would always override HTML height - so we need to make sure that any width+height given in the HTML isn't too big and then max-width won't kick in and cause an inconsistency -- or not give width+height at all, in which case height will indeed auto-scale without needing height:auto here (although be aware that the media renderers will always auto-detect widths+heights as either thumbnail size or from source media)*/
+}
+.attachment img:not([height]), .attachment img:not([height=""]) {
+	height: auto;
 }
 
 .attachment figcaption {
@@ -4377,10 +4394,6 @@ a[rel="lightbox"] {
 .attachment_left .attachment, .attachment_right .attachment {
 	width: 200px;
 	white-space: normal;
-}
-
-.attachment_img {
-	max-width: 100%;
 }
 
 .media_set {
