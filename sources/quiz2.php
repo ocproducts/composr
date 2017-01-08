@@ -442,6 +442,10 @@ function edit_quiz($id, $name, $timeout, $start_text, $end_text, $end_text_fail,
     $_end_text = $rows[0]['q_end_text'];
     $_end_text_fail = $rows[0]['q_end_text_fail'];
 
+    if ($open_time === null) {
+        $open_time = time();
+    }
+
     if (!addon_installed('unvalidated')) {
         $validated = 1;
     }
