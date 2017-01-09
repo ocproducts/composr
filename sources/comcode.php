@@ -218,8 +218,16 @@ function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
         return '';
     }
 
+    static $done = array();
+    if (isset($done[$text])) {
+        return $done[$text];
+    }
+
+    $input_text = $text;
+
     $matches = array();
     if (preg_match('#^(\[semihtml\])?([\w\d\-\_\(\) \.,:;/"\'\!\?]*)(\[/semihtml\])?$#', $text, $matches) != 0) {
+        $done[$text] = $matches[2];
         return $matches[2]; // Optimisation
     }
 
@@ -249,5 +257,6 @@ function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
         $text = str_replace(array('&hellip;', '&middot;', '&ndash;', '&mdash;'), array('...', '-', '-', '-'), $text);
     }
 
+    $done[$text] = $text;
     return $text;
 }

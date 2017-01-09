@@ -353,6 +353,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'metadata' => array(
                 'identifier' => '_SEARCH:topicview:browse:' . strval($topic_id),
                 'numcomments' => strval($topic_info['t_cache_num_posts']),
+                'description' => substr(strip_comcode(get_translated_text($topic_info['p_post'])), 0, 160), // There's no meta description, so we'll take this as a description, which will feed through
             ),
             'row' => $topic_info,
         );
