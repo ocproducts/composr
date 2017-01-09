@@ -1501,8 +1501,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 
         $current = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_custom_fields', $db_fieldname, array('mf_member_id' => $member_id));
         if (is_null($current)) {
-            $done_one_posting_field = true;
             if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                $done_one_posting_field = true;
                 require_code('attachments2');
                 $map += insert_lang_comcode_attachments($db_fieldname, 3, $value, 'null', strval($member_id), $GLOBALS['FORUM_DB']);
             } else {
@@ -1511,8 +1511,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 
             $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $map, array('mf_member_id' => $member_id), '', 1);
         } else {
-            $done_one_posting_field = true;
             if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                $done_one_posting_field = true;
                 require_code('attachments2');
                 require_code('attachments3');
                 $map += update_lang_comcode_attachments($db_fieldname, $current, $value, 'null', strval($member_id), $GLOBALS['FORUM_DB'], $member_id);

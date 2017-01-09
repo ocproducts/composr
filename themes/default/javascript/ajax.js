@@ -565,12 +565,14 @@ function process_request_changes()
 	for (i=0;i<window.AJAX_REQUESTS.length;i++)
 	{
 		result=window.AJAX_REQUESTS[i];
-		if ((result!=null) && (result.readyState) && (result.readyState==4))
+		if ((result!=null) && (result.readyState) && (result.readyState==4/*done*/))
 		{
 			window.AJAX_REQUESTS[i]=null;
 
 			// If status is 'OK'
-			if ((result.status) && ((result.status==200) || (result.status==500) || (result.status==400) || (result.status==401)))
+			var result_status=result.status;
+			if (result_status>10000) result_status=0; // Weird IE status, see http://stackoverflow.com/questions/872206/http-status-code-0-what-does-this-mean-in-ms-xmlhttp/905751#905751
+			if ((result_status) && ((result_status==200) || (result_status==500) || (result_status==400) || (result_status==401)))
 			{
 				// Process the result
 				if (window.AJAX_METHODS[i])
@@ -610,16 +612,16 @@ function process_request_changes()
 
 				try
 				{
-					if ((result.status==0) || (result.status==12029)) // 0 implies site down, or network down
+					if (result_status==0) // 0 implies site down, or network down
 					{
 						if ((!window.network_down) && (!window.unloaded))
 						{
-							if (result.status==12029) window.fauxmodal_alert('{!NETWORK_DOWN;^}');
+							window.fauxmodal_alert('{!NETWORK_DOWN;^}');
 							window.network_down=true;
 						}
 					} else
 					{
-						if (typeof console.log!='undefined') console.log('{!PROBLEM_RETRIEVING_XML;^}\n'+result.status+': '+result.statusText+'.');
+						if (typeof console.log!='undefined') console.log('{!PROBLEM_RETRIEVING_XML;^}\n'+result_status+': '+result.statusText+'.');
 					}
 				}
 				catch (e)

@@ -42,9 +42,7 @@
 	margin-right: 0;
 }
 
-.column img {
+.column img:not([width]):not([height]) {
 	max-width: 100%;
-}
-.column img:not([height]) {
 	height: auto;
 }

@@ -530,7 +530,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                     $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
                     $i++;
                 }
-                file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+                @file_put_contents($place, '') OR intelligent_write_error($place); // Lock it in ASAP, to stop race conditions
                 $url_full = url_is_local($url[0]) ? get_custom_base_url() . '/' . $url[0] : $url[0];
 
                 convert_image($url_full, $place, -1, -1, intval(get_option('thumb_width')), true, null, false, $only_make_smaller);
@@ -822,7 +822,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
                 $place = $upload_folder_full . '/' . $filename;
                 $i++;
             }
-            file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+            @file_put_contents($place, '') OR intelligent_write_error($place); // Lock it in ASAP, to stop race conditions
         } else { // A result of some randomness
             $ext = get_file_extension($file);
             $ext = (($obfuscate == 2) && (!is_image($file))) ? 'dat' : get_file_extension($file);

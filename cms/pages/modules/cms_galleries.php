@@ -750,7 +750,7 @@ class Module_cms_galleries extends Standard_crud_module
             $place = get_custom_file_base() . '/uploads/galleries/' . $_file;
             $i++;
         }
-        file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+        @file_put_contents($place, '') OR intelligent_write_error($place); // Lock it in ASAP, to stop race conditions
         $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . filter_naughty($file);
         $i = 2;
         $_file_thumb = filter_naughty($file);
@@ -759,7 +759,7 @@ class Module_cms_galleries extends Standard_crud_module
             $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
             $i++;
         }
-        file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
+        @file_put_contents($place_thumb, '') OR intelligent_write_error($place_thumb); // Lock it in ASAP, to stop race conditions
 
         // Store on server
         if (rename($in, $place) === false) {
@@ -804,7 +804,7 @@ class Module_cms_galleries extends Standard_crud_module
                     $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
                     $i++;
                 }
-                file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
+                @file_put_contents($place_thumb, '') OR intelligent_write_error($place_thumb); // Lock it in ASAP, to stop race conditions
                 $thumb_url = 'uploads/galleries_thumbs/' . rawurlencode($_file_thumb);
 
                 $this->simple_add($aurl, $thumb_url, $file, $cat);

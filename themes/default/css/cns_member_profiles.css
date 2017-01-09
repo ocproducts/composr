@@ -72,9 +72,9 @@
 
 .cns_member_profile_photo img {
 	border: 1px solid {$GET,standard_border};
-	max-width: 100%;
 }
-.cns_member_profile_photo img:not([height]) {
+.cns_member_profile_photo img:not([width]):not([height]) {
+	max-width: 100%;
 	height: auto;
 }
 

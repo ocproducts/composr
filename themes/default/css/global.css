@@ -749,10 +749,8 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 .zone_running_docs .comcode_page {
 	line-height: 1.35em;
 }
-.zone_running_docs .comcode_page img {
+.zone_running_docs .comcode_page img:not([width]):not([height]) {
 	max-width: 100%;
-}
-.zone_running_docs .comcode_page img:not([height]) {
 	height: auto;
 }
 
@@ -1171,17 +1169,17 @@ div.edited {
 	border: 1px solid {$GET,standard_border};
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
-	max-width: 100%;
 }
-.media_box>a>img:not([height]), .media_box>img:not([height]) {
+.media_box>a>img:not([width]):not([height]), .media_box>img:not([width]):not([height]) {
+	max-width: 100%;
 	height: auto;
 }
 
 .scale_down { /* Membership of this class is used as a tag to turn on image scale-to-fit */
-	max-width: 100%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 }
-.scale_down:not([height]) {
+.scale_down:not([width]):not([height]) {
+	max-width: 100%;
 	height: auto;
 }
 
@@ -1423,9 +1421,9 @@ th.metadata_title {
 
 .img_thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
-	max-width: 100%;
 }
-.img_thumb:not([height]) {
+.img_thumb:not([width]):not([height]) {
+	max-width: 100%;
 	height: auto;
 }
 .img_thumb:hover, body.touch_enabled .img_thumb {
@@ -2364,6 +2362,14 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .compacted_subbox_stream .box .associated_details {
 	margin-bottom: 0;
 }
+.compacted_subbox_stream.less_compact .box {
+	padding-top: 1.5em !important;
+	margin: 2em 0;
+}
+.compacted_subbox_stream.less_compact .box_inner>h3 {
+	font-size: 1.3em;
+	margin-bottom: 1em;
+}
 
 .category_sorter {
 }
@@ -3251,10 +3257,8 @@ ul.buttons_group, ul.associated_links_block_group {
 	margin-bottom: 2em;
 }
 
-.box___confirm_screen img {
+.box___confirm_screen img:not([width]):not([height]) {
 	max-width: 100%;
-}
-.box___confirm_screen img:not([height]) {
 	height: auto;
 }
 
@@ -4357,11 +4361,11 @@ a[rel="lightbox"] {
 	text-decoration: none; /* Stops "_" showing when we use white-space */
 }
 
-.attachment img {
+.attachment img, .attachment_img {
 	vertical-align: middle;
-	max-width: 100%;
 }
-.attachment img:not([height]), .attachment img:not([height=""]) {
+.attachment img:not([width]):not([height]), .attachment_img:not([width]):not([height]) {
+	max-width: 100%;
 	height: auto;
 }
 

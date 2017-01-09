@@ -136,9 +136,7 @@ a.top_left_toggleicon:hover {
 	text-align: center;
 }
 
-.staff_new_versions .img_wrap img {
+.staff_new_versions .img_wrap img:not([width]):not([height]) {
 	max-width: 100%;
-}
-.staff_new_versions .img_wrap img:not([height]) {
 	height: auto;
 }

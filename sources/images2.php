@@ -55,7 +55,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
         $thumb_path = get_custom_file_base() . '/uploads/' . $thumb_dir . '_thumbs/' . $file . '.' . $ext;
         $i++;
     } while (file_exists($thumb_path));
-    file_put_contents($thumb_path, ''); // Lock it in ASAP, to stop race conditions
+    @file_put_contents($thumb_path, '') OR intelligent_write_error($thumb_path); // Lock it in ASAP, to stop race conditions
     $thumb_url = 'uploads/' . $thumb_dir . '_thumbs/' . rawurlencode($file) . '.' . $ext;
     if ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) {
         $GLOBALS['FORUM_DB']->query_update($table, array($thumb_field_name => $thumb_url), array('id' => $id), '', 1);

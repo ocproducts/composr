@@ -1865,7 +1865,7 @@ function find_pos_x(obj,not_relative) /* if not_relative is true it gets the pos
 		while (obj!=null)
 		{
 			position=abstract_get_computed_style(obj,'position');
-			if (position=='absolute' || position=='relative')
+			if (position=='fixed' || position=='absolute' || position=='relative')
 			{
 				ret-=find_pos_x(obj,true);
 				break;
@@ -1885,7 +1885,7 @@ function find_pos_y(obj,not_relative) /* if not_relative is true it gets the pos
 		while (obj!=null)
 		{
 			position=abstract_get_computed_style(obj,'position');
-			if (position=='absolute' || position=='relative')
+			if (position=='fixed' || position=='absolute' || position=='relative')
 			{
 				ret-=find_pos_y(obj,true);
 				break;

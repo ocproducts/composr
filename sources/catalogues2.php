@@ -990,8 +990,8 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
         );
 
         if (strpos($raw_type, '_trans') !== false) {
-            $done_one_posting_field = true;
             if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                $done_one_posting_field = true;
                 require_code('attachments2');
                 $smap += insert_lang_comcode_attachments('cv_value', 3, $val, 'catalogue_entry', strval($id));
             } else {
@@ -1160,6 +1160,8 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
 
     @ignore_user_abort(true);
 
+    static $done_one_posting_field = false;
+
     $GLOBALS['SITE_DB']->query_update('catalogue_entries', $update_map, array('id' => $id), '', 1);
 
     require_code('fields');
@@ -1181,9 +1183,8 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
             if (is_null($_val)) {
                 $smap += insert_lang_comcode('cv_value', $val, 3);
             } else {
-                static $done_one_posting_field = false;
-                $done_one_posting_field = true;
                 if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                    $done_one_posting_field = true;
                     require_code('attachments2');
                     require_code('attachments3');
                     $smap += update_lang_comcode_attachments('cv_value', $_val, $val, 'catalogue_entry', strval($id), null, $original_submitter);

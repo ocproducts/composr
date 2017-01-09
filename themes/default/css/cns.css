@@ -371,10 +371,8 @@ div.cns_table_footer>div>div {
 }
 
 /*{+START,IF,{$MOBILE}}*/
-	.cns_topic .cns_topic_post_member_details img {
+	.cns_topic .cns_topic_post_member_details img:not([width]):not([height]) {
 		max-width: 100%;
-	}
-	.cns_topic .cns_topic_post_member_details img:not([height]) {
 		height: auto;
 	}
 /*{+END}*/
@@ -390,9 +388,9 @@ div.cns_table_footer>div>div {
 
 .cns_topic_post_avatar {
 	margin: 0 auto;
-	max-width: 100%;
 }
-.cns_topic_post_avatar:not([height]) {
+.cns_topic_post_avatar:not([width]):not([height]) {
+	max-width: 100%;
 	height: auto;
 }
 
@@ -421,8 +419,9 @@ div.cns_table_footer>div>div {
 	line-height: 1.6em;
 }
 
-.cns_topic_post_area img {
+.cns_topic_post_area img:not([width]):not([height]) {
 	max-width: 100%;
+	height: auto;
 }
 .cns_topic_post_area #map_canvas img { /*some exceptions may need defining for the above*/
 	max-width: none;
@@ -673,8 +672,9 @@ hr.cns_sig_barrier {
 	text-align: center;
 	width: 30px;
 }
-.cns_forum_topic_row_emoticon img {
+.cns_forum_topic_row_emoticon img:not([width]):not([height]) {
 	max-width: 100%;
+	height: auto;
 }
 
 .cns_forum_topic_row_preview {
