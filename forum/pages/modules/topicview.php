@@ -299,7 +299,7 @@ class Module_topicview
 
         // Mark as read
         if ((!is_null($id)) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') == 1)) {
-            if (is_null($topic_info['forum_id'])) {
+            if ((is_null($topic_info['forum_id'])) || (get_value('avoid_register_shutdown_function') === '1') ) {
                 $this->_update_read_status(); // Done early because we need to have updated read status set when the pt_notifications show up
             } else {
                 register_shutdown_function(array($this, '_update_read_status')); // done at end after output in case of locking (don't make the user wait)
