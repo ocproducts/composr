@@ -395,6 +395,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/lang_html_safe.php',
             '_tests/tests/unit_tests/lang_duplication.php',
             '_tests/tests/unit_tests/phpstub_accuracy.php',
+            '_tests/tests/unit_tests/lang_grammar.php',
             '_tests/tests/unit_tests/index.html',
             '_tests/tests/unit_tests/iotd.php',
             '_tests/tests/unit_tests/lang_spelling.php',
