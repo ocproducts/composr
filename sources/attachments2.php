@@ -324,7 +324,10 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     $place = get_custom_file_base() . '/uploads/attachments/' . $_file;
                     $i++;
                 }
-                @file_put_contents($place, '') OR intelligent_write_error($place); // Lock it in ASAP, to stop race conditions
+                if (@file_put_contents($place, '') === false) { // Lock it in ASAP, to stop race conditions
+                    intelligent_write_error($place);
+                }
+                sync_file($place);
 
                 $i = 2;
                 $_file_thumb = basename($entry['path']);
@@ -335,7 +338,10 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
                     $i++;
                 }
-                @file_put_contents($place_thumb, '') OR intelligent_write_error($place_thumb); // Lock it in ASAP, to stop race conditions
+                if (@file_put_contents($place_thumb, '') === false) { // Lock it in ASAP, to stop race conditions
+                    intelligent_write_error($place_thumb);
+                }
+                sync_file($place_thumb);
 
                 if ($arcext == 'tar') {
                     $file_details = tar_get_file($myfile, $entry['path'], false, $place);

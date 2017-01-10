@@ -1162,7 +1162,7 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
 function page_link_to_url($url)
 {
     $parts = array();
-    if ((preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
+    if ((preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
         list($zone, $map, $hash) = page_link_decode($url);
         $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
     } else {
@@ -1275,7 +1275,7 @@ function find_id_moniker($url_parts, $zone)
     if (strpos($url_parts['page'], '[') !== false) {
         return null; // A regexp in a comparison URL, in breadcrumbs code
     }
-    if ($zone == '[\w\_\-]*') {
+    if ($zone == '[\w\-]*') {
         return null; // Part of a breadcrumbs regexp
     }
 

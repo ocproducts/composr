@@ -1988,6 +1988,17 @@ function key_pressed(event,key,no_error_if_bad)
 	if ((key==='_') && (event.keyCode==189) && (event.shiftKey)) key=189; /* Safari '_' */
 	if (key==='_') key=0; /* Other browsers '_'; This one is a real shame as the key code 0 is shared by lots of symbols */
 
+	// Special case of allowing a unicode range
+	if ((key.constructor==String) && (key.match(/^\d+-\d+$/)))
+	{
+		var unicode=event.charCode;
+		if (unicode==0) unicode=event.keyCode;
+		if ((unicode>=key.replace(/-\d+$/,'')) && (unicode<=key.replace(/^\d+-/,'')))
+		{
+			return true;
+		}
+	}
+
 	// Where we have an ASCII correspondance or can automap to one
 	if (key.constructor==String) // NB we are not case sensitive on letters. And we cannot otherwise pass in characters that need shift pressed.
 	{

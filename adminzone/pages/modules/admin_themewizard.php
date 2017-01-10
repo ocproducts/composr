@@ -255,7 +255,7 @@ class Module_admin_themewizard
         $inherit_css = get_param_integer('inherit_css', 0);
         $themename = get_param_string('themename');
         require_code('type_sanitisation');
-        if ((!is_alphanumeric($themename, true)) || (strlen($themename) > 40)) {
+        if ((!is_alphanumeric($themename)) || (strlen($themename) > 40)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
         if ((file_exists(get_custom_file_base() . '/themes/' . $themename)) || ($themename == 'default' || $themename == 'admin')) {
@@ -337,7 +337,7 @@ class Module_admin_themewizard
         }
 
         require_code('type_sanitisation');
-        if ((!is_alphanumeric($themename, true)) || (strlen($themename) > 40)) {
+        if ((!is_alphanumeric($themename)) || (strlen($themename) > 40)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
         make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark == 1, $inherit_css == 1);
@@ -458,7 +458,7 @@ class Module_admin_themewizard
             $theme = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_theme', array('zone_name' => ''));
         }
         if ($theme == '-1') {
-            $theme = preg_replace('#[^A-Za-z\d]#', '_', get_site_name());
+            $theme = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', get_site_name());
         }
         if (!file_exists(get_custom_file_base() . '/themes/' . $theme)) {
             $theme = 'default';

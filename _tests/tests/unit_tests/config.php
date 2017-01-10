@@ -18,6 +18,27 @@
  */
 class config_test_set extends cms_test_case
 {
+    public function testAddonCategorisationConsistency()
+    {
+        $hooks = find_all_hooks('systems', 'config');
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/config/' . $hook);
+            $ob = object_factory('Hook_config_' . $hook);
+            $details = $ob->get_details();
+
+            $path = get_file_base() . '/sources/hooks/systems/config/' . $hook . '.php';
+            if (!is_file($path)) {
+                $path = get_file_base() . '/sources_custom/hooks/systems/config/' . $hook . '.php';
+            }
+            $file_contents = file_get_contents($path);
+
+            $expected_addon = preg_replace('#^.*@package\s+(\w+).*$#s', '$1', $file_contents);
+            $this->assertTrue($details['addon'] == $expected_addon, 'Addon mismatch for ' . $hook);
+
+            $this->assertTrue($details['addon'] != 'core', 'Don\'t put addons in core, put them in core_configuration - ' . $hook);
+        }
+    }
+
     public function testListConfigConsistency()
     {
         $hooks = find_all_hooks('systems', 'config');

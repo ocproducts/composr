@@ -853,7 +853,7 @@ class Module_admin_setupwizard
         $header_text = post_param_string('header_text');
         $name = post_param_string('site_name');
         $font = post_param_string('font', 'Vera');
-        $theme = substr(preg_replace('#[^A-Za-z\d]#', '_', $name), 0, 40);
+        $theme = substr(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $name), 0, 40);
         $installprofile = post_param_string('installprofile', '');
 
         $default_logos = get_all_image_ids_type('logo/default_logos');

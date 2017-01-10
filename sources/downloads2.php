@@ -814,7 +814,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
     if (strlen($mash) > 1024 * 1024 * 3) {
         $mash = substr($mash, 0, 1024 * 1024 * 3);
     }
-    $mash = preg_replace('# +#', ' ', preg_replace('#[^\w\d-\-\']#', ' ', $mash));
+    $mash = preg_replace('# +#', ' ', preg_replace('#[^\w\-\']#', ' ', $mash));
     if (strlen($mash) > intval(1024 * 1024 * 1 * 0.4)) {
         $mash = substr($mash, 0, intval(1024 * 1024 * 0.4));
     }

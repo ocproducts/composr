@@ -851,7 +851,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'tab':
             $default = (array_key_exists('default', $attributes)) ? $attributes['default'] : '0';
-            $is_page_link = preg_match('#^\s*\w*(:[^\s\n]+)+\s*$#', $embed->evaluate()) != 0;
+            $is_page_link = preg_match('#^\s*[' . URL_CONTENT_REGEXP . ']*(:[^\s\n]+)+\s*$#', $embed->evaluate()) != 0;
             $temp_tpl = do_template('COMCODE_TAB_BODY', array(
                 '_GUID' => '2d63ed21f8d8b939b8db21b20c147b41',
                 'DEFAULT' => $default == '1',

@@ -190,7 +190,7 @@ class Block_main_image_slider
         }
 
         $nice_cat = str_replace('*', '', $cat);
-        if (preg_match('#^[\w\_]+$#', $nice_cat) == 0) {
+        if (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $nice_cat) == 0) {
             $nice_cat = 'root';
         }
         $gallery_url = build_url(array('page' => 'galleries', 'type' => 'browse', 'id' => $nice_cat), $zone);
