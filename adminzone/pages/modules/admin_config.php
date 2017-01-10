@@ -377,7 +377,7 @@ class Module_admin_config
         foreach (array_keys($options) as $group) {
             $_group = do_lang($group);
 
-            $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', $_group)));
+            $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', strip_tags($_group))));
             if ((isset($all_known_groups[$_group])) && ($all_known_groups[$_group] != $group)) {
                 $_group = 'std_' . $group; // If cat names translate to same things or are in non-latin characters like Cyrillic
             }
