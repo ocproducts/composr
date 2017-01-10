@@ -473,7 +473,13 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 			// Non-first message
 			if (message_container.childNodes.length>0)
 			{
-				message_container.insertBefore(cloned_message,message_container.childNodes[0]);
+				{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}
+					message_container.insertBefore(cloned_message,message_container.childNodes[0]);
+				{+END}
+				{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+					message_container.appendChild(cloned_message);
+					message_container.scrollTop=1000000;
+				{+END}
 
 				if (!first_set) // Only if no other message sound already for this event update
 				{

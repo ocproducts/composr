@@ -135,6 +135,7 @@ class Hook_addon_registry_chat
             'sources/hooks/systems/config/chat_show_stats_count_users.php',
             'sources/hooks/systems/config/group_private_chatrooms.php',
             'sources/hooks/systems/config/chat_max_messages_to_show.php',
+            'sources/hooks/systems/config/chat_message_direction.php',
             'sources/hooks/systems/config/points_chat.php',
             'sources/hooks/systems/config/sitewide_im.php',
             'sources/hooks/systems/config/username_click_im.php',

@@ -302,6 +302,7 @@ class Module_chat
             $this->room_name = $this->room_row['room_name'];
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CHAT_LOBBY_END_CHAT'))));
+            breadcrumb_set_self($this->room_row['room_name']);
 
             $this->title = get_screen_title('_CHATROOM', true, array(escape_html($this->room_row['room_name'])));
 
