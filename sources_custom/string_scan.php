@@ -113,6 +113,10 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        CHAT_MESSAGE_DIRECTION
+        CONFIG_OPTION_chat_message_direction
+        CONFIG_OPTION_chat_message_direction_VALUE_upwards
+        CONFIG_OPTION_chat_message_direction_VALUE_downwards
         UNKNOWN_CSS_MODE
         CORRUPT_CSS_MODE
         INSTALL_TEST_CONTENT
