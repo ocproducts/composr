@@ -23,7 +23,7 @@ The username will be used for the name of your demo site.
 
 My username was &ldquo;ocptutor&rdquo; therefore my demo site can be found at
 
-[url="http://ocptutor.ocportal.arvixe.com/"]http://ocptutor.ocportal.arvixe.com/[/url]
+[tt]http://ocptutor.ocportal.arvixe.com/[/tt] (UPDATE: the site is no longer live)
 [/box]
 
 [media description="Composr demo site" thumb="1"]data_custom/images/docs/sup_composr_101/8140649df759280fe2588f4fce756d89.png[/media]

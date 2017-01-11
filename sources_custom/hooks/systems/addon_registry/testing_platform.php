@@ -398,6 +398,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/lang_grammar.php',
             '_tests/tests/unit_tests/index.html',
             '_tests/tests/unit_tests/iotd.php',
+            '_tests/tests/unit_tests/_broken_links.php',
             '_tests/tests/unit_tests/lang_spelling.php',
             '_tests/tests/unit_tests/lang_administrative_split.php',
             '_tests/tests/unit_tests/lang_no_unused.php',

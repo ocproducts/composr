@@ -1216,7 +1216,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_TIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_USERAGENT, $ua);
-                                            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $http_verb);
+                                            if ($http_verb == 'HEAD') {
+                                                curl_setopt($ch, CURLOPT_NOBODY, true); // Branch needed as doing a HEAD via CURLOPT_CUSTOMREQUEST can cause a timeout bug in cURL
+                                            } else {
+                                                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $http_verb);
+                                            }
                                             if (!is_null($accept)) {
                                                 $curl_headers[] = 'Accept: ' . $accept;
                                             }
