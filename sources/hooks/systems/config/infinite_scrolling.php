@@ -38,6 +38,7 @@ class Hook_config_infinite_scrolling
             'explanation' => 'CONFIG_OPTION_infinite_scrolling',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'theme_override' => true,
 
             'addon' => 'core_configuration',
         );

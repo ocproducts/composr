@@ -279,7 +279,7 @@ class Module_admin_setupwizard
         $fields->attach(form_input_line(do_lang_tempcode('STAFF_EMAIL'), do_lang_tempcode('CONFIG_OPTION_staff_address'), 'staff_address', $staff_address, true));
         $fields->attach(form_input_line(do_lang_tempcode('KEYWORDS'), do_lang_tempcode('CONFIG_OPTION_keywords'), 'keywords', $keywords, false));
         $fields->attach(form_input_line(do_lang_tempcode('GOOGLE_ANALYTICS'), do_lang_tempcode('CONFIG_OPTION_google_analytics'), 'google_analytics', $google_analytics, false));
-        $fields->attach(form_input_tick(do_lang_tempcode('FIXED_WIDTH'), do_lang_tempcode('CONFIG_OPTION_fixed_width'), 'fixed_width', get_option('fixed_width') == '1'));
+        $fields->attach(form_input_tick(do_lang_tempcode('FIXED_WIDTH'), do_lang_tempcode('CONFIG_OPTION_fixed_width'), 'fixed_width', get_theme_option('fixed_width') == '1'));
         $panel_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
         if (file_exists($panel_path)) {
             $include_cms_advert = strpos(file_get_contents($panel_path), 'logos/') !== false;

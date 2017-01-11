@@ -149,44 +149,18 @@ if (get_param_integer('export_themes', 0) == 1) {
             continue;
         }
 
-        $name = '';
-        $incompatibilities = '';
-        $dependencies = '';
-        $author = 'ocProducts';
-        $organisation = 'ocProducts Ltd';
-        $version = '1.0';
-        $copyright_attribution = '';
-        $licence = '(Unstated)';
-        $description = '';
-        $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
-        if (file_exists($ini_file)) {
-            $details = better_parse_ini_file($ini_file);
-
-            if (array_key_exists('title', $details)) {
-                $name = $details['title'];
-            }
-            if (array_key_exists('description', $details)) {
-                $description = $details['description'];
-            }
-            if ((array_key_exists('author', $details)) && ($details['author'] != 'admin')) {
-                $author = $details['author'];
-            }
-            if (array_key_exists('dependencies', $details)) {
-                $dependencies = $details['dependencies'];
-            }
-            if (array_key_exists('organisation', $details)) {
-                $organisation = $details['organisation'];
-            }
-            if (array_key_exists('version', $details)) {
-                $version = $details['version'];
-            }
-            if (array_key_exists('copyright_attribution', $details)) {
-                $copyright_attribution = implode("\n", $details['copyright_attribution']);
-            }
-            if (array_key_exists('licence', $details)) {
-                $licence = $details['licence'];
-            }
+        $name = get_theme_option('title', '', $theme);
+        $author = get_theme_option('author', 'ocProducts', $theme);
+        if ($author == 'admin') {
+            $author = 'ocProducts';
         }
+        $organisation = get_theme_option('organisation', 'ocProducts Ltd', $theme);
+        $version = get_theme_option('version', '1.0', $theme);
+        $copyright_attribution = get_theme_option('copyright_attribution', '', $theme);
+        $licence = get_theme_option('licence', '(Unstated)', $theme);
+        $description = get_theme_option('description', '', $theme);
+        $dependencies = get_theme_option('dependencies', '', $theme);
+        $incompatibilities = get_theme_option('incompatibilities', '', $theme);
 
         $file = 'theme-' . preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $theme)) . '-' . get_version_branch() . '.tar';
 

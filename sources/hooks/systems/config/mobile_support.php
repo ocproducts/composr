@@ -38,6 +38,7 @@ class Hook_config_mobile_support
             'explanation' => 'CONFIG_OPTION_mobile_support',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'theme_override' => true,
 
             'addon' => 'core_configuration',
         );

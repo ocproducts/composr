@@ -26,7 +26,7 @@
 					<li>
 						<a onclick="do_editarea_search('block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
 					</li>
-					{+START,IF,{$CONFIG_OPTION,fixed_width}}
+					{+START,IF,{$THEME_OPTION,fixed_width}}
 						<li>
 							<a onclick="do_editarea_search('outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
 						</li>

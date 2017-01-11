@@ -38,6 +38,7 @@ class Hook_config_fixed_width
             'explanation' => 'CONFIG_OPTION_fixed_width',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'theme_override' => true,
 
             'addon' => 'core',
         );

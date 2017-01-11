@@ -16,7 +16,7 @@ For example:
 .menu_type__dropdown {
 	overflow: hidden;
 }
-/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 	/*{+START,CSS_MODE,desktop}*/
 		.menu_type__dropdown {
 			width: 980px;
@@ -36,10 +36,10 @@ For example:
 }
 /*{+START,CSS_MODE,desktop}*/
 	.menu_type__dropdown li.toplevel {
-		/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
+		/*{+START,IF,{$NOT,{$THEME_OPTION,fixed_width}}}*/
 			width: {$DIV_FLOAT*,100,9}%;
 		/*{+END}*/
-		/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+		/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 			width: 109px;
 		/*{+END}*/
 	}

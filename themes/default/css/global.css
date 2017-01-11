@@ -531,7 +531,7 @@ body.website_body.frame {
 	background: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
 }
 
-/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 	/*{+START,CSS_MODE,desktop}*/
 		html>body#main_website { /* #main_website targets only the main site screen, avoiding frames etc */
 			/* Want to change the tiled background?
@@ -575,7 +575,7 @@ body#main_website {
 	margin: 0;
 }
 
-/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 	/* To stop it scaling down if we are applying "width=device-width" and forcing a page to displaying non-mobile */
 	/*{+START,CSS_MODE,desktop}*/
 		body#main_website {
@@ -622,7 +622,7 @@ header h1 {
 	text-align: center;
 	background: url('{$IMG;,banner_frame}') center top no-repeat;
 	position: relative;
-	/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+	/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 		top: -16px;
 	/*{+END}*/
 	padding-top: 6px;
@@ -774,10 +774,10 @@ header h1 {
 }
 /*{+START,CSS_MODE,desktop}*/
 	.global_breadcrumbs {
-		/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+		/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 			text-align: {!en_right};
 		/*{+END}*/
-		/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
+		/*{+START,IF,{$NOT,{$THEME_OPTION,fixed_width}}}*/
 			float: {!en_right};
 		/*{+END}*/
 		margin-left: 0.5em;
@@ -1020,7 +1020,7 @@ footer {
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,footer_background}\, {$GET,footer_2_background});}
 
 	color: {$GET,footer_text};
-	/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
+	/*{+START,IF,{$NOT,{$THEME_OPTION,fixed_width}}}*/
 		{$BETA_CSS_PROPERTY,box-shadow: 0 0 2px 2px {$GET,footer_tinting};}
 	/*{+END}*/
 }
@@ -4869,7 +4869,7 @@ a[rel="lightbox"] {
 =========================
 */
 
-/*{+START,IF,{$CONFIG_OPTION,filetype_icons}}*/
+/*{+START,IF,{$THEME_OPTION,filetype_icons}}*/
 	/* Higher than media links for lower CSS precedence */
 	a[target="_blank"].user_link { /* Detected external links have styling */
 		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top;

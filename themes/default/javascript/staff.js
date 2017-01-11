@@ -3,7 +3,7 @@
 function script_load_stuff_staff()
 {
 	// Navigation loading screen
-	/*{+START,IF,{$CONFIG_OPTION,enable_animations}}*/
+	/*{+START,IF,{$THEME_OPTION,enable_animations}}*/
 		if ((window.parent==window) && ((window.location+'').indexOf('js_cache=1')==-1) && (((window.location+'').indexOf('/cms/')!=-1) || ((window.location+'').indexOf('/adminzone/')!=-1)))
 			add_event_listener_abstract(window,'beforeunload',function() { staff_unload_action(); });
 	/*{+END}*/
@@ -339,7 +339,7 @@ function handle_image_mouse_over(event)
 	if (src.indexOf('/themes/')==-1) return;
 	if (window.location.href.indexOf('admin_themes')!=-1) return;
 
-	/*{+START,IF,{$CONFIG_OPTION,enable_theme_img_buttons}}*/
+	/*{+START,IF,{$THEME_OPTION,enable_theme_img_buttons}}*/
 		// Remove other edit links
 		var old=get_elements_by_class_name(document,'magic_image_edit_link');
 		for (var i=old.length-1;i>=0;i--)
@@ -378,7 +378,7 @@ function handle_image_mouse_out(event)
 
 	var target=event.target || event.srcElement;
 
-	/*{+START,IF,{$CONFIG_OPTION,enable_theme_img_buttons}}*/
+	/*{+START,IF,{$THEME_OPTION,enable_theme_img_buttons}}*/
 		if (target.previousSibling && (typeof target.previousSibling.className!='undefined') && (typeof target.previousSibling.className.indexOf!='undefined') && (target.previousSibling.className.indexOf('magic_image_edit_link')!=-1))
 		{
 			if ((typeof target.mo_link!='undefined') && (target.mo_link)) // Clear timed display of new edit button

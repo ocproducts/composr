@@ -9,7 +9,7 @@
 
 		{$,Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results}
 		{+START,IF,{$NOT,{IS_THREADED}}}
-			{+START,IF,{$CONFIG_OPTION,infinite_scrolling}}
+			{+START,IF,{$THEME_OPTION,infinite_scrolling}}
 				var infinite_scrolling_comments_wrapper=function (event) {
 					var wrapper=document.getElementById('comments_wrapper');
 					internalise_infinite_scrolling(url_stem,wrapper);

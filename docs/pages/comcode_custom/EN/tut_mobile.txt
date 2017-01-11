@@ -172,10 +172,10 @@ This is the code Composr now uses in [tt]HTML_HEAD.tpl[/tt]:
 	{+END}
 {+END}
 {+START,IF,{$DESKTOP}}
-	{+START,IF,{$CONFIG_OPTION,fixed_width}}
+	{+START,IF,{$THEME_OPTION,fixed_width}}
 		<meta name="viewport" content="width=982, user-scalable=yes" />
 	{+END}
-	{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}
+	{+START,IF,{$NOT,{$THEME_OPTION,fixed_width}}}
 		<meta name="viewport" content="width=device-width, user-scalable=yes" />
 	{+END}
 {+END}
@@ -191,10 +191,10 @@ I'm going to simplify things down a bit for my explanation, removing the stuff i
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 {+END}
 {+START,IF,{$DESKTOP}}
-	{+START,IF,{$CONFIG_OPTION,fixed_width}}
+	{+START,IF,{$THEME_OPTION,fixed_width}}
 		<meta name="viewport" content="width=982, user-scalable=yes" />
 	{+END}
-	{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}
+	{+START,IF,{$NOT,{$THEME_OPTION,fixed_width}}}
 		<meta name="viewport" content="width=device-width, user-scalable=yes" />
 	{+END}
 {+END}

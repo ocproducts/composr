@@ -53,7 +53,7 @@
 				{HIDDEN}
 
 				{+START,IF,{$NOT,{$MOBILE,1}}}
-					{+START,IF,{$CONFIG_OPTION,mobile_support}}
+					{+START,IF,{$THEME_OPTION,mobile_support}}
 						<p>
 							<label for="mobile_version">{!MOBILE_VERSION}: <input{+START,IF,{$MOBILE}} checked="checked"{+END} onclick="return preview_mobile_button(this,event);" type="checkbox" id="mobile_version" name="_mobile_version" /></label>
 							{+START,IF,{$MOBILE}}

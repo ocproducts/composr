@@ -431,7 +431,7 @@ class Module_admin_themes
      */
     public function manage_themes()
     {
-        $_themes = find_all_themes(true);
+        $_themes = find_all_themes();
 
         // Look through zones
         $zones = $GLOBALS['SITE_DB']->query_select('zones', array('*'), null, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
@@ -454,7 +454,7 @@ class Module_admin_themes
         $site_default_theme = $GLOBALS['FORUM_DRIVER']->_get_theme(true);
         $themes = array();
         $theme_default_reason = do_lang_tempcode('DEFAULT_THEME_BY_DEFAULT', escape_html(get_default_theme_name()));
-        foreach ($_themes as $theme => $details) {
+        foreach ($_themes as $theme => $theme_title) {
             if (is_integer($theme)) {
                 $theme = strval($theme);
             }
@@ -518,9 +518,9 @@ class Module_admin_themes
                 'DATE' => $date,
                 'RAW_DATE' => strval($date),
                 'NAME' => $theme,
-                'DESCRIPTION' => $details['description'],
-                'AUTHOR' => $details['author'],
-                'TITLE' => $details['title'],
+                'DESCRIPTION' => get_theme_option('description'),
+                'AUTHOR' => get_theme_option('author'),
+                'TITLE' => $theme_title,
                 'CSS_URL' => $css_url,
                 'TEMPLATES_URL' => $templates_url,
                 'IMAGES_URL' => $images_url,
@@ -571,6 +571,7 @@ class Module_admin_themes
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6fc4708641814ddf5e99d0771abaa8f8', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
 
+        // TODO
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
         $fields->attach(form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR_THEME', do_lang_tempcode('THEME')), 'author', $author, true));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_WIDE'), do_lang_tempcode('DESCRIPTION_SUPPORTS_WIDE'), 'supports_wide', $supports_wide == 1));
@@ -610,12 +611,6 @@ class Module_admin_themes
      */
     public function save_theme_changes($theme)
     {
-        require_code('files');
-
-        if (!file_exists((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-        }
-
         if (post_param_integer('use_on_all', 0) == 1) {
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($theme) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
 
@@ -623,20 +618,24 @@ class Module_admin_themes
         }
         erase_persistent_cache();
 
-        $before = better_parse_ini_file((($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        $path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+        $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+        if (!file_exists($ini_file)) {
+            $ini_file = get_file_base() . '/themes/default/theme.ini';
+        }
+        $before = better_parse_ini_file($ini_file);
         $contents = '';
+        // TODO
         $contents .= 'title=' . post_param_string('title') . "\n";
         $contents .= 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n";
         foreach ($before as $key => $val) {
-            if (($key != 'title') && ($key != 'description') && ($key != 'author') && ($key != 'mobile_pages') && ($key != 'supports_wide')) {
+            if (post_param_string($key, null) === null) { // Something not edited in the UI
                 $contents .= $key . '=' . $val . "\n";
             }
         }
         $contents .= 'author=' . post_param_string('author') . "\n";
         $contents .= 'mobile_pages=' . post_param_string('mobile_pages') . "\n";
         $contents .= 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n";
-        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+        cms_file_put_contents_safe($ini_file, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         require_code('permissions2');
         set_category_permissions_from_environment('theme', $theme);
@@ -742,27 +741,18 @@ class Module_admin_themes
     {
         $theme = get_param_string('theme', false, true);
 
-        $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
-        if (!file_exists($ini_file)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        $themeonly_settings = array(
+            'title' => $theme,
+            'description' => '',
+            'author' => $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true),
+            'mobile_pages' => null,
+            'supports_wide' => null,
+        );
+        $details = array();
+        foreach ($themeonly_settings as $themeonly_setting => $setting_default) {
+            $details[$themeonly_setting] = get_theme_option($themeonly_setting, $setting_default);
         }
-        $details = better_parse_ini_file($ini_file);
-        if (!array_key_exists('title', $details)) {
-            $details['title'] = '?';
-        }
-        if (!array_key_exists('description', $details)) {
-            $details['description'] = '?';
-        }
-        if (!array_key_exists('author', $details)) {
-            $details['author'] = '?';
-        }
-        if (!array_key_exists('mobile_pages', $details)) {
-            $details['mobile_pages'] = '';
-        }
-        if (!array_key_exists('supports_wide', $details)) {
-            $details['supports_wide'] = '1';
-        }
-        $fields = $this->get_theme_fields($theme, $details['title'], $details['description'], $details['author'], $details['mobile_pages'], intval($details['supports_wide']), false);
+        $fields = $this->get_theme_fields($theme, $details['title'], $details['description'], $details['author'], $details['mobile_pages'], intval($details['supports_wide']), false); // TODO
         if ($theme != 'default') {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '66a48b082356b9e9bfdb1a8107f5e567', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('COPY_THEME'), do_lang_tempcode('DESCRIPTION_COPY_THEME', escape_html($theme)), 'copy', false));
@@ -783,8 +773,8 @@ class Module_admin_themes
     /**
      * Find a theme date.
      *
-     * @param ID_TEXT The theme codename
-     * @return string The theme date
+     * @param ID_TEXT $theme The theme codename
+     * @return Tempcode The theme date
      */
     protected function _get_theme_date($theme)
     {
@@ -1166,8 +1156,6 @@ class Module_admin_themes
             $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
         }
         $revision_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
-
-        require_code('files');
 
         // Save
         cms_file_put_contents_safe($custom_path, $css, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
@@ -1777,8 +1765,6 @@ class Module_admin_themes
 
                 $file = $_file;
             } else {
-                require_code('files');
-
                 cms_file_put_contents_safe($full_path, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 if (file_exists(get_file_base() . '/themes/default/' . post_param_string('f' . $i . 'file'))) {

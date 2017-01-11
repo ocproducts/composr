@@ -77,7 +77,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	padding-top: 0;
 }
 
-/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 	.global_breadcrumbs {
 		padding: 18px 0 7px 0;
 	}
@@ -99,7 +99,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	{$BETA_CSS_PROPERTY,background-image: none !important;}
 }
 
-/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 	/*{+START,CSS_MODE,desktop}*/
 		.footer_inner {
 			width: 980px;

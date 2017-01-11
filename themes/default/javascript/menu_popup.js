@@ -122,7 +122,7 @@ function pop_up_menu(id,place,menu,event,outside_fixed_width)
 		fade_transition(e,100,30,8);
 	}
 	var full_width=(window.scrollX==0)?get_window_width():get_window_scroll_width();
-	/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+	/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 		if (!outside_fixed_width)
 		{
 			var main_website_inner=document.getElementById('main_website_inner');

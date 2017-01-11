@@ -187,6 +187,8 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
      */
     public function _import()
     {
+        require_code('files');
+
         require_code('uploads');
         is_plupload(true);
 

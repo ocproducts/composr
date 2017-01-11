@@ -86,7 +86,7 @@
 		{COMMENT_DETAILS}
 	</div>
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
+	{+START,IF,{$THEME_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
 
 	{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 		<div class="edited" role="note">

@@ -9,7 +9,7 @@ function fade_transition(fade_element,dest_percent_opacity,period_in_msecs,incre
 {
 	if (!fade_element) return;
 
-	/*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
+	/*{+START,IF,{$NOT,{$THEME_OPTION,enable_animations}}}*/
 		set_opacity(fade_element,dest_percent_opacity/100.0);
 		return;
 	/*{+END}*/

@@ -130,7 +130,7 @@ function ze_animate_to(ob,amount,towards_expanded,now)
 	ob.style.width=(amount)+'em';
 	return;
 
-	/*{+START,IF,{$NOT,{$CONFIG_OPTION,enable_animations}}}*/
+	/*{+START,IF,{$NOT,{$THEME_OPTION,enable_animations}}}*/
 		ob.style.width=(amount)+'em';
 		return;
 	/*{+END}*/

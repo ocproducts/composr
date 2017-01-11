@@ -1126,6 +1126,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>Get the value of a config option</td>
 		</tr>
 		<tr style="background: #DDFFDD">
+			<td>{$THEME_OPTION,optionname}</td>
+			<td>Get the value of a config option that can be overridden in a theme</td>
+		</tr>
+		<tr style="background: #DDFFDD">
 			<td>{$VALUE_OPTION,optionname}</td>
 			<td>Get the value of a hidden option/value</td>
 		</tr>

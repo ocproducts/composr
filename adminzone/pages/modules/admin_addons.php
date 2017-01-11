@@ -982,32 +982,19 @@ class Module_admin_addons
         require_code('files');
 
         // Default metadata
-        $name = '';
-        $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
-        $organisation = get_site_name();
-        $description = '';
-        $version = '1.0';
-        $copyright_attribution = '';
-        $licence = 'Creative Commons Attribution-ShareAlike';
-        $dependencies = '';
-        $incompatibilities = '';
-
-        // ... but the theme might already define some of this
-        if (!is_null($theme)) {
-            $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
-            if (file_exists($ini_file)) {
-                $details = better_parse_ini_file($ini_file);
-                if (array_key_exists('title', $details)) {
-                    $name = $details['title'];
-                }
-                if (array_key_exists('description', $details)) {
-                    $description = $details['description'];
-                }
-                if (array_key_exists('author', $details)) {
-                    $author = $details['author'];
-                }
-            }
+        $name = get_theme_option('title', '', $theme);
+        $author = get_theme_option('author', 'ocProducts', $theme);
+        if ($author == 'admin') {
+            $author = 'ocProducts';
         }
+        $organisation = get_theme_option('organisation', 'ocProducts Ltd', $theme);
+        $version = get_theme_option('version', '1.0', $theme);
+        $copyright_attribution = get_theme_option('copyright_attribution', '', $theme);
+        $licence = get_theme_option('licence', '(Unstated)', $theme);
+        $description = get_theme_option('description', '', $theme);
+        $dependencies = get_theme_option('dependencies', '', $theme);
+        $incompatibilities = get_theme_option('incompatibilities', '', $theme);
+
         if ($is_lang) {
             $lang = post_param_string('lang');
             $ini_file = get_custom_file_base() . '/lang_custom/langs.ini';

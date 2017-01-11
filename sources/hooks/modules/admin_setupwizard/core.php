@@ -34,7 +34,7 @@ class Hook_sw_core
 
         $settings['show_content_tagging'] = (get_option('show_content_tagging') == '1') ? '1' : '0';
         $settings['show_content_tagging_inline'] = (get_option('show_content_tagging_inline') == '1') ? '1' : '0';
-        $settings['show_screen_actions'] = (get_option('show_screen_actions') == '1') ? '1' : '0';
+        $settings['show_screen_actions'] = (get_theme_option('show_screen_actions') == '1') ? '1' : '0';
         $settings['collapse_user_zones'] = (get_option('collapse_user_zones') == '1') ? '1' : '0';
 
         $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
