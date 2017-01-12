@@ -74,7 +74,7 @@ if (cms_srv('REQUEST_METHOD') == 'POST') { // From form
     $i = 0;
     foreach ($special_file_types as $label => $_search) {
         if (isset($_POST['file_selector_' . strval($i)])) {
-            $files_to_show = array_merge($_POST['file_selector_' . strval($i)]);
+            $files_to_show = array_merge($files_to_show, $_POST['file_selector_' . strval($i)]);
         }
         $i++;
     }
