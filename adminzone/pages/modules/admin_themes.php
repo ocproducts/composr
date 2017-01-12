@@ -572,25 +572,33 @@ class Module_admin_themes
         $fields->attach(form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR_THEME', do_lang_tempcode('THEME')), 'author', $author, true));
 
         // Option overrides
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME__OPTION_OVERRIDES'), 'HELP' => do_lang_tempcode('DESCRIPTION__THEME__OPTION_OVERRIDES'))));
+        $show_theme_option_overrides = false;
         $hooks = find_all_hooks('systems', 'config');
+        foreach (array_keys($hooks) as $hook) {
+            $current_value = get_theme_option($hook, '', $name);
+            if ($current_value != '') {
+                $show_theme_option_overrides = true;
+            }
+        }
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => !$show_theme_option_overrides, 'TITLE' => do_lang_tempcode('THEME__OPTION_OVERRIDES'), 'HELP' => do_lang_tempcode('DESCRIPTION__THEME__OPTION_OVERRIDES'))));
+        require_all_lang();
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/config/' . $hook);
             $ob = object_factory('Hook_config_' . $hook);
             $details = $ob->get_details();
             if (!empty($details['theme_override'])) {
-                require_all_lang();
+                $current_value = get_theme_option($hook, '', $name);
+
                 switch ($details['type']) {
                     case 'line':
-                        $fields->attach(form_input_line(do_lang_tempcode($details['human_name']), do_lang_tempcode($details['explanation']), $hook, get_theme_option($hook, '', $name), false));
+                        $fields->attach(form_input_line(do_lang_tempcode($details['human_name']), do_lang_tempcode($details['explanation']), $hook, $current_value, false));
                         break;
 
                     case 'tick':
-                        $tick_value = get_theme_option($hook, '', $name);
                         $list = new Tempcode();
-                        $list->attach(form_input_list_entry('', $tick_value == '', do_lang_tempcode('NA_EM')));
-                        $list->attach(form_input_list_entry('0', $tick_value == '0', do_lang_tempcode('NO')));
-                        $list->attach(form_input_list_entry('1', $tick_value == '1', do_lang_tempcode('YES')));
+                        $list->attach(form_input_list_entry('', $current_value == '', do_lang_tempcode('NA_EM')));
+                        $list->attach(form_input_list_entry('0', $current_value == '0', do_lang_tempcode('NO')));
+                        $list->attach(form_input_list_entry('1', $current_value == '1', do_lang_tempcode('YES')));
                         $fields->attach(form_input_list(do_lang_tempcode($details['human_name']), do_lang_tempcode($details['explanation']), $hook, $list, null, false, false));
                         break;
                 }
