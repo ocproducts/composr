@@ -473,7 +473,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 {$THEME_WIZARD_COLOR,#ff8888,light_error_border,100% FF8888}
 {$THEME_WIZARD_COLOR,#fff2f2,light_error_background,95% WB + 5% FF0000}
 {$THEME_WIZARD_COLOR,#fc210e,red_highlight_text,80% FF0000 + 20% seed}
-{$THEME_WIZARD_COLOR,#00aa00,green_highlight_text,100% 00AA00}
+{$THEME_WIZARD_COLOR,#00aa00,green_highlight_text,100% 009900}
 {$THEME_WIZARD_COLOR,#fde5e1,required_background,60% (area_4_background hue_to 0) + 40% area_background}
 {$THEME_WIZARD_COLOR,#fdeae4,required_2_background,40% (area_4_background hue_to 0) + 60% area_background}
 {$THEME_WIZARD_COLOR,#000000,dark_shadow,100% BW}
@@ -550,6 +550,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 /* Footer */
 {$THEME_WIZARD_COLOR,#f7c78e,footer_tinting,61% seed + 39% WB}
 {$THEME_WIZARD_COLOR,#ffffff,footer_text,100% WB}
+{$THEME_WIZARD_COLOR,#dbe6f7,inverted_text,35% footer_tinting + 65% WB}
 
 /* Used for image generation */
 {$THEME_WIZARD_COLOR,#fef5ea,washed_out,10% (seed sat_to 85) + 90% WB}
@@ -565,6 +566,23 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 {$THEME_WIZARD_COLOR,#6d4310,special_middle,45% (seed sat_to 85) + 65% BW}
 {$THEME_WIZARD_COLOR,#f6ae59,cnspostindicator,65% (seed sat_to 100) + 35% WB}
 {$THEME_WIZARD_COLOR,#f6ae91,cnsredirectindicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
+
+/* Range of bright varying colours */
+{$THEME_WIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
+{$THEME_WIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
+{$THEME_WIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
+{$THEME_WIZARD_COLOR,#5800fa,gcol_4,100% #5800FA}
+{$THEME_WIZARD_COLOR,#0099fa,gcol_5,100% #0099FA}
+{$THEME_WIZARD_COLOR,#859638,gcol_6,100% #859638}
+{$THEME_WIZARD_COLOR,#2bab03,gcol_7,100% #2BAB03}
+{$THEME_WIZARD_COLOR,#7d7e04,gcol_8,100% #7D7E04}
+{$THEME_WIZARD_COLOR,#966038,gcol_9,100% #966038}
+{$THEME_WIZARD_COLOR,#96384a,gcol_10,100% #96384A}
+{$THEME_WIZARD_COLOR,#963895,gcol_11,100% #963895}
+{$THEME_WIZARD_COLOR,#4e3896,gcol_12,100% #4E3896}
+{$THEME_WIZARD_COLOR,#386296,gcol_13,100% #386296}
+{$THEME_WIZARD_COLOR,#389596,gcol_14,100% #389596}
+{$THEME_WIZARD_COLOR,#389653,gcol_15,100% #389653}
 
 /*
 =========================
@@ -611,7 +629,7 @@ textarea, input, code {
 /* Our little 'typing' effect, shows a keyboard when focusing input fields */
 /*Doesn't look good in IE10 input[type="text"]:focus, input[type="password"]:focus {
 	background: url('{$IMG_INLINE;,keyboard}') right center no-repeat {$GET,native_ui_background};
-
+}
 input[type="text"][size="6"]:focus, input[type="text"][readonly="true"]:focus {
 	background-image: none;
 }*/
@@ -759,6 +777,9 @@ iframe {
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
 ::selection {
 	background: {$GET,yellow_highlight_background};
+}
+comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
+	background: {$GET,green_highlight_text};
 }
 
 /* Stop Chrome breaking our datalist display with an arrow */
@@ -1178,6 +1199,7 @@ div.red_alert, p.red_alert {
 .inline_wip_message {
 	border: 1px solid {$GET,dark_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,area_background};
+	color: {$GET,slightly_seeded_text};
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	div.red_alert, p.red_alert {
@@ -1298,7 +1320,7 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box, .right>.box, .left>.box {
+td>.box, .right .box, .left .box {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -1414,7 +1436,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: {!en_left};
 	font-size: 15px;
-	margin: 0.5em 0;
+	margin: 0.5em 0 !important;
 	font-family: Arial;
 	padding: 1px 0 2px 21px !important;
 	width: auto;
@@ -1422,7 +1444,8 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	text-transform: uppercase;
 	{$BETA_CSS_PROPERTY,border-radius: 0;}
 }
-.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
@@ -1431,7 +1454,8 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
-	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+	.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_leftcomp}');
 		background-size: 18px 18px;
 	}
@@ -1516,7 +1540,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .toggleable_tray_button img {
 	float: {!en_right};
-	margin: 0 0.3em !important;
+	margin: 0 0 0 0.3em !important;
 }
 .toggleable_tray_title .toggleable_tray_button img {
 	margin-top: -1px !important;
@@ -1566,9 +1590,6 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .fp_col_block .pagination {
 	float: none;
-}
-.fp_col_block .pagination_per_page {
-	display: none;
 }
 .fp_col_block form + span {
 	margin-left: 0;
@@ -1690,7 +1711,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .whitespace_visible {
 	overflow: auto;
 	outline: 0;
-	white-space: pre-wrap;
+	white-space: pre-wrap !important;
 }
 .whitespace_visible.code {
 	font-family: 'Courier New', 'Courier', monospace;
@@ -1816,17 +1837,20 @@ table.scrollable_inside {
 
 .wide_table {
 	width: 100%;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	/*{+START,IF,{$EQ,{$LANG},EN}}*/
 		table-layout: fixed;
 	/*{+END}*/
 }
 
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
-	{+START,IF,{$MOBILE}}
-		overflow-x: auto;
-	{+END}
 }
+
+{+START,IF,{$MOBILE}}
+	.spaced_table td {
+		overflow-x: auto;
+	}
+{+END}
 
 /* Undo any descendant spacing for nested tables made in WYSIWYG */
 .results_table table[cellpadding="0"] td, .results_table table[cellpadding="0"] th {
@@ -1898,11 +1922,11 @@ table.scrollable_inside {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-table>*>.zebra_0>th, table>*>.zebra_0>td, div.zebra_0 {
+table>*>.zebra_0>th, table>*>.zebra_0>td, div.zebra_0, table.zebra>tbody>tr:nth-child(even)>th, table.zebra>tbody>tr:nth-child(even)>td {
 	background-color: {$GET,area_zebra_background} !important;
 	color: {$GET,slightly_seeded_text};
 }
-table>*>.zebra_1>th, table>*>.zebra_1>td, div.zebra_1 {
+table>*>.zebra_1>th, table>*>.zebra_1>td, div.zebra_1, table.zebra>tbody>tr:nth-child(odd)>th, table.zebra>tbody>tr:nth-child(even)>td {
 	background-color: {$GET,area_background} !important;
 	color: {$GET,slightly_seeded_text};
 }
@@ -1963,15 +1987,21 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 .tooltip {
 	font-size: 1em;
-	padding: 0.5em;
-	background-color: {$GET,area_faded_background};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
-	border: 1px solid {$GET,point_of_interest_border};
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
 	z-index: 10000;
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
+}
+.tooltip_ownlayout {
+	padding: 0.5em;
+	border: 1px solid {$GET,point_of_interest_border};
+	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
+	{$BETA_CSS_PROPERTY,border-radius: 10px;}
+	color: {$GET,area_text} !important;
+}
+.tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
+	background-color: {$GET,area_faded_background};
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 }
 .tooltip .box {
 	margin: 0;
@@ -2047,11 +2077,15 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .results_table_sorter {
 	max-width: {$?,{$MOBILE},315,400}px;
 	float: {!en_left};
-	margin-{!en_right}: 1em;
+	margin-{!en_right}: 0.75em;
 }
 
 .pagination_spacing {
 	margin: 1em 0;
+}
+
+.compacted_subbox_stream .pagination_spacing {
+	margin-left: 1em;
 }
 
 .pagination {
@@ -2375,7 +2409,7 @@ div.ajax_loading, p.ajax_loading {
 	padding: 0;
 }
 
-.post_action_link .RATING_INLINE_DYNAMIC {
+.post_action_link .RATING_INLINE {
 	padding-left: 2em;
 }
 
@@ -2424,13 +2458,6 @@ div.ajax_loading, p.ajax_loading {
 	font-weight: bold;
 	padding-left: 0;
 	margin-bottom: 0.3em;
-}
-
-.post .post_avatar {
-	float: left;
-	margin: 0.5em 1em 0.5em 0;
-	width: 50px;
-	height: 50px;
 }
 
 .post .post_subline {
@@ -2584,6 +2611,9 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	font-size: 0.85em;
 	font-weight: normal;
 }
+.comments_posting_form_inner .associated_links_block_group li {
+	white-space: normal !important;
+}
 
 .comments_posting_form_end {
 	overflow: hidden;
@@ -2592,9 +2622,9 @@ div .post_buttons>*, div .buttons_group_faded>* {
 		padding: 0;
 		text-align: center;
 	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	/*{+START,IF,{$NOT,{$MOBILE}}}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
 		margin: 0 0 1em 13.5em;
-	/*{+END}*/
+	/*{+END}*//*{+END}*/
 }
 
 .comments_posting_form_end input {
@@ -2740,6 +2770,7 @@ ul.meta_details_list>li {
 
 dl.meta_details_list>dt {
 	float: {!en_left};
+	clear: {!en_left};
 	padding-{!en_right}: 0.4em !important;
 }
 dl.meta_details_list>dt, dl.meta_details_list>dd {
@@ -2790,6 +2821,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 	padding-right: 5px;
 	background-origin: content-box;
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	min-height: 26px;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.staff_actions {
@@ -3171,6 +3203,9 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	margin: 1px 0.25em 0 0.25em; /* Push it up a bit due to confined space */
 	text-shadow: 1px 1px 1px {$GET,dark_shadow};
 	line-height: 0.9em;
+	/*{+START,IF,{$MOBILE}}*/
+		line-height: 0.9em;
+	/*{+END}*/
 }
 div .button_micro {
 	background-image: none !important; /* Too loud for such a small space */
@@ -3731,6 +3766,13 @@ a.tab, a.tab:visited, a.tab:hover {
 	/*{+END}*/
 }
 
+a.tab>img+span {
+	padding-top: 0;
+}
+a.tab>span {
+	padding-top: 3px;
+}
+
 /*{+START,IF,{$MOBILE}}*/
 	.tab_surround .tab {
 		min-width: 100px; /* Allows 3 per row, neat alignment (for nested tabs) */
@@ -4164,7 +4206,7 @@ figure {
 }
 
 a[rel="lightbox"] {
-	display: inline-block; /* Stops "_" showing when we use white-space */
+	text-decoration: none; /* Stops "_" showing when we use white-space */
 }
 
 .attachment img {
@@ -4476,8 +4518,8 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 
 .overlay .previous_button, .overlay .next_button {
 	{$BETA_CSS_PROPERTY,opacity: 0;}
-	{$BETA_CSS_PROPERTY,transition-property : opacity;}
-	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
+	{$BETA_CSS_PROPERTY,transition-property: opacity;}
+	{$BETA_CSS_PROPERTY,transition-duration: 0.5s;}
 }
 .overlay .previous_button:hover, .overlay .next_button:hover, .overlay.mousemove .previous_button, .overlay.mousemove .next_button, body.touch_enabled .overlay.mousemove .previous_button, body.touch_enabled .overlay.mousemove .next_button {
 	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;}
