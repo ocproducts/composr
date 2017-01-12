@@ -178,7 +178,7 @@ You should develop a policy about how you handle feedback. This is of particular
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
- - [url="The COPPA website"]http://www.coppa.org/comply.htm[/url]
+ - [url="Children's Online Privacy Protection Act (wikipedia)"]https://en.wikipedia.org/wiki/Children's_Online_Privacy_Protection_Act[/url]
  - [page="_SEARCH:tut_do"]Dos and Do-nots of a (Composr) website[/page]
 
 {$SET,tutorial_tags,Advice & Guidance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Guidance on the legal and social issues that webmasters need to understood.}[block]main_tutorial_rating[/block]

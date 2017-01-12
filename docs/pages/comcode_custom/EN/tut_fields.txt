@@ -166,6 +166,8 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 
 [title="3"]posting_field[/title]
 
+Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
+
 {| 15em wide
 ! Title
 | A paragraph(s) of Comcode, with attachment support

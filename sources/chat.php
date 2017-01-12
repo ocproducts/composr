@@ -350,7 +350,7 @@ function chat_room_prune($room_id)
                         $map += insert_lang_comcode('the_message', $left_room_msg, 4);
                         $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
                         require_code('files');
-                        cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                        cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
             }

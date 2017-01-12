@@ -287,8 +287,9 @@
 .global_side_panel .gallery_tease_pic_wrap h2, .global_side_panel .gallery_tease_pic_wrap h3 {
 	display: none;
 }
-.global_side_panel .img_thumb_wrap .img_thumb {
+.global_side_panel .img_thumb_wrap .img_thumb:not([width]):not([height]) {
 	max-width: 100%;
+	height: auto;
 }
 
 /* Miscellaneous media handling */

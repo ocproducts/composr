@@ -272,7 +272,7 @@ class Module_cms_comcode_pages
             } else {
                 $sample_page_name = 'site:example_new_page';
             }
-            $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', '', true, null, null, 'text', $sample_page_name, '([\w\_\-]*:)?[\w\_\-]+'));
+            $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', '', true, null, null, 'text', $sample_page_name, '([' . URL_CONTENT_REGEXP_JS . ']*:)?[' . URL_CONTENT_REGEXP_JS . ']+'));
 
             $template_list = new Tempcode();
             $template_list->attach(form_input_list_entry('', true, do_lang('NA')));
@@ -529,7 +529,7 @@ class Module_cms_comcode_pages
 
             $page__tempcode = do_template('COMCODE_TELETYPE', array(
                 '_GUID' => '56e1af60e09524c20fc62dd55cda1eb9',
-                'CONTENT' => preg_replace('#([\w\d\_]{22})#', '${1} ', escape_html($row['page'])),
+                'CONTENT' => preg_replace('#([' . URL_CONTENT_REGEXP . ']{22})#', '${1} ', escape_html($row['page'])),
             ));
 
             $parent_page = $row['parent_page'];
@@ -647,7 +647,7 @@ class Module_cms_comcode_pages
         }
 
         require_code('type_sanitisation');
-        if ((!is_alphanumeric($file, true)) || (strpos($file, '-') !== false && strpos($file, '_') !== false)/*can't have both*/) {
+        if ((!is_alphanumeric($file)) || (strpos($file, '-') !== false && strpos($file, '_') !== false)/*can't have both*/) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
@@ -1131,7 +1131,7 @@ class Module_cms_comcode_pages
                 $page_contents = get_translated_text($page['string_index']);
             } else {
                 $located = _request_page($page['the_page'], $page['the_zone']);
-                if ($located !== false && $located[0] != 'REDIRECT') {
+                if ($located !== false && $located[0] != 'REDIRECT' && isset($located[4])) {
                     $path = get_custom_file_base() . '/' . $located[4];
                     if (!is_file($path)) {
                         $path = get_file_base() . '/' . $located[4];

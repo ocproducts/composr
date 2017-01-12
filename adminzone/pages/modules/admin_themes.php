@@ -482,7 +482,7 @@ class Module_admin_themes
                 }
 
                 // Why is this the site-default theme?
-                if ($theme == preg_replace('#[^\w\-\.\d]#', '_', get_site_name())) {
+                if ($theme == preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', get_site_name())) {
                     $theme_default_reason = do_lang_tempcode('DEFAULT_THEME_BY_SITENAME');
                 } elseif ($theme != 'default') {
                     $theme_default_reason = do_lang_tempcode('DEFAULT_THEME_BY_FORUM');
@@ -564,7 +564,7 @@ class Module_admin_themes
         require_code('permissions2');
 
         $fields = new Tempcode();
-        $site_default_theme = preg_replace('#[^\w\-\.\d]#', '_', get_site_name());
+        $site_default_theme = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', get_site_name());
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
         if ($name != 'default') {
             $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode(file_exists(get_custom_file_base() . '/themes/' . $site_default_theme) ? 'DESCRIPTION_CODENAME_THEME' : 'DESCRIPTION_CODENAME_THEME_HELPER', escape_html($site_default_theme)), 'theme', $name, true));
@@ -692,7 +692,7 @@ class Module_admin_themes
                 var codename=document.getElementById('theme');
                 if (codename.value=='')
                 {
-                    codename.value=title.value.replace(/[^a-zA-Z0-9]/g,'');
+                    codename.value=title.value.replace(/[^" . URL_CONTENT_REGEXP_JS . "]/g,'');
                 }
             }
             var form=document.getElementById('main_form');
@@ -724,7 +724,7 @@ class Module_admin_themes
         $theme = post_param_string('theme');
         require_code('type_sanitisation');
         if (!is_alphanumeric($theme)) {
-            $theme = preg_replace('#[^\w\-\d]#', '_', $theme);
+            $theme = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $theme);
             //warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
         actual_add_theme($theme);
@@ -808,7 +808,7 @@ class Module_admin_themes
             if ($theme != $to) {
                 require_code('type_sanitisation');
                 if (!is_alphanumeric($to)) {
-                    $to = preg_replace('#[^\w\-\d]#', '_', $to);
+                    $to = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $to);
                     //warn_exit(do_lang_tempcode('BAD_CODENAME'));
                 }
 
@@ -1505,7 +1505,7 @@ class Module_admin_themes
             // Lots of UI stuff...
 
             $matches = array();
-            $cnt = preg_match_all('#\{([\w][\w\_]*)[\*;%\#]?\}#', $old_contents, $matches);
+            $cnt = preg_match_all('#\{([\w]\w*)[\*;%\#]?\}#', $old_contents, $matches);
             $parameters = new Tempcode();
             $p_done = array();
             for ($j = 0; $j < $cnt; $j++) {

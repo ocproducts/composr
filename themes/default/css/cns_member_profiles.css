@@ -72,7 +72,10 @@
 
 .cns_member_profile_photo img {
 	border: 1px solid {$GET,standard_border};
+}
+.cns_member_profile_photo img:not([width]):not([height]) {
 	max-width: 100%;
+	height: auto;
 }
 
 table.cns_profile_about_section {

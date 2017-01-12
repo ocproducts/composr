@@ -134,7 +134,7 @@ END;
     $results = '';
 
     // Check database
-    $prefix = preg_replace('#[^\w\_]#', '', $settings['db_prefix']);
+    $prefix = preg_replace('#[^\w]#', '', $settings['db_prefix']);
     if (file_exists($FILE_BASE . '/sources/hooks/systems/addon_registry/calendar_events.php')) {
         $multi_lang_content = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true;
         if ($multi_lang_content) {

@@ -176,7 +176,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
     require_lang('tasks');
 
     if ($force_immediate) {
-        if ($run_at_end_of_script) {
+        if (($run_at_end_of_script) && (get_value('avoid_register_shutdown_function') !== '1')) {
             @ignore_user_abort(true); // Must keep going till completion
 
             register_shutdown_function('call_user_func_array__long_task', $plain_title, $title, $hook, $args, false, $force_immediate, $send_notification);

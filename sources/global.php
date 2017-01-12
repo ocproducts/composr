@@ -485,7 +485,7 @@ function filter_naughty_harsh($in, $preg = false)
     if ((function_exists('ctype_alnum')) && (ctype_alnum($in))) {
         return $in;
     }
-    if (preg_match('#^[\w\-]*$#', $in) !== 0) {
+    if (preg_match('#^[' . URL_CONTENT_REGEXP . ']*$#', $in) !== 0) {
         return $in;
     }
     if (preg_match('#^[\w\-]*/#', $in) !== 0) {
@@ -493,7 +493,7 @@ function filter_naughty_harsh($in, $preg = false)
     }
 
     if ($preg) {
-        return preg_replace('#[^\w\-]#', '', $in);
+        return preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '', $in);
     }
     log_hack_attack_and_exit('EVAL_HACK', $in);
     return ''; // trick to make Zend happy
@@ -549,6 +549,9 @@ if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini
 // Are we in a special version of PHP?
 define('HHVM', strpos(PHP_VERSION, 'hiphop') !== false);
 define('GOOGLE_APPENGINE', isset($_SERVER['APPLICATION_ID']));
+
+define('URL_CONTENT_REGEXP', '\w\-\x80-\xFF'); // PHP is done using ASCII (don't use the 'u' modifier). Note this doesn't include dots, this is intentional as they can cause problems in filenames
+define('URL_CONTENT_REGEXP_JS', '\w\-\u0080-\uFFFF'); // JavaScript is done using Unicode
 
 // Sanitise the PHP environment some more
 safe_ini_set('track_errors', '1'); // so $php_errormsg is available
