@@ -180,7 +180,7 @@ function load_value_options()
  *
  * @param  ID_TEXT $name The name of the option
  * @param  ?string $default Default value (null: also is a configuration option, look in that -- OR we have a hard-coded default for it)
- * @param  ?ID_TEXT $theme Theme to load for (null: active theme)
+ * @param  ?ID_TEXT $theme Theme to load for (null: active theme) (blank: non-existent theme)
  * @param  boolean $missing_ok Where to accept a missing option (and return null)
  * @return ?SHORT_TEXT The value (null: either null value, or no option found while $missing_ok set)
  */
@@ -190,29 +190,25 @@ function get_theme_option($name, $default = null, $theme = null, $missing_ok = f
     if ($theme === null) {
         $theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     }
-    $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
-    if (is_file($ini_path)) {
-        static $map = array();
-        if (!isset($map[$theme])) {
-            require_code('files');
-            $map[$theme] = better_parse_ini_file($ini_path);
-        }
+    if ($theme != '') {
+        $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+        if (is_file($ini_path)) {
+            static $map = array();
+            if (!isset($map[$theme])) {
+                require_code('files');
+                $map[$theme] = better_parse_ini_file($ini_path);
+            }
 
-        if (!empty($map[$theme][$name])) {
-            return $map[$theme][$name];
+            if (!empty($map[$theme][$name])) {
+                return $map[$theme][$name];
+            }
         }
     }
 
     // Hard-coded $default?
     if ($default === null) {
         switch ($name) {
-            case 'supports_wide':
-                $default = '1';
-                break;
-            case 'mobile_pages':
-                $default = '';
-                break;
-
+            // Metadata
             case 'title':
                 $default = $theme;
                 break;
@@ -223,6 +219,15 @@ function get_theme_option($name, $default = null, $theme = null, $missing_ok = f
                 $default = do_lang('UNKNOWN');
                 break;
 
+            // Configuration
+            case 'supports_wide':
+                $default = '1';
+                break;
+            case 'mobile_pages':
+                $default = '';
+                break;
+
+            // Theme Wizard ones (may only be edited in theme.ini by hand)
             case 'seed':
                 $default = '426aa9'; // Call find_theme_seed() for a better guess
                 break;
@@ -236,6 +241,7 @@ function get_theme_option($name, $default = null, $theme = null, $missing_ok = f
                 $default = '';
                 break;
 
+            // Logo Wizard ones (may only be edited in theme.ini by hand)
             case 'logo_x_offset':
                 $default = '0';
                 break;

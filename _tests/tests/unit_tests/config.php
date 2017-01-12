@@ -113,6 +113,10 @@ class config_test_set extends cms_test_case
             foreach (array_keys($details) as $setting) {
                 $this->assertTrue(array_key_exists($setting, $settings_needed) || array_key_exists($setting, $settings_optional), 'Unknown setting: ' . $setting);
             }
+
+            if (!empty($details['theme_override'])) {
+                $this->assertTrue(in_array($details['type'], array('line', 'tick')), 'Unknown setting: ' . $setting);
+            }
         }
 
         require_code('files2');
@@ -128,6 +132,10 @@ class config_test_set extends cms_test_case
                 $c = file_get_contents(get_file_base() . '/' . $f);
 
                 foreach (array_keys($hooks) as $hook) {
+                    if ($hook == 'description') {
+                        // Special case - we have a config option named 'description', and also a theme setting named 'description' -- they are separate
+                    }
+
                     if (strpos($c, $hook) === false) {
                         continue;
                     }

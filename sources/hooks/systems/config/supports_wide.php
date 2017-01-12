@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_configuration
+ * @package    stats
  */
 
 /**
  * Hook class.
  */
-class Hook_config_mobile_support
+class Hook_config_supports_wide
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,13 @@ class Hook_config_mobile_support
     public function get_details()
     {
         return array(
-            'human_name' => 'MOBILE_SUPPORT',
+            'human_name' => 'SUPPORTS_WIDE',
             'type' => 'tick',
             'category' => 'THEME',
-            'group' => 'MOBILE_VERSION',
-            'explanation' => 'CONFIG_OPTION_mobile_support',
-            'shared_hosting_restricted' => '0',
+            'group' => 'GENERAL',
+            'explanation' => 'CONFIG_OPTION_supports_wide',
+            'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 1,
             'theme_override' => true,
 
             'addon' => 'core_configuration',

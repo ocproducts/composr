@@ -433,6 +433,9 @@ class Module_admin_config
                 } else {
                     $explanation = do_lang_tempcode($option['explanation']);
                 }
+                if (!empty($option['theme_override'])) {
+                    $explanation = do_lang_tempcode('IS_ALSO_THEME_SETTING', $explanation);
+                }
 
                 if (isset($option['required'])) {
                     $required = $option['required'];

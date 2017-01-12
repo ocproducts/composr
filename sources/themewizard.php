@@ -72,7 +72,7 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
     $theme_wizard_images = get_theme_option('theme_wizard_images');
     $theme_wizard_images_no_wild = get_theme_option('theme_wizard_images_no_wild');
 
-    $autodetect_background_images = ($guess_images_if_needed) && (get_theme_option('theme_wizard_images', '') == ''));
+    $autodetect_background_images = (($guess_images_if_needed) && (get_theme_option('theme_wizard_images', '') == ''));
 
     if ($autodetect_background_images) {
         $dh = opendir(get_file_base() . '/themes/' . filter_naughty($theme) . (($theme == 'default') ? '/css/' : '/css_custom/'));

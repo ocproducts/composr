@@ -34,7 +34,7 @@ class Hook_config_header_menu_call_string
             'human_name' => 'HEADER_MENU_CALL_STRING',
             'type' => 'line',
             'category' => 'THEME',
-            'group' => 'GENERAL',
+            'group' => 'BLOCKS_AT_TOP',
             'explanation' => 'CONFIG_OPTION_header_menu_call_string',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

@@ -545,43 +545,65 @@ class Module_admin_themes
      * Get standard form input fields for inputting a theme.
      *
      * @param  string $name The name of the theme
-     * @param  string $title The theme title
-     * @param  string $description The theme description
-     * @param  ?string $author The theme author (null: current member)
-     * @param  string $mobile_pages Comma-separated list mobile-supporting pages (blank: all do)
-     * @param  BINARY $supports_wide Whether the theme supports 'wide' screens
      * @param  boolean $use_on_all_zones Whether to use this theme on all zones
      * @return Tempcode The fields
      */
-    public function get_theme_fields($name = '', $title = '', $description = '', $author = null, $mobile_pages = '', $supports_wide = 1, $use_on_all_zones = false)
+    public function get_theme_fields($name = '', $use_on_all_zones = false)
     {
-        if (is_null($author)) {
-            $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
-        }
-
         require_code('form_templates');
         require_code('permissions2');
 
         $fields = new Tempcode();
-        $site_default_theme = preg_replace('#[^\w\-\.\d]#', '_', get_site_name());
+
+        // General options
+        $title = get_theme_option('title', null, $name);
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
         if ($name != 'default') {
-            $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode(file_exists(get_custom_file_base() . '/themes/' . $site_default_theme) ? 'DESCRIPTION_CODENAME_THEME' : 'DESCRIPTION_CODENAME_THEME_HELPER', escape_html($site_default_theme)), 'theme', $name, true));
+            $site_default_theme = preg_replace('#[^\w\-\.\d]#', '_', get_site_name());
+            $has_site_default_theme = file_exists(get_custom_file_base() . '/themes/' . $site_default_theme);
+            $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode($has_site_default_theme ? 'DESCRIPTION_CODENAME_THEME' : 'DESCRIPTION_CODENAME_THEME_HELPER', escape_html($site_default_theme)), 'theme', $name, true));
         }
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6fc4708641814ddf5e99d0771abaa8f8', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
-
-        // TODO
+        // Metadata
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6fc4708641814ddf5e99d0771abaa8f8', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('METADATA'))));
+        $description = get_theme_option('description', null, $name);
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
+        $author = get_theme_option('author', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true), $name);
         $fields->attach(form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR_THEME', do_lang_tempcode('THEME')), 'author', $author, true));
-        $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_WIDE'), do_lang_tempcode('DESCRIPTION_SUPPORTS_WIDE'), 'supports_wide', $supports_wide == 1));
-        $fields->attach(form_input_line(do_lang_tempcode('MOBILE_PAGES'), do_lang_tempcode('DESCRIPTION_MOBILE_PAGES'), 'mobile_pages', $mobile_pages, false));
+
+        // Option overrides
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME__OPTION_OVERRIDES'), 'HELP' => do_lang_tempcode('DESCRIPTION__THEME__OPTION_OVERRIDES'))));
+        $hooks = find_all_hooks('systems', 'config');
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/config/' . $hook);
+            $ob = object_factory('Hook_config_' . $hook);
+            $details = $ob->get_details();
+            if (!empty($details['theme_override'])) {
+                require_all_lang();
+                switch ($details['type']) {
+                    case 'line':
+                        $fields->attach(form_input_line(do_lang_tempcode($details['human_name']), do_lang_tempcode($details['explanation']), $hook, get_theme_option($hook, '', $name), false));
+                        break;
+
+                    case 'tick':
+                        $tick_value = get_theme_option($hook, '', $name);
+                        $list = new Tempcode();
+                        $list->attach(form_input_list_entry('', $tick_value == '', do_lang_tempcode('NA_EM')));
+                        $list->attach(form_input_list_entry('0', $tick_value == '0', do_lang_tempcode('NO')));
+                        $list->attach(form_input_list_entry('1', $tick_value == '1', do_lang_tempcode('YES')));
+                        $fields->attach(form_input_list(do_lang_tempcode($details['human_name']), do_lang_tempcode($details['explanation']), $hook, $list, null, false, false));
+                        break;
+                }
+            }
+        }
+
+        // Permissions
         if ($name != 'default') {
             $fields->attach(get_category_permissions_for_environment('theme', $name, null, null, ($name == '')));
         }
 
+        // Actions
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '805d278a21d59eaa4568c2a77fbb5073', 'TITLE' => do_lang_tempcode('ACTIONS'))));
-
         $fields->attach(form_input_tick(do_lang_tempcode('USE_ON_ZONES'), do_lang_tempcode('DESCRIPTION_USE_ON_ZONES'), 'use_on_all', $use_on_all_zones));
 
         // Mapping
@@ -611,35 +633,50 @@ class Module_admin_themes
      */
     public function save_theme_changes($theme)
     {
+        // Make live if requested
         if (post_param_integer('use_on_all', 0) == 1) {
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($theme) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
 
             attach_message(do_lang_tempcode('THEME_MADE_LIVE'), 'inform');
         }
-        erase_persistent_cache();
 
+        // Save theme.ini
         $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
         if (!file_exists($ini_file)) {
             $ini_file = get_file_base() . '/themes/default/theme.ini';
         }
         $before = better_parse_ini_file($ini_file);
         $contents = '';
-        // TODO
-        $contents .= 'title=' . post_param_string('title') . "\n";
-        $contents .= 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n";
+        $themeonly_options = array('title', 'description', 'author');
+        foreach ($themeonly_options as $themeonly_option) {
+            $contents .= $themeonly_option . '=' . str_replace("\n", '\n', post_param_string($themeonly_option, '')) . "\n";
+            unset($before[$themeonly_option]);
+        }
+        $hooks = find_all_hooks('systems', 'config');
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/config/' . $hook);
+            $ob = object_factory('Hook_config_' . $hook);
+            $details = $ob->get_details();
+            if (!empty($details['theme_override'])) {
+                $val = post_param_string($hook, '');
+                if ($val != '') {
+                    $contents .= $hook . '=' . $val . "\n";
+                }
+            }
+        }
         foreach ($before as $key => $val) {
             if (post_param_string($key, null) === null) { // Something not edited in the UI
                 $contents .= $key . '=' . $val . "\n";
             }
+            unset($before[$key]);
         }
-        $contents .= 'author=' . post_param_string('author') . "\n";
-        $contents .= 'mobile_pages=' . post_param_string('mobile_pages') . "\n";
-        $contents .= 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n";
         cms_file_put_contents_safe($ini_file, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
+        // Save permissions
         require_code('permissions2');
         set_category_permissions_from_environment('theme', $theme);
 
+        // Update map file
         $map = file_exists(get_file_base() . '/themes/map.ini') ? better_parse_ini_file(get_file_base() . '/themes/map.ini') : array();
         $new_map = array();
         foreach ($map as $key => $val) {
@@ -661,6 +698,9 @@ class Module_admin_themes
             $contents .= $key . '=' . $val . "\n";
         }
         cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+
+        // Empty caching
+        erase_persistent_cache();
     }
 
     /**
@@ -741,18 +781,7 @@ class Module_admin_themes
     {
         $theme = get_param_string('theme', false, true);
 
-        $themeonly_settings = array(
-            'title' => $theme,
-            'description' => '',
-            'author' => $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true),
-            'mobile_pages' => null,
-            'supports_wide' => null,
-        );
-        $details = array();
-        foreach ($themeonly_settings as $themeonly_setting => $setting_default) {
-            $details[$themeonly_setting] = get_theme_option($themeonly_setting, $setting_default);
-        }
-        $fields = $this->get_theme_fields($theme, $details['title'], $details['description'], $details['author'], $details['mobile_pages'], intval($details['supports_wide']), false); // TODO
+        $fields = $this->get_theme_fields($theme, false);
         if ($theme != 'default') {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '66a48b082356b9e9bfdb1a8107f5e567', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('COPY_THEME'), do_lang_tempcode('DESCRIPTION_COPY_THEME', escape_html($theme)), 'copy', false));
