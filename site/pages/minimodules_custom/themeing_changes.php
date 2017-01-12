@@ -161,7 +161,7 @@ foreach ($special_file_types as $label => $_search) {
             $_file = basename($file, '.' . $search_ext);
         }
         $selected = in_array((($search_path == '') ? '' : ($search_path . '/')) . $file, $files_to_show);
-        echo '<option' . ($selected ? ' selected="selected"' : '') . ' value="' . escape_html((($search_path == '') ? '' : ($search_path . '/')) . $file) . '">' . escape_html($_file) . '</option>';
+        echo '<option' . ($selected ? ' selected="selected"' : '') . ' value="' . escape_html($version) . '">' . escape_html($version . ' (' . get_timezoned_date($release_details['add_date'], false) . ')') . '</option>';
     }
 
     echo '</select>';
