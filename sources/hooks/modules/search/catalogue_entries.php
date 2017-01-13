@@ -151,7 +151,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
                 break;
 
             case 'title':
-                $remapped_orderer = 'c_cv_value'; // short table
+                $remapped_orderer = 'cv_value'; // short table
                 break;
 
             case 'add_date':
