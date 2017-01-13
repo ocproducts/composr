@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_themeing
+ * @package    banners
  */
 
 /**
  * Hook class.
  */
-class Hook_config_enable_theme_img_buttons
+class Hook_config_enable_edit_banner_buttons
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,16 @@ class Hook_config_enable_theme_img_buttons
     public function get_details()
     {
         return array(
-            'human_name' => 'ENABLE_THEME_IMG_BUTTONS',
+            'human_name' => 'ENABLE_EDIT_BANNER_BUTTONS',
             'type' => 'tick',
             'category' => 'THEME',
             'group' => 'EMBEDDED_LINKS',
-            'explanation' => 'CONFIG_OPTION_enable_theme_img_buttons',
-            'shared_hosting_restricted' => '0',
+            'explanation' => 'CONFIG_OPTION_enable_edit_banner_buttons',
+            'shared_hosting_restricted' => '1',
             'list_options' => '',
             'theme_override' => true,
 
-            'addon' => 'core_themeing',
+            'addon' => 'banners',
         );
     }
 

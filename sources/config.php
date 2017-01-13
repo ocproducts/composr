@@ -219,14 +219,6 @@ function get_theme_option($name, $default = null, $theme = null, $missing_ok = f
                 $default = do_lang('UNKNOWN');
                 break;
 
-            // Configuration
-            case 'supports_wide':
-                $default = '1';
-                break;
-            case 'mobile_pages':
-                $default = '';
-                break;
-
             // Theme Wizard ones (may only be edited in theme.ini by hand)
             case 'seed':
                 $default = '426aa9'; // Call find_theme_seed() for a better guess

@@ -33,7 +33,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{EDIT_URL}}
-			{+START,IF,{IS_PANEL}}
+			{+START,IF,{$AND,{IS_PANEL},{$THEME_OPTION,enable_edit_page_panel_buttons}}}
 				{+START,IF,{$EQ,{NAME},panel_left,panel_right}}
 					<p class="quick_self_edit_link associated_link">
 						<a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" width="16" height="16" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
@@ -48,7 +48,7 @@
 				{+END}
 			{+END}
 
-			{+START,IF,{$NOR,{IS_PANEL},{$GET,no_comcode_page_edit_links}}}
+			{+START,IF,{$NOR,{IS_PANEL},{$GET,no_comcode_page_edit_links},{$AND,{BEING_INCLUDED},{$NOT,{$THEME_OPTION,enable_edit_page_include_buttons}}}}}
 				{+START,INCLUDE,STAFF_ACTIONS}
 					1_URL={EDIT_URL*}
 					1_TITLE={$?,{BEING_INCLUDED},&uarr; {!EDIT},{!EDIT_PAGE}}
