@@ -89,7 +89,7 @@ function pop_up_menu(id,place,menu,event,outside_fixed_width)
 	var p=e.parentNode;
 
 	// Our own position computation as we are positioning relatively, as things expand out
-	if (abstract_get_computed_style(p.parentNode,'position')=='absolute')
+	if (abstract_get_computed_style(p.parentNode,'position')=='fixed' || abstract_get_computed_style(p.parentNode,'position')=='absolute')
 	{
 		l+=p.offsetLeft;
 		t+=p.offsetTop;
@@ -101,6 +101,7 @@ function pop_up_menu(id,place,menu,event,outside_fixed_width)
 			l+=p.offsetLeft;
 			t+=p.offsetTop-sts(p.style.borderTop);
 			p=p.offsetParent;
+			if ((p) && (abstract_get_computed_style(p,'position')=='fixed')) break;
 			if ((p) && (abstract_get_computed_style(p,'position')=='absolute')) break;
 		}
 	}

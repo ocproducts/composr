@@ -512,7 +512,14 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
     require_code('global4');
     if (!handle_has_checked_recently($url_full)) {
         $COMCODE_PARSE_URLS_CHECKED++;
-        $test = ($COMCODE_PARSE_URLS_CHECKED >= MAX_URLS_TO_READ) ? '' : http_download_file($url_full, 0, false);
+        if ($COMCODE_PARSE_URLS_CHECKED >= MAX_URLS_TO_READ) {
+            $test = '';
+        } else {
+            $test = http_download_file($url_full, 0, false);
+            if (($test === null) && ($GLOBALS['HTTP_MESSAGE'] == 403)) {
+                $test = http_download_file($url_full, 1, false); // Try without HEAD, sometimes it's not liked
+            }
+        }
         if ((is_null($test)) && (in_array($HTTP_MESSAGE, array('404')))) {
             if ($HTTP_MESSAGE != 'could not connect to host'/*don't show for random connectivity issue*/) {
                 $temp_tpl = do_template('WARNING_BOX', array(
@@ -851,7 +858,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
         case 'tab':
             $default = (array_key_exists('default', $attributes)) ? $attributes['default'] : '0';
-            $is_page_link = preg_match('#^\s*\w*(:[^\s\n]+)+\s*$#', $embed->evaluate()) != 0;
+            $is_page_link = preg_match('#^\s*[' . URL_CONTENT_REGEXP . ']*(:[^\s\n]+)+\s*$#', $embed->evaluate()) != 0;
             $temp_tpl = do_template('COMCODE_TAB_BODY', array(
                 '_GUID' => '2d63ed21f8d8b939b8db21b20c147b41',
                 'DEFAULT' => $default == '1',

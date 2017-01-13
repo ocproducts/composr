@@ -252,7 +252,7 @@ function init__webstandards2()
     } else {
         $enforce_link = '.*';
     }
-    $enforce_class = '[ \w-]*';
+    $enforce_class = '[ \w\-]*';
     $_counter_increment = '((\w+( \d+)?)+)';
     $enforce_counter_increment = $_counter_increment . '( ' . $_counter_increment . ')*';
     $enforce_transition_timing_function = '(linear|ease|ease-in|ease-out|ease-in-out|cubic-bezier\(' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . '\))';
@@ -1840,7 +1840,7 @@ function _webstandards_css_sheet($data)
                     $cnt = substr_count($class_name, ':');
                     if ($cnt > 0) {
                         $matches = array();
-                        $num_matches = preg_match_all('#:([\w-]+)#', $class_name, $matches);
+                        $num_matches = preg_match_all('#:([\w\-]+)#', $class_name, $matches);
                         for ($j = 0; $j < $num_matches; $j++) {
                             $pseudo = $matches[1][$j];
                             if (($GLOBALS['WEBSTANDARDS_COMPAT']) && (!in_array($pseudo, array('active', 'hover', 'link', 'visited', 'first-letter', 'first-line', 'first-child', 'last-child', 'before', 'after', 'disabled', 'focus')))) {

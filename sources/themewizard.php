@@ -87,7 +87,7 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
                 }
                 $css_file = file_get_contents($css_path);
                 $matches = array();
-                $num_matches = preg_match_all('#\{\$IMG[;\#]?,([\w\_\-\d]+)\}#', $css_file, $matches);
+                $num_matches = preg_match_all('#\{\$IMG[;\#]?,([\w\-]+)\}#', $css_file, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     if ((preg_match('#' . preg_quote($matches[0][$i]) . '[\'"]?\)[^\n]*no-repeat#', $css_file) == 0) || (preg_match('#' . preg_quote($matches[0][$i]) . '[\'"]?\)[^\n]*width:\s*\d\d\d+px#', $css_file) != 0) || (preg_match('#width:\s*\d\d\d+px;[^\n]*' . preg_quote($matches[0][$i]) . '[\'"]?\)#', $css_file) != 0)) {
                         $themewizard_images .= ',' . $matches[1][$i];

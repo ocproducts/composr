@@ -858,6 +858,10 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 .zone_running_docs .comcode_page {
 	line-height: 1.35em;
 }
+.zone_running_docs .comcode_page img:not([width]):not([height]) {
+	max-width: 100%;
+	height: auto;
+}
 
 .global_middle_outer {
 	margin-top: 0.8em;
@@ -1315,10 +1319,17 @@ div.edited {
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,standard_border};}
 }
+.media_box>a>img:not([width]):not([height]), .media_box>img:not([width]):not([height]) {
+	max-width: 100%;
+	height: auto;
+}
 
 .scale_down { /* Membership of this class is used as a tag to turn on image scale-to-fit */
-	max-width: 100%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+}
+.scale_down:not([width]):not([height]) {
+	max-width: 100%;
+	height: auto;
 }
 
 /* Used in a few places to make member links stand out */
@@ -1584,7 +1595,10 @@ th.metadata_title {
 
 .img_thumb { /* Membership of this class is used as a tag to turn on the thumbnail blend effect */
 	{$BETA_CSS_PROPERTY,opacity: 0.7;}
+}
+.img_thumb:not([width]):not([height]) {
 	max-width: 100%;
+	height: auto;
 }
 .img_thumb:hover, body.touch_enabled .img_thumb {
 	{$BETA_CSS_PROPERTY,opacity: 1.0;}
@@ -2647,6 +2661,14 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .compacted_subbox_stream .box .associated_details {
 	margin-bottom: 0;
 }
+.compacted_subbox_stream.less_compact .box {
+	padding-top: 1.5em !important;
+	margin: 2em 0;
+}
+.compacted_subbox_stream.less_compact .box_inner>h3 {
+	font-size: 1.3em;
+	margin-bottom: 1em;
+}
 
 .category_sorter {
 }
@@ -2983,8 +3005,8 @@ div.ajax_loading, p.ajax_loading {
 
 div .post_buttons>*, div .buttons_group_faded>* {
 	{$BETA_CSS_PROPERTY,opacity: 0.25;} display: inline-block;/*Needed for IE8*/
-	{$BETA_CSS_PROPERTY,transition-property : opacity;}
-	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
+	{$BETA_CSS_PROPERTY,transition-property: opacity;}
+	{$BETA_CSS_PROPERTY,transition-duration: 0.5s;}
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
@@ -3663,6 +3685,10 @@ ul.buttons_group, ul.associated_links_block_group {
 
 .box___confirm_screen {
 	margin-bottom: 2em;
+}
+.box___confirm_screen img:not([width]):not([height]) {
+	max-width: 100%;
+	height: auto;
 }
 
 /*
@@ -4771,10 +4797,12 @@ a[rel="lightbox"] {
 	text-decoration: none; /* Stops "_" showing when we use white-space */
 }
 
-.attachment img {
+.attachment img, .attachment_img {
 	vertical-align: middle;
+}
+.attachment img:not([width]):not([height]), .attachment_img:not([width]):not([height]) {
 	max-width: 100%;
-	/*height: auto; Would always override HTML height - so we need to make sure that any width+height given in the HTML isn't too big and then max-width won't kick in and cause an inconsistency -- or not give width+height at all, in which case height will indeed auto-scale without needing height:auto here (although be aware that the media renderers will always auto-detect widths+heights as either thumbnail size or from source media)*/
+	height: auto;
 }
 
 .attachment figcaption {
@@ -4806,10 +4834,6 @@ a[rel="lightbox"] {
 .attachment_left .attachment, .attachment_right .attachment {
 	width: 200px;
 	white-space: normal;
-}
-
-.attachment_img {
-	max-width: 100%;
 }
 
 .media_set {
@@ -5095,8 +5119,8 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 
 .overlay .previous_button, .overlay .next_button {
 	{$BETA_CSS_PROPERTY,opacity: 0;}
-	{$BETA_CSS_PROPERTY,transition-property : opacity;}
-	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
+	{$BETA_CSS_PROPERTY,transition-property: opacity;}
+	{$BETA_CSS_PROPERTY,transition-duration: 0.5s;}
 }
 .overlay .previous_button:hover, .overlay .next_button:hover, .overlay.mousemove .previous_button, .overlay.mousemove .next_button, body.touch_enabled .overlay.mousemove .previous_button, body.touch_enabled .overlay.mousemove .next_button {
 	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;}

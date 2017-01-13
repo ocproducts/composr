@@ -211,7 +211,7 @@ class css_file_test_set extends cms_test_case
                             $num_matches = preg_match_all('#^\s*[^@\s].*[^%\s]\s*\{$#m', $contents, $matches); // Finds selectors. However NB: @ is media rules, % is keyframe rules, neither are selectors.
                             for ($i = 0; $i < $num_matches; $i++) {
                                 $matches2 = array();
-                                $num_matches2 = /*find class/ID words*/preg_match_all('#[\w\-\_]+#', /*strip quotes*/preg_replace('#"[^"]*"#', '', /*strip CSS syntax*/preg_replace('#[:@][\w\-\_]+#', '', $matches[0][$i])), $matches2);
+                                $num_matches2 = /*find class/ID words*/preg_match_all('#[\w\-]+#', /*strip quotes*/preg_replace('#"[^"]*"#', '', /*strip CSS syntax*/preg_replace('#[:@][\w\-]+#', '', $matches[0][$i])), $matches2);
                                 for ($j = 0; $j < $num_matches2; $j++) {
                                     if (!isset($selector_files[$f])) {
                                         $selector_files[$f] = array();
@@ -543,6 +543,7 @@ class css_file_test_set extends cms_test_case
             'progressName',
             'progressWrapper',
             'questionTable',
+            'less_compact',
         );
         if (in_array($class, $exceptions)) {
             return true;

@@ -3578,7 +3578,7 @@ function ecv2_DISPLAY_CONCEPT($lang, $escaped, $param)
     if (array_key_exists(0, $param)) {
         $key = $param[0];
         require_code('comcode_renderer');
-        $_key = 'concept__' . preg_replace('#[^\w_]#', '_', $key);
+        $_key = 'concept__' . preg_replace('#[^\w]#', '_', $key);
         $page_link = get_tutorial_link($_key);
         if (is_null($page_link)) {
             $temp_tpl = make_string_tempcode($key);

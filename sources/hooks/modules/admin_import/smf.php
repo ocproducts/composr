@@ -832,7 +832,7 @@ class Hook_smf
         $attachments_dir = $forum_dir . '/attachments/'; // Forum attachments directory
 
         // Start preparing the attachment file path by adding it's md5-ied filename and attachment id
-        $file_stripped = preg_replace(array('/\s/', '/[^\w_\.\-]/'), array('_', ''), $filename);
+        $file_stripped = preg_replace(array('/\s/', '/[^\w\.\-]/'), array('_', ''), $filename);
         $filename_fixed = ((strlen($attachment_id) > 0) ? ($attachment_id . '_' . str_replace('.', '_', $file_stripped) . md5($file_stripped)) : (str_replace('.', '_', $file_stripped) . md5($file_stripped)));
         $file_path = $attachments_dir . $filename_fixed;
 

@@ -798,7 +798,7 @@ function _generate_moniker($moniker_src)
     $max_moniker_length = intval(get_option('max_moniker_length'));
 
     // Transliteration first
-    if (get_charset() == 'utf-8') {
+    if ((get_charset() == 'utf-8') && (get_option('moniker_transliteration') == '1')) {
         if (function_exists('transliterator_transliterate')) {
             $_moniker = @transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $moniker);
             if (!empty($_moniker)) {
@@ -817,13 +817,13 @@ function _generate_moniker($moniker_src)
 
     // Then strip down / substitute to force it to be URL-ready
     $moniker = str_replace("'", '', $moniker);
-    $moniker = strtolower(preg_replace('#[^A-Za-z\d\-]#', '-', $moniker));
-    if (strlen($moniker) > $max_moniker_length) {
-        $pos = strrpos(substr($moniker, 0, $max_moniker_length), '-');
+    $moniker = cms_mb_strtolower(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '-', $moniker));
+    if (cms_mb_strlen($moniker) > $max_moniker_length) {
+        $pos = strrpos(cms_mb_substr($moniker, 0, $max_moniker_length), '-');
         if (($pos === false) || ($pos < 12)) {
             $pos = $max_moniker_length;
         }
-        $moniker = substr($moniker, 0, $pos);
+        $moniker = cms_mb_substr($moniker, 0, $pos);
     }
     $moniker = preg_replace('#\-+#', '-', $moniker);
     $moniker = rtrim($moniker, '-');

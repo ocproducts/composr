@@ -289,7 +289,7 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
     }
 
     // Check named site valid
-    if ((strlen($codename) < 3) || (cms_mb_strlen($codename) > 20) || (preg_match('#^[\w\d-]*$#', $codename) == 0)) {
+    if ((strlen($codename) < 3) || (cms_mb_strlen($codename) > 20) || (preg_match('#^[\w\-]*$#', $codename) == 0)) {
         warn_exit(do_lang_tempcode('CMS_BAD_NAME'));
     }
 

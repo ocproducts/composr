@@ -140,6 +140,8 @@ function string_scan($lang, $do_guessing = false)
         CORRUPT_CSS_MODE
         INSTALL_TEST_CONTENT
         DESCRIPTION_INSTALL_TEST_CONTENT
+        MONIKER_TRANSLITERATION
+        CONFIG_OPTION_moniker_transliteration
         BLOCKS_AT_TOP
         BLOCK_TOP_LOGIN
         BLOCK_TOP_NOTIFICATIONS

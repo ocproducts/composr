@@ -92,7 +92,10 @@ class config_test_set extends cms_test_case
             'order_in_category_group' => 'integer',
             'required' => 'boolean',
         );
+    }
 
+    public function testAddonCategorisationConsistency()
+    {
         $hooks = find_all_hooks('systems', 'config');
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/config/' . $hook);
@@ -117,6 +120,17 @@ class config_test_set extends cms_test_case
             if (!empty($details['theme_override'])) {
                 $this->assertTrue(in_array($details['type'], array('line', 'tick')), 'Invalid config input type for a theme-overridable option: ' . $setting);
             }
+
+            $path = get_file_base() . '/sources/hooks/systems/config/' . $hook . '.php';
+            if (!is_file($path)) {
+                $path = get_file_base() . '/sources_custom/hooks/systems/config/' . $hook . '.php';
+            }
+            $file_contents = file_get_contents($path);
+
+            $expected_addon = preg_replace('#^.*@package\s+(\w+).*$#s', '$1', $file_contents);
+            $this->assertTrue($details['addon'] == $expected_addon, 'Addon mismatch for ' . $hook);
+
+            $this->assertTrue($details['addon'] != 'core', 'Don\'t put config options in core, put them in core_configuration - ' . $hook);
         }
 
         require_code('files2');

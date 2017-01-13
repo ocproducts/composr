@@ -21,7 +21,7 @@ $download_page_url = $_download_page_url->evaluate();
 $_importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
 $importing_tutorial_url = $_importing_tutorial_url->evaluate();
 
-$featuretree = array(
+$feature_tree = array(
     // Ways to help (using same code, bit of a hack)
     'help' => array(
         'evangelism' => array(
@@ -303,7 +303,7 @@ $featuretree = array(
             ),
         ),
         'quizzes' => array(
-            'Quizzes <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Quiz" href="http://shareddemo.composr.info/site/index.php?page=quiz"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
+            'Quizzes <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Quizzes" href="http://shareddemo.composr.info/site/index.php?page=quiz"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Run a competition', 'Give members a chance to win'),
                 array('Surveys', 'Gather data and find trends'),
@@ -670,7 +670,7 @@ $featuretree = array(
 );
 
 $collapsed_tree = array();
-foreach ($featuretree as $t) {
+foreach ($feature_tree as $t) {
     $collapsed_tree += $t;
 }
 
@@ -680,7 +680,7 @@ $raw = (isset($map['raw'])) && ($map['raw'] == '1');
 if (!$raw) {
     echo '<div class="feature_columns float_surrounder_hidden">' . "\n";
 }
-foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => $column) {
+foreach (($map['param'] == '') ? array_keys($collapsed_tree) : explode(',', $map['param']) as $i => $column) {
     if (!$raw) {
         echo '<div class="column column' . strval($i) . '">';
     }

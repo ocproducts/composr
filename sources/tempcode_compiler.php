@@ -458,7 +458,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                     case PARSE_PARAMETER:
                         $parameter = str_replace('"', '', str_replace("'", '', $first_param));
-                        $parameter = preg_replace('#[^\w\_\d]#', '', $parameter); // security to stop PHP injection
+                        $parameter = preg_replace('#[^\w]#', '', $parameter); // security to stop PHP injection
                         if ($escaped === array(PURE_STRING)) {
                             $current_level_data[] = '$bound_' . php_addslashes($parameter);
                         } else {
@@ -641,7 +641,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '(isset($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ')?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '(isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ')?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'IF_NON_PASSED':
@@ -650,7 +650,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '(!isset($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ')?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '(!isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ')?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'IF_PASSED_AND_TRUE':
@@ -659,7 +659,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '((isset($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ') && (otp($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ')=="1"))?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '((isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ') && (otp($bound_' . preg_replace('#[^\w]#', '', $eval) . ')=="1"))?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'IF_NON_PASSED_OR_FALSE':
@@ -668,7 +668,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '((!isset($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ') || (otp($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ')=="0"))?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '((!isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ') || (otp($bound_' . preg_replace('#[^\w]#', '', $eval) . ')=="0"))?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'WHILE':

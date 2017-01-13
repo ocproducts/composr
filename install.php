@@ -72,6 +72,9 @@ if (!defined('ENT_SUBSTITUTE')) { // LEGACY
 define('HHVM', strpos(PHP_VERSION, 'hiphop') !== false);
 define('GOOGLE_APPENGINE', isset($_SERVER['APPLICATION_ID']));
 
+define('URL_CONTENT_REGEXP', '\w\-\x80-\xFF'); // PHP is done using ASCII (don't use the 'u' modifier). Note this doesn't include dots, this is intentional as they can cause problems in filenames
+define('URL_CONTENT_REGEXP_JS', '\w\-\u0080-\uFFFF'); // JavaScript is done using Unicode
+
 if (!array_key_exists('type', $_GET)) {
     if (count($_GET) == 0) {
         header('Content-type: text/html');
@@ -2958,13 +2961,21 @@ php_flag mail.add_x_header off
 
 # Suhosin can cause problems on configuration and Catalogue forms, which use a lot of fields
 php_value suhosin.post.max_vars "2000"
+php_value suhosin.get.max_vars "100"
 php_value suhosin.request.max_vars "2000"
-php_value suhosin.cookie.max_vars "400"
-php_value suhosin.cookie.max_name_length "150"
+php_value suhosin.cookie.max_vars "100"
 php_value suhosin.post.max_value_length "100000000"
+php_value suhosin.get.max_value_length "512"
 php_value suhosin.request.max_value_length "100000000"
-php_value suhosin.post.max_totalname_length "10000"
-php_value suhosin.request.max_totalname_length "10000"
+php_value suhosin.cookie.max_value_length "10000"
+php_value suhosin.post.max_name_length "64"
+php_value suhosin.get.max_name_length "64"
+php_value suhosin.request.max_name_length "64"
+php_value suhosin.cookie.max_name_length "64"
+php_value suhosin.post.max_totalname_length "256"
+php_value suhosin.get.max_totalname_length "256"
+php_value suhosin.request.max_totalname_length "256"
+php_value suhosin.cookie.max_totalname_length "256"
 php_flag suhosin.cookie.encrypt off
 php_flag suhosin.sql.union off
 php_flag suhosin.sql.comment off

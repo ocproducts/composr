@@ -952,7 +952,7 @@ class Module_admin_setupwizard
 
             // Make/set theme and logos
             if ($doing_themewizard) {
-                $new_theme_name = substr(preg_replace('#[^A-Za-z\d]#', '_', $name), 0, 40);
+                $new_theme_name = substr(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $name), 0, 40);
 
                 global $THEME_IMAGES_CACHE;
                 $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));

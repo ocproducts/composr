@@ -276,7 +276,7 @@ Here are some ideas of where to source ads from:
    - Amazon
  - Your own "advertise here" banner, directly attracting advertisers to contact you
 
-If you are using Google Adsense and don't see any banners, [url="http://yurko.net/blog/2010/03/website-related/white-space-instead-adsense-ads.html"]consider whether your account is set up correctly[/url].
+If you are using Google Adsense and don't see any banners, [url="http://www.pixelstech.net/article/1311612749-Why-there-is-white-blank-space-instead-of-AdSense-ad-on-my-website"]consider whether your account is set up correctly[/url].
 
 [title="2"]See also[/title]
 

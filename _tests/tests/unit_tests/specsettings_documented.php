@@ -37,7 +37,7 @@ class specsettings_documented_test_set extends cms_test_case
         $tempcode_tutorial = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/tut_tempcode.txt');
 
         $matches = array();
-        $num_matches = preg_match_all('#^\t\t\tcase \'([\w\_]+)\':#m', $symbols_file, $matches);
+        $num_matches = preg_match_all('#^\t\t\tcase \'(\w+)\':#m', $symbols_file, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             if ((strpos($symbols_file, $matches[0][$i]) < $directives_start_pos) && (strpos($symbols_file, $matches[0][$i] . ' // LEGACY') === false)) {
                 $symbol = $matches[1][$i];

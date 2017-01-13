@@ -84,9 +84,7 @@ function read_multi_code($param)
 function check_suhosin_request_quantity($inc = 1, $name_length = 0)
 {
     static $count = 0;
-    static $name_length_count = 0;
     $count += $inc;
-    $name_length_count += $name_length;
 
     static $failed_already = false;
     if ($failed_already) {
@@ -115,14 +113,14 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
     static $max_length_values = null;
     if ($max_length_values === null) {
         $max_length_values = array();
-        foreach (array('suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
+        foreach (array('suhosin.post.max_name_length', 'suhosin.request.max_name_length', 'suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
             if (is_numeric(ini_get($setting))) {
                 $max_length_values[$setting] = intval(ini_get($setting));
             }
         }
     }
     foreach ($max_length_values as $setting => $max_length_value) {
-        if ($max_length_value < $name_length_count) {
+        if ($max_length_value < $name_length) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
         }

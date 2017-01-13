@@ -45,7 +45,9 @@ foreach ($releases as $version => $release) {
 $title = get_screen_title('Themeing compatibility changes', false);
 $title->evaluate_echo();
 
-echo '<p>This auto-generated page shows default theme changes made between versions. You can also look at changes in
+echo '
+<p>
+    This auto-generated page shows default theme changes made between versions. You can also look at changes in
     <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => '_SELF', 'show_all' => 1), '_SELF'))) . '">all files</a>.
 </p>';
 
@@ -72,7 +74,7 @@ if (cms_srv('REQUEST_METHOD') == 'POST') { // From form
     $i = 0;
     foreach ($special_file_types as $label => $_search) {
         if (isset($_POST['file_selector_' . strval($i)])) {
-            $files_to_show = array_merge($_POST['file_selector_' . strval($i)]);
+            $files_to_show = array_merge($files_to_show, $_POST['file_selector_' . strval($i)]);
         }
         $i++;
     }
@@ -159,7 +161,7 @@ foreach ($special_file_types as $label => $_search) {
             $_file = basename($file, '.' . $search_ext);
         }
         $selected = in_array((($search_path == '') ? '' : ($search_path . '/')) . $file, $files_to_show);
-        echo '<option' . ($selected ? ' selected="selected"' : '') . ' value="' . escape_html((($search_path == '') ? '' : ($search_path . '/')) . $file) . '">' . escape_html($_file) . '</option>';
+        echo '<option' . ($selected ? ' selected="selected"' : '') . ' value="' . escape_html($version) . '">' . escape_html($version . ' (' . get_timezoned_date($release_details['add_date'], false) . ')') . '</option>';
     }
 
     echo '</select>';
@@ -174,10 +176,10 @@ echo '<label style="padding-bottom: 3px; display: block" for="releases">';
 echo '<abbr title="The selected releases will be compared. You can select as many as you want and diffs will be shown across each jump.">Compare points</abbr>:';
 echo '</label>';
 echo '<select name="releases[]" class="file_selector" size="8" multiple="multiple" style="width: 100%">';
-foreach (array_reverse(array_keys($releases)) as $version) {
+foreach (array_reverse($releases) as $version => $release_details) {
     $selected = in_array($version, $versions_interested_in);
 
-    echo '<option' . ($selected ? ' selected="selected"' : '') . '>' . escape_html($version) . '</option>';
+    echo '<option' . ($selected ? ' selected="selected"' : '') . '>' . escape_html($version . ' (' . get_timezoned_date($release_details['add_date'], false) . ')') . '</option>';
 }
 echo '</select>';
 echo '</div>';

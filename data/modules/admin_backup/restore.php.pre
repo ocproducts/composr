@@ -53,6 +53,9 @@ if (!defined('ENT_SUBSTITUTE')) { // LEGACY
 define('HHVM', strpos(PHP_VERSION, 'hiphop') !== false);
 define('GOOGLE_APPENGINE', isset($_SERVER['APPLICATION_ID']));
 
+define('URL_CONTENT_REGEXP', '\w\-\x80-\xFF'); // PHP is done using ASCII (don't use the 'u' modifier). Note this doesn't include dots, this is intentional as they can cause problems in filenames
+define('URL_CONTENT_REGEXP_JS', '\w\-\u0080-\uFFFF'); // JavaScript is done using Unicode
+
 $shl = @ini_get('suhosin.memory_limit');
 if (($shl === false) || ($shl == '') || ($shl == '0')) {
     safe_ini_set('memory_limit', '-1');

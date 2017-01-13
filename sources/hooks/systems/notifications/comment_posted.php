@@ -64,7 +64,7 @@ class Hook_notification_comment_posted extends Hook_Notification
         $num_done = 0;
         foreach ($categories as $i => $c) {
             $matches = array();
-            if (preg_match('#^([^\_]*)\_(.*)$#', preg_replace('#^catalogues__\w+_#', 'catalogues_', $c['id']), $matches) != 0) {
+            if (preg_match('#^([^\_]*)\_(.*)$#', preg_replace('#^catalogues__[' . URL_CONTENT_REGEXP . ']+_#', 'catalogues_', $c['id']), $matches) != 0) {
                 $details = get_details_behind_feedback_code($matches[1], $matches[2]);
                 $new_title = $details[0];
                 if ((!is_null($new_title)) && ($new_title != '')) {

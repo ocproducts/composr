@@ -670,7 +670,7 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
                 }
             } else {
                 if (!$dirs_only) {
-                    if ((preg_match('#^[\w\-]+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
+                    if ((preg_match('#^[' . URL_CONTENT_REGEXP . ']+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
                         $type_path = $type . (($type != '') ? '/' : '');
 
                         $dot_pos = strrpos($file, '.');
