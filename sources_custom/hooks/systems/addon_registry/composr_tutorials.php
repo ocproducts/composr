@@ -659,7 +659,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_configuration/menu_edit_link.png',
             'data_custom/images/docs/tut_configuration/menu_editor.png',
             'data_custom/images/docs/tut_configuration/reaching_adminzone.png',
-            'data_custom/images/docs/tut_configuration/setup_wizard.png',
+            'data_custom/images/docs/tut_configuration/setupwizard.png',
             'data_custom/images/docs/tut_correspondance/correspondance_create_pt_page.png',
             'data_custom/images/docs/tut_correspondance/correspondance_create_pt_page1.png',
             'data_custom/images/docs/tut_correspondance/correspondance_forum_notification_message.png',

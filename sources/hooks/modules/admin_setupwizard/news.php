@@ -52,12 +52,12 @@ class Hook_sw_news
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return Tempcode An input field.
+     * @return array A pair: Input fields, Hidden fields.
      */
     public function get_fields($field_defaults)
     {
         if (!addon_installed('news') || post_param_integer('addon_news', null) === 0) {
-            return new Tempcode();
+            return array(new Tempcode(), new Tempcode());
         }
 
         $current_settings = $this->get_current_settings();
@@ -72,7 +72,7 @@ class Hook_sw_news
             $fields->attach(form_input_tick(do_lang_tempcode('EXTENDED_NEWS_CATEGORIES_SET'), do_lang_tempcode('DESCRIPTION_KEEP_DEFAULT_NEWS_CATEGORIES'), 'keep_news_categories', $field_defaults['keep_news_categories'] == '1'));
         }
 
-        return $fields;
+        return array($fields, new Tempcode());
     }
 
     /**

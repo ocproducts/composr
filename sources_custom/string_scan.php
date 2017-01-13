@@ -113,6 +113,25 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        THEME_NOT_SUPPORTING_THEMEWIZARD
+        THEME_NOT_SUPPORTING_LOGOWIZARD
+        EQUATIONS_NOT_SUPPORTED
+        INSTALLPROFILE_WITH_THEME
+        SUPPORTS_WIDE
+        CONFIG_OPTION_supports_wide
+        MOBILE_PAGES
+        CONFIG_OPTION_mobile_pages
+        ZONE_EDITOR_ENABLED
+        CONFIG_OPTION_zone_editor_enabled
+        ENABLE_EDIT_PAGE_INCLUDE_BUTTONS
+        CONFIG_OPTION_enable_edit_page_include_buttons
+        ENABLE_EDIT_PAGE_PANEL_BUTTONS
+        CONFIG_OPTION_enable_edit_page_panel_buttons
+        ENABLE_MENU_EDITOR_BUTTONS
+        CONFIG_OPTION_enable_menu_editor_buttons
+        EMBEDDED_LINKS
+        ENABLE_EDIT_BANNER_BUTTONS
+        CONFIG_OPTION_enable_edit_banner_buttons
         CHAT_MESSAGE_DIRECTION
         CONFIG_OPTION_chat_message_direction
         CONFIG_OPTION_chat_message_direction_VALUE_upwards

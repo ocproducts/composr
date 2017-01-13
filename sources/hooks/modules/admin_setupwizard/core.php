@@ -48,24 +48,41 @@ class Hook_sw_core
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return Tempcode An input field.
+     * @return array A pair: Input fields, Hidden fields.
      */
     public function get_fields($field_defaults)
     {
         $fields = new Tempcode();
+        $hidden = new Tempcode();
 
         $field_defaults += $this->get_current_settings(); // $field_defaults will take precedence, due to how "+" operator works in PHP
 
-        $fields->attach(form_input_tick(do_lang_tempcode('SHOW_CONTENT_TAGGING'), do_lang_tempcode('CONFIG_OPTION_show_content_tagging'), 'show_content_tagging', $field_defaults['show_content_tagging'] == '1'));
-        $fields->attach(form_input_tick(do_lang_tempcode('SHOW_CONTENT_TAGGING_INLINE'), do_lang_tempcode('CONFIG_OPTION_show_content_tagging_inline'), 'show_content_tagging_inline', $field_defaults['show_content_tagging_inline'] == '1'));
-        $fields->attach(form_input_tick(do_lang_tempcode('SHOW_SCREEN_ACTIONS'), do_lang_tempcode('CONFIG_OPTION_show_screen_actions'), 'show_screen_actions', $field_defaults['show_screen_actions'] == '1'));
+        if (get_theme_option('setupwizard__lock_show_content_tagging', null, post_param_string('source_theme', 'default')) == '1') {
+            $fields->attach(form_input_tick(do_lang_tempcode('SHOW_CONTENT_TAGGING'), do_lang_tempcode('CONFIG_OPTION_show_content_tagging'), 'show_content_tagging', $field_defaults['show_content_tagging'] == '1'));
+        } else {
+            $hidden->attach(form_input_hidden('show_content_tagging', get_theme_option('show_content_tagging', null, post_param_string('source_theme', 'default'))));
+        }
+        if (get_theme_option('setupwizard__lock_show_content_tagging_inline', null, post_param_string('source_theme', 'default')) == '1') {
+            $fields->attach(form_input_tick(do_lang_tempcode('SHOW_CONTENT_TAGGING_INLINE'), do_lang_tempcode('CONFIG_OPTION_show_content_tagging_inline'), 'show_content_tagging_inline', $field_defaults['show_content_tagging_inline'] == '1'));
+        } else {
+            $hidden->attach(form_input_hidden('show_content_tagging_inline', get_theme_option('show_content_tagging_inline', null, post_param_string('source_theme', 'default'))));
+        }
+        if (get_theme_option('setupwizard__lock_show_screen_actions', null, post_param_string('source_theme', 'default')) == '1') {
+            $fields->attach(form_input_tick(do_lang_tempcode('SHOW_SCREEN_ACTIONS'), do_lang_tempcode('CONFIG_OPTION_show_screen_actions'), 'show_screen_actions', $field_defaults['show_screen_actions'] == '1'));
+        } else {
+            $hidden->attach(form_input_hidden('show_screen_actions', get_theme_option('show_screen_actions', null, post_param_string('source_theme', 'default'))));
+        }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1f8970c551c886532158e16596f9c9b8', 'TITLE' => do_lang_tempcode('STRUCTURE'), 'HELP' => do_lang_tempcode('SETUPWIZARD_5x_DESCRIBE'))));
 
-        $fields->attach(form_input_tick(do_lang_tempcode('COLLAPSE_USER_ZONES'), do_lang_tempcode('CONFIG_OPTION_collapse_user_zones'), 'collapse_user_zones', $field_defaults['collapse_user_zones'] == '1'));
+        if (get_theme_option('setupwizard__lock_collapse_user_zones', null, post_param_string('source_theme', 'default')) == '1') {
+            $fields->attach(form_input_tick(do_lang_tempcode('COLLAPSE_USER_ZONES'), do_lang_tempcode('CONFIG_OPTION_collapse_user_zones'), 'collapse_user_zones', $field_defaults['collapse_user_zones'] == '1'));
+        } else {
+            $hidden->attach(form_input_hidden('collapse_user_zones', get_theme_option('collapse_user_zones', null, post_param_string('source_theme', 'default'))));
+        }
         $fields->attach(form_input_tick(do_lang_tempcode('GUEST_ZONE_ACCESS'), do_lang_tempcode('DESCRIPTION_GUEST_ZONE_ACCESS'), 'guest_zone_access', $field_defaults['guest_zone_access'] == '1'));
 
-        return $fields;
+        return array($fields, new Tempcode());
     }
 
     /**

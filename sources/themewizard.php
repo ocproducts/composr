@@ -25,16 +25,16 @@
  */
 function init__themewizard()
 {
-    global $THEME_WIZARD_IMAGES_CACHE, $THEME_SEED_CACHE, $THEME_DARK_CACHE;
-    $THEME_WIZARD_IMAGES_CACHE = array();
+    global $THEMEWIZARD_IMAGES_CACHE, $THEME_SEED_CACHE, $THEME_DARK_CACHE;
+    $THEMEWIZARD_IMAGES_CACHE = array();
     $THEME_SEED_CACHE = array();
     $THEME_DARK_CACHE = array();
 
-    global $THEME_WIZARD_IMAGES, $THEME_WIZARD_IMAGES_NO_WILD;
-    $THEME_WIZARD_IMAGES = array();
-    $THEME_WIZARD_IMAGES_NO_WILD = array();
+    global $THEMEWIZARD_IMAGES, $THEMEWIZARD_IMAGES_NO_WILD;
+    $THEMEWIZARD_IMAGES = array();
+    $THEMEWIZARD_IMAGES_NO_WILD = array();
     if (function_exists('imagecreatefromgif')) {
-        $THEME_WIZARD_IMAGES[] = '';
+        $THEMEWIZARD_IMAGES[] = '';
     }
 
     $hooks = find_all_hooks('modules', 'admin_themewizard');
@@ -49,8 +49,8 @@ function init__themewizard()
             continue;
         }
         list($a, $b) = $results;
-        $THEME_WIZARD_IMAGES = array_merge($THEME_WIZARD_IMAGES, $a);
-        $THEME_WIZARD_IMAGES_NO_WILD = array_merge($THEME_WIZARD_IMAGES_NO_WILD, $b);
+        $THEMEWIZARD_IMAGES = array_merge($THEMEWIZARD_IMAGES, $a);
+        $THEMEWIZARD_IMAGES_NO_WILD = array_merge($THEMEWIZARD_IMAGES_NO_WILD, $b);
     }
 
     require_code('images');
@@ -64,15 +64,15 @@ function init__themewizard()
  */
 function load_themewizard_params_from_theme($theme, $guess_images_if_needed = false)
 {
-    global $THEME_WIZARD_IMAGES_CACHE;
-    if (isset($THEME_WIZARD_IMAGES_CACHE[$theme])) {
+    global $THEMEWIZARD_IMAGES_CACHE;
+    if (isset($THEMEWIZARD_IMAGES_CACHE[$theme])) {
         return;
     }
 
-    $theme_wizard_images = get_theme_option('theme_wizard_images');
-    $theme_wizard_images_no_wild = get_theme_option('theme_wizard_images_no_wild');
+    $themewizard_images = get_theme_option('themewizard_images');
+    $themewizard_images_no_wild = get_theme_option('themewizard_images_no_wild');
 
-    $autodetect_background_images = (($guess_images_if_needed) && (get_theme_option('theme_wizard_images', '') == ''));
+    $autodetect_background_images = (($guess_images_if_needed) && (get_theme_option('themewizard_images', '') == ''));
 
     if ($autodetect_background_images) {
         $dh = opendir(get_file_base() . '/themes/' . filter_naughty($theme) . (($theme == 'default') ? '/css/' : '/css_custom/'));
@@ -90,7 +90,7 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
                 $num_matches = preg_match_all('#\{\$IMG[;\#]?,([\w\_\-\d]+)\}#', $css_file, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     if ((preg_match('#' . preg_quote($matches[0][$i]) . '[\'"]?\)[^\n]*no-repeat#', $css_file) == 0) || (preg_match('#' . preg_quote($matches[0][$i]) . '[\'"]?\)[^\n]*width:\s*\d\d\d+px#', $css_file) != 0) || (preg_match('#width:\s*\d\d\d+px;[^\n]*' . preg_quote($matches[0][$i]) . '[\'"]?\)#', $css_file) != 0)) {
-                        $theme_wizard_images .= ',' . $matches[1][$i];
+                        $themewizard_images .= ',' . $matches[1][$i];
                     }
                 }
             }
@@ -100,15 +100,15 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
             $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', 'at');
             flock($myfile, LOCK_EX);
             fseek($myfile, 0, SEEK_END);
-            fwrite($myfile, 'theme_wizard_images=' . $theme_wizard_images . "\n");
+            fwrite($myfile, 'themewizard_images=' . $themewizard_images . "\n");
             flock($myfile, LOCK_UN);
             fclose($myfile);
         }
     }
 
-    global $THEME_WIZARD_IMAGES, $THEME_WIZARD_IMAGES_NO_WILD;
-    $THEME_WIZARD_IMAGES = explode(',', $theme_wizard_images);
-    $THEME_WIZARD_IMAGES_NO_WILD = explode(',', $theme_wizard_images_no_wild);
+    global $THEMEWIZARD_IMAGES, $THEMEWIZARD_IMAGES_NO_WILD;
+    $THEMEWIZARD_IMAGES = explode(',', $themewizard_images);
+    $THEMEWIZARD_IMAGES_NO_WILD = explode(',', $themewizard_images_no_wild);
 
     // Remove gifs if we do not support them
     if (!function_exists('imagecreatefromgif')) {
@@ -121,19 +121,19 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
             $img_codes_bak = $THEME_IMAGES_CACHE;
         }
         $new = array();
-        foreach ($THEME_WIZARD_IMAGES as $theme_image) {
+        foreach ($THEMEWIZARD_IMAGES as $theme_image) {
             if (substr(find_theme_image($theme_image, true, false, $theme), -4) != '.gif') {
                 $new[] = $theme_image;
             }
         }
-        $THEME_WIZARD_IMAGES = $new;
+        $THEMEWIZARD_IMAGES = $new;
         if ($temporary_default) {
             $_GET['keep_theme_seed'] = $tseed;
             $THEME_IMAGES_CACHE = $img_codes_bak;
         }
     }
 
-    $THEME_WIZARD_IMAGES_CACHE[$theme] = $THEME_WIZARD_IMAGES;
+    $THEMEWIZARD_IMAGES_CACHE[$theme] = $THEMEWIZARD_IMAGES;
 }
 
 /**
@@ -149,7 +149,7 @@ function find_theme_seed($theme)
         return $THEME_SEED_CACHE[$theme];
     }
 
-    $seed = get_theme_option('seed', '');
+    $seed = get_theme_option('seed', ($theme == 'default') ? null : '');
 
     if ($seed == '') {
         $css_path = get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css';
@@ -218,7 +218,13 @@ function find_theme_dark($theme)
  */
 function find_theme_image_themewizard_preview($id, $silent_fail = false)
 {
-    load_themewizard_params_from_theme(get_param_string('keep_theme_source', 'default'), get_param_string('keep_theme_algorithm', 'equations') == 'hsv');
+    $source_theme = get_param_string('keep_theme_source', 'default');
+    $algorithm = get_param_string('keep_theme_algorithm', 'equations');
+    if (get_theme_option('supports_themewizard_equations', null, $source_theme) == '0') {
+        $algorithm = 'hsv';
+    }
+
+    load_themewizard_params_from_theme($source_theme, $algorithm == 'hsv');
 
     $seed = get_param_string('keep_theme_seed');
     if ($seed == 'random') {
@@ -235,9 +241,9 @@ function find_theme_image_themewizard_preview($id, $silent_fail = false)
         return null;
     }
 
-    global $THEME_WIZARD_IMAGES, $THEME_WIZARD_IMAGES_NO_WILD;
-    if (!in_array($id, $THEME_WIZARD_IMAGES_NO_WILD)) {
-        foreach ($THEME_WIZARD_IMAGES as $expression) {
+    global $THEMEWIZARD_IMAGES, $THEMEWIZARD_IMAGES_NO_WILD;
+    if (!in_array($id, $THEMEWIZARD_IMAGES_NO_WILD)) {
+        foreach ($THEMEWIZARD_IMAGES as $expression) {
             if (($expression == $id) || ((substr($expression, -1) == '*') && (substr($id, 0, strlen($expression) - 1) . '*' == $expression))) {
                 $keep = keep_symbol(array());
                 return find_script('themewizard') . '?type=image&show=' . rawurlencode($id) . $keep;
@@ -359,7 +365,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         $css_file = file_get_contents(get_file_base() . '/themes/default/css/global.css');
     }
     $matches = array();
-    if (preg_match('#\{\$THEME_WIZARD_COLOR,\#([a-f0-9][a-f0-9])([a-f0-9][a-f0-9])([a-f0-9][a-f0-9]),box_title_background,#i', $css_file, $matches) != 0) {
+    if (preg_match('#\{\$THEMEWIZARD_COLOR,\#([a-f0-9][a-f0-9])([a-f0-9][a-f0-9])([a-f0-9][a-f0-9]),box_title_background,#i', $css_file, $matches) != 0) {
         $text_colour = imagecolorallocate($canvas, hexdec($matches[1]), hexdec($matches[2]), hexdec($matches[3]));
     } else {
         $text_colour = $white;
@@ -437,6 +443,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
 {
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
+    require_code('themes3');
+
     load_themewizard_params_from_theme($source_theme, $algorithm == 'hsv');
 
     if (file_exists(get_custom_file_base() . '/themes/' . $theme_name)) {
@@ -447,7 +455,6 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
         if ($source_theme == 'default') {
             actual_add_theme($theme_name);
         } else {
-            require_code('themes3');
             actual_copy_theme($source_theme, $theme_name);
         }
         $extending_existing = false;
@@ -457,11 +464,11 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
         list($colours, $landscape) = calculate_theme($seed, $source_theme, $algorithm, 'colours', $dark);
 
         // Make images
-        global $THEME_WIZARD_IMAGES, $THEME_WIZARD_IMAGES_NO_WILD, $THEME_IMAGES_CACHE;
+        global $THEMEWIZARD_IMAGES, $THEMEWIZARD_IMAGES_NO_WILD, $THEME_IMAGES_CACHE;
         if (function_exists('imagecolorallocatealpha')) {
             require_code('themes2');
             $full_img_set = array();
-            foreach ($THEME_WIZARD_IMAGES as $expression) {
+            foreach ($THEMEWIZARD_IMAGES as $expression) {
                 if (substr($expression, -1) == '*') {
                     $expression = substr($expression, 0, strlen($expression) - 2); // remove "/*"
                     $full_img_set = array_merge($full_img_set, array_keys(get_all_image_codes(get_file_base() . '/themes/' . filter_naughty($source_theme) . '/images', $expression)));
@@ -480,7 +487,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
             $_langs = find_all_langs(true);
 
             foreach ($full_img_set as $image_code) {
-                if (!in_array($image_code, $THEME_WIZARD_IMAGES_NO_WILD)) {
+                if (!in_array($image_code, $THEMEWIZARD_IMAGES_NO_WILD)) {
                     if (($extending_existing) && (array_key_exists($image_code, $temp_all_ids)) && (strpos($temp_all_ids[$image_code], $theme_name . '/images_custom/') !== false) && ((!url_is_local($temp_all_ids[$image_code])) || (file_exists(get_custom_file_base() . '/' . $temp_all_ids[$image_code])))) {
                         continue;
                     }
@@ -544,7 +551,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                     if ($inherit_css) {
                         $output = '{+START,CSS_INHERIT,' . basename($sheet, '.css') . ',' . filter_naughty($source_theme) . ',' . $seed . ',' . ($dark ? '1' : '0') . ',' . $algorithm . '}{+END}';
                     } else {
-                        $output = theme_wizard_colours_to_sheet($sheet, $landscape, $source_theme, $algorithm, $seed);
+                        $output = themewizard_colours_to_sheet($sheet, $landscape, $source_theme, $algorithm, $seed);
                     }
                     $default_version_path = get_file_base() . '/themes/default/css/' . $sheet;
                     if (is_file($default_version_path)) {
@@ -574,7 +581,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
 
     // Use it, if requested
     if ($use) {
-        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($theme_name) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
+        set_live_theme($theme_name);
 
         require_code('permissions2');
         set_global_category_access('theme', $theme_name);
@@ -591,6 +598,9 @@ function themewizard_script()
     $type = get_param_string('type');
     $source_theme = get_param_string('keep_theme_source', 'default');
     $algorithm = get_param_string('keep_theme_algorithm', 'equations');
+    if (get_theme_option('supports_themewizard_equations', null, $source_theme) == '0') {
+        $algorithm = 'hsv';
+    }
     $show = get_param_string('show');
     $seed = get_param_string('keep_theme_seed');
     if ($seed == 'kiddie') {
@@ -607,12 +617,12 @@ function themewizard_script()
         safe_ini_set('ocproducts.xss_detect', '0');
         require_code('tempcode_compiler');
         list($colours, $landscape) = calculate_theme($seed, $source_theme, $algorithm, 'colours', $dark);
-        if ($show != 'global.css') { // We need to make sure the global.css file is parsed, as it contains some shared THEME_WIZARD_COLOR variables that Tempcode will pick up on
-            $css = theme_wizard_colours_to_sheet('global.css', $landscape, $source_theme, $algorithm, $seed);
+        if ($show != 'global.css') { // We need to make sure the global.css file is parsed, as it contains some shared THEMEWIZARD_COLOR variables that Tempcode will pick up on
+            $css = themewizard_colours_to_sheet('global.css', $landscape, $source_theme, $algorithm, $seed);
             $tpl = template_to_tempcode($css);
             $tpl->evaluate();
         }
-        $css = theme_wizard_colours_to_sheet($show, $landscape, $source_theme, $algorithm, $seed);
+        $css = themewizard_colours_to_sheet($show, $landscape, $source_theme, $algorithm, $seed);
         header('Content-type: text/css');
         if ($type == 'css') {
             $tpl = template_to_tempcode($css);
@@ -658,6 +668,10 @@ function themewizard_script()
  */
 function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $dark = null, $colours = null, $landscape = null, $lang = null)
 {
+    if (get_theme_option('supports_themewizard_equations', null, $source_theme) == '0') {
+        $algorithm = 'hsv';
+    }
+
     if ($seed[0] == '#') {
         $seed = substr($seed, 1);
     }
@@ -844,7 +858,7 @@ function calculate_dynamic_css_colours($colours, $source_theme)
             $contents = unixify_line_format(file_get_contents($path));
 
             $matches = array();
-            $num_matches = preg_match_all('#\{\$THEME_WIZARD_COLOR,(.*),(.*),(.*)\}#', $contents, $matches);
+            $num_matches = preg_match_all('#\{\$THEMEWIZARD_COLOR,(.*),(.*),(.*)\}#', $contents, $matches);
 
             for ($i = 0; $i < $num_matches; $i++) {
                 // Skip over our little stored hints (not intended for calculation, comes with new seed)
@@ -1284,7 +1298,7 @@ function hsv_to_rgb($h, $s, $v)
  * @param  ID_TEXT $seed The seed colour
  * @return string The sheet
  */
-function theme_wizard_colours_to_sheet($sheet, $landscape, $source_theme, $algorithm, $seed)
+function themewizard_colours_to_sheet($sheet, $landscape, $source_theme, $algorithm, $seed)
 {
     $theme = filter_naughty($source_theme);
 
@@ -1304,7 +1318,7 @@ function theme_wizard_colours_to_sheet($sheet, $landscape, $source_theme, $algor
 
     $contents = unixify_line_format(file_get_contents($path));
 
-    return theme_wizard_colours_to_css($contents, $landscape, $source_theme, $algorithm, $seed);
+    return themewizard_colours_to_css($contents, $landscape, $source_theme, $algorithm, $seed);
 }
 
 /**
@@ -1318,7 +1332,7 @@ function theme_wizard_colours_to_sheet($sheet, $landscape, $source_theme, $algor
  * @param  ID_TEXT $seed The seed colour
  * @return string The sheet
  */
-function theme_wizard_colours_to_css($contents, $landscape, $source_theme, $algorithm, $seed)
+function themewizard_colours_to_css($contents, $landscape, $source_theme, $algorithm, $seed)
 {
     if ($algorithm == 'hsv') {
         list($composr_h, $composr_s, $composr_v) = rgb_to_hsv(find_theme_seed($source_theme));
@@ -1340,11 +1354,11 @@ function theme_wizard_colours_to_css($contents, $landscape, $source_theme, $algo
     foreach ($landscape as $peak) {
         if (!is_null($peak[2])) {
             $from = $peak[2];
-            $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
+            $to = preg_replace('#\{\$THEMEWIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEMEWIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
             $contents = str_ireplace($from, $to, $contents);
         } else {
-            $to = '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',' . $peak[0] . ',100% ' . $peak[3] . '}';
-            $contents = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},' . $peak[0] . ',100% [\da-fA-F]{6}\}#i', $to, $contents);
+            $to = '{$THEMEWIZARD_COLOR,#' . $peak[3] . ',' . $peak[0] . ',100% ' . $peak[3] . '}';
+            $contents = preg_replace('#\{\$THEMEWIZARD_COLOR,\#[\da-fA-F]{6},' . $peak[0] . ',100% [\da-fA-F]{6}\}#i', $to, $contents);
         }
     }
 

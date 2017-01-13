@@ -53,151 +53,151 @@ In mobile mode:
 */
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
-{$THEME_WIZARD_COLOR,#94979d,seed,100% 426aa9}
-{$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#000000,BW,100% 000000}
+{$THEMEWIZARD_COLOR,#94979d,seed,100% 426aa9}
+{$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 426aa9*/
 
 /* The fundamental website */
-{$THEME_WIZARD_COLOR,#e3eaf6,fixed_width_background,11% (seed sat_to 100) + 89% WB}
-{$THEME_WIZARD_COLOR,#8ba4ca,fixed_width_border,61% seed + 39% WB}
-{$THEME_WIZARD_COLOR,#ffffff,main_background,100% WB}
-{$THEME_WIZARD_COLOR,#ebebeb,main_2_background,92% WB + 8% BW}
+{$THEMEWIZARD_COLOR,#e3eaf6,fixed_width_background,11% (seed sat_to 100) + 89% WB}
+{$THEMEWIZARD_COLOR,#8ba4ca,fixed_width_border,61% seed + 39% WB}
+{$THEMEWIZARD_COLOR,#ffffff,main_background,100% WB}
+{$THEMEWIZARD_COLOR,#ebebeb,main_2_background,92% WB + 8% BW}
 
 /* Colours to mirror UI conventions (i.e. non-thematic) */
-{$THEME_WIZARD_COLOR,#000000,native_ui_foreground,100% 000000}
-{$THEME_WIZARD_COLOR,#ffffff,native_ui_background,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#feffcb,native_ui_active_background,100% FEFFCB}
-{$THEME_WIZARD_COLOR,#316AC5,native_ui_selected_background,100% 316AC5}
-{$THEME_WIZARD_COLOR,#ffffff,native_ui_selected_foreground,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#ffffff,native_ui_button_foreground,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#ff0000,native_ui_alertfield_background,100% FF0000}
-{$THEME_WIZARD_COLOR,#ffffff,native_ui_alertfield_foreground,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#A9A9A9,unfilled_input_text,100% A9A9A9}
-{$THEME_WIZARD_COLOR,#888888,locked_input_field,100% 888888}
-{$THEME_WIZARD_COLOR,#3d434c,comfortable_input_field_text,20% WB + 65% BW + 15% seed}
-{$THEME_WIZARD_COLOR,#b5b5b5,tab_border,100% b5b5b5}
-{$THEME_WIZARD_COLOR,#008000,adwords_style_text,100% 008000} /* Google adwords style */
-{$THEME_WIZARD_COLOR,#ffffff,floating_section_background,100% WB}
-{$THEME_WIZARD_COLOR,#fffcc4,floating_alert_background,100% fffcc4}
+{$THEMEWIZARD_COLOR,#000000,native_ui_foreground,100% 000000}
+{$THEMEWIZARD_COLOR,#ffffff,native_ui_background,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#feffcb,native_ui_active_background,100% FEFFCB}
+{$THEMEWIZARD_COLOR,#316AC5,native_ui_selected_background,100% 316AC5}
+{$THEMEWIZARD_COLOR,#ffffff,native_ui_selected_foreground,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#ffffff,native_ui_button_foreground,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#ff0000,native_ui_alertfield_background,100% FF0000}
+{$THEMEWIZARD_COLOR,#ffffff,native_ui_alertfield_foreground,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#A9A9A9,unfilled_input_text,100% A9A9A9}
+{$THEMEWIZARD_COLOR,#888888,locked_input_field,100% 888888}
+{$THEMEWIZARD_COLOR,#3d434c,comfortable_input_field_text,20% WB + 65% BW + 15% seed}
+{$THEMEWIZARD_COLOR,#b5b5b5,tab_border,100% b5b5b5}
+{$THEMEWIZARD_COLOR,#008000,adwords_style_text,100% 008000} /* Google adwords style */
+{$THEMEWIZARD_COLOR,#ffffff,floating_section_background,100% WB}
+{$THEMEWIZARD_COLOR,#fffcc4,floating_alert_background,100% fffcc4}
 
 /* Colours to mirror human understandings (i.e. non-thematic) */
-{$THEME_WIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
-{$THEME_WIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
-{$THEME_WIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
-{$THEME_WIZARD_COLOR,#ff8888,light_error_border,100% FF8888}
-{$THEME_WIZARD_COLOR,#fff2f2,light_error_background,95% WB + 5% FF0000}
-{$THEME_WIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}
-{$THEME_WIZARD_COLOR,#009900,green_highlight_text,100% 009900}
-{$THEME_WIZARD_COLOR,#ede2e4,required_background,60% (area_4_background hue_to 0) + 40% area_background}
-{$THEME_WIZARD_COLOR,#ebe6eb,required_2_background,40% (area_4_background hue_to 0) + 60% area_background}
-{$THEME_WIZARD_COLOR,#000000,dark_shadow,100% BW}
+{$THEMEWIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
+{$THEMEWIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
+{$THEMEWIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
+{$THEMEWIZARD_COLOR,#ff8888,light_error_border,100% FF8888}
+{$THEMEWIZARD_COLOR,#fff2f2,light_error_background,95% WB + 5% FF0000}
+{$THEMEWIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}
+{$THEMEWIZARD_COLOR,#009900,green_highlight_text,100% 009900}
+{$THEMEWIZARD_COLOR,#ede2e4,required_background,60% (area_4_background hue_to 0) + 40% area_background}
+{$THEMEWIZARD_COLOR,#ebe6eb,required_2_background,40% (area_4_background hue_to 0) + 60% area_background}
+{$THEMEWIZARD_COLOR,#000000,dark_shadow,100% BW}
 
 /* For standard elements */
-{$THEME_WIZARD_COLOR,#325180,heading_text,76% seed + 24% BW}
-{$THEME_WIZARD_COLOR,#051225,a.hover,30% a.link + 70% BW}
-{$THEME_WIZARD_COLOR,#113871,a.visited,67% (seed sat_to 85) + 33% BW}
-{$THEME_WIZARD_COLOR,#123d7b,a.link,73% (seed sat_to 85) + 27% BW}
-{$THEME_WIZARD_COLOR,#bdcbe1,th_secondary_text,35% seed + 65% WB}
-{$THEME_WIZARD_COLOR,#a2b6d5,hr,60% area_background + 40% seed}
-{$THEME_WIZARD_COLOR,#325180,divider_line,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#325180,heading_text,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#051225,a.hover,30% a.link + 70% BW}
+{$THEMEWIZARD_COLOR,#113871,a.visited,67% (seed sat_to 85) + 33% BW}
+{$THEMEWIZARD_COLOR,#123d7b,a.link,73% (seed sat_to 85) + 27% BW}
+{$THEMEWIZARD_COLOR,#bdcbe1,th_secondary_text,35% seed + 65% WB}
+{$THEMEWIZARD_COLOR,#a2b6d5,hr,60% area_background + 40% seed}
+{$THEMEWIZARD_COLOR,#325180,divider_line,76% seed + 24% BW}
 
 /* Borders */
-{$THEME_WIZARD_COLOR,#6b81a1,standard_border,95% (seed sat_to 33) + 5% BW}
-{$THEME_WIZARD_COLOR,#4b5a71,dark_border,70% standard_border + 30% BW}
-{$THEME_WIZARD_COLOR,#c1cee3,pale_border,33% seed + 67% WB}
-{$THEME_WIZARD_COLOR,#8497b3,point_of_interest_border,50% dark_border + 50% WB}
+{$THEMEWIZARD_COLOR,#6b81a1,standard_border,95% (seed sat_to 33) + 5% BW}
+{$THEMEWIZARD_COLOR,#4b5a71,dark_border,70% standard_border + 30% BW}
+{$THEMEWIZARD_COLOR,#c1cee3,pale_border,33% seed + 67% WB}
+{$THEMEWIZARD_COLOR,#8497b3,point_of_interest_border,50% dark_border + 50% WB}
 
 /* Backgrounds (quiet a variety, as we need to be able to stack them, to have both hover and active effects, to have zebra striping, and various other levels of perceived focus) */
-{$THEME_WIZARD_COLOR,#eaeff6,area_background,11% seed + 89% WB}
-{$THEME_WIZARD_COLOR,#e3e9f2,area_2_background,15% seed + 85% WB}
-{$THEME_WIZARD_COLOR,#eef2f7,area_3_background,60% area_2_background + 40% WB}
-{$THEME_WIZARD_COLOR,#d9e1ee,area_4_background,20% seed + 80% WB}
-{$THEME_WIZARD_COLOR,#f4f4f4,area_5_background,3% seed + 97% WB}
-{$THEME_WIZARD_COLOR,#8daede,area_6_background,65% (seed val_to 80) + 35% WB}
-{$THEME_WIZARD_COLOR,#f2f5f9,area_faded_background,80% area_background + 20% WB}
-{$THEME_WIZARD_COLOR,#d9e1ee,area_zebra_background,20% seed + 80% WB}
-{$THEME_WIZARD_COLOR,#e6d8df,area_hover_background,92% (area_background hue_to 92) + 8% BW}
-{$THEME_WIZARD_COLOR,#c2d1e5,area_hover_2_background,20% seed + 80% WB}
-{$THEME_WIZARD_COLOR,#d9e1ee,area_current_background,93% (area_background sat_to 15) + 7% BW}
-{$THEME_WIZARD_COLOR,#dce2eb,point_of_interest_background,97% area_2_background + 2% BW}
-{$THEME_WIZARD_COLOR,#6b81a1,footer_background,95% (seed sat_to 33) + 5% BW}
-{$THEME_WIZARD_COLOR,#607490,footer_2_background,85% (seed sat_to 33) + 15% BW}
+{$THEMEWIZARD_COLOR,#eaeff6,area_background,11% seed + 89% WB}
+{$THEMEWIZARD_COLOR,#e3e9f2,area_2_background,15% seed + 85% WB}
+{$THEMEWIZARD_COLOR,#eef2f7,area_3_background,60% area_2_background + 40% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,area_4_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#f4f4f4,area_5_background,3% seed + 97% WB}
+{$THEMEWIZARD_COLOR,#8daede,area_6_background,65% (seed val_to 80) + 35% WB}
+{$THEMEWIZARD_COLOR,#f2f5f9,area_faded_background,80% area_background + 20% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,area_zebra_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#e6d8df,area_hover_background,92% (area_background hue_to 92) + 8% BW}
+{$THEMEWIZARD_COLOR,#c2d1e5,area_hover_2_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,area_current_background,93% (area_background sat_to 15) + 7% BW}
+{$THEMEWIZARD_COLOR,#dce2eb,point_of_interest_background,97% area_2_background + 2% BW}
+{$THEMEWIZARD_COLOR,#6b81a1,footer_background,95% (seed sat_to 33) + 5% BW}
+{$THEMEWIZARD_COLOR,#607490,footer_2_background,85% (seed sat_to 33) + 15% BW}
 /* Backgrounds, employing color wheel theory */
-{$THEME_WIZARD_COLOR,#d9e1ee,area_highlight_background,20% seed + 80% WB}
-{$THEME_WIZARD_COLOR,#d9ecee,area_highlight_left_complement_background,20% (seed hue_add -21) + 80% WB}
-{$THEME_WIZARD_COLOR,#dbd9ee,area_highlight_right_complement_background,20% (seed hue_add +21) + 80% WB}
-{$THEME_WIZARD_COLOR,#eee6d9,area_highlight_complement_background,20% (seed hue_add 128) + 80% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,area_highlight_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#d9ecee,area_highlight_left_complement_background,20% (seed hue_add -21) + 80% WB}
+{$THEMEWIZARD_COLOR,#dbd9ee,area_highlight_right_complement_background,20% (seed hue_add +21) + 80% WB}
+{$THEMEWIZARD_COLOR,#eee6d9,area_highlight_complement_background,20% (seed hue_add 128) + 80% WB}
 
 /* Text */
-{$THEME_WIZARD_COLOR,#0d1522,slightly_seeded_text,20% seed + 80% BW}
-{$THEME_WIZARD_COLOR,#3d434c,slightly_seeded_gray_text,20% WB + 65% BW + 15% seed}
-{$THEME_WIZARD_COLOR,#325180,area_text,76% seed + 24% BW}
-{$THEME_WIZARD_COLOR,#2a3d5a,area_key_text,53% (seed sat_to 53) + 47% BW}
-{$THEME_WIZARD_COLOR,#0d2d5d,area_link,55% (seed sat_to 86) + 45% BW}
-{$THEME_WIZARD_COLOR,#0a1019,area_2_link,15% seed + 85% BW}
-{$THEME_WIZARD_COLOR,#1a2a44,area_2_link_hover,40% seed + 60% BW}
+{$THEMEWIZARD_COLOR,#0d1522,slightly_seeded_text,20% seed + 80% BW}
+{$THEMEWIZARD_COLOR,#3d434c,slightly_seeded_gray_text,20% WB + 65% BW + 15% seed}
+{$THEMEWIZARD_COLOR,#325180,area_text,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#2a3d5a,area_key_text,53% (seed sat_to 53) + 47% BW}
+{$THEMEWIZARD_COLOR,#0d2d5d,area_link,55% (seed sat_to 86) + 45% BW}
+{$THEMEWIZARD_COLOR,#0a1019,area_2_link,15% seed + 85% BW}
+{$THEMEWIZARD_COLOR,#1a2a44,area_2_link_hover,40% seed + 60% BW}
 /* Text, employing color wheel theory */
-{$THEME_WIZARD_COLOR,#214f55,slightly_seeded_left_complement_text,50% (seed hue_add -21) + 50% BW}
-{$THEME_WIZARD_COLOR,#262155,slightly_seeded_right_complement_text,50% (seed hue_add +21) + 50% BW}
-{$THEME_WIZARD_COLOR,#554121,slightly_seeded_complement_text,50% (seed hue_add 128) + 50% BW}
+{$THEMEWIZARD_COLOR,#214f55,slightly_seeded_left_complement_text,50% (seed hue_add -21) + 50% BW}
+{$THEMEWIZARD_COLOR,#262155,slightly_seeded_right_complement_text,50% (seed hue_add +21) + 50% BW}
+{$THEMEWIZARD_COLOR,#554121,slightly_seeded_complement_text,50% (seed hue_add 128) + 50% BW}
 
 /* Special colour for box titles */
-{$THEME_WIZARD_COLOR,#ffffff,box_title_text,100% WB}
-{$THEME_WIZARD_COLOR,#cccccc,box_title_text_hover,80% WB + 20% BW}
-{$THEME_WIZARD_COLOR,#426aa9,box_title_background,100% seed}
-{$THEME_WIZARD_COLOR,#7f9ac5,box_title_background_2,68% seed + 32% WB}
+{$THEMEWIZARD_COLOR,#ffffff,box_title_text,100% WB}
+{$THEMEWIZARD_COLOR,#cccccc,box_title_text_hover,80% WB + 20% BW}
+{$THEMEWIZARD_COLOR,#426aa9,box_title_background,100% seed}
+{$THEMEWIZARD_COLOR,#7f9ac5,box_title_background_2,68% seed + 32% WB}
 
 /* Special colour for code/quote boxes */
-{$THEME_WIZARD_COLOR,#8ea6cb,code_title_background,60% seed + 40% WB}
-{$THEME_WIZARD_COLOR,#3f3f3f,code_text,25% code_background + 85% BW}
-{$THEME_WIZARD_COLOR,#fafbfd,code_background,25% area_background + 75% WB}
-{$THEME_WIZARD_COLOR,#7f9ac5,code_border,68% seed + 32% WB}
+{$THEMEWIZARD_COLOR,#8ea6cb,code_title_background,60% seed + 40% WB}
+{$THEMEWIZARD_COLOR,#3f3f3f,code_text,25% code_background + 85% BW}
+{$THEMEWIZARD_COLOR,#fafbfd,code_background,25% area_background + 75% WB}
+{$THEMEWIZARD_COLOR,#7f9ac5,code_border,68% seed + 32% WB}
 
 /* Drop down menus should look 'above' the site */
-{$THEME_WIZARD_COLOR,#c1cee3,dropdown_menu_background,33% seed + 67% WB}
-{$THEME_WIZARD_COLOR,#d9e1ee,dropdown_menu_text,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#c1cee3,dropdown_menu_background,33% seed + 67% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,dropdown_menu_text,20% seed + 80% WB}
 
 /* Global-level messages should stand out compared to other styling */
-{$THEME_WIZARD_COLOR,#ebe773,message_border,100% EBE773} /* Intentionally coloured on all themes */
-{$THEME_WIZARD_COLOR,#c4cdd9,message_highlighted_part,40% standard_border + 60% WB}
+{$THEMEWIZARD_COLOR,#ebe773,message_border,100% EBE773} /* Intentionally coloured on all themes */
+{$THEMEWIZARD_COLOR,#c4cdd9,message_highlighted_part,40% standard_border + 60% WB}
 
 /* Footer */
-{$THEME_WIZARD_COLOR,#8ba4ca,footer_tinting,61% seed + 39% WB}
-{$THEME_WIZARD_COLOR,#ffffff,footer_text,100% WB}
-{$THEME_WIZARD_COLOR,#dbe6f7,inverted_text,35% footer_tinting + 65% WB}
+{$THEMEWIZARD_COLOR,#8ba4ca,footer_tinting,61% seed + 39% WB}
+{$THEMEWIZARD_COLOR,#ffffff,footer_text,100% WB}
+{$THEMEWIZARD_COLOR,#dbe6f7,inverted_text,35% footer_tinting + 65% WB}
 
 /* Used for image generation */
-{$THEME_WIZARD_COLOR,#e8edf6,washed_out,10% (seed sat_to 85) + 90% WB}
-{$THEME_WIZARD_COLOR,#5a85c5,lgrad,67% (seed sat_to 95) + 33% FFFFFF} /* We always want the light source coming from the top */
-{$THEME_WIZARD_COLOR,#345495,dgrad,95% (seed sat_to 65) + 5% 000000} /* We always want the light source coming from the top */
-{$THEME_WIZARD_COLOR,#5477bd,ltgrad,67% (seed sat_to 135) + 33% FFFFFF}  /* We always want the light source coming from the top */
-{$THEME_WIZARD_COLOR,#707c95,dtgrad,95% (seed sat_to 25) + 5% 000000} /* We always want the shadows at the bottom */
-{$THEME_WIZARD_COLOR,#e1e2e3,comcode_quote_left,48% comcode_quote_right + 52% WB}
-{$THEME_WIZARD_COLOR,#bfc1c4,comcode_quote_right,100% code_title_background}
-{$THEME_WIZARD_COLOR,#0e2a63,a.link__dark,63% (seed sat_to 85) + 37% BW}
-{$THEME_WIZARD_COLOR,#030a17,a.hover__dark,20% a.link + 80% BW}
-{$THEME_WIZARD_COLOR,#707377,special_borderer,76% seed + 24% BW}
-{$THEME_WIZARD_COLOR,#0a1e47,special_middle,45% (seed sat_to 85) + 65% BW}
-{$THEME_WIZARD_COLOR,#597bbf,cnspostindicator,65% (seed sat_to 100) + 35% WB}
-{$THEME_WIZARD_COLOR,#597bf7,cnsredirectindicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
+{$THEMEWIZARD_COLOR,#e8edf6,washed_out,10% (seed sat_to 85) + 90% WB}
+{$THEMEWIZARD_COLOR,#5a85c5,lgrad,67% (seed sat_to 95) + 33% FFFFFF} /* We always want the light source coming from the top */
+{$THEMEWIZARD_COLOR,#345495,dgrad,95% (seed sat_to 65) + 5% 000000} /* We always want the light source coming from the top */
+{$THEMEWIZARD_COLOR,#5477bd,ltgrad,67% (seed sat_to 135) + 33% FFFFFF}  /* We always want the light source coming from the top */
+{$THEMEWIZARD_COLOR,#707c95,dtgrad,95% (seed sat_to 25) + 5% 000000} /* We always want the shadows at the bottom */
+{$THEMEWIZARD_COLOR,#e1e2e3,comcode_quote_left,48% comcode_quote_right + 52% WB}
+{$THEMEWIZARD_COLOR,#bfc1c4,comcode_quote_right,100% code_title_background}
+{$THEMEWIZARD_COLOR,#0e2a63,a.link__dark,63% (seed sat_to 85) + 37% BW}
+{$THEMEWIZARD_COLOR,#030a17,a.hover__dark,20% a.link + 80% BW}
+{$THEMEWIZARD_COLOR,#707377,special_borderer,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#0a1e47,special_middle,45% (seed sat_to 85) + 65% BW}
+{$THEMEWIZARD_COLOR,#597bbf,cnspostindicator,65% (seed sat_to 100) + 35% WB}
+{$THEMEWIZARD_COLOR,#597bf7,cnsredirectindicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
 
 /* Range of bright varying colours */
-{$THEME_WIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
-{$THEME_WIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
-{$THEME_WIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
-{$THEME_WIZARD_COLOR,#5800fa,gcol_4,100% #5800FA}
-{$THEME_WIZARD_COLOR,#0099fa,gcol_5,100% #0099FA}
-{$THEME_WIZARD_COLOR,#859638,gcol_6,100% #859638}
-{$THEME_WIZARD_COLOR,#2bab03,gcol_7,100% #2BAB03}
-{$THEME_WIZARD_COLOR,#7d7e04,gcol_8,100% #7D7E04}
-{$THEME_WIZARD_COLOR,#966038,gcol_9,100% #966038}
-{$THEME_WIZARD_COLOR,#96384a,gcol_10,100% #96384A}
-{$THEME_WIZARD_COLOR,#963895,gcol_11,100% #963895}
-{$THEME_WIZARD_COLOR,#4e3896,gcol_12,100% #4E3896}
-{$THEME_WIZARD_COLOR,#386296,gcol_13,100% #386296}
-{$THEME_WIZARD_COLOR,#389596,gcol_14,100% #389596}
-{$THEME_WIZARD_COLOR,#389653,gcol_15,100% #389653}
+{$THEMEWIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
+{$THEMEWIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
+{$THEMEWIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
+{$THEMEWIZARD_COLOR,#5800fa,gcol_4,100% #5800FA}
+{$THEMEWIZARD_COLOR,#0099fa,gcol_5,100% #0099FA}
+{$THEMEWIZARD_COLOR,#859638,gcol_6,100% #859638}
+{$THEMEWIZARD_COLOR,#2bab03,gcol_7,100% #2BAB03}
+{$THEMEWIZARD_COLOR,#7d7e04,gcol_8,100% #7D7E04}
+{$THEMEWIZARD_COLOR,#966038,gcol_9,100% #966038}
+{$THEMEWIZARD_COLOR,#96384a,gcol_10,100% #96384A}
+{$THEMEWIZARD_COLOR,#963895,gcol_11,100% #963895}
+{$THEMEWIZARD_COLOR,#4e3896,gcol_12,100% #4E3896}
+{$THEMEWIZARD_COLOR,#386296,gcol_13,100% #386296}
+{$THEMEWIZARD_COLOR,#389596,gcol_14,100% #389596}
+{$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
 /*
 =========================

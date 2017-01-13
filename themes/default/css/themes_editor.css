@@ -3,21 +3,21 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.theme_wizard_preview_wrap {
+.themewizard_preview_wrap {
 	margin: 1.5em 0;
 }
 
-.theme_wizard_colour, .theme_wizard_info_box_label, .theme_wizard_change_colour {
+.themewizard_colour, .themewizard_info_box_label, .themewizard_change_colour {
 	font-weight: bold;
 }
 
-.theme_wizard_preview {
+.themewizard_preview {
 	width: 100%;
 	height: 300px;
 }
 
 /*{+START,CSS_MODE,desktop}*/
-	.theme_wizard_info_box {
+	.themewizard_info_box {
 		float: {!en_right};
 		text-align: center;
 	}

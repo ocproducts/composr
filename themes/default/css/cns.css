@@ -7,10 +7,10 @@
 This file defines styles for Conversr (abbreviated as CNS).
 */
 
-{$THEME_WIZARD_COLOR,#72f579,cns_personal_post_background,50% 00FF00 + 50% area_2_background}
-{$THEME_WIZARD_COLOR,#000000,cns_personal_post_text,100% BW}
-{$THEME_WIZARD_COLOR,#f27579,emphasis_background,50% FF0000 + 50% area_2_background}
-{$THEME_WIZARD_COLOR,#180c0c,emphasis_text,10% emphasis_background + 90% BW}
+{$THEMEWIZARD_COLOR,#72f579,cns_personal_post_background,50% 00FF00 + 50% area_2_background}
+{$THEMEWIZARD_COLOR,#000000,cns_personal_post_text,100% BW}
+{$THEMEWIZARD_COLOR,#f27579,emphasis_background,50% FF0000 + 50% area_2_background}
+{$THEMEWIZARD_COLOR,#180c0c,emphasis_text,10% emphasis_background + 90% BW}
 
 /*
 =========================

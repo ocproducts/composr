@@ -23,9 +23,9 @@ class themeini_images_test_set extends cms_test_case
         require_code('themes2');
         $themes = find_all_themes();
         foreach (array_keys($themes) as $theme) {
-            $theme_wizard_images = get_theme_option('theme_wizard_images', '');
+            $themewizard_images = get_theme_option('themewizard_images', '');
 
-            foreach (($theme_wizard_images == '') ? array() : explode(',', $theme_wizard_images) as $theme_image) {
+            foreach (($themewizard_images == '') ? array() : explode(',', $themewizard_images) as $theme_image) {
                 if (strpos($theme_image, '*') === false) {
                     $this->assertTrue(find_theme_image($theme_image, true) != '', 'Missing but referenced in theme.ini: ' . $theme_image);
                 } else { // This code branch is assumptive (that the '*' goes on the end), but it works with the current theme.ini...

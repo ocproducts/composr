@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class _setup_wizard_test_set extends cms_test_case
+class _setupwizard_test_set extends cms_test_case
 {
     public function testFinalStep()
     {

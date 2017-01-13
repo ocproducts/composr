@@ -187,7 +187,8 @@ class Hook_addon_registry_setupwizard
             lorem_globalise(do_lorem_template('SETUPWIZARD_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'INNER' => $inner,
-                'STEP' => '7',
+                'STEP' => '2',
+                'NUM_STEPS_ENUMERABLE' => '10',
             )), null, '', true)
         );
     }
@@ -216,6 +217,7 @@ class Hook_addon_registry_setupwizard
                 'TITLE' => lorem_title(),
                 'INNER' => $inner,
                 'STEP' => '7',
+                'NUM_STEPS_ENUMERABLE' => '10',
             )), null, '', true)
         );
     }

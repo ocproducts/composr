@@ -575,9 +575,14 @@ class Module_admin_themes
         $show_theme_option_overrides = false;
         $hooks = find_all_hooks('systems', 'config');
         foreach (array_keys($hooks) as $hook) {
-            $current_value = get_theme_option($hook, '', $name);
-            if ($current_value != '') {
-                $show_theme_option_overrides = true;
+            require_code('hooks/systems/config/' . $hook);
+            $ob = object_factory('Hook_config_' . $hook);
+            $details = $ob->get_details();
+            if (!empty($details['theme_override'])) {
+                $current_value = get_theme_option($hook, '', $name);
+                if ($current_value != '') {
+                    $show_theme_option_overrides = true;
+                }
             }
         }
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => !$show_theme_option_overrides, 'TITLE' => do_lang_tempcode('THEME__OPTION_OVERRIDES'), 'HELP' => do_lang_tempcode('DESCRIPTION__THEME__OPTION_OVERRIDES'))));
@@ -602,6 +607,64 @@ class Module_admin_themes
                         $fields->attach(form_input_list(do_lang_tempcode($details['human_name']), do_lang_tempcode($details['explanation']), $hook, $list, null, false, false));
                         break;
                 }
+            }
+        }
+
+        // Setup Wizard
+        if (addon_installed('setupwizard')) {
+            $settings = array(
+                'setupwizard__install_profile',
+                'setupwizard__provide_block_choice',
+                'setupwizard__lock_fixed_width_choice',
+                'setupwizard__lock_addons_on',
+                'setupwizard__provide_cms_advert_choice',
+                'setupwizard__lock_show_content_tagging',
+                'setupwizard__lock_show_content_tagging_inline',
+                'setupwizard__lock_show_screen_actions',
+                'setupwizard__lock_collapse_user_zones',
+            );
+            require_lang('config');
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('SETUPWIZARD')))));
+            foreach ($settings as $setting) {
+                $fields->attach(form_input_line(titleify(preg_replace('#^setupwizard\_\_#', '', $setting)), '', $setting, get_theme_option($setting, null, $name), false));
+            }
+        }
+
+        // Theme Wizard
+        if (addon_installed('themewizard')) {
+            $settings = array(
+                'enable_themewizard',
+                'seed',
+                'supports_themewizard_equations',
+                'themewizard_images',
+                'themewizard_images_no_wild',
+            );
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('THEMEWIZARD')))));
+            foreach ($settings as $setting) {
+                $fields->attach(form_input_line(titleify(preg_replace('#^themewizard\_\_#', '', $setting)), '', $setting, get_theme_option($setting, null, $name), false));
+            }
+        }
+
+        // Logo Wizard
+        if (addon_installed('themewizard')) {
+            $settings = array(
+                'enable_logowizard',
+                'logo_x_offset',
+                'logo_y_offset',
+                'site_name_colour',
+                'site_name_split',
+                'site_name_split_gap',
+                'site_name_font_size_small',
+                'site_name_font_size',
+                'site_name_font_size_small_non_ttf',
+                'site_name_font_size_nonttf',
+                'site_name_x_offset',
+                'site_name_y_offset',
+                'site_name_y_offset_small',
+            );
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('LOGOWIZARD')))));
+            foreach ($settings as $setting) {
+                $fields->attach(form_input_line(titleify($setting), '', $setting, get_theme_option($setting, null, $name), false));
             }
         }
 
@@ -643,7 +706,8 @@ class Module_admin_themes
     {
         // Make live if requested
         if (post_param_integer('use_on_all', 0) == 1) {
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($theme) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
+            require_code('themes3');
+            set_live_theme($theme);
 
             attach_message(do_lang_tempcode('THEME_MADE_LIVE'), 'inform');
         }
@@ -724,8 +788,8 @@ class Module_admin_themes
         $submit_name = do_lang_tempcode('ADD_THEME');
 
         if (addon_installed('themewizard')) {
-            $theme_wizard_url = build_url(array('page' => 'admin_themewizard', 'type' => 'browse'), get_module_zone('admin_themewizard'));
-            $text = do_lang_tempcode('DESCRIPTION_ADD_THEME_MANUAL', escape_html($theme_wizard_url->evaluate()));
+            $themewizard_url = build_url(array('page' => 'admin_themewizard', 'type' => 'browse'), get_module_zone('admin_themewizard'));
+            $text = do_lang_tempcode('DESCRIPTION_ADD_THEME_MANUAL', escape_html($themewizard_url->evaluate()));
         } else {
             $text = new Tempcode();
         }

@@ -39,12 +39,12 @@ class Hook_sw_wordfilter
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return Tempcode An input field.
+     * @return array A pair: Input fields, Hidden fields.
      */
     public function get_fields($field_defaults)
     {
         if (!addon_installed('wordfilter') || post_param_integer('addon_wordfilter', null) === 0) {
-            return new Tempcode();
+            return array(new Tempcode(), new Tempcode());
         }
 
         $current_settings = $this->get_current_settings();
@@ -55,7 +55,7 @@ class Hook_sw_wordfilter
         if ($current_settings['have_default_wordfilter'] == '1') {
             $fields->attach(form_input_tick(do_lang_tempcode('KEEP_WORDFILTER'), do_lang_tempcode('DESCRIPTION_HAVE_DEFAULT_WORDFILTER'), 'have_default_wordfilter', $field_defaults['have_default_wordfilter'] == '1'));
         }
-        return $fields;
+        return array($fields, new Tempcode());
     }
 
     /**
