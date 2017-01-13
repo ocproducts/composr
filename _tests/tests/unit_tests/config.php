@@ -35,7 +35,7 @@ class config_test_set extends cms_test_case
             $expected_addon = preg_replace('#^.*@package\s+(\w+).*$#s', '$1', $file_contents);
             $this->assertTrue($details['addon'] == $expected_addon, 'Addon mismatch for ' . $hook);
 
-            $this->assertTrue($details['addon'] != 'core', 'Don\'t put addons in core, put them in core_configuration - ' . $hook);
+            $this->assertTrue($details['addon'] != 'core', 'Don\'t put config options in core, put them in core_configuration - ' . $hook);
         }
     }
 
