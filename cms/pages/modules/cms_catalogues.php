@@ -1549,7 +1549,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     public $is_tree_catalogue = false; // Set for usage by do-next-manager
     public $menu_label = 'CATALOGUES';
     public $table = 'catalogues';
-    public $javascript = "var fn=document.getElementById('title'); if (fn) { var form=fn.form; fn.onchange=function() { if ((form.elements['name']) && (form.elements['name'].value=='')) form.elements['name'].value=fn.value.toLowerCase().replace(/[^\w\d\.\-]/g,'_').replace(/\_+\$/,'').substr(0,80); }; }";
+    public $javascript = "var fn=document.getElementById('title'); if (fn) { var form=fn.form; fn.onchange=function() { if ((form.elements['name']) && (form.elements['name'].value=='')) form.elements['name'].value=fn.value.toLowerCase().replace(/[^\w\-\\u0080-\\uFFFF]/g,'_').replace(/\_+\$/,'').substr(0,80); }; }";
     public $is_chained_with_parent_browse = true;
 
     /**

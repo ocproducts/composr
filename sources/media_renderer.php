@@ -223,11 +223,12 @@ function render_media_url($url, $url_safe, $attributes, $as_admin = false, $sour
  * @param  array $attributes Attributes (Any combination of: thumb_url, width, height, length, filename, mime_type, description, filesize, framed, wysiwyg_editable, num_downloads, click_url, thumb)
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
  * @param  ?MEMBER $source_member Member to run as (null: current member)
+ * @param  boolean $prefer_natural_size Let the media size itself rather than detecting a size
  * @return array Template-ready parameters
  *
  * @ignore
  */
-function _create_media_template_parameters($url, $attributes, $as_admin = false, $source_member = null)
+function _create_media_template_parameters($url, $attributes, $as_admin = false, $source_member = null, $prefer_natural_size = false)
 {
     $_url = is_object($url) ? $url->evaluate() : $url;
 
@@ -242,7 +243,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
 
     $no_width = (!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width'])) || (floatval($attributes['width']) == 0.0);
     $no_height = (!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height'])) || (floatval($attributes['height']) == 0.0);
-    if ($no_width || $no_height) { // Try and work out the best default width/height, from the thumbnail if possible (image_websafe runs its own code to do the equivalent, as that defaults to thumb_width rather than attachment_default_width&attachment_default_height)
+    if (($no_width || $no_height) && (!$prefer_natural_size)) { // Try and work out the best default width/height, from the thumbnail if possible (image_websafe runs its own code to do the equivalent, as that defaults to thumb_width rather than attachment_default_width&attachment_default_height)
         $_width = get_option('attachment_default_width');
         $_height = get_option('attachment_default_height');
         if ((function_exists('getimagesize')) && (array_key_exists('thumb_url', $attributes)) && (((is_object($attributes['thumb_url'])) && (!$attributes['thumb_url']->is_empty()) || (is_string($attributes['thumb_url'])) && ($attributes['thumb_url'] != '')))) {
@@ -337,8 +338,8 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         'MIME_TYPE' => $attributes['mime_type'],
         'CLICK_URL' => array_key_exists('click_url', $attributes) ? $attributes['click_url'] : null,
 
-        'WIDTH' => $attributes['width'],
-        'HEIGHT' => $attributes['height'],
+        'WIDTH' => isset($attributes['width']) ? $attributes['width'] : '',
+        'HEIGHT' => isset($attributes['height']) ? $attributes['height'] : '',
 
         'LENGTH' => $attributes['length'],
 

@@ -34,17 +34,17 @@ function tar_open($path, $mode)
     } else {
         $exists = file_exists($path) && (strpos($mode, 'a') !== false);
         $myfile = @fopen($path, $mode);
-        if (substr($mode, 0, 1) == 'w') {
-            flock($myfile, LOCK_EX);
-        } else {
-            flock($myfile, LOCK_SH);
-        }
         if ($myfile === false) {
             if (substr($mode, 0, 1) == 'r') {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             } else {
                 intelligent_write_error($path);
             }
+        }
+        if (substr($mode, 0, 1) == 'w') {
+            flock($myfile, LOCK_EX);
+        } else {
+            flock($myfile, LOCK_SH);
         }
     }
     $resource = array();
@@ -421,11 +421,11 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
             }
 
             // Actually make file
-            if (($path == '/') && ($comcode_backups) && (get_param_integer('keep_theme_test', 0) == 1) && (preg_match('#^[\w\_]+\.txt$#', basename($file['path'])) != 0)) {
+            if (($path == '/') && ($comcode_backups) && (get_param_integer('keep_theme_test', 0) == 1) && (preg_match('#^[' . URL_CONTENT_REGEXP . ']+\.txt$#', basename($file['path'])) != 0)) {
                 $theme = null;
                 foreach ($directory as $file2) {
                     $matches = array();
-                    if (preg_match('#^themes/([\w\_\-]+)/#', $file2['path'], $matches) != 0) {
+                    if (preg_match('#^themes/([' . URL_CONTENT_REGEXP . ']+)/#', $file2['path'], $matches) != 0) {
                         $theme = $matches[1];
                         break;
                     }

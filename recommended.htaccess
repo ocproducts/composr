@@ -25,13 +25,21 @@ php_flag mail.add_x_header off
 
 # Suhosin can cause problems on configuration, language editing, and Catalogue forms, which use a lot of fields
 php_value suhosin.post.max_vars "2000"
+php_value suhosin.get.max_vars "100"
 php_value suhosin.request.max_vars "2000"
 php_value suhosin.cookie.max_vars "100"
-php_value suhosin.cookie.max_name_length "150"
 php_value suhosin.post.max_value_length "100000000"
+php_value suhosin.get.max_value_length "512"
 php_value suhosin.request.max_value_length "100000000"
-php_value suhosin.post.max_totalname_length "20000"
-php_value suhosin.request.max_totalname_length "20000"
+php_value suhosin.cookie.max_value_length "10000"
+php_value suhosin.post.max_name_length "64"
+php_value suhosin.get.max_name_length "64"
+php_value suhosin.request.max_name_length "64"
+php_value suhosin.cookie.max_name_length "64"
+php_value suhosin.post.max_totalname_length "256"
+php_value suhosin.get.max_totalname_length "256"
+php_value suhosin.request.max_totalname_length "256"
+php_value suhosin.cookie.max_totalname_length "256"
 php_flag suhosin.cookie.encrypt off
 php_flag suhosin.sql.union off
 php_flag suhosin.sql.comment off

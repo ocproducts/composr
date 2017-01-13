@@ -213,7 +213,7 @@ class Module_admin_errorlog
                 }
                 foreach ($lines as $i => $line) {
                     $matches = array();
-                    if (preg_match('#^\s+has\_specific\_permission: (\w+)#', $line, $matches) != 0) {
+                    if (preg_match('#^\s+has\_privilege: (\w+)#', $line, $matches) != 0) {
                         $looked_up = do_lang('PRIVILEGE_' . $matches[1], null, null, null, null, false);
                         if (!is_null($looked_up)) {
                             $line = str_replace($matches[1], $looked_up, $line);

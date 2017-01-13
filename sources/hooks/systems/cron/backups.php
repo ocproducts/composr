@@ -45,7 +45,7 @@ class Hook_cron_backups
                 require_lang('backups');
                 require_code('backup');
 
-                $max_size = get_value('backup_max_size');
+                $max_size = intval(get_value('backup_max_size'));
                 $b_type = get_value('backup_b_type');
                 global $MB2_FILE, $MB2_B_TYPE, $MB2_MAX_SIZE;
                 $end = ((get_option('backup_overwrite') != '1') || ($b_type == 'incremental')) ? uniqid('', true) : 'scheduled';
@@ -57,7 +57,11 @@ class Hook_cron_backups
                     $file = 'database_' . $end;
                 }
 
-                register_shutdown_function('make_backup', $file, $b_type, $max_size);
+                if (get_value('avoid_register_shutdown_function') === '1') {
+                    make_backup($file, $b_type, $max_size);
+                } else {
+                    register_shutdown_function('make_backup', $file, $b_type, $max_size);
+                }
 
                 if ($backup_recurrance_days == 0) {
                     delete_value('backup_schedule_time');

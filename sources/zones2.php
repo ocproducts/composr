@@ -107,7 +107,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
     require_lang('zones');
 
     require_code('type_sanitisation');
-    if (!is_alphanumeric($zone, true)) {
+    if (!is_alphanumeric($zone)) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
     }
 
@@ -221,8 +221,11 @@ function save_zone_base_url($zone, $base_url)
     $config_file = preg_replace($regexp, '', $config_file); // Strip any old entry
 
     if ($base_url != '') { // Add new entry, if appropriate
+        $main_site_domain = parse_url(get_base_url(), PHP_URL_HOST);
+        $main_site_path = trim(parse_url(get_base_url(), PHP_URL_PATH), '/');
+
         if (url_is_local($base_url)) {
-            $domain = cms_srv('HTTP_HOST');
+            $domain = $main_site_domain;
             $path = $base_url;
         } else {
             $parsed = @parse_url($base_url);
@@ -230,9 +233,15 @@ function save_zone_base_url($zone, $base_url)
                 warn_exit(do_lang_tempcode('INVALID_ZONE_BASE_URL'));
             }
             $domain = $parsed['host'];
-            $path = isset($parsed['path']) ? $parsed['path'] : '/';
+            $path = isset($parsed['path']) ? $parsed['path'] : '';
         }
-        $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "'] = array('" . addslashes($domain) . "', '" . addslashes(trim($path, '/')) . "');\n";
+
+        $path = preg_replace('#(/|$)index\.php$#', '', $path); // Fix common mistake
+        $path = trim($path, '/ ');
+
+        if (($domain != $main_site_domain) || (($path != '') && ($path != $main_site_path))) { // If not fully benign
+            $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "'] = array('" . addslashes($domain) . "', '" . addslashes(trim($path, '/')) . "');\n";
+        }
     }
 
     if ($config_file != $config_file_before) {
@@ -753,7 +762,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
     $dh = @opendir($stub . '/' . $module_path);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            if ((substr($file, -4) == '.' . $ext) && (file_exists($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][\w\-]*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
+            if ((substr($file, -4) == '.' . $ext) && (file_exists($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][' . URL_CONTENT_REGEXP . ']*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
                 if (!is_null($cutoff_time)) {
                     if (filectime($stub . '/' . $module_path . '/' . $file) < $cutoff_time) {
                         continue;

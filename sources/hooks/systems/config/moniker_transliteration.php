@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_fixed_width
+class Hook_config_moniker_transliteration
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,14 @@ class Hook_config_fixed_width
     public function get_details()
     {
         return array(
-            'human_name' => 'FIXED_WIDTH',
+            'human_name' => 'MONIKER_TRANSLITERATION',
             'type' => 'tick',
-            'category' => 'THEME',
-            'group' => 'GENERAL',
-            'explanation' => 'CONFIG_OPTION_fixed_width',
+            'category' => 'SITE',
+            'group' => 'SEO',
+            'explanation' => 'CONFIG_OPTION_moniker_transliteration',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 6,
 
             'addon' => 'core_configuration',
         );
