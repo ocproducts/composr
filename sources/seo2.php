@@ -291,9 +291,16 @@ function _seo_meta_find_data($keyword_sources, $description = '')
     require_code('xhtml');
     $description = strip_comcode($description, true);
     $description = trim(preg_replace('#\s+---+\s+#', ' ', $description));
+    $description = preg_replace('#\n+#', ' ', $description);
 
     if (cms_mb_strlen($description) > 160) {
-        $description = cms_mb_substr($description, 0, 157) . '...';
+        if (get_charset() == 'utf-8') {
+            $description = cms_mb_substr($description, 0, 159);
+            $description .= '…';
+        } else {
+            $description = cms_mb_substr($description, 0, 157);
+            $description .= '...';
+        }
     }
 
     return array($imp, $description);

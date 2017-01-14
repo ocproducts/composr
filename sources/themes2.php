@@ -357,7 +357,7 @@ function find_template_parameters($file)
     }
 
     $matches = array();
-    $cnt = preg_match_all('#\{([\w][\w\_]*)[\*;%\#]?\}#', file_get_contents($template_path), $matches);
+    $cnt = preg_match_all('#\{([\w]\w*)[\*;%\#]?\}#', cms_file_get_contents_safe($template_path), $matches);
     $p_done = array();
     for ($j = 0; $j < $cnt; $j++) {
         $parameters[] = $matches[1][$j];
@@ -755,7 +755,7 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
                 }
             } else {
                 if (!$dirs_only) {
-                    if ((preg_match('#^[\w\-]+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
+                    if ((preg_match('#^[' . URL_CONTENT_REGEXP . ']+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
                         $type_path = $type . (($type != '') ? '/' : '');
 
                         $dot_pos = strrpos($file, '.');

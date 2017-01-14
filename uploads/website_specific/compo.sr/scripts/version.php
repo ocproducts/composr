@@ -160,6 +160,8 @@ function strip_download_description($d)
 
 function display_version_upgrade_path($higher_version)
 {
+    $version_dotted = get_param_string('version');
+
     static $i = 0;
     $i++;
 
@@ -172,7 +174,7 @@ function display_version_upgrade_path($higher_version)
 
     $tooltip = comcode_to_tempcode('[title="2"]Inbetween versions[/title]' . $higher_version['download_description']);
 
-    $upgrade_url = static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $higher_version['news_id'], 'from_version' => $higher_version['version_dotted'], 'wide_high' => 1), 'site'));
+    $upgrade_url = static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $higher_version['news_id'], 'from_version' => $version_dotted, 'wide_high' => 1), 'site'));
     echo '<p class="version">';
 
     // First line of details

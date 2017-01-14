@@ -35,7 +35,7 @@
 							{!SUPPORT_PRIORITY_backburner}
 						</td>
 						<td>
-							{!SUPPORT_minutes,<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{BACKBURNER_MINUTES}}}</strong>}
+							{!MINUTES,<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{BACKBURNER_MINUTES}}}</strong>}
 						</td>
 					</tr>
 
@@ -44,7 +44,7 @@
 							{!SUPPORT_PRIORITY_regular}
 						</td>
 						<td>
-							{!SUPPORT_minutes,<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{REGULAR_MINUTES}}}</strong>}
+							{!MINUTES,<strong>{$NUMBER_FORMAT*,{$MULT,{NUM_CREDITS},{REGULAR_MINUTES}}}</strong>}
 						</td>
 					</tr>
 				</tbody>

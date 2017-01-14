@@ -200,7 +200,7 @@ function notifications_ui($member_id_of)
     $css_path = get_custom_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_cached/' . user_lang() . '/global.css';
     $color = 'FF00FF';
     if (file_exists($css_path)) {
-        $tmp_file = file_get_contents($css_path);
+        $tmp_file = cms_file_get_contents_safe($css_path);
         $matches = array();
         if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
             $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);
@@ -347,7 +347,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
     $css_path = get_custom_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_cached/' . user_lang() . '/global.css';
     $color = 'FF00FF';
     if (file_exists($css_path)) {
-        $tmp_file = file_get_contents($css_path);
+        $tmp_file = cms_file_get_contents_safe($css_path);
         $matches = array();
         if (preg_match('#(\s|\})th[\s,][^\}]*(\s|\{)background-color:\s*\#([\dA-Fa-f]*);color:\s*\#([\dA-Fa-f]*);#sU', $tmp_file, $matches) != 0) {
             $color = $matches[3] . '&fg_color=' . urlencode($matches[4]);

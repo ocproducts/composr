@@ -358,7 +358,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         }
 
         if ($intended_solely_for === null) {
-            if ($validated == 1) {
+            if (($validated == 1) || ($is_starter)) {
                 require_code('cns_posts_action2');
                 cms_profile_start_for('cns_make_post:cns_force_update_topic_caching');
                 cns_force_update_topic_caching($topic_id, 1, true, $is_starter, $post_id, $time, $title, $map['p_post'], $poster_name_if_guest, $poster);

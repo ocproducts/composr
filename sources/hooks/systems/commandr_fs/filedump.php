@@ -232,7 +232,7 @@ class Hook_commandr_fs_filedump
         }
 
         if ((is_dir($path)) && (file_exists($path . '/' . $file_name)) && (is_readable($path . '/' . $file_name))) {
-            $data = file_get_contents($path . '/' . $file_name);
+            $data = cms_file_get_contents_safe($path . '/' . $file_name);
 
             $output = array('data' => base64_encode($data));
             $rows = table_to_portable_rows('filedump', array('id'), array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));

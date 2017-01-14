@@ -212,7 +212,7 @@ class Module_admin_menus
         }
 
         require_code('type_sanitisation');
-        if (!is_alphanumeric($id, true)) {
+        if (!is_alphanumeric($id)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
@@ -510,7 +510,7 @@ class Module_admin_menus
         $url = post_param_string('url_' . strval($id), '', INPUT_FILTER_URL_GENERAL);
 
         // See if we can tidy it back to a page-link
-        if (preg_match('#^\w+$#', $url) != 0) {
+        if (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $url) != 0) {
             $url = ':' . $url; // So users do not have to think about zones
         }
         $page_link = url_to_page_link($url, true);

@@ -57,7 +57,7 @@ class Hook_snippet_template_editor_save
             $custom_path = get_custom_file_base() . '/themes/' . $theme . '/' . $subdir . '_custom/' . $_file;
             $original_path = get_file_base() . '/themes/default/' . $subdir . '/' . $_file;
 
-            if (is_file($original_path) && file_get_contents($original_path) == $contents) {
+            if (is_file($original_path) && cms_file_get_contents_safe($original_path) == $contents) {
                 // Delete
                 if (file_exists($custom_path)) {
                     unlink($custom_path);
@@ -73,7 +73,7 @@ class Hook_snippet_template_editor_save
 
                 // Make base-hash-thingy
                 if (is_file($original_path) && !is_file($custom_path . '.editfrom')) {
-                    $hash = file_get_contents($original_path);
+                    $hash = cms_file_get_contents_safe($original_path);
                     cms_file_put_contents_safe($custom_path . '.editfrom', $hash, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
             }
@@ -86,7 +86,7 @@ class Hook_snippet_template_editor_save
                 dirname($custom_path),
                 $clean_file,
                 ltrim($suffix, '.'),
-                file_get_contents($existing_path),
+                cms_file_get_contents_safe($existing_path),
                 filemtime($existing_path)
             );
 

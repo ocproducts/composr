@@ -202,7 +202,7 @@ class Hook_task_find_broken_urls
                 $COMCODE_BROKEN_URLS = array();
 
                 $file_path = zone_black_magic_filterer(((strpos($type, '_custom') !== false) ? get_custom_file_base() : get_file_base()) . '/' . $zone . '/pages/' . $type . '/' . $page);
-                $comcode = file_get_contents($file_path);
+                $comcode = cms_file_get_contents_safe($file_path);
                 comcode_to_tempcode($comcode, null, true);
 
                 if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && ($COMCODE_BROKEN_URLS !== null)) {
@@ -269,6 +269,9 @@ class Hook_task_find_broken_urls
             }
 
             $http_result = cms_http_request($url, array('trigger_error' => false, 'byte_limit' => 0));
+            if (($http_result->data === null) && ($http_result->message == '403')) {
+                $http_result = cms_http_request($url, array('trigger_error' => false, 'byte_limit' => 1)); // Try without HEAD, sometimes it's not liked
+            }
             if (($http_result->data === null) && (in_array($http_result->message, array('404', 'could not connect to host')))) {
                 $found_404[] = array('URL' => $url, 'SPOT' => $spot);
             }

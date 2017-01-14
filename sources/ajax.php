@@ -472,7 +472,7 @@ function load_template_script()
     }
 
     if (file_exists($x)) {
-        echo file_get_contents($x);
+        echo cms_file_get_contents_safe($x);
     }
 }
 
@@ -488,7 +488,7 @@ function sheet_script()
     header('Content-Type: text/css');
     $sheet = get_param_string('sheet');
     if ($sheet != '') {
-        echo str_replace('../../../', '', file_get_contents(css_enforce(filter_naughty_harsh($sheet))));
+        echo str_replace('../../../', '', cms_file_get_contents_safe(css_enforce(filter_naughty_harsh($sheet))));
     }
 }
 

@@ -226,7 +226,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
                         if (!$this->_handle_date_check_runtime($cutoff, filemtime($path))) {
                             continue;
                         }
-                        $contents = file_get_contents($path);
+                        $contents = cms_file_get_contents_safe($path);
                         if ($only_titles) {
                             $contents = preg_replace('#^.*\[title(="1")?\](.*)\[/title\].*$#Us', '${2}', $contents);
                         }

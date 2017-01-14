@@ -1022,7 +1022,7 @@ function _webstandards_css_sheet($data)
                     $cnt = substr_count($class_name, ':');
                     if ($cnt > 0) {
                         $matches = array();
-                        $num_matches = preg_match_all('#:([\w-]+)(\([^()]*\))?#', $class_name, $matches);
+                        $num_matches = preg_match_all('#:([\w\-]+)(\([^()]*\))?#', $class_name, $matches);
                         for ($j = 0; $j < $num_matches; $j++) {
                             $pseudo = $matches[1][$j];
                         }

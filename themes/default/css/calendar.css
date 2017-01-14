@@ -459,16 +459,6 @@ td.day_spacer:hover {
 	font-size: 1.1em;
 }
 
-.box___block_side_calendar .box_inner {
-	margin-left: 0.2em;
-	margin-right: 0.2em;
-	margin-bottom: 0.2em;
-}
-
-.box___block_side_calendar h3 {
-	margin-bottom: 0.3em;
-}
-
 .side_calendar .calendar_year_month_day {
 	background-color: {$GET,area_background};
 }

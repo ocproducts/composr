@@ -75,7 +75,7 @@ function get_release_tree()
 function is_release_discontinued($version)
 {
     $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2', '4', '5', '6', '7');
-    return (preg_match('#^' . implode('|', array_map('preg_quote', $discontinued)) . '($|\.)#', $version) != 0);
+    return (preg_match('#^(' . implode('|', array_map('preg_quote', $discontinued)) . ')($|\.)#', $version) != 0);
 }
 
 function find_version_download($version_pretty, $type_wanted = 'manual')
@@ -290,7 +290,7 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
     }
 
     // Check named site valid
-    if ((strlen($codename) < 3) || (cms_mb_strlen($codename) > 20) || (preg_match('#^[\w\d-]*$#', $codename) == 0)) {
+    if ((strlen($codename) < 3) || (cms_mb_strlen($codename) > 20) || (preg_match('#^[\w\-]*$#', $codename) == 0)) {
         warn_exit(do_lang_tempcode('CMS_BAD_NAME'));
     }
 

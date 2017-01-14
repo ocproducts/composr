@@ -13,7 +13,7 @@ Something I have been asked to add on a few occasions for community based forums
 [*] Click Proceed if none of the files will make any changes to files you have edited yourself
 [/list]
 
-Now your map addon for this is fully installed, I recommend adding your location on your profile so when you add the content block to a page you will be able to see if it is working correctly. To be able to do this you need to know your latitude and longitude coordinates. A simple website to find these is: [url="http://itouchmap.com/latlong.html"]http://itouchmap.com/latlong.html[/url]. Once you have the latitude and longitude go to your profile page on your website and click the edit tab.
+Now your map addon for this is fully installed, I recommend adding your location on your profile so when you add the content block to a page you will be able to see if it is working correctly. To be able to do this you need to know your latitude and longitude coordinates. A simple website to find these is: [url="https://itouchmap.com/latlong.html"]https://itouchmap.com/latlong.html[/url]. Once you have the latitude and longitude go to your profile page on your website and click the edit tab.
 
 Once you are on the account edit screen choose the profile sub-tab at the top of the screen. Scroll down to two new fields which have been added called latitude and longitude. Input your coordinates and click to save.
 

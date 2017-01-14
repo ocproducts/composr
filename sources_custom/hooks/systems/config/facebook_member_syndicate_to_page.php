@@ -35,7 +35,7 @@ class Hook_config_facebook_member_syndicate_to_page
             'list_options' => '',
             'order_in_category_group' => 11,
 
-            'addon' => 'facebook',
+            'addon' => 'facebook_support',
         );
     }
 

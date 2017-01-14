@@ -1597,7 +1597,7 @@ function __param($array, $name, $default, $integer = false, $posted = false)
 
     $val = $array[$name];
     if (is_array($val)) {
-        $val = implode(',', $val);
+        $val = trim(implode(',', $val), ' ,');
     }
 
     return $val;

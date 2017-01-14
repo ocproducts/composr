@@ -126,6 +126,18 @@ function string_scan($lang, $do_guessing = false)
         SECURITY_LEVEL_high
         MAINTENANCE_SCRIPT_ACCESS
         CONFIG_OPTION_maintenance_script_htaccess
+        MONIKER_TRANSLITERATION
+        CONFIG_OPTION_moniker_transliteration
+        BLOCKS_AT_TOP
+        BLOCK_TOP_LOGIN
+        BLOCK_TOP_NOTIFICATIONS
+        BLOCK_TOP_PERSONAL_STATS
+        BLOCK_TOP_SEARCH
+        CONFIG_GROUP_DESCRIP_BLOCKS_AT_TOP
+        CONFIG_OPTION_block_top_login
+        CONFIG_OPTION_block_top_notifications
+        CONFIG_OPTION_block_top_personal_stats
+        CONFIG_OPTION_block_top_search
         NEWS_SUMMARY_REQUIRED
         BACKUP_RESTORE_SUCCESS
         CONTINUE_RESTORATION
@@ -6198,10 +6210,8 @@ function string_scan($lang, $do_guessing = false)
         SITEMAP_EDITOR
         SITEMAP_LINK
         SITEWIDE_IM
-        SITE_CLOSED
         SITE_DB
         SITE_NAME
-        SITE_OPEN
         SITE_SCOPE
         SITE_SPECIAL_ACCESS
         SITE_SPECIAL_ACCESS_SU
@@ -9033,7 +9043,6 @@ function string_scan($lang, $do_guessing = false)
         PROCEED_SHORT
         PROCEED_TEXT
         PRODUCT
-        PRODUCT_CODE
         PRODUCT_NO_SUCH
         PRODUCT_PURCHASE_CANCEL
         PRODUCT_QUANTITY_CHANGED

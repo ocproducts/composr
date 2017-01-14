@@ -1088,7 +1088,7 @@ class Database_Static_xml extends DatabaseDriver
             return null;
         }
 
-        $file_contents = file_get_contents($path);
+        $file_contents = cms_file_get_contents_safe($path);
 
         foreach ($must_contain_strings as $match) {
             if (is_array($match)) {

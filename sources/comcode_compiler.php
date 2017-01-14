@@ -425,7 +425,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         '</a>',
         '<span>',
         '<span style="color:\s*\#[A-Fa-f0-9]+;?">',
-        '<span style="font-family:\s*[\w-\s,]+;?">',
+        '<span style="font-family:\s*[\w\-\s,]+;?">',
         '<span style="font-size:\s*[\d\.]+(em|px|pt)?;?">',
         '</span>',
     );
@@ -984,7 +984,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                             $pos = $p_len;
                                             if (($ret->parameterless(0)) && ($pos < $len)) { // We want to take the language string ID reference as Comcode if it's a simple language string ID reference with no parameters
                                                 $matches = array();
-                                                if (preg_match('#\{\!([\w\d\_\:]+)(\}|$)#U', $comcode, $matches, 0, $less_pos) != 0) { // Hacky code to extract the language string ID
+                                                if (preg_match('#\{\!([\w\:]+)(\}|$)#U', $comcode, $matches, 0, $less_pos) != 0) { // Hacky code to extract the language string ID
                                                     $temp_lang_string = $matches[1];
                                                     $ret = new Tempcode(); // Put into new Tempcode object to attach to, as what comcode_lang_string returns may be cached yet we may append to $ret
                                                     $ret->attach(static_evaluate_tempcode(comcode_lang_string($temp_lang_string))); // Recreate as a Comcode language string

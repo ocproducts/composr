@@ -100,6 +100,28 @@ class Hook_fields_posting_field
      */
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new, $last = true)
     {
+        static $done_one = false;
+
+        if ($done_one) {
+            if ($actual_value === null) {
+                $actual_value = ''; // Plug anomaly due to unusual corruption
+            }
+
+            $wysiwyg = (option_value_from_field_array($field, 'wysiwyg', 'on') == 'on');
+
+            $wordwrap = (option_value_from_field_array($field, 'wordwrap', 'on') == 'on');
+
+            $input_size = max(1, intval(option_value_from_field_array($field, 'input_size', '9')));
+
+            $_maxlength = option_value_from_field_array($field, 'maxlength', '');
+            $maxlength = ($_maxlength == '') ? null : intval($_maxlength);
+
+            $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
+            return form_input_text_comcode($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1, null, !$wysiwyg, '', null, !$wordwrap, $input_size);
+        }
+
+        $done_one = true;
+
         if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }

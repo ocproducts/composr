@@ -1030,8 +1030,8 @@ Composr has a multi-faceted testing strategy as there is no perfect solution for
 As mentioned above, the developers maintain an internally developed code quality checker tool (a lint, static code analysis) to scan code for violations of many coding standards, and find bugs. We also may use other tools internally, and our custom version of PHP designed to be very strict.
 
 These tools may now be downloaded:
- - [url="Code Quality Checker"]{$BRAND_BASE_URL}/docs/codechecker.zip[/url] which requires a recent Java, and the command-line PHP interpreter -- [i]this is primarily maintained inside the Composr github repository[/i])
  - [url="ocProducts PHP"]https://github.com/ocproducts/ocp-php[/url] (The source code tree for our special version of PHP; optional, but useful for auto-detecting some common development mistakes)
+ - (The Code Quality Checker is maintained inside the Composr github repository)
 
 [title="3"]Software for editing code[/title]
 

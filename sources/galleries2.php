@@ -1327,7 +1327,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
     }
 
     require_code('type_sanitisation');
-    if (!is_alphanumeric($name, true)) {
+    if (!is_alphanumeric($name)) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
     }
 
@@ -1454,7 +1454,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     if ($old_name != $name) {
         require_code('type_sanitisation');
-        if (!is_alphanumeric($name, true)) {
+        if (!is_alphanumeric($name)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 

@@ -196,7 +196,7 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
         if (!is_file($full_path)) {
             $full_path = get_file_base() . '/' . $path;
         }
-        $page_contents = file_get_contents($full_path);
+        $page_contents = cms_file_get_contents_safe($full_path);
         if (!$got_title || strpos($page_contents, 'sub="') !== false) {
             $matches = array();
             if (preg_match('#\[title([^\]]*\ssub="([^"]*)")?[^\]]*\]#', $page_contents, $matches) != 0) {

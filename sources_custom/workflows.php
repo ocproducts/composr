@@ -593,7 +593,7 @@ function workflow_update_handler()
         }
     }
     if (count($notes_approved) + count($notes_disapproved) > 0) {
-        $note_title = get_timezoned_date(time(), false, false, false, true/*TODO: Fix in v11*/) . ' ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        $note_title = get_timezoned_date(time(), false) . ' ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         $workflow_notes = $workflow_notes . "\n\n" . $note_title . "\n" . str_repeat('-', strlen($note_title));
 
         $notes_approved = array_map('get_translated_text', $notes_approved);

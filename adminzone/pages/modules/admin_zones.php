@@ -517,7 +517,7 @@ class Module_admin_zones
                 $revision_engine = new RevisionEngineFiles();
                 list(, , $existing_path) = find_comcode_page($lang, $for, $id);
                 if ($existing_path != '') {
-                    $revision_engine->add_revision(dirname($existing_path), $for, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                    $revision_engine->add_revision(dirname($existing_path), $for, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
                 }
 
                 // Save

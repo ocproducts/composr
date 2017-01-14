@@ -4903,11 +4903,9 @@ var encodeUC = encodeURIComponent;
                     callAjaxMethod(ajaxCallbacks[i]);
 
                     try {
-                        if ((xhr.status === 0) || (xhr.status === 12029)) {// 0 implies site down, or network down
+                        if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
                             if (!networkDownAlerted && !window.unloaded) {
-                                if (xhr.status === 12029) {
-                                    window.fauxmodal_alert('{!NETWORK_DOWN;^}');
-                                }
+                                window.fauxmodal_alert('{!NETWORK_DOWN;^}');
                                 networkDownAlerted = true;
                             }
                         } else {
@@ -5713,7 +5711,7 @@ function find_pos_x(el, not_relative) {/* if not_relative is true it gets the po
     if (!not_relative) {
         var position;
         while (el) {
-            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative'])) {
+            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
                 left -= find_pos_x(el, true);
                 break;
             }
@@ -5732,7 +5730,7 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     if (!not_relative) {
         var position;
         while (el) {
-            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative'])) {
+            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
                 top -= find_pos_y(el, true);
                 break;
             }
@@ -7169,7 +7167,7 @@ function faux_open(url, name, options, target, cancel_text) {
             if (window.history.pushState) {
                 try {
                     window.has_js_state = true;
-                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=\w+/, ''));
+                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
                 } catch (e) {
                     // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
                     // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")

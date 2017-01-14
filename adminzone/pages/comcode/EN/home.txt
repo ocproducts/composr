@@ -3,21 +3,21 @@
 [title="2"]Tasks[/title]
 
 {| 60%:37% wide floats
-| [block defer="1"]main_staff_checklist[/block]
-| [block defer="1"]main_staff_new_version[/block]{+START,IF,{$CNS}}[block="Staff" title="Staff forum" limit="3" failsafe="1" defer="1"]main_forum_topics[/block]{+END}[block defer="1"]main_staff_tips[/block]{+START,IF,{$ADDON_INSTALLED,syndication_blocks}}{$BLOCK,block=side_rss,param={$BRAND_BASE_URL}/backend.php?mode=news&type=rss&select=1-10&days=100,title=Composr news,cache=1,defer=1}{+END}
+| [block]main_staff_checklist[/block]
+| [block]main_staff_new_version[/block]{+START,IF,{$CNS}}[block="Staff" title="Staff forum" limit="3" failsafe="1"]main_forum_topics[/block]{+END}[block]main_staff_tips[/block]{+START,IF,{$ADDON_INSTALLED,syndication_blocks}}{$BLOCK,block=side_rss,param={$BRAND_BASE_URL}/backend.php?mode=news&type=rss&select=1-10&days=100,title=Composr news,cache=1,defer=1}{+END}
 |}
 
 [title="2"]Latest activity [size="0.8"]([page="adminzone:admin_actionlog"]more[/page])[/size][/title]
 
 {| 60%:37% wide floats
-| [block defer="1"]main_staff_actions[/block]
-| [block defer="1"]main_db_notes[/block]
+| [block]main_staff_actions[/block]
+| [block]main_db_notes[/block]
 |}
 
 [title="2"]Other Websites[/title]
 
 {| 60%:37% wide floats
-| [block defer="1"]main_staff_website_monitoring[/block]
+| [block]main_staff_website_monitoring[/block]
 
 [title="3"]Recommend Composr[/title]
 
@@ -27,5 +27,5 @@ Know someone who needs a website? [page=":recommend:browse:cms=1"]Recommend Comp
 
 [surround="vertical_alignment"]Check out our [page="adminzone:admin_version"]sponsors[/page]. We love them :wub:.[/surround]
 
-| [block defer="1"]main_staff_links[/block]
+| [block]main_staff_links[/block]
 |}

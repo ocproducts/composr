@@ -66,7 +66,7 @@ function actual_add_catalogue($name, $title, $description, $display_type, $is_tr
     }
 
     require_code('type_sanitisation');
-    if (!is_alphanumeric($name, true)) {
+    if (!is_alphanumeric($name)) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
     }
 
@@ -274,7 +274,7 @@ function actual_edit_catalogue($old_name, $name, $title, $description, $display_
         }
 
         require_code('type_sanitisation');
-        if (!is_alphanumeric($name, true)) {
+        if (!is_alphanumeric($name)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
     }
@@ -955,6 +955,8 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
         }
     }
 
+    static $done_one_posting_field = false;
+
     $id = $GLOBALS['SITE_DB']->query_insert('catalogue_entries', $imap, true);
     foreach ($map as $field_id => $val) {
         if ($val == STRING_MAGIC_NULL) {
@@ -972,7 +974,8 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
         );
 
         if (strpos($raw_type, '_trans') !== false) {
-            if ($type == 'posting_field') {
+            if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                $done_one_posting_field = true;
                 require_code('attachments2');
                 $smap += insert_lang_comcode_attachments('cv_value', 3, $val, 'catalogue_entry', strval($id));
             } else {
@@ -1012,7 +1015,14 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
                 }
             }
         }
-        seo_meta_set_for_implicit('catalogue_entry', strval($id), $seo_source_map, '');
+        foreach ($fields as $field_id => $cf_type) {
+            if (($cf_type == 'long_trans') || ($cf_type == 'long_text') || ($cf_type == 'posting_field')) {
+                $meta_description = isset($map[$field_id]) ? $map[$field_id] : '';
+                break;
+            }
+        }
+
+        seo_meta_set_for_implicit('catalogue_entry', strval($id), $seo_source_map, $meta_description);
     } else {
         seo_meta_set_for_explicit('catalogue_entry', strval($id), $meta_keywords, $meta_description);
     }
@@ -1134,6 +1144,8 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
 
     @ignore_user_abort(true);
 
+    static $done_one_posting_field = false;
+
     $GLOBALS['SITE_DB']->query_update('catalogue_entries', $update_map, array('id' => $id), '', 1);
 
     require_code('fields');
@@ -1155,7 +1167,8 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
             if ($_val === null) {
                 $smap += insert_lang_comcode('cv_value', $val, 3);
             } else {
-                if ($type == 'posting_field') {
+                if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                    $done_one_posting_field = true;
                     require_code('attachments2');
                     require_code('attachments3');
                     $smap += update_lang_comcode_attachments('cv_value', $_val, $val, 'catalogue_entry', strval($id), null, $original_submitter);

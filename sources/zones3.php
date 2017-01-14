@@ -39,7 +39,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
 {
     if ($zone != $new_zone) {
         require_code('type_sanitisation');
-        if (!is_alphanumeric($new_zone, true)) {
+        if (!is_alphanumeric($new_zone)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
@@ -423,6 +423,9 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
     if ($file === null) {
         $file = $new_file; // Not renamed
     }
+    if ($parent_page === null) {
+        $parent_page = '';
+    }
 
     if ($add_time === null) {
         $add_time = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_add_date', array('the_zone' => $zone, 'the_page' => $file));
@@ -448,7 +451,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
 
     // Check page name
     require_code('type_sanitisation');
-    if ((!is_alphanumeric($new_file, true)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
+    if ((!is_alphanumeric($new_file)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
     }
     require_code('zones2');

@@ -320,7 +320,6 @@ class Hook_addon_registry_core_cns
             'sources/forum/cns.php',
             'sources/cns_forum_driver_helper.php',
             'sources/cns_forum_driver_helper_install.php',
-            'sources/hooks/systems/cleanup/cns.php',
             'sources/hooks/systems/cleanup/cns_members.php',
             'sources/hooks/modules/admin_unvalidated/cns_members.php',
             'sources/hooks/systems/cns_cpf_filter/.htaccess',

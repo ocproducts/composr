@@ -303,6 +303,7 @@ class Hook_addon_registry_cns_forum
             'themes/default/templates/CNS_PRIVATE_TOPIC_LINK.tpl',
             'themes/default/templates/CNS_PT_FILTERS.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_POSTS.tpl',
+            'sources/hooks/systems/cleanup/cns.php',
             'sources/hooks/systems/config/edit_time_limit.php',
             'sources/hooks/systems/config/delete_time_limit.php',
             'sources/hooks/systems/config/enable_add_topic_btn_in_topic.php',

@@ -151,7 +151,7 @@ class Hook_commandr_fs_root
         }
 
         if ((is_dir($path)) && (file_exists($path . $file_name)) && (is_readable($path . $file_name))) {
-            return file_get_contents($path . $file_name);
+            return cms_file_get_contents_safe($path . $file_name);
         } else {
             return false; // File doesn't exist
         }

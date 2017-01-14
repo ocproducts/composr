@@ -69,27 +69,41 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 {
     $num_bytes_to_save = strlen($contents);
 
-    // If the directory is missing
-    if (!is_dir(dirname($path))) {
-        require_code('files2');
-        make_missing_directory(dirname($path));
+    $exists_already = file_exists($path);
+
+    if (!$exists_already) {
+        // If the directory is missing
+        if (!is_dir(dirname($path))) {
+            require_code('files2');
+            make_missing_directory(dirname($path));
+        }
     }
 
     // Error condition: If there's a lack of disk space
-    if (function_exists('disk_free_space')) {
+    if (php_function_allowed('disk_free_space')) {
         $num_bytes_to_write = $num_bytes_to_save;
         if (is_file($path)) {
             $num_bytes_to_write -= filesize($path);
         }
-        $disk_space = disk_free_space(dirname($path));
-        if ($disk_space < $num_bytes_to_write) {
-            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path), false, true);
-            return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
+        static $disk_space = null;
+        if ($disk_space === null) {
+            $disk_space = @disk_free_space(dirname($path));
+        }
+        if ($disk_space !== false) {
+            if ($disk_space < $num_bytes_to_write) {
+                $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+                return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
+            }
         }
     }
 
     // Save
     $num_bytes_written = @file_put_contents($path, $contents, LOCK_EX);
+    if (php_function_allowed('disk_free_space')) {
+        if ($disk_space !== false) {
+            $disk_space -= $num_bytes_written;
+        }
+    }
 
     // Error condition: If it failed to save
     if ($num_bytes_written === false) {
@@ -99,11 +113,16 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 
     // Error condition: If it did not save all bytes
     if ($num_bytes_written < $num_bytes_to_save) {
-        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path), false, true);
+        if ($exists_already) {
+            @unlink($path);
+        }
+
+        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
 
     // Error condition: If somehow it said it saved but didn't actually (maybe a race condition on servers with buggy locking)
+    clearstatcache();
     if (filesize($path) != $num_bytes_to_save) {
         if ($retry_depth < 5) {
             return cms_file_put_contents_safe($path, $contents, $flags, $retry_depth + 1);
@@ -141,7 +160,7 @@ function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 2)
     $looping = true;
 
     if (($flags & FILE_WRITE_FAILURE_SOFT) != 0) {
-        attach_message($error_message, 'warn');
+        attach_message($error_message, 'warn', false, true);
     }
 
     if (($flags & FILE_WRITE_FAILURE_HARD) != 0) {

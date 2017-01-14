@@ -68,6 +68,9 @@ $GLOBALS['SEMI_DEV_MODE'] = true;
 define('HHVM', strpos(PHP_VERSION, 'hiphop') !== false);
 define('GOOGLE_APPENGINE', isset($_SERVER['APPLICATION_ID']));
 
+define('URL_CONTENT_REGEXP', '\w\-\x80-\xFF'); // PHP is done using ASCII (don't use the 'u' modifier). Note this doesn't include dots, this is intentional as they can cause problems in filenames
+define('URL_CONTENT_REGEXP_JS', '\w\-\u0080-\uFFFF'); // JavaScript is done using Unicode
+
 if (!array_key_exists('type', $_GET)) {
     if (count($_GET) == 0) {
         header('Content-type: text/html');
@@ -1548,6 +1551,7 @@ function step_5_ftp()
 
         if ($i + 1 == $count) {
             $done_all = true;
+            $i++;
             break; // That's them all
         }
     }
@@ -2968,8 +2972,8 @@ RewriteRule ^([^/\&\?]+)\.htm$ index.php\?page=$1 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$ index.php\?page=$1&type=$2&id=$3 [L,QSA]
 #RewriteRule ^([^/\&\?]+)/([^/\&\?]*)$ index.php\?page=$1&type=$2 [L,QSA]
 #RewriteRule ^([^/\&\?]+)$ index.php\?page=$1 [L,QSA]
-/*REWRITE RULES END*/
 END;
+    /*REWRITE RULES END*/
 
     $clauses[] = <<<END
 order allow,deny
@@ -2989,6 +2993,7 @@ END;
             ");
 
             cms_file_put_contents_safe(get_file_base() . '/exports/addons/.htaccess', $clause);
+            usleep(100000); // 100ms, some servers are slow to update
             $http_result = cms_http_request($base_url . '/exports/addons/index.php', array('trigger_error' => false));
 
             if ($http_result->message != '200') {

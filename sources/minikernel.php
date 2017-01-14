@@ -832,7 +832,7 @@ function filter_naughty($in)
  */
 function filter_naughty_harsh($in)
 {
-    if (preg_match('#^[\w0-9\-]*$#', $in) != 0) {
+    if (preg_match('#^[\w\-]*$#', $in) != 0) {
         return $in;
     }
     exit();

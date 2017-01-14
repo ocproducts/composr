@@ -70,7 +70,7 @@ function inline_language_editing($codename, $lang)
  * Get a list of languages files for the given language. ONLY those that are overridden.
  *
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
- * @return array The language files, a map between codename to directory
+ * @return array The language files (a map between language file name -and- lang or lang_custom)
  */
 function get_lang_files($lang = null)
 {

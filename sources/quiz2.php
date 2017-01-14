@@ -348,6 +348,9 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
     if ($add_time === null) {
         $add_time = time();
     }
+    if ($open_time === null) {
+        $open_time = time();
+    }
 
     if (!addon_installed('unvalidated')) {
         $validated = 1;
@@ -438,6 +441,10 @@ function edit_quiz($id, $name, $timeout, $start_text, $end_text, $end_text_fail,
     $_start_text = $rows[0]['q_start_text'];
     $_end_text = $rows[0]['q_end_text'];
     $_end_text_fail = $rows[0]['q_end_text_fail'];
+
+    if ($open_time === null) {
+        $open_time = time();
+    }
 
     if (!addon_installed('unvalidated')) {
         $validated = 1;

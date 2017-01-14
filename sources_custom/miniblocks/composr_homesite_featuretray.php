@@ -21,7 +21,7 @@ $download_page_url = $_download_page_url->evaluate();
 $_importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
 $importing_tutorial_url = $_importing_tutorial_url->evaluate();
 
-$featuretree = array(
+$feature_tree = array(
     // Ways to help (using same code, bit of a hack)
     'help' => array(
         'evangelism' => array(
@@ -304,7 +304,7 @@ $featuretree = array(
             ),
         ),
         'quizzes' => array(
-            'Quizzes <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Galleries" href="http://shareddemo.composr.info/site/index.php?page=quiz"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
+            'Quizzes <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Quizzes" href="http://shareddemo.composr.info/site/index.php?page=quiz"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Run a competition', 'Give members a chance to win'),
                 array('Surveys', 'Gather data and find trends'),
@@ -618,16 +618,16 @@ $featuretree = array(
         'cnsforum' => array(
             'Forums',
             array(
-                array('The usual stuff', 'Categories, forums, topics, posts, polls <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Forum" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;id=general_chat%2Fhere_is_a_topic_with_a"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('The usual stuff', 'Categories, forums, topics, posts, polls <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Forum" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;id=general_chat%2Fhere-is-a-topic-with-a"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Forum and Topic tracking', 'Receive notifications when new posts are made'),
                 array('Password-protected forums <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Protected Forum" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;id=feedback"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Full moderator control', 'Determine who may moderate what forums'),
-                array('Report posts', 'When users report a post, a topic is created for the staff to discuss it <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post Reporting" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;id=reported_posts_forum"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Report posts', 'When users report a post, a topic is created for the staff to discuss it <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post Reporting" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;id=reported-posts-forum"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Inline personal posts', 'Whisper to members within a public topic <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Whispering" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;type=findpost&amp;id=6#post_6"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Over 50 bundled emoticons', 'Also, support for batch importing new ones <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Emoticons" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_emoticons"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Multi-moderation', 'Record and perform complex routine tasks <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Multi Moderation" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cns_multi_moderations"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
-                array('Announcements <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Announcement" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;id=this_topic_acts_as_an"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Announcements <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Announcement" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;id=this-topic-acts-as-an"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Quick reply'),
                 array('Post/topic moderation and validation'),
                 array('Unlimited sub-forum depth'),
@@ -665,14 +665,14 @@ $featuretree = array(
             array(
                 array('Show topics on your website <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of displayed forum topics" href="http://shareddemo.composr.info/site/index.php?page=featured_content"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
-                array('Comment integration', 'New topics appear in the &lsquo;comments&rsquo; forum as you add content to your website. Members can watch these topics so they never miss an addition to your website <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of comment topics" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;id=website_comment_topics"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Comment integration', 'New topics appear in the &lsquo;comments&rsquo; forum as you add content to your website. Members can watch these topics so they never miss an addition to your website <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of comment topics" href="http://shareddemo.composr.info/forum/index.php?page=forumview&amp;id=website-comment-topics"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
             ),
         ),
     ),
 );
 
 $collapsed_tree = array();
-foreach ($featuretree as $t) {
+foreach ($feature_tree as $t) {
     $collapsed_tree += $t;
 }
 
@@ -682,7 +682,7 @@ $raw = (isset($map['raw'])) && ($map['raw'] == '1');
 if (!$raw) {
     echo '<div class="feature_columns float_surrounder_hidden">' . "\n";
 }
-foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => $column) {
+foreach (($map['param'] == '') ? array_keys($collapsed_tree) : explode(',', $map['param']) as $i => $column) {
     if (!$raw) {
         echo '<div class="column column' . strval($i) . '">';
     }

@@ -521,7 +521,7 @@ Here we've used the variable [tt]$address[/tt] for storing both the website's ad
 
 [title="3"]A mini-block example[/title]
 
-Now that we've learned about variables, let's see how we can use them to make a seemingly complicated mini-block much simpler. Here we find out how many site points the current user has spent and has available to spend ("points" are a Composr feature where users get rewarded for contributing to the site), we store these in variables then we use echo to send the user an HTML image. The image uses [url="http://code.google.com/apis/chart"]Google Chart API[/url] to automatically generate a pie chart showing these values. Here's the code:
+Now that we've learned about variables, let's see how we can use them to make a seemingly complicated mini-block much simpler. Here we find out how many site points the current user has spent and has available to spend ("points" are a Composr feature where users get rewarded for contributing to the site), we store these in variables then we use echo to send the user an HTML image. The image uses [url="https://developers.google.com/chart/"]Google Chart API[/url] to automatically generate a pie chart showing these values. Here's the code:
 [code="PHP"]
 <?php
 /* This will use Google Chart API to draw a graph of the current

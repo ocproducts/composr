@@ -801,7 +801,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
         $all_privileges = collapse_1d_complexity('the_name', $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name')));
         foreach ($all_privileges as $privilege_name) {
             if (!array_key_exists($privilege_name, $privilege_addons)) {
-                attach_message('Privilege ' . $privilege_name . ' in meta database could not be sourced.', 'notice');
+                attach_message('Privilege ' . $privilege_name . ' in meta database could not be sourced.', 'notice', false, true);
             }
         }
     }
@@ -889,7 +889,7 @@ function make_install_sql()
     require_code('install_headless');
     $test = do_install_to($database, $username, $password, $table_prefix, true, 'cns', null, null, null, null, null, null, false);
     if (!$test) {
-        warn_exit('Failed to execute installer, while building install.sql');
+        warn_exit('Failed to execute installer, while building install.sql. It\'s likely that recursive write file permissions need setting.');
     }
 
     // Get database connector

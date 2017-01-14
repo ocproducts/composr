@@ -831,7 +831,11 @@ class HttpDownloaderCurl extends HttpDownloader
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($this->timeout));
         curl_setopt($ch, CURLOPT_TIMEOUT, intval($this->timeout));
         curl_setopt($ch, CURLOPT_USERAGENT, $this->ua);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->http_verb);
+        if ($this->http_verb == 'HEAD') {
+            curl_setopt($ch, CURLOPT_NOBODY, true); // Branch needed as doing a HEAD via CURLOPT_CUSTOMREQUEST can cause a timeout bug in cURL
+        } else {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->http_verb);
+        }
         if ($this->accept !== null) {
             $curl_headers[] = 'Accept: ' . $this->accept;
         }

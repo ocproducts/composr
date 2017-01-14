@@ -127,7 +127,7 @@
         title.onchange = function () {
             var codename = document.getElementById('theme');
             if (codename.value == '') {
-                codename.value = title.value.replace(/[^a-zA-Z0-9]/g, '');
+                codename.value = title.value.replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '');
             }
         };
         var form = document.getElementById('main_form');

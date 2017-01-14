@@ -132,7 +132,7 @@ The nature of these feeds are such that they embed portions of HTML into your ow
 
 [title="3"]Feed merging[/title]
 
-[s]If you want to merge or filter feeds, [url="Yahoo Pipes"]http://pipes.yahoo.com/[/url] is an absolutely fantastic tool. You basically tell it to look at a set of RSS feeds, give it some filters, and you get an RSS feed you can then plug into Composr.[/s]
+[s]If you want to merge or filter feeds, Yahoo Pipes is an absolutely fantastic tool. You basically tell it to look at a set of RSS feeds, give it some filters, and you get an RSS feed you can then plug into Composr.[/s]
 
 Yahoo Pipes no longer exists, but alternatives do:
 http://www.makeuseof.com/tag/12-best-yahoo-pipes-alternatives-look/

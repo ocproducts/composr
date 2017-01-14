@@ -204,7 +204,7 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
             $attachments = true;
         }
     }
-    if ((!$attachments || ($GLOBALS['IN_MINIKERNEL_VERSION'])) && (preg_match('#^[\w\d\-\_\(\) \.,:;/"\!\?]*$#'/*NB: No apostophes allowed in here, as they get changed by escape_html and can interfere then with apply_emoticons*/, $comcode) != 0) && (strpos($comcode, '  ') === false) && (strpos($comcode, '://') === false) && (strpos($comcode, '--') === false) && (get_page_name() != 'search')) {
+    if ((!$attachments || ($GLOBALS['IN_MINIKERNEL_VERSION'])) && (preg_match('#^[\w\-\(\) \.,:;/"\!\?]*$#'/*NB: No apostophes allowed in here, as they get changed by escape_html and can interfere then with apply_emoticons*/, $comcode) != 0) && (strpos($comcode, '  ') === false) && (strpos($comcode, '://') === false) && (strpos($comcode, '--') === false) && (get_page_name() != 'search')) {
         if (running_script('stress_test_loader')) {
             return make_string_tempcode(escape_html($comcode));
         }
@@ -241,13 +241,22 @@ function strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
         return '';
     }
 
+    static $done = array();
+    if (isset($done[$text])) {
+        return $done[$text];
+    }
+
+    $input_text = $text;
+
     $matches = array();
-    if (preg_match('#^(\[semihtml\])?([\w\d\-\_\(\) \.,:;/"\'\!\?]*)(\[/semihtml\])?$#', $text, $matches) != 0) {
+    if (preg_match('#^(\[semihtml\])?([\w\-\(\) \.,:;/"\'\!\?]*)(\[/semihtml\])?$#', $text, $matches) != 0) {
+        $done[$text] = $matches[2];
         return $matches[2]; // Optimisation
     }
 
     require_code('comcode_to_text');
     $text = _strip_comcode($text, $for_extract, $tags_to_preserve);
 
+    $done[$text] = $text;
     return $text;
 }

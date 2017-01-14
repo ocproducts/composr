@@ -2396,7 +2396,7 @@ function rawurldecode($str)
 }
 
 /**
- * Encode URL-encoded strings.
+ * Encode URL-encoded strings. Used for everything *except* GET-parameter encoding.
  *
  * @param  string $str The string to encode.
  * @return string Encoded string.
@@ -3065,7 +3065,7 @@ function urldecode($str)
 }
 
 /**
- * URL-encodes string.
+ * URL-encodes string. Used for GET-parameter encoding ONLY.
  *
  * @param  string $str The pure string to URL encode.
  * @return string URL encoded string.

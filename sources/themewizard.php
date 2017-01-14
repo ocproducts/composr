@@ -94,9 +94,9 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
                 if (!file_exists($css_path)) {
                     $css_path = get_file_base() . '/themes/default/css/' . $sheet;
                 }
-                $css_file = file_get_contents($css_path);
+                $css_file = cms_file_get_contents_safe($css_path);
                 $matches = array();
-                $num_matches = preg_match_all('#\{\$IMG[;\#]?,([\w\_\-\d]+)\}#', $css_file, $matches);
+                $num_matches = preg_match_all('#\{\$IMG[;\#]?,([\w\-]+)\}#', $css_file, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     if ((preg_match('#' . preg_quote($matches[0][$i]) . '[\'"]?\)[^\n]*no-repeat#', $css_file) == 0) || (preg_match('#' . preg_quote($matches[0][$i]) . '[\'"]?\)[^\n]*width:\s*\d\d\d+px#', $css_file) != 0) || (preg_match('#width:\s*\d\d\d+px;[^\n]*' . preg_quote($matches[0][$i]) . '[\'"]?\)#', $css_file) != 0)) {
                         $map['theme_wizard_images'] .= ',' . $matches[1][$i];
@@ -149,7 +149,7 @@ function find_theme_seed($theme, $no_easy_anchor = false)
         if (!is_file($css_path)) {
             $css_path = get_file_base() . '/themes/default/css/global.css';
         }
-        $css_file_contents = file_get_contents($css_path);
+        $css_file_contents = cms_file_get_contents_safe($css_path);
         $matches = array();
         if (preg_match('#\{\$THEME\_WIZARD\_COLOR,\#(.{6}),seed,.*\}#', $css_file_contents, $matches) != 0) {
             $THEME_SEED_CACHE[$theme] = $matches[1];
@@ -191,7 +191,7 @@ function find_theme_dark($theme)
     if (!is_file($css_path)) {
         return false;
     }
-    $css_file_contents = file_get_contents($css_path);
+    $css_file_contents = cms_file_get_contents_safe($css_path);
     $matches = array();
     if (preg_match('#\{\$THEME\_WIZARD\_COLOR,\#(.{6}),WB,.*\}#', $css_file_contents, $matches) != 0) {
         $THEME_DARK_CACHE[$theme] = (strtoupper($matches[1]) != 'FFFFFF');
@@ -286,7 +286,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
             if (!file_exists($file_path_stub)) {
                 $file_path_stub = get_file_base() . '/themes/default/images/EN/logo/' . filter_naughty($theme_image) . '.png'; // Exceptional situation. Maybe theme got corrupted?
             }
-            $data = file_get_contents($file_path_stub);
+            $data = cms_file_get_contents_safe($file_path_stub);
         } else {
             $data = http_get_contents($url);
         }
@@ -332,9 +332,9 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
     $white = imagecolorallocate($canvas, hexdec(substr($logowizard_details['site_name_colour'], 0, 2)), hexdec(substr($logowizard_details['site_name_colour'], 2, 2)), hexdec(substr($logowizard_details['site_name_colour'], 4, 2)));
     $black = imagecolorallocate($canvas, 0, 0, 0);
     if (file_exists(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css')) {
-        $css_file = file_get_contents(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css');
+        $css_file = cms_file_get_contents_safe(get_custom_file_base() . '/themes/' . $theme . '/css_custom/global.css');
     } else {
-        $css_file = file_get_contents(get_file_base() . '/themes/default/css/global.css');
+        $css_file = cms_file_get_contents_safe(get_file_base() . '/themes/default/css/global.css');
     }
     $matches = array();
     if (preg_match('#\{\$THEME_WIZARD_COLOR,\#([a-f0-9][a-f0-9])([a-f0-9][a-f0-9])([a-f0-9][a-f0-9]),box_title_background,#i', $css_file, $matches) != 0) {
@@ -527,8 +527,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                     }
                     $default_version_path = get_file_base() . '/themes/default/css/' . $sheet;
                     if (is_file($default_version_path)) {
-                        $default_version = file_get_contents($default_version_path);
-                        $changed_from_default_theme = file_get_contents(unixify_line_format($default_version_path)) != $output;
+                        $default_version = cms_file_get_contents_safe($default_version_path);
+                        $changed_from_default_theme = cms_file_get_contents_safe(unixify_line_format($default_version_path)) != $output;
                     } else {
                         $changed_from_default_theme = true;
                     }

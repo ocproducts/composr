@@ -163,7 +163,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
         if (multi_lang_content()) {
             $page_converted = str_replace('/', ': ', $page_converted);
         } else {
-            $page_converted = str_replace('/', ':', preg_replace('#((.*)/)?pages/.*/\w+/(.*)#', '$2/$3', $page_converted));
+            $page_converted = str_replace('/', ':', preg_replace('#((.*)/)?pages/.*/[' . URL_CONTENT_REGEXP . ']+/(.*)#', '$2/$3', $page_converted));
         }
 
         if ($myrow['s_get'] !== null) {

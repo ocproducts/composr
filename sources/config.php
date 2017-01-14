@@ -221,7 +221,7 @@ function get_option($name, $missing_ok = false)
         }
 
         if ((running_script('upgrader')) || (running_script('execute_temp'))) {
-            return ''; // Upgrade scenario, probably can't do this robustly
+            $missing_ok = true; // Upgrade scenario, probably can't do this robustly
         }
 
         global $GET_OPTION_LOOP;

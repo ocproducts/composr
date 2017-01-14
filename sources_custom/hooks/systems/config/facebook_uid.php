@@ -35,7 +35,7 @@ class Hook_config_facebook_uid
             'list_options' => '',
             'order_in_category_group' => 3,
 
-            'addon' => 'facebook',
+            'addon' => 'facebook_support',
         );
     }
 

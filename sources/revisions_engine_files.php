@@ -79,7 +79,7 @@ class RevisionEngineFiles
             }
 
             if ($original_text === null) {
-                $original_text = file_get_contents($existing_path);
+                $original_text = cms_file_get_contents_safe($existing_path);
             }
 
             if ($original_timestamp === null) {
@@ -183,7 +183,7 @@ class RevisionEngineFiles
                 continue;
             }
 
-            $original_text = file_get_contents($full_path);
+            $original_text = cms_file_get_contents_safe($full_path);
 
             $ret[$time] = array(
                 'id' => $mtime,
@@ -449,7 +449,7 @@ class RevisionEngineFiles
             $full_path = get_custom_file_base() . '/' . filter_naughty($restore_from_path);
             $exists = file_exists($full_path);
             if ($has_access && $exists) {
-                $text = file_get_contents($full_path);
+                $text = cms_file_get_contents_safe($full_path);
                 $revision_loaded = true;
 
                 $revisions_tpl->attach(do_template('REVISION_UNDO'));

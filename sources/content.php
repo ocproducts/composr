@@ -152,7 +152,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
 {
     $real_type_wanted = $type_wanted;
 
-    $type_id = preg_replace('#^catalogues__\w+_#', 'catalogues_', $type_id);
+    $type_id = preg_replace('#^catalogues__[' . URL_CONTENT_REGEXP . ']+_#', 'catalogues_', $type_id);
 
     // Search content-meta-aware hooks
     $found_type_id = '';
@@ -185,7 +185,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
  */
 function convert_composr_type_codes_multiple($type_has, $type_id)
 {
-    $type_id = preg_replace('#^catalogues__\w+_#', 'catalogues_', $type_id);
+    $type_id = preg_replace('#^catalogues__[' . URL_CONTENT_REGEXP . ']+_#', 'catalogues_', $type_id);
 
     // Search content-meta-aware hooks
     $found_type_ids = array();

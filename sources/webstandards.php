@@ -181,7 +181,7 @@ function init__webstandards()
     } else {
         $enforce_link = '.*';
     }
-    $enforce_class = '[ \w-]*';
+    $enforce_class = '[ \w\-]*';
     $_counter_increment = '((\w+( \d+)?)+)';
     $enforce_counter_increment = $_counter_increment . '( ' . $_counter_increment . ')*';
     $enforce_transition_timing_function = '(linear|ease|ease-in|ease-out|ease-in-out|cubic-bezier\(' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . '\))';
@@ -256,7 +256,7 @@ function init__webstandards()
         'content' => '.+',
         'counter-increment' => $enforce_counter_increment,
         'counter-reset' => $enforce_counter_increment,
-        'cursor' => '(' . $enforce_functional_url . '|(?i)auto|crosshair|default|move|text|wait|help|n-resize|e-resize|s-resize|w-resize|ne-resize|nw-resize|se-resize|sw-resize|pointer|not-allowed|no-drop|vertical-text|all-scroll|col-resize|row-resize|none' . ((!$is_ie) ? '|progress' : '') . '(?-i))', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
+        'cursor' => '(' . $enforce_functional_url . '|(?i)auto|crosshair|default|move|text|wait|help|n-resize|e-resize|s-resize|w-resize|ne-resize|nw-resize|se-resize|sw-resize|pointer|not-allowed|no-drop|vertical-text|all-scroll|col-resize|row-resize|none|progress(?-i))', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
         'direction' => '(ltr|rtl)',
         'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
         'empty-cells' => 'show|hide',
