@@ -174,7 +174,7 @@ class Hook_payment_gateway_authorize
         $trans_id = $this->generate_trans_id();
 
         // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
@@ -234,7 +234,7 @@ class Hook_payment_gateway_authorize
         $trans_id = $this->generate_trans_id();
 
         // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
@@ -324,7 +324,7 @@ class Hook_payment_gateway_authorize
         $parent_txn_id = '';
         $pending_reason = '';
         $memo = '';
-        $item_name = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_item_name', array('e_purchase_id' => $purchase_id));
+        $item_name = $GLOBALS['SITE_DB']->query_select_value('ecom_trans_expecting', 'e_item_name', array('e_purchase_id' => $purchase_id));
         if ($subscription_id != '') {
             $payment_status = $success ? 'Completed' : 'SCancelled';
         } else {
@@ -382,7 +382,7 @@ class Hook_payment_gateway_authorize
      */
     public function auto_cancel($subscription_id)
     {
-        $temp = $GLOBALS['SITE_DB']->query_select_value('subscriptions', 's_auto_fund_key', array('id' => $subscription_id));
+        $temp = $GLOBALS['SITE_DB']->query_select_value('ecom_subscriptions', 's_auto_fund_key', array('id' => $subscription_id));
         $data = unserialize($temp);
         $authorize_subscription_id = $data['id'];
 

@@ -58,7 +58,7 @@ class Hook_notification_pointstore_request_custom extends Hook_notification__Sta
     {
         $page_links = array();
 
-        $types = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('id', 'c_title'));
+        $types = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('id', 'c_title'));
         foreach ($types as $type) {
             $page_links[] = array(
                 'id' => $type['id'],

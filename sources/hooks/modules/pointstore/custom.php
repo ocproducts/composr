@@ -69,7 +69,7 @@ class Hook_pointstore_custom
      */
     public function config()
     {
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*'), null, 'ORDER BY id');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), null, 'ORDER BY id');
         $out = array();
         foreach ($rows as $i => $row) {
             $fields = new Tempcode();
@@ -90,7 +90,7 @@ class Hook_pointstore_custom
     public function save_config()
     {
         $i = 0;
-        $rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*')));
+        $rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*')));
         while (array_key_exists('custom_' . strval($i), $_POST)) {
             $id = post_param_integer('custom_' . strval($i));
             $title = post_param_string('custom_title_' . strval($i));
@@ -113,7 +113,7 @@ class Hook_pointstore_custom
                 delete_lang($_description);
                 delete_lang($_mail_subject);
                 delete_lang($_mail_body);
-                $GLOBALS['SITE_DB']->query_delete('pstore_customs', array('id' => $id), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('ecom_prods_custom', array('id' => $id), '', 1);
             } else {
                 $map = array(
                     'c_enabled' => $enabled,
@@ -124,7 +124,7 @@ class Hook_pointstore_custom
                 $map += lang_remap_comcode('c_description', $_description, $description);
                 $map += lang_remap('c_mail_subject', $_mail_subject, $mail_subject);
                 $map += lang_remap('c_mail_body', $_mail_body, $mail_body);
-                $GLOBALS['SITE_DB']->query_update('pstore_customs', $map, array('id' => $id), '', 1);
+                $GLOBALS['SITE_DB']->query_update('ecom_prods_custom', $map, array('id' => $id), '', 1);
             }
             $i++;
         }
@@ -146,7 +146,7 @@ class Hook_pointstore_custom
             $map += insert_lang_comcode('c_description', $description, 2);
             $map += insert_lang('c_mail_subject', $mail_subject, 2);
             $map += insert_lang('c_mail_body', $mail_body, 2);
-            $GLOBALS['SITE_DB']->query_insert('pstore_customs', $map);
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_custom', $map);
         }
 
         log_it('POINTSTORE_AMEND_CUSTOM_PRODUCTS');
@@ -163,7 +163,7 @@ class Hook_pointstore_custom
 
         $items = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*'), array('c_enabled' => 1));
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), array('c_enabled' => 1));
 
         foreach ($rows as $i => $row) {
             $rows[$i]['_title'] = get_translated_text($row['c_title']);
@@ -180,7 +180,7 @@ class Hook_pointstore_custom
             }
 
             $next_url = build_url(array('page' => '_SELF', 'type' => 'action', 'id' => $class, 'sub_id' => $row['id']), '_SELF');
-            $items[] = do_template('POINTSTORE_' . strtoupper($class), array('NEXT_URL' => $next_url, 'TITLE' =>$row['_title'], 'DESCRIPTION' => get_translated_tempcode('pstore_customs', $row, 'c_description')));
+            $items[] = do_template('POINTSTORE_' . strtoupper($class), array('NEXT_URL' => $next_url, 'TITLE' =>$row['_title'], 'DESCRIPTION' => get_translated_tempcode('ecom_prods_custom', $row, 'c_description')));
         }
         return $items;
     }
@@ -195,7 +195,7 @@ class Hook_pointstore_custom
         $class = str_replace('hook_pointstore_', '', strtolower(get_class($this)));
 
         $id = get_param_integer('sub_id');
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('c_title', 'c_cost', 'c_one_per_member'), array('id' => $id, 'c_enabled' => 1));
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('c_title', 'c_cost', 'c_one_per_member'), array('id' => $id, 'c_enabled' => 1));
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -226,7 +226,7 @@ class Hook_pointstore_custom
 
         post_param_integer('confirm'); // Make sure POSTed
         $id = get_param_integer('sub_id');
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*'), array('id' => $id, 'c_enabled' => 1), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), array('id' => $id, 'c_enabled' => 1), '', 1);
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }

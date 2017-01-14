@@ -142,7 +142,7 @@ class Hook_pointstore_permission
     public function config()
     {
         $fields = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), null, 'ORDER BY id');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), null, 'ORDER BY id');
         $hidden = new Tempcode();
         $out = array();
         foreach ($rows as $i => $row) {
@@ -168,7 +168,7 @@ class Hook_pointstore_permission
     public function save_config()
     {
         $i = 0;
-        $rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*')));
+        $rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*')));
         while (array_key_exists('permission_' . strval($i), $_POST)) {
             $id = post_param_integer('permission_' . strval($i));
             $title = post_param_string('permission_title_' . strval($i));
@@ -197,7 +197,7 @@ class Hook_pointstore_permission
                 delete_lang($_description);
                 delete_lang($_mail_subject);
                 delete_lang($_mail_body);
-                $GLOBALS['SITE_DB']->query_delete('pstore_permissions', array('id' => $id), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('ecom_prods_permissions', array('id' => $id), '', 1);
             } else {
                 $map = array(
                     'p_enabled' => $enabled,
@@ -214,7 +214,7 @@ class Hook_pointstore_permission
                 $map += lang_remap_comcode('p_description', $_description, $description);
                 $map += lang_remap('p_mail_subject', $_mail_subject, $mail_subject);
                 $map += lang_remap('p_mail_body', $_mail_body, $mail_body);
-                $GLOBALS['SITE_DB']->query_update('pstore_permissions', $map, array('id' => $id), '', 1);
+                $GLOBALS['SITE_DB']->query_update('ecom_prods_permissions', $map, array('id' => $id), '', 1);
             }
             $i++;
         }
@@ -248,7 +248,7 @@ class Hook_pointstore_permission
             $map += insert_lang_comcode('p_description', $description, 2);
             $map += insert_lang('p_mail_subject', $mail_subject, 2);
             $map += insert_lang('p_mail_body', $mail_body, 2);
-            $GLOBALS['SITE_DB']->query_insert('pstore_permissions', $map);
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_permissions', $map);
         }
 
         log_it('POINTSTORE_AMEND_CUSTOM_PERMISSIONS');
@@ -265,7 +265,7 @@ class Hook_pointstore_permission
 
         $items = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), array('p_enabled' => 1));
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('p_enabled' => 1));
 
         foreach ($rows as $i => $row) {
             $rows[$i]['_title'] = get_translated_text($row['p_title']);
@@ -278,7 +278,7 @@ class Hook_pointstore_permission
             }
 
             $next_url = build_url(array('page' => '_SELF', 'type' => 'action', 'id' => $class, 'sub_id' => $row['id']), '_SELF');
-            $items[] = do_template('POINTSTORE_' . strtoupper($class), array('NEXT_URL' => $next_url, 'TITLE' => $row['_title'], 'DESCRIPTION' => get_translated_tempcode('pstore_permissions', $row, 'p_description')));
+            $items[] = do_template('POINTSTORE_' . strtoupper($class), array('NEXT_URL' => $next_url, 'TITLE' => $row['_title'], 'DESCRIPTION' => get_translated_tempcode('ecom_prods_permissions', $row, 'p_description')));
         }
         return $items;
     }
@@ -293,7 +293,7 @@ class Hook_pointstore_permission
         $class = str_replace('hook_pointstore_', '', strtolower(get_class($this)));
 
         $id = get_param_integer('sub_id');
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('p_title', 'p_cost'), array('id' => $id, 'p_enabled' => 1));
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('p_title', 'p_cost'), array('id' => $id, 'p_enabled' => 1));
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -324,7 +324,7 @@ class Hook_pointstore_permission
 
         post_param_integer('confirm'); // Make sure POSTed
         $id = get_param_integer('sub_id');
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), array('id' => $id, 'p_enabled' => 1), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('id' => $id, 'p_enabled' => 1), '', 1);
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }

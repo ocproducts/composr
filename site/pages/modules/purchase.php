@@ -46,8 +46,8 @@ class Module_purchase
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('transactions');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('trans_expecting');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_transactions');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_expecting');
 
         delete_privilege('access_ecommerce_in_test_mode');
 
@@ -76,8 +76,8 @@ class Module_purchase
         if ($upgrade_from === null) {
             add_privilege('ECOMMERCE', 'access_ecommerce_in_test_mode', false);
 
-            $GLOBALS['SITE_DB']->create_table('trans_expecting', array( // Used by payment gateways that return limited information back via IPN, or for local transactions
-                'id' => '*ID_TEXT', // NB: This is often different from the 'transactions.id' field
+            $GLOBALS['SITE_DB']->create_table('ecom_trans_expecting', array( // Used by payment gateways that return limited information back via IPN, or for local transactions
+                'id' => '*ID_TEXT', // NB: This is often different from the 'ecom_transactions.id' field
                 'e_type_code' => 'ID_TEXT',
                 'e_purchase_id' => 'ID_TEXT',
                 'e_item_name' => 'SHORT_TEXT',
@@ -109,7 +109,7 @@ class Module_purchase
                 $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 1, $l[2]);
             }
 
-            $GLOBALS['SITE_DB']->create_table('transactions', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_transactions', array(
                 'id' => '*ID_TEXT',
                 't_type_code' => 'ID_TEXT',
                 't_purchase_id' => 'ID_TEXT',
@@ -470,13 +470,13 @@ class Module_purchase
 
         if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
             // For a subscription we need to add in the subscription record in advance of payment. This will become our $purchase_id
-            $_purchase_id = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 'id', array(
+            $_purchase_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 'id', array(
                 's_type_code' => $type_code,
                 's_member_id' => get_member(),
                 's_state' => 'new'
             ));
             if ($_purchase_id === null) {
-                $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('subscriptions', array(
+                $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_subscriptions', array(
                     's_type_code' => $type_code,
                     's_member_id' => get_member(),
                     's_state' => 'new',

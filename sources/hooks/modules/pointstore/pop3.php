@@ -48,7 +48,7 @@ class Hook_pointstore_pop3
         $pop3 = post_param_integer('pop3', -1);
         if ($pop3 != -1) {
             $dpop3 = post_param_string('dpop3');
-            $GLOBALS['SITE_DB']->query_insert('prices', array('name' => 'pop3_' . $dpop3, 'price' => $pop3));
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'pop3_' . $dpop3, 'price' => $pop3));
             log_it('POINTSTORE_ADD_MAIL_POP3', $dpop3);
         }
         $this->_do_price_mail();
@@ -65,9 +65,9 @@ class Hook_pointstore_pop3
             $name = 'pop3_' . post_param_string('dpop3_' . strval($i));
             $name2 = 'pop3_' . post_param_string('ndpop3_' . strval($i));
             if (post_param_integer('delete_pop3_' . strval($i), 0) == 1) {
-                $GLOBALS['SITE_DB']->query_delete('prices', array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
             } else {
-                $GLOBALS['SITE_DB']->query_update('prices', array('price' => $price, 'name' => $name2), array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_update('ecom_prods_prices', array('price' => $price, 'name' => $name2), array('name' => $name), '', 1);
             }
 
             $i++;
@@ -94,7 +94,7 @@ class Hook_pointstore_pop3
      */
     public function config()
     {
-        $rows = $GLOBALS['SITE_DB']->query('SELECT price,name FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('pop3\_%') . '\'');
+        $rows = $GLOBALS['SITE_DB']->query('SELECT price,name FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('pop3\_%') . '\'');
         $out = array();
         foreach ($rows as $i => $row) {
             $fields = new Tempcode();

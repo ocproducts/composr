@@ -27,7 +27,7 @@ class Hook_cron_classifieds
             return;
         }
 
-        if (!$GLOBALS['SITE_DB']->table_exists('classifieds_prices')) {
+        if (!$GLOBALS['SITE_DB']->table_exists('ecom_classifieds_prices')) {
             return;
         }
 
@@ -43,7 +43,7 @@ class Hook_cron_classifieds
 
         $start = 0;
         do {
-            $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries e JOIN ' . get_table_prefix() . 'classifieds_prices p ON p.c_catalogue_name=e.c_name', array('e.*'), array('ce_validated' => 1), '', 1000, $start);
+            $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices p ON p.c_catalogue_name=e.c_name', array('e.*'), array('ce_validated' => 1), '', 1000, $start);
             foreach ($entries as $entry) {
                 if ($entry['ce_last_moved'] == $entry['ce_add_date']) {
                     require_code('classifieds');

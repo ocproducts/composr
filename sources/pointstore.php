@@ -43,7 +43,7 @@ function pointstore_handle_error_taken($prefix, $suffix)
  */
 function get_mail_domains($type, $points_left)
 {
-    $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like($type . '%') . '\'');
+    $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like($type . '%') . '\'');
     $list = new Tempcode();
     foreach ($rows as $row) {
         $address = substr($row['name'], strlen($type));

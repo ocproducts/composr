@@ -35,7 +35,7 @@ class Hook_realtime_rain_ecommerce
         $drops = array();
 
         if (has_actual_page_access(get_member(), 'admin_ecommerce')) {
-            $rows = $GLOBALS['SITE_DB']->query('SELECT t_amount,t_type_code,t_time AS timestamp FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'transactions WHERE t_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
+            $rows = $GLOBALS['SITE_DB']->query('SELECT t_amount,t_type_code,t_time AS timestamp FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'ecom_transactions WHERE t_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
 
             foreach ($rows as $row) {
                 require_code('ecommerce');

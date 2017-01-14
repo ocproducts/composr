@@ -46,10 +46,10 @@ class Module_pointstore
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('prices');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_prices');
         $GLOBALS['SITE_DB']->drop_table_if_exists('sales');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('pstore_customs');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('pstore_permissions');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_custom');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_permissions');
     }
 
     /**
@@ -61,7 +61,7 @@ class Module_pointstore
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if (is_null($upgrade_from)) {
-            $GLOBALS['SITE_DB']->create_table('prices', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_prods_prices', array(
                 'name' => '*ID_TEXT',
                 'price' => 'INTEGER'
             ));
@@ -76,7 +76,7 @@ class Module_pointstore
             ));
 
             // Custom
-            $GLOBALS['SITE_DB']->create_table('pstore_customs', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_prods_custom', array(
                 'id' => '*AUTO',
                 'c_title' => 'SHORT_TRANS',
                 'c_description' => 'LONG_TRANS__COMCODE',
@@ -87,7 +87,7 @@ class Module_pointstore
                 'c_one_per_member' => 'BINARY',
             ));
             // Permissions
-            $GLOBALS['SITE_DB']->create_table('pstore_permissions', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_prods_permissions', array(
                 'id' => '*AUTO',
                 'p_title' => 'SHORT_TRANS',
                 'p_description' => 'LONG_TRANS__COMCODE',
@@ -240,7 +240,7 @@ class Module_pointstore
         if (get_option('is_on_forw_buy') == '1') {
             $forwarding_url = build_url(array('page' => '_SELF', 'type' => 'newforwarding', 'id' => 'forwarding'), '_SELF');
 
-            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('forw\_%') . '\'') > 0) {
+            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('forw\_%') . '\'') > 0) {
                 $_pointstore_mail_forwarding_link = $forwarding_url;
             } else {
                 $_pointstore_mail_forwarding_link = null;
@@ -252,7 +252,7 @@ class Module_pointstore
         if (get_option('is_on_pop3_buy') == '1') {
             $pop3_url = build_url(array('page' => '_SELF', 'type' => 'pop3info', 'id' => 'pop3'), '_SELF');
 
-            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('pop3\_%') . '\'') > 0) {
+            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('pop3\_%') . '\'') > 0) {
                 $_pointstore_mail_pop3_link = $pop3_url;
             } else {
                 $_pointstore_mail_pop3_link = null;

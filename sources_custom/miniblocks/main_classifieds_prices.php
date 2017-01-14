@@ -24,7 +24,7 @@ $catalogue_name = $map['param'];
 
 $show_free = ((isset($map['show_free'])) && ($map['show_free'] == '1'));
 
-$prices = $GLOBALS['SITE_DB']->query_select('classifieds_prices', array('*'), array('c_catalogue_name' => $catalogue_name), 'ORDER BY c_price');
+$prices = $GLOBALS['SITE_DB']->query_select('ecom_classifieds_prices', array('*'), array('c_catalogue_name' => $catalogue_name), 'ORDER BY c_price');
 
 $data = array();
 foreach ($prices as $price) {

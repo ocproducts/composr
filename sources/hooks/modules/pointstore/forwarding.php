@@ -48,7 +48,7 @@ class Hook_pointstore_forwarding
         $forw = post_param_integer('forw', -1);
         if ($forw != -1) {
             $dforw = post_param_string('dforw');
-            $GLOBALS['SITE_DB']->query_insert('prices', array('name' => 'forw_' . $dforw, 'price' => $forw));
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'forw_' . $dforw, 'price' => $forw));
             log_it('POINTSTORE_ADD_MAIL_FORWARDER', $dforw);
         }
         $this->_do_price_mail();
@@ -65,9 +65,9 @@ class Hook_pointstore_forwarding
             $name = 'forw_' . post_param_string('dforw_' . strval($i));
             $name2 = 'forw_' . post_param_string('ndforw_' . strval($i));
             if (post_param_integer('delete_forw_' . strval($i), 0) == 1) {
-                $GLOBALS['SITE_DB']->query_delete('prices', array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
             } else {
-                $GLOBALS['SITE_DB']->query_update('prices', array('price' => $price, 'name' => $name2), array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_update('ecom_prods_prices', array('price' => $price, 'name' => $name2), array('name' => $name), '', 1);
             }
 
             $i++;
@@ -94,7 +94,7 @@ class Hook_pointstore_forwarding
      */
     public function config()
     {
-        $rows = $GLOBALS['SITE_DB']->query('SELECT price,name FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('forw\_%') . '\'');
+        $rows = $GLOBALS['SITE_DB']->query('SELECT price,name FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('forw\_%') . '\'');
         $out = array();
         foreach ($rows as $i => $row) {
             $fields = new Tempcode();

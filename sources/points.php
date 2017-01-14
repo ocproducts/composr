@@ -41,7 +41,7 @@ function init__points()
  */
 function get_price($item)
 {
-    return $GLOBALS['SITE_DB']->query_select_value('prices', 'price', array('name' => $item));
+    return $GLOBALS['SITE_DB']->query_select_value('ecom_prods_prices', 'price', array('name' => $item));
 }
 
 /**

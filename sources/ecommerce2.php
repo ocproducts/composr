@@ -123,7 +123,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
         require_code('cns_groups_action');
         require_code('cns_groups_action2');
         $type_code = 'USERGROUP' . strval($id);
-        $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code));
+        $subscriptions = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code));
         foreach ($subscriptions as $sub) {
             $member_id = $sub['s_member_id'];
             if ((get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
@@ -225,7 +225,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
 
     // Remove benefits
     $type_code = 'USERGROUP' . strval($id);
-    $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code));
+    $subscriptions = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code));
     $to_members = array();
     foreach ($subscriptions as $sub) {
         $member_id = $sub['s_member_id'];

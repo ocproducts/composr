@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_commandr_fs_extended_config__pstore_customs
+class Hook_commandr_fs_extended_config__ecom_prods_custom
 {
     /**
      * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
@@ -45,7 +45,7 @@ class Hook_commandr_fs_extended_config__pstore_customs
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        return table_to_json('pstore_customs');
+        return table_to_json('ecom_prods_custom');
     }
 
     /**
@@ -60,6 +60,6 @@ class Hook_commandr_fs_extended_config__pstore_customs
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        return table_from_json('pstore_customs', $contents, null, TABLE_REPLACE_MODE_SEVERE);
+        return table_from_json('ecom_prods_custom', $contents, null, TABLE_REPLACE_MODE_SEVERE);
     }
 }

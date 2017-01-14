@@ -108,7 +108,7 @@ class Hook_payment_gateway_secpay
         $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
 
         // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
@@ -163,7 +163,7 @@ class Hook_payment_gateway_secpay
         list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
 
         // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
@@ -285,7 +285,7 @@ class Hook_payment_gateway_secpay
             $subscription = false;
         }
 
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $txn_id), '', 1);
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $txn_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
             if (!running_script('ecommerce')) {
                 return null;
@@ -460,7 +460,7 @@ class Hook_payment_gateway_secpay
         $password = get_option('payment_gateway_password');
         $vpn_password = get_option('payment_gateway_vpn_password');
 
-        $trans_id = $GLOBALS['SITE_DB']->query_select_value_if_there('transactions', 'id', array('t_purchase_id' => strval($subscription_id)));
+        $trans_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_transactions', 'id', array('t_purchase_id' => strval($subscription_id)));
         if ($trans_id === null) {
             return false;
         }
@@ -525,7 +525,7 @@ class Hook_payment_gateway_secpay
             $options .= ',repeat=' . $first_repeat . '/' . $length_units_2 . '/0/' . $amount;
         }
 
-        $item_name = $GLOBALS['SITE_DB']->query_select_value('trans_expecting', 'e_item_name', array('id' => $trans_id));
+        $item_name = $GLOBALS['SITE_DB']->query_select_value('ecom_trans_expecting', 'e_item_name', array('id' => $trans_id));
 
         $shipping_street_address_lines = explode("\n", $shipping_street_address, 2);
         $shipping_address = 'ship_name=' . $shipping_firstname . ' ' . $shipping_lastname . ',';

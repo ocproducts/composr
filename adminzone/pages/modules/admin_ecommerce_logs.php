@@ -250,8 +250,8 @@ class Module_admin_ecommerce_logs
                 $where['t_purchase_id'] = $id;
             }
         }
-        $max_rows = $GLOBALS['SITE_DB']->query_select_value('transactions', 'COUNT(*)', $where);
-        $rows = $GLOBALS['SITE_DB']->query_select('transactions', array('*'), $where, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value('ecom_transactions', 'COUNT(*)', $where);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('*'), $where, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         if (count($rows) == 0) {
             return inform_screen($this->title, do_lang_tempcode('NO_ENTRIES'));
         }
@@ -314,7 +314,7 @@ class Module_admin_ecommerce_logs
         $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*, 'start' => $start, 'max' => $max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
 
         $products = new Tempcode();
-        $product_rows = $GLOBALS['SITE_DB']->query_select('transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
+        $product_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
         foreach ($product_rows as $p) {
             $products->attach(form_input_list_entry($p['t_type_code']));
         }
@@ -467,7 +467,7 @@ class Module_admin_ecommerce_logs
                     }
                 }
 
-                $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('subscriptions', array(
+                $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_subscriptions', array(
                     's_type_code' => $type_code,
                     's_member_id' => $member_id,
                     's_state' => 'new',
@@ -489,7 +489,7 @@ class Module_admin_ecommerce_logs
                 $s_length_units = $products[$type_code][3]['length_units']; // y-year, m-month, w-week, d-day
                 $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
                 $new_s_time = strtotime('-' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $custom_expiry);
-                $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_time' => $new_s_time), array('id' => $purchase_id));
+                $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_time' => $new_s_time), array('id' => $purchase_id));
             }
         } else {
             if ($purchase_id == '') {
@@ -575,7 +575,7 @@ class Module_admin_ecommerce_logs
 
         require_code('currency');
 
-        $transactions = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'transactions WHERE t_time<' . strval($to) . ' AND ' . db_string_equal_to('t_status', 'Completed') . ' ORDER BY t_time');
+        $transactions = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'ecom_transactions WHERE t_time<' . strval($to) . ' AND ' . db_string_equal_to('t_status', 'Completed') . ' ORDER BY t_time');
         foreach ($transactions as $transaction) {
             if ($transaction['t_time'] > $from) {
                 $types['TRANS']['AMOUNT'] += get_transaction_fee($transaction['t_amount'], $transaction['t_payment_gateway']);
@@ -617,7 +617,7 @@ class Module_admin_ecommerce_logs
         }
 
         if ($unpaid_invoices_count) {
-            $invoices = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'invoices WHERE ' . db_string_equal_to('i_state', 'new') . ' AND i_time<' . strval($to) . ' ORDER BY i_time');
+            $invoices = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'ecom_invoices WHERE ' . db_string_equal_to('i_state', 'new') . ' AND i_time<' . strval($to) . ' ORDER BY i_time');
             foreach ($invoices as $invoice) {
                 $type_code = $invoice['i_type_code'];
 
@@ -713,7 +713,7 @@ class Module_admin_ecommerce_logs
             $where = null;
         }
 
-        $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), $where, 'ORDER BY s_type_code,s_time', 10000/*reasonable limit*/);
+        $subscriptions = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), $where, 'ORDER BY s_type_code,s_time', 10000/*reasonable limit*/);
         if (count($subscriptions) == 0) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
@@ -763,7 +763,7 @@ class Module_admin_ecommerce_logs
     public function cancel_subscription()
     {
         $id = get_param_integer('subscription_id');
-        $subscription = $GLOBALS['SITE_DB']->query_select('subscriptions', array('s_type_code', 's_member_id'), array('id' => $id), '', 1);
+        $subscription = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('s_type_code', 's_member_id'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $subscription)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }

@@ -46,7 +46,7 @@ function handle_product_orders($purchase_id, $details, $type_code, $payment_stat
         // Copy in memo from transaction, as customer notes
         $old_memo = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => intval($purchase_id)));
         if ($old_memo == '') {
-            $memo = $GLOBALS['SITE_DB']->query_select_value('transactions', 't_memo', array('id' => $txn_id));
+            $memo = $GLOBALS['SITE_DB']->query_select_value('ecom_transactions', 't_memo', array('id' => $txn_id));
             if ($memo != '') {
                 require_lang('shopping');
                 $memo = do_lang('CUSTOMER_NOTES') . "\n" . $memo;

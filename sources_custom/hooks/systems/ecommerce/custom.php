@@ -24,7 +24,7 @@ function handle_custom_purchase($purchase_id, $details, $type_code)
 {
     $id = intval(substr($type_code, strlen('CUSTOM_')));
 
-    $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('id', 'c_title', 'c_cost'), array('id' => $id));
+    $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('id', 'c_title', 'c_cost'), array('id' => $id));
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
@@ -70,7 +70,7 @@ class Hook_ecommerce_custom
             return array();
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*'), array('c_enabled' => 1));
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), array('c_enabled' => 1));
 
         $products = array();
         foreach ($rows as $row) {
@@ -103,7 +103,7 @@ class Hook_ecommerce_custom
 
         $id = intval(substr($type_code, strlen('CUSTOM_')));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*'), array('id' => $id), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), array('id' => $id), '', 1);
         if (array_key_exists(0, $rows)) {
             $row = $rows[0];
 
@@ -135,10 +135,10 @@ class Hook_ecommerce_custom
     {
         $id = intval(substr($type_code, strlen('CUSTOM_')));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*'), array('id' => $id), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), array('id' => $id), '', 1);
         if (array_key_exists(0, $rows)) {
             $row = $rows[0];
-            return get_translated_tempcode('pstore_customs', $row, 'c_description');
+            return get_translated_tempcode('ecom_prods_custom', $row, 'c_description');
         }
         return new Tempcode();
     }

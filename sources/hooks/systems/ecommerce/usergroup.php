@@ -49,7 +49,7 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
     }
 
     if ($myrow['s_auto_recur'] == 1) {
-        $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_member_id', array('id' => intval($purchase_id)));
+        $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
         if ($member_id === null) {
             return;
         }
@@ -157,7 +157,7 @@ class Hook_ecommerce_usergroup
     public function get_identifier_manual_field_inputter($type_code)
     {
         $list = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code, 's_state' => 'new'), 'ORDER BY id DESC');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code, 's_state' => 'new'), 'ORDER BY id DESC');
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['s_member_id']);
             if ($username === null) {
@@ -191,7 +191,7 @@ class Hook_ecommerce_usergroup
      */
     public function member_for($purchase_id)
     {
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_member_id', array('id' => intval($purchase_id)));
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
     }
 
     /**

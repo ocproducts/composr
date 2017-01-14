@@ -31,7 +31,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
 
     // Subscription expiry date
     if ((get_forum_type() == 'cns') && (addon_installed('ecommerce'))) {
-        $query = 'SELECT * FROM ' . get_table_prefix() . 'subscriptions WHERE s_member_id=' . strval($member_id) . ' AND (' . db_string_equal_to('s_state', 'active') . ' OR ' . db_string_equal_to('s_state', 'cancelled') . ') ORDER BY s_time';
+        $query = 'SELECT * FROM ' . get_table_prefix() . 'ecom_subscriptions WHERE s_member_id=' . strval($member_id) . ' AND (' . db_string_equal_to('s_state', 'active') . ' OR ' . db_string_equal_to('s_state', 'cancelled') . ') ORDER BY s_time';
         $_subscriptions = $GLOBALS['SITE_DB']->query($query);
         require_code('ecommerce');
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
@@ -39,7 +39,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
         $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
         foreach ($_subscriptions_non_recurring as $sub) {
             $found_transaction = false;
-            $subs_trans = $GLOBALS['SITE_DB']->query_select('transactions', array('*'), array('t_purchase_id' => $member_id, 't_status' => 'Completed'), 'ORDER BY t_time DESC');
+            $subs_trans = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('*'), array('t_purchase_id' => $member_id, 't_status' => 'Completed'), 'ORDER BY t_time DESC');
             foreach ($subs_trans as $sub_trans) {
                 $matches = array();
                 if (preg_match('#^USERGROUP(\d+)$#', $sub_trans['t_type_code'], $matches) != 0) {

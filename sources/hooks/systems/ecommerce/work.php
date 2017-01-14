@@ -42,7 +42,7 @@ class Hook_ecommerce_work
     public function get_identifier_manual_field_inputter($type_code)
     {
         $list = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_type_code' => $type_code), 'ORDER BY id DESC');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_type_code' => $type_code), 'ORDER BY id DESC');
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
             if ($username === null) {
@@ -61,7 +61,7 @@ class Hook_ecommerce_work
      */
     public function member_for($purchase_id)
     {
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('invoices', 'i_member_id', array('id' => intval($purchase_id)));
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_member_id', array('id' => intval($purchase_id)));
     }
 
     /**

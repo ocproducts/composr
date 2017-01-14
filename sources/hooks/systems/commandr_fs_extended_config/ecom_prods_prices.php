@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_commandr_fs_extended_config__pstore_permissions
+class Hook_commandr_fs_extended_config__ecom_prods_prices
 {
     /**
      * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__pstore_permissions
      */
     public function get_edit_date()
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'POINTSTORE_AMEND_CUSTOM_PERMISSIONS');
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'POINTSTORE_CHANGED_PRICES') . ' OR the_type LIKE \'' . db_encode_like('POINTSTORE\_ADD\_%') . '\'';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -45,7 +45,7 @@ class Hook_commandr_fs_extended_config__pstore_permissions
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        return table_to_json('pstore_permissions');
+        return table_to_json('ecom_prods_prices');
     }
 
     /**
@@ -60,6 +60,6 @@ class Hook_commandr_fs_extended_config__pstore_permissions
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        return table_from_json('pstore_permissions', $contents, null, TABLE_REPLACE_MODE_SEVERE);
+        return table_from_json('ecom_prods_prices', $contents, null, TABLE_REPLACE_MODE_SEVERE);
     }
 }

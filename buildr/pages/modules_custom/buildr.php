@@ -62,7 +62,7 @@ class Module_buildr
         if (addon_installed('pointstore')) { // If pointstore not removed yet
             $prices = get_buildr_prices_default();
             foreach (array_keys($prices) as $name) {
-                $GLOBALS['SITE_DB']->query_delete('prices', array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
             }
         }
 
@@ -261,7 +261,7 @@ class Module_buildr
 
             $prices = get_buildr_prices_default();
             foreach ($prices as $name => $price) {
-                $GLOBALS['SITE_DB']->query_insert('prices', array('name' => $name, 'price' => $price));
+                $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => $price));
             }
 
             require_code('buildr_action');

@@ -112,7 +112,7 @@ class Hook_payment_gateway_worldpay
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency);
 
         // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
@@ -188,7 +188,7 @@ class Hook_payment_gateway_worldpay
         $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
 
         // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
             'id' => $trans_id,
             'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
@@ -283,7 +283,7 @@ class Hook_payment_gateway_worldpay
             $subscription = false;
         }
 
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $cart_id), '', 1);
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $cart_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
             if (!running_script('ecommerce')) {
                 return null;

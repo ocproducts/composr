@@ -46,7 +46,7 @@ class Module_subscriptions
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('subscriptions');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_subscriptions');
 
         $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
@@ -67,7 +67,7 @@ class Module_subscriptions
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
         if ($upgrade_from === null) {
-            $GLOBALS['SITE_DB']->create_table('subscriptions', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_subscriptions', array(
                 'id' => '*AUTO',
                 's_type_code' => 'ID_TEXT',
                 's_member_id' => 'MEMBER',
@@ -159,7 +159,7 @@ class Module_subscriptions
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('subscriptions', 'COUNT(*)') > 0)) {
+        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('ecom_subscriptions', 'COUNT(*)') > 0)) {
             return array(
                 'browse' => array('MY_SUBSCRIPTIONS', 'menu/adminzone/audit/ecommerce/subscriptions'),
             );
@@ -254,7 +254,7 @@ class Module_subscriptions
     public function cancel()
     {
         $id = get_param_integer('id');
-        $payment_gateway = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_payment_gateway', array('id' => $id));
+        $payment_gateway = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_payment_gateway', array('id' => $id));
         if ($payment_gateway === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -270,7 +270,7 @@ class Module_subscriptions
             }
         }
 
-        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_state' => 'cancelled'), array('id' => $id, 's_member_id' => get_member()), '', 1);
+        $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_state' => 'cancelled'), array('id' => $id, 's_member_id' => get_member()), '', 1);
 
         $url = build_url(array('page' => '_SELF'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

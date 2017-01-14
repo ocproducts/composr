@@ -33,7 +33,7 @@ if (count($_POST) != 0) {
 
             if (($catalogue != '') && ($days != '') && ($label != '') && ($price != '')) {
                 if ($matches[1] == 'existing') {
-                    $_label = $GLOBALS['SITE_DB']->query_select_value_if_there('classifieds_prices', 'c_label', array('id' => intval($matches[2])));
+                    $_label = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_classifieds_prices', 'c_label', array('id' => intval($matches[2])));
                     if (is_null($_label)) {
                         $matches[1] = 'new'; // Was lost, so add as new
                     }
@@ -41,7 +41,7 @@ if (count($_POST) != 0) {
                 if ($matches[1] == 'existing') {
                     // Edit
                     $GLOBALS['SITE_DB']->query_update(
-                        'classifieds_prices',
+                        'ecom_classifieds_prices',
                         array(
                             'c_catalogue_name' => $catalogue,
                             'c_days' => intval($days),
@@ -54,7 +54,7 @@ if (count($_POST) != 0) {
                 } else {
                     // Add
                     $GLOBALS['SITE_DB']->query_insert(
-                        'classifieds_prices',
+                        'ecom_classifieds_prices',
                         array(
                             'c_catalogue_name' => $catalogue,
                             'c_days' => intval($days),
@@ -65,7 +65,7 @@ if (count($_POST) != 0) {
             } else {
                 if ($matches[1] == 'existing') {
                     // Delete
-                    $GLOBALS['SITE_DB']->query_delete('classifieds_prices', array('id' => intval($matches[2])), '', 1);
+                    $GLOBALS['SITE_DB']->query_delete('ecom_classifieds_prices', array('id' => intval($matches[2])), '', 1);
                 }
             }
         }
@@ -76,7 +76,7 @@ if (count($_POST) != 0) {
 
 $title = get_screen_title('CLASSIFIEDS');
 
-$_prices = $GLOBALS['SITE_DB']->query_select('classifieds_prices', array('*'), null, 'ORDER BY c_catalogue_name,c_days,c_price');
+$_prices = $GLOBALS['SITE_DB']->query_select('ecom_classifieds_prices', array('*'), null, 'ORDER BY c_catalogue_name,c_days,c_price');
 $prices = array();
 foreach ($_prices as $_price) {
     $prices[] = array(

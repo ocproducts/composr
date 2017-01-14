@@ -172,9 +172,9 @@ class Hook_addon_registry_pointstore
             'sources/hooks/modules/pointstore/topic_pin.php',
             'sources/hooks/systems/page_groupings/pointstore.php',
             'sources/pointstore.php',
-            'sources/hooks/systems/commandr_fs_extended_config/pstore_customs.php',
-            'sources/hooks/systems/commandr_fs_extended_config/pstore_permissions.php',
-            'sources/hooks/systems/commandr_fs_extended_config/pstore_prices.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ecom_prods_custom.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ecom_prods_permissions.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ecom_prods_prices.php',
         );
     }
 

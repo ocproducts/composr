@@ -56,7 +56,7 @@ class Module_invoices
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('invoices');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_invoices');
     }
 
     /**
@@ -68,7 +68,7 @@ class Module_invoices
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ($upgrade_from === null) {
-            $GLOBALS['SITE_DB']->create_table('invoices', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_invoices', array(
                 'id' => '*AUTO',
                 'i_type_code' => 'ID_TEXT',
                 'i_member_id' => 'MEMBER',
@@ -81,7 +81,7 @@ class Module_invoices
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 3)) {
-            $GLOBALS['SITE_DB']->create_index('invoices', 'i_member_id', array('i_member_id'));
+            $GLOBALS['SITE_DB']->create_index('ecom_invoices', 'i_member_id', array('i_member_id'));
         }
     }
 
@@ -96,7 +96,7 @@ class Module_invoices
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('invoices', 'COUNT(*)', array('i_member_id' => get_member())) > 0)) {
+        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'COUNT(*)', array('i_member_id' => get_member())) > 0)) {
             return array(
                 'browse' => array('MY_INVOICES', 'menu/adminzone/audit/ecommerce/invoices'),
             );
@@ -171,7 +171,7 @@ class Module_invoices
         }
 
         $invoices = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_member_id' => $member_id), 'ORDER BY i_time');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_member_id' => $member_id), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $type_code = $row['i_type_code'];
             $product_object = find_product($type_code);
@@ -220,7 +220,7 @@ class Module_invoices
     {
         $id = get_param_integer('id');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('id' => $id), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }

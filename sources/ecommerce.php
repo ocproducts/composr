@@ -389,7 +389,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
 
     $trans_id = $payment_gateway_object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
 
-    $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
+    $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
         'id' => $trans_id,
         'e_type_code' => $type_code,
         'e_purchase_id' => $purchase_id,
@@ -594,7 +594,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 
     $trans_id = post_param_string('trans_id');
 
-    $transaction_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $trans_id), '', 1);
+    $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_id), '', 1);
     if (!array_key_exists(0, $transaction_rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
@@ -788,7 +788,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Try and locate the product
     if ($is_subscription) { // Subscription
-        $type_code = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_type_code', array('id' => intval($purchase_id)));
+        $type_code = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_type_code', array('id' => intval($purchase_id)));
         if ($type_code === null) {
             fatal_ipn_exit(do_lang('NO_SUCH_SUBSCRIPTION', strval($purchase_id)));
         }
@@ -834,7 +834,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     }
 
     // Store
-    $GLOBALS['SITE_DB']->query_insert('transactions', array(
+    $GLOBALS['SITE_DB']->query_insert('ecom_transactions', array(
         'id' => $txn_id,
         't_memo' => $memo,
         't_type_code' => $type_code,
@@ -854,9 +854,9 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     // Pending
     if ($payment_status == 'Pending') {
         if ($found[0] == PRODUCT_INVOICE) { // Invoices have special support for tracking the order status
-            $GLOBALS['SITE_DB']->query_update('invoices', array('i_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
+            $GLOBALS['SITE_DB']->query_update('ecom_invoices', array('i_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
         } elseif ($found[0] == PRODUCT_SUBSCRIPTION) { // Subscriptions have special support for tracking the order status
-            $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
+            $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
             if ($found[2] != '') {
                 call_user_func_array($found[2], array($purchase_id, $found, $type_code, true)); // Run cancel code
             }
@@ -874,7 +874,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Invoice: Check price
     if ($found[0] == PRODUCT_INVOICE) {
-        $price = $GLOBALS['SITE_DB']->query_select_value('invoices', 'i_amount', array('id' => intval($purchase_id)));
+        $price = $GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'i_amount', array('id' => intval($purchase_id)));
         if ($price != $mc_gross) {
             if ($payment_gateway != 'manual') {
                 fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $price));
@@ -889,7 +889,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Subscription: Completed (Made active)
     if (($payment_status == 'Completed') && ($found[0] == PRODUCT_SUBSCRIPTION)) {
-        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'active'), array('id' => intval($purchase_id)), '', 1);
+        $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'active'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Subscription: Modified
@@ -899,12 +899,12 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Subscription: Cancelled
     if (($payment_status == 'SCancelled') && ($found[0] == PRODUCT_SUBSCRIPTION)) {
-        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'cancelled'), array('id' => intval($purchase_id)), '', 1);
+        $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'cancelled'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Invoice handling
     if (($payment_status == 'Completed') && ($found[0] == PRODUCT_INVOICE)) {
-        $GLOBALS['SITE_DB']->query_update('invoices', array('i_state' => 'paid'), array('id' => intval($purchase_id)), '', 1);
+        $GLOBALS['SITE_DB']->query_update('ecom_invoices', array('i_state' => 'paid'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Set order dispatch status
@@ -930,7 +930,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         // Send out notification to staff for completion/cancellation
         if ($found[0] == PRODUCT_SUBSCRIPTION) {
             require_code('notifications');
-            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_member_id', array('id' => intval($purchase_id)));
+            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
             if ($member_id !== null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
                 if ($username === null) {

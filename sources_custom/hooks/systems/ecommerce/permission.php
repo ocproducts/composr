@@ -24,7 +24,7 @@ function handle_permission_purchase($purchase_id, $details, $type_code)
 {
     $id = intval(substr($type_code, strlen('PERMISSION_')));
 
-    $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), array('id' => $id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
@@ -98,7 +98,7 @@ class Hook_ecommerce_permission
             return array();
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), array('p_enabled' => 1));
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('p_enabled' => 1));
 
         $products = array();
         foreach ($rows as $row) {
@@ -131,7 +131,7 @@ class Hook_ecommerce_permission
 
         $id = intval(substr($type_code, strlen('PERMISSION_')));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), array('id' => $id), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('id' => $id), '', 1);
         if (array_key_exists(0, $rows)) {
             $row = $rows[0];
 
@@ -157,10 +157,10 @@ class Hook_ecommerce_permission
     {
         $id = intval(substr($type_code, strlen('PERMISSION_')));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), array('id' => $id), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('id' => $id), '', 1);
         if (array_key_exists(0, $rows)) {
             $row = $rows[0];
-            return get_translated_tempcode('pstore_permissions', $row, 'p_description');
+            return get_translated_tempcode('ecom_prods_permissions', $row, 'p_description');
         }
         return new Tempcode();
     }

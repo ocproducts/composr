@@ -245,7 +245,7 @@ class Module_admin_invoices
             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $to));
         }
 
-        $id = $GLOBALS['SITE_DB']->query_insert('invoices', array(
+        $id = $GLOBALS['SITE_DB']->query_insert('ecom_invoices', array(
             'i_type_code' => $type_code,
             'i_member_id' => $member_id,
             'i_state' => 'new',
@@ -271,7 +271,7 @@ class Module_admin_invoices
     public function outstanding()
     {
         $invoices = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_state' => 'new'), 'ORDER BY i_time');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_state' => 'new'), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
             $time = get_timezoned_date($row['i_time']);
@@ -294,7 +294,7 @@ class Module_admin_invoices
     public function undelivered()
     {
         $invoices = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_state' => 'paid'), 'ORDER BY i_time');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_state' => 'paid'), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
             $time = get_timezoned_date($row['i_time']);
@@ -327,7 +327,7 @@ class Module_admin_invoices
             return do_template('CONFIRM_SCREEN', array('_GUID' => '45707062c00588c33726b256e8f9ba40', 'TITLE' => $this->title, 'FIELDS' => $hidden, 'PREVIEW' => $text, 'URL' => $url));
         }
 
-        $GLOBALS['SITE_DB']->query_delete('invoices', array('id' => get_param_integer('id')), '', 1);
+        $GLOBALS['SITE_DB']->query_delete('ecom_invoices', array('id' => get_param_integer('id')), '', 1);
 
         $url = build_url(array('page' => '_SELF', 'type' => post_param_string('from', 'browse')), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
@@ -340,7 +340,7 @@ class Module_admin_invoices
      */
     public function deliver()
     {
-        $GLOBALS['SITE_DB']->query_update('invoices', array('i_state' => 'delivered'), array('id' => get_param_integer('id')), '', 1);
+        $GLOBALS['SITE_DB']->query_update('ecom_invoices', array('i_state' => 'delivered'), array('id' => get_param_integer('id')), '', 1);
 
         $url = build_url(array('page' => '_SELF', 'type' => 'undelivered'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
