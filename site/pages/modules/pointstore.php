@@ -35,7 +35,7 @@ class Module_pointstore
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 6;
+        $info['version'] = 7;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -47,7 +47,7 @@ class Module_pointstore
     public function uninstall()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_prices');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('sales');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_sales');
         $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_custom');
         $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_permissions');
     }
@@ -66,13 +66,13 @@ class Module_pointstore
                 'price' => 'INTEGER'
             ));
 
-            $GLOBALS['SITE_DB']->create_table('sales', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_sales', array(
                 'id' => '*AUTO',
                 'date_and_time' => 'TIME',
-                'memberid' => 'MEMBER',
-                'purchasetype' => 'ID_TEXT',
+                'member_id' => 'MEMBER',
                 'details' => 'SHORT_TEXT',
                 'details2' => 'SHORT_TEXT'
+                'transaction_id' => 'AUTO_LINK',
             ));
 
             // Custom
@@ -118,6 +118,61 @@ class Module_pointstore
             rename_config_option('is_on_flagrant_buy', 'is_on_community_billboard_buy');
 
             $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_hours', '?INTEGER');
+        }
+
+        if (($upgrade_from < 7) && ($upgrade_from !== null)) {
+            $GLOBALS['SITE_DB']->rename_table('prices', 'ecom_prods_prices');
+            $GLOBALS['SITE_DB']->rename_table('pstore_customs', 'ecom_prods_custom');
+            $GLOBALS['SITE_DB']->rename_table('pstore_permissions', 'ecom_prods_permissions');
+            $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
+
+            $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'transaction_id', 'AUTO_LINK', db_get_first_id());
+            $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'memberid', 'MEMBER', 'member_id');
+            $sales = $GLOBALS['SITE_DB']->query_select('ecom_sales', array('*'));
+            foreach ($sales as $sale) {
+                $type_code = '';
+                switch ($sale['purchasetype']) {
+                    case 'banner':
+                        $type_code = 'banners';
+                        break;
+                    case 'pop3':
+                        $type_code = 'pop3';
+                        break;
+                    case 'forw':
+                        $type_code = 'forw';
+                        break;
+                    case 'PURCHASE_CUSTOM_PRODUCT':
+                        $type_code = 'custom';
+                        break;
+                    case 'PURCHASE_PERMISSION_PRODUCT':
+                        $type_code = 'permission';
+                        break;
+                    case 'NAME_HIGHLIGHTING':
+                        $type_code = 'highlight_name';
+                        break;
+                    case 'GAMBLING':
+                        $type_code = 'gambling';
+                        break;
+                    case 'TOPIC_PINNING':
+                        $type_code = 'topic_pin';
+                        break;
+                }
+                $transaction_id = $GLOBALS['SITE_DB']->query_insert('ecom_transactions', array(
+                    't_type_code' => $type_code,
+                    't_purchase_id' => strval($sale['id']),
+                    't_status' => 'Completed',
+                    't_reason' => '',
+                    't_amount' => '0',
+                    't_currency' => get_option('currency'),
+                    't_parent_txn_id' => '',
+                    't_time' => $sale['date_and_time'],
+                    't_pending_reason' => '',
+                    't_memo' => '',
+                    't_payment_gateway' => ''
+                ), true);
+                $GLOBALS['SITE_DB']->query_update('ecom_sales', array('transaction_id' => $transaction_id), array('id' => $sale['id']), '', 1);
+            }
+            $GLOBALS['SITE_DB']->delete_table_field('ecom_sales', 'purchasetype');
         }
     }
 

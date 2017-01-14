@@ -32,7 +32,7 @@ function handle_custom_purchase($purchase_id, $details, $type_code)
 
     $c_title = get_translated_text($row['c_title']);
 
-    $sale_id = $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => $purchase_id, 'purchasetype' => 'PURCHASE_CUSTOM_PRODUCT', 'details' => $c_title, 'details2' => strval($row['id'])), true);
+    $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $purchase_id, 'details' => $c_title, 'details2' => strval($row['id']), 'transaction_id' => TODO), true);
 
     require_lang('pointstore');
     require_code('notifications');
@@ -113,7 +113,7 @@ class Hook_ecommerce_custom
 
             if ($row['c_one_per_member'] == 1) {
                 // Test to see if it's been bought
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'id', array('purchasetype' => 'PURCHASE_CUSTOM_PRODUCT', 'details2' => strval($rows[0]['id']), 'memberid' => $member));
+                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'id', array('details2' => strval($rows[0]['id']), 'member_id' => $member, 't_type_code' => 'custom'));
                 if ($test !== null) {
                     return ECOMMERCE_PRODUCT_ALREADY_HAS;
                 }

@@ -82,7 +82,7 @@ class Module_admin_pointstore
             attach_message(do_lang_tempcode('menus:ALSO_SEE_SETUP', escape_html($also_url->evaluate())), 'inform', true);
         }
 
-        if ($type == 'browse' || $type == '_logs') {
+        if ($type == 'browse' || $type == 'delete_log_entry') {
             $this->title = get_screen_title('POINTSTORE_MANAGE_SALES');
         }
 
@@ -109,6 +109,7 @@ class Module_admin_pointstore
         rescue_shortened_post_request();
 
         require_code('form_templates');
+        require_code('ecommerce');
         require_css('points');
 
         $type = get_param_string('type', 'browse');
@@ -116,7 +117,7 @@ class Module_admin_pointstore
         if ($type == 'browse') {
             return $this->pointstore_log_interface();
         }
-        if ($type == '_logs') {
+        if ($type == 'delete_log_entry') {
             return $this->delete_log_entry();
         }
         if ($type == 'p') {
@@ -139,8 +140,8 @@ class Module_admin_pointstore
         $max = get_param_integer('max', 50);
         $start = get_param_integer('start', 0);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('sales', array('*'), null, 'ORDER BY date_and_time DESC', $max, $start);
-        $max_rows = $GLOBALS['SITE_DB']->query_select_value('sales', 'COUNT(*)');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('*', 's.id AS s_id'), null, 'ORDER BY date_and_time DESC', $max, $start);
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value('ecom_sales', 'COUNT(*)');
 
         $out = new Tempcode();
         require_code('templates_results_table');
@@ -152,41 +153,28 @@ class Module_admin_pointstore
             }
         }
         foreach ($rows as $row) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['memberid']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
             if (is_null($username)) {
                 $username = do_lang('UNKNOWN');
             }
-            switch ($row['purchasetype']) {
-                case 'banner':
-                    require_lang('banners');
-                    $type = do_lang('ADD_BANNER');
-                    break;
-                case 'pop3':
-                    $type = do_lang('POP3');
-                    break;
-                case 'forwarding':
-                    $type = do_lang('FORWARDING');
-                    break;
-                default:
-                    $_type = do_lang($row['purchasetype'], null, null, null, null, false);
-                    if (is_null($_type)) {
-                        $type = make_string_tempcode($row['purchasetype']);
-                    } else {
-                        $type = do_lang_tempcode($row['purchasetype']);
-                    }
-                    break;
+
+            list($found,) = find_product_row($row['t_type_code']);
+            if ($found !== null) {
+                $item_name = $found[4];
             }
+
             $details_1 = $row['details'];
             $details_2 = $row['details2'];
+
             $date = get_timezoned_date($row['date_and_time']);
 
-            $url = build_url(array('page' => '_SELF', 'type' => '_logs', 'date_and_time' => $row['date_and_time'], 'memberid' => $row['memberid']), '_SELF');
+            $url = build_url(array('page' => '_SELF', 'type' => 'delete_log_entry', 'id' => $row['id']), '_SELF');
             $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'NAME' => $username, 'URL' => $url));
 
             if ($do_other_details) {
-                $out->attach(columned_table_row(array($username, $type, $details_1, $details_2, $date, $actions), true));
+                $out->attach(columned_table_row(array($username, $item_name, $details_1, $details_2, $date, $actions), true));
             } else {
-                $out->attach(columned_table_row(array($username, $type, $details_1, $date, $actions), true));
+                $out->attach(columned_table_row(array($username, $item_name, $details_1, $date, $actions), true));
             }
         }
         if ($out->is_empty()) {
@@ -214,7 +202,7 @@ class Module_admin_pointstore
      */
     public function delete_log_entry()
     {
-        $this->_delete_log_entry(get_param_integer('date_and_time'), get_param_integer('memberid'));
+        $this->_delete_log_entry(get_param_integer('id'));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
@@ -224,12 +212,11 @@ class Module_admin_pointstore
     /**
      * Delete a Point Store purchase.
      *
-     * @param  integer $date_and_time The time of the purchase
-     * @param  MEMBER $memberid The member that made the purchase
+     * @param  integer $id The sales ID
      */
-    public function _delete_log_entry($date_and_time, $memberid)
+    public function _delete_log_entry($id)
     {
-        $GLOBALS['SITE_DB']->query_delete('sales', array('date_and_time' => $date_and_time, 'memberid' => $memberid), '', 1);
+        $GLOBALS['SITE_DB']->query_delete('ecom_sales', array('id' => $id), '', 1);
     }
 
     /**

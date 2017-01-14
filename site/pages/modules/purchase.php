@@ -164,6 +164,9 @@ class Module_purchase
 
             $GLOBALS['SITE_DB']->create_index('transactions', 't_time', array('t_time'));
             $GLOBALS['SITE_DB']->create_index('transactions', 't_type_code', array('t_type_code'));
+
+            $GLOBALS['SITE_DB']->rename_table('trans_expecting', 'ecom_trans_expecting');
+            $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
         }
     }
 

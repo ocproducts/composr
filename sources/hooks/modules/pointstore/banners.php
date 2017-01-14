@@ -65,7 +65,7 @@ class Hook_pointstore_banners
 
         $title = get_screen_title('MANAGE_BANNERS');
 
-        $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => get_member(), 'purchasetype' => 'banner'));
+        $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('member_id' => get_member(), 't_type_code' => 'banners'));
         if (!is_null($banner_name)) {
             $activate = new Tempcode();
             $upgrade_url = build_url(array('page' => '_SELF', 'type' => 'upgradebanner', 'id' => 'banners'), '_SELF');
@@ -85,7 +85,7 @@ class Hook_pointstore_banners
     public function handle_has_banner_already()
     {
         $member_id = get_member();
-        $has_one = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => $member_id, 'purchasetype' => 'banner'));
+        $has_one = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('member_id' => $member_id, 't_type_code' => 'banners'));
         if (!is_null($has_one)) {
             $myrows = $GLOBALS['SITE_DB']->query_select('banners', array('campaign_remaining', 'importance_modulus', 'name'), array('name' => $has_one), '', 1);
             if (array_key_exists(0, $myrows)) {
@@ -240,7 +240,7 @@ class Hook_pointstore_banners
 
         check_banner();
         add_banner($name, $image_url, '', $caption, $direct_code, intval(get_option('initial_banner_hits')), $site_url, 3, $notes, BANNER_PERMANENT, null, get_member(), 0);
-        $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => get_member(), 'purchasetype' => 'banner', 'details' => $name, 'details2' => ''));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => get_member(), 'details' => $name, 'details2' => '', 'transaction_id' => TODO));
         require_code('points2');
         charge_member(get_member(), $cost, do_lang('ADD_BANNER'));
 
@@ -274,16 +274,16 @@ class Hook_pointstore_banners
     {
         $member_id = get_member();
 
-        $details = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => $member_id, 'purchasetype' => 'banner'));
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('s.id', 'details'), array('member_id' => $member_id, 'e_type_code' => 'banners'));
 
         // If we don't own a banner account, stop right here.
-        if (is_null($details)) {
+        if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('NO_BANNER'));
         }
 
-        $myrows = $GLOBALS['SITE_DB']->query_select('banners', array('campaign_remaining', 'importance_modulus', 'name'), array('name' => $details), '', 1);
+        $myrows = $GLOBALS['SITE_DB']->query_select('banners', array('campaign_remaining', 'importance_modulus', 'name'), array('name' => $rows[0]['details']), '', 1);
         if (!array_key_exists(0, $myrows)) {
-            $GLOBALS['SITE_DB']->query_delete('sales', array('purchasetype' => 'banner', 'memberid' => $member_id), '', 1);
+            $GLOBALS['SITE_DB']->query_delete('ecom_sales', array('id'=> $rows[0]['id']), '', 1);
             warn_exit(do_lang_tempcode('BANNER_DELETED_REMAKE'));
         }
 

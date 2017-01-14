@@ -45,7 +45,7 @@ class Module_invoices
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 3;
+        $info['version'] = 4;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -82,6 +82,10 @@ class Module_invoices
 
         if (($upgrade_from !== null) && ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->create_index('ecom_invoices', 'i_member_id', array('i_member_id'));
+        }
+
+        if (($upgrade_from < 4) && ($upgrade_from !== null)) {
+            $GLOBALS['SITE_DB']->rename_table('invoices', 'ecom_invoices');
         }
     }
 

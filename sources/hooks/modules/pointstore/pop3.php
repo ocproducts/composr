@@ -124,7 +124,7 @@ class Hook_pointstore_pop3
 
         $title = get_screen_title('TITLE_POP3');
 
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => get_member(), 'purchasetype' => 'pop3'));
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('member_id' => get_member(), 't_type_code' => 'pop3'));
         if (is_null($test)) {
             $quota = new Tempcode();
             $activate_url = build_url(array('page' => '_SELF', 'type' => 'newpop3', 'id' => 'pop3'), '_SELF');
@@ -300,7 +300,7 @@ class Hook_pointstore_pop3
         pointstore_handle_error_taken($prefix, $_suffix);
 
         // Add us to the database
-        $sale_id = $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => $time, 'memberid' => get_member(), 'purchasetype' => 'pop3', 'details' => $prefix, 'details2' => '@' . $_suffix), true);
+        $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => $time, 'member_id' => get_member(), 'details' => $prefix, 'details2' => '@' . $_suffix, 'transaction_id' => TODO), true);
 
         $mail_server = get_option('mail_server');
         $pop3_url = get_option('pop_url');
@@ -353,7 +353,7 @@ class Hook_pointstore_pop3
         } else {
             $topamount = intval(round($points_left / $price));
         }
-        $details = $GLOBALS['SITE_DB']->query_select('sales', array('details', 'details2'), array('memberid' => $member_id, 'purchasetype' => 'pop3'), '', 1);
+        $details = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('details', 'details2'), array('member_id' => $member_id, 't_type_id' => 'pop3'), '', 1);
 
         // If we don't own a POP3 account, stop right here.
         if (!array_key_exists(0, $details)) {
@@ -390,14 +390,15 @@ class Hook_pointstore_pop3
         $price = intval(get_option('quota'));
         $quota = post_param_integer('quota');
 
-        $details = $GLOBALS['SITE_DB']->query_select('sales', array('details', 'details2'), array('memberid' => $member_id, 'purchasetype' => 'pop3'), '', 1);
-        $prefix = $details[0]['details'];
-        $suffix = $details[0]['details2'];
+        $details = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('details', 'details2'), array('member_id' => $member_id, 't_type_code' => 'pop3'), '', 1);
 
         // If we don't own a POP3 account, stop right here.
         if (!array_key_exists(0, $details)) {
             return warn_screen($title, do_lang_tempcode('NO_POP3'));
         }
+
+        $prefix = $details[0]['details'];
+        $suffix = $details[0]['details2'];
 
         // Stop if we can't afford this much quota
         if ((($quota * $price) > $points_left) && (!has_privilege(get_member(), 'give_points_self'))) {

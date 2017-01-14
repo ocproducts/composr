@@ -114,7 +114,7 @@ class Hook_cms_merge
                                        'images_and_galleries' => array('cns_members', 'catalogues'),
                                        'news_and_categories' => array('cns_members', 'attachments', 'catalogues'),
                                        'polls' => array('cns_members', 'catalogues'),
-                                       'pointstore' => array('cns_members'),
+                                       'pointstore' => array('cns_members', 'ecommerce'),
                                        'wiki' => array('cns_members', 'attachments', 'catalogues'),
                                        'useronline_tracking' => array('cns_members'),
                                        'ip_bans' => array('cns_members'),
@@ -516,7 +516,13 @@ class Hook_cms_merge
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            $GLOBALS['SITE_DB']->query_insert('ecom_transactions', $row);
+            if (import_check_if_imported('transactions', strval($row['id']))) {
+                continue;
+            }
+
+            $id_new = $GLOBALS['SITE_DB']->query_insert('ecom_transactions', $row, true);
+
+            import_id_remap_put('transactions', strval($row['id']), $id_new);
         }
 
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_invoices ORDER BY id');
@@ -1253,16 +1259,17 @@ class Hook_cms_merge
             $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $row['name']), '', 1);
             $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', $row);
         }
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'sales');
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_sales');
         $this->_fix_comcode_ownership($rows);
         $on_same_msn = ($this->on_same_msn($file_base));
         foreach ($rows as $row) {
-            $member_id = $on_same_msn ? $row['memberid'] : import_id_remap_get('member', $row['memberid'], true);
+            $member_id = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
             if (is_null($member_id)) {
                 continue;
             }
             unset($row['id']);
-            $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => $row['date_and_time'], 'memberid' => $member_id, 'purchasetype' => $row['purchasetype'], 'details' => $row['details'], 'details2' => $row['details2']));
+            $transaction_id = import_id_remap_get('transactions', $row['transaction_id']);
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => $row['date_and_time'], 'member_id' => $member_id, 'details' => $row['details'], 'details2' => $row['details2'], 'transaction_id' => $transaction_id));
         }
 
         $this->_import_ecom_prods_custom($db, $table_prefix);

@@ -30,7 +30,7 @@ class Module_classifieds
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 3;
         $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
@@ -82,6 +82,10 @@ class Module_classifieds
                 $map += insert_lang('c_label', do_lang('CLASSIFIEDS_DEFAULT_PRICE_LEVEL_' . $level), 2);
                 $GLOBALS['SITE_DB']->query_insert('ecom_classifieds_prices', $map);
             }
+        }
+
+        if (($upgrade_from < 3) && ($upgrade_from !== null)) {
+            $GLOBALS['SITE_DB']->rename_table('classifieds_prices', 'ecom_classifieds_prices');
         }
     }
 

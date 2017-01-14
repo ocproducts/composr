@@ -260,7 +260,7 @@ class Hook_pointstore_forwarding
         pointstore_handle_error_taken($prefix, $_suffix);
 
         // Add us to the database
-        $sale_id = $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => $time, 'memberid' => get_member(), 'purchasetype' => 'forwarding', 'details' => $prefix, 'details2' => '@' . $_suffix), true);
+        $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => $time, 'member_id' => get_member(), 'details' => $prefix, 'details2' => '@' . $_suffix, 'transaction_id' => TODO), true);
 
         $forw_url = get_option('forw_url');
 

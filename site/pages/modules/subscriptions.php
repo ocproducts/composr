@@ -35,7 +35,7 @@ class Module_subscriptions
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 6;
+        $info['version'] = 7;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -143,6 +143,10 @@ class Module_subscriptions
             $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_payment_gateway', 'ID_TEXT', 's_payment_gateway');
 
             $GLOBALS['SITE_DB']->create_index('subscriptions', 's_member_id', array('s_member_id'));
+        }
+
+        if (($upgrade_from < 7) && ($upgrade_from !== null)) {
+            $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
         }
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;

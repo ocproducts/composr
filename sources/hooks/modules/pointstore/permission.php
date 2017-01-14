@@ -349,7 +349,7 @@ class Hook_pointstore_permission
 
         require_code('points2');
         charge_member(get_member(), $cost, $p_title);
-        $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => get_member(), 'purchasetype' => 'PURCHASE_PERMISSION_PRODUCT', 'details' => $p_title, 'details2' => strval($row['id'])));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => get_member(), 'details' => $p_title, 'details2' => strval($row['id']), 'transaction_id' => TODO));
 
         // Actuate
         $map = $this->get_map($row);

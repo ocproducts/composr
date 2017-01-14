@@ -135,7 +135,7 @@ class Hook_pointstore_gambling
         // Actuate
         require_code('points2');
         charge_member(get_member(), $amount - $winnings, do_lang('GAMBLING'));
-        $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => get_member(), 'purchasetype' => 'GAMBLING', 'details' => strval($amount), 'details2' => ''));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => get_member(), 'details' => strval($amount), 'details2' => '', 'transaction_id' => TODO));
 
         // Show message
         if ($winnings > $amount) {

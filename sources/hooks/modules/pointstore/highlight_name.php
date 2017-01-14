@@ -115,7 +115,7 @@ class Hook_pointstore_highlight_name
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_highlighted_name' => 1), array('id' => get_member()), '', 1);
         require_code('points2');
         charge_member(get_member(), $cost, do_lang('NAME_HIGHLIGHTING'));
-        $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => get_member(), 'purchasetype' => 'NAME_HIGHLIGHTING', 'details' => '', 'details2' => ''));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => get_member(), 'details' => '', 'details2' => '', 'transaction_id' => TODO));
 
         // Show message
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

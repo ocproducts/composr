@@ -173,7 +173,7 @@ class Hook_pointstore_custom
         foreach ($rows as $row) {
             if ($row['c_one_per_member'] == 1) {
                 // Test to see if it's been bought
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'id', array('purchasetype' => 'PURCHASE_CUSTOM_PRODUCT', 'details2' => strval($rows[0]['id']), 'memberid' => get_member()));
+                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'id', array('details2' => strval($rows[0]['id']), 'member_id' => get_member(), 't_type_code' => 'custom'));
                 if (!is_null($test)) {
                     continue;
                 }
@@ -246,7 +246,7 @@ class Hook_pointstore_custom
 
         if ($row['c_one_per_member'] == 1) {
             // Test to see if it's been bought
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'id', array('purchasetype' => 'PURCHASE_CUSTOM_PRODUCT', 'details2' => strval($row['id']), 'memberid' => get_member()));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'id', array('details2' => strval($row['id']), 'member_id' => get_member(), 't_type_code' => 'custom'));
             if (!is_null($test)) {
                 warn_exit(do_lang_tempcode('ONE_PER_MEMBER_ONLY'));
             }
@@ -254,7 +254,7 @@ class Hook_pointstore_custom
 
         require_code('points2');
         charge_member(get_member(), $cost, $c_title);
-        $sale_id = $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => get_member(), 'purchasetype' => 'PURCHASE_CUSTOM_PRODUCT', 'details' => $c_title, 'details2' => strval($row['id'])), true);
+        $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('date_and_time' => time(), 'member_id' => get_member(), 'details' => $c_title, 'details2' => strval($row['id']), 't_type_code' => 'custom'), true);
 
         require_code('notifications');
         $subject = do_lang('MAIL_REQUEST_CUSTOM', comcode_escape($c_title), null, null, get_site_default_lang());

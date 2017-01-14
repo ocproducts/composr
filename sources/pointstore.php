@@ -27,7 +27,10 @@
 function pointstore_handle_error_taken($prefix, $suffix)
 {
     // Has this email address been taken?
-    $taken = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('details' => $prefix, 'details2' => '@' . $suffix));
+    $taken = $GLOBALS['SITE_DB']->query_select_value_if_there('eom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('details' => $prefix, 'details2' => '@' . $suffix, 't_type_code' => 'pop3'));
+    if ($taken === null) {
+        $taken = $GLOBALS['SITE_DB']->query_select_value_if_there('eom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('details' => $prefix, 'details2' => '@' . $suffix, 't_type_code' => 'forw'));
+    }
     if (!is_null($taken)) {
         warn_exit(do_lang_tempcode('EMAIL_TAKEN'));
     }
@@ -36,19 +39,19 @@ function pointstore_handle_error_taken($prefix, $suffix)
 /**
  * Get a Tempcode list of the available mail domains.
  *
- * @param  ID_TEXT $type The type of mail domain
+ * @param  ID_TEXT $type_code The type of mail domain
  * @set    pop3 forw
  * @param  integer $points_left Description
  * @return Tempcode The Tempcode list of available domains
  */
-function get_mail_domains($type, $points_left)
+function get_mail_domains($type_code, $points_left)
 {
-    $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like($type . '%') . '\'');
+    $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like($type_code . '%') . '\'');
     $list = new Tempcode();
     foreach ($rows as $row) {
-        $address = substr($row['name'], strlen($type));
+        $address = substr($row['name'], strlen($type_code));
 
-        //If we can't afford the mail, turn the text red
+        // If we can't afford the domain, turn the text red
         $red = ($points_left < $row['price']);
 
         $list->attach(form_input_list_entry($address, false, '@' . $address . ' ' . do_lang('PRICE_GIVE', integer_format($row['price'])), $red));
@@ -59,15 +62,14 @@ function get_mail_domains($type, $points_left)
 /**
  * Check to see if the member already has an account of this type. If so, an error message is shown, as you can only own of each type.
  *
- * @param  ID_TEXT $type The type of mail domain
- * @set    pop3 forw
+ * @param  ID_TEXT $type_code The product codename
  */
-function pointstore_handle_error_already_has($type)
+function pointstore_handle_error_already_has($type_code)
 {
-    $userid = get_member();
+    $member_id = get_member();
 
     // If we already own a forwarding account, inform our users.
-    $has_one_already = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'memberid', array('memberid' => $userid, 'purchasetype' => $type));
+    $has_one_already = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'member_id', array('member_id' => $member_id, 't_type_code' => $type_code));
     if (!is_null($has_one_already)) {
         warn_exit(do_lang_tempcode('ALREADY_HAVE'));
     }

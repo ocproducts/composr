@@ -213,7 +213,7 @@ class Hook_pointstore_topic_pin
         $GLOBALS['FORUM_DRIVER']->pin_topic($topic_id);
         require_code('points2');
         charge_member(get_member(), $total, do_lang('TOPIC_PINNING'));
-        $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => get_member(), 'purchasetype' => 'TOPIC_PINNING', 'details' => strval($topic_id), 'details2' => strval($days)));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => get_member(), 'details' => strval($topic_id), 'details2' => strval($days), 'transaction_id' => TODO));
 
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         return redirect_screen($title, $url, do_lang_tempcode('ORDER_GENERAL_DONE'));
