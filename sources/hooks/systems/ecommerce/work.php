@@ -77,12 +77,19 @@ class Hook_ecommerce_work
     {
         $products = array(
             'WORK' => array(
-                PRODUCT_INVOICE,
-                '?',
-                '',
-                array(),
-                do_lang('ecommerce:CUSTOM_PRODUCT_WORK', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
-                get_option('currency'),
+                'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_WORK', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
+
+                'type' => PRODUCT_INVOICE,
+                'type_special_details' => array(),
+
+                'price' => null,
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null,
+                'discount_points__price_reduction' => null,
+
+                'actualiser' => null,
+                'member_finder' => null,
             ),
         );
         return $products;

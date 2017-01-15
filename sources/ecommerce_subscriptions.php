@@ -112,7 +112,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 }
                 $products = $product_object->get_products(false, $type_code);
                 $product_row = $products[$type_code];
-                $item_name = $product_row[4];
+                $item_name = $product_row['item_name'];
             }
 
             $is_manual = ($sub['s_payment_gateway'] == 'manual');

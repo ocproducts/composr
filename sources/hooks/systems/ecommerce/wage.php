@@ -57,12 +57,19 @@ class Hook_ecommerce_wage
     {
         $products = array(
             'WAGE' => array(
-                PRODUCT_OTHER,
-                '?',
-                '',
-                array(),
-                do_lang('ecommerce:CUSTOM_PRODUCT_WAGE', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
-                get_option('currency'),
+                'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_WAGE', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
+
+                'type' => PRODUCT_OTHER,
+                'type_special_details' => array(),
+
+                'price' => null,
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null,
+                'discount_points__price_reduction' => null,
+
+                'actualiser' => null,
+                'member_finder' => null,
             ),
         );
         return $products;

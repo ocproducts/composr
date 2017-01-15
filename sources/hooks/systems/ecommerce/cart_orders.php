@@ -61,6 +61,19 @@ function handle_product_orders($purchase_id, $details, $type_code, $payment_stat
 }
 
 /**
+ * Get the member who made the purchase.
+ *
+ * @param  ID_TEXT $purchase_id The purchase ID.
+ * @param  array $details Details of the product.
+ * @param  ID_TEXT $type_code The product codename.
+ * @return ?MEMBER The member ID (null: none).
+ */
+function member_for_product_orders($purchase_id, $details, $type_code)
+{
+    return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'c_member', array('id' => intval($purchase_id)));
+}
+
+/**
  * eCommerce product hook.
  */
 class Hook_ecommerce_cart_orders
@@ -120,12 +133,19 @@ class Hook_ecommerce_cart_orders
 
             foreach ($orders as $order) {
                 $products[do_lang('shopping:CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang())] = array(
-                    PRODUCT_ORDERS,
-                    $order['tot_price'],
-                    'handle_product_orders',
-                    array(),
-                    do_lang('CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang()),
-                    get_option('currency'),
+                    'item_name' => do_lang('CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+
+                    'type' => PRODUCT_ORDERS,
+                    'type_special_details' => array(),
+
+                    'price' => $order['tot_price'],
+                    'currency' => get_option('currency'),
+                    'price_points' => null,
+                    'discount_points__num_points' => null,
+                    'discount_points__price_reduction' => null,
+
+                    'actualiser' => 'handle_product_orders',
+                    'member_finder' => 'member_for_product_orders',
                 );
             }
 

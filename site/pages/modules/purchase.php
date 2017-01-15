@@ -305,12 +305,12 @@ class Module_purchase
             }
 
             if ($type_filter !== null) {
-                if ($details[0] != $type_filter) {
+                if ($details['type'] != $type_filter) {
                     continue;
                 }
             }
 
-            $wizard_supported = (($details[0] == PRODUCT_PURCHASE) || ($details[0] == PRODUCT_SUBSCRIPTION) || ($details[0] == PRODUCT_CATALOGUE));
+            $wizard_supported = (($details['type'] == PRODUCT_PURCHASE) || ($details['type'] == PRODUCT_SUBSCRIPTION) || ($details['type'] == PRODUCT_CATALOGUE));
 
             $is_available = false; // Anything without is_available is not meant to be purchased directly
             if (method_exists($details[count($details) - 1], 'is_available')) {
@@ -320,14 +320,26 @@ class Module_purchase
 
             if ($wizard_supported && $is_available) {
                 require_code('currency');
-                $currency = isset($details[5]) ? $details[5] : get_option('currency');
-                $price = currency_convert(floatval($details[1]), $currency, null, true);
+                $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
-                $description = $details[4];
-                if ($price != '' && strpos($details[4], (strpos($details[4], '.') === false) ? preg_replace('#\.00($|[^\d])#', '', $price) : $price) === false) {
-                    $description .= (' (' . $price . ')');
+                if ($details['price'] !== null) {
+                    $full_price = floatval($details['price']);
+                    $_full_price = currency_convert($full_price, $currency, null, true);
+
+                    $discounted_price = get_discounted_price($details);
+
+                    if ($discounted_price === 0.0) {
+                        $_discounted_price = currency_convert(0.0, $currency, null, true);
+                        $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE', escape_html($details['item_name']), $_discounted_price, array($_full_price, escape_html(integer_format($details['discount_points__num_points']))));
+                    } elseif ($discounted_price !== null) {
+                        $_discounted_price = currency_convert($discounted_price, $currency, null, true);
+                        $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT', escape_html($details['item_name']), $_discounted_price, array($_full_price, escape_html(integer_format($details['discount_points__num_points']))));
+                    } else {
+                        $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FULL_PRICE', escape_html($details['item_name']), $_full_price, array($_full_price, escape_html(integer_format($details['discount_points__num_points']))));
+                    }
                 }
-                $list->attach(form_input_list_entry($type_code, false, protect_from_escaping($description)));
+
+                $list->attach(form_input_list_entry($type_code, false, $description));
             }
         }
         if ($list->is_empty()) {
@@ -461,9 +473,14 @@ class Module_purchase
         }
 
         $temp = $product_object->get_products(true, $type_code);
-        $price = $temp[$type_code][1];
-        $item_name = $temp[$type_code][4];
-        $currency = isset($temp[$type_code][5]) ? $temp[$type_code][5] : get_option('currency');
+        $discounted_price = get_discounted_price($temp[$type_code]);
+        if ($discounted_price === null) {
+            $price = $temp[$type_code]['price'];
+        } else {
+            $price = float_to_raw_string($discounted_price);
+        }
+        $item_name = $temp[$type_code]['item_name'];
+        $currency = isset($temp[$type_code]['currency']) ? $temp[$type_code]['currency'] : get_option('currency');
 
         if (method_exists($product_object, 'set_needed_fields')) {
             $purchase_id = $product_object->set_needed_fields($type_code);
@@ -471,7 +488,7 @@ class Module_purchase
             $purchase_id = strval(get_member());
         }
 
-        if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+        if ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
             // For a subscription we need to add in the subscription record in advance of payment. This will become our $purchase_id
             $_purchase_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 'id', array(
                 's_type_code' => $type_code,
@@ -483,27 +500,27 @@ class Module_purchase
                     's_type_code' => $type_code,
                     's_member_id' => get_member(),
                     's_state' => 'new',
-                    's_amount' => $temp[$type_code][1],
+                    's_amount' => $price,
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
                     's_payment_gateway' => $payment_gateway,
-                    's_length' => $temp[$type_code][3]['length'],
-                    's_length_units' => $temp[$type_code][3]['length_units'],
+                    's_length' => $temp[$type_code]['type_special_details']['length'],
+                    's_length_units' => $temp[$type_code]['type_special_details']['length_units'],
                 ), true));
             } else {
                 $purchase_id = strval($_purchase_id);
             }
 
-            $length = array_key_exists('length', $temp[$type_code][3]) ? $temp[$type_code][3]['length'] : 1;
-            $length_units = array_key_exists('length_units', $temp[$type_code][3]) ? $temp[$type_code][3]['length_units'] : 'm';
+            $length = array_key_exists('length', $temp[$type_code]['type_special_details']) ? $temp[$type_code]['type_special_details']['length'] : 1;
+            $length_units = array_key_exists('length_units', $temp[$type_code]['type_special_details']) ? $temp[$type_code]['type_special_details']['length_units'] : 'm';
         } else {
             $length = null;
             $length_units = '';
         }
 
-        if ($price == '0') {
+        if (floatval($price) == 0.0) {
             // Free product, so bought instantly
             $payment_status = 'Completed';
             $reason_code = '';
@@ -514,10 +531,6 @@ class Module_purchase
             $mc_gross = '';
             handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual');
             return inform_screen($this->title, do_lang_tempcode('FREE_PURCHASE'));
-        }
-
-        if (!array_key_exists(4, $temp[$type_code])) {
-            $item_name = do_lang('CUSTOM_PRODUCT_' . $type_code, null, null, null, get_site_default_lang());
         }
 
         $text = mixed();
@@ -538,10 +551,10 @@ class Module_purchase
                 $type_code,
                 $item_name,
                 $purchase_id,
-                float_to_raw_string($price),
+                $price,
                 $currency,
-                ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
-                ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? $length_units : '',
+                ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
+                ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) ? $length_units : '',
                 $payment_gateway,
                 $needs_shipping_address
             );
@@ -558,13 +571,13 @@ class Module_purchase
             ));
             return $this->_wrap($result, $this->title, $finish_url);
         } else { // Pass through to the gateway's HTTP server
-            if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+            if ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
                 $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $payment_gateway);
             } else {
                 $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
             }
 
-            $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'ECOM_PURCHASE_STAGE_SUBSCRIBE' : 'ECOM_PURCHASE_STAGE_PAY';
+            $tpl = ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) ? 'ECOM_PURCHASE_STAGE_SUBSCRIBE' : 'ECOM_PURCHASE_STAGE_PAY';
 
             $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
             $payment_processor_links = method_exists($payment_gateway_object, 'get_payment_processor_links') ? $payment_gateway_object->get_payment_processor_links() : new Tempcode();
@@ -578,7 +591,7 @@ class Module_purchase
                 'LENGTH' => ($length === null) ? '' : strval($length),
                 'LENGTH_UNITS' => $length_units,
                 'PURCHASE_ID' => $purchase_id,
-                'PRICE' => float_to_raw_string(floatval($price)),
+                'PRICE' => $price,
                 'TEXT' => $text,
                 'LOGOS' => $logos,
                 'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,

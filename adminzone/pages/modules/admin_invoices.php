@@ -196,10 +196,12 @@ class Module_admin_invoices
         $products = find_all_products();
         $list = new Tempcode();
         foreach ($products as $type_code => $details) {
-            if ($details[0] == PRODUCT_INVOICE) {
-                $text = do_lang_tempcode('CUSTOM_PRODUCT_' . $type_code);
-                if ($details[1] != '?') {
-                    $text->attach(escape_html(' (' . $details[1] . ' ' . get_option('currency') . ')'));
+            if ($details['type'] == PRODUCT_INVOICE) {
+                $text = new Tempcode();
+                $text->attach(escape_html($details['item_name']));
+                if ($details['price'] !== null) {
+                    $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+                    $text->attach(escape_html(' (' . $details['price'] . ' ' . $currency . ')'));
                 }
                 $list->attach(form_input_list_entry($type_code, false, $text));
             }
@@ -233,8 +235,8 @@ class Module_admin_invoices
         $amount = post_param_string('amount', '');
         if ($amount == '') {
             $products = $object->get_products(false, $type_code);
-            $amount = $products[$type_code][1];
-            if ($amount == '?') {
+            $amount = $products[$type_code]['price'];
+            if ($amount === null) {
                 warn_exit(do_lang_tempcode('INVOICE_REQURIRED_AMOUNT'));
             }
         }

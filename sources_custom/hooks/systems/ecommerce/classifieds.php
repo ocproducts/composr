@@ -14,6 +14,43 @@
  */
 
 /**
+ * Handling of a purchased classifieds advert.
+ *
+ * @param  ID_TEXT $purchase_id The purchase ID.
+ * @param  array $details Details of the product.
+ * @param  ID_TEXT $type_code The product codename.
+ */
+function handle_classifieds_advert($purchase_id, $details, $type_code)
+{
+    $days = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_classifieds_prices', 'c_days', array('id' => intval(substr($type_code, 19))));
+
+    // Make validated, bump up timer
+    $time = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_last_moved', array('id' => intval($purchase_id)));
+    if ($time !== null) {
+        $time += $days * 60 * 60 * 24;
+        $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_validated' => 1, 'ce_last_moved' => $time), array('id' => intval($purchase_id)), '', 1);
+        decache('main_cc_embed');
+        decache('main_recent_cc_entries');
+        require_code('catalogues2');
+        $cc_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => intval($purchase_id)));
+        calculate_category_child_count_cache($cc_id);
+    }
+}
+
+/**
+ * Get the member who made the purchase.
+ *
+ * @param  ID_TEXT $purchase_id The purchase ID.
+ * @param  array $details Details of the product.
+ * @param  ID_TEXT $type_code The product codename.
+ * @return ?MEMBER The member ID (null: none).
+ */
+function member_for_classifieds_advert($purchase_id, $details, $type_code)
+{
+    return $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_submitter', array('id' => intval($purchase_id)));
+}
+
+/**
  * Hook class.
  */
 class Hook_ecommerce_classifieds
@@ -68,12 +105,19 @@ class Hook_ecommerce_classifieds
         foreach ($prices as $price) {
             if ($price['c_price'] != 0.0) {
                 $products['CLASSIFIEDS_ADVERT_' . strval($price['id'])] = array(
-                    PRODUCT_PURCHASE,
-                    float_to_raw_string($price['c_price']),
-                    'handle_classifieds_advert',
-                    array(),
-                    do_lang('CLASSIFIED_ADVERT_BUY', get_translated_text($price['c_label'])),
-                    get_option('currency'),
+                    'item_name' => do_lang('CLASSIFIED_ADVERT_BUY', get_translated_text($price['c_label'])),
+
+                    'type' => PRODUCT_PURCHASE,
+                    'type_special_details' => array(),
+
+                    'price' => float_to_raw_string($price['c_price']),
+                    'currency' => get_option('currency'),
+                    'price_points' => null,
+                    'discount_points__num_points' => null,
+                    'discount_points__price_reduction' => null,
+
+                    'actualiser' => 'handle_classifieds_advert',
+                    'member_finder' => 'member_for_classifieds_advert',
                 );
             }
         }
@@ -121,29 +165,5 @@ class Hook_ecommerce_classifieds
         }
 
         return strval($entry_id);
-    }
-}
-
-/**
- * Handling of a purchased classifieds advert.
- *
- * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  array $details Details of the product.
- * @param  ID_TEXT $type_code The product codename.
- */
-function handle_classifieds_advert($purchase_id, $details, $type_code)
-{
-    $days = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_classifieds_prices', 'c_days', array('id' => intval(substr($type_code, 19))));
-
-    // Make validated, bump up timer
-    $time = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_last_moved', array('id' => intval($purchase_id)));
-    if ($time !== null) {
-        $time += $days * 60 * 60 * 24;
-        $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_validated' => 1, 'ce_last_moved' => $time), array('id' => intval($purchase_id)), '', 1);
-        decache('main_cc_embed');
-        decache('main_recent_cc_entries');
-        require_code('catalogues2');
-        $cc_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => intval($purchase_id)));
-        calculate_category_child_count_cache($cc_id);
     }
 }

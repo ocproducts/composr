@@ -289,13 +289,13 @@ function render_cart_payment_form()
             continue;
         }
 
-        if ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+        if ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
             continue; // Subscription type skipped
         }
 
-        $price = $temp[$type_code][1];
+        $price = $temp[$type_code]['price'];
 
-        $item_name = $temp[$type_code][4];
+        $item_name = $temp[$type_code]['item_name'];
 
         if (method_exists($product_object, 'set_needed_fields')) {
             $purchase_id = $product_object->set_needed_fields($type_code);

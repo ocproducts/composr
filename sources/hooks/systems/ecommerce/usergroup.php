@@ -134,6 +134,35 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
 }
 
 /**
+ * Get the member who made the purchase.
+ *
+ * @param  ID_TEXT $purchase_id The purchase ID.
+ * @param  array $details Details of the product.
+ * @param  ID_TEXT $type_code The product codename.
+ * @return ?MEMBER The member ID (null: none).
+ */
+function member_for_usergroup_subscription($purchase_id, $details, $type_code)
+{
+    $usergroup_subscription_id = intval(substr($type_code, 9));
+    $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+    if (array_key_exists(0, $rows)) {
+        $myrow = $rows[0];
+    } else {
+        return null;
+    }
+
+    if ($myrow['s_auto_recur'] == 1) {
+        $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
+    } else {
+        $member_id = intval($purchase_id);
+    }
+    return $member_id;
+}
+
+/**
  * eCommerce product hook.
  */
 class Hook_ecommerce_usergroup
@@ -218,12 +247,19 @@ class Hook_ecommerce_usergroup
             $item_name = get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], $site_lang ? get_site_default_lang() : null);
 
             $products['USERGROUP' . strval($sub['id'])] = array(
-                ($sub['s_auto_recur'] == 1) ? PRODUCT_SUBSCRIPTION : PRODUCT_PURCHASE, // Technically a non-recurring usergroup subscription is NOT a subscription (i.e. conflicting semantics here...)
-                $sub['s_cost'],
-                'handle_usergroup_subscription',
-                array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
-                $item_name,
-                get_option('currency'),
+                'item_name' => $item_name,
+
+                'type' => ($sub['s_auto_recur'] == 1) ? PRODUCT_SUBSCRIPTION : PRODUCT_PURCHASE, // Technically a non-recurring usergroup subscription is NOT a subscription (i.e. conflicting semantics here...)
+                'type_special_details' => array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
+
+                'price' => $sub['s_cost'],
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null,
+                'discount_points__price_reduction' => null,
+
+                'actualiser' => 'handle_usergroup_subscription',
+                'member_finder' => 'member_for_usergroup_subscription',
             );
         }
 

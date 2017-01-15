@@ -346,16 +346,16 @@ class Module_admin_ecommerce_logs
                 if (!is_string($type_code)) {
                     $type_code = strval($type_code);
                 }
-                $label = $details[4];
+                $label = $details['item_name'];
                 $label .= ' (' . escape_html($type_code);
 
-                $currency = isset($details[5]) ? $details[5] : get_option('currency');
+                $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
-                if ($details[1] !== null) {
-                    $label .= ', ' . escape_html(is_float($details[1]) ? float_to_raw_string($details[1], 2) : $details[1] . ' (' . $currency . ')');
+                if ($details['price'] !== null) {
+                    $label .= ', ' . escape_html(is_float($details['price']) ? float_to_raw_string($details['price'], 2) : $details['price'] . ' (' . $currency . ')');
                 }
                 $label .= ')';
-                $list->attach(form_input_list_entry($type_code, do_lang('CUSTOM_PRODUCT_' . $type_code, null, null, null, null, false) === get_param_string('type_code', null), protect_from_escaping($label)));
+                $list->attach(form_input_list_entry($type_code, $type_code === get_param_string('type_code', null), protect_from_escaping($label)));
             }
             $fields->attach(form_input_huge_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list, null, true));
 
@@ -410,7 +410,7 @@ class Module_admin_ecommerce_logs
         $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang('TRANSACTION_NOTES'), 'memo', '', false));
 
         $products = $product_ob->get_products();
-        if ($products[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+        if ($products[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
             $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
         }
 
@@ -443,9 +443,9 @@ class Module_admin_ecommerce_logs
         $product_object = find_product($type_code);
         $products = $product_object->get_products(true);
         if ($mc_gross == '') {
-            $mc_gross = $products[$type_code][1];
-            if (isset($products[$type_code][5])) {
-                $mc_currency = $products[$type_code][5];
+            $mc_gross = $products[$type_code]['price'];
+            if (isset($products[$type_code]['currency'])) {
+                $mc_currency = $products[$type_code]['currency'];
             }
         }
         $payment_status = 'Completed';
@@ -454,9 +454,9 @@ class Module_admin_ecommerce_logs
         $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
         $parent_txn_id = '';
 
-        $item_name = $products[$type_code][4];
+        $item_name = $products[$type_code]['item_name'];
 
-        if ($products[$type_code][0] == PRODUCT_SUBSCRIPTION) {
+        if ($products[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
             if (($purchase_id == '') || (post_param_string('username', '') != '')) {
                 $member_id = get_member();
                 $username = post_param_string('username', '');
@@ -471,22 +471,22 @@ class Module_admin_ecommerce_logs
                     's_type_code' => $type_code,
                     's_member_id' => $member_id,
                     's_state' => 'new',
-                    's_amount' => $products[$type_code][1],
+                    's_amount' => $products[$type_code]['price'],
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
                     's_payment_gateway' => 'manual',
-                    's_length' => $products[$type_code][3]['length'],
-                    's_length_units' => $products[$type_code][3]['length_units'],
+                    's_length' => $products[$type_code]['type_special_details']['length'],
+                    's_length_units' => $products[$type_code]['type_special_details']['length_units'],
                 ), true));
             }
 
             $item_name = ''; // Flag for handle_confirmed_transaction to know it's a subscription
 
             if ($custom_expiry !== null) {
-                $s_length = $products[$type_code][3]['length'];
-                $s_length_units = $products[$type_code][3]['length_units']; // y-year, m-month, w-week, d-day
+                $s_length = $products[$type_code]['type_special_details']['length'];
+                $s_length_units = $products[$type_code]['type_special_details']['length_units']; // y-year, m-month, w-week, d-day
                 $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
                 $new_s_time = strtotime('-' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $custom_expiry);
                 $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_time' => $new_s_time), array('id' => $purchase_id));
@@ -561,7 +561,7 @@ class Module_admin_ecommerce_logs
         );
         $products = find_all_products();
         foreach ($products as $type_code => $details) {
-            $types[$type_code] = array('TYPE' => $details[4], 'AMOUNT' => 0, 'SPECIAL' => false);
+            $types[$type_code] = array('TYPE' => $details['item_name'], 'AMOUNT' => 0, 'SPECIAL' => false);
         }
         $types += array(
             'COST' => array('TYPE' => do_lang_tempcode('EXPENSES'), 'AMOUNT' => 0, 'SPECIAL' => false),
@@ -583,7 +583,7 @@ class Module_admin_ecommerce_logs
 
             if ($unpaid_invoices_count) {
                 foreach ($products as $type_code => $details) {
-                    if (($transaction['t_type_code'] == $type_code) && ($details[0] == PRODUCT_INVOICE)) {
+                    if (($transaction['t_type_code'] == $type_code) && ($details['type'] == PRODUCT_INVOICE)) {
                         continue 2;
                     }
                 }
@@ -727,9 +727,9 @@ class Module_admin_ecommerce_logs
 
             $products = $product_obj->get_products(true);
 
-            $item_name = $products[$subs['s_type_code']][4];
-            $s_length = $products[$subs['s_type_code']][3]['length'];
-            $s_length_units = $products[$subs['s_type_code']][3]['length_units']; // y-year, m-month, w-week, d-day
+            $item_name = $products[$subs['s_type_code']]['item_name'];
+            $s_length = $products[$subs['s_type_code']]['type_special_details']['length'];
+            $s_length_units = $products[$subs['s_type_code']]['type_special_details']['length_units']; // y-year, m-month, w-week, d-day
             $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
             $expiry_time = strtotime('+' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $subs['s_time']);
             $expiry_date = get_timezoned_date($expiry_time, false, false, false, true);
@@ -770,7 +770,7 @@ class Module_admin_ecommerce_logs
 
         $product_obj = find_product($subscription[0]['s_type_code']);
         $products = $product_obj->get_products(true);
-        $item_name = $products[$subscription[0]['s_type_code']][4];
+        $item_name = $products[$subscription[0]['s_type_code']]['item_name'];
         $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription[0]['s_member_id']);
 
         $repost_id = post_param_integer('id', null);

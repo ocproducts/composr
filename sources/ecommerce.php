@@ -247,9 +247,6 @@ function find_all_products($site_lang = false)
         }
         $_products = $product_object->get_products($site_lang);
         foreach ($_products as $type_code => $details) {
-            if (!array_key_exists(4, $details)) {
-                $details[4] = do_lang('CUSTOM_PRODUCT_' . $type_code, null, null, null, $site_lang ? get_site_default_lang() : null);
-            }
             $details[] = $product_object;
             $products[$type_code] = $details;
         }
@@ -284,7 +281,7 @@ function find_product($search, $site_lang = false, $search_item_names = false)
             }
 
             if ($search_item_names) {
-                if (($product_row[4] == $search) || ('_' . $type_code == $search)) {
+                if (($product_row['item_name'] == $search) || ('_' . $type_code == $search)) {
                     return $product_object;
                 }
             } else {
@@ -324,7 +321,7 @@ function find_product_row($search, $site_lang = false, $search_item_names = fals
             }
 
             if ($search_item_names) {
-                if (($product_row[4] == $search) || ('_' . $type_code == $search)) {
+                if (($product_row['item_name'] == $search) || ('_' . $type_code == $search)) {
                     return array($product_row, $type_code);
                 }
             } else {
@@ -708,13 +705,13 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 
     if (($success) || ($length !== null)) {
         $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
-        handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $payment_gateway);
+        list(, $member_id) = handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $payment_gateway);
     }
 
     // Send notification...
 
     if ($success) {
-        $member_id = $transaction_row['e_member_id'];
+        //$member_id = $transaction_row['e_member_id']; We get this from handle_confirmed_transaction
         if ($member_id !== null) {
             require_code('notifications');
             dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $currency, get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
@@ -754,7 +751,7 @@ function handle_ipn_transaction_script()
 
     list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $payment_gateway_object->handle_ipn_transaction();
 
-    $type_code = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway);
+    list($type_code, $member_id) = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway);
 
     if (method_exists($payment_gateway_object, 'show_payment_response')) {
         echo $payment_gateway_object->show_payment_response($type_code, $purchase_id);
@@ -780,7 +777,7 @@ function handle_ipn_transaction_script()
  * @param  SHORT_TEXT $parent_txn_id The ID of the parent transaction
  * @param  string $period The subscription period (blank: N/A / unknown: trust is correct on the gateway)
  * @param  ID_TEXT $payment_gateway The payment gateway
- * @return ID_TEXT The product purchased
+ * @return array ID_TEXT A pair: The product purchased, The purchasing member ID (or null)
  */
 function handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway)
 {
@@ -797,13 +794,13 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         // Find what we sold
         list($found,) = find_product_row($type_code, true, false);
         if ($found !== null) {
-            $item_name = $found[4];
+            $item_name = $found['item_name'];
         }
 
         // Check subscription length
         if ($period != '') {
-            $length = array_key_exists('length', $found[3]) ? strval($found[3]['length']) : '1';
-            $length_units = array_key_exists('length_units', $found[3]) ? $found[3]['length_units'] : 'm';
+            $length = array_key_exists('length', $found['type_special_details']) ? strval($found['type_special_details']['length']) : '1';
+            $length_units = array_key_exists('length_units', $found['type_special_details']) ? $found['type_special_details']['length_units'] : 'm';
             if (strtolower($period) != strtolower($length . ' ' . $length_units)) {
                 fatal_ipn_exit(do_lang('IPN_SUB_PERIOD_WRONG'));
             }
@@ -812,7 +809,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         // Find what we sold
         list($found, $type_code) = find_product_row($item_name, true, true);
 
-        if ($found[0] == PRODUCT_SUBSCRIPTION) {
+        if ($found['type'] == PRODUCT_SUBSCRIPTION) {
             exit(); // We ignore separate payment signal for subscriptions (for Paypal it is web_accept)
         }
     }
@@ -820,13 +817,38 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         fatal_ipn_exit(do_lang('PRODUCT_NO_SUCH') . ' - ' . $item_name, true);
     }
 
+    // Find which member did the transaction, if any
+    if ($found['member_finder'] !== null) {
+        $member_id = call_user_func_array($found['member_finder'], array($purchase_id, $found, $type_code, $payment_status, $txn_id));
+        if ($member_id == $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
+            $member_id = null;
+        }
+    } else {
+        $member_id = null;
+    }
+
     // Check price, if one defined
-    if (($mc_gross != $found[1]) && ($found[1] != '?')) {
-        if (($payment_status == 'Completed') && ($payment_gateway != 'manual')) {
-            fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $found[1]), $is_subscription);
+    if (($found['price'] !== null) && (floatval($mc_gross) != floatval($found['price']))) {
+        $given_discount = false;
+
+        // Consider points as a discount
+        if ($member_id !== null) {
+            $discounted_price = get_discounted_price($found, false, $member_id);
+            if (($discounted_price !== null) && (floatval($mc_gross) == $discounted_price)) {
+                require_code('points2');
+                require_lang('ecommerce');
+                charge_member($member_id, $found['discount_points__num_points'], do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
+                $given_discount = true;
+            }
+        }
+
+        if (!$given_discount) {
+            if (($payment_status == 'Completed') && ($payment_gateway != 'manual')) {
+                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $found['price']), $is_subscription);
+            }
         }
     }
-    $expected_currency = isset($found[5]) ? $found[5] : get_option('currency');
+    $expected_currency = isset($found['currency']) ? $found['currency'] : get_option('currency');
     if ($mc_currency != $expected_currency) {
         if (($payment_status != 'SCancelled') && ($payment_gateway != 'manual')) {
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY', $item_name, $mc_currency, $expected_currency));
@@ -853,18 +875,18 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Pending
     if ($payment_status == 'Pending') {
-        if ($found[0] == PRODUCT_INVOICE) { // Invoices have special support for tracking the order status
+        if ($found['type'] == PRODUCT_INVOICE) { // Invoices have special support for tracking the order status
             $GLOBALS['SITE_DB']->query_update('ecom_invoices', array('i_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
-        } elseif ($found[0] == PRODUCT_SUBSCRIPTION) { // Subscriptions have special support for tracking the order status
+        } elseif ($found['type'] == PRODUCT_SUBSCRIPTION) { // Subscriptions have special support for tracking the order status
             $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
-            if ($found[2] != '') {
-                call_user_func_array($found[2], array($purchase_id, $found, $type_code, true)); // Run cancel code
+            if ($found['actualiser'] !== null) {
+                call_user_func_array($found['actualiser'], array($purchase_id, $found, $type_code, true)); // Run cancel code
             }
         } elseif ($item_name == do_lang('shopping:CART_ORDER', $purchase_id)) { // Cart orders have special support for tracking the order status
             $found['ORDER_STATUS'] = 'ORDER_STATUS_awaiting_payment';
 
-            if ($found[2] != '') {
-                call_user_func_array($found[2], array($purchase_id, $found, $type_code, $payment_status, $txn_id)); // Set order status
+            if ($found['actualiser'] !== null) {
+                call_user_func_array($found['actualiser'], array($purchase_id, $found, $type_code, $payment_status, $txn_id)); // Set order status
             }
         }
 
@@ -873,7 +895,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     }
 
     // Invoice: Check price
-    if ($found[0] == PRODUCT_INVOICE) {
+    if ($found['type'] == PRODUCT_INVOICE) {
         $price = $GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'i_amount', array('id' => intval($purchase_id)));
         if ($price != $mc_gross) {
             if ($payment_gateway != 'manual') {
@@ -888,22 +910,22 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     */
 
     // Subscription: Completed (Made active)
-    if (($payment_status == 'Completed') && ($found[0] == PRODUCT_SUBSCRIPTION)) {
+    if (($payment_status == 'Completed') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
         $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'active'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Subscription: Modified
-    if (($payment_status == 'SModified') && ($found[0] == PRODUCT_SUBSCRIPTION)) {
+    if (($payment_status == 'SModified') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
         // No special action needed
     }
 
     // Subscription: Cancelled
-    if (($payment_status == 'SCancelled') && ($found[0] == PRODUCT_SUBSCRIPTION)) {
+    if (($payment_status == 'SCancelled') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
         $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'cancelled'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Invoice handling
-    if (($payment_status == 'Completed') && ($found[0] == PRODUCT_INVOICE)) {
+    if (($payment_status == 'Completed') && ($found['type'] == PRODUCT_INVOICE)) {
         $GLOBALS['SITE_DB']->query_update('ecom_invoices', array('i_state' => 'paid'), array('id' => intval($purchase_id)), '', 1);
     }
 
@@ -923,14 +945,13 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     // Dispatch (all product types)
     if ($payment_status != 'SModified') {
         // Call completion/cancellation code
-        if ($found[2] != '') {
-            call_user_func_array($found[2], array($purchase_id, $found, $type_code, $payment_status, $txn_id));
+        if ($found['actualiser'] !== null) {
+            call_user_func_array($found['actualiser'], array($purchase_id, $found, $type_code, $payment_status, $txn_id));
         }
 
         // Send out notification to staff for completion/cancellation
-        if ($found[0] == PRODUCT_SUBSCRIPTION) {
+        if ($found['type'] == PRODUCT_SUBSCRIPTION) {
             require_code('notifications');
-            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
             if ($member_id !== null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
                 if ($username === null) {
@@ -949,7 +970,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
     }
 
-    return $type_code;
+    return array($type_code, $member_id);
 }
 
 /**
@@ -966,4 +987,35 @@ function fatal_ipn_exit($error, $dont_trigger = false)
         trigger_error($error, E_USER_NOTICE);
     }
     exit();
+}
+
+/**
+ * Find the discounted price for a product.
+ *
+ * @param  array $details Product details.
+ * @param  boolean $consider_free Consider the potential for a 0.0 price by paying entirely with points.
+ * @param  ?MEMBER $member_id The member who this is for (null: current member).
+ * @return ?float Discounted price (null: no discount)
+ */
+function get_discounted_price($details, $consider_free = false, $member_id = null)
+{
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+
+    if (($consider_free) && ($found['price_points'] !== null)) {
+        require_code('points');
+        if (available_points($member) >= $found['price_points']) {
+            return 0.0;
+        }
+    }
+
+    if ($found['discount_points__num_points'] !== null) {
+        require_code('points');
+        if (available_points($member) >= $found['discount_points__num_points']) {
+            return max(0.0, floatval($details['price']) - floatval($details['discount_points__price_reduction']));
+        }
+    }
+
+    return null;
 }

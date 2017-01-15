@@ -21,6 +21,18 @@ It is modular though, and purchase hook may provide these methods too.
 */
 
 /**
+ * Update stock count after transaction.
+ *
+ * @param  AUTO_LINK $entry_id Product ID.
+ * @param  array $details Details of product.
+ */
+function handle_catalogue_items($entry_id, $details)
+{
+    $product_object = object_factory('Hook_ecommerce_catalogue_items');
+    $product_object->reduce_stock($entry_id, 1);
+}
+
+/**
  * @license     http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright   ocProducts Ltd
  * @package     shopping
@@ -110,12 +122,19 @@ class Hook_ecommerce_catalogue_items
 
                 /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
                 $products[strval($ecomm_item['id'])] = array(
-                    PRODUCT_CATALOGUE,
-                    $price,
-                    'handle_catalogue_items',
-                    array('tax' => $tax),
-                    $product_title,
-                    get_option('currency'),
+                    'item_name' => $product_title,
+
+                    'type' => PRODUCT_CATALOGUE,
+                    'type_special_details' => array('tax' => $tax),
+
+                    'price' => $price,
+                    'currency' => get_option('currency'),
+                    'price_points' => null,
+                    'discount_points__num_points' => null,
+                    'discount_points__price_reduction' => null,
+
+                    'actualiser' => 'handle_catalogue_items',
+                    'member_finder' => null,
                 );
             }
             $start += 500;
@@ -661,16 +680,4 @@ class Hook_ecommerce_catalogue_items
             'CART_URL' => $shopping_cart_url,
         ));
     }
-}
-
-/**
- * Update stock count after transaction.
- *
- * @param  AUTO_LINK $entry_id Product ID.
- * @param  array $details Details of product.
- */
-function handle_catalogue_items($entry_id, $details)
-{
-    $product_object = object_factory('Hook_ecommerce_catalogue_items');
-    $product_object->reduce_stock($entry_id, 1);
 }

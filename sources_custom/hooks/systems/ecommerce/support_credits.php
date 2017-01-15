@@ -48,6 +48,19 @@ function handle_support_credits($purchase_id, $details, $type_code)
 }
 
 /**
+ * Get the member who made the purchase.
+ *
+ * @param  ID_TEXT $purchase_id The purchase ID.
+ * @param  array $details Details of the product.
+ * @param  ID_TEXT $type_code The product codename.
+ * @return ?MEMBER The member ID (null: none).
+ */
+function member_for_support_credits($purchase_id, $details, $type_code)
+{
+    return $GLOBALS['SITE_DB']->query_select_value_if_there('credit_purchases', 'member_id', array('purchase_id' => intval($purchase_id)));
+}
+
+/**
  * eCommerce product hook.
  */
 class Hook_ecommerce_support_credits
@@ -71,12 +84,19 @@ class Hook_ecommerce_support_credits
         $bundles = array(1, 2, 3, 4, 5, 6, 9, 20, 25, 35, 50, 90, 180, 550);
         foreach ($bundles as $bundle) {
             $products[strval($bundle) . '_CREDITS'] = array(
-                PRODUCT_PURCHASE,
-                float_to_raw_string($bundle * floatval(get_option('support_credit_value'))),
-                'handle_support_credits',
-                null,
-                do_lang('customers:CUSTOMER_SUPPORT_CREDITS', integer_format($bundle)),
-                get_option('currency'),
+                'item_name' => do_lang('customers:CUSTOMER_SUPPORT_CREDITS', integer_format($bundle)),
+
+                'type' => PRODUCT_PURCHASE,
+                'type_special_details' => null,
+
+                'price' => float_to_raw_string($bundle * floatval(get_option('support_credit_value'))),
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null,
+                'discount_points__price_reduction' => null,
+
+                'actualiser' => 'handle_support_credits',
+                'member_finder' => 'member_for_support_credits',
             );
         }
 
