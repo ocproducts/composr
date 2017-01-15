@@ -121,7 +121,7 @@ When creating new gifts please only use images which are free to use, we suggest
         return array(
             'requires' => array(
                 'Conversr',
-                'pointstore',
+                'ecommerce',
             ),
             'recommends' => array(),
             'conflicts_with' => array()
@@ -153,10 +153,10 @@ When creating new gifts please only use images which are free to use, we suggest
             'adminzone/pages/modules_custom/admin_giftr.php',
             'lang_custom/EN/giftr.ini',
             'sources_custom/hooks/modules/members/gifts.php',
-            'sources_custom/hooks/modules/pointstore/giftr.php',
+            'sources_custom/hooks/systems/ecommerce/giftr.php',
             'sources_custom/hooks/systems/page_groupings/giftr.php',
-            'themes/default/templates_custom/POINTSTORE_GIFTR.tpl',
-            'themes/default/templates_custom/POINTSTORE_GIFTR_GIFTS.tpl',
+            'themes/default/templates_custom/ECOM_PRODUCT_GIFTR.tpl',
+            'themes/default/templates_custom/ECOM_PRODUCT_GIFTR_GIFTS.tpl',
             'themes/default/templates_custom/CNS_MEMBER_SCREEN_GIFTS_WRAP.tpl',
             'themes/default/css_custom/gifts.css',
             'uploads/giftr_addon/index.html',

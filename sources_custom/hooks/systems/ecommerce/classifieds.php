@@ -68,7 +68,7 @@ class Hook_ecommerce_classifieds
         foreach ($prices as $price) {
             if ($price['c_price'] != 0.0) {
                 $products['CLASSIFIEDS_ADVERT_' . strval($price['id'])] = array(
-                    PRODUCT_PURCHASE_WIZARD,
+                    PRODUCT_PURCHASE,
                     float_to_raw_string($price['c_price']),
                     'handle_classifieds_advert',
                     array(),

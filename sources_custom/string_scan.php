@@ -2362,7 +2362,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_CATEGORY_DESCRIPTION__GALLERY
         CONFIG_CATEGORY_DESCRIPTION__PERFORMANCE
         CONFIG_CATEGORY_DESCRIPTION__POINTS
-        CONFIG_CATEGORY_DESCRIPTION__POINTSTORE
         CONFIG_CATEGORY_DESCRIPTION__PRIVACY
         CONFIG_CATEGORY_DESCRIPTION__SECURITY
         CONFIG_CATEGORY_DESCRIPTION__SERVER
@@ -2375,7 +2374,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_CATEGORY_GALLERY
         CONFIG_CATEGORY_PERFORMANCE
         CONFIG_CATEGORY_POINTS
-        CONFIG_CATEGORY_POINTSTORE
         CONFIG_CATEGORY_PRIVACY
         CONFIG_CATEGORY_SECURITY
         CONFIG_CATEGORY_SERVER
@@ -3922,7 +3920,6 @@ function string_scan($lang, $do_guessing = false)
         DOC_PERMISSIONS_TREE
         DOC_PHPINFO
         DOC_POINTS
-        DOC_POINTSTORE
         DOC_POLLS
         DOC_POST_TEMPLATES
         DOC_PRIVILEGES
@@ -5231,7 +5228,6 @@ function string_scan($lang, $do_guessing = false)
         MODULE_TRANS_NAME_admin_permissions
         MODULE_TRANS_NAME_admin_phpinfo
         MODULE_TRANS_NAME_admin_points
-        MODULE_TRANS_NAME_admin_pointstore
         MODULE_TRANS_NAME_admin_quiz
         MODULE_TRANS_NAME_admin_redirects
         MODULE_TRANS_NAME_admin_security
@@ -5313,7 +5309,7 @@ function string_scan($lang, $do_guessing = false)
         NAG_FORUMS
         NAG_MONITOR_GIFTS
         NAG_OPEN_WEBSITE
-        NAG_POINTSTORE
+        NAG_ECOM_PRODUCT_SETUP
         NAG_SETUP_CRON
         NAG_SETUP_PROFILE
         NAG_VALIDATE
@@ -5440,10 +5436,10 @@ function string_scan($lang, $do_guessing = false)
         NOTIFICATION_TYPE_low_stock
         NOTIFICATION_TYPE_messaging
         NOTIFICATION_TYPE_needs_validation
-        NOTIFICATION_TYPE_pointstore_request_custom
-        NOTIFICATION_TYPE_pointstore_request_forwarding
-        NOTIFICATION_TYPE_pointstore_request_pop3
-        NOTIFICATION_TYPE_pointstore_request_quota
+        NOTIFICATION_TYPE_ecom_request_custom
+        NOTIFICATION_TYPE_ecom_request_forwarding
+        NOTIFICATION_TYPE_ecom_request_pop3
+        NOTIFICATION_TYPE_ecom_request_quota
         NOTIFICATION_TYPE_receive_points_staff
         NOTIFICATION_TYPE_service_cancelled_staff
         NOTIFICATION_TYPE_service_paid_for_staff
@@ -5730,15 +5726,15 @@ function string_scan($lang, $do_guessing = false)
         PIN_STATE
         PLEASE_CHOOSE_LANG
         PLEASE_TAKE_RESPONSIBILITY
-        POINTSTORE_ADD_MAIL_FORWARDER
-        POINTSTORE_ADD_MAIL_POP3
-        POINTSTORE_AMEND_CUSTOM_PERMISSIONS
-        POINTSTORE_AMEND_CUSTOM_PRODUCTS
-        POINTSTORE_CHANGED_PRICES
-        POINTSTORE_LOG_TEXT
-        POINTSTORE_MANAGE_INVENTORY
-        POINTSTORE_MANAGE_SALES
-        POINTSTORE_PRICE_PAGE_TEXT
+        ECOM_PRODUCTS_ADD_MAIL_FORWARDER
+        ECOM_PRODUCTS_ADD_MAIL_POP3
+        ECOM_PRODUCTS_AMEND_CUSTOM_PERMISSIONS
+        ECOM_PRODUCTS_AMEND_CUSTOM_PRODUCTS
+        ECOM_PRODUCT_CHANGED_PRICES
+        ECOM_PRODUCTS_LOG_TEXT
+        ECOM_PRODUCTS_MANAGE_INVENTORY
+        ECOM_PRODUCTS_MANAGE_SALES
+        ECOM_PRODUCTS_PRICE_PAGE_TEXT
         POINTS_FOR_COMPLETING
         POINTS_IF_LIKED
         POINTS_PER_CURRENCY_UNIT
@@ -8420,7 +8416,6 @@ function string_scan($lang, $do_guessing = false)
         MODULE_TRANS_NAME_news
         MODULE_TRANS_NAME_newsletter
         MODULE_TRANS_NAME_points
-        MODULE_TRANS_NAME_pointstore
         MODULE_TRANS_NAME_polls
         MODULE_TRANS_NAME_purchase
         MODULE_TRANS_NAME_quiz
@@ -8802,10 +8797,9 @@ function string_scan($lang, $do_guessing = false)
         PLUPLOAD_STOPPED
         PLUPLOAD_UPLOADING
         POINTS
-        POINTSTORE
-        POINTSTORE_INTRO
-        POINTSTORE_ITEMS
-        POINTSTORE_ONE_PER_MEMBER
+        ECOM_PRODUCTS_INTRO
+        ECOM_PRODUCTS
+        ECOM_PRODUCTS_ONE_PER_MEMBER
         POINTS_COMPLETED_QUIZ
         POINTS_EARNED
         POINTS_GAINED_BETWEEN
@@ -8941,12 +8935,12 @@ function string_scan($lang, $do_guessing = false)
         PURCHASE_POP3_QUOTA
         PURCHASE_QUOTA
         PURCHASE_SOME_PRODUCT
-        PURCHASE_STAGE_browse
-        PURCHASE_STAGE_details
-        PURCHASE_STAGE_finish
-        PURCHASE_STAGE_message
-        PURCHASE_STAGE_pay
-        PURCHASE_STAGE_terms
+        ECOM_PURCHASE_STAGE_browse
+        ECOM_PURCHASE_STAGE_details
+        ECOM_PURCHASE_STAGE_finish
+        ECOM_PURCHASE_STAGE_message
+        ECOM_PURCHASE_STAGE_pay
+        ECOM_PURCHASE_STAGE_terms
         PURCHASE_STORED_DETAILS
         PURCHASING
         PURCHASING_TITLE

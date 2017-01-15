@@ -1,5 +1,5 @@
-<div class="pointstore_item">
-	<div class="box box___pointstore_giftr"><div class="box_inner">
+<div class="ecom_product">
+	<div class="box box___ecom_product_giftr"><div class="box_inner">
 		<h2>{!GIFTR_TITLE}</h2>
 
 		<p>

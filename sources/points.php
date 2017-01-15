@@ -34,12 +34,12 @@ function init__points()
 }
 
 /**
- * Get the price of the specified item for sale in the Point Store (only for tableless items).
+ * Get the price of the specified item for sale (only for tableless items).
  *
  * @param  ID_TEXT $item The name of the item
  * @return integer The price of the item
  */
-function get_price($item)
+function get_product_points_price($item)
 {
     return $GLOBALS['SITE_DB']->query_select_value('ecom_prods_prices', 'price', array('name' => $item));
 }

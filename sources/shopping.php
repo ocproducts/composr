@@ -368,7 +368,7 @@ function render_cart_payment_form()
             );
         }
 
-        $payment_form = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
+        $payment_form = do_template('ECOM_PURCHASE_STAGE_TRANSACT', array(
             '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
             'FIELDS' => $fields,
             'HIDDEN' => $hidden,
@@ -389,9 +389,9 @@ function render_cart_payment_form()
  */
 function get_order_tax_opt_out_status()
 {
-    if (get_page_name() == 'purchase') {
+    if (get_page_name() == 'purchase') { // Purchasing module creates separate orders for every product, so optout status depending only on current value of checkbox
         return 0;
-    }    //Purchase module creates separate orders for every product, so optout status depending only on current value of checkbox.
+    }
 
     $where = array();
     if (is_guest()) {

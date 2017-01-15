@@ -31,7 +31,6 @@ There are also a range of other logs such as:
 [list]
 [*] eCommerce log
 [*] Quiz entries
-[*] Point store transactions
 [*] Gift point transactions
 [*] Banner statistics
 [*] Site statistics

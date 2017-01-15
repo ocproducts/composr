@@ -121,7 +121,6 @@ Composr has created the following for us:
 [*] Member list
 [*] User groups
 [*] Chat lobby
-[*] Point Store
 [*] Personal profiles
 [/list]
 

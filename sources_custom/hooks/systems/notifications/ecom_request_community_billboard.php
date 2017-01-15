@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_notification_pointstore_request_community_billboard extends Hook_notification__Staff
+class Hook_notification_community_billboard_request extends Hook_notification__Staff
 {
     /**
      * Find the initial setting that members have for a notification code (only applies to the member_could_potentially_enable members).
@@ -39,7 +39,7 @@ class Hook_notification_pointstore_request_community_billboard extends Hook_noti
     public function list_handled_codes()
     {
         $list = array();
-        $list['pointstore_request_community_billboard'] = array(do_lang('pointstore:POINTSTORE'), do_lang('pointstore:NOTIFICATION_TYPE_pointstore_request_community_billboard'));
+        $list['community_billboard_request'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('community_billboard:NOTIFICATION_TYPE_community_billboard_request'));
         return $list;
     }
 }

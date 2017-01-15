@@ -3,6 +3,10 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
+.ecom_welcome {
+	text-align: center;
+}
+
 .purchase_button {
 	text-align: center;
 }
@@ -22,11 +26,11 @@
 	text-align: {!en_right};
 }
 
-.purchase_wizard_field_name_column {
+.purchase_field_name_column {
 	width: 16em;
 }
 
-.purchase_wizard_field_input_column {
+.purchase_field_input_column {
 	width: 100%;
 }
 

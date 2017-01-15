@@ -199,8 +199,8 @@ class Module_purchase
 
         require_lang('ecommerce');
 
-        $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('PURCHASE_STAGE_' . $type)));
-        breadcrumb_set_self(do_lang_tempcode('PURCHASE_STAGE_' . $type));
+        $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type)));
+        breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type));
 
         if ($type == 'browse') {
             breadcrumb_set_self(do_lang_tempcode('PURCHASING'));
@@ -278,7 +278,7 @@ class Module_purchase
             $url = '';
         }
         require_javascript('checking');
-        return do_template('PURCHASE_WIZARD_SCREEN', array('_GUID' => 'a32c99acc28e8ad05fd9b5e2f2cda029', 'GET' => $get ? true : null, 'TITLE' => $title, 'CONTENT' => $content, 'URL' => $url));
+        return do_template('ECOM_PURCHASE_SCREEN', array('_GUID' => 'a32c99acc28e8ad05fd9b5e2f2cda029', 'GET' => $get ? true : null, 'TITLE' => $title, 'CONTENT' => $content, 'URL' => $url));
     }
 
     /**
@@ -310,7 +310,7 @@ class Module_purchase
                 }
             }
 
-            $wizard_supported = (($details[0] == PRODUCT_PURCHASE_WIZARD) || ($details[0] == PRODUCT_SUBSCRIPTION) || ($details[0] == PRODUCT_CATALOGUE));
+            $wizard_supported = (($details[0] == PRODUCT_PURCHASE) || ($details[0] == PRODUCT_SUBSCRIPTION) || ($details[0] == PRODUCT_CATALOGUE));
 
             $is_available = false; // Anything without is_available is not meant to be purchased directly
             if (method_exists($details[count($details) - 1], 'is_available')) {
@@ -335,7 +335,7 @@ class Module_purchase
         }
         $fields = form_input_huge_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list, null, true);
 
-        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_CHOOSE', array('_GUID' => '47c22d48313ff50e6323f05a78342eae', 'FIELDS' => $fields, 'TITLE' => $this->title)), $this->title, $url, true);
+        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_CHOOSE', array('_GUID' => '47c22d48313ff50e6323f05a78342eae', 'FIELDS' => $fields, 'TITLE' => $this->title)), $this->title, $url, true);
     }
 
     /**
@@ -378,7 +378,7 @@ class Module_purchase
             $text->attach($product_object->get_message($type_code));
         }
 
-        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_MESSAGE', array('_GUID' => '8667b6b544c4cea645a52bb4d087f816', 'TITLE' => '', 'TEXT' => $text)), $this->title, $url);
+        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_MESSAGE', array('_GUID' => '8667b6b544c4cea645a52bb4d087f816', 'TITLE' => '', 'TEXT' => $text)), $this->title, $url);
     }
 
     /**
@@ -409,7 +409,7 @@ class Module_purchase
         }
         $url = build_url(array('page' => '_SELF', 'type' => ($fields === null) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
 
-        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_TERMS', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'TERMS' => $terms)), $this->title, null);
+        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_TERMS', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'TERMS' => $terms)), $this->title, null);
     }
 
     /**
@@ -438,7 +438,7 @@ class Module_purchase
         $fields = $product_object->get_needed_fields($type_code, get_param_integer('id', -1));
         $url = build_url(array('page' => '_SELF', 'type' => 'pay', 'type_code' => $type_code), '_SELF', null, true);
 
-        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_DETAILS', array('_GUID' => '7fcbb0be5e90e52163bfec01f22f4ea0', 'TEXT' => is_array($fields) ? $fields[1] : '', 'FIELDS' => is_array($fields) ? $fields[0] : $fields)), $this->title, $url);
+        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_DETAILS', array('_GUID' => '7fcbb0be5e90e52163bfec01f22f4ea0', 'TEXT' => is_array($fields) ? $fields[1] : '', 'FIELDS' => is_array($fields) ? $fields[0] : $fields)), $this->title, $url);
     }
 
     /**
@@ -549,7 +549,7 @@ class Module_purchase
             $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish', 'type_code' => $type_code), '_SELF');
 
             // Credit card form
-            $result = do_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
+            $result = do_template('ECOM_PURCHASE_STAGE_TRANSACT', array(
                 '_GUID' => '15cbba9733f6ff8610968418d8ab527e',
                 'FIELDS' => $fields,
                 'HIDDEN' => $hidden,
@@ -564,7 +564,7 @@ class Module_purchase
                 $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
             }
 
-            $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'PURCHASE_WIZARD_STAGE_SUBSCRIBE' : 'PURCHASE_WIZARD_STAGE_PAY';
+            $tpl = ($temp[$type_code][0] == PRODUCT_SUBSCRIPTION) ? 'ECOM_PURCHASE_STAGE_SUBSCRIBE' : 'ECOM_PURCHASE_STAGE_PAY';
 
             $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
             $payment_processor_links = method_exists($payment_gateway_object, 'get_payment_processor_links') ? $payment_gateway_object->get_payment_processor_links() : new Tempcode();
@@ -608,7 +608,7 @@ class Module_purchase
 
         if (get_param_integer('cancel', 0) == 1) {
             if ($message !== null) {
-                return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '859c31e8f0f02a2a46951be698dd22cf', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+                return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_FINISH', array('_GUID' => '859c31e8f0f02a2a46951be698dd22cf', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
             }
 
             return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
@@ -641,7 +641,7 @@ class Module_purchase
             return redirect_screen($this->title, $redirect, $message);
         }
 
-        return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '43f706793719ea893c280604efffacfe', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_FINISH', array('_GUID' => '43f706793719ea893c280604efffacfe', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
     }
 
     /**
@@ -691,7 +691,7 @@ class Module_purchase
 
                 $hidden = build_keep_post_fields();
 
-                $join_screen = do_template('PURCHASE_WIZARD_STAGE_GUEST', array(
+                $join_screen = do_template('ECOM_PURCHASE_STAGE_GUEST', array(
                     '_GUID' => 'accf475a1457f73d7280b14d774acc6e',
                     'TEXT' => do_lang_tempcode('PURCHASE_NOT_LOGGED_IN', escape_html(get_site_name())),
                     'JAVASCRIPT' => $javascript,

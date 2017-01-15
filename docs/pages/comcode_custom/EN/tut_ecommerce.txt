@@ -2,6 +2,8 @@
 
 {!ecommerce:DOC_ECOMMERCE}
 
+The eCommerce system may also be used with community points.
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Payment gateways[/title]
@@ -149,17 +151,29 @@ Composr has an abstract system of 'products' that may be 'purchased'. These Comp
 
 In Composr by default there are the following 'kinds' of 'product':
  - [b]usergroup subscription[/b]: you may configure as many usergroup subscriptions as you wish, and these are all handled by the 'Usergroup' product kind. Each configured subscription is considered a 'product' for sale on your site.
- - [b]catalogue items[/b]: these are items for sale from the online store
+ - [b]catalogue items[/b]: these are items for sale from the shopping catalogue
  - [b]orders[/b]: these products are a collection of other products bound into a group, and generated when someone finalises an order from the shopping cart
+ - [b]e-mail addresses[/b]: these are e-mail addresses on your domain that you'd set up manually after they are purchased (may be bought as [i]pop3[/i] or [i]forwarders[/i]). Quota upgrades for pop3 accounts may be purchased.
+ - [b]topic pinning[/b]: pinning of requested topics on the forum
+ - [b]name highlighting[/b]: highlighting of a member's name on the forum
+ - [b]banners[/b]: banner advertisements, and upgrades.
+ - [b]custom products[/b]: custom products that you give a label and description and set up manually
+ - [b]permission products[/b]: permissions that you give a label and description and are automatically assigned. This can be used for selling access to download categories, for example.
+ - [b]gambling[/b]: users may get points worth more than they pay, although on average they'll lose money/points
  - [b]work[/b]: this is a generic kind of product used to represent something that has been invoiced
  - Various kinds of [b]non-purchasable product[/b] that exist for accounting purpose -- [tt]interest[/tt], [tt]tax[/tt], [tt]wage[/tt] and [tt]other[/tt]. These aren't for sale on your site but positive or negative transaction sums can be entered against them in the Admin Zone, so your profit/loss and cash-flow charts can be accurate.
+Only the products you want will be available.
+When a member buys something, the staff are informed of it via e-mail of appropriate details.
 
+[media width="150" description="Configuring products" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products_config.png[/media]
+[media width="150" description="Configuring prices" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products_prices.png[/media]
+[media width="150" description="The shop-front" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products.png[/media]
 Product kinds fit into the following general categories:
  - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the [tt]invoices[/tt] module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
  - [b]Subscription[/b]: one-off purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) and managed from the [tt]subscriptions[/tt] module ([tt]site:subscriptions[/tt] page-link, linked from member accounts) (above: usergroup subscriptions)
  - [b]Shopping cart[/b]: an item purchased from the [tt]catalogue[/tt]/[tt]shopping[/tt] modules ([tt]site:catalogues[/tt]/[tt]site:shopping[/tt] page-links, Content > Products and Content > Shopping Cart, on the default menus) (above: catalogue items)
+ - [b]One-off purchase[/b]: purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: e-mail addresses, topic pinning, name highlighting, banners, custom products, permission products, gambling)
  - [b]Other[/b] (above: interest, tax, wage, other)
- - [b]Purchase wizard[/b]: one-off purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: [i]none available out-of-the-box[/i])
 
 [box="For programmers" width="25em" float="right"]
 In the code these are defined via a [tt]PRODUCT_*[/tt] constant from the [tt]ecommerce[/tt] code file.
@@ -169,6 +183,18 @@ For example, a programmer could create the following with relative ease:
  - a product that increases the number of available hits on banners
  - a product that sends out an e-mail to a dispatch warehouse instructing them to mail out a copy of a bands latest album to the address specified in the member profile of the purchaser.
 Most useful kinds of purchase can, however, be achieved with the default usergroup product: a usergroup for which membership can be bought could be given additional permissions that reflect access to features or areas of the website that would not otherwise be available. This is how most websites will use the eCommerce system because it is simple, effective, works well with PayPal, and does not require programmers to implement.
+
+Inventory management is at:
+Admin Zone > Setup > eCommerce inventory management
+Use this to set up those products which users can have multiple of (e-mail accounts, custom products, permission products).
+
+There is a module in the Admin Zone for sales list management at:
+Admin Zone > Audit > eCommerce sales list management
+The module should be used to cancel purchases, such as an e-mail address bought up a user that is no longer valid. Cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user).
+
+[title="3"]Points verses cash[/title]
+
+Many of the products allow configurability over whether they are sold for money or for points, or some combination. Gambling is only available via points.
 
 [title="3"]In more detail[/title]
 
@@ -218,6 +244,143 @@ However, we've designed it to be modular. In Composr another method of doing a t
 3) enter the correct ID number that the product will use to dispatch for this sale
 4) enter the sale amount that the product expects to be receiving (which you can leave blank for it to work this out itself).
 
+[title="2"]Handling refunds[/title]
+
+Refunds are not handled within Composr.
+
+[b]For monetary payments[/b]:
+Refunds should be done on the payment gateway.
+
+[b]For point payments[/b]:
+Refunds must manually be given through the points system.
+
+[title="2"]Purchasing module[/title]
+
+[title="3"]Banners[/title]
+
+While by default any member may submit a banner, the implication is that an eCommerce-bought banner would not have to serve the staff's interests so much as a banner they decided to validate for free.
+
+All banners bought are added to the 'General' banner type.
+
+[title="3"]Topic pinning[/title]
+
+On [concept]Conversr[/concept] sites, members can purchase to have a particular topic pinned on the forum.
+
+[title="3"]Gambling[/title]
+
+Members can gamble points. On average, members lose out on points when they try and gamble them though.
+
+[title="3"]E-mail accounts (advanced)[/title]
+
+[media width="150" description="Configuring pop3 accounts via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_pop3.png[/media]
+[media width="150" description="Configuring e-mail forwarders via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_forwarding.png[/media]
+By selling e-mail accounts you are essentially selling a prestige address to your members. Members might love having an address like [tt]sam@yourawesomesite.com[/tt].
+
+What may be purchased:
+ - POP3 e-mail accounts, and upgrades
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
+ - e-mail Forwarding accounts, and updates
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
+
+These may be configured via the inventory management screen at:
+Admin Zone > Setup > eCommerce inventory management
+
+If e-mail accounts are sold Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the eCommerce configuration defines 3 URLs that can be set according to your server.
+
+Example URLs follow for different webhosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
+
+[title="4"]For Plesk users[/title]
+
+The mail add address (POP3 and forwarding) is:
+[indent][tt]https://{DOMAIN}:8443/domains/mail/mail_name_preferences.php?mn_id=0&previous_page=mail_names[/tt][/indent]
+Forwarders are added through adding a mail address, and then specifying a forwarder for it.
+
+We're not sure if it is currently possible to manage POP3 quota with Plesk.
+
+[title="4"]For Ensim users[/title]
+
+The POP3 add address is:
+[indent][tt]http://{DOMAIN}/Site/email_users_add.htm[/tt][/indent]
+
+The forwarding add address is:
+[indent][tt]http://{DOMAIN}/Site/emal_forward.htm[/tt][/indent]
+We're not sure if it is currently possible to manage POP3 quota with Ensim.
+
+[title="4"]For cPanel users[/title]
+
+The POP3 add address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addpop2.html[/tt][/indent]
+
+The forwarding add address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addfwd.html[/tt][/indent]
+
+The POP3 quota change address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/pops.html[/tt][/indent]
+
+[title="3"]Name highlighting[/title]
+
+On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. This means the purchasers name gets special highlighting within forum topics.
+
+[title="3"]Permission products[/title]
+
+[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_permissions.png[/media]
+Staff can set up what permissions may be bought, how long they last for, and how much they cost.
+
+This is done via the inventory management screen at:
+Admin Zone > Setup > eCommerce inventory management
+
+The different types of permission (product) are configured with settings as follows:
+
+[title="4"]Privilege[/title]
+
+If a privilege is set globally, you will only set &ldquo;The privilege&rdquo;.
+
+If you are scoping it to a particular module page (e.g. &ldquo;downloads&rdquo;), you will also set &ldquo;The page&rdquo;.
+
+If you are scoping it to a particular category, you will also set it to &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
+
+[title="4"]Zone-access[/title]
+
+You will only set &ldquo;The zone&rdquo;.
+
+[title="4"]Page-access[/title]
+
+You will set &ldquo;The zone&rdquo; and &ldquo;The page&rdquo;.
+
+[title="4"]Category-access[/title]
+
+You will set &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
+
+Normally &ldquo;The category&rdquo; will be a numeric ID.
+
+[title="3"]Custom products[/title]
+
+[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_custom.png[/media]
+Staff set up custom products by description and cost, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
+This is done via the inventory management screen at:
+Admin Zone > Setup > eCommerce inventory management
+
+[title="3"]Community billboard (non-bundled)[/title]
+
+[i]As of Composr 10, the community billboard is a non-bundled addon.[/i]
+
+[surround]
+{!community_billboard:DOC_COMMUNITY_BILLBOARD}
+
+The queue is accessed via the Staff Checklist on the Admin Zone front page. Note that the queue is not self-managed, you need to control which message is active, as they won't automatically rotate or expire. We mentioned above that the staff are automatically notified when a purchase is made, but actually this isn't the case for the community billboard.
+
+Messages may be manually added in the Admin Zone (a link is on the dashboard checklist), but regular users will be purchasing them. When that happens, you are notified of the new message have been added.
+
+For the community billboard to display, you must place the symbol code, [tt]{$COMMUNITY_BILLBOARD}[/tt] into a template or page. Commonly this would be into [tt]GLOBAL_HTML_WRAP.tpl[/tt] so that it can show somewhere in the page footer.
+
+[media width="150" description="Managing community billboard messages in the queue" float="left"]data_custom/images/docs/tut_ecommerce/points_community_billboard_manage.png[/media]
+[media width="150" description="Adding a community billboard message from the Admin Zone" float="left"]data_custom/images/docs/tut_ecommerce/points_community_billboard_add.png[/media]
+[media width="150" description="Configuring the default community billboard message" float="left"]data_custom/images/docs/tut_ecommerce/points_default_community_billboard.png[/media]
+[media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/tut_ecommerce/points_community_billboard_actual.png[/media]
+[/surround]
+
 [title="2"]Subscriptions[/title]
 
 [surround]
@@ -261,16 +424,16 @@ Staff may quickly locate unpaid invoices and invoices for which the work has not
 Admin Zone > Audit > eCommerce > Invoices
 [/surround]
 
-[title="2"]Online store[/title]
+[title="2"]Shopping catalogue[/title]
 
-The Composr online store works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]). You can access this catalogue for modifications, and adding products to, from Content Management > Products.
+The Composr shopping catalogue works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]). You can access this catalogue for modifications, and adding products to, from Content Management > Products.
 
-The Composr store has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of people's needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in its own way but lacking the features needed for a wider website.
+The Composr shopping catalogue has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of people's needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in its own way but lacking the features needed for a wider website.
 
 [title="3"]Product fields[/title]
 
-[media width="150" description="Viewing a store product" float="right"]data_custom/images/docs/tut_ecommerce/product_view.png[/media]
-[media width="150" description="Adding a store product" float="right"]data_custom/images/docs/tut_ecommerce/product_add.png[/media]
+[media width="150" description="Viewing a shopping catalogue item" float="right"]data_custom/images/docs/tut_ecommerce/product_view.png[/media]
+[media width="150" description="Adding a shopping catalogue item" float="right"]data_custom/images/docs/tut_ecommerce/product_add.png[/media]
 This catalogue has some hard-coded fields:
  - [b]Product title[/b] -- the product title / name
  - [b]Item code[/b] -- a code of your choice for the item, probably taken from your internal labelling system
@@ -306,12 +469,12 @@ Once you are happy with your set of fields, you can add categories and entries t
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 Be aware that once ordered, a catalogue entry shouldn't usually be deleted. You can unvalidate the entries instead (unselect 'Validated'), and/or move it into an archive category and/or set the stock to zero. This is vital to your ledger integrity. There is an option to forcibly purge an item from the database and all past order history for it, but it's not usually recommended.
 
-[title="3"]Store front[/title]
+[title="3"]Shopping catalogue[/title]
 
 [media width="150" description="Viewing the shopping cart" float="right"]data_custom/images/docs/tut_ecommerce/product_cart.png[/media]
-Once you have entries, and your eCommerce configuration is configured, users can start using your store from the products catalogue (Content > Products, on the default menus). From here they will be able to navigate to the shopping cart ([tt]site:shopping[/tt] page-link, Content > Shopping cart on the default menus) and finalise and pay for their order.
+Once you have entries, and your eCommerce configuration is configured, users can start using the shopping catalogue (Content > Products, on the default menus). From here they will be able to navigate to the shopping cart ([tt]site:shopping[/tt] page-link, Content > Shopping cart on the default menus) and finalise and pay for their order.
 
-You may customise the appearance of the store in the usual way of editing catalogue templates (the [tt]products[/tt] catalogue already has most of the templates overridden with eCommerce-tuned styles, so you do not need to worry about accidentally altering the look of non-eCommerce catalogues).
+You may customise the appearance of the shopping catalogue in the usual way of editing catalogue templates (the [tt]products[/tt] catalogue already has most of the templates overridden with eCommerce-tuned styles, so you do not need to worry about accidentally altering the look of non-eCommerce catalogues).
 
 [title="4"]Guests[/title]
 
@@ -334,7 +497,7 @@ When orders are purchased, an e-mail is sent out to the staff so they can fulfil
 Orders may be reviewed by the purchaser from their [tt]orders[/tt] module (linked from their member profile)
 
 Order status can be changed (e.g. marked as dispatched) from:
-Audit > eCommerce > eCommerce orders
+Audit > eCommerce > Shopping orders
 
 [title="3"]Advanced tax and shipping[/title]
 
@@ -522,11 +685,17 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
 |}
 
 [concepts
- 1_key="PayPal"           1_value="The most popular online payment gateway"
- 2_key="Payment gateway"  2_value="A third-party infrastructure for performing eCommerce transactions"
+ 1_key="PayPal"                        1_value="The most popular online payment gateway"
+ 2_key="Payment gateway"               2_value="A third-party infrastructure for performing eCommerce transactions"
  3_key="Instant Payment Notification"  3_value="A system, originally created by PayPal, for determining the progress of a financial transaction or ongoing subscription."
- 4_key="Product"          4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
- 5_key="PCI"              5_value="The trade body for regulating eCommerce standards. When we refer to PCI compliance we are typically referring to PCI Data Security Standard (PCI DSS)."
+ 4_key="Product"                       4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
+ 5_key="PCI"                           5_value="The trade body for regulating eCommerce standards. When we refer to PCI compliance we are typically referring to PCI Data Security Standard (PCI DSS)."
+ 6_key="Shopping catalogue"            6_value="A special catalogue for listing items that may be purchased through the shopping cart"
+ 7_key="Shopping catalogue item"       7_value="An individual item in a shopping catalogue, another name for a catalogue entry which only applies to a shopping catalogue"
+ 8_key="Shopping cart"                 8_value="System for collecting and paying for one of more items from a shopping catalogue; typically these will be physical items that are shipped together"
+ 9_key="Purchasing module"             9_value="The [tt]purchase[/tt] module where one-off purchases are made"
+ 10_key="Subscription"                 10_value="Something purchased that has recurring payments for as long as the subscription is open"
+ 11_key="Invoice"                      11_value="An invoice created for a website member to pay"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
@@ -534,5 +703,6 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
  - [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues)[/page]
  - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
+ - [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points[/page]
 
 {$SET,tutorial_tags,eCommerce,Development,shopping,ecommerce,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Use the eCommerce system to sell things. Usergroup subscription and member invoicing are available out-of-the-box.}[block]main_tutorial_rating[/block]

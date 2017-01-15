@@ -71,7 +71,7 @@ class Hook_ecommerce_support_credits
         $bundles = array(1, 2, 3, 4, 5, 6, 9, 20, 25, 35, 50, 90, 180, 550);
         foreach ($bundles as $bundle) {
             $products[strval($bundle) . '_CREDITS'] = array(
-                PRODUCT_PURCHASE_WIZARD,
+                PRODUCT_PURCHASE,
                 float_to_raw_string($bundle * floatval(get_option('support_credit_value'))),
                 'handle_support_credits',
                 null,
@@ -84,7 +84,7 @@ class Hook_ecommerce_support_credits
     }
 
     /**
-     * Get the message for use in the purchase wizard.
+     * Get the message for use in the purchasing module.
      *
      * @param  string $type_code The product in question.
      * @return Tempcode The message.
@@ -95,7 +95,7 @@ class Hook_ecommerce_support_credits
     }
 
     /**
-     * Get the terms and conditions for use in the purchase wizard.
+     * Get the terms and conditions for use in the purchasing module.
      *
      * @return string The message.
      */
@@ -117,7 +117,7 @@ class Hook_ecommerce_support_credits
     }
 
     /**
-     * Get fields that need to be filled in in the purchase wizard.
+     * Get fields that need to be filled in in the purchasing module.
      *
      * @return ?array The fields and message text (null: none).
      */

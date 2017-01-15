@@ -570,7 +570,7 @@ class Module_shopping
             delete_pending_orders_for_current_user(); // Don't lock the stock unless they go back to the cart again
 
             if ($message !== null) {
-                return $this->wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '6eafce1925e5069ceb438ec24754b47d', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+                return $this->wrap(do_template('ECOM_PURCHASE_STAGE_FINISH', array('_GUID' => '6eafce1925e5069ceb438ec24754b47d', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
             }
 
             return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
@@ -607,7 +607,7 @@ class Module_shopping
             return redirect_screen($this->title, $redirect, $message);
         }
 
-        return $this->wrap(do_template('PURCHASE_WIZARD_STAGE_FINISH', array('_GUID' => '3857e761ab75f314f4960805bc76b936', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+        return $this->wrap(do_template('ECOM_PURCHASE_STAGE_FINISH', array('_GUID' => '3857e761ab75f314f4960805bc76b936', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
     }
 
     /**
@@ -626,7 +626,7 @@ class Module_shopping
         }
         require_javascript('checking');
 
-        return do_template('PURCHASE_WIZARD_SCREEN', array('_GUID' => '02fd80e2b4d4fc2348736a72e504a208', 'GET' => $get ? true : null, 'TITLE' => $title, 'CONTENT' => $content, 'URL' => $url));
+        return do_template('ECOM_PURCHASE_SCREEN', array('_GUID' => '02fd80e2b4d4fc2348736a72e504a208', 'GET' => $get ? true : null, 'TITLE' => $title, 'CONTENT' => $content, 'URL' => $url));
     }
 
     /**

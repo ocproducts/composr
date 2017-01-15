@@ -141,16 +141,6 @@ table.points_summary_table .answer {
 	display: none;
 }
 
-/* Point store */
-
-.pointstore_item_tag {
-	font-style: italic;
-}
-
-.pointstore_welcome {
-	text-align: center;
-}
-
 /*
 =========================
 =========Buttons=========

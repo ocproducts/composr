@@ -28,7 +28,7 @@ class Hook_config_community_billboard
         return array(
             'human_name' => 'COST_community_billboard',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'COMMUNITY_BILLBOARD_MESSAGE',
             'explanation' => 'CONFIG_OPTION_community_billboard',
             'shared_hosting_restricted' => '0',

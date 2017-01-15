@@ -118,7 +118,7 @@ Each module has a number of 'screens', identified by a URL parameter named [tt]t
 
 Example: [tt]index.php?page=moduleName&type=<screen_name>[/tt]
 
-Generally features relating to a single system (e.g. 'download' system, 'galleries' system, 'pointstore' system, ...) in Composr are contained in a single module, with the exception that content-management and administrative features are each put into separate modules (e.g. [tt]cms_downloads[/tt] and 'admin_downloads') . Content-management (CMS) and Adminisative (admin) modules are made separately so they may be placed in separate zones. Typically a website might be configured to allow certain members to manage content via the CMS zone, but only staff may access the admin modules (via the Admin Zone).
+Generally features relating to a single system (e.g. 'downloads' system, 'galleries' system, 'awards' system, ...) in Composr are contained in a single module, with the exception that content-management and administrative features are each put into separate modules (e.g. [tt]cms_downloads[/tt] and 'admin_downloads') . Content-management (CMS) and Adminisative (admin) modules are made separately so they may be placed in separate zones. Typically a website might be configured to allow certain members to manage content via the CMS zone, but only staff may access the admin modules (via the Admin Zone).
 
 Module files are either full-modules or mini-modules. All standard Composr modules are full-modules. Mini-modules are designed to simplify development or integration on individual websites, where full Composr coding quality is not important.
 Henceforth any use of the word 'module' in this tutorial will be talking about a 'full-module'.

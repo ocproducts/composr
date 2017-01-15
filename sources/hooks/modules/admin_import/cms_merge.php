@@ -78,7 +78,6 @@ class Hook_cms_merge
             'news_and_categories', // including rating, trackbacks, seo
             'newsletter_subscriptions',
             'polls', // including rating, trackbacks, seo
-            'pointstore',
             'redirects',
             'searches_saved',
             'staff_links',
@@ -114,7 +113,6 @@ class Hook_cms_merge
                                        'images_and_galleries' => array('cns_members', 'catalogues'),
                                        'news_and_categories' => array('cns_members', 'attachments', 'catalogues'),
                                        'polls' => array('cns_members', 'catalogues'),
-                                       'pointstore' => array('cns_members', 'ecommerce'),
                                        'wiki' => array('cns_members', 'attachments', 'catalogues'),
                                        'useronline_tracking' => array('cns_members'),
                                        'ip_bans' => array('cns_members'),
@@ -602,6 +600,76 @@ class Hook_cms_merge
                 unset($row['id']);
             }
             $GLOBALS['SITE_DB']->query_insert('ecom_subscriptions', $row);
+        }
+
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_prods_prices', null, null, true);
+        if (is_null($rows)) {
+            return;
+        }
+        $this->_fix_comcode_ownership($rows);
+        foreach ($rows as $row) {
+            $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $row['name']), '', 1);
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', $row);
+        }
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_sales');
+        $this->_fix_comcode_ownership($rows);
+        $on_same_msn = ($this->on_same_msn($file_base));
+        foreach ($rows as $row) {
+            $member_id = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
+            if (is_null($member_id)) {
+                continue;
+            }
+            unset($row['id']);
+            $transaction_id = import_id_remap_get('transactions', $row['transaction_id']);
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => $row['date_and_time'], 'member_id' => $member_id, 'details' => $row['details'], 'details2' => $row['details2'], 'transaction_id' => $transaction_id));
+        }
+
+        $this->_import_ecom_prods_custom($db, $table_prefix);
+
+        $this->_import_ecom_prods_permissions($db, $table_prefix);
+    }
+
+    /**
+     * Imports custom products.
+     *
+     * @param  object $db The DB connection to import from
+     * @param  string $table_prefix The table prefix the target prefix is using
+     */
+    protected function _import_ecom_prods_custom($db, $table_prefix)
+    {
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_prods_custom', null, null, true);
+        if (is_null($rows)) {
+            return;
+        }
+        $this->_fix_comcode_ownership($rows);
+        foreach ($rows as $row) {
+            unset($row['id']);
+
+            $row['c_description'] = $this->get_lang_string($db, $row['c_description']);
+
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_custom', $row);
+        }
+    }
+
+    /**
+     * Imports product store permissions.
+     *
+     * @param  object $db The DB connection to import from
+     * @param  string $table_prefix The table prefix the target prefix is using
+     */
+    protected function _import_ecom_prods_permissions($db, $table_prefix)
+    {
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_prods_permissions', null, null, true);
+        if (is_null($rows)) {
+            return;
+        }
+        $this->_fix_comcode_ownership($rows);
+        foreach ($rows as $row) {
+            unset($row['id']);
+
+            $row['p_description'] = $this->get_lang_string($db, $row['p_description']);
+
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_permissions', $row);
         }
     }
 
@@ -1239,42 +1307,6 @@ class Hook_cms_merge
                 $GLOBALS['SITE_DB']->query_insert('newsletter_periodic', $row);
             }
         }
-    }
-
-    /**
-     * Standard import function.
-     *
-     * @param  object $db The DB connection to import from
-     * @param  string $table_prefix The table prefix the target prefix is using
-     * @param  PATH $file_base The base directory we are importing from
-     */
-    public function import_pointstore($db, $table_prefix, $file_base)
-    {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_prods_prices', null, null, true);
-        if (is_null($rows)) {
-            return;
-        }
-        $this->_fix_comcode_ownership($rows);
-        foreach ($rows as $row) {
-            $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $row['name']), '', 1);
-            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', $row);
-        }
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_sales');
-        $this->_fix_comcode_ownership($rows);
-        $on_same_msn = ($this->on_same_msn($file_base));
-        foreach ($rows as $row) {
-            $member_id = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
-            if (is_null($member_id)) {
-                continue;
-            }
-            unset($row['id']);
-            $transaction_id = import_id_remap_get('transactions', $row['transaction_id']);
-            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => $row['date_and_time'], 'member_id' => $member_id, 'details' => $row['details'], 'details2' => $row['details2'], 'transaction_id' => $transaction_id));
-        }
-
-        $this->_import_ecom_prods_custom($db, $table_prefix);
-
-        $this->_import_ecom_prods_permissions($db, $table_prefix);
     }
 
     /**
@@ -3753,50 +3785,6 @@ class Hook_cms_merge
         foreach ($child_rows as $row) {
             $row['i_parent'] = import_id_remap_get('menu_item', strval(-$row['i_parent']), true);
             $GLOBALS['SITE_DB']->query_update('menu_items', $row, array('id' => $row['id']), '', 1);
-        }
-    }
-
-    /**
-     * Imports custom products.
-     *
-     * @param  object $db The DB connection to import from
-     * @param  string $table_prefix The table prefix the target prefix is using
-     */
-    protected function _import_ecom_prods_custom($db, $table_prefix)
-    {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_prods_custom', null, null, true);
-        if (is_null($rows)) {
-            return;
-        }
-        $this->_fix_comcode_ownership($rows);
-        foreach ($rows as $row) {
-            unset($row['id']);
-
-            $row['c_description'] = $this->get_lang_string($db, $row['c_description']);
-
-            $GLOBALS['SITE_DB']->query_insert('ecom_prods_custom', $row);
-        }
-    }
-
-    /**
-     * Imports product store permissions.
-     *
-     * @param  object $db The DB connection to import from
-     * @param  string $table_prefix The table prefix the target prefix is using
-     */
-    protected function _import_ecom_prods_permissions($db, $table_prefix)
-    {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'ecom_prods_permissions', null, null, true);
-        if (is_null($rows)) {
-            return;
-        }
-        $this->_fix_comcode_ownership($rows);
-        foreach ($rows as $row) {
-            unset($row['id']);
-
-            $row['p_description'] = $this->get_lang_string($db, $row['p_description']);
-
-            $GLOBALS['SITE_DB']->query_insert('ecom_prods_permissions', $row);
         }
     }
 

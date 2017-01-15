@@ -19,17 +19,17 @@ You can now determine how fast certain actions reward your users with a higher r
 
 [title="2"]What else can points be used for?[/title]
 
-As well as utilising points for site ranks and permissions, Composr offers a Point Store. The Point Store allows you to offer rewards for your users to spend the points they earn from interacting with your site.
+As well as utilising points for site ranks and permissions, Composr allows users to spend points in the eCommerce system for the products you've configured with points-based pricing. The eCommerce allows you to offer rewards for your users to spend the points they earn from interacting with your site.
 
-The Point Store inventory management screen can be found under Admin Zone > Setup > Point Store inventory management.
+The eCommerce inventory management screen can be found under Admin Zone > Setup > eCommerce inventory management.
 
-The Point Store allows you to set the cost for users uploading banners highlighting their name in the forum or pinning topics among others. You can also add more items which can be bought such as more enhanced permissions and products. You can also edit any existing configured Point Store items.
+You can set the cost for users uploading banners, for highlighting their name in the forum, or for pinning topics among other things. You can also add more items which can be bought such as more enhanced permissions and products. You can also edit any existing configured items.
 
-[title="2"]How do your users find the Point Store?[/title]
+[title="2"]How do your users purchase the products?[/title]
 
-The Point Store is linked onto the default menus on the front-end of your site, or can be found in the Sitemap.
+The Purchasing module is linked onto the default menus on the front-end of your site, or can be found in the Sitemap.
 
-Go and try out all of the Point Store options and see what works best for you. It offers a great amount of customisability which you simply don't get from simple posts to rank systems.
+Go and try out all of the points & eCommerce options and see what works best for you. It offers a great amount of customisability which you simply don't get from simple posts to rank systems.
 
 [box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 

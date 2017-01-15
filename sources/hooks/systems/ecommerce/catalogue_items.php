@@ -137,7 +137,7 @@ class Hook_ecommerce_catalogue_items
         require_code('catalogues');
 
         if (get_page_name() == 'purchase') {
-            return ECOMMERCE_PRODUCT_DISABLED; // Don't list within purchase module, we only want it as a part of a cart order
+            return ECOMMERCE_PRODUCT_DISABLED; // Don't list within purchasing module, we only want it as a part of a cart order
         }
 
         $res = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)), '', 1);
@@ -233,7 +233,7 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Get the message for use in the purchase wizard
+     * Get the message for use in the purchasing module
      *
      * @param  ID_TEXT $type_code The product in question.
      * @return Tempcode The message.
@@ -449,7 +449,7 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Calculate tax of catalogue product.
+     * Calculate tax of catalogue item.
      *
      * @param  float $gross_cost Gross cost of product.
      * @param  float $tax_percentage Tax in percentage.
@@ -518,7 +518,7 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Find product image for a specific catalogue product.
+     * Find product image for a specific catalogue item.
      *
      * @param  ID_TEXT $catalogue_name Catalogue name.
      * @param  AUTO_LINK $entry_id Catalogue entry ID.
@@ -616,7 +616,7 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Get custom fields for ecommerce product.
+     * Get custom fields for eCommerce product.
      *
      * @param  AUTO_LINK $id Product entry ID.
      * @param  array $map Map where product details are placed.

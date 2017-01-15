@@ -54,152 +54,6 @@ Gift points are not exactly like payment, because it doesn't detract from your o
 Gift points are useless unless spent, so the only advantage to hoarding them is to give a large amount in some kind of special situation being awaited; once given, the gift point receiver has the total added to their actual point count. Obviously members could abuse this, by giving points to each other in some form of reciprocal arrangement ("you pat my back I'll pat yours"): this is why there is an admin screen to monitor all gift transactions for fraud (and selectively reverse transactions). You can reach this screen from the Admin Zone > Audit > Gift-point transactions.
 [/surround]
 
-[title="2"]The Point Store[/title]
-
-[surround]
-[media width="150" description="Configuring the Point Store" float="right"]data_custom/images/docs/tut_points/points_pointstore_config.png[/media]
-[media width="150" description="Configuring the Point Store's prices" float="right"]data_custom/images/docs/tut_points/points_prices.png[/media]
-[media width="150" description="The Point Store shop-front" float="right"]data_custom/images/docs/tut_points/points_pointstore.png[/media]
-{!pointstore:DOC_POINTSTORE}
-
-When a member buys something from the Point Store, the staff are informed of it via e-mail of appropriate details.
-
-The Point Store shop front is accessed via the [tt]pointstore[/tt] module ([tt]site:pointstore[/tt] page-link, Social > Point Store on the default menus)
-
-Point Store inventory management is at:
-Admin Zone > Setup > Point Store inventory management
-Use this to set up those products which you can have multiple of (e-mail accounts, custom products, permission products).
-
-There is a module in the Admin Zone for sales list management at:
-Admin Zone > Audit > Point Store sales list management
-The module should be used to cancel purchases, such as an e-mail address bought up a user that is no longer valid. Cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user). Refunds must manually be given through the points system if points have been already charged by the point of cancellation.
-[/surround]
-
-[title="3"]Banners[/title]
-
-While by default any member may submit a banner, the implication is that a Point Store-bought banner would not have to serve the staff's interests so much as a banner they decided to validate for free.
-
-All banners bought are added to the 'General' banner type.
-
-[title="3"]Topic pinning[/title]
-
-On [concept]Conversr[/concept] sites, members can purchase to have a particular topic pinned on the forum.
-
-[title="3"]Gambling[/title]
-
-Members can gamble points. On average, members lose out on points when they try and gamble them though.
-
-[title="3"]E-mail accounts (advanced)[/title]
-
-[media width="150" description="Configuring pop3 accounts via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_pop3.png[/media]
-[media width="150" description="Configuring e-mail forwarders via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_forwarding.png[/media]
-By selling e-mail accounts you are essentially selling a prestige address to your members. Members might love having an address like [tt]sam@yourawesomesite.com[/tt].
-
-What may be purchased:
- - POP3 e-mail accounts, and upgrades
-  - staff define which e-mail domains members may purchase addresses on
-  - staff must set up the e-mail accounts manually after they are purchased/upgrades
- - e-mail Forwarding accounts, and updates
-  - staff define which e-mail domains members may purchase addresses on
-  - staff must set up the e-mail accounts manually after they are purchased/upgrades
-
-These may be configured via the inventory management screen at:
-Admin Zone > Setup > Point Store inventory management
-
-If e-mail accounts are sold through the Point Store, Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the Point Store configuration defines 3 URLs that can be set according to your server.
-
-Example URLs follow for different webhosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
-
-[title="4"]For Plesk users[/title]
-
-The mail add address (POP3 and forwarding) is:
-[indent][tt]https://{DOMAIN}:8443/domains/mail/mail_name_preferences.php?mn_id=0&previous_page=mail_names[/tt][/indent]
-Forwarders are added through adding a mail address, and then specifying a forwarder for it.
-
-We're not sure if it is currently possible to manage POP3 quota with Plesk.
-
-[title="4"]For Ensim users[/title]
-
-The POP3 add address is:
-[indent][tt]http://{DOMAIN}/Site/email_users_add.htm[/tt][/indent]
-
-The forwarding add address is:
-[indent][tt]http://{DOMAIN}/Site/emal_forward.htm[/tt][/indent]
-We're not sure if it is currently possible to manage POP3 quota with Ensim.
-
-[title="4"]For cPanel users[/title]
-
-The POP3 add address is:
-[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addpop2.html[/tt][/indent]
-
-The forwarding add address is:
-[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addfwd.html[/tt][/indent]
-
-The POP3 quota change address is:
-[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/pops.html[/tt][/indent]
-
-[title="3"]Name highlighting[/title]
-
-On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. This means the purchasers name gets special highlighting within forum topics.
-
-[title="3"]Permission products[/title]
-
-[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_permissions.png[/media]
-Staff can set up what permissions may be bought, how long they last for, and how much they cost.
-
-This is done via the inventory management screen at:
-Admin Zone > Setup > Point Store inventory management
-
-The different types of permission (product) are configured with settings as follows:
-
-[title="4"]Privilege[/title]
-
-If a privilege is set globally, you will only set &ldquo;The privilege&rdquo;.
-
-If you are scoping it to a particular module page (e.g. &ldquo;downloads&rdquo;), you will also set &ldquo;The page&rdquo;.
-
-If you are scoping it to a particular category, you will also set it to &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
-
-[title="4"]Zone-access[/title]
-
-You will only set &ldquo;The zone&rdquo;.
-
-[title="4"]Page-access[/title]
-
-You will set &ldquo;The zone&rdquo; and &ldquo;The page&rdquo;.
-
-[title="4"]Category-access[/title]
-
-You will set &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
-
-Normally &ldquo;The category&rdquo; will be a numeric ID.
-
-[title="3"]Custom products[/title]
-
-[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_custom.png[/media]
-Staff set up custom products by description and cost, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
-This is done via the inventory management screen at:
-Admin Zone > Setup > Point Store inventory management
-
-[title="3"]Community billboard (non-bundled)[/title]
-
-[i]As of Composr 10, the community billboard is a non-bundled addon.[/i]
-
-[surround]
-{!community_billboard:DOC_COMMUNITY_BILLBOARD}
-
-The queue is accessed via the Staff Checklist on the Admin Zone front page. Note that the queue is not self-managed, you need to control which message is active, as they won't automatically rotate or expire. We mentioned above that the staff are automatically notified when a Point Store purchase is made, but actually this isn't the case for the community billboard.
-
-Messages may be manually added in the Admin Zone (a link is on the dashboard checklist), but regular users will be adding them via the Point Store. When that happens, you are notified of the new message have been added.
-
-For the community billboard to display, you must place the symbol code, [tt]{$COMMUNITY_BILLBOARD}[/tt] into a template or page. Commonly this would be into [tt]GLOBAL_HTML_WRAP.tpl[/tt] so that it can show somewhere in the page footer.
-
-[media width="150" description="Managing community billboard messages in the queue" float="left"]data_custom/images/docs/tut_points/points_community_billboard_manage.png[/media]
-[media width="150" description="Adding a community billboard message from the Admin Zone" float="left"]data_custom/images/docs/tut_points/points_community_billboard_add.png[/media]
-[media width="150" description="Configuring the default community billboard message" float="left"]data_custom/images/docs/tut_points/points_default_community_billboard.png[/media]
-[media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/tut_points/points_community_billboard_actual.png[/media]
-[/surround]
-
 [title="2"]Other economy tie-ins[/title]
 
 [title="3"]Buildr (non-bundled)[/title]
@@ -213,15 +67,6 @@ Points are at the very core of Buildr, and are used in two ways:
 2) Members may add items to the system, and then sell these items to other members. An example of this being used, is for the controller of a realm used for a 'quest' to add a 'healthy' item into the system: those with more points have a higher chance of surviving to the end of the quest, as they can heal themselves.
 
 The Buildr system is very simple, yet via the small set of options available, presents amazing possibilities.
-
-[title="3"]Downloads[/title]
-
-Members may submit downloads that cost points to download. Depending on how the submitter configures the download, these points may end up with that submitter, or thrown away.
-This system allows:
- - staff to artificially limited access, to ensure members participate before they can use site resources.
- - members to earn points to compensate themselves for the work contained within a download.
-
-This is covered in the [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads tutorial[/page].
 
 [title="3"]The real world[/title]
 
@@ -264,14 +109,14 @@ A common point of confusion is users thinking the leader-board shows who are the
  1_key="Points"          1_value="Points are accumulated by various means and illustrate rank and provide spending power (currency)"
  2_key="Rank"            2_value="Rank is determined by the total of points ever earned, and is a status symbol"
  3_key="Gift points"     3_value="Gift points are automatically accumulated over time and exist only as gifts to give to other members, where they translate to real points"
- 4_key="Point Store"     4_value="The Point Store allows conversion of points into items such as community e-mail accounts"
- 5_key="Leader-board"    5_value="The point leader-board shows the top point holders, and is drawn up on a weekly basis"
- 6_key="Buildr"          6_value="A Composr addon that provides a simple virtual world environment to interact in; points are the currency of Buildr"
+ 4_key="Leader-board"    4_value="The point leader-board shows the top point holders, and is drawn up on a weekly basis"
+ 5_key="Buildr"          5_value="A Composr addon that provides a simple virtual world environment to interact in; points are the currency of Buildr"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_banners"]Running advertisements (via the banner system)[/page]
  - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
+ - [page="_SEARCH:tut_ecommerce"]eCommerce[/page]
 
-{$SET,tutorial_tags,Fun and Games,buildr,community_billboard,pointstore,points,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The points system allows members to earn and spend points, creating a great dynamic. Find out how it works.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Fun and Games,buildr,community_billboard,points,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The points system allows members to earn and spend points, creating a great dynamic. Find out how it works.}[block]main_tutorial_rating[/block]

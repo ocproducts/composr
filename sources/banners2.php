@@ -150,7 +150,7 @@ function create_selection_list_banners($it = null, $only_owned = null)
 /**
  * Get the Tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.
  *
- * @param  boolean $simplified Whether to simplify the banner interface (for the Point Store buy process)
+ * @param  boolean $simplified Whether to simplify the banner interface (for the purchase process)
  * @param  ID_TEXT $name The name of the banner
  * @param  URLPATH $image_url The URL to the banner image
  * @param  URLPATH $site_url The URL to the site the banner leads to

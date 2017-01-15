@@ -28,7 +28,7 @@ class Hook_config_bank_dividend
         return array(
             'human_name' => 'BANK_DIVIDEND',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'BANKING',
             'explanation' => 'CONFIG_OPTION_bank_dividend',
             'shared_hosting_restricted' => '0',

@@ -19,9 +19,9 @@ We have the ability to change the regularity a banner is shown on the network. I
 
 &raquo; [page="_SEARCH:cms_banners:add"]Join our banner scheme[/page]
 
-{+START,IF,{$ADDON_INSTALLED,pointstore}}[title="2"]Point Store[/title]
+{+START,IF,{$ADDON_INSTALLED,ecommerce}}[title="2"]Purchasing[/title]
 
-If you have built up points on our site then you may use the Point Store to purchase a banner and hits for it.
+You may [page="_SEARCH:purchase:message:banners"]purchase a banner[/page] and hits for it.
 {+END}
 [title="2"]Commercial[/title]
 

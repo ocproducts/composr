@@ -71,7 +71,7 @@ function add_item_wrap($member_id, $name, $cost, $not_infinite, $bribable, $heal
 
     // Charge them
     if (!has_privilege($member_id, 'administer_buildr')) {
-        $price = get_price('mud_item');
+        $price = get_product_points_price('mud_item');
         if (available_points($member_id) < $price) {
             buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html($price)), 'warn');
         }
@@ -148,7 +148,7 @@ function add_item_wrap_copy($member_id, $name, $cost, $not_infinite)
 
     // Charge them
     if (!has_privilege($member_id, 'administer_buildr')) {
-        $price = get_price('mud_item_copy');
+        $price = get_product_points_price('mud_item_copy');
         if (available_points($member_id) < $price) {
             buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
@@ -257,7 +257,7 @@ function add_room_wrap($member_id, $relative, $name, $text, $password_question, 
 
     // Charge them
     if (!has_privilege($member_id, 'administer_buildr')) {
-        $price = get_price('mud_room');
+        $price = get_product_points_price('mud_room');
         if (available_points($member_id) < $price) {
             buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
@@ -361,7 +361,7 @@ function add_realm_wrap($member_id, $name, $troll_name, $jail_name, $jail_text, 
             buildr_refresh_with_message(do_lang_tempcode('W_MEMBER_NOT_LONG_ENOUGH'), 'warn');
         }
 
-        $price = get_price('mud_realm');
+        $price = get_product_points_price('mud_realm');
         if (available_points($member_id) < $price) {
             buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
@@ -505,7 +505,7 @@ function add_portal_wrap($member_id, $name, $text, $end_location_realm, $end_loc
     // Charge them
     if (!has_privilege($member_id, 'administer_buildr')) {
         require_code('points2');
-        $price = get_price('mud_portal');
+        $price = get_product_points_price('mud_portal');
         if (available_points($member_id) < $price) {
             buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
@@ -570,7 +570,7 @@ function delete_item_wrap($name)
 
     // Refund them
     require_code('points2');
-    $price = get_price('mud_item');
+    $price = get_product_points_price('mud_item');
     charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_BUILDR', $name));
 
     // Remove item from all rooms and people
@@ -605,7 +605,7 @@ function delete_room_wrap($member_id)
 
     // Refund them
     require_code('points2');
-    $price = get_price('mud_room');
+    $price = get_product_points_price('mud_room');
     charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_ROOM_BUILDR', $name));
 
     delete_room($x, $y, $realm);
@@ -651,7 +651,7 @@ function delete_portal_wrap($member_id, $dest_realm)
 
     // Refund them
     require_code('points2');
-    $price = get_price('mud_portal');
+    $price = get_product_points_price('mud_portal');
     charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_PORTAL_BUILDR', $name));
 
     delete_portal($x, $y, $realm, $dest_realm);
@@ -697,7 +697,7 @@ function delete_realm_wrap($member_id)
 
     // Refund them
     require_code('points2');
-    $price = get_price('mud_realm');
+    $price = get_product_points_price('mud_realm');
     charge_member($attempt_member, intval(-0.7 * $price), do_lang('W_DELETE_REALM_BUILDR', strval($realm)));
 
     delete_realm($realm);

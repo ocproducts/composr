@@ -86,7 +86,7 @@ class Hook_addon_registry_bankr
      */
     public function get_description()
     {
-        return 'Members can deposit some of their hard earned points (but not the gift points) into a "bank account" and extract them again only after a month. The administrator can set the interest rate, that users will get with their points back at the end of the account term. To set the Interest rate go to Admin Zone > Setup > Manage Point Store inventory and click "edit your Point Store configuration" and change the interest rate to the level you would like. To deposit points go to the point store and click on the bank option and choose how much you would like to deposit for a month. The interest paid out will be at the level it was at when the points were deposited.';
+        return 'Members can deposit some of their hard earned points (but not the gift points) into a "bank account" and extract them again only after a month. The administrator can set the interest rate, that users will get with their points back at the end of the account term. To set the Interest rate go to Admin Zone > Setup > Manage eCommerce inventory and click "edit your eCommerce configuration" and change the interest rate to the level you would like. To deposit points go to the purchasing module and click on the bank option and choose how much you would like to deposit for a month. The interest paid out will be at the level it was at when the points were deposited.';
     }
 
     /**
@@ -109,7 +109,7 @@ class Hook_addon_registry_bankr
         return array(
             'requires' => array(
                 'Cron',
-                'pointstore',
+                'ecommerce',
             ),
             'recommends' => array(),
             'conflicts_with' => array()
@@ -135,10 +135,10 @@ class Hook_addon_registry_bankr
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/bankr.php',
-            'sources_custom/hooks/modules/pointstore/bank.php',
+            'sources_custom/hooks/systems/ecommerce/bank.php',
             'lang_custom/EN/bank.ini',
             'sources_custom/hooks/systems/cron/bank.php',
-            'themes/default/templates_custom/POINTSTORE_BANK.tpl',
+            'themes/default/templates_custom/ECOM_PRODUCT_BANK.tpl',
             'sources_custom/hooks/systems/config/bank_dividend.php',
         );
     }

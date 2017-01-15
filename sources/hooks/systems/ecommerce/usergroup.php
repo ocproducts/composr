@@ -106,7 +106,7 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
             $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_member_timeouts', array('member_id' => $member_id, 'group_id' => $new_group));
         }
 
-        if ($myrow['s_auto_recur'] == 0) { // Purchase-wizard, so need to maintain group-member-timeout
+        if ($myrow['s_auto_recur'] == 0) { // Purchasing module, so need to maintain group-member-timeout
             $start_time = $GLOBALS['SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'MAX(timeout)', array(
                 'member_id' => $member_id,
                 'group_id' => $new_group,
@@ -218,7 +218,7 @@ class Hook_ecommerce_usergroup
             $item_name = get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], $site_lang ? get_site_default_lang() : null);
 
             $products['USERGROUP' . strval($sub['id'])] = array(
-                ($sub['s_auto_recur'] == 1) ? PRODUCT_SUBSCRIPTION : PRODUCT_PURCHASE_WIZARD, // Technically a non-recurring usergroup subscription is NOT a subscription (i.e. conflicting semantics here...)
+                ($sub['s_auto_recur'] == 1) ? PRODUCT_SUBSCRIPTION : PRODUCT_PURCHASE, // Technically a non-recurring usergroup subscription is NOT a subscription (i.e. conflicting semantics here...)
                 $sub['s_cost'],
                 'handle_usergroup_subscription',
                 array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
@@ -233,7 +233,7 @@ class Hook_ecommerce_usergroup
     }
 
     /**
-     * Get the message for use in the purchase wizard.
+     * Get the message for use in the purchasing module.
      *
      * @param  ID_TEXT $type_code The product in question.
      * @return Tempcode The message.
@@ -259,7 +259,7 @@ class Hook_ecommerce_usergroup
     }
 
     /**
-     * Get fields that need to be filled in in the purchase wizard.
+     * Get fields that need to be filled in in the purchasing module.
      *
      * @return ?array The fields and message text (null: none).
      */

@@ -59,7 +59,7 @@ class Module_buildr
 
         require_code('buildr');
 
-        if (addon_installed('pointstore')) { // If pointstore not removed yet
+        if (addon_installed('ecommerce')) { // If eCommerce not removed yet
             $prices = get_buildr_prices_default();
             foreach (array_keys($prices) as $name) {
                 $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
@@ -623,7 +623,7 @@ class Module_buildr
             if ($name == '') {
                 $tpl = do_template('W_ITEM_SCREEN', array(
                     '_GUID' => '0246f7037a360996bdfb4f1dcf96bcfc',
-                    'PRICE' => integer_format(get_price('mud_item')),
+                    'PRICE' => integer_format(get_product_points_price('mud_item')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ADD_ITEM_TEXT')),
                     'TITLE' => $this->title,
                     'PAGE_TYPE' => 'additem',
@@ -662,7 +662,7 @@ class Module_buildr
 
                 $tpl = do_template('W_ITEMCOPY_SCREEN', array(
                     '_GUID' => '15799930bca51eafdee3c0a8e197866a',
-                    'PRICE' => integer_format(get_price('mud_item_copy')),
+                    'PRICE' => integer_format(get_product_points_price('mud_item_copy')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ADD_ITEM_COPY_TEXT')),
                     'TITLE' => $this->title,
                     'PAGE_TYPE' => 'additemcopy',
@@ -684,7 +684,7 @@ class Module_buildr
                 list($realm, $x, $y) = get_loc_details($member_id);
                 $tpl = do_template('W_ROOM_SCREEN', array(
                     '_GUID' => '5357a6cf8648c952cf29c2b7234cfa6c',
-                    'PRICE' => integer_format(get_price('mud_room')),
+                    'PRICE' => integer_format(get_product_points_price('mud_room')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ADD_ROOM_TEXT')),
                     'ROOM_TEXT' => '',
                     'TITLE' => $this->title,
@@ -724,7 +724,7 @@ class Module_buildr
 
                 $tpl = do_template('W_REALM_SCREEN', array(
                     '_GUID' => '7ae26fe1766aed02233e1be84772759b',
-                    'PRICE' => integer_format(get_price('mud_realm')),
+                    'PRICE' => integer_format(get_product_points_price('mud_realm')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ADD_REALM_TEXT',
                         integer_format($left))),
                     'TITLE' => $this->title,
@@ -759,7 +759,7 @@ class Module_buildr
             if ($name == '') {
                 $tpl = do_template('W_PORTAL_SCREEN', array(
                     '_GUID' => '69e74a964f69721d0381a920c4a25ce5',
-                    'PRICE' => integer_format(get_price('mud_portal')),
+                    'PRICE' => integer_format(get_product_points_price('mud_portal')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ABOUT_PORTALS')),
                     'TITLE' => $this->title,
                     'PORTAL_TEXT' => '',

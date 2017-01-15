@@ -51,7 +51,7 @@ class Hook_addon_registry_shopping
      */
     public function get_description()
     {
-        return 'Online store functionality.';
+        return 'Shopping catalogue functionality.';
     }
 
     /**

@@ -31,14 +31,14 @@ class Hook_members_gifts
         if (is_guest()) {
             return array();
         }
-        if (!has_actual_page_access(get_member(), 'pointstore', get_module_zone('pointstore'))) {
+        if (!has_actual_page_access(get_member(), 'purchase', get_module_zone('purchase'))) {
             return array();
         }
         if ($member_id == get_member()) {
             return array();
         }
 
-        return array(array('contact', do_lang_tempcode('GIFT_GIFT'), build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'giftr', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('pointstore')), 'menu/giftr'));
+        return array(array('contact', do_lang_tempcode('GIFT_GIFT'), build_url(array('page' => 'purchase', 'type' => 'message', 'id' => 'giftr', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('purchase')), 'menu/giftr'));
     }
 
     /**

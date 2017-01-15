@@ -156,27 +156,6 @@ The following addons are not supported/useful on GAE and should be uninstalled:
 
 Note that the purpose of recommending uninstallation is actually primarily because App Engine has some limits. We push up against these limits and hence need to get rid of redundant code to stay under them.
 
-Even after removing these addons, you will still need to clear a bit more out to make sure you have fewer than 1000 files in the [tt]themes/default/templates[/tt] directory.
-Remove one or two of the following addons (your choice which):
- - Calendar
- - Chat
- - eCommerce
- - Shopping
- - Galleries
- - Pointstore
-Also remove four of the following:
- - Authors
- - Banners
- - Downloads
- - Newsletter
- - Polls
- - Quizzes
- - Tickets
- - wiki
-(Of course, you may remove more if you wish, or other addons)
-
-If you find it annoying that you cannot have every Composr addon in simultaneous use when using GAE, you might consider that good sites are streamlined; very few (if any) websites should contain every Composr feature ;).
-
 [title="2"]Staging configuration[/title]
 
 You should only do certain tasks on your local development machine:

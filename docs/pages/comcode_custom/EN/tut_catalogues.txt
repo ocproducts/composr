@@ -122,7 +122,7 @@ You therefore need to either:
 [*] Create [tt]CATALOGUE_yournewcatalogue_GRID_ENTRY_WRAP.tpl[/tt] such that it references a different field sequence number (replace [tt]FIELD_1_THUMB[/tt], noting that we're counting field sequence numbers starting from zero)
 [/list]
 
-However there is an important exception to the above. The products catalogue already is bundled with a custom template set which is already referencing a different picture field. You also are not supposed to rearrange the first few fields in the products catalogue because they have a hard-coded meaning.
+However there is an important exception to the above. The shopping catalogue already is bundled with a custom template set which is already referencing a different picture field. You also are not supposed to rearrange the first few fields in the shopping catalogue because they have a hard-coded meaning.
 
 Templates:
  - [tt]CATALOGUE_*_GRID_ENTRY_WRAP.tpl[/tt]

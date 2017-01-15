@@ -4789,7 +4789,7 @@ insert into `cms_addons_files` values('downloads','sources/hooks/systems/config/
  ('ecommerce','themes/default/templates/ECOM_TRANSACTION_LOGS_SCREEN.tpl','4593'),
  ('ecommerce','themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_LINE.tpl','4594'),
  ('ecommerce','themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN.tpl','4595'),
- ('ecommerce','themes/default/templates/MEMBER_SUBSCRIPTION_STATUS.tpl','4596'),
+ ('ecommerce','themes/default/templates/ECOM_MEMBER_SUBSCRIPTION_STATUS.tpl','4596'),
  ('ecommerce','sources/hooks/systems/cron/manual_subscription_notification.php','4597'),
  ('ecommerce','sources/hooks/systems/cron/subscription_mails.php','4598'),
  ('ecommerce','adminzone/pages/modules/admin_ecommerce.php','4599'),

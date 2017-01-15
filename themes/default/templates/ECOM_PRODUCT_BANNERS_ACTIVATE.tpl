@@ -1,5 +1,5 @@
-<div class="pointstore_item">
-	<div class="box box___pointstore_banners_activate"><div class="box_inner">
+<div class="ecom_product">
+	<div class="box box___ecom_product_banners_activate"><div class="box_inner">
 		<h2>{!BANNERS_ACTIVATE}</h2>
 
 		<p>

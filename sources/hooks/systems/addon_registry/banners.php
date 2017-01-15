@@ -137,11 +137,11 @@ class Hook_addon_registry_banners
             'sources/blocks/main_banner_wave.php',
             'sources/hooks/modules/admin_setupwizard/banners.php',
             'sources/hooks/modules/admin_unvalidated/banners.php',
-            'sources/hooks/modules/pointstore/banners.php',
-            'themes/default/templates/POINTSTORE_BANNERS_SCREEN.tpl',
-            'themes/default/templates/POINTSTORE_BANNERS_2.tpl',
-            'themes/default/templates/POINTSTORE_BANNERS_ACTIVATE.tpl',
-            'themes/default/templates/POINTSTORE_BANNERS_UPGRADE.tpl',
+            'sources/hooks/systems/ecommerce/banners.php',
+            'themes/default/templates/ECOM_PRODUCT_BANNERS_SCREEN.tpl',
+            'themes/default/templates/ECOM_PRODUCT_BANNERS_2.tpl',
+            'themes/default/templates/ECOM_PRODUCT_BANNERS_ACTIVATE.tpl',
+            'themes/default/templates/ECOM_PRODUCT_BANNERS_UPGRADE.tpl',
             'sources/hooks/systems/page_groupings/banners.php',
             'sources/hooks/systems/content_meta_aware/banner.php',
             'sources/hooks/systems/content_meta_aware/banner_type.php',
@@ -172,10 +172,10 @@ class Hook_addon_registry_banners
             'templates/BANNER_IMAGE.tpl' => 'banner_image',
             'templates/BANNER_IFRAME.tpl' => 'banner_iframe',
             'templates/BANNER_TEXT.tpl' => 'banner_text',
-            'templates/POINTSTORE_BANNERS_2.tpl' => 'pointstore_banners_2',
-            'templates/POINTSTORE_BANNERS_UPGRADE.tpl' => 'pointstore_banners_upgrade',
-            'templates/POINTSTORE_BANNERS_ACTIVATE.tpl' => 'pointstore_banners_activate',
-            'templates/POINTSTORE_BANNERS_SCREEN.tpl' => 'pointstore_banners_screen',
+            'templates/ECOM_PRODUCT_BANNERS_2.tpl' => 'ecom_product_banners_2',
+            'templates/ECOM_PRODUCT_BANNERS_UPGRADE.tpl' => 'ecom_product_banners_upgrade',
+            'templates/ECOM_PRODUCT_BANNERS_ACTIVATE.tpl' => 'ecom_product_banners_activate',
+            'templates/ECOM_PRODUCT_BANNERS_SCREEN.tpl' => 'ecom_product_banners_screen',
             'templates/BANNER_VIEW_SCREEN.tpl' => 'administrative__banner_view_screen'
         );
     }
@@ -420,11 +420,11 @@ class Hook_addon_registry_banners
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__pointstore_banners_2()
+    public function tpl_preview__ecom_product_banners_2()
     {
-        require_lang('pointstore');
+        require_lang('ecommerce');
         return array(
-            lorem_globalise(do_lorem_template('POINTSTORE_BANNERS_2', array(
+            lorem_globalise(do_lorem_template('ECOM_PRODUCT_BANNERS_2', array(
                 'BANNER_URL' => placeholder_url(),
             )), null, '', true)
         );
@@ -437,11 +437,11 @@ class Hook_addon_registry_banners
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__pointstore_banners_upgrade()
+    public function tpl_preview__ecom_product_banners_upgrade()
     {
-        require_lang('pointstore');
+        require_lang('ecommerce');
         return array(
-            lorem_globalise(do_lorem_template('POINTSTORE_BANNERS_UPGRADE', array(
+            lorem_globalise(do_lorem_template('ECOM_PRODUCT_BANNERS_UPGRADE', array(
                 'UPGRADE_URL' => placeholder_url(),
             )), null, '', true)
         );
@@ -454,11 +454,11 @@ class Hook_addon_registry_banners
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__pointstore_banners_activate()
+    public function tpl_preview__ecom_product_banners_activate()
     {
-        require_lang('pointstore');
+        require_lang('ecommerce');
         return array(
-            lorem_globalise(do_lorem_template('POINTSTORE_BANNERS_ACTIVATE', array(
+            lorem_globalise(do_lorem_template('ECOM_PRODUCT_BANNERS_ACTIVATE', array(
                 'ACTIVATE_URL' => placeholder_url(),
             )), null, '', true)
         );
@@ -471,11 +471,11 @@ class Hook_addon_registry_banners
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__pointstore_banners_screen()
+    public function tpl_preview__ecom_product_banners_screen()
     {
-        require_lang('pointstore');
+        require_lang('ecommerce');
         return array(
-            lorem_globalise(do_lorem_template('POINTSTORE_BANNERS_SCREEN', array(
+            lorem_globalise(do_lorem_template('ECOM_PRODUCT_BANNERS_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'ACTIVATE' => lorem_phrase(),
                 'UPGRADE' => lorem_phrase(),

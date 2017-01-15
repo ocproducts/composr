@@ -202,7 +202,7 @@ $featuretree = array(
             'Points system',
             array(
                 array('So many ways to earn points', 'From submitting different content to how active they are, you control the economy'),
-                array('Point store', 'Members can buy advertising space, temporary privileges, gamble, and more! <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Point Store" href="http://shareddemo.composr.info/site/index.php?page=pointstore&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('eCommerce integration', 'Members can buy advertising space, temporary privileges, gamble, or any other eCommerce product you configure to accept points! <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of eCommerce" href="http://shareddemo.composr.info/site/index.php?page=purchase&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Gift system', 'Allows members to reward each other with gift points <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Points" href="http://shareddemo.composr.info/site/index.php?page=points"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Leader board', 'Create some community competition, by showing a week-by-week who has the most points <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Leaderboard" href="http://shareddemo.composr.info/site/index.php?page=leader_board&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider

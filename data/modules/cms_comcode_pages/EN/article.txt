@@ -52,7 +52,7 @@ Short copy techniques may include:
  - Story-telling through images
  - Short snappy sentences, typically stating key points or benefits, perhaps directly or perhaps indirectly
  - Minimal text that gets across a key message, usually either heavily emotionally-driven, or a direct delivery of unique-selling-point(s)
- - Termination with a call to action (for example, a join link, an ecommerce link, a newsletter signup block, or a phone number)
+ - Termination with a call to action (for example, a join link, an eCommerce link, a newsletter signup block, or a phone number)
 
 Long copy techniques may include:
  - (Most of the techniques of short copy)

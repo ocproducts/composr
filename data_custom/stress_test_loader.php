@@ -444,7 +444,7 @@ function do_work()
         gc_enable();
     }
 
-    // items in ecommerce store
+    // items in shopping catalogue
     require_code('catalogues2');
     $cat_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => 'products'));
     $fields = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id'), array('c_name' => 'products')));
@@ -464,7 +464,7 @@ function do_work()
         $pid = actual_add_catalogue_entry($cat_id, 1, '', 1, 1, 1, $map);
         unset($map);
     }
-    // outstanding ecommerce orders
+    // outstanding shopping orders
     $pid = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'MIN(id)', array('c_name' => 'products'));
     require_code('shopping');
     for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'COUNT(*)'); $j < $num_wanted; $j++) {

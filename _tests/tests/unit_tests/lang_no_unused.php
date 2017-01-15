@@ -68,7 +68,7 @@ class lang_no_unused_test_set extends cms_test_case
             'ERROR_UPLOADING_',
             'NEXT_ITEM_',
             'DYNAMIC_NOTICE_',
-            'PURCHASE_STAGE_',
+            'ECOM_PURCHASE_STAGE_',
             'LENGTH_UNIT_',
             '_LENGTH_UNIT_',
             'PAYMENT_STATE_',

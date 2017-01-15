@@ -158,13 +158,13 @@ Where [tt]example[/tt] is changed for whatever type string you've used for the b
 [*] Place the code in any template you like (or multiple ones). Obviously you'll need to write it in in such a way as for it to fit well into the layout. This is a standard CSS/XHTML themeing issue.
 [/list]
 
-[title="2"]The Point Store[/title]
+[title="2"]Selling advertising[/title]
 
-If you wish to use your banner space, in part of full, for showing banners that your community want, then you may wish to enable the Point Store, to allow members to buy banners using points.
+If you wish to use your banner space, in part of full, for showing third-party banners, then you may wish to enable sale via the eCommerce system, to allow either customers to buy banners or for members to buy banners using points.
 
-More information on the Point Store is provided in the [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points tutorial[/page].
+More information on eCommerce is provided in the [page="_SEARCH:tut_ecommerce"]eCommerce tutorial[/page].
 
-Alternatively, members may directly submit banners (i.e. without using the Point Store), and you may choose to validate them without requiring the members to spend their points.
+Alternatively, members may directly submit banners (i.e. without using eCommerce), and you may choose to validate them without requiring the members to spend their points.
 
 [title="2"]Troubleshooting[/title]
 

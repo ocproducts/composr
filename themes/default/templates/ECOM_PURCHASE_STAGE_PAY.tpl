@@ -1,4 +1,4 @@
-{$,Template is used for remote payments only; local payments use PURCHASE_WIZARD_STAGE_TRANSACT}
+{$,Template is used for remote payments only; local payments use ECOM_PURCHASE_STAGE_TRANSACT}
 
 {+START,IF_PASSED,TEXT}
 	{$PARAGRAPH,{TEXT}}

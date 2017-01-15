@@ -339,7 +339,6 @@ class Module_admin_setupwizard
             'cns_signatures',
             'cns_warnings',
             'points',
-            'pointstore',
             'polls',
             'quizzes',
             'random_quotes',

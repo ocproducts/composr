@@ -147,21 +147,21 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_INVOICES_SCREEN.tpl',
             'themes/default/templates/ECOM_OUTSTANDING_INVOICES_SCREEN.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTIONS_SCREEN.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_SCREEN.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_CHOOSE.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_DETAILS.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_FINISH.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_GUEST.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_TERMS.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_MESSAGE.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_PAY.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_SUBSCRIBE.tpl',
-            'themes/default/templates/PURCHASE_WIZARD_STAGE_TRANSACT.tpl',
+            'themes/default/templates/ECOM_PURCHASE_SCREEN.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_CHOOSE.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_DETAILS.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_FINISH.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_GUEST.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_TERMS.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_MESSAGE.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_PAY.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_SUBSCRIBE.tpl',
+            'themes/default/templates/ECOM_PURCHASE_STAGE_TRANSACT.tpl',
             'themes/default/templates/ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER.tpl',
             'themes/default/templates/ECOM_TRANSACTION_LOGS_SCREEN.tpl',
             'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_LINE.tpl',
             'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN.tpl',
-            'themes/default/templates/MEMBER_SUBSCRIPTION_STATUS.tpl',
+            'themes/default/templates/ECOM_MEMBER_SUBSCRIPTION_STATUS.tpl',
             'themes/default/images/ecommerce/checkmark.png',
             'themes/default/images/ecommerce/index.html',
             'sources/hooks/systems/cron/manual_subscription_notification.php',
@@ -257,8 +257,8 @@ class Hook_addon_registry_ecommerce
             'templates/ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER.tpl' => 'ecom_subscriptions_screen',
             'templates/ECOM_TRANSACTION_LOGS_SCREEN.tpl' => 'administrative__ecom_transaction_logs_screen',
             'templates/ECOM_CASH_FLOW_SCREEN.tpl' => 'administrative__ecom_cash_flow_screen',
-            'templates/PURCHASE_WIZARD_STAGE_TRANSACT.tpl' => 'purchase_wizard_stage_transact',
-            'templates/PURCHASE_WIZARD_SCREEN.tpl' => 'purchase_wizard_screen',
+            'templates/ECOM_PURCHASE_STAGE_TRANSACT.tpl' => 'purchase_stage_transact',
+            'templates/ECOM_PURCHASE_SCREEN.tpl' => 'purchase_screen',
             'templates/ECOM_LOGOS_WORLDPAY.tpl' => 'ecom_logos_worldpay',
             'templates/ECOM_LOGOS_AUTHORIZE.tpl' => 'ecom_logos_authorize',
             'templates/ECOM_PAYMENT_PROCESSOR_LINKS_AUTHORIZE.tpl' => 'ecom_payment_processor_links_authorize',
@@ -277,19 +277,19 @@ class Hook_addon_registry_ecommerce
             'templates/ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE.tpl' => 'ecom_transaction_button_via_authorize',
             'templates/ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE.tpl' => 'ecom_subscription_button_via_authorize',
             'templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_AUTHORIZE.tpl' => 'ecom_subscription_cancel_button_via_authorize',
-            'templates/PURCHASE_WIZARD_STAGE_GUEST.tpl' => 'purchase_wizard_stage_guest',
-            'templates/PURCHASE_WIZARD_STAGE_CHOOSE.tpl' => 'purchase_wizard_stage_choose',
-            'templates/PURCHASE_WIZARD_STAGE_MESSAGE.tpl' => 'purchase_wizard_stage_message',
-            'templates/PURCHASE_WIZARD_STAGE_TERMS.tpl' => 'purchase_wizard_stage_terms',
-            'templates/PURCHASE_WIZARD_STAGE_DETAILS.tpl' => 'purchase_wizard_stage_details',
-            'templates/PURCHASE_WIZARD_STAGE_FINISH.tpl' => 'purchase_wizard_stage_finish',
+            'templates/ECOM_PURCHASE_STAGE_GUEST.tpl' => 'purchase_stage_guest',
+            'templates/ECOM_PURCHASE_STAGE_CHOOSE.tpl' => 'purchase_stage_choose',
+            'templates/ECOM_PURCHASE_STAGE_MESSAGE.tpl' => 'purchase_stage_message',
+            'templates/ECOM_PURCHASE_STAGE_TERMS.tpl' => 'purchase_stage_terms',
+            'templates/ECOM_PURCHASE_STAGE_DETAILS.tpl' => 'purchase_stage_details',
+            'templates/ECOM_PURCHASE_STAGE_FINISH.tpl' => 'purchase_stage_finish',
             'templates/ECOM_INVOICES_SCREEN.tpl' => 'ecom_invoices_screen',
             'templates/ECOM_SUBSCRIPTIONS_SCREEN.tpl' => 'ecom_subscriptions_screen',
-            'templates/PURCHASE_WIZARD_STAGE_SUBSCRIBE.tpl' => 'purchase_wizard_stage_subscribe',
-            'templates/PURCHASE_WIZARD_STAGE_PAY.tpl' => 'purchase_wizard_stage_pay',
+            'templates/ECOM_PURCHASE_STAGE_SUBSCRIBE.tpl' => 'purchase_stage_subscribe',
+            'templates/ECOM_PURCHASE_STAGE_PAY.tpl' => 'purchase_stage_pay',
             'templates/ECOM_VIEW_MANUAL_TRANSACTIONS_LINE.tpl' => 'ecom_view_manual_transactions_screen',
             'templates/ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN.tpl' => 'ecom_view_manual_transactions_screen',
-            'templates/MEMBER_SUBSCRIPTION_STATUS.tpl' => 'member_subscription_status_screen',
+            'templates/ECOM_MEMBER_SUBSCRIPTION_STATUS.tpl' => 'member_subscription_status_screen',
         );
     }
 
@@ -377,10 +377,10 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_transact()
+    public function tpl_preview__purchase_stage_transact()
     {
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_TRANSACT', array(
                 'FIELDS' => placeholder_fields(),
                 'HIDDEN' => '',
                 'LOGO' => placeholder_image(),
@@ -396,9 +396,9 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_screen()
+    public function tpl_preview__purchase_screen()
     {
-        $fields = do_lorem_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
+        $fields = do_lorem_template('ECOM_PURCHASE_STAGE_TRANSACT', array(
             'FIELDS' => placeholder_fields(),
             'HIDDEN' => '',
             'LOGO' => placeholder_image(),
@@ -406,7 +406,7 @@ class Hook_addon_registry_ecommerce
         ));
 
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_SCREEN', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'CONTENT' => $fields,
                 'URL' => placeholder_url(),
@@ -829,12 +829,12 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_guest()
+    public function tpl_preview__purchase_stage_guest()
     {
         require_lang('cns');
 
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_GUEST', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_GUEST', array(
                 'TEXT' => lorem_sentence_html(),
                 'JAVASCRIPT' => '',
                 'FORM' => placeholder_form(),
@@ -850,10 +850,10 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_choose()
+    public function tpl_preview__purchase_stage_choose()
     {
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_CHOOSE', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_CHOOSE', array(
                 'FIELDS' => placeholder_fields(),
                 'TITLE' => lorem_title(),
             )), null, '', true)
@@ -867,10 +867,10 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_message()
+    public function tpl_preview__purchase_stage_message()
     {
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_MESSAGE', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_MESSAGE', array(
                 'TITLE' => lorem_title(),
                 'TEXT' => lorem_sentence_html(),
             )), null, '', true)
@@ -884,11 +884,11 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_terms()
+    public function tpl_preview__purchase_stage_terms()
     {
         require_lang('installer');
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_TERMS', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_TERMS', array(
                 'TITLE' => lorem_title(),
                 'URL' => placeholder_url(),
                 'TERMS' => lorem_paragraph(),
@@ -903,10 +903,10 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_details()
+    public function tpl_preview__purchase_stage_details()
     {
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_DETAILS', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_DETAILS', array(
                 'TEXT' => lorem_sentence_html(),
                 'FIELDS' => placeholder_fields(),
             )), null, '', true)
@@ -920,10 +920,10 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_finish()
+    public function tpl_preview__purchase_stage_finish()
     {
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_FINISH', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_FINISH', array(
                 'TITLE' => lorem_title(),
                 'MESSAGE' => lorem_phrase(),
             )), null, '', true)
@@ -1024,10 +1024,10 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_subscribe()
+    public function tpl_preview__purchase_stage_subscribe()
     {
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_SUBSCRIBE', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_SUBSCRIBE', array(
                 'LOGOS' => placeholder_image(),
                 'TRANSACTION_BUTTON' => placeholder_button(),
                 'CURRENCY' => placeholder_number(),
@@ -1048,10 +1048,10 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__purchase_wizard_stage_pay()
+    public function tpl_preview__purchase_stage_pay()
     {
         return array(
-            lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_PAY', array(
+            lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_PAY', array(
                 'TRANSACTION_BUTTON' => placeholder_button(),
                 'CURRENCY' => placeholder_number(),
                 'ITEM_NAME' => lorem_word(),
@@ -1138,7 +1138,7 @@ class Hook_addon_registry_ecommerce
         }
 
         return array(
-            lorem_globalise(do_lorem_template('MEMBER_SUBSCRIPTION_STATUS', array(
+            lorem_globalise(do_lorem_template('ECOM_MEMBER_SUBSCRIPTION_STATUS', array(
                 'MEMBER_ID' => placeholder_id(),
                 'SUBSCRIPTIONS' => $subscriptions,
             )), null, '', true)

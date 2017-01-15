@@ -86,7 +86,7 @@ class Hook_addon_registry_community_billboard
      */
     public function get_description()
     {
-        return 'Community billboard messages, designed to work with the pointstore to allow members to buy community billboard advertising on the website.';
+        return 'Community billboard messages, designed to work with eCommerce to allow people buy community billboard advertising on the website.';
     }
 
     /**
@@ -110,7 +110,7 @@ class Hook_addon_registry_community_billboard
     {
         return array(
             'requires' => array(
-                'pointstore',
+                'ecommerce',
             ),
             'recommends' => array(),
             'conflicts_with' => array()
@@ -139,8 +139,8 @@ class Hook_addon_registry_community_billboard
             'themes/default/images_custom/icons/48x48/menu/adminzone/audit/community_billboard.png',
             'themes/default/templates_custom/COMMUNITY_BILLBOARD_DETAILS.tpl',
             'themes/default/templates_custom/COMMUNITY_BILLBOARD_STORE_LIST_LINE.tpl',
-            'themes/default/templates_custom/POINTSTORE_COMMUNITY_BILLBOARD_SCREEN.tpl',
-            'themes/default/templates_custom/POINTSTORE_COMMUNITY_BILLBOARD_2.tpl',
+            'themes/default/templates_custom/ECOM_PRODUCT_COMMUNITY_BILLBOARD_SCREEN.tpl',
+            'themes/default/templates_custom/ECOM_PRODUCT_COMMUNITY_BILLBOARD_2.tpl',
             'adminzone/pages/modules_custom/admin_community_billboard.php',
             'lang_custom/EN/community_billboard.ini',
             'sources_custom/hooks/systems/config/system_community_billboard.php',
@@ -149,10 +149,10 @@ class Hook_addon_registry_community_billboard
             'sources_custom/hooks/systems/symbols/COMMUNITY_BILLBOARD.php',
             'sources_custom/community_billboard.php',
             'sources_custom/hooks/blocks/main_staff_checklist/community_billboard.php',
-            'sources_custom/hooks/modules/pointstore/community_billboard.php',
+            'sources_custom/hooks/systems/ecommerce/community_billboard.php',
             'sources_custom/hooks/systems/config/community_billboard.php',
             'sources_custom/hooks/systems/config/is_on_community_billboard_buy.php',
-            'sources_custom/hooks/systems/notifications/pointstore_request_community_billboard.php',
+            'sources_custom/hooks/systems/notifications/ecom_request_community_billboard.php',
             'sources_custom/hooks/systems/page_groupings/community_billboard.php',
             'themes/default/css_custom/community_billboard.css',
         );
@@ -168,8 +168,8 @@ class Hook_addon_registry_community_billboard
         return array(
             'templates/COMMUNITY_BILLBOARD_DETAILS.tpl' => 'administrative__community_billboard_manage_screen',
             'templates/COMMUNITY_BILLBOARD_STORE_LIST_LINE.tpl' => 'administrative__community_billboard_manage_screen',
-            'templates/POINTSTORE_COMMUNITY_BILLBOARD_2.tpl' => 'pointstore_community_billboard_2',
-            'templates/POINTSTORE_COMMUNITY_BILLBOARD_SCREEN.tpl' => 'pointstore_community_billboard_screen',
+            'templates/ECOM_PRODUCT_COMMUNITY_BILLBOARD_2.tpl' => 'community_billboard_2',
+            'templates/ECOM_PRODUCT_COMMUNITY_BILLBOARD_SCREEN.tpl' => 'community_billboard_screen',
         );
     }
 
@@ -180,11 +180,11 @@ class Hook_addon_registry_community_billboard
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__pointstore_community_billboard_2()
+    public function tpl_preview__community_billboard_2()
     {
         return array(
             lorem_globalise(
-                do_lorem_template('POINTSTORE_COMMUNITY_BILLBOARD_2', array(
+                do_lorem_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD_2', array(
                         'TEXT_URL' => placeholder_url(),
                     )
                 ), null, '', true),
@@ -198,11 +198,11 @@ class Hook_addon_registry_community_billboard
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__pointstore_community_billboard_screen()
+    public function tpl_preview__community_billboard_screen()
     {
         return array(
             lorem_globalise(
-                do_lorem_template('POINTSTORE_COMMUNITY_BILLBOARD_SCREEN', array(
+                do_lorem_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD_SCREEN', array(
                         'TITLE' => lorem_title(),
                         'TEXT_URL' => placeholder_url(),
                         'QUEUE' => placeholder_number(),

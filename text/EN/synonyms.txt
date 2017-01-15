@@ -120,7 +120,7 @@ random_quotes	testimonials
 join	register	signup	sign-up
 logout	log-out	sign-out	sign-off
 login	log-in	sign-in	sign-on
-shopping	ecommerce	payment	purchase	products
+shopping	ecommerce	payment	purchase	products	store
 cache	decache	cleanup
 ssl	https
 seed	theme wizard

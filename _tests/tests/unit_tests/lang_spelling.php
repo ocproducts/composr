@@ -131,9 +131,6 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'set-up') !== false) {
             $this->assertTrue(false, 'The phrase \'set-up\' was used in ' . $file . '. This might need to be changed to \'setup\', depending on the usage.');
         }
-        if (stripos($string, 'point-store') !== false) {
-            $this->assertTrue(false, 'The word \'point-store\' was used in ' . $file . '. This should be changed to \'Point Store\'.');
-        }
         if (stripos($string, 'add-on') !== false) {
             $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
         }

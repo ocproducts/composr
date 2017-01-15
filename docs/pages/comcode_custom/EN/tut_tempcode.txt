@@ -1023,7 +1023,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$STOCK_CHECK,Product id}</td>
-			<td>Get the stock count for an eCommerce product</td>
+			<td>Get the stock count for a shopping catalogue item</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$IS_FRIEND,2,3}</td>
