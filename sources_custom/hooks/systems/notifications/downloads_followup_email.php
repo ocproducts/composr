@@ -77,7 +77,7 @@ class Hook_notification_downloads_followup_email extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['downloads_followup_email'] = array(do_lang('menus:CONTENT'), do_lang('downloads_followup_email:NOTIFICATION_TYPE_downloads_followup_email'));
+        $list['downloads_followup_email'] = array(do_lang('CONTENT'), do_lang('downloads_followup_email:NOTIFICATION_TYPE_downloads_followup_email'));
         return $list;
     }
 

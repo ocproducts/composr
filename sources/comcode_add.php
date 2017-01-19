@@ -1021,7 +1021,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         }
 
         $hidden->attach(form_input_hidden('tag_contents', $default_embed));
-        $tag_description = do_lang_tempcode('COMCODE_TAG_attachment_simplified');
+        $tag_description = do_lang_tempcode('COMCODE_TAG_attachment_simplified_DESCRIPTION');
         $has_full_tag_description = true;
 
         if (substr($default_embed, 0, 4) == 'new_') {

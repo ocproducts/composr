@@ -43,7 +43,7 @@ class Hook_notification_cns_topic_invite extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['cns_topic_invite'] = array(do_lang('notifications:MESSAGES'), do_lang('cns:NOTIFICATION_TYPE_cns_topic_invite'));
+        $list['cns_topic_invite'] = array(do_lang('MESSAGES'), do_lang('cns:NOTIFICATION_TYPE_cns_topic_invite'));
         return $list;
     }
 

@@ -294,7 +294,7 @@ class CMSAccountWrite
 
         return array(
             'result' => false,
-            'result_text' => do_lang('USER_NO_EXIST'),
+            'result_text' => do_lang('MEMBER_NO_EXIST'),
             'verified' => false,
         );
     }
@@ -358,9 +358,9 @@ class CMSAccountWrite
         $url = $_url->evaluate();
         $_url_simple = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => null, 'username' => null, 'member' => null), $zone, null, false, false, true);
         $url_simple = $_url_simple->evaluate();
-        $message = do_lang('RESET_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($url), $url_simple, strval($member), strval($code)), get_lang($member));
+        $message = do_lang('LOST_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($url), $url_simple, strval($member), strval($code)), get_lang($member));
         require_code('mail');
-        mail_wrap(do_lang('RESET_PASSWORD', null, null, null, get_lang($member)), $message, array($email), $username, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
+        mail_wrap(do_lang('LOST_PASSWORD', null, null, null, get_lang($member)), $message, array($email), $username, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
 
         // Return
         return array(
@@ -390,7 +390,7 @@ class CMSAccountWrite
         $acl_object = new CMSMemberACL();
         $member_id = $acl_object->authenticate_credentials_and_set_auth($username, $old_password);
         if (is_null($member_id)) {
-            warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
+            warn_exit(do_lang_tempcode('MEMBER_BAD_PASSWORD'));
         }
 
         $this->update_member_password($member_id, $new_password);
@@ -415,7 +415,7 @@ class CMSAccountWrite
             $email_address = $test['TTEmail'];
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email_address);
             if (is_null($member_id)) {
-                warn_exit(do_lang_tempcode('USER_NO_EXIST'));
+                warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
             }
 
             $this->update_member_password($member_id, $new_password);
@@ -478,7 +478,7 @@ class CMSAccountWrite
         $acl_object = new CMSMemberACL();
         $member_id = $acl_object->authenticate_credentials_and_set_auth($username, $password);
         if (is_null($member_id)) {
-            warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
+            warn_exit(do_lang_tempcode('MEMBER_BAD_PASSWORD'));
         }
 
         $map = array(

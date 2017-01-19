@@ -235,7 +235,7 @@ class Module_admin_invoices
             $products = $object->get_products(false, $type_code);
             $amount = $products[$type_code][1];
             if ($amount == '?') {
-                warn_exit(do_lang_tempcode('INVOICE_REQURIRED_AMOUNT'));
+                warn_exit(do_lang_tempcode('INVOICE_REQUIRED_AMOUNT'));
             }
         }
 

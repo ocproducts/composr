@@ -34,9 +34,12 @@ class lang_no_unused_test_set extends cms_test_case
         foreach ($files as $file) {
             $all_code .= file_get_contents($file);
         }
-        $files = $this->do_dir(get_file_base(), '', 'js');
+        $files = $this->do_dir(get_file_base() . '/themes', 'themes', 'js');
         foreach ($files as $file) {
-            $all_code .= file_get_contents($file);
+            $c = file_get_contents($file);
+            if (strpos('/*{$,Parser hint: pure}*/', $c) === false) {
+                $all_code .= $c;
+            }
         }
         $files = $this->do_dir(get_file_base(), '', 'txt');
         foreach ($files as $file) {
