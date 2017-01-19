@@ -108,7 +108,7 @@ class Module_users_online
         $members = array_reverse($members);
         foreach ($members as $row) {
             $last_activity = $row['last_activity'];
-            $member = $row['member_id'];
+            $member_id = $row['member_id'];
             //$username = $row['cache_username'];
             $location = $row['the_title'];
             if (($location == '') && ($row['the_type'] == 'rss')) {
@@ -128,7 +128,7 @@ class Module_users_online
             }
             $ip = $row['ip'];
             if (substr($ip, -1) == '*') { // sessions IPs are not full so try and resolve to full
-                if (is_guest($member)) {
+                if (is_guest($member_id)) {
                     if (addon_installed('stats')) {
                         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'ip', array('session_id' => $row['the_session']));
                         if ((!is_null($test)) && ($test != '')) {
@@ -141,14 +141,14 @@ class Module_users_online
                         }
                     }
                 } else {
-                    $test = $GLOBALS['FORUM_DRIVER']->get_member_ip($member);
+                    $test = $GLOBALS['FORUM_DRIVER']->get_member_ip($member_id);
                     if ((!is_null($test)) && ($test != '')) {
                         $ip = $test;
                     }
                 }
             }
 
-            $link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member);
+            $link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member_id);
 
             if ($ip != '') {// CRON?
                 $rows[] = array('IP' => $ip, 'AT_URL' => $at_url, 'LOCATION' => $location, 'MEMBER' => $link, 'TIME' => integer_format(intval((time() - $last_activity) / 60)));

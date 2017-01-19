@@ -24,13 +24,37 @@
 class Hook_ecommerce_work
 {
     /**
-     * Find whether a shipping address is needed.
+     * Get the products handled by this eCommerce hook.
      *
-     * @return boolean Whether a shipping address is needed.
+     * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
+     *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
+     *
+     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
+     * @param  ?ID_TEXT $search Product being searched for (null: none).
+     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
+     * @return array A map of product name to list of product details.
      */
-    public function needs_shipping_address()
+    public function get_products($site_lang = false, $search = null, $search_item_names = false)
     {
-        return false;
+        $products = array(
+            'WORK' => array(
+                'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_WORK', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_description' => new Tempcode(),
+                'item_image_url' => '',
+
+                'type' => PRODUCT_INVOICE,
+                'type_special_details' => array(),
+
+                'price' => null,
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null,
+                'discount_points__price_reduction' => null,
+
+                'needs_shipping_address' => false,
+            ),
+        );
+        return $products;
     }
 
     /**
@@ -54,44 +78,15 @@ class Hook_ecommerce_work
     }
 
     /**
-     * Find the corresponding member to a given purchase ID.
+     * Get the member who made the purchase.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @return ?MEMBER The member (null: unknown / can't perform operation).
+     * @return ?MEMBER The member ID (null: none).
      */
-    public function member_for($purchase_id)
+    function member_for($type_code, $purchase_id)
     {
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_member_id', array('id' => intval($purchase_id)));
-    }
-
-    /**
-     * Get the products handled by this eCommerce hook.
-     *
-     * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
-     *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
-     *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
-     * @return array A map of product name to list of product details.
-     */
-    public function get_products($site_lang = false)
-    {
-        $products = array(
-            'WORK' => array(
-                'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_WORK', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
-
-                'type' => PRODUCT_INVOICE,
-                'type_special_details' => array(),
-
-                'price' => null,
-                'currency' => get_option('currency'),
-                'price_points' => null,
-                'discount_points__num_points' => null,
-                'discount_points__price_reduction' => null,
-
-                'actualiser' => null,
-                'member_finder' => null,
-            ),
-        );
-        return $products;
+        $invoice_id = intval($purchase_id);
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_member_id', array('id' => $invoice_id));
     }
 }

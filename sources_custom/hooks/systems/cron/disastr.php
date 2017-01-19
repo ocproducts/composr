@@ -102,7 +102,7 @@ class Hook_cron_disastr
                     }
 
                     if (!$has_immunization) {
-                        $_cure_url = build_url(array('page' => 'purchase', 'type' => 'message', 'id' => 'disastr'), '_SEARCH', null, false, false, true);
+                        $_cure_url = build_url(array('page' => 'purchase', 'type' => 'pay', 'id' => 'CURE_' . strval($disease['id'])), '_SEARCH', null, false, false, true);
                         $cure_url = $_cure_url->evaluate();
 
                         if ($insert) {
@@ -152,7 +152,7 @@ class Hook_cron_disastr
 
                 require_code('notifications');
 
-                $_cure_url = build_url(array('page' => 'purchase', 'type' => 'message', 'id' => 'disastr'), '_SEARCH', null, false, false, true);
+                $_cure_url = build_url(array('page' => 'purchase', 'type' => 'pay', 'type_code' => 'CURE_' . strval($disease['id'])), '_SEARCH', null, false, false, true);
                 $cure_url = $_cure_url->evaluate();
 
                 if ($insert) {

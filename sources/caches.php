@@ -554,16 +554,16 @@ function has_caching_for($type)
  *
  * @param  mixed $cached_for The type of what we are caching (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
  * @param  ?array $identifier A map of identifiying characteristics (null: no identifying characteristics, decache all)
- * @param  ?MEMBER $member Member to only decache for (null: no limit)
+ * @param  ?MEMBER $member_id Member to only decache for (null: no limit)
  */
-function decache($cached_for, $identifier = null, $member = null)
+function decache($cached_for, $identifier = null, $member_id = null)
 {
     if (get_mass_import_mode()) {
         return;
     }
 
     require_code('caches2');
-    _decache($cached_for, $identifier, $member);
+    _decache($cached_for, $identifier, $member_id);
 }
 
 /**
@@ -638,7 +638,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
 
     require_code('temporal');
     $staff_status = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0)) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
-    $member = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0)) ? get_member() : null;
+    $member_id = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0)) ? get_member() : null;
     $groups = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0)) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
     $is_bot = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0)) ? (is_null(get_bot_type()) ? 0 : 1) : null;
     $timezone = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0)) ? get_users_timezone(get_member()) : '';
@@ -654,10 +654,10 @@ function _get_cache_entries($dets, $special_cache_flags = null)
         } else {
             $sql .= ' AND staff_status=' . strval($staff_status);
         }
-        if ($member === null) {
+        if ($member_id === null) {
             $sql .= ' AND the_member IS NULL';
         } else {
-            $sql .= ' AND the_member=' . strval($member);
+            $sql .= ' AND the_member=' . strval($member_id);
         }
         if ($groups === null) {
             $sql .= ' AND ' . db_string_equal_to('groups', '');
@@ -707,7 +707,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
             $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $lang = user_lang();
-            $cache_row = persistent_cache_get(array('CACHE', $codename, $md5_cache_identifier, $lang, $theme, $staff_status, $member, $groups, $is_bot, $timezone));
+            $cache_row = persistent_cache_get(array('CACHE', $codename, $md5_cache_identifier, $lang, $theme, $staff_status, $member_id, $groups, $is_bot, $timezone));
 
             if ($cache_row === null) { // No
                 if ($caching_via_cron) {

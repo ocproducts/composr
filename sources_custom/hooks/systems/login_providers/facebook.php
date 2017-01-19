@@ -21,13 +21,13 @@ class Hook_login_provider_facebook
     /**
      * Standard login provider hook.
      *
-     * @param  ?MEMBER $member Member ID already detected as logged in (null: none). May be a guest ID.
+     * @param  ?MEMBER $member_id Member ID already detected as logged in (null: none). May be a guest ID.
      * @return ?MEMBER Member ID now detected as logged in (null: none). May be a guest ID.
      */
-    public function try_login($member) // NB: if $member is set (but not Guest), then it will bind to that account
+    public function try_login($member_id) // NB: if $member_id is set (but not Guest), then it will bind to that account
     {
-        /*if (($member !== null) && (!is_guest($member))) {     Speeds up slighlty, but we don't want to test with this because we need to ensure startup always works right, and it also stops some stuff working
-            return $member;
+        /*if (($member_id !== null) && (!is_guest($member_id))) {     Speeds up slighlty, but we don't want to test with this because we need to ensure startup always works right, and it also stops some stuff working
+            return $member_id;
         }*/
 
         require_code('facebook_connect');
@@ -40,14 +40,14 @@ class Hook_login_provider_facebook
             if (!is_null($FACEBOOK_CONNECT)) {
                 try {
                     if ($FACEBOOK_CONNECT->getUser() != 0) {
-                        $member = handle_facebook_connection_login($member);
+                        $member_id = handle_facebook_connection_login($member_id);
 
-                        if (!is_guest($member)) {
+                        if (!is_guest($member_id)) {
                             if (is_file(get_file_base() . '/sources_custom/hooks/systems/syndication/facebook.php')) {
                                 if (post_param_integer('auto_syndicate', 0) == 1) {
-                                    set_value('facebook_oauth_token' . '__' . strval($member), $FACEBOOK_CONNECT->getAccessToken(), true);
+                                    set_value('facebook_oauth_token' . '__' . strval($member_id), $FACEBOOK_CONNECT->getAccessToken(), true);
                                 } else {
-                                    set_value('facebook_oauth_token' . '__' . strval($member), '', true);
+                                    set_value('facebook_oauth_token' . '__' . strval($member_id), '', true);
                                 }
                             }
                         }
@@ -61,6 +61,6 @@ class Hook_login_provider_facebook
 
             //safe_ini_set('ocproducts.type_strictness', '1');
         }
-        return $member;
+        return $member_id;
     }
 }

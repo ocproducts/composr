@@ -88,7 +88,7 @@ class Block_side_calendar
         $calendar_url = build_url($filter + array('page' => 'calendar', 'type' => 'browse', 'view' => 'month', 'id' => strval($year) . '-' . strval($month)), $zone);
 
         $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
-        $member = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : get_member();
+        $member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : get_member();
 
         $type = array_key_exists('param', $map) ? $map['param'] : 'year';
 
@@ -96,7 +96,7 @@ class Block_side_calendar
             $period_start = mktime(0, 0, 0, $month, 1, $year);
             $period_end = mktime(23, 59, 0, $month + 1, 0, $year);
 
-            $happenings = calendar_matches($member, $member, !has_privilege(get_member(), 'assume_any_member'), $period_start, $period_end, $filter, true, $private);
+            $happenings = calendar_matches($member_id, $member_id, !has_privilege(get_member(), 'assume_any_member'), $period_start, $period_end, $filter, true, $private);
 
             $entries = array();
             $priorities = array();
@@ -213,7 +213,7 @@ class Block_side_calendar
         $num_days = array_key_exists('days', $map) ? intval($map['days']) : 30;
         $period_end = $period_start + 60 * 60 * 24 * $num_days;
 
-        $happenings = calendar_matches($member, $member, !has_privilege(get_member(), 'assume_any_member'), $period_start - 100 * 60 * 60 * 24, $period_end, $filter, true, $private);
+        $happenings = calendar_matches($member_id, $member_id, !has_privilege(get_member(), 'assume_any_member'), $period_start - 100 * 60 * 60 * 24, $period_end, $filter, true, $private);
 
         $days = array();
         for ($hap_i = 0; $hap_i < count($happenings); $hap_i++) {

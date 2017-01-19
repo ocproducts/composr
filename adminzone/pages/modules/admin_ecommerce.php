@@ -98,6 +98,11 @@ class Module_admin_ecommerce extends Standard_crud_module
         $ret = array(
             'browse' => array('CUSTOM_PRODUCT_USERGROUP', 'menu/adminzone/audit/ecommerce/subscriptions'),
         );
+        if (!$be_deferential) {
+            $ret += array(
+                'prices' => array('ECOM_PRODUCTS_MANAGE_INVENTORY', 'menu/adminzone/setup/ecommerce_products'),
+            );
+        }
         $ret += parent::get_entry_points();
         return $ret;
     }
@@ -132,6 +137,15 @@ class Module_admin_ecommerce extends Standard_crud_module
             }
         }
 
+        if ($type == 'prices') {
+            $also_url = build_url(array('page' => 'admin_ecommerce', 'type' => 'browse'), get_module_zone('admin_ecommerce'));
+            attach_message(do_lang_tempcode('menus:ALSO_SEE_AUDIT', escape_html($also_url->evaluate())), 'inform', true);
+        }
+
+        if ($type == 'prices' || $type == '_prices') {
+            $this->title = get_screen_title('ECOM_PRODUCTS_MANAGE_INVENTORY');
+        }
+
         return parent::pre_run($top_level);
     }
 
@@ -162,6 +176,12 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         if ($type == 'browse') {
             return $this->browse();
+        }
+        if ($type == 'prices') {
+            return $this->prices();
+        }
+        if ($type == '_prices') {
+            return $this->_prices();
         }
 
         return new Tempcode();
@@ -507,5 +527,122 @@ class Module_admin_ecommerce extends Standard_crud_module
         $uhoh_mail = post_param_string('mail_uhoh');
 
         delete_usergroup_subscription(intval($id), $uhoh_mail);
+    }
+
+    /**
+     * The UI to set eCommerce product prices.
+     *
+     * @return Tempcode The UI
+     */
+    public function prices()
+    {
+        require_code('input_filter_2');
+        rescue_shortened_post_request();
+        modsecurity_workaround_enable();
+
+        require_code('form_templates');
+
+        $field_groups = new Tempcode();
+        $add_forms = new Tempcode();
+
+        // Load up configuration from hooks
+        $_hooks = find_all_hooks('systems', 'ecommerce');
+        foreach (array_keys($_hooks) as $hook) {
+            require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
+            $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+            if (is_null($object)) {
+                continue;
+            }
+            if (method_exists($object, 'config')) {
+                $fgs = $object->config();
+                foreach ($fgs as $fg) {
+                    foreach ($fg[0] as $__fg) {
+                        $_fg = do_template('FORM_GROUP', array('_GUID' => '58a0948313f0e8e69c06ee01fb7ee48a', 'FIELDS' => $__fg[0], 'HIDDEN' => $__fg[1]));
+                        $field_groups->attach(do_template('ECOM_PRODUCTS_PRICES_FORM_WRAP', array('_GUID' => '938143162b418de982cdb6ce8d8a92ee', 'TITLE' => $__fg[2], 'FORM' => $_fg)));
+                    }
+                    if (!$fg[2]->is_empty()) {
+                        $submit_name = do_lang_tempcode('ADD');
+
+                        $post_url = build_url(array('page' => '_SELF', 'type' => '_prices'), '_SELF');
+
+                        $fg[2] = do_template('FORM', array(
+                            '_GUID' => 'e98141bc0a2a54abcca59a5c947a6738',
+                            'SECONDARY_FORM' => true,
+                            'TABINDEX' => strval(get_form_field_tabindex(null)),
+                            'HIDDEN' => '',
+                            'TEXT' => $fg[3],
+                            'FIELDS' => $fg[2],
+                            'SUBMIT_BUTTON_CLASS' => 'proceed_button_left',
+                            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+                            'SUBMIT_NAME' => $submit_name,
+                            'URL' => $post_url,
+                            'SUPPORT_AUTOSAVE' => true,
+                        ));
+                        $add_forms->attach(do_template('ECOM_PRODUCTS_PRICES_FORM_WRAP', array('_GUID' => '3956550ebff14bbb923b57c8341b0862', 'TITLE' => $fg[1], 'FORM' => $fg[2])));
+                    }
+                }
+            }
+        }
+
+        $submit_name = do_lang_tempcode('SAVE_ALL');
+
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_prices'), '_SELF');
+
+        if ($field_groups->is_empty()) {
+            $edit_form = new Tempcode();
+        } else {
+            $edit_form = do_template('FORM_GROUPED', array(
+                '_GUID' => 'bf025026dcfc86cfd0a8ef3728bbf6d8',
+                'TEXT' => '',
+                'FIELD_GROUPS' => $field_groups,
+                'SUBMIT_ICON' => 'buttons__save',
+                'SUBMIT_NAME' => $submit_name,
+                'SUBMIT_BUTTON_CLASS' => 'proceed_button_left_2',
+                'URL' => $post_url,
+                'SUPPORT_AUTOSAVE' => true,
+                'MODSECURITY_WORKAROUND' => true,
+            ));
+        }
+
+        list($warning_details, $ping_url) = handle_conflict_resolution();
+
+        return do_template('ECOM_PRODUCT_PRICE_SCREEN', array(
+            '_GUID' => '278c8244c7f1743370198dfc437b7bbf',
+            'PING_URL' => $ping_url,
+            'WARNING_DETAILS' => $warning_details,
+            'TITLE' => $this->title,
+            'EDIT_FORM' => $edit_form,
+            'ADD_FORMS' => $add_forms,
+        ));
+    }
+
+    /**
+     * The actualiser to set eCommerce product prices.
+     *
+     * @return Tempcode The UI
+     */
+    public function _prices()
+    {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
+        // Save configuration for hooks
+        $_hooks = find_all_hooks('systems', 'ecommerce');
+        foreach (array_keys($_hooks) as $hook) {
+            require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
+            $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+            if (is_null($object)) {
+                continue;
+            }
+            if (method_exists($object, 'save_config')) {
+                $object->save_config();
+            }
+        }
+
+        log_it('ECOM_PRODUCT_CHANGED_PRICES');
+
+        // Show it worked / Refresh
+        $url = build_url(array('page' => '_SELF', 'type' => 'prices'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 }

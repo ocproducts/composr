@@ -27,12 +27,12 @@ FOR CART MANAGEMENT
  *
  * @return array Product details
  */
-function get_product_details()
+function get_product_details_for_cart()
 {
     $_hook = get_param_string('hook');
     require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
     $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
-    $products = $product_object->get_product_details();
+    $products = $product_object->get_product_details_for_cart();
 
     return $products;
 }
@@ -284,34 +284,31 @@ function render_cart_payment_form()
             continue;
         }
 
-        $temp = $product_object->get_products(false, $type_code);
+        $temp = $product_object->get_products(false, $type_code, false, get_member());
         if (!isset($temp[$type_code])) {
             continue;
         }
+        $details = $temp[$type_code];
 
-        if ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
+        if ($details['type'] == PRODUCT_SUBSCRIPTION) {
             continue; // Subscription type skipped
         }
 
-        $price = $temp[$type_code]['price'];
+        $price = $details['price'];
 
-        $item_name = $temp[$type_code]['item_name'];
+        $item_name = $details['item_name'];
 
-        if (method_exists($product_object, 'set_needed_fields')) {
-            $purchase_id = $product_object->set_needed_fields($type_code);
+        if (method_exists($product_object, 'handle_needed_fields')) {
+            list($purchase_id) = $product_object->handle_needed_fields($type_code);
         } else {
-            $purchase_id = strval(get_member());
+            list($purchase_id) = strval(get_member());
         }
 
         $length = null;
 
         $length_units = '';
 
-        if (method_exists($product_object, 'calculate_product_price')) {
-            $price = $product_object->calculate_product_price($item['price'], $item['price_pre_tax'], $item['product_weight']);
-        } else {
-            $price = $item['price'];
-        }
+        $price = floatval($item['price']);
 
         if (method_exists($product_object, 'calculate_tax') && ($tax_opt_out == 0)) {
             $tax = round($product_object->calculate_tax($item['price'], $item['price_pre_tax']), 2);

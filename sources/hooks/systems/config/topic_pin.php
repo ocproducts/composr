@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    ecommerce
  */
 
 /**
@@ -33,14 +33,14 @@ class Hook_config_topic_pin
         return array(
             'human_name' => 'COST_topic_pin',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'TOPIC_PINNING',
             'explanation' => 'CONFIG_OPTION_topic_pin',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 2,
 
-            'addon' => 'pointstore',
+            'addon' => 'ecommerce',
         );
     }
 

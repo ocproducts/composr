@@ -277,7 +277,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 		</tr>
 		<tr>
 			<td>Pay-Per-Click (PPC)</td>
-			<td>The normal mode of advertising, where you have to pay out each time someone clicks your ad. As opposed to Pay-Per-Impression (pay for each time the ad is viewed) or Pay-Per-Sale (pay when people who clicked the ad actually bought something on your site).</td>
+			<td>The normal mode of advertising, where you have to pay out each time someone clicks your ad. As opposed to Pay-Per-Impression (pay for each time the ad is viewed) or Pay-Per-Sale (pay when people who clicked the ad actually purchased something on your site).</td>
 		</tr>
 		<tr>
 			<td>Payment gateway</td>

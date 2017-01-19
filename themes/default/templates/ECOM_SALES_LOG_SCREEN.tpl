@@ -1,0 +1,9 @@
+{TITLE}
+
+<p>
+	{!ECOM_PRODUCTS_LOG_TEXT}
+</p>
+
+{CONTENT}
+
+{PAGINATION}

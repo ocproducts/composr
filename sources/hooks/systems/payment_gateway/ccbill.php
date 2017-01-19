@@ -247,7 +247,7 @@ class Hook_payment_gateway_ccbill
         $txn_id = post_param_string('consumerUniqueId');
 
         if (addon_installed('shopping')) {
-            list(, $type_code) = find_product_row($item_name, true, true);
+            list(, $type_code) = find_product_details($item_name, true, true);
             if ($type_code == 'cart_orders') {
                 $this->store_shipping_address(intval($purchase_id));
             }

@@ -27,8 +27,8 @@ class Hook_symbol_POINTS_FROM_USERGROUPS
     public function run($param)
     {
         require_code('points');
-        $member = isset($param[0]) ? intval($param[0]) : get_member();
-        $value = strval(total_points($member) - non_overridden__total_points($member));
+        $member_id = isset($param[0]) ? intval($param[0]) : get_member();
+        $value = strval(total_points($member_id) - non_overridden__total_points($member_id));
         return $value;
     }
 }

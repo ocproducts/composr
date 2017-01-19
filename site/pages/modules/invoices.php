@@ -178,13 +178,12 @@ class Module_invoices
         $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_member_id' => $member_id), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $type_code = $row['i_type_code'];
-            $product_object = find_product($type_code);
-            if ($product_object === null) {
+            list($details) = find_product_details($type_code);
+            if ($details === null) {
                 continue;
             }
-            $products = $product_object->get_products(false, $type_code);
 
-            $invoice_title = $products[$type_code][4];
+            $invoice_title = $details['item_name'];
             $time = get_timezoned_date($row['i_time'], true, false, false, true);
             $payable = ($row['i_state'] == 'new');
             $deliverable = ($row['i_state'] == 'paid');
@@ -193,7 +192,7 @@ class Module_invoices
             if (perform_local_payment()) {
                 $transaction_button = hyperlink(build_url(array('page' => '_SELF', 'type' => 'pay', 'id' => $row['id']), '_SELF'), do_lang_tempcode('MAKE_PAYMENT'), false, false);
             } else {
-                $transaction_button = make_transaction_button(substr(get_class($product_object), 5), $invoice_title, strval($row['id']), floatval($row['i_amount']), $currency);
+                $transaction_button = make_transaction_button($type_code, $invoice_title, strval($row['id']), floatval($row['i_amount']), $currency);
             }
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => $transaction_button,
@@ -230,13 +229,12 @@ class Module_invoices
         }
         $row = $rows[0];
         $type_code = $row['i_type_code'];
-        $product_object = find_product($type_code);
-        $products = $product_object->get_products(false, $type_code);
-        $invoice_title = $products[$type_code][4];
+        list($details) = find_product_details($type_code);
+        $invoice_title = $details['item_name'];
 
         $post_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $type_code), get_module_zone('purchase'));
 
-        $needs_shipping_address = (method_exists($product_object, 'needs_shipping_address')) && ($product_object->needs_shipping_address());
+        $needs_shipping_address = !empty($details['needs_shipping_address']);
 
         list($fields, $hidden) = get_transaction_form_fields(
             $type_code,

@@ -911,7 +911,6 @@ class Module_wiki
         check_edit_permission('low', $original_poster, array('wiki_page', $true_page_id), 'cms_wiki');
 
         // Check user info
-        $member = get_member();
         if ($target == db_get_first_id()) {
             check_privilege('feature');
         }

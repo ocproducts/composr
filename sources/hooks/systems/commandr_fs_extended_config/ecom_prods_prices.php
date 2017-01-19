@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    ecommerce
  */
 
 /**
@@ -30,7 +30,7 @@ class Hook_commandr_fs_extended_config__ecom_prods_prices
      */
     public function get_edit_date()
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'POINTSTORE_CHANGED_PRICES') . ' OR the_type LIKE \'' . db_encode_like('POINTSTORE\_ADD\_%') . '\'';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'ECOM_PRODUCT_CHANGED_PRICES') . ' OR the_type LIKE \'' . db_encode_like('POINTSTORE\_ADD\_%') . '\'';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 

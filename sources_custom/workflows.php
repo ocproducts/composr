@@ -17,19 +17,19 @@
  * Returns whether the given user (default: current member) can choose the
  * workflow to apply to some content they're submitting/editing.
  *
- * @param  ?MEMBER $member Member (null: current member)
+ * @param  ?MEMBER $member_id Member (null: current member)
  * @return boolean Whether the user has permission or not
  */
-function can_choose_workflow($member = null)
+function can_choose_workflow($member_id = null)
 {
     // Sort out the user
-    if (is_null($member)) {
-        $member = get_member();
+    if (is_null($member_id)) {
+        $member_id = get_member();
     }
 
     // We currently use access to the workflow management page as the defining
     // criterion
-    return has_actual_page_access($member, 'admin_workflow', get_module_zone('admin_workflow'));
+    return has_actual_page_access($member_id, 'admin_workflow', get_module_zone('admin_workflow'));
 }
 
 /**

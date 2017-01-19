@@ -81,15 +81,15 @@ function _enforce_sessioned_url($url)
  *
  * @sets_output_state
  *
- * @param  MEMBER $member Logged in member
+ * @param  MEMBER $member_id Logged in member
  * @param  BINARY $session_confirmed Whether the session should be considered confirmed
  * @param  boolean $invisible Whether the session should be invisible
  * @return ID_TEXT New session ID
  */
-function create_session($member, $session_confirmed = 0, $invisible = false)
+function create_session($member_id, $session_confirmed = 0, $invisible = false)
 {
     global $SESSION_CACHE, $MEMBER_CACHED;
-    $MEMBER_CACHED = $member;
+    $MEMBER_CACHED = $member_id;
 
     if (($invisible) && (get_option('is_on_invisibility') == '0')) {
         $invisible = false;
@@ -97,18 +97,18 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
 
     $new_session = mixed();
     $prior_session_row = mixed();
-    $restored_session = delete_expired_sessions_or_recover($member);
+    $restored_session = delete_expired_sessions_or_recover($member_id);
     if (is_null($restored_session)) { // We're force to make a new one
         // Generate random session
         require_code('crypt');
         $new_session = get_rand_password();
 
         // Store session
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         $new_session_row = array(
             'the_session' => $new_session,
             'last_activity' => time(),
-            'member_id' => $member,
+            'member_id' => $member_id,
             'ip' => get_ip_address(3),
             'session_confirmed' => $session_confirmed,
             'session_invisible' => $invisible ? 1 : 0,
@@ -121,7 +121,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         );
         $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row, false, true);
         if ((get_forum_type() == 'cns') && (!$GLOBALS['FORUM_DB']->table_is_locked('f_members'))) {
-            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_total_sessions=m_total_sessions+1 WHERE id=' . strval($member), 1, null, true);
+            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_total_sessions=m_total_sessions+1 WHERE id=' . strval($member_id), 1, null, true);
         }
 
         $SESSION_CACHE[$new_session] = $new_session_row;
@@ -154,24 +154,24 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         }
     }
 
-    set_session_id($new_session, is_guest($member));
+    set_session_id($new_session, is_guest($member_id));
 
     // New sessions=Login points
-    if ((!is_null($member)) && (!is_guest($member)) && (addon_installed('points')) && (addon_installed('stats'))) {
+    if ((!is_null($member_id)) && (!is_guest($member_id)) && (addon_installed('points')) && (addon_installed('stats'))) {
         // See if this is the first visit today
         global $SESSION_CACHE;
         $test = isset($prior_session_row['last_activity']) ? $prior_session_row['last_activity'] : null;
         if ($test === null) {
-            $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member));
+            $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member_id));
         }
         if (!is_null($test)) {
             require_code('temporal');
             require_code('tempcode');
             if (date('d/m/Y', tz_time($test, get_site_timezone())) != date('d/m/Y', tz_time(time(), get_site_timezone()))) {
                 require_code('points');
-                $_before = point_info($member);
+                $_before = point_info($member_id);
                 if (array_key_exists('points_gained_visiting', $_before)) {
-                    $GLOBALS['FORUM_DRIVER']->set_custom_field($member, 'points_gained_visiting', strval(intval($_before['points_gained_visiting']) + 1));
+                    $GLOBALS['FORUM_DRIVER']->set_custom_field($member_id, 'points_gained_visiting', strval(intval($_before['points_gained_visiting']) + 1));
                 }
             }
         }
@@ -243,10 +243,10 @@ function force_httpauth()
 /**
  * Filter a member ID through SU, if SU is on and if the user has permission.
  *
- * @param  MEMBER $member Real logged in member
+ * @param  MEMBER $member_id Real logged in member
  * @return MEMBER Simulated member
  */
-function try_su_login($member)
+function try_su_login($member_id)
 {
     $ks = get_param_string('keep_su', '');
 
@@ -254,7 +254,7 @@ function try_su_login($member)
     if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {
         $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
     }
-    if (has_privilege($member, 'assume_any_member')) {
+    if (has_privilege($member_id, 'assume_any_member')) {
         if ($ks == do_lang('GUEST', null, null, null, fallback_lang())) {
             $ks = do_lang('GUEST');
         }
@@ -265,21 +265,21 @@ function try_su_login($member)
         }
 
         if (!is_null($su)) {
-            $member = $su;
+            $member_id = $su;
         } elseif (is_numeric($ks)) {
-            $member = intval($ks);
+            $member_id = intval($ks);
         } else {
-            $member = null;
+            $member_id = null;
         }
 
-        if (is_null($member)) {
+        if (is_null($member_id)) {
             require_code('site');
             attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($ks)), 'warn');
             return get_member();
         }
 
-        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin($su)) || ($GLOBALS['FORUM_DRIVER']->is_super_admin($member))) {
-            if ((!is_guest($member)) && ($GLOBALS['FORUM_DRIVER']->is_banned($member))) { // All hands to the guns
+        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin($su)) || ($GLOBALS['FORUM_DRIVER']->is_super_admin($member_id))) {
+            if ((!is_guest($member_id)) && ($GLOBALS['FORUM_DRIVER']->is_banned($member_id))) { // All hands to the guns
                 global $USER_THEME_CACHE;
                 $USER_THEME_CACHE = 'default';
                 critical_error('YOU_ARE_BANNED');
@@ -287,7 +287,7 @@ function try_su_login($member)
         }
         if (get_param_integer('keep_su_strict', 0) == 0) {
             $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
-            $GLOBALS['IS_ACTUALLY'] = $member;
+            $GLOBALS['IS_ACTUALLY'] = $member_id;
         }
 
         if ((get_forum_type() == 'cns') && (get_param_integer('keep_su_online', 0) == 1)) {
@@ -295,11 +295,11 @@ function try_su_login($member)
             $new_session_row = array(
                 'the_session' => get_rand_password(),
                 'last_activity' => time(),
-                'member_id' => $member,
+                'member_id' => $member_id,
                 'ip' => get_ip_address(3),
                 'session_confirmed' => 0,
                 'session_invisible' => 0,
-                'cache_username' => $GLOBALS['FORUM_DRIVER']->get_username($member),
+                'cache_username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id),
                 'the_title' => '',
                 'the_zone' => get_zone_name(),
                 'the_page' => cms_mb_substr(get_page_name(), 0, 80),
@@ -309,7 +309,7 @@ function try_su_login($member)
             $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row);
             global $FLOOD_CONTROL_ONCE;
             $FLOOD_CONTROL_ONCE = false;
-            $GLOBALS['FORUM_DRIVER']->cns_flood_control($member);
+            $GLOBALS['FORUM_DRIVER']->cns_flood_control($member_id);
             $GLOBALS['SITE_DB']->query_update('sessions', array('session_invisible' => 1), array('the_session' => get_session_id()), '', 1);
 
             if (get_option('session_prudence') == '0') { // With session prudence we don't store all these in persistent cache due to the size of it all. So only re-save if that's not on.
@@ -320,7 +320,7 @@ function try_su_login($member)
         }
     }
 
-    return $member;
+    return $member_id;
 }
 
 /**
@@ -336,8 +336,8 @@ function try_httpauth_login()
     require_code('cns_groups');
     require_lang('cns');
 
-    $member = cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']);
-    if ((is_null($member)) && ((running_script('index')) || (running_script('execute_temp')))) {
+    $member_id = cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']);
+    if ((is_null($member_id)) && ((running_script('index')) || (running_script('execute_temp')))) {
         require_code('cns_members_action');
         require_code('cns_members_action2');
         if ((trim(post_param_string('email_address', '')) == '') && (get_option('finish_profile') == '1')) {
@@ -352,15 +352,15 @@ function try_httpauth_login()
             $tpl->evaluate_echo();
             exit();
         } else {
-            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $member_id = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
         }
     }
 
-    if (!is_null($member)) {
-        create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
+    if (!is_null($member_id)) {
+        create_session($member_id, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
     }
 
-    return $member;
+    return $member_id;
 }
 
 /**
@@ -370,7 +370,7 @@ function try_httpauth_login()
  */
 function try_cookie_login()
 {
-    $member = null;
+    $member_id = null;
 
     // Preprocess if this is a serialized cookie
     $member_cookie_name = get_member_cookie();
@@ -448,26 +448,26 @@ function try_cookie_login()
         } else {
             $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($store));
         }
-        $member = intval($store);
-        if (!is_guest($member)) {
+        $member_id = intval($store);
+        if (!is_guest($member_id)) {
             if ($GLOBALS['FORUM_DRIVER']->is_hashed()) {
                 // Test password hash
-                $login_array = $GLOBALS['FORUM_DRIVER']->forum_authorise_login(null, $member, $pass, $pass, true);
-                $member = $login_array['id'];
+                $login_array = $GLOBALS['FORUM_DRIVER']->forum_authorise_login(null, $member_id, $pass, $pass, true);
+                $member_id = $login_array['id'];
             } else {
                 // Test password plain
-                $login_array = $GLOBALS['FORUM_DRIVER']->forum_authorise_login(null, $member, apply_forum_driver_md5_variant($pass, $username), $pass, true);
-                $member = $login_array['id'];
+                $login_array = $GLOBALS['FORUM_DRIVER']->forum_authorise_login(null, $member_id, apply_forum_driver_md5_variant($pass, $username), $pass, true);
+                $member_id = $login_array['id'];
             }
 
-            if (!is_null($member)) {
+            if (!is_null($member_id)) {
                 global $IS_A_COOKIE_LOGIN;
                 $IS_A_COOKIE_LOGIN = true;
 
-                create_session($member, 0, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1'));
+                create_session($member_id, 0, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1'));
             }
         }
     }
 
-    return $member;
+    return $member_id;
 }

@@ -507,9 +507,9 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
  *
  * @param  AUTO_LINK $updated_forum_id The ID of the forum.
  * @param  ?string $forum_name The name of the forum (null: find it from the DB).
- * @param  ?MEMBER $member The member (null: do no member decaching).
+ * @param  ?MEMBER $member_id The member (null: do no member decaching).
  */
-function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member = null)
+function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member_id = null)
 {
     if (is_null($forum_name)) {
         $forum_name = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $updated_forum_id));
@@ -522,9 +522,9 @@ function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member =
         array('bottom_news', array($forum_name)),
     );
 
-    if (!is_null($member)) {
-        $decache[] = array('side_cns_private_topics', array($member));
-        $decache[] = array('_new_pp', array($member));
+    if (!is_null($member_id)) {
+        $decache[] = array('side_cns_private_topics', array($member_id));
+        $decache[] = array('_new_pp', array($member_id));
     }
 
     if (get_option('show_post_validation') == '1') {

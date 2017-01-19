@@ -39,9 +39,9 @@ class Hook_realtime_rain_ecommerce
 
             foreach ($rows as $row) {
                 require_code('ecommerce');
-                list($product_row,) = find_product_row($row['t_type_code']);
-                if (!is_null($product_row)) {
-                    $title = $product_row['item_name'];
+                list($details) = find_product_details($row['t_type_code']);
+                if ($details !== null) {
+                    $title = $details['item_name'];
                 } else {
                     require_lang('ecommerce');
                     $title = do_lang('SALE_MADE');

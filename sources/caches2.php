@@ -23,16 +23,16 @@
  *
  * @param  mixed $cached_for The type of what we are caching (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
  * @param  ?array $identifier A map of identifiying characteristics (null: no identifying characteristics, decache all)
- * @param  ?MEMBER $member Member to only decache for (null: no limit)
+ * @param  ?MEMBER $member_id Member to only decache for (null: no limit)
  * @ignore
  */
-function _decache($cached_for, $identifier = null, $member = null)
+function _decache($cached_for, $identifier = null, $member_id = null)
 {
     if (!is_array($cached_for)) {
         $cached_for = array($cached_for);
     }
 
-    $cached_for_sz = serialize(array($cached_for, $identifier, $member));
+    $cached_for_sz = serialize(array($cached_for, $identifier, $member_id));
 
     static $done_already = array();
     if ($identifier === null) {
@@ -68,8 +68,8 @@ function _decache($cached_for, $identifier = null, $member = null)
         if ($_identifier !== null) {
             $where .= ' AND ' . db_string_equal_to('identifier', md5(serialize($_identifier)));
         }
-        if ($member !== null) {
-            $where .= ' AND the_member=' . strval($member);
+        if ($member_id !== null) {
+            $where .= ' AND the_member=' . strval($member_id);
         }
     }
 
@@ -128,7 +128,7 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
  * @param  integer $ttl The TTL of what is being cached in minutes
  * @param  LONG_TEXT $cache_identifier The requisite situational information (a serialized map) [-> further restraints when reading]
  * @param  ?BINARY $staff_status Staff status to limit to (null: Not limiting by this)
- * @param  ?MEMBER $member Member to limit to (null: Not limiting by this)
+ * @param  ?MEMBER $member_id Member to limit to (null: Not limiting by this)
  * @param  SHORT_TEXT $groups Sorted permissive usergroup list to limit to (blank: Not limiting by this)
  * @param  ?BINARY $is_bot Bot status to limit to (null: Not limiting by this)
  * @param  MINIID_TEXT $timezone Timezone to limit to (blank: Not limiting by this)
@@ -140,7 +140,7 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
  * @param  ?ID_TEXT $theme The theme this is being cached for (null: current theme)
  * @param  ?LANGUAGE_NAME $lang The language this is being cached for (null: current language)
  */
-function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, $_langs_required = null, $_javascripts_required = null, $_csss_required = null, $tempcode = false, $theme = null, $lang = null)
+function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member_id, $groups, $is_bot, $timezone, $cache, $_langs_required = null, $_javascripts_required = null, $_csss_required = null, $tempcode = false, $theme = null, $lang = null)
 {
     if ($theme === null) {
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
@@ -167,7 +167,7 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
 
     if (!is_null($GLOBALS['PERSISTENT_CACHE'])) {
         $pcache = array('dependencies' => $dependencies, 'date_and_time' => time(), 'the_value' => $cache);
-        persistent_cache_set(array('CACHE', $codename, md5($cache_identifier), $lang, $theme, $staff_status, $member, $groups, $is_bot, $timezone), $pcache, false, $ttl * 60);
+        persistent_cache_set(array('CACHE', $codename, md5($cache_identifier), $lang, $theme, $staff_status, $member_id, $groups, $is_bot, $timezone), $pcache, false, $ttl * 60);
     } else {
         $GLOBALS['SITE_DB']->query_delete('cache', array(
             'lang' => $lang,
@@ -182,7 +182,7 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
             'identifier' => md5($cache_identifier),
             'the_theme' => $theme,
             'staff_status' => $staff_status,
-            'the_member' => $member,
+            'the_member' => $member_id,
             'groups' => $groups,
             'is_bot' => $is_bot,
             'timezone' => $timezone,

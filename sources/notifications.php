@@ -1092,9 +1092,9 @@ class Hook_Notification
         list($_members, $possibly_has_more) = $to_filter;
         $members = array();
         require_code('permissions');
-        foreach ($_members as $member => $setting) {
-            if (has_privilege($member, $privilege)) {
-                $members[$member] = $setting;
+        foreach ($_members as $member_id => $setting) {
+            if (has_privilege($member_id, $privilege)) {
+                $members[$member_id] = $setting;
             }
         }
         return array($members, $possibly_has_more);
@@ -1116,9 +1116,9 @@ class Hook_Notification
     {
         list($_members, $possibly_has_more) = $to_filter;
         $members = array();
-        foreach ($_members as $member => $setting) {
-            if (has_zone_access($member, $zone)) {
-                $members[$member] = $setting;
+        foreach ($_members as $member_id => $setting) {
+            if (has_zone_access($member_id, $zone)) {
+                $members[$member_id] = $setting;
             }
         }
         return array($members, $possibly_has_more);
@@ -1140,9 +1140,9 @@ class Hook_Notification
     {
         list($_members, $possibly_has_more) = $to_filter;
         $members = array();
-        foreach ($_members as $member => $setting) {
-            if (has_actual_page_access($member, $page)) {
-                $members[$member] = $setting;
+        foreach ($_members as $member_id => $setting) {
+            if (has_actual_page_access($member_id, $page)) {
+                $members[$member_id] = $setting;
             }
         }
         return array($members, $possibly_has_more);
@@ -1164,9 +1164,9 @@ class Hook_Notification
     {
         list($_members, $possibly_has_more) = $to_filter;
         $members = array();
-        foreach ($_members as $member => $setting) {
-            if (has_category_access($member, $category, $only_if_enabled_on__category)) {
-                $members[$member] = $setting;
+        foreach ($_members as $member_id => $setting) {
+            if (has_category_access($member_id, $category, $only_if_enabled_on__category)) {
+                $members[$member_id] = $setting;
             }
         }
         return array($members, $possibly_has_more);

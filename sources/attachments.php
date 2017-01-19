@@ -120,18 +120,18 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
 /**
  * Find if the specified member has access to view the specified attachment.
  *
- * @param  MEMBER $member The member being checked whether to have the access
+ * @param  MEMBER $member_id The member being checked whether to have the access
  * @param  AUTO_LINK $id The ID code for the attachment being checked
  * @param  ?object $connection The database connection to use (null: site DB)
  * @return boolean Whether the member has attachment access
  */
-function has_attachment_access($member, $id, $connection = null)
+function has_attachment_access($member_id, $id, $connection = null)
 {
     if (is_null($connection)) {
         $connection = $GLOBALS['SITE_DB'];
     }
 
-    if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member)) {
+    if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member_id)) {
         return true;
     }
 

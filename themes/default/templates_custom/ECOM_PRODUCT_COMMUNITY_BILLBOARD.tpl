@@ -1,0 +1,23 @@
+<p>
+	{!COMMUNITY_BILLBOARD_A,{$SITE_NAME*}}
+</p>
+
+<p>
+	{!COMMUNITY_BILLBOARD_B,{COST}}
+</p>
+
+<p>
+	{!COMMUNITY_BILLBOARD_C,{QUEUE}}
+</p>
+
+<p>
+	{!COMMUNITY_BILLBOARD_D}
+</p>
+
+<p>
+	{!COMMUNITY_BILLBOARD_E}
+</p>
+
+<p>
+	{!COMMUNITY_BILLBOARD_GUIDE}
+</p>

@@ -124,8 +124,8 @@ function dload_script()
         if ($myrow['download_cost'] > 0) {
             require_code('points2');
 
-            $member = get_member();
-            if (is_guest($member)) {
+            $member_id = get_member();
+            if (is_guest($member_id)) {
                 access_denied('NOT_AS_GUEST');
             }
 
@@ -133,17 +133,12 @@ function dload_script()
             if (is_null($got_before)) {
                 $cost = $myrow['download_cost'];
 
-                $member = get_member();
-                if (is_guest($member)) {
-                    access_denied('NOT_AS_GUEST');
-                }
-
-                $dif = $cost - available_points($member);
-                if (($dif > 0) && (!has_privilege(get_member(), 'have_negative_gift_points'))) {
+                $dif = $cost - available_points($member_id);
+                if (($dif > 0) && (!has_privilege($member_id, 'have_negative_gift_points'))) {
                     warn_exit(do_lang_tempcode('LACKING_POINTS', escape_html(integer_format($dif))));
                 }
                 require_code('points2');
-                charge_member($member, $cost, do_lang('DOWNLOADED_THIS', get_translated_text($myrow['name'])));
+                charge_member($member_id, $cost, do_lang('DOWNLOADED_THIS', get_translated_text($myrow['name'])));
 
                 if ($myrow['download_submitter_gets_points'] == 1) {
                     system_gift_transfer(do_lang('THEY_DOWNLOADED_THIS', get_translated_text($myrow['name'])), $cost, $myrow['submitter']);

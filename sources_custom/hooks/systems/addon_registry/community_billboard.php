@@ -139,8 +139,7 @@ class Hook_addon_registry_community_billboard
             'themes/default/images_custom/icons/48x48/menu/adminzone/audit/community_billboard.png',
             'themes/default/templates_custom/COMMUNITY_BILLBOARD_DETAILS.tpl',
             'themes/default/templates_custom/COMMUNITY_BILLBOARD_STORE_LIST_LINE.tpl',
-            'themes/default/templates_custom/ECOM_PRODUCT_COMMUNITY_BILLBOARD_SCREEN.tpl',
-            'themes/default/templates_custom/ECOM_PRODUCT_COMMUNITY_BILLBOARD_2.tpl',
+            'themes/default/templates_custom/ECOM_PRODUCT_COMMUNITY_BILLBOARD.tpl',
             'adminzone/pages/modules_custom/admin_community_billboard.php',
             'lang_custom/EN/community_billboard.ini',
             'sources_custom/hooks/systems/config/system_community_billboard.php',
@@ -169,7 +168,7 @@ class Hook_addon_registry_community_billboard
             'templates/COMMUNITY_BILLBOARD_DETAILS.tpl' => 'administrative__community_billboard_manage_screen',
             'templates/COMMUNITY_BILLBOARD_STORE_LIST_LINE.tpl' => 'administrative__community_billboard_manage_screen',
             'templates/ECOM_PRODUCT_COMMUNITY_BILLBOARD_2.tpl' => 'community_billboard_2',
-            'templates/ECOM_PRODUCT_COMMUNITY_BILLBOARD_SCREEN.tpl' => 'community_billboard_screen',
+            'templates/ECOM_PRODUCT_COMMUNITY_BILLBOARD.tpl' => 'community_billboard_screen',
         );
     }
 
@@ -202,9 +201,7 @@ class Hook_addon_registry_community_billboard
     {
         return array(
             lorem_globalise(
-                do_lorem_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'TEXT_URL' => placeholder_url(),
+                do_lorem_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array(
                         'QUEUE' => placeholder_number(),
                         'COST' => placeholder_number(),
                     )

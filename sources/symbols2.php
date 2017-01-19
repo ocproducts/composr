@@ -1831,12 +1831,12 @@ function ecv2_HAS_EDIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[1])) {
         $range = strtolower($param[0]);
         $owner = intval($param[1]);
-        $member = ((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member();
+        $member_id = ((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member();
         $cms_page = ((!is_null($param)) && (isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
-            $value = has_edit_permission($range, $member, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
+            $value = has_edit_permission($range, $member_id, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
         } else {
-            $value = has_edit_permission($range, $member, $owner, $cms_page) ? '1' : '0';
+            $value = has_edit_permission($range, $member_id, $owner, $cms_page) ? '1' : '0';
         }
     }
 
@@ -1947,12 +1947,12 @@ function ecv2_HAS_SUBMIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[0])) {
         $range = strtolower($param[0]);
         $ip_address = $param[1];
-        $member = ((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member();
+        $member_id = ((!is_null($param)) && (isset($param[2]))) ? intval($param[2]) : get_member();
         $cms_page = ((!is_null($param)) && (isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
-            $value = has_submit_permission($range, $member, $ip_address, $cms_page, array($param[5], $param[6])) ? '1' : '0';
+            $value = has_submit_permission($range, $member_id, $ip_address, $cms_page, array($param[5], $param[6])) ? '1' : '0';
         } else {
-            $value = has_submit_permission($range, $member, $ip_address, $cms_page) ? '1' : '0';
+            $value = has_submit_permission($range, $member_id, $ip_address, $cms_page) ? '1' : '0';
         }
     }
 

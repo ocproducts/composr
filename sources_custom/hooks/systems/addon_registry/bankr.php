@@ -109,6 +109,7 @@ class Hook_addon_registry_bankr
         return array(
             'requires' => array(
                 'Cron',
+                'points',
                 'ecommerce',
             ),
             'recommends' => array(),
@@ -138,7 +139,6 @@ class Hook_addon_registry_bankr
             'sources_custom/hooks/systems/ecommerce/bank.php',
             'lang_custom/EN/bank.ini',
             'sources_custom/hooks/systems/cron/bank.php',
-            'themes/default/templates_custom/ECOM_PRODUCT_BANK.tpl',
             'sources_custom/hooks/systems/config/bank_dividend.php',
         );
     }

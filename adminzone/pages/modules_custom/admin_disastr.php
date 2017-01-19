@@ -214,8 +214,8 @@ class Module_admin_disastr extends Standard_crud_module
 
         $cure = $rows[0]['cure'];
         $cure_price = $rows[0]['cure_price'];
-        $immunization = $rows[0]['immunisation'];
-        $immunization_price = $rows[0]['immunisation_price'];
+        $immunisation = $rows[0]['immunisation'];
+        $immunisation_price = $rows[0]['immunisation_price'];
 
         $spread_rate = $rows[0]['spread_rate'];
         $points_per_spread = $rows[0]['points_per_spread'];
@@ -228,15 +228,15 @@ class Module_admin_disastr extends Standard_crud_module
             'IMAGE' => $image,
             'CURE' => $cure,
             'CURE_PRICE' => integer_format($cure_price),
-            'IMMUNIZATION' => $immunization,
-            'IMMUNIZATION_PRICE' => integer_format($immunization_price),
+            'IMMUNISATION' => $immunisation,
+            'IMMUNISATION_PRICE' => integer_format($immunisation_price),
             'SPREAD_RATE' => integer_format($spread_rate),
             'POINTS_PER_SPREAD' => integer_format($points_per_spread),
             'ENABLED' => $enabled,
         ));
     }
 
-    public function get_form_fields($id = null, $name = '', $image = '', $cure = '', $cure_price = 10, $immunization = '', $immunization_price = 5, $spread_rate = 12, $points_per_spread = 10, $enabled = 1)
+    public function get_form_fields($id = null, $name = '', $image = '', $cure = '', $cure_price = 10, $immunisation = '', $immunisation_price = 5, $spread_rate = 12, $points_per_spread = 10, $enabled = 1)
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -250,8 +250,8 @@ class Module_admin_disastr extends Standard_crud_module
 
         $fields->attach(form_input_line(do_lang_tempcode('CURE'), do_lang_tempcode('DESCRIPTION_CURE'), 'cure', $cure, true));
         $fields->attach(form_input_line(do_lang_tempcode('CURE_PRICE'), '', 'cure_price', strval($cure_price), true));
-        $fields->attach(form_input_line(do_lang_tempcode('IMMUNIZATION'), do_lang_tempcode('DESCRIPTION_IMMUNIZATION'), 'immunization', $immunization, true));
-        $fields->attach(form_input_line(do_lang_tempcode('IMMUNIZATION_PRICE'), '', 'immunization_price', strval($immunization_price), true));
+        $fields->attach(form_input_line(do_lang_tempcode('IMMUNISATION'), do_lang_tempcode('DESCRIPTION_IMMUNISATION'), 'immunisation', $immunisation, true));
+        $fields->attach(form_input_line(do_lang_tempcode('IMMUNISATION_PRICE'), '', 'immunisation_price', strval($immunisation_price), true));
         $fields->attach(form_input_line(do_lang_tempcode('SPREAD_RATE'), do_lang_tempcode('DESCRIPTION_SPREAD_RATE'), 'spread_rate', strval($spread_rate), true));
         $fields->attach(form_input_line(do_lang_tempcode('POINTS_PER_SPREAD'), do_lang_tempcode('DESCRIPTION_POINTS_PER_SPREAD'), 'points_per_spread', strval($points_per_spread), true));
         $fields->attach(form_input_tick(do_lang_tempcode('ENABLED'), do_lang_tempcode('DESCRIPTION_DISEASE_ENABLED'), 'enabled', $enabled == 1));
@@ -295,13 +295,13 @@ class Module_admin_disastr extends Standard_crud_module
         $image = $myrow['image'];
         $cure = $myrow['cure'];
         $cure_price = $myrow['cure_price'];
-        $immunization = $myrow['immunisation'];
-        $immunization_price = $myrow['immunisation_price'];
+        $immunisation = $myrow['immunisation'];
+        $immunisation_price = $myrow['immunisation_price'];
         $spread_rate = $myrow['spread_rate'];
         $points_per_spread = $myrow['points_per_spread'];
         $enabled = $myrow['enabled'];
 
-        $ret = $this->get_form_fields($id, $name, $image, $cure, $cure_price, $immunization, $immunization_price, $spread_rate, $points_per_spread, $enabled);
+        $ret = $this->get_form_fields($id, $name, $image, $cure, $cure_price, $immunisation, $immunisation_price, $spread_rate, $points_per_spread, $enabled);
 
         return $ret;
     }
@@ -316,8 +316,8 @@ class Module_admin_disastr extends Standard_crud_module
         $name = post_param_string('name', '');
         $cure = post_param_string('cure', '');
         $cure_price = post_param_integer('cure_price', 0);
-        $immunization = post_param_string('immunization', '');
-        $immunization_price = post_param_integer('immunization_price', 0);
+        $immunisation = post_param_string('immunisation', '');
+        $immunisation_price = post_param_integer('immunisation_price', 0);
         $spread_rate = post_param_integer('spread_rate', 12);
         $points_per_spread = post_param_integer('points_per_spread', 10);
         $enabled = post_param_integer('enabled', 0);
@@ -325,7 +325,7 @@ class Module_admin_disastr extends Standard_crud_module
         require_code('themes2');
         $url = post_param_image('image', 'uploads/diseases_addon', null, true);
 
-        $id = $GLOBALS['SITE_DB']->query_insert('diseases', array('name' => $name, 'image' => $url, 'cure' => $cure, 'cure_price' => $cure_price, 'immunisation' => $immunization, 'immunisation_price' => $immunization_price, 'spread_rate' => $spread_rate, 'points_per_spread' => $points_per_spread, 'last_spread_time' => 0, 'enabled' => $enabled), true);
+        $id = $GLOBALS['SITE_DB']->query_insert('diseases', array('name' => $name, 'image' => $url, 'cure' => $cure, 'cure_price' => $cure_price, 'immunisation' => $immunisation, 'immunisation_price' => $immunisation_price, 'spread_rate' => $spread_rate, 'points_per_spread' => $points_per_spread, 'last_spread_time' => 0, 'enabled' => $enabled), true);
 
         return strval($id);
     }
@@ -342,8 +342,8 @@ class Module_admin_disastr extends Standard_crud_module
         $name = post_param_string('name', '');
         $cure = post_param_string('cure', '');
         $cure_price = post_param_integer('cure_price', 0);
-        $immunization = post_param_string('immunization', '');
-        $immunization_price = post_param_integer('immunization_price', 0);
+        $immunisation = post_param_string('immunisation', '');
+        $immunisation_price = post_param_integer('immunisation_price', 0);
         $spread_rate = post_param_integer('spread_rate', 12);
         $points_per_spread = post_param_integer('points_per_spread', 10);
         $enabled = post_param_integer('enabled', 0);
@@ -354,7 +354,7 @@ class Module_admin_disastr extends Standard_crud_module
         require_code('files2');
         delete_upload('uploads/diseases_addon', 'diseases', 'image', 'id', $id, $url);
 
-        $map = array('name' => $name, 'cure' => $cure, 'cure_price' => $cure_price, 'immunisation' => $immunization, 'immunisation_price' => $immunization_price, 'spread_rate' => $spread_rate, 'points_per_spread' => $points_per_spread, 'enabled' => $enabled);
+        $map = array('name' => $name, 'cure' => $cure, 'cure_price' => $cure_price, 'immunisation' => $immunisation, 'immunisation_price' => $immunisation_price, 'spread_rate' => $spread_rate, 'points_per_spread' => $points_per_spread, 'enabled' => $enabled);
         if ($url !== null) {
             $map['image'] = $url;
         }

@@ -106,13 +106,12 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 $usergroup_name = mixed();
 
                 $type_code = $sub['s_type_code'];
-                $product_object = find_product($type_code);
+                list(, , $product_object) = find_product_details($type_code);
                 if ($product_object === null) {
                     continue;
                 }
-                $products = $product_object->get_products(false, $type_code);
-                $product_row = $products[$type_code];
-                $item_name = $product_row['item_name'];
+                list($details) = find_product_details($type_code);
+                $item_name = $details['item_name'];
             }
 
             $is_manual = ($sub['s_payment_gateway'] == 'manual');

@@ -292,13 +292,13 @@ function _insert_lang($field_name, $text, $level, $connection = null, $comcode =
     if ($comcode && !get_mass_import_mode()) {
         if ($text_parsed === null) {
             if ((function_exists('get_member')) && (!$insert_as_admin)) {
-                $member = get_member();
+                $member_id = get_member();
             } else {
-                $member = is_object($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : 0;
+                $member_id = is_object($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : 0;
                 $insert_as_admin = true;
             }
             require_code('comcode');
-            $_text_parsed = comcode_to_tempcode($text, $member, $insert_as_admin, $wrap_pos, $pass_id, $connection, false, $preparse_mode);
+            $_text_parsed = comcode_to_tempcode($text, $member_id, $insert_as_admin, $wrap_pos, $pass_id, $connection, false, $preparse_mode);
             $text_parsed = $_text_parsed->to_assembly();
         }
     } else {
@@ -390,9 +390,9 @@ function _lang_remap($field_name, $id, $text, $connection = null, $comcode = fal
 
     $lang = user_lang();
 
-    $member = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id(); // This updates the Comcode reference to match the current user, which may not be the owner of the content this is for. This is for a reason - we need to parse with the security token of the current user, not the original content submitter.
+    $member_id = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id(); // This updates the Comcode reference to match the current user, which may not be the owner of the content this is for. This is for a reason - we need to parse with the security token of the current user, not the original content submitter.
     if (($for_member === null) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member) === null)) {
-        $for_member = $member;
+        $for_member = $member_id;
     }
 
     if ($leave_source_user) {
@@ -404,8 +404,8 @@ function _lang_remap($field_name, $id, $text, $connection = null, $comcode = fal
         This is necessary as editing admin's content shouldn't let you write content with admin's privileges, even if you have privilege to edit their content
          - yet also, if the source_user is changed, when admin edits it has to change back again.
         */
-        if ((function_exists('cms_admirecookie')) && ((cms_admirecookie('use_wysiwyg', '1') == '0') && (get_value('edit_with_my_comcode_perms') === '1')) || (!has_privilege($member, 'allow_html')) || (!has_privilege($member, 'comcode_dangerous')) || (!has_privilege($member, 'use_very_dangerous_comcode'))) {
-            $source_user = $member;
+        if ((function_exists('cms_admirecookie')) && ((cms_admirecookie('use_wysiwyg', '1') == '0') && (get_value('edit_with_my_comcode_perms') === '1')) || (!has_privilege($member_id, 'allow_html')) || (!has_privilege($member_id, 'comcode_dangerous')) || (!has_privilege($member_id, 'use_very_dangerous_comcode'))) {
+            $source_user = $member_id;
         } else {
             $source_user = $for_member; // Reset to latest submitter for main record
         }

@@ -57,8 +57,8 @@ class Block_main_greeting
 
         if ($forum != 'none') {
             // Standard welcome back vs into greeting
-            $member = get_member();
-            if (is_guest($member)) {
+            $member_id = get_member();
+            if (is_guest($member_id)) {
                 if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
                     $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
                 } else {
@@ -71,7 +71,7 @@ class Block_main_greeting
                 $p = do_lang_tempcode('WELCOME', $join_bits);
                 $out->attach(paragraph($p, 'hhrt4dsgdsgd'));
             } else {
-                $out->attach(paragraph(do_lang_tempcode('WELCOME_BACK', escape_html($GLOBALS['FORUM_DRIVER']->get_username($member, true)), escape_html($GLOBALS['FORUM_DRIVER']->get_username($member))), 'gfgdf9gjd'));
+                $out->attach(paragraph(do_lang_tempcode('WELCOME_BACK', escape_html($GLOBALS['FORUM_DRIVER']->get_username($member_id, true)), escape_html($GLOBALS['FORUM_DRIVER']->get_username($member_id))), 'gfgdf9gjd'));
             }
         }
 

@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    ecommerce
  */
 
 /**
@@ -33,14 +33,14 @@ class Hook_config_forw_url
         return array(
             'human_name' => 'FORW_MAINTAIN_URL',
             'type' => 'line',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'FORWARDING',
             'explanation' => 'CONFIG_OPTION_forw_url',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 2,
 
-            'addon' => 'pointstore',
+            'addon' => 'ecommerce',
         );
     }
 

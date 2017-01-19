@@ -61,8 +61,9 @@ class Module_admin_ecommerce_logs
 
         $ret = array(
             'browse' => array('ECOMMERCE', 'menu/adminzone/audit/ecommerce/ecommerce'),
-            'trigger' => array('MANUAL_TRANSACTION', 'menu/rich_content/ecommerce/purchase'),
+            'sales' => array('ECOM_PRODUCTS_MANAGE_SALES', 'menu/adminzone/audit/ecommerce/sales_log'),
             'logs' => array('TRANSACTIONS', 'menu/adminzone/audit/ecommerce/transactions'),
+            'trigger' => array('MANUAL_TRANSACTION', 'menu/rich_content/ecommerce/purchase'),
             'profit_loss' => array('PROFIT_LOSS', 'menu/adminzone/audit/ecommerce/profit_loss'),
             'cash_flow' => array('CASH_FLOW', 'menu/adminzone/audit/ecommerce/cash_flow'),
             'view_manual_subscriptions' => array('MANUAL_SUBSCRIPTIONS', 'menu/adminzone/audit/ecommerce/subscriptions'),
@@ -92,6 +93,21 @@ class Module_admin_ecommerce_logs
         require_lang('ecommerce');
         require_css('ecommerce');
 
+        if ($type == 'browse') {
+            $this->title = get_screen_title('ECOMMERCE');
+
+            set_helper_panel_text(comcode_lang_string('DOC_ECOMMERCE'));
+        }
+
+        if ($type == 'sales') {
+            $also_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'prices'), get_module_zone('admin_ecommerce_logs'));
+            attach_message(do_lang_tempcode('menus:ALSO_SEE_SETUP', escape_html($also_url->evaluate())), 'inform', true);
+        }
+
+        if ($type == 'sales' || $type == 'delete_log_entry') {
+            $this->title = get_screen_title('ECOM_PRODUCTS_MANAGE_SALES');
+        }
+
         if ($type == 'logs') {
             $this->title = get_screen_title('TRANSACTIONS');
         }
@@ -112,12 +128,6 @@ class Module_admin_ecommerce_logs
             breadcrumb_set_self(do_lang_tempcode('RESULT'));
 
             $this->title = get_screen_title('PROFIT_LOSS');
-        }
-
-        if ($type == 'browse') {
-            $this->title = get_screen_title('TRANSACTIONS');
-
-            set_helper_panel_text(comcode_lang_string('DOC_ECOMMERCE'));
         }
 
         if ($type == 'trigger') {
@@ -174,6 +184,12 @@ class Module_admin_ecommerce_logs
         if ($type == 'browse') {
             return $this->browse();
         }
+        if ($type == 'sales') {
+            return $this->sales();
+        }
+        if ($type == 'delete_log_entry') {
+            return $this->delete_log_entry();
+        }
         if ($type == 'logs') {
             return $this->logs();
         }
@@ -220,6 +236,95 @@ class Module_admin_ecommerce_logs
             ),
             do_lang('ECOMMERCE')
         );
+    }
+
+    /**
+     * The UI to view sales logs.
+     *
+     * @return Tempcode The UI
+     */
+    public function sales()
+    {
+        $max = get_param_integer('max', 50);
+        $start = get_param_integer('start', 0);
+
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('*', 's.id AS s_id'), null, 'ORDER BY date_and_time DESC', $max, $start);
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value('ecom_sales', 'COUNT(*)');
+
+        $out = new Tempcode();
+        require_code('templates_results_table');
+        require_code('templates_columned_table');
+        $do_other_details = false;
+        foreach ($rows as $row) {
+            if ($row['details2'] != '') {
+                $do_other_details = true;
+            }
+        }
+        foreach ($rows as $row) {
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
+            if (is_null($username)) {
+                $username = do_lang('UNKNOWN');
+            }
+
+            list($found,) = find_product_details($row['t_type_code']);
+            if ($found !== null) {
+                $item_name = $found[4];
+            }
+
+            $details_1 = $row['details'];
+            $details_2 = $row['details2'];
+
+            $date = get_timezoned_date($row['date_and_time']);
+
+            $url = build_url(array('page' => '_SELF', 'type' => 'delete_log_entry', 'id' => $row['id']), '_SELF');
+            $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'NAME' => $username, 'URL' => $url));
+
+            if ($do_other_details) {
+                $out->attach(columned_table_row(array($username, $item_name, $details_1, $details_2, $date, $actions), true));
+            } else {
+                $out->attach(columned_table_row(array($username, $item_name, $details_1, $date, $actions), true));
+            }
+        }
+        if ($out->is_empty()) {
+            return inform_screen($this->title, do_lang_tempcode('NO_ENTRIES'));
+        }
+
+        if ($do_other_details) {
+            $header_row = columned_table_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('PURCHASE'), do_lang_tempcode('DETAILS'), do_lang_tempcode('OTHER_DETAILS'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTIONS')));
+        } else {
+            $header_row = columned_table_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('PURCHASE'), do_lang_tempcode('DETAILS'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTIONS')));
+        }
+
+        $content = do_template('COLUMNED_TABLE', array('_GUID' => 'd87800ff26e9e5b8f7593fae971faa73', 'HEADER_ROW' => $header_row, 'ROWS' => $out));
+
+        require_code('templates_pagination');
+        $pagination = pagination(do_lang('ECOM_PRODUCTS_MANAGE_SALES'), $start, 'start', $max, 'max', $max_rows);
+
+        return do_template('ECOM_SALES_LOG_SCREEN', array('_GUID' => '014cf9436ece951edb55f2f7b0efb597', 'TITLE' => $this->title, 'CONTENT' => $content, 'PAGINATION' => $pagination));
+    }
+
+    /**
+     * The actualiser to delete a purchase.
+     *
+     * @return Tempcode The UI
+     */
+    public function delete_log_entry()
+    {
+        $this->_delete_log_entry(get_param_integer('id'));
+
+        // Show it worked / Refresh
+        $url = build_url(array('page' => '_SELF', 'type' => 'sales'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
+     * Delete a sales log entry (presumably as a purchase is being reversed).
+     *
+     * @param  integer $id The sales ID
+     */
+    public function _delete_log_entry($id)
+    {
+        $GLOBALS['SITE_DB']->query_delete('ecom_sales', array('id' => $id), '', 1);
     }
 
     /**
@@ -283,9 +388,9 @@ class Module_admin_ecommerce_logs
 
             // Find member link, if possible
             $member_id = null;
-            $product_ob = find_product($myrow['t_type_code']);
-            if ($product_ob !== null) {
-                $member_id = method_exists($product_ob, 'member_for') ? $product_ob->member_for($myrow['t_purchase_id']) : null;
+            list(, , $product_object) = find_product_details($myrow['t_type_code']);
+            if ($product_object !== null) {
+                $member_id = method_exists($product_object, 'member_for') ? $product_object->member_for($myrow['t_type_code'], $myrow['t_purchase_id']) : null;
             }
             if ($member_id !== null) {
                 $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member_id, false, '', false);
@@ -370,11 +475,11 @@ class Module_admin_ecommerce_logs
         $text = do_lang('MANUAL_TRANSACTION_TEXT');
         $submit_name = do_lang('MANUAL_TRANSACTION');
 
-        $product_ob = find_product($type_code);
+        list(, , $product_object) = find_product_details($type_code);
 
         // To work out key
         if (post_param_integer('got_purchase_key_dependencies', 0) == 0) {
-            $needed_fields = method_exists($product_ob, 'get_needed_fields') ? $product_ob->get_needed_fields($type_code) : null;
+            list($needed_fields, $needed_text, $needed_javascript) = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : array(null, null, null);
             if ($needed_fields !== null) { // Only do step if we actually have fields - create intermediary step. get_self_url ensures first product-choose step choice is propagated.
                 $submit_name = do_lang('PROCEED');
                 $extra_hidden = new Tempcode();
@@ -385,21 +490,21 @@ class Module_admin_ecommerce_logs
 
                 url_default_parameters__disable();
 
-                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => is_array($needed_fields) ? $needed_fields[1] : $needed_fields, 'TEXT' => '', 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden));
+                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $needed_fields, 'TEXT' => $needed_text, 'JAVASCRIPT' => $needed_javascript, 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden));
             }
         }
 
         // Remaining fields, customised for product chosen
-        if (method_exists($product_ob, 'get_identifier_manual_field_inputter')) {
-            $f = $product_ob->get_identifier_manual_field_inputter($type_code);
+        if (method_exists($product_object, 'get_identifier_manual_field_inputter')) {
+            $f = $product_object->get_identifier_manual_field_inputter($type_code);
             if ($f !== null) {
                 $fields->attach($f);
             }
         } else {
             $default_purchase_id = get_param_string('id', null);
             if ($default_purchase_id === null) {
-                if (method_exists($product_ob, 'set_needed_fields')) {
-                    $default_purchase_id = $product_ob->set_needed_fields($type_code);
+                if (method_exists($product_object, 'handle_needed_fields')) {
+                    list($default_purchase_id) = $product_object->handle_needed_fields($type_code);
                 } else {
                     $default_purchase_id = strval(get_member());
                 }
@@ -409,8 +514,8 @@ class Module_admin_ecommerce_logs
         }
         $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang('TRANSACTION_NOTES'), 'memo', '', false));
 
-        $products = $product_ob->get_products();
-        if ($products[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
+        list($details) = find_product_details($type_code);
+        if ($details['type'] == PRODUCT_SUBSCRIPTION) {
             $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
         }
 
@@ -440,12 +545,11 @@ class Module_admin_ecommerce_logs
         $custom_expiry = post_param_date('cexpiry');
         $mc_currency = get_option('currency');
 
-        $product_object = find_product($type_code);
-        $products = $product_object->get_products(true);
+        list($details) = find_product_details($type_code);
         if ($mc_gross == '') {
-            $mc_gross = $products[$type_code]['price'];
-            if (isset($products[$type_code]['currency'])) {
-                $mc_currency = $products[$type_code]['currency'];
+            $mc_gross = $details['price'];
+            if (isset($details['currency'])) {
+                $mc_currency = $details['currency'];
             }
         }
         $payment_status = 'Completed';
@@ -454,9 +558,9 @@ class Module_admin_ecommerce_logs
         $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
         $parent_txn_id = '';
 
-        $item_name = $products[$type_code]['item_name'];
+        $item_name = $details['item_name'];
 
-        if ($products[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
+        if ($details['type'] == PRODUCT_SUBSCRIPTION) {
             if (($purchase_id == '') || (post_param_string('username', '') != '')) {
                 $member_id = get_member();
                 $username = post_param_string('username', '');
@@ -471,22 +575,22 @@ class Module_admin_ecommerce_logs
                     's_type_code' => $type_code,
                     's_member_id' => $member_id,
                     's_state' => 'new',
-                    's_amount' => $products[$type_code]['price'],
+                    's_amount' => $details['price'],
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
                     's_payment_gateway' => 'manual',
-                    's_length' => $products[$type_code]['type_special_details']['length'],
-                    's_length_units' => $products[$type_code]['type_special_details']['length_units'],
+                    's_length' => $details['type_special_details']['length'],
+                    's_length_units' => $details['type_special_details']['length_units'],
                 ), true));
             }
 
             $item_name = ''; // Flag for handle_confirmed_transaction to know it's a subscription
 
             if ($custom_expiry !== null) {
-                $s_length = $products[$type_code]['type_special_details']['length'];
-                $s_length_units = $products[$type_code]['type_special_details']['length_units']; // y-year, m-month, w-week, d-day
+                $s_length = $details['type_special_details']['length'];
+                $s_length_units = $details['type_special_details']['length_units']; // y-year, m-month, w-week, d-day
                 $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
                 $new_s_time = strtotime('-' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $custom_expiry);
                 $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_time' => $new_s_time), array('id' => $purchase_id));
@@ -636,8 +740,8 @@ class Module_admin_ecommerce_logs
         $types['PROFIT']['AMOUNT'] = $types['CLOSING']['AMOUNT'] - $types['OPENING']['AMOUNT'] + $types['TAX']['AMOUNT'];
         // $types['PROFIT_NET_TAXED'] is not calculated
 
-        foreach ($types as $item => $details) {
-            $types[$item]['AMOUNT'] = float_to_raw_string($types[$item]['AMOUNT']);
+        foreach ($types as $type_code => $details) {
+            $types[$type_code]['AMOUNT'] = float_to_raw_string($types[$type_code]['AMOUNT']);
         }
 
         foreach ($types as $i => $t) {
@@ -720,16 +824,14 @@ class Module_admin_ecommerce_logs
 
         $data = array();
         foreach ($subscriptions as $subs) {
-            $product_obj = find_product($subs['s_type_code']);
-            if ($product_obj === null) {
+            list($details) = find_product_details($subs['s_type_code']);
+            if ($details === null) {
                 continue;
             }
 
-            $products = $product_obj->get_products(true);
-
-            $item_name = $products[$subs['s_type_code']]['item_name'];
-            $s_length = $products[$subs['s_type_code']]['type_special_details']['length'];
-            $s_length_units = $products[$subs['s_type_code']]['type_special_details']['length_units']; // y-year, m-month, w-week, d-day
+            $item_name = $details['item_name'];
+            $s_length = $details['type_special_details']['length'];
+            $s_length_units = $details['type_special_details']['length_units']; // y-year, m-month, w-week, d-day
             $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
             $expiry_time = strtotime('+' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $subs['s_time']);
             $expiry_date = get_timezoned_date($expiry_time, false, false, false, true);
@@ -768,9 +870,8 @@ class Module_admin_ecommerce_logs
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
-        $product_obj = find_product($subscription[0]['s_type_code']);
-        $products = $product_obj->get_products(true);
-        $item_name = $products[$subscription[0]['s_type_code']]['item_name'];
+        list($details) = find_product_details($subscription[0]['s_type_code']);
+        $item_name = $details['item_name'];
         $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription[0]['s_member_id']);
 
         $repost_id = post_param_integer('id', null);

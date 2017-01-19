@@ -130,8 +130,6 @@ class template_no_unused_test_set extends cms_test_case
             'ECOM_PRODUCT_HIGHLIGHT_NAME',
             'ECOM_PRODUCT_PERMISSION',
             'ECOM_PRODUCT_TOPIC_PIN',
-            'ECOM_PURCHASE_STAGE_PAY',
-            'ECOM_PURCHASE_STAGE_SUBSCRIBE',
             'QUIZ_RESULTS',
             'RATING_BOX',
             'RATING_DISPLAY_SHARED',

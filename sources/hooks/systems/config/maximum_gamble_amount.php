@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    ecommerce
  */
 
 /**
@@ -33,14 +33,14 @@ class Hook_config_maximum_gamble_amount
         return array(
             'human_name' => 'MAXIMUM_GAMBLE_AMOUNT',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'GAMBLING',
             'explanation' => 'CONFIG_OPTION_maximum_gamble_amount',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,
 
-            'addon' => 'pointstore',
+            'addon' => 'ecommerce',
         );
     }
 

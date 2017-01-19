@@ -1,0 +1,21 @@
+{!MAIL_FORW_A,[b]{$USERNAME@}[/b]}
+
+{!ADDRESS_CURRENT@}: {EMAIL@}
+{!ADDRESS_DESIRED@}: {PREFIX@}@{SUFFIX@}
+
+{!CREATE_HERE,[url="{!HERE#}"]{FORW_URL@}[/url]}
+
+{!SEND_EMAIL,[url="{!EMAIL#}"]mailto:{EMAIL@}?subject=Re: {!MAIL_REQUEST_FORWARDING@}[/url],{$USERNAME@}}
+
+[code="Text"]
+{!EMAIL_HEAD@,{$USERNAME}}
+
+{!NEWS_MAIL_AVAILABLE@,{PREFIX}@{SUFFIX}}
+
+{!MAIL_FORW_B@,{PREFIX}@{SUFFIX},{EMAIL}}
+
+{!ANY_PROBLEMS_CAN,[email="{!US#}"]{$STAFF_ADDRESS_PURE@}[/email]}
+
+{!EMAIL_FOOT@,{$SITE_NAME}}
+[/code]
+

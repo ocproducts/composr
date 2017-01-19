@@ -437,21 +437,21 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
         if ($is_support_ticket) {
             // For support tickets, we need to make the spacer post
             require_code('tickets2');
-            $member = get_member();
+            $member_id = get_member();
             foreach ($posts as $post) {
-                $member = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_poster', array('id' => $posts[0]));
-                if ($member != get_member()) {
+                $member_id = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_poster', array('id' => $posts[0]));
+                if ($member_id != get_member()) {
                     break;
                 }
             }
-            $ticket_id = strval($member) . '_' . uniqid('', true);
+            $ticket_id = strval($member_id) . '_' . uniqid('', true);
             $ticket_type = $GLOBALS['FORUM_DB']->query_select_value('tickets', 'ticket_type', array('topic_id' => $from_topic_id));
             if (is_null($title)) {
                 $title = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_title', array('id' => $posts[0]));
             }
             $_ticket_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
             $ticket_url = $_ticket_url->evaluate();
-            ticket_add_post($member, $ticket_id, $ticket_type, $title, '', $ticket_url);
+            ticket_add_post($member_id, $ticket_id, $ticket_type, $title, '', $ticket_url);
             $to_topic_id = $GLOBALS['LAST_TOPIC_ID'];
             $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_time=' . strval(time()) . ' WHERE ' . $or_list, null, null, false, true);
         } else {

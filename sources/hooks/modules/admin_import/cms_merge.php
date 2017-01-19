@@ -454,14 +454,14 @@ class Hook_cms_merge
             if (is_null($quiz)) {
                 continue;
             }
-            $member = $on_same_msn ? $row['q_member'] : import_id_remap_get('member', $row['q_member'], true);
-            if (is_null($member)) {
-                $member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            $member_id = $on_same_msn ? $row['q_member'] : import_id_remap_get('member', $row['q_member'], true);
+            if (is_null($member_id)) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
             $id_new = $GLOBALS['SITE_DB']->query_insert('quiz_entries', array(
                 'q_time' => $row['q_time'],
-                'q_member' => $member,
+                'q_member' => $member_id,
                 'q_quiz' => $quiz,
                 'q_results' => $row['q_results'],
             ), true);
@@ -983,11 +983,11 @@ class Hook_cms_merge
         $this->_fix_comcode_ownership($rows);
         $on_same_msn = ($this->on_same_msn($file_base));
         foreach ($rows as $row) {
-            $member = $on_same_msn ? $row['user_id'] : import_id_remap_get('member', $row['user_id'], true);
-            if (is_null($member)) {
-                $member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            $member_id = $on_same_msn ? $row['user_id'] : import_id_remap_get('member', $row['user_id'], true);
+            if (is_null($member_id)) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
-            add_to_charge_log($member, $row['amount'], $this->get_lang_string($db, $row['reason']), $row['date_and_time']);
+            add_to_charge_log($member_id, $row['amount'], $this->get_lang_string($db, $row['reason']), $row['date_and_time']);
         }
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'gifts', null, null, true);
         if (is_null($rows)) {
@@ -996,18 +996,18 @@ class Hook_cms_merge
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
             $viewer_member = $on_same_msn ? $row['gift_from'] : import_id_remap_get('member', $row['gift_from'], true);
-            $member = $on_same_msn ? $row['gift_to'] : import_id_remap_get('member', $row['gift_to'], true);
+            $member_id = $on_same_msn ? $row['gift_to'] : import_id_remap_get('member', $row['gift_to'], true);
             if (is_null($viewer_member)) {
                 $viewer_member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
-            if (is_null($member)) {
-                $member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            if (is_null($member_id)) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
             $map = array(
                 'date_and_time' => $row['date_and_time'],
                 'amount' => $row['amount'],
                 'gift_from' => $viewer_member,
-                'gift_to' => $member,
+                'gift_to' => $member_id,
                 'anonymous' => $row['anonymous'],
             );
             $map += insert_lang_comcode('reason', $this->get_lang_string($db, $row['reason']), 4);
@@ -1019,12 +1019,12 @@ class Hook_cms_merge
         }
         $this->_fix_comcode_ownership($rows);
         foreach ($rows as $row) {
-            $member = $on_same_msn ? $row['lb_member'] : import_id_remap_get('member', $row['lb_member'], true);
-            if (is_null($member)) {
+            $member_id = $on_same_msn ? $row['lb_member'] : import_id_remap_get('member', $row['lb_member'], true);
+            if (is_null($member_id)) {
                 continue;
             }
-            $GLOBALS['SITE_DB']->query_delete('leader_board', array('lb_member' => $member, 'lb_points' => $row['lb_points'], 'date_and_time' => $row['date_and_time']), '', 1);
-            $GLOBALS['SITE_DB']->query_insert('leader_board', array('lb_member' => $member, 'lb_points' => $row['lb_points'], 'date_and_time' => $row['date_and_time']));
+            $GLOBALS['SITE_DB']->query_delete('leader_board', array('lb_member' => $member_id, 'lb_points' => $row['lb_points'], 'date_and_time' => $row['date_and_time']), '', 1);
+            $GLOBALS['SITE_DB']->query_insert('leader_board', array('lb_member' => $member_id, 'lb_points' => $row['lb_points'], 'date_and_time' => $row['date_and_time']));
         }
     }
 
@@ -1393,13 +1393,13 @@ class Hook_cms_merge
             if (is_null($id)) {
                 continue;
             }
-            $member = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
-            if (is_null($member)) {
-                $member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            $member_id = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
+            if (is_null($member_id)) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('download_logging', 'ip', array('id' => $id, 'member_id' => $member));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('download_logging', 'ip', array('id' => $id, 'member_id' => $member_id));
             if (is_null($test)) {
-                $GLOBALS['SITE_DB']->query_insert('download_logging', array('id' => $id, 'member_id' => $member, 'ip' => $row['ip'], 'date_and_time' => $row['date_and_time']));
+                $GLOBALS['SITE_DB']->query_insert('download_logging', array('id' => $id, 'member_id' => $member_id, 'ip' => $row['ip'], 'date_and_time' => $row['date_and_time']));
             }
         }
 
@@ -1552,14 +1552,14 @@ class Hook_cms_merge
                 $page_id = db_get_first_id();
             }
 
-            $member = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
-            if (is_null($member)) {
-                $member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            $member_id = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
+            if (is_null($member_id)) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
             $map = array(
                 'wiki_views' => array_key_exists('wiki_views', $row) ? $row['wiki_views'] : 0,
                 'validated' => array_key_exists('validated', $row) ? $row['validated'] : 1,
-                'member_id' => $member,
+                'member_id' => $member_id,
                 'date_and_time' => $row['date_and_time'],
                 'page_id' => $page_id,
                 'edit_date' => $row['edit_date'],
@@ -1839,16 +1839,16 @@ class Hook_cms_merge
         $this->_fix_comcode_ownership($rows);
         $on_same_msn = ($this->on_same_msn($file_base));
         foreach ($rows as $row) {
-            $member = $on_same_msn ? $row['i_member_id'] : import_id_remap_get('member', $row['i_member_id'], true);
-            if (is_null($member)) {
+            $member_id = $on_same_msn ? $row['i_member_id'] : import_id_remap_get('member', $row['i_member_id'], true);
+            if (is_null($member_id)) {
                 continue;
             }
             $type = import_id_remap_get('event_type', strval($row['t_type']), true);
             if (is_null($type)) {
                 continue;
             }
-            $GLOBALS['SITE_DB']->query_delete('calendar_interests', array('i_member_id' => $member, 't_type' => $type), '', 1);
-            $GLOBALS['SITE_DB']->query_insert('calendar_interests', array('i_member_id' => $member, 't_type' => $type));
+            $GLOBALS['SITE_DB']->query_delete('calendar_interests', array('i_member_id' => $member_id, 't_type' => $type), '', 1);
+            $GLOBALS['SITE_DB']->query_insert('calendar_interests', array('i_member_id' => $member_id, 't_type' => $type));
         }
 
         $event_rows = $db->query('SELECT * FROM ' . $table_prefix . 'calendar_events ORDER BY id');
@@ -1913,11 +1913,11 @@ class Hook_cms_merge
             if (is_null($event)) {
                 continue;
             }
-            $member = $on_same_msn ? $row['n_member_id'] : import_id_remap_get('member', strval($row['n_member_id']), true);
-            if (is_null($member)) {
+            $member_id = $on_same_msn ? $row['n_member_id'] : import_id_remap_get('member', strval($row['n_member_id']), true);
+            if (is_null($member_id)) {
                 continue;
             }
-            $GLOBALS['SITE_DB']->query_insert('calendar_reminders', array('e_id' => $event, 'n_member_id' => $member, 'n_seconds_before' => $row['n_seconds_before']));
+            $GLOBALS['SITE_DB']->query_insert('calendar_reminders', array('e_id' => $event, 'n_member_id' => $member_id, 'n_seconds_before' => $row['n_seconds_before']));
         }
 
         require_code('calendar');
@@ -2137,11 +2137,11 @@ class Hook_cms_merge
         $this->_fix_comcode_ownership($rows);
         $on_same_msn = ($this->on_same_msn($file_base));
         foreach ($rows as $row) {
-            $member = $on_same_msn ? $row['the_member'] : import_id_remap_get('member', $row['the_member'], true);
-            if (is_null($member)) {
+            $member_id = $on_same_msn ? $row['the_member'] : import_id_remap_get('member', $row['the_member'], true);
+            if (is_null($member_id)) {
                 continue;
             }
-            $GLOBALS['SITE_DB']->query_insert('usersubmitban_member', array('the_member' => $member));
+            $GLOBALS['SITE_DB']->query_insert('usersubmitban_member', array('the_member' => $member_id));
         }
     }
 

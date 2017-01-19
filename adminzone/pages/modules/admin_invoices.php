@@ -230,12 +230,11 @@ class Module_admin_invoices
     public function _add()
     {
         $type_code = post_param_string('type_code');
-        $object = find_product($type_code);
+        list($details) = find_product_details($type_code);
 
         $amount = post_param_string('amount', '');
         if ($amount == '') {
-            $products = $object->get_products(false, $type_code);
-            $amount = $products[$type_code]['price'];
+            $amount = $details['price'];
             if ($amount === null) {
                 warn_exit(do_lang_tempcode('INVOICE_REQURIRED_AMOUNT'));
             }

@@ -734,14 +734,14 @@ function buy($member_id, $item_name, $copy_owner)
         if (available_points($member_id) < $price) {
             buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
-        charge_member($member_id, $price, do_lang('W_BOUGHT_BUILDR', escape_html($item_name)));
+        charge_member($member_id, $price, do_lang('W_PURCHASED_BUILDR', escape_html($item_name)));
 
         charge_member($copy_owner, -$price * 0.7, do_lang('W_SOLD_BUILDR', escape_html($item_name)));
     }
 
     basic_pickup($member_id, $item_name, $copy_owner);
 
-    buildr_refresh_with_message(do_lang_tempcode('W_BOUGHT', escape_html($item_name), escape_html(integer_format($cost))));
+    buildr_refresh_with_message(do_lang_tempcode('W_PURCHASED', escape_html($item_name), escape_html(integer_format($cost))));
 }
 
 /**

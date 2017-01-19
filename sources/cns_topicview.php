@@ -620,11 +620,11 @@ function cns_cache_member_details($members)
     require_code('cns_members');
 
     $member_or_list = '';
-    foreach ($members as $member) {
+    foreach ($members as $member_id) {
         if ($member_or_list != '') {
             $member_or_list .= ' OR ';
         }
-        $member_or_list .= 'm.id=' . strval($member);
+        $member_or_list .= 'm.id=' . strval($member_id);
     }
     if ($member_or_list != '') {
         global $TABLE_LANG_FIELDS_CACHE;

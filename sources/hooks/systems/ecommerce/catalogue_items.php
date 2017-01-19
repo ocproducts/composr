@@ -21,18 +21,6 @@ It is modular though, and purchase hook may provide these methods too.
 */
 
 /**
- * Update stock count after transaction.
- *
- * @param  AUTO_LINK $entry_id Product ID.
- * @param  array $details Details of product.
- */
-function handle_catalogue_items($entry_id, $details)
-{
-    $product_object = object_factory('Hook_ecommerce_catalogue_items');
-    $product_object->reduce_stock($entry_id, 1);
-}
-
-/**
  * @license     http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright   ocProducts Ltd
  * @package     shopping
@@ -40,13 +28,22 @@ function handle_catalogue_items($entry_id, $details)
 class Hook_ecommerce_catalogue_items
 {
     /**
-     * Find whether a shipping address is needed.
+     * Get the overall categorisation for the products handled by this eCommerce hook.
      *
-     * @return boolean Whether a shipping address is needed.
+     * @return ?array A map of product categorisation details (null: disabled).
      */
-    public function needs_shipping_address()
+    function get_product_category()
     {
-        return true;
+        require_lang('shopping');
+
+        return array(
+            'category_name' => do_lang('CATALOGUE_ITEM'),
+            'category_description' => do_lang_tempcode('CATALOGUE_ITEM_DESCRIPTION'),
+            'category_image_url' => find_theme_image('icons/48x48/menu/rich_content/catalogues/products'),
+
+            'supports_money' => true,
+            'supports_points' => false,
+        );
     }
 
     /**
@@ -118,11 +115,15 @@ class Hook_ecommerce_catalogue_items
                     $product_weight = floatval($field_rows[8]['effective_value_pure']);
                 }
 
-                $price = float_to_raw_string($this->calculate_product_price(floatval($item_price), $tax, $product_weight));
+                $price = float_to_raw_string($this->_calculate_product_price(floatval($item_price), $tax, $product_weight));
+
+                $image = $this->_get_product_image($ecomm_item['c_name'], $ecomm_item['id']);
 
                 /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
                 $products[strval($ecomm_item['id'])] = array(
                     'item_name' => $product_title,
+                    'item_description' => $field_rows[9]['effective_value'],
+                    'item_image_url' => $image,
 
                     'type' => PRODUCT_CATALOGUE,
                     'type_special_details' => array('tax' => $tax),
@@ -133,8 +134,7 @@ class Hook_ecommerce_catalogue_items
                     'discount_points__num_points' => null,
                     'discount_points__price_reduction' => null,
 
-                    'actualiser' => 'handle_catalogue_items',
-                    'member_finder' => null,
+                    'needs_shipping_address' => true,
                 );
             }
             $start += 500;
@@ -147,16 +147,17 @@ class Hook_ecommerce_catalogue_items
      * Check whether the product codename is available for purchase by the member.
      *
      * @param  ID_TEXT $type_code The product codename.
-     * @param  ?MEMBER $member The member we are checking against (null: current meber).
+     * @param  MEMBER $member_id The member we are checking against.
      * @param  integer $req_quantity The number required.
+     * @param  boolean $must_be_listed Whether the product must be available for public listing.
      * @return integer The availability code (a ECOMMERCE_PRODUCT_* constant).
      */
-    public function is_available($type_code, $member = null, $req_quantity = 1)
+    public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
         require_code('catalogues');
 
-        if (get_page_name() == 'purchase') {
-            return ECOMMERCE_PRODUCT_DISABLED; // Don't list within purchasing module, we only want it as a part of a cart order
+        if ($must_be_listed) {
+            return ECOMMERCE_PRODUCT_DISABLED; // Don't list within purchasing module, we only want it as a part of a cart order. Otherwise we can't actually track who bought it
         }
 
         $res = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)), '', 1);
@@ -178,7 +179,7 @@ class Hook_ecommerce_catalogue_items
             return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
         }
         if (($field_rows[3]['effective_value_pure'] != '') && ($field_rows[3]['effective_value_pure'] != do_lang('NA'))) { // Check stock
-            $available_stock = $this->get_available_quantity($type_code);
+            $available_stock = $this->get_available_quantity($type_code, true, $member_id);
 
             return ($available_stock >= $req_quantity) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_OUT_OF_STOCK;
         }
@@ -191,10 +192,15 @@ class Hook_ecommerce_catalogue_items
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  boolean $consider_own_cart_contents Whether to consider the contents of your own cart.
+     * @param  ?MEMBER $member_id The member we are checking against (null: current member).
      * @return ?integer Quantity (null: no limit).
      */
-    public function get_available_quantity($type_code, $consider_own_cart_contents = true)
+    public function get_available_quantity($type_code, $consider_own_cart_contents = true, $member_id = null)
     {
+        if ($member_id === null) {
+            $member_id = get_member();
+        }
+
         require_code('catalogues');
 
         $res = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)));
@@ -216,10 +222,10 @@ class Hook_ecommerce_catalogue_items
 
             // Locked order check
             $query = 'SELECT sum(t2.p_quantity) FROM ' . get_table_prefix() . 'shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND t2.p_id=' . strval(intval($type_code));
-            if (is_guest()) {
+            if (is_guest($member_id)) {
                 $query .= ' AND ' . db_string_not_equal_to('t1.session_id', get_session_id());
             } else {
-                $query .= ' AND t1.c_member<>' . strval(get_member());
+                $query .= ' AND t1.c_member<>' . strval($member_id);
             }
             $locked_item_count = $GLOBALS['SITE_DB']->query_value_if_there($query);
             if ($locked_item_count === null) {
@@ -232,10 +238,10 @@ class Hook_ecommerce_catalogue_items
                     'is_deleted' => 0,
                     'product_id' => intval($type_code),
                 );
-                if (is_guest()) {
+                if (is_guest($member_id)) {
                     $where['session_id'] = get_session_id();
                 } else {
-                    $where['ordered_by'] = get_member();
+                    $where['ordered_by'] = $member_id;
                 }
                 $cart_item_count = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'SUM(quantity)', $where);
                 if ($cart_item_count === null) {
@@ -255,7 +261,7 @@ class Hook_ecommerce_catalogue_items
      * Get the message for use in the purchasing module
      *
      * @param  ID_TEXT $type_code The product in question.
-     * @return Tempcode The message.
+     * @return ?Tempcode The message (null: no message).
      */
     public function get_message($type_code)
     {
@@ -285,12 +291,12 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Get the product's details in a standard form.
+     * Get the product's details in a standard cart-friendly format.
      *
      * @param  ?AUTO_LINK $pid Product ID (null: read from environment, product_id).
      * @return array List of product details.
      */
-    public function get_product_details($pid = null)
+    public function get_product_details_for_cart($pid = null)
     {
         require_code('catalogues');
 
@@ -468,6 +474,28 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
+     * Find product image for a specific catalogue item.
+     *
+     * @param  ID_TEXT $catalogue_name Catalogue name.
+     * @param  AUTO_LINK $entry_id Catalogue entry ID.
+     * @return ?SHORT_TEXT Image name (null: no image).
+     */
+    protected function _get_product_image($catalogue_name, $entry_id)
+    {
+        require_code('catalogues');
+
+        $field_rows = get_catalogue_entry_field_values($catalogue_name, $entry_id, null, null, true);
+
+        $image = null;
+
+        if (array_key_exists(7, $field_rows)) {
+            return is_object($field_rows[7]['effective_value']) ? $field_rows[7]['effective_value']->evaluate() : $field_rows[7]['effective_value'];
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Calculate tax of catalogue item.
      *
      * @param  float $gross_cost Gross cost of product.
@@ -519,7 +547,7 @@ class Hook_ecommerce_catalogue_items
      * @param  integer $item_weight Weight of item.
      * @return float Calculated shipping cost for the product.
      */
-    public function calculate_product_price($item_price, $tax, $item_weight)
+    protected function _calculate_product_price($item_price, $tax, $item_weight)
     {
         $item_price = round($item_price, 2);
 
@@ -537,25 +565,67 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Find product image for a specific catalogue item.
+     * Get eCommerce-specific template-parameters to include in catalogue templating.
+     * Only called from the catalogues code, not the main eCommerce framework.
      *
-     * @param  ID_TEXT $catalogue_name Catalogue name.
-     * @param  AUTO_LINK $entry_id Catalogue entry ID.
-     * @return ?SHORT_TEXT Image name (null: no image).
+     * @param  AUTO_LINK $id Product entry ID.
+     * @param  array $map Map where product details are placed.
      */
-    protected function _get_product_image($catalogue_name, $entry_id)
+    public function get_catalogue_template_parameters($id, &$map)
     {
-        require_code('catalogues');
+        require_code('feedback');
+        require_code('ecommerce');
+        require_code('images');
 
-        $field_rows = get_catalogue_entry_field_values($catalogue_name, $entry_id, null, null, true);
+        require_lang('shopping');
 
-        $image = null;
+        $shopping_cart_url = build_url(array('page' => 'shopping', 'type' => 'browse'), '_SELF');
 
-        if (array_key_exists(7, $field_rows)) {
-            return is_object($field_rows[7]['effective_value']) ? $field_rows[7]['effective_value']->evaluate() : $field_rows[7]['effective_value'];
-        } else {
-            return null;
+        $product_title = null;
+
+        if (array_key_exists('FIELD_0', $map)) {
+            $product_title = $map['FIELD_0_PLAIN'];
+            if (is_object($product_title)) {
+                $product_title = strip_html($product_title->evaluate());
+            }
         }
+
+        $available_quantity = $this->get_available_quantity(strval($id));
+        $out_of_stock = ($available_quantity !== null) && ($available_quantity <= 0);
+
+        $cart_url = build_url(array('page' => 'shopping', 'type' => 'add_item', 'hook' => 'catalogue_items'), '_SELF');
+
+        $next_purchase_step = get_next_purchase_step($this, strval($id), 'browse');
+        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => $next_purchase_step, 'type_code' => strval($id), 'id' => $id), '_SELF');
+
+        $map['CART_BUTTONS'] = do_template('ECOM_SHOPPING_CART_BUTTONS', array(
+            '_GUID' => 'd4491c6e221b1f06375a6427da062bac',
+            'OUT_OF_STOCK' => $out_of_stock,
+            'ACTION_URL' => $cart_url,
+            'PRODUCT_ID' => strval($id),
+            'ALLOW_OPTOUT_TAX' => get_option('allow_opting_out_of_tax'),
+            'PURCHASE_ACTION_URL' => $purchase_mod_url,
+            'CART_URL' => $shopping_cart_url,
+        ));
+    }
+
+    /**
+     * Handling of a product purchase change state.
+     *
+     * @param  ID_TEXT $purchase_id The purchase ID.
+     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  ID_TEXT $type_code The product codename.
+     */
+    function actualiser($type_code, $purchase_id, $details)
+    {
+        if ($found['PAYMENT_STATUS'] != 'Completed') {
+            return;
+        }
+
+        $product_object = object_factory('Hook_ecommerce_catalogue_items');
+        $product_object->reduce_stock($entry_id, 1);
+
+        // We won't log to the ecom_sales as we log the containing order instead (in much more detail)
     }
 
     /**
@@ -632,52 +702,5 @@ class Hook_ecommerce_catalogue_items
     public function get_product_dispatch_type()
     {
         return 'manual';
-    }
-
-    /**
-     * Get custom fields for eCommerce product.
-     *
-     * @param  AUTO_LINK $id Product entry ID.
-     * @param  array $map Map where product details are placed.
-     */
-    public function get_custom_product_map_fields($id, &$map)
-    {
-        require_code('feedback');
-        require_code('ecommerce');
-        require_code('images');
-
-        require_lang('shopping');
-
-        $shopping_cart_url = build_url(array('page' => 'shopping', 'type' => 'browse'), '_SELF');
-
-        $product_title = null;
-
-        if (array_key_exists('FIELD_0', $map)) {
-            $product_title = $map['FIELD_0_PLAIN'];
-            if (is_object($product_title)) {
-                $product_title = strip_html($product_title->evaluate());
-            }
-        }
-
-        $terms = method_exists($this, 'get_terms') ? $this->get_terms(strval($id)) : '';
-
-        $fields = method_exists($this, 'get_needed_fields') ? $this->get_needed_fields(strval($id)) : null;
-
-        $available_quantity = $this->get_available_quantity(strval($id));
-        $out_of_stock = ($available_quantity !== null) && ($available_quantity <= 0);
-
-        $cart_url = build_url(array('page' => 'shopping', 'type' => 'add_item', 'hook' => 'catalogue_items'), '_SELF');
-
-        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => ($terms == '') ? (($fields === null) ? 'pay' : 'details') : 'terms', 'type_code' => strval($id), 'id' => $id), '_SELF');
-
-        $map['CART_BUTTONS'] = do_template('ECOM_SHOPPING_CART_BUTTONS', array(
-            '_GUID' => 'd4491c6e221b1f06375a6427da062bac',
-            'OUT_OF_STOCK' => $out_of_stock,
-            'ACTION_URL' => $cart_url,
-            'PRODUCT_ID' => strval($id),
-            'ALLOW_OPTOUT_TAX' => get_option('allow_opting_out_of_tax'),
-            'PURCHASE_ACTION_URL' => $purchase_mod_url,
-            'CART_URL' => $shopping_cart_url,
-        ));
     }
 }

@@ -281,13 +281,13 @@ class Module_bookmarks
         $id = get_param_integer('id');
 
         if (post_param_string('delete', null) !== null) { // A delete
-            $member = get_member();
-            delete_bookmark($id, $member);
+            $member_id = get_member();
+            delete_bookmark($id, $member_id);
         } else {
             $caption = post_param_string('caption');
             $page_link = post_param_string('page_link');
-            $member = get_member();
-            edit_bookmark($id, $member, $caption, $page_link);
+            $member_id = get_member();
+            edit_bookmark($id, $member_id, $caption, $page_link);
         }
 
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

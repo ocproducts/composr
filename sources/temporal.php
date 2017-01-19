@@ -127,29 +127,29 @@ function get_site_timezone()
 /**
  * Get a user's timezone.
  *
- * @param  ?MEMBER $member Member for which the date is being rendered (null: current user)
+ * @param  ?MEMBER $member_id Member for which the date is being rendered (null: current user)
  * @return string Users timezone in "boring" format.
  */
-function get_users_timezone($member = null)
+function get_users_timezone($member_id = null)
 {
-    if ($member === null) {
-        $member = get_member();
+    if ($member_id === null) {
+        $member_id = get_member();
     }
 
     global $TIMEZONE_MEMBER_CACHE;
-    if (isset($TIMEZONE_MEMBER_CACHE[$member])) {
-        return $TIMEZONE_MEMBER_CACHE[$member];
+    if (isset($TIMEZONE_MEMBER_CACHE[$member_id])) {
+        return $TIMEZONE_MEMBER_CACHE[$member_id];
     }
 
     $timezone = get_param_string('keep_timezone', null);
     if ($timezone !== null) {
-        $TIMEZONE_MEMBER_CACHE[$member] = $timezone;
+        $TIMEZONE_MEMBER_CACHE[$member_id] = $timezone;
         return $timezone;
     }
 
     // Get user timezone
-    if ((get_forum_type() == 'cns') && (!is_guest($member))) {
-        $timezone_member = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_timezone_offset');
+    if ((get_forum_type() == 'cns') && (!is_guest($member_id))) {
+        $timezone_member = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_timezone_offset');
     } elseif ((function_exists('cms_admirecookie')) && (get_option('is_on_timezone_detection') == '1') && (get_option('allow_international') == '1')) {
         $client_time = cms_admirecookie('client_time');
         $client_time_ref = cms_admirecookie('client_time_ref');
@@ -170,7 +170,7 @@ function get_users_timezone($member = null)
         $timezone_member = get_site_timezone();
     }
 
-    $TIMEZONE_MEMBER_CACHE[$member] = $timezone_member;
+    $TIMEZONE_MEMBER_CACHE[$member_id] = $timezone_member;
 
     return $timezone_member;
 }
@@ -210,16 +210,16 @@ function convert_timezone_offset_to_formal_timezone($offset)
  * What complicate understanding of matters is that "user time" is not the timestamp that would exist on a user's PC, as all timestamps are meant to be stored in UTC. "user time" is offsetted to compensate, a virtual construct.
  *
  * @param  ?TIME $timestamp Input timestamp (null: now)
- * @param  ?MEMBER $member Member for which the date is being rendered (null: current member)
+ * @param  ?MEMBER $member_id Member for which the date is being rendered (null: current member)
  * @return TIME Output timestamp
  */
-function utctime_to_usertime($timestamp = null, $member = null)
+function utctime_to_usertime($timestamp = null, $member_id = null)
 {
     if ($timestamp === null) {
         $timestamp = time();
     }
 
-    $timezone = get_users_timezone($member);
+    $timezone = get_users_timezone($member_id);
 
     return tz_time($timestamp, $timezone);
 }
@@ -229,16 +229,16 @@ function utctime_to_usertime($timestamp = null, $member = null)
  * What complicate understanding of matters is that "user time" is not the timestamp that would exist on a user's PC, as all timestamps are meant to be stored in UTC. "user time" is offsetted to compensate, a virtual construct.
  *
  * @param  ?TIME $timestamp Input timestamp (null: now)
- * @param  ?MEMBER $member Member for which the date is being rendered (null: current member)
+ * @param  ?MEMBER $member_id Member for which the date is being rendered (null: current member)
  * @return TIME Output timestamp
  */
-function usertime_to_utctime($timestamp = null, $member = null)
+function usertime_to_utctime($timestamp = null, $member_id = null)
 {
     if ($timestamp === null) {
         $timestamp = time();
     }
 
-    $timezone = get_users_timezone($member);
+    $timezone = get_users_timezone($member_id);
 
     $amount_forward = tz_time($timestamp, $timezone) - $timestamp;
     return $timestamp - $amount_forward;
@@ -302,13 +302,13 @@ function get_timezoned_date_tempcode($timestamp, $include_time = true)
  * @param  boolean $verbose Whether to make this a verbose date (longer than usual)
  * @param  boolean $utc_time Whether to work in UTC time
  * @param  boolean $avoid_contextual_dates Whether contextual dates will be avoided
- * @param  ?MEMBER $member Member for which the date is being rendered (null: current member)
+ * @param  ?MEMBER $member_id Member for which the date is being rendered (null: current member)
  * @return string Formatted time
  */
-function get_timezoned_date($timestamp, $include_time = true, $verbose = false, $utc_time = false, $avoid_contextual_dates = false, $member = null)
+function get_timezoned_date($timestamp, $include_time = true, $verbose = false, $utc_time = false, $avoid_contextual_dates = false, $member_id = null)
 {
-    if ($member === null) {
-        $member = get_member();
+    if ($member_id === null) {
+        $member_id = get_member();
     }
 
     if (!$avoid_contextual_dates && gmdate('H:i', $timestamp) == '00:00') {
@@ -316,8 +316,8 @@ function get_timezoned_date($timestamp, $include_time = true, $verbose = false, 
     }
 
     // Work out timezone
-    $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
-    $usered_now_timestamp = $utc_time ? time() : utctime_to_usertime(time(), $member);
+    $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member_id);
+    $usered_now_timestamp = $utc_time ? time() : utctime_to_usertime(time(), $member_id);
 
     if ($usered_timestamp < 0) {
         if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
@@ -393,14 +393,14 @@ function locale_filter($ret)
  *
  * @param  TIME $timestamp Input timestamp
  * @param  boolean $avoid_contextual_dates Whether contextual times will be avoided. Note that we don't currently use contextual (relative) times. This parameter may be used in the future.
- * @param  ?MEMBER $member Member for which the time is being rendered (null: current member)
+ * @param  ?MEMBER $member_id Member for which the time is being rendered (null: current member)
  * @param  boolean $utc_time Whether to work in UTC time
  * @return string Formatted time
  */
-function get_timezoned_time($timestamp, $avoid_contextual_dates = false, $member = null, $utc_time = false)
+function get_timezoned_time($timestamp, $avoid_contextual_dates = false, $member_id = null, $utc_time = false)
 {
-    if ($member === null) {
-        $member = get_member();
+    if ($member_id === null) {
+        $member_id = get_member();
     }
 
     if (get_option('use_contextual_dates') == '0') {
@@ -408,7 +408,7 @@ function get_timezoned_time($timestamp, $avoid_contextual_dates = false, $member
     }
 
     $date_string = do_lang('date_regular_time');
-    $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
+    $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member_id);
     return cms_strftime($date_string, $usered_timestamp);
 }
 

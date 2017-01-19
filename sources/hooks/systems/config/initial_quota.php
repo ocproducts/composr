@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    ecommerce
  */
 
 /**
@@ -33,14 +33,14 @@ class Hook_config_initial_quota
         return array(
             'human_name' => 'QUOTA',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'POP3',
             'explanation' => 'CONFIG_OPTION_initial_quota',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 5,
 
-            'addon' => 'pointstore',
+            'addon' => 'ecommerce',
         );
     }
 

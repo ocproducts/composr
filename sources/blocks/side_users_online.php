@@ -83,26 +83,26 @@ class Block_side_users_online
         $done_members = array();
         $done_ips = array();
         foreach ($members as $_member) {
-            $member = $_member['member_id'];
+            $member_id = $_member['member_id'];
             $username = $_member['cache_username'];
             $ip = $_member['ip'];
 
-            if ((is_guest($member)) || (is_null($username))) {
+            if ((is_guest($member_id)) || (is_null($username))) {
                 if (!array_key_exists($ip, $done_ips)) {
                     $done_ips[$ip] = 1;
                     $guests++;
                 }
             } else {
-                if (!array_key_exists($member, $done_members)) {
-                    $colour = (get_forum_type() == 'cns') ? get_group_colour(cns_get_member_primary_group($member)) : null;
-                    $done_members[$member] = 1;
-                    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true, true);
+                if (!array_key_exists($member_id, $done_members)) {
+                    $colour = (get_forum_type() == 'cns') ? get_group_colour(cns_get_member_primary_group($member_id)) : null;
+                    $done_members[$member_id] = 1;
+                    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true);
                     $online[] = array(
                         'URL' => $url,
                         'USERNAME' => $username,
                         'COLOUR' => $colour,
-                        'MEMBER_ID' => strval($member),
-                        'AVATAR_URL' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member),
+                        'MEMBER_ID' => strval($member_id),
+                        'AVATAR_URL' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id),
                     );
                     $_members++;
                 }

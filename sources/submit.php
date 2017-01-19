@@ -141,18 +141,18 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
  * @param  ?MEMBER $member The member to give the points to (null: give to current member)
  * @return ?string A message about the member being given these submit points (null: no message)
  */
-function give_submit_points($type, $member = null)
+function give_submit_points($type, $member_id = null)
 {
-    if (is_null($member)) {
-        $member = get_member();
+    if (is_null($member_id)) {
+        $member_id = get_member();
     }
-    if ((!is_guest($member)) && (addon_installed('points'))) {
+    if ((!is_guest($member_id)) && (addon_installed('points'))) {
         $points = get_option('points_' . $type, true);
         if (is_null($points)) {
             return '';
         }
         require_code('points2');
-        system_gift_transfer(do_lang($type), intval($points), $member);
+        system_gift_transfer(do_lang($type), intval($points), $member_id);
         return do_lang('SUBMIT_AWARD', integer_format(intval($points)));
     }
     return null;

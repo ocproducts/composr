@@ -1466,15 +1466,15 @@ class Hook_phpbb3
             }
 
             $poster = $post_info[0]['p_poster_name_if_guest'];
-            $member = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-            if (is_null($member)) {
-                $member = do_lang('UNKNOWN');
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
+            if (is_null($username)) {
+                $username = do_lang('UNKNOWN');
             }
 
             $title = do_lang('REPORTED_POST_TITLE', $post_title);
             $topic_id = cns_make_topic($forum_id, $title, '', $row['topic_approved'], ($row['report_closed'] == 1) ? 0 : 1, 0, 0, 0, null, null, false);
-            $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('_GUID' => '0dd1532216390f75385323ce11baedba', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_NAME' => $topic_info[0]['t_cache_first_title'], 'POST' => $row['report_text'], 'POSTER' => $poster), null, false, null, '.txt', 'text');
-            cns_make_post($topic_id, $title, $post->evaluate(), 0, true, 1, 0, $member, null, $row['report_time'], $user_id, null, null, null, false, true, null, true, $title, 0, null, false);
+            $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('_GUID' => '0dd1532216390f75385323ce11baedba', 'POST_ID' => strval($post_id), 'MEMBER' => $username, 'TOPIC_NAME' => $topic_info[0]['t_cache_first_title'], 'POST' => $row['report_text'], 'POSTER' => $poster), null, false, null, '.txt', 'text');
+            cns_make_post($topic_id, $title, $post->evaluate(), 0, true, 1, 0, $username, null, $row['report_time'], $user_id, null, null, null, false, true, null, true, $title, 0, null, false);
         }
     }
 }

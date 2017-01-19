@@ -23,7 +23,7 @@ As well as utilising points for site ranks and permissions, Composr allows users
 
 The eCommerce inventory management screen can be found under Admin Zone > Setup > eCommerce inventory management.
 
-You can set the cost for users uploading banners, for highlighting their name in the forum, or for pinning topics among other things. You can also add more items which can be bought such as more enhanced permissions and products. You can also edit any existing configured items.
+You can set the cost for users uploading banners, for highlighting their name in the forum, or for pinning topics among other things. You can also add more items which can be purchased such as more enhanced permissions and products. You can also edit any existing configured items.
 
 [title="2"]How do your users purchase the products?[/title]
 

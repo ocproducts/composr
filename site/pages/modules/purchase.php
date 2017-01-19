@@ -18,6 +18,32 @@
  * @package    ecommerce
  */
 
+/*
+URL parameters are follows...
+
+(any screen)
+ type = browse|message|terms|details|pay|finish (the screen type) [required]
+ type_code (selected product)
+ id (default purchase ID; some hooks only)
+ include_message = 0|1 (merge the message step's message into the next available non-message screen, allows skipping a screen)
+ redirect (a URL to redirect to after the finish screen)
+
+'choose' screen only
+ filter (a stem filter on product codenames)
+ type_filter (an exact string match filter on product codenames)
+ supports_money = 0|1 (whether to only show products that take money payment)
+ supports_points = 0|1 (whether to only show products that take points payment)
+ use_categorisation = 0|1 (whether to use categorisation to fold products together, for hooks that define that)
+
+'finish' screen only
+ message (a message passed from a payment gateway)
+ from (a payment gateway hook name, e.g. paypal)
+ points = 0|1 (whether to do an immediate points transaction)
+ cancel = 0|1 (whether this is a user cancellation)
+
+URL parameters all will automatically propagate through. Hooks may use these to prepopulate get_needed_fields forms.
+*/
+
 /**
  * Module page class.
  */
@@ -48,6 +74,7 @@ class Module_purchase
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_transactions');
         $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_expecting');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_sales_expecting');
 
         delete_privilege('access_ecommerce_in_test_mode');
 
@@ -63,6 +90,11 @@ class Module_purchase
         foreach ($cpf as $_cpf) {
             $GLOBALS['FORUM_DRIVER']->install_delete_custom_field($_cpf);
         }
+
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_prices');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_sales');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_custom');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_prods_permissions');
     }
 
     /**
@@ -135,6 +167,25 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
 
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+
+            $GLOBALS['SITE_DB']->add_table_field('pstore_permissions', 'p_mail_subject', 'SHORT_TRANS');
+            $GLOBALS['SITE_DB']->add_table_field('pstore_permissions', 'p_mail_body', 'LONG_TRANS');
+
+            $GLOBALS['SITE_DB']->add_table_field('pstore_customs', 'c_mail_subject', 'SHORT_TRANS');
+            $GLOBALS['SITE_DB']->add_table_field('pstore_customs', 'c_mail_body', 'LONG_TRANS');
+
+            rename_config_option('text', 'community_billboard');
+            rename_config_option('is_on_flagrant_buy', 'is_on_community_billboard_buy');
+
+            $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_hours', '?INTEGER');
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 7)) {
+            // This is used to store purchase details where there's too much data not stored anywhere else to use directly as a purchase ID
+            $GLOBALS['SITE_DB']->create_table('ecom_sales_expecting', array(
+                'id' => '*AUTO_LINK', // Used as a unique purchase ID
+                'details' => 'LONG_TEXT', // JSON encoded data
+            ));
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
@@ -167,6 +218,106 @@ class Module_purchase
 
             $GLOBALS['SITE_DB']->rename_table('trans_expecting', 'ecom_trans_expecting');
             $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
+
+            if ($GLOBALS['SITE_DB']->table_exists('prices')) {
+                $GLOBALS['SITE_DB']->rename_table('prices', 'ecom_prods_prices');
+                $GLOBALS['SITE_DB']->rename_table('pstore_customs', 'ecom_prods_custom');
+                $GLOBALS['SITE_DB']->rename_table('pstore_permissions', 'ecom_prods_permissions');
+                $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
+
+                $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'transaction_id', 'AUTO_LINK', db_get_first_id());
+                $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'memberid', 'MEMBER', 'member_id');
+                $sales = $GLOBALS['SITE_DB']->query_select('ecom_sales', array('*'));
+                foreach ($sales as $sale) {
+                    $type_code = '';
+                    switch ($sale['purchasetype']) {
+                        case 'banner':
+                            $type_code = 'banners';
+                            break;
+                        case 'pop3':
+                            $type_code = 'pop3';
+                            break;
+                        case 'forw':
+                            $type_code = 'forw';
+                            break;
+                        case 'PURCHASE_CUSTOM_PRODUCT':
+                            $type_code = 'custom';
+                            break;
+                        case 'PURCHASE_PERMISSION_PRODUCT':
+                            $type_code = 'permission';
+                            break;
+                        case 'NAME_HIGHLIGHTING':
+                            $type_code = 'highlight_name';
+                            break;
+                        case 'GAMBLING':
+                            $type_code = 'gambling';
+                            break;
+                        case 'TOPIC_PINNING':
+                            $type_code = 'topic_pin';
+                            break;
+                    }
+                    $transaction_id = $GLOBALS['SITE_DB']->query_insert('ecom_transactions', array(
+                        't_type_code' => $type_code,
+                        't_purchase_id' => strval($sale['id']),
+                        't_status' => 'Completed',
+                        't_reason' => '',
+                        't_amount' => '0',
+                        't_currency' => get_option('currency'),
+                        't_parent_txn_id' => '',
+                        't_time' => $sale['date_and_time'],
+                        't_pending_reason' => '',
+                        't_memo' => '',
+                        't_payment_gateway' => ''
+                    ), true);
+                    $GLOBALS['SITE_DB']->query_update('ecom_sales', array('transaction_id' => $transaction_id), array('id' => $sale['id']), '', 1);
+                }
+                $GLOBALS['SITE_DB']->delete_table_field('ecom_sales', 'purchasetype');
+            }
+        }
+
+        if (!$GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) { // LEGACY: Used to be in pointstore addon, hence the unusual install pattern. Now is just a part of purchase addon
+            $GLOBALS['SITE_DB']->create_table('ecom_prods_prices', array(
+                'name' => '*ID_TEXT',
+                'price' => 'INTEGER'
+            ));
+
+            $GLOBALS['SITE_DB']->create_table('ecom_sales', array(
+                'id' => '*AUTO',
+                'date_and_time' => 'TIME',
+                'member_id' => 'MEMBER',
+                'details' => 'SHORT_TEXT',
+                'details2' => 'SHORT_TEXT'
+                'transaction_id' => 'AUTO_LINK',
+            ));
+
+            // Custom
+            $GLOBALS['SITE_DB']->create_table('ecom_prods_custom', array(
+                'id' => '*AUTO',
+                'c_title' => 'SHORT_TRANS',
+                'c_description' => 'LONG_TRANS__COMCODE',
+                'c_mail_subject' => 'SHORT_TRANS',
+                'c_mail_body' => 'LONG_TRANS',
+                'c_enabled' => 'BINARY',
+                'c_cost' => 'INTEGER',
+                'c_one_per_member' => 'BINARY',
+            ));
+            // Permissions
+            $GLOBALS['SITE_DB']->create_table('ecom_prods_permissions', array(
+                'id' => '*AUTO',
+                'p_title' => 'SHORT_TRANS',
+                'p_description' => 'LONG_TRANS__COMCODE',
+                'p_mail_subject' => 'SHORT_TRANS',
+                'p_mail_body' => 'LONG_TRANS',
+                'p_enabled' => 'BINARY',
+                'p_cost' => 'INTEGER',
+                'p_hours' => '?INTEGER',
+                'p_type' => 'ID_TEXT', // member_privileges,member_category_access,member_page_access,member_zone_access
+                'p_privilege' => 'ID_TEXT', // privilege only
+                'p_zone' => 'ID_TEXT', // zone and page only
+                'p_page' => 'ID_TEXT', // page and ?privilege only
+                'p_module' => 'ID_TEXT', // category and ?privilege only
+                'p_category' => 'ID_TEXT', // category and ?privilege only
+            ));
         }
     }
 
@@ -224,6 +375,9 @@ class Module_purchase
         require_lang('config');
         require_css('ecommerce');
 
+        global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
+        $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = null;
+
         // Kill switch
         if ((ecommerce_test_mode()) && (!$GLOBALS['IS_ACTUALLY_ADMIN']) && (!has_privilege(get_member(), 'access_ecommerce_in_test_mode'))) {
             warn_exit(do_lang_tempcode('PURCHASE_DISABLED'));
@@ -272,7 +426,7 @@ class Module_purchase
      * @param  boolean $get Whether it is a GET form
      * @return Tempcode Wrapped.
      */
-    public function _wrap($content, $title, $url, $get = false)
+    protected function _wrap($content, $title, $url, $get = false)
     {
         if ($url === null) {
             $url = '';
@@ -288,7 +442,7 @@ class Module_purchase
      */
     public function choose()
     {
-        $url = build_url(array('page' => '_SELF', 'type' => 'message', 'id' => get_param_integer('id', -1)), '_SELF', null, true, true);
+        $url = build_url(array('page' => '_SELF', 'type' => 'message'), '_SELF', null, true); // TODO, direct to best step
 
         require_code('form_templates');
 
@@ -310,33 +464,40 @@ class Module_purchase
                 }
             }
 
-            $wizard_supported = (($details['type'] == PRODUCT_PURCHASE) || ($details['type'] == PRODUCT_SUBSCRIPTION) || ($details['type'] == PRODUCT_CATALOGUE));
+            $purchasing_module_supported = in_array($details['type'], array(PRODUCT_PURCHASE, PRODUCT_SUBSCRIPTION, PRODUCT_CATALOGUE));
 
             $is_available = false; // Anything without is_available is not meant to be purchased directly
             if (method_exists($details[count($details) - 1], 'is_available')) {
-                $availability_status = $details[count($details) - 1]->is_available($type_code, get_member());
+                $availability_status = $details[count($details) - 1]->is_available($type_code, get_member(), 1, true);
                 $is_available = ($availability_status == ECOMMERCE_PRODUCT_AVAILABLE) || ($availability_status == ECOMMERCE_PRODUCT_NO_GUESTS);
             }
 
-            if ($wizard_supported && $is_available) {
+            if ($purchasing_module_supported && $is_available) {
                 require_code('currency');
                 $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
-                if ($details['price'] !== null) {
+                if ($details['price'] === null) {
+                    $full_price = null;
+                    $_full_price = do_lang('NA');
+                } else {
                     $full_price = floatval($details['price']);
                     $_full_price = currency_convert($full_price, $currency, null, true);
+                }
 
-                    $discounted_price = get_discounted_price($details);
+                list($discounted_price, $points_for_discount) = get_discounted_price($details);
 
-                    if ($discounted_price === 0.0) {
-                        $_discounted_price = currency_convert(0.0, $currency, null, true);
-                        $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE', escape_html($details['item_name']), $_discounted_price, array($_full_price, escape_html(integer_format($details['discount_points__num_points']))));
-                    } elseif ($discounted_price !== null) {
-                        $_discounted_price = currency_convert($discounted_price, $currency, null, true);
-                        $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT', escape_html($details['item_name']), $_discounted_price, array($_full_price, escape_html(integer_format($details['discount_points__num_points']))));
-                    } else {
-                        $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FULL_PRICE', escape_html($details['item_name']), $_full_price, array($_full_price, escape_html(integer_format($details['discount_points__num_points']))));
-                    }
+                if (($discounted_price === null) && ($details['price'] === null)) {
+                    continue; // No way to purchase it
+                }
+
+                if ($discounted_price === 0.0) {
+                    $_discounted_price = currency_convert(0.0, $currency, null, true);
+                    $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE', escape_html($details['item_name']), $_discounted_price, array($_full_price, escape_html(integer_format($points_for_discount))));
+                } elseif ($discounted_price !== null) {
+                    $_discounted_price = currency_convert($discounted_price, $currency, null, true);
+                    $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT', escape_html($details['item_name']), $_discounted_price, array($_full_price, escape_html(integer_format($points_for_discount))));
+                } else {
+                    $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FULL_PRICE', escape_html($details['item_name']), $_full_price, array($_full_price));
                 }
 
                 $list->attach(form_input_list_entry($type_code, false, $description));
@@ -347,11 +508,17 @@ class Module_purchase
         }
         $fields = form_input_huge_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list, null, true);
 
-        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_CHOOSE', array('_GUID' => '47c22d48313ff50e6323f05a78342eae', 'FIELDS' => $fields, 'TITLE' => $this->title)), $this->title, $url, true);
+        $result = do_template('ECOM_PURCHASE_STAGE_CHOOSE', array(
+            '_GUID' => '47c22d48313ff50e6323f05a78342eae',
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+        ));
+        return $this->_wrap($result, $this->title, $url, true);
     }
 
     /**
      * Message about product step.
+     * Note that by using a 'include_message' parameter to a 'details' or 'pay' step you include the message on that other step and skip this step.
      *
      * @return Tempcode The result of execution.
      */
@@ -362,7 +529,7 @@ class Module_purchase
         $type_code = get_param_string('type_code');
 
         $text = new Tempcode();
-        $product_object = find_product($type_code);
+        list($details, , $product_object) = find_product_details($type_code);
         if ($product_object === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -373,24 +540,28 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $terms = method_exists($product_object, 'get_terms') ? $product_object->get_terms($type_code) : '';
-        $fields = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : null;
-        if (($fields !== null) && ($fields->is_empty())) {
-            $fields = null;
-        }
-        $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (($fields === null) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
+        $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'message');
+        $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array('include_message' => true), true);
 
-        if (method_exists($product_object, 'product_info')) {
-            $text->attach($product_object->product_info(get_param_integer('type_code'), $this->title));
+        if (method_exists($product_object, 'get_message')) {
+            $message = $product_object->get_message($type_code);
         } else {
-            if (!method_exists($product_object, 'get_message')) {
-                // Ah, not even a message to show - jump ahead
-                return redirect_screen($this->title, $url, '');
-            }
-            $text->attach($product_object->get_message($type_code));
+            $message = null;
         }
+        if ($message === null) {
+            // Ah, not even a message to show - jump ahead
+            return redirect_screen($this->title, $url, '');
+        }
+        $text->attach($message);
 
-        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_MESSAGE', array('_GUID' => '8667b6b544c4cea645a52bb4d087f816', 'TITLE' => '', 'TEXT' => $text)), $this->title, $url);
+        $result = do_template('ECOM_PURCHASE_STAGE_MESSAGE', array(
+            '_GUID' => '8667b6b544c4cea645a52bb4d087f816',
+            'TITLE' => $this->title,
+            'ITEM_NAME' => $details['item_name'],
+            'TYPE_CODE' => $type_code,
+            'TEXT' => $text,
+        ));
+        return $this->_wrap($result, $this->title, $url);
     }
 
     /**
@@ -400,13 +571,11 @@ class Module_purchase
      */
     public function terms()
     {
-        require_lang('installer');
-
         require_code('form_templates');
 
         $type_code = get_param_string('type_code');
 
-        $product_object = find_product($type_code);
+        list($details, , $product_object) = find_product_details($type_code);
 
         $test = $this->_check_availability($type_code);
         if ($test !== null) {
@@ -414,18 +583,32 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $terms = $product_object->get_terms($type_code);
-        $fields = $product_object->get_needed_fields($type_code);
-        if (($fields !== null) && ($fields->is_empty())) {
-            $fields = null;
-        }
-        $url = build_url(array('page' => '_SELF', 'type' => ($fields === null) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
+        $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'terms');
+        $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'accepted' => 1), '_SELF', null, true);
 
-        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_TERMS', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'TERMS' => $terms)), $this->title, null);
+        if (method_exists($product_object, 'get_terms')) {
+            $terms = $product_object->get_terms($type_code);
+        } else {
+            $terms = '';
+        }
+        if ($terms === '') {
+            // Ah, not even any terms to show - jump ahead
+            return redirect_screen($this->title, $url, '');
+        }
+
+        $result = do_template('ECOM_PURCHASE_STAGE_TERMS', array(
+            '_GUID' => '55c7bc550bb327535db1aebdac9d85f2',
+            'TITLE' => $this->title,
+            'ITEM_NAME' => $details['item_name'],
+            'TYPE_CODE' => $type_code,
+            'URL' => $url,
+            'TERMS' => $terms,
+        ));
+        return $this->_wrap($result, $this->title, null);
     }
 
     /**
-     * Details about purchase step.
+     * Details about purchase step (including a possible form).
      *
      * @return Tempcode The result of execution.
      */
@@ -439,7 +622,7 @@ class Module_purchase
 
         $type_code = get_param_string('type_code');
 
-        $product_object = find_product($type_code);
+        list($details, , $product_object) = find_product_details($type_code);
 
         $test = $this->_check_availability($type_code);
         if ($test !== null) {
@@ -447,10 +630,38 @@ class Module_purchase
         }
 
         // Work out what next step is
-        $fields = $product_object->get_needed_fields($type_code, get_param_integer('id', -1));
-        $url = build_url(array('page' => '_SELF', 'type' => 'pay', 'type_code' => $type_code), '_SELF', null, true);
+        $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'details');
+        $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => true), true);
 
-        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_DETAILS', array('_GUID' => '7fcbb0be5e90e52163bfec01f22f4ea0', 'TEXT' => is_array($fields) ? $fields[1] : '', 'FIELDS' => is_array($fields) ? $fields[0] : $fields)), $this->title, $url);
+        list($fields, $text, $javascript) = $product_object->get_needed_fields($type_code);
+
+        if (get_param_integer('include_message', 0) == 1) {
+            // Request to show message on the details screen (we would have been hot-linked straight to here)
+            if ($text === null) {
+                $text = new Tempcode();
+            }
+            if (method_exists($product_object, 'get_message')) {
+                $text->attach($product_object->get_message($type_code));
+            }
+        }
+
+        if ($fields === null) {
+            $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', null, true);
+
+            // Ah, not even any fields to show - jump ahead
+            return redirect_screen($this->title, $url, '');
+        }
+
+        $result = do_template('ECOM_PURCHASE_STAGE_DETAILS', array(
+            '_GUID' => '7fcbb0be5e90e52163bfec01f22f4ea0',
+            'TITLE' => $this->title,
+            'ITEM_NAME' => $details['item_name'],
+            'TYPE_CODE' => $type_code,
+            'TEXT' => $text,
+            'FIELDS' => $fields,
+            'JAVASCRIPT' => $javascript,
+        ));
+        return $this->_wrap($result, $this->title, $url);
     }
 
     /**
@@ -461,7 +672,7 @@ class Module_purchase
     public function pay()
     {
         $type_code = get_param_string('type_code');
-        $product_object = find_product($type_code);
+        list($details, , $product_object) = find_product_details($type_code, false, true);
 
         $payment_gateway = get_option('payment_gateway');
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
@@ -472,23 +683,28 @@ class Module_purchase
             return $test;
         }
 
-        $temp = $product_object->get_products(true, $type_code);
-        $discounted_price = get_discounted_price($temp[$type_code]);
+        list($discounted_price, $points_for_discount) = get_discounted_price($details);
         if ($discounted_price === null) {
-            $price = $temp[$type_code]['price'];
+            $price = $details['price'];
+
+            if ($price === null) {
+                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
         } else {
             $price = float_to_raw_string($discounted_price);
         }
-        $item_name = $temp[$type_code]['item_name'];
-        $currency = isset($temp[$type_code]['currency']) ? $temp[$type_code]['currency'] : get_option('currency');
 
-        if (method_exists($product_object, 'set_needed_fields')) {
-            $purchase_id = $product_object->set_needed_fields($type_code);
+        $item_name = $details['item_name'];
+
+        $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+
+        if (method_exists($product_object, 'handle_needed_fields')) {
+            list($purchase_id, $confirmation_box) = $product_object->handle_needed_fields($type_code);
         } else {
-            $purchase_id = strval(get_member());
+            list($purchase_id, null) = strval(get_member());
         }
 
-        if ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
+        if ($details['type'] == PRODUCT_SUBSCRIPTION) {
             // For a subscription we need to add in the subscription record in advance of payment. This will become our $purchase_id
             $_purchase_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 'id', array(
                 's_type_code' => $type_code,
@@ -506,46 +722,63 @@ class Module_purchase
                     's_auto_fund_source' => '',
                     's_auto_fund_key' => '',
                     's_payment_gateway' => $payment_gateway,
-                    's_length' => $temp[$type_code]['type_special_details']['length'],
-                    's_length_units' => $temp[$type_code]['type_special_details']['length_units'],
+                    's_length' => $details['type_special_details']['length'],
+                    's_length_units' => $details['type_special_details']['length_units'],
                 ), true));
             } else {
                 $purchase_id = strval($_purchase_id);
             }
 
-            $length = array_key_exists('length', $temp[$type_code]['type_special_details']) ? $temp[$type_code]['type_special_details']['length'] : 1;
-            $length_units = array_key_exists('length_units', $temp[$type_code]['type_special_details']) ? $temp[$type_code]['type_special_details']['length_units'] : 'm';
+            $length = array_key_exists('length', $details['type_special_details']) ? $details['type_special_details']['length'] : 1;
+            $length_units = array_key_exists('length_units', $details['type_special_details']) ? $details['type_special_details']['length_units'] : 'm';
         } else {
             $length = null;
             $length_units = '';
         }
 
-        if (floatval($price) == 0.0) {
-            // Free product, so bought instantly
-            $payment_status = 'Completed';
-            $reason_code = '';
-            $pending_reason = '';
-            $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
-            $parent_txn_id = '';
-            $memo = 'Free';
-            $mc_gross = '';
-            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual');
-            return inform_screen($this->title, do_lang_tempcode('FREE_PURCHASE'));
-        }
-
         $text = mixed();
+
         if (get_param_integer('include_message', 0) == 1) {
             // Request to show message on the payment screen (we would have been hot-linked straight to here)
             $text = new Tempcode();
-            if (method_exists($product_object, 'product_info')) {
-                $text->attach($product_object->product_info(get_param_integer('product'), $this->title));
-            } elseif (method_exists($product_object, 'get_message')) {
+            if (method_exists($product_object, 'get_message')) {
                 $text->attach($product_object->get_message($type_code));
             }
         }
 
-        if (perform_local_payment()) { // Handle the transaction internally
-            $needs_shipping_address = (method_exists($product_object, 'needs_shipping_address')) && ($product_object->needs_shipping_address());
+        if (floatval($price) == 0.0) { // Free/point-based product
+            if ($confirmation_box === null) {
+                if ($points_for_discount !== null) {
+                    $confirmation_box = do_lang_tempcode('BUYING_FOR_POINTS_CONFIRMATION', escape_html($item_name), escape_html(integer_format($points_for_discount)));
+                } else 
+                    $confirmation_box = do_lang_tempcode('BUYING_FOR_FREE_CONFIRMATION', escape_html($item_name));
+                }
+            }
+
+            // No form
+            $result = do_template('ECOM_PURCHASE_STAGE_TRANSACT', array(
+                'TITLE' => $this->title,
+                'ITEM_NAME' => $item_name,
+                'TYPE_CODE' => $type_code,
+                'PURCHASE_ID' => $purchase_id,
+                'FIELDS' => null,
+                'HIDDEN' => '',
+                'LOGOS' => '',
+                'PAYMENT_PROCESSOR_LINKS' => '',
+                'TEXT' => $text,
+                'CONFIRMATION_BOX' => $confirmation_box,
+            ));
+
+            $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
+            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => null, 'points' => 1, 'purchase_id' => $purchase_id), true);
+
+        } elseif (perform_local_payment()) { // Handle the transaction internally
+            if ($confirmation_box === null) {
+                $_price = currency_convert(floatval($price), $currency, null, true);
+                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), escape_html(integer_format($_price)));
+            }
+
+            $needs_shipping_address = !empty($details['needs_shipping_address']);
 
             list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
                 $type_code,
@@ -553,52 +786,66 @@ class Module_purchase
                 $purchase_id,
                 $price,
                 $currency,
-                ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
-                ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) ? $length_units : '',
+                ($details['type'] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
+                ($details['type'] == PRODUCT_SUBSCRIPTION) ? $length_units : '',
                 $payment_gateway,
                 $needs_shipping_address
             );
 
-            $finish_url = build_url(array('page' => '_SELF', 'type' => 'finish', 'type_code' => $type_code), '_SELF');
-
             // Credit card form
             $result = do_template('ECOM_PURCHASE_STAGE_TRANSACT', array(
                 '_GUID' => '15cbba9733f6ff8610968418d8ab527e',
+                'TITLE' => $this->title,
+                'ITEM_NAME' => $item_name,
+                'TYPE_CODE' => $type_code,
+                'PURCHASE_ID' => $purchase_id,
                 'FIELDS' => $fields,
                 'HIDDEN' => $hidden,
                 'LOGOS' => $logos,
                 'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
+                'TEXT' => $text,
+                'CONFIRMATION_BOX' => $confirmation_box,
             ));
-            return $this->_wrap($result, $this->title, $finish_url);
+
+            $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
+            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => null), true);
+
         } else { // Pass through to the gateway's HTTP server
-            if ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) {
+            if ($confirmation_box === null) {
+                $_price = currency_convert(floatval($price), $currency, null, true);
+                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), escape_html(integer_format($_price)));
+            }
+
+            if ($details['type'] == PRODUCT_SUBSCRIPTION) {
                 $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $payment_gateway);
             } else {
                 $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
             }
 
-            $tpl = ($temp[$type_code]['type'] == PRODUCT_SUBSCRIPTION) ? 'ECOM_PURCHASE_STAGE_SUBSCRIBE' : 'ECOM_PURCHASE_STAGE_PAY';
-
             $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
             $payment_processor_links = method_exists($payment_gateway_object, 'get_payment_processor_links') ? $payment_gateway_object->get_payment_processor_links() : new Tempcode();
 
             // Form with pay button on
-            $result = do_template($tpl, array(
+            $result = do_template('ECOM_PURCHASE_STAGE_PAY', array(
+                'TITLE' => $this->title,
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'CURRENCY' => $currency,
                 'ITEM_NAME' => $item_name,
-                'TITLE' => $this->title,
+                'TYPE_CODE' => $type_code,
+                'PURCHASE_ID' => $purchase_id,
                 'LENGTH' => ($length === null) ? '' : strval($length),
                 'LENGTH_UNITS' => $length_units,
-                'PURCHASE_ID' => $purchase_id,
                 'PRICE' => $price,
                 'TEXT' => $text,
+                'CONFIRMATION_BOX' => $confirmation_box,
                 'LOGOS' => $logos,
                 'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
             ));
+
+            $finish_url = null; // The embedded button will take the user through to the payment gateway
         }
 
-        return $this->_wrap($result, $this->title, null);
+        return $this->_wrap($result, $this->title, $finish_url);
     }
 
     /**
@@ -612,6 +859,16 @@ class Module_purchase
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
         $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
+        if (get_param_integer('cancel', 0) == 1) {
+            $subtype = 'cancel';
+        } elseif (get_param_integer('points', 0) == 1) {
+            $subtype = 'points_payment';
+        } elseif (perform_local_payment()) {
+            $subtype = 'local_payment';
+        } else {
+            $subtype = 'ipn_return';
+        }
+
         $message = get_param_string('message', null);
         if ($message === null) {
             if (method_exists($payment_gateway_object, 'get_callback_url_message')) {
@@ -619,24 +876,62 @@ class Module_purchase
             }
         }
 
-        if (get_param_integer('cancel', 0) == 1) {
+        if ($subtype == 'cancel') {
             if ($message !== null) {
-                return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_FINISH', array('_GUID' => '859c31e8f0f02a2a46951be698dd22cf', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+                $result = do_template('ECOM_PURCHASE_STAGE_FINISH', array(
+                    '_GUID' => '859c31e8f0f02a2a46951be698dd22cf',
+                    'TITLE' => $this->title,
+                    'TYPE_CODE' => $type_code,
+                    'MESSAGE' => $message,
+                ));
+                return $this->_wrap($result, $this->title, null);
             }
 
-            return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
+            return inform_screen($this->title, do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
         }
 
-        if (perform_local_payment()) { // We need to try and run the transaction
+        if ($subtype == 'points_payment') {
+            $purchase_id = get_param_string('purchase_id');
+
+            list($discounted_price, $points_for_discount) = get_discounted_price($details);
+            if (($discounted_price === null) && (floatval($details['price']) != 0.0)) {
+                warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Not discounted to free and not free, we should not be here
+            }
+
+            if ($points_for_discount !== null) {
+                require_code('points2');
+                charge_member($member_id, $points_for_discount, do_lang('FREE_ECOMMERCE_PRODUCT', $item_name));
+                $message = do_lang_tempcode('POINTS_PURCHASE', escape_html(integer_format($points_for_discount)));
+                $memo = do_lang('POINTS');
+            } else {
+                $message = do_lang_tempcode('FREE_PURCHASE');
+                $memo = do_lang('FREE');
+            }
+
+            $payment_status = 'Completed';
+            $reason_code = '';
+            $pending_reason = '';
+            $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
+            $parent_txn_id = '';
+            $mc_gross = '';
+            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual');
+
+            global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
+            if ($ECOMMERCE_SPECIAL_SUCCESS_MESSAGE !== null) {
+                $message = $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
+            }
+        }
+
+        if ($subtype == 'local_payment') { // We need to try and run the transaction
             list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $payment_gateway_object);
             if (!$success) {
-                warn_exit($message);
+                return warn_screen($this->title, $message);
             }
         }
 
         // We know success at this point...
 
-        if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
+        if (($subtype == 'ipn_return') && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
             handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
@@ -644,17 +939,28 @@ class Module_purchase
 
         if ($redirect === null) {
             $type_code = get_param_string('type_code');
-            $product_object = find_product($type_code);
+            list(, , $product_object) = find_product_details($type_code);
             if (method_exists($product_object, 'get_finish_url')) {
                 $redirect = $product_object->get_finish_url($type_code, $message);
             }
+        }
+
+        global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
+        if ($ECOMMERCE_SPECIAL_SUCCESS_MESSAGE !== null) {
+            $message = $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
         }
 
         if ($redirect !== null) {
             return redirect_screen($this->title, $redirect, $message);
         }
 
-        return $this->_wrap(do_template('ECOM_PURCHASE_STAGE_FINISH', array('_GUID' => '43f706793719ea893c280604efffacfe', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
+        $result = do_template('ECOM_PURCHASE_STAGE_FINISH', array(
+            '_GUID' => '43f706793719ea893c280604efffacfe',
+            'TITLE' => $this->title,
+            'TYPE_CODE' => $type_code,
+            'MESSAGE' => $message,
+        ));
+        return $this->_wrap($result, $this->title, null);
     }
 
     /**
@@ -663,33 +969,33 @@ class Module_purchase
      * @param  ID_TEXT $type_code The product code.
      * @return ?Tempcode Error screen (null: no error).
      */
-    public function _check_availability($type_code)
+    protected function _check_availability($type_code)
     {
-        $product_object = find_product($type_code);
+        list(, , $product_object) = find_product_details($type_code);
         if (!method_exists($product_object, 'is_available')) {
-            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            return warn_screen($this->title, do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        $availability_status = $product_object->is_available($type_code, get_member());
+        $availability_status = $product_object->is_available($type_code, get_member(), 1, true);
 
         switch ($availability_status) {
             case ECOMMERCE_PRODUCT_ALREADY_HAS:
-                return warn_screen(get_screen_title('PURCHASING'), do_lang_tempcode('ECOMMERCE_PRODUCT_ALREADY_HAS'), true, true);
+                return warn_screen($this->title, do_lang_tempcode('ECOMMERCE_PRODUCT_ALREADY_HAS'), true, true);
 
             case ECOMMERCE_PRODUCT_DISABLED:
-                return warn_screen(get_screen_title('PURCHASING'), do_lang_tempcode('ECOMMERCE_PRODUCT_DISABLED'), true, true);
+                return warn_screen($this->title, do_lang_tempcode('ECOMMERCE_PRODUCT_DISABLED'), true, true);
 
             case ECOMMERCE_PRODUCT_PROHIBITED:
-                return warn_screen(get_screen_title('PURCHASING'), do_lang_tempcode('ECOMMERCE_PRODUCT_PROHIBITED'), true, true);
+                return warn_screen($this->title, do_lang_tempcode('ECOMMERCE_PRODUCT_PROHIBITED'), true, true);
 
             case ECOMMERCE_PRODUCT_OUT_OF_STOCK:
-                return warn_screen(get_screen_title('PURCHASING'), do_lang_tempcode('ECOMMERCE_PRODUCT_OUT_OF_STOCK'));
+                return warn_screen($this->title, do_lang_tempcode('ECOMMERCE_PRODUCT_OUT_OF_STOCK'));
 
             case ECOMMERCE_PRODUCT_MISSING:
-                return warn_screen(get_screen_title('PURCHASING'), do_lang_tempcode('ECOMMERCE_PRODUCT_MISSING'));
+                return warn_screen($this->title, do_lang_tempcode('ECOMMERCE_PRODUCT_MISSING'));
 
             case ECOMMERCE_PRODUCT_INTERNAL_ERROR:
-                return warn_screen(get_screen_title('PURCHASING'), do_lang_tempcode('INTERNAL_ERROR'));
+                return warn_screen($this->title, do_lang_tempcode('INTERNAL_ERROR'));
 
             case ECOMMERCE_PRODUCT_NO_GUESTS:
                 if ((is_guest()) && (get_forum_type() != 'cns')) {
@@ -712,9 +1018,33 @@ class Module_purchase
                     'HIDDEN' => $hidden,
                 ));
 
-                return $this->_wrap($join_screen, get_screen_title('PURCHASING'), null);
+                return $this->_wrap($join_screen, $this->title, null);
         }
 
-        return null;
+        return $this->_check_can_afford($type_code);
+    }
+
+    /**
+     * Check to see if the current user can afford a product.
+     *
+     * @return ?Tempcode Error screen (null: no error).
+     */
+    protected function _check_can_afford($type_code)
+    {
+        list($details) = find_product_details($type_code);
+        list($discounted_price, $points_for_discount) = get_discounted_price($details);
+
+        if ($points_for_discount !== null) {
+            // Can't afford the points?
+            require_code('points');
+            $available_points = available_points(get_member());
+            if (($available_points < $points_for_discount) && (!has_privilege(get_member(), 'give_points_self'))) {
+                return warn_screen($this->title, do_lang_tempcode('CANT_AFFORD', escape_html(integer_format($points_for_discount)), escape_html(integer_format($available_points))));
+            }
+        }
+
+        if (($discounted_price === null) && ($details['price'] === null)) {
+            return warn_screen($this->title, do_lang_tempcode('INTERNAL_ERROR')); // Cannot buy with money and not available with points for some reason
+        }
     }
 }

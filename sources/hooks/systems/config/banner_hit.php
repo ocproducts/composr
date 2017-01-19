@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    ecommerce
  */
 
 /**
@@ -33,14 +33,14 @@ class Hook_config_banner_hit
         return array(
             'human_name' => 'COST_banner_hit',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'BANNERS',
             'explanation' => 'CONFIG_OPTION_banner_hit',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 5,
 
-            'addon' => 'pointstore',
+            'addon' => 'ecommerce',
         );
     }
 

@@ -320,10 +320,10 @@ class Module_admin_orders
 
             $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['c_member']);
             if (($submitted_by === null) || (is_guest($row['c_member']))) {
-                $member = do_lang('UNKNOWN');
+                $member_link = do_lang('UNKNOWN');
             } else {
                 $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['c_member']), get_module_zone('members'));
-                $member = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
+                $member_link = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
             }
 
             $order_date = hyperlink($view_url, get_timezoned_date($row['add_date'], true, false, true, true), false, true);
@@ -341,7 +341,7 @@ class Module_admin_orders
                     ecommerce_get_currency_symbol() . escape_html(float_format($row['tot_price'], 2)),
                     escape_html(($row['tax'] === null) ? '' : float_format($row['tax'], 2)),
                     $order_date,
-                    $member,
+                    $member_link,
                     $transaction_id,
                     $order_status,
                     $actions

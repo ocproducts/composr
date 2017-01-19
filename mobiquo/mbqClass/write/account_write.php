@@ -302,17 +302,17 @@ class CMSAccountWrite
     /**
      * Initiate lost password process (helper method).
      *
-     * @param  MEMBER $member Member
+     * @param  MEMBER $member_id Member
      * @return array Details of result status, containing status/data
      */
-    private function lost_password($member)
+    private function lost_password($member_id)
     {
         cms_verify_parameters_phpdoc();
 
         cns_require_all_forum_stuff();
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
-        $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+        $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
         // Basic validation
         if ($username == '') {
@@ -329,38 +329,38 @@ class CMSAccountWrite
         }
 
         // Check we are allowed to do a reset
-        if (($GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_password_compat_scheme') == '') && (has_privilege($member, 'disable_lost_passwords'))) {
+        if (($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme') == '') && (has_privilege($member_id, 'disable_lost_passwords'))) {
             return array(
                 'status' => false,
                 'data' => do_lang('NO_RESET_ACCESS'),
             );
         }
-        if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_password_compat_scheme') == 'httpauth') {
+        if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme') == 'httpauth') {
             return array(
                 'status' => false,
                 'data' => do_lang('NO_PASSWORD_RESET_HTTPAUTH'),
             );
         }
-        $is_ldap = cns_is_ldap_member($member);
-        $is_httpauth = cns_is_httpauth_member($member);
+        $is_ldap = cns_is_ldap_member($member_id);
+        $is_httpauth = cns_is_httpauth_member($member_id);
         if (($is_ldap)/* || ($is_httpauth  Actually covered more explicitly above - over mock-httpauth, like Facebook, may have passwords reset to break the integrations)*/) {
             warn_exit(do_lang_tempcode('EXT_NO_PASSWORD_CHANGE'));
         }
 
         // Start the reset process by generating a reset code
         $code = mt_rand(0, mt_getrandmax());
-        $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => strval($code)), array('id' => $member), '', 1);
-        log_it('RESET_PASSWORD', strval($member), strval($code));
+        $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => strval($code)), array('id' => $member_id), '', 1);
+        log_it('RESET_PASSWORD', strval($member_id), strval($code));
 
         // Send confirm mail
         $zone = get_module_zone('lost_password');
-        $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => $code, 'member' => $member), $zone, null, false, false, true);
+        $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => $code, 'member' => $member_id), $zone, null, false, false, true);
         $url = $_url->evaluate();
         $_url_simple = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => null, 'username' => null, 'member' => null), $zone, null, false, false, true);
         $url_simple = $_url_simple->evaluate();
-        $message = do_lang('RESET_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($url), $url_simple, strval($member), strval($code)), get_lang($member));
+        $message = do_lang('RESET_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($url), $url_simple, strval($member_id), strval($code)), get_lang($member_id));
         require_code('mail');
-        mail_wrap(do_lang('RESET_PASSWORD', null, null, null, get_lang($member)), $message, array($email), $username, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
+        mail_wrap(do_lang('RESET_PASSWORD', null, null, null, get_lang($member_id)), $message, array($email), $username, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
 
         // Return
         return array(

@@ -1,0 +1,7 @@
+{!MAIL_QUOTA_A#,[b]{$USERNAME@}[/b]}
+
+{!EMAIL_ADDRESS@}: {EMAIL@}
+
+{!QUOTA_INCREASE@}: {QUOTA@} megabytes
+
+{!CHANGE_HERE,[url="{!HERE#}"]{QUOTA_URL@}[/url]}

@@ -124,13 +124,13 @@ function add_bookmark_form($post_url)
 /**
  * Add a bookmark.
  *
- * @param  MEMBER $member Member who it will belong to
+ * @param  MEMBER $member_id Member who it will belong to
  * @param  string $folder Folder (blank: root)
  * @param  string $title Title/caption
  * @param  string $page_link The page-link or URL
  * @return AUTO_LINK The ID
  */
-function add_bookmark($member, $folder, $title, $page_link)
+function add_bookmark($member_id, $folder, $title, $page_link)
 {
     $_page_link = url_to_page_link($page_link, true);
     if ($_page_link != '') {
@@ -138,7 +138,7 @@ function add_bookmark($member, $folder, $title, $page_link)
     }
 
     $id = $GLOBALS['SITE_DB']->query_insert('bookmarks', array(
-        'b_owner' => $member,
+        'b_owner' => $member_id,
         'b_folder' => $folder,
         'b_title' => $title,
         'b_page_link' => $page_link,
@@ -153,18 +153,18 @@ function add_bookmark($member, $folder, $title, $page_link)
  * Edit a bookmark.
  *
  * @param  AUTO_LINK $id The ID
- * @param  MEMBER $member Member who it belongs to
+ * @param  MEMBER $member_id Member who it belongs to
  * @param  string $title Title/caption
  * @param  string $page_link The page-link
  */
-function edit_bookmark($id, $member, $title, $page_link)
+function edit_bookmark($id, $member_id, $title, $page_link)
 {
     $_page_link = url_to_page_link($page_link, true);
     if ($_page_link != '') {
         $page_link = $_page_link;
     }
 
-    $GLOBALS['SITE_DB']->query_update('bookmarks', array('b_page_link' => $page_link, 'b_title' => $title), array('id' => $id, 'b_owner' => $member), '', 1); // Second select param for needed security
+    $GLOBALS['SITE_DB']->query_update('bookmarks', array('b_page_link' => $page_link, 'b_title' => $title), array('id' => $id, 'b_owner' => $member_id), '', 1); // Second select param for needed security
 
     decache('menu');
 }
@@ -173,13 +173,13 @@ function edit_bookmark($id, $member, $title, $page_link)
  * Delete a bookmark.
  *
  * @param  AUTO_LINK $id The ID
- * @param  ?MEMBER $member Member who it belongs to (null: do not check)
+ * @param  ?MEMBER $member_id Member who it belongs to (null: do not check)
  */
-function delete_bookmark($id, $member = null)
+function delete_bookmark($id, $member_id = null)
 {
     $where = array('id' => $id);
-    if (!is_null($member)) {
-        $where['b_owner'] = $member; // Second select param for needed security
+    if (!is_null($member_id)) {
+        $where['b_owner'] = $member_id; // Second select param for needed security
     }
     $GLOBALS['SITE_DB']->query_delete('bookmarks', $where, '', 1);
 

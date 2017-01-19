@@ -220,19 +220,19 @@ function delete_author($author)
 /**
  * Find if a member's usergroup has permission to edit an author
  *
- * @param  MEMBER $member The member being checked whether to have the access
+ * @param  MEMBER $member_id The member being checked whether to have the access
  * @param  ID_TEXT $author An author
  * @return boolean Whether the member can edit this author
  */
-function has_edit_author_permission($member, $author)
+function has_edit_author_permission($member_id, $author)
 {
-    if (is_guest($member)) {
+    if (is_guest($member_id)) {
         return false;
     }
-    if ((get_author_id_from_name($author) == $member) && (has_privilege($member, 'set_own_author_profile'))) {
+    if ((get_author_id_from_name($author) == $member_id) && (has_privilege($member_id, 'set_own_author_profile'))) {
         return true;
     }
-    if (has_privilege($member, 'edit_midrange_content', 'cms_authors')) {
+    if (has_privilege($member_id, 'edit_midrange_content', 'cms_authors')) {
         return true;
     }
     return false;
@@ -241,19 +241,19 @@ function has_edit_author_permission($member, $author)
 /**
  * Find if a member's usergroup has permission to delete an author
  *
- * @param  MEMBER $member The member being checked whether to have the access
+ * @param  MEMBER $member_id The member being checked whether to have the access
  * @param  ID_TEXT $author An author
  * @return boolean Whether the member can edit this author
  */
-function has_delete_author_permission($member, $author)
+function has_delete_author_permission($member_id, $author)
 {
-    if (is_guest($member)) {
+    if (is_guest($member_id)) {
         return false;
     }
-    if ((get_author_id_from_name($author) == $member) && (has_privilege($member, 'delete_own_midrange_content'))) {
+    if ((get_author_id_from_name($author) == $member_id) && (has_privilege($member_id, 'delete_own_midrange_content'))) {
         return true;
     }
-    if (has_privilege($member, 'delete_midrange_content', 'cms_authors')) {
+    if (has_privilege($member_id, 'delete_midrange_content', 'cms_authors')) {
         return true;
     }
     return false;

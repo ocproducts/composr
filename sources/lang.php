@@ -392,17 +392,17 @@ function get_site_default_lang()
 /**
  * Get what language the given member uses. The language is sent through a mapping to ensure it is in the right format, or dumped if it will not map.
  *
- * @param  MEMBER $member The member ID
+ * @param  MEMBER $member_id The member ID
  * @return ?LANGUAGE_NAME The language used by the member (null: the language will not map)
  */
-function get_lang_member($member)
+function get_lang_member($member_id)
 {
-    if (is_guest($member)) {
+    if (is_guest($member_id)) {
         return get_site_default_lang();
     }
 
     // In forum?
-    $lang = $GLOBALS['FORUM_DRIVER']->forum_get_lang($member);
+    $lang = $GLOBALS['FORUM_DRIVER']->forum_get_lang($member_id);
     if ((!is_null($lang)) && ($lang != '')) {
         $_lang = strtoupper($lang);
         if (!does_lang_exist($_lang)) {
@@ -435,17 +435,17 @@ function get_lang_member($member)
  * Get the current language.
  * First it tries to get the GET or POST language values, then it tries the user's language, then site default, then it resorts to EN.
  *
- * @param  ?MEMBER $member The member ID (null: site default language, although better just to call get_site_default_lang directly)
+ * @param  ?MEMBER $member_id The member ID (null: site default language, although better just to call get_site_default_lang directly)
  * @return LANGUAGE_NAME The current language
  */
-function get_lang($member)
+function get_lang($member_id)
 {
-    if ($member !== null) {
-        if ($member == get_member()) {
+    if ($member_id !== null) {
+        if ($member_id == get_member()) {
             return user_lang();
         }
 
-        $lang = get_lang_member($member);
+        $lang = get_lang_member($member_id);
         if ($lang !== null) {
             return $lang;
         }

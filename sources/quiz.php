@@ -98,12 +98,12 @@ function get_quiz_data_for_csv($quiz_id)
 
     // Loop over it all
     foreach ($member_answers as $member_bits => $_member_answers) {
-        list($member, , $result) = explode('_', $member_bits, 3);
-        $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($member));
-        $member_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(intval($member));
+        list($member_id, , $result) = explode('_', $member_bits, 3);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($member_id));
+        $member_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(intval($member_id));
 
         $member_answers_csv = array();
-        $member_answers_csv[do_lang('IDENTIFIER')] = $member;
+        $member_answers_csv[do_lang('IDENTIFIER')] = $member_id;
         $member_answers_csv[do_lang('USERNAME')] = $username;
         $member_answers_csv[do_lang('EMAIL')] = $member_email;
         $member_answers_csv[do_lang('MARKS')] = $result;

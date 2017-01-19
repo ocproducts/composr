@@ -68,6 +68,15 @@ Points are at the very core of Buildr, and are used in two ways:
 
 The Buildr system is very simple, yet via the small set of options available, presents amazing possibilities.
 
+[title="3"]Downloads[/title]
+
+Members may submit downloads that cost points to download. Depending on how the submitter configures the download, these points may end up with that submitter, or thrown away.
+This system allows:
+ - staff to artificially limited access, to ensure members participate before they can use site resources.
+ - members to earn points to compensate themselves for the work contained within a download.
+
+This is covered in the [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads tutorial[/page].
+
 [title="3"]The real world[/title]
 
 A small number of sites may wish to set up a payment system (outside of the scope of Composr, at the time of writing), to allow members to exchange points for real money, or tangible products or services. Sites that may wish to do this are likely to be sites where the earning of points has a real effect on business goals, such that real-world reimbursement may be appropriate; for example, on a site where members collaborate on art for a published catalogue.

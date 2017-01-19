@@ -1155,11 +1155,11 @@ function do_block($codename, $map = null, $ttl = null)
                         }
                         require_code('temporal');
                         $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
-                        $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0) ? get_member() : null;
+                        $member_id = (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0) ? get_member() : null;
                         $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
                         $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
                         $timezone = (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0) ? get_users_timezone(get_member()) : '';
-                        put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true);
+                        put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member_id, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true);
                     } elseif (($ttl !== -1) && ($cache->is_empty())) { // Try again with no TTL, if we currently failed but did impose a TTL
                         $LANGS_REQUESTED += $backup_langs_requested;
                         $REQUIRED_ALL_LANG = $backup_required_all_lang;
@@ -1227,11 +1227,11 @@ function do_block($codename, $map = null, $ttl = null)
                 require_code('caches2');
                 require_code('temporal');
                 $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
-                $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0) ? get_member() : null;
+                $member_id = (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0) ? get_member() : null;
                 $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
                 $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
                 $timezone = (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0) ? get_users_timezone(get_member()) : '';
-                put_into_cache($codename, $info['ttl'], $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), $GLOBALS['OUTPUT_STREAMING'] ? array() : array_keys($JAVASCRIPTS), $GLOBALS['OUTPUT_STREAMING'] ? array() : array_keys($CSSS), true);
+                put_into_cache($codename, $info['ttl'], $cache_identifier, $staff_status, $member_id, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), $GLOBALS['OUTPUT_STREAMING'] ? array() : array_keys($JAVASCRIPTS), $GLOBALS['OUTPUT_STREAMING'] ? array() : array_keys($CSSS), true);
             }
         }
     }

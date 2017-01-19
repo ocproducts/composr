@@ -18,6 +18,32 @@
  * @package    ecommerce
  */
 
+/*
+systems/ecommerce hooks are structured like this...
+
+config                                      (optional, for hooks with configurable products within admin_ecommerce module)
+save_config                                 (optional, for hooks with configurable products within admin_ecommerce module)
+get_product_category                        (optional, used if multiple products are in the hook and they want grouping on the purchasing wizard)
+get_products                                (required)
+is_available                                (optional but advisable)
+get_available_quantity                      (only for cart items)
+get_message                                 (optional but advisable)
+get_product_details_for_cart                (only for cart items)
+add_to_cart                                 (only for cart items)
+show_cart_entry                             (only for cart items)
+calculate_tax                               (only for cart items)
+calculate_shipping_cost                     (only for cart items)
+get_catalogue_template_parameters           (only for catalogue items)
+get_terms                                   (optional)
+get_needed_fields                           (optional)
+get_identifier_manual_field_inputter        (optional)
+handle_needed_fields                        (optional)
+actualiser                                  (required if automatic actualisation will be a feature)
+reduce_stock                                (only for cart items)
+member_for                                  (required if point payment is supported, except for invoices and subscriptions)
+get_product_dispatch_type                   (only for cart items)
+*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -30,7 +56,7 @@ function init__ecommerce()
         define('PRODUCT_INVOICE', 1);
         define('PRODUCT_SUBSCRIPTION', 2);
         define('PRODUCT_OTHER', 3);
-        define('PRODUCT_CATALOGUE', 4);
+        define('PRODUCT_CATALOGUE', 4); // used only with the cart
         define('PRODUCT_ORDERS', 5);
 
         define('ECOMMERCE_PRODUCT_AVAILABLE', 0);
@@ -44,6 +70,55 @@ function init__ecommerce()
     }
 
     require_lang('ecommerce');
+}
+
+/**
+ * Find the next step for the purchasing module.
+ *
+ * @param object $product_object The product object.
+ * @param ID_TEXT $type_code The product type.
+ * @param ID_TEXT $step_before The step prior to the next step.
+ * @return ID_TEXT The next step.
+ */
+function get_next_purchase_step($product_object, $type_code, $step_before)
+{
+    if ($step_before == 'browse') {
+        $message = method_exists($product_object, 'get_message') ? $product_object->get_message($type_code) : null;
+        $has_message = ($message !== null);
+
+        if (($has_message) && (get_param_integer('include_message', 0) == 0))
+            return 'message';
+        } else {
+            $step_before = 'message'; // Let it roll on
+        }
+    }
+    if ($step_before == 'message') {
+        $terms = method_exists($product_object, 'get_terms') ? $product_object->get_terms($type_code) : '';
+        $has_terms = ($terms != '');
+
+        if ($has_terms)
+            return 'terms';
+        } else {
+            $step_before = 'terms'; // Let it roll on
+        }
+    }
+    if ($step_before == 'terms') {
+        list($fields) = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : array(null);
+        $has_details = ($fields !== null);
+
+        if ($has_details)
+            return 'details';
+        } else {
+            $step_before = 'details'; // Let it roll on
+        }
+    }
+    if ($step_before == 'details') {
+        return 'pay';
+    }
+    if ($step_before == 'pay') {
+        return 'finish';
+    }
+    return null;
 }
 
 /**
@@ -255,54 +330,14 @@ function find_all_products($site_lang = false)
 }
 
 /**
- * Find product.
- *
- * @param  ID_TEXT $search The item name/product codename
- * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
- * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
- * @return ?object The product-class object (null: not found).
- */
-function find_product($search, $site_lang = false, $search_item_names = false)
-{
-    $_hooks = find_all_hooks('systems', 'ecommerce');
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($product_object === null) {
-            continue;
-        }
-
-        $_products = $product_object->get_products($site_lang, $search, $search_item_names);
-
-        $type_code = mixed();
-        foreach ($_products as $type_code => $product_row) {
-            if (is_integer($type_code)) {
-                $type_code = strval($type_code);
-            }
-
-            if ($search_item_names) {
-                if (($product_row['item_name'] == $search) || ('_' . $type_code == $search)) {
-                    return $product_object;
-                }
-            } else {
-                if ($type_code == $search) {
-                    return $product_object;
-                }
-            }
-        }
-    }
-    return null;
-}
-
-/**
- * Find product info row.
+ * Find product info row and other details.
  *
  * @param  ID_TEXT $search The product codename/item name
- * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
- * @return array A pair: The product-class map, and the product codename (both will be null if not found).
+ * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
+ * @return array A triple: The product info row, the product codename, the product object (all will be null if not found).
  */
-function find_product_row($search, $site_lang = false, $search_item_names = false)
+function find_product_details($search, $search_item_names = false, $site_lang = false)
 {
     $_hooks = find_all_hooks('systems', 'ecommerce');
     foreach (array_keys($_hooks) as $hook) {
@@ -315,23 +350,23 @@ function find_product_row($search, $site_lang = false, $search_item_names = fals
         $_products = $product_object->get_products($site_lang, $search, $search_item_names);
 
         $type_code = mixed();
-        foreach ($_products as $type_code => $product_row) {
+        foreach ($_products as $type_code => $details) {
             if (is_integer($type_code)) {
                 $type_code = strval($type_code);
             }
 
             if ($search_item_names) {
-                if (($product_row['item_name'] == $search) || ('_' . $type_code == $search)) {
-                    return array($product_row, $type_code);
+                if (($details['item_name'] == $search) || ('_' . $type_code == $search)) {
+                    return array($details, $type_code, $product_object);
                 }
             } else {
                 if ($type_code == $search) {
-                    return array($product_row, $type_code);
+                    return array($details, $type_code, $product_object);
                 }
             }
         }
     }
-    return array(null, null);
+    return array(null, null, null);
 }
 
 /**
@@ -792,7 +827,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         $item_name = '_' . $type_code;
 
         // Find what we sold
-        list($found,) = find_product_row($type_code, true, false);
+        list($found, , $product_object) = find_product_details($type_code, false, true);
         if ($found !== null) {
             $item_name = $found['item_name'];
         }
@@ -807,7 +842,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
     } else {
         // Find what we sold
-        list($found, $type_code) = find_product_row($item_name, true, true);
+        list($found, $type_code, $product_object) = find_product_details($item_name, true, true);
 
         if ($found['type'] == PRODUCT_SUBSCRIPTION) {
             exit(); // We ignore separate payment signal for subscriptions (for Paypal it is web_accept)
@@ -818,33 +853,49 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     }
 
     // Find which member did the transaction, if any
-    if ($found['member_finder'] !== null) {
-        $member_id = call_user_func_array($found['member_finder'], array($purchase_id, $found, $type_code, $payment_status, $txn_id));
+    $member_id = null;
+    if (method_exists($product_object, 'member_for')) {
+        $member_id = $product_object->member_for($type_code, $purchase_id);
         if ($member_id == $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
             $member_id = null;
         }
-    } else {
-        $member_id = null;
+    }
+    if ($member_id === null) {
+        if ($found['type'] == PRODUCT_SUBSCRIPTION) {
+            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
+        }
+        elseif ($found['type'] == PRODUCT_INVOICE) {
+            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_member_id', array('id' => intval($purchase_id)));
+        }
     }
 
-    // Check price, if one defined
-    if (($found['price'] !== null) && (floatval($mc_gross) != floatval($found['price']))) {
+    // Invoice: Check price
+    if ($found['type'] == PRODUCT_INVOICE) {
+        $price = $GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'i_amount', array('id' => intval($purchase_id)));
+        if ($price != $mc_gross) {
+            if ($payment_gateway != 'manual') {
+                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $price));
+            }
+        }
+    }
+
+    // Check price, if one defined (non-invoices)
+    if (($found['type'] != PRODUCT_INVOICE) && (($found['price'] === null) || (floatval($mc_gross) != floatval($found['price'])))) {
         $given_discount = false;
 
         // Consider points as a discount
         if ($member_id !== null) {
-            $discounted_price = get_discounted_price($found, false, $member_id);
+            list($discounted_price, $points_for_discount) = get_discounted_price($found, false, $member_id);
             if (($discounted_price !== null) && (floatval($mc_gross) == $discounted_price)) {
                 require_code('points2');
-                require_lang('ecommerce');
-                charge_member($member_id, $found['discount_points__num_points'], do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
+                charge_member($member_id, $points_for_discount, do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
                 $given_discount = true;
             }
         }
 
         if (!$given_discount) {
             if (($payment_status == 'Completed') && ($payment_gateway != 'manual')) {
-                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $found['price']), $is_subscription);
+                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, ($found['price'] === null) ? do_lang('NA') : $found['price']), $is_subscription);
             }
         }
     }
@@ -871,37 +922,27 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         't_payment_gateway' => $payment_gateway,
     ));
 
-    $found['txn_id'] = $txn_id;
+    // Add in extra details to $found, so actualisers can track things better
+    $found['TXN_ID'] = $txn_id;
+    $found['PAYMENT_STATUS'] = $payment_status;
 
-    // Pending
+    // Pending: We do some book-keeping then stop
     if ($payment_status == 'Pending') {
+        $found['ORDER_STATUS'] = 'ORDER_STATUS_awaiting_payment';
+
         if ($found['type'] == PRODUCT_INVOICE) { // Invoices have special support for tracking the order status
             $GLOBALS['SITE_DB']->query_update('ecom_invoices', array('i_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
         } elseif ($found['type'] == PRODUCT_SUBSCRIPTION) { // Subscriptions have special support for tracking the order status
             $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_state' => 'pending'), array('id' => intval($purchase_id)), '', 1);
-            if ($found['actualiser'] !== null) {
-                call_user_func_array($found['actualiser'], array($purchase_id, $found, $type_code, true)); // Run cancel code
-            }
-        } elseif ($item_name == do_lang('shopping:CART_ORDER', $purchase_id)) { // Cart orders have special support for tracking the order status
-            $found['ORDER_STATUS'] = 'ORDER_STATUS_awaiting_payment';
+        }
 
-            if ($found['actualiser'] !== null) {
-                call_user_func_array($found['actualiser'], array($purchase_id, $found, $type_code, $payment_status, $txn_id)); // Set order status
-            }
+        // Call actualiser code
+        if (method_exists($found, 'actualiser')) {
+            $product_object->actualiser($type_code, $purchase_id, $found);
         }
 
         // Pending transactions stop here
         fatal_ipn_exit(do_lang('TRANSACTION_NOT_COMPLETE', $type_code . ':' . strval($purchase_id), $payment_status), true);
-    }
-
-    // Invoice: Check price
-    if ($found['type'] == PRODUCT_INVOICE) {
-        $price = $GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'i_amount', array('id' => intval($purchase_id)));
-        if ($price != $mc_gross) {
-            if ($payment_gateway != 'manual') {
-                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $price));
-            }
-        }
     }
 
     /*
@@ -931,44 +972,42 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Set order dispatch status
     if ($payment_status == 'Completed') {
-        $product_object = find_product($type_code, true);
-
-        if ((is_object($product_object)) && (!method_exists($product_object, 'get_product_dispatch_type'))) { // If hook does not have dispatch method setting take dispatch method as automatic
+        if (!method_exists($product_object, 'get_product_dispatch_type')) { // If hook does not have dispatch method setting take dispatch method as automatic
             $found['ORDER_STATUS'] = 'ORDER_STATUS_dispatched';
-        } elseif (is_object($product_object) && $product_object->get_product_dispatch_type($purchase_id) == 'automatic') {
+        } elseif ($product_object->get_product_dispatch_type($purchase_id) == 'automatic') {
             $found['ORDER_STATUS'] = 'ORDER_STATUS_dispatched';
         } else {
             $found['ORDER_STATUS'] = 'ORDER_STATUS_payment_received'; // Dispatch has to happen manually still
         }
     }
 
-    // Dispatch (all product types)
-    if ($payment_status != 'SModified') {
-        // Call completion/cancellation code
-        if ($found['actualiser'] !== null) {
-            call_user_func_array($found['actualiser'], array($purchase_id, $found, $type_code, $payment_status, $txn_id));
-        }
+    // Call actualiser code
+    if (method_exists($found, 'actualiser')) {
+        $product_object->actualiser($type_code, $purchase_id, $found);
+    }
 
-        // Send out notification to staff for completion/cancellation
-        if ($found['type'] == PRODUCT_SUBSCRIPTION) {
-            require_code('notifications');
-            if ($member_id !== null) {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-                if ($username === null) {
-                    $username = do_lang('GUEST');
-                }
-                if ($payment_status == 'Completed') { // Completed
-                    $subject = do_lang('SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
-                    $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
-                    dispatch_notification('service_paid_for_staff', null, $subject, $body);
-                } else { // Must be SCancelled
-                    $subject = do_lang('SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
-                    $body = do_notification_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
-                    dispatch_notification('service_cancelled_staff', null, $subject, $body);
-                }
+    // Subscription: Send out notification to staff for completion/cancellation
+    if (($found['type'] == PRODUCT_SUBSCRIPTION) && ($payment_status != 'SModified')) {
+        require_code('notifications');
+        if ($member_id !== null) {
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            if ($username === null) {
+                $username = do_lang('GUEST');
+            }
+            if ($payment_status == 'Completed') { // Completed
+                $subject = do_lang('SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
+                $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
+                dispatch_notification('service_paid_for_staff', null, $subject, $body);
+            } else { // Must be SCancelled
+                $subject = do_lang('SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
+                $body = do_notification_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
+                dispatch_notification('service_cancelled_staff', null, $subject, $body);
             }
         }
     }
+
+    // Cleanup very old data
+    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'ecom_sales_expecting WHERE e_time<' . strval(time() - 60 * 60 * 24 * 90);
 
     return array($type_code, $member_id);
 }
@@ -990,32 +1029,52 @@ function fatal_ipn_exit($error, $dont_trigger = false)
 }
 
 /**
- * Find the discounted price for a product.
+ * Find the 'discounted' price for a product (check the return values carefully).
  *
  * @param  array $details Product details.
  * @param  boolean $consider_free Consider the potential for a 0.0 price by paying entirely with points.
  * @param  ?MEMBER $member_id The member who this is for (null: current member).
- * @return ?float Discounted price (null: no discount)
+ * @return array A triple Discounted price as a float (null is no discount), Points required to get discount (null is no discount), Whether this is a discount
  */
 function get_discounted_price($details, $consider_free = false, $member_id = null)
 {
+    if ((!addon_installed('points')) || (is_guest())) {
+        return array(
+            null,
+            null,
+            false
+        );
+    }
+
     if ($member_id === null) {
         $member_id = get_member();
     }
 
-    if (($consider_free) && ($found['price_points'] !== null)) {
+    if (($consider_free) && ($details['price_points'] !== null)) {
         require_code('points');
-        if (available_points($member) >= $found['price_points']) {
-            return 0.0;
+        if ((available_points($member_id) >= $details['price_points']) || ($details['price'] === null/*has to be points as no monetary-price*/)) {
+            return array(
+                0.0,
+                $details['discount_points__num_points'],
+                false
+            );
         }
     }
 
-    if ($found['discount_points__num_points'] !== null) {
+    if (($details['discount_points__num_points'] !== null) && ($details['discount_points__price_reduction'] !== null) && ($details['price'] !== null)) {
         require_code('points');
-        if (available_points($member) >= $found['discount_points__num_points']) {
-            return max(0.0, floatval($details['price']) - floatval($details['discount_points__price_reduction']));
+        if (available_points($member_id) >= $details['discount_points__num_points']) {
+            return array(
+                max(0.0, floatval($details['price']) - floatval($details['discount_points__price_reduction'])),
+                $details['discount_points__num_points'],
+                true
+            );
         }
     }
 
-    return null;
+    return array(
+        null,
+        null,
+        false
+    );
 }

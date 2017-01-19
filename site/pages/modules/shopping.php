@@ -465,7 +465,7 @@ class Module_shopping
             set_session_id(get_session_id(), true); // Persist guest sessions longer
         }
 
-        $product_details = get_product_details();
+        $product_details = get_product_details_for_cart();
 
         add_to_cart($product_details);
 
@@ -493,7 +493,7 @@ class Module_shopping
             foreach ($pids as $pid) {
                 $qty = post_param_integer('quantity_' . $pid);
 
-                $product_object = find_product($pid);
+                list(, , $product_object) = find_product_details($pid);
 
                 $remove = post_param_integer('remove_' . $pid, 0);
 
@@ -597,7 +597,7 @@ class Module_shopping
         $redirect = get_param_string('redirect', null);
 
         if ($redirect === null) {
-            $product_object = find_product('cart_orders');
+            list(, , $product_object) = find_product_details('cart_orders');
             if (method_exists($product_object, 'get_finish_url')) {
                 $redirect = $product_object->get_finish_url('cart_orders', $message);
             }

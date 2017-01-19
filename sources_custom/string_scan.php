@@ -2937,7 +2937,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_ticket_text
         CONFIG_OPTION_ticket_type_forums
         CONFIG_OPTION_topic_pin
-        CONFIG_OPTION_topic_pin_max_days
         CONFIG_OPTION_tornevall_api_password
         CONFIG_OPTION_tornevall_api_username
         CONFIG_OPTION_transcoding_server
@@ -9580,7 +9579,7 @@ function string_scan($lang, $do_guessing = false)
         _CALENDAR_EVENT_VCAL
         _CALENDAR_SPECIFIC
         _CALENDAR_SPECIFIC_WEEK
-        _CANT_AFFORD
+        CANT_AFFORD
         _CATEGORISE_PTS
         _CHATROOM
         _COLLABORATION

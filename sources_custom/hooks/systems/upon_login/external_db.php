@@ -23,14 +23,14 @@ class Hook_upon_login_external_db
      *
      * @param  boolean $new_attempt Whether it is a new login attempt.
      * @param  string $username Username.
-     * @param  ?MEMBER $member Member ID of already-confirmed login.
+     * @param  ?MEMBER $member_id Member ID of already-confirmed login.
      */
-    public function run($new_attempt, $username, $member)
+    public function run($new_attempt, $username, $member_id)
     {
         if (!$new_attempt) {
             return; // We don't try and bind to a third-party login if we're dealing with re-establishing an existing Composr session
         }
-        if (is_null($member) || is_guest($member)) {
+        if (is_null($member_id) || is_guest($member_id)) {
             return; // No login to speak of
         }
 
@@ -69,7 +69,7 @@ class Hook_upon_login_external_db
         }
         $records = $db->query($query);
         if (isset($records[0])) {
-            external_db_user_sync($member, $records[0]);
+            external_db_user_sync($member_id, $records[0]);
         }
     }
 }

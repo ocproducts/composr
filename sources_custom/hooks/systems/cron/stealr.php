@@ -52,7 +52,7 @@ class Hook_cron_stealr
         $stealr_group = (isset($stealr_group) && strlen($stealr_group) > 0) ? $stealr_group : 'Member';
 
         // start determining the various cases
-        if ($stealr_type == "Members that are inactive, but has lots points") {
+        if ($stealr_type == 'Members that are inactive, but has lots points') {
             $all_members = $GLOBALS['FORUM_DRIVER']->get_top_posters(1000);
             $points = array();
             foreach ($all_members as $member) {
@@ -110,7 +110,7 @@ class Hook_cron_stealr
                     send_pt_notification($post_id, $subject, $topic_id, $GLOBALS['FORUM_DRIVER']->mrow_id($member), $give_to_member);
                 }
             }
-        } elseif ($stealr_type == "Members that are rich") {
+        } elseif ($stealr_type == 'Members that are rich') {
             $all_members = $GLOBALS['FORUM_DRIVER']->get_top_posters(100);
             $points = array();
             foreach ($all_members as $member) {
@@ -154,11 +154,11 @@ class Hook_cron_stealr
 
                     $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, 0, null, true, true, true);
 
-                    send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member);
-                    send_pt_notification($post_id, $subject, $topic_id, $member, $give_to_member);
+                    send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member_id);
+                    send_pt_notification($post_id, $subject, $topic_id, $member_id, $give_to_member);
                 }
             }
-        } elseif ($stealr_type == "Members that are random") {
+        } elseif ($stealr_type == 'Members that are random') {
             $random_members = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE  id <> ' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' ORDER BY RAND( ) ', $stealr_number, null, true);
 
             $stealr_number = (count($random_members) > $stealr_number) ? $stealr_number : count($random_members);
@@ -189,11 +189,11 @@ class Hook_cron_stealr
 
                     $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, 0, null, true, true, true);
 
-                    send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member);
-                    send_pt_notification($post_id, $subject, $topic_id, $member, $give_to_member);
+                    send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member['id']);
+                    send_pt_notification($post_id, $subject, $topic_id, $member['id'], $give_to_member);
                 }
             }
-        } elseif ($stealr_type == "Members that are in a certain usergroup") {
+        } elseif ($stealr_type == 'Members that are in a certain usergroup') {
             $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
 
             $group_id = 0;

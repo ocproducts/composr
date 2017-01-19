@@ -345,23 +345,23 @@ class TapatalkPush extends TapatalkBasePush
     /**
      * Find member type.
      *
-     * @param  MEMBER $member Member ID
+     * @param  MEMBER $member_id Member ID
      * @return string User type
      */
-    private function check_return_user_type($member)
+    private function check_return_user_type($member_id)
     {
-        if ($GLOBALS['FORUM_DRIVER']->is_banned($member)) {
+        if ($GLOBALS['FORUM_DRIVER']->is_banned($member_id)) {
             $user_type = 'banned';
-        } elseif ($GLOBALS['FORUM_DRIVER']->is_super_admin($member)) {
+        } elseif ($GLOBALS['FORUM_DRIVER']->is_super_admin($member_id)) {
             $user_type = 'admin';
-        } elseif ($GLOBALS['FORUM_DRIVER']->is_staff($member)) {
+        } elseif ($GLOBALS['FORUM_DRIVER']->is_staff($member_id)) {
             $user_type = 'mod';
         }
-        //else if($GLOBALS['FORUM_DRIVER']->get_member_row_field($member,'m_validated')==0)
+        //else if($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id,'m_validated')==0)
         //{
         //    $user_type = 'unapproved';
         //}
-        //else if($GLOBALS['FORUM_DRIVER']->get_member_row_field($member,'m_validated_email_confirm_code')!='')
+        //else if($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id,'m_validated_email_confirm_code')!='')
         //{
         //    $user_type = 'inactive';
         //}

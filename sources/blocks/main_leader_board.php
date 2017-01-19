@@ -109,19 +109,19 @@ class Block_main_leader_board
         }
         $has_rank_images = (get_forum_type() == 'cns') && ($GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups WHERE ' . $or_list . ' AND ' . db_string_not_equal_to('g_rank_image', '')) != 0);
 
-        foreach ($rows as $member => $points) {
-            $points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member), get_module_zone('points'));
+        foreach ($rows as $member_id => $points) {
+            $points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points'));
 
-            $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true, true);
+            $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true);
 
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
             if (is_null($username)) {
                 continue; // Deleted member now
             }
 
             $out->attach(do_template('POINTS_LEADER_BOARD_ROW', array(
                 '_GUID' => '68caa55091aade84bc7ca760e6655a45',
-                'ID' => strval($member),
+                'ID' => strval($member_id),
                 'POINTS_URL' => $points_url,
                 'PROFILE_URL' => $profile_url,
                 'POINTS' => integer_format($points),

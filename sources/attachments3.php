@@ -53,10 +53,10 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
 
     _check_attachment_count();
 
-    $member = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
+    $member_id = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
 
     if ((is_null($for_member)) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member) === null)) {
-        $for_member = $member;
+        $for_member = $member_id;
     }
 
     /*
@@ -65,14 +65,14 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
     This is necessary as editing admin's content shouldn't let you write content with admin's privileges, even if you have privilege to edit their content
      - yet also, if the source_user is changed, when admin edits it has to change back again.
     */
-    if (((cms_admirecookie('use_wysiwyg', '1') == '0') && (get_value('edit_with_my_comcode_perms') === '1')) || (!has_privilege($member, 'allow_html')) || (!has_privilege($member, 'use_very_dangerous_comcode'))) {
-        $source_user = $member;
+    if (((cms_admirecookie('use_wysiwyg', '1') == '0') && (get_value('edit_with_my_comcode_perms') === '1')) || (!has_privilege($member_id, 'allow_html')) || (!has_privilege($member_id, 'use_very_dangerous_comcode'))) {
+        $source_user = $member_id;
     } else {
         $source_user = $for_member; // Reset to latest submitter for main record
     }
 
     $_info = do_comcode_attachments($text, $type, $id, false, $connection, null, $source_user);
-    $text_parsed = ''; //Actually we'll let it regenerate with the correct permissions ($member, not $for_member) $_info['tempcode']->to_assembly();
+    $text_parsed = ''; //Actually we'll let it regenerate with the correct permissions ($member_id, not $for_member) $_info['tempcode']->to_assembly();
 
     if (multi_lang_content()) {
         $remap = array(

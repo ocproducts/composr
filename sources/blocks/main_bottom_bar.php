@@ -76,21 +76,21 @@ class Block_main_bottom_bar
         $num_guests = 0;
         if (!is_null($members)) {
             foreach ($members as $bits) {
-                $member = $bits['member_id'];
+                $member_id = $bits['member_id'];
                 $username = $bits['cache_username'];
 
-                if ($member == $GLOBALS['CNS_DRIVER']->get_guest_id()) {
+                if ($member_id == $GLOBALS['CNS_DRIVER']->get_guest_id()) {
                     $num_guests++;
                     continue;
                 }
                 if (is_null($username)) {
                     continue;
                 }
-                $url = $GLOBALS['CNS_DRIVER']->member_profile_url($member, false, true);
+                $url = $GLOBALS['CNS_DRIVER']->member_profile_url($member_id, false, true);
                 if (!array_key_exists('m_primary_group', $bits)) {
-                    $bits['m_primary_group'] = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_primary_group');
+                    $bits['m_primary_group'] = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
                 }
-                $pgid = $bits['m_primary_group'];//$GLOBALS['FORUM_DRIVER']->get_member_row_field($member,'m_primary_group');
+                $pgid = $bits['m_primary_group'];//$GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id,'m_primary_group');
                 if (is_null($pgid)) {
                     continue; // Deleted member
                 }

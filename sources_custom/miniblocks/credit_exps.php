@@ -28,7 +28,7 @@ require_code('ecommerce');
 require_code('hooks/systems/ecommerce/support_credits');
 
 $ob = new Hook_ecommerce_support_credits();
-$products = $ob->get_products();
+$products = $ob->get_products(false, null, false, get_member());
 
 $credit_kinds = array();
 foreach ($products as $p => $v) {

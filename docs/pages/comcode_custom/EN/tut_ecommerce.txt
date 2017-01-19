@@ -144,7 +144,17 @@ To prevent purchases being made by real people that you don't receive real money
 For PayPal test mode goes through the [url="PayPal sandbox"]https://developer.paypal.com/[/url]. Sign up on the sandbox (this is your test account for making the sale), log in, and create a test user (this is your test account for purchasing).
 Be advised that we have found the PayPal sandbox to be buggy. If your tests fail with errors like "The link you have used to enter the PayPal system is invalid. Please review the link and try again." then you may be experiencing bugs in the PayPal sandbox. By all means, please complain to PayPal about it -- we have run tests and found the sandbox fails midway through purchases on configurations that work correctly for live payments.
 
-[title="2"]Products[/title]
+[title="2"]Monetary system[/title]
+
+[title="3"]Currencies[/title]
+
+The currency the website works in is defined in the configuration. If you use PayPal you need to make sure your account can accept this currency and is not set up to allow people to choose which currency to pay in (as it stops Composr being able to verify the payment if they use this feature).
+
+[title="3"]Points verses cash[/title]
+
+Many of the products allow configurability over whether they are sold for money or for points, or some combination (a discount via using points). Gambling is only available via points.
+
+[title="2"]Products overview[/title]
 
 [media width="150" description="The eCommerce layering in Composr for usergroup subscriptions" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_layer.png[/media]
 Composr has an abstract system of 'products' that may be 'purchased'. These Composr products are not the same as products that are available from shopping-cart systems, but rather, special types of purchasable product or service that have their own code to handle their purchase.
@@ -153,7 +163,7 @@ In Composr by default there are the following 'kinds' of 'product':
  - [b]usergroup subscription[/b]: you may configure as many usergroup subscriptions as you wish, and these are all handled by the 'Usergroup' product kind. Each configured subscription is considered a 'product' for sale on your site.
  - [b]catalogue items[/b]: these are items for sale from the shopping catalogue
  - [b]orders[/b]: these products are a collection of other products bound into a group, and generated when someone finalises an order from the shopping cart
- - [b]e-mail addresses[/b]: these are e-mail addresses on your domain that you'd set up manually after they are purchased (may be bought as [i]pop3[/i] or [i]forwarders[/i]). Quota upgrades for pop3 accounts may be purchased.
+ - [b]e-mail addresses[/b]: these are e-mail addresses on your domain that you'd set up manually after they are purchased (may be purchased as [i]pop3[/i] or [i]forwarders[/i]). Quota upgrades for pop3 accounts may be purchased.
  - [b]topic pinning[/b]: pinning of requested topics on the forum
  - [b]name highlighting[/b]: highlighting of a member's name on the forum
  - [b]banners[/b]: banner advertisements, and upgrades.
@@ -169,98 +179,29 @@ When a member buys something, the staff are informed of it via e-mail of appropr
 [media width="150" description="Configuring prices" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products_prices.png[/media]
 [media width="150" description="The shop-front" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products.png[/media]
 Product kinds fit into the following general categories:
- - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the [tt]invoices[/tt] module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
+ - [b]One-off purchase[/b]: purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: e-mail addresses, topic pinning, name highlighting, banners, custom products, permission products, gambling)
  - [b]Subscription[/b]: one-off purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) and managed from the [tt]subscriptions[/tt] module ([tt]site:subscriptions[/tt] page-link, linked from member accounts) (above: usergroup subscriptions)
  - [b]Shopping cart[/b]: an item purchased from the [tt]catalogue[/tt]/[tt]shopping[/tt] modules ([tt]site:catalogues[/tt]/[tt]site:shopping[/tt] page-links, Content > Products and Content > Shopping Cart, on the default menus) (above: catalogue items)
- - [b]One-off purchase[/b]: purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: e-mail addresses, topic pinning, name highlighting, banners, custom products, permission products, gambling)
+ - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the [tt]invoices[/tt] module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
  - [b]Other[/b] (above: interest, tax, wage, other)
 
-[box="For programmers" width="25em" float="right"]
-In the code these are defined via a [tt]PRODUCT_*[/tt] constant from the [tt]ecommerce[/tt] code file.
-[/box]
 While the abstraction of this may be confusing, it is very beneficial as all kinds of automatically handled products may be programmed to integrate with Composr functionality.
 For example, a programmer could create the following with relative ease:
  - a product that increases the number of available hits on banners
  - a product that sends out an e-mail to a dispatch warehouse instructing them to mail out a copy of a bands latest album to the address specified in the member profile of the purchaser.
-Most useful kinds of purchase can, however, be achieved with the default usergroup product: a usergroup for which membership can be bought could be given additional permissions that reflect access to features or areas of the website that would not otherwise be available. This is how most websites will use the eCommerce system because it is simple, effective, works well with PayPal, and does not require programmers to implement.
+Most useful kinds of purchase can, however, be achieved with the default usergroup product: a usergroup for which membership can be purchased could be given additional permissions that reflect access to features or areas of the website that would not otherwise be available. This is how most websites will use the eCommerce system because it is simple, effective, works well with PayPal, and does not require programmers to implement.
+
+[title="2"]Purchasing module products[/title]
 
 Inventory management is at:
 Admin Zone > Setup > eCommerce inventory management
 Use this to set up those products which users can have multiple of (e-mail accounts, custom products, permission products).
 
-There is a module in the Admin Zone for sales list management at:
-Admin Zone > Audit > eCommerce sales list management
-The module should be used to cancel purchases, such as an e-mail address bought up a user that is no longer valid. Cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user).
-
-[title="3"]Points verses cash[/title]
-
-Many of the products allow configurability over whether they are sold for money or for points, or some combination. Gambling is only available via points.
-
-[title="3"]In more detail[/title]
-
-The eCommerce system has a central transactional framework. Each type of product is sold by putting through transactions that have three key things that correspond to that product:
-1) product name (a codename, not intended for humans to read)
-2) product ID
-3) amount
-Any transaction that goes through is matched to a product that will then verify the payment and dispatch the sale. The product is matched via the product name -- i.e. the product name in the transaction matches the name of a product for sale. The product will usually see if the amount is correct for that product, and it will use the ID to find how to dispatch the sale. For example, on our old site (when Composr was commercial software) the 'lifetime registration' product stores the site-ID in this, and thus when the transaction went through it knew what site has been registered and could go and then send out the key etc.
-
-[title="4"]Actual code (for programmers)[/title]
-
-This is an abbreviated line of code from within the [tt]get_products[/tt] method defining a product in [tt]sources/hooks/systems/ecommerce/usergroup.php[/tt]:
-[code="PHP"]
-$products['USERGROUP' . strval($sub['id'])] = array(PRODUCT_SUBSCRIPTION, $sub['s_cost'], 'handle_usergroup_subscription', array(...), $item_name);
-[/code]
-
-The 'product name' would be [tt]USERGROUP<id>[/tt]. You can see how we have created a separate product for each different kind of usergroup subscription.
-
-The 'product ID' is actually specified via the [tt]set_needed_fields[/tt] function for most product hooks. In the case of usergroup subscriptions there is no [tt]set_needed_fields[/tt] method because the ID of a row in the [tt]subscriptions[/tt] table will be used in this case (subscriptions are a little different). i.e. it provides the information needed to link the purchased product back to a member's actual subscription record. Actually, the 'product ID' is always a string, so it has gone through the PHP [tt]strval[/tt] function, and gets converted back via the PHP [tt]intval[/tt] function.
-
-You will see we essentially have two kinds of ID here. There's an ID embedded into the product name, and the 'product ID'. Typically we generate different product names when the prices will be different in each case, while the 'product ID' typically is either the purchaser's member ID or is the ID of another table that defines the specifics about the member's customised purchase. So in this case the different configured usergroup subscriptions in Composr have different prices, so are different products -- but the ID of the actual purchased subscription is not price-determining. It is possible you won't have both -- for example, the 'product name' may fully distinguish the purchase -- in this case you probably should just use the purchaser's member ID as the 'product ID'.
-
-Custom product hooks that are selling many individually priced items related to a specific user will often have a [tt]get_products[/tt] function that lists a large number of items. There is a mechanism for [tt]get_products[/tt] to only list products matching a specific 'product name' / product title, for performance reasons. If you have 1000s of products (or more) and are linking to purchase from custom code then you should return no products unless a filter is requested, and then use that filter to determine what products to show.
-
-Composr basically flows like follows:
-1) User goes to the [tt]purchase[/tt] module in Composr, and selects a product. Alternatively some custom code or link may bypass this step and direct them deep into the [tt]purchase[/tt] module, i.e. to a known product.
-2) Product message is shown, if the hook defines a [tt]get_message[/tt] method.
-3) Product agreement is shown that the user must agree to, if the hook defines a [tt]get_agreement[/tt] method.
-4) User details what 'product ID' they are purchasing. This happens by them filling out a form determined by the product hook's [tt]get_needed_fields[/tt] method. Actually for manual transactions in the Admin Zone there may be a [tt]get_identifier_manual_field_inputter[/tt] method too, because admin's typically need more control when putting through a manual purchase. [tt]get_needed_fields[/tt] does not have to be defined in a hook, so this step is optional too.
-5) A 'product ID' is generated via the hooks [tt]set_needed_fields[/tt] method. If there was a [tt]get_needed_fields[/tt] method then this typically works by taking the form input from the previous step and saving it, and getting an ID. However sometimes hooks may just generate an ID via some other known mechanism, or will just return the purchaser's member ID. It very much depends on the necessary purchasing process for the particular kind of product.
-6) An availability check is performed, if the hook defines a [tt]is_available[/tt] function. This can do things such as stock checks, sanity checks, and permission checks. It returns one of a number of possible [tt]ECOMMERCE_PRODUCT_*[/tt] values, [tt]ECOMMERCE_PRODUCT_AVAILABLE[/tt] if purchase may happen.
-6) The user is directed to go pay off-site
-7) An IPN (i.e. background message) is sent back to Composr when the payment has happened, and/or when the user clicks to return back to Composr.
-8) Composr interprets the IPN to get back the 'product name' and 'purchase ID'. This is very hook-dependent. For PayPal it will look at the human item-name, find the matching 'product name' (i.e. codename), and it will already know the 'product ID'. For WorldPay and possibly other payment gateways it will have to look up a specific transaction in the [tt]trans_expecting[/tt] table that Composr used to track the purchase, because WorldPay doesn't route through full information as PayPal does.
-9) Composr looks in all the product hooks to find a matching defined product, checks the price, then dispatches a call to the specified handler function for that product (e.g. [tt]handle_usergroup_subscription[/tt]).
-10) The handler function then does what is necessary to make the purchase happen. For a usergroup subscription this means putting the purchasing member into the appropriate usergroup.
-
-Subscriptions and invoices have some custom handling. Subscriptions can also end, so they are separately tracked with life-time details, and there are cancellation signals that are also fed through. Each separate invoice is not given a separate product even though each has a separate price, as it would get potentially too out-of-hand, so the handling of invoice price checking is hard-coded. Invoice products could actually be taken advantage of for this -- you could generate custom invoices for particular purchasable items, if very large quantities of potentially differently-priced items are involved.
-
-[title="3"]Manual transactions[/title]
-
-Normally a transaction would go through via PayPal/etc. i.e. Composr sends a user off to PayPal, and then PayPal calls back saying the transaction has happened.
-
-However, we've designed it to be modular. In Composr another method of doing a transaction is the 'manual transaction'. The manual transaction form just allows you to simulate a transaction from the Admin Zone; the idea is that you've received a cheque (or SMS payment, or whatever) and are manually telling Composr about it so that Composr can dispatch the sale. To perform a manual transaction you need to:
-1) access the manual transaction screen (Admin Zone > Audit > eCommerce > Manual transaction).
-2) select the right product
-3) enter the correct ID number that the product will use to dispatch for this sale
-4) enter the sale amount that the product expects to be receiving (which you can leave blank for it to work this out itself).
-
-[title="2"]Handling refunds[/title]
-
-Refunds are not handled within Composr.
-
-[b]For monetary payments[/b]:
-Refunds should be done on the payment gateway.
-
-[b]For point payments[/b]:
-Refunds must manually be given through the points system.
-
-[title="2"]Purchasing module[/title]
-
 [title="3"]Banners[/title]
 
-While by default any member may submit a banner, the implication is that an eCommerce-bought banner would not have to serve the staff's interests so much as a banner they decided to validate for free.
+While by default any member may submit a banner, the implication is that an eCommerce-purchased banner would not have to serve the staff's interests so much as a banner they decided to validate for free.
 
-All banners bought are added to the 'General' banner type.
+All banners purchased are added to the 'General' banner type.
 
 [title="3"]Topic pinning[/title]
 
@@ -326,7 +267,7 @@ On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. Th
 [title="3"]Permission products[/title]
 
 [media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_permissions.png[/media]
-Staff can set up what permissions may be bought, how long they last for, and how much they cost.
+Staff can set up what permissions may be purchased, how long they last for, and how much they cost.
 
 This is done via the inventory management screen at:
 Admin Zone > Setup > eCommerce inventory management
@@ -355,6 +296,10 @@ You will set &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
 
 Normally &ldquo;The category&rdquo; will be a numeric ID.
 
+This said, when you add or edit a category you can automatically set up the permission product on the normal form.
+
+Categories that a user does not have permission to will not be linked. So to promote sale of access to those categories you may want to either direct users directly into the Purchasing module, or link to the sale pages from the description of the parent download category.
+
 [title="3"]Custom products[/title]
 
 [media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_custom.png[/media]
@@ -381,7 +326,7 @@ For the community billboard to display, you must place the symbol code, [tt]{$CO
 [media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/tut_ecommerce/points_community_billboard_actual.png[/media]
 [/surround]
 
-[title="2"]Subscriptions[/title]
+[title="2"]Subscription products[/title]
 
 [surround]
 [media width="150" description="Adding a capability for a usergroup subscription" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_subscription.png[/media]
@@ -412,7 +357,7 @@ Note that for some payment gateways you need to be mindful about how subscriptio
 Be very careful when deleting users because subscriptions will be left hanging when you do and would need to be manually cleaned up.
 [/surround]
 
-[title="2"]Invoices[/title]
+[title="2"]Invoice products[/title]
 
 [surround]
 [media width="150" description="Invoicing a member" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_invoice.png[/media]
@@ -424,7 +369,7 @@ Staff may quickly locate unpaid invoices and invoices for which the work has not
 Admin Zone > Audit > eCommerce > Invoices
 [/surround]
 
-[title="2"]Shopping catalogue[/title]
+[title="2"]Shopping catalogue products[/title]
 
 The Composr shopping catalogue works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]). You can access this catalogue for modifications, and adding products to, from Content Management > Products.
 
@@ -442,7 +387,7 @@ This catalogue has some hard-coded fields:
  - [b]Stock level warning point[/b] -- the point at which you should be e-mailed if the stock level reaches
  - [b]Whether stock is being maintained[/b] -- whether you want stock control (as above)
  - [b]Tax rate[/b] -- the tax rate, a percentage chosen from a list (you may edit the catalogue to change what is shown in the list)
- - [b]Weight[/b] -- the items weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight ("Shipping cost factor")
+ - [b]Weight[/b] -- the item's weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight ("Shipping cost factor")
  - [b]Description[/b] -- a description for the item
 
 By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
@@ -510,11 +455,27 @@ Some custom profile fields are pre-installed to allow members to set their shipp
 You can find and edit the fields from:
 Admin Zone > Tools > Members > Custom Profile Fields > Edit Custom Profile Field
 
-[title="2"]Currencies[/title]
+[title="2"]Auditing[/title]
 
-The currency the website works in is defined in the configuration. If you use PayPal you need to make sure your account can accept this currency and is not set up to allow people to choose which currency to pay in (as it stops Composr being able to verify the payment if they use this feature).
+[title="3"]Handling refunds[/title]
 
-[title="2"]Charts[/title]
+There is a module in the Admin Zone for sales list management at:
+Admin Zone > Audit > eCommerce sales list management
+The module should be used to cancel purchases, such as an e-mail address purchased up a user that is no longer valid. Cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user).
+
+You may also want to cancel whatever the purchase automatically did. This is not done automatically for you (&dagger;). For example, if a user bought name highlighting you can edit their account to un-highlight their name.
+
+Cancelling does not automatically provide a refund.
+
+[b]For monetary payments[/b]:
+Refunds should be done on the payment gateway.
+
+[b]For point payments[/b]:
+Refunds must manually be given through the points system.
+
+&dagger; Usergroup subscriptions can be cancelled from the subscriptions page, or from some payment gateways. Usergroup memberships automatically are removed when a subscription is terminated.
+
+[title="3"]Charts[/title]
 
 [surround]
 [media width="150" description="A profit/loss account for a fresh install" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_pl.png[/media]
@@ -528,21 +489,29 @@ Composr can generate the following charts over a custom specified period:
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
 The developers do not accept any responsibility for the financial accounts of users of the Composr eCommerce system. Accountancy features are provided as an aid only and are not guaranteed to perform to match any legislative, tax, or accountancy conventions.
 [/box]
-[/surround][title="2"]Logs[/title]
+[/surround][title="3"]Logs[/title]
 
 Transaction logs can be viewed from:
 Admin Zone > Audit > eCommerce > Logs
 
-[title="2"]Payment system[/title]
+[title="2"]Payment gateways: advanced[/title]
+
+[title="3"]Manual transactions[/title]
 
 [surround]
 [media width="150" description="Inputting a manual transaction" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_manual.png[/media]
-While Composr supports manual transactions to be entered. This is possible in the Admin Zone module. Entering a manual transaction will trigger any code associated with the purchase of a product (such as a usergroup promotion).
+Normally a transaction would go through via PayPal/etc. i.e. Composr sends a user off to PayPal, and then PayPal calls back saying the transaction has happened.
+
+However, we've designed it to be modular. In Composr another method of doing a transaction is the 'manual transaction'. The manual transaction form just allows you to simulate a transaction from the Admin Zone; the idea is that you've received a cheque (or SMS payment, or whatever) and are manually telling Composr about it so that Composr can dispatch the sale. To perform a manual transaction you need to:
+1) access the manual transaction screen (Admin Zone > Audit > eCommerce > Manual transaction).
+2) select the right product
+3) enter the correct ID number that the product will use to dispatch for this sale
+4) enter the sale amount that the product expects to be receiving (which you can leave blank for it to work this out itself).
 
 Manual transactions may also be used to input transactions that are totally external to Composr, and thus otherwise immeasurable by the charting. For example, an organisations expenditure may be recorded by manually inputting a negative transaction for the special 'Other' product.
 [/surround]
 
-[title="2"]Local payments[/title]
+[title="3"]Local payments[/title]
 
 Composr supports taking in payments 'locally' (i.e. not redirecting to a third-party site to take the payment). Not all the payment gateways within Composr allow local payments though, either due to the gateways not supporting it or just because it has not yet been implemented. At the time of writing the SecPay and Authorize.Net gateways support it.
 

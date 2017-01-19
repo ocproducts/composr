@@ -2007,7 +2007,7 @@ function log_stats($string, $pg_time)
     $page = $string;
     $ip = get_ip_address();
     $session_id = get_session_id();
-    $member = get_member();
+    $member_id = get_member();
     $time = time();
     $referer = cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255);
     $browser = cms_mb_substr(get_browser_string(), 0, 255);
@@ -2027,7 +2027,7 @@ function log_stats($string, $pg_time)
         'the_page' => $page,
         'ip' => $ip,
         'session_id' => $session_id,
-        'member_id' => $member,
+        'member_id' => $member_id,
         'date_and_time' => $time,
         'referer' => $referer,
         's_get' => $get,

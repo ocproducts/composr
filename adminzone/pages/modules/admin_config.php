@@ -661,8 +661,8 @@ class Module_admin_config
                 $staff = $GLOBALS['FORUM_DRIVER']->member_group_query($admin_groups, 100);
                 if (count($staff) < 100) {
                     foreach ($staff as $row_staff) {
-                        $member = $GLOBALS['FORUM_DRIVER']->mrow_id($row_staff);
-                        if ($GLOBALS['FORUM_DRIVER']->is_staff($member)) {
+                        $member_id = $GLOBALS['FORUM_DRIVER']->mrow_id($row_staff);
+                        if ($GLOBALS['FORUM_DRIVER']->is_staff($member_id)) {
                             $sites = get_cms_cpf('sites');
                             $sites = str_replace(', ' . get_site_name(), '', $sites);
                             $sites = str_replace(',' . get_site_name(), '', $sites);
@@ -673,7 +673,7 @@ class Module_admin_config
                                 $sites .= ', ';
                             }
                             $sites .= $new_site_name;
-                            $GLOBALS['FORUM_DRIVER']->set_custom_field($member, 'sites', $sites);
+                            $GLOBALS['FORUM_DRIVER']->set_custom_field($member_id, 'sites', $sites);
                         }
                     }
                 }

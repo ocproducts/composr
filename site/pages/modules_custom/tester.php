@@ -492,9 +492,9 @@ class Module_tester
         $members = $GLOBALS['FORUM_DRIVER']->member_group_query($groups, 2000);
 
         $list = form_input_list_entry('-1', is_null($it), do_lang_tempcode('NA_EM'));
-        foreach ($members as $member => $details) {
+        foreach ($members as $member_id => $details) {
             $username = $GLOBALS['FORUM_DRIVER']->mrow_username($details);
-            $list->attach(form_input_list_entry(strval($member), $member == $it, $username));
+            $list->attach(form_input_list_entry(strval($member_id), $member_id == $it, $username));
         }
 
         return $list;

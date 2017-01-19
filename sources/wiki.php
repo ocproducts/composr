@@ -129,17 +129,17 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
  * @param  AUTO_LINK $page_id The page ID
  * @param  string $message The new post
  * @param  BINARY $validated Whether the post will be validated
- * @param  ?MEMBER $member The member doing the action (null: current member)
+ * @param  ?MEMBER $member_id The member doing the action (null: current member)
  * @param  boolean $send_notification Whether to send out a notification out
  * @param  ?TIME $add_time The add time (null: now)
  * @param  integer $views The number of views so far
  * @param  ?TIME $edit_date The edit time (null: N/A)
  * @return AUTO_LINK The post ID
  */
-function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send_notification = true, $add_time = null, $views = 0, $edit_date = null)
+function wiki_add_post($page_id, $message, $validated = 1, $member_id = null, $send_notification = true, $add_time = null, $views = 0, $edit_date = null)
 {
-    if (is_null($member)) {
-        $member = get_member();
+    if (is_null($member_id)) {
+        $member_id = get_member();
     }
     if (is_null($add_time)) {
         $add_time = time();
@@ -157,7 +157,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
     }
     $map = array(
         'validated' => $validated,
-        'member_id' => $member,
+        'member_id' => $member_id,
         'date_and_time' => $add_time,
         'page_id' => $page_id,
         'wiki_views' => $views,
@@ -181,9 +181,9 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
     // Update post count
     if ((addon_installed('points')) && (cms_mb_strlen($message) > 1024)) {
         require_code('points');
-        $_count = point_info($member);
+        $_count = point_info($member_id);
         $count = array_key_exists('points_gained_wiki', $_count) ? $_count['points_gained_wiki'] : 0;
-        $GLOBALS['FORUM_DRIVER']->set_custom_field($member, 'points_gained_wiki', $count + 1);
+        $GLOBALS['FORUM_DRIVER']->set_custom_field($member_id, 'points_gained_wiki', $count + 1);
     }
 
     // Stat
@@ -215,14 +215,14 @@ function wiki_add_post($page_id, $message, $validated = 1, $member = null, $send
  * @param  AUTO_LINK $post_id The post ID
  * @param  string $message The new post
  * @param  BINARY $validated Whether the post will be validated
- * @param  ?MEMBER $member The member doing the action (null: current member)
+ * @param  ?MEMBER $member_id The member doing the action (null: current member)
  * @param  ?AUTO_LINK $page_id The page ID (null: do not change)
  * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Number of views (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id = null, $edit_time = null, $add_time = null, $views = null, $null_is_literal = false)
+function wiki_edit_post($post_id, $message, $validated, $member_id = null, $page_id = null, $edit_time = null, $add_time = null, $views = null, $null_is_literal = false)
 {
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
@@ -282,8 +282,8 @@ function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id
     if (!is_null($views)) {
         $update_map['wiki_views'] = $views;
     }
-    if (!is_null($member)) {
-        $update_map['member_id'] = $member;
+    if (!is_null($member_id)) {
+        $update_map['member_id'] = $member_id;
     }
 
     $GLOBALS['SITE_DB']->query_update('wiki_posts', $update_map, array('id' => $post_id), '', 1);
@@ -306,12 +306,12 @@ function wiki_edit_post($post_id, $message, $validated, $member = null, $page_id
  * Delete a Wiki+ post
  *
  * @param  AUTO_LINK $post_id The post ID
- * @param  ?MEMBER $member The member doing the action (null: current member)
+ * @param  ?MEMBER $member_id The member doing the action (null: current member)
  */
-function wiki_delete_post($post_id, $member = null)
+function wiki_delete_post($post_id, $member_id = null)
 {
-    if (is_null($member)) {
-        $member = get_member();
+    if (is_null($member_id)) {
+        $member_id = get_member();
     }
 
     $rows = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), array('id' => $post_id), '', 1);
@@ -366,7 +366,7 @@ function wiki_delete_post($post_id, $member = null)
  * @param  LONG_TEXT $description The page description
  * @param  LONG_TEXT $notes Hidden notes pertaining to the page
  * @param  BINARY $hide_posts Whether to hide the posts on the page by default
- * @param  ?MEMBER $member The member doing the action (null: current member)
+ * @param  ?MEMBER $member_id The member doing the action (null: current member)
  * @param  ?TIME $add_time The add time (null: now)
  * @param  integer $views The number of views so far
  * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (null: do not edit) (blank: implicit)
@@ -375,10 +375,10 @@ function wiki_delete_post($post_id, $member = null)
  * @param  boolean $send_notification Whether to send a notification
  * @return AUTO_LINK The page ID
  */
-function wiki_add_page($title, $description, $notes, $hide_posts, $member = null, $add_time = null, $views = 0, $meta_keywords = '', $meta_description = '', $edit_date = null, $send_notification = true)
+function wiki_add_page($title, $description, $notes, $hide_posts, $member_id = null, $add_time = null, $views = 0, $meta_keywords = '', $meta_description = '', $edit_date = null, $send_notification = true)
 {
-    if (is_null($member)) {
-        $member = get_member();
+    if (is_null($member_id)) {
+        $member_id = get_member();
     }
     if (is_null($add_time)) {
         $add_time = time();
@@ -390,15 +390,15 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
     // Update post count
     if ((addon_installed('points')) && (cms_mb_strlen($description) > 1024)) {
         require_code('points');
-        $_count = point_info($member);
+        $_count = point_info($member_id);
         $count = array_key_exists('points_gained_wiki', $_count) ? $_count['points_gained_wiki'] : 0;
-        $GLOBALS['FORUM_DRIVER']->set_custom_field($member, 'points_gained_wiki', $count + 1);
+        $GLOBALS['FORUM_DRIVER']->set_custom_field($member_id, 'points_gained_wiki', $count + 1);
     }
 
     $map = array(
         'hide_posts' => $hide_posts,
         'notes' => $notes,
-        'submitter' => $member,
+        'submitter' => $member_id,
         'wiki_views' => $views,
         'add_date' => time(),
         'edit_date' => $edit_date,
@@ -415,7 +415,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
         $page_id = $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map, true);
 
         require_code('attachments2');
-        $GLOBALS['SITE_DB']->query_update('wiki_pages', insert_lang_comcode_attachments('description', 2, $description, 'wiki_page', strval($page_id), null, false, $member), array('id' => $page_id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('wiki_pages', insert_lang_comcode_attachments('description', 2, $description, 'wiki_page', strval($page_id), null, false, $member_id), array('id' => $page_id), '', 1);
     } else {
         $map = insert_lang_comcode('description', $description, 2) + $map;
         $page_id = $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map, true);
@@ -459,13 +459,13 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
  * @param  BINARY $hide_posts Whether to hide the posts on the page by default
  * @param  SHORT_TEXT $meta_keywords Meta keywords
  * @param  LONG_TEXT $meta_description Meta description
- * @param  ?MEMBER $member The member doing the action (null: current member)
+ * @param  ?MEMBER $member_id The member doing the action (null: current member)
  * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?integer $views Views (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $meta_keywords, $meta_description, $member = null, $edit_time = null, $add_time = null, $views = null, $null_is_literal = false)
+function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $meta_keywords, $meta_description, $member_id = null, $edit_time = null, $add_time = null, $views = null, $null_is_literal = false)
 {
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
@@ -507,17 +507,17 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
     if (!is_null($views)) {
         $update_map['wiki_views'] = $views;
     }
-    if (!is_null($member)) {
-        $update_map['submitter'] = $member;
+    if (!is_null($member_id)) {
+        $update_map['submitter'] = $member_id;
     } else {
-        $member = $page['submitter'];
+        $member_id = $page['submitter'];
     }
 
     require_code('attachments2');
     require_code('attachments3');
 
     $update_map += lang_remap('title', $_title, $title);
-    $update_map += update_lang_comcode_attachments('description', $_description, $description, 'wiki_page', strval($page_id), null, $member);
+    $update_map += update_lang_comcode_attachments('description', $_description, $description, 'wiki_page', strval($page_id), null, $member_id);
 
     $GLOBALS['SITE_DB']->query_update('wiki_pages', $update_map, array('id' => $page_id), '', 1);
 
