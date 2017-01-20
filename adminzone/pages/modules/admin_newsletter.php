@@ -617,7 +617,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         // Show subscribers
-        $levels = is_null($level) ? (($id == '-1' || substr($id, 0, 1) == 'g') ? array(4) : ((get_option('interest_levels') == '1') ? array(1, 2, 3, 4) : array(4))) : array($level);
+        $levels = is_null($level) ? (($id == '-1' || substr($id, 0, 1) == 'g') ? array(1) : ((get_option('interest_levels') == '1') ? array(1, 2, 3, 4) : array(4))) : array($level);
         $outs = array();
         foreach ($levels as $level) {
             $max = get_param_integer('max_' . (is_null($level) ? '' : strval($level)), 100);
@@ -717,10 +717,28 @@ class Module_admin_newsletter extends Standard_crud_module
         $domains = array();
         $start = 0;
         do {
-            if (strpos(get_db_type(), 'mysql') !== false) {
-                $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email', 'COUNT(*) as cnt'), null, 'GROUP BY SUBSTRING_INDEX(email,\'@\',-1)'); // Far less PHP processing
+            if (substr($id, 0, 1) == 'g') {
+                if (strpos(get_db_type(), 'mysql') !== false) {
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails' => 1, 'm_primary_group' => intval(substr($id, 1))), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
+                } else {
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails' => 1, 'm_primary_group' => intval(substr($id, 1))), '', 500, $start);
+                }
+            } elseif ($id == '-1') {
+                if (strpos(get_db_type(), 'mysql') !== false) {
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails' => 1), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
+                } else {
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails' => 1), '', 500, $start);
+                }
             } else {
-                $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email'), null, '', 500, $start);
+                $where = array('newsletter_id' => $id, 'code_confirm' => 0);
+                if (get_option('interest_levels') == '1') {
+                    $where['the_level'] = $level;
+                }
+                if (strpos(get_db_type(), 'mysql') !== false) {
+                    $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers x ON s.email=x.email', array('DISTINCT s.email', 'COUNT(*) as cnt'), $where, 'GROUP BY SUBSTRING_INDEX(s.email,\'@\',-1)'); // Far less PHP processing
+                } else {
+                    $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers x ON s.email=x.email', array('DISTINCT s.email'), $where, '', 500, $start);
+                }
             }
             foreach ($rows as $row) {
                 $email = $row['email'];

@@ -66,6 +66,7 @@ class Database_Static_mysqli extends Database_super_mysql
             return array($this->cache_db[$x], $db_name);
         }
         $db = @mysqli_connect(($persistent ? 'p:' : '') . $db_host, $db_user, $db_password);
+        $myfile = fopen(get_file_base() . '/open_log.log', 'at'); fwrite($myfile, date('Y/m/d H:i:s') . ' - ' . $_SERVER['REQUEST_URI'] . " - mysqli_connect\n"); fclose($myfile); // TODO
 
         if ($db === false) {
             $error = 'Could not connect to database-server (when authenticating) (' . mysqli_connect_error() . ')';

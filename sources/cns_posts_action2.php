@@ -193,7 +193,7 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
     require_code('notifications');
 
     $subject = do_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL_SUBJECT' : 'POST_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $topic_title, array($sender_displayname, $sender_username));
-    $mail = do_notification_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, ((is_guest($sender_member_id)) && ($poster_name_if_guest !== null)) ? $poster_name_if_guest : strval($sender_member_id), comcode_escape($sender_username), strval($sender_member_id)));
+    $mail = do_notification_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, ((is_guest($sender_member_id)) && ($poster_name !== null)) ? $poster_name : strval($sender_member_id), comcode_escape($sender_username), strval($sender_member_id)));
 
     $limit_to = is_null($_limit_to) ? array() : array($_limit_to);
 
