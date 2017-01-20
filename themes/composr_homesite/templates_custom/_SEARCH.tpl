@@ -26,6 +26,10 @@
 			get_elements_by_class_name(cse_form,'gsc-search-box')[0].action='{$SELF_URL;}';
 			get_elements_by_class_name(cse_form,'gsc-search-box')[0].method='post';
 			get_elements_by_class_name(cse_form,'gsc-search-box')[0].innerHTML+='{$INSERT_SPAMMER_BLACKHOLE;^/}';
+			get_elements_by_class_name(cse_form,'gsc-search-box')[0].onkeypress=function(event) {
+				if (enter_pressed(event))
+					get_elements_by_class_name(cse_form,'gsc-search-box')[0].submit();
+			};
 			get_elements_by_class_name(cse_form,'gsc-search-button')[0].onclick=function() {
 				get_elements_by_class_name(cse_form,'gsc-search-box')[0].submit();
 			};
