@@ -142,7 +142,14 @@ class Hook_task_import_newsletter_subscribers
                     if ($join_time === false) {
                         $join_time = time();
                     }
-                    $level = ((!is_null($level_index)) && (array_key_exists($level_index, $csv_line))) ? intval($csv_line[$level_index]) : $_level;
+                    if ($_level == 0) {
+                        $level = 0;
+                    } else {
+                        $level = ((!is_null($level_index)) && (array_key_exists($level_index, $csv_line))) ? intval($csv_line[$level_index]) : $_level;
+                        if ($level == 0) {
+                            $level = $_level;
+                        }
+                    }
 
                     if ($newsletter_id == -1) {
                         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email));
@@ -182,7 +189,14 @@ class Hook_task_import_newsletter_subscribers
                             'newsletter_id' => $newsletter_id,
                             'email' => $email,
                         ), '', 1);
-                        if ($level != 0) { // Allow deletion CSV via setting subscription level to 0. So we only reinsert if NOT deletion.
+                        if ($level == 0) { // Allow deletion CSV via setting subscription level to 0
+                            $cnt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribe', 'COUNT(*)', array('email' => $email));
+                            if ($cnt == 0) { // No newsletters for them now, so remove entirely
+                                $GLOBALS['SITE_DB']->query_delete('newsletter_subscribers', array(
+                                    'email' => $email,
+                                ), '', 1);
+                            }
+                        } else { // We only reinsert if NOT deletion.
                             $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array(
                                 'newsletter_id' => $newsletter_id,
                                 'the_level' => $level,

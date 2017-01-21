@@ -57,6 +57,7 @@ admin zone	admincp	admin panel	control panel
 collaboration_zone	groupware
 actionlog	audit
 atom	rss	feed	syndication
+ical	icalendar
 login	logon	log-in	log-on
 display	render	view
 gallery	album	galleries	podcast	multimedia

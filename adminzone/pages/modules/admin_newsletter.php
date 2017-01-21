@@ -277,7 +277,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Select newsletter and attach CSV
         if (is_null($newsletter_id)) {
-            $default_newsletter_id = get_param_integer('id', null);
+            $default_newsletter_id = get_param_integer('id', db_get_first_id());
             $default_level = get_param_integer('level', 4);
 
             $fields = new Tempcode();
@@ -299,7 +299,7 @@ class Module_admin_newsletter extends Standard_crud_module
             if (count($rows) == 0) {
                 $hidden->attach(form_input_hidden('id', '-1'));
             } else {
-                $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
+                $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters, null, true));
             }
             $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD_CSV_2'), 'file', true, null, null, true, 'csv,txt'));
             // Choose level
@@ -407,7 +407,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         $fields = new Tempcode();
-        $fields->attach(form_input_list(do_lang_tempcode('DIRECTORY'), new Tempcode(), 'box', $folders));
+        $fields->attach(form_input_list(do_lang_tempcode('DIRECTORY'), new Tempcode(), 'box', $folders, null, true));
 
         $submit_name = do_lang_tempcode('PROCEED');
         $post_url = get_self_url();
@@ -554,8 +554,8 @@ class Module_admin_newsletter extends Standard_crud_module
             // Selection
             $newsletters = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('id', 'title'));
-            foreach ($rows as $newsletter) {
-                $newsletters->attach(form_input_list_entry(strval($newsletter['id']), false, get_translated_text($newsletter['title'])));
+            foreach ($rows as $i => $newsletter) {
+                $newsletters->attach(form_input_list_entry(strval($newsletter['id']), $i == 0, get_translated_text($newsletter['title'])));
             }
             if (get_forum_type() == 'cns') {
                 $newsletters->attach(form_input_list_entry('-1', false, do_lang_tempcode('NEWSLETTER_CNS')));
@@ -575,7 +575,7 @@ class Module_admin_newsletter extends Standard_crud_module
             if ($newsletters->is_empty()) {
                 inform_exit(do_lang_tempcode('NO_CATEGORIES'));
             }
-            $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
+            $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters, null, true));
 
             // CSV option
             $fields->attach(form_input_tick(do_lang_tempcode('DOWNLOAD_AS_CSV'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_AS_CSV'), 'csv', false));
