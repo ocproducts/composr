@@ -75,7 +75,14 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
         // If the directory is missing
         if (!is_dir(dirname($path))) {
             require_code('files2');
-            make_missing_directory(dirname($path));
+            if ((($flags & FILE_WRITE_FAILURE_SOFT) != 0) && (($flags & FILE_WRITE_FAILURE_HARD) != 0)) {
+                make_missing_directory(dirname($path));
+            } else {
+                $test = @make_missing_directory(dirname($path));
+                if ($test === false) {
+                    return false;
+                }
+            }
         }
     }
 
@@ -91,7 +98,11 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
         }
         if ($disk_space !== false) {
             if ($disk_space < $num_bytes_to_write) {
-                $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+                if (function_exists('do_lang_tempcode')) {
+                    $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+                } else {
+                    $error_message = 'Could not save file ' . htmlentities($path);
+                }
                 return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
             }
         }
@@ -117,7 +128,11 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
             @unlink($path);
         }
 
-        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        if (function_exists('do_lang_tempcode')) {
+            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        } else {
+            $error_message = 'Could not save file ' . htmlentities($path);
+        }
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
 
@@ -128,7 +143,11 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
             return cms_file_put_contents_safe($path, $contents, $flags, $retry_depth + 1);
         }
 
-        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        if (function_exists('do_lang_tempcode')) {
+            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        } else {
+            $error_message = 'Could not save file ' . htmlentities($path);
+        }
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
 
