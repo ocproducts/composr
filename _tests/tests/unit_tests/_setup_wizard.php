@@ -85,8 +85,7 @@ class _setup_wizard_test_set extends cms_test_case
             'tick_on_form__site_closed' => '0',
             'require__site_closed' => '0',
             'label_for__closed' => 'Message',
-            'closed' => 'This site is currently closed because it is still being created.',
-            'The webmaster(s) will open it up when they are ready.',
+            'closed' => 'This site is currently closed because it is still being created. The webmaster(s) will open it up when they are ready.',
             'pre_f_closed' => '1',
             'require__closed' => '0',
         );

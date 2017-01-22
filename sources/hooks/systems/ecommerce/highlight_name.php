@@ -92,13 +92,13 @@ class Hook_ecommerce_highlight_name
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
@@ -116,7 +116,7 @@ class Hook_ecommerce_highlight_name
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         return intval($purchase_id);
     }

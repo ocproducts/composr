@@ -23,7 +23,7 @@ class Hook_ecommerce_classifieds
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         require_lang('classifieds');
 
@@ -153,7 +153,7 @@ class Hook_ecommerce_classifieds
      * Get the filled in fields and do something with them.
      *
      * @param  ID_TEXT $type_code The product codename.
-     * @return array A pair: The purchase ID, a confirmation box to show (null: no specific confirmation).
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
     public function handle_needed_fields($type_code)
     {
@@ -184,19 +184,21 @@ class Hook_ecommerce_classifieds
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
         $classified_type_id = intval(preg_replace('#^CLASSIFIEDS\_ADVERT\_#', '', $type_code));
 
         $entry_id = intval($purchase_id);
+
+        $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_submitter', array('id' => $entry_id));
 
         $days = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_classifieds_prices', 'c_days', array('id' => $classified_type_id));
 
@@ -222,7 +224,7 @@ class Hook_ecommerce_classifieds
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         $entry_id = intval($purchase_id);
         return $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_submitter', array('id' => $entry_id));

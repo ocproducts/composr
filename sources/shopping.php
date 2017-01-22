@@ -301,7 +301,7 @@ function render_cart_payment_form()
         if (method_exists($product_object, 'handle_needed_fields')) {
             list($purchase_id) = $product_object->handle_needed_fields($type_code);
         } else {
-            list($purchase_id) = strval(get_member());
+            $purchase_id = strval(get_member());
         }
 
         $length = null;

@@ -28,7 +28,7 @@ class Hook_ecommerce_giftr
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         if (!$GLOBALS['SITE_DB']->table_exists('giftr')) {
             return null;
@@ -71,7 +71,7 @@ class Hook_ecommerce_giftr
 
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('giftr', 'COUNT(*)', $map);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('giftr g', array('*', '(SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'members_gifts m WHERE m.gift_id=g.id) AS popularity'), $map, 'ORDER BY popularity DESC', $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('giftr g', array('*', '(SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'members_gifts m WHERE m.gift_id=g.id) AS popularity'), $map, 'ORDER BY popularity DESC');
         $gifts = array();
         foreach ($rows as $gift) {
             $image_url = '';
@@ -79,7 +79,7 @@ class Hook_ecommerce_giftr
                 $image_url = get_custom_base_url() . '/' . $gift['image'];
             }
 
-            $products['GIFTR_' . strval($gift['id'])] => array(
+            $products['GIFTR_' . strval($gift['id'])] = array(
                 'item_name' => $gift['name'],
                 'item_description' => do_lang_tempcode('GIFT_DESCRIPTION', escape_html($gift['category']), escape_html(integer_format($gift['popularity'])), escape_html($gift['name'])),
                 'item_image_url' => $image_url,
@@ -144,7 +144,7 @@ class Hook_ecommerce_giftr
      * Get the filled in fields and do something with them.
      *
      * @param  ID_TEXT $type_code The product codename.
-     * @return array A pair: The purchase ID, a confirmation box to show (null: no specific confirmation).
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
     public function handle_needed_fields($type_code)
     {
@@ -152,8 +152,8 @@ class Hook_ecommerce_giftr
         $gift_message = post_param_string('gift_message', '');
         $anonymous = post_param_integer('anonymous', 0);
 
-        $details = json_encode(array(get_member(), $to_member, $gift_message, $anonymous));
-        $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $details, 'e_time' => time()), true));
+        $e_details = json_encode(array(get_member(), $to_member, $gift_message, $anonymous));
+        $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $e_details, 'e_time' => time()), true));
 
         return array($purchase_id, null);
     }
@@ -161,13 +161,13 @@ class Hook_ecommerce_giftr
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
@@ -175,8 +175,8 @@ class Hook_ecommerce_giftr
 
         $gift_id = intval(preg_replace('#^GIFTR\_#', '', $type_code));
 
-        $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-        list($from_member_id, $to_member, $gift_message, $anonymous) = json_decode($details);
+        $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+        list($from_member_id, $to_member, $gift_message, $anonymous) = json_decode($e_details);
 
         $member_rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), array('m_username' => $to_member), '', 1);
         if (array_key_exists(0, $member_rows)) {
@@ -190,7 +190,7 @@ class Hook_ecommerce_giftr
                 $gift_image_url = get_custom_base_url() . '/' . $gift_row['image'];
                 $gift_row_id = $GLOBALS['SITE_DB']->query_insert('members_gifts', array('to_member_id' => $to_member_id, 'from_member_id' => $from_member_id, 'gift_id' => $gift_id, 'add_time' => time(), 'is_anonymous' => $anonymous, 'gift_message' => $gift_message), true);
 
-                $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $gift_name, 'details2' => $GLOBALS['FORUM_DRIVER']->get_username($to_member_id), 'transaction_id' => $details['TXN_ID']));
+                $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $from_member_id, 'details' => $gift_name, 'details2' => $GLOBALS['FORUM_DRIVER']->get_username($to_member_id), 'transaction_id' => $details['TXN_ID']));
 
                 // Send notification
                 require_code('notifications');
@@ -224,10 +224,10 @@ class Hook_ecommerce_giftr
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
-        $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-        list($from_member_id) = json_decode($details);
+        $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+        list($from_member_id) = json_decode($e_details);
         return $from_member_id;
     }
 }

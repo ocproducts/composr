@@ -157,7 +157,7 @@ class Hook_ecommerce_email
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         require_lang('ecommerce');
 
@@ -230,7 +230,7 @@ class Hook_ecommerce_email
 
         // It's slightly naughty for us to use get_member(), but it's only for something going into item_description so safe
         $current_amount = $initial_quota;
-        $quota_increase_rows = $GLOBALS['SITE_DB']->query_select('ecom_sales', array('details2'), array('member_id' => get_member(), 'details' => do_lang('QUOTA')), true);
+        $quota_increase_rows = $GLOBALS['SITE_DB']->query_select('ecom_sales', array('details2'), array('member_id' => get_member(), 'details' => do_lang('QUOTA')));
         foreach ($quota_increase_rows as $quota_increase_row) {
             $current_amount += intval($quota_increase_row['details2']);
         }
@@ -276,7 +276,7 @@ class Hook_ecommerce_email
             return ECOMMERCE_PRODUCT_NO_GUESTS;
         }
 
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#\_.*$#', '', $type_code)) {
             case 'FORWARDING':
                 if (get_option('is_on_forw_buy') == '1') {
                     return ECOMMERCE_PRODUCT_DISABLED;
@@ -330,14 +330,18 @@ class Hook_ecommerce_email
 
         require_code('form_templates');
 
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        $member_id = get_member();
+
+        switch (preg_replace('#\_.*$#', '', $type_code)) {
             case 'FORWARDING':
+                $domain = preg_replace('#^.*\_#', '', $type_code);
                 $fields->attach(form_input_line(do_lang_tempcode('ADDRESS_DESIRED_STUB'), do_lang_tempcode('DESCRIPTION_ADDRESS_DESIRED_STUB', escape_html($domain)), 'email_prefix', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), true));
                 $fields->attach(form_input_line(do_lang_tempcode('ADDRESS_CURRENT'), '', 'email', $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), true));
 
                 $javascript = null;
 
             case 'POP3':
+                $domain = preg_replace('#^.*\_#', '', $type_code);
                 $fields->attach(form_input_line(do_lang_tempcode('ADDRESS_DESIRED_STUB'), do_lang_tempcode('DESCRIPTION_ADDRESS_DESIRED_STUB', escape_html($domain)), 'email_prefix', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), true));
                 $fields->attach(form_input_password(do_lang_tempcode('PASSWORD'), '', 'pass1', true));
                 $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'pass2', true));
@@ -372,7 +376,7 @@ class Hook_ecommerce_email
      * Get the filled in fields and do something with them.
      *
      * @param  ID_TEXT $type_code The product codename.
-     * @return array A pair: The purchase ID, a confirmation box to show (null: no specific confirmation).
+     * @return array A pair: The purchase ID, a confirmation box to show (null no specific confirmation).
      */
     public function handle_needed_fields($type_code)
     {
@@ -380,7 +384,7 @@ class Hook_ecommerce_email
 
         $member_id = get_member();
 
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#\_.*$#', '', $type_code)) {
             case 'FORWARDING':
                 $suffix = preg_replace('#^FORWARDING\_#', '', $type_code);
 
@@ -395,12 +399,12 @@ class Hook_ecommerce_email
 
                 // Is the email for things to be forwarded to valid?
                 if (!is_email_address($email)) {
-                    return warn_screen($title, do_lang_tempcode('INVALID_EMAIL_ADDRESS'));
+                    warn_exit(do_lang_tempcode('INVALID_EMAIL_ADDRESS'));
                 }
 
                 $this->_ecom_product_handle_error_taken($prefix, $suffix);
 
-                $details = json_encode(array($member_id, $email, $prefix));
+                $e_details = json_encode(array($member_id, $email, $prefix));
 
                 break;
 
@@ -418,20 +422,20 @@ class Hook_ecommerce_email
                 // Does the prefix contain valid characters?
                 require_code('type_sanitisation');
                 if (!is_email_address($prefix . '@' . $suffix)) {
-                    return warn_screen($title, do_lang_tempcode('INVALID_EMAIL_PREFIX'));
+                    warn_exit(do_lang_tempcode('INVALID_EMAIL_PREFIX'));
                 }
 
                 $this->_ecom_product_handle_error_taken($prefix, $suffix);
 
-                $details = json_encode(array($member_id, $prefix, $pass1));
+                $e_details = json_encode(array($member_id, $prefix, $pass1));
 
                 break;
 
             case 'QUOTA':
-                return strval(get_member());
+                return array(strval(get_member()), null);
         }
 
-        $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $details, 'e_time' => time()), true));
+        $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $e_details, 'e_time' => time()), true));
         return array($purchase_id, null);
     }
 
@@ -456,24 +460,24 @@ class Hook_ecommerce_email
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
         require_lang('ecommerce');
 
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#\_.*$#', '', $type_code)) {
             case 'FORWARDING':
                 $suffix = preg_replace('#^FORWARDING\_#', '', $type_code);
 
-                $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-                list($member_id, $email, $prefix) = json_decode($details);
+                $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+                list($member_id, $email, $prefix) = json_decode($e_details);
 
                 $this->_ecom_product_handle_error_taken($prefix, $suffix);
 
@@ -501,8 +505,8 @@ class Hook_ecommerce_email
             case 'POP3':
                 $suffix = preg_replace('#^POP3\_#', '', $type_code);
 
-                $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-                list($member_id, $prefix, $password) = json_decode($details);
+                $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+                list($member_id, $prefix, $password) = json_decode($e_details);
 
                 $this->_ecom_product_handle_error_taken($prefix, $suffix);
 
@@ -524,7 +528,7 @@ class Hook_ecommerce_email
                     'MAIL_SERVER' => $mail_server,
                     'PASSWORD' => $password,
                     'PREFIX' => $prefix,
-                    'SUFFIX' => $_suffix,
+                    'SUFFIX' => $suffix,
                     'POP3_URL' => $pop3_url,
                 ), null, false, null, '.txt', 'text');
                 dispatch_notification('ecom_product_request_pop3', 'pop3_' . strval($sale_id), do_lang('MAIL_REQUEST_POP3', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
@@ -538,13 +542,13 @@ class Hook_ecommerce_email
             case 'QUOTA':
                 $member_id = intval($purchase_id);
 
-                $details = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('details', 'details2'), array('member_id' => $member_id, 't_type_code' => 'pop3'), '', 1);
-                if (!array_key_exists(0, $details)) {
+                $pop3_details = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('details', 'details2'), array('member_id' => $member_id, 't_type_code' => 'pop3'), '', 1);
+                if (!array_key_exists(0, $pop3_details)) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
 
-                $prefix = $details[0]['details'];
-                $suffix = $details[0]['details2'];
+                $prefix = $pop3_details[0]['details'];
+                $suffix = $pop3_details[0]['details2'];
 
                 $quota = intval(preg_replace('#^QUOTA\_#', '', $type_code));
 
@@ -577,13 +581,13 @@ class Hook_ecommerce_email
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#\_.*$#', '', $type_code)) {
             case 'FORWARDING':
             case 'POP3':
-                $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-                list($member_id) = json_decode($details);
+                $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+                list($member_id) = json_decode($e_details);
                 return $member_id;
 
             case 'QUOTA':

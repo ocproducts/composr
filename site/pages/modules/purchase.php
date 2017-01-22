@@ -286,7 +286,7 @@ class Module_purchase
                 'date_and_time' => 'TIME',
                 'member_id' => 'MEMBER',
                 'details' => 'SHORT_TEXT',
-                'details2' => 'SHORT_TEXT'
+                'details2' => 'SHORT_TEXT',
                 'transaction_id' => 'AUTO_LINK',
             ));
 
@@ -701,7 +701,8 @@ class Module_purchase
         if (method_exists($product_object, 'handle_needed_fields')) {
             list($purchase_id, $confirmation_box) = $product_object->handle_needed_fields($type_code);
         } else {
-            list($purchase_id, null) = strval(get_member());
+            $purchase_id = strval(get_member());
+            $confirmation_box = null;
         }
 
         if ($details['type'] == PRODUCT_SUBSCRIPTION) {
@@ -750,7 +751,7 @@ class Module_purchase
             if ($confirmation_box === null) {
                 if ($points_for_discount !== null) {
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_POINTS_CONFIRMATION', escape_html($item_name), escape_html(integer_format($points_for_discount)));
-                } else 
+                } else {
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_FREE_CONFIRMATION', escape_html($item_name));
                 }
             }
@@ -859,6 +860,10 @@ class Module_purchase
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
         $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
+        $member_id = get_member();
+
+        $type_code = get_param_string('type_code', null);
+
         if (get_param_integer('cancel', 0) == 1) {
             $subtype = 'cancel';
         } elseif (get_param_integer('points', 0) == 1) {
@@ -891,6 +896,9 @@ class Module_purchase
         }
 
         if ($subtype == 'points_payment') {
+            list($details, , $product_object) = find_product_details($type_code, false, true);
+            $item_name = $details['item_name'];
+
             $purchase_id = get_param_string('purchase_id');
 
             list($discounted_price, $points_for_discount) = get_discounted_price($details);
@@ -908,6 +916,7 @@ class Module_purchase
                 $memo = do_lang('FREE');
             }
 
+            $currency = get_option('currency');
             $payment_status = 'Completed';
             $reason_code = '';
             $pending_reason = '';
@@ -938,7 +947,6 @@ class Module_purchase
         $redirect = get_param_string('redirect', null);
 
         if ($redirect === null) {
-            $type_code = get_param_string('type_code');
             list(, , $product_object) = find_product_details($type_code);
             if (method_exists($product_object, 'get_finish_url')) {
                 $redirect = $product_object->get_finish_url($type_code, $message);
@@ -1027,6 +1035,7 @@ class Module_purchase
     /**
      * Check to see if the current user can afford a product.
      *
+     * @param  ID_TEXT $type_code The product code.
      * @return ?Tempcode Error screen (null: no error).
      */
     protected function _check_can_afford($type_code)

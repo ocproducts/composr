@@ -84,7 +84,7 @@ class Hook_ecommerce_work
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         $invoice_id = intval($purchase_id);
         return $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_member_id', array('id' => $invoice_id));

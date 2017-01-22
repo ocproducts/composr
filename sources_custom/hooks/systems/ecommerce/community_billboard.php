@@ -28,7 +28,7 @@ class Hook_ecommerce_community_billboard
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         require_lang('community_billboard');
 
@@ -66,7 +66,7 @@ class Hook_ecommerce_community_billboard
         $products = array();
 
         foreach (array(1, 3, 5, 10, 20, 31, 90) as $days) {
-            $products['COMMUNITY_BILLBOARD_' . strval($days)] => array(
+            $products['COMMUNITY_BILLBOARD_' . strval($days)] = array(
                 'item_name' => do_lang('COMMUNITY_BILLBOARD_MESSAGE_FOR_DAYS', integer_format($days), null, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
@@ -150,43 +150,29 @@ class Hook_ecommerce_community_billboard
      * Get the filled in fields and do something with them.
      *
      * @param  ID_TEXT $type_code The product codename.
-     * @return array A pair: The purchase ID, a confirmation box to show (null: no specific confirmation).
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
     public function handle_needed_fields($type_code)
     {
         $member_id = get_member();
         $message = post_param_string('message');
 
-        $details = json_encode(array($member_id, $message));
+        $e_details = json_encode(array($member_id, $message));
 
-        $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $details, 'e_time' => time()), true));
+        $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $e_details, 'e_time' => time()), true));
         return array($purchase_id, null);
-    }
-
-    /**
-     * Check whether the product codename is available for purchase by the member.
-     *
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  MEMBER $member_id The member we are checking against.
-     * @param  integer $req_quantity The number required.
-     * @param  boolean $must_be_listed Whether the product must be available for public listing.
-     * @return integer The availability code (a ECOMMERCE_PRODUCT_* constant).
-     */
-    public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
-    {
-        return ECOMMERCE_PRODUCT_AVAILABLE;
     }
 
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
@@ -194,8 +180,8 @@ class Hook_ecommerce_community_billboard
 
         $days = intval(preg_replace('#^COMMUNITY_BILLBOARD\_#', '', $type_code));
 
-        $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-        list($member_id, $message) = json_decode($details);
+        $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+        list($member_id, $message) = json_decode($e_details);
 
         // Add this to the database
         $map = array(
@@ -225,10 +211,10 @@ class Hook_ecommerce_community_billboard
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
-        $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-        list($member_id) = json_decode($details);
+        $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+        list($member_id) = json_decode($e_details);
         return $member_id;
     }
 }

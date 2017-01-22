@@ -113,21 +113,21 @@ class Hook_ecommerce_cart_orders
      * Get the filled in fields and do something with them.
      *
      * @param  ID_TEXT $type_code The product codename.
-     * @return array A pair: The purchase ID, a confirmation box to show (null: no specific confirmation).
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
     public function handle_needed_fields($type_code)
     {
-        return array(str_replace('#', '', $item_name), null);
+        return array(str_replace('#', '', $type_code), null);
     }
 
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
         if (!isset($details['ORDER_STATUS'])) {
             return;
@@ -170,7 +170,7 @@ class Hook_ecommerce_cart_orders
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         $order_id = intval($purchase_id);
         return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'c_member', array('id' => $order_id));

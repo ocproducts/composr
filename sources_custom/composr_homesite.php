@@ -208,7 +208,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
         attach_message('Running import command... ' . $cmd, 'inform');
     }
-    $output = '';
+    $output = array();
     $return_var = 0;
     $last_line = exec($cmd, $output, $return_var);
     if ($return_var != 0) {

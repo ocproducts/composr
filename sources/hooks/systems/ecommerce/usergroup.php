@@ -28,7 +28,7 @@ class Hook_ecommerce_usergroup
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         require_lang('ecommerce');
 
@@ -203,11 +203,11 @@ class Hook_ecommerce_usergroup
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
         require_code('cns_groups_action');
         require_code('cns_groups_action2');
@@ -321,7 +321,7 @@ class Hook_ecommerce_usergroup
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         $usergroup_subscription_id = intval(substr($type_code, 9));
         $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];

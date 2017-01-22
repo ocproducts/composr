@@ -28,7 +28,7 @@ class Hook_ecommerce_topic_pin
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         require_lang('ecommerce');
 
@@ -63,7 +63,7 @@ class Hook_ecommerce_topic_pin
         $products = array();
 
         foreach (array(1, 3, 5, 10, 20, 31, 90) as $days) {
-            $products['TOPIC_PIN_' . strval($days)] => array(
+            $products['TOPIC_PIN_' . strval($days)] = array(
                 'item_name' => do_lang('TOPIC_PINNED_FOR', integer_format($days), null, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
@@ -138,7 +138,7 @@ class Hook_ecommerce_topic_pin
      * Get the filled in fields and do something with them.
      *
      * @param  ID_TEXT $type_code The product codename.
-     * @return array A pair: The purchase ID, a confirmation box to show (null: no specific confirmation).
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
     public function handle_needed_fields($type_code)
     {
@@ -159,7 +159,7 @@ class Hook_ecommerce_topic_pin
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
             }
             if ($currently_pinned == 1) {
-                return warn_screen($title, do_lang_tempcode('TOPIC_PINNED_ALREADY'));
+                warn_exit(do_lang_tempcode('TOPIC_PINNED_ALREADY'));
             }
         }
 
@@ -169,13 +169,13 @@ class Hook_ecommerce_topic_pin
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
@@ -207,7 +207,7 @@ class Hook_ecommerce_topic_pin
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         list($member_id) = json_decode($purchase_id);
         return $member_id;

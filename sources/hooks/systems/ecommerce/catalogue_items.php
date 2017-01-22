@@ -32,7 +32,7 @@ class Hook_ecommerce_catalogue_items
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         require_lang('shopping');
 
@@ -612,15 +612,17 @@ class Hook_ecommerce_catalogue_items
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
+
+        $entry_id = intval($purchase_id);
 
         $product_object = object_factory('Hook_ecommerce_catalogue_items');
         $product_object->reduce_stock($entry_id, 1);

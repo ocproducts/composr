@@ -268,7 +268,7 @@ class Hook_ecommerce_permission
         sort_maps_by($rows, '_title');
 
         foreach ($rows as $row) {
-            $products['PERMISSION_' . strval($row['id'])] => array(
+            $products['PERMISSION_' . strval($row['id'])] = array(
                 'item_name' => $row['_title'],
                 'item_description' => get_translated_tempcode('ecom_prods_permissions', $row, 'p_description'),
                 'item_image_url' => '',
@@ -309,6 +309,7 @@ class Hook_ecommerce_permission
         if (!array_key_exists(0, $rows)) {
             return ECOMMERCE_PRODUCT_MISSING;
         }
+        $row = $rows[0];
 
         $map = $this->_get_map($row, $member_id);
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there(filter_naughty_harsh($row['p_type']), 'member_id', $map);
@@ -323,7 +324,7 @@ class Hook_ecommerce_permission
      * Get a database map for our permission row.
      *
      * @param  array $row Map row of product
-     * @param  ?MEMBER $member_id The member it is for.
+     * @param  MEMBER $member_id The member it is for.
      * @return array Permission map row
      */
     protected function _get_map($row, $member_id)
@@ -355,13 +356,13 @@ class Hook_ecommerce_permission
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
@@ -413,7 +414,7 @@ class Hook_ecommerce_permission
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         return intval($purchase_id);
     }

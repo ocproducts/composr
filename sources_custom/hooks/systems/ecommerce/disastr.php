@@ -28,7 +28,7 @@ class Hook_ecommerce_disastr
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         require_lang('disastr');
 
@@ -70,9 +70,9 @@ class Hook_ecommerce_disastr
                 $image_url = get_custom_base_url() . '/' . $image_url;
             }
 
-            $products['CURE_' . strval($disease['id'])] => array(
+            $products['CURE_' . strval($disease['id'])] = array(
                 'item_name' => $disease['cure'],
-                'item_description' => do_lang_tempcode('_CURE', escape_html($disease['name']), escape_html($disease['cure']), null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_description' => do_lang_tempcode('_CURE', escape_html($disease['name']), escape_html($disease['cure'])),
                 'item_image_url' => $image_url,
 
                 'type' => PRODUCT_PURCHASE,
@@ -87,9 +87,9 @@ class Hook_ecommerce_disastr
                 'needs_shipping_address' => false,
             );
 
-            $products['IMMUNISATION_' . strval($disease['id'])] => array(
+            $products['IMMUNISATION_' . strval($disease['id'])] = array(
                 'item_name' => $disease['immunisation'],
-                'item_description' => do_lang_tempcode('_IMMUNISATION', escape_html($disease['name']), escape_html($disease['immunisation']), null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_description' => do_lang_tempcode('_IMMUNISATION', escape_html($disease['name']), escape_html($disease['immunisation'])),
                 'item_image_url' => $image_url,
 
                 'type' => PRODUCT_PURCHASE,
@@ -124,12 +124,16 @@ class Hook_ecommerce_disastr
         }
 
         $matches = array();
-        $disease_id = intval(preg_replace('#^(CURE|IMMUNISATION)\_#', '', $type_code, $matches));
+        if (preg_match('#^(CURE|IMMUNISATION)\_(\d+)$#', $type_code, $matches) != 0) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+        $disease_id = intval($matches[2]);
 
         $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), array('id' => $disease_id), '', 1);
         if (!array_key_exists(0, $rows)) {
             return ECOMMERCE_PRODUCT_MISSING;
         }
+        $disease = $rows[0];
 
         $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease['id']), '', 1);
         if (array_key_exists(0, $member_rows)) {
@@ -164,20 +168,23 @@ class Hook_ecommerce_disastr
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
         require_lang('disastr');
 
         $matches = array();
-        $disease_id = intval(preg_replace('#^(CURE|IMMUNISATION)\_#', '', $type_code, $matches));
+        if (preg_match('#^(CURE|IMMUNISATION)\_(\d+)$#', $type_code, $matches) != 0) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+        $disease_id = intval($matches[2]);
 
         $member_id = intval($purchase_id);
 
@@ -211,7 +218,7 @@ class Hook_ecommerce_disastr
             $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('IMMUNISATION', null, null, null, get_site_default_lang()), 'details2' => $disease_row['immunisation'], 'transaction_id' => $details['TXN_ID']));
         }
 
-        if ($get_immunisation == 1) {
+        if ($matches[1] == 'IMMUNISATION') {
             $result = do_lang_tempcode('IMMUNISATION_CONGRATULATIONS');
         } else {
             $result = do_lang_tempcode('CURE_CONGRATULATIONS');
@@ -227,7 +234,7 @@ class Hook_ecommerce_disastr
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         return intval($purchase_id);
     }

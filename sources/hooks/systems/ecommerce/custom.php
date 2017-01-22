@@ -170,7 +170,7 @@ class Hook_ecommerce_custom
         sort_maps_by($rows, '_title');
 
         foreach ($rows as $row) {
-            $products['CUSTOM_' . strval($id)] => array(
+            $products['CUSTOM_' . strval($row['id'])] = array(
                 'item_name' => $row['_title'],
                 'item_description' => get_translated_tempcode('ecom_prods_custom', $row, 'c_description'),
                 'item_image_url' => '',
@@ -211,6 +211,7 @@ class Hook_ecommerce_custom
         if (!array_key_exists(0, $rows)) {
             return ECOMMERCE_PRODUCT_MISSING;
         }
+        $row = $rows[0];
 
         if ($row['c_one_per_member'] == 1) {
             // Test to see if it's been purchased
@@ -226,13 +227,13 @@ class Hook_ecommerce_custom
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
@@ -277,7 +278,7 @@ class Hook_ecommerce_custom
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         return intval($purchase_id);
     }

@@ -78,7 +78,7 @@ function init__ecommerce()
  * @param object $product_object The product object.
  * @param ID_TEXT $type_code The product type.
  * @param ID_TEXT $step_before The step prior to the next step.
- * @return ID_TEXT The next step.
+ * @return ?ID_TEXT The next step (null: error).
  */
 function get_next_purchase_step($product_object, $type_code, $step_before)
 {
@@ -86,7 +86,7 @@ function get_next_purchase_step($product_object, $type_code, $step_before)
         $message = method_exists($product_object, 'get_message') ? $product_object->get_message($type_code) : null;
         $has_message = ($message !== null);
 
-        if (($has_message) && (get_param_integer('include_message', 0) == 0))
+        if (($has_message) && (get_param_integer('include_message', 0) == 0)) {
             return 'message';
         } else {
             $step_before = 'message'; // Let it roll on
@@ -96,7 +96,7 @@ function get_next_purchase_step($product_object, $type_code, $step_before)
         $terms = method_exists($product_object, 'get_terms') ? $product_object->get_terms($type_code) : '';
         $has_terms = ($terms != '');
 
-        if ($has_terms)
+        if ($has_terms) {
             return 'terms';
         } else {
             $step_before = 'terms'; // Let it roll on
@@ -106,7 +106,7 @@ function get_next_purchase_step($product_object, $type_code, $step_before)
         list($fields) = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : array(null);
         $has_details = ($fields !== null);
 
-        if ($has_details)
+        if ($has_details) {
             return 'details';
         } else {
             $step_before = 'details'; // Let it roll on
@@ -1007,7 +1007,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     }
 
     // Cleanup very old data
-    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'ecom_sales_expecting WHERE e_time<' . strval(time() - 60 * 60 * 24 * 90);
+    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'ecom_sales_expecting WHERE e_time<' . strval(time() - 60 * 60 * 24 * 90));
 
     return array($type_code, $member_id);
 }

@@ -28,7 +28,7 @@ class Hook_ecommerce_banners
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         if (!addon_installed('banners')) {
             return null;
@@ -37,8 +37,8 @@ class Hook_ecommerce_banners
         require_lang('ecommerce');
 
         return array(
-            'category_name' => do_lang('BANNER_ADS', integer_format(intval(get_option('initial_banner_hits'))),
-            'category_description' => do_lang_tempcode('BANNER_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_banner_hits')))),
+            'category_name' => do_lang('BANNER_ADS', integer_format(intval(get_option('initial_banner_hits')))),
+            'category_description' => do_lang_tempcode('BANNER_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_banner_hits'))))),
             'category_image_url' => find_theme_image('icons/48x48/menu/cms/banners'),
 
             'supports_money' => false,
@@ -69,7 +69,7 @@ class Hook_ecommerce_banners
         $products = array();
 
         $products['BANNER_ACTIVATE'] = array(
-            'item_name' => do_lang('BANNER_ACTIVATE', integer_format(intval(get_option('initial_banner_hits')), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+            'item_name' => do_lang('BANNER_ACTIVATE', integer_format(intval(get_option('initial_banner_hits'))), null, null, $site_lang ? get_site_default_lang() : user_lang()),
             'item_description' => do_lang_tempcode('BANNER_ACTIVATE_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_banner_hits'))))),
             'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_one'),
 
@@ -258,7 +258,7 @@ class Hook_ecommerce_banners
      * Get the filled in fields and do something with them.
      *
      * @param  ID_TEXT $type_code The product codename.
-     * @return array A pair: The purchase ID, a confirmation box to show (null: no specific confirmation).
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
     public function handle_needed_fields($type_code)
     {
@@ -278,8 +278,8 @@ class Hook_ecommerce_banners
                 $notes = post_param_string('notes', '');
                 $cost = intval(get_option('banner_setup'));
 
-                $details = json_encode(array($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes, $cost));
-                $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $details, 'e_time' => time()), true));
+                $e_details = json_encode(array($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes, $cost));
+                $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $e_details, 'e_time' => time()), true));
 
                 $confirmation_box = show_banner($name, '', comcode_to_tempcode($caption), $direct_code, (url_is_local($image_url) ? (get_custom_base_url() . '/') : '') . $image_url, '', $site_url, '', get_member());
                 break;
@@ -297,13 +297,13 @@ class Hook_ecommerce_banners
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
@@ -315,8 +315,8 @@ class Hook_ecommerce_banners
 
         switch (preg_replace('#\_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
-                $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-                list($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes, $cost) = json_decode($details);
+                $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+                list($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes, $cost) = json_decode($e_details);
 
                 add_banner($name, $image_url, '', $caption, $direct_code, intval(get_option('initial_banner_hits')), $site_url, 3, $notes, BANNER_PERMANENT, null, $member_id, 0);
 
@@ -340,7 +340,7 @@ class Hook_ecommerce_banners
                 }
                 $banner_code = do_template('BANNER_SHOW_CODE', array('_GUID' => 'c96f0ce22de97782b1ab9bee3f43c0ba', 'TYPE' => '', 'NAME' => $name, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height'])));
 
-                $result = do_template('BANNER_ADDED_SCREEN', array('_GUID' => '68725923b19d3df71c72276ada826183', 'TITLE' => $title, 'TEXT' => $text, 'BANNER_CODE' => $banner_code, 'STATS_URL' => $stats_url, 'DO_NEXT' => ''));
+                $result = do_template('BANNER_ADDED_SCREEN', array('_GUID' => '68725923b19d3df71c72276ada826183', 'TITLE' => '', 'TEXT' => $text, 'BANNER_CODE' => $banner_code, 'STATS_URL' => $stats_url, 'DO_NEXT' => ''));
                 global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
                 $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = $result;
 
@@ -385,12 +385,12 @@ class Hook_ecommerce_banners
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         switch (preg_replace('#\_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
-                $details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-                list($member_id) = json_decode($details);
+                $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
+                list($member_id) = json_decode($e_details);
                 return $member_id;
 
             case 'BANNER_UPGRADE_HITS':
@@ -399,7 +399,7 @@ class Hook_ecommerce_banners
             case 'BANNER_UPGRADE_IMPORTANCE':
                 return intval($purchase_id);
         }
-    }
 
-    return null;
+        return null;
+    }
 }

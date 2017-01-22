@@ -28,7 +28,7 @@ class Hook_ecommerce_gambling
      *
      * @return ?array A map of product categorisation details (null: disabled).
      */
-    function get_product_category()
+    public function get_product_category()
     {
         require_lang('ecommerce');
 
@@ -76,7 +76,7 @@ class Hook_ecommerce_gambling
         $amounts = array_unique($amounts);
 
         foreach ($amounts as $amount) {
-            $products['GAMBLING_' . strval($amount)] => array(
+            $products['GAMBLING_' . strval($amount)] = array(
                 'item_name' => do_lang('GAMBLE_THIS', integer_format($amount), null, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
@@ -117,6 +117,7 @@ class Hook_ecommerce_gambling
         }
 
         return ECOMMERCE_PRODUCT_AVAILABLE;
+    }
 
     /**
      * Get the message for use in the purchasing module
@@ -130,18 +131,17 @@ class Hook_ecommerce_gambling
 
         return do_lang_tempcode('GAMBLE_WARNING');
     }
-    }
 
     /**
      * Handling of a product purchase change state.
      *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
-     * @param  ID_TEXT $type_code The product codename.
      */
-    function actualiser($type_code, $purchase_id, $details)
+    public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($found['PAYMENT_STATUS'] != 'Completed') {
+        if ($details['PAYMENT_STATUS'] != 'Completed') {
             return;
         }
 
@@ -195,7 +195,7 @@ class Hook_ecommerce_gambling
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @return ?MEMBER The member ID (null: none).
      */
-    function member_for($type_code, $purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
         return intval($purchase_id);
     }
