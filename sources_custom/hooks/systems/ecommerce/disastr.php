@@ -121,7 +121,7 @@ class Hook_ecommerce_disastr
         }
 
         $matches = array();
-        if (preg_match('#^(CURE|IMMUNISATION)\_(\d+)$#', $type_code, $matches) != 0) {
+        if (preg_match('#^(CURE|IMMUNISATION)\_(\d+)$#', $type_code, $matches) == 0) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $disease_id = intval($matches[2]);
@@ -178,7 +178,7 @@ class Hook_ecommerce_disastr
         require_lang('disastr');
 
         $matches = array();
-        if (preg_match('#^(CURE|IMMUNISATION)\_(\d+)$#', $type_code, $matches) != 0) {
+        if (preg_match('#^(CURE|IMMUNISATION)\_(\d+)$#', $type_code, $matches) == 0) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $disease_id = intval($matches[2]);
@@ -191,6 +191,8 @@ class Hook_ecommerce_disastr
         }
         $disease_row = $rows[0];
 
+        $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease_id), '', 1);
+
         $map = array(
             'member_id' => $member_id,
             'disease_id' => $disease_id,
@@ -198,8 +200,15 @@ class Hook_ecommerce_disastr
         if ($matches[1] == 'CURE') {
             $map['cure'] = 1;
             $map['sick'] = 0;
+            if (!array_key_exists(0, $member_rows)) {
+                $map['immunisation'] = 0; // This code should not actually be runnable
+            }
         } elseif ($matches[1] == 'IMMUNISATION') {
             $map['immunisation'] = 1;
+            if (!array_key_exists(0, $member_rows)) {
+                $map['cure'] = 0;
+                $map['sick'] = 0;
+            }
         }
 
         $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease_id), '', 1);

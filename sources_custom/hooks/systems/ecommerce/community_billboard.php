@@ -122,7 +122,9 @@ class Hook_ecommerce_community_billboard
         }
         $cost = intval(get_option('community_billboard'));
 
-        return do_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array('_GUID' => '92d51c5b87745c31397d9165595262d3', 'QUEUE' => integer_format($queue), 'COST' => integer_format($cost)));
+        $days = intval(preg_replace('#^COMMUNITY_BILLBOARD\_#', '', $type_code));
+
+        return do_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array('_GUID' => '92d51c5b87745c31397d9165595262d3', 'QUEUE' => integer_format($queue), 'COST' => integer_format($cost), 'DAYS' => integer_format($days)));
     }
 
     /**
@@ -138,7 +140,7 @@ class Hook_ecommerce_community_billboard
         $fields = new Tempcode();
         $fields->attach(form_input_line_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('MESSAGE_DESCRIPTION'), 'message', '', true));
 
-        return array($fields, null, null);
+        return array($fields, do_lang_tempcode('COMMUNITY_BILLBOARD_GUIDE'), null);
     }
 
     /**
