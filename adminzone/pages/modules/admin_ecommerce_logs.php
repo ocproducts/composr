@@ -71,7 +71,8 @@ class Module_admin_ecommerce_logs
         if ($support_crosslinks) {
             $ret['_SEARCH:admin_invoices:browse'] = array('INVOICES', 'menu/adminzone/audit/ecommerce/invoices');
             if (addon_installed('shopping')) {
-                $ret['_SEARCH:admin_orders:browse'] = array('shopping:ORDERS', 'menu/adminzone/audit/ecommerce/orders');
+                require_lang('shopping');
+                $ret['_SEARCH:admin_orders:browse'] = array('ORDERS', 'menu/adminzone/audit/ecommerce/orders');
             }
         }
 

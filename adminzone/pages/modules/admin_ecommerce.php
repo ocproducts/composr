@@ -470,7 +470,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             $config_url = $_config_url->evaluate();
             $config_url .= '#group_ECOMMERCE';
 
-            $text = do_lang_tempcode('ECOM_ADDED_SUBSCRIP', escape_html($config_url));
+            $text = paragraph(do_lang_tempcode('ECOM_ADDED_SUBSCRIP', escape_html($config_url)));
         } else {
             $text = null;
         }

@@ -51,6 +51,6 @@ class Hook_config_topic_pin
      */
     public function get_default()
     {
-        return (!addon_installed('cns_forum')) ? null : '50';
+        return has_no_forum() ? null : '50';
     }
 }

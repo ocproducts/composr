@@ -178,10 +178,10 @@ class Module_classifieds
             $purchase_url = build_url(array('page' => 'purchase', 'type' => 'browse', 'filter' => 'CLASSIFIEDS_ADVERT', 'id' => $row['id']), get_module_zone('purchase'));
 
             // We'll show all transactions against this ad
-            $transaction_details = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'transactions WHERE t_purchase_id=' . strval($row['id']) . ' AND t_item LIKE \'' . db_encode_like('CLASSIFIEDS\_ADVERT\_%') . '\'');
+            $transaction_details = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'transactions WHERE t_purchase_id=' . strval($row['id']) . ' AND t_type_code LIKE \'' . db_encode_like('CLASSIFIEDS\_ADVERT\_%') . '\'');
             $_transaction_details = array();
             foreach ($transaction_details as $t) {
-                list($found,) = find_product_row($t['t_item']);
+                list($found,) = find_product_row($t['t_type_code']);
                 if (!is_null($found)) {
                     $item_title = $found[4];
                 } else {

@@ -134,3 +134,4 @@ rules	license	licence	agreement	terms	conditions	legals t&cs
 dashboard	console	status
 menu	navigation
 permalink	url	link
+importance	priority	precedence	level

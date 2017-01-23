@@ -50,6 +50,9 @@ class Hook_config_allow_email_disable
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '1';
     }
 }
