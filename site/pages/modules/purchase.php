@@ -29,7 +29,7 @@ URL parameters are follows...
  redirect (a URL to redirect to after the finish screen)
 
 'browse' (choose) screen only
- filter (a stem filter on product codenames)
+ filter (a prefix filter on product codenames)
  type_filter (an exact string match filter on product codenames)
  must_support_money = 0|1 (whether to only show products that take money payment)
  must_support_points = 0|1 (whether to only show products that take points payment)
@@ -479,7 +479,7 @@ class Module_purchase
      * @param  Tempcode $title The title to use.
      * @param  ?mixed $url URL (null: no next URL).
      * @param  boolean $get Whether it is a GET form
-     * @param  Tempcode $submit_name Submit button label to use (null: default)
+     * @param  ?Tempcode $submit_name Submit button label to use (null: default)
      * @param  string $icon CSS icon label to use
      * @return Tempcode Wrapped.
      */
@@ -532,8 +532,7 @@ class Module_purchase
         foreach ($_products as $type_code => $details) {
             $product_object = $details['product_object'];
 
-            // Category folding? ...
-
+            // Category folding?
             if (($category === null) && ($use_categorisation)) {
                 $this_category = preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object));
 
@@ -561,6 +560,7 @@ class Module_purchase
                     $supports_money = false;
                     $supports_points = false;
                     $num_products_in_category = 0;
+                    $num_products_in_category_available = 0;
                     foreach ($_products as $_type_code => $_details) {
                         if (preg_replace('#^Hook\_ecommerce\_#', '', get_class($_details['product_object'])) == $this_category) {
                             if ($_details['price'] !== null) {
@@ -572,10 +572,16 @@ class Module_purchase
                                 $points_involved = true;
                             }
 
+                            if ($this->_is_filtered_out($product_object, $_type_code, $_details, $filter, $type_filter, $must_support_money, $must_support_points)) {
+                                continue;
+                            }
+
                             list($_discounted_price, $_points_for_discount) = get_discounted_price($_details, true);
                             $_can_purchase = ((($_discounted_price !== null) && (!$must_support_money)) || (($_details['price'] !== null) && (!$must_support_points)));
                             if ($_can_purchase) {
                                 $can_purchase = true;
+
+                                $num_products_in_category_available++;
                             }
 
                             $num_products_in_category++;
@@ -598,12 +604,12 @@ class Module_purchase
                         'CAN_PURCHASE' => $can_purchase,
                         'IS_CATEGORY' => true,
                         'NUM_PRODUCTS_IN_CATEGORY' => strval($num_products_in_category),
+                        'NUM_PRODUCTS_IN_CATEGORY_AVAILABLE' => strval($num_products_in_category_available),
                     );
 
                     continue;
                 }
             }
-
             if ($category !== null) {
                 $this_category = preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object));
                 if ($this_category != $category) {
@@ -611,45 +617,9 @@ class Module_purchase
                 }
             }
 
-            // Explicit filtering...
-
-            if ($filter != '') {
-                if ((!is_string($type_code)) || (substr($type_code, 0, strlen($filter)) != $filter)) {
-                    continue;
-                }
-            }
-
-            if ($type_filter !== null) {
-                if ($details['type'] != $type_filter) {
-                    continue;
-                }
-            }
-
-            // Implicit filtering...
-
-            $purchasing_module_supported = in_array($details['type'], array(PRODUCT_PURCHASE, PRODUCT_SUBSCRIPTION, PRODUCT_CATALOGUE));
-            if (!$purchasing_module_supported) {
+            if ($this->_is_filtered_out($product_object, $type_code, $details, $filter, $type_filter, $must_support_money, $must_support_points)) {
                 continue;
             }
-
-            $is_available = false; // Anything without is_available is not meant to be purchased directly
-            if (method_exists($product_object, 'is_available')) {
-                $availability_status = $product_object->is_available($type_code, get_member(), 1, true);
-                $is_available = ($availability_status == ECOMMERCE_PRODUCT_AVAILABLE) || ($availability_status == ECOMMERCE_PRODUCT_NO_GUESTS);
-            }
-            if (!$is_available) {
-                continue;
-            }
-
-            if (($must_support_money) && ($details['price'] === null)) {
-                continue;
-            }
-
-            if (($must_support_points) && ($details['price_points'] === null)) {
-                continue;
-            }
-
-            // --
 
             $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
@@ -710,6 +680,7 @@ class Module_purchase
                 'CAN_PURCHASE' => $can_purchase,
                 'IS_CATEGORY' => false,
                 'NUM_PRODUCTS_IN_CATEGORY' => '',
+                'NUM_PRODUCTS_IN_CATEGORY_AVAILABLE' => '',
 
                 'WRITTEN_PRICE' => $written_price,
 
@@ -744,6 +715,61 @@ class Module_purchase
             'MONEY_INVOLVED' => $money_involved,
         ));
         return $this->_wrap($result, $this->title, null, true);
+    }
+
+    /**
+     * See if a product is filtered out.
+     *
+     * @param object $product_object The product object.
+     * @param ID_TEXT $type_code The product codename.
+     * @param array $details The product details.
+     * @param string $filter Filter prefix.
+     * @param string $type_filter Filter by exact product name.
+     * @param boolean $must_support_money Filter out products that don't support money.
+     * @param boolean $must_support_points Filter out products that don't support points.
+     * @return boolean Is filtered.
+     */
+    protected function _is_filtered_out($product_object, $type_code, $details, $filter, $type_filter, $must_support_money, $must_support_points)
+    {
+        // Explicit filtering...
+
+        if ($filter != '') {
+            if ((!is_string($type_code)) || (substr($type_code, 0, strlen($filter)) != $filter)) {
+                return true;
+            }
+        }
+
+        if ($type_filter !== null) {
+            if ($details['type'] != $type_filter) {
+                return true;
+            }
+        }
+
+        // Implicit filtering...
+
+        $purchasing_module_supported = in_array($details['type'], array(PRODUCT_PURCHASE, PRODUCT_SUBSCRIPTION, PRODUCT_CATALOGUE));
+        if (!$purchasing_module_supported) {
+            return true;
+        }
+
+        $is_available = false; // Anything without is_available is not meant to be purchased directly
+        if (method_exists($product_object, 'is_available')) {
+            $availability_status = $product_object->is_available($type_code, get_member(), 1, true);
+            $is_available = ($availability_status == ECOMMERCE_PRODUCT_AVAILABLE) || ($availability_status == ECOMMERCE_PRODUCT_NO_GUESTS);
+        }
+        if (!$is_available) {
+            return true;
+        }
+
+        if (($must_support_money) && ($details['price'] === null)) {
+            return true;
+        }
+
+        if (($must_support_points) && ($details['price_points'] === null)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

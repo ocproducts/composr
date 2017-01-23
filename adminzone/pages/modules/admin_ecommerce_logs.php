@@ -72,7 +72,8 @@ class Module_admin_ecommerce_logs
         if ($support_crosslinks) {
             $ret['_SEARCH:admin_invoices:browse'] = array('INVOICES', 'menu/adminzone/audit/ecommerce/invoices');
             if (addon_installed('shopping')) {
-                $ret['_SEARCH:admin_orders:browse'] = array('shopping:ORDERS', 'menu/adminzone/audit/ecommerce/orders');
+                require_lang('shopping');
+                $ret['_SEARCH:admin_orders:browse'] = array('ORDERS', 'menu/adminzone/audit/ecommerce/orders');
             }
         }
 
@@ -248,7 +249,7 @@ class Module_admin_ecommerce_logs
         $max = get_param_integer('max', 50);
         $start = get_param_integer('start', 0);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('*', 's.id AS s_id'), null, 'ORDER BY date_and_time DESC', $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', array('*', 's.id AS s_id'), null, 'ORDER BY date_and_time DESC', $max, $start);
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('ecom_sales', 'COUNT(*)');
 
         $out = new Tempcode();
@@ -262,13 +263,13 @@ class Module_admin_ecommerce_logs
         }
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-            if (is_null($username)) {
+            if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }
 
             list($found,) = find_product_details($row['t_type_code']);
             if ($found !== null) {
-                $item_name = $found[4];
+                $item_name = $found['item_name'];
             }
 
             $details_1 = $row['details'];
@@ -276,7 +277,7 @@ class Module_admin_ecommerce_logs
 
             $date = get_timezoned_date($row['date_and_time']);
 
-            $url = build_url(array('page' => '_SELF', 'type' => 'delete_log_entry', 'id' => $row['id']), '_SELF');
+            $url = build_url(array('page' => '_SELF', 'type' => 'delete_log_entry', 'id' => $row['s_id']), '_SELF');
             $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'NAME' => $username, 'URL' => $url));
 
             if ($do_other_details) {
@@ -290,9 +291,9 @@ class Module_admin_ecommerce_logs
         }
 
         if ($do_other_details) {
-            $header_row = columned_table_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('PURCHASE'), do_lang_tempcode('DETAILS'), do_lang_tempcode('OTHER_DETAILS'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTIONS')));
+            $header_row = columned_table_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('PRODUCT'), do_lang_tempcode('DETAILS'), do_lang_tempcode('OTHER_DETAILS'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTIONS')));
         } else {
-            $header_row = columned_table_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('PURCHASE'), do_lang_tempcode('DETAILS'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTIONS')));
+            $header_row = columned_table_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('PRODUCT'), do_lang_tempcode('DETAILS'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTIONS')));
         }
 
         $content = do_template('COLUMNED_TABLE', array('_GUID' => 'd87800ff26e9e5b8f7593fae971faa73', 'HEADER_ROW' => $header_row, 'ROWS' => $out));

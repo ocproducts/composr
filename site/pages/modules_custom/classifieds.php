@@ -187,7 +187,7 @@ class Module_classifieds
             foreach ($transaction_details as $t) {
                 list($found,) = find_product_details($t['t_item']);
                 if ($found !== null) {
-                    $item_title = $found[4];
+                    $item_title = $found['item_name'];
                 } else {
                     $item_title = $t['t_item'];
                 }

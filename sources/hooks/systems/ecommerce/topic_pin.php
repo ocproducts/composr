@@ -52,6 +52,10 @@ class Hook_ecommerce_topic_pin
      */
     public function get_products($site_lang = false, $search = null, $search_item_names = false)
     {
+        if ((get_forum_type() != 'cns') || (!addon_installed('cns_forum'))) {
+            return array();
+        }
+
         require_lang('ecommerce');
         require_lang('cns');
 
@@ -142,8 +146,8 @@ class Hook_ecommerce_topic_pin
 
         $member_id = get_member();
 
-        $topic_id = post_param_integer('select_topic_id', -1);
-        if ($topic_id == -1) {
+        $topic_id = post_param_integer('select_topic_id', null);
+        if ($topic_id === null) {
             $_topic_id = post_param_string('manual_topic_id');
             $topic_id = intval($_topic_id);
         }

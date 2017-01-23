@@ -24,7 +24,7 @@ class Hook_page_groupings_disastr
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            array('setup', 'menu/disastr_log', array('admin_disastr', array('type' => 'browse'), get_module_zone('admin_disastr')), do_lang_tempcode('disastr:MANAGE_DISEASES'), 'disastr:DOC_DISASTR'),
+            array('setup', 'menu/disastr_log', array('admin_disastr', array('type' => 'browse'), get_module_zone('admin_disastr')), do_lang_tempcode('disastr:DISEASES_TITLE'), 'disastr:DOC_DISASTR'),
         );
     }
 }

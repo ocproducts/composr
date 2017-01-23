@@ -823,6 +823,8 @@ class Hook_addon_registry_ecommerce
                 'IMAGE_URL' => placeholder_image_url(),
                 'CAN_PURCHASE' => true,
                 'IS_CATEGORY' => false,
+                'NUM_PRODUCTS_IN_CATEGORY' => '',
+                'NUM_PRODUCTS_IN_CATEGORY_AVAILABLE' => '',
             );
 
             switch ($i) {
@@ -920,6 +922,8 @@ class Hook_addon_registry_ecommerce
 
                 case 5: // category
                     $map['IS_CATEGORY'] = false,
+                    $map['NUM_PRODUCTS_IN_CATEGORY'] = '1';
+                    $map['NUM_PRODUCTS_IN_CATEGORY_AVAILABLE'] = '1';
                     break;
             }
 
@@ -932,7 +936,6 @@ class Hook_addon_registry_ecommerce
                 'PRODUCTS' => $products,
 
                 'CATEGORY' => null,
-                'NUM_PRODUCTS_IN_CATEGORY' => '',
                 'MUST_SUPPORT_MONEY' => false,
                 'MUST_SUPPORT_POINTS' => false,
 

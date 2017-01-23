@@ -209,6 +209,7 @@ class Hook_ecommerce_permission
             }
             $i++;
         }
+
         $title = post_param_string('permission_title', null);
         if ($title !== null) {
             $description = post_param_string('permission_description');
@@ -268,10 +269,17 @@ class Hook_ecommerce_permission
         sort_maps_by($rows, '_title');
 
         foreach ($rows as $row) {
+            $description = get_translated_tempcode('ecom_prods_permissions', $row, 'p_description');
+            if (strpos($description->evaluate(), '<img') === false) {
+                $image_url = find_theme_image('icons/48x48/menu/adminzone/security/permissions/privileges');
+            } else {
+                $image_url = '';
+            }
+
             $products['PERMISSION_' . strval($row['id'])] = array(
-                'item_name' => $row['_title'],
-                'item_description' => get_translated_tempcode('ecom_prods_permissions', $row, 'p_description'),
-                'item_image_url' => '',
+                'item_name' => do_lang('PERMISSION_PRODUCT', $row['p_title'], null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_description' => $description,
+                'item_image_url' => $image_url,
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),

@@ -123,6 +123,7 @@ class Hook_ecommerce_custom
             }
             $i++;
         }
+
         $title = post_param_string('custom_title', null);
         if ($title !== null) {
             $description = post_param_string('custom_description');
@@ -169,11 +170,18 @@ class Hook_ecommerce_custom
         }
         sort_maps_by($rows, '_title');
 
-        foreach ($rows as $row) {
+        foreach ($rows as $i => $row) {
+            $description = get_translated_tempcode('ecom_prods_custom', $row, 'c_description');
+            if (strpos($description->evaluate(), '<img') === false) {
+                $image_url = find_theme_image('icons/48x48/menu/_generic_spare/' . strval(($i % 8) + 1));
+            } else {
+                $image_url = '';
+            }
+
             $products['CUSTOM_' . strval($row['id'])] = array(
                 'item_name' => $row['_title'],
-                'item_description' => get_translated_tempcode('ecom_prods_custom', $row, 'c_description'),
-                'item_image_url' => '',
+                'item_description' => $description,
+                'item_image_url' => $image_url,
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
@@ -215,7 +223,7 @@ class Hook_ecommerce_custom
 
         if ($row['c_one_per_member'] == 1) {
             // Test to see if it's been purchased
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'id', array('details2' => strval($rows[0]['id']), 'member_id' => $member_id, 't_type_code' => 'custom'));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'id', array('details2' => strval($rows[0]['id']), 'member_id' => $member_id, 't_type_code' => $type_code));
             if ($test !== null) {
                 return ECOMMERCE_PRODUCT_ALREADY_HAS;
             }

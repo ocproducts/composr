@@ -68,7 +68,7 @@ class Hook_ecommerce_disastr
             }
 
             $products['CURE_' . strval($disease['id'])] = array(
-                'item_name' => $disease['cure'],
+                'item_name' => do_lang('__CURE', $disease['name'], $disease['cure'], null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => do_lang_tempcode('_CURE', escape_html($disease['name']), escape_html($disease['cure'])),
                 'item_image_url' => $image_url,
 
@@ -85,7 +85,7 @@ class Hook_ecommerce_disastr
             );
 
             $products['IMMUNISATION_' . strval($disease['id'])] = array(
-                'item_name' => $disease['immunisation'],
+                'item_name' => do_lang('__IMMUNISATION', $disease['name'], $disease['immunisation'], null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => do_lang_tempcode('_IMMUNISATION', escape_html($disease['name']), escape_html($disease['immunisation'])),
                 'item_image_url' => $image_url,
 

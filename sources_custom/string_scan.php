@@ -7065,6 +7065,7 @@ function string_scan($lang, $do_guessing = false)
         AVATARS_THEMATIC
         AVATARS_MISC
         MEMBER_HAS_SUBSCRIPTIONS
+        PERMISSION_PRODUCT
         SAVE_TO_ACCOUNT
         ADD_AUTHOR
         ADD_CALENDAR_EVENT

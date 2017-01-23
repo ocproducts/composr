@@ -50,6 +50,6 @@ class Hook_config_enable_highlight_name
      */
     public function get_default()
     {
-        return '0';
+        return (get_forum_type() != 'cns') ? null : '1';
     }
 }

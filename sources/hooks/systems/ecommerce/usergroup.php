@@ -59,10 +59,12 @@ class Hook_ecommerce_usergroup
         $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
+        $images = array('bronze', 'silver', 'gold', 'platinum');
+
         $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
-        $usergroup_subs = $db->query_select('f_usergroup_subs', array('*'), array('s_enabled' => 1));
+        $usergroup_subs = $db->query_select('f_usergroup_subs', array('*'), array('s_enabled' => 1), 'ORDER BY s_length_units, s_cost');
         $products = array();
-        foreach ($usergroup_subs as $sub) {
+        foreach ($usergroup_subs as $i => $sub) {
             $item_name = get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], $site_lang ? get_site_default_lang() : null);
 
             $image_url = '';
@@ -73,8 +75,12 @@ class Hook_ecommerce_usergroup
                 }
             }
 
+            if ($image_url == '') {
+                $image_url = find_theme_image('icons/48x48/tiers/' . $images[$i % 4]);
+            }
+
             $products['USERGROUP' . strval($sub['id'])] = array(
-                'item_name' => $item_name,
+                'item_name' => do_lang('_SUBSCRIPTION', $item_name, null, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => get_translated_tempcode('f_usergroup_subs', $sub, 's_description', $db),
                 'item_image_url' => $image_url,
 

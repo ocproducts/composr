@@ -83,7 +83,7 @@ class Hook_ecommerce_banners
         );
 
         // It's slightly naughty for us to use get_member(), but it's only for something going into item_description so safe
-        $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => get_member(), 't_type_code' => 'banners'));
+        $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => get_member(), 't_type_code' => 'BANNER_ACTIVATE'));
         $sql = 'SELECT SUM(importance_modulus) FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_equal_to('b_type', '');
         if ($banner_name !== null) {
             $sql .= ' AND ' . db_string_not_equal_to('name', $banner_name);
@@ -124,7 +124,7 @@ class Hook_ecommerce_banners
         foreach (array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) as $importance) {
             $percentage = intval(round(100.0 * floatval($current_importance + $importance) / floatval($total_importance)));
 
-            $products['BANNER_UPGRADE_IMPORTANCE'] = array(
+            $products['BANNER_UPGRADE_IMPORTANCE_' . strval($importance)] = array(
                 'item_name' => do_lang('BANNER_ADD_IMPORTANCE', integer_format($importance), $percentage, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => do_lang_tempcode('BANNER_ADD_IMPORTANCE_DESCRIPTION', escape_html(integer_format($importance)), escape_html($percentage)),
                 'item_image_url' => find_theme_image('icons/48x48/buttons/choose'),
@@ -167,13 +167,13 @@ class Hook_ecommerce_banners
         require_lang('ecommerce');
         require_lang('banners');
 
-        $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'banners'));
+        $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'BANNER_ACTIVATE'));
 
         if ($banner_name !== null) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $banner_name));
             if ($test === null) {
                 // Cleanup an inconsistency
-                $sales_id = $GLOBALS['SITE_DB']->query_select_value('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 's.id', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'banners'));
+                $sales_id = $GLOBALS['SITE_DB']->query_select_value('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 's.id', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'BANNER_ACTIVATE'));
                 $GLOBALS['SITE_DB']->query_delete('ecom_sales', array('id' => $sales_id), '', 1);
 
                 $banner_name = null;
@@ -269,6 +269,8 @@ class Hook_ecommerce_banners
             case 'BANNER_ACTIVATE':
                 $member_id = get_member();
 
+                require_code('uploads');
+
                 $name = post_param_string('name');
                 $urls = get_url('image_url', 'file', 'uploads/banners', 0, CMS_UPLOAD_IMAGE);
                 $image_url = $urls[0];
@@ -342,20 +344,20 @@ class Hook_ecommerce_banners
 
                 $result = do_template('BANNER_ADDED_SCREEN', array('_GUID' => '68725923b19d3df71c72276ada826183', 'TITLE' => '', 'TEXT' => $text, 'BANNER_CODE' => $banner_code, 'STATS_URL' => $stats_url, 'DO_NEXT' => ''));
                 global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
-                $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = $result;
+                $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = protect_from_escaping($result);
 
                 break;
 
             case 'BANNER_UPGRADE_HITS':
                 $extrahit = intval(preg_replace('#^BANNER\_UPGRADE\_HITS\_#', '', $type_code));
                 $member_id = intval($purchase_id);
-                $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'banners'));
+                $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'BANNER_ACTIVATE'));
                 $curhit = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'campaign_remaining', array('name' => $banner_name));
                 if ($curhit === null) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
                 $afthit = $curhit + $extrahit;
-                $GLOBALS['SITE_DB']->query_update('banners', array('campaign_remaining' => $afthit), array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_update('banners', array('campaign_remaining' => $afthit), array('name' => $banner_name), '', 1);
 
                 $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('BANNER_ADD_HITS', null, null, null, get_site_default_lang()), 'details2' => strval($extrahit), 'transaction_id' => $details['TXN_ID']));
 
@@ -364,13 +366,13 @@ class Hook_ecommerce_banners
             case 'BANNER_UPGRADE_IMPORTANCE':
                 $extraimp = intval(preg_replace('#^BANNER\_UPGRADE\_IMPORTANCE\_#', '', $type_code));
                 $member_id = intval($purchase_id);
-                $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'banners'));
+                $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'BANNER_ACTIVATE'));
                 $curimp = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'importance_modulus', array('name' => $banner_name));
                 if ($curimp === null) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
                 $aftimp = $curimp + $extraimp;
-                $GLOBALS['SITE_DB']->query_update('banners', array('importance_modulus' => $aftimp), array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_update('banners', array('importance_modulus' => $aftimp), array('name' => $banner_name), '', 1);
 
                 $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('BANNER_ADD_IMPORTANCE', null, null, null, get_site_default_lang()), 'details2' => strval($extraimp), 'transaction_id' => $details['TXN_ID']));
 

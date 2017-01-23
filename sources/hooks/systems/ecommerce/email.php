@@ -95,16 +95,16 @@ class Hook_ecommerce_email
      */
     public function save_config()
     {
-        $forw = post_param_integer('forw', -1);
-        if ($forw != -1) {
+        $forw = post_param_integer('forw', null);
+        if ($forw !== null) {
             $dforw = post_param_string('dforw');
             $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'forw_' . $dforw, 'price' => $forw));
             log_it('ECOM_PRODUCTS_ADD_MAIL_FORWARDER', $dforw);
         }
         $this->_do_price_mail_forw();
 
-        $pop3 = post_param_integer('pop3', -1);
-        if ($pop3 != -1) {
+        $pop3 = post_param_integer('pop3', null);
+        if ($pop3 !== null) {
             $dpop3 = post_param_string('dpop3');
             $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'pop3_' . $dpop3, 'price' => $pop3));
             log_it('ECOM_PRODUCTS_ADD_MAIL_POP3', $dpop3);
@@ -294,7 +294,7 @@ class Hook_ecommerce_email
                     return ECOMMERCE_PRODUCT_MISSING;
                 }
 
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('member_id' => $member_id, 't_type_code' => 'pop3'));
+                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'details', array('member_id' => $member_id), ' AND t_type_code LIKE \'POP3%\'');
                 if ($test !== null) {
                     return ECOMMERCE_PRODUCT_ALREADY_HAS;
                 }
@@ -302,7 +302,7 @@ class Hook_ecommerce_email
                 break;
 
             case 'QUOTA':
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('member_id' => $member_id, 't_type_code' => 'pop3'));
+                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'details', array('member_id' => $member_id), ' AND t_type_code LIKE \'POP3%\'');
                 if ($test === null) {
                     return ECOMMERCE_PRODUCT_PROHIBITED;
                 }
@@ -443,11 +443,8 @@ class Hook_ecommerce_email
     protected function _ecom_product_handle_error_taken($prefix, $suffix)
     {
         // Has this email address been taken?
-        $taken = $GLOBALS['SITE_DB']->query_select_value_if_there('eom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('details' => $prefix, 'details2' => '@' . $suffix, 't_type_code' => 'pop3'));
-        if ($taken === null) {
-            $taken = $GLOBALS['SITE_DB']->query_select_value_if_there('eom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details', array('details' => $prefix, 'details2' => '@' . $suffix, 't_type_code' => 'forw'));
-        }
-        if (!is_null($taken)) {
+        $taken = $GLOBALS['SITE_DB']->query_select_value_if_there('eom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'details', array('details' => $prefix, 'details2' => '@' . $suffix), ' AND (t_type_code LIKE \'POP3%\' OR t_type_code LIKE \'FORW%\')');
+        if ($taken !== null) {
             warn_exit(do_lang_tempcode('EMAIL_TAKEN'));
         }
     }
@@ -537,7 +534,7 @@ class Hook_ecommerce_email
             case 'QUOTA':
                 $member_id = intval($purchase_id);
 
-                $pop3_details = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('details', 'details2'), array('member_id' => $member_id, 't_type_code' => 'pop3'), '', 1);
+                $pop3_details = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', array('details', 'details2'), array('member_id' => $member_id), 't_type_code LIKE \'POP3%\'', 1);
                 if (!array_key_exists(0, $pop3_details)) {
                     warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
                 }
