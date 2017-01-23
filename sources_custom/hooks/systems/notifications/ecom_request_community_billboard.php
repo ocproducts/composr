@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_notification_community_billboard_request extends Hook_notification__Staff
+class Hook_notification_ecom_request_community_billboard extends Hook_notification__Staff
 {
     /**
      * Find the initial setting that members have for a notification code (only applies to the member_could_potentially_enable members).

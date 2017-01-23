@@ -38,7 +38,7 @@ class Hook_members_gifts
             return array();
         }
 
-        return array(array('contact', do_lang_tempcode('GIFT_GIFT'), build_url(array('page' => 'purchase', 'type' => 'browse', 'filter' => 'GIFTR_', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('purchase')), 'menu/giftr'));
+        return array(array('contact', do_lang_tempcode('GIFT_GIFT'), build_url(array('page' => 'purchase', 'type' => 'browse', 'category' => 'giftr', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('purchase')), 'menu/giftr'));
     }
 
     /**

@@ -171,7 +171,8 @@ class Hook_ecommerce_custom
         sort_maps_by($rows, '_title');
 
         foreach ($rows as $i => $row) {
-            $description = get_translated_tempcode('ecom_prods_custom', $row, 'c_description');
+            $just_row = db_map_restrict($row, array('id', 'c_description'));
+            $description = get_translated_tempcode('ecom_prods_custom', $just_row, 'c_description');
             if (strpos($description->evaluate(), '<img') === false) {
                 $image_url = find_theme_image('icons/48x48/menu/_generic_spare/' . strval(($i % 8) + 1));
             } else {

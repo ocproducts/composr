@@ -10,6 +10,7 @@
 	{+END}
 {+END}
 
+{$SET,has_products,0}
 {+START,IF_NON_EMPTY,{PRODUCTS}}
 	<div itemprop="significantLinks">
 		{+START,LOOP,PRODUCTS}
@@ -43,11 +44,13 @@
 						</div>
 					</div></div>
 				</div>
+
+				{$SET,has_products,1}
 			{+END}
 		{+END}
 	</div>
 {+END}
-{+START,IF_EMPTY,{PRODUCTS}}
+{+START,IF,{$NOT,{$GET,has_products}}}
 	<p class="nothing_here">
 		{!NO_CATEGORIES}
 	</p>

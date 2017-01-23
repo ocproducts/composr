@@ -179,17 +179,17 @@ class Module_classifieds
             $data_map = get_catalogue_entry_map($row, null, 'CATEGORY', 'DEFAULT', get_param_integer('keep_catalogue_' . $row['c_name'] . '_root', null), null, array(0));
             $ad_title = $data_map['FIELD_0'];
 
-            $purchase_url = build_url(array('page' => 'purchase', 'type' => 'browse', 'filter' => 'CLASSIFIEDS_ADVERT_', 'id' => $row['id']), get_module_zone('purchase'));
+            $purchase_url = build_url(array('page' => 'purchase', 'type' => 'browse', 'category' => 'classifieds', 'id' => $row['id']), get_module_zone('purchase'));
 
             // We'll show all transactions against this ad
-            $transaction_details = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_transactions WHERE t_purchase_id=' . strval($row['id']) . ' AND t_item LIKE \'' . db_encode_like('CLASSIFIEDS\_ADVERT\_%') . '\'');
+            $transaction_details = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_transactions WHERE t_purchase_id=' . strval($row['id']) . ' AND t_type_code LIKE \'' . db_encode_like('CLASSIFIEDS\_ADVERT\_%') . '\'');
             $_transaction_details = array();
             foreach ($transaction_details as $t) {
-                list($found,) = find_product_details($t['t_item']);
+                list($found,) = find_product_details($t['t_type_code']);
                 if ($found !== null) {
                     $item_title = $found['item_name'];
                 } else {
-                    $item_title = $t['t_item'];
+                    $item_title = $t['t_type_code'];
                 }
 
                 $_transaction_details[] = array(

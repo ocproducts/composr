@@ -63,8 +63,10 @@ class Hook_ecommerce_disastr
         $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null, 'ORDER BY name');
         foreach ($rows as $disease) {
             $image_url = $disease['image'];
-            if (url_is_local($image_url)) {
-                $image_url = get_custom_base_url() . '/' . $image_url;
+            if ($image_url != '') {
+                if (url_is_local($image_url)) {
+                    $image_url = get_custom_base_url() . '/' . $image_url;
+                }
             }
 
             $products['CURE_' . strval($disease['id'])] = array(

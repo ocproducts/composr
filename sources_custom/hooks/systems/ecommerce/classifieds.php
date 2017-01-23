@@ -98,13 +98,9 @@ class Hook_ecommerce_classifieds
     {
         $purchase_id = get_param_string('id', null);
 
-        if ($must_be_listed) {
-            if ($purchase_id === null) {
-                return ECOMMERCE_PRODUCT_DISABLED; // Can't do from the 'choose' screen, must be linked from classifieds module
-            }
-        }
-
-        if ($purchase_id !== null) {
+        if ($purchase_id == null) {
+            return ECOMMERCE_PRODUCT_DISABLED; // Can't do from the 'choose' screen, must be linked from classifieds module
+        } else {
             $entry_id = intval($purchase_id);
             $validated = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'ce_validated', array('id' => $entry_id));
 

@@ -71,7 +71,10 @@ class Hook_ecommerce_usergroup
             if (get_forum_type() == 'cns') {
                 $image_url = $db->query_select_value_if_there('f_groups', 'g_rank_image', array('id' => $sub['id']));
                 if ($image_url === null) {
-                    continue;
+                    continue; // Missing
+                }
+                if ($image_url != '') {
+                    $image_url = find_theme_image($image_url);
                 }
             }
 

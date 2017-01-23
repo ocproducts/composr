@@ -63,7 +63,6 @@ table.cart_payment_summary .price {
 	color: {$GET,slightly_seeded_text};
 	font-size: 0.9em;
 	margin-top: 1em;
-	margin-left: 1em;
 }
 
 .checkout_text input {

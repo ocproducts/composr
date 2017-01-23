@@ -127,7 +127,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
     $more_params .= ':type_code=' . cms_url_encode($type_code);
 
     $message = method_exists($product_object, 'get_message') ? $product_object->get_message($type_code) : null;
-    $has_message = ($message !== null);
+    $has_message = ($message !== null) && (!$message->is_empty());
     if (($has_message) && (get_param_integer('include_message', 0) == 0)) {
         $steps[] = array('_SELF:_SELF:message' . ':' . $more_params, 'message', do_lang_tempcode('ECOM_PURCHASE_STAGE_message'));
     }
@@ -366,6 +366,7 @@ function find_all_products($site_lang = false)
             $products[$type_code] = $details;
         }
     }
+    sort_maps_by($products, 'item_name');
     return $products;
 }
 

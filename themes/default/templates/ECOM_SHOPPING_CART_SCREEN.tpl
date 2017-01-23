@@ -18,11 +18,11 @@
 		<div class="buttons_group cart_update_buttons" itemprop="significantLinks">
 			{$,Put first, so it associates with the enter key}
 			{+START,IF_NON_EMPTY,{PRODUCT_IDS}}
-				<input id="cart_update_button" class="buttons__cart_update button_screen{+START,IF,{$JS_ON}} button_faded{+END}" type="submit" name="update" onclick="return update_cart('{PRODUCT_IDS;*}');" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
+				<input id="cart_update_button" class="buttons__cart_update button_screen_item{+START,IF,{$JS_ON}} button_faded{+END}" type="submit" name="update" onclick="return update_cart('{PRODUCT_IDS;*}');" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
 			{+END}
 
 			{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}
-				<input class="button_screen buttons__cart_empty" type="submit" onclick="return confirm_empty('{!EMPTY_CONFIRM}','{EMPTY_CART_URL;*}',this.form);" value="{!EMPTY_CART}" />
+				<input class="button_screen_item buttons__cart_empty" type="submit" onclick="return confirm_empty('{!EMPTY_CONFIRM}','{EMPTY_CART_URL;*}',this.form);" value="{!EMPTY_CART}" />
 			{+END}
 		</div>
 
@@ -30,7 +30,7 @@
 			<input type="hidden" name="product_ids" id="product_ids" value="{PRODUCT_IDS*}" />
 
 			{+START,IF_NON_EMPTY,{CONTINUE_SHOPPING_URL}}
-				<a class="button_screen menu__rich_content__catalogues__products" href="{CONTINUE_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
+				<a class="button_screen_item menu__rich_content__catalogues__products" href="{CONTINUE_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
 			{+END}
 		</div>
 	</div>

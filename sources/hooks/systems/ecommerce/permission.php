@@ -269,7 +269,8 @@ class Hook_ecommerce_permission
         sort_maps_by($rows, '_title');
 
         foreach ($rows as $row) {
-            $description = get_translated_tempcode('ecom_prods_permissions', $row, 'p_description');
+            $just_row = db_map_restrict($row, array('id', 'p_description'));
+            $description = get_translated_tempcode('ecom_prods_permissions', $just_row, 'p_description');
             if (strpos($description->evaluate(), '<img') === false) {
                 $image_url = find_theme_image('icons/48x48/menu/adminzone/security/permissions/privileges');
             } else {

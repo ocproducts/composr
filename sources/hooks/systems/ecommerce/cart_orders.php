@@ -117,7 +117,7 @@ class Hook_ecommerce_cart_orders
      */
     public function handle_needed_fields($type_code)
     {
-        return array(str_replace('#', '', $type_code), null);
+        return array(preg_replace('#^.*\##', '', $type_code), null);
     }
 
     /**

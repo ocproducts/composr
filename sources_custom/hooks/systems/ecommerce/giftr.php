@@ -67,9 +67,11 @@ class Hook_ecommerce_giftr
         $rows = $GLOBALS['SITE_DB']->query_select('giftr g', array('*', '(SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'members_gifts m WHERE m.gift_id=g.id) AS popularity'), $map, 'ORDER BY popularity DESC');
         $gifts = array();
         foreach ($rows as $gift) {
-            $image_url = '';
-            if (is_file(get_custom_file_base() . '/' . rawurldecode($gift['image']))) {
-                $image_url = get_custom_base_url() . '/' . $gift['image'];
+            $image_url = $gift['image'];
+            if ($image_url != '') {
+                if (url_is_local($image_url)) {
+                    $image_url = get_custom_base_url() . '/' . $image_url;
+                }
             }
 
             $products['GIFTR_' . strval($gift['id'])] = array(
