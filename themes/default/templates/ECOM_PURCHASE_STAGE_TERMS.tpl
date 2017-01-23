@@ -5,9 +5,11 @@
 
 	<p>{!AGREEMENT_PROCESS}</p>
 
-	<p class="lonely_label">{!AGREEMENT}:</p>
+	<div class="agreement_box">
+		<p class="lonely_label">{!AGREEMENT}:</p>
 
-	<div class="purchase_terms">{TERMS*}</div>
+		<div class="purchase_terms">{TERMS*}</div>
+	</div>
 
 	<p>
 		<input type="checkbox" id="confirm" name="confirm" value="1" onclick="document.getElementById('proceed_button').disabled=!this.checked;" /><label for="confirm">{!I_AGREE}</label>

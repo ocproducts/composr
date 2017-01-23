@@ -361,7 +361,11 @@ class Module_purchase
 
                 $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type), '1', '6'));
             } else {
-                breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_category'));
+                $hook = get_param_string('category', null);
+                require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
+                $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+                $product_category = $product_object->get_product_category();
+                breadcrumb_set_self($product_category['category_name']);
                 breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOM_PURCHASE_STAGE_browse'))));
 
                 $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type), '2', '6'));
@@ -475,15 +479,31 @@ class Module_purchase
      * @param  Tempcode $title The title to use.
      * @param  ?mixed $url URL (null: no next URL).
      * @param  boolean $get Whether it is a GET form
+     * @param  Tempcode $submit_name Submit button label to use (null: default)
+     * @param  string $icon CSS icon label to use
      * @return Tempcode Wrapped.
      */
-    protected function _wrap($content, $title, $url, $get = false)
+    protected function _wrap($content, $title, $url, $get = false, $submit_name = null, $icon = 'buttons__proceed')
     {
         if ($url === null) {
             $url = '';
         }
+
         require_javascript('checking');
-        return do_template('ECOM_PURCHASE_SCREEN', array('_GUID' => 'a32c99acc28e8ad05fd9b5e2f2cda029', 'GET' => $get ? true : null, 'TITLE' => $title, 'CONTENT' => $content, 'URL' => $url));
+
+        if ($submit_name === null) {
+            $submit_name = do_lang_tempcode('PROCEED');
+        }
+
+        return do_template('ECOM_PURCHASE_SCREEN', array(
+            '_GUID' => 'a32c99acc28e8ad05fd9b5e2f2cda029',
+            'TITLE' => $title,
+            'CONTENT' => $content,
+            'GET' => $get ? true : null,
+            'URL' => $url,
+            'SUBMIT_NAME' => $submit_name,
+            'ICON' => $icon,
+        ));
     }
 
     /**
@@ -493,8 +513,6 @@ class Module_purchase
      */
     public function choose()
     {
-        require_code('form_templates');
-
         $filter = get_param_string('filter', '');
         $type_filter = get_param_integer('type_filter', null);
         $use_categorisation = (get_param_integer('use_categorisation', 1) == 1);
@@ -736,8 +754,6 @@ class Module_purchase
      */
     public function message()
     {
-        require_code('form_templates');
-
         $type_code = get_param_string('type_code');
 
         $text = new Tempcode();
@@ -783,8 +799,6 @@ class Module_purchase
      */
     public function terms()
     {
-        require_code('form_templates');
-
         $type_code = get_param_string('type_code');
 
         list($details, , $product_object) = find_product_details($type_code);
@@ -826,8 +840,6 @@ class Module_purchase
      */
     public function details()
     {
-        require_code('form_templates');
-
         if (get_param_integer('accepted', 0) == 1) {
             attach_message(do_lang_tempcode('LICENCE_WAS_ACCEPTED'), 'inform');
         }
@@ -845,6 +857,7 @@ class Module_purchase
         $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'details');
         $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => true), true);
 
+        require_code('form_templates');
         list($fields, $text, $javascript) = $product_object->get_needed_fields($type_code);
 
         if (get_param_integer('include_message', 0) == 1) {
@@ -855,6 +868,10 @@ class Module_purchase
             if (method_exists($product_object, 'get_message')) {
                 $text->attach($product_object->get_message($type_code));
             }
+        }
+
+        if ($text === null) {
+            $text = do_lang_tempcode('FILL_IN_PRODUCT_OPTIONS');
         }
 
         if ($fields === null) {
@@ -984,6 +1001,9 @@ class Module_purchase
 
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
             $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'points' => 1, 'purchase_id' => $purchase_id), '_SELF', array('include_message' => null), true);
+            $submit_name = do_lang_tempcode('MAKE_PAYMENT');
+            require_css('points');
+            $icon = 'menu__social__points';
 
         } elseif (perform_local_payment()) { // Handle the transaction internally
             if ($confirmation_box === null) {
@@ -1022,6 +1042,8 @@ class Module_purchase
 
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
             $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => null), true);
+            $submit_name = do_lang_tempcode('MAKE_PAYMENT');
+            $icon = 'menu__rich_content__ecommerce__purchase';
 
         } else { // Pass through to the gateway's HTTP server
             if ($confirmation_box === null) {
@@ -1056,9 +1078,11 @@ class Module_purchase
             ));
 
             $finish_url = null; // The embedded button will take the user through to the payment gateway
+            $submit_name = null;
+            $icon = 'buttons__proceed';
         }
 
-        return $this->_wrap($result, $this->title, $finish_url);
+        return $this->_wrap($result, $this->title, $finish_url, false, $submit_name, $icon);
     }
 
     /**
@@ -1100,6 +1124,7 @@ class Module_purchase
                     'TITLE' => $this->title,
                     'TYPE_CODE' => $type_code,
                     'MESSAGE' => $message,
+                    'SUCCESS' => false,
                 ));
                 return $this->_wrap($result, $this->title, null);
             }
@@ -1179,6 +1204,7 @@ class Module_purchase
             'TITLE' => $this->title,
             'TYPE_CODE' => $type_code,
             'MESSAGE' => $message,
+            'SUCCESS' => true,
         ));
         return $this->_wrap($result, $this->title, null);
     }

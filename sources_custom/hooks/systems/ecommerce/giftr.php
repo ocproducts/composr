@@ -123,8 +123,6 @@ class Hook_ecommerce_giftr
     {
         require_lang('giftr');
 
-        require_code('form_templates');
-
         $fields = new Tempcode();
         $fields->attach(form_input_username(do_lang_tempcode('TO_USERNAME'), do_lang_tempcode('DESCRIPTION_MEMBER_TO_GIVE'), 'username', get_param_string('username', ''), true));
         $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_GIFT_MESSAGE'), 'gift_message', '', true));

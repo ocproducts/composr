@@ -325,8 +325,6 @@ class Hook_ecommerce_email
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
-
         $member_id = get_member();
 
         switch (preg_replace('#\_.*$#', '', $type_code)) {

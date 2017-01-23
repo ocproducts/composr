@@ -778,6 +778,8 @@ class Hook_addon_registry_ecommerce
                 'TITLE' => lorem_title(),
                 'CONTENT' => $fields,
                 'URL' => placeholder_url(),
+                'SUBMIT_NAME' => lorem_phrase(),
+                'ICON' => 'buttons__proceed',
             )), null, '', true)
         );
     }
@@ -1063,6 +1065,7 @@ class Hook_addon_registry_ecommerce
                 'TITLE' => lorem_title(),
                 'TYPE_CODE' => lorem_word(),
                 'MESSAGE' => lorem_phrase(),
+                'SUCCESS' => true,
             )), null, '', true)
         );
     }

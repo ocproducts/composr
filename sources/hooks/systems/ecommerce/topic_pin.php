@@ -110,8 +110,6 @@ class Hook_ecommerce_topic_pin
         require_lang('ecommerce');
         require_lang('cns');
 
-        require_code('form_templates');
-
         $fields = new Tempcode();
         if (get_forum_type() == 'cns') {
             $set_name = 'topic';

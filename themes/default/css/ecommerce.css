@@ -11,8 +11,17 @@
 	text-align: center;
 }
 
+.agreement_box {
+	max-height: 25em;
+	border: 1px solid {$GET,pale_border};
+	padding: 0.5em;
+	overflow: auto;
+}
+.agreement_box .lonely_label {
+	font-weight: bold;
+	margin-top: 0;
+}
 .purchase_terms {
-	width: 100%;
 	font-family: Courier, monospace;
 	white-space: pre-wrap !important;
 	margin: 1em 0;

@@ -110,7 +110,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
 
     $more_params = '';
     foreach ($_GET as $key => $val) {
-        if ((is_string($val)) && (!in_array($key, array('page', 'type', 'type_code', 'category')))) {
+        if ((is_string($val)) && (!in_array($key, array('page', 'type', 'category', 'type_code', 'purchase_id', 'points', 'cancel', 'from', 'message')))) {
             $more_params .= ':' . $key . '=' . cms_url_encode($val);
         }
     }
@@ -119,7 +119,8 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
 
     if ($consider_categories) {
         if (method_exists($product_object, 'get_product_category')) {
-            $steps[] = array('_SELF:_SELF:browse:category=' . preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object)) . ':' . $more_params, 'browse', do_lang_tempcode('ECOM_PURCHASE_STAGE_category'));
+            $product_category = $product_object->get_product_category();
+            $steps[] = array('_SELF:_SELF:browse:category=' . preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object)) . ':' . $more_params, 'browse', $product_category['category_name']);
         }
     }
 
@@ -137,10 +138,20 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
         $steps[] = array('_SELF:_SELF:terms' . ':' . $more_params, 'terms', do_lang_tempcode('ECOM_PURCHASE_STAGE_terms'));
     }
 
-    list($fields) = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : array(null);
-    $has_details = ($fields !== null);
+    if (method_exists($product_object, 'get_needed_fields')) {
+        require_code('form_templates');
+        list($fields) = $product_object->get_needed_fields($type_code);
+        $has_details = ($fields !== null);
+    } else {
+        $has_details = false;
+    }
     if ($has_details) {
         $steps[] = array('_SELF:_SELF:details' . ':' . $more_params, 'details', do_lang_tempcode('ECOM_PURCHASE_STAGE_details'));
+    }
+
+    $purchase_id = get_param_string('purchase_id', null);
+    if ($purchase_id !== null) {
+        $more_params .= ':purchase_id=' . cms_url_encode($purchase_id);
     }
 
     $steps[] = array('_SELF:_SELF:pay' . ':' . $more_params, 'pay', do_lang_tempcode('ECOM_PURCHASE_STAGE_pay'));

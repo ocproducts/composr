@@ -135,8 +135,6 @@ class Hook_ecommerce_community_billboard
     {
         require_lang('community_billboard');
 
-        require_code('form_templates');
-
         $fields = new Tempcode();
         $fields->attach(form_input_line_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('MESSAGE_DESCRIPTION'), 'message', '', true));
 
