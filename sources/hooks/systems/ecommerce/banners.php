@@ -40,9 +40,6 @@ class Hook_ecommerce_banners
             'category_name' => do_lang('BANNER_ADS', integer_format(intval(get_option('initial_banner_hits')))),
             'category_description' => do_lang_tempcode('BANNER_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_banner_hits'))))),
             'category_image_url' => find_theme_image('icons/48x48/menu/cms/banners'),
-
-            'supports_money' => false,
-            'supports_points' => true,
         );
     }
 
@@ -130,7 +127,7 @@ class Hook_ecommerce_banners
             $products['BANNER_UPGRADE_IMPORTANCE'] = array(
                 'item_name' => do_lang('BANNER_ADD_IMPORTANCE', integer_format($importance), $percentage, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => do_lang_tempcode('BANNER_ADD_IMPORTANCE_DESCRIPTION', escape_html(integer_format($importance)), escape_html($percentage)),
-                'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/choose'),
+                'item_image_url' => find_theme_image('icons/48x48/buttons/choose'),
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
@@ -172,12 +169,15 @@ class Hook_ecommerce_banners
 
         $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'banners'));
 
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $banner_name));
-        if ($test === null) {
-            // Cleanup an inconsistency
-            $GLOBALS['SITE_DB']->query_delete('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'banners'), '', 1);
+        if ($banner_name !== null) {
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'name', array('name' => $banner_name));
+            if ($test === null) {
+                // Cleanup an inconsistency
+                $sales_id = $GLOBALS['SITE_DB']->query_select_value('ecom_sales s JOIN ' . get_table_prefix() . 'transactions t ON t.id=s.transaction_id', 's.id', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'banners'));
+                $GLOBALS['SITE_DB']->query_delete('ecom_sales', array('id' => $sales_id), '', 1);
 
-            $banner_name = null;
+                $banner_name = null;
+            }
         }
 
         switch (preg_replace('#\_\d+$#', '', $type_code)) {

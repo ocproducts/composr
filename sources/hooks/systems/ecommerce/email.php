@@ -165,9 +165,6 @@ class Hook_ecommerce_email
             'category_name' => do_lang('EMAIL_ACCOUNTS', integer_format(intval(get_option('initial_quota')))),
             'category_description' => do_lang_tempcode('EMAIL_TYPES_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_quota'))))),
             'category_image_url' => find_theme_image('icons/48x48/contact_methods/email'),
-
-            'supports_money' => false,
-            'supports_points' => true,
         );
     }
 

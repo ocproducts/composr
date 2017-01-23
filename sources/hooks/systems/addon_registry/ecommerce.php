@@ -812,10 +812,130 @@ class Hook_addon_registry_ecommerce
      */
     public function tpl_preview__purchase_stage_choose()
     {
+        $products = array();
+        for ($i = 0; $i <= 5; $i++) {
+            $map = array(
+                'ITEM_NAME' => lorem_phrase(),
+                'DESCRIPTION' => lorem_paragraph(),
+                'URL' => placeholder_url(),
+                'IMAGE_URL' => placeholder_image_url(),
+                'CAN_PURCHASE' => true,
+                'IS_CATEGORY' => false,
+            );
+
+            switch ($i) {
+                case 0: // unavailable
+                    $_discounted_price = do_lang('NA');
+                    $written_price = do_lang_tempcode('NA_EM');
+
+                    $map += array(
+                        'WRITTEN_PRICE' => $written_price,
+
+                        'FULL_PRICE' => '0.00 USD',
+                        'DISCOUNTED_PRICE' => $_discounted_price,
+
+                        '_PRICE' => '0.00',
+                        '_CURRENCY' => 'USD',
+                    );
+                    break;
+
+                case 1:
+                    $_full_price = currency_convert(0.0, 'USD', null, true);
+                    $_discounted_price = do_lang('NA');
+                    $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE');
+
+                    $map += array(
+                        'WRITTEN_PRICE' => $written_price,
+
+                        'FULL_PRICE' => $_full_price,
+                        'DISCOUNTED_PRICE' => $_discounted_price,
+
+                        '_PRICE' => '0.00',
+                        '_CURRENCY' => 'USD',
+                        '_CURRENCY' => 'USD',
+                        '_PRICE_POINTS' => null,
+                        '_DISCOUNT_POINTS__NUM_POINTS' => null,
+                        '_DISCOUNT_POINTS__PRICE_REDUCTION' => null,
+                    );
+                    break;
+
+                case 2:
+                    $_full_price = currency_convert(4.56, 'USD', null, true);
+                    $_discounted_price = currency_convert(3.45, 'USD', null, true);
+                    $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT', $_discounted_price, $_full_price, array(escape_html(integer_format(5))));
+
+                    $map += array(
+                        'WRITTEN_PRICE' => $written_price,
+
+                        'FULL_PRICE' => $_full_price,
+                        'DISCOUNTED_PRICE' => $_discounted_price,
+
+                        '_PRICE' => '3.45',
+                        '_CURRENCY' => 'USD',
+                        '_PRICE_POINTS' => null,
+                        '_DISCOUNT_POINTS__NUM_POINTS' => '5',
+                        '_DISCOUNT_POINTS__PRICE_REDUCTION' => '1.11',
+                    );
+                    break;
+
+                case 3:
+                    $_full_price = currency_convert(1.23, 'USD', null, true);
+                    $_discounted_price = currency_convert(0.0, 'USD', null, true);
+                    $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE_WITH_POINTS', $_discounted_price, $_full_price, array(escape_html(integer_format(5))));
+
+                    $map += array(
+                        'WRITTEN_PRICE' => $written_price,
+
+                        'FULL_PRICE' => $_full_price,
+                        'DISCOUNTED_PRICE' => $_discounted_price,
+
+                        '_PRICE' => '1.23',
+                        '_CURRENCY' => 'USD',
+                        '_PRICE_POINTS' => '5',
+                        '_DISCOUNT_POINTS__NUM_POINTS' => null,
+                        '_DISCOUNT_POINTS__PRICE_REDUCTION' => null,
+                    );
+                    break;
+
+                case 4:
+                    $_full_price = currency_convert(1.23, 'USD', null, true);
+                    $_discounted_price = do_lang('NA');
+                    $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FULL_PRICE', $_full_price);
+
+                    $map += array(
+                        'WRITTEN_PRICE' => $written_price,
+
+                        'FULL_PRICE' => $_full_price,
+                        'DISCOUNTED_PRICE' => $_discounted_price,
+
+                        '_PRICE' => '1.23',
+                        '_CURRENCY' => 'USD',
+                        '_PRICE_POINTS' => null,
+                        '_DISCOUNT_POINTS__NUM_POINTS' => null,
+                        '_DISCOUNT_POINTS__PRICE_REDUCTION' => null,
+                    );
+                    break;
+
+                case 5: // category
+                    $map['IS_CATEGORY'] = false,
+                    break;
+            }
+
+            $products[] = $map;
+        }
+
         return array(
             lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_CHOOSE', array(
                 'TITLE' => lorem_title(),
-                'FIELDS' => placeholder_fields(),
+                'PRODUCTS' => $products,
+
+                'CATEGORY' => null,
+                'NUM_PRODUCTS_IN_CATEGORY' => '',
+                'MUST_SUPPORT_MONEY' => false,
+                'MUST_SUPPORT_POINTS' => false,
+
+                'POINTS_INVOLVED' => true,
+                'MONEY_INVOLVED' => true,
             )), null, '', true)
         );
     }

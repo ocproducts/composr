@@ -82,43 +82,72 @@ function init__ecommerce()
  */
 function get_next_purchase_step($product_object, $type_code, $step_before)
 {
-    if ($step_before == 'browse') {
-        $message = method_exists($product_object, 'get_message') ? $product_object->get_message($type_code) : null;
-        $has_message = ($message !== null);
+    $steps = get_product_purchase_steps($product_object, $type_code, false);
+    foreach ($steps as $i => $step) {
+        if ($step[1] == $step_before) {
+            if (!isset($steps[$i + 1])) {
+                return null;
+            }
 
-        if (($has_message) && (get_param_integer('include_message', 0) == 0)) {
-            return 'message';
-        } else {
-            $step_before = 'message'; // Let it roll on
+            return $steps[$i + 1][1];
         }
     }
-    if ($step_before == 'message') {
-        $terms = method_exists($product_object, 'get_terms') ? $product_object->get_terms($type_code) : '';
-        $has_terms = ($terms != '');
 
-        if ($has_terms) {
-            return 'terms';
-        } else {
-            $step_before = 'terms'; // Let it roll on
-        }
-    }
-    if ($step_before == 'terms') {
-        list($fields) = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : array(null);
-        $has_details = ($fields !== null);
-
-        if ($has_details) {
-            return 'details';
-        } else {
-            $step_before = 'details'; // Let it roll on
-        }
-    }
-    if ($step_before == 'details') {
-        return 'pay';
-    }
-    if ($step_before == 'pay') {
-        return 'finish';
-    }
     return null;
+}
+
+/**
+ * Find the purchasing module breadcrumb steps for a product.
+ *
+ * @param object $product_object The product object.
+ * @param ID_TEXT $type_code Type code for product.
+ * @param boolean $consider_categories Whether to consider a category screen.
+ * @return array A structure describing the steps.
+ */
+function get_product_purchase_steps($product_object, $type_code, $consider_categories)
+{
+    $steps = array();
+
+    $more_params = '';
+    foreach ($_GET as $key => $val) {
+        if ((is_string($val)) && (!in_array($key, array('page', 'type', 'type_code', 'category')))) {
+            $more_params .= ':' . $key . '=' . cms_url_encode($val);
+        }
+    }
+
+    $steps[] = array('_SELF:_SELF:browse' . $more_params, 'browse', do_lang_tempcode('ECOM_PURCHASE_STAGE_browse'));
+
+    if ($consider_categories) {
+        if (method_exists($product_object, 'get_product_category')) {
+            $steps[] = array('_SELF:_SELF:browse:category=' . preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object)) . ':' . $more_params, 'browse', do_lang_tempcode('ECOM_PURCHASE_STAGE_category'));
+        }
+    }
+
+    $more_params .= ':type_code=' . cms_url_encode($type_code);
+
+    $message = method_exists($product_object, 'get_message') ? $product_object->get_message($type_code) : null;
+    $has_message = ($message !== null);
+    if (($has_message) && (get_param_integer('include_message', 0) == 0)) {
+        $steps[] = array('_SELF:_SELF:message' . ':' . $more_params, 'message', do_lang_tempcode('ECOM_PURCHASE_STAGE_message'));
+    }
+
+    $terms = method_exists($product_object, 'get_terms') ? $product_object->get_terms($type_code) : '';
+    $has_terms = ($terms != '');
+    if ($has_terms) {
+        $steps[] = array('_SELF:_SELF:terms' . ':' . $more_params, 'terms', do_lang_tempcode('ECOM_PURCHASE_STAGE_terms'));
+    }
+
+    list($fields) = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : array(null);
+    $has_details = ($fields !== null);
+    if ($has_details) {
+        $steps[] = array('_SELF:_SELF:details' . ':' . $more_params, 'details', do_lang_tempcode('ECOM_PURCHASE_STAGE_details'));
+    }
+
+    $steps[] = array('_SELF:_SELF:pay' . ':' . $more_params, 'pay', do_lang_tempcode('ECOM_PURCHASE_STAGE_pay'));
+
+    $steps[] = array('_SELF:_SELF:finish' . ':' . $more_params, 'finish', do_lang_tempcode('ECOM_PURCHASE_STAGE_finish'));
+
+    return $steps;
 }
 
 /**
@@ -308,7 +337,7 @@ function send_invoice_notification($member_id, $id)
  * Find all products, except ones from hooks that might have too many to list (so don't rely on this for important backend tasks).
  *
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
- * @return array A list of maps of product details.
+ * @return array A list of maps of product details. 'product_object' is added to each detail map.
  */
 function find_all_products($site_lang = false)
 {
@@ -322,7 +351,7 @@ function find_all_products($site_lang = false)
         }
         $_products = $product_object->get_products($site_lang);
         foreach ($_products as $type_code => $details) {
-            $details[] = $product_object;
+            $details['product_object'] = $product_object;
             $products[$type_code] = $details;
         }
     }
@@ -982,7 +1011,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     }
 
     // Call actualiser code
-    if (method_exists($found, 'actualiser')) {
+    if (method_exists($product_object, 'actualiser')) {
         $product_object->actualiser($type_code, $purchase_id, $found);
     }
 
@@ -1055,7 +1084,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
         if ((available_points($member_id) >= $details['price_points']) || ($details['price'] === null/*has to be points as no monetary-price*/)) {
             return array(
                 0.0,
-                $details['discount_points__num_points'],
+                $details['price_points'],
                 false
             );
         }

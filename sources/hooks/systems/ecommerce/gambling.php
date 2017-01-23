@@ -36,9 +36,6 @@ class Hook_ecommerce_gambling
             'category_name' => do_lang('GAMBLING'),
             'category_description' => do_lang_tempcode('GAMBLING_DESCRIPTION'),
             'category_image_url' => find_theme_image('icons/48x48/menu/_generic_spare/features'),
-
-            'supports_money' => false,
-            'supports_points' => true,
         );
     }
 

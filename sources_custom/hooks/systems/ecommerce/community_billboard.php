@@ -36,9 +36,6 @@ class Hook_ecommerce_community_billboard
             'category_name' => do_lang('COMMUNITY_BILLBOARD_MESSAGE'),
             'category_description' => do_lang_tempcode('COMMUNITY_BILLBOARD_MESSAGE_DESCRIPTION'),
             'category_image_url' => find_theme_image('icons/48x48/menu/adminzone/audit/community_billboard'),
-
-            'supports_money' => false,
-            'supports_points' => true,
         );
     }
 

@@ -28,12 +28,13 @@ URL parameters are follows...
  include_message = 0|1 (merge the message step's message into the next available non-message screen, allows skipping a screen)
  redirect (a URL to redirect to after the finish screen)
 
-'choose' screen only
+'browse' (choose) screen only
  filter (a stem filter on product codenames)
  type_filter (an exact string match filter on product codenames)
- supports_money = 0|1 (whether to only show products that take money payment)
- supports_points = 0|1 (whether to only show products that take points payment)
+ must_support_money = 0|1 (whether to only show products that take money payment)
+ must_support_points = 0|1 (whether to only show products that take points payment)
  use_categorisation = 0|1 (whether to use categorisation to fold products together, for hooks that define that)
+ category (a particular category to filter to)
 
 'finish' screen only
  message (a message passed from a payment gateway)
@@ -183,8 +184,9 @@ class Module_purchase
         if (($upgrade_from === null) || ($upgrade_from < 7)) {
             // This is used to store purchase details where there's too much data not stored anywhere else to use directly as a purchase ID
             $GLOBALS['SITE_DB']->create_table('ecom_sales_expecting', array(
-                'id' => '*AUTO_LINK', // Used as a unique purchase ID
-                'details' => 'LONG_TEXT', // JSON encoded data
+                'id' => '*AUTO', // Used as a unique purchase ID
+                'e_details' => 'LONG_TEXT', // JSON encoded data
+                'e_time' => 'TIME',
             ));
         }
 
@@ -225,7 +227,7 @@ class Module_purchase
                 $GLOBALS['SITE_DB']->rename_table('pstore_permissions', 'ecom_prods_permissions');
                 $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
 
-                $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'transaction_id', 'AUTO_LINK', db_get_first_id());
+                $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'transaction_id', 'ID_TEXT', '');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'memberid', 'MEMBER', 'member_id');
                 $sales = $GLOBALS['SITE_DB']->query_select('ecom_sales', array('*'));
                 foreach ($sales as $sale) {
@@ -256,7 +258,9 @@ class Module_purchase
                             $type_code = 'topic_pin';
                             break;
                     }
-                    $transaction_id = $GLOBALS['SITE_DB']->query_insert('ecom_transactions', array(
+                    $transaction_id = 'manual-' . substr(uniqid('', true), 0, 10);
+                    $GLOBALS['SITE_DB']->query_insert('ecom_transactions', array(
+                        'id' => $transaction_id,
                         't_type_code' => $type_code,
                         't_purchase_id' => strval($sale['id']),
                         't_status' => 'Completed',
@@ -287,7 +291,7 @@ class Module_purchase
                 'member_id' => 'MEMBER',
                 'details' => 'SHORT_TEXT',
                 'details2' => 'SHORT_TEXT',
-                'transaction_id' => 'AUTO_LINK',
+                'transaction_id' => 'ID_TEXT',
             ));
 
             // Custom
@@ -349,14 +353,60 @@ class Module_purchase
         $type = get_param_string('type', 'browse');
 
         require_lang('ecommerce');
-
-        $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type)));
-        breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type));
+        require_code('ecommerce');
 
         if ($type == 'browse') {
-            breadcrumb_set_self(do_lang_tempcode('PURCHASING'));
-        } else {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('PURCHASING'))));
+            if (get_param_string('category', null) === null) {
+                breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_browse'));
+
+                $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type), '1', '6'));
+            } else {
+                breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_category'));
+                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOM_PURCHASE_STAGE_browse'))));
+
+                $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type), '2', '6'));
+            }
+        }
+        if ($type == 'message') {
+            breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_message'));
+        }
+        if ($type == 'terms') {
+            breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_terms'));
+        }
+        if ($type == 'details') {
+            breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_details'));
+        }
+        if ($type == 'pay') {
+            breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_pay'));
+        }
+        if ($type == 'finish') {
+            if (get_param_integer('cancel', 0) == 1) {
+                breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_cancel'));
+            } else {
+                breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_finish'));
+            }
+        }
+
+        if ($type != 'browse') {
+            $type_code = get_param_string('type_code', null);
+            if ($type_code !== null) {
+                $breadcrumbs = array();
+                list(, , $product_object) = find_product_details($type_code);
+                $steps = get_product_purchase_steps($product_object, $type_code, true);
+                $step_at = 0;
+                foreach ($steps as $i => $step) {
+                    if (($step[1] == $type) && (($step[1] != 'browse') || ($steps[$i + 1][1] != 'browse') || (get_param_string('category', null) === null))) {
+                        $step_at = $i;
+                        break;
+                    }
+                    $breadcrumbs[] = array($step[0], $step[2]);
+                }
+                breadcrumb_set_parents($breadcrumbs);
+
+                $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type), escape_html(integer_format($step_at + 1)), escape_html(integer_format(count($steps)))));
+            } else {
+                $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type), '?', '6'));
+            }
         }
 
         return null;
@@ -371,9 +421,9 @@ class Module_purchase
     {
         @ignore_user_abort(true); // Must keep going till completion
 
-        require_code('ecommerce');
         require_lang('config');
         require_css('ecommerce');
+        require_code('currency');
 
         global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
         $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = null;
@@ -387,7 +437,8 @@ class Module_purchase
 
         // Recognise join operations
         $new_username = post_param_string('username', null);
-        if ($new_username !== null) {
+        $new_password = post_param_string('password', null);
+        if (($new_username !== null) && ($new_password !== null)) {
             require_code('cns_join');
             list($messages) = cns_join_actual(true, false, false, true, false, false, false, true);
             if (!$messages->is_empty()) {
@@ -436,22 +487,114 @@ class Module_purchase
     }
 
     /**
-     * Choose product step.
+     * Choose-product step.
      *
      * @return Tempcode The result of execution.
      */
     public function choose()
     {
-        $url = build_url(array('page' => '_SELF', 'type' => 'message'), '_SELF', null, true); // TODO, direct to best step
-
         require_code('form_templates');
 
-        $list = new Tempcode();
         $filter = get_param_string('filter', '');
         $type_filter = get_param_integer('type_filter', null);
-        $products = find_all_products();
+        $use_categorisation = (get_param_integer('use_categorisation', 1) == 1);
+        $category = get_param_string('category', null);
+        $must_support_money = (get_param_integer('must_support_money', 0) == 1);
+        $must_support_points = (get_param_integer('must_support_points', 0) == 1);
 
-        foreach ($products as $type_code => $details) {
+        $money_involved = false;
+        $points_involved = false;
+
+        $_products = find_all_products();
+
+        $products = array();
+
+        $categories_done = array();
+
+        foreach ($_products as $type_code => $details) {
+            $product_object = $details['product_object'];
+
+            // Category folding? ...
+
+            if (($category === null) && ($use_categorisation)) {
+                $this_category = preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object));
+
+                if (isset($categories_done[$this_category])) {
+                    continue;
+                }
+
+                if (method_exists($product_object, 'get_product_category')) {
+                    $product_category = $product_object->get_product_category();
+                    $categories_done[$this_category] = true;
+
+                    if ($product_category === null) {
+                        continue;
+                    }
+
+                    $image_url = $product_category['category_image_url'];
+                    if ($image_url != '') {
+                        if (url_is_local($image_url)) {
+                            $image_url = get_custom_base_url() . '/' . $image_url;
+                        }
+                    }
+
+                    $url = build_url(array('page' => '_SELF', 'type' => 'browse', 'category' => $this_category), '_SELF', null, true);
+                    $can_purchase = false;
+                    $supports_money = false;
+                    $supports_points = false;
+                    $num_products_in_category = 0;
+                    foreach ($_products as $_type_code => $_details) {
+                        if (preg_replace('#^Hook\_ecommerce\_#', '', get_class($_details['product_object'])) == $this_category) {
+                            if ($_details['price'] !== null) {
+                                $supports_money = true;
+                                $money_involved = true;
+                            }
+                            if ($_details['price_points'] !== null) {
+                                $supports_points = true;
+                                $points_involved = true;
+                            }
+
+                            list($_discounted_price, $_points_for_discount) = get_discounted_price($_details, true);
+                            $_can_purchase = ((($_discounted_price !== null) && (!$must_support_money)) || (($_details['price'] !== null) && (!$must_support_points)));
+                            if ($_can_purchase) {
+                                $can_purchase = true;
+                            }
+
+                            $num_products_in_category++;
+                        }
+                    }
+
+                    if (($must_support_money) && (!$supports_money)) {
+                        continue;
+                    }
+
+                    if (($must_support_points) && (!$supports_points)) {
+                        continue;
+                    }
+
+                    $products[] = array(
+                        'ITEM_NAME' => $product_category['category_name'],
+                        'DESCRIPTION' => $product_category['category_description'],
+                        'URL' => $url,
+                        'IMAGE_URL' => $image_url,
+                        'CAN_PURCHASE' => $can_purchase,
+                        'IS_CATEGORY' => true,
+                        'NUM_PRODUCTS_IN_CATEGORY' => strval($num_products_in_category),
+                    );
+
+                    continue;
+                }
+            }
+
+            if ($category !== null) {
+                $this_category = preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object));
+                if ($this_category != $category) {
+                    continue;
+                }
+            }
+
+            // Explicit filtering...
+
             if ($filter != '') {
                 if ((!is_string($type_code)) || (substr($type_code, 0, strlen($filter)) != $filter)) {
                     continue;
@@ -464,56 +607,125 @@ class Module_purchase
                 }
             }
 
+            // Implicit filtering...
+
             $purchasing_module_supported = in_array($details['type'], array(PRODUCT_PURCHASE, PRODUCT_SUBSCRIPTION, PRODUCT_CATALOGUE));
+            if (!$purchasing_module_supported) {
+                continue;
+            }
 
             $is_available = false; // Anything without is_available is not meant to be purchased directly
-            if (method_exists($details[count($details) - 1], 'is_available')) {
-                $availability_status = $details[count($details) - 1]->is_available($type_code, get_member(), 1, true);
+            if (method_exists($product_object, 'is_available')) {
+                $availability_status = $product_object->is_available($type_code, get_member(), 1, true);
                 $is_available = ($availability_status == ECOMMERCE_PRODUCT_AVAILABLE) || ($availability_status == ECOMMERCE_PRODUCT_NO_GUESTS);
             }
-
-            if ($purchasing_module_supported && $is_available) {
-                require_code('currency');
-                $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
-
-                if ($details['price'] === null) {
-                    $full_price = null;
-                    $_full_price = do_lang('NA');
-                } else {
-                    $full_price = floatval($details['price']);
-                    $_full_price = currency_convert($full_price, $currency, null, true);
-                }
-
-                list($discounted_price, $points_for_discount) = get_discounted_price($details);
-
-                if (($discounted_price === null) && ($details['price'] === null)) {
-                    continue; // No way to purchase it
-                }
-
-                if ($discounted_price === 0.0) {
-                    $_discounted_price = currency_convert(0.0, $currency, null, true);
-                    $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE', escape_html($details['item_name']), $_discounted_price, array($_full_price, escape_html(integer_format($points_for_discount))));
-                } elseif ($discounted_price !== null) {
-                    $_discounted_price = currency_convert($discounted_price, $currency, null, true);
-                    $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT', escape_html($details['item_name']), $_discounted_price, array($_full_price, escape_html(integer_format($points_for_discount))));
-                } else {
-                    $description = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FULL_PRICE', escape_html($details['item_name']), $_full_price, array($_full_price));
-                }
-
-                $list->attach(form_input_list_entry($type_code, false, $description));
+            if (!$is_available) {
+                continue;
             }
+
+            if (($must_support_money) && ($details['price'] === null)) {
+                continue;
+            }
+
+            if (($must_support_points) && ($details['price_points'] === null)) {
+                continue;
+            }
+
+            // --
+
+            $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+
+            if ($details['price'] === null) {
+                $full_price = null;
+                $_full_price = do_lang('NA');
+            } else {
+                $full_price = floatval($details['price']);
+                $_full_price = currency_convert($full_price, $currency, null, true);
+            }
+
+            list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
+            $can_purchase = (($discounted_price !== null) || ($details['price'] !== null));
+
+            if ($details['price'] !== null) {
+                $money_involved = true;
+            }
+            if ($details['price_points'] !== null) {
+                $points_involved = true;
+            }
+
+            if (!$can_purchase) {
+                $_discounted_price = do_lang('NA');
+                $written_price = do_lang_tempcode('NA_EM');
+            } elseif ($full_price === 0.0/*free without any need for discount*/) {
+                $_discounted_price = do_lang('NA');
+                $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE');
+            } elseif ($discounted_price === 0.0/*discounted via points to zero*/) {
+                $_discounted_price = currency_convert(0.0, $currency, null, true);
+                $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE_WITH_POINTS', $_discounted_price, $_full_price, array(escape_html(integer_format($points_for_discount))));
+            } elseif ($discounted_price !== null/*discounted via points*/) {
+                $_discounted_price = currency_convert($discounted_price, $currency, null, true);
+                $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT', $_discounted_price, $_full_price, array(escape_html(integer_format($points_for_discount))));
+            } else {
+                $_discounted_price = do_lang('NA');
+                $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FULL_PRICE', $_full_price);
+            }
+
+            if ($can_purchase) {
+                $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'browse');
+                $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', null, true);
+            } else {
+                $url = null;
+            }
+
+            $image_url = $details['item_image_url'];
+            if ($image_url != '') {
+                if (url_is_local($image_url)) {
+                    $image_url = get_custom_base_url() . '/' . $image_url;
+                }
+            }
+
+            $products[] = array(
+                'ITEM_NAME' => $details['item_name'],
+                'DESCRIPTION' => $details['item_description'],
+                'URL' => $url,
+                'IMAGE_URL' => $image_url,
+                'CAN_PURCHASE' => $can_purchase,
+                'IS_CATEGORY' => false,
+                'NUM_PRODUCTS_IN_CATEGORY' => '',
+
+                'WRITTEN_PRICE' => $written_price,
+
+                'FULL_PRICE' => $_full_price,
+                'DISCOUNTED_PRICE' => $_discounted_price,
+
+                '_PRICE' => $full_price,
+                '_CURRENCY' => $details['currency'],
+                '_PRICE_POINTS' => ($details['price_points'] === null) ? null : strval($details['price_points']),
+                '_DISCOUNT_POINTS__NUM_POINTS' => ($details['discount_points__num_points'] === null) ? null : strval($details['discount_points__num_points']),
+                '_DISCOUNT_POINTS__PRICE_REDUCTION' => ($details['discount_points__price_reduction'] === null) ? null : strval($details['discount_points__price_reduction']),
+
+                'TYPE_SPECIAL_DETAILS_LENGTH' => isset($details['special_details_length']['length']) ? strval($details['special_details_length']['length']) : null,
+                'TYPE_SPECIAL_DETAILS_LENGTH_UNITS' => isset($details['special_details_length']['length_units']) ? $details['special_details_length']['length_units'] : null,
+            );
         }
-        if ($list->is_empty()) {
-            inform_exit(do_lang_tempcode('NO_CATEGORIES'));
+
+        if ($category === null/*we assume category products are already sorted in the way desired*/) {
+            sort_maps_by($products, 'ITEM_NAME');
         }
-        $fields = form_input_huge_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list, null, true);
 
         $result = do_template('ECOM_PURCHASE_STAGE_CHOOSE', array(
             '_GUID' => '47c22d48313ff50e6323f05a78342eae',
             'TITLE' => $this->title,
-            'FIELDS' => $fields,
+            'PRODUCTS' => $products,
+
+            'CATEGORY' => $category,
+            'MUST_SUPPORT_MONEY' => $must_support_money,
+            'MUST_SUPPORT_POINTS' => $must_support_points,
+
+            'POINTS_INVOLVED' => $points_involved,
+            'MONEY_INVOLVED' => $money_involved,
         ));
-        return $this->_wrap($result, $this->title, $url, true);
+        return $this->_wrap($result, $this->title, null, true);
     }
 
     /**
@@ -683,7 +895,7 @@ class Module_purchase
             return $test;
         }
 
-        list($discounted_price, $points_for_discount) = get_discounted_price($details);
+        list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
         if ($discounted_price === null) {
             $price = $details['price'];
 
@@ -771,12 +983,12 @@ class Module_purchase
             ));
 
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
-            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => null, 'points' => 1, 'purchase_id' => $purchase_id), true);
+            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'points' => 1, 'purchase_id' => $purchase_id), '_SELF', array('include_message' => null), true);
 
         } elseif (perform_local_payment()) { // Handle the transaction internally
             if ($confirmation_box === null) {
                 $_price = currency_convert(floatval($price), $currency, null, true);
-                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), escape_html(integer_format($_price)));
+                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price);
             }
 
             $needs_shipping_address = !empty($details['needs_shipping_address']);
@@ -814,7 +1026,7 @@ class Module_purchase
         } else { // Pass through to the gateway's HTTP server
             if ($confirmation_box === null) {
                 $_price = currency_convert(floatval($price), $currency, null, true);
-                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), escape_html(integer_format($_price)));
+                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price);
             }
 
             if ($details['type'] == PRODUCT_SUBSCRIPTION) {
@@ -901,7 +1113,7 @@ class Module_purchase
 
             $purchase_id = get_param_string('purchase_id');
 
-            list($discounted_price, $points_for_discount) = get_discounted_price($details);
+            list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
             if (($discounted_price === null) && (floatval($details['price']) != 0.0)) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Not discounted to free and not free, we should not be here
             }
@@ -1041,7 +1253,7 @@ class Module_purchase
     protected function _check_can_afford($type_code)
     {
         list($details) = find_product_details($type_code);
-        list($discounted_price, $points_for_discount) = get_discounted_price($details);
+        list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
 
         if ($points_for_discount !== null) {
             // Can't afford the points?

@@ -40,9 +40,6 @@ class Hook_ecommerce_giftr
             'category_name' => do_lang('GIFTR_TITLE'),
             'category_description' => do_lang_tempcode('GIFTS_DESCRIPTION'),
             'category_image_url' => find_theme_image('icons/48x48/menu/giftr'),
-
-            'supports_money' => false,
-            'supports_points' => true,
         );
     }
 
@@ -64,10 +61,6 @@ class Hook_ecommerce_giftr
         $products = array();
 
         $map = array('enabled' => 1);
-        $category = either_param_string('category', '');
-        if ($category != '') {
-            $map['category'] = $category;
-        }
 
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('giftr', 'COUNT(*)', $map);
 

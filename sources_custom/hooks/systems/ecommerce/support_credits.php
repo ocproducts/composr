@@ -31,9 +31,6 @@ class Hook_ecommerce_support_credits
             'category_name' => do_lang('CREDITS'),
             'category_description' => do_lang_tempcode('CUSTOMER_SUPPORT_CREDITS_DESCRIPTION'),
             'category_image_url' => find_theme_image('icons/48x48/menu/pages/help'),
-
-            'supports_money' => true,
-            'supports_points' => false,
         );
     }
 
@@ -96,17 +93,6 @@ class Hook_ecommerce_support_credits
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
         return ($member_id != $GLOBALS['FORUM_DRIVER']->get_guest_id()) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_NO_GUESTS;
-    }
-
-    /**
-     * Get the message for use in the purchasing module.
-     *
-     * @param  string $type_code The product in question.
-     * @return Tempcode The message.
-     */
-    public function get_message($type_code)
-    {
-        return do_lang_tempcode('SUPPORT_CREDITS_PRODUCT_DESCRIPTION');
     }
 
     /**

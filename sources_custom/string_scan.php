@@ -7054,6 +7054,10 @@ function string_scan($lang, $do_guessing = false)
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
         takes_lots_of_space
+        ECOMMERCE_PRODUCT_PRICING_FOR_FREE
+        ECOMMERCE_PRODUCT_PRICING_FOR_FREE_WITH_POINTS
+        ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT
+        ECOMMERCE_PRODUCT_PRICING_FULL_PRICE
         DESCRIPTION_AWARD_OVERVIEW
         EMAILS
         AVATARS_CARTOONS

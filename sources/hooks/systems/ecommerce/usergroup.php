@@ -36,9 +36,6 @@ class Hook_ecommerce_usergroup
             'category_name' => do_lang('USERGROUP_SUBSCRIPTION'),
             'category_description' => do_lang_tempcode('USERGROUP_SUBSCRIPTION_DESCRITION'),
             'category_image_url' => find_theme_image('icons/48x48/menu/adminzone/audit/ecommerce/subscriptions'),
-
-            'supports_money' => true,
-            'supports_points' => false,
         );
     }
 
