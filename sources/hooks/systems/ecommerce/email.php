@@ -30,29 +30,35 @@ class Hook_ecommerce_email
      */
     public function config()
     {
-        $rows = $GLOBALS['SITE_DB']->query('SELECT price,name FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('forw\_%') . '\'');
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('forw\_%') . '\'');
         $out_forw = array();
         foreach ($rows as $i => $row) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
             $domain = substr($row['name'], strlen('forw_'));
             $hidden->attach(form_input_hidden('dforw_' . strval($i), $domain));
-            $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'ndforw_' . strval($i), $domain, true));
-            $fields->attach(form_input_integer(do_lang_tempcode('MAIL_COST'), do_lang_tempcode('DESCRIPTION_MAIL_COST', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i), $row['price'], true));
+            $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'ndforw_' . strval($i), $domain, false));
+            $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i) . '_price', ($row['price'] == '') ? null : floatval($row['price']), false));
+            if (addon_installed('points')) {
+                $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE_POINTS', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i) . '_price_points', $row['price_points'], true));
+            }
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '34f5212a96f58fa1b0575a99ca0509e7', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_forw_' . strval($i), false));
             $out_forw[] = array($fields, $hidden, do_lang_tempcode('_EDIT_FORWARDING_DOMAIN', escape_html($domain)));
         }
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT price,name FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('pop3\_%') . '\'');
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'' . db_encode_like('pop3\_%') . '\'');
         $out_pop3 = array();
         foreach ($rows as $i => $row) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
             $domain = substr($row['name'], strlen('pop3_'));
             $hidden->attach(form_input_hidden('dpop3_' . strval($i), $domain));
-            $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'ndpop3_' . strval($i), $domain, true));
-            $fields->attach(form_input_integer(do_lang_tempcode('MAIL_COST'), do_lang_tempcode('DESCRIPTION_MAIL_COST', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i), $row['price'], true));
+            $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'ndpop3_' . strval($i), $domain, false));
+            $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_price', ($row['price'] == '') ? null : floatval($row['price']), false));
+            if (addon_installed('points')) {
+                $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE_POINTS', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_price_points', $row['price_points'], true));
+            }
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '9e37f41f134eecae630bfbf32da7b9ec', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_pop3_' . strval($i), false));
             $out_pop3[] = array($fields, $hidden, do_lang_tempcode('_EDIT_POP3_DOMAIN', escape_html($domain)));
@@ -65,7 +71,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Get fields for adding/editing one of these.
+     * Get fields for adding one of these.
      *
      * @return Tempcode The fields
      */
@@ -73,12 +79,15 @@ class Hook_ecommerce_email
     {
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'dforw', '', true));
-        $fields->attach(form_input_integer(do_lang_tempcode('MAIL_COST'), do_lang_tempcode('_DESCRIPTION_MAIL_COST'), 'forw', null, true));
+        $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE'), 'forw_price', null, false));
+        if (addon_installed('points')) {
+            $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE_POINTS'), 'forw_price_points', null, false));
+        }
         return $fields;
     }
 
     /**
-     * Get fields for adding/editing one of these.
+     * Get fields for adding one of these.
      *
      * @return Tempcode The fields
      */
@@ -86,7 +95,10 @@ class Hook_ecommerce_email
     {
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'dpop3', '', true));
-        $fields->attach(form_input_integer(do_lang_tempcode('MAIL_COST'), do_lang_tempcode('_DESCRIPTION_MAIL_COST'), 'pop3', null, true));
+        $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE'), 'pop3_price', null, false));
+        if (addon_installed('points')) {
+            $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('_DESCRIPTION_MAIL_COST'), 'pop3_price_points', null, false));
+        }
         return $fields;
     }
 
@@ -95,37 +107,57 @@ class Hook_ecommerce_email
      */
     public function save_config()
     {
-        $forw = post_param_integer('forw', null);
-        if ($forw !== null) {
-            $dforw = post_param_string('dforw');
-            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'forw_' . $dforw, 'price' => $forw));
-            log_it('ECOM_PRODUCTS_ADD_MAIL_FORWARDER', $dforw);
-        }
-        $this->_do_price_mail_forw();
+        $this->_add_config_forw();
+        $this->_edit_config_forw();
 
-        $pop3 = post_param_integer('pop3', null);
-        if ($pop3 !== null) {
-            $dpop3 = post_param_string('dpop3');
-            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'pop3_' . $dpop3, 'price' => $pop3));
-            log_it('ECOM_PRODUCTS_ADD_MAIL_POP3', $dpop3);
-        }
-        $this->_do_price_mail_pop3();
+        $this->_add_config_pop3();
+        $this->_edit_config_pop3();
     }
 
     /**
-     * Update an e-mail address from what was chosen in an interface; update or delete each price/cost/product
+     * Add e-mail addresss from what was chosen in an interface
      */
-    protected function _do_price_mail_forw()
+    protected function _add_config_forw()
+    {
+        $_forw_price = post_param_string('forw_price', '');
+        $forw_price = ($_forw_price == '') ? '' : float_to_raw_string(float_unformat($_forw_price));
+        if (addon_installed('points')) {
+            $forw_price_points = post_param_integer('forw_price_points', null);
+        } else {
+            $forw_price_points = null;
+        }
+
+        if (($forw_price != '') && ($forw_price_points !== null)) {
+            $dforw = post_param_string('dforw');
+
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'forw_' . $dforw, 'price' => $forw_price, 'price_points' => $forw_price_points));
+
+            log_it('ECOM_PRODUCTS_ADD_MAIL_FORWARDER', $dforw);
+        }
+    }
+
+    /**
+     * Update e-mail addresss from what was chosen in an interface; update or delete each price/cost/product
+     */
+    protected function _edit_config_forw()
     {
         $i = 0;
-        while (array_key_exists('forw_' . strval($i), $_POST)) {
-            $price = post_param_integer('forw_' . strval($i));
+        while (array_key_exists('dforw_' . strval($i), $_POST)) {
+            $_price = post_param_string('forw_' . strval($i) . '_price', '');
+            $price = ($_price == '') ? '' : float_to_raw_string(float_unformat($_price));
+            if (addon_installed('points')) {
+                $price_points = post_param_integer('forw_' . strval($i) . '_price_points', null);
+            } else {
+                $price_points = null;
+            }
+
             $name = 'forw_' . post_param_string('dforw_' . strval($i));
-            $name2 = 'forw_' . post_param_string('ndforw_' . strval($i));
+            $name_new = 'forw_' . post_param_string('ndforw_' . strval($i));
+
             if (post_param_integer('delete_forw_' . strval($i), 0) == 1) {
                 $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
             } else {
-                $GLOBALS['SITE_DB']->query_update('ecom_prods_prices', array('price' => $price, 'name' => $name2), array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_update('ecom_prods_prices', array('price' => $price, 'price_points' => $price_points, 'name' => $name_new), array('name' => $name), '', 1);
             }
 
             $i++;
@@ -133,19 +165,49 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Update an e-mail address from what was chosen in an interface; update or delete each price/cost/product
+     * Add e-mail addresses from what was chosen in an interface
      */
-    protected function _do_price_mail_pop3()
+    protected function _add_config_pop3()
+    {
+        $_pop3_price = post_param_string('pop3_price', '');
+        $pop3_price = ($_pop3_price == '') ? '' : float_to_raw_string(float_unformat($_pop3_price));
+        if (addon_installed('points')) {
+            $pop3_price_points = post_param_integer('pop3_price_points', null);
+        } else {
+            $pop3_price_points = null;
+        }
+
+        if (($pop3_price != '') && ($pop3_price_points !== null)) {
+            $dpop3 = post_param_string('dpop3');
+
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'pop3_' . $dpop3, 'price' => $pop3_price, 'price_points' => $pop3_price_points));
+
+            log_it('ECOM_PRODUCTS_ADD_MAIL_POP3', $dpop3);
+        }
+    }
+
+    /**
+     * Update e-mail addresses from what was chosen in an interface; update or delete each price/cost/product
+     */
+    protected function _edit_config_pop3()
     {
         $i = 0;
-        while (array_key_exists('pop3_' . strval($i), $_POST)) {
-            $price = post_param_integer('pop3_' . strval($i));
+        while (array_key_exists('dpop3_' . strval($i), $_POST)) {
+            $_price = post_param_string('pop3_' . strval($i) . '_price', '');
+            $price = ($_price == '') ? '' : float_to_raw_string(float_unformat($_price));
+            if (addon_installed('points')) {
+                $price_points = post_param_integer('pop3_' . strval($i) . '_price_points', null);
+            } else {
+                $price_points = null;
+            }
+
             $name = 'pop3_' . post_param_string('dpop3_' . strval($i));
-            $name2 = 'pop3_' . post_param_string('ndpop3_' . strval($i));
+            $name_new = 'pop3_' . post_param_string('ndpop3_' . strval($i));
+
             if (post_param_integer('delete_pop3_' . strval($i), 0) == 1) {
                 $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
             } else {
-                $GLOBALS['SITE_DB']->query_update('ecom_prods_prices', array('price' => $price, 'name' => $name2), array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_update('ecom_prods_prices', array('price' => $price, 'price_points' => $price_points, 'name' => $name_new), array('name' => $name), '', 1);
             }
 
             $i++;
@@ -200,7 +262,7 @@ class Hook_ecommerce_email
                 continue;
             }
 
-            $products['QUOTA_' . strval($amount)] = array(
+            $products['QUOTA_' . strval($amount)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('PURCHASE_QUOTA', integer_format($amount), integer_format($current_amount), integer_format($current_amount + $amount), $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => do_lang_tempcode('PURCHASE_QUOTA_DESCRIPTION', escape_html(integer_format($amount)), escape_html(integer_format($current_amount)), escape_html(integer_format($current_amount + $amount))),
                 'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_to_category'),
@@ -208,14 +270,14 @@ class Hook_ecommerce_email
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => null,
+                'price' => (get_option('quota_price') == '') ? null : (intval(get_option('quota_price')) * $amount),
                 'currency' => get_option('currency'),
-                'price_points' => intval(get_option('quota')) * $amount,
+                'price_points' => (get_option('quota_price_points') == '') ? null : (intval(get_option('quota_price_points')) * $amount),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
                 'needs_shipping_address' => false,
-            );
+            ));
         }
 
         foreach (array('pop3' => 'POP3', 'forw' => 'FORWARDING') as $protocol => $protocol_label) {
@@ -236,7 +298,7 @@ class Hook_ecommerce_email
                         $image_url = '';
                 }
 
-                $products[$protocol_label . '_' . $domain] = array(
+                $products[$protocol_label . '_' . $domain] = automatic_discount_calculation(array(
                     'item_name' => do_lang('TITLE_NEW' . $protocol_label, $domain, integer_format($initial_quota), null, $site_lang ? get_site_default_lang() : user_lang()),
                     'item_description' => do_lang_tempcode('NEW' . $protocol_label . '_DESCRIPTION', escape_html($domain), escape_html(integer_format($initial_quota))),
                     'item_image_url' => $image_url,
@@ -251,7 +313,7 @@ class Hook_ecommerce_email
                     'discount_points__price_reduction' => null,
 
                     'needs_shipping_address' => false,
-                );
+                ));
             }
         }
 

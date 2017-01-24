@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_max_quota
+class Hook_config_banner_hit_price_points
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_max_quota
     public function get_details()
     {
         return array(
-            'human_name' => 'MAX_QUOTA',
+            'human_name' => 'COST_banner_hit_price_points',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
-            'group' => 'POP3',
-            'explanation' => 'CONFIG_OPTION_max_quota',
-            'shared_hosting_restricted' => '1',
+            'group' => 'BANNERS',
+            'explanation' => 'CONFIG_OPTION_banner_hit_price_points',
+            'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 8,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +52,9 @@ class Hook_config_max_quota
      */
     public function get_default()
     {
-        return '10000';
+        if (!addon_installed('points')) {
+            return null;
+        }
+        return (!addon_installed('banners')) ? null : '20';
     }
 }

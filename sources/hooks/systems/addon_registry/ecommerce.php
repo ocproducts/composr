@@ -222,11 +222,15 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/notifications/ecom_product_request_pop3.php',
             'sources/hooks/systems/notifications/ecom_product_request_quota.php',
             'sources/hooks/systems/config/average_gamble_multiplier.php',
-            'sources/hooks/systems/config/banner_hit.php',
-            'sources/hooks/systems/config/banner_imp.php',
-            'sources/hooks/systems/config/banner_setup.php',
+            'sources/hooks/systems/config/banner_hit_price.php',
+            'sources/hooks/systems/config/banner_hit_price_points.php',
+            'sources/hooks/systems/config/banner_imp_price.php',
+            'sources/hooks/systems/config/banner_imp_price_points.php',
+            'sources/hooks/systems/config/banner_setup_price.php',
+            'sources/hooks/systems/config/banner_setup_price_points.php',
             'sources/hooks/systems/config/forw_url.php',
-            'sources/hooks/systems/config/highlight_name.php',
+            'sources/hooks/systems/config/highlight_name_price.php',
+            'sources/hooks/systems/config/highlight_name_price_points.php',
             'sources/hooks/systems/config/initial_banner_hits.php',
             'sources/hooks/systems/config/initial_quota.php',
             'sources/hooks/systems/config/is_on_banner_buy.php',
@@ -241,9 +245,11 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/maximum_gamble_multiplier.php',
             'sources/hooks/systems/config/minimum_gamble_amount.php',
             'sources/hooks/systems/config/pop_url.php',
-            'sources/hooks/systems/config/quota.php',
+            'sources/hooks/systems/config/quota_price.php',
+            'sources/hooks/systems/config/quota_price_points.php',
             'sources/hooks/systems/config/quota_url.php',
-            'sources/hooks/systems/config/topic_pin.php',
+            'sources/hooks/systems/config/topic_pin_price.php',
+            'sources/hooks/systems/config/topic_pin_price_points.php',
             'sources/hooks/systems/cron/topic_pin.php',
             'sources/hooks/systems/commandr_fs_extended_config/ecom_prods_custom.php',
             'sources/hooks/systems/commandr_fs_extended_config/ecom_prods_permissions.php',
@@ -856,7 +862,6 @@ class Hook_addon_registry_ecommerce
 
                         '_PRICE' => '0.00',
                         '_CURRENCY' => 'USD',
-                        '_CURRENCY' => 'USD',
                         '_PRICE_POINTS' => null,
                         '_DISCOUNT_POINTS__NUM_POINTS' => null,
                         '_DISCOUNT_POINTS__PRICE_REDUCTION' => null,
@@ -921,7 +926,7 @@ class Hook_addon_registry_ecommerce
                     break;
 
                 case 5: // category
-                    $map['IS_CATEGORY'] = false,
+                    $map['IS_CATEGORY'] = false;
                     $map['NUM_PRODUCTS_IN_CATEGORY'] = '1';
                     $map['NUM_PRODUCTS_IN_CATEGORY_AVAILABLE'] = '1';
                     break;

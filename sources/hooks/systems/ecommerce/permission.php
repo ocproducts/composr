@@ -41,7 +41,7 @@ class Hook_ecommerce_permission
             if ($hours == 400000) {
                 $hours = null; // LEGACY: Around 100 years, but meaning unlimited
             }
-            $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['p_title']), get_translated_text($row['p_description']), $row['p_enabled'], $row['p_cost'], $hours, $row['p_type'], $row['p_privilege'], $row['p_zone'], $row['p_page'], $row['p_module'], $row['p_category'], get_translated_text($row['p_mail_subject']), get_translated_text($row['p_mail_body'])));
+            $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['p_title']), get_translated_text($row['p_description']), $row['p_enabled'], $row['p_price'], $row['p_price_points'], $hours, $row['p_type'], $row['p_privilege'], $row['p_zone'], $row['p_page'], $row['p_module'], $row['p_category'], get_translated_text($row['p_mail_subject']), get_translated_text($row['p_mail_body'])));
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4055cbfc1c94723f4ad72a80ede0b554', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_permission_' . strval($i), false));
             $hidden->attach(form_input_hidden('permission_' . strval($i), strval($row['id'])));
@@ -60,7 +60,8 @@ class Hook_ecommerce_permission
      * @param  SHORT_TEXT $title Title
      * @param  LONG_TEXT $description Description
      * @param  BINARY $enabled Whether it is enabled
-     * @param  ?integer $cost The cost in points (null: not set)
+     * @param  ID_TEXT $price The cost (blank: not set)
+     * @param  ?integer $price_points The cost in points (null: not set)
      * @param  ?integer $hours Number of hours for it to last for (null: unlimited)
      * @param  ID_TEXT $type Permission scope 'type'
      * @param  ID_TEXT $privilege Permission scope 'privilege'
@@ -72,7 +73,7 @@ class Hook_ecommerce_permission
      * @param  LONG_TEXT $mail_body Confirmation mail body
      * @return Tempcode The fields
      */
-    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $cost = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
+    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = '', $price_points = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
     {
         require_lang('points');
 
@@ -80,7 +81,10 @@ class Hook_ecommerce_permission
 
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'permission_title' . $name_suffix, $title, true));
         $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'permission_description' . $name_suffix, $description, true));
-        $fields->attach(form_input_integer(do_lang_tempcode('COST'), do_lang_tempcode('HOW_MUCH_THIS_COSTS'), 'permission_cost' . $name_suffix, $cost, true));
+        $fields->attach(form_input_float(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_COST'), 'permission_price' . $name_suffix, ($price == '') ? null : floatval($price), false));
+        if (addon_installed('points')) {
+            $fields->attach(form_input_integer(do_lang_tempcode('COST_POINTS'), do_lang_tempcode('DESCRIPTION_COST_POINTS'), 'permission_price_points' . $name_suffix, $price_points, false));
+        }
         $fields->attach(form_input_integer(do_lang_tempcode('PERMISSION_HOURS'), do_lang_tempcode('DESCRIPTION_PERMISSION_HOURS'), 'permission_hours' . $name_suffix, $hours, false));
         $fields->attach(form_input_tick(do_lang_tempcode('ENABLED'), '', 'permission_enabled' . $name_suffix, $enabled == 1));
 
@@ -165,7 +169,13 @@ class Hook_ecommerce_permission
             $title = post_param_string('permission_title_' . strval($i));
             $description = post_param_string('permission_description_' . strval($i));
             $enabled = post_param_integer('permission_enabled_' . strval($i), 0);
-            $cost = post_param_integer('permission_cost_' . strval($i));
+            $_price = post_param_string('permission_price_' . strval($i), '');
+            $price = ($_price == '') ? '' : float_to_raw_string(float_unformat($_price));
+            if (addon_installed('points')) {
+                $price_points = post_param_integer('permission_price_points_' . strval($i), null);
+            } else {
+                $price_points = null;
+            }
             $hours = post_param_integer('permission_hours_' . strval($i), null);
             $type = post_param_string('permission_type_' . strval($i));
             $privilege = post_param_string('permission_privilege_' . strval($i));
@@ -192,7 +202,8 @@ class Hook_ecommerce_permission
             } else {
                 $map = array(
                     'p_enabled' => $enabled,
-                    'p_cost' => $cost,
+                    'p_price' => $price,
+                    'p_price_points' => $price_points,
                     'p_hours' => $hours,
                     'p_type' => $type,
                     'p_privilege' => $privilege,
@@ -214,7 +225,13 @@ class Hook_ecommerce_permission
         if ($title !== null) {
             $description = post_param_string('permission_description');
             $enabled = post_param_integer('permission_enabled', 0);
-            $cost = post_param_integer('permission_cost');
+            $_price = post_param_string('permission_price', '');
+            $price = ($_price == '') ? '' : float_to_raw_string(float_unformat($_price));
+            if (addon_installed('points')) {
+                $price_points = post_param_integer('permission_price_points', null);
+            } else {
+                $price_points = null;
+            }
             $hours = post_param_integer('permission_hours', null);
             $type = post_param_string('permission_type');
             $privilege = post_param_string('permission_privilege');
@@ -227,7 +244,8 @@ class Hook_ecommerce_permission
 
             $map = array(
                 'p_enabled' => $enabled,
-                'p_cost' => $cost,
+                'p_price' => $price,
+                'p_price_points' => $price_points,
                 'p_hours' => $hours,
                 'p_type' => $type,
                 'p_privilege' => $privilege,

@@ -58,12 +58,10 @@ class Hook_ecommerce_community_billboard
 
         require_lang('community_billboard');
 
-        $day_price = intval(get_option('community_billboard'));
-
         $products = array();
 
         foreach (array(1, 3, 5, 10, 20, 31, 90) as $days) {
-            $products['COMMUNITY_BILLBOARD_' . strval($days)] = array(
+            $products['COMMUNITY_BILLBOARD_' . strval($days)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('COMMUNITY_BILLBOARD_MESSAGE_FOR_DAYS', integer_format($days), null, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
@@ -71,14 +69,14 @@ class Hook_ecommerce_community_billboard
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => null,
+                'price' => (get_option('community_billboard_price') == '') ? null : (intval(get_option('community_billboard_price')) * $days),
                 'currency' => get_option('currency'),
-                'price_points' => $day_price * $days,
+                'price_points' => (get_option('community_billboard_price_points') == '') ? null : (intval(get_option('community_billboard_price_points')) * $days),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
                 'needs_shipping_address' => false,
-            );
+            ));
         }
 
         return $products;
@@ -120,11 +118,10 @@ class Hook_ecommerce_community_billboard
         if ($queue === null) {
             $queue = 0;
         }
-        $cost = intval(get_option('community_billboard'));
 
         $days = intval(preg_replace('#^COMMUNITY_BILLBOARD\_#', '', $type_code));
 
-        return do_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array('_GUID' => '92d51c5b87745c31397d9165595262d3', 'QUEUE' => integer_format($queue), 'COST' => integer_format($cost), 'DAYS' => integer_format($days)));
+        return do_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array('_GUID' => '92d51c5b87745c31397d9165595262d3', 'QUEUE' => integer_format($queue), 'DAYS' => integer_format($days)));
     }
 
     /**

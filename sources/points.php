@@ -39,9 +39,9 @@ function init__points()
  * @param  ID_TEXT $item The name of the item
  * @return integer The price of the item
  */
-function get_product_points_price($item)
+function get_product_price_points($item)
 {
-    return $GLOBALS['SITE_DB']->query_select_value('ecom_prods_prices', 'price', array('name' => $item));
+    return $GLOBALS['SITE_DB']->query_select_value('ecom_prods_prices', 'price_points', array('name' => $item));
 }
 
 /**

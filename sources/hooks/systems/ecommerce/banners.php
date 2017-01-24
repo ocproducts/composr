@@ -65,7 +65,7 @@ class Hook_ecommerce_banners
 
         $products = array();
 
-        $products['BANNER_ACTIVATE'] = array(
+        $products['BANNER_ACTIVATE'] = automatic_discount_calculation(array(
             'item_name' => do_lang('BANNER_ACTIVATE', integer_format(intval(get_option('initial_banner_hits'))), null, null, $site_lang ? get_site_default_lang() : user_lang()),
             'item_description' => do_lang_tempcode('BANNER_ACTIVATE_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_banner_hits'))))),
             'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_one'),
@@ -73,14 +73,14 @@ class Hook_ecommerce_banners
             'type' => PRODUCT_PURCHASE,
             'type_special_details' => array(),
 
-            'price' => null,
+            'price' => intval(get_option('banner_setup_price')),
             'currency' => get_option('currency'),
-            'price_points' => intval(get_option('banner_setup')),
+            'price_points' => intval(get_option('banner_setup_price_points')),
             'discount_points__num_points' => null,
             'discount_points__price_reduction' => null,
 
             'needs_shipping_address' => false,
-        );
+        ));
 
         // It's slightly naughty for us to use get_member(), but it's only for something going into item_description so safe
         $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => get_member(), 't_type_code' => 'BANNER_ACTIVATE'));
@@ -103,7 +103,7 @@ class Hook_ecommerce_banners
         }
 
         foreach (array(10, 20, 50, 100, 1000, 2000, 5000, 10000, 20000, 50000, 100000) as $hits) {
-            $products['BANNER_UPGRADE_HITS_' . strval($hits)] = array(
+            $products['BANNER_UPGRADE_HITS_' . strval($hits)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('BANNER_ADD_HITS', integer_format($hits), integer_format($current_hits), null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => do_lang_tempcode('BANNER_ADD_HITS_DESCRIPTION', escape_html(integer_format($hits)), escape_html(integer_format($current_hits))),
                 'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_to_category'),
@@ -111,20 +111,20 @@ class Hook_ecommerce_banners
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => null,
+                'price' => intval(get_option('banner_hit_price')) * $hits,
                 'currency' => get_option('currency'),
-                'price_points' => intval(get_option('banner_hit')) * $hits,
+                'price_points' => intval(get_option('banner_hit_price_points')) * $hits,
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
                 'needs_shipping_address' => false,
-            );
+            ));
         }
 
         foreach (array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) as $importance) {
             $percentage = intval(round(100.0 * floatval($current_importance + $importance) / floatval($total_importance)));
 
-            $products['BANNER_UPGRADE_IMPORTANCE_' . strval($importance)] = array(
+            $products['BANNER_UPGRADE_IMPORTANCE_' . strval($importance)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('BANNER_ADD_IMPORTANCE', integer_format($importance), $percentage, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => do_lang_tempcode('BANNER_ADD_IMPORTANCE_DESCRIPTION', escape_html(integer_format($importance)), escape_html($percentage)),
                 'item_image_url' => find_theme_image('icons/48x48/buttons/choose'),
@@ -132,14 +132,14 @@ class Hook_ecommerce_banners
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => null,
+                'price' => (get_option('banner_imp_price') == '') ? null : (intval(get_option('banner_imp_price')) * $importance),
                 'currency' => get_option('currency'),
-                'price_points' => intval(get_option('banner_imp')) * $importance,
+                'price_points' => (get_option('banner_imp_price_points') == '') ? null : (intval(get_option('banner_imp_price_points')) * $importance),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
                 'needs_shipping_address' => false,
-            );
+            ));
         }
 
         return $products;
@@ -278,9 +278,8 @@ class Hook_ecommerce_banners
                 $caption = post_param_string('caption');
                 $direct_code = post_param_string('direct_code', '');
                 $notes = post_param_string('notes', '');
-                $cost = intval(get_option('banner_setup'));
 
-                $e_details = json_encode(array($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes, $cost));
+                $e_details = json_encode(array($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes));
                 $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $e_details, 'e_time' => time()), true));
 
                 $confirmation_box = show_banner($name, '', comcode_to_tempcode($caption), $direct_code, (url_is_local($image_url) ? (get_custom_base_url() . '/') : '') . $image_url, '', $site_url, '', get_member());
@@ -318,7 +317,7 @@ class Hook_ecommerce_banners
         switch (preg_replace('#\_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
                 $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
-                list($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes, $cost) = json_decode($e_details);
+                list($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes) = json_decode($e_details);
 
                 add_banner($name, $image_url, '', $caption, $direct_code, intval(get_option('initial_banner_hits')), $site_url, 3, $notes, BANNER_PERMANENT, null, $member_id, 0);
 

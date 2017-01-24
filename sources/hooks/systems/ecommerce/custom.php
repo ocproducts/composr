@@ -35,7 +35,7 @@ class Hook_ecommerce_custom
         foreach ($rows as $i => $row) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
-            $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['c_title']), get_translated_text($row['c_description']), $row['c_enabled'], $row['c_cost'], $row['c_one_per_member'], get_translated_text($row['c_mail_subject']), get_translated_text($row['c_mail_body'])));
+            $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['c_title']), get_translated_text($row['c_description']), $row['c_enabled'], $row['c_price'], $row['c_price_points'], $row['c_one_per_member'], get_translated_text($row['c_mail_subject']), get_translated_text($row['c_mail_body'])));
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '01362c21b40d7905b76ee6134198a128', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_custom_' . strval($i), false));
             $hidden->attach(form_input_hidden('custom_' . strval($i), strval($row['id'])));
@@ -54,13 +54,14 @@ class Hook_ecommerce_custom
      * @param  SHORT_TEXT $title Title
      * @param  LONG_TEXT $description Description
      * @param  BINARY $enabled Whether it is enabled
-     * @param  ?integer $cost The cost in points (null: not set)
+     * @param  ID_TEXT $price The cost (blank: not set)
+     * @param  ?integer $price_points The cost in points (null: not set)
      * @param  BINARY $one_per_member Whether it is restricted to one per member
      * @param  SHORT_TEXT $mail_subject Confirmation mail subject
      * @param  LONG_TEXT $mail_body Confirmation mail body
      * @return Tempcode The fields
      */
-    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $cost = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
+    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = '', $price_points = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
     {
         require_lang('points');
 
@@ -68,7 +69,10 @@ class Hook_ecommerce_custom
 
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'custom_title' . $name_suffix, $title, true));
         $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'custom_description' . $name_suffix, $description, true));
-        $fields->attach(form_input_integer(do_lang_tempcode('COST'), do_lang_tempcode('HOW_MUCH_THIS_COSTS'), 'custom_cost' . $name_suffix, $cost, true));
+        $fields->attach(form_input_float(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_COST'), 'custom_price' . $name_suffix, ($price == '') ? null : floatval($price), false));
+        if (addon_installed('points')) {
+            $fields->attach(form_input_integer(do_lang_tempcode('COST_POINTS'), do_lang_tempcode('DESCRIPTION_COST_POINTS'), 'custom_price_points' . $name_suffix, $price_points, false));
+        }
         $fields->attach(form_input_tick(do_lang_tempcode('ONE_PER_MEMBER'), do_lang_tempcode('DESCRIPTION_ONE_PER_MEMBER'), 'custom_one_per_member' . $name_suffix, $one_per_member == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('ENABLED'), '', 'custom_enabled' . $name_suffix, $enabled == 1));
 
@@ -91,7 +95,13 @@ class Hook_ecommerce_custom
             $title = post_param_string('custom_title_' . strval($i));
             $description = post_param_string('custom_description_' . strval($i));
             $enabled = post_param_integer('custom_enabled_' . strval($i), 0);
-            $cost = post_param_integer('custom_cost_' . strval($i));
+            $_price = post_param_string('custom_price_' . strval($i), '');
+            $price = ($_price == '') ? '' : float_to_raw_string(float_unformat($_price));
+            if (addon_installed('points')) {
+                $price_points = post_param_integer('custom_price_points_' . strval($i), null);
+            } else {
+                $price_points = null;
+            }
             $one_per_member = post_param_integer('custom_one_per_member_' . strval($i), 0);
             $mail_subject = post_param_string('custom_mail_subject_' . strval($i));
             $mail_body = post_param_string('custom_mail_body_' . strval($i));
@@ -112,7 +122,8 @@ class Hook_ecommerce_custom
             } else {
                 $map = array(
                     'c_enabled' => $enabled,
-                    'c_cost' => $cost,
+                    'c_price' => $price,
+                    'c_price_points' => $price_points,
                     'c_one_per_member' => $one_per_member,
                 );
                 $map += lang_remap('c_title', $_title, $title);
@@ -128,14 +139,21 @@ class Hook_ecommerce_custom
         if ($title !== null) {
             $description = post_param_string('custom_description');
             $enabled = post_param_integer('custom_enabled', 0);
-            $cost = post_param_integer('custom_cost');
+            $_price = post_param_string('custom_price', '');
+            $price = ($_price == '') ? '' : float_to_raw_string(float_unformat($_price));
+            if (addon_installed('points')) {
+                $price_points = post_param_integer('custom_price_points', null);
+            } else {
+                $price_points = null;
+            }
             $one_per_member = post_param_integer('custom_one_per_member', 0);
             $mail_subject = post_param_string('custom_mail_subject');
             $mail_body = post_param_string('custom_mail_body');
 
             $map = array(
                 'c_enabled' => $enabled,
-                'c_cost' => $cost,
+                'c_price' => $price,
+                'c_price_points' => $price_points,
                 'c_one_per_member' => $one_per_member,
             );
             $map += insert_lang('c_title', $title, 2);
@@ -179,7 +197,7 @@ class Hook_ecommerce_custom
                 $image_url = '';
             }
 
-            $products['CUSTOM_' . strval($row['id'])] = array(
+            $products['CUSTOM_' . strval($row['id'])] = automatic_discount_calculation(array(
                 'item_name' => $row['_title'],
                 'item_description' => $description,
                 'item_image_url' => $image_url,
@@ -194,7 +212,7 @@ class Hook_ecommerce_custom
                 'discount_points__price_reduction' => null,
 
                 'needs_shipping_address' => false,
-            );
+            ));
         }
 
         return $products;

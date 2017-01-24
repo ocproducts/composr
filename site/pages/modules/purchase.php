@@ -223,8 +223,17 @@ class Module_purchase
 
             if ($GLOBALS['SITE_DB']->table_exists('prices')) {
                 $GLOBALS['SITE_DB']->rename_table('prices', 'ecom_prods_prices');
+                $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_prices', 'price', '?INTEGER', 'price_points');
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'price', 'ID_TEXT', '');
+
                 $GLOBALS['SITE_DB']->rename_table('pstore_customs', 'ecom_prods_custom');
+                $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_custom', 'c_cost', '?INTEGER', 'c_price_points');
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_price', 'ID_TEXT', '');
+
                 $GLOBALS['SITE_DB']->rename_table('pstore_permissions', 'ecom_prods_permissions');
+                $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_permissions', 'p_cost', '?INTEGER', 'p_price_points');
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_price', 'ID_TEXT', '');
+
                 $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
 
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'transaction_id', 'ID_TEXT', '');
@@ -282,7 +291,8 @@ class Module_purchase
         if (!$GLOBALS['SITE_DB']->table_exists('ecom_prods_prices')) { // LEGACY: Used to be in pointstore addon, hence the unusual install pattern. Now is just a part of purchase addon
             $GLOBALS['SITE_DB']->create_table('ecom_prods_prices', array(
                 'name' => '*ID_TEXT',
-                'price' => 'INTEGER'
+                'price' => 'ID_TEXT',
+                'points_price' => '?INTEGER'
             ));
 
             $GLOBALS['SITE_DB']->create_table('ecom_sales', array(
@@ -302,7 +312,8 @@ class Module_purchase
                 'c_mail_subject' => 'SHORT_TRANS',
                 'c_mail_body' => 'LONG_TRANS',
                 'c_enabled' => 'BINARY',
-                'c_cost' => 'INTEGER',
+                'c_price' => 'ID_TEXT',
+                'c_points_price' => '?INTEGER',
                 'c_one_per_member' => 'BINARY',
             ));
             // Permissions
@@ -313,7 +324,8 @@ class Module_purchase
                 'p_mail_subject' => 'SHORT_TRANS',
                 'p_mail_body' => 'LONG_TRANS',
                 'p_enabled' => 'BINARY',
-                'p_cost' => 'INTEGER',
+                'p_price' => 'ID_TEXT',
+                'p_points_price' => '?INTEGER',
                 'p_hours' => '?INTEGER',
                 'p_type' => 'ID_TEXT', // member_privileges,member_category_access,member_page_access,member_zone_access
                 'p_privilege' => 'ID_TEXT', // privilege only

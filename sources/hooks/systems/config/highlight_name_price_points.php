@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_banner_imp
+class Hook_config_highlight_name_price_points
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_banner_imp
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_banner_imp',
+            'human_name' => 'COST_highlight_name_price_points',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
-            'group' => 'BANNERS',
-            'explanation' => 'CONFIG_OPTION_banner_imp',
+            'group' => 'NAME_HIGHLIGHTING',
+            'explanation' => 'CONFIG_OPTION_highlight_name_price_points',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 4,
+            'order_in_category_group' => 3,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +52,9 @@ class Hook_config_banner_imp
      */
     public function get_default()
     {
-        return (!addon_installed('banners')) ? null : '700';
+        if (!addon_installed('points')) {
+            return null;
+        }
+        return (get_forum_type() != 'cns') ? null : '2000';
     }
 }

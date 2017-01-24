@@ -63,7 +63,7 @@ class Hook_ecommerce_classifieds
         $products = array();
         foreach ($prices as $price) {
             if ($price['c_price'] != 0.0) {
-                $products['CLASSIFIEDS_ADVERT_' . strval($price['id'])] = array(
+                $products['CLASSIFIEDS_ADVERT_' . strval($price['id'])] = automatic_discount_calculation(array(
                     'item_name' => do_lang('CLASSIFIED_ADVERT_BUY', get_translated_text($price['c_label']), null, null, $site_lang ? get_site_default_lang() : user_lang()),
                     'item_description' => new Tempcode(),
                     'item_image_url' => '',
@@ -78,7 +78,7 @@ class Hook_ecommerce_classifieds
                     'discount_points__price_reduction' => null,
 
                     'needs_shipping_address' => false,
-                );
+                ));
             }
         }
 

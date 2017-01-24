@@ -55,12 +55,10 @@ class Hook_ecommerce_topic_pin
         require_lang('ecommerce');
         require_lang('cns');
 
-        $day_price = intval(get_option('topic_pin'));
-
         $products = array();
 
         foreach (array(1, 3, 5, 10, 20, 31, 90) as $days) {
-            $products['TOPIC_PIN_' . strval($days)] = array(
+            $products['TOPIC_PIN_' . strval($days)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('TOPIC_PINNED_FOR', integer_format($days), null, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
@@ -68,14 +66,14 @@ class Hook_ecommerce_topic_pin
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => null,
+                'price' => (get_option('topic_pin_price') == '') ? null : (intval(get_option('topic_pin_price')) * $days),
                 'currency' => get_option('currency'),
-                'price_points' => $day_price * $days,
+                'price_points' => (get_option('topic_pin_price_points') == '') ? null : (intval(get_option('topic_pin_price_points')) * $days),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
                 'needs_shipping_address' => false,
-            );
+            ));
         }
 
         return $products;

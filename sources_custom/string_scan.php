@@ -2427,9 +2427,12 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_backup_server_user
         CONFIG_OPTION_backup_time
         CONFIG_OPTION_banner_autosize
-        CONFIG_OPTION_banner_hit
-        CONFIG_OPTION_banner_imp
-        CONFIG_OPTION_banner_setup
+        CONFIG_OPTION_banner_hit_price
+        CONFIG_OPTION_banner_imp_price
+        CONFIG_OPTION_banner_setup_price
+        CONFIG_OPTION_banner_hit_price_points
+        CONFIG_OPTION_banner_imp_price_points
+        CONFIG_OPTION_banner_setup_price_points
         CONFIG_OPTION_bcc
         CONFIG_OPTION_blog_update_time
         CONFIG_OPTION_bot_stats
@@ -2620,7 +2623,8 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_hack_ban_threshold
         CONFIG_OPTION_has_low_memory_limit
         CONFIG_OPTION_header_menu_call_string
-        CONFIG_OPTION_highlight_name
+        CONFIG_OPTION_highlight_name_price
+        CONFIG_OPTION_highlight_name_price_points
         CONFIG_OPTION_honeypot_phrase
         CONFIG_OPTION_honeypot_url
         CONFIG_OPTION_hot_topic_definition
@@ -2839,7 +2843,8 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_proxy_port
         CONFIG_OPTION_proxy_user
         CONFIG_OPTION_pt_notifications_as_web
-        CONFIG_OPTION_quota
+        CONFIG_OPTION_quota_price
+        CONFIG_OPTION_quota_price_points
         CONFIG_OPTION_quota_url
         CONFIG_OPTION_random_avatars
         CONFIG_OPTION_remember_me_by_default
@@ -2936,7 +2941,8 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_ticket_member_forums
         CONFIG_OPTION_ticket_text
         CONFIG_OPTION_ticket_type_forums
-        CONFIG_OPTION_topic_pin
+        CONFIG_OPTION_topic_pin_price
+        CONFIG_OPTION_topic_pin_price_points
         CONFIG_OPTION_tornevall_api_password
         CONFIG_OPTION_tornevall_api_username
         CONFIG_OPTION_transcoding_server
@@ -3055,12 +3061,18 @@ function string_scan($lang, $do_guessing = false)
         CORRUPT_FILES_LOWERCASE
         CORRUPT_INSTALLATION_FILE
         CORRUPT_TAR
-        COST_banner_hit
-        COST_banner_imp
-        COST_banner_setup
-        COST_highlight_name
-        COST_quota
-        COST_topic_pin
+        COST_banner_hit_price
+        COST_banner_imp_price
+        COST_banner_setup_price
+        COST_highlight_name_price
+        COST_quota_price
+        COST_topic_pin_price
+        COST_banner_hit_price_points
+        COST_banner_imp_price_points
+        COST_banner_setup_price_points
+        COST_highlight_name_price_points
+        COST_quota_price_points
+        COST_topic_pin_price_points
         COULD_NOT_SAVE_FILE
         COULD_NOT_SAVE_FILE_TMP
         CPF_ENABLE_CITY
@@ -3548,7 +3560,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_LOAD_TIMES
         DESCRIPTION_LOGOWIZARD_THEME
         DESCRIPTION_LOGO_NAME
-        DESCRIPTION_MAIL_COST
         DESCRIPTION_MAIN_CATEGORY
         DESCRIPTION_MAX_ATTACHMENTS_PER_POST
         DESCRIPTION_MAX_AVATAR_DIMENSIONS
@@ -4675,7 +4686,9 @@ function string_scan($lang, $do_guessing = false)
         HOURLY_BREAKDOWNS
         HOURS_MUST_BE_LESS_5_YEARS
         HOVER_FOR_CONTENTS
-        HOW_MUCH_THIS_COSTS
+        DESCRIPTION_COST
+        COST_POINTS
+        DESCRIPTION_COST_POINTS
         HTACCESS_SEO_PROBLEM
         HTML_ONLY
         HTML_PAGES
@@ -4964,7 +4977,6 @@ function string_scan($lang, $do_guessing = false)
         MAILS_PER_SEND
         MAIL_BAD_TAG
         MAIL_BODY
-        MAIL_COST
         MAIL_DOCTYPE
         MAIL_DOMAIN
         MAIL_END
@@ -6956,7 +6968,12 @@ function string_scan($lang, $do_guessing = false)
         _DELETE_MEMBER_SEARCH
         _DESCRIPTION_ANSWER
         _DESCRIPTION_BANNER_TYPE
-        _DESCRIPTION_MAIL_COST
+        _DESCRIPTION_MAIL_PRICE
+        MAIL_PRICE
+        DESCRIPTION_MAIL_PRICE
+        _DESCRIPTION_MAIL_PRICE_POINTS
+        MAIL_PRICE_POINTS
+        DESCRIPTION_MAIL_PRICE_POINTS
         _DESCRIPTION_NAME
         _DESCRIPTION_REPRESENTATIVE_IMAGE
         _DESCRIPTION_THEME

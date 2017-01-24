@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_banner_setup
+class Hook_config_banner_hit_price
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_banner_setup
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_banner_setup',
+            'human_name' => 'COST_banner_hit_price',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
             'group' => 'BANNERS',
-            'explanation' => 'CONFIG_OPTION_banner_setup',
+            'explanation' => 'CONFIG_OPTION_banner_hit_price',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 7,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +52,6 @@ class Hook_config_banner_setup
      */
     public function get_default()
     {
-        return (!addon_installed('banners')) ? null : '750';
+        return (!addon_installed('banners')) ? null : '0.40';
     }
 }

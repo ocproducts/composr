@@ -149,7 +149,8 @@ class Hook_addon_registry_community_billboard
             'sources_custom/community_billboard.php',
             'sources_custom/hooks/blocks/main_staff_checklist/community_billboard.php',
             'sources_custom/hooks/systems/ecommerce/community_billboard.php',
-            'sources_custom/hooks/systems/config/community_billboard.php',
+            'sources_custom/hooks/systems/config/community_billboard_price.php',
+            'sources_custom/hooks/systems/config/community_billboard_price_points.php',
             'sources_custom/hooks/systems/config/is_on_community_billboard_buy.php',
             'sources_custom/hooks/systems/notifications/ecom_request_community_billboard.php',
             'sources_custom/hooks/systems/page_groupings/community_billboard.php',
@@ -203,7 +204,6 @@ class Hook_addon_registry_community_billboard
             lorem_globalise(
                 do_lorem_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array(
                         'QUEUE' => placeholder_number(),
-                        'COST' => placeholder_number(),
                         'DAYS' => placeholder_number(),
                     )
                 ), null, '', true),

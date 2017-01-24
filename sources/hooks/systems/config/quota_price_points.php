@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_highlight_name
+class Hook_config_quota_price_points
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_highlight_name
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_highlight_name',
+            'human_name' => 'COST_quota_price_points',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
-            'group' => 'NAME_HIGHLIGHTING',
-            'explanation' => 'CONFIG_OPTION_highlight_name',
+            'group' => 'POP3',
+            'explanation' => 'CONFIG_OPTION_quota_price_points',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 7,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +52,9 @@ class Hook_config_highlight_name
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : '2000';
+        if (!addon_installed('points')) {
+            return null;
+        }
+        return '2';
     }
 }

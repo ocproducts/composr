@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_topic_pin
+class Hook_config_topic_pin_price
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_topic_pin
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_topic_pin',
+            'human_name' => 'COST_topic_pin_price',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
             'group' => 'TOPIC_PINNING',
-            'explanation' => 'CONFIG_OPTION_topic_pin',
+            'explanation' => 'CONFIG_OPTION_topic_pin_price',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +52,6 @@ class Hook_config_topic_pin
      */
     public function get_default()
     {
-        return has_no_forum() ? null : '50';
+        return has_no_forum() ? null : '1.00';
     }
 }

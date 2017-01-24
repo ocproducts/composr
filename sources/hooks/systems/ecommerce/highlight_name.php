@@ -39,7 +39,7 @@ class Hook_ecommerce_highlight_name
         require_lang('ecommerce');
 
         $products = array(
-            'HIGHLIGHT_NAME' => array(
+            'HIGHLIGHT_NAME' => automatic_discount_calculation(array(
                 'item_name' => do_lang('NAME_HIGHLIGHTING', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
                 'item_description' => do_lang_tempcode('NAME_HIGHLIGHTING_DESCRIPTION'),
                 'item_image_url' => find_theme_image('icons/48x48/menu/social/members'),
@@ -47,14 +47,14 @@ class Hook_ecommerce_highlight_name
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => null,
+                'price' => (get_option('highlight_name_price') == '') ? null : (intval(get_option('highlight_name_price'))),
                 'currency' => get_option('currency'),
-                'price_points' => intval(get_option('highlight_name')),
+                'price_points' => (get_option('highlight_name_price_points') == '') ? null : (intval(get_option('highlight_name_price_points'))),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
                 'needs_shipping_address' => false,
-            ),
+            )),
         );
         return $products;
     }

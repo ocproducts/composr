@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_max_quota
+class Hook_config_highlight_name_price
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_max_quota
     public function get_details()
     {
         return array(
-            'human_name' => 'MAX_QUOTA',
+            'human_name' => 'COST_highlight_name_price',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
-            'group' => 'POP3',
-            'explanation' => 'CONFIG_OPTION_max_quota',
-            'shared_hosting_restricted' => '1',
+            'group' => 'NAME_HIGHLIGHTING',
+            'explanation' => 'CONFIG_OPTION_highlight_name_price',
+            'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 8,
+            'order_in_category_group' => 3,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +52,6 @@ class Hook_config_max_quota
      */
     public function get_default()
     {
-        return '10000';
+        return (get_forum_type() != 'cns') ? null : '40.00';
     }
 }

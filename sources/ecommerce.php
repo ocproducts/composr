@@ -73,6 +73,35 @@ function init__ecommerce()
 }
 
 /**
+ * Automatically calculates a half-price points-based discount for a product.
+ *
+ * @param array $details The product details.
+ * @return array The amended product details.
+ */
+function automatic_discount_calculation($details)
+{
+    if ($details['discount_points__num_points'] !== null) {
+        // Already has discount
+        return $details;
+    }
+
+    if ($details['price'] === null) {
+        // Only via money
+        return $details;
+    }
+
+    if ($details['price_points'] === null) {
+        // Only via points
+        return $details;
+    }
+
+    $details['discount_points__num_points'] = intval(round(floatval($details['price_points']) / 2.0));
+    $details['discount_points__price_reduction'] = float_to_raw_string(floatval($details['price']) / 2.0);
+
+    return $details;
+}
+
+/**
  * Find the next step for the purchasing module.
  *
  * @param object $product_object The product object.
