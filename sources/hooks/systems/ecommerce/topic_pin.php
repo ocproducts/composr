@@ -52,10 +52,6 @@ class Hook_ecommerce_topic_pin
      */
     public function get_products($site_lang = false, $search = null, $search_item_names = false)
     {
-        if ((get_forum_type() != 'cns') || (!addon_installed('cns_forum'))) {
-            return array();
-        }
-
         require_lang('ecommerce');
         require_lang('cns');
 
@@ -96,6 +92,10 @@ class Hook_ecommerce_topic_pin
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (has_no_forum()) {
+            return ECOMMERCE_PRODUCT_DISABLED;
+        }
+
         if (get_option('is_on_topic_pin_buy') == '0') {
             return ECOMMERCE_PRODUCT_DISABLED;
         }
