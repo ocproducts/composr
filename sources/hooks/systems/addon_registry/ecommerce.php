@@ -180,6 +180,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/notifications/service_paid_for_staff.php',
             'sources/ecommerce.php',
             'sources/ecommerce2.php',
+            'sources/ecommerce_permission_products.php',
             'sources/ecommerce_subscriptions.php',
             'sources/hooks/systems/config/manual_subscription_expiry_notice.php',
             'sources/hooks/modules/members/ecommerce.php',

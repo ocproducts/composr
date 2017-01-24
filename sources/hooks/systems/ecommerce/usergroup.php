@@ -264,6 +264,7 @@ class Hook_ecommerce_usergroup
                         }
                     }
 
+                    // Notification to user
                     dispatch_notification('paid_subscription_messages', null/*Not currently per-sub settable strval($usergroup_subscription_id)*/, do_lang('PAID_SUBSCRIPTION_ENDED', null, null, null, get_lang($member_id)), get_translated_text($myrow['s_mail_end'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
                 }
             }
@@ -314,6 +315,7 @@ class Hook_ecommerce_usergroup
                 ));
             }
 
+            // Notification to user
             dispatch_notification('paid_subscription_messages', null/*Not currently per-sub settable strval($usergroup_subscription_id)*/, do_lang('PAID_SUBSCRIPTION_STARTED'), get_translated_text($myrow['s_mail_start'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
 
             $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => strval($usergroup_subscription_id), 'transaction_id' => $details['TXN_ID']));

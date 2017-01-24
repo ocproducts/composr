@@ -191,7 +191,7 @@ class Hook_ecommerce_community_billboard
 
         $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('COMMUNITY_BILLBOARD_MESSAGE', null, null, null, get_site_default_lang()), 'details2' => strval($days), 'transaction_id' => $details['TXN_ID']));
 
-        // Mail off the notice
+        // Notification to staff
         require_code('notifications');
         $_url = build_url(array('page' => 'admin_community_billboard'), get_module_zone('admin_community_billboard'), null, false, false, true);
         $manage_url = $_url->evaluate();

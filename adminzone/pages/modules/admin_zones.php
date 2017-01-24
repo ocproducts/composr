@@ -672,6 +672,10 @@ class Module_admin_zones
                 $perhaps = is_null($zone) ? true : $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => $zone, 'group_id' => $id));
                 $fields .= static_evaluate_tempcode(form_input_tick(do_lang_tempcode('ACCESS_FOR', escape_html($name)), do_lang_tempcode('DESCRIPTION_ACCESS_FOR', escape_html($name)), 'access_' . strval($id), !is_null($perhaps)));
             }
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                $fields->attach(permission_product_form('zone', empty($zone) ? null : $zone));
+            }
         }
 
         return array(make_string_tempcode($fields), $hidden, $javascript);
@@ -766,6 +770,10 @@ class Module_admin_zones
         sync_htaccess_with_zones();
 
         $this->set_permissions($zone);
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('zone', $zone);
+        }
 
         // Show it worked / Refresh
         $url = build_url(array('page' => $default_page), $zone);
@@ -929,6 +937,10 @@ class Module_admin_zones
 
             if ($new_zone != '') {
                 $this->set_permissions($new_zone);
+                if (addon_installed('ecommerce')) {
+                    require_code('ecommerce_permission_products');
+                    permission_product_save('zone', $zone, $new_zone);
+                }
             }
 
             $this->title = get_screen_title('EDIT_ZONE'); // Re-get title late, as we might be changing the theme this title is got from

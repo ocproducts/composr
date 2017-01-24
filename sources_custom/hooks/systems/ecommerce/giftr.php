@@ -185,7 +185,7 @@ class Hook_ecommerce_giftr
 
                 $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $from_member_id, 'details' => $gift_name, 'details2' => $GLOBALS['FORUM_DRIVER']->get_username($to_member_id), 'transaction_id' => $details['TXN_ID']));
 
-                // Send notification
+                // Send notification to recipient
                 require_code('notifications');
                 $subject = do_lang('GOT_GIFT', null, null, null, get_lang($to_member_id));
                 if ($anonymous == 0) {

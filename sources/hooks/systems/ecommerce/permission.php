@@ -64,6 +64,7 @@ class Hook_ecommerce_permission
      * @param  ?integer $price_points The cost in points (null: not set)
      * @param  ?integer $hours Number of hours for it to last for (null: unlimited)
      * @param  ID_TEXT $type Permission scope 'type'
+     * @set member_privileges member_category_access member_page_access member_zone_access
      * @param  ID_TEXT $privilege Permission scope 'privilege'
      * @param  ID_TEXT $zone Permission scope 'zone'
      * @param  ID_TEXT $page Permission scope 'page'
@@ -98,6 +99,7 @@ class Hook_ecommerce_permission
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c1ee1d8ff171d8de6cd5ed14b5a59afb', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('SETTINGS'))));
 
         require_all_lang();
+
         $privileges = new Tempcode();
         $temp = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         $privileges->attach($temp);
@@ -117,12 +119,14 @@ class Hook_ecommerce_permission
             $privileges->attach($temp);
         }
         $fields->attach(form_input_list(do_lang_tempcode('PERMISSION_SCOPE_privilege'), do_lang_tempcode('DESCRIPTION_PERMISSION_SCOPE_privilege'), 'permission_privilege' . $name_suffix, $privileges, null, false, false));
+
         $zones = new Tempcode();
         //$zones->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));      Will always scope to a zone. Welcome zone would be '' anyway, so we're simplifying the code by having a zone setting which won't hurt anyway
         require_code('zones2');
         require_code('zones3');
         $zones->attach(create_selection_list_zones($zone));
         $fields->attach(form_input_list(do_lang_tempcode('PERMISSION_SCOPE_zone'), do_lang_tempcode('DESCRIPTION_PERMISSION_SCOPE_zone'), 'permission_zone' . $name_suffix, $zones, null, false, false));
+
         $pages = new Tempcode();
         $temp = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         $pages->attach($temp);
@@ -139,6 +143,7 @@ class Hook_ecommerce_permission
             $pages->attach($temp);
         }
         $fields->attach(form_input_list(do_lang_tempcode('PERMISSION_SCOPE_page'), do_lang_tempcode('DESCRIPTION_PERMISSION_SCOPE_page'), 'privilege_page' . $name_suffix, $pages, null, false, false));
+
         $modules = new Tempcode();
         $temp = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         $modules->attach($temp);
@@ -148,6 +153,7 @@ class Hook_ecommerce_permission
             $modules->attach($temp);
         }
         $fields->attach(form_input_list(do_lang_tempcode('PERMISSION_SCOPE_module'), do_lang_tempcode('DESCRIPTION_PERMISSION_SCOPE_module'), 'permission_module' . $name_suffix, $modules, null, false, false));
+
         $fields->attach(form_input_line(do_lang_tempcode('PERMISSION_SCOPE_category'), do_lang_tempcode('DESCRIPTION_PERMISSION_SCOPE_category'), 'permission_category' . $name_suffix, $category, false));
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b89804ab98762d661f4337b1dfb62d46', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('PURCHASE_MAIL'), 'HELP' => do_lang_tempcode('DESCRIPTION_PURCHASE_MAIL'))));
@@ -417,7 +423,7 @@ class Hook_ecommerce_permission
         $map['active_until'] = ($row['p_hours'] === null) ? null : (time() + $row['p_hours'] * 60 * 60);
         $GLOBALS['SITE_DB']->query_insert(filter_naughty_harsh($row['p_type']), $map);
 
-        // Email member
+        // E-mail member (we don't do a notification as we want to know for sure it will be received; plus avoid bloat in the notification UI)
         require_code('mail');
         $subject_line = get_translated_text($row['p_mail_subject']);
         if ($subject_line != '') {

@@ -396,6 +396,8 @@ class Hook_ecommerce_email
                 $fields->attach(form_input_password(do_lang_tempcode('PASSWORD'), '', 'pass1', true));
                 $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'pass2', true));
 
+                $text = do_lang_tempcode('EMAIL_CONTACT_MESSAGE');
+
                 $javascript = "
                     var form=document.getElementById('pass1').form;
                     form.old_submit=form.onsubmit;
@@ -423,12 +425,14 @@ class Hook_ecommerce_email
                 $fields->attach(form_input_line(do_lang_tempcode('ADDRESS_DESIRED_STUB'), do_lang_tempcode('DESCRIPTION_ADDRESS_DESIRED_STUB', escape_html($domain)), 'email_prefix', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), true));
                 $fields->attach(form_input_line(do_lang_tempcode('ADDRESS_CURRENT'), '', 'email', $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), true));
 
+                $text = do_lang_tempcode('EMAIL_CONTACT_MESSAGE');
+
                 $javascript = null;
 
                 break;
         }
 
-        return array($fields, null, $javascript);
+        return array($fields, $text, $javascript);
     }
 
     /**
@@ -539,6 +543,7 @@ class Hook_ecommerce_email
 
                 $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $prefix, 'details2' => '@' . $suffix, 'transaction_id' => $details['TXN_ID']), true);
 
+                // Notification to staff
                 $mail_server = get_option('mail_server');
                 $pop3_url = get_option('pop_url');
                 $initial_quota = intval(get_option('initial_quota'));
@@ -560,10 +565,6 @@ class Hook_ecommerce_email
                 ), null, false, null, '.txt', 'text');
                 dispatch_notification('ecom_product_request_pop3', 'pop3_' . strval($sale_id), do_lang('MAIL_REQUEST_POP3', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
-                $result = do_lang_tempcode('ORDER_POP3_DONE', escape_html($prefix . '@' . $suffix));
-                global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
-                $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = $result;
-
                 break;
 
             case 'QUOTA':
@@ -581,6 +582,7 @@ class Hook_ecommerce_email
 
                 $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('QUOTA', null, null, null, get_site_default_lang()), 'details2' => strval($quota), 'transaction_id' => $details['TXN_ID']), true);
 
+                // Notification to staff
                 $quota_url = get_option('quota_url');
                 $encoded_reason = do_lang('TITLE_QUOTA');
                 require_code('notifications');
@@ -592,10 +594,6 @@ class Hook_ecommerce_email
                     'QUOTA_URL' => $quota_url,
                 ), null, false, null, '.txt', 'text');
                 dispatch_notification('ecom_request_quota', 'quota_' . uniqid('', true), do_lang('MAIL_REQUEST_QUOTA', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
-
-                $result = do_lang_tempcode('ORDER_QUOTA_DONE');
-                global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
-                $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = $result;
 
                 break;
 
@@ -609,6 +607,7 @@ class Hook_ecommerce_email
 
                 $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $prefix, 'details2' => '@' . $suffix, 'transaction_id' => $details['TXN_ID']), true);
 
+                // Notification to staff
                 $forw_url = get_option('forw_url');
                 require_code('notifications');
                 $encoded_reason = do_lang('TITLE_NEWFORWARDING');
@@ -621,10 +620,6 @@ class Hook_ecommerce_email
                     'FORW_URL' => $forw_url,
                 ), null, false, null, '.txt', 'text');
                 dispatch_notification('ecom_product_request_forwarding', 'forw_' . strval($sale_id), do_lang('MAIL_REQUEST_FORWARDING', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
-
-                $result = do_lang_tempcode('ORDER_FORWARDER_DONE', $email, escape_html($prefix . '@' . $suffix));
-                global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
-                $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = $result;
 
                 break;
         }

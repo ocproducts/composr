@@ -8728,11 +8728,7 @@ function string_scan($lang, $do_guessing = false)
         OPTIONS
         OR
         ORANGE
-        ORDER_FORWARDER_DONE
-        ORDER_GENERAL_DONE
-        ORDER_POP3_DONE
         ORDER_PRICE_AMT
-        ORDER_QUOTA_DONE
         ORIGINAL_COMCODE
         OTHER
         OTHER_ACTIONS

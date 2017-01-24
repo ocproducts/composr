@@ -1316,6 +1316,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         // Permissions
         if (get_value('disable_cat_cat_perms') !== '1') {
             $fields->attach($this->get_permission_fields(is_null($id) ? '' : strval($id), null, is_null($id)));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                $fields->attach(permission_product_form('catalogue_category', ($id === null) ? null : strval($id)));
+            }
         }
 
         return array($fields, $hidden);
@@ -1407,6 +1411,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         if (get_value('disable_cat_cat_perms') !== '1') {
             $this->set_permissions(strval($category_id));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('catalogue_category', strval($category_id));
+            }
         }
 
         if (addon_installed('content_reviews')) {
@@ -1462,6 +1470,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         if (!fractional_edit()) {
             if (get_value('disable_cat_cat_perms') !== '1') {
                 $this->set_permissions(strval($category_id));
+                if (addon_installed('ecommerce')) {
+                    require_code('ecommerce_permission_products');
+                    permission_product_save('catalogue_category', strval($category_id));
+                }
             }
         }
 
@@ -1704,6 +1716,10 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
             // Permissions
             $fields->attach($this->get_permission_fields($name, null, ($name == '')));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                $fields->attach(permission_product_form('catalogue', ($name === '') ? null : $name));
+            }
 
             $actions = new Tempcode();
             if (($name != '') && (get_value('disable_cat_cat_perms') !== '1')) {
@@ -1869,6 +1885,10 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $this->set_permissions($name);
         if (!is_null($category_id)) {
             $GLOBALS['MODULE_CMS_CATALOGUES']->cat_crud_module->set_permissions(strval($category_id));
+        }
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('catalogue', $name);
         }
 
         if (addon_installed('content_reviews')) {
@@ -2152,6 +2172,10 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         // Do this last as it causes a menu decache which can cause memory errors if we do a warn_exit (i.e. we want the warn_exit's before this)
         if (!fractional_edit()) {
             $this->set_permissions($name);
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('catalogue', $name);
+            }
         }
     }
 

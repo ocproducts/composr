@@ -929,6 +929,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
 
         // Permissions
         $fields->attach($this->get_permission_fields(($category_id == -1) ? null : strval($category_id), null, ($category == '')));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('download_category', ($category_id === null) ? null : strval($category_id)));
+        }
 
         return array($fields, $hidden);
     }
@@ -977,6 +981,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
         set_url_moniker('download_category', strval($category_id));
 
         $this->set_permissions(strval($category_id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('download_category', strval($category_id));
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('download_category', strval($category_id));
@@ -1014,6 +1022,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
         edit_download_category($category_id, $category, $parent_id, $description, $notes, $rep_image, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $metadata['add_time']);
         if (!fractional_edit()) {
             $this->set_permissions(strval($category_id));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('download_category', strval($category_id));
+            }
         }
 
         if (addon_installed('content_reviews')) {

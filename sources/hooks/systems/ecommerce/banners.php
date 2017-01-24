@@ -343,7 +343,7 @@ class Hook_ecommerce_banners
 
                 $result = do_template('BANNER_ADDED_SCREEN', array('_GUID' => '68725923b19d3df71c72276ada826183', 'TITLE' => '', 'TEXT' => $text, 'BANNER_CODE' => $banner_code, 'STATS_URL' => $stats_url, 'DO_NEXT' => ''));
                 global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
-                $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = protect_from_escaping($result);
+                $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = protect_from_escaping($result); // Note that this won't show for everyone, it depends on the payment method
 
                 break;
 

@@ -1391,6 +1391,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
 
         // Permissions
         $fields->attach($this->get_permission_fields(is_null($id) ? null : strval($id), null, ($title == '')));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('calendar_type', ($id === null) ? null : strval($id)));
+        }
 
         if (addon_installed('content_reviews')) {
             $fields->attach(content_review_get_fields('calendar_type', is_null($id) ? null : strval($id)));
@@ -1481,6 +1485,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
         set_url_moniker('calendar_type', strval($id));
 
         $this->set_permissions(strval($id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('calendar_type', strval($id));
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('calendar_type', strval($id));
@@ -1509,6 +1517,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
 
         if (!fractional_edit()) {
             $this->set_permissions($id);
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('calendar_type', $id);
+            }
         }
 
         if (addon_installed('content_reviews')) {

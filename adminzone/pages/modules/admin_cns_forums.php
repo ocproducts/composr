@@ -244,6 +244,10 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         // Permissions
         $fields->attach($this->get_permission_fields(is_null($id) ? null : strval($id), null, is_null($id)));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('forum', ($id === null) ? null : strval($id)));
+        }
 
         return array($fields, $hidden);
     }
@@ -582,6 +586,10 @@ class Module_admin_cns_forums extends Standard_crud_module
         }
 
         $this->set_permissions($id);
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('forum', $id);
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('forum', $id);
@@ -638,6 +646,10 @@ class Module_admin_cns_forums extends Standard_crud_module
             }
 
             $this->set_permissions($id);
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('forum', $id);
+            }
 
             if (addon_installed('content_reviews')) {
                 content_review_set('forum', $id);

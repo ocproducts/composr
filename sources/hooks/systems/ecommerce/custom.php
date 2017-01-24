@@ -287,7 +287,7 @@ class Hook_ecommerce_custom
         $message_raw = do_notification_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
         dispatch_notification('ecom_product_request_custom', 'custom' . strval($custom_product_id) . '_' . strval($sale_id), $subject, $message_raw, null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
-        // Email member
+        // E-mail member (we don't do a notification as we want to know for sure it will be received; plus avoid bloat in the notification UI)
         require_code('mail');
         $subject_line = get_translated_text($row['c_mail_subject']);
         if ($subject_line != '') {
