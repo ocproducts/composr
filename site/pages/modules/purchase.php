@@ -380,7 +380,7 @@ class Module_purchase
                 breadcrumb_set_self($product_category['category_name']);
                 breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOM_PURCHASE_STAGE_browse'))));
 
-                $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_' . $type), '2', '6'));
+                $this->title = get_screen_title('PURCHASING_TITLE', true, array(do_lang_tempcode('ECOM_PURCHASE_STAGE_category'), '2', '6'));
             }
         }
         if ($type == 'message') {
@@ -397,7 +397,7 @@ class Module_purchase
         }
         if ($type == 'finish') {
             if (get_param_integer('cancel', 0) == 1) {
-                breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_cancel'));
+                breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_cancelled'));
             } else {
                 breadcrumb_set_self(do_lang_tempcode('ECOM_PURCHASE_STAGE_finish'));
             }
