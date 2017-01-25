@@ -254,6 +254,7 @@ function get_table_purpose_flags()
         'wiki_posts' => TABLE_PURPOSE__NORMAL,
         'wordfilter' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG,
         'zones' => TABLE_PURPOSE__NORMAL,
+        'ecom_sales_expecting' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__MISC_NO_MERGE/*too-site-tied*/,
     );
 }
 
@@ -340,6 +341,7 @@ function get_table_descriptions()
         'values_elective' => 'arbitrary store of lengthy/elective data values (mapping of keys to values)',
         'webstandards_checked_once' => 'this is used by the inbuilt XHTML checker to know what markup it has already checked, so it doesn\'t waste a lot of time re-checking the same stuff; it uses a hash-signature-check so it doesn\'t need to store all data in the table',
         'zones' => 'details of all zones on the website',
+        'ecom_sales_expecting' => 'stores details of an in-progress purchase',
     );
 }
 

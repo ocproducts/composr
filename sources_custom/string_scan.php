@@ -476,7 +476,6 @@ function string_scan($lang, $do_guessing = false)
         BAD_ARCHIVE_FORMAT
         BAD_CODENAME
         BAD_IMPORT_PATH
-        BAD_INPUT
         BAD_PATH
         BAD_ZONE
         CURRENT_BANNER_IS
@@ -525,7 +524,6 @@ function string_scan($lang, $do_guessing = false)
         BANNER_TYPE_LINE_TEXTUAL
         BANNER_UPGRADED
         BANNER_UPGRADE_CONFIRM
-        BANNER_UPGRADE_LINE
         BANNER_VIEWS_FROM
         BANNER_VIEWS_TO
         BAN_IP_DESCRIPTION
@@ -4714,7 +4712,6 @@ function string_scan($lang, $do_guessing = false)
         IMMEDIATE_USE
         IMPLIED_SPAMMER_CONFIDENCE
         IMPORT
-        IMPORTANCE
         IMPORTANCE_UPGRADE_DESCRIPTION
         IMPORTANT_GROUPS_PER_PAGE
         IMPORTER
@@ -5445,10 +5442,10 @@ function string_scan($lang, $do_guessing = false)
         NOTIFICATION_TYPE_low_stock
         NOTIFICATION_TYPE_messaging
         NOTIFICATION_TYPE_needs_validation
-        NOTIFICATION_TYPE_ecom_request_custom
-        NOTIFICATION_TYPE_ecom_request_forwarding
-        NOTIFICATION_TYPE_ecom_request_pop3
-        NOTIFICATION_TYPE_ecom_request_quota
+        NOTIFICATION_TYPE_ecom_product_request_custom
+        NOTIFICATION_TYPE_ecom_product_request_forwarding
+        NOTIFICATION_TYPE_ecom_product_request_pop3
+        NOTIFICATION_TYPE_ecom_product_request_quota
         NOTIFICATION_TYPE_receive_points_staff
         NOTIFICATION_TYPE_service_cancelled_staff
         NOTIFICATION_TYPE_service_paid_for_staff
@@ -5459,6 +5456,8 @@ function string_scan($lang, $do_guessing = false)
         NOTIFICATION_TYPE_ticket_assigned_staff
         NOTIFICATION_TYPE_ticket_new_staff
         NOTIFICATION_TYPE_ticket_reply_staff
+        EDIT_ECOMMERCE_CONFIG
+        SELL_CATEGORY_ACCESS
         NOT_ADDON
         NOT_A_DIR
         NOT_A_FILE
@@ -6223,7 +6222,6 @@ function string_scan($lang, $do_guessing = false)
         SIGN_UP_REMINDER_GROUPS
         SILENCE_FROM_FORUM
         SILENCE_FROM_TOPIC
-        SILLY_INPUT
         SIMPLIFIED_ATTACHMENTS_UI
         SIMPLIFIED_DONEXT
         SIMPLIFY_WYSIWYG_BY_PERMISSIONS
@@ -7102,6 +7100,48 @@ function string_scan($lang, $do_guessing = false)
         DEFAULT_CPF_about_NAME
         NO_DAYLIGHT_SAVING
         NOTIFICATION_TYPE_payment_received
+        AUTOMATIC_CATEGORY_ACCESS_BODY
+        AUTOMATIC_CATEGORY_ACCESS_SUBJECT
+        BANNERS_INTRO
+        BANNER_ACTIVATE
+        BANNER_ACTIVATE_DESCRIPTION
+        BANNER_ADD_HITS
+        BANNER_ADD_HITS_DESCRIPTION
+        BANNER_ADD_IMPORTANCE
+        BANNER_ADD_IMPORTANCE_DESCRIPTION
+        BUYING_FOR_FREE_CONFIRMATION
+        BUYING_FOR_MONEY_CONFIRMATION
+        BUYING_FOR_POINTS_CONFIRMATION
+        CART_ORDER_DESCRIPTION
+        CATALOGUE_ITEM
+        CATALOGUE_ITEM_DESCRIPTION
+        DESCRIPTION_ADDRESS_DESIRED_STUB
+        DESCRIPTION_SELL_CATEGORY_ACCESS
+        DISCOUNTED_ECOMMERCE_PRODUCT
+        ECOM_PRODUCTS_INTRO_BOTH
+        ECOM_PRODUCTS_INTRO_MONEY_ONLY
+        ECOM_PRODUCTS_INTRO_POINTS_ONLY
+        ECOM_PURCHASE_STAGE_cancelled
+        ECOM_PURCHASE_STAGE_category
+        EMAIL_CONTACT_MESSAGE
+        FREE
+        FREE_ECOMMERCE_PRODUCT
+        GAMBLE_THIS
+        GAMBLE_WARNING
+        GAMBLING_WINNINGS
+        NEWFORWARDING_DESCRIPTION
+        NEWPOP3_DESCRIPTION
+        PERMISSION_PRODUCT_PERMANENT_AUTOMATIC_DESCRIPTION
+        PERMISSION_PRODUCT_PERMANENT_AUTOMATIC_TITLE
+        PERMISSION_PRODUCT_TEMPORARY_AUTOMATIC_DESCRIPTION
+        PERMISSION_PRODUCT_TEMPORARY_AUTOMATIC_TITLE
+        PIN_SPECIFIC_TOPIC
+        POINTS_PURCHASE
+        PURCHASES
+        PURCHASE_QUOTA_DESCRIPTION
+        TOPIC_PINNED_FOR
+        USERGROUP_SUBSCRIPTION_DESCRIPTION
+        _SUBSCRIPTION
         TASK_COMPLETED
         TASK_COMPLETED_BODY
         TASK_COMPLETED_BODY_ATTACHMENT
@@ -8149,7 +8189,6 @@ function string_scan($lang, $do_guessing = false)
         INACTIVE
         INCORRECT_CONFIRMATION
         INCORRECT_CONFIRM_CODE
-        INFO_CONFIRM
         INLINE_PERSONAL_POSTS
         INLINE_POSTS_MOVED_MESSAGE
         INPUTSYSTEM_CANCEL
@@ -9371,7 +9410,6 @@ function string_scan($lang, $do_guessing = false)
         TOPIC_NOTIFICATION_MAIL
         TOPIC_NOTIFICATION_MAIL_SUBJECT
         TOPIC_PINNED_ALREADY
-        TOPIC_PINNED_MAX_DAYS
         TOPIC_PINNING
         TOPIC_PINNING_DESCRIPTION
         TOPIC_PIN_LACK_POINTS

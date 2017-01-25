@@ -38,7 +38,7 @@ class Hook_config_highlight_name_price
             'explanation' => 'CONFIG_OPTION_highlight_name_price',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 2,
             'required' => false,
 
             'addon' => 'ecommerce',

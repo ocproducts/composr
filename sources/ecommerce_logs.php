@@ -23,7 +23,7 @@
  *
  * @param  ?MEMBER $filter_member_id Member to filter by (null: none)
  * @param  boolean $show_username Whether to show the username column
- * @param  boolean $show_username Whether to show the deletion column
+ * @param  boolean $show_delete Whether to show the deletion column
  * @param  integer $max_default Default maximum number of records to show
  * @return array A pair: The sales table, pagination
  */
@@ -141,7 +141,7 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
         $sales_rows[] = $sales_row;
     }
     if (count($sales_rows) == 0) {
-        return inform_screen($this->title, do_lang_tempcode('NO_ENTRIES'));
+        inform_exit(do_lang_tempcode('NO_ENTRIES'));
     }
 
     $header_row = array();

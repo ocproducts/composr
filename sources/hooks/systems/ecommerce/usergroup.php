@@ -34,7 +34,7 @@ class Hook_ecommerce_usergroup
 
         return array(
             'category_name' => do_lang('USERGROUP_SUBSCRIPTION'),
-            'category_description' => do_lang_tempcode('USERGROUP_SUBSCRIPTION_DESCRITION'),
+            'category_description' => do_lang_tempcode('USERGROUP_SUBSCRIPTION_DESCRIPTION'),
             'category_image_url' => find_theme_image('icons/48x48/menu/adminzone/audit/ecommerce/subscriptions'),
         );
     }

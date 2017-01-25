@@ -128,4 +128,4 @@ A common point of confusion is users thinking the leader-board shows who are the
  - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
  - [page="_SEARCH:tut_ecommerce"]eCommerce[/page]
 
-{$SET,tutorial_tags,Fun and Games,buildr,community_billboard,points,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The points system allows members to earn and spend points, creating a great dynamic. Find out how it works.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Fun and Games,buildr,ecommerce,community_billboard,points,Social,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The points system allows members to earn and spend points, creating a great dynamic. Find out how it works.}[block]main_tutorial_rating[/block]

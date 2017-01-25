@@ -674,7 +674,7 @@ class Module_admin_zones
             }
             if (addon_installed('ecommerce')) {
                 require_code('ecommerce_permission_products');
-                $fields->attach(permission_product_form('zone', empty($zone) ? null : $zone));
+                $fields .= static_evaluate_tempcode(permission_product_form('zone', empty($zone) ? null : $zone));
             }
         }
 

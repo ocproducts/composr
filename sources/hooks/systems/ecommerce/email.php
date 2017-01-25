@@ -97,7 +97,7 @@ class Hook_ecommerce_email
         $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'dpop3', '', true));
         $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE'), 'pop3_price', null, false));
         if (addon_installed('points')) {
-            $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('_DESCRIPTION_MAIL_COST'), 'pop3_price_points', null, false));
+            $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE_POINTS'), 'pop3_price_points', null, false));
         }
         return $fields;
     }
@@ -593,7 +593,7 @@ class Hook_ecommerce_email
                     'EMAIL' => $prefix . $suffix,
                     'QUOTA_URL' => $quota_url,
                 ), null, false, null, '.txt', 'text');
-                dispatch_notification('ecom_request_quota', 'quota_' . uniqid('', true), do_lang('MAIL_REQUEST_QUOTA', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
+                dispatch_notification('ecom_product_request_quota', 'quota_' . uniqid('', true), do_lang('MAIL_REQUEST_QUOTA', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
                 break;
 

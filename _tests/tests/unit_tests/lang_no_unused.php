@@ -187,6 +187,9 @@ class lang_no_unused_test_set extends cms_test_case
             '_VIEW_IMAGE',
             '_VIEW_VIDEO',
             'EDIT_WARNING',
+            'NEWFORWARDING_DESCRIPTION',
+            'NEWPOP3_DESCRIPTION',
+            'TITLE_POP3',
             'takes_lots_of_space',
         );
 

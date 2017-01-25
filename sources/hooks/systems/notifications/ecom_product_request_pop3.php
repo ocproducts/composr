@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_notification_ecom_request_forwarding extends Hook_notification__Staff
+class Hook_notification_ecom_product_request_pop3 extends Hook_notification__Staff
 {
     /**
      * Find the initial setting that members have for a notification code (only applies to the member_could_potentially_enable members).
@@ -44,7 +44,7 @@ class Hook_notification_ecom_request_forwarding extends Hook_notification__Staff
     public function list_handled_codes()
     {
         $list = array();
-        $list['ecom_request_forwarding'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('ecommerce:NOTIFICATION_TYPE_ecom_request_forwarding'));
+        $list['ecom_product_request_pop3'] = array(do_lang('ecommerce:ECOMMERCE'), do_lang('ecommerce:NOTIFICATION_TYPE_ecom_product_request_pop3'));
         return $list;
     }
 }
