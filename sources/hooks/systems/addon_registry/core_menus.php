@@ -253,21 +253,19 @@ class Hook_addon_registry_core_menus
         $root_branch = do_lorem_template('MENU_EDITOR_BRANCH', array('CLICKABLE_SECTIONS' => 'true', 'CHILD_BRANCH_TEMPLATE' => $child_branch_template, 'CHILD_BRANCHES' => '', 'I' => ''));
 
         return array(
-            lorem_globalise(
-                do_lorem_template('MENU_EDITOR_SCREEN', array(
-                        'ALL_MENUS' => placeholder_array(),
-                        'MENU_NAME' => lorem_word(),
-                        'DELETE_URL' => placeholder_url(),
-                        'PING_URL' => placeholder_url(),
-                        'WARNING_DETAILS' => '',
-                        'FIELDS_TEMPLATE' => placeholder_fields(),
-                        'HIGHEST_ORDER' => lorem_phrase(),
-                        'URL' => placeholder_url(),
-                        'CHILD_BRANCH_TEMPLATE' => $child_branch_template,
-                        'ROOT_BRANCH' => $root_branch,
-                        'TITLE' => lorem_title(),
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('MENU_EDITOR_SCREEN', array(
+                'ALL_MENUS' => placeholder_array(),
+                'MENU_NAME' => lorem_word(),
+                'DELETE_URL' => placeholder_url(),
+                'PING_URL' => placeholder_url(),
+                'WARNING_DETAILS' => '',
+                'FIELDS_TEMPLATE' => placeholder_fields(),
+                'HIGHEST_ORDER' => lorem_phrase(),
+                'URL' => placeholder_url(),
+                'CHILD_BRANCH_TEMPLATE' => $child_branch_template,
+                'ROOT_BRANCH' => $root_branch,
+                'TITLE' => lorem_title(),
+            )), null, '', true),
         );
     }
 
@@ -282,12 +280,10 @@ class Hook_addon_registry_core_menus
     {
         require_javascript('tree_list');
         return array(
-            lorem_globalise(
-                do_lorem_template('PAGE_LINK_CHOOSER', array(
-                        'NAME' => lorem_word(),
-                        'VALUE' => lorem_word(),
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('PAGE_LINK_CHOOSER', array(
+                'NAME' => lorem_word(),
+                'VALUE' => lorem_word(),
+            )), null, '', true),
         );
     }
 
@@ -364,15 +360,13 @@ class Hook_addon_registry_core_menus
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'mobile', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
 
         return array(
-            lorem_globalise(
-                do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'mobile',
-                    )
-                ), null, '', false),
+            lorem_globalise(do_lorem_template('BLOCK_MENU', array(
+                'CONTENT' => $menu,
+                'PARAM' => lorem_phrase(),
+                'TRAY_STATUS' => lorem_phrase(),
+                'TITLE' => lorem_phrase(),
+                'TYPE' => 'mobile',
+            )), null, '', false),
         );
     }
 
@@ -449,15 +443,13 @@ class Hook_addon_registry_core_menus
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'tree', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
 
         return array(
-            lorem_globalise(
-                do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'tree',
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('BLOCK_MENU', array(
+                'CONTENT' => $menu,
+                'PARAM' => lorem_phrase(),
+                'TRAY_STATUS' => lorem_phrase(),
+                'TITLE' => lorem_phrase(),
+                'TYPE' => 'tree',
+            )), null, '', true),
         );
     }
 
@@ -611,15 +603,13 @@ class Hook_addon_registry_core_menus
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'embossed', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
 
         return array(
-            lorem_globalise(
-                do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'embossed',
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('BLOCK_MENU', array(
+                'CONTENT' => $menu,
+                'PARAM' => lorem_phrase(),
+                'TRAY_STATUS' => lorem_phrase(),
+                'TITLE' => lorem_phrase(),
+                'TYPE' => 'embossed',
+            )), null, '', true),
         );
     }
 
@@ -696,15 +686,13 @@ class Hook_addon_registry_core_menus
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'popup', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
 
         return array(
-            lorem_globalise(
-                do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'popup',
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('BLOCK_MENU', array(
+                'CONTENT' => $menu,
+                'PARAM' => lorem_phrase(),
+                'TRAY_STATUS' => lorem_phrase(),
+                'TITLE' => lorem_phrase(),
+                'TYPE' => 'popup',
+            )), null, '', true),
         );
     }
 
@@ -781,15 +769,13 @@ class Hook_addon_registry_core_menus
         $menu->attach(do_lorem_template('MENU_STAFF_LINK', array('TYPE' => 'select', 'EDIT_URL' => placeholder_url(), 'NAME' => lorem_phrase())));
 
         return array(
-            lorem_globalise(
-                do_lorem_template('BLOCK_MENU', array(
-                        'CONTENT' => $menu,
-                        'PARAM' => lorem_phrase(),
-                        'TRAY_STATUS' => lorem_phrase(),
-                        'TITLE' => lorem_phrase(),
-                        'TYPE' => 'select',
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('BLOCK_MENU', array(
+                'CONTENT' => $menu,
+                'PARAM' => lorem_phrase(),
+                'TRAY_STATUS' => lorem_phrase(),
+                'TITLE' => lorem_phrase(),
+                'TYPE' => 'select',
+            )), null, '', true),
         );
     }
 

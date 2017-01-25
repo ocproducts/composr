@@ -1277,13 +1277,11 @@ class Hook_addon_registry_ecommerce
         $content = do_lorem_template('COLUMNED_TABLE', array('HEADER_ROW' => $header_row, 'ROWS' => $out));
 
         return array(
-            lorem_globalise(
-                do_lorem_template('ECOM_SALES_LOG_SCREEN', array(
-                        'TITLE' => lorem_title(),
-                        'CONTENT' => $content,
-                        'PAGINATION' => placeholder_pagination(),
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('ECOM_SALES_LOG_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'CONTENT' => $content,
+                'PAGINATION' => placeholder_pagination(),
+            )), null, '', true),
         );
     }
 
@@ -1384,15 +1382,13 @@ class Hook_addon_registry_ecommerce
         }
 
         return array(
-            lorem_globalise(
-                do_lorem_template('ECOM_PRODUCT_PRICE_SCREEN', array(
-                        'PING_URL' => placeholder_url(),
-                        'WARNING_DETAILS' => $warning_details,
-                        'TITLE' => lorem_title(),
-                        'EDIT_FORM' => placeholder_form(),
-                        'ADD_FORMS' => $add_forms,
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('ECOM_PRODUCT_PRICE_SCREEN', array(
+                'PING_URL' => placeholder_url(),
+                'WARNING_DETAILS' => $warning_details,
+                'TITLE' => lorem_title(),
+                'EDIT_FORM' => placeholder_form(),
+                'ADD_FORMS' => $add_forms,
+            )), null, '', true),
         );
     }
 
@@ -1406,12 +1402,10 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__administrative__cns_member_profile_ecommerce_logs_screen()
     {
         return array(
-            lorem_globalise(
-                do_lorem_template('CNS_MEMBER_PROFILE_ECOMMERCE_LOGS', array(
-                        'CONTENT' => lorem_chunk_html(),
-                        'PAGINATION' => placeholder_pagination(),
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('CNS_MEMBER_PROFILE_ECOMMERCE_LOGS', array(
+                'CONTENT' => lorem_chunk_html(),
+                'PAGINATION' => placeholder_pagination(),
+            )), null, '', true),
         );
     }
 

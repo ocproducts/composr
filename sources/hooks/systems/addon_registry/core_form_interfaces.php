@@ -2071,12 +2071,10 @@ class Hook_addon_registry_core_form_interfaces
     {
         require_lang('comcode');
         return array(
-            lorem_globalise(
-                do_lorem_template('BLOCK_HELPER_START', array(
-                        'TITLE' => lorem_phrase(),
-                        'LINKS' => lorem_paragraph_html(),
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('BLOCK_HELPER_START', array(
+                'TITLE' => lorem_phrase(),
+                'LINKS' => lorem_paragraph_html(),
+            )), null, '', true),
         );
     }
 

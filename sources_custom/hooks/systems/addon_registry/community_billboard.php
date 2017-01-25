@@ -182,12 +182,10 @@ class Hook_addon_registry_community_billboard
     public function tpl_preview__community_billboard_screen()
     {
         return array(
-            lorem_globalise(
-                do_lorem_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array(
-                        'QUEUE' => placeholder_number(),
-                        'DAYS' => placeholder_number(),
-                    )
-                ), null, '', true),
+            lorem_globalise(do_lorem_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array(
+                'QUEUE' => placeholder_number(),
+                'DAYS' => placeholder_number(),
+            )), null, '', true),
         );
     }
 
