@@ -395,9 +395,7 @@ function string_scan($lang, $do_guessing = false)
         ALSO_ADMIN_ZONE_SEARCH
         ALSO_AUDIO
         ALSO_SEE_ADMIN
-        ALSO_SEE_AUDIT
         ALSO_SEE_CMS
-        ALSO_SEE_SETUP
         AMERICAN_ENGLISH
         ANOMALOUS_FORUM_ACCESS
         ANOTHER_TIP

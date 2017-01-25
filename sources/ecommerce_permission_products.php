@@ -88,7 +88,7 @@ function permission_product_form($resource_type, $category_id = null)
 function _get_permission_product_save_map($resource_type, $category_id)
 {
     require_code('content');
-    $module = convert_composr_type_codes('cma_hook', $resource_type, 'module');
+    $module = convert_composr_type_codes('content_type', $resource_type, 'module');
 
     return array(
         'p_enabled' => 1,
@@ -145,7 +145,7 @@ function permission_product_save($resource_type, $old_category_id, $new_category
         case 'add':
         case 'edit':
             list($content_title, , $cma_info, , , $url_safe) = content_get_details($resource_type, $new_category_id);
-            $content_type_label = $cma_info['content_type_label'];
+            $content_type_label = do_lang($cma_info['content_type_label']);
 
             require_lang('ecommerce');
 

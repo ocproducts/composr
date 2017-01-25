@@ -409,6 +409,14 @@ function find_all_products($site_lang = false)
  */
 function find_product_details($search, $search_item_names = false, $site_lang = false)
 {
+    static $cache = array();
+    $sz = serialize(array($search, $search_item_names, $site_lang));
+    if (isset($cache[$sz])) {
+        return $cache[$sz];
+    }
+
+    static $hook_products_cache = array();
+
     $_hooks = find_all_hooks('systems', 'ecommerce');
     foreach (array_keys($_hooks) as $hook) {
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
@@ -417,7 +425,14 @@ function find_product_details($search, $search_item_names = false, $site_lang = 
             continue;
         }
 
-        $_products = $product_object->get_products($site_lang, $search, $search_item_names);
+        if ((isset($hook_products_cache[$hook])) && (!$search_item_names) && (!$site_lang)) {
+            $_products = $hook_products_cache[$hook];
+        } else {
+            $_products = $product_object->get_products($site_lang, $search, $search_item_names);
+            if ((!$search_item_names) && (!$site_lang)) {
+                $hook_products_cache[$hook] = $_products;
+            }
+        }
 
         $type_code = mixed();
         foreach ($_products as $type_code => $details) {
@@ -427,16 +442,23 @@ function find_product_details($search, $search_item_names = false, $site_lang = 
 
             if ($search_item_names) {
                 if (($details['item_name'] == $search) || ('_' . $type_code == $search)) {
-                    return array($details, $type_code, $product_object);
+                    $ret = array($details, $type_code, $product_object);
+                    $cache[$sz] = $ret;
+                    return $ret;
                 }
             } else {
                 if ($type_code == $search) {
-                    return array($details, $type_code, $product_object);
+                    $ret = array($details, $type_code, $product_object);
+                    $cache[$sz] = $ret;
+                    return $ret;
                 }
             }
         }
     }
-    return array(null, null, null);
+
+    $ret = array(null, null, null);
+    $cache[$sz] = $ret;
+    return $ret;
 }
 
 /**
@@ -1122,7 +1144,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
 
     if (($consider_free) && ($details['price_points'] !== null)) {
         require_code('points');
-        if ((available_points($member_id) >= $details['price_points']) || ($details['price'] === null/*has to be points as no monetary-price*/)) {
+        if ((available_points($member_id) >= $details['price_points']) || ($details['price'] === null/*has to be points as no monetary-price*/) || (has_privilege($member_id, 'give_points_self'))) {
             return array(
                 0.0,
                 $details['price_points'],
@@ -1133,7 +1155,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
 
     if (($details['discount_points__num_points'] !== null) && ($details['discount_points__price_reduction'] !== null) && ($details['price'] !== null)) {
         require_code('points');
-        if (available_points($member_id) >= $details['discount_points__num_points']) {
+        if ((available_points($member_id) >= $details['discount_points__num_points']) || (has_privilege($member_id, 'give_points_self'))) {
             return array(
                 max(0.0, floatval($details['price']) - floatval($details['discount_points__price_reduction'])),
                 $details['discount_points__num_points'],

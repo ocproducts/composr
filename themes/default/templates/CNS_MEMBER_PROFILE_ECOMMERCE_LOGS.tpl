@@ -1,9 +1,3 @@
-{TITLE}
-
-<p>
-	{!ECOM_PRODUCTS_LOG_TEXT}
-</p>
-
 <div class="float_surrounder">
 	{CONTENT}
 

@@ -169,10 +169,11 @@ class Hook_ecommerce_gambling
             $winnings = mt_rand(0, intval(round($average_gamble_multiplier * $amount)));
         }
 
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('GAMBLING', null, null, null, get_site_default_lang()), 'details2' => strval($amount) . ' --> ' . strval($winnings), 'transaction_id' => $details['TXN_ID']));
+
         // Actuate
         require_code('points2');
         give_points($winnings, $member_id, $GLOBALS['FORUM_DRIVER']->get_guest_id(), do_lang('GAMBLING_WINNINGS'), false, false);
-        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('GAMBLING', null, null, null, get_site_default_lang()), 'details2' => strval($amount) . ' --> ' . strval($winnings), 'transaction_id' => $details['TXN_ID']));
 
         // Show message
         if ($winnings > $amount) {

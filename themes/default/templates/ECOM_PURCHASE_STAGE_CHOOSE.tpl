@@ -26,7 +26,7 @@
 
 							{+START,IF_NON_EMPTY,{DESCRIPTION}}
 								<p>
-									{DESCRIPTION*}
+									{DESCRIPTION}
 								</p>
 							{+END}
 

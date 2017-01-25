@@ -125,21 +125,14 @@ class Module_admin_ecommerce extends Standard_crud_module
         set_helper_panel_tutorial('tut_ecommerce');
 
         if ($type == 'browse') {
-            $also_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'browse'), get_module_zone('admin_ecommerce_logs'));
-            attach_message(do_lang_tempcode('menus:ALSO_SEE_AUDIT', escape_html($also_url->evaluate())), 'inform', true);
-
-            $this->title = get_screen_title('CUSTOM_PRODUCT_USERGROUP');
+            $this->title = get_screen_title('ECOMMERCE');
         }
 
         if (($type == 'add') || ($type == '_add') || ($type == 'edit') || ($type == '_edit') || ($type == '__edit')) {
+            set_helper_panel_text(comcode_lang_string('DOC_USERGROUP_SUBSCRIPTION'));
             if (get_forum_type() == 'cns') {
                 breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
             }
-        }
-
-        if ($type == 'prices') {
-            $also_url = build_url(array('page' => 'admin_ecommerce', 'type' => 'browse'), get_module_zone('admin_ecommerce'));
-            attach_message(do_lang_tempcode('menus:ALSO_SEE_AUDIT', escape_html($also_url->evaluate())), 'inform', true);
         }
 
         if ($type == 'prices' || $type == '_prices') {
@@ -195,10 +188,11 @@ class Module_admin_ecommerce extends Standard_crud_module
     public function browse()
     {
         require_code('templates_donext');
-        return do_next_manager($this->title, comcode_lang_string('DOC_USERGROUP_SUBSCRIPTION'),
+        return do_next_manager($this->title, comcode_lang_string('DOC_ECOMMERCE'),
             array(
                 ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
                 ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
+                array('menu/adminzone/setup/ecommerce_products', array('_SELF', array('type' => 'prices'), '_SELF'), do_lang('ECOM_PRODUCTS_MANAGE_INVENTORY')),
             ),
             do_lang('CUSTOM_PRODUCT_USERGROUP')
         );

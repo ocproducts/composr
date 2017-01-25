@@ -96,37 +96,31 @@ class Module_admin_ecommerce_logs
 
         if ($type == 'browse') {
             $this->title = get_screen_title('ECOMMERCE');
-
-            set_helper_panel_text(comcode_lang_string('DOC_ECOMMERCE'));
         }
 
-        if ($type == 'sales') {
-            $also_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'prices'), get_module_zone('admin_ecommerce_logs'));
-            attach_message(do_lang_tempcode('menus:ALSO_SEE_SETUP', escape_html($also_url->evaluate())), 'inform', true);
-        }
-
-        if ($type == 'sales' || $type == 'delete_log_entry') {
+        if ($type == 'sales' || $type == 'delete_sales_log_entry') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE'))));
             $this->title = get_screen_title('ECOM_PRODUCTS_MANAGE_SALES');
         }
 
         if ($type == 'logs') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE'))));
             $this->title = get_screen_title('TRANSACTIONS');
         }
 
-        if ($type != 'logs') {
+        if (($type != 'logs') && ($type != 'sales')) {
             set_helper_panel_tutorial('tut_ecommerce');
+            set_helper_panel_text(comcode_lang_string('DOC_ECOMMERCE'));
         }
 
         if ($type == 'cash_flow') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE'))));
-            breadcrumb_set_self(do_lang_tempcode('RESULT'));
 
             $this->title = get_screen_title('CASH_FLOW');
         }
 
         if ($type == 'profit_loss') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE'))));
-            breadcrumb_set_self(do_lang_tempcode('RESULT'));
 
             $this->title = get_screen_title('PROFIT_LOSS');
         }
@@ -150,10 +144,12 @@ class Module_admin_ecommerce_logs
         }
 
         if ($type == 'view_manual_subscriptions') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE'))));
             $this->title = get_screen_title('MANUAL_SUBSCRIPTIONS');
         }
 
         if ($type == 'cancel_subscription') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:view_manual_subscriptions', do_lang_tempcode('MANUAL_SUBSCRIPTIONS'))));
             $this->title = get_screen_title('CANCEL_MANUAL_SUBSCRIPTION');
         }
 
@@ -188,8 +184,8 @@ class Module_admin_ecommerce_logs
         if ($type == 'sales') {
             return $this->sales();
         }
-        if ($type == 'delete_log_entry') {
-            return $this->delete_log_entry();
+        if ($type == 'delete_sales_log_entry') {
+            return $this->delete_sales_log_entry();
         }
         if ($type == 'logs') {
             return $this->logs();
@@ -200,7 +196,6 @@ class Module_admin_ecommerce_logs
         if ($type == 'profit_loss') {
             return $this->profit_loss();
         }
-        //if ($type == 'balance_sheet') return $this->balance_sheet();
         if ($type == 'trigger') {
             return $this->trigger();
         }
@@ -227,13 +222,14 @@ class Module_admin_ecommerce_logs
         require_code('templates_donext');
         return do_next_manager($this->title, new Tempcode(),
             array(
+                array('menu/rich_content/ecommerce/purchase', array('_SELF', array('type' => 'trigger'), '_SELF'), do_lang('MANUAL_TRANSACTION')),
+                array('menu/adminzone/audit/ecommerce/sales_log', array('_SELF', array('type' => 'sales'), '_SELF'), do_lang('ECOM_PRODUCTS_MANAGE_SALES')),
+                array('menu/adminzone/audit/ecommerce/transactions', array('_SELF', array('type' => 'logs'), '_SELF'), do_lang('LOGS')),
                 array('menu/adminzone/audit/ecommerce/cash_flow', array('_SELF', array('type' => 'cash_flow'), '_SELF'), do_lang('CASH_FLOW')),
                 array('menu/adminzone/audit/ecommerce/profit_loss', array('_SELF', array('type' => 'profit_loss'), '_SELF'), do_lang('PROFIT_LOSS')),
-                array('menu/rich_content/ecommerce/purchase', array('_SELF', array('type' => 'trigger'), '_SELF'), do_lang('MANUAL_TRANSACTION')),
-                array('menu/adminzone/audit/ecommerce/transactions', array('_SELF', array('type' => 'logs'), '_SELF'), do_lang('LOGS')),
-                array('menu/adminzone/audit/ecommerce/invoices', array('admin_invoices', array('type' => 'browse'), get_module_zone('admin_invoices')), do_lang('INVOICES')),
-                addon_installed('shopping') ? array('menu/adminzone/audit/ecommerce/orders', array('admin_orders', array('type' => 'browse'), get_module_zone('admin_orders')), do_lang('shopping:ORDERS')) : null,
                 array('menu/adminzone/audit/ecommerce/subscriptions', array('_SELF', array('type' => 'view_manual_subscriptions'), '_SELF'), do_lang('MANUAL_SUBSCRIPTIONS')),
+                addon_installed('shopping') ? array('menu/adminzone/audit/ecommerce/orders', array('admin_orders', array('type' => 'browse'), get_module_zone('admin_orders')), do_lang('shopping:ORDERS')) : null,
+                array('menu/adminzone/audit/ecommerce/invoices', array('admin_invoices', array('type' => 'browse'), get_module_zone('admin_invoices')), do_lang('INVOICES')),
             ),
             do_lang('ECOMMERCE')
         );
@@ -246,62 +242,10 @@ class Module_admin_ecommerce_logs
      */
     public function sales()
     {
-        $max = get_param_integer('max', 50);
-        $start = get_param_integer('start', 0);
+        require_code('ecommerce_logs');
+        list($sales_table, $pagination) = build_sales_table(null, true, true, 50);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', array('*', 's.id AS s_id'), null, 'ORDER BY date_and_time DESC', $max, $start);
-        $max_rows = $GLOBALS['SITE_DB']->query_select_value('ecom_sales', 'COUNT(*)');
-
-        $out = new Tempcode();
-        require_code('templates_results_table');
-        require_code('templates_columned_table');
-        $do_other_details = false;
-        foreach ($rows as $row) {
-            if ($row['details2'] != '') {
-                $do_other_details = true;
-            }
-        }
-        foreach ($rows as $row) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-            if ($username === null) {
-                $username = do_lang('UNKNOWN');
-            }
-
-            list($found,) = find_product_details($row['t_type_code']);
-            if ($found !== null) {
-                $item_name = $found['item_name'];
-            }
-
-            $details_1 = $row['details'];
-            $details_2 = $row['details2'];
-
-            $date = get_timezoned_date($row['date_and_time']);
-
-            $url = build_url(array('page' => '_SELF', 'type' => 'delete_log_entry', 'id' => $row['s_id']), '_SELF');
-            $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'NAME' => $username, 'URL' => $url));
-
-            if ($do_other_details) {
-                $out->attach(columned_table_row(array($username, $item_name, $details_1, $details_2, $date, $actions), true));
-            } else {
-                $out->attach(columned_table_row(array($username, $item_name, $details_1, $date, $actions), true));
-            }
-        }
-        if ($out->is_empty()) {
-            return inform_screen($this->title, do_lang_tempcode('NO_ENTRIES'));
-        }
-
-        if ($do_other_details) {
-            $header_row = columned_table_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('PRODUCT'), do_lang_tempcode('DETAILS'), do_lang_tempcode('OTHER_DETAILS'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTIONS')));
-        } else {
-            $header_row = columned_table_header_row(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('PRODUCT'), do_lang_tempcode('DETAILS'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTIONS')));
-        }
-
-        $content = do_template('COLUMNED_TABLE', array('_GUID' => 'd87800ff26e9e5b8f7593fae971faa73', 'HEADER_ROW' => $header_row, 'ROWS' => $out));
-
-        require_code('templates_pagination');
-        $pagination = pagination(do_lang('ECOM_PRODUCTS_MANAGE_SALES'), $start, 'start', $max, 'max', $max_rows);
-
-        return do_template('ECOM_SALES_LOG_SCREEN', array('_GUID' => '014cf9436ece951edb55f2f7b0efb597', 'TITLE' => $this->title, 'CONTENT' => $content, 'PAGINATION' => $pagination));
+        return do_template('ECOM_SALES_LOG_SCREEN', array('_GUID' => '014cf9436ece951edb55f2f7b0efb597', 'TITLE' => $this->title, 'CONTENT' => $sales_table, 'PAGINATION' => $pagination));
     }
 
     /**
@@ -309,9 +253,9 @@ class Module_admin_ecommerce_logs
      *
      * @return Tempcode The UI
      */
-    public function delete_log_entry()
+    public function delete_sales_log_entry()
     {
-        $this->_delete_log_entry(get_param_integer('id'));
+        $this->_delete_sales_log_entry(get_param_integer('id'));
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'sales'), '_SELF');
@@ -323,7 +267,7 @@ class Module_admin_ecommerce_logs
      *
      * @param  integer $id The sales ID
      */
-    public function _delete_log_entry($id)
+    public function _delete_sales_log_entry($id)
     {
         $GLOBALS['SITE_DB']->query_delete('ecom_sales', array('id' => $id), '', 1);
     }
@@ -794,15 +738,6 @@ class Module_admin_ecommerce_logs
 
         return do_template('ECOM_CASH_FLOW_SCREEN', array('_GUID' => '255681ec95e90e36e085d14cf984b725', 'TITLE' => $this->title, 'TYPES' => $types));
     }
-
-    /* *
-     * Show a balance sheet. NOT REALLY FEASIBLE: REQUIRES HUMAN INTERPRETATION OF ASSETS, and recording of liabilities
-     *
-     * @return Tempcode The result of execution.
-     */
-    /*function balance_sheet()
-    {
-    }*/
 
     /**
      * Show manual subscriptions.

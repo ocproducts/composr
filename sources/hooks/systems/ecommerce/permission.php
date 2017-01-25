@@ -301,22 +301,27 @@ class Hook_ecommerce_permission
                 $image_url = '';
             }
 
-            $products['PERMISSION_' . strval($row['id'])] = array(
-                'item_name' => do_lang('PERMISSION_PRODUCT', $row['p_title'], null, null, $site_lang ? get_site_default_lang() : user_lang()),
+            $item_name = $row['p_title'];
+            if (strpos($item_name, '(') === false) { // Too simple, wrap the label
+                $item_name = do_lang('PERMISSION_PRODUCT', $item_name, null, null, $site_lang ? get_site_default_lang() : user_lang());
+            }
+
+            $products['PERMISSION_' . strval($row['id'])] = automatic_discount_calculation(array(
+                'item_name' => $item_name,
                 'item_description' => $description,
                 'item_image_url' => $image_url,
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => null,
+                'price' => $row['p_price'],
                 'currency' => get_option('currency'),
-                'price_points' => $row['p_cost'],
+                'price_points' => $row['p_price_points'],
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
                 'needs_shipping_address' => false,
-            );
+            ));
         }
 
         return $products;
@@ -409,8 +414,6 @@ class Hook_ecommerce_permission
         }
 
         $row = $rows[0];
-
-        $cost = $row['p_cost'];
 
         $p_title = get_translated_text($row['p_title']);
 

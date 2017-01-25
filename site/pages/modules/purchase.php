@@ -1186,18 +1186,20 @@ class Module_purchase
                 charge_member($member_id, $points_for_discount, do_lang('FREE_ECOMMERCE_PRODUCT', $item_name));
                 $message = do_lang_tempcode('POINTS_PURCHASE', escape_html(integer_format($points_for_discount)));
                 $memo = do_lang('POINTS');
+                $mc_gross = strval($points_for_discount);
+                $currency = '';
             } else {
                 $message = do_lang_tempcode('FREE_PURCHASE');
                 $memo = do_lang('FREE');
+                $mc_gross = '';
+                $currency = get_option('currency');
             }
 
-            $currency = get_option('currency');
             $payment_status = 'Completed';
             $reason_code = '';
             $pending_reason = '';
             $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
             $parent_txn_id = '';
-            $mc_gross = '';
             handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual');
 
             global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;

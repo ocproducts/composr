@@ -138,6 +138,11 @@ class Hook_ecommerce_cart_orders
 
         $order_id = intval($purchase_id);
 
+        if ($details['PAYMENT_STATUS'] == 'Completed') {
+            $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'c_member', array('id' => $order_id));
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'transaction_id' => $details['TXN_ID']));
+        }
+
         $old_status = $GLOBALS['SITE_DB']->query_select_value('shopping_order_details', 'dispatch_status', array('order_id' => $order_id));
 
         if ($old_status != $details['ORDER_STATUS']) {

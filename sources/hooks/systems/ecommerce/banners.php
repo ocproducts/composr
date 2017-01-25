@@ -358,7 +358,7 @@ class Hook_ecommerce_banners
                 $afthit = $curhit + $extrahit;
                 $GLOBALS['SITE_DB']->query_update('banners', array('campaign_remaining' => $afthit), array('name' => $banner_name), '', 1);
 
-                $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('BANNER_ADD_HITS', null, null, null, get_site_default_lang()), 'details2' => strval($extrahit), 'transaction_id' => $details['TXN_ID']));
+                $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => strval($extrahit), 'transaction_id' => $details['TXN_ID']));
 
                 break;
 
@@ -373,7 +373,7 @@ class Hook_ecommerce_banners
                 $aftimp = $curimp + $extraimp;
                 $GLOBALS['SITE_DB']->query_update('banners', array('importance_modulus' => $aftimp), array('name' => $banner_name), '', 1);
 
-                $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('BANNER_ADD_IMPORTANCE', null, null, null, get_site_default_lang()), 'details2' => strval($extraimp), 'transaction_id' => $details['TXN_ID']));
+                $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => strval($extraimp), 'transaction_id' => $details['TXN_ID']));
 
                 break;
         }

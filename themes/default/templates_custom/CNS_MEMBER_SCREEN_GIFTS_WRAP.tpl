@@ -21,7 +21,7 @@
 
 		{+START,IF_EMPTY,{GIFTS}}
 			<p class="nothing_here">
-				<span class="cns_member_detailer_titler">{!NO_GIFTS_TO_DISPLAY}</span>
+				<span class="cns_member_detailer_titler">{!NO_ENTRIES}</span>
 			</p>
 		{+END}
 	</div>

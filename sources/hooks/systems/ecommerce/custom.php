@@ -205,9 +205,9 @@ class Hook_ecommerce_custom
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => null,
+                'price' => $row['c_price'],
                 'currency' => get_option('currency'),
-                'price_points' => $row['c_cost'],
+                'price_points' => $row['c_price_points'],
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 

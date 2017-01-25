@@ -150,9 +150,13 @@ Be advised that we have found the PayPal sandbox to be buggy. If your tests fail
 
 The currency the website works in is defined in the configuration. If you use PayPal you need to make sure your account can accept this currency and is not set up to allow people to choose which currency to pay in (as it stops Composr being able to verify the payment if they use this feature).
 
-[title="3"]Points verses cash[/title]
+[title="3"]Points verses money[/title]
 
-Many of the products allow configurability over whether they are sold for money or for points, or some combination (a discount via using points). Gambling is only available via points.
+Many of the products allow configurability over whether they are sold for money or for points, or some combination (a discount via using points). Products that support both money and points typically also allow a 50:50 purchase option too. Users don't choose which option, the system will calculate it for them -- but they are told the discount they will get.
+
+Gambling is only available via points.
+Usergroup subscriptions are only available via money (as there's already a points-based rank ladder system).
+Catalogue products are only available via money, although you can set up custom products that represent shippable items that can be purchased with points.
 
 [title="2"]Products overview[/title]
 
@@ -196,6 +200,10 @@ Most useful kinds of purchase can, however, be achieved with the default usergro
 Inventory management is at:
 Admin Zone > Setup > eCommerce inventory management
 Use this to set up those products which users can have multiple of (e-mail accounts, custom products, permission products).
+
+Other prices are set in normal configuration options.
+
+If you are running Conversr then there will be a member tab showing past purchases.
 
 [title="3"]Banners[/title]
 
@@ -320,10 +328,10 @@ Messages may be manually added in the Admin Zone (a link is on the dashboard che
 
 For the community billboard to display, you must place the symbol code, [tt]{$COMMUNITY_BILLBOARD}[/tt] into a template or page. Commonly this would be into [tt]GLOBAL_HTML_WRAP.tpl[/tt] so that it can show somewhere in the page footer.
 
-[media width="150" description="Managing community billboard messages in the queue" float="left"]data_custom/images/docs/tut_ecommerce/points_community_billboard_manage.png[/media]
-[media width="150" description="Adding a community billboard message from the Admin Zone" float="left"]data_custom/images/docs/tut_ecommerce/points_community_billboard_add.png[/media]
-[media width="150" description="Configuring the default community billboard message" float="left"]data_custom/images/docs/tut_ecommerce/points_default_community_billboard.png[/media]
-[media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/tut_ecommerce/points_community_billboard_actual.png[/media]
+[media width="150" description="Managing community billboard messages in the queue" float="left"]data_custom/images/docs/tut_ecommerce/community_billboard_manage.png[/media]
+[media width="150" description="Adding a community billboard message from the Admin Zone" float="left"]data_custom/images/docs/tut_ecommerce/community_billboard_add.png[/media]
+[media width="150" description="Configuring the default community billboard message" float="left"]data_custom/images/docs/tut_ecommerce/default_community_billboard.png[/media]
+[media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/tut_ecommerce/community_billboard_actual.png[/media]
 [/surround]
 
 [title="2"]Subscription products[/title]

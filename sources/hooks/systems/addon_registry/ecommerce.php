@@ -162,6 +162,7 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_LINE.tpl',
             'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN.tpl',
             'themes/default/templates/ECOM_MEMBER_SUBSCRIPTION_STATUS.tpl',
+            'themes/default/templates/CNS_MEMBER_PROFILE_ECOMMERCE_LOGS.tpl',
             'themes/default/images/ecommerce/checkmark.png',
             'themes/default/images/ecommerce/index.html',
             'sources/hooks/systems/cron/manual_subscription_notification.php',
@@ -182,6 +183,8 @@ class Hook_addon_registry_ecommerce
             'sources/ecommerce2.php',
             'sources/ecommerce_permission_products.php',
             'sources/ecommerce_subscriptions.php',
+            'sources/ecommerce_logs.php',
+            'sources/hooks/systems/profiles_tabs/ecommerce_logs.php',
             'sources/hooks/systems/config/manual_subscription_expiry_notice.php',
             'sources/hooks/modules/members/ecommerce.php',
             'sources/hooks/systems/page_groupings/ecommerce.php',
@@ -347,6 +350,7 @@ class Hook_addon_registry_ecommerce
             'templates/ECOM_SALES_LOG_SCREEN.tpl' => 'administrative__ecom_sales_log_screen',
             'templates/ECOM_PRODUCTS_PRICES_FORM_WRAP.tpl' => 'administrative__ecom_products_price_screen',
             'templates/ECOM_PRODUCT_PRICE_SCREEN.tpl' => 'administrative__ecom_products_price_screen',
+            'templates/CNS_MEMBER_PROFILE_ECOMMERCE_LOGS.tpl' => 'administrative__cns_member_profile_ecommerce_logs_screen',
             'text/ECOM_PRODUCT_FORWARDER_MAIL.txt' => 'ecom_product_forwarder_mail',
             'text/ECOM_PRODUCT_POP3_MAIL.txt' => 'ecom_product_pop3_mail',
             'text/ECOM_PRODUCT_QUOTA_MAIL.txt' => 'ecom_product_quota_mail',
@@ -1387,6 +1391,25 @@ class Hook_addon_registry_ecommerce
                         'TITLE' => lorem_title(),
                         'EDIT_FORM' => placeholder_form(),
                         'ADD_FORMS' => $add_forms,
+                    )
+                ), null, '', true),
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__cns_member_profile_ecommerce_logs_screen()
+    {
+        return array(
+            lorem_globalise(
+                do_lorem_template('CNS_MEMBER_PROFILE_ECOMMERCE_LOGS', array(
+                        'CONTENT' => lorem_chunk_html(),
+                        'PAGINATION' => placeholder_pagination(),
                     )
                 ), null, '', true),
         );
