@@ -993,7 +993,7 @@ class Module_cms_news_cat extends Standard_crud_module
 
         set_url_moniker('news_category', strval($id));
 
-        $this->set_permissions($id);
+        $this->set_permissions(strval($id));
 
         if (addon_installed('content_reviews')) {
             content_review_set('news_category', strval($id));

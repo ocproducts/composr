@@ -136,9 +136,17 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
 
-    // Error condition: If somehow it said it saved but didn't actually (maybe a race condition on servers with buggy locking)
+    // Find file size
     clearstatcache();
-    if (filesize($path) != $num_bytes_to_save) {
+    $size = @filesize($path);
+
+    // Special condition: File already deleted
+    if ($size === false) {
+        return true; // We'll assume it was okay before something else deleted it
+    }
+
+    // Error condition: If somehow it said it saved but didn't actually (maybe a race condition on servers with buggy locking)
+    if ($size != $num_bytes_to_save) {
         if ($retry_depth < 5) {
             return cms_file_put_contents_safe($path, $contents, $flags, $retry_depth + 1);
         }
