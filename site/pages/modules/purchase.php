@@ -292,7 +292,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->create_table('ecom_prods_prices', array(
                 'name' => '*ID_TEXT',
                 'price' => 'ID_TEXT',
-                'points_price' => '?INTEGER'
+                'price_points' => '?INTEGER'
             ));
 
             $GLOBALS['SITE_DB']->create_table('ecom_sales', array(
@@ -313,7 +313,7 @@ class Module_purchase
                 'c_mail_body' => 'LONG_TRANS',
                 'c_enabled' => 'BINARY',
                 'c_price' => 'ID_TEXT',
-                'c_points_price' => '?INTEGER',
+                'c_price_points' => '?INTEGER',
                 'c_one_per_member' => 'BINARY',
             ));
             // Permissions
@@ -325,7 +325,7 @@ class Module_purchase
                 'p_mail_body' => 'LONG_TRANS',
                 'p_enabled' => 'BINARY',
                 'p_price' => 'ID_TEXT',
-                'p_points_price' => '?INTEGER',
+                'p_price_points' => '?INTEGER',
                 'p_hours' => '?INTEGER',
                 'p_type' => 'ID_TEXT', // member_privileges,member_category_access,member_page_access,member_zone_access
                 'p_privilege' => 'ID_TEXT', // privilege only

@@ -181,7 +181,7 @@ When a member buys something, the staff are informed of it via e-mail of appropr
 
 [media width="150" description="Configuring products" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products_config.png[/media]
 [media width="150" description="Configuring prices" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products_prices.png[/media]
-[media width="150" description="The shop-front" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products.png[/media]
+[media width="150" description="The purchasing module" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products.png[/media]
 Product kinds fit into the following general categories:
  - [b]One-off purchase[/b]: purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: e-mail addresses, topic pinning, name highlighting, banners, custom products, permission products, gambling)
  - [b]Subscription[/b]: one-off purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) and managed from the [tt]subscriptions[/tt] module ([tt]site:subscriptions[/tt] page-link, linked from member accounts) (above: usergroup subscriptions)
@@ -274,7 +274,7 @@ On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. Th
 
 [title="3"]Permission products[/title]
 
-[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_permissions.png[/media]
+[media width="150" description="Configuring permission products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_permissions.png[/media]
 Staff can set up what permissions may be purchased, how long they last for, and how much they cost.
 
 This is done via the inventory management screen at:
@@ -467,6 +467,7 @@ Admin Zone > Tools > Members > Custom Profile Fields > Edit Custom Profile Field
 
 [title="3"]Handling refunds[/title]
 
+[media width="150" description="Sales list management" float="right"]data_custom/images/docs/tut_ecommerce/sales_management.png[/media]
 There is a module in the Admin Zone for sales list management at:
 Admin Zone > Audit > eCommerce sales list management
 The module should be used to cancel purchases, such as an e-mail address purchased up a user that is no longer valid. Cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user).

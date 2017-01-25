@@ -140,6 +140,8 @@ function string_scan($lang, $do_guessing = false)
         ABRUPTED_DIRECTIVE_OR_BRACE
         ABSORB_PERMISSIONS
         WHAT_NEXT
+        FORWARDING
+        POP3
         WHERE_NEXT
         ABSTRACTION_SYMBOL__BLOCK
         ABSTRACTION_SYMBOL__IMG

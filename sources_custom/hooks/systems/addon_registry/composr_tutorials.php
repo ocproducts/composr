@@ -711,6 +711,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_ecommerce/community_billboard_actual.png',
             'data_custom/images/docs/tut_ecommerce/community_billboard_add.png',
             'data_custom/images/docs/tut_ecommerce/community_billboard_manage.png',
+            'data_custom/images/docs/tut_ecommerce/sales_management.png',
             'data_custom/images/docs/tut_emoticons/emoticons_add.png',
             'data_custom/images/docs/tut_facebook/facebook.png',
             'data_custom/images/docs/tut_facebook/twitter.png',
