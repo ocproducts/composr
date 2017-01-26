@@ -247,7 +247,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
             'url' => $db_row['t_url'],
             'title' => $db_row['t_title'],
             'summary' => $db_row['t_summary'],
-            'icon' => find_tutorial_image($db_row['t_icon'], $raw_tags),
+            'icon' => looks_like_url($db_row['t_icon']) ? $db_row['t_icon'] : find_tutorial_image($db_row['t_icon'], $raw_tags),
             'raw_tags' => $raw_tags,
             'tags' => $tags,
             'media_type' => $db_row['t_media_type'],
