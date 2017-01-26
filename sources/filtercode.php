@@ -491,7 +491,7 @@ function _fields_api_filtercode_named($db, $info, $catalogue_name, &$extra_join,
     if (count($fields) != 0) {
         foreach ($fields as $i => $field) {
             if (get_translated_text($field['cf_name']) == $filter_key) {
-                return _fields_api_filtercode($db, $info, $catalogue_name, $extra_join, $extra_select, 'field_' . strval($i), $filter_val, $db_fields, $table_join_code);
+                return _fields_api_filtercode($db, $info, $catalogue_name, $extra_join, $extra_select, 'field_' . strval($field['id']), $filter_val, $db_fields, $table_join_code);
             }
         }
     }

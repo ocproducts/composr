@@ -165,7 +165,7 @@ class Hook_notification_cns_topic extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['cns_topic'] = array(do_lang('menus:CONTENT'), do_lang('cns:NOTIFICATION_TYPE_cns_topic'));
+        $list['cns_topic'] = array(do_lang('CONTENT'), do_lang('cns:NOTIFICATION_TYPE_cns_topic'));
         return $list;
     }
 

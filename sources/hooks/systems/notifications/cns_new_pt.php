@@ -47,7 +47,7 @@ class Hook_notification_cns_new_pt extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['cns_new_pt'] = array(do_lang('notifications:MESSAGES'), do_lang('cns:NOTIFICATION_TYPE_cns_new_pt'));
+        $list['cns_new_pt'] = array(do_lang('MESSAGES'), do_lang('cns:NOTIFICATION_TYPE_cns_new_pt'));
         return $list;
     }
 

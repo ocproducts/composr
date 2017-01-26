@@ -44,6 +44,17 @@ function list_tutorial_tags($skip_addons_and_specials = false)
         }
     }
     $tags = array_unique($tags);
+
+    // We can't store mixed case in the database, let's just have one set of tags
+    foreach ($tags as $tag) {
+        if (preg_match('#^[A-Z]#', $tag) != 0) {
+            $at = array_search(strtolower($tag), $tags);
+            if ($at !== false) {
+                unset($tags[$at]);
+            }
+        }
+    }
+
     natcasesort($tags);
     return $tags;
 }
@@ -236,7 +247,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
             'url' => $db_row['t_url'],
             'title' => $db_row['t_title'],
             'summary' => $db_row['t_summary'],
-            'icon' => find_tutorial_image($db_row['t_icon'], $raw_tags),
+            'icon' => looks_like_url($db_row['t_icon']) ? $db_row['t_icon'] : find_tutorial_image($db_row['t_icon'], $raw_tags),
             'raw_tags' => $raw_tags,
             'tags' => $tags,
             'media_type' => $db_row['t_media_type'],

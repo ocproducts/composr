@@ -144,7 +144,7 @@ On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. Th
 
 [title="3"]Permission products[/title]
 
-[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_permissions.png[/media]
+[media width="150" description="Configuring permission products via the inventory management screen" float="right"]data_custom/images/docs/tut_points/inventory_permissions.png[/media]
 Staff can set up what permissions may be bought, how long they last for, and how much they cost.
 
 This is done via the inventory management screen at:

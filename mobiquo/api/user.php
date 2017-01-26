@@ -39,13 +39,13 @@ function login_func($raw_params)
         if (is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($username))) {
             $response = mobiquo_val(array(
                 'result' => mobiquo_val(true, 'boolean'),
-                'result_text' => mobiquo_val(do_lang('USER_NO_EXIST'), 'base64'),
+                'result_text' => mobiquo_val(do_lang('MEMBER_NO_EXIST'), 'base64'),
                 'status' => mobiquo_val('2', 'string'),
             ), 'struct');
             return mobiquo_response($response);
         }
 
-        warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
+        warn_exit(do_lang_tempcode('MEMBER_BAD_PASSWORD'));
     }
 
     require_once(COMMON_CLASS_PATH_READ . '/user_read.php');

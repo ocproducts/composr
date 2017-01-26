@@ -32,7 +32,7 @@ class Hook_notification_im_invited extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['im_invited'] = array(do_lang('notifications:MESSAGES'), do_lang('chat:NOTIFICATION_TYPE_im_invited'));
+        $list['im_invited'] = array(do_lang('MESSAGES'), do_lang('chat:NOTIFICATION_TYPE_im_invited'));
         return $list;
     }
 

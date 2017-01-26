@@ -50,6 +50,9 @@ class Hook_config_is_on_post_map
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '0';
     }
 }

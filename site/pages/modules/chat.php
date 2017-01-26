@@ -979,7 +979,7 @@ class Module_chat
             $username = post_param_string('friend_username');
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
             if ((is_null($member_id)) || (is_guest($member_id))) {
-                warn_exit(do_lang_tempcode('_USER_NO_EXIST', escape_html($username)));
+                warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
             }
         } else {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
