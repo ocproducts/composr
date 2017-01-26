@@ -42,13 +42,13 @@ class Hook_page_groupings_core
             array('', 'menu/adminzone/start', array('start', array(), 'adminzone'), do_lang_tempcode('menus:DASHBOARD'), $extensive_docs ? 'menus:DOC_DASHBOARD' : 'menus:MM_TOOLTIP_DASHBOARD'),
             array('', 'menu/adminzone/audit', array('admin', array('type' => 'audit'), get_module_zone('admin')), do_lang_tempcode('menus:AUDIT'), $extensive_docs ? 'menus:DOC_AUDIT' : 'menus:MM_TOOLTIP_AUDIT'),
             array('', 'menu/adminzone/security', array('admin', array('type' => 'security'), get_module_zone('admin')), do_lang_tempcode('SECURITY'), $extensive_docs ? 'menus:DOC_SECURITY' : 'menus:MM_TOOLTIP_SECURITY'),
-            array('', 'menu/adminzone/setup', array('admin', array('type' => 'setup'), get_module_zone('admin')), do_lang_tempcode('menus:SETUP'), $extensive_docs ? 'menus:DOC_SETUP' : 'menus:MM_TOOLTIP_SETUP'),
+            array('', 'menu/adminzone/setup', array('admin', array('type' => 'setup'), get_module_zone('admin')), do_lang_tempcode('SETUP'), $extensive_docs ? 'menus:DOC_SETUP' : 'menus:MM_TOOLTIP_SETUP'),
             array('', 'menu/adminzone/structure', array('admin', array('type' => 'structure'), get_module_zone('admin')), do_lang_tempcode('menus:STRUCTURE'), $extensive_docs ? 'menus:DOC_STRUCTURE' : 'menus:MM_TOOLTIP_STRUCTURE'),
             array('', 'menu/adminzone/style', array('admin', array('type' => 'style'), get_module_zone('admin')), do_lang_tempcode('menus:STYLE'), $extensive_docs ? 'menus:DOC_STYLE' : 'menus:MM_TOOLTIP_STYLE'),
-            array('', 'menu/adminzone/tools', array('admin', array('type' => 'tools'), get_module_zone('admin')), do_lang_tempcode('menus:TOOLS'), $extensive_docs ? 'menus:DOC_TOOLS' : 'menus:MM_TOOLTIP_TOOLS'),
+            array('', 'menu/adminzone/tools', array('admin', array('type' => 'tools'), get_module_zone('admin')), do_lang_tempcode('TOOLS'), $extensive_docs ? 'menus:DOC_TOOLS' : 'menus:MM_TOOLTIP_TOOLS'),
             (_request_page('website', 'adminzone') === null) ? array('', 'menu/adminzone/help', get_brand_base_url() . '/docs' . strval(cms_version()) . '/', do_lang_tempcode('menus:DOCS'), $extensive_docs ? 'menus:DOCS' : 'menus:MM_TOOLTIP_DOCS') : null,
             (_request_page('website', 'adminzone') === null) ? null : array('', 'menu/adminzone/help', array('website', array(), 'adminzone'), do_lang_tempcode('menus:DOCS'), $extensive_docs ? 'menus:DOCS' : 'menus:MM_TOOLTIP_DOCS'),
-            array('', 'menu/cms/cms', array('cms', array('type' => 'cms'), get_module_zone('cms')), do_lang_tempcode('CONTENT'), $extensive_docs ? 'menus:CONTENT' : 'menus:MM_TOOLTIP_CMS'),
+            array('', 'menu/cms/cms', array('cms', array('type' => 'cms'), get_module_zone('cms')), do_lang_tempcode('CONTENT'), $extensive_docs ? 'CONTENT' : 'menus:MM_TOOLTIP_CMS'),
 
             ((has_some_edit_comcode_page_permission(COMCODE_EDIT_OWN | COMCODE_EDIT_ANY)) || (get_comcode_page_editability_per_zone() != array())) ? array('cms', 'menu/cms/comcode_page_edit', array('cms_comcode_pages', array('type' => 'browse'), get_module_zone('cms_comcode_pages')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('menus:_COMCODE_PAGES'), make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM (SELECT DISTINCT the_zone,the_page FROM ' . get_table_prefix() . 'comcode_pages WHERE ' . db_string_not_equal_to('the_zone', '!') . ') x'))))), 'zones:DOC_COMCODE_PAGE_EDIT') : null,
 
@@ -90,7 +90,7 @@ class Hook_page_groupings_core
             //array('security', 'menu/adminzone/security/permissions/permission_tree_editor', array('admin_permissions', array('type' => 'page'), get_module_zone('admin_permissions')), do_lang_tempcode('permissions:PAGE_ACCESS'), 'permissions:DOC_PAGE_PERMISSIONS'),  // Disabled as not needed - but tree permission editor will redirect to it if no javascript available
             addon_installed('securitylogging') ? array('security', 'menu/adminzone/security/ip_ban', array('admin_ip_ban', array('type' => 'browse'), get_module_zone('admin_ip_ban')), do_lang_tempcode('submitban:BANNED_ADDRESSES'), 'submitban:DOC_IP_BAN') : null,
             array('security', 'menu/adminzone/security/permissions/privileges', array('admin_permissions', array('type' => 'privileges'), get_module_zone('admin_permissions')), do_lang_tempcode('permissions:GLOBAL_PRIVILEGES'), 'permissions:DOC_PRIVILEGES'),
-            (get_forum_type() != 'cns') ? null : array('security', 'menu/social/groups', array('admin_cns_groups', array('type' => 'browse'), get_module_zone('admin_cns_groups')), do_lang_tempcode('cns:USERGROUPS'), 'cns:DOC_GROUPS'),
+            (get_forum_type() != 'cns') ? null : array('security', 'menu/social/groups', array('admin_cns_groups', array('type' => 'browse'), get_module_zone('admin_cns_groups')), do_lang_tempcode('USERGROUPS'), 'cns:DOC_GROUPS'),
             (get_forum_type() != 'cns') ? null : array('security', 'menu/adminzone/security/usergroups_temp', array('admin_group_member_timeouts', array('type' => 'browse'), get_module_zone('admin_group_member_timeouts')), do_lang_tempcode('group_member_timeouts:GROUP_MEMBER_TIMEOUTS'), 'group_member_timeouts:DOC_MANAGE_GROUP_MEMBER_TIMEOUTS'),
             (get_forum_type() == 'cns') ? null : array('security', 'menu/social/groups', array('admin_permissions', array('type' => 'absorb'), get_module_zone('admin_security')), do_lang_tempcode('permissions:ABSORB_PERMISSIONS'), 'permissions:DOC_ABSORB_PERMISSIONS'),
 
@@ -114,7 +114,7 @@ class Hook_page_groupings_core
             (get_forum_type() != 'cns') ? null : array('site_meta', 'menu/site_meta/user_actions/join', array('join', array(), get_module_zone('join')), do_lang_tempcode('_JOIN')),
             (get_forum_type() != 'cns') ? null : array('site_meta', 'menu/site_meta/user_actions/lost_password', array('lost_password', array(), get_module_zone('lost_password')), do_lang_tempcode('cns:LOST_PASSWORD')),
 
-            (get_forum_type() != 'cns') ? null : array('social', 'menu/social/groups', array('groups', array(), get_module_zone('groups')), do_lang_tempcode('cns:USERGROUPS')),
+            (get_forum_type() != 'cns') ? null : array('social', 'menu/social/groups', array('groups', array(), get_module_zone('groups')), do_lang_tempcode('USERGROUPS')),
             (get_forum_type() != 'cns') ? null : array('social', 'menu/social/members', array('members', array(), get_module_zone('members')), do_lang_tempcode('cns:MEMBER_DIRECTORY')),
             (get_forum_type() != 'cns') ? null : array('social', 'menu/social/users_online', array('users_online', array(), get_module_zone('users_online')), do_lang_tempcode('USERS_ONLINE')),
 

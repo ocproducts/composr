@@ -40,8 +40,14 @@ class Hook_rss_cns_birthdays
             return null;
         }
 
-        if ($cutoff < time()) { // Forward in time for birthdays, unlike most RSS
-            $cutoff += (time() - $cutoff) * 2;
+        $days = get_param_integer('days', 30);
+
+        $method = get_param_string('method', 'happened'); // happened|happening|stream_in
+
+        if ($method == 'happening') {
+            if ($cutoff < time()) {
+                $cutoff += (time() - $cutoff) * 2;
+            }
         }
 
         require_lang('dates');
@@ -50,57 +56,87 @@ class Hook_rss_cns_birthdays
         $filters_2 = selectcode_to_sqlfragment($_filters, 'p.m_primary_group', 'f_groups', null, 'p.m_primary_group', 'id', true, true, $GLOBALS['FORUM_DB']); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
         $filters = '(' . $filters_1 . ' OR ' . $filters_2 . ')';
 
+        if ($method == 'stream_in') {
+            $filters .= ' AND m_join_time>' . strval(time() - 60 * 60 * 24 * $days);
+            $order = 'm_join_time DESC';
+        } else {
+            $order = 'm_last_visit_time DESC';
+            $max = 10000;
+        }
+
         $join = '';
         if ($filters != '(1=1 OR 1=1)') {
             $join = ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members d ON (d.gm_member_id=p.id AND d.gm_validated=1)';
         }
-        $rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_dob_day,m_dob_month,m_dob_year,m_username,m_reveal_age,m_join_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members p' . $join . ' WHERE m_validated=1 AND ' . $filters . ' AND m_dob_day IS NOT NULL ORDER BY m_join_time DESC', $max * 3/*for inbalances*/ * intval(360.0 / floatval(get_param_integer('days', 30))));
+        $rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_dob_day,m_dob_month,m_dob_year,m_username,m_reveal_age,m_join_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members p' . $join . ' WHERE m_validated=1 AND ' . $filters . ' AND m_dob_day IS NOT NULL ORDER BY ' . $order, $max);
 
         $done = 0;
 
+        $year = intval(date('Y', time()));
+
         $content = new Tempcode();
+
+        foreach ($rows as $i => &$row) {
+            if ($method == 'happened') {
+                $cutoff_today = (time() + 60 * 60 * 24 * 1/*1 international time line*/);
+                $previous_birthday_time_this_year = mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $year);
+                $previous_birthday_time_last_year = mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $year - 1);
+                $birthday_time = ($previous_birthday_time_this_year > $cutoff_today) ? $previous_birthday_time_last_year : $previous_birthday_time_this_year;
+                $display = ($birthday_time > $cutoff) && ($birthday_time < $cutoff_today) && ($birthday_time > time() - 60 * 60 * 24 * $days);
+            } elseif ($method == 'happening') {
+                $cutoff_today = (time() - 60 * 60 * 24 * 1/*1 international time line*/);
+                $next_birthday_time_this_year = mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $year);
+                $next_birthday_time_next_year = mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $year + 1);
+                $birthday_time = ($next_birthday_time_this_year < $cutoff_today) ? $next_birthday_time_next_year : $next_birthday_time_this_year;
+                $display = ($birthday_time < $cutoff) && ($birthday_time > $cutoff_today) && ($birthday_time < time() + 60 * 60 * 24 * $days);
+            } else { // stream_in
+                $cutoff_today = (time() - 60 * 60 * 24 * 1/*1 international time line*/);
+                $next_birthday_time_this_year = mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $year);
+                $next_birthday_time_next_year = mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $year + 1);
+                $birthday_time = ($next_birthday_time_this_year < $cutoff_today) ? $next_birthday_time_next_year : $next_birthday_time_this_year;
+                $display = true;
+            }
+
+            if ($display) {
+                $row['birthday_time'] = $birthday_time;
+            } else {
+                unset($rows[$i]);
+            }
+        }
+
+        if ($method == 'happened') {
+            sort_maps_by($rows, '!birthday_time');
+        } elseif ($method == 'happening') {
+            sort_maps_by($rows, 'birthday_time');
+        }
+
         foreach ($rows as $row) {
-            $year = intval(date('Y', time()));
-            $next_birthday_time_a = mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $year);
-            $next_birthday_time_b = mktime(0, 0, 0, $row['m_dob_month'], $row['m_dob_day'], $year + 1);
-            $next_birthday_time = ($next_birthday_time_a < (time() - 60 * 60 * 24)) ? $next_birthday_time_b : $next_birthday_time_a;
-            $a = $next_birthday_time;
-            if ($a < 0) {
-                $a = -$a;
+            $id = strval($row['id']);
+            $author = $row['m_username'];
+
+            $news_date = date($date_string, $row['birthday_time']); // The "post" date is actually the birthday
+            $edit_date = date($date_string, max($row['m_join_time'], $row['birthday_time'])); // The "edit" date is actually the join date
+
+            if ($row['m_reveal_age'] == 1) {
+                $news_title = xmlentities(do_lang('BIRTHDAY_OF_AGE', $author, strval($year - $row['m_dob_year'])));
+            } else {
+                $news_title = xmlentities(do_lang('BIRTHDAY_OF', $author));
             }
-            $b = $cutoff;
-            if ($b < 0) {
-                $b = -$b;
-            }
+            $summary = '';
+            $news = '';
 
-            if ($a < $b) {
-                $id = strval($row['id']);
-                $author = $row['m_username'];
+            $category = do_lang('BIRTHDAY');
+            $category_raw = do_lang('BIRTHDAY');
 
-                $news_date = date($date_string, $next_birthday_time); // The "post" date is actually the birthday
-                $edit_date = date($date_string, $row['m_join_time']); // The "edit" date is actually the join date
+            $view_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], false, true);
 
-                if ($row['m_reveal_age'] == 1) {
-                    $news_title = xmlentities(do_lang('BIRTHDAY_OF_AGE', $author, strval($year - $row['m_dob_year'])));
-                } else {
-                    $news_title = xmlentities(do_lang('BIRTHDAY_OF', $author));
-                }
-                $summary = '';
-                $news = '';
+            $if_comments = new Tempcode();
 
-                $category = do_lang('BIRTHDAY');
-                $category_raw = do_lang('BIRTHDAY');
+            $content->attach(do_template($prefix . 'ENTRY', array('VIEW_URL' => $view_url, 'SUMMARY' => $summary, 'EDIT_DATE' => $edit_date, 'IF_COMMENTS' => $if_comments, 'TITLE' => $news_title, 'CATEGORY_RAW' => $category_raw, 'CATEGORY' => $category, 'AUTHOR' => $author, 'ID' => $id, 'NEWS' => $news, 'DATE' => $news_date), null, false, null, '.xml', 'xml'));
 
-                $view_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], false, true);
-
-                $if_comments = new Tempcode();
-
-                $content->attach(do_template($prefix . 'ENTRY', array('VIEW_URL' => $view_url, 'SUMMARY' => $summary, 'EDIT_DATE' => $edit_date, 'IF_COMMENTS' => $if_comments, 'TITLE' => $news_title, 'CATEGORY_RAW' => $category_raw, 'CATEGORY' => $category, 'AUTHOR' => $author, 'ID' => $id, 'NEWS' => $news, 'DATE' => $news_date), null, false, null, '.xml', 'xml'));
-
-                $done++;
-                if ($done == $max) {
-                    break;
-                }
+            $done++;
+            if ($done == $max) {
+                break;
             }
         }
 

@@ -98,7 +98,7 @@ class Hook_task_import_newsletter_subscribers
                         if (in_array(strtolower($val), array('username', strtolower(do_lang('NAME'))))) {
                             $username_index = $j;
                         }
-                        if (in_array(strtolower($val), array('hash', 'password', 'pass', 'code', 'secret', strtolower(do_lang('PASSWORD_HASH'))))) {
+                        if (in_array(strtolower($val), array('hash', 'password', 'pass', 'pword', 'pw', 'p/w', 'code', 'secret', strtolower(do_lang('PASSWORD_HASH'))))) {
                             $hash_index = $j;
                         }
                         if (in_array(strtolower($val), array('salt', strtolower(do_lang('SALT'))))) {
@@ -113,7 +113,7 @@ class Hook_task_import_newsletter_subscribers
                         if ((stripos($val, 'time') !== false) || (stripos($val, 'date') !== false) || (strtolower($val) == do_lang('JOIN_DATE'))) {
                             $join_time_index = $j;
                         }
-                        if (in_array(strtolower($val), array('subscription level', strtolower(do_lang('SUBSCRIPTION_LEVEL'))))) {
+                        if (in_array(strtolower($val), array('level', 'subscription level', strtolower(do_lang('SUBSCRIPTION_LEVEL'))))) {
                             $level_index = $j;
                         }
                     }
@@ -138,11 +138,18 @@ class Hook_task_import_newsletter_subscribers
                         $language = $_language;
                     }
                     $code_confirm = ((!is_null($code_confirm_index)) && (array_key_exists($code_confirm_index, $csv_line))) ? intval($csv_line[$code_confirm_index]) : 0;
-                    $join_time = ((!is_null($join_time_index)) && (array_key_exists($join_time_index, $csv_line))) ? strtotime($csv_line[$join_time_index]) : time();
+                    $join_time = ((!is_null($join_time_index)) && (!empty($csv_line[$join_time_index]))) ? strtotime($csv_line[$join_time_index]) : time();
                     if ($join_time === false) {
                         $join_time = time();
                     }
-                    $level = ((!is_null($level_index)) && (array_key_exists($level_index, $csv_line))) ? intval($csv_line[$level_index]) : $_level;
+                    if ($_level == 0) {
+                        $level = 0;
+                    } else {
+                        $level = ((!is_null($level_index)) && (!empty($csv_line[$level_index]))) ? intval($csv_line[$level_index]) : $_level;
+                        if ($level == 0) {
+                            $level = $_level;
+                        }
+                    }
 
                     if ($newsletter_id == -1) {
                         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email));
@@ -182,7 +189,14 @@ class Hook_task_import_newsletter_subscribers
                             'newsletter_id' => $newsletter_id,
                             'email' => $email,
                         ), '', 1);
-                        if ($level != 0) { // Allow deletion CSV via setting subscription level to 0. So we only reinsert if NOT deletion.
+                        if ($level == 0) { // Allow deletion CSV via setting subscription level to 0
+                            $cnt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribe', 'COUNT(*)', array('email' => $email));
+                            if ($cnt == 0) { // No newsletters for them now, so remove entirely
+                                $GLOBALS['SITE_DB']->query_delete('newsletter_subscribers', array(
+                                    'email' => $email,
+                                ), '', 1);
+                            }
+                        } else { // We only reinsert if NOT deletion.
                             $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array(
                                 'newsletter_id' => $newsletter_id,
                                 'the_level' => $level,

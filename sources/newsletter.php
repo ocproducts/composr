@@ -172,10 +172,12 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
         if ($this_level != 0) {
             $where_lang = multi_lang() ? (db_string_equal_to('language', $language) . ' AND ') : '';
             $query = ' FROM ' . get_table_prefix() . 'newsletter_subscribe s LEFT JOIN ' . get_table_prefix() . 'newsletter_subscribers n ON n.email=s.email WHERE ' . $where_lang . 'code_confirm=0 AND s.newsletter_id=' . strval($newsletter['id']);
-            if ($strict_level) {
-                $query .= ' AND the_level=' . strval($this_level);
-            } else {
-                $query .= ' AND the_level>=' . strval($this_level);
+            if (get_option('interest_levels') == '1') {
+                if ($strict_level) {
+                    $query .= ' AND the_level=' . strval($this_level);
+                } else {
+                    $query .= ' AND the_level>=' . strval($this_level);
+                }
             }
             $query .= ' ORDER BY n.id';
 

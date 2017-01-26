@@ -51,6 +51,10 @@ class Hook_block_ui_renderers_catalogues
                 $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title', 'c_name'), ($num_categories >= 300) ? array('cc_parent_id' => null) : null, 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'));
                 $last_cat = mixed();
                 foreach ($categories as $cat) {
+                    if (substr($cat['c_name'], 0, 1) == '_') {
+                        continue;
+                    }
+
                     if ((is_null($last_cat)) || ($cat['c_name'] != $last_cat)) {
                         if (!$list->is_empty()) {
                             $structured_list->attach(form_input_list_group($last_cat, $list));

@@ -51,7 +51,7 @@ function toggle_wysiwyg(name)
 					buttons__yes: '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
 				},
 				'{!comcode:DISABLE_WYSIWYG;^}',
-				'{!comcode:DISCARD_WYSIWYG_CHANGES;^}',
+				'{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
 				function(saving_cookies)
 				{
 					if (!saving_cookies) return;
@@ -120,10 +120,10 @@ function _toggle_wysiwyg(name)
 		} else
 		{
 			generate_question_ui(
-				'{!comcode:DISCARD_WYSIWYG_CHANGES_NICE;^}',
-				{buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',buttons__convert: '{!comcode:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',buttons__no: '{!comcode:DISCARD_WYSIWYG_CHANGES_LINE;^}'},
+				'{!javascript:DISCARD_WYSIWYG_CHANGES_NICE;^}',
+				{buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',buttons__convert: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',buttons__no: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'},
 				'{!comcode:DISABLE_WYSIWYG;^}',
-				'{!comcode:DISCARD_WYSIWYG_CHANGES;^}',
+				'{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
 				function(prompt)
 				{
 					if ((!prompt) || (prompt.toLowerCase()=='{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()))
@@ -132,7 +132,7 @@ function _toggle_wysiwyg(name)
 							set_cookie('use_wysiwyg','1',3000);
 						return false;
 					}
-					var discard=(prompt.toLowerCase()=='{!comcode:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
+					var discard=(prompt.toLowerCase()=='{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
 
 					disable_wysiwyg(forms,so,so2,discard);
 				}

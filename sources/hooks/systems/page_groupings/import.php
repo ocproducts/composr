@@ -37,7 +37,7 @@ class Hook_page_groupings_import
         }
 
         return array(
-            array('tools', 'menu/_generic_admin/import', array('admin_import', array('type' => 'browse'), get_module_zone('admin_import')), do_lang_tempcode('import:IMPORT'), 'import:DOC_IMPORT'),
+            array('tools', 'menu/_generic_admin/import', array('admin_import', array('type' => 'browse'), get_module_zone('admin_import')), do_lang_tempcode('IMPORT'), 'import:DOC_IMPORT'),
         );
     }
 }

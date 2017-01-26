@@ -274,7 +274,7 @@ class Hook_task_find_broken_urls
             }
 
             $test = http_download_file($url, 0, false);
-            if (($test === null) && ($GLOBALS['HTTP_MESSAGE'] == 403)) {
+            if (($test === null) && ($GLOBALS['HTTP_MESSAGE'] == '403')) {
                 $test = http_download_file($url, 1, false); // Try without HEAD, sometimes it's not liked
             }
             if ((is_null($test)) && (in_array($GLOBALS['HTTP_MESSAGE'], array('404', 'could not connect to host')))) {

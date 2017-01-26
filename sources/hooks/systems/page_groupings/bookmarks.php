@@ -33,7 +33,7 @@ class Hook_page_groupings_bookmarks
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            array('site_meta', 'menu/site_meta/bookmarks', array('bookmarks', array('type' => 'browse'), get_module_zone('bookmarks')), do_lang_tempcode('bookmarks:BOOKMARKS')),
+            array('site_meta', 'menu/site_meta/bookmarks', array('bookmarks', array('type' => 'browse'), get_module_zone('bookmarks')), do_lang_tempcode('BOOKMARKS')),
         );
     }
 }
