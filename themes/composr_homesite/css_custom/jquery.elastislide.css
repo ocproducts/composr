@@ -68,6 +68,12 @@
 	padding-right: 10px;
 }
 
+.elastislide-horizontal ul, .elastislide-horizontal ul li {
+	/* Added by ocProducts due to flakiness within carousel */
+	max-height: none !important;
+	min-height: 160px !important;
+}
+
 .elastislide-vertical ul li {
 	display: block;
 }
