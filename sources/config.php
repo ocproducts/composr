@@ -199,7 +199,7 @@ function get_theme_option($name, $default = null, $theme = null, $missing_ok = f
                 $map[$theme] = better_parse_ini_file($ini_path);
             }
 
-            if (!empty($map[$theme][$name])) {
+            if ((isset($map[$theme][$name])) && ($map[$theme][$name] != '')) {
                 return $map[$theme][$name];
             }
         }

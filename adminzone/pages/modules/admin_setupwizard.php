@@ -622,7 +622,7 @@ class Module_admin_setupwizard
         }
         $fields .= static_evaluate_tempcode(form_input_tick(do_lang_tempcode('INSTALL_TEST_CONTENT'), do_lang_tempcode('DESCRIPTION_INSTALL_TEST_CONTENT'), 'install_test_content', true));
 
-        $js = 'var cuz=document.getElementById("collapse_user_zones"); var cuz_func=function() { var gza=document.getElementById("guest_zone_access"); gza.disabled=cuz.checked; if (cuz.checked) gza.checked=true; }; cuz.onchange=cuz_func; cuz_func();';
+        $js = 'var cuz=document.getElementById("collapse_user_zones"); if (cuz) { var cuz_func=function() { var gza=document.getElementById("guest_zone_access"); gza.disabled=cuz.checked; if (cuz.checked) gza.checked=true; }; cuz.onchange=cuz_func; cuz_func(); }';
 
         $inner = do_template('FORM', array(
             '_GUID' => 'f1e9a4d271c7d68ff9da6dc0438f6e3f',
