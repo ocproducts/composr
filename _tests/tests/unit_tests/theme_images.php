@@ -154,7 +154,7 @@ class theme_images_test_set extends cms_test_case
                     continue;
                 }
 
-                $this->assertTrue($is_used, 'Unused theme image in theme ' . $theme . ': ' . $image);
+                $this->assertTrue($is_used || (strpos(find_theme_image($image), '_custom') !== false), 'Unused theme image in theme ' . $theme . ': ' . $image);
             }
 
             foreach ($images_referenced as $image => $is_used) {

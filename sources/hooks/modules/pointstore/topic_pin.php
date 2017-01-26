@@ -62,7 +62,7 @@ class Hook_pointstore_topic_pin
             return new Tempcode();
         }
         if (has_no_forum()) {
-            return array();
+            return new Tempcode();
         }
 
         $title = get_screen_title('TOPIC_PINNING');
@@ -130,7 +130,7 @@ class Hook_pointstore_topic_pin
             return new Tempcode();
         }
         if (has_no_forum()) {
-            return array();
+            return new Tempcode();
         }
 
         $title = get_screen_title('TOPIC_PINNING');
@@ -189,7 +189,7 @@ class Hook_pointstore_topic_pin
             return new Tempcode();
         }
         if (has_no_forum()) {
-            return array();
+            return new Tempcode();
         }
 
         $title = get_screen_title('TOPIC_PINNING');

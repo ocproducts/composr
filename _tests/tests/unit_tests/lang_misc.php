@@ -55,33 +55,39 @@ class lang_misc_test_set extends cms_test_case
         }
         $all_code .= file_get_contents(get_file_base() . '/install.php');
 
-        $num_matches = preg_match_all('#do\_lang(\_tempcode)?\(\'([^\']*)\'[\),]#', $all_code, $matches);
+        $num_matches = preg_match_all('#do\_lang\_tempcode\(\'([^\']*)\'[\),]#', $all_code, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-            $str = $matches[2][$i];
-            $this->process_str_reference($str);
+            $str = $matches[1][$i];
+            $this->process_str_reference($str, 'do_lang_tempcode');
+        }
+
+        $num_matches = preg_match_all('#do\_lang\(\'([^\']*)\'[\),]#', $all_code, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $str = $matches[1][$i];
+            $this->process_str_reference($str, 'do_lang');
         }
 
         $num_matches = preg_match_all('#get_screen_title\(\'([^\']*)\'\)#', $all_code, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $str = $matches[1][$i];
-            $this->process_str_reference($str);
+            $this->process_str_reference($str, 'get_screen_title');
         }
 
         $num_matches = preg_match_all('#[^\\\\]\{\!([\w:]+)[^\}]*\}#', $all_code, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $str = $matches[1][$i];
-            $this->process_str_reference($str);
+            $this->process_str_reference($str, 'Tempcode');
         }
     }
 
-    private function process_str_reference($str)
+    private function process_str_reference($str, $type)
     {
         $this->assertTrue(do_lang($str, null, null, null, null, false) !== null, 'Cannot find referenced lang string ' . $str);
 
         if (strpos($str, ':') !== false) {
             list($file, $just_str) = explode(':', $str, 2);
             $map = get_lang_file_map(fallback_lang(), $file, false) + get_lang_file_map(fallback_lang(), $file, true);
-            $this->assertTrue(isset($map[$just_str]), 'Incorrect implicit require_lang for ' . $str);
+            $this->assertTrue(isset($map[$just_str]), 'Incorrect implicit require_lang for ' . $str . ' for a ' . $type . ' case');
         }
     }
 

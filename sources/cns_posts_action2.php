@@ -169,7 +169,7 @@ function cns_member_handle_promotion($member_id = null)
  * @param  boolean $is_pt Whether this is for a Private Topic.
  * @param  ?ID_TEXT $no_notify_for__notification_code DO NOT send notifications to: The notification code (null: no restriction)
  * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
- * @param  ?SHORT_TEXT $poster_name_if_guest The name of the poster (null: default for $sender_member_id)
+ * @param  ?SHORT_TEXT $poster_name The name of the poster (null: default for $sender_member_id)
  */
 function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_id, $is_starter, $post, $topic_title, $_limit_to = null, $is_pt = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $poster_name = null)
 {

@@ -69,6 +69,8 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 {
     $num_bytes_to_save = strlen($contents);
 
+    $error_message = mixed();
+
     $exists_already = file_exists($path);
 
     if (!$exists_already) {
@@ -173,7 +175,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 /**
  * If cms_file_put_contents_safe has failed, process the error messaging.
  *
- * @param  Tempcode $error_message Error message.
+ * @param  mixed $error_message Error message (Tempcode or string).
  * @param  PATH $path File path.
  * @param  integer $flags FILE_WRITE_* flags.
  * @return boolean Success status (always false).
