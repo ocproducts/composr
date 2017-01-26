@@ -4521,6 +4521,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FU_ESTIMATED_TIME
         FU_EXTRACTING_WINDOW
         FU_FILE_UPGRADE_INFO
+        FU_FILE_UPGRADE_INFO_MANUAL
         FU_FIX_PERMISSIONS
         FU_FTP_INFO
         FU_FTP_NEEDED

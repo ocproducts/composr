@@ -47,17 +47,22 @@ function get_default_addon_details()
  * @param  boolean $get_dependencies_on_this Whether to search for dependencies on this
  * @param  ?array $row Database row (null: lookup via a new query)
  * @param  ?array $ini_info .ini-format info (needs processing) (null: unknown / N/A)
+ * @param  ?PATH $path Force reading from a particular path (null: no path)
  * @return array The map of details
  */
-function read_addon_info($addon, $get_dependencies_on_this = false, $row = null, $ini_info = null)
+function read_addon_info($addon, $get_dependencies_on_this = false, $row = null, $ini_info = null, $path = null)
 {
     // Hook file has highest priority...
 
-    $is_orig = false;
-    $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
-    if (!file_exists($path)) {
-        $is_orig = true;
-        $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+    if ($path === null) {
+        $is_orig = false;
+        $path = get_file_base() . '/sources_custom/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+        if (!file_exists($path)) {
+            $is_orig = true;
+            $path = get_file_base() . '/sources/hooks/systems/addon_registry/' . filter_naughty_harsh($addon) . '.php';
+        }
+    } else {
+        $is_orig = (strpos($path, '/sources_custom/hooks/systems/addon_registry/') !== false);
     }
 
     if (file_exists($path)) {

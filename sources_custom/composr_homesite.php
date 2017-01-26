@@ -27,20 +27,30 @@ function init__composr_homesite()
 // IDENTIFYING RELEASES
 // --------------------
 
-function get_latest_version_pretty()
+function get_latest_version_dotted()
 {
     static $version = null;
     static $fetched_version = false;
     if (!$fetched_version) {
-        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
+        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'), 'ORDER BY add_date DESC');
         if ($version !== null) {
             require_code('version2');
             $_version = preg_replace('# \(.*#', '', get_translated_text($version));
-            list(, , , , $version) = get_version_components__from_dotted(get_version_dotted__from_anything($_version));
+            $version = get_version_dotted__from_anything($_version);
         }
         $fetched_version = true;
     }
-    return is_null($version) ? null : float_format($version, 2, true);
+    return ($version === null) ? null : $version;
+}
+
+function get_latest_version_pretty()
+{
+    $version_dotted = get_latest_version_dotted();
+    if ($version_dotted === null) {
+        return $version_dotted;
+    }
+    list(, , , , $version) = get_version_components__from_dotted($version_dotted);
+    return float_format($version, 2, true);
 }
 
 function get_release_tree()
