@@ -44,7 +44,7 @@ class Hook_notification_hack_attack extends Hook_notification__Staff
     public function list_handled_codes()
     {
         $list = array();
-        $list['hack_attack'] = array(do_lang('security:SECURITY'), do_lang('NOTIFICATION_TYPE_hack_attack'));
+        $list['hack_attack'] = array(do_lang('SECURITY'), do_lang('NOTIFICATION_TYPE_hack_attack'));
         return $list;
     }
 }

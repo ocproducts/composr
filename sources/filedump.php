@@ -93,7 +93,8 @@ function update_filedump_links($from, $to)
             if (is_array($ref)) {
                 lang_remap_comcode($ref[1], $ref[0][$ref[1]], $new_comcode);
             } else {
-                file_put_contents($path, $new_comcode);
+                require_code('files');
+                cms_file_put_contents_safe($path, $new_comcode, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             }
         }
     }

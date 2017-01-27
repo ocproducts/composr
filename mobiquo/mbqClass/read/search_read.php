@@ -77,7 +77,7 @@ class CMSSearchRead
         } elseif (!is_null($searchuser)) {
             $_userid = $GLOBALS['FORUM_DRIVER']->get_member_from_username($searchuser);
             if (is_null($_userid)) {
-                warn_exit(do_lang_tempcode('_USER_NO_EXIST', escape_html($searchuser)));
+                warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($searchuser)));
             }
             $where .= ' AND t_cache_first_member_id=' . strval($_userid);
         }
@@ -223,7 +223,7 @@ class CMSSearchRead
         } elseif (!is_null($searchuser)) {
             $_userid = $GLOBALS['FORUM_DRIVER']->get_member_from_username($searchuser);
             if (is_null($_userid)) {
-                warn_exit(do_lang_tempcode('_USER_NO_EXIST', escape_html($searchuser)));
+                warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($searchuser)));
             }
             $sql .= ' AND p_poster=' . strval($_userid);
         }

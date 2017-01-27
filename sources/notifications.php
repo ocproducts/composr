@@ -582,7 +582,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
             $successes = sms_wrap($wrapped_message, array($to_member_id));
             if ($successes == 0) { // Could not send
                 $setting = $setting | A_INSTANT_EMAIL; // Make sure it also goes to email then
-                $message_to_send = do_lang('INSTEAD_OF_SMS', $message);
+                $message_to_send = do_lang('sms:INSTEAD_OF_SMS', $message);
             }
         }
     }
@@ -642,12 +642,9 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
                         continue;
                     }
                 }
+                require_code('files');
                 $path = get_custom_file_base() . '/data_custom/modules/web_notifications';
-                if (!file_exists($path)) {
-                    require_code('files2');
-                    make_missing_directory($path);
-                }
-                @file_put_contents($path . '/latest.dat', strval(time()));
+                cms_file_put_contents_safe($path . '/latest.dat', strval(time()), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
             }
 
             inject_web_resources_context_to_comcode($message);

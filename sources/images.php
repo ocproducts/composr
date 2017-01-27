@@ -177,6 +177,12 @@ function _symbol_thumbnail($param)
         // made one with these options
         if ((!is_file($save_path)) && (!is_file($save_path . '.png'))) {
             if (!function_exists('imagepng')) {
+                if (($fallback != '') && ($fallback != $param[0])) {
+                    $param[0] = $fallback;
+                    $param[4] = '';
+                    return _symbol_thumbnail($param);
+                }
+
                 return $fallback;
             }
 
@@ -196,12 +202,24 @@ function _symbol_thumbnail($param)
                 if (!is_null($converted_to_path)) {
                     $sizes = @getimagesize($converted_to_path);
                     if ($sizes === false) {
+                        if (($fallback != '') && ($fallback != $param[0])) {
+                            $param[0] = $fallback;
+                            $param[4] = '';
+                            return _symbol_thumbnail($param);
+                        }
+
                         return $fallback;
                     }
                     list($source_x, $source_y) = $sizes;
                 } else {
                     $source = @imagecreatefromstring(http_download_file($orig_url, null, false));
                     if ($source === false) {
+                        if (($fallback != '') && ($fallback != $param[0])) {
+                            $param[0] = $fallback;
+                            $param[4] = '';
+                            return _symbol_thumbnail($param);
+                        }
+
                         return $fallback;
                     }
                     $source_x = imagesx($source);
@@ -268,11 +286,17 @@ function _symbol_thumbnail($param)
             // If the conversion failed then give back the fallback,
             // or if it's empty then give back the original image
             if (!$result) {
+                if (($fallback != '') && ($fallback != $param[0])) {
+                    $param[0] = $fallback;
+                    $param[4] = '';
+                    return _symbol_thumbnail($param);
+                }
+
                 $value = $fallback;
             }
         }
 
-        if (!file_exists($save_path)) {
+        if ((!file_exists($save_path)) && (file_exists($save_path . '.png'))) {
             $value .= '.png';
         }
     }

@@ -14,3 +14,11 @@
  */
 
 // TODO (takes an ID of a bookable) - for choosing a recurrence of a specific bookable
+
+class Block_side_choose_showing
+{
+    function run()
+    {
+        return new Tempcode();
+    }
+}

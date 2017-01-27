@@ -375,6 +375,16 @@ Under HTTPS user provided media that is not linked under HTTPS will either be au
 
 You can set HTTPS for a whole site via changing the base URL. In this situation the banners restriction will not be applied, as the webmasters are assumed to have set up HTTPS-compatible banners for everything.
 
+[title="4"]Migrating HTTP websites[/title]
+
+If you are on Apache then you can add this to your [tt].htaccess[/tt] file:
+[code="htaccess"]
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteRule ^(.*\.php.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+[/code]
+
 [title="3"]Secured zones[/title]
 
 [media width="150" description="Securing a zone so that an explicitly logged-in session is required" float="right"]data_custom/images/docs/tut_security/security_require_session.png[/media]
@@ -527,5 +537,6 @@ If you have sensitive material that might be in a URL moniker, you should either
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
  - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
  - [url="http://www.robotstxt.org/robotstxt.html"]robots.txt help[/url]
+ - [url="https://internethealthreport.org"]The Internet Health Report[/url]
 
 {$SET,tutorial_tags,ssl,securitylogging,rootkit_detector,Security,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details and guidance on the advanced security protections available in Composr.}[block]main_tutorial_rating[/block]

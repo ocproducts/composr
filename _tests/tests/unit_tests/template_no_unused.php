@@ -21,6 +21,7 @@ class template_no_unused_test_set extends cms_test_case
     public function testNothingUnused()
     {
         require_code('files');
+        require_code('themes2');
 
         disable_php_memory_limit();
 
@@ -185,23 +186,27 @@ class template_no_unused_test_set extends cms_test_case
             'W_MESSAGE_ALL',
             'W_MESSAGE_TO',
             'RATING_INLINE_STATIC',
+            'ADMIN_ZONE_SEARCH',
         );
 
-        $paths = array(
-            get_file_base() . '/themes/default/templates',
-            get_file_base() . '/themes/default/templates_custom',
-        );
-        foreach ($paths as $path) {
-            $dh = opendir($path);
-            while (($f = readdir($dh)) !== false) {
-                if (strtolower(substr($f, -4)) == '.tpl') {
-                    $f = basename($f, '.tpl');
+        $themes = find_all_themes();
+        foreach (array_keys($themes) as $theme) {
+            $paths = array(
+                get_file_base() . '/themes/' . $theme . '/templates',
+                get_file_base() . '/themes/' . $theme . '/templates_custom',
+            );
+            foreach ($paths as $path) {
+                $dh = opendir($path);
+                while (($f = readdir($dh)) !== false) {
+                    if (strtolower(substr($f, -4)) == '.tpl') {
+                        $f = basename($f, '.tpl');
 
-                    if (in_array($f, $exceptions)) {
-                        continue;
+                        if (in_array($f, $exceptions)) {
+                            continue;
+                        }
+
+                        $this->assertTrue(strpos($all_code, 'do_template(\'' . $f . '\'') !== false, 'Cannot find use of ' . $f . ' template');
                     }
-
-                    $this->assertTrue(strpos($all_code, 'do_template(\'' . $f . '\'') !== false, 'Cannot find use of ' . $f . ' template');
                 }
             }
         }

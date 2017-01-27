@@ -439,7 +439,7 @@ function do_set()
     if ($config_file_handle === false) {
         exit();
     }
-    @flock($config_file_handle, LOCK_EX);
+    flock($config_file_handle, LOCK_EX);
     ftruncate($config_file_handle, 0);
     fwrite($config_file_handle, "<" . "?php\n");
     foreach ($new as $key => $val) {
@@ -457,7 +457,7 @@ function do_set()
             }
         }
     }
-    @flock($config_file_handle, LOCK_UN);
+    flock($config_file_handle, LOCK_UN);
     fclose($config_file_handle);
     co_sync_file($config_file);
 

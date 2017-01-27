@@ -37,7 +37,7 @@ function actual_edit_zone($zone, $title, $default_page, $header_text, $theme, $r
 {
     if ($zone != $new_zone) {
         require_code('type_sanitisation');
-        if (!is_alphanumeric($new_zone, true)) {
+        if (!is_alphanumeric($new_zone)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
@@ -417,7 +417,12 @@ function get_template_contents($name)
         return '';
     }
 
-    return file_get_contents($template_path);
+    $ret = file_get_contents($template_path);
+
+    $ret = str_replace('{$BASE_URL*}', escape_html(get_base_url()), $ret);
+    $ret = str_replace('{$BASE_URL}', get_base_url(), $ret);
+
+    return $ret;
 }
 
 /**
@@ -450,10 +455,13 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     if (is_null($file)) {
         $file = $new_file; // Not renamed
     }
+    if ($parent_page === null) {
+        $parent_page = '';
+    }
 
     // Check page name
     require_code('type_sanitisation');
-    if ((!is_alphanumeric($new_file, true)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
+    if ((!is_alphanumeric($new_file)) || (strpos($new_file, '-') !== false && strpos($new_file, '_') !== false)/*can't have both*/) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
     }
     require_code('zones2');
@@ -483,6 +491,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         }
         foreach ($rename_map as $path => $new_path) {
             rename(get_custom_file_base() . '/' . $path, get_custom_file_base() . '/' . $new_path);
+            sync_file_move(get_custom_file_base() . '/' . $path, get_custom_file_base() . '/' . $new_path);
         }
 
         // Got to rename various resources
@@ -545,32 +554,14 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
         $revision_engine = new RevisionEngineFiles();
         list(, , $existing_path) = find_comcode_page($lang, $file, $zone);
         if ($existing_path != '') {
-            $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+            $revision_engine->add_revision(dirname($full_path), $new_file, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
         }
     }
 
     // Store page on disk
     if ($file_changed) {
-        if (!file_exists(dirname($full_path))) {
-            require_code('files2');
-            make_missing_directory(dirname($full_path));
-        }
-
-        $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at');
-        if ($myfile === false) {
-            intelligent_write_error($full_path);
-        }
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        if (fwrite($myfile, $text) < strlen($text)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        sync_file($full_path);
-        fix_permissions($full_path);
+        require_code('files');
+        cms_file_put_contents_safe($full_path, $text, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 
     // Empty caching
@@ -641,7 +632,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
                 $revision_engine = new RevisionEngineFiles();
                 list(, , $existing_path) = find_comcode_page(user_lang(), $page, $zone);
                 if ($existing_path != '') {
-                    $revision_engine->add_revision(dirname($existing_path), $page, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                    $revision_engine->add_revision(dirname($existing_path), $page, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
                 }
             }
         }
@@ -655,7 +646,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
                     afm_delete_file($_path);
                 } else {
                     unlink(get_custom_file_base() . '/' . $_path);
-                    sync_file($_path);
+                    sync_file(get_custom_file_base() . '/' . $_path);
                 }
             }
         }
@@ -680,7 +671,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
                 afm_delete_file($_path);
             } else {
                 unlink(get_custom_file_base() . '/' . $_path);
-                sync_file($_path);
+                sync_file(get_custom_file_base() . '/' . $_path);
             }
         }
     }

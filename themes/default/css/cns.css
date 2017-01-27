@@ -7,23 +7,6 @@
 This file defines styles for Conversr (abbreviated as CNS).
 */
 
-/* Range of bright varying colours */
-{$THEME_WIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
-{$THEME_WIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
-{$THEME_WIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
-{$THEME_WIZARD_COLOR,#5800fa,gcol_4,100% #5800FA}
-{$THEME_WIZARD_COLOR,#0099fa,gcol_5,100% #0099FA}
-{$THEME_WIZARD_COLOR,#859638,gcol_6,100% #859638}
-{$THEME_WIZARD_COLOR,#2bab03,gcol_7,100% #2BAB03}
-{$THEME_WIZARD_COLOR,#7d7e04,gcol_8,100% #7D7E04}
-{$THEME_WIZARD_COLOR,#966038,gcol_9,100% #966038}
-{$THEME_WIZARD_COLOR,#96384a,gcol_10,100% #96384A}
-{$THEME_WIZARD_COLOR,#963895,gcol_11,100% #963895}
-{$THEME_WIZARD_COLOR,#4e3896,gcol_12,100% #4E3896}
-{$THEME_WIZARD_COLOR,#386296,gcol_13,100% #386296}
-{$THEME_WIZARD_COLOR,#389596,gcol_14,100% #389596}
-{$THEME_WIZARD_COLOR,#389653,gcol_15,100% #389653}
-
 {$THEME_WIZARD_COLOR,#72f579,cns_personal_post_background,50% 00FF00 + 50% area_2_background}
 {$THEME_WIZARD_COLOR,#000000,cns_personal_post_text,100% BW}
 {$THEME_WIZARD_COLOR,#f27579,emphasis_background,50% FF0000 + 50% area_2_background}
@@ -322,11 +305,6 @@ div.cns_table_footer>div>div {
 	padding: 0.5em;
 }
 
-.cns_topic_poll_results {
-	font-weight: bold;
-	text-align: center;
-}
-
 .cns_topic_poll_result_column2 {
 	font-size: 0.85em;
 }
@@ -335,7 +313,7 @@ div.cns_table_footer>div>div {
 	vertical-align: middle;
 }
 
-.cns_topic_poll_result_column2, .cns_topic_poll_radio_column2 {
+.cns_topic_poll_result_column2 {
 	padding: 0.5em;
 }
 
@@ -393,8 +371,9 @@ div.cns_table_footer>div>div {
 }
 
 /*{+START,IF,{$MOBILE}}*/
-	.cns_topic .cns_topic_post_member_details img {
+	.cns_topic .cns_topic_post_member_details img:not([width]):not([height]) {
 		max-width: 100%;
+		height: auto;
 	}
 /*{+END}*/
 
@@ -409,7 +388,10 @@ div.cns_table_footer>div>div {
 
 .cns_topic_post_avatar {
 	margin: 0 auto;
+}
+.cns_topic_post_avatar:not([width]):not([height]) {
 	max-width: 100%;
+	height: auto;
 }
 
 .cns_post_main_column {
@@ -437,8 +419,9 @@ div.cns_table_footer>div>div {
 	line-height: 1.6em;
 }
 
-.cns_topic_post_area img {
+.cns_topic_post_area img:not([width]):not([height]) {
 	max-width: 100%;
+	height: auto;
 }
 .cns_topic_post_area #map_canvas img { /*some exceptions may need defining for the above*/
 	max-width: none;
@@ -689,8 +672,9 @@ hr.cns_sig_barrier {
 	text-align: center;
 	width: 30px;
 }
-.cns_forum_topic_row_emoticon img {
+.cns_forum_topic_row_emoticon img:not([width]):not([height]) {
 	max-width: 100%;
+	height: auto;
 }
 
 .cns_forum_topic_row_preview {
@@ -774,14 +758,6 @@ hr.cns_sig_barrier {
 	max-width: 245px; /* Based on tooltip size */
 }
 
-.cns_isolated_post_meta_column {
-	width: 13em;
-}
-
-.cns_isolated_post_content_column {
-	width: 100%;
-}
-
 .cns_member_signature {
 	margin: 0.5em;
 	font-size: 0.85em;
@@ -829,9 +805,8 @@ hr.cns_sig_barrier {
 	.cns_topic_control_functions,
 	.cns_member_bar_etc,
 	.box___block_main_bottom_bar,
-	.box__members_viewing,
-	.cns_buttons_screen,
-	.cns_topic_marker {
+	.box___members_viewing,
+	.cns_buttons_screen {
 		display: none;
 	}
 }
@@ -946,23 +921,3 @@ hr.cns_sig_barrier {
 		background-image: url('{$IMG,icons/48x48/buttons/threaded}') !important;
 	}
 }
-
-{+START,IF,{$MOBILE}}
-	/* Modifications to make the top "Mark read" button appear in mobile mode */
-	.cns_topic_buttons.non_accessibility_redundancy,
-	.cns_forum_buttons.non_accessibility_redundancy {
-		display: block;
-	}
-
-	.cns_forum_buttons .cns_screen_buttons input,
-	.cns_topic_buttons .cns_screen_buttons input,
-	.cns_forum_buttons .cns_screen_buttons a,
-	.cns_topic_buttons .cns_screen_buttons a {
-		display: none;
-	}
-
-	.cns_forum_buttons .cns_screen_buttons input[alt="{!cns:MARK_READ}"],
-	.cns_topic_buttons .cns_screen_buttons input[alt="{!cns:MARK_READ}"] {
-		display: inline-block;
-	}
-{+END}

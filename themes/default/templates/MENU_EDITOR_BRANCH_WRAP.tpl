@@ -21,8 +21,8 @@
 			<option value="branch_plus">{!EXPANDED_BRANCH}</option>
 		</select>
 
-		<input type="image" class="horiz_field_sep" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" onkeypress="if (enter_pressed()) this.onclick(event);" onclick="handle_ordering(this,false,true); return false;" />
-		<input type="image" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" onkeypress="if (enter_pressed()) this.onclick(event);" onclick="handle_ordering(this,true,false); return false;" />
+		<input type="image" class="horiz_field_sep" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" onkeypress="if (enter_pressed(event)) this.onclick(event);" onclick="handle_ordering(this,false,true); return false;" />
+		<input type="image" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" onkeypress="if (enter_pressed(event)) this.onclick(event);" onclick="handle_ordering(this,true,false); return false;" />
 
 		<input class="menu___generic_admin__delete button_micro horiz_field_sep" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" onclick="delete_menu_branch(this);" />
 	</div>

@@ -324,7 +324,10 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     $place = get_custom_file_base() . '/uploads/attachments/' . $_file;
                     $i++;
                 }
-                file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+                if (@file_put_contents($place, '') === false) { // Lock it in ASAP, to stop race conditions
+                    intelligent_write_error($place);
+                }
+                sync_file($place);
 
                 $i = 2;
                 $_file_thumb = basename($entry['path']);
@@ -335,7 +338,10 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
                     $i++;
                 }
-                file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
+                if (@file_put_contents($place_thumb, '') === false) { // Lock it in ASAP, to stop race conditions
+                    intelligent_write_error($place_thumb);
+                }
+                sync_file($place_thumb);
 
                 if ($arcext == 'tar') {
                     $file_details = tar_get_file($myfile, $entry['path'], false, $place);
@@ -346,15 +352,17 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     );
 
                     $out_file = @fopen($place, 'wb') or intelligent_write_error($place);
+                    flock($out_file, LOCK_EX);
                     $more = mixed();
                     do {
                         $more = zip_entry_read($entry['zip_entry']);
                         if ($more !== false) {
                             if (fwrite($out_file, $more) < strlen($more)) {
-                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($place)));
                             }
                         }
                     } while (($more !== false) && ($more != ''));
+                    flock($out_file, LOCK_UN);
                     fclose($out_file);
 
                     zip_entry_close($entry['zip_entry']);

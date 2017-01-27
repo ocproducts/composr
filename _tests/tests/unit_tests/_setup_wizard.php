@@ -22,7 +22,7 @@ class _setup_wizard_test_set extends cms_test_case
     {
         global $SITE_INFO;
         if ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != '127.0.0.1')) {
-            warn_exit('backdoor_ip must be set to 127.0.0.1 temporarily');
+            warn_exit('backdoor_ip must be set to 127.0.0.1 temporarily in _config.php, $SITE_INFO[\'backdoor_ip\'] = \'127.0.0.1\';');
         }
 
         $post = array(
@@ -98,6 +98,6 @@ class _setup_wizard_test_set extends cms_test_case
 
         http_download_file($url->evaluate(), null, true, false, 'Composr', $post);
 
-        $this->assertTrue($GLOBALS['HTTP_MESSAGE'] == 200);
+        $this->assertTrue($GLOBALS['HTTP_MESSAGE'] == '200');
     }
 }

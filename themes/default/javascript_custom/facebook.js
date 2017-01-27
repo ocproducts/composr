@@ -3,7 +3,7 @@
 function facebook_init(app_id,channel_url,just_logged_out,serverside_fbuid,home_page_url,logout_page_url)
 {
 	window.fbAsyncInit=function() {
-		FB.init({
+		window.FB.init({
 			appId: app_id,
 			channelUrl: channel_url,
 			status: true,
@@ -15,14 +15,14 @@ function facebook_init(app_id,channel_url,just_logged_out,serverside_fbuid,home_
 
 		{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}
 			// Calling this effectively waits until the login is active on the client side, which we must do before we can do anything (including calling a log out)
-			FB.getLoginStatus(function(response) {
+			window.FB.getLoginStatus(function(response) {
 				if ((response.status=='connected') && (response.authResponse))
 				{
 					// If Composr is currently logging out, tell FB connect to disentangle
 					// Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have authed due to FB_CONNECT_LOGGED_OUT being set
 					if (just_logged_out)
 					{
-						FB.logout(function(response) {
+						window.FB.logout(function(response) {
 							if (typeof window.console!='undefined' && window.console) console.log('Facebook: Logged out.');
 						});
 					}
@@ -43,7 +43,7 @@ function facebook_init(app_id,channel_url,just_logged_out,serverside_fbuid,home_
 						if (forms[i].action.indexOf(logout_page_url)!=-1)
 						{
 							forms[i].onsubmit=function(logout_link) { return function() {
-								FB.logout(function(response) {
+								window.FB.logout(function(response) {
 									if (typeof window.console!='undefined' && window.console) console.log('Facebook: Logged out.');
 									window.location=logout_link;
 								});
@@ -57,7 +57,7 @@ function facebook_init(app_id,channel_url,just_logged_out,serverside_fbuid,home_
 
 			if (serverside_fbuid===null) // If not already in a Composr Facebook login session we may need to listen for explicit new logins
 			{
-				FB.Event.subscribe('auth.login',function(response) { // New login status arrived - so a Composr Facebook login session should be established, or ignore as we are calling a logout within this request (above)
+				window.FB.Event.subscribe('auth.login',function(response) { // New login status arrived - so a Composr Facebook login session should be established, or ignore as we are calling a logout within this request (above)
 					if (!just_logged_out) // Check it is not that logout
 					{
 						// ... and therefore refresh to let Composr server-side re-sync, as this was a new login initiated just now on the client side

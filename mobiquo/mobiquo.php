@@ -87,6 +87,8 @@ if (!empty($request_method_name) && isset($SERVER_DEFINE[$request_method_name]))
 if ((is_file(TAPATALK_LOG)) && (is_writable_wrap(TAPATALK_LOG))) {
     // Request
     $log_file = fopen(TAPATALK_LOG, 'at');
+    flock($log_file, LOCK_EX);
+    fseek($log_file, 0, SEEK_END);
     fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *REQUEST*:\n");
     fwrite($log_file, 'GET: ' . serialize($_GET) . "\n");
     fwrite($log_file, 'COOKIE: ' . serialize($_COOKIE) . "\n");
@@ -99,6 +101,7 @@ if ((is_file(TAPATALK_LOG)) && (is_writable_wrap(TAPATALK_LOG))) {
     fwrite($log_file, 'FILES: ' . serialize($_FILES) . "\n");
     fwrite($log_file, 'USERNAME: ' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . "\n");
     fwrite($log_file, "\n\n");
+    flock($log_file, LOCK_UN);
     fclose($log_file);
 
     // Response
@@ -107,10 +110,13 @@ if ((is_file(TAPATALK_LOG)) && (is_writable_wrap(TAPATALK_LOG))) {
     function _do_response_logging()
     {
         $log_file = fopen(TAPATALK_LOG, 'at');
+        flock($log_file, LOCK_EX);
+        fseek($log_file, 0, SEEK_END);
         fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *RESPONSE*:\n");
         fwrite($log_file, 'HEADERS: ' . serialize(headers_list()) . "\n");
         fwrite($log_file, ob_get_contents() . "\n");
         fwrite($log_file, "\n\n");
+        flock($log_file, LOCK_UN);
         fclose($log_file);
 
         @ob_end_flush();

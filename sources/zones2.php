@@ -107,7 +107,7 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
     require_lang('zones');
 
     require_code('type_sanitisation');
-    if (!is_alphanumeric($zone, true)) {
+    if (!is_alphanumeric($zone)) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
     }
 
@@ -146,12 +146,12 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
             afm_make_directory($zone . '/pages/html/' . $lang, false, true);
         }
         afm_make_file($zone . '/index.php', file_get_contents(get_file_base() . '/adminzone/index.php'), false);
-        if (file_exists(get_file_base() . '/pages' . DIRECTORY_SEPARATOR . '.htaccess')) {
+        if (file_exists(get_file_base() . '/pages/.htaccess')) {
             $index_php = array('pages/comcode/EN', 'pages/comcode_custom/EN',
                                'pages/html/EN', 'pages/html_custom/EN',
                                'pages/modules', 'pages/modules_custom', 'pages');
             foreach ($index_php as $i) {
-                afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/.htaccess', file_get_contents(get_file_base() . '/pages' . DIRECTORY_SEPARATOR . '.htaccess'), false);
+                afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/.htaccess', file_get_contents(get_file_base() . '/pages/.htaccess'), false);
             }
         }
         $index_php = array('pages/comcode', 'pages/comcode/EN', 'pages/comcode_custom', 'pages/comcode_custom/EN',
@@ -214,19 +214,18 @@ function save_zone_base_url($zone, $base_url)
     }
 
     $config_path = get_file_base() . '/_config.php';
-    $tmp = fopen($config_path, 'rb');
-    @flock($tmp, LOCK_SH);
-    $config_file = file_get_contents($config_path);
-    @flock($tmp, LOCK_UN);
-    fclose($tmp);
+    $config_file = cms_file_get_contents_safe($config_path);
     $config_file_before = $config_file;
 
     $regexp = '#\n?\$SITE_INFO\[\'ZONE_MAPPING_' . preg_quote($zone, '#') . '\'\] = array\(\'[^\']+\', \'[^\']+\'\);\n?#';
     $config_file = preg_replace($regexp, '', $config_file); // Strip any old entry
 
     if ($base_url != '') { // Add new entry, if appropriate
+        $main_site_domain = parse_url(get_base_url(), PHP_URL_HOST);
+        $main_site_path = trim(parse_url(get_base_url(), PHP_URL_PATH), '/');
+
         if (url_is_local($base_url)) {
-            $domain = cms_srv('HTTP_HOST');
+            $domain = $main_site_domain;
             $path = $base_url;
         } else {
             $parsed = @parse_url($base_url);
@@ -234,25 +233,20 @@ function save_zone_base_url($zone, $base_url)
                 warn_exit(do_lang_tempcode('INVALID_ZONE_BASE_URL'));
             }
             $domain = $parsed['host'];
-            $path = isset($parsed['path']) ? $parsed['path'] : '/';
+            $path = isset($parsed['path']) ? $parsed['path'] : '';
         }
-        $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "'] = array('" . addslashes($domain) . "', '" . addslashes(trim($path, '/')) . "');\n";
+
+        $path = preg_replace('#(/|$)index\.php$#', '', $path); // Fix common mistake
+        $path = trim($path, '/ ');
+
+        if (($domain != $main_site_domain) || (($path != '') && ($path != $main_site_path))) { // If not fully benign
+            $config_file .= "\n\$SITE_INFO['ZONE_MAPPING_" . addslashes($zone) . "'] = array('" . addslashes($domain) . "', '" . addslashes(trim($path, '/')) . "');\n";
+        }
     }
 
     if ($config_file != $config_file_before) {
-        $out = @fopen($config_path, GOOGLE_APPENGINE ? 'wb' : 'ab');
-        if ($out === false) {
-            intelligent_write_error($config_path);
-        }
-        @flock($out, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($out, 0);
-        }
-        fwrite($out, $config_file);
-        @flock($out, LOCK_UN);
-        fclose($out);
-        sync_file($config_path);
-        fix_permissions($config_path);
+        require_code('files');
+        cms_file_put_contents_safe($config_path, $config_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }
 
@@ -768,7 +762,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
     $dh = @opendir($stub . '/' . $module_path);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            if ((substr($file, -4) == '.' . $ext) && (file_exists($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][\w\-]*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
+            if ((substr($file, -4) == '.' . $ext) && (file_exists($stub . '/' . $module_path . '/' . $file)) && (preg_match('#^[^\.][' . URL_CONTENT_REGEXP . ']*$#', substr($file, 0, strlen($file) - 4)) != 0)) {
                 if (!is_null($cutoff_time)) {
                     if (filectime($stub . '/' . $module_path . '/' . $file) < $cutoff_time) {
                         continue;
@@ -873,11 +867,8 @@ function sync_htaccess_with_zones()
 
         $htaccess = file_get_contents($htaccess_path);
         $htaccess = preg_replace('#\(site[^\)]*#', '(' . implode('|', $zones), $htaccess);
-        $myfile = fopen($htaccess_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-        fwrite($myfile, $htaccess);
-        fclose($myfile);
-        fix_permissions($htaccess_path);
-        sync_file($htaccess_path);
+        require_code('files');
+        cms_file_put_contents_safe($htaccess_path, $htaccess, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }
 

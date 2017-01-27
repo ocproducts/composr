@@ -55,7 +55,10 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
         $thumb_path = get_custom_file_base() . '/uploads/' . $thumb_dir . '_thumbs/' . $file . '.' . $ext;
         $i++;
     } while (file_exists($thumb_path));
-    file_put_contents($thumb_path, ''); // Lock it in ASAP, to stop race conditions
+    if (@file_put_contents($thumb_path, '') === false) { // Lock it in ASAP, to stop race conditions
+        intelligent_write_error($thumb_path);
+    }
+    sync_file($thumb_path);
     $thumb_url = 'uploads/' . $thumb_dir . '_thumbs/' . rawurlencode($file) . '.' . $ext;
     if ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) {
         $GLOBALS['FORUM_DB']->query_update($table, array($thumb_field_name => $thumb_url), array('id' => $id), '', 1);
@@ -140,11 +143,8 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
                 $from_file = false;
                 $exif = false;
             } else {
-                $myfile = fopen($to, 'wb');
-                fwrite($myfile, $from_file);
-                fclose($myfile);
-                fix_permissions($to);
-                sync_file($to);
+                require_code('files');
+                cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 $exif = function_exists('exif_read_data') ? @exif_read_data($to) : false;
                 if ($ext == 'svg') { // SVG is pass-through
                     return true;
@@ -234,13 +234,12 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
 
                 if ($using_path) {
                     copy($from, $to);
+                    fix_permissions($to);
+                    sync_file($to);
                 } else {
-                    $_to = @fopen($to, 'wb') or intelligent_write_error($to);
-                    fwrite($_to, $from_file);
-                    fclose($_to);
+                    require_code('files');
+                    cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
-                fix_permissions($to);
-                sync_file($to);
                 return true;
             }
         }

@@ -28,7 +28,7 @@ class CMSForumWrite
         cms_verify_parameters_phpdoc();
 
         if (is_guest()) {
-            warn_exit(do_lang_tempcode('NOT_AS_GUEST'));
+            warn_exit(do_lang_tempcode('permissions:ACCESS_DENIED__NOT_AS_GUEST'));
         }
 
         require_code('config2');

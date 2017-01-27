@@ -42,9 +42,8 @@ class Hook_cron_dynamic_firewall
                 $new_contents = @http_download_file('https://compo.sr/data_custom/firewall_rules.txt?version=' . rawurlencode(get_version_dotted()), null, false);
 
                 if (!empty($new_contents)) {
-                    file_put_contents($rules_path, $new_contents);
-                    fix_permissions($rules_path);
-                    sync_file($rules_path);
+                    require_code('files');
+                    cms_file_put_contents_safe($rules_path, $new_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
 
                 set_value('dynamic_firewall_time', strval(time()), true);

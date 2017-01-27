@@ -57,7 +57,7 @@ admin zone	admincp	admin panel	control panel
 collaboration_zone	groupware
 actionlog	audit
 atom	rss	feed	syndication
-login	logon	log-in	log-on
+ical	icalendar
 display	render	view
 gallery	album	galleries	podcast	multimedia
 audit	log	usage
@@ -119,7 +119,7 @@ ipb	invision
 random_quotes	testimonials
 join	register	signup	sign-up
 logout	log-out	sign-out	sign-off
-login	log-in	sign-in	sign-on
+login	log-in	sign-in	sign-on	logon	log-on	authorize
 shopping	ecommerce	payment	purchase	products	store	buy	bought
 cash	money	currency
 price	cost	amount	quantity
@@ -132,7 +132,8 @@ author	bio	biography
 block	widget
 moniker	slug
 guest	anonymous
-rules	license	licence	agreement	terms	conditions	legals
+rules	license	licence	agreement	terms	conditions	legals t&cs
 dashboard	console	status
 menu	navigation
 permalink	url	link
+importance	priority	precedence	level

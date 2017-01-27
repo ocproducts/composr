@@ -153,8 +153,10 @@ class Composr_mobile_sdk_tools
 
             $ios_path = $out_dir . '/' . $file . '.strings';
             $ios_file = fopen($ios_path, 'wb');
+            flock($ios_file, LOCK_EX);
             $android_path = $out_dir . '/' . $file . '.xml';
             $android_file = fopen($android_path, 'wb');
+            flock($android_file, LOCK_EX);
 
             fwrite($android_file, '<resources>' . "\n");
 
@@ -186,7 +188,9 @@ class Composr_mobile_sdk_tools
 
             fwrite($android_file, '</resources>' . "\n");
 
+            flock(($ios_file), LOCK_UN);
             fclose($ios_file);
+            flock($android_file, LOCK_UN);
             fclose($android_file);
         }
 

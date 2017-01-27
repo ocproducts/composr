@@ -102,6 +102,14 @@ It is possible digest e-mails could become very long. In this case, Composr woul
 
 Members are informed if the limit is exceeded (while still given the subjects of each digest item). The member may then choose to change their settings to something more manageable (such as more regular, or smaller, digests).
 
+[title="3"]Debugging[/title]
+
+Digests are sent out via the scheduler. A member can only choose to receive digests if the scheduler is set up and if they have configured an e-mail address.
+
+Digests are not sent out at any specific time (to avoid overloading outbound e-mail each night), but rather each member's digests are individually time-tracked using the [tt]digestives_consumed[/tt] table. For each member there is a timestamp in that table representing when each of their digest's was last sent. When the scheduler runs it looks to see what digests are due and sends them if there's any content for them.
+
+Actual digest content is queued up in the [tt]digestives_tin[/tt] table.
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]

@@ -510,7 +510,7 @@ function build_page_link($vars, $zone_name = '', $skip = null, $hash = '')
 
             if (isset($val->codename/*faster than is_object*/)) {
                 $page_link .= ':' . $key . '=';
-                $page_link .= $val->evaluate();
+                $page_link .= urlencode($val->evaluate());
             } else {
                 $page_link .= ':' . $key . '=' . (($val === null) ? '<null>' : urlencode($val));
             }
@@ -1162,7 +1162,7 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
 function page_link_to_url($url)
 {
     $parts = array();
-    if ((preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
+    if ((preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
         list($zone, $map, $hash) = page_link_decode($url);
         $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
     } else {
@@ -1275,7 +1275,7 @@ function find_id_moniker($url_parts, $zone)
     if (strpos($url_parts['page'], '[') !== false) {
         return null; // A regexp in a comparison URL, in breadcrumbs code
     }
-    if ($zone == '[\w\_\-]*') {
+    if ($zone == '[\w\-]*') {
         return null; // Part of a breadcrumbs regexp
     }
 
@@ -1498,13 +1498,16 @@ function ensure_protocol_suitability($url)
  */
 function check_url_exists($url, $test_freq_secs)
 {
-    $test1 = $GLOBALS['SITE_DB']->query_select('urls_checked', array('url_check_time', 'url_exists'), array('url' => $url));
+    $test1 = $GLOBALS['SITE_DB']->query_select('urls_checked', array('url_check_time', 'url_exists'), array('url' => $url), 'ORDER BY url_check_time DESC', 1);
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
         $test2 = http_download_file($url, 0, false);
-        $exists = is_null($test2) ? 0 : 1;
+        if (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] == '403')) {
+            $test2 = http_download_file($url, 1, false); // Try without HEAD, sometimes it's not liked
+        }
+        $exists = (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] != 401)) ? 0 : 1;
 
-        if (!isset($test1[0])) {
+        if (isset($test1[0])) {
             $GLOBALS['SITE_DB']->query_delete('urls_checked', array(
                 'url' => $url,
             ));

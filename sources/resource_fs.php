@@ -68,7 +68,7 @@ function init__resource_fs()
 }
 
 /**
- * Disengage logging.
+ * Engage logging.
  *
  * @param  string $level The minimum logging level
  * @set inform notice warn
@@ -80,6 +80,8 @@ function resource_fs_logging__start($level = 'notice')
         fclose($RESOURCE_FS_LOGGER);
     }
     $RESOURCE_FS_LOGGER = fopen(get_custom_file_base() . '/data_custom/resource_fs.log', 'at');
+    flock($RESOURCE_FS_LOGGER, LOCK_EX);
+    fseek($RESOURCE_FS_LOGGER, 0, SEEK_END);
     $RESOURCE_FS_LOGGER_LEVEL = $level;
 }
 
@@ -119,6 +121,7 @@ function resource_fs_logging__end()
 {
     global $RESOURCE_FS_LOGGER;
     if ($RESOURCE_FS_LOGGER !== null) {
+        flock($RESOURCE_FS_LOGGER, LOCK_UN);
         fclose($RESOURCE_FS_LOGGER);
     }
     $RESOURCE_FS_LOGGER = null;
@@ -898,9 +901,8 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
         }
     }
 
-    file_put_contents($place, $binary);
-    fix_permissions($place);
-    sync_file($place);
+    require_code('files');
+    cms_file_put_contents_safe($place, $binary, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     return $urlpath;
 }

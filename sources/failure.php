@@ -768,22 +768,15 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
     $GLOBALS['SITE_DB']->query_delete('banned_ip', array('ip' => $ip), '', 1);
     $GLOBALS['SITE_DB']->query_insert('banned_ip', array('ip' => $ip, 'i_descrip' => $descrip, 'i_ban_until' => $ban_until, 'i_ban_positive' => $ban_positive ? 1 : 0), false, true); // To stop weird race-like conditions
     persistent_cache_delete('IP_BANS');
-    if ((is_writable_wrap(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) && (is_null($ban_until))) {
-        $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'rb' : 'rt');
-        @flock($myfile, LOCK_SH);
-        $original_contents = file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
+    if ((is_writable_wrap(get_file_base() . '/.htaccess')) && (is_null($ban_until))) {
+        $original_contents = cms_file_get_contents_safe(get_file_base() . '/.htaccess');
         $ip_cleaned = str_replace('*', '', $ip);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         if (strpos($original_contents, "\n" . 'deny from ' . $ip_cleaned) === false) {
+            require_code('files');
             $contents = str_replace('# deny from xxx.xx.x.x (leave this comment here!)', '# deny from xxx.xx.x.x (leave this comment here!)' . "\n" . 'deny from ' . $ip_cleaned, $original_contents);
-            if (file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', $contents, LOCK_EX) < strlen($contents)) {
-                file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', $original_contents, LOCK_EX);
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            sync_file(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
+            cms_file_put_contents_safe(get_file_base() . '/.htaccess', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
     }
 
@@ -803,20 +796,16 @@ function remove_ip_ban($ip)
 
     $GLOBALS['SITE_DB']->query_delete('banned_ip', array('ip' => $ip), '', 1);
     persistent_cache_delete('IP_BANS');
-    if (is_writable_wrap(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) {
-        $contents = file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
+    if (is_writable_wrap(get_file_base() . '/.htaccess')) {
+        $contents = cms_file_get_contents_safe(get_file_base() . '/.htaccess');
         $ip_cleaned = str_replace('*', '', $ip);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         if (trim($ip_cleaned) != '') {
+            require_code('files');
             $contents = str_replace("\n" . 'deny from ' . $ip_cleaned . "\n", "\n", $contents);
             $contents = str_replace("\r" . 'deny from ' . $ip_cleaned . "\r", "\r", $contents); // Just in case
-            $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
-            if (fwrite($myfile, $contents) < strlen($contents)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            fclose($myfile);
-            sync_file('.htaccess');
+            cms_file_put_contents_safe(get_file_base() . '/.htaccess', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
     }
     $GLOBALS['SITE_DB']->query_delete('hackattack', array('ip' => $ip));
@@ -1340,7 +1329,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
                     require_code('site2');
                     assign_refresh($url, 0.0);
                     $message = do_lang_tempcode('_REDIRECTING');
-                } elseif (preg_match('#^\w*:\w*#', $message_raw) != 0) { // Looks like a page-link
+                } elseif (preg_match('#^[' . URL_CONTENT_REGEXP . ']*:[' . URL_CONTENT_REGEXP . ']*#', $message_raw) != 0) { // Looks like a page-link
                     list($zone, $map, $hash) = page_link_decode($message_raw);
                     if ((isset($map['error_message'])) && ($map['error_message'] == '')) {
                         $map['error_message'] = $natural_text;

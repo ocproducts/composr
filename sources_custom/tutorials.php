@@ -44,6 +44,17 @@ function list_tutorial_tags($skip_addons_and_specials = false)
         }
     }
     $tags = array_unique($tags);
+
+    // We can't store mixed case in the database, let's just have one set of tags
+    foreach ($tags as $tag) {
+        if (preg_match('#^[A-Z]#', $tag) != 0) {
+            $at = array_search(strtolower($tag), $tags);
+            if ($at !== false) {
+                unset($tags[$at]);
+            }
+        }
+    }
+
     natcasesort($tags);
     return $tags;
 }
@@ -129,7 +140,7 @@ function list_tutorials()
 
     $cache_path = get_custom_file_base() . '/uploads/website_specific/tutorial_sigs.dat';
     if ((is_file($cache_path)) && (filemtime($cache_path) > time() - 60 * 60/*1hr cache*/) && (get_param_integer('keep_tutorial_test', 0) == 0)) {
-        return unserialize(file_get_contents($cache_path));
+        return unserialize(cms_file_get_contents_safe($cache_path));
     }
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
@@ -159,9 +170,8 @@ function list_tutorials()
 
     //sort_maps_by($tutorials, 'title');    Breaks keys
 
-    file_put_contents($cache_path, serialize($tutorials));
-    fix_permissions($cache_path);
-    sync_file($cache_path);
+    require_code('files');
+    cms_file_put_contents_safe($cache_path, serialize($tutorials), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     return $tutorials;
 }
@@ -237,7 +247,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
             'url' => $db_row['t_url'],
             'title' => $db_row['t_title'],
             'summary' => $db_row['t_summary'],
-            'icon' => find_tutorial_image($db_row['t_icon'], $raw_tags),
+            'icon' => looks_like_url($db_row['t_icon']) ? $db_row['t_icon'] : find_tutorial_image($db_row['t_icon'], $raw_tags),
             'raw_tags' => $raw_tags,
             'tags' => $tags,
             'media_type' => $db_row['t_media_type'],

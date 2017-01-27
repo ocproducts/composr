@@ -79,6 +79,8 @@ class Hook_startup_composr_homesite__for_outdated_version
                         }
 
                         $cat_id = $cat_detail['parent_id'];
+                    } else {
+                        break;
                     }
                 }
 

@@ -234,6 +234,7 @@ class Hook_phpbb3
                 $id_new = $GLOBALS['FORUM_DB']->query_insert('attachments', $row_copy, true);
 
                 @rename($file_base . '/files/' . $row['physical_filename'], get_custom_file_base() . '/uploads/attachments/' . $row['physical_filename']);
+                sync_file(get_custom_file_base() . '/uploads/attachments/' . $row['physical_filename']);
 
                 import_id_remap_put('attachment', strval($row['attach_id']), $id_new);
             }
@@ -490,7 +491,7 @@ class Hook_phpbb3
                         $filename = $row['user_avatar'];
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($file_base . '/' . $avatar_path . '/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . $filename;
-                            sync_file($avatar_url);
+                            sync_file(get_custom_file_base() . '/' . $avatar_url);
                         } else {
                             if ($STRICT_FILE) {
                                 warn_exit(do_lang_tempcode('MISSING_AVATAR', escape_html($filename)));
@@ -505,7 +506,7 @@ class Hook_phpbb3
                         $filename = $row['user_avatar'];
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($file_base . '/' . $avatar_gallery_path . '/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . substr($filename, strrpos($filename, '/'));
-                            sync_file($avatar_url);
+                            sync_file(get_custom_file_base() . '/' . $avatar_url);
                         } else {
                             // Try as a pack avatar then
                             $striped_filename = str_replace('/', '_', $filename);

@@ -300,8 +300,9 @@ function http_download_file_cached($url, $referer = '', $cookies = null)
     } else {
         sleep(3);
 
+        require_code('files');
         $data = http_download_file($url, null, true, false, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36', null, $cookies, 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', null, 'en-US,en;q=0.8', null, $referer);
-        file_put_contents($cache_file, $data);
+        cms_file_put_contents_safe($cache_file, $data, FILE_WRITE_FIX_PERMISSIONS);
     }
     return $data;
 }

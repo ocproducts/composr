@@ -269,7 +269,7 @@ class Hook_ecommerce_catalogue_items
 
         $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array('c_name' => $catalogue_name), '', 1);
         if (!array_key_exists(0, $catalogues)) {
-            warn_exit(do_lang_tempcode('CATALOGUE_NOT_FOUND', $catalogue_name));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($catalogue_name)));
         }
 
         $catalogue = $catalogues[0];

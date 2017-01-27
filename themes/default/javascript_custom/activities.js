@@ -85,7 +85,7 @@ function s_update_show(data,stat)
 					this_li.className='activities_box box';
 					this_li.setAttribute('toFade','yes');
 					top_of_list.parentNode.insertBefore(this_li,top_of_list);
-					set_inner_html(this_li,Base64.decode($(this).text()));
+					set_inner_html(this_li,window.Base64.decode($(this).text()));
 				});
 
 				var no_messages=document.getElementById('activity_-1');

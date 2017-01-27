@@ -506,7 +506,7 @@ class Module_cms_galleries extends Standard_crud_module
                                 $more = zip_entry_read($entry);
                                 if ($more !== false) {
                                     if (fwrite($myfile2, $more) < strlen($more)) {
-                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE_TMP'));
                                     }
                                 }
                             } while (($more !== false) && ($more != ''));
@@ -750,7 +750,10 @@ class Module_cms_galleries extends Standard_crud_module
             $place = get_custom_file_base() . '/uploads/galleries/' . $_file;
             $i++;
         }
-        file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+        if (@file_put_contents($place, '') === false) { // Lock it in ASAP, to stop race conditions
+            intelligent_write_error($place);
+        }
+        sync_file($place);
         $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . filter_naughty($file);
         $i = 2;
         $_file_thumb = filter_naughty($file);
@@ -759,7 +762,10 @@ class Module_cms_galleries extends Standard_crud_module
             $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
             $i++;
         }
-        file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
+        if (@file_put_contents($place_thumb, '') === false) { // Lock it in ASAP, to stop race conditions
+            intelligent_write_error($place_thumb);
+        }
+        sync_file($place_thumb);
 
         // Store on server
         if (rename($in, $place) === false) {
@@ -804,7 +810,10 @@ class Module_cms_galleries extends Standard_crud_module
                     $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
                     $i++;
                 }
-                file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
+                if (@file_put_contents($place_thumb, '') === false) { // Lock it in ASAP, to stop race conditions
+                    intelligent_write_error($place_thumb);
+                }
+                sync_file($place_thumb);
                 $thumb_url = 'uploads/galleries_thumbs/' . rawurlencode($_file_thumb);
 
                 $this->simple_add($aurl, $thumb_url, $file, $cat);
@@ -969,7 +978,7 @@ class Module_cms_galleries extends Standard_crud_module
             if (substr($x, 0, 5) == 'file_') {
                 $path = get_custom_file_base() . '/uploads/galleries/' . filter_naughty($file);
                 @unlink($path) or intelligent_write_error($path);
-                sync_file('uploads/galleries/' . $file);
+                sync_file($path);
             }
         }
 
@@ -1116,7 +1125,7 @@ class Module_cms_galleries extends Standard_crud_module
         }
         if (((get_value('no_confirm_url_spec_cats') !== '1') && (($id !== null) || (substr($cat, 0, 9) != 'download_'))) || ($cat == '')) {
             $root_cat = get_value('root_cat__images', null, true);
-            if ((!is_null($root_cat)) && (preg_match('#^\w+$#', $root_cat) == 0)) {
+            if ((!is_null($root_cat)) && (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $root_cat) == 0)) {
                 $filters['filter'] = $root_cat;
                 $root_cat = '';
             }
@@ -1698,7 +1707,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         }
         if ((get_value('no_confirm_url_spec_cats') !== '1') || ($cat == '')) {
             $root_cat = get_value('root_cat__videos', null, true);
-            if ((!is_null($root_cat)) && (preg_match('#^\w+$#', $root_cat) == 0)) {
+            if ((!is_null($root_cat)) && (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $root_cat) == 0)) {
                 $filters['filter'] = $root_cat;
                 $root_cat = '';
             }
@@ -2106,7 +2115,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
     public $content_type = 'gallery';
     public $menu_label = 'GALLERIES';
     public $table = 'galleries';
-    public $javascript = "var fn=document.getElementById('fullname'); if (fn) { var form=fn.form; fn.onchange=function() { if ((form.elements['name']) && (form.elements['name'].value=='')) form.elements['name'].value=fn.value.toLowerCase().replace(/[^\w\d\.\-]/g,'_').replace(/\_+\$/,'').substr(0,80); }; }";
+    public $javascript = "var fn=document.getElementById('fullname'); if (fn) { var form=fn.form; fn.onchange=function() { if ((form.elements['name']) && (form.elements['name'].value=='')) form.elements['name'].value=fn.value.toLowerCase().replace(/[^\w\-\\u0080-\\uFFFF]/g,'_').replace(/\_+\$/,'').substr(0,80); }; }";
     public $is_chained_with_parent_browse = true;
 
     /**
@@ -2308,7 +2317,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $name = post_param_string('name', '');
         $fullname = post_param_string('fullname');
         if ($name == '') {
-            $name = preg_replace('#[^\w\d\-]#', '', $fullname);
+            $name = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '', $fullname);
         }
         $description = post_param_string('description');
         $notes = post_param_string('notes', '');
@@ -2358,7 +2367,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         $name = post_param_string('name', fractional_edit() ? $id : '');
         $fullname = post_param_string('fullname');
         if ($name == '') {
-            $name = preg_replace('#[^\w\d\-]#', '', $fullname);
+            $name = preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '', $fullname);
         }
         $parent_id = post_param_string('parent_id', STRING_MAGIC_NULL);
         $accept_images = post_param_integer('accept_images', fractional_edit() ? INTEGER_MAGIC_NULL : 0);

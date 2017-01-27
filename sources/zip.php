@@ -103,7 +103,8 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
     $outfile = mixed();
     if (!is_null($outfile_path)) {
         $stream = false;
-        $outfile = fopen($outfile_path, 'w+b');
+        $outfile = fopen($outfile_path, 'wb');
+        flock($outfile, LOCK_EX);
     }
 
     if ($stream) {
@@ -154,12 +155,14 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
             if (!is_null($outfile)) {
                 if ((!array_key_exists('data', $file)) || (is_null($file['data']))) {
                     $tmp = fopen($file['full_path'], 'rb');
+                    flock($tmp, LOCK_SH);
                     while (!feof($tmp)) {
                         $data = fread($tmp, 1024 * 1024);
                         if ($data !== false) {
                             fwrite($outfile, $data);
                         }
                     }
+                    flock($tmp, LOCK_UN);
                     fclose($tmp);
                     $offset += filesize($file['full_path']);
                 } else {
@@ -220,6 +223,10 @@ function create_zip_file($file_array, $stream = false, $get_offsets = false, $ou
             fwrite($outfile, $out);
             $out = '';
         }
+    }
+
+    if ($outfile_path !== null) {
+        flock($outfile, LOCK_UN);
     }
 
     if ($get_offsets) {

@@ -39,10 +39,10 @@ class api_classes_documented_test_set extends cms_test_case
                 }
 
                 $matches = array();
-                $num_matches = preg_match_all('#\n\t*(abstract\s+)?class ([\w\_]+)#', $c, $matches);
+                $num_matches = preg_match_all('#\n\t*(abstract\s+)?class (\w+)#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $this->assertTrue(
-                        preg_match('# +\* @package\s+([\w\_]+)\n\t* +\*/\n\t*(abstract\s+)?class ' . preg_quote($matches[2][$i], '#') . '#', $c) != 0,
+                        preg_match('# +\* @package\s+(\w+)\n\t* +\*/\n\t*(abstract\s+)?class ' . preg_quote($matches[2][$i], '#') . '#', $c) != 0,
                         'Undefined package for PHPDocumentor-exposed class: ' . $d . '/' . $f . ' (' . $matches[2][$i] . ')'
                     );
                 }

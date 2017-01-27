@@ -322,7 +322,7 @@ function _dedirectiveise($matches)
     $attributes_arr = array();
     $attributes_xml = isset($matches[1]) ? $matches[1] : '';
     $matches_attributes = array();
-    $num_matches_attributes = preg_match_all('#\s+([\w\_\-]+)\s*=\s*"([^"]*)"#', $attributes_xml, $matches_attributes);
+    $num_matches_attributes = preg_match_all('#\s+([\w\-]+)\s*=\s*"([^"]*)"#', $attributes_xml, $matches_attributes);
     for ($i = 0; $i < $num_matches_attributes; $i++) {
         $attributes_arr[$matches_attributes[1][$i]] = $matches_attributes[2][$i];
     }
@@ -500,7 +500,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = preg_replace('#<span id="cke_bm_[^"]+" style="display: none;\s*">&nbsp;</span>#', '', $semihtml);
 
     // CKEditor may leave white-space on the end, we have to assume it was not intentional
-    $semihtml = preg_replace('#(\[[\w\_]+)&nbsp;#', '${1} ', $semihtml);
+    $semihtml = preg_replace('#(\[\w+)&nbsp;#', '${1} ', $semihtml);
 
     $semihtml = wysiwygify_media_set($semihtml);
 
@@ -642,7 +642,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = str_replace(' type="1"', '', $semihtml);
     $semihtml = str_replace(' start="1"', '', $semihtml);
     $semihtml = preg_replace('#mso-\w+-font-family:\s*"[^"]*"#', '', $semihtml);
-    $semihtml = preg_replace('#mso-[\w-]+:[^;"\']*#', '', $semihtml);
+    $semihtml = preg_replace('#mso-[\w\-]+:[^;"\']*#', '', $semihtml);
     $semihtml = str_replace('text-autospace:none', '', $semihtml);
     $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*right[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
     $semihtml = preg_replace('#(<[^>]* align="center"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*center[;\s]*"#is', '${1}', $semihtml); // trim off redundancy

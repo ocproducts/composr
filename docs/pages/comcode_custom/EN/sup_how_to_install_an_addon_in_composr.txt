@@ -50,7 +50,7 @@ To install a new addon you need to follow this simple process:
 [*] Click Proceed
 [/list]
 
-There may be further instructions for each specific addon which can be found in the full addon description (which can be conveniently viewed on the [url="Composr addon directory"]http://compos.sr/downloads/browse/addons.htm[/url]).
+There may be further instructions for each specific addon which can be found in the full addon description (which can be conveniently viewed on the [url="Composr addon directory"]http://compo.sr/downloads/browse/addons.htm[/url]).
 
 [box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://arvixe.evyy.net/c/302199/279421/3370[/url].[/box]
 

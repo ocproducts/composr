@@ -30,7 +30,7 @@ function init__type_sanitisation()
          * Find whether the specified string is alphanumeric or not.
          *
          * @param  string $string The string to test
-         * @param  boolean $strict Whether to do stricter sanitisation
+         * @param  boolean $strict Whether to do stricter sanitisation, latin alphanumeric only and no dots
          * @return boolean Whether the string is alphanumeric or not
          */
         function is_alphanumeric($string, $strict = false)

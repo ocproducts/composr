@@ -55,7 +55,7 @@ function init__webstandards_js_lex()
     $TOKENS['DEFAULT'] = 'default';
     // Assignment
     $TOKENS['DIV_EQUAL'] = '/=';
-    $TOKENS['MINUS_EQUAL'] = '-=';
+    $TOKENS['SUBTRACT_EQUAL'] = '-=';
     $TOKENS['MUL_EQUAL'] = '*=';
     $TOKENS['PLUS_EQUAL'] = '+=';
     $TOKENS['SL_EQUAL'] = '<<=';
@@ -119,7 +119,7 @@ function init__webstandards_js_lex()
     $TOKENS['false'] = 'false';
     $TOKENS['null'] = 'null';
     $TOKENS['undefined'] = 'undefined';
-    $TOKENS['infinity'] = 'infinity';
+    $TOKENS['Infinity'] = 'Infinity';
     $TOKENS['NaN'] = 'NaN';
     // Reserved
     $TOKENS['abstract'] = 'abstract';
@@ -159,7 +159,7 @@ function init__webstandards_js_lex()
 
     // Loaded lexer tokens that change the lexing state
     // ================================================
-// $TOKENS['REGEXP']='/'; // Ending it with "/" is implicit in the LEXER_REGEXP state
+    //$TOKENS['REGEXP']='/'; // Ending it with "/" is implicit in the LEXER_REGEXP state
     $TOKENS['START_ML_COMMENT'] = '/*'; // Ending it with "* /" is implicit in the LEXER_ML_COMMENT state
     $TOKENS['COMMENT'] = '//'; // Ending it with a new-line is implicit in the LEXER_COMMENT state
     $TOKENS['DOUBLE_QUOTE'] = '"'; // Ending it with non-escaped " is implicit in LEXER_DOUBLE_QUOTE_STRING_LITERAL state (as well as extended escaping)
@@ -187,7 +187,7 @@ function init__webstandards_js_lex()
  * Lex some JavaScript code.
  *
  * @param  string $text The code
- * @return list List of lexed tokens
+ * @return array List of lexed tokens
  */
 function webstandards_js_lex($text)
 {
@@ -391,7 +391,7 @@ function webstandards_js_lex($text)
                 }
 
                 // Exit case
-                if (($char == '/') && (($i < 2) || ($JS_TEXT[$i - 2] != '\\') || ($JS_TEXT[$i - 3] == '\\'))) {
+                if (($char == '/') && (($i < 2) || ($JS_TEXT[$i - 2] != '\\') || ($JS_TEXT[$i - 3] == '\\') && ($JS_TEXT[$i - 4] != '\\'))) {
                     do {
                         list($reached_end, $i, $char) = lex__get_next_chars($i, 1);
                     } while (($char == 'g') || ($char == 'i') || ($char == 'm'));
@@ -507,7 +507,7 @@ function webstandards_js_lex($text)
  * Get the next character while lexing
  *
  * @param  integer $i Get character at this position
- * @return list Get triplet about the next character (whether end reached, new position, character)
+ * @return array Get triplet about the next character (whether end reached, new position, character)
  */
 function lex__get_next_char($i)
 {
@@ -524,7 +524,7 @@ function lex__get_next_char($i)
  *
  * @param  integer $i Get character at this position
  * @param  integer $num How many to get
- * @return list Get triplet about the next character (whether end reached, new position, characters)
+ * @return array Get triplet about the next character (whether end reached, new position, characters)
  */
 function lex__get_next_chars($i, $num)
 {
@@ -538,7 +538,7 @@ function lex__get_next_chars($i, $num)
  *
  * @param  integer $i The position
  * @param  boolean $absolute Whether the position is a string offset (as opposed to a token position)
- * @return list The quartet of details (line offset, line number, the line, the absolute position)
+ * @return array The quartet of details (line offset, line number, the line, the absolute position)
  */
 function js_pos_to_line_details($i, $absolute = false)
 {
@@ -597,7 +597,7 @@ function js_log_warning($system, $warning, $i = -1, $absolute = false)
     }
     list($pos, $line, , $i) = js_pos_to_line_details($i, $absolute);
 
-    if (strpos(substr($JS_TEXT, $i, 200), 'JSLINT: Ignore errors') !== false) {
+    if (strpos(substr($JS_TEXT, $i, 275), 'JSLINT: Ignore errors') !== false) {
         return;
     }
 

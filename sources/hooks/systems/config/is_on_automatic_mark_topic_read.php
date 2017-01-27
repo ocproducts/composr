@@ -50,6 +50,9 @@ class Hook_config_is_on_automatic_mark_topic_read
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '1';
     }
 }

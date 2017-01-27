@@ -132,11 +132,7 @@ function do_work()
     for ($i = $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)'); $i < $num_wanted; $i++) {
         $file = uniqid('', true);
         /*$path = get_custom_file_base() . '/site/pages/comcode_custom/' . fallback_lang() . '/' . $file . '.txt';
-        $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-        fwrite($myfile, random_text());
-        fclose($myfile);
-        sync_file($path);
-        fix_permissions($path);*/
+        cms_file_put_contents_safe($path, random_text(), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);*/
         $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
             'the_zone' => 'site',
             'the_page' => $file,
@@ -223,19 +219,19 @@ function do_work()
     $content_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $content_id), 'site');
     for ($j = $GLOBALS['SITE_DB']->query_select_value('trackbacks', 'COUNT(*)'); $j < $num_wanted; $j++) {
         // trackbacks
-        $GLOBALS['SITE_DB']->query_insert('trackbacks', array('trackback_for_type' => 'downloads', 'trackback_for_id' => $content_id, 'trackback_ip' => '', 'trackback_time' => time(), 'trackback_url' => '', 'trackback_title' => random_line(), 'trackback_excerpt' => random_text(), 'trackback_name' => random_line()));
+        $GLOBALS['SITE_DB']->query_insert('trackbacks', array('trackback_for_type' => 'downloads', 'trackback_for_id' => strval($content_id), 'trackback_ip' => '', 'trackback_time' => time(), 'trackback_url' => '', 'trackback_title' => random_line(), 'trackback_excerpt' => random_text(), 'trackback_name' => random_line()));
 
         // ratings
-        $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => 'downloads', 'rating_for_id' => $content_id, 'rating_member' => $j + 1, 'rating_ip' => '', 'rating_time' => time(), 'rating' => 3));
+        $GLOBALS['SITE_DB']->query_insert('rating', array('rating_for_type' => 'downloads', 'rating_for_id' => strval($content_id), 'rating_member' => $j + 1, 'rating_ip' => '', 'rating_time' => time(), 'rating' => 3));
 
         // posts in a comment topic
         $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
             get_option('comments_forum_name'),
             'downloads_' . strval($content_id),
             get_member(),
+            random_line(),
             random_text(),
             random_line(),
-            '',
             do_lang('COMMENT'),
             $content_url->evaluate(),
             null,

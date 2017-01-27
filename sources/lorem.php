@@ -67,7 +67,7 @@ function lorem_phrase()
  */
 function lorem_title()
 {
-    return get_screen_title('Lorem Ipsum Dolor');
+    return get_screen_title('Lorem Ipsum Dolor', false);
 }
 
 /**
@@ -519,7 +519,9 @@ function placeholder_breadcrumbs()
  */
 function do_lorem_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates')
 {
-    return do_template($codename, $parameters, $lang, $light_error, $fallback, $suffix, $directory);
+    global $THEME_BEING_TESTED;
+    $theme = isset($THEME_BEING_TESTED) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $THEME_BEING_TESTED;
+    return do_template($codename, $parameters, $lang, $light_error, $fallback, $suffix, $directory, $theme);
 }
 
 /**

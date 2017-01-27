@@ -1216,7 +1216,7 @@ function _get_next_tag()
  * @param  map $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
- * @param  list $errors Errors detected so far. We will add to these and return
+ * @param  array $errors Errors detected so far. We will add to these and return
  * @return mixed String for tag basis form, or array of error information
  *
  * @ignore

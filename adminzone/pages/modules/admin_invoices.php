@@ -236,7 +236,7 @@ class Module_admin_invoices
         if ($amount == '') {
             $amount = $details['price'];
             if ($amount === null) {
-                warn_exit(do_lang_tempcode('INVOICE_REQURIRED_AMOUNT'));
+                warn_exit(do_lang_tempcode('INVOICE_REQUIRED_AMOUNT'));
             }
         }
 

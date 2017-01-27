@@ -80,18 +80,6 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	padding-right: 2em;
 }
 
-.global_side_panel .hide_if_in_panel {
-	display: none;
-}
-
-.hide_if_not_in_panel {
-	display: none;
-}
-
-.global_side_panel .hide_if_not_in_panel {
-	display: block;
-}
-
 .page_running_login #main_website_inner {
 	{$BETA_CSS_PROPERTY,background-image: none !important;}
 }

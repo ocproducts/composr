@@ -94,7 +94,7 @@ class Hook_fields_picture_multi
         $ret = new Tempcode();
         $evs = explode("\n", $ev);
         foreach ($evs as $i => $ev) {
-            $img_url = $ev;
+            $img_url = preg_replace('#::.*$#', '', $ev);
             if (url_is_local($img_url)) {
                 $img_url = get_custom_base_url() . '/' . $img_url;
             }

@@ -137,7 +137,7 @@ $g_default_bug_reproducibility = 100;
 $g_add_bugnote_threshold = isset($_COOKIE[$SITE_INFO['session_cookie']]) ? ANYBODY : REPORTER;
 $g_report_bug_threshold = isset($_COOKIE[$SITE_INFO['session_cookie']]) ? ANYBODY : REPORTER;
 
-$g_html_valid_tags		= '';
+$g_html_valid_tags		= 'p, li, ul, ol, br, pre, i, b, u, em';
 
 # --- Branding ---
 $g_window_title			= 'Composr CMS feature tracker'; // TODO: Customise

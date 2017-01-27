@@ -132,7 +132,7 @@ function lang_load_runtime_processing()
 
         $path = get_custom_file_base() . '/caches/lang/_runtime_processing.lcd';
         if (is_file($path)) {
-            $LANG_RUNTIME_PROCESSING = @unserialize(file_get_contents($path));
+            $LANG_RUNTIME_PROCESSING = @unserialize(cms_file_get_contents_safe($path));
             if ($LANG_RUNTIME_PROCESSING !== false) {
                 $needs_compiling = false;
             }
@@ -140,9 +140,9 @@ function lang_load_runtime_processing()
 
         if ($needs_compiling) {
             require_code('lang_compile');
+            require_code('files');
             $LANG_RUNTIME_PROCESSING = get_lang_file_section(user_lang(), null, 'runtime_processing');
-            @file_put_contents($path, serialize($LANG_RUNTIME_PROCESSING));
-            fix_permissions($path);
+            cms_file_put_contents_safe($path, serialize($LANG_RUNTIME_PROCESSING), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         }
     }
 }
@@ -567,7 +567,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
         }
 
         if ((is_file($cache_path)) && ((!is_file($lang_file)) || ((@/*race conditions*/filemtime($cache_path) > filemtime($lang_file)) && (@/*race conditions*/filemtime($cache_path) > filemtime($lang_file_default))))) {
-            $tmp = @file_get_contents($cache_path);
+            $tmp = @cms_file_get_contents_safe($cache_path);
             if ($tmp != '') {
                 $unserialized = @unserialize($tmp);
                 if ($unserialized !== false) {

@@ -1865,7 +1865,7 @@ function find_pos_x(obj,not_relative) /* if not_relative is true it gets the pos
 		while (obj!=null)
 		{
 			position=abstract_get_computed_style(obj,'position');
-			if (position=='absolute' || position=='relative')
+			if (position=='fixed' || position=='absolute' || position=='relative')
 			{
 				ret-=find_pos_x(obj,true);
 				break;
@@ -1885,7 +1885,7 @@ function find_pos_y(obj,not_relative) /* if not_relative is true it gets the pos
 		while (obj!=null)
 		{
 			position=abstract_get_computed_style(obj,'position');
-			if (position=='absolute' || position=='relative')
+			if (position=='fixed' || position=='absolute' || position=='relative')
 			{
 				ret-=find_pos_y(obj,true);
 				break;
@@ -1978,15 +1978,26 @@ function key_pressed(event,key,no_error_if_bad)
 	}
 
 	/* Special cases, we remap what we accept if we detect an alternative was pressed */
-	if ((key=='-') && (event.keyCode==173)) key=173; /* Firefox '-' */
-	if ((key=='-') && (event.keyCode==189)) key=189; /* Safari '-' */
-	if (key=='-') key=109; /* Other browsers '-' */
-	if (key=='/') key=191; /* Normal '/' */
-	if ((key=='.') && (event.keyCode==190)) key=190; /* Normal '.' */
-	if ((key=='.') && (event.keyCode==110)) key=110; /* Keypad '.' */
-	if ((key=='_') && (event.keyCode==173) && (event.shiftKey)) key=173; /* Firefox '_' */
-	if ((key=='_') && (event.keyCode==189) && (event.shiftKey)) key=189; /* Safari '_' */
-	if (key=='_') key=0; /* Other browsers '_'; This one is a real shame as the key code 0 is shared by lots of symbols */
+	if ((key==='-') && (event.keyCode==173)) key=173; /* Firefox '-' */
+	if ((key==='-') && (event.keyCode==189)) key=189; /* Safari '-' */
+	if (key==='-') key=109; /* Other browsers '-' */
+	if (key==='/') key=191; /* Normal '/' */
+	if ((key==='.') && (event.keyCode==190)) key=190; /* Normal '.' */
+	if ((key==='.') && (event.keyCode==110)) key=110; /* Keypad '.' */
+	if ((key==='_') && (event.keyCode==173) && (event.shiftKey)) key=173; /* Firefox '_' */
+	if ((key==='_') && (event.keyCode==189) && (event.shiftKey)) key=189; /* Safari '_' */
+	if (key==='_') key=0; /* Other browsers '_'; This one is a real shame as the key code 0 is shared by lots of symbols */
+
+	// Special case of allowing a unicode range
+	if ((key.constructor==String) && (key.match(/^\d+-\d+$/)))
+	{
+		var unicode=event.charCode;
+		if (unicode==0) unicode=event.keyCode;
+		if ((unicode>=key.replace(/-\d+$/,'')) && (unicode<=key.replace(/^\d+-/,'')))
+		{
+			return true;
+		}
+	}
 
 	// Where we have an ASCII correspondance or can automap to one
 	if (key.constructor==String) // NB we are not case sensitive on letters. And we cannot otherwise pass in characters that need shift pressed.
@@ -2157,18 +2168,20 @@ function _modsecurity_workaround(data)
 		'\'': '/',
 		'"': '\\',
 		'%': '&',
-		'&': '%'
+		'&': '%',
+		'@': ':',
+		':': '@',
 	};
 	var out='';
-	var len=data.length,char;
+	var len=data.length,character;
 	for (var i=0;i<len;i++) {
-		char=data[i];
-		if (typeof remapper[char]!='undefined')
+		character=data[i];
+		if (typeof remapper[character]!='undefined')
 		{
-			out+=remapper[char];
+			out+=remapper[character];
 		} else
 		{
-			out+=char;
+			out+=character;
 		}
 	}
 	return out;
@@ -2286,7 +2299,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	if (typeof win=='undefined') win=window;
 	if (typeof have_links=='undefined') have_links=false;
 
-	if (!page_loaded) return;
+	if (!window.page_loaded) return;
 	if ((typeof tooltip!='function') && (tooltip=='')) return;
 
 	register_mouse_listener(event);
@@ -2424,7 +2437,7 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 			ac.parentNode.setAttribute('title',''); // Do not want second tooltips that are not useful
 	}
 
-	if (!page_loaded) return;
+	if (!window.page_loaded) return;
 	if (!ac.tooltip_id) { if ((typeof ac.onmouseover!='undefined') && (ac.onmouseover)) ac.onmouseover(event); return; }  // Should not happen but written as a fail-safe
 
 	if ((typeof tooltip_element=='undefined') || (!tooltip_element)) var tooltip_element=document.getElementById(ac.tooltip_id);
@@ -2650,7 +2663,7 @@ function add_event_listener_abstract(element,the_event,func,capture)
 {
 	if (element)
 	{
-		if ((element==window) && ((the_event=='load') && ((page_fully_loaded) || (document.readyState=='interactive') || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
+		if ((element==window) && ((the_event=='load') && ((window.page_fully_loaded) || (document.readyState=='interactive') || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
 		{
 			window.setTimeout(func,0);
 			return true;
@@ -3849,67 +3862,66 @@ function has_iframe_ownership(iframe)
 // LEGACY: IE8
 // Production steps of ECMA-262, Edition 5, 15.4.4.14
 // Reference: http://es5.github.io/#x15.4.4.14
-if (!Array.prototype.indexOf) {
-  Array.prototype.indexOf = function(searchElement, fromIndex) {
+if (typeof Array.prototype.indexOf=='undefined') {
+	Array.prototype.indexOf = function(searchElement, fromIndex) {
+		var k;
 
-	var k;
+		// 1. Let O be the result of calling ToObject passing
+		//	the this value as the argument.
+		if (this == null) {
+			throw new TypeError('"this" is null or not defined');
+		}
 
-	// 1. Let O be the result of calling ToObject passing
-	//	the this value as the argument.
-	if (this == null) {
-	  throw new TypeError('"this" is null or not defined');
-	}
+		var O = Object(this);
 
-	var O = Object(this);
+		// 2. Let lenValue be the result of calling the Get
+		//	internal method of O with the argument "length".
+		// 3. Let len be ToUint32(lenValue).
+		var len = O.length >>> 0;
 
-	// 2. Let lenValue be the result of calling the Get
-	//	internal method of O with the argument "length".
-	// 3. Let len be ToUint32(lenValue).
-	var len = O.length >>> 0;
+		// 4. If len is 0, return -1.
+		if (len === 0) {
+			return -1;
+		}
 
-	// 4. If len is 0, return -1.
-	if (len === 0) {
-	  return -1;
-	}
+		// 5. If argument fromIndex was passed let n be
+		//	ToInteger(fromIndex); else let n be 0.
+		var n = (typeof fromIndex == 'undefined') ? 0 : fromIndex;
 
-	// 5. If argument fromIndex was passed let n be
-	//	ToInteger(fromIndex); else let n be 0.
-	var n = +fromIndex || 0;
+		if (Math.abs(n) === Infinity) {
+			n = 0;
+		}
 
-	if (Math.abs(n) === Infinity) {
-	  n = 0;
-	}
+		// 6. If n >= len, return -1.
+		if (n >= len) {
+			return -1;
+		}
 
-	// 6. If n >= len, return -1.
-	if (n >= len) {
-	  return -1;
-	}
+		// 7. If n >= 0, then Let k be n.
+		// 8. Else, n<0, Let k be len - abs(n).
+		//	If k is less than 0, then let k be 0.
+		k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
 
-	// 7. If n >= 0, then Let k be n.
-	// 8. Else, n<0, Let k be len - abs(n).
-	//	If k is less than 0, then let k be 0.
-	k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-
-	// 9. Repeat, while k < len
-	while (k < len) {
-	  var kValue;
-	  // a. Let Pk be ToString(k).
-	  //   This is implicit for LHS operands of the in operator
-	  // b. Let kPresent be the result of calling the
-	  //	HasProperty internal method of O with argument Pk.
-	  //   This step can be combined with c
-	  // c. If kPresent is true, then
-	  //	i.  Let elementK be the result of calling the Get
-	  //		internal method of O with the argument ToString(k).
-	  //   ii.  Let same be the result of applying the
-	  //		Strict Equality Comparison Algorithm to
-	  //		searchElement and elementK.
-	  //  iii.  If same is true, return k.
-	  if (k in O && O[k] === searchElement) {
-		return k;
-	  }
-	  k++;
-	}
-	return -1;
-  };
+		// 9. Repeat, while k < len
+		while (k < len) {
+			var kValue;
+			// a. Let Pk be ToString(k).
+			//   This is implicit for LHS operands of the in operator
+			// b. Let kPresent be the result of calling the
+			//	HasProperty internal method of O with argument Pk.
+			//   This step can be combined with c
+			// c. If kPresent is true, then
+			//	i.  Let elementK be the result of calling the Get
+			//		internal method of O with the argument ToString(k).
+			//   ii.  Let same be the result of applying the
+			//		Strict Equality Comparison Algorithm to
+			//		searchElement and elementK.
+			//  iii.  If same is true, return k.
+			if (k in O && O[k] === searchElement) {
+				return k;
+			}
+			k++;
+		}
+		return -1;
+	};
 }

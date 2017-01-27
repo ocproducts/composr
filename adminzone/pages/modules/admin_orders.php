@@ -437,7 +437,7 @@ class Module_admin_orders
                     ), false, null)
             );
         }
-        $results_table = results_table(do_lang_tempcode('PRODUCTS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries, $sortables, $sortable, $sort_order, 'sort', null, null);
+        $results_table = results_table(do_lang_tempcode('catalogues:DEFAULT_CATALOGUE_PRODUCTS_TITLE'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries, $sortables, $sortable, $sort_order, 'sort', null, null);
 
         // Pagination
         require_code('templates_pagination');

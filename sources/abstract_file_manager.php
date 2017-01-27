@@ -562,15 +562,12 @@ function afm_make_file($basic_path, $contents, $world_access)
     $path = _rescope_path($basic_path);
     $access = _translate_file_access($world_access, get_file_extension($basic_path));
 
+    require_code('files');
+
     $conn = _ftp_info();
     if ($conn !== false) {
         $path2 = cms_tempnam();
-
-        $h = fopen($path2, 'wb');
-        if (fwrite($h, $contents) < strlen($contents)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE_TMP', escape_html($path2)));
-        }
-        fclose($h);
+        cms_file_put_contents_safe($path2, $contents);
 
         $h = fopen($path2, 'rb');
         $success = @ftp_fput($conn, $path, $h, FTP_BINARY);
@@ -591,18 +588,8 @@ function afm_make_file($basic_path, $contents, $world_access)
 
         sync_file(get_custom_file_base() . '/' . $basic_path);
     } else {
-        $h = @fopen($path, 'wb');
-        if ($h === false) {
-            intelligent_write_error($path);
-        }
-        if (fwrite($h, $contents) < strlen($contents)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE_TMP'));
-        }
-        fclose($h);
+        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         @chmod($path, $access);
-        fix_permissions($path);
-
-        sync_file($path);
     }
 }
 

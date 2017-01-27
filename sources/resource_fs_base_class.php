@@ -679,7 +679,7 @@ abstract class Resource_fs_base
     protected function _create_name_from_label($label)
     {
         $name = strtolower($label);
-        $name = preg_replace('#[^\w\d\.\-]#', '_', $name);
+        $name = preg_replace('#[^\w\.\-]#', '_', $name);
         $name = preg_replace('#\_+\$#', '', $name);
         if ($name == '') {
             $name = 'unnamed';

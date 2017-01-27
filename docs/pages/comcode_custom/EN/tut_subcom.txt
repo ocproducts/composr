@@ -165,7 +165,7 @@ Redirections are useful for a number of reasons, including:
 
 To reach the Redirects module go to Admin Zone > Structure > Redirects.
 
-[title="3"]Using redirects to virtually move a module[/title]
+[title="3"]Using redirects to virtually move a module (rename a module)[/title]
 
 If you want a module to behave as if it was completely moved, you can set up a transparent redirect from your desired location to the actual location, and then a non-transparent redirect from the actual location to the desired location.
 
@@ -191,7 +191,7 @@ Now let's try the same for a transparent redirect and see the results. To make o
 
 When you visit the home page you are redirected to the Forums page just like earlier with the normal redirect, but take a look at the URL now: it doesn't reveal that the [tt]forumview[/tt] page was called. The redirect happened within Composr, not your web browser.
 
-[title="3"]Example: Moving a module[/title]
+[title="3"]Example: Moving a module (renaming a module)[/title]
 
 If you wanted to move the [tt]supermembers[/tt] module from the Collaboration Zone to the Site zone, you could set up these redirects:
 1) [tt]site:supermembers[/tt]-->[tt]collaboration:supermembers[/tt] [i]transparent[/i]

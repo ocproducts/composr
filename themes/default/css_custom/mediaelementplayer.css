@@ -699,7 +699,7 @@
 	text-decoration: underline;
 }
 
-.mejs-captions-layer[lang=ar] {
+.mejs-captions-layer[lang="ar"] {
 	font-size: 20px;
 	font-weight: normal;
 }

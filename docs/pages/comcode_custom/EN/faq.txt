@@ -419,6 +419,16 @@ On the tracker issues it says "These hotfixes are not necessarily reliable or we
 
 So, please don't go installing all of them, it'll hurt you more than it will help you, and it's not expected. Just install a hotfix if you are being affected by a specific issue and keep up with the official patch releases.
 
+[title="3"]Can I get early access to new features?[/title]
+
+Nothing should be considered usable in production until at least beta of the version it is set to arrive in. Before then things are typically developed in feature branches (which have no specific version as they're off-track); compatibility is likely to be broken dozens of times before final release -- e.g. database structure, CSS structure, file names, etc. This is because the various in-development features often overlap, or late unexpected changes happen. Those compatibility breaks wouldn't be supported or documented in any way, so anyone using it early would be on their own unfortunately. There's no way for us to bridge this stuff for a large product like Composr outside of official releases, there are too many permutations of compatibility states.
+
+Programmers can break that rule if they're going to take individual responsibility for the non-final code and manually keep it updated/upgraded with whatever changes will happen until its final release within an official version. That's a legitimate approach but it's expert work, whoever is doing it needs a strong understanding of how the code works.
+
+So, by all means try it out to do an early test run and report any feedback (much appreciated), just please don't expect the test site to turn into a real site when the next major version hits beta, expect it to at some point become terminally incompatible with the mainline releases.
+
+I hope that clears things up. People are eager to be early-adopters, but there's some limitation to that.
+
 [title="2"]Programming philosophy and goals[/title]
 
 [title="3"]Will you implement (some feature)?[/title]

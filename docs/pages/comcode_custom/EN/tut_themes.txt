@@ -94,6 +94,8 @@ At the bottom, there is also an "Switch to Advanced CSS" link. Clicking this wil
 [/staff_note]
 You should be able to see your changes right away.
 
+If you get confused by Composr's use of Tempcode within the CSS you are free to strip and replace it with pure CSS as you go. The Tempcode is used for the Theme Wizard, and to make maintenance a bit easier, but you don't really have any particular personal incentive to maintain that.
+
 [title="4"]Contextual CSS editing[/title]
 
 [media width="150" description="Page rendering tools in the footer" float="right"]data_custom/images/docs/tut_themes/rendering_tools.png[/media]

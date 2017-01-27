@@ -281,7 +281,9 @@ function log_warning($warning, $i = -1, $absolute = false)
 
     echo 'WARNING "' . $FILENAME . '" ' . $line . ' ' . $pos . ' ' . 'PHP: ' . $warning . cnl();
 // if (!isset($MYFILE_WARNINGS)) $MYFILE_WARNINGS = fopen('warnings_' . $START_TIME . '.log', 'at');
+// flock($MYFILE_WARNINGS, LOCK_EX);
 // fwrite($MYFILE_WARNINGS, $FILENAME . ': ' . $warning . ' (at line ' . $line . ', position ' . $pos . ')  [' . $full_line . ']' . "\n");
+// flock($MYFILE_WARNINGS, LOCK_UN);
 // fclose($MYFILE_WARNINGS);
 }
 

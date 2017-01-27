@@ -16,7 +16,7 @@
 	text-align: center;
 
 	background: {$GET,area_background};
-	text-shadow: 0 0 1px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.3);
+	text-shadow: 0 0 1px rgba(0,0,0,0.05);
 	box-shadow: 0 1px 2px 1px rgba(0,0,0,0.25);
 }
 .unslider, .unslider a {
@@ -45,7 +45,7 @@
 	background-repeat: no-repeat;
 }
 
-.unslider>ul>li div.feature_background_image, .unslider>ul>li div.feature_image, .unslider>ul>li div.feature_video {
+.unslider>ul>li>div.comcode_page, .unslider>ul>li div.feature_background_image, .unslider>ul>li div.feature_image, .unslider>ul>li div.feature_video {
 	height: 100%;
 }
 

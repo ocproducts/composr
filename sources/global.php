@@ -162,9 +162,8 @@ function require_code($codename, $light_exit = false)
                         include($path_orig);
                     }
                 } else {
-                    //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); fwrite($log_file, $path_orig . "\n");      Good for debugging errors in eval'd code
+                    //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); flock($log_file, LOCK_EX); fwrite($log_file, $path_orig . "\n"); flock($log_file, LOCK_UN);      Good for debugging errors in eval'd code
                     eval($orig); // Load up modified original
-
                 }
 
                 if ((!$pure) && ($doing_code_modifier_init) && (function_exists('non_overridden__init__' . str_replace('/', '__', str_replace('.php', '', $codename))))) {
@@ -486,7 +485,7 @@ function filter_naughty_harsh($in, $preg = false)
     if ((function_exists('ctype_alnum')) && (ctype_alnum($in))) {
         return $in;
     }
-    if (preg_match('#^[\w\-]*$#', $in) !== 0) {
+    if (preg_match('#^[' . URL_CONTENT_REGEXP . ']*$#', $in) !== 0) {
         return $in;
     }
     if (preg_match('#^[\w\-]*/#', $in) !== 0) {
@@ -494,7 +493,7 @@ function filter_naughty_harsh($in, $preg = false)
     }
 
     if ($preg) {
-        return preg_replace('#[^\w\-]#', '', $in);
+        return preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '', $in);
     }
     log_hack_attack_and_exit('EVAL_HACK', $in);
     return ''; // trick to make Zend happy
@@ -525,7 +524,7 @@ function hhvm_include($path)
         require_code('php');
         $path = substr($path, strlen(get_file_base()) + 1);
         $new_code = convert_from_php_to_hhvm_hack($path);
-        file_put_contents($path . '.hh', $new_code);
+        file_put_contents($path . '.hh', $new_code, LOCK_EX);
     }
     return include($path . '.hh');*/
 }
@@ -550,6 +549,9 @@ if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini
 // Are we in a special version of PHP?
 define('HHVM', strpos(PHP_VERSION, 'hiphop') !== false);
 define('GOOGLE_APPENGINE', isset($_SERVER['APPLICATION_ID']));
+
+define('URL_CONTENT_REGEXP', '\w\-\x80-\xFF'); // PHP is done using ASCII (don't use the 'u' modifier). Note this doesn't include dots, this is intentional as they can cause problems in filenames
+define('URL_CONTENT_REGEXP_JS', '\w\-\u0080-\uFFFF'); // JavaScript is done using Unicode
 
 // Sanitise the PHP environment some more
 safe_ini_set('track_errors', '1'); // so $php_errormsg is available
@@ -624,7 +626,7 @@ if (count($SITE_INFO) == 0) {
     if ((!is_file($FILE_BASE . '/_config.php')) && (is_file($FILE_BASE . '/info.php'))) {
         @copy($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
         if (is_file($FILE_BASE . '/_config.php')) {
-            file_put_contents($FILE_BASE . '/_config.php', str_replace(array('ocf_table_prefix', 'use_mem_cache'), array('cns_table_prefix', 'use_persistent_cache'), file_get_contents($FILE_BASE . '/_config.php')));
+            file_put_contents($FILE_BASE . '/_config.php', str_replace(array('ocf_table_prefix', 'use_mem_cache'), array('cns_table_prefix', 'use_persistent_cache'), file_get_contents($FILE_BASE . '/_config.php')), LOCK_EX);
         } else {
             exit('Error, cannot rename info.php to _config.php: check the Composr upgrade instructions');
         }
@@ -657,9 +659,10 @@ if ($rate_limiting) {
                 global $RATE_LIMITING_DATA;
                 $RATE_LIMITING_DATA = array();
 
-                $fp = fopen($rate_limiter_path, 'r');
+                $fp = fopen($rate_limiter_path, 'rb');
                 flock($fp, LOCK_SH);
                 include($rate_limiter_path);
+                flock($fp, LOCK_UN);
                 fclose($fp);
             }
 
@@ -679,7 +682,7 @@ if ($rate_limiting) {
             if (count($pertinent) >= $rate_limit_hits_per_window) {
                 header('HTTP/1.0 429 Too Many Requests');
                 header('Content-Type: text/plain');
-                exit('We only allow ' . strval($rate_limit_hits_per_window) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
+                exit('We only allow ' . strval($rate_limit_hits_per_window - 1) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
             }
 
             // Remove any old hits from other IPs

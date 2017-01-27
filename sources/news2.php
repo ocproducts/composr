@@ -403,9 +403,18 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     }
 
     if ((!get_mass_import_mode()) && ($validated == 1) && (get_option('site_closed') == '0') && (!$GLOBALS['DEV_MODE']) && (has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category_id)))) {
-        register_shutdown_function('send_rss_ping');
+        if (get_value('avoid_register_shutdown_function') === '1') {
+            send_rss_ping();
+        } else {
+            register_shutdown_function('send_rss_ping');
+        }
+
         require_code('news_sitemap');
-        register_shutdown_function('build_news_sitemap');
+        if (get_value('avoid_register_shutdown_function') === '1') {
+            build_news_sitemap();
+        } else {
+            register_shutdown_function('build_news_sitemap');
+        }
     }
 
     require_code('member_mentions');
@@ -579,7 +588,11 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     decache('side_news_categories');
 
     if (($validated == 1) && (has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category)))) {
-        register_shutdown_function('send_rss_ping');
+        if (get_value('avoid_register_shutdown_function') === '1') {
+            send_rss_ping();
+        } else {
+            register_shutdown_function('send_rss_ping');
+        }
     }
 
     require_code('feedback');
@@ -911,7 +924,9 @@ function _news_import_grab_image(&$data, $url)
     }
 
     $target_handle = fopen($target_path, 'wb') or intelligent_write_error($target_path);
+    flock($target_handle, LOCK_EX);
     $result = http_download_file($url, null, false, false, 'Composr', null, null, null, null, null, $target_handle);
+    flock($target_handle, LOCK_UN);
     fclose($target_handle);
     sync_file($target_path);
     fix_permissions($target_path);

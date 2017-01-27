@@ -95,7 +95,7 @@ The names of the fields to take longitude/latitude from are configured inside bl
 Example:
 [code="Comcode"][block title="store locater" description="This is a Store Locater" latfield="Latitude" longfield="Longitude" catalogue="stores" width="100%" height="300px" zoom="6" latitude="24.2135" longitude="-1.4654"]main_google_map[/block][/code]
 
-If you use the field names of exactly "Latitude" and "Longitude" then you\'ll get a visual location selector when adding entries. Otherwise you\'ll need to manually enter the coordinates. A tool like http://itouchmap.com/latlong.html can help you.
+If you use the field names of exactly "Latitude" and "Longitude" then you\'ll get a visual location selector when adding entries. Otherwise you\'ll need to manually enter the coordinates. A tool like https://itouchmap.com/latlong.html can help you.
 
 It is advisable to set the field options as [tt]decimal_points=6[/tt] for your latitude and longitude fields, otherwise there will not be enough precision.
 

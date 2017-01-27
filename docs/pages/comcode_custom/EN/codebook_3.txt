@@ -539,6 +539,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]search_days__<search-hook>[/tt] -- set the default day search period for a search hook (e.g. 60, or blank for no limit). This may be set for reasons of user experience, or for performance -- searching without a day constraint is actually faster.
   - [tt]no_cannot_access_url_messages[/tt] -- set this to '1' to turn off attached messages about broken URLs that Composr tries to process
   - [tt]force_spell_checker[/tt] -- set to 'pspell' or 'enchant' to force that particular spell-checker, rather than auto-detecting
+  - [tt]avoid_register_shutdown_function[/tt] -- set this to '1' if [tt]register_shutdown_function[/tt] is not reliable on this system (may appear to be unreliable on some Windows servers, for example)
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]
   - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive db lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions
@@ -640,6 +641,7 @@ The 'keep' parameters available are:
  - [tt]keep_smart_decaching[/tt] -- set this to '1' for smart decaching to be enabled, even if disabled in [tt]_config.php[/tt] (it is on by default, so you may want to use this flag if you disabled it but want to ease your development workflow)
  - [tt]keep_infinite_scroll[/tt] -- set this to '0' or '1' to temporarily change the infinite scrolling setting
  - [tt]keep_ecommerce_local_test[/tt] -- set this to '1' to test local payment in dev-mode (without needing SSL)
+ - [tt]keep_test_version[/tt] -- set to a dotted version number to test the version block in the Admin Zone dashboard as if you're running a different version. Likely needs combining with [tt]keep_cache_blocks=0[/tt]
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr

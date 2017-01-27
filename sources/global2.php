@@ -49,7 +49,7 @@ function init__global2()
     $error_log_path = get_custom_file_base() . '/data_custom/errorlog.php';
     safe_ini_set('error_log', $error_log_path);
     if (is_file($error_log_path) && filesize($error_log_path) < 17) {
-        @file_put_contents($error_log_path, "<" . "?php return; ?" . ">\n");
+        @file_put_contents($error_log_path, "<" . "?php return; ?" . ">\n", LOCK_EX);
     }
 
     global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT;
@@ -61,6 +61,9 @@ function init__global2()
     @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
     @header('Cache-Control: no-cache, max-age=0');
     @header('Pragma: no-cache'); // for proxies, and also IE
+    if (php_function_allowed('session_cache_limiter')) {
+        @session_cache_limiter('');
+    }
 
     // Closed site message
     if ((is_file('closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
@@ -804,13 +807,11 @@ function is_browser_decaching()
     }
 
     if (defined('DO_PLANNED_DECACHE')) { // Used by decache.sh
-        $config_file_orig = file_get_contents(get_file_base() . '/_config.php');
+        $config_file_orig = cms_file_get_contents_safe(get_file_base() . '/_config.php');
         $config_file = $config_file_orig;
         $config_file = rtrim(str_replace('define(\'DO_PLANNED_DECACHE\', true);', '', $config_file)) . "\n\n";
-        if (file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '_config.php', $config_file, LOCK_EX) < strlen($config_file)) {
-            file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '_config.php', $config_file_orig, LOCK_EX);
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
+        require_code('files');
+        cms_file_put_contents_safe(get_file_base() . '/_config.php', $config_file, FILE_WRITE_FIX_PERMISSIONS);
         return true;
     }
 
@@ -1491,7 +1492,7 @@ function __param($array, $name, $default, $integer = false, $posted = false)
 
     $val = $array[$name];
     if (is_array($val)) {
-        $val = implode(',', $val);
+        $val = trim(implode(',', $val), ' ,');
     }
 
     static $mq = null;

@@ -230,7 +230,7 @@ class Module_admin_chat extends Standard_crud_module
 
         set_url_moniker('chat', strval($id));
 
-        $this->set_permissions($id);
+        $this->set_permissions(strval($id));
         if (addon_installed('ecommerce')) {
             require_code('ecommerce_permission_products');
             permission_product_save('chat', strval($id));
