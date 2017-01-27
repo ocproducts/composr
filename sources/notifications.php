@@ -582,7 +582,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
             $successes = sms_wrap($wrapped_message, array($to_member_id));
             if ($successes == 0) { // Could not send
                 $setting = $setting | A_INSTANT_EMAIL; // Make sure it also goes to email then
-                $message_to_send = do_lang('INSTEAD_OF_SMS', $message);
+                $message_to_send = do_lang('sms:INSTEAD_OF_SMS', $message);
             }
         }
     }

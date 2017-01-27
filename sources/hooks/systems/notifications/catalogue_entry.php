@@ -91,7 +91,7 @@ class Hook_notification_catalogue_entry extends Hook_Notification
             if (is_null($nl)) {
                 $nl = do_lang('catalogues:NOTIFICATION_TYPE_catalogue_entry', get_translated_text($catalogue['c_title']));
             }
-            $list['catalogue_entry__' . $catalogue_name] = array(do_lang('menus:CONTENT'), $nl);
+            $list['catalogue_entry__' . $catalogue_name] = array(do_lang('CONTENT'), $nl);
         }
         return $list;
     }

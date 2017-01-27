@@ -99,6 +99,6 @@ class _setupwizard_test_set extends cms_test_case
 
         http_download_file($url->evaluate(), null, true, false, 'Composr', $post);
 
-        $this->assertTrue($GLOBALS['HTTP_MESSAGE'] == 200);
+        $this->assertTrue($GLOBALS['HTTP_MESSAGE'] == '200');
     }
 }

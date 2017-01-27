@@ -13,7 +13,7 @@
  * @package    meta_toolkit
  */
 
-function string_scan($lang, $do_guessing = false)
+function string_scan($lang, $do_guessing = false, $only_exists = true)
 {
     require_code('lorem');
     require_code('lang_compile');
@@ -170,6 +170,7 @@ function string_scan($lang, $do_guessing = false)
         ABOUT_DELETE_MENU
         ABOUT_REVISIONS
         ABRUPTED_DIRECTIVE_OR_BRACE
+        INVOICE_REQUIRED_AMOUNT
         ABSORB_PERMISSIONS
         WHAT_NEXT
         WHERE_NEXT
@@ -222,6 +223,8 @@ function string_scan($lang, $do_guessing = false)
         WHETHER_CONVERT_COMCODE
         MERGE_POSTS
         VIEW_ALERT
+        ANTISPAM_RESPONSE_SKIP
+        CORRUPT_ATTACHMENT
         ATTACHMENT_REFERENCES
         MERGE_SUPPORT_TICKETS
         NO_PARAMETER_SENT
@@ -580,7 +583,6 @@ function string_scan($lang, $do_guessing = false)
         BLOCK
         BLOCKING_REDIRECT_IN_PLACE
         BLOCKS
-        BLOCKS_EM
         BLOCKS_TYPE_ADDON
         BLOCKS_TYPE_bottom
         BLOCKS_TYPE_main
@@ -1703,7 +1705,6 @@ function string_scan($lang, $do_guessing = false)
         CHOOSE_LANG_DESCRIP
         CHOOSE_LANG_DESCRIP_ADD_TO_MAIN_LANG_FIRST
         CHOOSE_MASTER_PASSWORD
-        CHOOSE_MEMBER
         CHOOSE_OPEN_NEW_WINDOW
         CHOOSE_POLL
         CHOOSE_SAVED_WARNING
@@ -3413,7 +3414,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_COPY_THEME
         DESCRIPTION_COPY_TO_SERVER
         DESCRIPTION_CORRECT_MYSQL_SCHEMA_ISSUES
-        DESCRIPTION_CPF_DEFAULT
         DESCRIPTION_CUSTOM_EXPIRY_DATE
         DESCRIPTION_CUTOFF_DATE
         DESCRIPTION_DANGEROUS_TAG
@@ -4287,7 +4287,6 @@ function string_scan($lang, $do_guessing = false)
         EXPORT_ADDON
         EXPORT_ADDON_TITLE
         EXPORT_CATALOGUE_ENTRIES
-        EXPORT_COMCODE_PAGE
         EXPORT_CSV_BANNERS
         EXPORT_FILES
         EXPORT_ICAL
@@ -4401,8 +4400,6 @@ function string_scan($lang, $do_guessing = false)
         FILES_TRANSFERRED
         FILETYPE_ICONS
         FILE_BASE
-        FILE_BASE_EXAMPLE
-        FILE_BASE_TEXT
         FILE_IN_ARCHIVE_TWICE
         FILE_MOVED
         FILE_MOVE_ERROR
@@ -4497,7 +4494,6 @@ function string_scan($lang, $do_guessing = false)
         FORUM_PATH
         FORUM_PATH_TEXT
         FORUM_POSTS_PER_PAGE
-        FORUM_SETTINGS
         FORUM_SOFTWARE
         FORUM_STAFF
         FORUM_TOPICS_PER_PAGE
@@ -4553,6 +4549,7 @@ function string_scan($lang, $do_guessing = false)
         FU_ESTIMATED_TIME
         FU_EXTRACTING_WINDOW
         FU_FILE_UPGRADE_INFO
+        FU_FILE_UPGRADE_INFO_MANUAL
         FU_FIX_PERMISSIONS
         FU_FTP_INFO
         FU_FTP_NEEDED
@@ -4704,10 +4701,8 @@ function string_scan($lang, $do_guessing = false)
         HONEYPOT_PHRASE
         HONEYPOT_URL
         HOST
-        HOSTING
         HOT_TOPIC_DEFINITION
         HOURLY_BREAKDOWNS
-        HOURS_MUST_BE_LESS_5_YEARS
         HOVER_FOR_CONTENTS
         HOW_MUCH_THIS_COSTS
         HTACCESS_SEO_PROBLEM
@@ -5083,7 +5078,6 @@ function string_scan($lang, $do_guessing = false)
         MASQUERADE_AS_MEMBER
         MASS_DELETE
         MASTER_PASSWORD
-        MASTER_PASSWORD_INSECURE
         MATCH_KEY
         MATCH_KEYS
         MATCH_KEY_MESSAGES
@@ -5312,10 +5306,8 @@ function string_scan($lang, $do_guessing = false)
         MSN_FORUM_DB_NOT_CNS_ALREADY
         MULTILANG_OFF
         MULTILANG_OFF_CONTENT
-        MULTI_LANG
         MULTI_LANG_CONTENT
         MULTI_LANG_CONTENT_TEXT
-        MULTI_LANG_TEXT
         MULTI_MODERATION
         MULTI_MODERATION_WILL
         MULTI_MODERATION_WILL_CLOSE
@@ -6145,7 +6137,6 @@ function string_scan($lang, $do_guessing = false)
         SCREEN_PREVIEWS
         SCREEN_TITLE
         SCREEN_TITLE_DESC
-        SCRIPT_TAG_HACK
         SCRIPT_UPLOAD_HACK
         SCRIPT_URL_HACK
         SCRIPT_URL_HACK_2
@@ -6377,7 +6368,6 @@ function string_scan($lang, $do_guessing = false)
         SUPER_MODERATOR
         SUPPORTS_WIDE
         SUPPORT_OPERATOR
-        SURE
         SU_2
         SU_CHATTING_AS
         SVG_EXPLANATION
@@ -7422,6 +7412,9 @@ function string_scan($lang, $do_guessing = false)
         CHARGES
         CHARGE_INFO
         CHAT
+        DIGEST_ITEM_OMITTED
+        INSTEAD_OF_SMS
+        USERGROUP_SEARCH_COMBO
         CHATCODE_HELP
         CHATROOM
         CHATROOMS_LOBBY_TITLE
@@ -8194,7 +8187,6 @@ function string_scan($lang, $do_guessing = false)
         INPUT_COMCODE_quote
         INPUT_COMCODE_thumb
         INPUT_COMCODE_url
-        INSERT
         INSTALL
         INSTANT_MESSAGING
         INSTANT_MESSAGING_CONVO
@@ -8295,7 +8287,6 @@ function string_scan($lang, $do_guessing = false)
         LOGIN
         LOGIN_CONCEDED
         LOGIN_FREQUENCY
-        LOGIN_TEXT_NO_JOIN
         LOGOUT
         LONGITUDE
         LOST_PASSWORD
@@ -8500,7 +8491,6 @@ function string_scan($lang, $do_guessing = false)
         NAMED_TOPIC
         NAME_HIGHLIGHTING
         NAME_HIGHLIGHTING_DESCRIPTION
-        NAVIGATION
         NA_EM
         NC_art
         NC_business
@@ -8512,7 +8502,6 @@ function string_scan($lang, $do_guessing = false)
         NETWORK
         NETWORK_DOWN
         NEW
-        NEWER
         NEWEST_FIRST
         NEWEST_MEMBER
         NEWEST_MEMBER_WELCOME
@@ -8835,10 +8824,8 @@ function string_scan($lang, $do_guessing = false)
         PLEASE_SELECT_SOUND
         PLEASE_WAIT
         PLEASE_WAIT_WHILE_UPLOADING
-        PLUPLOAD_CANCELLED
         PLUPLOAD_COMPLETE
         PLUPLOAD_FAILED
-        PLUPLOAD_STOPPED
         PLUPLOAD_UPLOADING
         POINTS
         POINTSTORE
@@ -9034,7 +9021,6 @@ function string_scan($lang, $do_guessing = false)
         REASON
         RECENT
         RECENTLY_READ
-        RECENT_BLOG_POSTS
         RECOMMENDATION_MADE
         RECOMMENDING_TO_LINE
         RECOMMEND_AUTO_TEXT
@@ -9410,7 +9396,6 @@ function string_scan($lang, $do_guessing = false)
         TOPIC_POLL_IS_PRIVATE
         TOPIC_STARTED_DATE_TIME
         TOPIC_TITLE_WILL_BE
-        TOP_SITES
         TOTAL_EVENTS_AND_HIGHEST_PRIORITY
         TOTAL_PRICE
         TO_DOWNLOAD_VIDEO
@@ -9613,13 +9598,11 @@ function string_scan($lang, $do_guessing = false)
         _ASCENDING
         _ASSIGNED_TO
         _ATTACHMENT
-        _ATTACHMENT_SAVED
         _AUTHOR
         _AWARD
         _BACK_TO_TOP
         _BLOCK_HELPER
         _BLOCK_MEMBER
-        _CALENDAR
         _CALENDAR_EVENT_VCAL
         _CALENDAR_SPECIFIC
         _CALENDAR_SPECIFIC_WEEK
@@ -9709,7 +9692,6 @@ function string_scan($lang, $do_guessing = false)
         _UNKNOWN
         _UNSET
         VIDEO_LENGTH
-        _VIDEO_LENGTH
         _VIEW_AS_LINEAR
         _VIEW_AS_THREADED
         _VIEW_IMAGE
@@ -9840,10 +9822,17 @@ function string_scan($lang, $do_guessing = false)
     }
     closedir($dh);
 
-    // De-duplicate, and return only stuff that actually still exists
-    $lang_strings_admin = array_intersect($all_strings, array_unique($lang_strings_admin));
-    $lang_strings_non_admin = array_intersect($all_strings, array_unique($lang_strings_non_admin));
-    $lang_strings_unknown = array_intersect($all_strings, array_unique($lang_strings_unknown));
+    // De-duplicate
+    $lang_strings_admin = array_unique($lang_strings_admin);
+    $lang_strings_non_admin = array_unique($lang_strings_non_admin);
+    $lang_strings_unknown = array_unique($lang_strings_unknown);
+
+    // Return only stuff that actually still exists
+    if ($only_exists) {
+        $lang_strings_admin = array_intersect($all_strings, $lang_strings_admin);
+        $lang_strings_non_admin = array_intersect($all_strings, $lang_strings_non_admin);
+        $lang_strings_unknown = array_intersect($all_strings, $lang_strings_unknown);
+    }
 
     // Sort
     sort($lang_strings_admin);

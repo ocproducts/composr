@@ -1502,7 +1502,7 @@ function check_url_exists($url, $test_freq_secs)
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
         $test2 = http_download_file($url, 0, false);
-        if (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] == 403)) {
+        if (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] == '403')) {
             $test2 = http_download_file($url, 1, false); // Try without HEAD, sometimes it's not liked
         }
         $exists = (($test2 === null) && ($GLOBALS['HTTP_MESSAGE'] != 401)) ? 0 : 1;

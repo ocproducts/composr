@@ -445,13 +445,18 @@ function find_addon_dependencies_on($addon)
  * @param  string $description Addon description
  * @param  PATH $dir Directory to save to
  * @param  ?array $mtimes A map of file mtimes to use (null: none)
+ * @param  ?PATH $file_base Alternate file base to get addon files from (null: main website file base)
  */
-function create_addon($file, $files, $addon, $incompatibilities, $dependencies, $author, $organisation, $version, $category, $copyright_attribution, $licence, $description, $dir = 'exports/addons', $mtimes = null)
+function create_addon($file, $files, $addon, $incompatibilities, $dependencies, $author, $organisation, $version, $category, $copyright_attribution, $licence, $description, $dir = 'exports/addons', $mtimes = null, $file_base = null)
 {
     require_code('tar');
 
     $_full = get_custom_file_base() . '/' . $dir . '/' . $file;
     $tar = tar_open($_full, 'wb');
+
+    if ($file_base === null) {
+        $file_base = get_file_base();
+    }
 
     $max_mtime = 0;
 
@@ -460,7 +465,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
             continue;
         }
 
-        $full = get_file_base() . '/' . filter_naughty($val);
+        $full = $file_base . '/' . filter_naughty($val);
 
         $themed_suffix = get_param_string('theme', $GLOBALS['FORUM_DRIVER']->get_theme()) . '__';
         $themed_version = dirname($full) . '/' . $themed_suffix . basename($full);
@@ -484,7 +489,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
             }
             tar_add_file($tar, $val, $full, $mode, $mtime, true);
 
-            $full = get_file_base() . '/' . filter_naughty($val) . '.editfrom';
+            $full = $file_base . '/' . filter_naughty($val) . '.editfrom';
             if (file_exists($full)) {
                 $mode = fileperms($full);
                 $mtime = filemtime($full);
@@ -493,7 +498,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
         }
 
         // If it's a theme, make a addon_install_code.php for the theme to restore images_custom mappings
-        if ((substr($val, 0, 7) == 'themes/') && (substr($val, -10) == '/theme.ini')) {
+        if ((substr($val, 0, 7) == 'themes/') && (substr($val, 0, 15) == 'themes/default/') && (substr($val, 0, 12) == 'themes/admin/') && (substr($val, -10) == '/theme.ini')) {
             $theme = substr($val, 7, strpos($val, '/theme.ini') - 7);
 
             $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => $theme));

@@ -516,7 +516,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
             $test = '';
         } else {
             $test = http_download_file($url_full, 0, false);
-            if (($test === null) && ($GLOBALS['HTTP_MESSAGE'] == 403)) {
+            if (($test === null) && ($GLOBALS['HTTP_MESSAGE'] == '403')) {
                 $test = http_download_file($url_full, 1, false); // Try without HEAD, sometimes it's not liked
             }
         }

@@ -51,7 +51,7 @@ function make_colour_chooser(name,color,context,tabindex,label,className)
 	t=t+'<div class="css_colour_chooser">';
 	t=t+'	<div class="css_colour_chooser_name">';
 	t=t+'		<label class="field_name" for="'+name+'"> '+label+'</label><br />';
-	t=t+	'<input '+className+'alt="{!themes:COLOUR;^}" type="color" value="'+_color+'" size="7" id="'+name+'" name="'+name+'" size="6" onchange="update_chooser(\''+name+'\'); return false;" />';
+	t=t+	'<input '+className+'alt="{!COLOUR;^}" type="color" value="'+_color+'" size="7" id="'+name+'" name="'+name+'" size="6" onchange="update_chooser(\''+name+'\'); return false;" />';
 	t=t+'	</div>';
 	t=t+'	<div class="css_colour_chooser_fixed">';
 	t=t+'	<div class="css_colour_chooser_from" style="background-color: '+((color=='')?'#000':color)+'" id="cc_source_'+name+'">';

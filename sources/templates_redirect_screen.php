@@ -41,7 +41,7 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
 
     foreach ($ATTACHED_MESSAGES_RAW as $message) {
         $_message = is_object($message[0]) ? $message[0]->evaluate() : escape_html($message[0]);
-        if ($_message != '' && $_message != do_lang('_REDIRECTING')) {
+        if (($_message != '') && ($_message != do_lang('_REDIRECTING')) && (strpos($_message, 'cancel_sw_warn') === false)) {
             $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
                 'r_session_id' => get_session_id(),
                 'r_message' => $_message,
@@ -54,7 +54,7 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
     // Even if we have $FORCE_META_REFRESH we want to relay $text if provided --- our delay is zero so it won't be read in time by most users
     if (!is_null($text)) {
         $_message = is_object($text) ? $text->evaluate() : escape_html($text);
-        if ($_message != '' && $_message != do_lang('_REDIRECTING')) {
+        if (($_message != '') && ($_message != do_lang('_REDIRECTING')) && (strpos($_message, 'cancel_sw_warn') === false)) {
             $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
                 'r_session_id' => get_session_id(),
                 'r_message' => $_message,

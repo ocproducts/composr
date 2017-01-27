@@ -51,6 +51,9 @@ class Hook_config_privacy_postal_address
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '';
     }
 }

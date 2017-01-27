@@ -1587,6 +1587,10 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         $auto_link = substr($auto_link, 0, strlen($auto_link) - 1);
                                         $link_end_pos--;
                                     }
+                                    if (substr($auto_link, -1) === ',') { // Strip trailing commas (commas may be within, but not at the end)
+                                        $auto_link = substr($auto_link, 0, strlen($auto_link) - 1);
+                                        $link_end_pos--;
+                                    }
 
                                     // Find a media renderer for this link
                                     $embed_output = mixed();
