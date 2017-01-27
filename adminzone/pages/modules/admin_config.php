@@ -420,18 +420,18 @@ class Module_admin_config
             foreach ($options_in_group as $name => $option) {
                 // Language strings
                 $human_name = do_lang_tempcode($option['human_name']);
-                $_explanation = do_lang($option['explanation'], null, null, null, null, false);
+                $_explanation = do_lang($option['explanation'], isset($option['explanation_param_a']) ? $option['explanation_param_a'] : null, isset($option['explanation_param_b']) ? $option['explanation_param_b'] : null, isset($option['explanation_param_c']) ? $option['explanation_param_c'] : null, null, false);
                 if ($_explanation === null) {
                     $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $option['group'], null, null, null, null, false);
                     if ($_explanation === null) {
                         // So an error shows
-                        $_explanation = do_lang($option['explanation']);
-                        $explanation = do_lang_tempcode($option['explanation']);
+                        $_explanation = do_lang($option['explanation'], isset($option['explanation_param_a']) ? $option['explanation_param_a'] : null, isset($option['explanation_param_b']) ? $option['explanation_param_b'] : null, isset($option['explanation_param_c']) ? $option['explanation_param_c'] : null);
+                        $explanation = do_lang_tempcode($option['explanation'], isset($option['explanation_param_a']) ? $option['explanation_param_a'] : null, isset($option['explanation_param_b']) ? $option['explanation_param_b'] : null, isset($option['explanation_param_c']) ? $option['explanation_param_c'] : null);
                     } else {
                         $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $option['group']);
                     }
                 } else {
-                    $explanation = do_lang_tempcode($option['explanation']);
+                    $explanation = do_lang_tempcode($option['explanation'], isset($option['explanation_param_a']) ? $option['explanation_param_a'] : null, isset($option['explanation_param_b']) ? $option['explanation_param_b'] : null, isset($option['explanation_param_c']) ? $option['explanation_param_c'] : null);
                 }
 
                 if (isset($option['required'])) {
@@ -527,7 +527,11 @@ class Module_admin_config
                         break;
 
                     case 'date':
-                        $out .= static_evaluate_tempcode(form_input_date($human_name, $explanation, $name, $required, false, false, intval(get_option($name)), 40, intval(date('Y')) - 20, null));
+                        $out .= static_evaluate_tempcode(form_input_date($human_name, $explanation, $name, $required, false, false, (get_option($name) == '') ? null : intval(get_option($name)), 40, intval(date('Y')) - 20, null));
+                        break;
+
+                    case 'datetime':
+                        $out .= static_evaluate_tempcode(form_input_date($human_name, $explanation, $name, $required, false, true, (get_option($name) == '') ? null : intval(get_option($name)), 40, intval(date('Y')) - 20, null));
                         break;
 
                     case 'forum':
@@ -719,7 +723,7 @@ class Module_admin_config
             // Save
             if ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
-            } elseif ($option['type'] == 'date') {
+            } elseif (($option['type'] == 'date') || ($option['type'] == 'datetime')) {
                 $date_value = post_param_date($name);
                 $value = is_null($date_value) ? '' : strval($date_value);
             } elseif ((($option['type'] == 'forum') || ($option['type'] == '?forum')) && (get_forum_type() == 'cns')) {

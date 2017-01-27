@@ -2159,6 +2159,9 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
     }
     // Fix if out of range
     if ((!is_null($year_start)) && (!is_null($default_year)) && ($default_year < $year_start)) {
+        if (($default_year < $year_start) && ($total_years_to_show !== null)) {
+            $total_years_to_show += ($year_start - $default_year);
+        }
         $year_start = $default_year;
     }
 

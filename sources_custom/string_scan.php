@@ -134,7 +134,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_transaction_percentage_cost
         TRANSACTION_FLAT_COST
         TRANSACTION_PERCENTAGE_COST
-        CONFIG_CATEGORY_TRANSACTION_FEES
         PAYMENT_GATEWAY_authorize
         PAYMENT_GATEWAY_ccbill
         TICKETS_STAFF
@@ -6003,6 +6002,17 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         QUIZ_WAS_ENTERED_AS_FOLLOWS
         QUOTA
         QUOTA_MAINTAIN_URL
+        SITE_MESSAGING
+        CONFIG_OPTION_site_message
+        SITE_MESSAGE_START_DATETIME
+        CONFIG_OPTION_site_message_start_datetime
+        SITE_MESSAGE_END_DATETIME
+        CONFIG_OPTION_site_message_end_datetime
+        SITE_MESSAGE_STATUS_LEVEL
+        CONFIG_OPTION_site_message_status_level
+        CONFIG_OPTION_site_message_status_level_VALUE_NEVER=Never
+        SITE_MESSAGE_USERGROUP_SELECT
+        CONFIG_OPTION_site_message_usergroup_select
         Q_SURE_BAN
         Q_SURE_MOVE
         Q_SURE_UNBAN
