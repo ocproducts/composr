@@ -393,7 +393,12 @@ function get_template_contents($name)
         return '';
     }
 
-    return file_get_contents($template_path);
+    $ret = file_get_contents($template_path);
+
+    $ret = str_replace('{$BASE_URL*}', escape_html(get_base_url()), $ret);
+    $ret = str_replace('{$BASE_URL}', get_base_url(), $ret);
+
+    return $ret;
 }
 
 /**

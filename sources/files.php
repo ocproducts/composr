@@ -69,13 +69,22 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 {
     $num_bytes_to_save = strlen($contents);
 
+    $error_message = mixed();
+
     $exists_already = file_exists($path);
 
     if (!$exists_already) {
         // If the directory is missing
         if (!is_dir(dirname($path))) {
             require_code('files2');
-            make_missing_directory(dirname($path));
+            if ((($flags & FILE_WRITE_FAILURE_SOFT) != 0) && (($flags & FILE_WRITE_FAILURE_HARD) != 0)) {
+                make_missing_directory(dirname($path));
+            } else {
+                $test = @make_missing_directory(dirname($path));
+                if ($test === false) {
+                    return false;
+                }
+            }
         }
     }
 
@@ -91,7 +100,11 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
         }
         if ($disk_space !== false) {
             if ($disk_space < $num_bytes_to_write) {
-                $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+                if (function_exists('do_lang_tempcode')) {
+                    $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+                } else {
+                    $error_message = 'Could not save file ' . htmlentities($path);
+                }
                 return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
             }
         }
@@ -117,18 +130,34 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
             @unlink($path);
         }
 
-        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        if (function_exists('do_lang_tempcode')) {
+            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        } else {
+            $error_message = 'Could not save file ' . htmlentities($path);
+        }
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
 
-    // Error condition: If somehow it said it saved but didn't actually (maybe a race condition on servers with buggy locking)
+    // Find file size
     clearstatcache();
-    if (filesize($path) != $num_bytes_to_save) {
+    $size = @filesize($path);
+
+    // Special condition: File already deleted
+    if ($size === false) {
+        return true; // We'll assume it was okay before something else deleted it
+    }
+
+    // Error condition: If somehow it said it saved but didn't actually (maybe a race condition on servers with buggy locking)
+    if ($size != $num_bytes_to_save) {
         if ($retry_depth < 5) {
             return cms_file_put_contents_safe($path, $contents, $flags, $retry_depth + 1);
         }
 
-        $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path), false, true);
+        if (function_exists('do_lang_tempcode')) {
+            $error_message = do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($path));
+        } else {
+            $error_message = 'Could not save file ' . htmlentities($path);
+        }
         return _cms_file_put_contents_safe_failed($error_message, $path, $flags);
     }
 
@@ -146,7 +175,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 /**
  * If cms_file_put_contents_safe has failed, process the error messaging.
  *
- * @param  Tempcode $error_message Error message.
+ * @param  mixed $error_message Error message (Tempcode or string).
  * @param  PATH $path File path.
  * @param  integer $flags FILE_WRITE_* flags.
  * @return boolean Success status (always false).
@@ -164,7 +193,7 @@ function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 2)
     }
 
     if (($flags & FILE_WRITE_FAILURE_HARD) != 0) {
-        warn_exit($error_message);
+        warn_exit($error_message, false, true);
     }
 
     $looping = false;

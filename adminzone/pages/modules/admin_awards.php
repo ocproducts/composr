@@ -359,7 +359,7 @@ class Module_admin_awards extends Standard_crud_module
     {
         $id = add_award_type(post_param_string('title'), post_param_string('description'), post_param_integer('points', 0), post_param_string('content_type'), post_param_integer('hide_awardee', 0), post_param_integer('update_time_hours'));
 
-        $this->set_permissions($id);
+        $this->set_permissions(strval($id));
 
         return strval($id);
     }

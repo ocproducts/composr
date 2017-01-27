@@ -722,9 +722,9 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
                     if ($member == get_member()) {
                         $has_permission = true;
                     } else {
-                        $a = (in_array(array('group_id' => $member['m_primary_group'], 'the_page' => '', 'the_value' => 1), $group_permissions));
-                        $b = (in_array(array('group_id' => $member['m_primary_group'], 'the_page' => 'cms_galleries', 'the_value' => 0), $group_permissions));
-                        $c = (in_array(array('group_id' => $member['m_primary_group'], 'the_page' => 'cms_galleries', 'the_value' => 1), $group_permissions));
+                        $a = (in_array(array('group_id' => $_member['m_primary_group'], 'the_page' => '', 'the_value' => 1), $group_permissions));
+                        $b = (in_array(array('group_id' => $_member['m_primary_group'], 'the_page' => 'cms_galleries', 'the_value' => 0), $group_permissions));
+                        $c = (in_array(array('group_id' => $_member['m_primary_group'], 'the_page' => 'cms_galleries', 'the_value' => 1), $group_permissions));
                         $has_permission = $is_super_admin;
                         if ((($a) && (!$b)) || ($c)) {
                             $has_permission = true;

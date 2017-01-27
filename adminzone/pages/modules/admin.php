@@ -110,7 +110,7 @@ class Module_admin
                 $this->title = get_screen_title('SETUP');
                 break;
             case 'tools':
-                $this->title = get_screen_title('menus:TOOLS');
+                $this->title = get_screen_title('TOOLS');
                 break;
             case 'security':
                 $this->title = get_screen_title('SECURITY');
@@ -154,7 +154,7 @@ class Module_admin
             case 'setup':
                 return do_next_manager_hooked('SETUP', 'menus:DOC_SETUP', 'setup');
             case 'tools':
-                return do_next_manager_hooked('menus:TOOLS', 'menus:DOC_TOOLS', 'tools');
+                return do_next_manager_hooked('TOOLS', 'menus:DOC_TOOLS', 'tools');
             case 'security':
                 return do_next_manager_hooked('SECURITY', 'menus:DOC_SECURITY', 'security');
         }

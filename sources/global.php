@@ -658,7 +658,7 @@ if ($rate_limiting) {
             if (count($pertinent) >= $rate_limit_hits_per_window) {
                 header('HTTP/1.0 429 Too Many Requests');
                 header('Content-Type: text/plain');
-                exit('We only allow ' . strval($rate_limit_hits_per_window) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
+                exit('We only allow ' . strval($rate_limit_hits_per_window - 1) . ' page hits every ' . strval($rate_limit_time_window) . ' seconds. You\'re at ' . strval(count($pertinent)) . '.');
             }
 
             // Remove any old hits from other IPs

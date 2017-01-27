@@ -44,21 +44,49 @@ class Hook_rss_calendar
             return null;
         }
 
+        $method = get_param_string('method', 'happened'); // happened|happening|stream_in
+
+        if ($method == 'happening') {
+            if ($cutoff < time()) {
+                $cutoff += (time() - $cutoff) * 2;
+            }
+        }
+
         $filters = selectcode_to_sqlfragment($_filters, 'c.id', 'calendar_types', null, 'e_type', 'id');
 
         $content = new Tempcode();
+
         $_categories = $GLOBALS['SITE_DB']->query('SELECT c.id,c.t_title FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types c WHERE ' . $filters, null, null, false, true, array('t_title' => 'SHORT_TRANS__COMCODE'));
         foreach ($_categories as $i => $_category) {
             $_categories[$i]['_t_title'] = get_translated_text($_category['t_title']);
         }
         $categories = collapse_2d_complexity('id', '_t_title', $_categories);
-        $period_start = utctime_to_usertime($cutoff);
-        $period_end = utctime_to_usertime(time() * 2 - $cutoff);
-        if (is_float($period_end)) {
-            $period_end = intval($period_end);
-        }
+
         require_code('calendar');
-        $rows = calendar_matches(get_member(), get_member(), !has_privilege(get_member(), 'assume_any_member'), $period_start, $period_end, null, false, get_param_integer('private', null));
+
+        if ($method == 'happened') {
+            $period_start = utctime_to_usertime($cutoff);
+            $period_end = utctime_to_usertime(time());
+            $rows = calendar_matches(get_member(), get_member(), !has_privilege(get_member(), 'assume_any_member'), $period_start, $period_end, null, false, get_param_integer('private', null));
+        } elseif ($method == 'happening') {
+            $period_start = utctime_to_usertime(time());
+            $period_end = utctime_to_usertime($cutoff);
+            $rows = calendar_matches(get_member(), get_member(), !has_privilege(get_member(), 'assume_any_member'), $period_start, $period_end, null, false, get_param_integer('private', null));
+        } else { // stream_in
+            $period_start = utctime_to_usertime(time() - 60 * 60 * 24 * 365 * 5);
+            $period_end = utctime_to_usertime(time() + 60 * 60 * 24 * 365 * 5);
+            $rows = calendar_matches(get_member(), get_member(), !has_privilege(get_member(), 'assume_any_member'), $period_start, $period_end, null, false, get_param_integer('private', null));
+            foreach ($rows as $i => $_row) {
+                if (!array_key_exists('id', $_row[1])) {
+                    unset($rows[$i]); // RSS event
+                }
+
+                if ($_row[1]['e_add_date'] < $cutoff) {
+                    unset($rows[$i]);
+                }
+            }
+        }
+
         $rows = array_reverse($rows);
         foreach ($rows as $i => $_row) {
             if ($i == $max) {
@@ -66,10 +94,6 @@ class Hook_rss_calendar
             }
 
             $row = $_row[1];
-
-            if (!array_key_exists('id', $row)) {
-                continue; // RSS event
-            }
 
             $id = strval($row['id']);
             $author = '';

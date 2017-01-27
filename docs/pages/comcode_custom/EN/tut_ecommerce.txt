@@ -279,7 +279,7 @@ This catalogue has some hard-coded fields:
  - [b]Stock level warning point[/b] -- the point at which you should be e-mailed if the stock level reaches
  - [b]Whether stock is being maintained[/b] -- whether you want stock control (as above)
  - [b]Tax rate[/b] -- the tax rate, a percentage chosen from a list (you may edit the catalogue to change what is shown in the list)
- - [b]Weight[/b] -- the items weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight ("Shipping cost factor")
+ - [b]Weight[/b] -- the item's weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight ("Shipping cost factor")
  - [b]Description[/b] -- a description for the item
 
 By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
@@ -374,7 +374,7 @@ Admin Zone > Audit > eCommerce > Logs
 
 [surround]
 [media width="150" description="Inputting a manual transaction" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_manual.png[/media]
-While Composr supports manual transactions to be entered. This is possible in the Admin Zone module. Entering a manual transaction will trigger any code associated with the purchase of a product (such as a usergroup promotion).
+Composr supports manual transactions to be entered. This is possible in the Admin Zone module. Entering a manual transaction will trigger any code associated with the purchase of a product (such as a usergroup promotion).
 
 Manual transactions may also be used to input transactions that are totally external to Composr, and thus otherwise immeasurable by the charting. For example, an organisations expenditure may be recorded by manually inputting a negative transaction for the special 'Other' product.
 [/surround]

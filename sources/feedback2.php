@@ -54,7 +54,7 @@ function set_comment_forum_for($feedback_code, $category_id, $forum_id)
     // Move stuff
     if (get_forum_type() == 'cns') {
         require_code('content');
-        $cma_hook = convert_composr_type_codes('feedback_type_code', $feedback_code, 'cma_hook');
+        $cma_hook = convert_composr_type_codes('feedback_type_code', $feedback_code, 'content_type');
         require_code('hooks/systems/content_meta_aware/' . $cma_hook);
         $cma_ob = object_factory('Hook_content_meta_aware_' . $cma_hook);
         $info = $cma_ob->info();

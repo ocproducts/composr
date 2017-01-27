@@ -70,7 +70,7 @@ function lorem_phrase()
  */
 function lorem_title()
 {
-    return get_screen_title('Lorem Ipsum Dolor');
+    return get_screen_title('Lorem Ipsum Dolor', false);
 }
 
 /**

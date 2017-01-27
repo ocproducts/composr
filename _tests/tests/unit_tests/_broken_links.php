@@ -74,7 +74,7 @@ class _broken_links_test_set extends cms_test_case
 
         $lang_files = get_lang_files(fallback_lang());
         foreach (array_keys($lang_files) as $lang_file) {
-            $map = get_lang_file_map(fallback_lang(), $lang_file, false, false);
+            $map = get_lang_file_map(fallback_lang(), $lang_file, false, false) + get_lang_file_map(fallback_lang(), $lang_file, true, false);
             foreach ($map as $key => $value) {
                 if (strpos($value, '[url') !== false) {
                     $tempcode = comcode_to_tempcode($value);

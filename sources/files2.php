@@ -29,17 +29,26 @@ function init__files2()
 }
 
 /**
- * Make a missing required directory, or exit with an error if we cannot.
+ * Make a missing required directory, or exit with an error if we cannot (unless error suppression is on).
  *
  * @param PATH $dir Path to create
+ * @return boolean Success status
  */
 function make_missing_directory($dir)
 {
     if (@mkdir($dir, 0777, true) === false) {
-        warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY_REPAIR', escape_html($dir)), false, true);
+        if (error_reporting() == 0) {
+            return false;
+        }
+        if (function_exists('do_lang_tempcode')) {
+            warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY_REPAIR', escape_html($dir)), false, true);
+        } else {
+            warn_exit('Could not auto-create missing directory ' . htmlentities($dir), false, true);
+        }
     }
     fix_permissions($dir);
     sync_file($dir);
+    return true;
 }
 
 /**
@@ -50,6 +59,14 @@ function make_missing_directory($dir)
  */
 function _intelligent_write_error($path)
 {
+    if (error_reporting() == 0) {
+        return;
+    }
+
+    if (!function_exists('do_lang_tempcode')) {
+        warn_exit('Could not write to ' . htmlentities($path));
+    }
+
     if (file_exists($path)) {
         if (filesize($path) == 0) {
             return; // Probably was OR'd where 0 casted to false

@@ -51,6 +51,9 @@ class Hook_config_show_first_join_page
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '1';
     }
 }

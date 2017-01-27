@@ -309,8 +309,8 @@ function log_newest_activity($id, $timeout = 1000, $force = false)
 {
     $file_path = get_custom_file_base() . '/data_custom/latest_activity.txt';
 
-    $old_id = file_get_contents($file_path);
-    if ($force || ($old_id < $id)) {
+    $old_id = @file_get_contents($file_path);
+    if (($force) || ($old_id === false) || (intval($old_id) < $id)) {
         require_code('files');
         cms_file_put_contents_safe($file_path, strval($id), FILE_WRITE_FAILURE_SOFT | FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }

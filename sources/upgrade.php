@@ -216,9 +216,19 @@ function upgrade_script()
                 case 'file_upgrade':
                     appengine_live_guard();
 
+                    require_code('version2');
+                    $personal_upgrader_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
+                    $hooks = find_all_hooks('systems', 'addon_registry');
+                    foreach (array_keys($hooks) as $hook) {
+                        if (is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $hook . '.php')) {
+                            $personal_upgrader_url .= '&addon_' . $hook . '=1';
+                        }
+                    }
+
                     if (get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL) == '') {
                         echo do_lang('FU_FILE_UPGRADE_INFO');
                     }
+                    echo do_lang('FU_FILE_UPGRADE_INFO_MANUAL', escape_html($personal_upgrader_url));
                     echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
                     echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL))) . '" /></p>';
                     echo '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('FU_DRY_RUN') . '</label></p>';
@@ -251,9 +261,15 @@ function upgrade_script()
                         }
 
                         $temp_path = cms_tempnam();
-                        $myfile = fopen($temp_path, 'wb');
-                        http_get_contents(post_param_string('url', false, INPUT_FILTER_URL_GENERAL), array('write_to_file' => $myfile));
-                        fclose($myfile);
+                        $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
+                        if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
+                            unlink($temp_path);
+                            copy(get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/'))), $temp_path);
+                        } else {
+                            $myfile = fopen($temp_path, 'wb');
+                            http_get_contents($url, array('write_to_file' => $myfile));
+                            fclose($myfile);
+                        }
                     }
                     if (substr(strtolower($temp_path), -4) == '.zip') {
                         require_code('tar2');
@@ -1103,6 +1119,10 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     unset($hook_files);
     sort($files_to_check);
     foreach ($files_to_check as $file) {
+        if (($basic) && (time() - $_SERVER['REQUEST_TIME'] > 5)) {
+            return ''; // Taking too long
+        }
+
         if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
             continue;
         }

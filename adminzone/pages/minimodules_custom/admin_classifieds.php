@@ -101,6 +101,10 @@ for ($i = 0; $i < 10; $i++) {
 $_catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_name', 'c_title'), null, 'ORDER BY c_name');
 $catalogues = array();
 foreach ($_catalogues as $_catalogue) {
+    if (substr($_catalogue['c_name'], 0, 1) == '_') {
+        continue;
+    }
+
     $catalogues[$_catalogue['c_name']] = get_translated_text($_catalogue['c_title']);
 }
 

@@ -97,7 +97,7 @@ class Hook_task_import_newsletter_subscribers
                         if (in_array(strtolower($val), array('username', strtolower(do_lang('NAME'))))) {
                             $username_index = $j;
                         }
-                        if (in_array(strtolower($val), array('hash', 'password', 'pass', 'code', 'secret', strtolower(do_lang('PASSWORD_HASH'))))) {
+                        if (in_array(strtolower($val), array('hash', 'password', 'pass', 'pword', 'pw', 'p/w', 'code', 'secret', strtolower(do_lang('PASSWORD_HASH'))))) {
                             $hash_index = $j;
                         }
                         if (in_array(strtolower($val), array('salt', strtolower(do_lang('SALT'))))) {
@@ -134,7 +134,7 @@ class Hook_task_import_newsletter_subscribers
                         $language = $_language;
                     }
                     $code_confirm = (($code_confirm_index !== null) && (array_key_exists($code_confirm_index, $csv_line))) ? intval($csv_line[$code_confirm_index]) : 0;
-                    $join_time = (($join_time_index !== null) && (array_key_exists($join_time_index, $csv_line))) ? strtotime($csv_line[$join_time_index]) : time();
+                    $join_time = (($join_time_index !== null) && (!empty($csv_line[$join_time_index]))) ? strtotime($csv_line[$join_time_index]) : time();
                     if ($join_time === false) {
                         $join_time = time();
                     }

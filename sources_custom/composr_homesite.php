@@ -27,21 +27,31 @@ function init__composr_homesite()
 // IDENTIFYING RELEASES
 // --------------------
 
-function get_latest_version_pretty()
+function get_latest_version_dotted()
 {
     static $version = null; // null means unset (uncached)
     if ($version === null) {
         $_version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
         if ($_version === null) {
-            $version = 0.0; // unknown
+            $version = '0.0'; // unknown
         } else {
             require_code('version2');
             $__version = preg_replace('# \(.*#', '', $_version);
-            list(, , , , $version) = get_version_components__from_dotted(get_version_dotted__from_anything($__version));
+            $version = get_version_dotted__from_anything($__version);
         }
         $fetched_version = true;
     }
-    return ($version == 0.0) ? null : float_format($version, 2, true);
+    return ($version == '0.0') ? null : $version;
+}
+
+function get_latest_version_pretty()
+{
+    $version_dotted = get_latest_version_dotted();
+    if ($version_dotted === null) {
+        return $version_dotted;
+    }
+    list(, , , , $version) = get_version_components__from_dotted($version_dotted);
+    return float_format($version, 2, true);
 }
 
 function get_release_tree()

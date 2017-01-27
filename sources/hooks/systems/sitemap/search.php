@@ -259,6 +259,10 @@ class Hook_sitemap_search extends Hook_sitemap_base
                     do {
                         $rows = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), null, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
                         foreach ($rows as $row) {
+                            if (substr($row['c_name'], 0, 1) == '_') {
+                                continue;
+                            }
+
                             $child_page_link = $page_link . ':' . $row['c_name'];
                             $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
                             if ($child_node !== null) {

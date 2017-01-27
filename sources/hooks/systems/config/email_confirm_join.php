@@ -51,6 +51,9 @@ class Hook_config_email_confirm_join
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '1';
     }
 }

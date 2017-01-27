@@ -25,6 +25,8 @@ class backups_test_set extends cms_test_case
         require_code('tar');
         require_code('files');
 
+        disable_php_memory_limit();
+
         set_option('backup_server_hostname', '');
         $backup_name = 'test_backup';
         $backup_tar_path = get_custom_file_base() . '/exports/backups/' . $backup_name . '.tar';

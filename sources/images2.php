@@ -169,6 +169,11 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
             $sizes = cms_getimagesize($orig_url);
             if ($sizes === false) {
                 cms_profile_end_for('convert_image_plus', $orig_url);
+
+                if (($fallback_image != '') && ($fallback_image != $orig_url)) {
+                    return convert_image_plus($fallback_image, $dimensions, $output_dir, $filename, '', $algorithm, $where, $background, $only_make_smaller);
+                }
+
                 return $fallback_image;
             }
             list($source_x, $source_y) = $sizes;

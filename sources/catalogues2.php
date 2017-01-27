@@ -949,7 +949,6 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
 
         if ($title === null) {
             $title = $val;
-
             require_code('global4');
             prevent_double_submit('ADD_CATALOGUE_ENTRY', null, $title);
         }

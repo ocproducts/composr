@@ -298,7 +298,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Select newsletter and attach CSV
         if ($newsletter_id === null) {
-            $default_newsletter_id = get_param_integer('id', null);
+            $default_newsletter_id = get_param_integer('id', db_get_first_id());
 
             $fields = new Tempcode();
             $hidden = new Tempcode();
@@ -319,7 +319,7 @@ class Module_admin_newsletter extends Standard_crud_module
             if (count($rows) == 0) {
                 $hidden->attach(form_input_hidden('id', '-1'));
             } else {
-                $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
+                $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters, null, true));
             }
             $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD_CSV_2'), 'file', true, null, null, true, 'csv,txt'));
             $l = new Tempcode();
@@ -416,7 +416,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         $fields = new Tempcode();
-        $fields->attach(form_input_list(do_lang_tempcode('DIRECTORY'), new Tempcode(), 'box', $folders));
+        $fields->attach(form_input_list(do_lang_tempcode('DIRECTORY'), new Tempcode(), 'box', $folders, null, true));
 
         $submit_name = do_lang_tempcode('PROCEED');
         $post_url = get_self_url();
@@ -544,8 +544,8 @@ class Module_admin_newsletter extends Standard_crud_module
             // Selection
             $newsletters = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('id', 'title'));
-            foreach ($rows as $newsletter) {
-                $newsletters->attach(form_input_list_entry(strval($newsletter['id']), false, get_translated_text($newsletter['title'])));
+            foreach ($rows as $i => $newsletter) {
+                $newsletters->attach(form_input_list_entry(strval($newsletter['id']), $i == 0, get_translated_text($newsletter['title'])));
             }
             if (get_forum_type() == 'cns') {
                 $newsletters->attach(form_input_list_entry('-1', false, do_lang_tempcode('NEWSLETTER_CNS')));
@@ -562,7 +562,7 @@ class Module_admin_newsletter extends Standard_crud_module
             if ($newsletters->is_empty()) {
                 inform_exit(do_lang_tempcode('NO_CATEGORIES'));
             }
-            $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
+            $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters, null, true));
 
             // CSV option
             $fields->attach(form_input_tick(do_lang_tempcode('DOWNLOAD_AS_CSV'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_AS_CSV'), 'csv', false));
@@ -687,10 +687,32 @@ class Module_admin_newsletter extends Standard_crud_module
         $domains = array();
         $start = 0;
         do {
-            if ($GLOBALS['SITE_DB']->has_expression_ordering()) {
-                $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email', 'COUNT(*) as cnt'), null, 'GROUP BY SUBSTRING_INDEX(email,\'@\',-1)'); // Far less PHP processing
+            if (substr($id, 0, 1) == 'g') {
+                if (strpos(get_db_type(), 'mysql') !== false) {
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails' => 1, 'm_primary_group' => intval(substr($id, 1))), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
+                } else {
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails' => 1, 'm_primary_group' => intval(substr($id, 1))), '', 500, $start);
+                }
+            } elseif ($id == '-1') {
+                if (strpos(get_db_type(), 'mysql') !== false) {
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails' => 1), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
+                } else {
+                    $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails' => 1), '', 500, $start);
+                }
             } else {
-                $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email'), null, '', 500, $start);
+                if ($GLOBALS['SITE_DB']->has_expression_ordering()) {
+                    $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email', 'COUNT(*) as cnt'), null, 'GROUP BY SUBSTRING_INDEX(email,\'@\',-1)'); // Far less PHP processing
+                } else {
+                    $where = array('newsletter_id' => $id, 'code_confirm' => 0);
+                    if (get_option('interest_levels') == '1') {
+                        $where['the_level'] = $level;
+                    }
+                    if (strpos(get_db_type(), 'mysql') !== false) {
+                        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers x ON s.email=x.email', array('DISTINCT s.email', 'COUNT(*) as cnt'), $where, 'GROUP BY SUBSTRING_INDEX(s.email,\'@\',-1)'); // Far less PHP processing
+                    } else {
+                        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers x ON s.email=x.email', array('DISTINCT s.email'), $where, '', 500, $start);
+                    }
+                }
             }
             foreach ($rows as $row) {
                 $email = $row['email'];
