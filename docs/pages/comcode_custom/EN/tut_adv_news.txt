@@ -4,7 +4,7 @@ This tutorial describes some of the more complex features available for news, in
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="3"]Scheduled news / Manual date selection[/title]
+[title="2"]Scheduled news / Manual date selection[/title]
 
 See the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial for information on setting up the CRON bridge scheduler.
 
@@ -12,7 +12,7 @@ You will see an advance scheduling option once the CRON bridge scheduler is enab
 
 Scheduling posts work by having the entry initially non-validated, then it will be auto-validated at the chosen time.
 
-[title="3"]Pinging[/title]
+[title="2"]Pinging[/title]
 
 'Pinging' (in the context of blogging) refers to an automatic alert feature that some software (including Composr) has. When you write a news post the URL to the news post can automatically be given to one or more ping services (defined in Admin Zone > Setup > Configuration > Feature options). These ping services typically are blog search engines, and the ping action automatically tells the search engine to go and index your new article.
 

@@ -354,6 +354,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/chatroom.php',
             '_tests/tests/unit_tests/comcode.php',
             '_tests/tests/unit_tests/comcode_to_text.php',
+            '_tests/tests/unit_tests/tutorial_title_structure.php',
             '_tests/tests/unit_tests/comment.php',
             '_tests/tests/unit_tests/xhtml_substr.php',
             '_tests/tests/unit_tests/config_lang_strings.php',
