@@ -33,8 +33,8 @@ class Hook_config_transaction_flat_cost
         return array(
             'human_name' => 'TRANSACTION_FLAT_COST',
             'type' => 'float',
-            'category' => 'TRANSACTION_FEES',
-            'group' => 'ECOMMERCE',
+            'category' => 'ECOMMERCE',
+            'group' => 'TRANSACTION_FEES',
             'explanation' => 'CONFIG_OPTION_transaction_flat_cost',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
