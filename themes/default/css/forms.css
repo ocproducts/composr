@@ -685,7 +685,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 }
 
 .skip_step_button_wrap {
-	height: 35px;
+	overflow: hidden;
 }
 
 .skip_step_button_wrap div {
