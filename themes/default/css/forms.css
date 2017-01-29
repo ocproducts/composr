@@ -284,7 +284,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	display: inline-block;
 }
 .input_dimensions input {
-	width: 3em !important;
+	width: 4em !important;
 }
 .input_dimensions, .input_dimensions * {
 	vertical-align: middle;
