@@ -726,7 +726,7 @@ class Module_cms_banners_cat extends Standard_crud_module
     /**
      * Get Tempcode for a post template adding/editing form.
      *
-     * @param  ID_TEXT $id The ID of the banner type (blank: new)
+     * @param  ?ID_TEXT $id The ID of the banner type (null: new)
      * @param  BINARY $is_textual Whether this is a textual banner
      * @param  integer $image_width The image width (ignored for textual banners)
      * @param  integer $image_height The image height (ignored for textual banners)
@@ -734,12 +734,12 @@ class Module_cms_banners_cat extends Standard_crud_module
      * @param  BINARY $comcode_inline Whether the banner will be automatically shown via Comcode hot-text (this can only happen if banners of the title are given title-text)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = '', $is_textual = 0, $image_width = 160, $image_height = 600, $max_file_size = 250, $comcode_inline = 0)
+    public function get_form_fields($id = null, $is_textual = 0, $image_width = 160, $image_height = 600, $max_file_size = 250, $comcode_inline = 0)
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        $fields->attach(form_input_line(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE_2'), 'new_id', $id, false));
+        $fields->attach(form_input_line(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_BANNER_TYPE_2'), 'new_id', ($id === null) ? '' : $id, false));
         if ($id != '') {
             $hidden->attach(form_input_hidden('is_textual', strval($is_textual)));
         } else {
@@ -749,10 +749,41 @@ class Module_cms_banners_cat extends Standard_crud_module
         $fields->attach(form_input_integer(do_lang_tempcode('FILE_SIZE'), do_lang_tempcode('DESCRIPTION_BANNER_FILE_SIZE'), 'max_file_size', $max_file_size, true));
         $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_INLINE'), do_lang_tempcode('DESCRIPTION_COMCODE_INLINE'), 'comcode_inline', $comcode_inline == 1));
 
-        $fields->attach(metadata_get_fields('banner_type', ($id == '') ? null : $id));
+        $fields->attach(metadata_get_fields('banner_type', ($id === null) ? null : $id));
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('banner_type', $id));
+            $fields->attach(content_review_get_fields('banner_type', ($id === null) ? null : $id));
+        }
+
+        // Select of banners within compatible types
+        if ($id !== null) {
+            $banners_in_type = collapse_1d_complexity('name', $GLOBALS['SITE_DB']->query_select('banners_types', array('name'), array('b_type' => $id)));
+
+            $compatible_banner_types = $GLOBALS['SITE_DB']->query_select('banner_types', array('id'), array('t_image_width' => $image_width, 't_image_height' => $image_height, 't_is_textual' => $is_textual));
+            $or_list = '';
+            foreach ($compatible_banner_types as $compatible_banner_type) {
+                if ($compatible_banner_type['id'] != $id) {
+                    if ($or_list != '') {
+                        $or_list .= ' OR ';
+                    }
+                    $or_list .= db_string_equal_to('b_type', $compatible_banner_type['id']);
+                }
+            }
+            if ($or_list != '') {
+                $or_list = '(' . $or_list . ')';
+                $sql = 'SELECT name FROM ' . get_table_prefix() . 'banners WHERE ' . $or_list . ' ORDER BY name';
+                $compatible_banners = $GLOBALS['SITE_DB']->query($sql);
+                if (count($compatible_banners) > 0) {
+                    $_compatible_banners = new Tempcode();
+                    foreach ($compatible_banners as $compatible_banner) {
+                        $_compatible_banners->attach(form_input_list_entry($compatible_banner['name'], in_array($compatible_banner['name'], $banners_in_type)));
+                    }
+                    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => $banners_in_type == array(), 'TITLE' => do_lang_tempcode('ACTIONS'))));
+                    $fields->attach(form_input_multi_list(do_lang_tempcode('BANNERS_IN_TYPE_AS_SECONDARY'), do_lang_tempcode('DESCRIPTION_BANNERS_IN_TYPE_AS_SECONDARY'), 'banners_in_type_as_secondary', $_compatible_banners));
+
+                    $this->appended_actions_already = true;
+                }
+            }
         }
 
         return array($fields, $hidden);
@@ -817,12 +848,18 @@ class Module_cms_banners_cat extends Standard_crud_module
         $image_height = post_param_integer('image_height');
         $max_file_size = post_param_integer('max_file_size');
         $comcode_inline = post_param_integer('comcode_inline', 0);
+        $banners_in_type_as_secondary = isset($_POST['banners_in_type_as_secondary']) ? $_POST['banners_in_type_as_secondary'] : array();
 
         $new_id = post_param_string('new_id');
 
         $metadata = actual_metadata_get_fields('banner_type', $id, null, $new_id);
 
         edit_banner_type($id, $new_id, $is_textual, $image_width, $image_height, $max_file_size, $comcode_inline);
+
+        $GLOBALS['SITE_DB']->query_delete('banners_types', array('b_type' => $new_id));
+        foreach ($banners_in_type_as_secondary as $banner) {
+            $GLOBALS['SITE_DB']->query_insert('banners_types', array('b_type' => $new_id, 'name' => $banner));
+        }
 
         $this->new_id = post_param_string('new_id');
 
