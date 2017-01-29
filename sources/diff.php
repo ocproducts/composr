@@ -720,7 +720,7 @@ class Text_Diff3_BlockBuilder
 
     function _append(&$array, $lines)
     {
-        array_splice($array, sizeof($array), 0, $lines);
+        array_splice($array, count($array), 0, $lines);
     }
 }
 
@@ -1160,7 +1160,8 @@ class Text_Diff_Engine_native
                     }
                 }
 
-                while (list($junk, $y) = each($matches)) {
+                foreach ($matches as $_match) {
+                    list($junk, $y) = $_match;
                     if ($y > $this->seq[$k - 1]) {
 //							assert($y < $this->seq[$k]);
                         /* Optimization: this is a common case: next match is

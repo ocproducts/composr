@@ -400,7 +400,7 @@ class ApnsPHP_Message
 		if (!defined('JSON_UNESCAPED_UNICODE') && function_exists('mb_convert_encoding')) {
 			$sJSON = preg_replace_callback(
 				'~\\\\u([0-9a-f]{4})~i',
-				create_function('$aMatches', 'return mb_convert_encoding(pack("H*", $aMatches[1]), "UTF-8", "UTF-16");'),
+				@create_function('$aMatches', 'return mb_convert_encoding(pack("H*", $aMatches[1]), "UTF-8", "UTF-16");'),
 				$sJSON);
 		}
 
