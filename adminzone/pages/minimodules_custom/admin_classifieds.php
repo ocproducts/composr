@@ -53,14 +53,11 @@ if (count($_POST) != 0) {
                     );
                 } else {
                     // Add
-                    $GLOBALS['SITE_DB']->query_insert(
-                        'ecom_classifieds_prices',
-                        array(
-                            'c_catalogue_name' => $catalogue,
-                            'c_days' => intval($days),
-                            'c_price' => floatval($price),
-                        ) + insert_lang('c_label', $label, 2)
-                    );
+                    $GLOBALS['SITE_DB']->query_insert('ecom_classifieds_prices', array(
+                        'c_catalogue_name' => $catalogue,
+                        'c_days' => intval($days),
+                        'c_price' => floatval($price),
+                    ) + insert_lang('c_label', $label, 2));
                 }
             } else {
                 if ($matches[1] == 'existing') {

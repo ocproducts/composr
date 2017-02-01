@@ -363,7 +363,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
             'QUANTITY' => strval($item['p_quantity']),
         );
     }
-    $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
+    $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'total_price', array('id' => $order_id));
 
     $payment_gateway = get_option('payment_gateway');
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));

@@ -261,7 +261,7 @@ class Module_admin_orders
             't1.id' => do_lang_tempcode('ECOM_ORDER'),
             't1.add_date' => do_lang_tempcode('ORDERED_DATE'),
             't1.c_member' => do_lang_tempcode('ORDERED_BY'),
-            't1.tot_price' => do_lang_tempcode('ORDER_PRICE_AMT'),
+            't1.total_price' => do_lang_tempcode('ORDER_PRICE_AMT'),
             't3.included_tax' => do_lang_tempcode('TAX_PAID'),
             't1.order_status' => do_lang_tempcode('STATUS'),
             't1.transaction_id' => do_lang_tempcode('TRANSACTION_ID'),
@@ -338,7 +338,7 @@ class Module_admin_orders
             $order_entries->attach(results_entry(
                 array(
                     escape_html($order_title),
-                    ecommerce_get_currency_symbol() . escape_html(float_format($row['tot_price'], 2)),
+                    ecommerce_get_currency_symbol() . escape_html(float_format($row['total_price'], 2)),
                     escape_html(($row['tax'] === null) ? '' : float_format($row['tax'], 2)),
                     $order_date,
                     $member_link,
@@ -498,7 +498,7 @@ class Module_admin_orders
             'ORDER_NUMBER' => strval($id),
             'ADD_DATE' => get_timezoned_date($data['add_date'], true, false, true, true),
             'CURRENCY' => get_option('currency'),
-            'TOTAL_PRICE' => float_format($data['tot_price'], 2),
+            'TOTAL_PRICE' => float_format($data['total_price'], 2),
             'ORDERED_BY_MEMBER_ID' => strval($ordered_by_member_id),
             'ORDERED_BY_USERNAME' => $ordered_by_username,
             'ORDER_STATUS' => do_lang($data['order_status']),
@@ -768,7 +768,7 @@ class Module_admin_orders
         foreach ($rows as $order) {
             $orders[do_lang('ORDER_NUMBER')] = strval($order['id']);
             $orders[do_lang('ORDERED_DATE')] = get_timezoned_date($order['add_date'], true, false, true, true);
-            $orders[do_lang('ORDER_PRICE')] = $order['tot_price'];
+            $orders[do_lang('ORDER_PRICE')] = $order['total_price'];
             $orders[do_lang('ORDER_STATUS')] = do_lang($order['order_status']);
             $orders[do_lang('ORDER_TAX_OPT_OUT')] = ($order['tax_opted_out']) ? do_lang('YES') : do_lang('NO');
             $orders[do_lang('TOTAL_TAX_PAID')] = ($order['tax_amt'] === null) ? float_format(0.0, 2) : float_format($order['tax_amt'], 2);

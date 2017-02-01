@@ -93,11 +93,11 @@ class Module_shopping
                 'c_member' => 'INTEGER',
                 'session_id' => 'ID_TEXT',
                 'add_date' => 'TIME',
-                'tot_price' => 'REAL',
+                'total_price' => 'REAL',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
                 'notes' => 'LONG_TEXT',
                 'transaction_id' => 'SHORT_TEXT',
-                'purchase_through' => 'SHORT_TEXT',
+                'purchase_through' => 'SHORT_TEXT', // cart|purchase_module
                 'tax_opted_out' => 'BINARY',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order', 'finddispatchable', array('order_status'));
@@ -164,6 +164,8 @@ class Module_shopping
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order', 'tot_price', 'REAL', 'total_price');
+
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_address_county', 'SHORT_TEXT');
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'first_name', 'SHORT_TEXT', 'a_firstname');
@@ -587,7 +589,7 @@ class Module_shopping
                 $order_details_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_det['p_id']), get_module_zone('catalogues'));
             }
 
-            $orders[] = array('ORDER_TITLE' => $order_title, 'ID' => strval($row['id']), 'AMOUNT' => strval($row['tot_price']), 'TIME' => get_timezoned_date($row['add_date'], true, false, true, true), 'STATE' => do_lang_tempcode($row['order_status']), 'NOTE' => '', 'ORDER_DET_URL' => $order_details_url, 'DELIVERABLE' => '');
+            $orders[] = array('ORDER_TITLE' => $order_title, 'ID' => strval($row['id']), 'AMOUNT' => strval($row['total_price']), 'TIME' => get_timezoned_date($row['add_date'], true, false, true, true), 'STATE' => do_lang_tempcode($row['order_status']), 'NOTE' => '', 'ORDER_DET_URL' => $order_details_url, 'DELIVERABLE' => '');
         }
 
         if (count($orders) == 0) {

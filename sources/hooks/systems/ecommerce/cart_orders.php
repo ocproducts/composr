@@ -64,7 +64,7 @@ class Hook_ecommerce_cart_orders
 
         $start = 0;
         do {
-            $orders = $GLOBALS['SITE_DB']->query('SELECT id,tot_price FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where, 500, null, false, true);
+            $orders = $GLOBALS['SITE_DB']->query('SELECT id,total_price FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where, 500, null, false, true);
 
             foreach ($orders as $order) {
                 $products['CART_ORDER_' . strval($order['id'])] = array(
@@ -75,7 +75,7 @@ class Hook_ecommerce_cart_orders
                     'type' => PRODUCT_ORDERS,
                     'type_special_details' => array(),
 
-                    'price' => $order['tot_price'],
+                    'price' => $order['total_price'],
                     'currency' => get_option('currency'),
                     'price_points' => null,
                     'discount_points__num_points' => null,

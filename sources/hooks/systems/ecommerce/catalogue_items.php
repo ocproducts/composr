@@ -142,7 +142,7 @@ class Hook_ecommerce_catalogue_items
         require_code('catalogues');
 
         if ($must_be_listed) {
-            return ECOMMERCE_PRODUCT_DISABLED; // Don't list within purchasing module, we only want it as a part of a cart order. Otherwise we can't actually track who bought it
+            return ECOMMERCE_PRODUCT_DISABLED; // Don't list within purchasing module, we only want it as a part of a cart order. Otherwise we can't actually track who bought it. We do allow purchase of single product orders.
         }
 
         $res = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)), '', 1);
@@ -580,8 +580,9 @@ class Hook_ecommerce_catalogue_items
 
         $cart_url = build_url(array('page' => 'shopping', 'type' => 'add_item', 'hook' => 'catalogue_items'), '_SELF');
 
+        // Single purchase, by-passing cart
         $next_purchase_step = get_next_purchase_step($this, strval($id), 'browse');
-        $purchase_mod_url = build_url(array('page' => 'purchase', 'type' => $next_purchase_step, 'type_code' => strval($id), 'id' => $id), '_SELF');
+        $purchase_action_url = build_url(array('page' => 'purchase', 'type' => $next_purchase_step, 'type_code' => strval($id), 'id' => $id), '_SELF');
 
         $map['CART_BUTTONS'] = do_template('ECOM_SHOPPING_CART_BUTTONS', array(
             '_GUID' => 'd4491c6e221b1f06375a6427da062bac',
@@ -589,7 +590,7 @@ class Hook_ecommerce_catalogue_items
             'ACTION_URL' => $cart_url,
             'PRODUCT_ID' => strval($id),
             'ALLOW_OPTOUT_TAX' => get_option('allow_opting_out_of_tax'),
-            'PURCHASE_ACTION_URL' => $purchase_mod_url,
+            'PURCHASE_ACTION_URL' => $purchase_action_url,
             'CART_URL' => $shopping_cart_url,
         ));
     }

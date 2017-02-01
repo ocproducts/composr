@@ -253,7 +253,7 @@ function render_cart_payment_form()
             'c_member' => get_member(),
             'session_id' => get_session_id(),
             'add_date' => time(),
-            'tot_price' => 0,
+            'total_price' => 0,
             'order_status' => 'ORDER_STATUS_awaiting_payment',
             'notes' => '',
             'purchase_through' => 'cart',
@@ -262,7 +262,7 @@ function render_cart_payment_form()
         );
 
         if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'id') === null) {
-            $insert['id'] = hexdec('1701D'); // Start offset
+            $insert['id'] = hexdec('1701D'); // Start offset so it looks like we have more sales
         }
 
         $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', $insert, true);
@@ -316,26 +316,22 @@ function render_cart_payment_form()
             $tax = 0.0;
         }
 
-        $GLOBALS['SITE_DB']->query_insert(
-            'shopping_order_details',
-            array(
-                'p_id' => $item['product_id'],
-                'p_name' => $item['product_name'],
-                'p_code' => $item['product_code'],
-                'p_type' => $item['product_type'],
-                'p_quantity' => $item['quantity'],
-                'p_price' => $price,
-                'included_tax' => $tax,
-                'order_id' => $order_id,
-                'dispatch_status' => '',
-            ),
-            true
-        );
+        $GLOBALS['SITE_DB']->query_insert('shopping_order_details', array(
+            'p_id' => $item['product_id'],
+            'p_name' => $item['product_name'],
+            'p_code' => $item['product_code'],
+            'p_type' => $item['product_type'],
+            'p_quantity' => $item['quantity'],
+            'p_price' => $price,
+            'included_tax' => $tax,
+            'order_id' => $order_id,
+            'dispatch_status' => '',
+        ), true);
 
         $total_price += $price * $item['quantity'];
     }
 
-    $GLOBALS['SITE_DB']->query_update('shopping_order', array('tot_price' => $total_price), array('id' => $order_id), '', 1);
+    $GLOBALS['SITE_DB']->query_update('shopping_order', array('total_price' => $total_price), array('id' => $order_id), '', 1);
 
     $points_for_discount = null; // TODO (#3026) - We don't currently support point discounts for cart purchases
 
@@ -344,7 +340,7 @@ function render_cart_payment_form()
 
         $finish_url = new Tempcode();
     } else { // Handle the transaction internally
-        $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
+        $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'total_price', array('id' => $order_id));
         $item_name = do_lang('CART_ORDER', strval($order_id));
         if ($order_id === null) {
             $fields = new Tempcode();

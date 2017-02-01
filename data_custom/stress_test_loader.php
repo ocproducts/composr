@@ -497,7 +497,7 @@ function do_work()
             'c_member' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
             'session_id' => get_rand_password(),
             'add_date' => time(),
-            'tot_price' => '123.00',
+            'total_price' => '123.00',
             'order_status' => 'ORDER_STATUS_awaiting_payment',
             'notes' => '',
             'purchase_through' => 'purchase_module',

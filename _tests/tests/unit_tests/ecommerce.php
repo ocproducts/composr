@@ -40,7 +40,7 @@ class ecommerce_test_set extends cms_test_case
             'c_member' => get_member(),
             'session_id' => get_session_id(),
             'add_date' => time(),
-            'tot_price' => 0.0,
+            'total_price' => 0.0,
             'order_status' => 'NEW',
             'notes' => '',
             'transaction_id' => 'ddfsfdsdfsdfs',
