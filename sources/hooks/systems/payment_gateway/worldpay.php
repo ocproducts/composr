@@ -36,6 +36,18 @@ class Hook_payment_gateway_worldpay
     //  FuturePay must be enabled for subscriptions to work (contact WorldPay about it)
 
     /**
+     * Get a standardised config map.
+     *
+     * @return array The config
+     */
+    public function get_config()
+    {
+        return array(
+            'supports_remote_memo' => false,
+        );
+    }
+
+    /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
      * @param  float $amount A transaction amount.
@@ -94,6 +106,7 @@ class Hook_payment_gateway_worldpay
     /**
      * Make a transaction (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
@@ -101,37 +114,21 @@ class Hook_payment_gateway_worldpay
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency)
     {
         $username = $this->_get_username();
         $form_url = $this->_get_remote_form_url();
         $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
-        $trans_id = $this->generate_trans_id();
         $digest_option = get_option('payment_gateway_digest');
-        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency);  Deprecated
-        $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency);
-
-        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
+        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_expecting_id . ':' . float_to_raw_string($amount) . ':' . $currency);  Deprecated
+        $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_expecting_id . ';' . float_to_raw_string($amount) . ';' . $currency);
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY', array(
             '_GUID' => '56c78a4e16c0e7f36fcfbe57d37bc3d3',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => $trans_id, // cartID in Worldpay, has to be unique so we generate a transaction ID and store true purchase_id within that
+            'PURCHASE_ID' => $purchase_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'DIGEST' => $digest,
             'TEST_MODE' => ecommerce_test_mode(),
             'AMOUNT' => float_to_raw_string($amount),
@@ -146,23 +143,23 @@ class Hook_payment_gateway_worldpay
     /**
      * Make a subscription (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  float $amount A transaction amount.
+     * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
-     * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units)
     {
         // https://support.worldpay.com/support/kb/bg/recurringpayments/rpfp.html
 
         $username = $this->_get_username();
         $form_url = $this->_get_remote_form_url();
-        $trans_id = $this->generate_trans_id();
         $length_units_2 = '1';
         $first_repeat = time();
         switch ($length_units) {
@@ -184,30 +181,15 @@ class Hook_payment_gateway_worldpay
                 break;
         }
         $digest_option = get_option('payment_gateway_digest');
-        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_id . ':' . float_to_raw_string($amount) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
-        $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
-
-        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
+        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_expecting_id . ':' . float_to_raw_string($amount) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
+        $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_expecting_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY', array(
             '_GUID' => '1f88716137762a467edbf5fbb980c6fe',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
-            'PURCHASE_ID' => $trans_id,
+            'PURCHASE_ID' => $purchase_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
             'LENGTH' => strval($length),
@@ -267,23 +249,9 @@ class Hook_payment_gateway_worldpay
     {
         // http://support.worldpay.com/support/kb/bg/paymentresponse/pr0000.html
 
-        $code = post_param_string('transStatus');
-        if ($code == 'C') {
-            if (!running_script('ecommerce')) {
-                return null;
-            }
-            exit(); // Cancellation signal, won't process
-        }
+        $trans_expecting_id = post_param_string('cartId');
 
-        $txn_id = post_param_string('transId');
-        $cart_id = post_param_string('cartId');
-        if (post_param_string('futurePayType', '') == 'regular') {
-            $subscription = true;
-        } else {
-            $subscription = false;
-        }
-
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $cart_id), '', 1);
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
             if (!running_script('ecommerce')) {
                 return null;
@@ -293,20 +261,36 @@ class Hook_payment_gateway_worldpay
         $transaction_row = $transaction_rows[0];
 
         $member_id = $transaction_row['e_member_id'];
-        $item_name = $subscription ? '' : $transaction_row['e_item_name'];
+        $type_code = $transaction_row['e_type_code'];
+        $item_name = $transaction_row['e_item_name'];
         $purchase_id = $transaction_row['e_purchase_id'];
 
+        $code = post_param_string('transStatus');
+        if ($code == 'C') {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
+            exit(); // Cancellation signal, won't process
+        }
         $success = ($code == 'Y');
+
+        $txn_id = post_param_string('transId');
+        if (post_param_string('futurePayType', '') == 'regular') {
+            $is_subscription = true;
+        } else {
+            $is_subscription = false;
+        }
         $message = post_param_string('rawAuthMessage');
-
-        $payment_status = $success ? 'Completed' : 'Failed';
-        $reason_code = '';
+        $status = $success ? 'Completed' : 'Failed';
+        $reason = '';
         $pending_reason = '';
-        $memo = '';
-        $mc_gross = post_param_string('authAmount');
-        $mc_currency = post_param_string('authCurrency');
-        $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
+        $memo = $transaction_row['e_memo'];
+        $amount = post_param_string('authAmount');
+        $currency = post_param_string('authCurrency');
+        $parent_txn_id = '';
+        $period = '';
 
+        // SECURITY
         if (post_param_string('callbackPW') != get_option('payment_gateway_callback_password')) {
             if (!running_script('ecommerce')) {
                 return null;
@@ -314,18 +298,14 @@ class Hook_payment_gateway_worldpay
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 
-        if ($success) {
-            require_code('notifications');
-            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
-        }
-
+        // Shopping cart
         if (addon_installed('shopping')) {
-            if ($transaction_row['e_type_code'] == 'cart_orders') {
+            if (preg_match('#^CART_ORDER_#', $type_code) != 0) {
                 $this->store_shipping_address(intval($purchase_id));
             }
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '', '');
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**

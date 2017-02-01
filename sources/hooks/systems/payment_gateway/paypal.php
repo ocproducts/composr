@@ -24,6 +24,18 @@
 class Hook_payment_gateway_paypal
 {
     /**
+     * Get a standardised config map.
+     *
+     * @return array The config
+     */
+    public function get_config()
+    {
+        return array(
+            'supports_remote_memo' => true,
+        );
+    }
+
+    /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
      * @param  float $amount A transaction amount.
@@ -55,8 +67,20 @@ class Hook_payment_gateway_paypal
     }
 
     /**
+     * Generate a transaction ID.
+     *
+     * @return string A transaction ID.
+     */
+    public function generate_trans_id()
+    {
+        require_code('crypt');
+        return get_rand_password();
+    }
+
+    /**
      * Make a transaction (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
@@ -64,7 +88,7 @@ class Hook_payment_gateway_paypal
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency)
     {
         // https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/formbasics/
 
@@ -76,6 +100,7 @@ class Hook_payment_gateway_paypal
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
@@ -88,12 +113,13 @@ class Hook_payment_gateway_paypal
      * Make a transaction (payment) button for multiple shopping cart items.
      * Optional method, provides more detail than make_transaction_button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  array $items Items array.
      * @param  Tempcode $currency Currency symbol.
      * @param  AUTO_LINK $order_id Order ID.
      * @return Tempcode The button.
      */
-    public function make_cart_transaction_button($items, $currency, $order_id)
+    public function make_cart_transaction_button($trans_expecting_id, $items, $currency, $order_id)
     {
         $payment_address = $this->_get_payment_address();
 
@@ -109,6 +135,7 @@ class Hook_payment_gateway_paypal
             'FORM_URL' => $form_url,
             'MEMBER_ADDRESS' => $this->_build_member_address(),
             'ORDER_ID' => strval($order_id),
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'NOTIFICATION_TEXT' => $notification_text,
         ));
     }
@@ -116,17 +143,18 @@ class Hook_payment_gateway_paypal
     /**
      * Make a subscription (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  float $amount A transaction amount.
+     * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
-     * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units)
     {
         $payment_address = $this->_get_payment_address();
         $form_url = $this->_get_remote_form_url();
@@ -137,6 +165,7 @@ class Hook_payment_gateway_paypal
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
@@ -186,10 +215,23 @@ class Hook_payment_gateway_paypal
      */
     public function handle_ipn_transaction()
     {
-        $purchase_id = post_param_string('custom', '-1');
+        $trans_expecting_id = post_param_string('custom');
 
-        // Read in stuff we'll just log
-        $reason_code = post_param_string('reason_code', '');
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
+        if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+        $transaction_row = $transaction_rows[0];
+
+        $member_id = $transaction_row['e_member_id'];
+        $type_code = $transaction_row['e_type_code'];
+        $item_name = $transaction_row['e_item_name'];
+        $purchase_id = $transaction_row['e_purchase_id'];
+
+        $reason = post_param_string('reason_code', '');
         $pending_reason = post_param_string('pending_reason', '');
         $memo = post_param_string('memo', '');
         foreach (array_keys($_POST) as $key) { // Custom product options go onto the memo
@@ -200,22 +242,18 @@ class Hook_payment_gateway_paypal
         }
         $txn_id = post_param_string('txn_id', ''); // May be blank for subscription, will be overwritten for them
         $parent_txn_id = post_param_string('parent_txn_id', '-1');
-
-        // Work out how much money was made for the hook
-        $mc_gross = post_param_string('mc_gross', ''); // May be blank for subscription
+        $amount = post_param_string('mc_gross', ''); // May be blank for subscription
         $tax = post_param_string('tax', '');
-        if (($tax != '') && (intval($tax) > 0) && ($mc_gross != '')) {
-            $mc_gross = float_to_raw_string(floatval($mc_gross) - floatval($tax));
+        if (($tax != '') && (intval($tax) > 0) && ($amount != '')) {
+            $amount = float_to_raw_string(floatval($amount) - floatval($tax));
         }
         /* Actually, the hook will have added shipping to the overall product cost
         $shipping = post_param_string('shipping', '');
-        if (($shipping != '') && (intval($shipping) > 0) && ($mc_gross != '')) {
-            $mc_gross = float_to_raw_string(floatval($mc_gross) - floatval($shipping));
+        if (($shipping != '') && (intval($shipping) > 0) && ($amount != '')) {
+            $amount = float_to_raw_string(floatval($amount) - floatval($shipping));
         }
         */
-        $mc_currency = post_param_string('mc_currency', ''); // May be blank for subscription
-
-        // More stuff that we might need
+        $currency = post_param_string('mc_currency', get_option('currency')); // May be blank for subscription
         $period = post_param_string('period3', '');
 
         // Valid transaction types / pre-processing for $item_name based on mapping rules
@@ -223,7 +261,8 @@ class Hook_payment_gateway_paypal
         switch ($txn_type) {
             // Product
             case 'web_accept':
-                $item_name = post_param_string('item_name');
+            case 'cart':
+                $is_subscription = false;
                 break;
 
             // Subscription
@@ -233,13 +272,7 @@ class Hook_payment_gateway_paypal
             case 'subscr_modify':
             case 'subscr_cancel':
             case 'subscr_eot':
-                $item_name = ''; // These map through the Composr subscriptions table, based upon purchase_id; our blank item name will tell us we need to do that (blank item name --> a subscription not an item)
-                break;
-
-            // Cart
-            case 'cart':
-                require_lang('shopping');
-                $item_name = do_lang('CART_ORDER', $purchase_id); // We will detect as the correct cart-order from the re-mapped item_name. This is a specially recognised item naming, reserved for cart products.
+                $is_subscription = true;
                 break;
 
             // (Non-supported)
@@ -267,11 +300,11 @@ class Hook_payment_gateway_paypal
                 }
                 exit(); // Non-supported for IPN in Composr
         }
-        $payment_status = post_param_string('payment_status', '');
-        switch ($payment_status) {
+        $status = post_param_string('payment_status', '');
+        switch ($status) {
             // Subscription
             case '': // We map certain values of txn_type for subscriptions over to payment_status, as subscriptions have no payment status but similar data in txn_type which we do not use
-                $mc_gross = post_param_string('mc_amount3');
+                $amount = post_param_string('mc_amount3');
 
                 switch ($txn_type) {
                     case 'subscr_signup':
@@ -291,7 +324,7 @@ class Hook_payment_gateway_paypal
                             fatal_ipn_exit(do_lang('IPN_BAD_TRIAL'));
                         }
 
-                        $payment_status = 'Completed';
+                        $status = 'Completed';
                         $txn_id = post_param_string('subscr_id');
 
                         // NB: subscr_date is sent by IPN, but not user-settable. For the more complex PayPal APIs we may need to validate it
@@ -311,7 +344,7 @@ class Hook_payment_gateway_paypal
                         exit(); // PayPal auto-cancels at a configured point ("To avoid unnecessary cancellations, you can specify that PayPal should reattempt failed payments before canceling subscriptions."). So, we only listen to the actual cancellation signal.
 
                     case 'subscr_modify':
-                        $payment_status = 'SModified';
+                        $status = 'SModified';
                         $txn_id = post_param_string('subscr_id') . '-m';
                         break;
 
@@ -323,7 +356,7 @@ class Hook_payment_gateway_paypal
 
                     case 'subscr_eot': // NB: An 'eot' means "end of *final* term" (i.e. if a payment fail / cancel / natural last term, has happened). PayPal's terminology is a little dodgy here.
                     case 'recurring_payment_suspended_due_to_max_failed_payment':
-                        $payment_status = 'SCancelled';
+                        $status = 'SCancelled';
                         $txn_id = post_param_string('subscr_id') . '-c';
                         break;
                 }
@@ -336,7 +369,7 @@ class Hook_payment_gateway_paypal
             // Completed
             case 'Completed':
             case 'Created':
-                $payment_status = 'Completed';
+                $status = 'Completed';
                 break;
 
             // (Non-supported)
@@ -406,13 +439,12 @@ class Hook_payment_gateway_paypal
 
         // Shopping cart
         if (addon_installed('shopping')) {
-            list(, $type_code) = find_product_details($item_name, true, true);
-            if ($type_code == 'cart_orders') {
+            if (preg_match('#^CART_ORDER_#', $type_code) != 0) {
                 $this->store_shipping_address(intval($purchase_id));
             }
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period);
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**

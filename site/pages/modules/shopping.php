@@ -245,16 +245,6 @@ class Module_shopping
             $this->title = get_screen_title('SHOPPING');
         }
 
-        if ($type == 'finish') {
-            if ($ecom_catalogue_count == 1) {
-                breadcrumb_set_parents(array(array('_SELF:catalogues:category:=' . $ecom_catalogue_id, do_lang_tempcode('DEFAULT_CATALOGUE_PRODUCTS_TITLE')), array('_SELF:_SELF:browse', do_lang_tempcode('SHOPPING'))));
-            } else {
-                breadcrumb_set_parents(array(array('_SELF:catalogues:browse:ecommerce=1', do_lang_tempcode('CATALOGUES')), array('_SELF:_SELF:browse', do_lang_tempcode('SHOPPING'))));
-            }
-
-            $this->title = get_screen_title('_PURCHASE_FINISHED');
-        }
-
         if ($type == 'my_orders') {
             $this->title = get_screen_title('MY_ORDERS');
         }
@@ -309,9 +299,6 @@ class Module_shopping
         }
         if ($type == 'empty_cart') {
             return $this->empty_cart();
-        }
-        if ($type == 'finish') {
-            return $this->finish();
         }
         if ($type == 'my_orders') {
             return $this->my_orders();
@@ -547,70 +534,6 @@ class Module_shopping
     }
 
     /**
-     * Finish step.
-     *
-     * @return Tempcode The result of execution.
-     */
-    public function finish()
-    {
-        $payment_gateway = get_option('payment_gateway');
-        require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-        $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-
-        $message = get_param_string('message', null);
-        if ($message === null) {
-            if (method_exists($payment_gateway_object, 'get_callback_url_message')) {
-                $message = $payment_gateway_object->get_callback_url_message();
-            }
-        }
-
-        require_code('shopping');
-
-        if (get_param_integer('cancel', 0) == 1) {
-            delete_pending_orders_for_current_user(); // Don't lock the stock unless they go back to the cart again
-
-            if ($message !== null) {
-                return $this->wrap(do_template('ECOM_PURCHASE_STAGE_FINISH', array('_GUID' => '6eafce1925e5069ceb438ec24754b47d', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
-            }
-
-            return inform_screen(get_screen_title('PURCHASING'), do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
-        }
-
-        if (perform_local_payment()) {
-            list($success, $message, $message_raw) = do_local_transaction($payment_gateway, $payment_gateway_object);
-            if (!$success) {
-                attach_message($message, 'warn');
-                return $this->view_shopping_cart();
-            }
-        }
-
-        // We know success at this point...
-
-        empty_cart();
-
-        log_cart_actions('Completed payment');
-
-        if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
-            handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
-        }
-
-        $redirect = get_param_string('redirect', null);
-
-        if ($redirect === null) {
-            list(, , $product_object) = find_product_details('cart_orders');
-            if (method_exists($product_object, 'get_finish_url')) {
-                $redirect = $product_object->get_finish_url('cart_orders', $message);
-            }
-        }
-
-        if ($redirect !== null) {
-            return redirect_screen($this->title, $redirect, $message);
-        }
-
-        return $this->wrap(do_template('ECOM_PURCHASE_STAGE_FINISH', array('_GUID' => '3857e761ab75f314f4960805bc76b936', 'TITLE' => $this->title, 'MESSAGE' => $message)), $this->title, null);
-    }
-
-    /**
      * Wrap-up so as to remove redundancy in templates.
      *
      * @param  Tempcode $content To wrap.
@@ -650,7 +573,7 @@ class Module_shopping
             if ($row['purchase_through'] == 'cart') {
                 $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
 
-                $order_title = do_lang('CART_ORDER', $row['id']);
+                $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
                 $res = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_id', 'p_name'), array('order_id' => $row['id']));
 

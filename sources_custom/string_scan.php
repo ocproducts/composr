@@ -5513,7 +5513,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_SHELL_ZIP_POSSIBLE2
         NO_SUCH_CONTENT_TYPE
         NO_SUCH_RENDERER
-        NO_SUCH_SUBSCRIPTION
         NO_SUCH_THEME
         NO_SUCH_THEME_IMAGE
         NO_SUCH_ZONE
@@ -6084,7 +6083,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         RESTRICTION_CELL
         RESTRICT_PAGE_VISIBILITY
         RESULT
-        RETURN_PRODUCT
+        RETURNED_PRODUCT
         REVEAL_ANSWERS
         REVERSE
         REVERSE_THUMB_ORDER
@@ -7091,6 +7090,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_about_NAME
         NO_DAYLIGHT_SAVING
         NOTIFICATION_TYPE_payment_received
+        notification_type_payment_received_staff
         AUTOMATIC_CATEGORY_ACCESS_BODY
         AUTOMATIC_CATEGORY_ACCESS_SUBJECT
         BANNERS_INTRO
@@ -7471,7 +7471,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHAT_USERSONLINE_BOTMSG
         CHAT_WEBSITE_HELPER_BOT
         CHECKOUT_NOTIFICATION_TEXT
-        CHECK_OUT
         CHILD_PAGES
         CHILD_PLU
         CHOOSE
@@ -8773,9 +8772,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PASSWORD_TOO_SHORT
         PATTERN_NOT_MATCHED
         PAUSE
-        PAYMENT_HEADING
         PAYMENT_RECEIVED_BODY
         PAYMENT_RECEIVED_SUBJECT
+        PAYMENT_SENT_BODY
+        PAYMENT_SENT_SUBJECT
         PEOPLE_NOW_FRIENDS
         PERCENTAGE
         PERFORM_ACTION_ON_PREVIEW
@@ -9329,9 +9329,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TIME_RANGE_START
         TIME_REMAINING
         TITLE
-        TITLE_NEWFORWARDING
-        TITLE_NEWPOP3
-        TITLE_QUOTA
+        NEWFORWARDING_TITLE
+        NEWPOP3_TITLE
+        QUOTA_TITLE
         TITLE_TOO_LONG
         TO
         TODAY
@@ -9635,7 +9635,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _POINTS_SPENT
         _POLL_REQUIRES_REPLY
         _PR_LUCKY
-        _PURCHASE_FINISHED
         _QUOTE_POST
         _RECOMMEND_SITE
         _REDIRECTING

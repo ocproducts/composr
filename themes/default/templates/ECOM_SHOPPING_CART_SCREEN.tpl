@@ -57,8 +57,6 @@
 	{+START,IF_NON_EMPTY,{FINISH_URL}}
 		{$,Form}
 
-		<h2>{!PAYMENT_HEADING}</h2>
-
 		<form title="{!PRIMARY_PAGE_FORM}" method="post" enctype="multipart/form-data" action="{FINISH_URL*}" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 

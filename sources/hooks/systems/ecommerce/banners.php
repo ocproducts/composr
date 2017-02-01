@@ -49,12 +49,10 @@ class Hook_ecommerce_banners
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         if (!addon_installed('banners')) {
             return array();
@@ -66,14 +64,14 @@ class Hook_ecommerce_banners
         $products = array();
 
         $products['BANNER_ACTIVATE'] = automatic_discount_calculation(array(
-            'item_name' => do_lang('BANNER_ACTIVATE', integer_format(intval(get_option('initial_banner_hits'))), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+            'item_name' => do_lang('BANNER_ACTIVATE', integer_format(intval(get_option('initial_banner_hits')))),
             'item_description' => do_lang_tempcode('BANNER_ACTIVATE_DESCRIPTION', escape_html(integer_format(intval(get_option('initial_banner_hits'))))),
             'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_one'),
 
             'type' => PRODUCT_PURCHASE,
             'type_special_details' => array(),
 
-            'price' => intval(get_option('banner_setup_price')),
+            'price' => float_to_raw_string(floatval(get_option('banner_setup_price'))),
             'currency' => get_option('currency'),
             'price_points' => intval(get_option('banner_setup_price_points')),
             'discount_points__num_points' => null,
@@ -104,14 +102,14 @@ class Hook_ecommerce_banners
 
         foreach (array(10, 20, 50, 100, 1000, 2000, 5000, 10000, 20000, 50000, 100000) as $hits) {
             $products['BANNER_UPGRADE_HITS_' . strval($hits)] = automatic_discount_calculation(array(
-                'item_name' => do_lang('BANNER_ADD_HITS', integer_format($hits), integer_format($current_hits), null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('BANNER_ADD_HITS', integer_format($hits), integer_format($current_hits)),
                 'item_description' => do_lang_tempcode('BANNER_ADD_HITS_DESCRIPTION', escape_html(integer_format($hits)), escape_html(integer_format($current_hits))),
                 'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_to_category'),
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => intval(get_option('banner_hit_price')) * $hits,
+                'price' => float_to_raw_string(floatval(get_option('banner_hit_price')) * $hits),
                 'currency' => get_option('currency'),
                 'price_points' => intval(get_option('banner_hit_price_points')) * $hits,
                 'discount_points__num_points' => null,
@@ -125,14 +123,14 @@ class Hook_ecommerce_banners
             $percentage = intval(round(100.0 * floatval($current_importance + $importance) / floatval($total_importance)));
 
             $products['BANNER_UPGRADE_IMPORTANCE_' . strval($importance)] = automatic_discount_calculation(array(
-                'item_name' => do_lang('BANNER_ADD_IMPORTANCE', integer_format($importance), $percentage, null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('BANNER_ADD_IMPORTANCE', integer_format($importance), $percentage),
                 'item_description' => do_lang_tempcode('BANNER_ADD_IMPORTANCE_DESCRIPTION', escape_html(integer_format($importance)), escape_html($percentage)),
                 'item_image_url' => find_theme_image('icons/48x48/buttons/choose'),
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('banner_imp_price') == '') ? null : (intval(get_option('banner_imp_price')) * $importance),
+                'price' => (get_option('banner_imp_price') == '') ? null : float_to_raw_string(floatval(get_option('banner_imp_price')) * $importance),
                 'currency' => get_option('currency'),
                 'price_points' => (get_option('banner_imp_price_points') == '') ? null : (intval(get_option('banner_imp_price_points')) * $importance),
                 'discount_points__num_points' => null,
@@ -251,6 +249,8 @@ class Hook_ecommerce_banners
                 return array(null, null, null);
         }
 
+        ecommerce_attach_memo_field_if_needed($fields);
+
         return array($fields, null, $javascript);
     }
 
@@ -300,12 +300,13 @@ class Hook_ecommerce_banners
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         require_lang('ecommerce');
@@ -341,6 +342,7 @@ class Hook_ecommerce_banners
                 }
                 $banner_code = do_template('BANNER_SHOW_CODE', array('_GUID' => 'c96f0ce22de97782b1ab9bee3f43c0ba', 'TYPE' => '', 'NAME' => $name, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height'])));
 
+                // Show a message about banner usage (will only be seen if buying with points)
                 $result = do_template('BANNER_ADDED_SCREEN', array('_GUID' => '68725923b19d3df71c72276ada826183', 'TITLE' => '', 'TEXT' => $text, 'BANNER_CODE' => $banner_code, 'STATS_URL' => $stats_url, 'DO_NEXT' => ''));
                 global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
                 $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = protect_from_escaping($result); // Note that this won't show for everyone, it depends on the payment method
@@ -377,6 +379,8 @@ class Hook_ecommerce_banners
 
                 break;
         }
+
+        return true;
     }
 
     /**

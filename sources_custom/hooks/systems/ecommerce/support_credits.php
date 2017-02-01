@@ -40,12 +40,10 @@ class Hook_ecommerce_support_credits
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         if (!$GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
             return array();
@@ -61,7 +59,7 @@ class Hook_ecommerce_support_credits
         $bundles = array(1, 2, 3, 4, 5, 6, 9, 20, 25, 35, 50, 90, 180, 550);
         foreach ($bundles as $bundle) {
             $products[strval($bundle) . '_CREDITS'] = array(
-                'item_name' => do_lang('CUSTOMER_SUPPORT_CREDITS', integer_format($bundle), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('CUSTOMER_SUPPORT_CREDITS', integer_format($bundle)),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
 
@@ -128,6 +126,8 @@ class Hook_ecommerce_support_credits
         $fields = new Tempcode();
         $fields->attach(form_input_username(do_lang('USERNAME'), do_lang('USERNAME_CREDITS_FOR'), 'member_username', $username, true));
 
+        ecommerce_attach_memo_field_if_needed($fields);
+
         return array($fields, null, null);
     }
 
@@ -171,12 +171,13 @@ class Hook_ecommerce_support_credits
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         $row = $GLOBALS['SITE_DB']->query_select('credit_purchases', array('member_id', 'num_credits'), array('purchase_validated' => 0, 'purchase_id' => intval($purchase_id)), '', 1);
@@ -204,6 +205,8 @@ class Hook_ecommerce_support_credits
         $GLOBALS['SITE_DB']->query_update('credit_purchases', array('purchase_validated' => 1), array('purchase_id' => intval($purchase_id)));
 
         $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('CREDITS', null, null, null, get_site_default_lang()), 'details2' => strval($num_credits), 'transaction_id' => $details['TXN_ID']));
+
+        return true;
     }
 
     /**

@@ -138,20 +138,22 @@ class shopping_test_set extends cms_test_case
 
     public function testHandleTransaction()
     {
-        $purchase_id = strval($GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array()));
-        $item_name = lorem_phrase();
-        $payment_status = 'Completed';
-        $reason_code = '';
+        $purchase_id = strval($GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)', array()));
+        $type_code = 'CART_ORDER_' . $purchase_id;
+        $item_name = do_lang('CART_ORDER', $purchase_id);
+        $status = 'Completed';
+        $reason = '';
         $pending_reason = 'bar';
         $memo = 'foo';
-        $mc_gross = (get_db_type() == 'xml'/*rounding difference*/) ? '71.40' : '71.77';
-        $mc_currency = get_option('currency');
+        $amount = (get_db_type() == 'xml'/*rounding difference*/) ? '71.40' : '71.77';
+        $currency = get_option('currency');
         $txn_id = '0';
         $parent_txn_id = '0';
         $period = '';
-        $payment_gateway = 'paypal';
+        $payment_gateway = 'manual';
+        $is_subscription = false;
 
-        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway);
+        handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, get_member(), $payment_gateway);
     }
 
     public function tearDown()

@@ -31,6 +31,18 @@ class Hook_payment_gateway_secpay
     //  You have the SecPay "Hash key" option set as the Composr "Gateway digest code" option 
 
     /**
+     * Get a standardised config map.
+     *
+     * @return array The config
+     */
+    public function get_config()
+    {
+        return array(
+            'supports_remote_memo' => false,
+        );
+    }
+
+    /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
      * @param  float $amount A transaction amount.
@@ -91,6 +103,7 @@ class Hook_payment_gateway_secpay
     /**
      * Make a transaction (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
@@ -98,39 +111,22 @@ class Hook_payment_gateway_secpay
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency)
     {
         // https://www.secpay.com/sc_api.html
 
         $username = $this->_get_username();
         $form_url = $this->_get_remote_form_url();
-        $trans_id = $this->generate_trans_id();
-        $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
-
-        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
+        $digest = md5($trans_expecting_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_SECPAY', array(
             '_GUID' => 'e68e80cb637f8448ef62cd7d73927722',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
-            'TRANS_ID' => $trans_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
@@ -142,50 +138,34 @@ class Hook_payment_gateway_secpay
     /**
      * Make a subscription (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  float $amount A transaction amount.
+     * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
-     * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units)
     {
         // https://www.secpay.com/sc_api.html
 
         $username = $this->_get_username();
         $form_url = $this->_get_remote_form_url();
-        $trans_id = $this->generate_trans_id();
-        $digest = md5($trans_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
+        $digest = md5($trans_expecting_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
         list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
-
-        // No 'custom' field for gateway to encode $purchase_id next to $item_name, so we need to pass through a single transaction ID
-        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => $length,
-            'e_length_units' => $length_units,
-        ));
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY', array(
             '_GUID' => 'e5e6d6835ee6da1a6cf02ff8c2476aa6',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
-            'TRANS_ID' => $trans_id,
             'FIRST_REPEAT' => $first_repeat,
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
@@ -278,14 +258,17 @@ class Hook_payment_gateway_secpay
     public function handle_ipn_transaction()
     {
         $txn_id = post_param_string('trans_id');
+
         if (substr($txn_id, 0, 7) == 'subscr_') { // "subscr_" was added in by us explicitly in ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY.tpl
-            $subscription = true;
+            $is_subscription = true;
             $txn_id = substr($txn_id, 7);
         } else {
-            $subscription = false;
+            $is_subscription = false;
         }
 
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $txn_id), '', 1);
+        $trans_expecting_id = $txn_id;
+
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
             if (!running_script('ecommerce')) {
                 return null;
@@ -295,7 +278,8 @@ class Hook_payment_gateway_secpay
         $transaction_row = $transaction_rows[0];
 
         $member_id = $transaction_row['e_member_id'];
-        $item_name = $subscription ? '' : $transaction_row['e_item_name'];
+        $type_code = $transaction_row['e_type_code'];
+        $item_name = $transaction_row['e_item_name'];
         $purchase_id = $transaction_row['e_purchase_id'];
 
         $code = post_param_string('code');
@@ -356,16 +340,25 @@ class Hook_payment_gateway_secpay
             }
         }
 
-        $payment_status = $success ? 'Completed' : 'Failed';
-        $reason_code = '';
+        $status = $success ? 'Completed' : 'Failed';
+        $reason = '';
         $pending_reason = '';
-        $memo = '';
-        $mc_gross = post_param_string('amount');
-        $mc_currency = post_param_string('currency', ''); // May be blank for subscription
+        $memo = $transaction_row['e_memo'];
+        $amount = post_param_string('amount');
+        $currency = post_param_string('currency', get_option('currency')); // May be blank for subscription
+        $parent_txn_id = '';
+        $period = '';
 
-        // Validate
+        // Subscription stuff
+        if (get_param_integer('subc', 0) == 1) {
+            if (!$success) {
+                $status = 'SCancelled';
+            }
+        }
+
+        // SECURITY
         $hash = post_param_string('hash');
-        if ($subscription) {
+        if ($is_subscription) {
             $my_hash = md5('trans_id=' . $txn_id . '&' . 'req_cv2=true' . '&' . get_option('payment_gateway_digest'));
         } else {
             $repeat = $this->_translate_subscription_details($transaction_row['e_length'], $transaction_row['e_length_units']);
@@ -378,21 +371,10 @@ class Hook_payment_gateway_secpay
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 
-        if ($success) {
-            require_code('notifications');
-            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, null, null, get_lang($member_id)), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($mc_gross)), $mc_currency, get_site_name(), get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
-        }
-
+        // Shopping cart
         if (addon_installed('shopping')) {
-            if ($transaction_row['e_type_code'] == 'cart_orders') {
+            if (preg_match('#^CART_ORDER_#', $type_code) != 0) {
                 $this->store_shipping_address(intval($purchase_id));
-            }
-        }
-
-        // Subscription stuff
-        if (get_param_integer('subc', 0) == 1) {
-            if (!$success) {
-                $payment_status = 'SCancelled';
             }
         }
 
@@ -405,7 +387,7 @@ class Hook_payment_gateway_secpay
         $url = $_url->evaluate();
         echo http_download_file($url, null, false);
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '', '');
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**
@@ -460,14 +442,14 @@ class Hook_payment_gateway_secpay
         $password = get_option('payment_gateway_password');
         $vpn_password = get_option('payment_gateway_vpn_password');
 
-        $trans_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_transactions', 'id', array('t_purchase_id' => strval($subscription_id)));
-        if ($trans_id === null) {
+        $txn_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_transactions', 'id', array('t_purchase_id' => strval($subscription_id)));
+        if ($txn_id === null) {
             return false;
         }
-        $trans_id = 'subscr_' . $trans_id;
+        $txn_id = 'subscr_' . $txn_id;
 
         require_code('xmlrpc');
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $vpn_password, $trans_id, -1, $password, '', '', '', '', '', 'repeat_change=true,repeat=false'));
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.repeatCardFullAddr', array($username, $vpn_password, $txn_id, -1, $password, '', '', '', '', '', 'repeat_change=true,repeat=false'));
         $map = $this->_parse_result($result);
         $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
 
@@ -477,7 +459,7 @@ class Hook_payment_gateway_secpay
     /**
      * Perform a transaction (local not remote).
      *
-     * @param  ID_TEXT $trans_id The transaction ID we have generated for this transaction.
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  SHORT_TEXT $cardholder_name Cardholder name.
      * @param  SHORT_TEXT $card_type Card Type.
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
@@ -507,15 +489,15 @@ class Hook_payment_gateway_secpay
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
      * @set    d w m y
-     * @return array A tuple: success (boolean), message (string), raw message (string).
+     * @return array A tuple: success (boolean), message (string), raw message (string), transaction ID (string).
      */
-    public function do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
+    public function do_local_transaction($trans_expecting_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
         // https://www.secpay.com/xmlrpc/
 
         $username = $this->_get_username();
         $vpn_password = get_option('payment_gateway_vpn_password');
-        $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_password'));
+        $digest = md5($trans_expecting_id . strval($amount) . get_option('payment_gateway_password'));
         $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($card_cv2)) . ',mand_cv2=true';
         if (ecommerce_test_mode()) {
             $options .= ',test_status=true';
@@ -525,7 +507,7 @@ class Hook_payment_gateway_secpay
             $options .= ',repeat=' . $first_repeat . '/' . $length_units_2 . '/0/' . $amount;
         }
 
-        $item_name = $GLOBALS['SITE_DB']->query_select_value('ecom_trans_expecting', 'e_item_name', array('id' => $trans_id));
+        $item_name = $GLOBALS['SITE_DB']->query_select_value('ecom_trans_expecting', 'e_item_name', array('id' => $trans_expecting_id));
 
         $shipping_street_address_lines = explode("\n", $shipping_street_address, 2);
         $shipping_address = 'ship_name=' . $shipping_firstname . ' ' . $shipping_lastname . ',';
@@ -550,16 +532,16 @@ class Hook_payment_gateway_secpay
 
         require_code('xmlrpc');
         if ($length !== null) {
-            $trans_id = 'subscr_' . $trans_id;
+            $trans_expecting_id = 'subscr_' . $trans_expecting_id;
         }
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $vpn_password, $trans_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $vpn_password, $trans_expecting_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
         $map = $this->_parse_result($result);
 
         $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));
         $message_raw = array_key_exists('message', $map) ? $map['message'] : do_lang('INTERNAL_ERROR');
         $message = $success ? do_lang_tempcode('ACCEPTED_MESSAGE', escape_html($message_raw)) : do_lang_tempcode('DECLINED_MESSAGE', escape_html($message_raw));
 
-        return array($success, $message, $message_raw);
+        return array($success, $message, $message_raw, $trans_expecting_id);
     }
 
     /**

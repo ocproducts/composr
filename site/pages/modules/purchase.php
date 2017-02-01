@@ -109,19 +109,21 @@ class Module_purchase
         if ($upgrade_from === null) {
             add_privilege('ECOMMERCE', 'access_ecommerce_in_test_mode', false);
 
-            $GLOBALS['SITE_DB']->create_table('ecom_trans_expecting', array( // Used by payment gateways that return limited information back via IPN, or for local transactions
+            $GLOBALS['SITE_DB']->create_table('ecom_trans_expecting', array( // Used to lock in and track transactions as they go through the payment gateway
                 'id' => '*ID_TEXT', // NB: This is often different from the 'ecom_transactions.id' field
                 'e_type_code' => 'ID_TEXT',
                 'e_purchase_id' => 'ID_TEXT',
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
-                'e_amount' => 'SHORT_TEXT',
+                'e_price' => 'ID_TEXT',
                 'e_currency' => 'ID_TEXT',
+                'e_price_points' => 'INTEGER', // This is supplementary, not an alternative; if it is only points then no ecom_trans_expecting record will be created
                 'e_ip_address' => 'IP',
                 'e_session_id' => 'ID_TEXT',
                 'e_time' => 'TIME',
                 'e_length' => '?INTEGER',
                 'e_length_units' => 'ID_TEXT',
+                'e_memo' => 'LONG_TEXT',
             ));
 
             require_code('currency');
@@ -143,12 +145,12 @@ class Module_purchase
             }
 
             $GLOBALS['SITE_DB']->create_table('ecom_transactions', array(
-                'id' => '*ID_TEXT',
+                'id' => '*ID_TEXT', // Often referenced as txn_id in code
                 't_type_code' => 'ID_TEXT',
                 't_purchase_id' => 'ID_TEXT',
                 't_status' => 'SHORT_TEXT',
                 't_reason' => 'SHORT_TEXT',
-                't_amount' => 'SHORT_TEXT',
+                't_amount' => 'ID_TEXT',
                 't_currency' => 'ID_TEXT',
                 't_parent_txn_id' => 'ID_TEXT',
                 't_time' => '*TIME',
@@ -213,13 +215,16 @@ class Module_purchase
             rename_config_option('vpn_password', 'payment_gateway_vpn_password');
             rename_config_option('callback_password', 'payment_gateway_callback_password');
 
-            $GLOBALS['SITE_DB']->alter_table_field('transactions', 't_payment_gateway', 'ID_TEXT', 't_payment_gateway');
-
-            $GLOBALS['SITE_DB']->create_index('transactions', 't_time', array('t_time'));
-            $GLOBALS['SITE_DB']->create_index('transactions', 't_type_code', array('t_type_code'));
+            $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_amount', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
+            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
 
             $GLOBALS['SITE_DB']->rename_table('trans_expecting', 'ecom_trans_expecting');
-            $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_trans_expecting', 'e_amount', 'ID_TEXT', 'e_price');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_memo', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_price_points', 'INTEGER', 0);
 
             if ($GLOBALS['SITE_DB']->table_exists('prices')) {
                 $GLOBALS['SITE_DB']->rename_table('prices', 'ecom_prods_prices');
@@ -235,7 +240,6 @@ class Module_purchase
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_price', 'ID_TEXT', '');
 
                 $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
-
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'transaction_id', 'ID_TEXT', '');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'memberid', 'MEMBER', 'member_id');
                 $sales = $GLOBALS['SITE_DB']->query_select('ecom_sales', array('*'));
@@ -939,7 +943,7 @@ class Module_purchase
     public function pay()
     {
         $type_code = get_param_string('type_code');
-        list($details, , $product_object) = find_product_details($type_code, false, true);
+        list($details, , $product_object) = find_product_details($type_code);
 
         $payment_gateway = get_option('payment_gateway');
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
@@ -1055,8 +1059,9 @@ class Module_purchase
                 $type_code,
                 $item_name,
                 $purchase_id,
-                $price,
+                floatval($price),
                 $currency,
+                ($points_for_discount === null) ? 0 : $points_for_discount,
                 ($details['type'] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
                 ($details['type'] == PRODUCT_SUBSCRIPTION) ? $length_units : '',
                 $payment_gateway,
@@ -1090,9 +1095,9 @@ class Module_purchase
             }
 
             if ($details['type'] == PRODUCT_SUBSCRIPTION) {
-                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $length, $length_units, $currency, $payment_gateway);
+                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, floatval($price), $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
             } else {
-                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, $payment_gateway);
+                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, floatval($price), $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $payment_gateway);
             }
 
             $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
@@ -1170,8 +1175,8 @@ class Module_purchase
             return inform_screen($this->title, do_lang_tempcode('PRODUCT_PURCHASE_CANCEL'), true);
         }
 
-        if ($subtype == 'points_payment') {
-            list($details, , $product_object) = find_product_details($type_code, false, true);
+        if ($subtype == 'points_payment') { // No eCommerce payment required
+            list($details, , $product_object) = find_product_details($type_code);
             $item_name = $details['item_name'];
 
             $purchase_id = get_param_string('purchase_id');
@@ -1186,21 +1191,27 @@ class Module_purchase
                 charge_member($member_id, $points_for_discount, do_lang('FREE_ECOMMERCE_PRODUCT', $item_name));
                 $message = do_lang_tempcode('POINTS_PURCHASE', escape_html(integer_format($points_for_discount)));
                 $memo = do_lang('POINTS');
-                $mc_gross = strval($points_for_discount);
-                $currency = '';
+                $amount = strval($points_for_discount);
+                $currency = 'points'; // No charge_member will occur in handle_confirmed_transaction as ($currency == 'points') makes it avoid the pricing code
             } else {
                 $message = do_lang_tempcode('FREE_PURCHASE');
                 $memo = do_lang('FREE');
-                $mc_gross = '';
+                $amount = '';
                 $currency = get_option('currency');
             }
 
-            $payment_status = 'Completed';
-            $reason_code = '';
+            $status = 'Completed';
+            $reason = '';
             $pending_reason = '';
             $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
             $parent_txn_id = '';
-            handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $currency, $txn_id, $parent_txn_id, '', 'manual');
+            $is_subscription = ($details['type'] == PRODUCT_SUBSCRIPTION);
+            if ($is_subscription) {
+                $period = strtolower(strval($details['type_special_details']['length']) . ' ' . $details['type_special_details']['length_units']);
+            } else {
+                $period = '';
+            }
+            handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual');
 
             global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
             if ($ECOMMERCE_SPECIAL_SUCCESS_MESSAGE !== null) {

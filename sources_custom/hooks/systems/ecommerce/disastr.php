@@ -45,12 +45,10 @@ class Hook_ecommerce_disastr
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         if (!$GLOBALS['SITE_DB']->table_exists('members_diseases')) {
             return array();
@@ -70,7 +68,7 @@ class Hook_ecommerce_disastr
             }
 
             $products['CURE_' . strval($disease['id'])] = array(
-                'item_name' => do_lang('__CURE', $disease['name'], $disease['cure'], null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('__CURE', $disease['name'], $disease['cure']),
                 'item_description' => do_lang_tempcode('_CURE', escape_html($disease['name']), escape_html($disease['cure'])),
                 'item_image_url' => $image_url,
 
@@ -87,7 +85,7 @@ class Hook_ecommerce_disastr
             );
 
             $products['IMMUNISATION_' . strval($disease['id'])] = array(
-                'item_name' => do_lang('__IMMUNISATION', $disease['name'], $disease['immunisation'], null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('__IMMUNISATION', $disease['name'], $disease['immunisation']),
                 'item_description' => do_lang_tempcode('_IMMUNISATION', escape_html($disease['name']), escape_html($disease['immunisation'])),
                 'item_image_url' => $image_url,
 
@@ -169,12 +167,13 @@ class Hook_ecommerce_disastr
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         require_lang('disastr');
@@ -226,6 +225,7 @@ class Hook_ecommerce_disastr
             $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('IMMUNISATION', null, null, null, get_site_default_lang()), 'details2' => $disease_row['immunisation'], 'transaction_id' => $details['TXN_ID']));
         }
 
+        // There's an urgency, so show an instant message (plus buying via points, so will definitely be seen)
         if ($matches[1] == 'IMMUNISATION') {
             $result = do_lang_tempcode('IMMUNISATION_CONGRATULATIONS');
         } else {
@@ -233,6 +233,8 @@ class Hook_ecommerce_disastr
         }
         global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
         $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = $result;
+
+        return true;
     }
 
     /**

@@ -59,6 +59,18 @@ class Hook_payment_gateway_ccbill
     );
 
     /**
+     * Get a standardised config map.
+     *
+     * @return array The config
+     */
+    public function get_config()
+    {
+        return array(
+            'supports_remote_memo' => false,
+        );
+    }
+
+    /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
      * @param  float $amount A transaction amount.
@@ -80,8 +92,20 @@ class Hook_payment_gateway_ccbill
     }
 
     /**
+     * Generate a transaction ID.
+     *
+     * @return string A transaction ID.
+     */
+    public function generate_trans_id()
+    {
+        require_code('crypt');
+        return get_rand_password();
+    }
+
+    /**
      * Make a transaction (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
@@ -89,7 +113,7 @@ class Hook_payment_gateway_ccbill
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency)
     {
         if (!isset($this->currency_alphabetic_to_numeric_code[$currency])) {
             warn_exit(do_lang_tempcode('UNRECOGNISED_CURRENCY', 'ccbill', escape_html($currency)));
@@ -115,6 +139,7 @@ class Hook_payment_gateway_ccbill
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'AMOUNT' => float_to_raw_string($amount),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
@@ -131,17 +156,18 @@ class Hook_payment_gateway_ccbill
     /**
      * Make a subscription (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  float $amount A transaction amount.
+     * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
-     * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units)
     {
         if (!isset($this->currency_alphabetic_to_numeric_code[$currency])) {
             warn_exit(do_lang_tempcode('UNRECOGNISED_CURRENCY', 'ccbill', escape_html($currency)));
@@ -164,6 +190,7 @@ class Hook_payment_gateway_ccbill
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
             'AMOUNT' => float_to_raw_string($amount),
@@ -219,14 +246,41 @@ class Hook_payment_gateway_ccbill
      */
     public function handle_ipn_transaction()
     {
-        $purchase_id = post_param_integer('customPurchaseId');
+        $trans_expecting_id = post_param_integer('customPurchaseId');
+
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
+        if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
+                return null;
+            }
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+        $transaction_row = $transaction_rows[0];
+
+        $member_id = $transaction_row['e_member_id'];
+        $type_code = $transaction_row['e_type_code'];
+        $item_name = $transaction_row['e_item_name'];
+        $purchase_id = $transaction_row['e_purchase_id'];
 
         $subscription_id = post_param_string('subscription_id', '');
         $denial_id = post_param_string('denialId', '');
         $response_digest = post_param_string('responseDigest');
         $success_response_digest = md5($subscription_id . '1' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on success
         $denial_response_digest = md5($denial_id . '0' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on failure
+        $success = ($success_response_digest === $response_digest);
+        $is_subscription = (post_param_integer('customIsSubscription') == 1);
+        $status = $success ? 'Completed' : 'Failed';
+        $reason = post_param_integer('reasonForDeclineCode', 0);
+        $pending_reason = '';
+        $memo = '';
+        $amount = post_param_string('initialPrice');
+        $_currency = post_param_integer('baseCurrency', 0);
+        $currency = ($_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_currency];
+        $txn_id = post_param_string('consumerUniqueId');
+        $parent_txn_id = '';
+        $period = '';
 
+        // SECURITY
         if (($response_digest !== $success_response_digest) && ($response_digest !== $denial_response_digest)) {
             if (!running_script('ecommerce')) {
                 return null;
@@ -234,26 +288,14 @@ class Hook_payment_gateway_ccbill
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED')); // Hacker?!!!
         }
 
-        $success = ($success_response_digest === $response_digest);
-        $is_subscription = (post_param_integer('customIsSubscription') == 1);
-        $item_name = $is_subscription ? '' : post_param_string('customItemName');
-        $payment_status = $success ? 'Completed' : 'Failed';
-        $reason_code = post_param_integer('reasonForDeclineCode', 0);
-        $pending_reason = '';
-        $memo = '';
-        $mc_gross = post_param_string('initialPrice');
-        $_mc_currency = post_param_integer('baseCurrency', 0);
-        $mc_currency = ($_mc_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_mc_currency];
-        $txn_id = post_param_string('consumerUniqueId');
-
+        // Shopping cart
         if (addon_installed('shopping')) {
-            list(, $type_code) = find_product_details($item_name, true, true);
-            if ($type_code == 'cart_orders') {
+            if (preg_match('#^CART_ORDER_#', $type_code) != 0) {
                 $this->store_shipping_address(intval($purchase_id));
             }
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, '');
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**

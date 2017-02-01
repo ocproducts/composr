@@ -33,12 +33,10 @@ class Hook_ecommerce_cart_orders
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         $products = array();
 
@@ -49,12 +47,10 @@ class Hook_ecommerce_cart_orders
         }
 
         if ($search !== null) {
-            $l = do_lang('CART_ORDER', '', null, null, $site_lang ? get_site_default_lang() : user_lang());
-            if (substr($search, 0, strlen($l)) != $l) {
+            if (preg_match('#^CART_ORDER_#', $search) != 0) {
                 return array();
             }
-            $where = 'id=' . strval(intval(substr($search, strlen($l))));
-            // NB: $search_item_names is ignored because codename is the same as item name for this hook
+            $where = 'id=' . strval(intval(substr($search, strlen('CART_ORDER_'))));
         } else {
             $where = '(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')';
         }
@@ -71,8 +67,8 @@ class Hook_ecommerce_cart_orders
             $orders = $GLOBALS['SITE_DB']->query('SELECT id,tot_price FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where, 500, null, false, true);
 
             foreach ($orders as $order) {
-                $products[do_lang('CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang())] = array(
-                    'item_name' => do_lang('CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                $products['CART_ORDER_' . strval($order['id'])] = array(
+                    'item_name' => do_lang('CART_ORDER', strval($order['id'])),
                     'item_description' => do_lang_tempcode('CART_ORDER_DESCRIPTION', escape_html(strval($order['id']))),
                     'item_image_url' => find_theme_image('icons/48x48/menu/rich_content/ecommerce/shopping_cart'),
 
@@ -121,16 +117,31 @@ class Hook_ecommerce_cart_orders
     }
 
     /**
+     * Get fields that need to be filled in in the purchasing module.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     */
+    public function get_needed_fields($type_code)
+    {
+        $fields = mixed();
+        ecommerce_attach_memo_field_if_needed($fields);
+
+        return array(null, null, null);
+    }
+
+    /**
      * Handling of a product purchase change state.
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
         if (!isset($details['ORDER_STATUS'])) {
-            return;
+            return false;
         }
 
         require_code('shopping');
@@ -138,7 +149,7 @@ class Hook_ecommerce_cart_orders
 
         $order_id = intval($purchase_id);
 
-        if ($details['PAYMENT_STATUS'] == 'Completed') {
+        if ($details['STATUS'] == 'Completed') {
             $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'c_member', array('id' => $order_id));
             $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'transaction_id' => $details['TXN_ID']));
         }
@@ -166,6 +177,8 @@ class Hook_ecommerce_cart_orders
 
             // We won't log to the ecom_sales as we log the order instead (in much more detail)
         }
+
+        return false;
     }
 
     /**

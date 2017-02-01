@@ -49,12 +49,10 @@ class Hook_ecommerce_catalogue_items
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         if ($search === null) {
             $cnt = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries t1 LEFT JOIN ' . get_table_prefix() . 'catalogues t2 ON t1.c_name=t2.c_name', 'COUNT(*)', array('c_ecommerce' => 1));
@@ -69,14 +67,10 @@ class Hook_ecommerce_catalogue_items
 
         $where = array('c_ecommerce' => 1);
         if ($search !== null) {
-            if (!$search_item_names) {
-                if (!is_numeric($search)) {
-                    return array();
-                }
-                $where['id'] = intval($search);
-            } else {
-                // Unfortunately no easy efficient solution due to inability to do easy querying on catalogue fields. However, practically speaking, this code path will not be called, as catalogue items are purchased as part of a card order rather than separately.
+            if (!is_numeric($search)) {
+                return array();
             }
+            $where['id'] = intval($search);
         }
 
         if (php_function_allowed('set_time_limit')) {
@@ -90,12 +84,6 @@ class Hook_ecommerce_catalogue_items
                 $field_rows = get_catalogue_entry_field_values($ecomm_item['c_name'], $ecomm_item['id'], null, null, true);
 
                 $product_title = $field_rows[0]['effective_value_pure'];
-
-                if (($search !== null) && ($search_item_names)) {
-                    if ($product_title != $search) {
-                        continue;
-                    }
-                }
 
                 $item_price = '0.0';
                 if (array_key_exists(2, $field_rows)) {
@@ -117,7 +105,7 @@ class Hook_ecommerce_catalogue_items
                 $image = $this->_get_product_image($ecomm_item['c_name'], $ecomm_item['id']);
 
                 /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
-                $products[strval($ecomm_item['id'])] = array(
+                $products[strval($ecomm_item['id'])/*We use numeric indices for shopping catalogue products*/] = array(
                     'item_name' => $product_title,
                     'item_description' => $field_rows[9]['effective_value'],
                     'item_image_url' => $image,
@@ -607,16 +595,31 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
+     * Get fields that need to be filled in in the purchasing module.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     */
+    public function get_needed_fields($type_code)
+    {
+        $fields = mixed();
+        ecommerce_attach_memo_field_if_needed($fields);
+
+        return array(null, null, null);
+    }
+
+    /**
      * Handling of a product purchase change state.
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         $entry_id = intval($purchase_id);
@@ -625,6 +628,8 @@ class Hook_ecommerce_catalogue_items
         $product_object->reduce_stock($entry_id, 1);
 
         // We won't log to the ecom_sales as we log the containing order instead (in much more detail)
+
+        return false;
     }
 
     /**

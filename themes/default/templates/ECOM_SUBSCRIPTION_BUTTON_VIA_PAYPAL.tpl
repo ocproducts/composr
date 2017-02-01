@@ -4,10 +4,10 @@
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />
 	<input type="hidden" name="notify_url" value="{$FIND_SCRIPT*,ecommerce,1}?from=paypal&amp;type_code={TYPE_CODE*}" />
 	<input type="hidden" name="return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:type_code={TYPE_CODE}:from=paypal}" />
-	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:cancel=1:from=paypal}" />
+	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:type_code={TYPE_CODE}:cancel=1:from=paypal}" />
 	<input type="hidden" name="no_shipping" value="1" />
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />
-	<input type="hidden" name="custom" value="{PURCHASE_ID*}" />
+	<input type="hidden" name="custom" value="{TRANS_EXPECTING_ID*}" />
 	<input type="hidden" name="item_name" value="{!SUBSCRIPTION_FOR,{$USERNAME*}} ({ITEM_NAME*})" />
 	<input type="hidden" name="rm" value="2" />
 	<input type="hidden" name="bn" value="ocproducts_SP" />

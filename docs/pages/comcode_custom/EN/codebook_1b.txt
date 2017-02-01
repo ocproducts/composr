@@ -717,13 +717,13 @@ Sometimes data in software being imported has no use in Composr, or isn't quite 
 [title="3"]eCommerce[/title]
 
 [media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/4.jpg[/media]
-For an overview about how eCommerce is achieved in Composr see the [page="docs:tut_ecommerce"]eCommerce tutorial[/page]. This tutorial goes into a lot of programming detail.
+For an overview about how eCommerce is achieved in Composr see the [page="docs:tut_ecommerce"]eCommerce tutorial[/page]. This tutorial goes into a lot of framework detail.
 
 The eCommerce system has a central transactional framework. Each type of product is sold by putting through transactions that basically have three key things that correspond to that product:
 1) product name (a codename, not intended for humans to read -- allows looking up the product price etc)
 2) purchase ID (typically the ID of the database record that relates to the sale, e.g. a content record to validate, or a record containing form data about the sale)
 3) amount (the price paid)
-sAny transaction that goes through is matched to a product that will then verify the payment and dispatch the sale. The product is matched via the product name -- i.e. the product name in the transaction matches the name of a product for sale. The product will usually see if the amount is correct for that product, and it will use the ID to find how to dispatch the sale. For example, on our old site (when Composr was commercial software) the 'lifetime registration' product stores the site-ID in this, and thus when the transaction went through it knew what site has been registered and could go and then send out the key etc. There is a strict rule that any product must have a static price, unless you are using an invoice product type (generating and processing invoices saved into the database).
+Any transaction that goes through is matched to a product that will then verify the payment and dispatch the sale. The product is matched via the product name -- i.e. the product name in the transaction matches the name of a product for sale. The product will usually see if the amount is correct for that product, and it will use the ID to find how to dispatch the sale. For example, on our old site (when Composr was commercial software) the 'lifetime registration' product stores the site-ID in this, and thus when the transaction went through it knew what site has been registered and could go and then send out the key etc. There is a strict rule that any product must have a static price, unless you are using an invoice product type (generating and processing invoices saved into the database).
 
 For reference, the described eCommerce hooks typically have the following methods (a full list of methods is at the top of [tt]sources/ecommerce.php[/tt]:
 [list]
@@ -761,6 +761,8 @@ Composr basically flows like follows:
 10) The handler function then does what is necessary to make the purchase happen. For a usergroup subscription this means putting the purchasing member into the appropriate usergroup.
 
 Subscriptions and invoices have some custom handling. Subscriptions can also end, so they are separately tracked with life-time details, and there are cancellation signals that are also fed through. Each separate invoice is not given a separate product even though each has a separate price, as it would get potentially too out-of-hand, so the handling of invoice price checking is hard-coded. Invoice products could actually be taken advantage of for this -- you could generate custom invoices for particular purchasable items, if very large quantities of potentially differently-priced items are involved.
+
+Details about how notifications are sent out, and how shipping addresses are handled are at the top of [tt]sources/ecommerce.php[/tt].
 
 [title="3"]Forum drivers[/title]
 

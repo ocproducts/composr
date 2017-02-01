@@ -276,12 +276,10 @@ class Hook_ecommerce_permission
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         $products = array();
 
@@ -303,7 +301,7 @@ class Hook_ecommerce_permission
 
             $item_name = $row['p_title'];
             if (strpos($item_name, '(') === false) { // Too simple, wrap the label
-                $item_name = do_lang('PERMISSION_PRODUCT', $item_name, null, null, $site_lang ? get_site_default_lang() : user_lang());
+                $item_name = do_lang('PERMISSION_PRODUCT', $item_name);
             }
 
             $products['PERMISSION_' . strval($row['id'])] = automatic_discount_calculation(array(
@@ -392,16 +390,31 @@ class Hook_ecommerce_permission
     }
 
     /**
+     * Get fields that need to be filled in in the purchasing module.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     */
+    public function get_needed_fields($type_code)
+    {
+        $fields = mixed();
+        ecommerce_attach_memo_field_if_needed($fields);
+
+        return array(null, null, null);
+    }
+
+    /**
      * Handling of a product purchase change state.
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         require_lang('ecommerce');
@@ -441,6 +454,8 @@ class Hook_ecommerce_permission
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_category_access WHERE active_until IS NOT NULL AND active_until<' . strval(time()));
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_page_access WHERE active_until IS NOT NULL AND active_until<' . strval(time()));
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_zone_access WHERE active_until IS NOT NULL AND active_until<' . strval(time()));
+
+        return true;
     }
 
     /**

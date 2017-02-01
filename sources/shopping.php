@@ -284,7 +284,7 @@ function render_cart_payment_form()
             continue;
         }
 
-        $temp = $product_object->get_products(false, $type_code, false, get_member());
+        $temp = $product_object->get_products($type_code);
         if (!isset($temp[$type_code])) {
             continue;
         }
@@ -337,8 +337,10 @@ function render_cart_payment_form()
 
     $GLOBALS['SITE_DB']->query_update('shopping_order', array('tot_price' => $total_price), array('id' => $order_id), '', 1);
 
+    $points_for_discount = null; // TODO (#3026) - We don't currently support point discounts for cart purchases
+
     if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
-        $payment_form = make_cart_payment_button($order_id, get_option('currency'));
+        $payment_form = make_cart_payment_button($order_id, get_option('currency'), ($points_for_discount === null) ? 0 : $points_for_discount);
 
         $finish_url = new Tempcode();
     } else { // Handle the transaction internally
@@ -356,8 +358,9 @@ function render_cart_payment_form()
                 $type_code,
                 $item_name,
                 strval($order_id),
-                float_to_raw_string($price),
+                $price,
                 get_option('currency'),
+                ($points_for_discount === null) ? 0 : $points_for_discount,
                 null,
                 '',
                 get_option('payment_gateway'),
@@ -373,7 +376,7 @@ function render_cart_payment_form()
             'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
         ));
 
-        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish', 'type_code' => 'cart_orders'), get_module_zone('purchase'));
+        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish', 'type_code' => 'CART_ORDER_' . strval($order_id)), get_module_zone('purchase'));
     }
 
     return array($payment_form, $finish_url);

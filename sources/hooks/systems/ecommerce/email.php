@@ -236,12 +236,10 @@ class Hook_ecommerce_email
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         require_lang('ecommerce');
 
@@ -263,14 +261,14 @@ class Hook_ecommerce_email
             }
 
             $products['QUOTA_' . strval($amount)] = automatic_discount_calculation(array(
-                'item_name' => do_lang('PURCHASE_QUOTA', integer_format($amount), integer_format($current_amount), integer_format($current_amount + $amount), $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('PURCHASE_QUOTA', integer_format($amount), integer_format($current_amount), integer_format($current_amount + $amount)),
                 'item_description' => do_lang_tempcode('PURCHASE_QUOTA_DESCRIPTION', escape_html(integer_format($amount)), escape_html(integer_format($current_amount)), escape_html(integer_format($current_amount + $amount))),
                 'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_to_category'),
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('quota_price') == '') ? null : (intval(get_option('quota_price')) * $amount),
+                'price' => (get_option('quota_price') == '') ? null : float_to_raw_string(floatval(intval(get_option('quota_price')) * $amount)),
                 'currency' => get_option('currency'),
                 'price_points' => (get_option('quota_price_points') == '') ? null : (intval(get_option('quota_price_points')) * $amount),
                 'discount_points__num_points' => null,
@@ -299,16 +297,16 @@ class Hook_ecommerce_email
                 }
 
                 $products[$protocol_label . '_' . $domain] = automatic_discount_calculation(array(
-                    'item_name' => do_lang('TITLE_NEW' . $protocol_label, $domain, integer_format($initial_quota), null, $site_lang ? get_site_default_lang() : user_lang()),
+                    'item_name' => do_lang('NEW' . $protocol_label . '_TITLE', $domain, integer_format($initial_quota)),
                     'item_description' => do_lang_tempcode('NEW' . $protocol_label . '_DESCRIPTION', escape_html($domain), escape_html(integer_format($initial_quota))),
                     'item_image_url' => $image_url,
 
                     'type' => PRODUCT_PURCHASE,
                     'type_special_details' => array(),
 
-                    'price' => null,
+                    'price' => $row['price'],
                     'currency' => get_option('currency'),
-                    'price_points' => $row['price'],
+                    'price_points' => $row['price_points'],
                     'discount_points__num_points' => null,
                     'discount_points__price_reduction' => null,
 
@@ -432,6 +430,8 @@ class Hook_ecommerce_email
                 break;
         }
 
+        ecommerce_attach_memo_field_if_needed($fields);
+
         return array($fields, $text, $javascript);
     }
 
@@ -522,12 +522,13 @@ class Hook_ecommerce_email
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         require_lang('ecommerce');
@@ -549,9 +550,10 @@ class Hook_ecommerce_email
                 $initial_quota = intval(get_option('initial_quota'));
                 $login = $prefix . '@' . $suffix;
                 $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
-                $encoded_reason = do_lang('TITLE_NEWPOP3');
+                $encoded_reason = do_lang('NEWPOP3_TITLE');
                 require_code('notifications');
-                $message_raw = do_notification_template('ECOM_PRODUCT_POP3_MAIL', array(
+                $subject = do_lang('MAIL_REQUEST_POP3', null, null, null, get_site_default_lang());
+                $body = do_notification_template('ECOM_PRODUCT_POP3_MAIL', array(
                     '_GUID' => '19022c49d0bdde39735245850d04fca7',
                     'EMAIL' => $email,
                     'ENCODED_REASON' => $encoded_reason,
@@ -563,7 +565,7 @@ class Hook_ecommerce_email
                     'SUFFIX' => $suffix,
                     'POP3_URL' => $pop3_url,
                 ), null, false, null, '.txt', 'text');
-                dispatch_notification('ecom_product_request_pop3', 'pop3_' . strval($sale_id), do_lang('MAIL_REQUEST_POP3', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
+                dispatch_notification('ecom_product_request_pop3', 'pop3_' . strval($sale_id), $subject, $body->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
                 break;
 
@@ -586,14 +588,15 @@ class Hook_ecommerce_email
                 $quota_url = get_option('quota_url');
                 $encoded_reason = do_lang('TITLE_QUOTA');
                 require_code('notifications');
-                $message_raw = do_notification_template('ECOM_PRODUCT_QUOTA_MAIL', array(
+                $subject = do_lang('MAIL_REQUEST_QUOTA', null, null, null, get_site_default_lang());
+                $body = do_notification_template('ECOM_PRODUCT_QUOTA_MAIL', array(
                     '_GUID' => '5a4e0bb5e53e6ccf8e57581c377557f4',
                     'ENCODED_REASON' => $encoded_reason,
                     'QUOTA' => integer_format($quota),
                     'EMAIL' => $prefix . $suffix,
                     'QUOTA_URL' => $quota_url,
                 ), null, false, null, '.txt', 'text');
-                dispatch_notification('ecom_product_request_quota', 'quota_' . uniqid('', true), do_lang('MAIL_REQUEST_QUOTA', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
+                dispatch_notification('ecom_product_request_quota', 'quota_' . uniqid('', true), $subject, $body->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
                 break;
 
@@ -610,8 +613,9 @@ class Hook_ecommerce_email
                 // Notification to staff
                 $forw_url = get_option('forw_url');
                 require_code('notifications');
-                $encoded_reason = do_lang('TITLE_NEWFORWARDING');
-                $message_raw = do_notification_template('ECOM_PRODUCT_FORWARDER_MAIL', array(
+                $encoded_reason = do_lang('NEWFORWARDING_TITLE');
+                $subject = do_lang('MAIL_REQUEST_FORWARDING', null, null, null, get_site_default_lang());
+                $body = do_notification_template('ECOM_PRODUCT_FORWARDER_MAIL', array(
                     '_GUID' => 'a09dba8b440baa5cd48d462ebfafd15f',
                     'ENCODED_REASON' => $encoded_reason,
                     'EMAIL' => $email,
@@ -619,10 +623,12 @@ class Hook_ecommerce_email
                     'SUFFIX' => $suffix,
                     'FORW_URL' => $forw_url,
                 ), null, false, null, '.txt', 'text');
-                dispatch_notification('ecom_product_request_forwarding', 'forw_' . strval($sale_id), do_lang('MAIL_REQUEST_FORWARDING', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
+                dispatch_notification('ecom_product_request_forwarding', 'forw_' . strval($sale_id), $subject, $body->evaluate(get_site_default_lang()), null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
                 break;
         }
+
+        return false;
     }
 
     /**

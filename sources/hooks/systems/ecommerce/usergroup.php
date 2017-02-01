@@ -45,12 +45,10 @@ class Hook_ecommerce_usergroup
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         if ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) {
             return array();
@@ -65,7 +63,7 @@ class Hook_ecommerce_usergroup
         $usergroup_subs = $db->query_select('f_usergroup_subs', array('*'), array('s_enabled' => 1), 'ORDER BY s_length_units, s_cost');
         $products = array();
         foreach ($usergroup_subs as $i => $sub) {
-            $item_name = get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], $site_lang ? get_site_default_lang() : null);
+            $item_name = get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
 
             $image_url = '';
             if (get_forum_type() == 'cns') {
@@ -83,7 +81,7 @@ class Hook_ecommerce_usergroup
             }
 
             $products['USERGROUP' . strval($sub['id'])] = array(
-                'item_name' => do_lang('_SUBSCRIPTION', $item_name, null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('_SUBSCRIPTION', $item_name),
                 'item_description' => get_translated_tempcode('f_usergroup_subs', $sub, 's_description', $db),
                 'item_image_url' => $image_url,
 
@@ -207,11 +205,26 @@ class Hook_ecommerce_usergroup
     }
 
     /**
+     * Get fields that need to be filled in in the purchasing module.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     */
+    public function get_needed_fields($type_code)
+    {
+        $fields = mixed();
+        ecommerce_attach_memo_field_if_needed($fields);
+
+        return array(null, null, null);
+    }
+
+    /**
      * Handling of a product purchase change state.
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
@@ -227,8 +240,10 @@ class Hook_ecommerce_usergroup
         $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
         if (!array_key_exists(0, $rows)) {
-            return; // The usergroup subscription has been deleted, and this was to remove the payment for it
+            return false; // The usergroup subscription has been deleted, and this was to remove the payment for it
         }
+
+        $item_name = $details['item_name'];
 
         $myrow = $rows[0];
         $new_group = $myrow['s_group_id'];
@@ -236,13 +251,18 @@ class Hook_ecommerce_usergroup
         if ($myrow['s_auto_recur'] == 1) {
             $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
             if ($member_id === null) {
-                return;
+                return false;
             }
         } else {
             $member_id = intval($purchase_id);
         }
 
-        if ($details['PAYMENT_STATUS'] == 'SCancelled') { // Cancelled
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+        if ($username === null) {
+            $username = do_lang('GUEST');
+        }
+
+        if ($details['STATUS'] == 'SCancelled') { // Cancelled
             $test = in_array($new_group, $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id));
             if ($test) {
                 // Remove them from the group
@@ -265,7 +285,14 @@ class Hook_ecommerce_usergroup
                     }
 
                     // Notification to user
-                    dispatch_notification('paid_subscription_messages', null/*Not currently per-sub settable strval($usergroup_subscription_id)*/, do_lang('PAID_SUBSCRIPTION_ENDED', null, null, null, get_lang($member_id)), get_translated_text($myrow['s_mail_end'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+                    $subject = do_lang('PAID_SUBSCRIPTION_ENDED', null, null, null, get_lang($member_id));
+                    $body = get_translated_text($myrow['s_mail_end'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], get_lang($member_id));
+                    dispatch_notification('paid_subscription_messages', null/*Not currently per-sub settable strval($usergroup_subscription_id)*/, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+
+                    // Notification to staff
+                    $subject = do_lang('SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
+                    $body = do_notification_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
+                    dispatch_notification('service_cancelled_staff', null, $subject, $body);
                 }
             }
         } else { // Completed
@@ -316,10 +343,19 @@ class Hook_ecommerce_usergroup
             }
 
             // Notification to user
-            dispatch_notification('paid_subscription_messages', null/*Not currently per-sub settable strval($usergroup_subscription_id)*/, do_lang('PAID_SUBSCRIPTION_STARTED'), get_translated_text($myrow['s_mail_start'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], get_lang($member_id)), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+            $subject = do_lang('PAID_SUBSCRIPTION_STARTED', null, null, null, get_lang($member_id));
+            $body = get_translated_text($myrow['s_mail_start'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'], get_lang($member_id));
+            dispatch_notification('paid_subscription_messages', null/*Not currently per-sub settable strval($usergroup_subscription_id)*/, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+
+            // Notification to staff
+            $subject = do_lang('SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
+            $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
+            dispatch_notification('service_paid_for_staff', null, $subject, $body);
 
             $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => strval($usergroup_subscription_id), 'transaction_id' => $details['TXN_ID']));
         }
+
+        return true;
     }
 
     /**

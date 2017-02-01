@@ -45,12 +45,10 @@ class Hook_ecommerce_gambling
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         require_lang('ecommerce');
 
@@ -74,7 +72,7 @@ class Hook_ecommerce_gambling
 
         foreach ($amounts as $amount) {
             $products['GAMBLING_' . strval($amount)] = array(
-                'item_name' => do_lang('GAMBLE_THIS', integer_format($amount), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('GAMBLE_THIS', integer_format($amount)),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
 
@@ -134,12 +132,13 @@ class Hook_ecommerce_gambling
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         require_lang('ecommerce');
@@ -175,7 +174,7 @@ class Hook_ecommerce_gambling
         require_code('points2');
         give_points($winnings, $member_id, $GLOBALS['FORUM_DRIVER']->get_guest_id(), do_lang('GAMBLING_WINNINGS'), false, false);
 
-        // Show message
+        // Show an instant message so the member knows how it worked out (plus buying via points, so will definitely be seen)
         if ($winnings > $amount) {
             $result = do_lang_tempcode('GAMBLE_CONGRATULATIONS', escape_html(integer_format($winnings - $amount)), escape_html(integer_format($amount)));
         } else {
@@ -183,6 +182,8 @@ class Hook_ecommerce_gambling
         }
         global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
         $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE = $result;
+
+        return true;
     }
 
     /**

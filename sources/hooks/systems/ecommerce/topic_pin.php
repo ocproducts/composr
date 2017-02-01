@@ -45,12 +45,10 @@ class Hook_ecommerce_topic_pin
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         require_lang('ecommerce');
         require_lang('cns');
@@ -59,14 +57,14 @@ class Hook_ecommerce_topic_pin
 
         foreach (array(1, 3, 5, 10, 20, 31, 90) as $days) {
             $products['TOPIC_PIN_' . strval($days)] = automatic_discount_calculation(array(
-                'item_name' => do_lang('TOPIC_PINNED_FOR', integer_format($days), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('TOPIC_PINNED_FOR', integer_format($days)),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
 
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('topic_pin_price') == '') ? null : (intval(get_option('topic_pin_price')) * $days),
+                'price' => (get_option('topic_pin_price') == '') ? null : float_to_raw_string(floatval(get_option('topic_pin_price')) * $days),
                 'currency' => get_option('currency'),
                 'price_points' => (get_option('topic_pin_price_points') == '') ? null : (intval(get_option('topic_pin_price_points')) * $days),
                 'discount_points__num_points' => null,
@@ -128,6 +126,8 @@ class Hook_ecommerce_topic_pin
             $fields->attach(form_input_integer(do_lang_tempcode('FORUM_TOPIC'), do_lang_tempcode('ENTER_TOPIC_ID_MANUALLY'), 'manual_topic_id', null, false));
         }
 
+        ecommerce_attach_memo_field_if_needed($fields);
+
         return array($fields, null, null);
     }
 
@@ -168,12 +168,13 @@ class Hook_ecommerce_topic_pin
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         require_lang('ecommerce');
@@ -195,6 +196,8 @@ class Hook_ecommerce_topic_pin
         $GLOBALS['FORUM_DRIVER']->pin_topic($topic_id);
 
         $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('PIN_SPECIFIC_TOPIC', $topic_title, null, null, get_site_default_lang()), 'details2' => strval($days), 'transaction_id' => $details['TXN_ID']));
+
+        return true;
     }
 
     /**

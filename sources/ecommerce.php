@@ -19,6 +19,9 @@
  */
 
 /*
+See codebook_1b for a technical overview. Follows are some notes.
+
+
 systems/ecommerce hooks are structured like this...
 
 config                                      (optional, for hooks with configurable products within admin_ecommerce module)
@@ -42,6 +45,49 @@ actualiser                                  (required if automatic actualisation
 reduce_stock                                (only for cart items)
 member_for                                  (required if point payment is supported, except for invoices and subscriptions)
 get_product_dispatch_type                   (only for cart items)
+
+systems/payment_gateways hooks are structured like this...
+
+get_config                                  (required)
+get_transaction_fee                         (optional)
+get_logos                                   (optional)
+generate_trans_id                           (required)
+make_transaction_button                     (required if it provides remote payment)
+make_cart_transaction_button                (optional)
+make_subscription_button                    (required if it provides remote payment)
+make_cancel_button                          (optional)
+handle_ipn_transaction                      (required if it provides remote payment)
+create_selection_list_card_types            (optional, only for providing local payment but also optional then)
+do_local_transaction                        (required if it provides local payment)
+store_shipping_address                      (optional)
+get_callback_url_message                    (optional)
+auto_cancel                                 (required, but may just return false)
+
+
+Notifications and e-mailing...
+
+SITUATION                                                                           NOTIFICATION CODE
+---------                                                                           -----------------
+raw transaction gone through (to user)                                              framework: payment_received
+raw transaction gone through (to staff)                                             framework: payment_received_staff
+transaction gone through, stuff sent for individual hooks (to user or to staff)     per product hook: ecom_product_request_*, new_order, paid_subscription_messages, service_paid_for_staff, service_cancelled_staff
+invoice created (to user)                                                           manual trigger: invoice
+invoice created (to staff)                                                          (none, staff know they created it)
+subscription cancel request, needs manual attention (to user)                       (none, user knows they just did this)
+subscription cancel request, needs manual attention (to staff)                      manual trigger: subscription_cancelled_staff
+order manually dispatched (to user)                                                 per product hook: ecom_product_?, order_dispatched
+order manually dispatched (to staff)                                                (none, staff know they just did this)
+
+As you can see we usually send based on manual triggers, or in individual product hooks.
+We send generic messages about payments received to users and staff (as cover-all reassurance in case product hooks do not and to supplement what the payment gateway will send).
+We don't send e-mails for pending transactions or reversed transactions, we leave that to the payment gateway.
+We don't try and e-mail guest users. We assume the payment gateway sends them a sensible message, or guest purchasing is disabled (inline joining is supported), or manual e-mails are sent to the contact details gathered by the payment gateway.
+
+
+Shipping addresses...
+
+Shipping addresses are only gathered for cart purchases.
+It is assumed shipping details for other products will not be required, or will be requested manually, or will be found out from member profile details.
 */
 
 /**
@@ -263,53 +309,50 @@ function get_transaction_fee($amount, $payment_gateway)
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The human-readable product title.
  * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  float $amount A transaction amount.
+ * @param  float $price Transaction price in money.
  * @param  ID_TEXT $currency The currency to use.
+ * @param  integer $price_points Transaction price in points.
  * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
  * @return Tempcode The button
  */
-function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency, $payment_gateway = null)
+function make_transaction_button($type_code, $item_name, $purchase_id, $price, $currency, $price_points = 0, $payment_gateway = null)
 {
     if ($payment_gateway === null) {
         $payment_gateway = get_option('payment_gateway');
     }
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
     $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-    return $payment_gateway_object->make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency);
-}
 
-/**
- * Make a subscription (payment) button.
- *
- * @param  ID_TEXT $type_code The product codename.
- * @param  SHORT_TEXT $item_name The human-readable product title.
- * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  float $amount A transaction amount.
- * @param  integer $length The subscription length in the units.
- * @param  ID_TEXT $length_units The length units.
- * @set    d w m y
- * @param  ID_TEXT $currency The currency to use.
- * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
- * @return Tempcode The button
- */
-function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency, $payment_gateway = null)
-{
-    if ($payment_gateway === null) {
-        $payment_gateway = get_option('payment_gateway');
-    }
-    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-    return $payment_gateway_object->make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency);
+    $trans_expecting_id = $payment_gateway_object->generate_trans_id();
+    $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
+        'id' => $trans_expecting_id,
+        'e_type_code' => $type_code,
+        'e_purchase_id' => $purchase_id,
+        'e_item_name' => $item_name,
+        'e_member_id' => get_member(),
+        'e_price' => float_to_raw_string($price),
+        'e_currency' => $currency,
+        'e_price_points' => $price_points,
+        'e_ip_address' => get_ip_address(),
+        'e_session_id' => get_session_id(),
+        'e_time' => time(),
+        'e_length' => null,
+        'e_length_units' => '',
+        'e_memo' => post_param_string('memo', ''),
+    ));
+
+    return $payment_gateway_object->make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $currency);
 }
 
 /**
  * Make a shopping cart payment button.
  *
- * @param  AUTO_LINK $order_id Order ID
+ * @param  AUTO_LINK $order_id Order ID.
  * @param  ID_TEXT $currency The currency to use.
+ * @param  integer $price_points Transaction price in points.
  * @return Tempcode The button
  */
-function make_cart_payment_button($order_id, $currency)
+function make_cart_payment_button($order_id, $currency, $price_points = 0)
 {
     $_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_name', 'p_price', 'p_quantity'), array('order_id' => $order_id));
     $items = array();
@@ -320,19 +363,82 @@ function make_cart_payment_button($order_id, $currency)
             'QUANTITY' => strval($item['p_quantity']),
         );
     }
+    $price = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
 
     $payment_gateway = get_option('payment_gateway');
-
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
-
     $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
+    $type_code = 'CART_ORDER_' . strval($order_id);
+    $item_name = do_lang('CART_ORDER', strval($order_id));
+
     if (!method_exists($payment_gateway_object, 'make_cart_transaction_button')) {
-        $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
-        return $payment_gateway_object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), strval($order_id), $amount, $currency);
+        return $payment_gateway_object->make_transaction_button($type_code, $item_name, strval($order_id), $price, $currency, $price_points);
     }
 
-    return $payment_gateway_object->make_cart_transaction_button($items, $currency, $order_id);
+    $trans_expecting_id = $payment_gateway_object->generate_trans_id();
+    $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
+        'id' => $trans_expecting_id,
+        'e_type_code' => $type_code,
+        'e_purchase_id' => strval($order_id),
+        'e_item_name' => $item_name,
+        'e_member_id' => get_member(),
+        'e_price' => float_to_raw_string($price),
+        'e_currency' => $currency,
+        'e_price_points' => $price_points,
+        'e_ip_address' => get_ip_address(),
+        'e_session_id' => get_session_id(),
+        'e_time' => time(),
+        'e_length' => null,
+        'e_length_units' => '',
+        'e_memo' => post_param_string('memo', ''),
+    ));
+
+    return $payment_gateway_object->make_cart_transaction_button($trans_expecting_id, $items, $currency, $order_id);
+}
+
+/**
+ * Make a subscription (payment) button.
+ *
+ * @param  ID_TEXT $type_code The product codename.
+ * @param  SHORT_TEXT $item_name The human-readable product title.
+ * @param  ID_TEXT $purchase_id The purchase ID.
+ * @param  float $price Transaction price in money.
+ * @param  ID_TEXT $currency The currency to use.
+ * @param  integer $price_points Transaction price in points (only for first transaction).
+ * @param  integer $length The subscription length in the units.
+ * @param  ID_TEXT $length_units The length units.
+ * @set    d w m y
+ * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
+ * @return Tempcode The button
+ */
+function make_subscription_button($type_code, $item_name, $purchase_id, $price, $currency, $price_points = 0, $length, $length_units, $payment_gateway = null)
+{
+    if ($payment_gateway === null) {
+        $payment_gateway = get_option('payment_gateway');
+    }
+    require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+    $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+
+    $trans_expecting_id = $payment_gateway_object->generate_trans_id();
+    $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
+        'id' => $trans_expecting_id,
+        'e_type_code' => $type_code,
+        'e_purchase_id' => $purchase_id,
+        'e_item_name' => $item_name,
+        'e_member_id' => get_member(),
+        'e_price' => float_to_raw_string($price),
+        'e_currency' => $currency,
+        'e_price_points' => $price_points,
+        'e_ip_address' => get_ip_address(),
+        'e_session_id' => get_session_id(),
+        'e_time' => time(),
+        'e_length' => $length,
+        'e_length_units' => $length_units,
+        'e_memo' => post_param_string('memo', ''),
+    ));
+
+    return $payment_gateway_object->make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $currency, $length, $length_units);
 }
 
 /**
@@ -370,16 +476,17 @@ function send_invoice_notification($member_id, $id)
     require_code('notifications');
     $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), null, false, false, true);
     $url = $_url->evaluate();
-    dispatch_notification('invoice', null, do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id)), do_notification_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id)), array($member_id));
+    $subject = do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id));
+    $body = do_notification_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id));
+    dispatch_notification('invoice', null, $subject, $body, array($member_id));
 }
 
 /**
  * Find all products, except ones from hooks that might have too many to list (so don't rely on this for important backend tasks).
  *
- * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @return array A list of maps of product details. 'product_object' is added to each detail map.
  */
-function find_all_products($site_lang = false)
+function find_all_products()
 {
     $_hooks = find_all_hooks('systems', 'ecommerce');
     $products = array();
@@ -389,7 +496,7 @@ function find_all_products($site_lang = false)
         if ($product_object === null) {
             continue;
         }
-        $_products = $product_object->get_products($site_lang);
+        $_products = $product_object->get_products();
         foreach ($_products as $type_code => $details) {
             $details['product_object'] = $product_object;
             $products[$type_code] = $details;
@@ -403,14 +510,12 @@ function find_all_products($site_lang = false)
  * Find product info row and other details.
  *
  * @param  ID_TEXT $search The product codename/item name
- * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
- * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @return array A triple: The product info row, the product codename, the product object (all will be null if not found).
  */
-function find_product_details($search, $search_item_names = false, $site_lang = false)
+function find_product_details($search)
 {
     static $cache = array();
-    $sz = serialize(array($search, $search_item_names, $site_lang));
+    $sz = $search;
     if (isset($cache[$sz])) {
         return $cache[$sz];
     }
@@ -425,13 +530,11 @@ function find_product_details($search, $search_item_names = false, $site_lang = 
             continue;
         }
 
-        if ((isset($hook_products_cache[$hook])) && (!$search_item_names) && (!$site_lang)) {
+        if (isset($hook_products_cache[$hook])) {
             $_products = $hook_products_cache[$hook];
         } else {
-            $_products = $product_object->get_products($site_lang, $search, $search_item_names);
-            if ((!$search_item_names) && (!$site_lang)) {
-                $hook_products_cache[$hook] = $_products;
-            }
+            $_products = $product_object->get_products($search);
+            $hook_products_cache[$hook] = $_products;
         }
 
         $type_code = mixed();
@@ -440,18 +543,10 @@ function find_product_details($search, $search_item_names = false, $site_lang = 
                 $type_code = strval($type_code);
             }
 
-            if ($search_item_names) {
-                if (($details['item_name'] == $search) || ('_' . $type_code == $search)) {
-                    $ret = array($details, $type_code, $product_object);
-                    $cache[$sz] = $ret;
-                    return $ret;
-                }
-            } else {
-                if ($type_code == $search) {
-                    $ret = array($details, $type_code, $product_object);
-                    $cache[$sz] = $ret;
-                    return $ret;
-                }
+            if ($type_code == $search) {
+                $ret = array($details, $type_code, $product_object);
+                $cache[$sz] = $ret;
+                return $ret;
             }
         }
     }
@@ -486,15 +581,16 @@ function perform_local_payment()
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The item name
  * @param  ID_TEXT $purchase_id The purchase ID
- * @param  SHORT_TEXT $amount The amount
- * @param  ID_TEXT $currency The currency
+ * @param  float $price Transaction price in money.
+ * @param  ID_TEXT $currency The currency to use.
+ * @param  integer $price_points Transaction price in points (only for first transaction).
  * @param  ?integer $length The length (null: not a subscription)
  * @param  ID_TEXT $length_units The length units
  * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
  * @param  boolean $needs_shipping_address Whether a shipping address is needed.
  * @return array A tuple: The form fields, Hidden fields, Confidence logos, Payment processor links
  */
-function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
+function get_transaction_form_fields($type_code, $item_name, $purchase_id, $price, $currency, $price_points, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
 {
     if ((!tacit_https()) && (!ecommerce_test_mode())) {
         warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
@@ -511,21 +607,23 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
         warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($payment_gateway)));
     }
 
-    $trans_id = $payment_gateway_object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
+    $trans_expecting_id = $payment_gateway_object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
 
     $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
-        'id' => $trans_id,
+        'id' => $trans_expecting_id,
         'e_type_code' => $type_code,
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
-        'e_amount' => $amount,
+        'e_price' => float_to_raw_string($price),
         'e_currency' => $currency,
+        'e_price_points' => $price_points,
         'e_member_id' => get_member(),
         'e_ip_address' => get_ip_address(),
         'e_session_id' => get_session_id(),
         'e_time' => time(),
         'e_length' => $length,
         'e_length_units' => $length_units,
+        'e_memo' => post_param_string('memo', ''),
     ));
 
     require_code('form_templates');
@@ -640,7 +738,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $amou
     // Store transaction ID in hidden field...
 
     $hidden = new Tempcode();
-    $hidden->attach(form_input_hidden('trans_id', $trans_id));
+    $hidden->attach(form_input_hidden('trans_id', $trans_expecting_id));
 
     // ---
 
@@ -691,6 +789,32 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
 }
 
 /**
+ * Attach a memo field to a product's input fields if needed.
+ *
+ * @param  ?Tempcode $fields The fields to attach to (null: create new Tempcode object if needed).
+ */
+function ecommerce_attach_memo_field_if_needed(&$fields)
+{
+    if (get_option('payment_memos') == '1') {
+        if (perform_local_payment()) {
+            $get_memo = true;
+        } else {
+            $payment_gateway = get_option('payment_gateway');
+            require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
+            $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
+            $config = $payment_gateway_object->get_config();
+            $get_memo = !$config['supports_remote_memo'];
+        }
+        if ($get_memo) {
+            if ($fields === null) {
+                $fields = new Tempcode();
+            }
+            $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('TRANSACTION_NOTES'), 'memo', '', false));
+        }
+    }
+}
+
+/**
  * Get a CPF label, for re-use as a general form input label. Remove any CPF name prefixing.
  *
  * @param  ID_TEXT $cpf_name The CPF name.
@@ -716,20 +840,26 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 {
     // Grab transaction details...
 
-    $trans_id = post_param_string('trans_id');
+    $trans_expecting_id = post_param_string('trans_id');
 
-    $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_id), '', 1);
+    $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
     if (!array_key_exists(0, $transaction_rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $transaction_row = $transaction_rows[0];
 
+    $type_code = $transaction_row['e_type_code'];
+    $item_name = $transaction_row['e_item_name'];
     $purchase_id = $transaction_row['e_purchase_id'];
 
-    $amount = $transaction_row['e_amount'];
+    $amount = $transaction_row['e_price'];
+    $currency = $transaction_row['e_currency'];
+
     $length = $transaction_row['e_length'];
     $length_units = $transaction_row['e_length_units'];
-    $currency = $transaction_row['e_currency'];
+    $is_subscription = ($length !== null);
+
+    $memo = $transaction_row['e_memo'];
 
     $cardholder_name = post_param_string('payment_cardholder_name');
     $card_type = post_param_string('payment_card_type', '');
@@ -761,7 +891,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
     $shipping_email = post_param_string('shipping_email', '');
     $shipping_phone = post_param_string('shipping_phone', '');
     if (addon_installed('shopping')) {
-        if ($transaction_row['e_type_code'] == 'cart_orders') {
+        if (preg_match('#^CART_ORDER_#', $type_code) != 0) {
             $shipping_address = array(
                 'a_order_id' => intval($purchase_id),
                 'a_firstname' => $shipping_firstname,
@@ -828,21 +958,12 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 
     // Process order...
 
-    list($success, $message, $message_raw) = $payment_gateway_object->do_local_transaction($trans_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $length, $length_units);
+    list($success, $message, $message_raw, $txn_id) = $payment_gateway_object->do_local_transaction($trans_expecting_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $length, $length_units);
 
     if (($success) || ($length !== null)) {
         $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
-        list(, $member_id) = handle_confirmed_transaction($transaction_row['e_purchase_id'], $transaction_row['e_item_name'], $status, $message_raw, '', '', $amount, $currency, $trans_id, '', ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units), $payment_gateway);
-    }
-
-    // Send notification...
-
-    if ($success) {
-        //$member_id = $transaction_row['e_member_id']; We get this from handle_confirmed_transaction
-        if ($member_id !== null) {
-            require_code('notifications');
-            dispatch_notification('payment_received', null, do_lang('PAYMENT_RECEIVED_SUBJECT', $trans_id), do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $currency, get_site_name()), array($member_id), A_FROM_SYSTEM_PRIVILEGED);
-        }
+        $period = ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units);
+        list(, $member_id) = handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $message_raw, $amount, $currency, '', '', $memo, $period, get_member(), $payment_gateway);
     }
 
     // Return...
@@ -879,9 +1000,9 @@ function handle_ipn_transaction_script()
 
     ob_start();
 
-    list($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period) = $payment_gateway_object->handle_ipn_transaction();
+    list($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id) = $payment_gateway_object->handle_ipn_transaction();
 
-    list($type_code, $member_id) = handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway);
+    list($type_code, $member_id) = handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id, $payment_gateway);
 
     if (method_exists($payment_gateway_object, 'show_payment_response')) {
         echo $payment_gateway_object->show_payment_response($type_code, $purchase_id);
@@ -894,38 +1015,31 @@ function handle_ipn_transaction_script()
  * Handle IPN's that have been confirmed as backed up by real money.
  * Variables largely emulate PayPal's IPN API.
  *
+ * @param  ?ID_TEXT $trans_expecting_id Our internal temporary transaction ID (null: an immediate transaction that didn't require this table)
+ * @param  ID_TEXT $txn_id The transaction ID
+ * @param  ID_TEXT $type_code The product codename
+ * @param  SHORT_TEXT $item_name The human-readable product title (blank: doing a subscription cancellation, unknown item name; but can get from $found)
  * @param  ID_TEXT $purchase_id The ID of the purchase-type (meaning depends on item_name)
- * @param  SHORT_TEXT $item_name The item being purchased (aka the product). One might wonder why we use $item_name instead of $type_code. This is because we pass human-readable-names (hopefully unique!!!) through payment gateways because they are visually shown to the user. (blank: it's a subscription, so look up via a key map across the subscriptions table)
- * @param  ID_TEXT $payment_status The status this transaction is telling of
+ * @param  boolean $is_subscription Whether this is a subscription
+ * @param  ID_TEXT $status The status this transaction is telling of
  * @set    Pending Completed SModified SCancelled
- * @param  SHORT_TEXT $reason_code The code that gives reason to the status
- * @param  SHORT_TEXT $pending_reason The reason it is in pending status (if it is)
- * @param  SHORT_TEXT $memo A note attached to the transaction
- * @param  SHORT_TEXT $mc_gross The amount of money
- * @param  SHORT_TEXT $mc_currency The currency the amount is in
- * @param  SHORT_TEXT $txn_id The transaction ID
- * @param  SHORT_TEXT $parent_txn_id The ID of the parent transaction
- * @param  string $period The subscription period (blank: N/A / unknown: trust is correct on the gateway)
- * @param  ID_TEXT $payment_gateway The payment gateway
+ * @param  SHORT_TEXT $reason A reason for the transaction's status (blank: unknown or N/A)
+ * @param  ID_TEXT $amount Transaction amount (blank: unknown or doing a subscription cancellation or a free transaction triggered from somewhere other than a payment gateway)
+ * @param  ID_TEXT $currency The currency the amount is in (points: was done fully with points)
+ * @param  ID_TEXT $parent_txn_id The ID of the parent transaction (blank: unknown or N/A)
+ * @param  SHORT_TEXT $pending_reason The reason it is in pending status (if it is) (blank: unknown or N/A)
+ * @param  LONG_TEXT $memo A note attached to the transaction (blank: not set)
+ * @param  string $period The subscription period (blank: N/A or unknown because trust is checked on the gateway's code)
+ * @param  ?MEMBER $member_id_paying The member ID of who is doing the transaction (null: unknown)
+ * @param  ID_TEXT $payment_gateway The payment gateway (manual: was a manual transaction, not through a real gateway)
  * @return array ID_TEXT A pair: The product purchased, The purchasing member ID (or null)
  */
-function handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway)
+function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id_paying, $payment_gateway)
 {
-    $is_subscription = ($item_name == '');
-
     // Try and locate the product
     if ($is_subscription) { // Subscription
-        $type_code = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_type_code', array('id' => intval($purchase_id)));
-        if ($type_code === null) {
-            fatal_ipn_exit(do_lang('NO_SUCH_SUBSCRIPTION', strval($purchase_id)));
-        }
-        $item_name = '_' . $type_code;
-
         // Find what we sold
-        list($found, , $product_object) = find_product_details($type_code, false, true);
-        if ($found !== null) {
-            $item_name = $found['item_name'];
-        }
+        list($found, , $product_object) = find_product_details($type_code);
 
         // Check subscription length
         if ($period != '') {
@@ -937,67 +1051,107 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
     } else {
         // Find what we sold
-        list($found, $type_code, $product_object) = find_product_details($item_name, true, true);
+        list($found, $type_code, $product_object) = find_product_details($type_code);
 
         if ($found['type'] == PRODUCT_SUBSCRIPTION) {
-            exit(); // We ignore separate payment signal for subscriptions (for Paypal it is web_accept)
+            exit(); // We ignore separate payment signal for subscriptions (for Paypal it is web_accept). Or, it could be a hacker, which we must block
         }
     }
     if ($found === null) {
-        fatal_ipn_exit(do_lang('PRODUCT_NO_SUCH') . ' - ' . $item_name, true);
+        fatal_ipn_exit(do_lang('PRODUCT_NO_SUCH', $item_name));
     }
 
-    // Find which member did the transaction, if any
-    $member_id = null;
+    // Missing data, but we can find it
+    if ($item_name == '') {
+        $item_name = $found['item_name'];
+    }
+
+    // Find which member the transaction was for, if we can (otherwise we leave it as who did the transaction, or null if that's not set)
+    $member_id = $member_id_paying;
     if (method_exists($product_object, 'member_for')) {
         $member_id = $product_object->member_for($type_code, $purchase_id);
-        if ($member_id == $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
-            $member_id = null;
+    } else {
+        if ($member_id === null) {
+            if ($found['type'] == PRODUCT_SUBSCRIPTION) {
+                $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
+            }
+            elseif ($found['type'] == PRODUCT_INVOICE) {
+                $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_member_id', array('id' => intval($purchase_id)));
+            }
         }
     }
-    if ($member_id === null) {
-        if ($found['type'] == PRODUCT_SUBSCRIPTION) {
-            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_member_id', array('id' => intval($purchase_id)));
-        }
-        elseif ($found['type'] == PRODUCT_INVOICE) {
-            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_member_id', array('id' => intval($purchase_id)));
-        }
+    if ($member_id == $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
+        $member_id = null;
+    }
+    if ($member_id_paying === null) {
+        $member_id_paying = $member_id;
     }
 
     // Invoice: Check price
-    if ($found['type'] == PRODUCT_INVOICE) {
-        $price = $GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'i_amount', array('id' => intval($purchase_id)));
-        if ($price != $mc_gross) {
-            if ($payment_gateway != 'manual') {
-                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, $price));
+    if (($amount != '') && ($currency != 'points')) {
+        if ($found['type'] == PRODUCT_INVOICE) {
+            $price = $GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'i_amount', array('id' => intval($purchase_id)));
+            if ($price != $amount) {
+                if ($payment_gateway != 'manual') {
+                    fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $amount, $price));
+                }
             }
+        }
+    }
+
+    // What is expected
+    $expected_price = $found['price'];
+    $expected_currency = isset($found['currency']) ? $found['currency'] : get_option('currency');
+    $expected_price_points = null;
+    if ($trans_expecting_id !== null) {
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
+        if ((array_key_exists(0, $transaction_rows)) && (time() - $transaction_rows[0]['e_time'] < 24 * 60 * 60 * intval(get_option('ecom_price_honour_time')))) {
+            $transaction_row = $transaction_rows[0];
+            $expected_price = $transaction_row['e_price'];
+            $expected_currency = $transaction_row['e_currency'];
+            $expected_price_points = $transaction_row['e_price_points'];
         }
     }
 
     // Check price, if one defined (non-invoices)
-    if (($found['type'] != PRODUCT_INVOICE) && (($found['price'] === null) || (floatval($mc_gross) != floatval($found['price'])))) {
-        $given_discount = false;
+    if ($found['type'] != PRODUCT_INVOICE) {
+        if (($amount != '') && ($currency != 'points'/*payment gateway will never claim points, so we know we can skip this check branch for points transactions as we did the call manually*/)) {
+            if (($expected_price_points === null) && (($expected_price === null) || (floatval($amount) != floatval($expected_price)))) {
+                // No pre-calculated points charge, and no full price defined or not paid full price - so we need to work out the price split...
+                // (this code branch rarely runs, as payment gateway transactions have the pre-calculated charges)
 
-        // Consider points as a discount
-        if ($member_id !== null) {
-            list($discounted_price, $points_for_discount) = get_discounted_price($found, false, $member_id);
-            if (($discounted_price !== null) && (floatval($mc_gross) == $discounted_price)) {
+                $given_discount = false;
+
+                // Consider points as a discount (if was 100% paid via points then ($currency == 'points') would have stopped the branch running, and we would have already charged the points in purchase.php)
+                if ($member_id_paying !== null) {
+                    list($discounted_price, $points_for_discount) = get_discounted_price($found, false, $member_id_paying);
+                    if (($discounted_price !== null) && (floatval($amount) == $discounted_price)) {
+                        require_code('points2');
+                        charge_member($member_id_paying, $points_for_discount, do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
+                        $given_discount = true;
+                    }
+                }
+
+                if (!$given_discount) {
+                    if (($status == 'Completed') && ($payment_gateway != 'manual')) {
+                        fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $amount, ($expected_price === null) ? do_lang('NA') : $expected_price), $is_subscription);
+                    }
+                }
+            } elseif (($expected_price_points !== null) && ($expected_price_points !== 0)) {
+                // Pre-calculated points charge that is non-zero...
+
                 require_code('points2');
-                charge_member($member_id, $points_for_discount, do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
-                $given_discount = true;
-            }
-        }
-
-        if (!$given_discount) {
-            if (($payment_status == 'Completed') && ($payment_gateway != 'manual')) {
-                fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $mc_gross, ($found['price'] === null) ? do_lang('NA') : $found['price']), $is_subscription);
+                charge_member($member_id_paying, $expected_price_points, do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
             }
         }
     }
-    $expected_currency = isset($found['currency']) ? $found['currency'] : get_option('currency');
-    if ($mc_currency != $expected_currency) {
-        if (($payment_status != 'SCancelled') && ($payment_gateway != 'manual')) {
-            fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY', $item_name, $mc_currency, $expected_currency));
+
+    // Check currency
+    if (($amount != '') && ($currency != 'points'/*payment gateway will never claim points, so we know we can skip this check branch for points transactions as we did the call manually*/)) {
+        if ($currency != $expected_currency) {
+            if (($status != 'SCancelled') && ($payment_gateway != 'manual')) {
+                fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY', $item_name, $currency, $expected_currency));
+            }
         }
     }
 
@@ -1007,11 +1161,11 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         't_memo' => $memo,
         't_type_code' => $type_code,
         't_purchase_id' => $purchase_id,
-        't_status' => $payment_status,
+        't_status' => $status,
         't_pending_reason' => $pending_reason,
-        't_reason' => $reason_code,
-        't_amount' => $mc_gross,
-        't_currency' => $mc_currency,
+        't_reason' => $reason,
+        't_amount' => $amount,
+        't_currency' => $currency,
         't_parent_txn_id' => $parent_txn_id,
         't_time' => time(),
         't_payment_gateway' => $payment_gateway,
@@ -1019,10 +1173,10 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Add in extra details to $found, so actualisers can track things better
     $found['TXN_ID'] = $txn_id;
-    $found['PAYMENT_STATUS'] = $payment_status;
+    $found['STATUS'] = $status;
 
     // Pending: We do some book-keeping then stop
-    if ($payment_status == 'Pending') {
+    if ($status == 'Pending') {
         $found['ORDER_STATUS'] = 'ORDER_STATUS_awaiting_payment';
 
         if ($found['type'] == PRODUCT_INVOICE) { // Invoices have special support for tracking the order status
@@ -1037,7 +1191,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
 
         // Pending transactions stop here
-        fatal_ipn_exit(do_lang('TRANSACTION_NOT_COMPLETE', $type_code . ':' . strval($purchase_id), $payment_status), true);
+        fatal_ipn_exit(do_lang('TRANSACTION_NOT_COMPLETE', $type_code . ':' . strval($purchase_id), $status), true);
     }
 
     /*
@@ -1046,27 +1200,27 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
     */
 
     // Subscription: Completed (Made active)
-    if (($payment_status == 'Completed') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
+    if (($status == 'Completed') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
         $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'active'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Subscription: Modified
-    if (($payment_status == 'SModified') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
+    if (($status == 'SModified') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
         // No special action needed
     }
 
     // Subscription: Cancelled
-    if (($payment_status == 'SCancelled') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
+    if (($status == 'SCancelled') && ($found['type'] == PRODUCT_SUBSCRIPTION)) {
         $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_auto_fund_source' => $payment_gateway, 's_auto_fund_key' => $txn_id, 's_state' => 'cancelled'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Invoice handling
-    if (($payment_status == 'Completed') && ($found['type'] == PRODUCT_INVOICE)) {
+    if (($status == 'Completed') && ($found['type'] == PRODUCT_INVOICE)) {
         $GLOBALS['SITE_DB']->query_update('ecom_invoices', array('i_state' => 'paid'), array('id' => intval($purchase_id)), '', 1);
     }
 
     // Set order dispatch status
-    if ($payment_status == 'Completed') {
+    if ($status == 'Completed') {
         if (!method_exists($product_object, 'get_product_dispatch_type')) { // If hook does not have dispatch method setting take dispatch method as automatic
             $found['ORDER_STATUS'] = 'ORDER_STATUS_dispatched';
         } elseif ($product_object->get_product_dispatch_type($purchase_id) == 'automatic') {
@@ -1078,26 +1232,31 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
 
     // Call actualiser code
     if (method_exists($product_object, 'actualiser')) {
-        $product_object->actualiser($type_code, $purchase_id, $found);
+        $automatic_setup = $product_object->actualiser($type_code, $purchase_id, $found);
+    } else {
+        $automatic_setup = false;
     }
 
-    // Subscription: Send out notification to staff for completion/cancellation
-    if (($found['type'] == PRODUCT_SUBSCRIPTION) && ($payment_status != 'SModified')) {
-        require_code('notifications');
+    // Notifications
+    if ($status == 'Completed') {
         if ($member_id !== null) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-            if ($username === null) {
-                $username = do_lang('GUEST');
+            require_code('notifications');
+
+            if ($currency == 'points') {
+                $_currency = do_lang('POINTS');
+            } else {
+                $_currency = $currency;
             }
-            if ($payment_status == 'Completed') { // Completed
-                $subject = do_lang('SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
-                $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
-                dispatch_notification('service_paid_for_staff', null, $subject, $body);
-            } else { // Must be SCancelled
-                $subject = do_lang('SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
-                $body = do_notification_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
-                dispatch_notification('service_cancelled_staff', null, $subject, $body);
-            }
+
+            // Send completed notification to user
+            $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_lang($member_id));
+            $body = do_notification_lang($automatic_setup ? 'PAYMENT_SENT_BODY_automatic' : 'PAYMENT_SENT_BODY_manual', float_format(floatval($amount)), $_currency, array(get_site_name(), $item_name), get_lang($member_id));
+            dispatch_notification('payment_received', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
+
+            // Send completed notification to staff
+            $subject = do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
+            $body = do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $_currency, array(($memo == '') ? do_lang('NONE') : $memo, $item_name), get_site_default_lang());
+            dispatch_notification('payment_received_staff', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
         }
     }
 

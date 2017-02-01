@@ -236,6 +236,202 @@ class Module_admin_ecommerce_logs
     }
 
     /**
+     * The UI to take details on a manually triggered transaction.
+     *
+     * @return Tempcode The UI.
+     */
+    public function trigger()
+    {
+        require_code('form_templates');
+        $fields = new Tempcode();
+
+        url_default_parameters__enable();
+
+        // Choose product
+        $type_code = get_param_string('type_code', null);
+        if ($type_code === null) {
+            $products = find_all_products();
+            $list = new Tempcode();
+            foreach ($products as $type_code => $details) {
+                if (!is_string($type_code)) {
+                    $type_code = strval($type_code);
+                }
+                $label = $details['item_name'];
+                $label .= ' (' . escape_html($type_code);
+
+                $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+
+                if ($details['price'] !== null) {
+                    $label .= ', ' . escape_html(is_float($details['price']) ? float_to_raw_string($details['price'], 2) : $details['price'] . ' (' . $currency . ')');
+                }
+                $label .= ')';
+                $list->attach(form_input_list_entry($type_code, $type_code === get_param_string('type_code', null), protect_from_escaping($label)));
+            }
+            $fields->attach(form_input_huge_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list, null, true));
+
+            $submit_name = do_lang('CHOOSE');
+
+            url_default_parameters__disable();
+
+            return do_template('FORM_SCREEN', array('_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => '', 'URL' => get_self_url(), 'GET' => true, 'HIDDEN' => ''));
+        }
+
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => get_param_string('redirect', null)), '_SELF');
+        $text = do_lang('MANUAL_TRANSACTION_TEXT');
+        $submit_name = do_lang('MANUAL_TRANSACTION');
+
+        list(, , $product_object) = find_product_details($type_code);
+
+        // To work out key
+        if (post_param_integer('got_purchase_key_dependencies', 0) == 0) {
+            list($needed_fields, $needed_text, $needed_javascript) = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : array(null, null, null);
+            if ($needed_fields !== null) { // Only do step if we actually have fields - create intermediary step. get_self_url ensures first product-choose step choice is propagated.
+                $submit_name = do_lang('PROCEED');
+                $extra_hidden = new Tempcode();
+                $extra_hidden->attach(form_input_hidden('got_purchase_key_dependencies', '1'));
+                if (is_array($needed_fields)) {
+                    $extra_hidden->attach($needed_fields[0]);
+                }
+
+                url_default_parameters__disable();
+
+                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $needed_fields, 'TEXT' => $needed_text, 'JAVASCRIPT' => $needed_javascript, 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden));
+            }
+        }
+
+        // Remaining fields, customised for product chosen
+        if (method_exists($product_object, 'get_identifier_manual_field_inputter')) {
+            $f = $product_object->get_identifier_manual_field_inputter($type_code);
+            if ($f !== null) {
+                $fields->attach($f);
+            }
+        } else {
+            $default_purchase_id = get_param_string('id', null);
+            if ($default_purchase_id === null) {
+                if (method_exists($product_object, 'handle_needed_fields')) {
+                    list($default_purchase_id) = $product_object->handle_needed_fields($type_code);
+                } else {
+                    $default_purchase_id = strval(get_member());
+                }
+            }
+
+            $fields->attach(form_input_codename(do_lang_tempcode('IDENTIFIER'), do_lang('MANUAL_TRANSACTION_IDENTIFIER'), 'purchase_id', $default_purchase_id, false));
+        }
+
+        list($details) = find_product_details($type_code);
+        if ($details['type'] == PRODUCT_SUBSCRIPTION) {
+            $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
+        }
+
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f4e52dff9353fb767afbe0be9808591c', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
+        $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('MONEY_AMOUNT_DESCRIPTION', ecommerce_get_currency_symbol()), 'amount', null, false));
+
+        $hidden = new Tempcode();
+        $hidden->attach(form_input_hidden('type_code', $type_code));
+
+        url_default_parameters__disable();
+
+        return do_template('FORM_SCREEN', array('_GUID' => '990d955cb14b6681685ec9e1d1448d9d', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'menu__rich_content__ecommerce__purchase', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => $text, 'URL' => $post_url, 'HIDDEN' => $hidden));
+    }
+
+    /**
+     * The actualiser for a manually triggered transaction.
+     *
+     * @return Tempcode The result of execution.
+     */
+    public function _trigger()
+    {
+        $type_code = post_param_string('type_code');
+
+        $purchase_id = post_param_string('purchase_id', '');
+        $memo = post_param_string('memo', '');
+        $amount = post_param_string('amount', '');
+        $custom_expiry = post_param_date('cexpiry');
+        $currency = get_option('currency');
+
+        list($details) = find_product_details($type_code);
+        if ($amount == '') {
+            $amount = $details['price'];
+            if (isset($details['currency'])) {
+                $currency = $details['currency'];
+            }
+        }
+        $status = 'Completed';
+        $reason = '';
+        $pending_reason = '';
+        $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
+        $parent_txn_id = '';
+
+        $item_name = $details['item_name'];
+
+        if ($details['type'] == PRODUCT_SUBSCRIPTION) {
+            if (($purchase_id == '') || (post_param_string('username', '') != '')) {
+                $member_id = get_member();
+                $username = post_param_string('username', '');
+                if ($username != '') {
+                    $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
+                    if ($_member_id !== null) {
+                        $member_id = $_member_id;
+                    }
+                }
+
+                $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_subscriptions', array(
+                    's_type_code' => $type_code,
+                    's_member_id' => $member_id,
+                    's_state' => 'new',
+                    's_amount' => $details['price'],
+                    's_purchase_id' => $purchase_id,
+                    's_time' => time(),
+                    's_auto_fund_source' => '',
+                    's_auto_fund_key' => '',
+                    's_payment_gateway' => 'manual',
+                    's_length' => $details['type_special_details']['length'],
+                    's_length_units' => $details['type_special_details']['length_units'],
+                ), true));
+            }
+
+            $is_subscription = true;
+
+            $s_length = $details['type_special_details']['length'];
+            $s_length_units = $details['type_special_details']['length_units']; // y-year, m-month, w-week, d-day
+
+            if ($custom_expiry !== null) {
+                $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
+                $new_s_time = strtotime('-' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $custom_expiry);
+                $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_time' => $new_s_time), array('id' => $purchase_id));
+            }
+
+            $period = strtolower(strval($s_length) . ' ' . $s_length_units);
+        } else {
+            $is_subscription = false;
+
+            if ($purchase_id == '') {
+                $member_id = get_member();
+                $username = post_param_string('username', '');
+                if ($username != '') {
+                    $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
+                    if ($_member_id !== null) {
+                        $member_id = $_member_id;
+                    }
+                }
+
+                $purchase_id = strval($member_id);
+            }
+
+            $period = '';
+        }
+
+        handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual');
+
+        $url = get_param_string('redirect', null);
+        if ($url !== null) {
+            return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
+        }
+
+        return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
      * The UI to view sales logs.
      *
      * @return Tempcode The UI
@@ -373,196 +569,6 @@ class Module_admin_ecommerce_logs
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
-    }
-
-    /**
-     * The UI to take details on a manually triggered transaction.
-     *
-     * @return Tempcode The UI.
-     */
-    public function trigger()
-    {
-        require_code('form_templates');
-        $fields = new Tempcode();
-
-        url_default_parameters__enable();
-
-        // Choose product
-        $type_code = get_param_string('type_code', null);
-        if ($type_code === null) {
-            $products = find_all_products();
-            $list = new Tempcode();
-            foreach ($products as $type_code => $details) {
-                if (!is_string($type_code)) {
-                    $type_code = strval($type_code);
-                }
-                $label = $details['item_name'];
-                $label .= ' (' . escape_html($type_code);
-
-                $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
-
-                if ($details['price'] !== null) {
-                    $label .= ', ' . escape_html(is_float($details['price']) ? float_to_raw_string($details['price'], 2) : $details['price'] . ' (' . $currency . ')');
-                }
-                $label .= ')';
-                $list->attach(form_input_list_entry($type_code, $type_code === get_param_string('type_code', null), protect_from_escaping($label)));
-            }
-            $fields->attach(form_input_huge_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list, null, true));
-
-            $submit_name = do_lang('CHOOSE');
-
-            url_default_parameters__disable();
-
-            return do_template('FORM_SCREEN', array('_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => '', 'URL' => get_self_url(), 'GET' => true, 'HIDDEN' => ''));
-        }
-
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => get_param_string('redirect', null)), '_SELF');
-        $text = do_lang('MANUAL_TRANSACTION_TEXT');
-        $submit_name = do_lang('MANUAL_TRANSACTION');
-
-        list(, , $product_object) = find_product_details($type_code);
-
-        // To work out key
-        if (post_param_integer('got_purchase_key_dependencies', 0) == 0) {
-            list($needed_fields, $needed_text, $needed_javascript) = method_exists($product_object, 'get_needed_fields') ? $product_object->get_needed_fields($type_code) : array(null, null, null);
-            if ($needed_fields !== null) { // Only do step if we actually have fields - create intermediary step. get_self_url ensures first product-choose step choice is propagated.
-                $submit_name = do_lang('PROCEED');
-                $extra_hidden = new Tempcode();
-                $extra_hidden->attach(form_input_hidden('got_purchase_key_dependencies', '1'));
-                if (is_array($needed_fields)) {
-                    $extra_hidden->attach($needed_fields[0]);
-                }
-
-                url_default_parameters__disable();
-
-                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $needed_fields, 'TEXT' => $needed_text, 'JAVASCRIPT' => $needed_javascript, 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden));
-            }
-        }
-
-        // Remaining fields, customised for product chosen
-        if (method_exists($product_object, 'get_identifier_manual_field_inputter')) {
-            $f = $product_object->get_identifier_manual_field_inputter($type_code);
-            if ($f !== null) {
-                $fields->attach($f);
-            }
-        } else {
-            $default_purchase_id = get_param_string('id', null);
-            if ($default_purchase_id === null) {
-                if (method_exists($product_object, 'handle_needed_fields')) {
-                    list($default_purchase_id) = $product_object->handle_needed_fields($type_code);
-                } else {
-                    $default_purchase_id = strval(get_member());
-                }
-            }
-
-            $fields->attach(form_input_codename(do_lang_tempcode('IDENTIFIER'), do_lang('MANUAL_TRANSACTION_IDENTIFIER'), 'purchase_id', $default_purchase_id, false));
-        }
-        $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang('TRANSACTION_NOTES'), 'memo', '', false));
-
-        list($details) = find_product_details($type_code);
-        if ($details['type'] == PRODUCT_SUBSCRIPTION) {
-            $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
-        }
-
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f4e52dff9353fb767afbe0be9808591c', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
-        $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('MONEY_AMOUNT_DESCRIPTION', ecommerce_get_currency_symbol()), 'amount', null, false));
-
-        $hidden = new Tempcode();
-        $hidden->attach(form_input_hidden('type_code', $type_code));
-
-        url_default_parameters__disable();
-
-        return do_template('FORM_SCREEN', array('_GUID' => '990d955cb14b6681685ec9e1d1448d9d', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'menu__rich_content__ecommerce__purchase', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => $text, 'URL' => $post_url, 'HIDDEN' => $hidden));
-    }
-
-    /**
-     * The actualiser for a manually triggered transaction.
-     *
-     * @return Tempcode The result of execution.
-     */
-    public function _trigger()
-    {
-        $type_code = post_param_string('type_code');
-
-        $purchase_id = post_param_string('purchase_id', '');
-        $memo = post_param_string('memo');
-        $mc_gross = post_param_string('amount', '');
-        $custom_expiry = post_param_date('cexpiry');
-        $mc_currency = get_option('currency');
-
-        list($details) = find_product_details($type_code);
-        if ($mc_gross == '') {
-            $mc_gross = $details['price'];
-            if (isset($details['currency'])) {
-                $mc_currency = $details['currency'];
-            }
-        }
-        $payment_status = 'Completed';
-        $reason_code = '';
-        $pending_reason = '';
-        $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
-        $parent_txn_id = '';
-
-        $item_name = $details['item_name'];
-
-        if ($details['type'] == PRODUCT_SUBSCRIPTION) {
-            if (($purchase_id == '') || (post_param_string('username', '') != '')) {
-                $member_id = get_member();
-                $username = post_param_string('username', '');
-                if ($username != '') {
-                    $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-                    if ($_member_id !== null) {
-                        $member_id = $_member_id;
-                    }
-                }
-
-                $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_subscriptions', array(
-                    's_type_code' => $type_code,
-                    's_member_id' => $member_id,
-                    's_state' => 'new',
-                    's_amount' => $details['price'],
-                    's_purchase_id' => $purchase_id,
-                    's_time' => time(),
-                    's_auto_fund_source' => '',
-                    's_auto_fund_key' => '',
-                    's_payment_gateway' => 'manual',
-                    's_length' => $details['type_special_details']['length'],
-                    's_length_units' => $details['type_special_details']['length_units'],
-                ), true));
-            }
-
-            $item_name = ''; // Flag for handle_confirmed_transaction to know it's a subscription
-
-            if ($custom_expiry !== null) {
-                $s_length = $details['type_special_details']['length'];
-                $s_length_units = $details['type_special_details']['length_units']; // y-year, m-month, w-week, d-day
-                $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
-                $new_s_time = strtotime('-' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $custom_expiry);
-                $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_time' => $new_s_time), array('id' => $purchase_id));
-            }
-        } else {
-            if ($purchase_id == '') {
-                $member_id = get_member();
-                $username = post_param_string('username', '');
-                if ($username != '') {
-                    $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-                    if ($_member_id !== null) {
-                        $member_id = $_member_id;
-                    }
-                }
-
-                $purchase_id = strval($member_id);
-            }
-        }
-
-        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, '', 'manual');
-
-        $url = get_param_string('redirect', null);
-        if ($url !== null) {
-            return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
-        }
-
-        return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
     }
 
     /**
@@ -813,7 +819,7 @@ class Module_admin_ecommerce_logs
         $repost_id = post_param_integer('id', null);
         if (($repost_id !== null) && ($repost_id == $id)) {
             require_code('ecommerce');
-            handle_confirmed_transaction(strval($id), '', 'SCancelled', '', '', '', '', '', '', '', '', 'manual'); // Runs a cancel
+            handle_confirmed_transaction(null, strval($id), $subscription[0]['s_type_code'], '', strval($id), true, 'SCancelled', '', '', get_option('currency'), '', '', '', '', get_member(), 'manual'); // Runs a cancel
             return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
         }
 

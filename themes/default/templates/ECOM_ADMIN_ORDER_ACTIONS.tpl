@@ -16,7 +16,7 @@
 					<option value="dispatch">{!DISPATCH}</option>
 				{+END}
 				{+START,IF,{$NEQ,{ORDER_STATUS},{!ORDER_STATUS_returned}}}
-					<option value="return">{!RETURN_PRODUCT}</option>
+					<option value="return">{!RETURNED_PRODUCT}</option>
 				{+END}
 				{+START,IF,{$NEQ,{ORDER_STATUS},{!ORDER_STATUS_onhold}}}
 					<option value="hold">{!HOLD_ORDER}</option>

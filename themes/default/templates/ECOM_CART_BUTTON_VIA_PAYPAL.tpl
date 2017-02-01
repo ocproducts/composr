@@ -3,11 +3,11 @@
 	<input type="hidden" name="charset" value="{!charset}" />
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />
 	<input type="hidden" name="notify_url" value="{$FIND_SCRIPT*,ecommerce,1}?from=paypal" />
-	<input type="hidden" name="return" value="{$PAGE_LINK*,_SEARCH:shopping:finish:type_code=cart_orders:from=paypal}" />
-	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:shopping:finish:type_code=cart_orders:cancel=1:from=paypal}" />
+	<input type="hidden" name="return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:type_code={TYPE_CODE}:from=paypal}" />
+	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:type_code={TYPE_CODE*}:cancel=1:from=paypal}" />
 	<input type="hidden" name="no_shipping" value="0" />
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />
-	<input type="hidden" name="custom" value="{ORDER_ID*}" />
+	<input type="hidden" name="custom" value="{TRANS_EXPECTING_ID*}" />
 	<input type="hidden" name="rm" value="2" />
 	<input type="hidden" name="bn" value="ocproducts_SP" />
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}
@@ -42,7 +42,7 @@
 	{+END}
 
 	<p class="purchase_button">
-		<input class="button_screen buttons__cart_checkout" type="submit" name="submit" value="{!shopping:CHECK_OUT}" />
+		<input class="button_screen buttons__cart_checkout" type="submit" name="submit" value="{!MAKE_PAYMENT}" />
 	</p>
 </form>
 

@@ -49,12 +49,10 @@ class Hook_ecommerce_giftr
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         require_lang('giftr');
 
@@ -75,7 +73,7 @@ class Hook_ecommerce_giftr
             }
 
             $products['GIFTR_' . strval($gift['id'])] = array(
-                'item_name' => do_lang('_GIFT', $gift['name'], null, $site_lang ? get_site_default_lang() : user_lang()),
+                'item_name' => do_lang('_GIFT', $gift['name']),
                 'item_description' => do_lang_tempcode('GIFT_DESCRIPTION', escape_html($gift['category']), escape_html(integer_format($gift['popularity'])), escape_html($gift['name'])),
                 'item_image_url' => $image_url,
 
@@ -156,12 +154,13 @@ class Hook_ecommerce_giftr
      *
      * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, PAYMENT_STATUS, ORDER_STATUS.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['PAYMENT_STATUS'] != 'Completed') {
-            return;
+        if ($details['STATUS'] != 'Completed') {
+            return false;
         }
 
         require_lang('giftr');
@@ -194,13 +193,13 @@ class Hook_ecommerce_giftr
                     $sender_username = $GLOBALS['FORUM_DRIVER']->get_username($from_member_id);
                     $private_topic_url = $GLOBALS['FORUM_DRIVER']->member_pm_url($from_member_id);
 
-                    $message = do_notification_lang('GIFT_EXPLANATION_MAIL', comcode_escape($sender_displayname), comcode_escape($gift_name), array($sender_url, $gift_image_url, $gift_message, $private_topic_url, comcode_escape($sender_username)), get_lang($to_member_id));
+                    $body = do_notification_lang('GIFT_EXPLANATION_MAIL', comcode_escape($sender_displayname), comcode_escape($gift_name), array($sender_url, $gift_image_url, $gift_message, $private_topic_url, comcode_escape($sender_username)), get_lang($to_member_id));
 
-                    dispatch_notification('gift', null, $subject, $message, array($to_member_id), $from_member_id, 3, false, false, null, null, '', '', '', '', null, true);
+                    dispatch_notification('gift', null, $subject, $body, array($to_member_id), $from_member_id, 3, false, false, null, null, '', '', '', '', null, true);
                 } else {
-                    $message = do_notification_lang('GIFT_EXPLANATION_ANONYMOUS_MAIL', comcode_escape($gift_name), $gift_image_url, $gift_message, get_lang($to_member_id));
+                    $body = do_notification_lang('GIFT_EXPLANATION_ANONYMOUS_MAIL', comcode_escape($gift_name), $gift_image_url, $gift_message, get_lang($to_member_id));
 
-                    dispatch_notification('gift', null, $subject, $message, array($to_member_id), A_FROM_SYSTEM_UNPRIVILEGED);
+                    dispatch_notification('gift', null, $subject, $body, array($to_member_id), A_FROM_SYSTEM_UNPRIVILEGED);
                 }
             } else {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -208,6 +207,8 @@ class Hook_ecommerce_giftr
         } else {
             warn_exit(do_lang_tempcode('NO_MEMBER_SELECTED'));
         }
+
+        return true;
     }
 
     /**

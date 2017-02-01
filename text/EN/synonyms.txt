@@ -112,7 +112,7 @@ survey	quiz	competition	test	questionnaire
 swf	flash
 friend	buddy	follower
 like	love	rate
-subscribe	subscription	recurring
+subscribe	subscription	recurring	service
 attach	embed
 smf	simple machines forum
 ipb	invision
@@ -122,7 +122,7 @@ logout	log-out	sign-out	sign-off
 login	log-in	sign-in	sign-on	logon	log-on	authorize
 shopping	ecommerce	payment	purchase	products	store	buy	bought
 cash	money	currency
-price	cost	amount	quantity
+price	cost	amount	quantity	gross
 coupon	voucher	discount	credit
 cache	decache	cleanup
 ssl	https
@@ -137,3 +137,4 @@ dashboard	console	status
 menu	navigation
 permalink	url	link
 importance	priority	precedence	level
+note	memo
