@@ -33,11 +33,15 @@
         FromScreenInputUpload.base(this, 'constructor', arguments);
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
-            preinit_file_input('upload', params.name, null, null, params.filter);
+            $cms.requireJavascript('plupload').then(function () {
+                preinit_file_input('upload', params.name, null, null, params.filter);
+            });
         }
 
-        if (params.syndicationJson !== undefined) {
-            show_upload_syndication_options(params.name, params.syndicationJson);
+        if (params.syndicationJson != null) {
+            $cms.requireJavascript('editing').then(function () {
+                show_upload_syndication_options(params.name, params.syndicationJson);
+            });
         }
     }
 
@@ -54,10 +58,15 @@
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copy_permission_presets(prefix, '0', true)) list.selectedIndex = list.options.length - 4;
-            else if (!copy_permission_presets(prefix, '1', true)) list.selectedIndex = list.options.length - 3;
-            else if (!copy_permission_presets(prefix, '2', true)) list.selectedIndex = list.options.length - 2;
-            else if (!copy_permission_presets(prefix, '3', true)) list.selectedIndex = list.options.length - 1;
+            if (!copy_permission_presets(prefix, '0', true)) {
+                list.selectedIndex = list.options.length - 4;
+            } else if (!copy_permission_presets(prefix, '1', true)) {
+                list.selectedIndex = list.options.length - 3;
+            } else if (!copy_permission_presets(prefix, '2', true)) {
+                list.selectedIndex = list.options.length - 2;
+            } else if (!copy_permission_presets(prefix, '3', true)) {
+                list.selectedIndex = list.options.length - 1;
+            }
         }
     }
 
@@ -189,7 +198,7 @@
         }
 
         if (params.supportAutosave && params.formName) {
-            if (init_form_saving !== undefined) {
+            if (window.init_form_saving !== undefined) {
                 init_form_saving(params.formName);
             }
         }
@@ -335,7 +344,9 @@
     };
 
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
-        set_up_comcode_autocomplete(params.name, !!params.wysiwyg);
+        $cms.requireJavascript('jquery_autocomplete').then(function () {
+            set_up_comcode_autocomplete(params.name, !!params.wysiwyg);
+        });
     };
 
     $cms.templates.formScreenInputCombo = function (params, container) {
@@ -396,8 +407,8 @@
     };
 
     $cms.templates.formScreenInputHugeComcode = function (params) {
-        var textarea = $cms.dom.id(params.name),
-            input = $cms.dom.id('form_table_field_input__' + params.randomisedId);
+        var textarea = $cms.dom.$id(params.name),
+            input = $cms.dom.$id('form_table_field_input__' + params.randomisedId);
 
         if (params.required && params.required.includes('wysiwyg') && wysiwyg_on()) {
             textarea.readOnly = true;
@@ -408,7 +419,9 @@
         }
 
         manage_scroll_height(textarea);
-        set_up_comcode_autocomplete(params.name, params.required.includes('wysiwyg'));
+        $cms.requireJavascript('jquery_autocomplete').then(function () {
+            set_up_comcode_autocomplete(params.name, params.required && params.required.includes('wysiwyg'));
+        });
     };
 
     $cms.templates.formScreenInputAuthor = function formScreenInputAuthor(params, container) {
@@ -491,7 +504,7 @@
             title = $cms.filter.id(params.title);
 
         if (title && params.sectionHidden) {
-            $cms.dom.id('fes' + title).click();
+            $cms.dom.$id('fes' + title).click();
         }
 
         $cms.dom.on(container, 'click', '.js-click-toggle-subord-fields', function (e, clicked) {
@@ -565,7 +578,7 @@
             return;
         }
 
-        selectEl = $cms.dom.id(params.name);
+        selectEl = $cms.dom.$id(params.name);
         select2Options = {
             dropdownAutoWidth: true,
             containerCssClass: 'wide_field'
@@ -679,9 +692,8 @@
         }
     };
 
-    $cms.templates.previewScript = function () {
-        var container = this,
-            inner = $cms.dom.$(container, '.js-preview-box-scroll');
+    $cms.templates.previewScript = function (params, container) {
+        var inner = $cms.dom.$(container, '.js-preview-box-scroll');
 
         if (inner) {
             $cms.dom.on(inner, browser_matches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
@@ -700,7 +712,7 @@
                 } catch (e) {
                 }
                 window.parent.mobile_version_for_preview = !!el.checked;
-                window.parent.document.getElementById('preview_button').onclick(event);
+                $cms.dom.trigger(window.parent.document.getElementById('preview_button'), 'click');
                 return;
             }
 
@@ -708,7 +720,7 @@
         });
     };
 
-    $cms.templates.postingField = function postingField(params/* has mutiple containers */) {
+    $cms.templates.postingField = function postingField(params/* NB: mutiple containers */) {
         var id = strVal(params.id),
             name = strVal(params.name),
             initDragDrop = !!params.initDragDrop,
@@ -736,10 +748,14 @@
         }
 
         manage_scroll_height(postEl);
-        set_up_comcode_autocomplete(name, true);
+        $cms.requireJavascript('jquery_autocomplete').then(function () {
+            set_up_comcode_autocomplete(name, true);
+        });
 
         if (initDragDrop) {
-            initialise_html5_dragdrop_upload('container_for_' + name, name);
+            $cms.requireJavascript('plupload').then(function () {
+                initialise_html5_dragdrop_upload('container_for_' + name, name);
+            });
         }
 
         $cms.dom.on(labelRow, 'click', '.js-click-toggle-wysiwyg', function () {
@@ -945,7 +961,9 @@
             syndicationJson = strVal(params.syndicationJson);
 
         if (params.syndicationJson !== undefined) {
-            show_upload_syndication_options(nameStub, syndicationJson);
+            $cms.requireJavascript('editing').then(function () {
+                show_upload_syndication_options(nameStub, syndicationJson);
+            });
         }
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
@@ -1382,7 +1400,7 @@
         if (j.fakeonchange) {
             j.fakeonchange(event);
         }
-        img_ob.parentNode.classList.add(' selected');
+        img_ob.parentNode.classList.add('selected');
         img_ob.style.outline = '1px dotted';
     }
 

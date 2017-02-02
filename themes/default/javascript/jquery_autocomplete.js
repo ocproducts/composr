@@ -656,32 +656,31 @@ function autoCompleteElementFactory(element,e) {
 
 /* Composr binder code */
 
-function set_up_comcode_autocomplete(name,wysiwyg) {
-	if (wysiwyg && wysiwyg_on() && (CKEDITOR == undefined ||  CKEDITOR.instances[name] == undefined)) {
+function set_up_comcode_autocomplete(name, wysiwyg) {
+	if (wysiwyg && window.wysiwyg_on && wysiwyg_on() && ((window.CKEDITOR == null) ||  (window.CKEDITOR.instances[name] == null))) {
 		return;
 	}
 
 	register_mouse_listener();
 
-	window.jQuery('#'+name).sew({
-		values: [],
-		token: '@',
-		elementFactory: autoCompleteElementFactory,
-		onFilterChanged: function(sew, token, expression) {
-			do_ajax_request(
-				'{$FIND_SCRIPT;,namelike}?id='+encodeURIComponent(token)+keep_stub(),
-				function(result,list_contents) {
-					var new_values = [];
-					for (var i=0;i<list_contents.childNodes.length;i++)
-					{
-						new_values.push({
-							val: list_contents.childNodes[i].getAttribute('value'),
-							meta: list_contents.childNodes[i].getAttribute('displayname')
-						});
-					}
-					sew.setValues(new_values);
-				}
-			);
-		}
-	});
+    window.jQuery('#' + name).sew({
+        values: [],
+        token: '@',
+        elementFactory: autoCompleteElementFactory,
+        onFilterChanged: function (sew, token, expression) {
+            do_ajax_request(
+                '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + keep_stub(),
+                function (result, list_contents) {
+                    var new_values = [];
+                    for (var i = 0; i < list_contents.childNodes.length; i++) {
+                        new_values.push({
+                            val: list_contents.childNodes[i].getAttribute('value'),
+                            meta: list_contents.childNodes[i].getAttribute('displayname')
+                        });
+                    }
+                    sew.setValues(new_values);
+                }
+            );
+        }
+    });
 }

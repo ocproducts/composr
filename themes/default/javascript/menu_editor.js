@@ -25,20 +25,20 @@ function make_field_selected(el) {
 
 function copy_fields_into_bottom(i, changed) {
     window.current_selection = i;
-    var form = $cms.dom.id('edit_form');
+    var form = $cms.dom.$id('edit_form');
 
-    form.elements['caption_long'].value = $cms.dom.id('caption_long_' + i).value;
+    form.elements['caption_long'].value = $cms.dom.$id('caption_long_' + i).value;
     form.elements['caption_long'].onchange = function () {
         $cms.dom.$('#caption_long_' + i).value = this.value;
         $cms.dom.$('#caption_long_' + i).disabled = (this.value == '');
     };
 
-    form.elements['url'].value = $cms.dom.id('url_' + i).value;
+    form.elements['url'].value = $cms.dom.$id('url_' + i).value;
     form.elements['url'].onchange = function () {
         $cms.dom.$('#url_' + i).value = this.value;
     };
 
-    form.elements['page_only'].value = $cms.dom.id('page_only_' + i).value;
+    form.elements['page_only'].value = $cms.dom.$id('page_only_' + i).value;
     form.elements['page_only'].onchange = function () {
         $cms.dom.$('#page_only_' + i).value = this.value;
         $cms.dom.$('#page_only_' + i).disabled = (this.value === '');
@@ -49,7 +49,7 @@ function copy_fields_into_bottom(i, changed) {
         if (document.getElementById('theme_img_code_' + i).value == form.elements['theme_img_code'].options[s].value) break;
     if (s == form.elements['theme_img_code'].options.length) {
         s = 0;
-        fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.dom.id('theme_img_code_' + i).value));
+        fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.dom.$id('theme_img_code_' + i).value));
     }
     form.elements['theme_img_code'].selectedIndex = s;
     form.elements['theme_img_code'].onchange = function () {
@@ -60,20 +60,20 @@ function copy_fields_into_bottom(i, changed) {
         window.jQuery(form.elements['theme_img_code']).trigger('change');
     }
 
-    form.elements['new_window'].checked = $cms.dom.id('new_window_' + i).value == '1';
+    form.elements['new_window'].checked = $cms.dom.$id('new_window_' + i).value == '1';
     form.elements['new_window'].onclick = function () {
         $cms.dom.$('#new_window_' + i).value = this.checked ? '1' : '0';
         $cms.dom.$('#new_window_' + i).disabled = !this.checked;
     };
 
-    form.elements['check_perms'].checked = $cms.dom.id('check_perms_' + i).value == '1';
+    form.elements['check_perms'].checked = $cms.dom.$id('check_perms_' + i).value == '1';
     form.elements['check_perms'].onclick = function () {
         $cms.dom.$('#check_perms_' + i).value = this.checked ? '1' : '0';
         $cms.dom.$('#check_perms_' + i).disabled = !this.checked;
     };
 
     //$cms.dom.html(form.elements['branch_type'],$cms.dom.html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
-    form.elements['branch_type'].selectedIndex = $cms.dom.id('branch_type_' + i).selectedIndex;
+    form.elements['branch_type'].selectedIndex = $cms.dom.$id('branch_type_' + i).selectedIndex;
     form.elements['branch_type'].onchange = function (event) {
         $cms.dom.$('#branch_type_' + i).selectedIndex = this.selectedIndex;
         if ($cms.dom.$('#branch_type_' + i).onchange) {
@@ -84,7 +84,7 @@ function copy_fields_into_bottom(i, changed) {
         window.jQuery(form.elements['branch_type']).trigger('change');
     }
 
-    form.elements['include_sitemap'].selectedIndex = $cms.dom.id('include_sitemap_' + i).value;
+    form.elements['include_sitemap'].selectedIndex = $cms.dom.$id('include_sitemap_' + i).value;
     form.elements['include_sitemap'].onchange = function (event) {
         $cms.dom.$('#include_sitemap_' + i).value = this.selectedIndex;
         $cms.dom.$('#include_sitemap_' + i).disabled = (this.selectedIndex == 0);
@@ -228,8 +228,8 @@ function swap_names(t, a, b, t2, values_also) {
         values_also = false;
     }
 
-    var _a = $cms.dom.id(t + '_' + a + t2);
-    var _b = $cms.dom.id(t + '_' + b + t2);
+    var _a = $cms.dom.$id(t + '_' + a + t2);
+    var _b = $cms.dom.$id(t + '_' + b + t2);
     _a.name = t + '_' + b + t2;
     _b.name = t + '_' + a + t2;
     _a.id = t + '_' + b + t2;
@@ -288,7 +288,7 @@ function _do_magic_copier(num, url, caption) {
 
 
 function delete_branch(id) {
-    var branch = $cms.dom.id(id);
+    var branch = $cms.dom.$id(id);
     branch.parentNode.removeChild(branch);
 }
 
@@ -314,15 +314,15 @@ function check_menu() {
             if (!ignore) {// It's the real deal
 
                 // Check we have a caption
-                caption = $cms.dom.id('caption_' + id);
-                url = $cms.dom.id('url_' + id);
+                caption = $cms.dom.$id('caption_' + id);
+                url = $cms.dom.$id('url_' + id);
                 if ((caption.value == '') && (url.value != '')) {
                     window.fauxmodal_alert('{!MISSING_CAPTION_ERROR;^}');
                     return false;
                 }
 
                 // If we are a page, check we have a URL
-                branch_type = $cms.dom.id('branch_type_' + id);
+                branch_type = $cms.dom.$id('branch_type_' + id);
                 if (branch_type.options[branch_type.selectedIndex].value == 'page') {
                     if ((caption.value != '') && (url.value == '')) {
                         window.fauxmodal_alert('{!MISSING_URL_ERROR;^}');

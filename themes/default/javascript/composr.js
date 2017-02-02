@@ -19,7 +19,7 @@ var encodeUC = encodeURIComponent;
         toArray = Function.bind.call(Function.call, emptyArr.slice),
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
-    // Clever helper for merging arrays using `[].push`
+        // Clever helper for merging arrays using `[].push`
         pushArray = Function.bind.call(Function.apply, emptyArr.push),
 
     // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
@@ -43,7 +43,7 @@ var encodeUC = encodeURIComponent;
     window.objVal = objVal;
 
     /** @namespace $cms */
-    $cms = Object.assign($cms, /** @lends $cms */ {
+    $cms = extendDeep($cms, /** @lends $cms */ {
         // Unique for each copy of Composr on the page
         /**@var {string}*/
         id: 'composr' + ('' + Math.random()).substr(2),
@@ -221,63 +221,112 @@ var encodeUC = encodeURIComponent;
         /**@var {object}*/
         staffTooltipsUrlPatterns: objVal(symbols.EXTRA.staff_tooltips_url_patterns),
 
-        // Export useful stuff
-        toArray: toArray,
-        forEach: forEach,
-        some: Function.bind.call(Function.call, emptyArr.some),
-        every: Function.bind.call(Function.call, emptyArr.every),
-        includes: includes,
-        hasOwn: hasOwn,
 
+        /**@var {boolean}*/
         isOpera: isOpera,
+        /**@var {boolean}*/
         isFirefox: isFirefox,
+        /**@var {boolean}*/
         isSafari: isSafari,
+        /**@var {boolean}*/
         isIE: isIE,
+        /**@var {boolean}*/
         isEdge: isEdge,
+        /**@var {boolean}*/
         isChrome: isChrome,
-
+        /**@var {boolean}*/
         isTouchEnabled: ('ontouchstart' in docEl),
 
+        // Export useful stuff
+        /**@method*/
+        toArray: toArray,
+        /**@method*/
+        forEach: forEach,
+        /**@method*/
+        some: Function.bind.call(Function.call, emptyArr.some),
+        /**@method*/
+        every: Function.bind.call(Function.call, emptyArr.every),
+        /**@method*/
+        includes: includes,
+        /**@method*/
+        hasOwn: hasOwn,
+
+        /**@method*/
         uid: uid,
+        /**@method*/
         nodeType: nodeType,
+        /**@method*/
         isEl: isEl,
+        /**@method*/
         isNumeric: isNumeric,
+        /**@method*/
         isDocOrEl: isDocOrEl,
+        /**@method*/
         isArrayLike: isArrayLike,
+        /**@method*/
         noop: noop,
+        /**@method*/
         random: random,
+        /**@method*/
         camelCase: camelCase,
-
+        /**@method*/
         uspFromUrl: uspFromUrl,
-
+        /**@method*/
         each: each,
+        /**@method*/
         extend: extend,
+        /**@method*/
         extendOwn: extendOwn,
+        /**@method*/
         extendDeep: extendDeep,
+        /**@method*/
         cloner: cloner,
+        /**@method*/
         defaults: defaults,
-
-        define: define,
-
+        /**@method*/
+        properties: properties,
+        /**@method*/
         intVal: intVal,
+        /**@method*/
         strVal: strVal,
+        /**@method*/
         format: format,
+        /**@method*/
         numberFormat: numberFormat,
-
+        /**@method*/
         inherits: inherits,
-
+        /**@method*/
         baseUrl: baseUrl,
+        /**@method*/
         img: img,
+        /**@method*/
         navigate: navigate,
+        /**@method*/
         log: log,
+        /**@method*/
         info: info,
+        /**@method*/
         warn: warn,
+        /**@method*/
         dir: dir,
+        /**@method*/
         assert: assert,
+        /**@method*/
         error: error,
+        /**@method*/
         exception: exception,
+        /**@method*/
+        requireCss: requireCss,
+        /**@method*/
+        requireJavascript: requireJavascript,
+        /**@method*/
+        setPostDataFlag: setPostDataFlag,
+        /**@method*/
+        parseJson: parseJson,
 
-        parseJson: parseJson
+        defineBehaviors: defineBehaviors,
+        attachBehaviors: attachBehaviors,
+        detachBehaviors: detachBehaviors
     });
 
     /**
@@ -408,7 +457,7 @@ var encodeUC = encodeURIComponent;
         }
 
         var id = uniqueId();
-        define(obj, $cms.id, id);
+        properties(obj, keyValue($cms.id, id));
         return id;
     }
 
@@ -457,6 +506,10 @@ var encodeUC = encodeURIComponent;
         return (val != null) && (Array.isArray(val) || isPlainObj(val));
     }
 
+    function isScalar(val) {
+        return (val != null) && ((typeof val === 'boolean') || (typeof val === 'number') || (typeof val === 'string'));
+    }
+
     function hasMatchingKey(obj, keys) {
         keys = arrVal(keys);
 
@@ -485,6 +538,10 @@ var encodeUC = encodeURIComponent;
         var obj = {};
         obj[key] = value;
         return obj;
+    }
+
+    function isPromise(obj) {
+        return (obj != null) && (typeof obj === 'object') && (typeof obj.then === 'function');
     }
 
     function isWindow(obj) {
@@ -543,7 +600,7 @@ var encodeUC = encodeURIComponent;
 
     function isArrayLike(obj, minLength) {
         var len;
-        minLength = Numver.isFinite(+minLength) ? +minLength : 0;
+        minLength = Number.isFinite(+minLength) ? +minLength : 0;
 
         return (obj != null)
             && (typeof obj === 'object')
@@ -556,7 +613,7 @@ var encodeUC = encodeURIComponent;
     // Returns a random integer between min (inclusive) and max (inclusive)
     // Using Math.round() will give you a non-uniform distribution!
     function random(min, max) {
-        min = Number.isFinite(+min) ? +mix : 0;
+        min = Number.isFinite(+min) ? +min : 0;
         max = Number.isFinite(+max) ? +max : 1000000000000;
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -686,72 +743,42 @@ var encodeUC = encodeURIComponent;
         return (typeof value === 'function') ? value.call(object) : value;
     }
 
-    var DEFINE_CONFIGURABLE = 1,
-        DEFINE_ENUMERABLE = 2,
-        DEFINE_WRITABLE = 4;
-
     /**
-     * @param {number} [mask] - optional, assumed to be `obj` if not of type number.
+     * @param {string} [mask] - optional, assumed to be `obj` if not of type number.
      * @param {object} obj - the target object to define properties on.
      * @param {object|string} props - is a single property's name if `value` is passed.
-     * @param {*} [value].
      * @returns {Object}
      */
-    function define(mask, obj, props, value) {
+    function properties(mask, obj, props) {
         var key, descriptors, descriptor;
 
-        if (typeof mask !== 'number') {
-            value = props;
+        if (typeof mask !== 'string') {
             props = obj;
             obj = mask;
-            mask = DEFINE_CONFIGURABLE | DEFINE_WRITABLE;
+            mask = 'cw';
         }
 
-        if (value !== undefined) {
-            props = keyValue(props, value);
-        }
+        var configurable = mask.includes('c'),
+            enumerable = mask.includes('e'),
+            writeable = mask.includes('w');
 
         descriptors = {};
         for (key in props) {
+            if (!hasOwn(props, key)) {
+                continue;
+            }
+
             descriptor = Object.getOwnPropertyDescriptor(props, key);
-            descriptor.configurable = !!(mask & DEFINE_CONFIGURABLE);
-            descriptor.enumerable = !!(mask & DEFINE_ENUMERABLE);
+            descriptor.configurable = configurable;
+            descriptor.enumerable = enumerable;
             if (descriptor.writeable !== undefined) {
                 // ^ It's not an accessor property, otherwise we just let descriptor.get/set pass-through
-                descriptor.writeable = !!(mask & DEFINE_WRITABLE);
+                descriptor.writeable = writeable;
             }
             descriptors[key] = descriptor;
         }
 
         return Object.defineProperties(obj, descriptors);
-    }
-
-    function defineC(obj, props, value) {
-        return define(DEFINE_CONFIGURABLE, obj, props, value);
-    }
-
-    function defineCE(obj, props, value) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE, obj, props, value);
-    }
-
-    function defineCW(obj, props, value) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_WRITABLE, obj, props, value);
-    }
-
-    function defineCEW(obj, props, value) {
-        return define(DEFINE_CONFIGURABLE | DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props, value);
-    }
-
-    function defineE(obj, props, value) {
-        return define(DEFINE_ENUMERABLE, obj, props, value);
-    }
-
-    function defineEW(obj, props, value) {
-        return define(DEFINE_ENUMERABLE | DEFINE_WRITABLE, obj, props, value);
-    }
-
-    function defineW(obj, props, value) {
-        return define(DEFINE_WRITABLE, obj, props, value);
     }
 
     // Gets the internal type/constructor name of the provided `val`
@@ -812,7 +839,7 @@ var encodeUC = encodeURIComponent;
             return [];
         }
 
-        if ((typeof val === 'object') && ((isArr = Array.isArray(val)) || isArrayLike(val))) {
+        if ((typeof val === 'object') && ((isArr = Array.isArray(val))/* || isArrayLike(val)*/)) {
             return clone ? toArray(val) : val;
         }
 
@@ -1073,13 +1100,59 @@ var encodeUC = encodeURIComponent;
         }
     }
 
-    $cms.set_post_data_flag = function set_post_data_flag(flag) {
+    function requireCss(sheet) {
+        if ($cms.dom.$('link#css-' + sheet)) {
+            return;
+        }
+        var link = document.createElement('link');
+        link.id = 'css-' + sheet;
+        link.rel = 'stylesheet';
+        link.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheet + keep_stub();
+        document.head.appendChild(link);
+    }
+
+    var _requireJsPromises = Object.create(null);
+    function _requireJavascript(script) {
+        script = strVal(script);
+
+        if (_requireJsPromises[script] == null) {
+            if ($cms.dom.$('script#javascript-' + script)) {
+                _requireJsPromises[script] = Promise.resolve();
+            } else {
+                _requireJsPromises[script] = new Promise(function (resolve, reject) {
+                    var sEl = document.createElement('script');
+                    sEl.id = 'javascript-' + script;
+                    sEl.onload = function (e) {
+                        resolve(e)
+                    };
+                    sEl.onerror = function (e) {
+                        $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
+                        reject(e);
+                    };
+                    sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + keep_stub();
+                    document.body.appendChild(sEl);
+                });
+            }
+        }
+
+        return _requireJsPromises[script];
+    }
+
+    function requireJavascript(scripts) {
+        scripts = arrVal(scripts);
+
+        return Promise.all(scripts.map(_requireJavascript));
+    }
+
+    function setPostDataFlag(flag) {
+        flag = strVal(flag);
+
         var forms = $cms.dom.$$('form'), form, post_data;
 
         for (var i = 0; i < forms.length; i++) {
             form = forms[i];
 
-            if (form.elements['post_data'] === undefined) {
+            if (form.elements['post_data'] == null) {
                 post_data = document.createElement('input');
                 post_data.value = '';
             } else {
@@ -1091,13 +1164,13 @@ var encodeUC = encodeURIComponent;
             post_data.value += flag;
             form.appendChild(post_data);
         }
-    };
+    }
 
     // Inspired by goog.inherits and Babel's generated output for ES6 classes
     function inherits(SubClass, SuperClass, protoProps) {
         Object.setPrototypeOf(SubClass, SuperClass);
 
-        define(SubClass, 'base', base.bind(undefined, SuperClass));
+        properties(SubClass, { base: base.bind(undefined, SuperClass) });
 
         // Set the prototype chain to inherit from `SuperClass`
         SubClass.prototype = Object.create(SuperClass.prototype);
@@ -1105,7 +1178,7 @@ var encodeUC = encodeURIComponent;
         protoProps || (protoProps = {});
         protoProps.constructor = SubClass;
 
-        define(SubClass.prototype, protoProps);
+        properties(SubClass.prototype, protoProps);
     }
 
     /**
@@ -1125,7 +1198,7 @@ var encodeUC = encodeURIComponent;
     // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
     function CookieMonster() {}
 
-    define(CookieMonster.prototype, /** @lends CookieMonster.prototype */ {
+    properties(CookieMonster.prototype, /** @lends CookieMonster# */ {
         get: function get(cookieName) {
             cookieName = strVal(cookieName);
             if (cookieName) {
@@ -1251,12 +1324,11 @@ var encodeUC = encodeURIComponent;
     }
 
     function read_cookie(cookieName, defaultValue) {
+        cookieName = strVal(cookieName);
+        defaultValue = strVal(defaultValue);
+
         var cookies = '' + document.cookie,
             startIdx = cookies.startsWith(cookieName + '=') ? 0 : cookies.indexOf(' ' + cookieName + '=');
-
-        if (defaultValue === undefined) {
-            defaultValue = '';
-        }
 
         if ((startIdx === -1) || !cookieName) {
             return defaultValue;
@@ -1311,13 +1383,21 @@ var encodeUC = encodeURIComponent;
     }());
 
     function domArg(windowOrNodeOrSelector) {
+        var el;
+
         if (windowOrNodeOrSelector != null) {
             if (isWindow(windowOrNodeOrSelector) || isNode(windowOrNodeOrSelector)) {
                 return windowOrNodeOrSelector
             }
 
             if (typeof windowOrNodeOrSelector === 'string') {
-                return $cms.dom.$(windowOrNodeOrSelector);
+                el = $cms.dom.$(windowOrNodeOrSelector);
+
+                if (el == null) {
+                    throw new Error('domArg(): No element found for selector "' + strVal(windowOrNodeOrSelector) + '".');
+                }
+
+                return el;
             }
         }
 
@@ -1325,13 +1405,21 @@ var encodeUC = encodeURIComponent;
     }
 
     function nodeArg(nodeOrSelector) {
+        var el;
+
         if (nodeOrSelector != null) {
             if (isNode(nodeOrSelector)) {
                 return nodeOrSelector;
             }
 
             if (typeof nodeOrSelector === 'string') {
-                return $cms.dom.$(nodeOrSelector);
+                el = $cms.dom.$(nodeOrSelector);
+
+                if (el == null) {
+                    throw new Error('nodeArg(): No element found for selector "' + strVal(nodeOrSelector) + '".');
+                }
+
+                return el;
             }
         }
 
@@ -1339,13 +1427,21 @@ var encodeUC = encodeURIComponent;
     }
 
     function elArg(elementOrSelector) {
+        var el;
+
         if (elementOrSelector != null) {
             if (isEl(elementOrSelector)) {
                 return elementOrSelector;
             }
 
             if (typeof elementOrSelector === 'string') {
-                return $cms.dom.$(elementOrSelector);
+                el = $cms.dom.$(elementOrSelector);
+
+                if (el == null) {
+                    throw new Error('elArg(): No element found for selector "' + strVal(elementOrSelector) + '".');
+                }
+
+                return el;
             }
         }
 
@@ -1364,13 +1460,14 @@ var encodeUC = encodeURIComponent;
      * @param id
      * @returns {*}
      */
-    $cms.dom.id = function id(context, id) {
+    $cms.dom.$id = function $id(context, id) {
         if (id === undefined) {
             id = context;
             context = document;
         } else {
             context = nodeArg(context);
         }
+        id = strVal(id);
 
         return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
     };
@@ -1390,6 +1487,7 @@ var encodeUC = encodeURIComponent;
         } else {
             context = nodeArg(context);
         }
+        selector = strVal(selector);
 
         return (rgxIdSelector.test(selector) && ('getElementById' in context)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
     };
@@ -1411,6 +1509,7 @@ var encodeUC = encodeURIComponent;
         } else {
             context = nodeArg(context);
         }
+        selector = strVal(selector);
 
         // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
         if (rgxSimpleSelector.test(selector) && isDocOrEl(context)) {
@@ -1456,6 +1555,7 @@ var encodeUC = encodeURIComponent;
         } else {
             context = nodeArg(context);
         }
+        selector = strVal(selector);
 
         var els = $cms.dom.$$(context, selector);
 
@@ -1546,7 +1646,7 @@ var encodeUC = encodeURIComponent;
         this.expando = $cms.id + '-data-' + Data.uid++;
     }
     Data.uid = 1;
-    define(Data.prototype, /**@lends Data#*/ {
+    properties(Data.prototype, /**@lends Data#*/ {
         cache: function (owner) {
             // Check if the owner object already has a cache
             var value = owner[this.expando];
@@ -1558,7 +1658,7 @@ var encodeUC = encodeURIComponent;
                 // but we should not, see #8335.
                 // Always return an empty object.
                 if (!isNode(owner) || isDocOrEl(owner)) {
-                    define(owner, this.expando, value);
+                    properties(owner, keyValue(this.expando, value));
                 }
             }
 
@@ -2869,13 +2969,51 @@ var encodeUC = encodeURIComponent;
         return result.join('&');
     };
 
+    function defineBehaviors(behaviors) {
+        behaviors = objVal(behaviors);
+
+        for (var key in behaviors) {
+            $cms.behaviors[key] = behaviors[key];
+        }
+    }
+
+    /**
+     * @return {string[]}
+     */
+    function behaviorNamesByPriority() {
+        var name, behavior, priority, priorities, i,
+            byPriority = {},
+            names = [];
+
+        for (name in $cms.behaviors) {
+            behavior = $cms.behaviors[name];
+            priority = +behavior.priority || 0;
+
+            byPriority[priority] || (byPriority[priority] = []);
+            byPriority[priority].push(name);
+        }
+
+        priorities = Object.keys(byPriority);
+        priorities.sort(function (a, b) {
+            // Numerical descending sort
+            return b - a;
+        });
+
+        for (i = 0; i < priorities.length; i++) {
+            priority = priorities[i];
+            pushArray(names, byPriority[priority]);
+        }
+
+        return names;
+    }
+
     /**
      *
      * @param context
      * @param settings
      */
-    $cms.attachBehaviors = function (context, settings) {
-        var name;
+    function attachBehaviors(context, settings) {
+        var names;
 
         if (!isDocOrEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
@@ -2884,16 +3022,33 @@ var encodeUC = encodeURIComponent;
         settings || (settings = $cms.settings);
 
         // Execute all of them.
-        for (name in $cms.behaviors) {
+        names = behaviorNamesByPriority();
+
+        _attach(0);
+        function _attach(i) {
+            var name = names[i], ret;
+
             if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
                 try {
-                    $cms.behaviors[name].attach(context, settings);
+                    ret = $cms.behaviors[name].attach(context, settings);
                 } catch (e) {
                     $cms.error('$cms.attachBehaviors(): Error while attaching behavior \'' + name + '\' to', context, '\n', e);
                 }
             }
+
+            ++i;
+
+            if (names.length <= i) {
+                return;
+            }
+
+            if (isPromise(ret)) { // If the behavior returns a promise, we wait for it before moving on
+                ret.then(_attach.bind(undefined, i), _attach.bind(undefined, i));
+            } else { // no promise!
+                _attach(i);
+            }
         }
-    };
+    }
 
     /**
      *
@@ -2901,7 +3056,7 @@ var encodeUC = encodeURIComponent;
      * @param settings
      * @param trigger
      */
-    $cms.detachBehaviors = function (context, settings, trigger) {
+    function detachBehaviors(context, settings, trigger) {
         var name;
 
         if (!isDocOrEl(context)) {
@@ -2921,7 +3076,7 @@ var encodeUC = encodeURIComponent;
                 }
             }
         }
-    };
+    }
 
     // List of view options that can be set as properties.
     var viewOptionsList = { el: 1, id: 1, attributes: 1, className: 1, tagName: 1, events: 1 };
@@ -2942,7 +3097,7 @@ var encodeUC = encodeURIComponent;
 
     // Cached regex to split keys for `delegate`.
     var rgxDelegateEventSplitter = /^(\S+)\s*(.*)$/;
-    define(View.prototype, /**@lends $cms.View#*/{
+    properties(View.prototype, /**@lends $cms.View#*/{
         /**
          * @method
          */
@@ -3365,12 +3520,12 @@ var encodeUC = encodeURIComponent;
 
     $cms.views.ModalWindow = ModalWindow;
     /**
+     * @memberof $cms.views
      * @class
+     * @extends $cms.View
      */
     function ModalWindow(params) {
         ModalWindow.base(this, 'constructor', arguments);
-
-        bindAll(this, 'close', 'option', 'reset_dimensions', 'init_box', 'inject', 'remove', 'element', 'getPageSize');
 
         // Constants
         this.WINDOW_SIDE_GAP = $cms.$MOBILE ? 5 : 25;
@@ -3422,7 +3577,7 @@ var encodeUC = encodeURIComponent;
         this.init_box();
     }
 
-    $cms.inherits(ModalWindow, $cms.View, /** @lends ModalWindow# */ {
+    $cms.inherits(ModalWindow, $cms.View, /** @lends $cms.views.ModalWindow# */ {
         // Methods...
         close: function (win) {
             if (this.boxWrapperEl) {
@@ -3772,15 +3927,15 @@ var encodeUC = encodeURIComponent;
                             //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';	Actually, not wanting this now
 
                             // Remove fixed width
-                            var main_website_inner = iframe.contentWindow.$cms.dom.id('main_website_inner');
+                            var main_website_inner = iframe.contentWindow.$cms.dom.$id('main_website_inner');
                             if (main_website_inner) main_website_inner.id = '';
 
                             // Remove main_website marker
-                            var main_website = iframe.contentWindow.$cms.dom.id('main_website');
+                            var main_website = iframe.contentWindow.$cms.dom.$id('main_website');
                             if (main_website) main_website.id = '';
 
                             // Remove popup spacing
-                            var popup_spacer = iframe.contentWindow.$cms.dom.id('popup_spacer');
+                            var popup_spacer = iframe.contentWindow.$cms.dom.$id('popup_spacer');
                             if (popup_spacer) popup_spacer.id = '';
 
                             // Set linking scheme
@@ -4089,7 +4244,7 @@ var encodeUC = encodeURIComponent;
             url += '&id=' + encodeUC(params.root_id);
         }
         url += '&options=' + this.options;
-        url += '&default=' + encodeUC($cms.dom.id(this.name).value);
+        url += '&default=' + encodeUC($cms.dom.$id(this.name).value);
 
         do_ajax_request(url, this);
 
@@ -4152,7 +4307,7 @@ var encodeUC = encodeURIComponent;
 
             var i, xml, temp_node, html;
             if (!expanding_id) {// Root
-                html = $cms.dom.id('tree_list__root_' + this.name);
+                html = $cms.dom.$id('tree_list__root_' + this.name);
                 $cms.dom.html(html, '');
 
                 this.tree_list_data = ajax_result.cloneNode(true);
@@ -4170,7 +4325,7 @@ var encodeUC = encodeURIComponent;
                     temp_node = ajax_result.childNodes[i];
                     xml.appendChild(temp_node.cloneNode(true));
                 }
-                html = $cms.dom.id(this.name + 'tree_list_c_' + expanding_id);
+                html = $cms.dom.$id(this.name + 'tree_list_c_' + expanding_id);
             }
 
             attributes_full_fixup(xml);
@@ -4186,7 +4341,7 @@ var encodeUC = encodeURIComponent;
                 initially_expanded, selectable, extra, title, func,
                 temp, master_html, node, node_self_wrap, node_self;
 
-            element || (element = $cms.dom.id(this.name));
+            element || (element = $cms.dom.$id(this.name));
 
             clear_transition_and_set_opacity(html, 0.0);
             fade_transition(html, 100, 30, 4);
@@ -4216,7 +4371,7 @@ var encodeUC = encodeURIComponent;
                         if (xml_node) {
                             el = $cms.dom.$('#' + that.name + 'texp_c_' + xml_node.getAttribute('id'));
                             if (el) {
-                                html_node = $cms.dom.id(that.name + 'tree_list_c_' + xml_node.getAttribute('id'));
+                                html_node = $cms.dom.$id(that.name + 'tree_list_c_' + xml_node.getAttribute('id'));
                                 expanding = (html_node.style.display != 'block');
                                 if (expanding) {
                                     el.onclick(null, true);
@@ -4324,7 +4479,7 @@ var encodeUC = encodeURIComponent;
                     new_html.style.padding/*{$?,{$EQ,{!en_left},left},Left,Right}*/ = '15px';
                     var selected = ((that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value && element.value != '') || node.getAttribute('selected') == 'yes';
                     if (selectable) {
-                        that.makeElementLookSelected($cms.dom.id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);
+                        that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);
                         if (selected) {
                             element.value = (that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')); // Copy in proper ID for what is selected, not relying on what we currently have as accurate
                             if (element.value != '') {
@@ -4391,11 +4546,11 @@ var encodeUC = encodeURIComponent;
                     if ((that.multi_selection) && (!selected)) {
                         selected = ((',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') != -1);
                     }
-                    that.makeElementLookSelected($cms.dom.id(that.name + 'tsel_e_' + node.getAttribute('id')), selected);
+                    that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_e_' + node.getAttribute('id')), selected);
                 }
 
                 if ((node.getAttribute('draggable')) && (node.getAttribute('draggable') !== 'false')) {
-                    master_html = $cms.dom.id('tree_list__root_' + that.name);
+                    master_html = $cms.dom.$id('tree_list__root_' + that.name);
                     fix_up_node_position(node_self);
                     node_self.cms_draggable = node.getAttribute('draggable');
                     node_self.draggable = true;
@@ -4478,7 +4633,7 @@ var encodeUC = encodeURIComponent;
         },
 
         handleTreeClick: function (event, automated) {// Not called as a method
-            var element = $cms.dom.id(this.object.name);
+            var element = $cms.dom.$id(this.object.name);
             if (element.disabled || this.object.busy) {
                 return false;
             }
@@ -4487,8 +4642,8 @@ var encodeUC = encodeURIComponent;
 
             var clicked_id = this.getAttribute('id').substr(7 + this.object.name.length);
 
-            var html_node = $cms.dom.id(this.object.name + 'tree_list_c_' + clicked_id);
-            var expand_button = $cms.dom.id(this.object.name + 'texp_c_' + clicked_id);
+            var html_node = $cms.dom.$id(this.object.name + 'tree_list_c_' + clicked_id);
+            var expand_button = $cms.dom.$id(this.object.name + 'texp_c_' + clicked_id);
 
             var expanding = (html_node.style.display != 'block');
 
@@ -4508,7 +4663,7 @@ var encodeUC = encodeURIComponent;
                         ob.response(ajax_result_frame, ajax_result, clicked_id);
                     });
                     $cms.dom.html(html_node, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
-                    var container = $cms.dom.id('tree_list__root_' + ob.name);
+                    var container = $cms.dom.$id('tree_list__root_' + ob.name);
                     if ((automated) && (container) && (container.style.overflowY == 'auto')) {
                         window.setTimeout(function () {
                             container.scrollTop = find_pos_y(html_node) - 20;
@@ -4545,7 +4700,7 @@ var encodeUC = encodeURIComponent;
         handleSelection: function (event, assume_ctrl) {// Not called as a method
             assume_ctrl = !!assume_ctrl;
 
-            var element = $cms.dom.id(this.object.name);
+            var element = $cms.dom.$id(this.object.name);
             if (element.disabled) {
                 return;
             }
@@ -4557,7 +4712,7 @@ var encodeUC = encodeURIComponent;
 
             if (!assume_ctrl && event.shiftKey && this.object.multi_selection) {
                 // We're holding down shift so we need to force selection of everything bounded between our last click spot and here
-                var all_a = $cms.dom.id('tree_list__root_' + this.object.name).getElementsByTagName('label');
+                var all_a = $cms.dom.$id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                 var pos_last = -1;
                 var pos_us = -1;
                 if (this.object.last_clicked == null) this.object.last_clicked = all_a[0];
@@ -4607,7 +4762,7 @@ var encodeUC = encodeURIComponent;
             if (xml_node.getAttribute('selectable') == 'true' || this.object.all_nodes_selectable) {
                 var selected_after = selected_before;
                 for (i = 0; i < selected_before.length; i++) {
-                    this.object.makeElementLookSelected($cms.dom.id(this.object.name + 'tsel_' + type + '_' + selected_before[i]), false);
+                    this.object.makeElementLookSelected($cms.dom.$id(this.object.name + 'tsel_' + type + '_' + selected_before[i]), false);
                 }
                 if ((!this.object.multi_selection) || (((!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) && (!assume_ctrl))) {
                     selected_after = [];
@@ -4620,15 +4775,15 @@ var encodeUC = encodeURIComponent;
                 } else if (selected_after.indexOf(selected_id) == -1) {
                     selected_after.push(selected_id);
                     if (!this.object.multi_selection) {// This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
-                        var anchors = $cms.dom.id('tree_list__root_' + this.object.name).getElementsByTagName('label');
+                        var anchors = $cms.dom.$id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                         for (i = 0; i < anchors.length; i++) {
                             this.object.makeElementLookSelected(anchors[i], false);
                         }
-                        this.object.makeElementLookSelected($cms.dom.id(this.object.name + 'tsel_' + type + '_' + real_selected_id), true);
+                        this.object.makeElementLookSelected($cms.dom.$id(this.object.name + 'tsel_' + type + '_' + real_selected_id), true);
                     }
                 }
                 for (i = 0; i < selected_after.length; i++) {
-                    this.object.makeElementLookSelected($cms.dom.id(this.object.name + 'tsel_' + type + '_' + selected_after[i]), true);
+                    this.object.makeElementLookSelected($cms.dom.$id(this.object.name + 'tsel_' + type + '_' + selected_after[i]), true);
                 }
 
                 element.value = selected_after.join(',');
@@ -4709,7 +4864,7 @@ var encodeUC = encodeURIComponent;
         }
 
         if (node.getAttribute('droppable') == element.cms_draggable) {
-            child_node_element = $cms.dom.id(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
+            child_node_element = $cms.dom.$id(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
             y = find_pos_y(child_node_element.parentNode.parentNode, true);
             height = child_node_element.parentNode.parentNode.offsetHeight;
             if ((y < mouse_y) && (y + height > mouse_y)) {
@@ -5075,6 +5230,7 @@ function noop() {}
     window.escape_comcode = escape_comcode;
     window.create_rollover = create_rollover;
     window.browser_matches = browser_matches;
+    window.confirm_session = confirm_session;
 
     // Serves as a flag to indicate any new errors are probably due to us transitioning
     window.unloaded = !!window.unloaded;
@@ -5087,7 +5243,7 @@ function noop() {}
         for (var i = 0; i < pre.length; i++) {
             pre[i].parentNode.removeChild(pre[i]);
         }
-        var bi = $cms.dom.id('main_website_inner');
+        var bi = $cms.dom.$id('main_website_inner');
         if (bi) {
             clear_transition(bi);
             bi.classList.remove('site_unloading');
@@ -5212,7 +5368,7 @@ function noop() {}
 
     /* Image rollover effects */
     function create_rollover(rand, rollover) {
-        var img = rand && $cms.dom.id(rand);
+        var img = rand && $cms.dom.$id(rand);
         if (!img) {
             return;
         }
@@ -5290,60 +5446,60 @@ function noop() {}
         // Should never get here
         return false;
     }
-}());
 
-/* Enforcing a session using AJAX */
-function confirm_session(callback) {
-    var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + keep_stub(true);
+    /* Enforcing a session using AJAX */
+    function confirm_session(callback) {
+        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + keep_stub(true);
 
-    do_ajax_request(url, function (ret) {
-        if (!ret) {
-            return;
-        }
+        do_ajax_request(url, function (ret) {
+            if (!ret) {
+                return;
+            }
 
-        if (ret.responseText === '') {// Blank means success, no error - so we can call callback
-            callback(true);
-            return;
-        }
+            if (ret.responseText === '') {// Blank means success, no error - so we can call callback
+                callback(true);
+                return;
+            }
 
-        // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-        if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
+            // But non blank tells us the username, and there is an implication that no session is confirmed for this login
+            if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
+                window.fauxmodal_prompt(
+                    '{!USERNAME;^}',
+                    '',
+                    function (promptt) {
+                        _confirm_session(callback, promptt, url);
+                    },
+                    '{!_LOGIN;^}'
+                );
+                return;
+            }
+
+            _confirm_session(callback, ret.responseText, url);
+        });
+
+        function _confirm_session(callback, username, url) {
             window.fauxmodal_prompt(
-                '{!USERNAME;^}',
+                $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
                 '',
                 function (promptt) {
-                    _confirm_session(callback, promptt, url);
+                    if (promptt !== null) {
+                        do_ajax_request(url, function (ret) {
+                            if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
+                                callback(true);
+                            } else {
+                                _confirm_session(callback, username, url); // Recurse
+                            }
+                        }, 'login_username=' + encodeUC(username) + '&password=' + encodeUC(promptt));
+                    } else {
+                        callback(false);
+                    }
                 },
-                '{!_LOGIN;^}'
+                '{!_LOGIN;^}',
+                'password'
             );
-            return;
         }
-
-        _confirm_session(callback, ret.responseText, url);
-    });
-
-    function _confirm_session(callback, username, url) {
-        window.fauxmodal_prompt(
-            $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
-            '',
-            function (promptt) {
-                if (promptt !== null) {
-                    do_ajax_request(url, function (ret) {
-                        if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
-                            callback(true);
-                        } else {
-                            _confirm_session(callback, username, url); // Recurse
-                        }
-                    }, 'login_username=' + encodeUC(username) + '&password=' + encodeUC(promptt));
-                } else {
-                    callback(false);
-                }
-            },
-            '{!_LOGIN;^}',
-            'password'
-        );
     }
-}
+}());
 
 
 /* Dynamic inclusion */
@@ -5352,10 +5508,10 @@ function load_snippet(snippet_hook, post, callback) {
         return null;
     }
 
-    var title = $cms.dom.html(document.querySelector('title'));
-    title = title.replace(/ \u2013 .*/, '');
-    var metas = document.getElementsByTagName('link'), i;
-    var url = window.location.href;
+    var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
+        metas = document.getElementsByTagName('link'), i,
+        url = window.location.href;
+
     for (i = 0; i < metas.length; i++) {
         if (metas[i].getAttribute('rel') === 'canonical') {
             url = metas[i].getAttribute('href');
@@ -5371,37 +5527,6 @@ function load_snippet(snippet_hook, post, callback) {
     }
     return html.responseText;
 }
-function require_css(sheet) {
-    if ($cms.dom.$('#loading_css_' + sheet)) {
-        return;
-    }
-    var link = document.createElement('link');
-    link.setAttribute('id', 'loading_css_' + sheet);
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheet + keep_stub());
-    document.head.appendChild(link);
-}
-function require_javascript(script, detector, callback) {
-    // Check it is not already loading
-    if ($cms.dom.$('#loading_js_' + script)) {
-        return;
-    }
-
-    // Check it is already loaded
-    if (detector !== undefined) {
-        // Some object reference into the file passed in was defined, so the file must have been loaded already
-        if (callback) {
-            callback();
-        }
-        return;
-    }
-
-    // Load it
-    var s = document.createElement('script');
-    s.id = 'loading_js_' + script;
-    s.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + keep_stub();
-    document.head.appendChild(s);
-}
 
 /* Tabs */
 function find_url_tab(hash) {
@@ -5415,7 +5540,7 @@ function find_url_tab(hash) {
         if ($cms.dom.$('#g_' + tab)) {
             select_tab('g', tab);
         }
-        else if ((tab.indexOf('__') != -1) && ($cms.dom.id('g_' + tab.substr(0, tab.indexOf('__'))))) {
+        else if ((tab.indexOf('__') != -1) && ($cms.dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
             var old = hash;
             select_tab('g', tab.substr(0, tab.indexOf('__')));
             window.location.hash = old;
@@ -5439,7 +5564,7 @@ function select_tab(id, tab, from_url, automated) {
 
     var tabs = [], i, element;
 
-    element = $cms.dom.id('t_' + tab);
+    element = $cms.dom.$('#t_' + tab);
     for (i = 0; i < element.parentNode.children.length; i++) {
         if (element.parentNode.children[i].id && (element.parentNode.children[i].id.substr(0, 2) === 't_')) {
             tabs.push(element.parentNode.children[i].id.substr(2));
@@ -5447,7 +5572,7 @@ function select_tab(id, tab, from_url, automated) {
     }
 
     for (i = 0; i < tabs.length; i++) {
-        element = $cms.dom.id(id + '_' + tabs[i]);
+        element = $cms.dom.$('#' + id + '_' + tabs[i]);
         if (element) {
             element.style.display = (tabs[i] === tab) ? 'block' : 'none';
 
@@ -5467,7 +5592,7 @@ function select_tab(id, tab, from_url, automated) {
 
     if (window['load_tab__' + tab] !== undefined) {
         // Usually an AJAX loader
-        window['load_tab__' + tab](automated, $cms.dom.id(id + '_' + tab));
+        window['load_tab__' + tab](automated, $cms.dom.$('#' + id + '_' + tab));
     }
 
     return false;
@@ -5505,7 +5630,7 @@ function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
 }
 
 function illustrate_frame_load(iframeId) {
-    var head, cssText = '', i, iframe = $cms.dom.id(iframeId), doc, de;
+    var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
 
     if (!$cms.$CONFIG_OPTION.enable_animations || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
         return;
@@ -5581,7 +5706,7 @@ function illustrate_frame_load(iframeId) {
             i_new.id = i_default.id;
             i_default.parentNode.replaceChild(i_new, i_default);
         }
-    });
+    }, 0);
 }
 
 /* Smoothly scroll to another position on the page */
@@ -5595,7 +5720,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
 
     var scroll_y = window.pageYOffset;
     if (typeof dest_y === 'string') {
-        dest_y = find_pos_y($cms.dom.id(dest_y), true);
+        dest_y = find_pos_y($cms.dom.$id(dest_y), true);
     }
     if (dest_y < 0) {
         dest_y = 0;
@@ -5911,7 +6036,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
     }
 
     var tooltipEl;
-    if ((el.tooltip_id !== undefined) && ($cms.dom.id(el.tooltip_id))) {
+    if ((el.tooltip_id !== undefined) && ($cms.dom.$id(el.tooltip_id))) {
         tooltipEl = win.$cms.dom.$('#' + el.tooltip_id);
         tooltipEl.style.display = 'none';
         $cms.dom.html(tooltipEl, '');
@@ -6027,7 +6152,7 @@ function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_
         return;
     }  // Should not happen but written as a fail-safe
 
-    tooltip_element || (tooltip_element = $cms.dom.id(el.tooltip_id));
+    tooltip_element || (tooltip_element = $cms.dom.$id(el.tooltip_id));
 
     if (!tooltip_element) {
         return;
@@ -6120,7 +6245,7 @@ function deactivate_tooltip(el, tooltip_element) {
 function resize_frame(name, min_height) {
     min_height = +min_height || 0;
 
-    var frame_element = $cms.dom.id(name),
+    var frame_element = $cms.dom.$id(name),
         frame_window;
 
     if (window.frames[name] !== undefined) {
@@ -6369,7 +6494,7 @@ function find_if_children_set(container) {
 
 /* Used by audio CAPTCHA. */
 function play_self_audio_link(ob) {
-    require_javascript('sound', window.SoundManager);
+    $cms.requireJavascript('sound');
 
     var timer = window.setInterval(function () {
         if (window.soundManager === undefined) {
@@ -6551,11 +6676,11 @@ function open_images_into_lightbox(imgs, start) {
         window.setTimeout(function () { // Defer execution until the HTML was parsed
             if (is_video) {
                 var video = document.createElement('video');
+                video.id = 'lightbox_image';
+                video.className = 'lightbox_image';
                 video.controls = 'controls';
                 video.autoplay = 'autoplay';
                 $cms.dom.html(video, imgs[position][0]);
-                video.className = 'lightbox_image';
-                video.id = 'lightbox_image';
                 video.addEventListener('loadedmetadata', function () {
                     _resize_lightbox_dimensions_img(modal, video, true, true);
                 });
@@ -6572,8 +6697,8 @@ function open_images_into_lightbox(imgs, start) {
                 });
             }
 
-            var lightbox_description = modal.top_window.$cms.dom.id('lightbox_description'),
-                lightbox_position_in_set_x = modal.top_window.$cms.dom.id('lightbox_position_in_set_x');
+            var lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
+                lightbox_position_in_set_x = modal.top_window.$cms.dom.$id('lightbox_position_in_set_x');
 
             if (lightbox_description) {
                 $cms.dom.html(lightbox_description, imgs[position][1]);
@@ -6649,12 +6774,26 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
         width = real_width,
         real_height = is_video ? img.videoHeight : img.height,
         height = real_height,
-        lightbox_image = modal.top_window.$cms.dom.id('lightbox_image'),
+        lightbox_image = modal.top_window.$cms.dom.$id('lightbox_image'),
 
-        lightbox_meta = modal.top_window.$cms.dom.id('lightbox_meta'),
-        lightbox_description = modal.top_window.$cms.dom.id('lightbox_description'),
-        lightbox_position_in_set = modal.top_window.$cms.dom.id('lightbox_position_in_set'),
-        lightbox_full_link = modal.top_window.$cms.dom.id('lightbox_full_link');
+        lightbox_meta = modal.top_window.$cms.dom.$id('lightbox_meta'),
+        lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
+        lightbox_position_in_set = modal.top_window.$cms.dom.$id('lightbox_position_in_set'),
+        lightbox_full_link = modal.top_window.$cms.dom.$id('lightbox_full_link');
+
+    var sup = lightbox_image.parentNode;
+    sup.removeChild(lightbox_image);
+    if (sup.firstChild) {
+        sup.insertBefore(img, sup.firstChild);
+    } else {
+        sup.appendChild(img);
+    }
+    sup.className = '';
+    sup.style.textAlign = 'center';
+    sup.style.overflow = 'hidden';
+
+    dims_func();
+    $cms.dom.on(window, 'resize', dims_func);
 
     function dims_func() {
         lightbox_description.style.display = (lightbox_description.firstChild) ? 'inline' : 'none';
@@ -6702,20 +6841,6 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
             return [max_width, max_height];
         }
     }
-
-    var sup = lightbox_image.parentNode;
-    sup.removeChild(lightbox_image);
-    if (sup.firstChild) {
-        sup.insertBefore(img, sup.firstChild);
-    } else {
-        sup.appendChild(img);
-    }
-    sup.className = '';
-    sup.style.textAlign = 'center';
-    sup.style.overflow = 'hidden';
-
-    dims_func();
-    $cms.dom.on(window, 'resize', dims_func);
 }
 
 
@@ -7036,7 +7161,7 @@ function faux_open(url, name, options, target, cancel_text) {
             return false;
         }
 
-        var wrapper_inner = $cms.dom.id(wrapper.id + '_inner');
+        var wrapper_inner = $cms.dom.$id(wrapper.id + '_inner');
         if (!wrapper_inner) wrapper_inner = wrapper;
 
         var rel;
@@ -7589,7 +7714,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 if (current_list_for_copy.onchange) {
                     current_list_for_copy.onchange(e);
                 }
-                var al = $cms.dom.id('ajax_list');
+                var al = $cms.dom.$id('ajax_list');
                 al.parentNode.removeChild(al);
                 window.setTimeout(function () {
                     current_list_for_copy.focus();
@@ -7757,7 +7882,7 @@ function do_form_submit(form, event) {
 function do_form_preview(event, form, preview_url, has_separate_preview) {
     has_separate_preview = !!has_separate_preview;
 
-    if (!$cms.dom.id('preview_iframe')) {
+    if (!$cms.dom.$id('preview_iframe')) {
         fauxmodal_alert('{!ADBLOCKER;^}');
         return false;
     }
@@ -7796,7 +7921,7 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
         return true;
     }
 
-    $cms.dom.id('submit_button').style.display = 'inline';
+    $cms.dom.$id('submit_button').style.display = 'inline';
 
     /* Do our loading-animation */
     if (!window.just_checking_requirements) {
@@ -7813,6 +7938,11 @@ function do_form_preview(event, form, preview_url, has_separate_preview) {
     }
 
     return true;
+}
+
+function is_wysiwyg_field(the_element) {
+    var id = the_element.id;
+    return window.wysiwyg_editors && (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
 }
 
 function clever_find_value(form, element) {
@@ -7913,11 +8043,11 @@ function check_form(the_form, for_preview) {
                         }
 
                         if ((!no_recurse) && (the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/))) {
-                            var e = $cms.dom.id(the_element.id.replace(/\_(day|month|year)$/, '_day'));
+                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_day'));
                             if (e != the_element) e.onblur(event, true);
-                            var e = $cms.dom.id(the_element.id.replace(/\_(day|month|year)$/, '_month'));
+                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_month'));
                             if (e != the_element) e.onblur(event, true);
-                            var e = $cms.dom.id(the_element.id.replace(/\_(day|month|year)$/, '_year'));
+                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_year'));
                             if (e != the_element) e.onblur(event, true);
                         }
                     };
@@ -7965,7 +8095,7 @@ function check_form(the_form, for_preview) {
 
     // Try and workaround max_input_vars problem if lots of usergroups
     if (!erroneous) {
-        var delete_e = $cms.dom.id('delete');
+        var delete_e = $cms.dom.$id('delete');
         var is_delete = delete_e && delete_e.type == 'checkbox' && delete_e.checked;
         var es = document.getElementsByTagName('select'), e;
         for (var i = 0; i < es.length; i++) {
@@ -8089,9 +8219,9 @@ function check_form(the_form, for_preview) {
         return [erroneous, total_file_size, alerted];
 
         function get_errormsg_element(id) {
-            var errormsg_element = $cms.dom.id('error_' + id);
+            var errormsg_element = $cms.dom.$id('error_' + id);
             if (!errormsg_element) {
-                errormsg_element = $cms.dom.id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                errormsg_element = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
             }
             return errormsg_element;
         }
@@ -8099,14 +8229,14 @@ function check_form(the_form, for_preview) {
 }
 
 function set_locked(field, is_locked, chosen_ob) {
-    var radio_button = $cms.dom.id('choose_' + field.name.replace(/\[\]$/, ''));
+    var radio_button = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
     if (!radio_button) {
-        radio_button = $cms.dom.id('choose_' + field.name.replace(/\_\d+$/, '_'));
+        radio_button = $cms.dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
     }
 
     // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: set_locked assumes that the calling code is clever
     // special input types are coded to observe their master input field readonly status)
-    var button = $cms.dom.id('uploadButton_' + field.name.replace(/\[\]$/, ''));
+    var button = $cms.dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
 
     if (is_locked) {
         var labels = document.getElementsByTagName('label'), label = null;

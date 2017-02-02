@@ -3,7 +3,7 @@
 function find_text_nodes(e) {
     var found = [];
     for (var i = 0; i < e.childNodes.length; i++) {
-        if (e.childNodes[i].nodeName == '#text') {
+        if (e.childNodes[i].nodeName === '#text') {
             found.push(e.childNodes[i]);
         }
         if (e.childNodes[i] !== undefined) {

@@ -231,7 +231,7 @@
         }
 
         $cms.dom.on(container, 'click', '.js-click-menu-editor-add-new-page', function () {
-            var form = $cms.dom.id('edit_form');
+            var form = $cms.dom.$id('edit_form');
 
             window.fauxmodal_prompt(
                 $cms.$CONFIG_OPTION.collapse_user_zones ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}',
@@ -411,19 +411,19 @@
         $cms.dom.on(container, 'click', '.js-click-add-new-menu-item', function () {
             var insert_before_id = 'branches_go_before_' + parentId;
 
-            var template = $cms.dom.id('template').value;
+            var template = $cms.dom.$id('template').value;
 
-            var before = $cms.dom.id(insert_before_id);
+            var before = $cms.dom.$id(insert_before_id);
             var new_id = 'm_' + Math.floor(Math.random() * 10000);
             var template2 = template.replace(/replace\_me\_with\_random/gi, new_id);
-            var highest_order_element = $cms.dom.id('highest_order');
+            var highest_order_element = $cms.dom.$id('highest_order');
             var new_order = highest_order_element.value + 1;
             highest_order_element.value++;
             template2 = template2.replace(/replace\_me\_with\_order/gi, new_order);
             template2 = template2.replace(/replace\_me\_with\_parent/gi, parentId);
 
             // Backup form branches
-            var form = $cms.dom.id('edit_form');
+            var form = $cms.dom.$id('edit_form');
             var _elements_bak = form.elements, elements_bak = [];
             var i;
             for (i = 0; i < _elements_bak.length; i++) {
@@ -443,18 +443,18 @@
                 menu_editor_branch_type_change(new_id);
             }
 
-            $cms.dom.id('mini_form_hider').style.display = 'none';
+            $cms.dom.$id('mini_form_hider').style.display = 'none';
         });
     };
 
 
     function menu_editor_branch_type_change(id) {
         var disabled = (document.getElementById('branch_type_' + id).value !== 'page');
-        var sub = $cms.dom.id('branch_' + id + '_follow_1');
+        var sub = $cms.dom.$id('branch_' + id + '_follow_1');
         if (sub) {
             sub.style.display = disabled ? 'block' : 'none';
         }
-        sub = $cms.dom.id('branch_' + id + '_follow_2');
+        sub = $cms.dom.$id('branch_' + id + '_follow_2');
         if (sub) {
             sub.style.display = disabled ? 'block' : 'none';
         }

@@ -8,7 +8,25 @@
         $cms.attachBehaviors(document);
     });
 
-    Object.assign($cms.behaviors, /** @lends $cms.behaviors */{
+    $cms.defineBehaviors(/** @lends $cms.behaviors */{
+        // Implementation for [data-require-javascript="[<scripts>...]"]
+        initializeRequireJavascript: {
+            priority: 10000,
+            attach: function (context) {
+                var promises = [];
+
+                $cms.dom.$$$(context, '[data-require-javascript]').forEach(function (el) {
+                    var scripts = arrVal($cms.dom.data(el, 'requireJavascript'));
+
+                    if (scripts.length) {
+                        promises.push($cms.requireJavascript(scripts));
+                    }
+                });
+
+                return Promise.all(promises);
+            }
+        },
+
         // Implementation for [data-view]
         initializeViews: {
             attach: function (context) {
@@ -300,7 +318,7 @@
             var clipboard_data = event.clipboardData || window.clipboardData;
             var pasted_data = clipboard_data.getData('Text');
             if (pasted_data && pasted_data.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
-                $cms.set_post_data_flag('paste');
+                $cms.setPostDataFlag('paste');
             }
         });
 
@@ -454,12 +472,12 @@
                     stuck_nav.real_height = stuck_nav_height;
                     var pos_y = find_pos_y(stuck_nav.parentNode, true),
                         footer_height = document.querySelector('footer').offsetHeight,
-                        panel_bottom = $cms.dom.id('panel_bottom');
+                        panel_bottom = $cms.dom.$id('panel_bottom');
 
                     if (panel_bottom) {
                         footer_height += panel_bottom.offsetHeight;
                     }
-                    panel_bottom = $cms.dom.id('global_messages_2');
+                    panel_bottom = $cms.dom.$id('global_messages_2');
                     if (panel_bottom) {
                         footer_height += panel_bottom.offsetHeight;
                     }
@@ -996,7 +1014,7 @@
                 }
 
                 // Show the animation
-                var bi = $cms.dom.id('main_website_inner');
+                var bi = $cms.dom.$id('main_website_inner');
                 if (bi) {
                     bi.classList.add('site_unloading');
                     fade_transition(bi, 20, 30, -4);
@@ -1011,8 +1029,8 @@
                 $cms.dom.html(div, '<div aria-busy="true" class="loading_box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="{$IMG_INLINE*;,loading}" /></div>');
                 window.setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
-                    if ($cms.dom.id('loading_image')) {
-                        $cms.dom.id('loading_image').src += '';
+                    if ($cms.dom.$id('loading_image')) {
+                        $cms.dom.$id('loading_image').src += '';
                     }
                 }, 100);
                 document.body.appendChild(div);
@@ -1378,7 +1396,7 @@
 
         $cms.dom.on(delBtn, 'click', function () {
             confirm_delete(form, true, function () {
-                var idEl = $cms.dom.id('id'),
+                var idEl = $cms.dom.$id('id'),
                     ids = (idEl.value === '') ? [] : idEl.value.split(',');
 
                 for (var i = 0; i < ids.length; i++) {
@@ -1392,7 +1410,7 @@
             });
         });
 
-        $cms.dom.id('id').fakeonchange = initialiseButtonVisibility;
+        $cms.dom.$id('id').fakeonchange = initialiseButtonVisibility;
         initialiseButtonVisibility();
 
         function initialiseButtonVisibility() {
@@ -1499,7 +1517,7 @@
     };
 
     $cms.templates.jsBlock = function jsBlock(params) {
-        call_block(params.blockCallUrl, '', $cms.dom.id(params.jsBlockId), false, null, false, null, false, false);
+        call_block(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, null, false, null, false, false);
     };
 
     $cms.templates.massSelectMarker = function (params) {
@@ -1683,9 +1701,9 @@
 
 
     function prepareMassSelectMarker(set, type, id, checked) {
-        var mass_delete_form = $cms.dom.id('mass_select_form__' + set);
+        var mass_delete_form = $cms.dom.$id('mass_select_form__' + set);
         if (!mass_delete_form) {
-            mass_delete_form = $cms.dom.id('mass_select_button').form;
+            mass_delete_form = $cms.dom.$id('mass_select_button').form;
         }
         var key = type + '_' + id;
         var hidden;

@@ -1,9 +1,9 @@
-var sb_cc_timer = null;
-var sb_last_message_id = null;
+window.sb_cc_timer = null;
+window.sb_last_message_id = null;
 
 function sb_chat_check(last_message_id, last_event_id) {
-    sb_last_message_id = last_message_id;
-    var url = "{$FIND_SCRIPT*,messages}?action=new&no_reenter_message=1&room_id=" + window.sb_room_id + "&message_id=" + last_message_id + "&event_id=" + last_event_id;
+    window.sb_last_message_id = last_message_id;
+    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + window.sb_room_id + "&message_id=" + last_message_id + "&event_id=" + last_event_id;
     do_ajax_request(url + keep_stub(false), sb_chat_check_response);
 }
 
@@ -31,7 +31,7 @@ function sb_handle_signals(ajax_result) {
 
     // Look through our messages
     for (var i = 0; i < messages.length; i++) {
-        if (messages[i].nodeName == 'div') {
+        if (messages[i].localName === 'div') {
             var id = messages[i].getAttribute("id");
             if (!id) id = messages[i].id; // Weird fix for Opera
             if (id > window.sb_last_message_id && window.sb_last_message_id != -1) {

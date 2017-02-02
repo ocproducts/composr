@@ -2,6 +2,7 @@
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,jquery_autocomplete}
 {$REQUIRE_JAVASCRIPT,ajax}
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$REQUIRE_CSS,autocomplete}
 
 <div class="constrain_field" data-tpl="formScreenInputLine" data-tpl-params="{+START,PARAMS_JSON,NAME,WYSIWYG}{_*}{+END}">

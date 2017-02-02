@@ -11,7 +11,7 @@ if (window.notifications_time_barrier === undefined) {
 }
 
 function notification_poller_init(time_barrier) {
-    require_javascript('sound', window.SoundManager);
+    $cms.requireJavascript('sound');
 
     window.notifications_time_barrier = time_barrier;
 
