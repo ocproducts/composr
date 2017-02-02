@@ -90,8 +90,8 @@ class Module_shopping
 
             $GLOBALS['SITE_DB']->create_table('shopping_order', array(
                 'id' => '*AUTO',
-                'c_member' => 'INTEGER',
                 'session_id' => 'ID_TEXT',
+                'member_id' => 'MEMBER',
                 'add_date' => 'TIME',
                 'total_price' => 'REAL',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
@@ -101,34 +101,34 @@ class Module_shopping
                 'tax_opted_out' => 'BINARY',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order', 'finddispatchable', array('order_status'));
-            $GLOBALS['SITE_DB']->create_index('shopping_order', 'soc_member', array('c_member'));
+            $GLOBALS['SITE_DB']->create_index('shopping_order', 'somember_id', array('member_id'));
             $GLOBALS['SITE_DB']->create_index('shopping_order', 'sosession_id', array('session_id'));
             $GLOBALS['SITE_DB']->create_index('shopping_order', 'soadd_date', array('add_date'));
 
-            $GLOBALS['SITE_DB']->create_table('shopping_order_details', array(
+            $GLOBALS['SITE_DB']->create_table('shopping_order_details', array( // individual products in an order
                 'id' => '*AUTO',
-                'order_id' => '?AUTO_LINK',
+                'p_order_id' => '?AUTO_LINK',
                 'p_id' => '?AUTO_LINK',
                 'p_name' => 'SHORT_TEXT',
                 'p_code' => 'SHORT_TEXT',
                 'p_type' => 'SHORT_TEXT',
                 'p_quantity' => 'INTEGER',
                 'p_price' => 'REAL',
-                'included_tax' => 'REAL',
-                'dispatch_status' => 'SHORT_TEXT'
+                'p_included_tax' => 'REAL',
+                'p_dispatch_status' => 'SHORT_TEXT'
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'p_id', array('p_id'));
-            $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'order_id', array('order_id'));
+            $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'order_id', array('p_order_id'));
 
             $GLOBALS['SITE_DB']->create_table('shopping_logging', array(
                 'id' => '*AUTO',
-                'e_member_id' => '*MEMBER',
-                'session_id' => 'ID_TEXT',
-                'ip' => 'IP',
-                'last_action' => 'SHORT_TEXT',
-                'date_and_time' => 'TIME'
+                'l_member_id' => '*MEMBER',
+                'l_session_id' => 'ID_TEXT',
+                'l_ip' => 'IP',
+                'l_last_action' => 'SHORT_TEXT',
+                'l_date_and_time' => 'TIME'
             ));
-            $GLOBALS['SITE_DB']->create_index('shopping_logging', 'calculate_bandwidth', array('date_and_time'));
+            $GLOBALS['SITE_DB']->create_index('shopping_logging', 'calculate_bandwidth', array('l_date_and_time'));
 
             $GLOBALS['SITE_DB']->create_table('shopping_order_addresses', array(
                 // These are filled after an order is made (maybe via what comes back from IPN, maybe from what is set for a local payment), and presented in the admin orders UI
@@ -156,7 +156,7 @@ class Module_shopping
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_cart', 'session_id', 'ID_TEXT');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'session_id', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'l_session_id', 'ID_TEXT');
 
             $GLOBALS['SITE_DB']->change_primary_key('shopping_cart', array('id'));
 
@@ -164,7 +164,18 @@ class Module_shopping
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 8)) {
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order', 'tot_price', 'REAL', 'total_price');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'tot_price', 'REAL', 'total_price');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'c_member', 'MEMBER', 'member_id');
+
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'order_id', '?AUTO_LINK', 'p_order_id');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'included_tax', 'REAL', 'p_included_tax');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'dispatch_status', 'SHORT_TEXT', 'p_dispatch_status');
+
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'e_member_id', '*MEMBER', 'l_member_id');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'session_id', 'ID_TEXT', 'l_session_id');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'ip', 'IP', 'l_ip');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'last_action', 'SHORT_TEXT', 'l_last_action');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'date_and_time', 'TIME', 'l_date_and_time');
 
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_address_county', 'SHORT_TEXT');
 
@@ -375,16 +386,17 @@ class Module_shopping
                 }
 
                 // Tax
-                $tax = 0;
                 if (method_exists($product_object, 'calculate_tax')) {
                     $tax = $product_object->calculate_tax($value['price'], $value['price_pre_tax']);
+                } else {
+                    $tax = 0.0;
                 }
 
                 // Shipping
                 if (method_exists($product_object, 'calculate_shipping_cost')) {
                     $shipping_cost = $product_object->calculate_shipping_cost($value['product_weight']);
                 } else {
-                    $shipping_cost = 0;
+                    $shipping_cost = 0.0;
                 }
 
                 $grand_total += round($value['price'] + $tax + $shipping_cost, 2) * $value['quantity'];
@@ -569,7 +581,7 @@ class Module_shopping
 
         $orders = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('c_member' => $member_id), 'ORDER BY add_date');
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('member_id' => $member_id), 'ORDER BY add_date');
 
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {
@@ -577,7 +589,7 @@ class Module_shopping
 
                 $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
-                $res = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_id', 'p_name'), array('order_id' => $row['id']));
+                $res = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_id', 'p_name'), array('p_order_id' => $row['id']));
 
                 if (!array_key_exists(0, $res)) {
                     continue; // DB corruption
@@ -589,7 +601,16 @@ class Module_shopping
                 $order_details_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_det['p_id']), get_module_zone('catalogues'));
             }
 
-            $orders[] = array('ORDER_TITLE' => $order_title, 'ID' => strval($row['id']), 'AMOUNT' => strval($row['total_price']), 'TIME' => get_timezoned_date($row['add_date'], true, false, true, true), 'STATE' => do_lang_tempcode($row['order_status']), 'NOTE' => '', 'ORDER_DET_URL' => $order_details_url, 'DELIVERABLE' => '');
+            $orders[] = array(
+                'ORDER_TITLE' => $order_title,
+                'ID' => strval($row['id']),
+                'AMOUNT' => float_format($row['total_price']),
+                'TIME' => get_timezoned_date($row['add_date'], true, false, true, true),
+                'STATE' => do_lang_tempcode($row['order_status']),
+                'NOTE' => '',
+                'ORDER_DET_URL' => $order_details_url,
+                'DELIVERABLE' => '',
+            );
         }
 
         if (count($orders) == 0) {
@@ -610,11 +631,19 @@ class Module_shopping
 
         $products = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $id), 'ORDER BY p_name');
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY p_name');
         foreach ($rows as $row) {
             $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['p_id']), get_module_zone('catalogues'));
 
-            $products[] = array('PRODUCT_NAME' => $row['p_name'], 'ID' => strval($row['p_id']), 'AMOUNT' => strval($row['p_price']), 'QUANTITY' => strval($row['p_quantity']), 'DISPATCH_STATUS' => do_lang_tempcode($row['dispatch_status']), 'PRODUCT_DET_URL' => $product_det_url, 'DELIVERABLE' => '');
+            $products[] = array(
+                'PRODUCT_NAME' => $row['p_name'],
+                'ID' => strval($row['p_id']),
+                'AMOUNT' => float_format($row['p_price']),
+                'QUANTITY' => strval($row['p_quantity']),
+                'DISPATCH_STATUS' => do_lang_tempcode($row['p_dispatch_status']),
+                'PRODUCT_DET_URL' => $product_det_url,
+                'DELIVERABLE' => '',
+            );
         }
 
         if (count($products) == 0) {

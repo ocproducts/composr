@@ -204,7 +204,7 @@ function prepare_templated_subscription($subscription)
         'LENGTH' => strval($subscription['length']),
         'LENGTH_UNITS' => $subscription['length_units'],
         'PER' => do_lang('_LENGTH_UNIT_' . $subscription['length_units'], integer_format($subscription['length'])),
-        'AMOUNT' => $subscription['amount'],
+        'AMOUNT' => float_format($subscription['amount']),
         '_VIA' => $subscription['via'],
         'VIA' => do_lang_tempcode('PAYMENT_GATEWAY_' . $subscription['via']),
         '_STATE' => $subscription['state'],

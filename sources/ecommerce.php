@@ -142,7 +142,7 @@ function automatic_discount_calculation($details)
     }
 
     $details['discount_points__num_points'] = intval(round(floatval($details['price_points']) / 2.0));
-    $details['discount_points__price_reduction'] = float_to_raw_string(floatval($details['price']) / 2.0);
+    $details['discount_points__price_reduction'] = $details['price'] / 2.0;
 
     return $details;
 }
@@ -268,19 +268,19 @@ function ecommerce_get_currency_symbol($currency = null)
 /**
  * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
  *
- * @param  float $amount A transaction amount.
+ * @param  REAL $amount A transaction amount.
  * @param  ID_TEXT $payment_gateway The payment gateway the payment went via.
- * @return float The fee
+ * @return REAL The fee
  */
 function get_transaction_fee($amount, $payment_gateway)
 {
     if (get_option('transaction_flat_cost') . get_option('transaction_percentage_cost') != '') {
         $fee = 0.0;
         if (get_option('transaction_flat_cost') != '') {
-            $fee += floatval(get_option('transaction_flat_cost'));
+            $fee += float_unformat(get_option('transaction_flat_cost'));
         }
         if (get_option('transaction_percentage_cost') != '') {
-            $fee += floatval(get_option('transaction_percentage_cost')) / 100.0 * $amount;
+            $fee += float_unformat(get_option('transaction_percentage_cost')) / 100.0 * $amount;
         }
         return round($fee, 2);
     }
@@ -309,7 +309,7 @@ function get_transaction_fee($amount, $payment_gateway)
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The human-readable product title.
  * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  float $price Transaction price in money.
+ * @param  REAL $price Transaction price in money.
  * @param  ID_TEXT $currency The currency to use.
  * @param  integer $price_points Transaction price in points.
  * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
@@ -330,7 +330,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
-        'e_price' => float_to_raw_string($price),
+        'e_price' => $price,
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -354,7 +354,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
  */
 function make_cart_payment_button($order_id, $currency, $price_points = 0)
 {
-    $_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_name', 'p_price', 'p_quantity'), array('order_id' => $order_id));
+    $_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_name', 'p_price', 'p_quantity'), array('p_order_id' => $order_id));
     $items = array();
     foreach ($_items as $item) {
         $items[] = array(
@@ -383,7 +383,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_purchase_id' => strval($order_id),
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
-        'e_price' => float_to_raw_string($price),
+        'e_price' => $price,
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -403,7 +403,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The human-readable product title.
  * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  float $price Transaction price in money.
+ * @param  REAL $price Transaction price in money.
  * @param  ID_TEXT $currency The currency to use.
  * @param  integer $price_points Transaction price in points (only for first transaction).
  * @param  integer $length The subscription length in the units.
@@ -427,7 +427,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
-        'e_price' => float_to_raw_string($price),
+        'e_price' => $price,
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -581,7 +581,7 @@ function perform_local_payment()
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The item name
  * @param  ID_TEXT $purchase_id The purchase ID
- * @param  float $price Transaction price in money.
+ * @param  REAL $price Transaction price in money.
  * @param  ID_TEXT $currency The currency to use.
  * @param  integer $price_points Transaction price in points (only for first transaction).
  * @param  ?integer $length The length (null: not a subscription)
@@ -614,7 +614,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         'e_type_code' => $type_code,
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
-        'e_price' => float_to_raw_string($price),
+        'e_price' => $price,
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_member_id' => get_member(),
@@ -1024,7 +1024,7 @@ function handle_ipn_transaction_script()
  * @param  ID_TEXT $status The status this transaction is telling of
  * @set    Pending Completed SModified SCancelled
  * @param  SHORT_TEXT $reason A reason for the transaction's status (blank: unknown or N/A)
- * @param  ID_TEXT $amount Transaction amount (blank: unknown or doing a subscription cancellation or a free transaction triggered from somewhere other than a payment gateway)
+ * @param  REAL $amount Transaction amount (blank: unknown or doing a subscription cancellation or a free transaction triggered from somewhere other than a payment gateway)
  * @param  ID_TEXT $currency The currency the amount is in (points: was done fully with points)
  * @param  ID_TEXT $parent_txn_id The ID of the parent transaction (blank: unknown or N/A)
  * @param  SHORT_TEXT $pending_reason The reason it is in pending status (if it is) (blank: unknown or N/A)
@@ -1088,12 +1088,14 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     }
 
     // Invoice: Check price
-    if (($amount != '') && ($currency != 'points')) {
-        if ($found['type'] == PRODUCT_INVOICE) {
-            $price = $GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'i_amount', array('id' => intval($purchase_id)));
-            if ($price != $amount) {
-                if ($payment_gateway != 'manual') {
-                    fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $amount, $price));
+    if ($status == 'Completed') {
+        if ($currency != 'points') {
+            if ($found['type'] == PRODUCT_INVOICE) {
+                $price = $GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'i_amount', array('id' => intval($purchase_id)));
+                if ($price != $amount) {
+                    if ($payment_gateway != 'manual') {
+                        fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $amount, $price));
+                    }
                 }
             }
         }
@@ -1114,43 +1116,47 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     }
 
     // Check price, if one defined (non-invoices)
-    if ($found['type'] != PRODUCT_INVOICE) {
-        if (($amount != '') && ($currency != 'points'/*payment gateway will never claim points, so we know we can skip this check branch for points transactions as we did the call manually*/)) {
-            if (($expected_price_points === null) && (($expected_price === null) || (floatval($amount) != floatval($expected_price)))) {
-                // No pre-calculated points charge, and no full price defined or not paid full price - so we need to work out the price split...
-                // (this code branch rarely runs, as payment gateway transactions have the pre-calculated charges)
+    if ($status == 'Completed') {
+        if ($found['type'] != PRODUCT_INVOICE) {
+            if ($currency != 'points'/*payment gateway will never claim points, so we know we can skip this check branch for points transactions as we did the call manually*/) {
+                if (($expected_price_points === null) && (($expected_price === null) || ($amount != $expected_price))) {
+                    // No pre-calculated points charge, and no full price defined or not paid full price - so we need to work out the price split...
+                    // (this code branch rarely runs, as payment gateway transactions have the pre-calculated charges)
 
-                $given_discount = false;
+                    $given_discount = false;
 
-                // Consider points as a discount (if was 100% paid via points then ($currency == 'points') would have stopped the branch running, and we would have already charged the points in purchase.php)
-                if ($member_id_paying !== null) {
-                    list($discounted_price, $points_for_discount) = get_discounted_price($found, false, $member_id_paying);
-                    if (($discounted_price !== null) && (floatval($amount) == $discounted_price)) {
-                        require_code('points2');
-                        charge_member($member_id_paying, $points_for_discount, do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
-                        $given_discount = true;
+                    // Consider points as a discount (if was 100% paid via points then ($currency == 'points') would have stopped the branch running, and we would have already charged the points in purchase.php)
+                    if ($member_id_paying !== null) {
+                        list($discounted_price, $points_for_discount) = get_discounted_price($found, false, $member_id_paying);
+                        if (($discounted_price !== null) && ($amount == $discounted_price)) {
+                            require_code('points2');
+                            charge_member($member_id_paying, $points_for_discount, do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
+                            $given_discount = true;
+                        }
                     }
-                }
 
-                if (!$given_discount) {
-                    if (($status == 'Completed') && ($payment_gateway != 'manual')) {
-                        fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, $amount, ($expected_price === null) ? do_lang('NA') : $expected_price), $is_subscription);
+                    if (!$given_discount) {
+                        if (($status == 'Completed') && ($payment_gateway != 'manual')) {
+                            fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name, float_format($amount), ($expected_price === null) ? do_lang('NA') : float_format($expected_price)), $is_subscription);
+                        }
                     }
-                }
-            } elseif (($expected_price_points !== null) && ($expected_price_points !== 0)) {
-                // Pre-calculated points charge that is non-zero...
+                } elseif (($expected_price_points !== null) && ($expected_price_points !== 0)) {
+                    // Pre-calculated points charge that is non-zero...
 
-                require_code('points2');
-                charge_member($member_id_paying, $expected_price_points, do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
+                    require_code('points2');
+                    charge_member($member_id_paying, $expected_price_points, do_lang('DISCOUNTED_ECOMMERCE_PRODUCT', $item_name));
+                }
             }
         }
     }
 
     // Check currency
-    if (($amount != '') && ($currency != 'points'/*payment gateway will never claim points, so we know we can skip this check branch for points transactions as we did the call manually*/)) {
-        if ($currency != $expected_currency) {
-            if (($status != 'SCancelled') && ($payment_gateway != 'manual')) {
-                fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY', $item_name, $currency, $expected_currency));
+    if ($status == 'Completed') {
+        if ($currency != 'points'/*payment gateway will never claim points, so we know we can skip this check branch for points transactions as we did the call manually*/) {
+            if ($currency != $expected_currency) {
+                if (($status != 'SCancelled') && ($payment_gateway != 'manual')) {
+                    fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY', $item_name, $currency, $expected_currency));
+                }
             }
         }
     }
@@ -1250,12 +1256,12 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
 
             // Send completed notification to user
             $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_lang($member_id));
-            $body = do_notification_lang($automatic_setup ? 'PAYMENT_SENT_BODY_automatic' : 'PAYMENT_SENT_BODY_manual', float_format(floatval($amount)), $_currency, array(get_site_name(), $item_name), get_lang($member_id));
+            $body = do_notification_lang($automatic_setup ? 'PAYMENT_SENT_BODY_automatic' : 'PAYMENT_SENT_BODY_manual', float_format($amount), $_currency, array(get_site_name(), $item_name), get_lang($member_id));
             dispatch_notification('payment_received', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
 
             // Send completed notification to staff
             $subject = do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
-            $body = do_notification_lang('PAYMENT_RECEIVED_BODY', float_format(floatval($amount)), $_currency, array(($memo == '') ? do_lang('NONE') : $memo, $item_name), get_site_default_lang());
+            $body = do_notification_lang('PAYMENT_RECEIVED_BODY', float_format($amount), $_currency, array(($memo == '') ? do_lang('NONE') : $memo, $item_name), get_site_default_lang());
             dispatch_notification('payment_received_staff', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
         }
     }
@@ -1319,7 +1325,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
         require_code('points');
         if ((available_points($member_id) >= $details['discount_points__num_points']) || (has_privilege($member_id, 'give_points_self'))) {
             return array(
-                max(0.0, floatval($details['price']) - floatval($details['discount_points__price_reduction'])),
+                max(0.0, $details['price'] - $details['discount_points__price_reduction']),
                 $details['discount_points__num_points'],
                 true
             );

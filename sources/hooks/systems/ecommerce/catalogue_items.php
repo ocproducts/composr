@@ -85,14 +85,14 @@ class Hook_ecommerce_catalogue_items
 
                 $product_title = $field_rows[0]['effective_value_pure'];
 
-                $item_price = '0.0';
+                $item_price = 0.0;
                 if (array_key_exists(2, $field_rows)) {
-                    $item_price = $field_rows[2]['effective_value_pure'];
+                    $item_price = floatval($field_rows[2]['effective_value_pure']);
                 }
 
                 $tax = 0.0;
                 if (array_key_exists(6, $field_rows)) {
-                    $tax = floatval(preg_replace('#[^\d\.]#', '', $field_rows[6]['effective_value_pure']));
+                    $tax = floatval($field_rows[6]['effective_value_pure']);
                 }
 
                 $product_weight = 0.0;
@@ -100,7 +100,7 @@ class Hook_ecommerce_catalogue_items
                     $product_weight = floatval($field_rows[8]['effective_value_pure']);
                 }
 
-                $price = float_to_raw_string($this->_calculate_product_price(floatval($item_price), $tax, $product_weight));
+                $price = $this->_calculate_product_price($item_price, $tax, $product_weight);
 
                 $image = $this->_get_product_image($ecomm_item['c_name'], $ecomm_item['id']);
 
@@ -206,11 +206,11 @@ class Hook_ecommerce_catalogue_items
             $available_quantity = intval($field_rows[3]['effective_value_pure']);
 
             // Locked order check
-            $query = 'SELECT sum(t2.p_quantity) FROM ' . get_table_prefix() . 'shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND t2.p_id=' . strval(intval($type_code));
+            $query = 'SELECT sum(t2.p_quantity) FROM ' . get_table_prefix() . 'shopping_order t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.p_order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND t2.p_id=' . strval(intval($type_code));
             if (is_guest($member_id)) {
                 $query .= ' AND ' . db_string_not_equal_to('t1.session_id', get_session_id());
             } else {
-                $query .= ' AND t1.c_member<>' . strval($member_id);
+                $query .= ' AND t1.member_id<>' . strval($member_id);
             }
             $locked_item_count = $GLOBALS['SITE_DB']->query_value_if_there($query);
             if ($locked_item_count === null) {
@@ -311,8 +311,8 @@ class Hook_ecommerce_catalogue_items
             'product_id' => $pid,
             'product_name' => $field_rows[0],
             'product_code' => $field_rows[1],
-            'price' => $field_rows[2],
-            'tax' => floatval(preg_replace('#[^\d\.]#', '', $field_rows[6])),
+            'price' => floatval($field_rows[2]),
+            'tax' => floatval($field_rows[6]),
             'description' => $field_rows[9],
             'quantity' => $qty,
             'product_type' => 'catalogue_items',
@@ -351,8 +351,8 @@ class Hook_ecommerce_catalogue_items
                 'product_name' => $product_det['product_name'],
                 'product_code' => $product_det['product_code'],
                 'quantity' => $product_det['quantity'],
-                'price' => round(floatval($product_det['price']), 2),
-                'price_pre_tax' => round(floatval($product_det['tax']), 2),
+                'price' => $product_det['price'],
+                'price_pre_tax' => $product_det['tax'],
                 'product_description' => $product_det['description'],
                 'product_type' => $product_det['product_type'],
                 'product_weight' => $product_det['product_weight'],
@@ -370,8 +370,8 @@ class Hook_ecommerce_catalogue_items
                 'shopping_cart',
                 array(
                     'quantity' => ($qty + $product_det['quantity']),
-                    'price' => round(floatval($product_det['price']), 2),
-                    'price_pre_tax' => round(floatval($product_det['tax']), 2),
+                    'price' => $product_det['price'],
+                    'price_pre_tax' => $product_det['tax'],
                 ),
                 $where
             );
@@ -512,13 +512,13 @@ class Hook_ecommerce_catalogue_items
         $base = 0.0;
         $matches = array();
         if (preg_match('#\(([\d\.]+)\)#', $option, $matches) != 0) {
-            $base = floatval($matches[1]);
+            $base = float_unformat($matches[1]);
             $option = str_replace($matches[0], '', $option);
         }
         if ($option == '') {
-            $option = '0';
+            $option = float_format(0.0);
         }
-        $factor = floatval($option) / 100.0;
+        $factor = float_unformat($option) / 100.0;
         $shipping_cost = $base + $item_weight * $factor;
 
         return $shipping_cost;
@@ -610,6 +610,30 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
+     * Get the filled in fields and do something with them.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
+     */
+    public function handle_needed_fields($type_code)
+    {
+        $insert = array(
+            'member_id' => get_member(),
+            'session_id' => get_session_id(),
+            'add_date' => time(),
+            'total_price' => 0,
+            'order_status' => 'ORDER_STATUS_awaiting_payment',
+            'notes' => '',
+            'purchase_through' => 'purchase_module',
+            'transaction_id' => '',
+            'tax_opted_out' => 0,
+        );
+        $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', $insert, true);
+
+        return array(strval($order_id), null);
+    }
+
+    /**
      * Handling of a product purchase change state.
      *
      * @param  ID_TEXT $type_code The product codename.
@@ -619,16 +643,41 @@ class Hook_ecommerce_catalogue_items
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if ($details['STATUS'] != 'Completed') {
-            return false;
-        }
-
-        $entry_id = intval($purchase_id);
-
+        $entry_id = intval($type_code);
         $product_object = object_factory('Hook_ecommerce_catalogue_items');
         $product_object->reduce_stock($entry_id, 1);
 
-        // We won't log to the ecom_sales as we log the containing order instead (in much more detail)
+        require_code('shopping');
+        require_lang('shopping');
+
+        $order_id = intval($purchase_id);
+
+        if ($details['STATUS'] == 'Completed') {
+            $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'member_id', array('id' => $order_id));
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'transaction_id' => $details['TXN_ID']));
+        }
+
+        $old_status = $GLOBALS['SITE_DB']->query_select_value('shopping_order_details', 'p_dispatch_status', array('p_order_id' => $order_id));
+
+        if ($old_status != $details['ORDER_STATUS']) {
+            $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => $details['ORDER_STATUS']), array('p_order_id' => $order_id));
+
+            $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => $details['ORDER_STATUS'], 'transaction_id' => $details['TXN_ID']), array('id' => $order_id));
+
+            // Copy in memo from transaction, as customer notes
+            $old_memo = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => $order_id));
+            if ($old_memo == '') {
+                $memo = $GLOBALS['SITE_DB']->query_select_value('ecom_transactions', 't_memo', array('id' => $details['TXN_ID']));
+                if ($memo != '') {
+                    $memo = do_lang('CUSTOMER_NOTES') . "\n" . $memo;
+                    $GLOBALS['SITE_DB']->query_update('shopping_order', array('notes' => $memo), array('id' => $order_id), '', 1);
+                }
+            }
+
+            if ($details['ORDER_STATUS'] == 'ORDER_STATUS_payment_received') {
+                purchase_done_staff_mail($order_id);
+            }
+        }
 
         return false;
     }
@@ -697,6 +746,19 @@ class Hook_ecommerce_catalogue_items
         if (array_key_exists(3, $field_rows)) { // Stock level
             $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field_id, 'ce_id' => $entry_id));
         }
+    }
+
+    /**
+     * Get the member who made the purchase.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  ID_TEXT $purchase_id The purchase ID.
+     * @return ?MEMBER The member ID (null: none).
+     */
+    public function member_for($type_code, $purchase_id)
+    {
+        $order_id = intval($purchase_id);
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'member_id', array('id' => $order_id));
     }
 
     /**

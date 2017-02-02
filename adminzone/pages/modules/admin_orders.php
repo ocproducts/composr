@@ -249,7 +249,7 @@ class Module_admin_orders
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
             $cond .= ' AND (t1.id LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\' OR t2.m_username LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\')';
-            $extra_join = ' JOIN ' . get_table_prefix() . 'f_members t2 ON t2.id=t1.c_member';
+            $extra_join = ' JOIN ' . get_table_prefix() . 'f_members t2 ON t2.id=t1.member_id';
         }
 
         $start = get_param_integer('start', 0);
@@ -260,9 +260,9 @@ class Module_admin_orders
         $sortables = array(
             't1.id' => do_lang_tempcode('ECOM_ORDER'),
             't1.add_date' => do_lang_tempcode('ORDERED_DATE'),
-            't1.c_member' => do_lang_tempcode('ORDERED_BY'),
+            't1.member_id' => do_lang_tempcode('ORDERED_BY'),
             't1.total_price' => do_lang_tempcode('ORDER_PRICE_AMT'),
-            't3.included_tax' => do_lang_tempcode('TAX_PAID'),
+            't3.p_included_tax' => do_lang_tempcode('TAX_PAID'),
             't1.order_status' => do_lang_tempcode('STATUS'),
             't1.transaction_id' => do_lang_tempcode('TRANSACTION_ID'),
         );
@@ -292,7 +292,7 @@ class Module_admin_orders
         global $NO_DB_SCOPE_CHECK;
         $NO_DB_SCOPE_CHECK = true;
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,(t3.p_quantity*t3.p_included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.p_order_id ' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {
@@ -300,7 +300,7 @@ class Module_admin_orders
 
                 $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
-                $res = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_id', 'p_name'), array('order_id' => $row['id']));
+                $res = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_id', 'p_name'), array('p_order_id' => $row['id']));
 
                 if (!array_key_exists(0, $res)) {
                     continue; // DB corruption
@@ -318,11 +318,11 @@ class Module_admin_orders
 
             $actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array('_GUID' => '19ad8393aa5dba3f2f768818f22d8837', 'ORDER_TITLE' => $order_title, 'ORDER_ACTUALISE_URL' => $order_actualise_url, 'ORDER_STATUS' => $order_status));
 
-            $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['c_member']);
-            if (($submitted_by === null) || (is_guest($row['c_member']))) {
+            $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
+            if (($submitted_by === null) || (is_guest($row['member_id']))) {
                 $member_link = do_lang('UNKNOWN');
             } else {
-                $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['c_member']), get_module_zone('members'));
+                $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['member_id']), get_module_zone('members'));
                 $member_link = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
             }
 
@@ -353,7 +353,7 @@ class Module_admin_orders
         }
 
         require_code('templates_pagination');
-        $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond);
+        $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.p_order_id ' . $cond);
         $pagination = pagination(do_lang_tempcode('ORDERS'), $start, 'start', $max, 'max', $max_rows, true);
 
         $widths = mixed();//array('110', '70', '80', '200', '120', '180', '180', '200');
@@ -411,10 +411,10 @@ class Module_admin_orders
             ), $sortables, 'sort', $sortable . ' ' . $sort_order
         );
 
-        $max_rows = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'COUNT(*)', array('order_id' => $id));
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'COUNT(*)', array('p_order_id' => $id));
 
         // Show products in the order
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $id), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         $product_entries = new Tempcode();
         foreach ($rows as $row) {
             if ($row['p_type'] == 'catalogue_items') {
@@ -433,7 +433,7 @@ class Module_admin_orders
                         $product,
                         ecommerce_get_currency_symbol() . escape_html(float_format($row['p_price'], 2)),
                         escape_html(strval($row['p_quantity'])),
-                        do_lang($row['dispatch_status'])
+                        do_lang($row['p_dispatch_status'])
                     ), false, null)
             );
         }
@@ -453,8 +453,8 @@ class Module_admin_orders
         $data = $rows[0];
 
         // Order actions
-        $ordered_by_member_id = $data['c_member'];
-        $ordered_by_username = $GLOBALS['FORUM_DRIVER']->get_username($data['c_member']);
+        $ordered_by_member_id = $data['member_id'];
+        $ordered_by_username = $GLOBALS['FORUM_DRIVER']->get_username($data['member_id']);
         $self_url = get_self_url(true, true);
         $order_actualise_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'id' => $id, 'redirect' => $self_url), '_SELF');
         $order_actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array(
@@ -521,7 +521,7 @@ class Module_admin_orders
         $id = get_param_integer('id');
 
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_dispatched'), array('id' => $id), '', 1);
-        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('dispatch_status' => 'ORDER_STATUS_dispatched'), array('order_id' => $id)); // There may be more than one items to update status
+        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => 'ORDER_STATUS_dispatched'), array('p_order_id' => $id)); // There may be more than one items to update status
 
         require_code('shopping');
         update_stock($id);
@@ -564,9 +564,9 @@ class Module_admin_orders
             $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $id), '', 1);
             $order_details = $res[0];
 
-            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['c_member']);
+            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['member_id']);
 
-            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_details['c_member']));
+            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_details['member_id']));
 
             $fields->attach(form_input_text(do_lang_tempcode('DISPATCH_MAIL_PREVIEW'), do_lang_tempcode('DISPATCH_MAIL_PREVIEW_DESCRIPTION'), 'dispatch_mail_content', $message, true));
 
@@ -628,11 +628,11 @@ class Module_admin_orders
         $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $order_id), '', 1);
         $order_details = $res[0];
 
-        if (is_guest($order_details['c_member'])) {
+        if (is_guest($order_details['member_id'])) {
             attach_message(do_lang_tempcode('NO_NOTE_GUEST'), 'warn');
         } else {
             require_code('notifications');
-            dispatch_notification('order_dispatched', null, do_lang('ORDER_DISPATCHED_MAIL_SUBJECT', get_site_name(), strval($order_id), null, get_lang($order_details['c_member'])), $message, array($order_details['c_member']), A_FROM_SYSTEM_PRIVILEGED);
+            dispatch_notification('order_dispatched', null, do_lang('ORDER_DISPATCHED_MAIL_SUBJECT', get_site_name(), strval($order_id), null, get_lang($order_details['member_id'])), $message, array($order_details['member_id']), A_FROM_SYSTEM_PRIVILEGED);
         }
     }
 
@@ -646,7 +646,7 @@ class Module_admin_orders
         $id = get_param_integer('id');
 
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_cancelled'), array('id' => $id), '', 1);
-        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('dispatch_status' => 'ORDER_STATUS_cancelled'), array('order_id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => 'ORDER_STATUS_cancelled'), array('p_order_id' => $id), '', 1);
 
         $add_note_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'action' => 'add_note', 'last_act' => 'cancelled', 'id' => $id), get_module_zone('admin_orders'));
 
@@ -663,7 +663,7 @@ class Module_admin_orders
         $id = get_param_integer('id');
 
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_returned'), array('id' => $id), '', 1);
-        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('dispatch_status' => 'ORDER_STATUS_returned'), array('order_id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => 'ORDER_STATUS_returned'), array('p_order_id' => $id), '', 1);
 
         $add_note_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'action' => 'add_note', 'last_act' => 'returned', 'id' => $id), get_module_zone('admin_orders'));
 
@@ -680,7 +680,7 @@ class Module_admin_orders
         $id = get_param_integer('id');
 
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_onhold'), array('id' => $id), '', 1);
-        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('dispatch_status' => 'ORDER_STATUS_onhold'), array('order_id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => 'ORDER_STATUS_onhold'), array('p_order_id' => $id), '', 1);
 
         $add_note_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'action' => 'add_note', 'last_act' => 'onhold', 'id' => $id), get_module_zone('admin_orders'));
 
@@ -757,9 +757,9 @@ class Module_admin_orders
             $cond .= ' AND ' . db_string_equal_to('t1.order_status', $order_status);
         }
 
-        $qry = 'SELECT t1.*,(t2.included_tax*t2.p_quantity) AS tax_amt,t3.*
+        $qry = 'SELECT t1.*,(t2.p_included_tax*t2.p_quantity) AS tax_amt,t3.*
             FROM ' . get_table_prefix() . 'shopping_order t1
-            LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id
+            LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.p_order_id
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.a_order_id
             WHERE ' . $cond;
         $rows = $GLOBALS['SITE_DB']->query($qry);
@@ -773,7 +773,10 @@ class Module_admin_orders
             $orders[do_lang('ORDER_TAX_OPT_OUT')] = ($order['tax_opted_out']) ? do_lang('YES') : do_lang('NO');
             $orders[do_lang('TOTAL_TAX_PAID')] = ($order['tax_amt'] === null) ? float_format(0.0, 2) : float_format($order['tax_amt'], 2);
             $orders[do_lang('ORDERED_PRODUCTS')] = get_ordered_product_list_string($order['id']);
-            $orders[do_lang('ORDERED_BY')] = $GLOBALS['FORUM_DRIVER']->get_username($order['c_member']);
+            $orders[do_lang('ORDERED_BY')] = $GLOBALS['FORUM_DRIVER']->get_username($order['member_id']);
+            if ($orders[do_lang('ORDERED_BY')] === null) {
+                $orders[do_lang('ORDERED_BY')] = do_lang('UNKNOWN');
+            }
 
             // Put address together
             $address = array();

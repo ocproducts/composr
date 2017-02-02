@@ -494,7 +494,7 @@ function do_work()
     }
     for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'COUNT(*)'); $j < $num_wanted; $j++) {
         $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', array(
-            'c_member' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
+            'member_id' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
             'session_id' => get_rand_password(),
             'add_date' => time(),
             'total_price' => '123.00',
@@ -512,9 +512,9 @@ function do_work()
             'p_type' => 'catalogue_items',
             'p_quantity' => 1,
             'p_price' => '12.00',
-            'order_id' => $order_id,
-            'dispatch_status' => '',
-            'included_tax' => '1.00',
+            'p_order_id' => $order_id,
+            'p_dispatch_status' => '',
+            'p_included_tax' => '1.00',
         ));
     }
     echo 'done store stuff' . "\n";

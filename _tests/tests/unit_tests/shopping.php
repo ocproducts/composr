@@ -145,7 +145,7 @@ class shopping_test_set extends cms_test_case
         $reason = '';
         $pending_reason = 'bar';
         $memo = 'foo';
-        $amount = (get_db_type() == 'xml'/*rounding difference*/) ? '71.40' : '71.77';
+        $amount = (get_db_type() == 'xml'/*rounding difference*/) ? 71.40 : 71.77;
         $currency = get_option('currency');
         $txn_id = '0';
         $parent_txn_id = '0';

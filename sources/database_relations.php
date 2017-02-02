@@ -498,7 +498,7 @@ function get_relation_map()
         'shopping_cart.ordered_by' => 'f_members.id',
         'shopping_cart.product_id' => 'catalogue_entries.id',
         'shopping_order_addresses.a_order_id' => 'shopping_order.id',
-        'shopping_order_details.order_id' => 'shopping_order.id',
+        'shopping_order_details.p_order_id' => 'shopping_order.id',
         'shopping_order_details.p_id' => 'catalogue_entries.id',
         'temp_block_permissions.p_session_id' => 'sessions.the_session',
         'tickets.forum_id' => 'f_forums.id',

@@ -140,24 +140,20 @@ class Hook_ecommerce_cart_orders
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
-        if (!isset($details['ORDER_STATUS'])) {
-            return false;
-        }
-
         require_code('shopping');
         require_lang('shopping');
 
         $order_id = intval($purchase_id);
 
         if ($details['STATUS'] == 'Completed') {
-            $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'c_member', array('id' => $order_id));
+            $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'member_id', array('id' => $order_id));
             $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'transaction_id' => $details['TXN_ID']));
         }
 
-        $old_status = $GLOBALS['SITE_DB']->query_select_value('shopping_order_details', 'dispatch_status', array('order_id' => $order_id));
+        $old_status = $GLOBALS['SITE_DB']->query_select_value('shopping_order_details', 'p_dispatch_status', array('p_order_id' => $order_id));
 
         if ($old_status != $details['ORDER_STATUS']) {
-            $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('dispatch_status' => $details['ORDER_STATUS']), array('order_id' => $order_id));
+            $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => $details['ORDER_STATUS']), array('p_order_id' => $order_id));
 
             $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => $details['ORDER_STATUS'], 'transaction_id' => $details['TXN_ID']), array('id' => $order_id));
 
@@ -174,8 +170,6 @@ class Hook_ecommerce_cart_orders
             if ($details['ORDER_STATUS'] == 'ORDER_STATUS_payment_received') {
                 purchase_done_staff_mail($order_id);
             }
-
-            // We won't log to the ecom_sales as we log the order instead (in much more detail)
         }
 
         return false;
@@ -191,7 +185,7 @@ class Hook_ecommerce_cart_orders
     public function member_for($type_code, $purchase_id)
     {
         $order_id = intval($purchase_id);
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'c_member', array('id' => $order_id));
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'member_id', array('id' => $order_id));
     }
 
     /**
@@ -203,7 +197,7 @@ class Hook_ecommerce_cart_orders
      */
     public function get_product_dispatch_type($order_id)
     {
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id));
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
 
         foreach ($rows as $item) {
             if ($item['p_type'] === null) {

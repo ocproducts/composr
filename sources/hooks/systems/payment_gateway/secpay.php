@@ -45,8 +45,8 @@ class Hook_payment_gateway_secpay
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
-     * @param  float $amount A transaction amount.
-     * @return float The fee.
+     * @param  REAL $amount A transaction amount.
+     * @return REAL The fee.
      */
     public function get_transaction_fee($amount)
     {
@@ -107,7 +107,7 @@ class Hook_payment_gateway_secpay
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
@@ -142,7 +142,7 @@ class Hook_payment_gateway_secpay
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
@@ -344,7 +344,8 @@ class Hook_payment_gateway_secpay
         $reason = '';
         $pending_reason = '';
         $memo = $transaction_row['e_memo'];
-        $amount = post_param_string('amount');
+        $_amount = post_param_string('amount');
+        $amount = ($_amount == '') ? null : floatval($_amount);
         $currency = post_param_string('currency', get_option('currency')); // May be blank for subscription
         $parent_txn_id = '';
         $period = '';
@@ -468,7 +469,7 @@ class Hook_payment_gateway_secpay
      * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
      * @param  integer $card_issue_number Card Issue number.
      * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
-     * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  REAL $amount Transaction amount.
      * @param  ID_TEXT $currency The currency
      * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
      * @param  SHORT_TEXT $billing_city Town/City (billing, i.e. AVS)
@@ -497,14 +498,14 @@ class Hook_payment_gateway_secpay
 
         $username = $this->_get_username();
         $vpn_password = get_option('payment_gateway_vpn_password');
-        $digest = md5($trans_expecting_id . strval($amount) . get_option('payment_gateway_password'));
+        $digest = md5($trans_expecting_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
         $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($card_cv2)) . ',mand_cv2=true';
         if (ecommerce_test_mode()) {
             $options .= ',test_status=true';
         }
         if ($length !== null) {
             list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
-            $options .= ',repeat=' . $first_repeat . '/' . $length_units_2 . '/0/' . $amount;
+            $options .= ',repeat=' . $first_repeat . '/' . $length_units_2 . '/0/' . float_to_raw_string($amount);
         }
 
         $item_name = $GLOBALS['SITE_DB']->query_select_value('ecom_trans_expecting', 'e_item_name', array('id' => $trans_expecting_id));
@@ -534,7 +535,7 @@ class Hook_payment_gateway_secpay
         if ($length !== null) {
             $trans_expecting_id = 'subscr_' . $trans_expecting_id;
         }
-        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $vpn_password, $trans_expecting_id, get_ip_address(), $cardholder_name, $card_number, $amount, $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
+        $result = xml_rpc('https://www.secpay.com:443/secxmlrpc/make_call', 'SECVPN.validateCardFull', array($username, $vpn_password, $trans_expecting_id, get_ip_address(), $cardholder_name, $card_number, float_to_raw_string($amount), $card_expiry_date, $card_issue_number, $card_start_date, $currency, '', '', $options, $item_name, $shipping_address, $billing_address));
         $map = $this->_parse_result($result);
 
         $success = ((array_key_exists('code', $map)) && (($map['code'] == 'A') || ($map['code'] == 'P:P')));

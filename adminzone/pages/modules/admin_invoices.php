@@ -201,7 +201,7 @@ class Module_admin_invoices
                 $text->attach(escape_html($details['item_name']));
                 if ($details['price'] !== null) {
                     $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
-                    $text->attach(escape_html(' (' . $details['price'] . ' ' . $currency . ')'));
+                    $text->attach(escape_html(' (' . float_format($details['price']) . ' ' . $currency . ')'));
                 }
                 $list->attach(form_input_list_entry($type_code, false, $text));
             }
@@ -232,8 +232,9 @@ class Module_admin_invoices
         $type_code = post_param_string('type_code');
         list($details) = find_product_details($type_code);
 
-        $amount = post_param_string('amount', '');
-        if ($amount == '') {
+        $_amount = post_param_string('amount', '');
+        $amount = ($_amount == '') ? null : float_unformat($_amount);
+        if ($amount === null) {
             $amount = $details['price'];
             if ($amount === null) {
                 warn_exit(do_lang_tempcode('INVOICE_REQUIRED_AMOUNT'));
@@ -278,7 +279,17 @@ class Module_admin_invoices
             $time = get_timezoned_date($row['i_time']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], false, true);
-            $invoices[] = array('INVOICE_TITLE' => $invoice_title, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'ID' => strval($row['id']), 'STATE' => $row['i_state'], 'AMOUNT' => $row['i_amount'], 'TIME' => $time, 'NOTE' => $row['i_note'], 'TYPE_CODE' => $row['i_type_code']);
+            $invoices[] = array(
+                'INVOICE_TITLE' => $invoice_title,
+                'PROFILE_URL' => $profile_url,
+                'USERNAME' => $username,
+                'ID' => strval($row['id']),
+                'STATE' => $row['i_state'],
+                'AMOUNT' => float_format($row['i_amount']),
+                'TIME' => $time,
+                'NOTE' => $row['i_note'],
+                'TYPE_CODE' => $row['i_type_code'],
+            );
         }
         if (count($invoices) == 0) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
@@ -301,7 +312,17 @@ class Module_admin_invoices
             $time = get_timezoned_date($row['i_time']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], false, true);
-            $invoices[] = array('INVOICE_TITLE' => $invoice_title, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'ID' => strval($row['id']), 'STATE' => $row['i_state'], 'AMOUNT' => $row['i_amount'], 'TIME' => $time, 'NOTE' => $row['i_note'], 'TYPE_CODE' => $row['i_type_code']);
+            $invoices[] = array(
+                'INVOICE_TITLE' => $invoice_title,
+                'PROFILE_URL' => $profile_url,
+                'USERNAME' => $username,
+                'ID' => strval($row['id']),
+                'STATE' => $row['i_state'],
+                'AMOUNT' => float_format($row['i_amount']),
+                'TIME' => $time,
+                'NOTE' => $row['i_note'],
+                'TYPE_CODE' => $row['i_type_code'],
+            );
         }
         if (count($invoices) == 0) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));

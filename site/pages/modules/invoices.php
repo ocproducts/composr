@@ -73,7 +73,7 @@ class Module_invoices
                 'i_type_code' => 'ID_TEXT',
                 'i_member_id' => 'MEMBER',
                 'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
-                'i_amount' => 'SHORT_TEXT', // can't always find this from i_type_code
+                'i_amount' => 'REAL', // can't always find this from i_type_code
                 'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
                 'i_time' => 'TIME',
                 'i_note' => 'LONG_TEXT'
@@ -86,6 +86,8 @@ class Module_invoices
 
         if (($upgrade_from < 4) && ($upgrade_from !== null)) {
             $GLOBALS['SITE_DB']->rename_table('invoices', 'ecom_invoices');
+
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_invoices', 'i_amount', 'REAL');
         }
     }
 
@@ -192,13 +194,13 @@ class Module_invoices
             if (perform_local_payment()) {
                 $transaction_button = hyperlink(build_url(array('page' => '_SELF', 'type' => 'pay', 'id' => $row['id']), '_SELF'), do_lang_tempcode('MAKE_PAYMENT'), false, false);
             } else {
-                $transaction_button = make_transaction_button($type_code, $invoice_title, strval($row['id']), floatval($row['i_amount']), $currency);
+                $transaction_button = make_transaction_button($type_code, $invoice_title, strval($row['id']), $row['i_amount'], $currency);
             }
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'INVOICE_TITLE' => $invoice_title,
                 'INVOICE_ID' => strval($row['id']),
-                'AMOUNT' => $row['i_amount'],
+                'AMOUNT' => float_format($row['i_amount']),
                 'TIME' => $time,
                 'STATE' => $state,
                 'DELIVERABLE' => $deliverable,
@@ -240,7 +242,7 @@ class Module_invoices
             $type_code,
             $invoice_title,
             strval($id),
-            floatval($row['i_amount']),
+            $row['i_amount'],
             get_option('currency'),
             0,
             null,

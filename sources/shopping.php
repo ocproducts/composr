@@ -88,16 +88,9 @@ function update_cart($product_det)
         }
 
         if ($product_row['quantity'] > 0) {
-            $GLOBALS['SITE_DB']->query_update(
-                'shopping_cart',
-                array('quantity' => $product_row['quantity']),
-                $where
-            );
+            $GLOBALS['SITE_DB']->query_update('shopping_cart', array('quantity' => $product_row['quantity']), $where);
         } else {
-            $GLOBALS['SITE_DB']->query_delete(
-                'shopping_cart',
-                $where
-            );
+            $GLOBALS['SITE_DB']->query_delete('shopping_cart', $where);
         }
     }
 
@@ -128,11 +121,7 @@ function remove_from_cart($product_to_remove)
             $where['ordered_by'] = get_member();
         }
 
-        $GLOBALS['SITE_DB']->query_update(
-            'shopping_cart',
-            array('is_deleted' => 1),
-            $where
-        );
+        $GLOBALS['SITE_DB']->query_update('shopping_cart', array('is_deleted' => 1), $where);
     }
 }
 
@@ -173,24 +162,18 @@ function log_cart_actions($action)
     $id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_logging', 'id', $where);
 
     if ($id === null) {
-        $GLOBALS['SITE_DB']->query_insert(
-            'shopping_logging',
-            array(
-                'e_member_id' => get_member(),
-                'session_id' => get_session_id(),
-                'ip' => get_ip_address(),
-                'last_action' => $action,
-                'date_and_time' => time()
-            )
-        );
+        $GLOBALS['SITE_DB']->query_insert('shopping_logging', array(
+            'l_member_id' => get_member(),
+            'l_session_id' => get_session_id(),
+            'l_ip' => get_ip_address(),
+            'l_last_action' => $action,
+            'l_date_and_time' => time()
+        ));
     } else {
-        $GLOBALS['SITE_DB']->query_update(
-            'shopping_logging',
-            array(
-                'last_action' => $action,
-                'date_and_time' => time()
-            )
-        );
+        $GLOBALS['SITE_DB']->query_update('shopping_logging', array(
+            'l_last_action' => $action,
+            'l_date_and_time' => time()
+        ));
     }
 }
 
@@ -206,7 +189,7 @@ function delete_incomplete_orders()
     $where = db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' AND add_date<' . strval(time() - 60 * 60 * 24 * 14/*2 weeks*/);
     $rows = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where);
     foreach ($rows as $row) {
-        $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $row['id']));
+        $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_order_id' => $row['id']));
         $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $row['id']), '', 1);
     }
 }
@@ -220,11 +203,11 @@ function delete_pending_orders_for_current_user()
     if (is_guest()) {
         $where['session_id'] = get_session_id();
     } else {
-        $where['c_member'] = get_member();
+        $where['member_id'] = get_member();
     }
     $orders = $GLOBALS['SITE_DB']->query_select('shopping_order', array('id'), $where);
     foreach ($orders as $order) {
-        $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('order_id' => $order['id']));
+        $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_order_id' => $order['id']));
         $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $order['id']), '', 1);
     }
 }
@@ -250,7 +233,7 @@ function render_cart_payment_form()
 
     if (count($cart_items) > 0) {
         $insert = array(
-            'c_member' => get_member(),
+            'member_id' => get_member(),
             'session_id' => get_session_id(),
             'add_date' => time(),
             'total_price' => 0,
@@ -260,11 +243,6 @@ function render_cart_payment_form()
             'transaction_id' => '',
             'tax_opted_out' => $tax_opt_out,
         );
-
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'id') === null) {
-            $insert['id'] = hexdec('1701D'); // Start offset so it looks like we have more sales
-        }
-
         $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', $insert, true);
     } else {
         $order_id = null;
@@ -323,9 +301,9 @@ function render_cart_payment_form()
             'p_type' => $item['product_type'],
             'p_quantity' => $item['quantity'],
             'p_price' => $price,
-            'included_tax' => $tax,
-            'order_id' => $order_id,
-            'dispatch_status' => '',
+            'p_included_tax' => $tax,
+            'p_order_id' => $order_id,
+            'p_dispatch_status' => '',
         ), true);
 
         $total_price += $price * $item['quantity'];
@@ -393,7 +371,7 @@ function get_order_tax_opt_out_status()
     if (is_guest()) {
         $where['session_id'] = get_session_id();
     } else {
-        $where['c_member'] = get_member();
+        $where['member_id'] = get_member();
     }
     $row = $GLOBALS['SITE_DB']->query_select('shopping_order', array('tax_opted_out'), $where, 'ORDER BY add_date DESC', 1);
 
@@ -415,7 +393,7 @@ function get_current_order_id()
     if (is_guest()) {
         $where['session_id'] = get_session_id();
     } else {
-        $where['c_member'] = get_member();
+        $where['member_id'] = get_member();
     }
     return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'id', $where, 'ORDER BY add_date DESC');
 }
@@ -427,7 +405,7 @@ function get_current_order_id()
  */
 function purchase_done_staff_mail($order_id)
 {
-    $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'c_member', array('id' => $order_id));
+    $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'member_id', array('id' => $order_id));
     $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
@@ -468,7 +446,7 @@ FOR ADMIN_ORDERS
  */
 function update_stock($order_id)
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id), '', 1);
 
     foreach ($rows as $ordered_items) {
         $hook = $ordered_items['p_type'];
@@ -521,7 +499,7 @@ function get_ordered_product_list_string($order_id)
 {
     $product_det = array();
 
-    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), 'ORDER BY p_name');
+    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id), 'ORDER BY p_name');
 
     foreach ($rows as $key => $product) {
         $product_det[] = $product['p_name'] . ' x ' . integer_format($product['p_quantity']) . ' @ ' . do_lang('UNIT_PRICE') . '=' . float_format($product['p_price']);

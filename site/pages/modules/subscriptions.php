@@ -72,7 +72,7 @@ class Module_subscriptions
                 's_type_code' => 'ID_TEXT',
                 's_member_id' => 'MEMBER',
                 's_state' => 'ID_TEXT', // pending|new|active|cancelled (pending means payment has been requested)
-                's_amount' => 'SHORT_TEXT', // can't always find this from s_type_code
+                's_amount' => 'REAL', // can't always find this from s_type_code
                 's_purchase_id' => 'ID_TEXT',
                 's_time' => 'TIME',
                 's_auto_fund_source' => 'ID_TEXT', // The payment gateway
@@ -88,7 +88,7 @@ class Module_subscriptions
                 'id' => '*AUTO',
                 's_title' => 'SHORT_TRANS',
                 's_description' => 'LONG_TRANS__COMCODE',
-                's_cost' => 'SHORT_TEXT',
+                's_cost' => 'REAL',
                 's_length' => 'INTEGER',
                 's_length_units' => 'SHORT_TEXT',
                 's_auto_recur' => 'BINARY',
@@ -147,6 +147,10 @@ class Module_subscriptions
 
         if (($upgrade_from < 7) && ($upgrade_from !== null)) {
             $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
+
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_amount', 'REAL');
+
+            $GLOBALS['SITE_DB']->alter_table_field('f_usergroup_subs', 's_cost', 'REAL');
         }
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;

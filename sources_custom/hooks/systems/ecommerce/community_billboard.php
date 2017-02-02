@@ -67,7 +67,7 @@ class Hook_ecommerce_community_billboard
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('community_billboard_price') == '') ? null : float_to_raw_string(floatval(intval(get_option('community_billboard_price')) * $days)),
+                'price' => (get_option('community_billboard_price') == '') ? null : (float_unformat(get_option('community_billboard_price')) * $days),
                 'currency' => get_option('currency'),
                 'price_points' => (get_option('community_billboard_price_points') == '') ? null : (intval(get_option('community_billboard_price_points')) * $days),
                 'discount_points__num_points' => null,

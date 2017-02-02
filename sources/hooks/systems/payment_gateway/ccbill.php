@@ -73,8 +73,8 @@ class Hook_payment_gateway_ccbill
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
-     * @param  float $amount A transaction amount.
-     * @return float The fee
+     * @param  REAL $amount A transaction amount.
+     * @return REAL The fee
      */
     public function get_transaction_fee($amount)
     {
@@ -109,7 +109,7 @@ class Hook_payment_gateway_ccbill
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
@@ -160,7 +160,7 @@ class Hook_payment_gateway_ccbill
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
@@ -273,7 +273,8 @@ class Hook_payment_gateway_ccbill
         $reason = post_param_integer('reasonForDeclineCode', 0);
         $pending_reason = '';
         $memo = '';
-        $amount = post_param_string('initialPrice');
+        $_amount = post_param_string('initialPrice');
+        $amount = ($_amount == '') ? null : floatval($_amount);
         $_currency = post_param_integer('baseCurrency', 0);
         $currency = ($_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_currency];
         $txn_id = post_param_string('consumerUniqueId');

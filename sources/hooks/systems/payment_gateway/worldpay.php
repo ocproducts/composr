@@ -50,8 +50,8 @@ class Hook_payment_gateway_worldpay
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
-     * @param  float $amount A transaction amount.
-     * @return float The fee.
+     * @param  REAL $amount A transaction amount.
+     * @return REAL The fee.
      */
     public function get_transaction_fee($amount)
     {
@@ -110,7 +110,7 @@ class Hook_payment_gateway_worldpay
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
@@ -147,7 +147,7 @@ class Hook_payment_gateway_worldpay
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
@@ -285,7 +285,8 @@ class Hook_payment_gateway_worldpay
         $reason = '';
         $pending_reason = '';
         $memo = $transaction_row['e_memo'];
-        $amount = post_param_string('authAmount');
+        $_amount = post_param_string('authAmount');
+        $amount = ($_amount == '') ? null : floatval($_amount);
         $currency = post_param_string('authCurrency');
         $parent_txn_id = '';
         $period = '';

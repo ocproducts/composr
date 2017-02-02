@@ -38,8 +38,8 @@ class Hook_payment_gateway_paypal
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
-     * @param  float $amount A transaction amount.
-     * @return float The fee
+     * @param  REAL $amount A transaction amount.
+     * @return REAL The fee
      */
     public function get_transaction_fee($amount)
     {
@@ -84,7 +84,7 @@ class Hook_payment_gateway_paypal
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
@@ -242,15 +242,16 @@ class Hook_payment_gateway_paypal
         }
         $txn_id = post_param_string('txn_id', ''); // May be blank for subscription, will be overwritten for them
         $parent_txn_id = post_param_string('parent_txn_id', '-1');
-        $amount = post_param_string('mc_gross', ''); // May be blank for subscription
+        $_amount = post_param_string('mc_gross', ''); // May be blank for subscription
+        $amount = ($_amount == '') ? null : floatval($_amount);
         $tax = post_param_string('tax', '');
-        if (($tax != '') && (intval($tax) > 0) && ($amount != '')) {
-            $amount = float_to_raw_string(floatval($amount) - floatval($tax));
+        if (($tax != '') && (intval($tax) > 0) && ($amount !== null)) {
+            $amount -= floatval($tax);
         }
         /* Actually, the hook will have added shipping to the overall product cost
         $shipping = post_param_string('shipping', '');
-        if (($shipping != '') && (intval($shipping) > 0) && ($amount != '')) {
-            $amount = float_to_raw_string(floatval($amount) - floatval($shipping));
+        if (($shipping != '') && (intval($shipping) > 0) && ($amount !== null)) {
+            $amount -= floatval($shipping);
         }
         */
         $currency = post_param_string('mc_currency', get_option('currency')); // May be blank for subscription
@@ -304,7 +305,8 @@ class Hook_payment_gateway_paypal
         switch ($status) {
             // Subscription
             case '': // We map certain values of txn_type for subscriptions over to payment_status, as subscriptions have no payment status but similar data in txn_type which we do not use
-                $amount = post_param_string('mc_amount3');
+                $_amount = post_param_string('mc_amount3');
+                $amount = ($_amount == '') ? null : floatval($_amount);
 
                 switch ($txn_type) {
                     case 'subscr_signup':

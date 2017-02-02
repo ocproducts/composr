@@ -45,7 +45,7 @@ class Hook_ecommerce_highlight_name
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('highlight_name_price') == '') ? null : float_to_raw_string(floatval(get_option('highlight_name_price'))),
+                'price' => (get_option('highlight_name_price') == '') ? null : float_unformat(get_option('highlight_name_price')),
                 'currency' => get_option('currency'),
                 'price_points' => (get_option('highlight_name_price_points') == '') ? null : (intval(get_option('highlight_name_price_points'))),
                 'discount_points__num_points' => null,

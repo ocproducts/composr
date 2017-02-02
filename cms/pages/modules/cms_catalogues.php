@@ -851,10 +851,10 @@ class Module_cms_catalogues extends Standard_crud_module
             if ($delete_permission) {
                 $start = 0;
                 do {
-                    $details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('order_id', 'p_price'), array('p_id' => $id), '', 1000, $start);
+                    $details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_order_id', 'p_price'), array('p_id' => $id), '', 1000, $start);
                     foreach ($details as $d) {
-                        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'shopping_order SET total_price=total_price-' . float_to_raw_string($d['p_price']) . ' WHERE id=' . strval($d['order_id']) . ' AND ' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment'));
-                        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $d['order_id'], 'total_price' => 0.0), '', 1);
+                        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'shopping_order SET total_price=total_price-' . float_to_raw_string($d['p_price']) . ' WHERE id=' . strval($d['p_order_id']) . ' AND ' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment'));
+                        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $d['p_order_id'], 'total_price' => 0.0), '', 1);
                     }
                     $start += 1000;
                 } while (count($details) != 0);

@@ -262,7 +262,7 @@ class Module_admin_ecommerce_logs
                 $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
                 if ($details['price'] !== null) {
-                    $label .= ', ' . escape_html(is_float($details['price']) ? float_to_raw_string($details['price'], 2) : $details['price'] . ' (' . $currency . ')');
+                    $label .= ', ' . escape_html(float_format($details['price']) . ' (' . $currency . ')');
                 }
                 $label .= ')';
                 $list->attach(form_input_list_entry($type_code, $type_code === get_param_string('type_code', null), protect_from_escaping($label)));
@@ -345,12 +345,13 @@ class Module_admin_ecommerce_logs
 
         $purchase_id = post_param_string('purchase_id', '');
         $memo = post_param_string('memo', '');
-        $amount = post_param_string('amount', '');
+        $_amount = post_param_string('amount', '');
+        $amount = ($_amount == '') ? null : float_unformat($_amount);
         $custom_expiry = post_param_date('cexpiry');
         $currency = get_option('currency');
 
         list($details) = find_product_details($type_code);
-        if ($amount == '') {
+        if ($amount === null) {
             $amount = $details['price'];
             if (isset($details['currency'])) {
                 $currency = $details['currency'];
@@ -544,7 +545,7 @@ class Module_admin_ecommerce_logs
                 $myrow['t_purchase_id'],
                 $myrow['t_parent_txn_id'],
                 $date,
-                $myrow['t_amount'],
+                float_format($myrow['t_amount']),
                 $myrow['t_currency'],
                 $myrow['t_type_code'],
                 $status,
@@ -646,7 +647,7 @@ class Module_admin_ecommerce_logs
 
             $type_code = $transaction['t_type_code'];
 
-            $transaction['t_amount'] = currency_convert(floatval($transaction['t_amount']), $transaction['t_currency'], get_option('currency'));
+            $transaction['t_amount'] = currency_convert($transaction['t_amount'], $transaction['t_currency'], get_option('currency'));
 
             $types['CLOSING']['AMOUNT'] += $transaction['t_amount'];
 
@@ -655,12 +656,12 @@ class Module_admin_ecommerce_logs
                 continue;
             }
 
-            if (($transaction['t_type_code'] == 'OTHER') && ($transaction['t_amount'] < 0)) {
+            if (($transaction['t_type_code'] == 'OTHER') && ($transaction['t_amount'] < 0.0)) {
                 $types['COST']['AMOUNT'] += $transaction['t_amount'];
             } elseif ($transaction['t_type_code'] == 'TAX') {
                 $types['TAX']['AMOUNT'] += $transaction['t_amount'];
             } elseif ($transaction['t_type_code'] == 'INTEREST') {
-                $types[$type_code][($transaction['t_amount'] < 0) ? 'INTEREST_MINUS' : 'INTEREST_PLUS']['AMOUNT'] += $transaction['t_amount'];
+                $types[$type_code][($transaction['t_amount'] < 0.0) ? 'INTEREST_MINUS' : 'INTEREST_PLUS']['AMOUNT'] += $transaction['t_amount'];
             } elseif ($transaction['t_type_code'] == 'WAGE') {
                 $types['WAGE']['AMOUNT'] += $transaction['t_amount'];
             } else {
@@ -676,14 +677,14 @@ class Module_admin_ecommerce_logs
             foreach ($invoices as $invoice) {
                 $type_code = $invoice['i_type_code'];
 
-                $types['CLOSING']['AMOUNT'] += intval($invoice['i_amount']);
+                $types['CLOSING']['AMOUNT'] += $invoice['i_amount'];
 
                 if ($invoice['i_time'] < $from) {
-                    $types['OPENING']['AMOUNT'] += intval($invoice['i_amount']);
+                    $types['OPENING']['AMOUNT'] += $invoice['i_amount'];
                     continue;
                 }
 
-                $types[$type_code]['AMOUNT'] += intval($invoice['i_amount']);
+                $types[$type_code]['AMOUNT'] += $invoice['i_amount'];
             }
         }
 
@@ -692,12 +693,12 @@ class Module_admin_ecommerce_logs
         // $types['PROFIT_NET_TAXED'] is not calculated
 
         foreach ($types as $type_code => $details) {
-            $types[$type_code]['AMOUNT'] = float_to_raw_string($types[$type_code]['AMOUNT']);
+            $types[$type_code]['AMOUNT'] = float_format($types[$type_code]['AMOUNT']);
         }
 
         foreach ($types as $i => $t) {
             if (is_float($t['AMOUNT'])) {
-                $types[$i]['AMOUNT'] = float_to_raw_string($t['AMOUNT']);
+                $types[$i]['AMOUNT'] = float_format($t['AMOUNT']);
             } elseif (is_integer($t['AMOUNT'])) {
                 $types[$i]['AMOUNT'] = strval($t['AMOUNT']);
             }
@@ -819,7 +820,7 @@ class Module_admin_ecommerce_logs
         $repost_id = post_param_integer('id', null);
         if (($repost_id !== null) && ($repost_id == $id)) {
             require_code('ecommerce');
-            handle_confirmed_transaction(null, strval($id), $subscription[0]['s_type_code'], '', strval($id), true, 'SCancelled', '', '', get_option('currency'), '', '', '', '', get_member(), 'manual'); // Runs a cancel
+            handle_confirmed_transaction(null, strval($id), $subscription[0]['s_type_code'], '', strval($id), true, 'SCancelled', '', 0.0, get_option('currency'), '', '', '', '', get_member(), 'manual'); // Runs a cancel
             return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
         }
 

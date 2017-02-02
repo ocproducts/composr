@@ -69,7 +69,7 @@ class Hook_ecommerce_classifieds
                     'type' => PRODUCT_PURCHASE,
                     'type_special_details' => array(),
 
-                    'price' => float_to_raw_string($price['c_price']),
+                    'price' => $price['c_price'],
                     'currency' => get_option('currency'),
                     'price_points' => null,
                     'discount_points__num_points' => null,

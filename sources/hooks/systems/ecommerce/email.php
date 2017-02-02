@@ -38,7 +38,7 @@ class Hook_ecommerce_email
             $domain = substr($row['name'], strlen('forw_'));
             $hidden->attach(form_input_hidden('dforw_' . strval($i), $domain));
             $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'ndforw_' . strval($i), $domain, false));
-            $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i) . '_price', ($row['price'] == '') ? null : floatval($row['price']), false));
+            $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i) . '_price', $row['price'], false));
             if (addon_installed('points')) {
                 $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE_POINTS', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i) . '_price_points', $row['price_points'], true));
             }
@@ -55,7 +55,7 @@ class Hook_ecommerce_email
             $domain = substr($row['name'], strlen('pop3_'));
             $hidden->attach(form_input_hidden('dpop3_' . strval($i), $domain));
             $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'ndpop3_' . strval($i), $domain, false));
-            $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_price', ($row['price'] == '') ? null : floatval($row['price']), false));
+            $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_price', $row['price'], false));
             if (addon_installed('points')) {
                 $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE_POINTS', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_price_points', $row['price_points'], true));
             }
@@ -120,7 +120,7 @@ class Hook_ecommerce_email
     protected function _add_config_forw()
     {
         $_forw_price = post_param_string('forw_price', '');
-        $forw_price = ($_forw_price == '') ? '' : float_to_raw_string(float_unformat($_forw_price));
+        $forw_price = ($_forw_price == '') ? null : float_unformat($_forw_price);
         if (addon_installed('points')) {
             $forw_price_points = post_param_integer('forw_price_points', null);
         } else {
@@ -144,7 +144,7 @@ class Hook_ecommerce_email
         $i = 0;
         while (array_key_exists('dforw_' . strval($i), $_POST)) {
             $_price = post_param_string('forw_' . strval($i) . '_price', '');
-            $price = ($_price == '') ? '' : float_to_raw_string(float_unformat($_price));
+            $price = ($_price == '') ? null : float_unformat($_price);
             if (addon_installed('points')) {
                 $price_points = post_param_integer('forw_' . strval($i) . '_price_points', null);
             } else {
@@ -170,7 +170,7 @@ class Hook_ecommerce_email
     protected function _add_config_pop3()
     {
         $_pop3_price = post_param_string('pop3_price', '');
-        $pop3_price = ($_pop3_price == '') ? '' : float_to_raw_string(float_unformat($_pop3_price));
+        $pop3_price = ($_pop3_price == '') ? null : float_unformat($_pop3_price);
         if (addon_installed('points')) {
             $pop3_price_points = post_param_integer('pop3_price_points', null);
         } else {
@@ -194,7 +194,7 @@ class Hook_ecommerce_email
         $i = 0;
         while (array_key_exists('dpop3_' . strval($i), $_POST)) {
             $_price = post_param_string('pop3_' . strval($i) . '_price', '');
-            $price = ($_price == '') ? '' : float_to_raw_string(float_unformat($_price));
+            $price = ($_price == '') ? null : float_unformat($_price);
             if (addon_installed('points')) {
                 $price_points = post_param_integer('pop3_' . strval($i) . '_price_points', null);
             } else {
@@ -268,7 +268,7 @@ class Hook_ecommerce_email
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('quota_price') == '') ? null : float_to_raw_string(floatval(intval(get_option('quota_price')) * $amount)),
+                'price' => (get_option('quota_price') == '') ? null : (float_unformat(get_option('quota_price')) * $amount),
                 'currency' => get_option('currency'),
                 'price_points' => (get_option('quota_price_points') == '') ? null : (intval(get_option('quota_price_points')) * $amount),
                 'discount_points__num_points' => null,

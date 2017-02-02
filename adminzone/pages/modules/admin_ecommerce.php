@@ -203,7 +203,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      *
      * @param  SHORT_TEXT $title The title
      * @param  LONG_TEXT $description The description
-     * @param  SHORT_TEXT $cost The cost
+     * @param  REAL $cost The cost
      * @param  integer $length The length
      * @param  SHORT_TEXT $length_units The units for the length
      * @set    y m d w
@@ -218,7 +218,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  ?AUTO_LINK $id ID of existing subscription (null: new)
      * @return array Tuple: The input fields, The hidden fields, The delete fields
      */
-    public function get_form_fields($title = '', $description = '', $cost = '9.99', $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
+    public function get_form_fields($title = '', $description = '', $cost = 9.99, $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
     {
         if (($title == '') && (get_forum_type() == 'cns')) {
             $add_usergroup_url = build_url(array('page' => 'admin_cns_groups', 'type' => 'add'), get_module_zone('admin_cns_groups'));
@@ -245,7 +245,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_TITLE'), 'title', $title, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_DESCRIPTION'), 'description', $description, true));
-        $fields->attach(form_input_float(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_COST'), 'cost', floatval($cost), true));
+        $fields->attach(form_input_float(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_COST'), 'cost', $cost, true));
 
         $list = new Tempcode();
         foreach (array('d', 'w', 'm', 'y') as $unit) {
@@ -493,7 +493,7 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $mails = $this->_mails();
 
-        $id = add_usergroup_subscription($title, post_param_string('description'), post_param_string('cost'), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
+        $id = add_usergroup_subscription($title, post_param_string('description'), float_unformat(post_param_string('cost')), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
         return array(strval($id), $text);
     }
 
@@ -508,7 +508,7 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $mails = $this->_mails();
 
-        edit_usergroup_subscription(intval($id), $title, post_param_string('description'), post_param_string('cost'), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
+        edit_usergroup_subscription(intval($id), $title, post_param_string('description'), float_unformat(post_param_string('cost')), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
     }
 
     /**

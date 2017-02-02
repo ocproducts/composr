@@ -49,8 +49,8 @@ class Hook_payment_gateway_authorize
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
-     * @param  float $amount A transaction amount.
-     * @return float The fee.
+     * @param  REAL $amount A transaction amount.
+     * @return REAL The fee.
      */
     public function get_transaction_fee($amount)
     {
@@ -83,7 +83,7 @@ class Hook_payment_gateway_authorize
      *
      * @param  string $login_id Login ID.
      * @param  string $x_tran_key Transaction key
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  integer $sequence Sequence number.
      * @param  integer $timestamp Timestamp
      * @param  ID_TEXT $currency The currency to use.
@@ -168,7 +168,7 @@ class Hook_payment_gateway_authorize
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
@@ -209,7 +209,7 @@ class Hook_payment_gateway_authorize
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $amount A transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
@@ -314,7 +314,8 @@ class Hook_payment_gateway_authorize
         $period = '';
         $_transaction_id = post_param_string('x_trans_id');
         $reason = post_param_string('x_response_reason_code', '');
-        $amount = post_param_integer('x_amount');
+        $_amount = post_param_string('x_amount');
+        $amount = floatval($_amount);
         $currency = post_param_string('x_currency_code', get_option('currency'));
         $parent_txn_id = '';
         $pending_reason = '';
@@ -328,7 +329,7 @@ class Hook_payment_gateway_authorize
 
         // SECURITY: Check hash
         $hash = post_param_string('x_MD5_Hash');
-        if ($hash != md5($md5_hash_value . $login_id . $_transaction_id . post_param_string('amount'))) {
+        if ($hash != md5($md5_hash_value . $login_id . $_transaction_id . float_to_raw_string($amount))) {
             if (!running_script('ecommerce')) {
                 return null;
             }
@@ -436,7 +437,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
      * @param  integer $card_issue_number Card Issue number.
      * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
-     * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  REAL $amount Transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
      * @param  SHORT_TEXT $billing_city Town/City (billing, i.e. AVS)
@@ -556,7 +557,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
      * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
      * @param  ID_TEXT $trans_expecting_id Transaction ID
-     * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  REAL $amount Transaction amount.
      * @param  SHORT_TEXT $billing_firstname Cardholder first name.
      * @param  SHORT_TEXT $billing_lastname Cardholder last name.
      * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
@@ -595,7 +596,7 @@ class Hook_payment_gateway_authorize
         $this->api_parameters['x_delim_data'] = true;
         $this->api_parameters['x_delim_char'] = '|';
         $this->api_parameters['x_relay_response'] = false;
-        $this->api_parameters['x_amount'] = $amount;
+        $this->api_parameters['x_amount'] = float_to_raw_string($amount);
         $this->api_parameters['x_card_code'] = $card_cv2;
         $this->api_parameters['x_customer_ip'] = get_ip_address();
 
@@ -652,7 +653,7 @@ class Hook_payment_gateway_authorize
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
      * @set    d w m y
      * @param  ID_TEXT $trans_expecting_id Transaction ID
-     * @param  SHORT_TEXT $amount Transaction amount.
+     * @param  REAL $amount Transaction amount.
      * @param  SHORT_TEXT $billing_firstname Cardholder first name.
      * @param  SHORT_TEXT $billing_lastname Cardholder last name.
      * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
@@ -707,7 +708,7 @@ class Hook_payment_gateway_authorize
                     '<totalOccurrences>9999</totalOccurrences>' .
                 '</paymentSchedule>' .
 
-                '<amount>' . $amount . '</amount>' .
+                '<amount>' . float_to_raw_string($amount) . '</amount>' .
 
                 '<payment>' .
                     '<creditCard>' .

@@ -37,7 +37,7 @@ class ecommerce_test_set extends cms_test_case
         require_lang('shopping');
 
         $this->order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', array(
-            'c_member' => get_member(),
+            'member_id' => get_member(),
             'session_id' => get_session_id(),
             'add_date' => time(),
             'total_price' => 0.0,

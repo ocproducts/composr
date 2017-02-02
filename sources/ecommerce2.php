@@ -23,7 +23,7 @@
  *
  * @param  SHORT_TEXT $title The title
  * @param  LONG_TEXT $description The description
- * @param  SHORT_TEXT $cost The cost
+ * @param  REAL $cost The cost
  * @param  integer $length The length
  * @param  SHORT_TEXT $length_units The units for the length
  * @set    y m d w
@@ -94,7 +94,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
  * @param  AUTO_LINK $id The ID
  * @param  SHORT_TEXT $title The title
  * @param  LONG_TEXT $description The description
- * @param  SHORT_TEXT $cost The cost
+ * @param  REAL $cost The cost
  * @param  integer $length The length
  * @param  SHORT_TEXT $length_units The units for the length
  * @set    y m d w
