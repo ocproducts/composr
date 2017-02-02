@@ -581,7 +581,7 @@ class Module_cms_wiki
             access_denied('CATEGORY_ACCESS');
         }
 
-        $childlinks = post_param_string('children');
+        $child_links = post_param_string('children');
 
         $member = get_member();
         check_privilege('wiki_manage_tree', array('wiki_page', $id));
@@ -592,10 +592,10 @@ class Module_cms_wiki
             $hide_posts = 1;
         }
 
-        if ((substr($childlinks, -1, 1) != "\n") && (strlen($childlinks) > 0)) {
-            $childlinks .= "\n";
+        if ((substr($child_links, -1, 1) != "\n") && (strlen($child_links) > 0)) {
+            $child_links .= "\n";
         }
-        $no_children = substr_count($childlinks, "\n");
+        $no_children = substr_count($child_links, "\n");
         if ($no_children > 300) {
             warn_exit(do_lang_tempcode('TOO_MANY_WIKI_CHILDREN'));
         }
@@ -603,8 +603,8 @@ class Module_cms_wiki
         $GLOBALS['SITE_DB']->query_delete('wiki_children', array('parent_id' => $id));
         require_code('seo2');
         for ($i = 0; $i < $no_children; $i++) {
-            $length = strpos($childlinks, "\n", $start) - $start;
-            $new_link = trim(substr($childlinks, $start, $length));
+            $length = strpos($child_links, "\n", $start) - $start;
+            $new_link = trim(substr($child_links, $start, $length));
             $start = $start + $length + 1;
             if ($new_link != '') {
                 // Find ID and title
@@ -612,7 +612,7 @@ class Module_cms_wiki
                 $child_id_on_start = (($q_pos !== false) && ($q_pos > 0) && (is_numeric(substr($new_link, 0, $q_pos))));
 
                 if ($child_id_on_start) { // Existing
-                    $title = substr($new_link, $q_pos + 1);
+                    $title = substr(substr($new_link, $q_pos + 1), 0, 255);
                     $child_id = intval(substr($new_link, 0, $q_pos));
                     if ($child_id == $id) {
                         continue;
@@ -632,7 +632,7 @@ class Module_cms_wiki
                         }
                     }
                 } else { // New
-                    $title = $new_link;
+                    $title = substr($new_link, 0, 255);
                     $child_id = wiki_add_page($title, '', '', $hide_posts, null, null, 0, '', '', null, false);
 
                     require_code('permissions2');

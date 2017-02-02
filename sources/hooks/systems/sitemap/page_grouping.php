@@ -283,7 +283,8 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                     // Any left-behind pages
                     // NB: Code largely repeated in zone.php
                     $orphaned_pages = array();
-                    foreach ((($zone == 'site') && (($options & SITEMAP_GEN_COLLAPSE_ZONES) != 0)) ? array('site', '') : array($zone) as $_zone) {
+                    $zones_to_search = (($zone == 'site') && (($options & SITEMAP_GEN_COLLAPSE_ZONES) != 0)) ? array('site', '') : array($zone);
+                    foreach ($zones_to_search as $_zone) {
                         $pages = find_all_pages_wrap($_zone, false, /*$consider_redirects=*/true, /*$show_method = */0, /*$page_type = */($zone != $_zone) ? 'comcode' : null);
                         foreach ($pages as $page => $page_type) {
                             if (is_integer($page)) {
@@ -325,6 +326,19 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                     $child_page_link = $_zone . ':' . $page;
 
                     $child_links[] = array(titleify($page), $child_page_link, null, $page_type, null);
+                }
+
+                if (($zone == '') || ($zone == 'site')) {
+                    $all_zones = find_all_zones(false, false, true);
+                    $zone_sitemap_ob = $this->_get_sitemap_object('zone');
+                    foreach ($all_zones as $zone) {
+                        if (!in_array($zone, array('', 'site', 'adminzone', 'cms', 'collaboration', 'forum'))) {
+                            $child_node = $zone_sitemap_ob->get_node($zone . ':', $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather);
+                            if ($child_node !== null) {
+                                $children[] = $child_node;
+                            }
+                        }
+                    }
                 }
             }
 

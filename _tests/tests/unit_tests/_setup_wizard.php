@@ -22,7 +22,7 @@ class _setup_wizard_test_set extends cms_test_case
     {
         global $SITE_INFO;
         if ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != '127.0.0.1')) {
-            warn_exit('backdoor_ip must be set to 127.0.0.1 temporarily');
+            warn_exit('backdoor_ip must be set to 127.0.0.1 temporarily in _config.php, $SITE_INFO[\'backdoor_ip\'] = \'127.0.0.1\';');
         }
 
         $post_params = array(

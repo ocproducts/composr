@@ -99,7 +99,9 @@ if (file_exists($COMPOSR_PATH . '/data_custom')) {
 } else {
     $myfile = fopen('functions.dat', 'wb');
 }
+flock($myfile, LOCK_EX);
 fwrite($myfile, serialize($classes));
+flock($myfile, LOCK_UN);
 fclose($myfile);
 
 echo 'DONE Compiled signatures';

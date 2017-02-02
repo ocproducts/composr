@@ -474,9 +474,6 @@ if ((!isset($URL_BASE)) && (isset($CRAWLED_URLS))) {
         }
     }
 }
-if ($filesize > 100 * 1024) {
-    echo 'ISSUE "' . $to_use . '" ' . strval($line) . ' ' . strval($pos) . ' ' . html_entity_decode(do_lang('XHTML_BLOAT'), ENT_QUOTES) . "\n";
-}
 
 global $WITHIN_PHP;
 if (!isset($WITHIN_PHP)) {

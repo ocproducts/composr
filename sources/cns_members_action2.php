@@ -839,11 +839,11 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
 
         $email_address_required = member_field_is_required($member_id, 'email_address');
 
-        if (($email_address !== null) && ($email_address != '') && (!is_email_address($email_address))) {
+        if (($email_address !== null) && ($email_address != '') && ($email_address != STRING_MAGIC_NULL) && (!is_email_address($email_address))) {
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
         }
 
-        if ((get_option('one_per_email_address') != '0') && ($email_address != ''))
+        if ((get_option('one_per_email_address') != '0') && ($email_address != '') && ($email_address != STRING_MAGIC_NULL))
         {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
             if (($test !== null) && ($test != $member_id)) {
@@ -1452,6 +1452,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
     $ob = get_fields_hook($type);
     list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => $field_id, 'cf_default' => '', 'cf_type' => $type));
 
+    static $done_one_posting_field = false;
+
     if (strpos($storage_type, '_trans') !== false) {
         if (is_integer($value)) {
             $value = get_translated_text($value, $GLOBALS['FORUM_DB']);
@@ -1461,7 +1463,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 
         $current = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_member_custom_fields', $db_fieldname, array('mf_member_id' => $member_id));
         if ($current === null) {
-            if ($type == 'posting_field') {
+            if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                $done_one_posting_field = true;
                 require_code('attachments2');
                 $map += insert_lang_comcode_attachments($db_fieldname, 3, $value, 'null', strval($member_id), $GLOBALS['FORUM_DB']);
             } else {
@@ -1470,7 +1473,8 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 
             $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $map, array('mf_member_id' => $member_id), '', 1);
         } else {
-            if ($type == 'posting_field') {
+            if (($type == 'posting_field') && (!$done_one_posting_field)) {
+                $done_one_posting_field = true;
                 require_code('attachments2');
                 require_code('attachments3');
                 $map += update_lang_comcode_attachments($db_fieldname, $current, $value, 'null', strval($member_id), $GLOBALS['FORUM_DB'], $member_id);
@@ -1797,8 +1801,8 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
 
     // Cleanup old avatar
     if ((url_is_local($old)) && ((substr($old, 0, 20) == 'uploads/cns_avatars/') || (substr($old, 0, 16) == 'uploads/avatars/')) && ($old != $avatar_url)) {
-        sync_file(rawurldecode($old));
         @unlink(get_custom_file_base() . '/' . rawurldecode($old));
+        sync_file(rawurldecode($old));
     }
 
     $GLOBALS['FORUM_DB']->query_update('f_members', array('m_avatar_url' => $avatar_url), array('id' => $member_id), '', 1);

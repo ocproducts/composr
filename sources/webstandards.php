@@ -128,10 +128,11 @@ function init__webstandards()
     $enforce_align4 = '(top|bottom|left|right)';
     $enforce_valign = '(top|middle|bottom|baseline)';
     $enforce_number = '(-?[0-9]+)';
+    $enforce_fractional = '(-?[0-9]*(\.)[0-9]+?)';
     $enforce_inumber = '[0-9]+';
     $enforce_character = '.';
     $enforce_color = '(black|silver|gray|white|maroon|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|red|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]))'; // orange and red aren't 'official' -- but kind of handy ;). In reality, the colour codes were never properly defined, and these two are obvious names for obviously needed ones-- they'll be supported
-    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_number . ')?\.' . $enforce_number . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
+    $enforce_length = '((0)|(' . $enforce_number . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_fractional . ')(in|cm|mm|ex|px|em|%)))'; // |ex|pt|in|cm|mm|pc  We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_ilength = '((0)|(' . $enforce_inumber . '(|in|cm|mm|ex|pt|pc|px|em|%))|((' . $enforce_inumber . ')?\.' . $enforce_inumber . '(in|cm|mm|ex|em|vh|vw|vmin|rem|%)))'; // |ex|pt|in|cm|mm|pc We don't want these in our XHTML... preferably we only want em when it comes to font size!
     $enforce_pixels = '[0-9]+';
     $enforce_auto_or_length = '(auto|' . $enforce_length . ')';
@@ -139,11 +140,20 @@ function init__webstandards()
     $enforce_normal_or_length = '(normal|' . $enforce_length . ')';
     $enforce_border_width = '(thin|medium|thick|' . $enforce_length . ')';
     $enforce_potential_4d_border_width = $enforce_border_width . '( ' . $enforce_border_width . '( ' . $enforce_border_width . '( ' . $enforce_border_width . '|)|)|)';
-    $enforce_css_color = '((rgb\(' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%\))|(rgb\(' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . '\))|(rgba\(' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%,' . $enforce_inumber . '%\))|(rgba\(' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . ',' . $enforce_inumber . '\.\d+\))|(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])|' . $enforce_color . '|ActiveBorder|ActiveCaption|AppWorkspace|Background|Buttonface|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText)';
+    $color_types = array(
+        '(rgb\(' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?\))',
+        '(rgba\(' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*[01]?(\.\d+)?\))',
+        '(hsl\(' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?\))',
+        '(hsla\(' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*' . $enforce_inumber . '%?,\s*[01]?(\.\d+)?\))',
+        '(\#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f])',
+        $enforce_color,
+        'ActiveBorder|ActiveCaption|AppWorkspace|Background|Buttonface|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText',
+    );
+    $enforce_css_color = '(' . implode('|', $color_types) . ')';
     $enforce_transparent_or_color = '(transparent|' . $enforce_css_color . ')';
-    $enforce_fraction = '(\d%|\d\d%|100%|0\.\d+|1\.0|0|1)';
-    $_enforce_font_list = "(cursive|fantasy|monospace|serif|sans-serif|Georgia|Times|Trebuchet|Tahoma|Geneva|Verdana|Arial|Helvetica|Courier|Courier New|Impact|'Georgia'|'Times'|'Trebuchet'|'Tahoma'|'Geneva'|'Verdana'|'Arial'|'Helvetica'|'Courier'|'Courier New'|'Impact')";
-    $enforce_font_list = '((([A-Za-z]+)|("[A-Za-z ]+")|(\'[A-Za-z ]+\')),\s*)*' . $_enforce_font_list;
+    $enforce_fraction = '(\d%|\d\d%|100%|0?\.\d+|1\.0|0|1)';
+    $_enforce_font_list = "((?i)cursive|fantasy|monospace|serif|sans-serif|Georgia|Times|Trebuchet|Tahoma|Geneva|Verdana|Arial|Helvetica|Courier|Courier New|Impact|'Georgia'|'Times'|'Trebuchet'|'Tahoma'|'Geneva'|'Verdana'|'Arial'|'Helvetica'|'Courier'|'Courier New'|'Impact'(?-i))";
+    $enforce_font_list = '((([\w\-]+)|("[\w\- ]+")|(\'[\w\- ]+\')),\s*)*' . $_enforce_font_list;
     $enforce_functional_url = '(url\(\'.+\'\)|url\(".+"\)|url\([^\(\);]+\))';
     $enforce_functional_url_or_none = '(' . $enforce_functional_url . '|none)';
     $enforce_border_style = '(none|dotted|dashed|solid|double|groove|ridge|inset|outset|transparent)';
@@ -155,6 +165,7 @@ function init__webstandards()
     $enforce_potential_4d_length = $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '( ' . $enforce_length . '|)|)|)';
     $enforce_potential_4d_length_auto = $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '( ' . $enforce_auto_or_length . '|)|)|)';
     $enforce_potential_4d_ilength = $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '( ' . $enforce_ilength . '|)|)|)';
+    $enforce_font_size = '(larger|smaller|xx-small|x-small|small|medium|large|x-large|xx-large|' . $enforce_length . '(/' . $enforce_length . ')?)';
     $enforce_potential_4d_ilength_auto = $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '( ' . $enforce_auto_or_ilength . '|)|)|)';
     $enforce_font_style = '(normal|italic|oblique)';
     $enforce_font_variant = '(normal|small-caps)';
@@ -170,7 +181,7 @@ function init__webstandards()
     } else {
         $enforce_link = '.*';
     }
-    $enforce_class = '[ \w-]*';
+    $enforce_class = '[ \w\-]*';
     $_counter_increment = '((\w+( \d+)?)+)';
     $enforce_counter_increment = $_counter_increment . '( ' . $_counter_increment . ')*';
     $enforce_transition_timing_function = '(linear|ease|ease-in|ease-out|ease-in-out|cubic-bezier\(' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . ' ' . $enforce_fraction . '\))';
@@ -179,6 +190,7 @@ function init__webstandards()
     $enforce_transition_property = '[\w,\-]+';
     $enforce_transform_origin = '(left|center|right|' . $enforce_length . ')';
     $enforce_transform_style = '(flat|preserve-3d)';
+    $enforce_transition = $enforce_transition_property . '( ' . $enforce_time . '( ' . $enforce_transition_timing_function . '( ' . $enforce_time . ')?)?)?';
 
     global $CSS_PROPERTIES;
     $CSS_PROPERTIES = array(
@@ -200,7 +212,7 @@ function init__webstandards()
         'background-origin' => '(border-box|content-box)',
         'background-position' => $enforce_background_position,
         'background-repeat' => $enforce_background_repeat,
-        'background-size' => '(' . $enforce_length . ' ' . $enforce_length . ')',
+        'background-size' => '(cover|contain|((' . $enforce_length . ' )?' . $enforce_length . '))',
         'border' => $enforce_border,
         'border-bottom' => $enforce_border,
         'border-bottom-color' => $enforce_transparent_or_color,
@@ -244,21 +256,21 @@ function init__webstandards()
         'content' => '.+',
         'counter-increment' => $enforce_counter_increment,
         'counter-reset' => $enforce_counter_increment,
-        'cursor' => '(' . $enforce_functional_url . '|default|auto|n-resize|ne-resize|e-resize|se-resize|s-resize|sw-resize|w-resize|nw-resize|crosshair|pointer|move|text|wait|help|progress)',
+        'cursor' => '(' . $enforce_functional_url . '|(?i)auto|crosshair|default|move|text|wait|help|n-resize|e-resize|s-resize|w-resize|ne-resize|nw-resize|se-resize|sw-resize|pointer|not-allowed|no-drop|vertical-text|all-scroll|col-resize|row-resize|none|progress(?-i))', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
         'direction' => '(ltr|rtl)',
         'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
         'empty-cells' => 'show|hide',
         'float' => '(left|right|none)',
-        'font' => '((caption|icon|menu|message-box|small-caption|status-bar|' . $enforce_font_style . '|' . $enforce_font_variant . '|' . $enforce_font_weight . '|' . $enforce_length . '|' . $enforce_normal_or_length . '|' . $enforce_font_list . ')( |$))+',
+        'font' => '((caption|icon|menu|message-box|small-caption|status-bar|' . $enforce_font_style . '|' . $enforce_font_variant . '|' . $enforce_font_weight . '|' . $enforce_font_size . '|' . $enforce_normal_or_length . '|' . $enforce_font_list . ')( |$))+',
         'font-family' => $enforce_font_list,
-        'font-size' => 'larger|smaller|xx-small|x-small|small|medium|large|x-large|xx-large|' . $enforce_length,
+        'font-size' => $enforce_font_size,
         'font-style' => $enforce_font_style,
         'font-variant' => $enforce_font_variant,
         'font-weight' => $enforce_font_weight,
         'height' => $enforce_auto_or_length,
         'left' => $enforce_auto_or_length,
         'letter-spacing' => $enforce_normal_or_length,
-        'line-height' => $enforce_normal_or_length,
+        'line-height' => '(\d*(\.\d+)?|' . $enforce_normal_or_length . ')',
         'list-style' => '((' . $enforce_list_style_type . '|' . $enforce_list_style_position . '|' . $enforce_list_style_image . ')( |$))+',
         'list-style-image' => '(' . $enforce_functional_url . '|none)',
         'list-style-position' => $enforce_list_style_position,
@@ -269,8 +281,8 @@ function init__webstandards()
         'margin-right' => $enforce_auto_or_length,
         'margin-top' => $enforce_auto_or_length,
         'marker-offset' => $enforce_auto_or_length,
-        'max-height' => $enforce_auto_or_length,
-        'max-width' => $enforce_auto_or_length,
+        'max-height' => '(none|' . $enforce_auto_or_length . ')',
+        'max-width' => '(none|' . $enforce_auto_or_length . ')',
         'min-height' => $enforce_auto_or_length,
         'min-width' => $enforce_auto_or_length,
         'opacity' => $enforce_fraction,
@@ -303,7 +315,7 @@ function init__webstandards()
         'transform' => '(none|\w+\([^\(\)]+\))',
         'transform-origin' => $enforce_transform_origin . '( ' . $enforce_transform_origin . '( ' . $enforce_transform_origin . ')?)?',
         'transform-style' => $enforce_transform_style,
-        'transition' => $enforce_transition_property . '( ' . $enforce_time . '( ' . $enforce_transition_timing_function . '( ' . $enforce_time . ')?)?)?',
+        'transition' => $enforce_transition . '(\s*,\s*' . $enforce_transition . ')*',
         'transition-delay' => $enforce_time,
         'transition-duration' => $enforce_time,
         'transition-property' => $enforce_transition_property,
@@ -315,6 +327,9 @@ function init__webstandards()
         'width' => $enforce_auto_or_length,
         'word-spacing' => $enforce_normal_or_length,
         'z-index' => '(auto|(\d+))',
+        'user-select' => '(none|auto|text|all|contain)',
+        'text-overflow' => '(clip|ellipsis|\'[^\']\')',
+        'touch-action' => '(auto|none|pan-x|pan-y|manipulation|pan-left|pan-right|pan-up|pan-down|pinch-zoom)',
 
         /* Purposely left out these CSS features due to very poor browser support or generally irrelevancy */
         /*
@@ -327,6 +342,8 @@ function init__webstandards()
         /* These are non standard but we want them */
         'writing-mode' => '(tb-rl|lr-tb)', // A more complex W3C standard is underway. Only IE supports this one.
         'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
+        'overflow-scrolling' => '(touch|auto)',
+        'text-size-adjust' => '(none|auto|\d%|\d\d%|100%)',
     );
 
     global $POSSIBLY_EMPTY_TAGS;
@@ -1965,7 +1982,7 @@ function _get_next_tag()
  * @param  map $attributes A map of attributes (name=>value) the tag has
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
- * @param  list $errors Errors detected so far. We will add to these and return
+ * @param  array $errors Errors detected so far. We will add to these and return
  * @return mixed String for tag basis form, or array of error information
  *
  * @ignore

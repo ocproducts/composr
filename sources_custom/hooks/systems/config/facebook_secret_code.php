@@ -35,7 +35,7 @@ class Hook_config_facebook_secret_code
             'list_options' => '',
             'order_in_category_group' => 2,
 
-            'addon' => 'facebook',
+            'addon' => 'facebook_support',
         );
     }
 

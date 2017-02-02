@@ -98,11 +98,7 @@ class Hook_snippet_template_editor_load
             if ($path === null) {
                 $contents = '';
             } else {
-                $tmp = fopen($path, 'rb');
-                @flock($tmp, LOCK_SH);
-                $contents = unixify_line_format(file_get_contents($path));
-                @flock($tmp, LOCK_UN);
-                fclose($tmp);
+                $contents = unixify_line_format(cms_file_get_contents_safe($path));
 
                 // Revisions
                 if (addon_installed('actionlog')) {
@@ -162,11 +158,7 @@ class Hook_snippet_template_editor_load
             if ($path == '') {
                 $contents = '';
             } else {
-                $tmp = fopen($path, 'rb');
-                @flock($tmp, LOCK_SH);
-                $contents = unixify_line_format(file_get_contents($path));
-                @flock($tmp, LOCK_UN);
-                fclose($tmp);
+                $contents = unixify_line_format(cms_file_get_contents_safe($path));
 
                 // Revisions
                 if (addon_installed('actionlog')) {

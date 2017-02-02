@@ -67,6 +67,27 @@ class database_relations_test_set extends cms_test_case
         }
     }
 
+    public function testRelationsAccurate()
+    {
+        if (in_safe_mode()) {
+            $this->assertTrue(false, 'Cannot work in safe mode');
+            return;
+        }
+
+        $links = get_relation_map();
+        foreach ($links as $from => $to) {
+            if ($from !== null) {
+                list($from_table, $from_field) = explode('.', $from, 2);
+                $GLOBALS['SITE_DB']->query_select_value_if_there($from_table, $from_field);
+            }
+
+            if ($to !== null) {
+                list($to_table, $to_field) = explode('.', $to, 2);
+                $GLOBALS['SITE_DB']->query_select_value_if_there($to_table, $to_field);
+            }
+        }
+    }
+
     public function testMetaAwareDefined() // Composr's equivalent of "entities"
     {
         $tables_in_hooks = array();

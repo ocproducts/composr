@@ -50,6 +50,9 @@ class Hook_config_md_default_sort_order
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return 'm_join_time DESC';
     }
 }

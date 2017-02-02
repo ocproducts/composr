@@ -27,10 +27,26 @@ function _diff_simple($old, $new, $unified = false)
     $diff = new Text_Diff($old, $new);
     if ($unified) {
         $renderer = new Text_Diff_Renderer_unified();
+        $diff_text = $rendered_diff = $renderer->render($diff);
+        $diff_html = '';
+        foreach (explode("\n", $diff_text) as $diff_line) {
+            switch (substr($diff_line, 0, 1)) {
+                case '+':
+                    $diff_html .= '<span style="color: green">' . escape_html($diff_line) . '</span>';
+                    break;
+                case '-':
+                    $diff_html .= '<span style="color: red">' . escape_html($diff_line) . '</span>';
+                    break;
+                default:
+                    $diff_html .= escape_html($diff_line);
+                    break;
+            }
+            $diff_html .= '<br />';
+        }
     } else {
         $renderer = new Text_Diff_Renderer_inline();
+        $diff_html = $rendered_diff = $renderer->render($diff);
     }
-    $diff_html = $rendered_diff = $renderer->render($diff);
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($diff_html);
     }

@@ -30,8 +30,8 @@ function toggle_wysiwyg(name) {
                     //buttons__no: '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}',	Too confusing, re-enable if you want it
                     buttons__yes: '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
                 },
-                '{!comcode:DISABLE_WYSIWYG;^}',
-                '{!comcode:DISCARD_WYSIWYG_CHANGES;^}',
+                '{!javascript:DISABLE_WYSIWYG;^}',
+                '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
                 function (saving_cookies) {
                     if (!saving_cookies) {
                         return;
@@ -92,21 +92,21 @@ function _toggle_wysiwyg(name) {
             disable_wysiwyg(forms, so, so2, false);
         } else {
             generate_question_ui(
-                '{!comcode:DISCARD_WYSIWYG_CHANGES_NICE;^}',
+                '{!javascript:DISCARD_WYSIWYG_CHANGES_NICE;^}',
                 {
                     buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
-                    buttons__convert: '{!comcode:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',
-                    buttons__no: '{!comcode:DISCARD_WYSIWYG_CHANGES_LINE;^}'
+                    buttons__convert: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',
+                    buttons__no: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'
                 },
-                '{!comcode:DISABLE_WYSIWYG;^}',
-                '{!comcode:DISCARD_WYSIWYG_CHANGES;^}',
+                '{!javascript:DISABLE_WYSIWYG;^}',
+                '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
                 function (prompt) {
                     if ((!prompt) || (prompt.toLowerCase() == '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase())) {
-                        if (saving_cookies)
+                        if (read_cookie('use_wysiwyg') == '0')
                             set_cookie('use_wysiwyg', '1', 3000);
                         return false;
                     }
-                    var discard = (prompt.toLowerCase() == '{!comcode:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
+                    var discard = (prompt.toLowerCase() == '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
 
                     disable_wysiwyg(forms, so, so2, discard);
                 }
@@ -757,7 +757,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
                 editor.document.getBody().appendHtml(insert);
             } else {
                 //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
-                var element_for_inserting = CKEDITOR.dom.element.createFromHtml(insert);
+                var element_for_inserting = window.CKEDITOR.dom.element.createFromHtml(insert);
                 editor.insertElement(element_for_inserting);
             }
 

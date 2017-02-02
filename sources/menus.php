@@ -41,7 +41,7 @@ function init__menus()
  */
 function build_menu($type, $menu, $silent_failure = false, $apply_highlighting = true)
 {
-    $is_sitemap_menu = (preg_match('#^[\w\_]+$#', $menu) == 0);
+    $is_sitemap_menu = (preg_match('#^[' . URL_CONTENT_REGEXP . ']*$#', $menu) == 0);
 
     if ($is_sitemap_menu) {
         $root = _build_sitemap_menu($menu);
@@ -576,7 +576,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             $somewhere_definite = false;
             $_parts = array();
             foreach ($all_branches as $_branch) {
-                if (($_branch['page_link'] !== null) && (preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $_branch['page_link'], $_parts) != 0)) {
+                if (($_branch['page_link'] !== null) && (preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $_branch['page_link'], $_parts) != 0)) {
                     if ($_parts[1] == $users_current_zone) {
                         $somewhere_definite = true;
                     }
@@ -603,7 +603,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
                             $v = $ZONE['zone_default_page'];
                         }
                     }
-                    $pv = get_param_string($k, ($k == 'page') ? $dp : null, true);
+                    $pv = get_param_string($k, ($k == 'page') ? $dp : null, INPUT_FILTER_NONE);
                     if (($pv !== $v) && (($k != 'page') || ($REDIRECTED_TO_CACHE === null) || (($REDIRECTED_TO_CACHE !== null) && (($v !== $REDIRECTED_TO_CACHE['r_to_page']) || ($zone_name != $REDIRECTED_TO_CACHE['r_to_zone'])))) && (($k != 'type') || ($v != 'browse') || ($pv !== null)) && (($v != $dp) || ($k != 'page') || (get_page_name() != '')) && (substr($k, 0, 5) != 'keep_')) {
                         $current_page = false;
                         break;

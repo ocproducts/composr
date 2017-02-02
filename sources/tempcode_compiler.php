@@ -855,11 +855,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                             $full_path = get_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
                                         }
                                         if (is_file($full_path)) {
-                                            $tmp = fopen($full_path, 'rb');
-                                            @flock($tmp, LOCK_SH);
-                                            $filecontents = file_get_contents($full_path);
-                                            @flock($tmp, LOCK_UN);
-                                            fclose($tmp);
+                                            $filecontents = cms_file_get_contents_safe($full_path);
                                         } else {
                                             $filecontents = '';
                                         }
@@ -1074,11 +1070,7 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
         $template_contents = unixify_line_format(file_array_get('themes/' . $theme . $directory . $codename . $suffix));
     } else {
         $_path = $base_dir . filter_naughty($theme . $directory . $codename) . $suffix;
-        $tmp = fopen($_path, 'rb');
-        @flock($tmp, LOCK_SH);
-        $template_contents = unixify_line_format(file_get_contents($_path));
-        @flock($tmp, LOCK_UN);
-        fclose($tmp);
+        $template_contents = unixify_line_format(cms_file_get_contents_safe($_path));
     }
 
     //$final_css_path = null;
@@ -1097,7 +1089,9 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
             header('Content-type: text/plain; charset=' . get_charset());
             exit('We are doing a code update. Please refresh in around 2 minutes.');
         }
-        file_put_contents($final_css_path, 'GENERATING');*/
+        require_code('files');
+        cms_file_put_contents_safe($final_css_path, 'GENERATING', FILE_WRITE_FIX_PERMISSIONS);
+        */
 
         if (!empty($SITE_INFO['nodejs_binary_path'])) {
             $less_path = get_custom_file_base() . '/node_modules/less/bin/lessc';
@@ -1179,50 +1173,10 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
     if (($CACHE_TEMPLATES) && ($parameters === null) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE)) {
         $path2 = get_custom_file_base() . '/themes/' . $theme_orig . '/templates_cached/' . filter_naughty($lang);
         $_path2 = $path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp';
-        $myfile = @fopen($_path2, GOOGLE_APPENGINE ? 'wb' : 'ab');
-        if ($myfile === false) {
-            static $looping = false;
-            if ($looping) {
-                critical_error('PASSON', do_lang('WRITE_ERROR', escape_html($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp'))); // Bail out hard if would cause a loop
-            }
-            $looping = true;
 
-            if (!file_exists($path2)) {
-                require_code('files2');
-                if (!file_exists(dirname($path2))) {
-                    make_missing_directory(dirname($path2));
-                }
-                make_missing_directory($path2);
-            }
-
-            $looping = false;
-
-            $myfile = @fopen($_path2, GOOGLE_APPENGINE ? 'wb' : 'ab');
-            if ($myfile === false) {
-                critical_error('PASSON', do_lang('WRITE_ERROR', escape_html($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp'))); // Bail out hard if would cause a loop
-            }
-        }
-
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
+        require_code('files');
         $data_to_write = '<' . '?php' . "\n" . $result->to_assembly($lang) . "\n" . '?' . '>';
-        if (fwrite($myfile, $data_to_write) >= strlen($data_to_write)) {
-            // Success
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            require_code('files');
-            fix_permissions($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp');
-            /*if ($final_css_path !== null) {
-                @unlink($final_css_path); // So we know to regenerate the final file (so far we just did the .tcp)
-            }*/
-        } else {
-            // Failure
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            @unlink($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp'); // Can't leave this around, would cause problems
-        }
+        cms_file_put_contents_safe($_path2, $data_to_write, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
     }
 
     return $result;

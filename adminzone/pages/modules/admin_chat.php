@@ -224,7 +224,7 @@ class Module_admin_chat extends Standard_crud_module
 
         set_url_moniker('chat', strval($id));
 
-        $this->set_permissions($id);
+        $this->set_permissions(strval($id));
 
         if (addon_installed('content_reviews')) {
             content_review_set('chat', strval($id));

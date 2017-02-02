@@ -145,7 +145,7 @@ write_to('data/modules/google_appengine/app.yaml', 'GAE2', 'handlers:' . "\n", "
 write_to('recommended.htaccess', 'Apache', '<IfModule mod_rewrite.c>', '</IfModule>', 0, $rewrite_rules);
 
 // Write rules to install.php (quick installer)
-write_to('install.php', 'Apache', '/*REWRITE RULES START*/$clauses[]=<<<END', 'END;/*REWRITE RULES END*/', 0, $rewrite_rules);
+write_to('install.php', 'Apache', '/*REWRITE RULES START*/$clauses[]=<<<END', "END;\n\t/*REWRITE RULES END*/", 0, $rewrite_rules);
 
 // Write rules to web.config (new IIS)
 write_to('web.config', 'IIS', '<rules>', '</rules>', 4, $rewrite_rules);
@@ -317,7 +317,8 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
     $updated = preg_replace('#' . preg_quote($match_start, '#') . '.*' . preg_quote($match_end, '#') . '#s', 'xxxRULES-GO-HERExxx', $existing);
     $updated = str_replace('xxxRULES-GO-HERExxx', $new, $updated);
 
-    file_put_contents($file_path, $updated);
+    require_code('files');
+    cms_file_put_contents_safe($file_path, $updated, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     echo 'Done ' . $file_path . "\n";
 }

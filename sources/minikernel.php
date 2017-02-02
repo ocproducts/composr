@@ -454,7 +454,7 @@ function get_charset()
     if (!file_exists($path)) {
         $path = get_file_base() . '/lang/' . $lang . '/global.ini';
     }
-    $file = fopen($path, GOOGLE_APPENGINE ? 'rb' : 'rt');
+    $file = fopen($path, 'rb');
     $contents = unixify_line_format(fread($file, 100));
     fclose($file);
     $matches = array();
@@ -832,7 +832,7 @@ function filter_naughty($in)
  */
 function filter_naughty_harsh($in)
 {
-    if (preg_match('#^[\w0-9\-]*$#', $in) != 0) {
+    if (preg_match('#^[\w\-]*$#', $in) != 0) {
         return $in;
     }
     exit();

@@ -33,8 +33,8 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
     require_code('submit');
     send_content_validated_notification('post', strval($post_id));
 
+    $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id), '', 1);
     if ($topic_id === null) {
-        $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id), '', 1);
         $topic_id = $post_info[0]['p_topic_id'];
         $forum_id = $post_info[0]['p_cache_forum_id'];
         $poster = $post_info[0]['p_poster'];
@@ -72,7 +72,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
         }
     }
 
-    cns_send_topic_notification($url, $topic_id, $forum_id, $poster, $is_starter, $post, $topic_info[0]['t_cache_first_title'], null, ($topic_info[0]['t_pt_from'] !== null));
+    cns_send_topic_notification($url, $topic_id, $forum_id, $poster, $is_starter, $post, $topic_info[0]['t_cache_first_title'], null, ($topic_info[0]['t_pt_from'] !== null), null, null, $post_info[0]['p_poster_name_if_guest']);
 
     if ($forum_id !== null) {
         cns_force_update_forum_caching($forum_id, 0, 1);

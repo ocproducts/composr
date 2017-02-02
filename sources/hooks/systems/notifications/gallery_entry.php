@@ -81,7 +81,7 @@ class Hook_notification_gallery_entry extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['gallery_entry'] = array(do_lang('menus:CONTENT'), do_lang('galleries:NOTIFICATION_TYPE_gallery_entry'));
+        $list['gallery_entry'] = array(do_lang('CONTENT'), do_lang('galleries:NOTIFICATION_TYPE_gallery_entry'));
         return $list;
     }
 

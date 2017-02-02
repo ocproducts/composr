@@ -50,6 +50,9 @@ class Hook_config_enable_birthdays
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '20';
     }
 }

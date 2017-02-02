@@ -33,12 +33,8 @@ function cache_and_carry($func, $args, $timeout = null)
     $ret = mixed();
 
     $path = get_custom_file_base() . '/caches/http/' . md5(serialize($args)) . '.dat';
-    if (!file_exists(dirname($path))) {
-        mkdir(dirname($path), 0777);
-        fix_permissions(dirname($path));
-    }
     if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {
-        $_ret = file_get_contents($path);
+        $_ret = cms_file_get_contents_safe($path);
         if ($func == 'cms_http_request') {
             $ret = @unserialize($_ret);
         } else {
@@ -46,15 +42,14 @@ function cache_and_carry($func, $args, $timeout = null)
         }
     } else {
         $_ret = call_user_func_array($func, $args);
+        require_code('files');
         if ($func == 'cms_http_request') {
             $ret = array($_ret->data, $_ret->download_mime_type, $_ret->download_size, $_ret->download_url, $_ret->message, $_ret->message_b, $_ret->new_cookies, $_ret->filename, $_ret->charset, $_ret->download_mtime);
-            file_put_contents($path, serialize($ret), LOCK_EX);
+            cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         } else {
             $ret = is_string($_ret) ? $_ret : serialize($_ret);
-            file_put_contents($path, $ret, LOCK_EX);
+            cms_file_put_contents_safe($path, $ret, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         }
-        fix_permissions($path);
-        sync_file($path);
     }
     return $ret;
 }
@@ -836,7 +831,11 @@ class HttpDownloaderCurl extends HttpDownloader
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($this->timeout));
         curl_setopt($ch, CURLOPT_TIMEOUT, intval($this->timeout));
         curl_setopt($ch, CURLOPT_USERAGENT, $this->ua);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->http_verb);
+        if ($this->http_verb == 'HEAD') {
+            curl_setopt($ch, CURLOPT_NOBODY, true); // Branch needed as doing a HEAD via CURLOPT_CUSTOMREQUEST can cause a timeout bug in cURL
+        } else {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->http_verb);
+        }
         if ($this->accept !== null) {
             $curl_headers[] = 'Accept: ' . $this->accept;
         }

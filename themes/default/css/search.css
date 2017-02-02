@@ -14,26 +14,8 @@
 	padding: 1em 0;
 }
 
-.google_search_box {
-	margin-top: 3em;
-	text-align: center;
-}
-
 .search_tabular_header {
 	padding: 1em 0;
-}
-
-.google_search_button {
-	white-space: nowrap;
-}
-
-.google_search_descrip {
-	font-size: 0.8em;
-}
-
-.google_search_descrip img {
-	float: {!en_left};
-	margin-{!en_right}: 5px;
 }
 
 /*{+START,IF,{$NOT,{$MOBILE}}}*/
@@ -95,10 +77,6 @@
 .search_result {
 	margin-top: 1em;
 	overflow: hidden;
-}
-
-.search_field_table th {
-	vertical-align: middle;
 }
 
 .search_sort {

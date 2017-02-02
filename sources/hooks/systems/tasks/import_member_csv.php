@@ -65,7 +65,7 @@ class Hook_task_import_member_csv
         $_csv_data = array();
 
         safe_ini_set('auto_detect_line_endings', '1');
-        $myfile = fopen($path, 'rt');
+        $myfile = fopen($path, 'rb');
         $del = ',';
         $csv_header = fgetcsv($myfile, 102400, $del);
         if ($csv_header === false) {
@@ -139,10 +139,10 @@ class Hook_task_import_member_csv
                     }
 
                     // Tidy up forename
-                    $_forename = preg_replace('#[^\w]#', '', preg_replace('#[\s\.].*#', '', $forename));
+                    $_forename = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', preg_replace('#[\s\.].*#', '', $forename));
 
                     // Tidy up surname (last bit strips like 'OBE')
-                    $_surname = preg_replace('#[^\w]#', '', trim(preg_replace('#\s*[A-Z\d][A-Z\d]+#', '', $surname)));
+                    $_surname = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', trim(preg_replace('#\s*[A-Z\d][A-Z\d]+#', '', $surname)));
 
                     // Put it together
                     $line['Username'] = ucfirst($_forename) . ucfirst($_surname) . $year;

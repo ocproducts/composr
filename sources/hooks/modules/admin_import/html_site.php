@@ -122,6 +122,8 @@ class Hook_import_html_site
     {
         appengine_live_guard();
 
+        require_code('files');
+
         require_code('files2');
         $files = @get_directory_contents($file_base);
 
@@ -351,9 +353,7 @@ class Hook_import_html_site
             $global_to_write = $header_to_write . '{MIDDLE}' . $footer_to_write;
         }
         $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/templates_custom/GLOBAL_HTML_WRAP.tpl';
-        file_put_contents($path, $global_to_write);
-        fix_permissions($path);
-        sync_file($path);
+        cms_file_put_contents_safe($path, $global_to_write, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         // Extract site name from <title> tag, based on common consistency (largest common substring)
         $site_name = get_site_name();
@@ -413,9 +413,7 @@ class Hook_import_html_site
 
             if (substr($content_file, -4) == '.php') {
                 $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/minimodules_custom/' . $page . '.php');
-                file_put_contents($file_path, $file_contents);
-                fix_permissions($file_path);
-                sync_file($file_path);
+                cms_file_put_contents_safe($file_path, $file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             } else {
                 $filtered = $this->_html_filter($file_contents, $fix_html, $base_url, $files, $file_base);
 
@@ -455,9 +453,7 @@ class Hook_import_html_site
 
                     $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt');
 
-                    file_put_contents($file_path, '[semihtml]' . $filtered . '[/semihtml]');
-                    fix_permissions($file_path);
-                    sync_file($file_path);
+                    cms_file_put_contents_safe($file_path, '[semihtml]' . $filtered . '[/semihtml]', FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 } else { // Or copy htm/html's as Comcode-converted instead, if the user chose this
                     // Insert an <h1> if the h1 is not there
                     if ((strpos($filtered, '[title') === false) && ($page_title !== null)) {
@@ -467,9 +463,7 @@ class Hook_import_html_site
                     require_code('comcode_from_html');
                     $comcode = semihtml_to_comcode($filtered);
                     $file_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt');
-                    file_put_contents($file_path, $comcode);
-                    fix_permissions($file_path);
-                    sync_file($file_path);
+                    cms_file_put_contents_safe($file_path, $comcode, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
             }
         }
@@ -488,14 +482,12 @@ class Hook_import_html_site
         }
 
         // Set the panels to be blank
+        require_code('files');
         foreach (array('site/', '') as $zone) {
             $panels = array('panel_left', 'panel_right');
             foreach ($panels as $panel) {
                 $path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . 'pages/comcode_custom/' . filter_naughty(fallback_lang()) . '/' . filter_naughty($panel) . '.txt');
-                $myfile = fopen($path, 'wb');
-                fclose($myfile);
-                fix_permissions($path);
-                sync_file($path);
+                cms_file_put_contents_safe($path, '', FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             }
         }
     }
@@ -571,7 +563,8 @@ class Hook_import_html_site
                         /*if (substr($decoded_url, -4) == '.css') { Not needed, as relative paths maintained
                             $css_file = file_get_contents($target);
                             $css_file = preg_replace('#(url\([\'"]?)(\.*' . '/)?#', '${1}{$BASE_URL;}/uploads/website_specific/', $css_file);
-                            file_put_contents($target, $css_file);
+                            require_code('files');
+                            cms_file_put_contents_safe($target, $css_file);
                         }*/
 
                         fix_permissions($target);

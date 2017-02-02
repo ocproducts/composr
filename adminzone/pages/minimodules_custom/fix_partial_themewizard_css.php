@@ -77,6 +77,8 @@ while (($sheet = readdir($dh)) !== false) {
 
         if (!file_exists($saveat)) {
             copy(get_file_base() . '/themes/default/css/' . $sheet, $saveat);
+            fix_permissions($saveat);
+            sync_file($saveat);
         }
 
         $output = file_get_contents($saveat);
@@ -98,13 +100,8 @@ while (($sheet = readdir($dh)) !== false) {
         }
 
         if ($output != $before) {
-            $fp = @fopen($saveat, 'wb') or intelligent_write_error($saveat);
-            if (fwrite($fp, $output) < strlen($output)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-            }
-            fclose($fp);
-            fix_permissions($saveat);
-            sync_file($saveat);
+            require_code('files');
+            cms_file_put_contents_safe($saveat, $output, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
             echo '<li>' . escape_html($sheet) . '</li>';
         }

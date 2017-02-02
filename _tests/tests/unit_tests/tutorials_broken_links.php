@@ -45,6 +45,29 @@ class tutorials_broken_links_test_set extends cms_test_case
         }
     }
 
+    public function testLinksFromCode()
+    {
+        require_code('files2');
+        $files = get_directory_contents(get_file_base());
+        foreach ($files as $file) {
+            if (substr($file, -4) == '.php') {
+                $contents = file_get_contents(get_file_base() . '/' . $file);
+
+                $matches = array();
+                $num_matches = preg_match_all('#(get_tutorial_url|set_helper_panel_tutorial)\(\'([^\']+)\'\)#', $contents, $matches);
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $tutorial = $matches[2][$i];
+
+                    if ($tutorial == 'tutorials') {
+                        continue;
+                    }
+
+                    $this->assertTrue(isset($this->pages[$tutorial]), 'Code link to a missing tutorial: ' . $tutorial . ' in ' . $file);
+                }
+            }
+        }
+    }
+
     public function testTutorialBrokenLinks()
     {
         foreach (array_keys($this->pages) as $f) {

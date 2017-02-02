@@ -315,7 +315,10 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                             if (!isset($all_template_data[$file])) {
                                 $all_template_data[$file] = array();
                             }
-                            $all_template_data[$file][] = file_get_contents($dir_path . '/' . $file);
+                            $contents = @file_get_contents($dir_path . '/' . $file);
+                            if ($contents !== false) {
+                                $all_template_data[$file][] = $contents;
+                            }
                         }
                         closedir($_dir);
                     }

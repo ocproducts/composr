@@ -40,7 +40,7 @@ foreach ($advertiser_sessions as $session) {
     $members_done[$session['member_id']] = 1;
 
     $matches = array();
-    if (!preg_match('#<param>from=([\w\d]+)</param>#', $session['s_get'], $matches)) {
+    if (!preg_match('#<param>from=([' . URL_CONTENT_REGEXP . ']+)</param>#', $session['s_get'], $matches)) {
         continue;
     }
     $from = $matches[1];

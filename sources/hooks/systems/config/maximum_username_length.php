@@ -51,6 +51,9 @@ class Hook_config_maximum_username_length
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '20';
     }
 }

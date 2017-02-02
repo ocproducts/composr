@@ -712,11 +712,14 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
  */
 function handle_ipn_transaction_script($silent_fail = false, $send_notifications = true)
 {
-    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (cms_is_writable(get_file_base() . '/data_custom/ecommerce.log'))) {
+    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'ab');
+        flock($myfile, LOCK_EX);
+        fseek($myfile, 0, SEEK_END);
         fwrite($myfile, serialize($_POST) . "\n");
         fwrite($myfile, serialize($_GET) . "\n");
         fwrite($myfile, "\n\n");
+        flock($myfile, LOCK_UN);
         fclose($myfile);
     }
 

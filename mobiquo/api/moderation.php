@@ -36,7 +36,7 @@ function login_mod_func($raw_params)
     $result = $acl_object->authenticate_credentials_and_set_auth($username, $password);
 
     if ($result <= 0) {
-        warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
+        warn_exit(do_lang_tempcode('MEMBER_BAD_PASSWORD'));
     }
 
     return mobiquo_response_true();

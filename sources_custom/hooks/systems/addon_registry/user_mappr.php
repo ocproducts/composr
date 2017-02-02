@@ -92,7 +92,7 @@ The addon adds extra custom profile fields to store members coordinates to store
 
 You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map).
 
-Coordinates of the Google map centre point and zoom level are configurable. You can find the coordinates by using the option in Google Maps Labs or via http://itouchmap.com/latlong.html.
+Coordinates of the Google map centre point and zoom level are configurable. You can find the coordinates by using the option in Google Maps Labs or via https://itouchmap.com/latlong.html.
 
 Parameters:
  - Title -- The Name of the block which will appear on screen for example Store Locater.

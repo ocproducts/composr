@@ -9,6 +9,9 @@
 				{+END}
 			{+END}
 			{+START,IF,{$NOT,{HAS_RATINGS}}}
+				<meta itemprop="ratingCount" content="0" />
+				<meta itemprop="ratingValue" content="3" />
+
 				<em>{!UNRATED}</em>
 			{+END}
 

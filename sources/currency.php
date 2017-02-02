@@ -131,8 +131,9 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
     if ($string) {
         list($symbol, $has_primacy) = get_currency_symbol($to_currency);
         $ret = $symbol;
-        $ret .= escape_html(float_format($new_amount)) . '&nbsp;';
+        $ret .= escape_html(float_format($new_amount));
         if (!$has_primacy) {
+            $ret .= '&nbsp;';
             $ret .= escape_html($to_currency);
         }
         return $ret;

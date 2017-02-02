@@ -119,7 +119,7 @@ foreach (array_keys($themes) as $theme) {
                         $num_matches = preg_match_all('#^\s*[^@\s].*[^%\s]\s*\{$#m', $contents, $matches); // @ is media rules, % is keyframe rules. Neither wanted.
                         for ($i = 0; $i < $num_matches; $i++) {
                             $matches2 = array();
-                            $num_matches2 = preg_match_all('#[\w\-\_]+#', preg_replace('#"[^"]*"#', '', preg_replace('#[:@][\w\-\_]+#', '', $matches[0][$i])), $matches2);
+                            $num_matches2 = preg_match_all('#[\w\-]+#', preg_replace('#"[^"]*"#', '', preg_replace('#[:@][\w\-]+#', '', $matches[0][$i])), $matches2);
                             for ($j = 0; $j < $num_matches2; $j++) {
                                 $selectors[$matches2[0][$j]] = true;
                             }

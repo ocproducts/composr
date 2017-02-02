@@ -126,7 +126,7 @@ function get_exif_image_caption($path, $filename)
         $del = ',';
 
         safe_ini_set('auto_detect_line_endings', '1');
-        $csv_file_handle = fopen($csv_path, 'rt');
+        $csv_file_handle = fopen($csv_path, 'rb');
         $csv_test_line = fgetcsv($csv_file_handle, 10240, $del);
         if ((count($csv_test_line) == 1) && (strpos($csv_test_line[0], ';') !== false)) {
             $del = ';';
@@ -142,6 +142,7 @@ function get_exif_image_caption($path, $filename)
     }
 
     $file_pointer = fopen($path, 'rb');
+    flock($file_pointer, LOCK_SH);
 
     if (($comments == '') && ($file_pointer !== false)) { // Attempt XMP
         $file_cap100 = fread($file_pointer, 102400); // Read first 100k
@@ -172,7 +173,9 @@ function get_exif_image_caption($path, $filename)
                 }
             }
         }
-
+    }
+    if ($file_pointer !== false) {
+        flock($file_pointer, LOCK_UN);
         fclose($file_pointer);
     }
     if ($comments == '') { // If XMP fails, attempt EXIF

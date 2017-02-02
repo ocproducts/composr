@@ -1251,7 +1251,10 @@ class DatabaseConnector
         global $QUERY_COUNT, $QUERY_LOG, $QUERY_LIST, $DEV_MODE, $IN_MINIKERNEL_VERSION, $QUERY_FILE_LOG, $UPON_QUERY_HOOKS_CACHE;
 
         if ($QUERY_FILE_LOG !== null) {
+            flock($QUERY_FILE_LOG, LOCK_EX);
+            fseek($QUERY_FILE_LOG, 0, SEEK_END);
             fwrite($QUERY_FILE_LOG, $query . ';' . "\n\n");
+            flock($QUERY_FILE_LOG, LOCK_UN);
         }
 
         if ($DEV_MODE) {

@@ -169,6 +169,11 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
             $sizes = cms_getimagesize($orig_url);
             if ($sizes === false) {
                 cms_profile_end_for('convert_image_plus', $orig_url);
+
+                if (($fallback_image != '') && ($fallback_image != $orig_url)) {
+                    return convert_image_plus($fallback_image, $dimensions, $output_dir, $filename, '', $algorithm, $where, $background, $only_make_smaller);
+                }
+
                 return $fallback_image;
             }
             list($source_x, $source_y) = $sizes;
@@ -294,9 +299,8 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
                 $from_file = false;
                 $exif = false;
             } else {
-                file_put_contents($to, $from_file);
-                fix_permissions($to);
-                sync_file($to);
+                require_code('files');
+                cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 $exif = function_exists('exif_read_data') ? @exif_read_data($to) : false;
                 if ($ext == 'svg') { // SVG is pass-through
                     return $from;
@@ -389,11 +393,12 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
 
                 if ($using_path) {
                     copy($from, $to);
+                    fix_permissions($to);
+                    sync_file($to);
                 } else {
-                    @file_put_contents($to, $from_file) or intelligent_write_error($to);
+                    require_code('files');
+                    cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
-                fix_permissions($to);
-                sync_file($to);
                 return _image_path_to_url($to);
             }
         }

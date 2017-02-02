@@ -50,7 +50,6 @@ form.activities_remove .remove_cross {
 	height: 14px;
 	background: url('{$IMG;,stop12}') transparent no-repeat;
 	font-size: 0;
-	color: transparent;
 	border: none;
 	margin-top: 4px;
 	padding: 0;

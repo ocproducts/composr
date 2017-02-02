@@ -104,11 +104,11 @@ class Block_main_quotes
      */
     public function get_random_line($filename)
     {
-        $myfile = @fopen(filter_naughty($filename, true), GOOGLE_APPENGINE ? 'rb' : 'rt');
+        $myfile = @fopen(filter_naughty($filename, true), 'rb');
         if ($myfile === false) {
             return '';
         }
-        @flock($myfile, LOCK_SH);
+        flock($myfile, LOCK_SH);
         $i = 0;
         $line = array();
         while (true) {
@@ -126,7 +126,7 @@ class Block_main_quotes
             return '';
         }
         $r = mt_rand(0, $i - 1);
-        @flock($myfile, LOCK_UN);
+        flock($myfile, LOCK_UN);
         fclose($myfile);
         return trim($line[$r]);
     }

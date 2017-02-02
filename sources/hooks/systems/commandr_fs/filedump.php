@@ -232,7 +232,7 @@ class Hook_commandr_fs_filedump
         }
 
         if ((is_dir($path)) && (file_exists($path . '/' . $file_name)) && (is_readable($path . '/' . $file_name))) {
-            $data = file_get_contents($path . '/' . $file_name);
+            $data = cms_file_get_contents_safe($path . '/' . $file_name);
 
             $output = array('data' => base64_encode($data));
             $rows = table_to_portable_rows('filedump', array('id'), array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
@@ -288,14 +288,8 @@ class Hook_commandr_fs_filedump
             }
             unset($input['data']);
 
-            $fh = @fopen($path . '/' . $file_name, 'wb') or intelligent_write_error($path . '/' . $file_name);
-            $output = fwrite($fh, $data);
-            fclose($fh);
-            if ($output < strlen($data)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-            }
-            fix_permissions($path . '/' . $file_name);
-            sync_file($path . '/' . $file_name);
+            require_code('files');
+            cms_file_put_contents_safe($path . '/' . $file_name, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
             if (count($input) != 0) {
                 table_from_portable_rows('filedump', array($input), array('name' => cms_mb_substr($file_name, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);

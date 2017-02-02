@@ -37,7 +37,7 @@ class Hook_page_groupings_search
         }
 
         return array(
-            array('site_meta', 'buttons/search', array('search', array(), get_module_zone('search')), do_lang_tempcode('search:SEARCH')),
+            array('site_meta', 'buttons/search', array('search', array(), get_module_zone('search')), do_lang_tempcode('SEARCH')),
         );
     }
 }

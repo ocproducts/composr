@@ -258,7 +258,7 @@ class Module_pointstore
         }
 
         if ((!$pointstore_mail_pop3_link->is_empty()) || (!$pointstore_mail_pop3_link->is_empty())) {
-            $items->attach(do_template('POINTSTORE_MAIL', array('_GUID' => '4a024f39a4065197b2268ecd2923b8d6', 'POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link), null, false, null, '.txt', 'text'));
+            $items->attach(do_template('POINTSTORE_MAIL', array('_GUID' => '4a024f39a4065197b2268ecd2923b8d6', 'POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link)));
         }
 
         // --

@@ -154,8 +154,8 @@ class Hook_cron_stealr
 
                     $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, null, true, true, true);
 
-                    send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member);
-                    send_pt_notification($post_id, $subject, $topic_id, $member, $give_to_member);
+                    send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member_id);
+                    send_pt_notification($post_id, $subject, $topic_id, $member_id, $give_to_member);
                 }
             }
         } elseif ($stealr_type == "Members that are random") {
@@ -189,8 +189,8 @@ class Hook_cron_stealr
 
                     $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, null, true, true, true);
 
-                    send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member);
-                    send_pt_notification($post_id, $subject, $topic_id, $member, $give_to_member);
+                    send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member['id']);
+                    send_pt_notification($post_id, $subject, $topic_id, $member['id'], $give_to_member);
                 }
             }
         } elseif ($stealr_type == "Members that are in a certain usergroup") {

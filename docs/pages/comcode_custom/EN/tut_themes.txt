@@ -139,6 +139,8 @@ body {
 [/code]
 ... would make all text italic (obviously a silly, but simple, example).
 
+If you get confused by Composr's use of Tempcode within the CSS you are free to strip and replace it with pure CSS as you go. The Tempcode is used for the Theme Wizard, and to make maintenance a bit easier, but you don't really have any particular personal incentive to maintain that.
+
 [title="4"]Debugging[/title]
 
 If you find the CSS totally "corrupts", it is likely you have made a typo somewhere. For example, failing to close a comment.

@@ -145,7 +145,7 @@ class Hook_addon_registry_pointstore
             'themes/default/templates/POINTSTORE_CONFIRM_SCREEN.tpl',
             'themes/default/text/POINTSTORE_FORWARDER_MAIL.txt',
             'themes/default/templates/POINTSTORE_LOG_SCREEN.tpl',
-            'themes/default/text/POINTSTORE_MAIL.txt',
+            'themes/default/templates/POINTSTORE_MAIL.tpl',
             'themes/default/templates/POINTSTORE_MFORWARDING_LINK.tpl',
             'themes/default/templates/POINTSTORE_MPOP3_LINK.tpl',
             'themes/default/templates/POINTSTORE_POP3_SCREEN.tpl',
@@ -201,7 +201,7 @@ class Hook_addon_registry_pointstore
             'templates/POINTSTORE_HIGHLIGHT_NAME_SCREEN.tpl' => 'pointstore_highlight_name_screen',
             'templates/POINTSTORE_MFORWARDING_LINK.tpl' => 'pointstore_screen',
             'templates/POINTSTORE_MPOP3_LINK.tpl' => 'pointstore_screen',
-            'text/POINTSTORE_MAIL.txt' => 'pointstore_screen',
+            'templates/POINTSTORE_MAIL.tpl' => 'pointstore_screen',
             'templates/POINTSTORE_SCREEN.tpl' => 'pointstore_screen',
             'templates/POINTSTORE_CUSTOM.tpl' => 'pointstore_custom',
             'templates/POINTSTORE_GAMBLING.tpl' => 'pointstore_gambling',
@@ -474,7 +474,7 @@ class Hook_addon_registry_pointstore
 
         $pointstore_mail_forwarding_link = do_lorem_template('POINTSTORE_MFORWARDING_LINK', array('FORWARDING_URL' => placeholder_url()));
 
-        $items = do_lorem_template('POINTSTORE_MAIL', array('POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link), null, false, null, '.txt', 'text');
+        $items = do_lorem_template('POINTSTORE_MAIL', array('POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link));
 
         return array(
             lorem_globalise(

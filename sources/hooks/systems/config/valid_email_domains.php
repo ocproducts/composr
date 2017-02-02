@@ -51,6 +51,9 @@ class Hook_config_valid_email_domains
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '';
     }
 }

@@ -471,7 +471,7 @@ if (window.alert!==null)
 END;
                     return;
                 }
-                @flock($myfile, LOCK_EX);
+                flock($myfile, LOCK_EX);
                 ftruncate($myfile, 0);
                 if (fwrite($myfile, $file) === false) {
                     fclose($myfile);
@@ -489,7 +489,7 @@ if (window.alert!==null)
 END;
                     return;
                 }
-                @flock($myfile, LOCK_UN);
+                flock($myfile, LOCK_UN);
                 fclose($myfile);
             } else { // Via FTP
                 $path2 = tempnam((((ini_get('open_basedir') != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0)) ? get_custom_file_base() . '/temp/' : '/tmp/'), 'cmsce');
@@ -516,7 +516,7 @@ END;
                 }
                 fclose($h);
 
-                $h = fopen($path2, 'rt');
+                $h = fopen($path2, 'rb');
                 $ftp_success = @ftp_fput($conn, $save_path, $h, FTP_BINARY);
                 if ($ftp_success === false) {
                     echo <<<END
@@ -551,7 +551,9 @@ END;
                 if ($conn === null) { // Via direct access
                     $myfile = @fopen($save_path . '.editfrom', 'wb');
                     if ($myfile !== false) {
+                        flock($myfile, LOCK_EX);
                         fwrite($myfile, $hash);
+                        flock($myfile, LOCK_UN);
                         fclose($myfile);
                     }
                 } else { // Via FTP
@@ -559,7 +561,7 @@ END;
 
                     file_put_contents($path2, $hash);
 
-                    $h = fopen($path2, 'rt');
+                    $h = fopen($path2, 'rb');
                     @ftp_fput($conn, $save_path . '.editfrom', $h, FTP_BINARY);
                     fclose($h);
 

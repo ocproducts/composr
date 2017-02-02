@@ -25,6 +25,8 @@ class backups_test_set extends cms_test_case
         require_code('tar');
         require_code('files');
 
+        disable_php_memory_limit();
+
         set_option('backup_server_hostname', '');
         $backup_name = 'test_backup';
         $backup_tar_path = get_custom_file_base() . '/exports/backups/' . $backup_name . '.tar';
@@ -61,7 +63,7 @@ unset($SITE_INFO[\'base_url\']); // Let it auto-detect
 unset($SITE_INFO[\'cns_table_prefix\']);
 $SITE_INFO[\'table_prefix\'] = \'bt_\';
         ';
-        file_put_contents($config_path, $config_php);
+        cms_file_put_contents_safe($config_path, $config_php);
 
         for ($i = 0; $i < 2; $i++) {
             $test = cms_http_request(get_base_url() . '/exports/backups/test/restore.php?time_limit=1000', array('trigger_error' => false, 'post_params' => array(), 'timeout' => 100.0));

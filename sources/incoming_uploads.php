@@ -96,12 +96,10 @@ function incoming_uploads_script()
         require_code('files');
 
         if (get_param_integer('base64', 0) == 1) {
+            require_code('files');
             $new = base64_decode(file_get_contents(get_custom_file_base() . '/' . $savename));
-            @file_put_contents(get_custom_file_base() . '/' . $savename, $new) or intelligent_write_error(get_custom_file_base() . '/' . $savename);
+            cms_file_put_contents_safe(get_custom_file_base() . '/' . $savename, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
-
-        fix_permissions(get_custom_file_base() . '/' . $savename);
-        sync_file(get_custom_file_base() . '/' . $savename);
 
         $member_id = get_member();
 
@@ -172,7 +170,6 @@ function clear_old_uploads()
                 if (file_exists($upload['i_save_url'])) {
                     // Delete file if it exists
                     @unlink($upload['i_save_url']);
-                    sync_file($upload['i_save_url']);
                 }
 
                 // Note: it is possible some db records to be left without corresponding files. So we need to clean them too.

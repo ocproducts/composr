@@ -64,7 +64,7 @@ class Block_bottom_rss
     {
         $block_id = get_block_id($map);
 
-        $url = array_key_exists('param', $map) ? $map['param'] : (get_brand_base_url() . '/backend.php?type=rss&mode=news&select=16,17,18,19,20'); // http://channel9.msdn.com/Feeds/RSS/
+        $url = empty($map['param']) ? (get_brand_base_url() . '/backend.php?type=rss&mode=news') : $map['param'];
 
         require_code('rss');
         $rss = new CMS_RSS($url);

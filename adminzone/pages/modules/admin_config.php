@@ -373,14 +373,14 @@ class Module_admin_config
         foreach (array_keys($options) as $group) {
             $_group = do_lang($group);
 
-            $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', $_group)));
+            $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', strip_tags($_group))));
             if ((isset($all_known_groups[$_group])) && ($all_known_groups[$_group] != $group)) {
                 $_group = 'std_' . $group; // If cat names translate to same things or are in non-latin characters like Cyrillic
             }
 
             $all_known_groups[$_group] = $group;
         }
-        $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', do_lang('ADVANCED'))));
+        $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
         ksort($all_known_groups, SORT_NATURAL | SORT_FLAG_CASE);
         if (isset($all_known_groups[$advanced_key])) { // Advanced goes last
             $temp = $all_known_groups[$advanced_key];
@@ -818,7 +818,7 @@ class Module_admin_config
             '_GUID' => 'cc21f921ecbdbdf83e1e28d2b3f75a3a',
             'TITLE' => $this->title,
             'POST_URL' => $post_url,
-            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/fields.xml') ? file_get_contents(get_custom_file_base() . '/data_custom/xml_config/fields.xml') : file_get_contents(get_file_base() . '/data/xml_config/fields.xml'),
+            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/fields.xml') ? cms_file_get_contents_safe(get_custom_file_base() . '/data_custom/xml_config/fields.xml') : cms_file_get_contents_safe(get_file_base() . '/data/xml_config/fields.xml'),
         ));
     }
 
@@ -829,27 +829,10 @@ class Module_admin_config
      */
     public function _xml_fields()
     {
-        if (!file_exists(get_custom_file_base() . '/data_custom')) {
-            require_code('files2');
-            make_missing_directory(get_custom_file_base() . '/data_custom');
-        }
-
-        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/fields.xml', GOOGLE_APPENGINE ? 'wb' : 'ab');
-        if ($myfile === false) {
-            intelligent_write_error(get_custom_file_base() . '/data_custom/xml_config/fields.xml');
-        }
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
+        require_code('files');
+        $full_path = get_custom_file_base() . '/data_custom/xml_config/fields.xml';
         $xml = post_param_string('xml');
-        if (fwrite($myfile, $xml) < strlen($xml)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        fix_permissions(get_custom_file_base() . '/data_custom/xml_config/fields.xml');
-        sync_file(get_custom_file_base() . '/data_custom/xml_config/fields.xml');
+        cms_file_put_contents_safe($full_path, $xml, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         log_it('FIELD_FILTERS');
 
@@ -869,7 +852,7 @@ class Module_admin_config
             '_GUID' => '456f56149832d459bce72ca63a1578b9',
             'TITLE' => $this->title,
             'POST_URL' => $post_url,
-            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml') ? file_get_contents(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml') : file_get_contents(get_file_base() . '/data/xml_config/breadcrumbs.xml'),
+            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml') ? cms_file_get_contents_safe(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml') : cms_file_get_contents_safe(get_file_base() . '/data/xml_config/breadcrumbs.xml'),
         ));
     }
 
@@ -880,27 +863,10 @@ class Module_admin_config
      */
     public function _xml_breadcrumbs()
     {
-        if (!file_exists(get_custom_file_base() . '/data_custom')) {
-            require_code('files2');
-            make_missing_directory(get_custom_file_base() . '/data_custom');
-        }
-
-        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml', GOOGLE_APPENGINE ? 'wb' : 'ab');
-        if ($myfile === false) {
-            intelligent_write_error(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
-        }
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
+        require_code('files');
+        $full_path = get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml';
         $xml = post_param_string('xml');
-        if (fwrite($myfile, $xml) < strlen($xml)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        fix_permissions(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
-        sync_file(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
+        cms_file_put_contents_safe($full_path, $xml, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         log_it('BREADCRUMB_OVERRIDES');
 

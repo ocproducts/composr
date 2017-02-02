@@ -152,8 +152,8 @@ function messages_script()
             'e_room_id' => $room_id,
             'e_date_and_time' => time()
         ), true);
-        @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
-        sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
+        require_code('files');
+        cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         // Catch up the current user so that they know who else is in the room just joined...
 
@@ -189,8 +189,8 @@ function messages_script()
                     'e_room_id' => $room_id,
                     'e_date_and_time' => time()
                 ), true);
-                @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
-                sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
+                require_code('files');
+                cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 if ($allow_list == '') {
                     require_code('chat2');
                     delete_chatroom($room_id);
@@ -221,8 +221,8 @@ function messages_script()
                 'e_room_id' => $room_id,
                 'e_date_and_time' => time()
             ), true);
-            @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
-            sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
+            require_code('files');
+            cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'is_im', 'c_welcome', 'allow_list_groups', 'disallow_list_groups', 'allow_list', 'disallow_list', 'room_owner'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
@@ -332,13 +332,9 @@ function chat_room_prune($room_id)
                         'e_date_and_time' => time()
                     ), true);
 
+                    require_code('files');
                     $path = get_custom_file_base() . '/data_custom/modules/chat';
-                    if (!file_exists($path)) {
-                        require_code('files2');
-                        make_missing_directory($path);
-                    }
-                    @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
-                    sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
+                    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
             } else {
                 // Make "left room" message
@@ -360,8 +356,8 @@ function chat_room_prune($room_id)
                         );
                         $map += insert_lang_comcode('the_message', $left_room_msg, 4);
                         $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
-                        @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
-                        sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
+                        require_code('files');
+                        cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
             }
@@ -771,8 +767,8 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
                             'e_room_id' => $room_id,
                             'e_date_and_time' => time()
                         ), true);
-                        @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
-                        sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat');
+                        require_code('files');
+                        cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                         require_lang('chat');
 
@@ -888,8 +884,8 @@ function chat_post_message($room_id, $message, $font_name, $text_colour)
         $map += insert_lang_comcode('the_message', wordfilter_text($message), 4, null, false, null);
         $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
 
-        @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
-        sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
+        require_code('files');
+        cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         // Bot support
         $hooks = find_all_hook_obs('modules', 'chat_bots', 'Hook_chat_bot_');
@@ -910,8 +906,8 @@ function chat_post_message($room_id, $message, $font_name, $text_colour)
                     $map += insert_lang_comcode('the_message', wordfilter_text($response), 4, null, false, null);
                     $bot_message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
 
-                    @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($bot_message_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
-                    sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
+                    require_code('files');
+                    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($bot_message_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
             }
         }
@@ -971,8 +967,8 @@ function chat_post_message($room_id, $message, $font_name, $text_colour)
     );
     $map += insert_lang_comcode('the_message', '[private="' . $GLOBALS['FORUM_DRIVER']->get_username(get_member()) . '"]' . do_lang('FLOOD_CONTROL_BLOCKED', integer_format($time_left)) . '[/private]', 4, null, false, null);
     $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
-    @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
-    sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
+    require_code('files');
+    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     return false;
 }
 
@@ -1123,8 +1119,8 @@ function chat_get_room_content($room_id, $_rooms, $max_messages = null, $derefer
             );
             $map += insert_lang_comcode('the_message', '[private="' . $their_username . '"]' . $_entering_room . '[/private]', 4);
             $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
-            @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
-            sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
+            require_code('files');
+            cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
 
         $enter_room_msg = do_lang('ENTERED_THE_CHATROOM', $their_username);
@@ -1141,8 +1137,8 @@ function chat_get_room_content($room_id, $_rooms, $max_messages = null, $derefer
             );
             $map += insert_lang_comcode('the_message', $enter_room_msg, 4);
             $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
-            @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
-            sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
+            require_code('files');
+            cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
 
         $room_name = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'room_name', array('id' => $room_id));
@@ -1437,8 +1433,8 @@ function _deal_with_chatcode_newroom($pm_user, $pm_message, $username, $text, $m
                         );
                         $map += insert_lang_comcode('the_message', '[invite="' . $person . '"]' . get_chatroom_name($new_room_id) . '[/invite]', 4);
                         $message_id = $GLOBALS['SITE_DB']->query_insert('chat_messages', $map, true);
-                        @file_put_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id)) or intelligent_write_error(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
-                        sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
+                        require_code('files');
+                        cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat', strval($message_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
             }

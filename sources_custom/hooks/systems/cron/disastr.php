@@ -38,7 +38,7 @@ class Hook_cron_disastr
         require_lang('disastr');
 
         // get just disease that should spead and are enabled
-        $diseases_to_spread = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'diseases WHERE (last_spread_time<(' . strval(time()) . '-(spread_rate*60*60)) OR  last_spread_time=0) AND enabled=1', null, null, true);
+        $diseases_to_spread = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'diseases WHERE (last_spread_time<(' . strval(time()) . '-(spread_rate*60*60)) OR last_spread_time=0) AND enabled=1', null, null, true);
         if ($diseases_to_spread === null) {
             return; // Missing table
         }

@@ -180,7 +180,8 @@ class Hook_pointstore_custom
             }
 
             $next_url = build_url(array('page' => '_SELF', 'type' => 'action', 'id' => $class, 'sub_id' => $row['id']), '_SELF');
-            $items[] = do_template('POINTSTORE_' . strtoupper($class), array('NEXT_URL' => $next_url, 'TITLE' =>$row['_title'], 'DESCRIPTION' => get_translated_tempcode('pstore_customs', $row, 'c_description')));
+            $just_row = db_map_restrict($row, array('id', 'c_description'));
+            $items[] = do_template('POINTSTORE_' . strtoupper($class), array('NEXT_URL' => $next_url, 'TITLE' =>$row['_title'], 'DESCRIPTION' => get_translated_tempcode('pstore_customs', $just_row, 'c_description')));
         }
         return $items;
     }

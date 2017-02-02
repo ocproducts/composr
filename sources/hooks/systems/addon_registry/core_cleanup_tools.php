@@ -162,15 +162,17 @@ class Hook_addon_registry_core_cleanup_tools
     public function tpl_preview__administrative__cleanup_completed_screen()
     {
         require_lang('stats');
-        $url = array();
+
+        $urls = array();
         foreach (placeholder_array() as $v) {
-            $url[] = array(
+            $urls[] = array(
                 'URL' => placeholder_url(),
+                'PATH' => lorem_phrase(),
             );
         }
 
         $message = do_lorem_template('CLEANUP_ORPHANED_UPLOADS', array(
-            'FOUND' => $url,
+            'FOUND' => $urls,
         ));
         $message->attach(do_lorem_template('CLEANUP_PAGE_STATS', array(
             'STATS_BACKUP_URL' => placeholder_url(),

@@ -4422,7 +4422,7 @@ var encodeUC = encodeURIComponent;
                     }
                     $cms.dom.html(node_self, ' \
 				<div> \
-					<input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escaped_title + '" title="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.url(!initially_expanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" /> \
+					<input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escaped_title + '" title="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.url(!initially_expanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $cms.url(!initially_expanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" /> \
 					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" /> \
 					<label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" onmouseover="activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(this.firstElementChild.title),\'auto\');" class="ajax_tree_magic_button ' + colour + '"><input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + description_in_use + '" />' + escaped_title + '</label> \
 					<span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
@@ -4676,6 +4676,7 @@ var encodeUC = encodeURIComponent;
                 fade_transition(html_node, 100, 30, 4);
 
                 expand_button.src = $cms.img('{$IMG;,1x/treefield/collapse}');
+                expand_button.srcset = $cms.img('{$IMG;,2x/treefield/collapse}') + ' 2x';
                 expand_button.title = expand_button.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
                 expand_button.alt = expand_button.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
             } else {
@@ -4684,6 +4685,7 @@ var encodeUC = encodeURIComponent;
                 html_node.style.display = 'none';
 
                 expand_button.src = $cms.img('{$IMG;,1x/treefield/expand}');
+                expand_button.srcset = $cms.img('{$IMG;,2x/treefield/expand}') + ' 2x';
                 expand_button.title = expand_button.title.replace('{!CONTRACT;^}', '{!EXPAND;^}');
                 expand_button.alt = expand_button.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
             }
@@ -5056,11 +5058,9 @@ var encodeUC = encodeURIComponent;
                     callAjaxMethod(ajaxCallbacks[i]);
 
                     try {
-                        if ((xhr.status === 0) || (xhr.status === 12029)) {// 0 implies site down, or network down
+                        if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
                             if (!networkDownAlerted && !window.unloaded) {
-                                if (xhr.status === 12029) {
-                                    window.fauxmodal_alert('{!NETWORK_DOWN;^}');
-                                }
+                                window.fauxmodal_alert('{!NETWORK_DOWN;^}');
                                 networkDownAlerted = true;
                             }
                         } else {
@@ -5836,7 +5836,7 @@ function find_pos_x(el, not_relative) {/* if not_relative is true it gets the po
     if (!not_relative) {
         var position;
         while (el) {
-            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative'])) {
+            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
                 left -= find_pos_x(el, true);
                 break;
             }
@@ -5855,7 +5855,7 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     if (!not_relative) {
         var position;
         while (el) {
-            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative'])) {
+            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
                 top -= find_pos_y(el, true);
                 break;
             }
@@ -5921,7 +5921,9 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
                 '\'': '/',
                 '"': '\\',
                 '%': '&',
-                '&': '%'
+                '&': '%',
+                '@': ':',
+                ':': '@'
             },
             out = '',
             char;
@@ -7290,7 +7292,7 @@ function faux_open(url, name, options, target, cancel_text) {
             if (window.history.pushState) {
                 try {
                     window.has_js_state = true;
-                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=\w+/, ''));
+                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
                 } catch (e) {
                     // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
                     // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
@@ -8015,7 +8017,7 @@ function clever_find_value(form, element) {
 
 function check_form(the_form, for_preview) {
     var delete_element = $cms.dom.$('#delete');
-    if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (the_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
+    if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (delete_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
         return true;
     }
 

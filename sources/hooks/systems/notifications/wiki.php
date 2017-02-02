@@ -88,7 +88,7 @@ class Hook_notification_wiki extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['wiki'] = array(do_lang('menus:CONTENT'), do_lang('wiki:NOTIFICATION_TYPE_wiki'));
+        $list['wiki'] = array(do_lang('CONTENT'), do_lang('wiki:NOTIFICATION_TYPE_wiki'));
         return $list;
     }
 

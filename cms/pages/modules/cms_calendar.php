@@ -410,13 +410,6 @@ class Module_cms_calendar extends Standard_crud_module
         $type_list = create_selection_list_event_types($type);
         $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_EVENT_TYPE'), 'type', $type_list));
 
-        // Member calendar
-        $member_calendar = get_param_integer('member_id', $member_calendar);
-        if (has_privilege(get_member(), 'calendar_add_to_others') || $member_calendar == get_member()) {
-            $_member_calendar = ($member_calendar === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
-            $fields->attach(form_input_username(do_lang_tempcode('MEMBER_CALENDAR'), do_lang_tempcode('DESCRIPTION_MEMBER_CALENDAR'), 'member_calendar', $_member_calendar, !has_privilege(get_member(), 'add_public_events')));
-        }
-
         // Priority
         $priority_list = new Tempcode();
         $priority_list->attach(form_input_list_entry('1', $priority == 1, do_lang_tempcode('PRIORITY_1')));
@@ -437,6 +430,15 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         $fields2 = new Tempcode();
+
+        // Member calendar
+        $member_calendar = get_param_integer('member_id', $member_calendar);
+        if (has_privilege(get_member(), 'calendar_add_to_others') || $member_calendar == get_member()) {
+            $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => $member_calendar === null, 'TITLE' => do_lang_tempcode('ADVANCED'))));
+
+            $_member_calendar = ($member_calendar === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
+            $fields2->attach(form_input_username(do_lang_tempcode('MEMBER_CALENDAR'), do_lang_tempcode('DESCRIPTION_MEMBER_CALENDAR'), 'member_calendar', $_member_calendar, !has_privilege(get_member(), 'add_public_events')));
+        }
 
         $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'fd78d3298730d0cb157b20f1b3dd6ae1', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('TIMEZONE'))));
 
@@ -459,7 +461,7 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         // Recurrence
-        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '313be8d71088bf12c9c5e5f67f28174a', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('RECURRENCE'))));
+        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '313be8d71088bf12c9c5e5f67f28174a', 'SECTION_HIDDEN' => ($recurrence == 'none'), 'TITLE' => do_lang_tempcode('RECURRENCE'))));
         if (strpos($recurrence, ' ') === false) {
             $recurrence_main = $recurrence;
             $recurrence_pattern = '';

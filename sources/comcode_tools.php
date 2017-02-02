@@ -138,8 +138,9 @@ function comcode_convert_script()
         $stripped_old = preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', '', $out));
         if (($box_title != '') && ($stripped_new != $stripped_old)) {
             /*
-            file_put_contents(get_file_base() . '/a', preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $new)));
-            file_put_contents(get_file_base() . '/b', preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $out)));
+            require_code('files');
+            cms_file_put_contents_safe(get_file_base() . '/a', preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $new)));
+            cms_file_put_contents_safe(get_file_base() . '/b', preg_replace('#<!--.*-->#Us', '', preg_replace('#\s+#', chr(10), $out)));
             */
 
             $out = $new . do_lang('BROKEN_XHTML_FIXED');

@@ -108,9 +108,8 @@ function _save_web_resource_merging($resources, $type, $write_path)
             $data = str_replace('"use strict";', '', $data);
         }
 
-        file_put_contents($write_path, $data) or intelligent_write_error($write_path); // Intentionally 'wb' to stop line ending conversions on Windows
-        fix_permissions($write_path);
-        sync_file($write_path);
+        require_code('files');
+        cms_file_put_contents_safe($write_path, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         require_code('css_and_js');
         compress_cms_stub_file($write_path);

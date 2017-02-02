@@ -440,7 +440,7 @@ class Hook_import_vb3
                             $relpath = rawurldecode($avatar_row['avatarpath']);
                             if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . basename($relpath))) || (@rename($file_base . '/uploads/' . $setting . $relpath, get_custom_file_base() . '/uploads/cns_avatars/' . basename($relpath)))) {
                                 $avatar_url = 'uploads/cns_avatars/' . basename($relpath);
-                                sync_file($avatar_url);
+                                sync_file(get_custom_file_base() . '/' . $avatar_url);
                             }
                         }
                     }
@@ -881,14 +881,10 @@ class Hook_import_vb3
             }
         }
         if ($filename != '') {
+            require_code('files');
+
             list($path, $url) = find_unique_path('uploads/' . $sections, $filename . ($obfuscate ? '.dat' : ''));
-            $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
-            if (fwrite($myfile, $data) < strlen($data)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-            }
-            fclose($myfile);
-            fix_permissions($path);
-            sync_file($path);
+            cms_file_put_contents_safe($path, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
             if ($thumbnail_data == '') {
                 if ($thumbnail) {
@@ -902,13 +898,7 @@ class Hook_import_vb3
                 }
             } else {
                 list($path, $thumb_url) = find_unique_path('uploads/' . $sections . '_thumbs', $t_filename);
-                $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
-                if (fwrite($myfile, $thumbnail_data) < strlen($thumbnail_data)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-                }
-                fclose($myfile);
-                fix_permissions($path);
-                sync_file($path);
+                cms_file_put_contents_safe($path, $thumbnail_data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
                 return array($url, $thumb_url);
             }

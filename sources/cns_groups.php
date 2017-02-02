@@ -55,7 +55,7 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
     $url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $row['id']), get_module_zone('groups'));
 
     $_title = cns_get_group_name($row['id']);
-    $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('GROUP'), $_title) : $_title;
+    $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('USERGROUP'), $_title) : $_title;
 
     $summary = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
 

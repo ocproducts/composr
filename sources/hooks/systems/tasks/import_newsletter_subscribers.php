@@ -44,15 +44,12 @@ class Hook_task_import_newsletter_subscribers
 
         if (filesize($path) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
             $fixed_contents = unixify_line_format(file_get_contents($path));
-            $myfile = @fopen($path, 'wb');
-            if ($myfile !== false) {
-                fwrite($myfile, $fixed_contents);
-                fclose($myfile);
-            }
+            require_code('files');
+            cms_file_put_contents_safe($path, $fixed_contents, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         }
 
         safe_ini_set('auto_detect_line_endings', '1');
-        $myfile = fopen($path, 'rt');
+        $myfile = fopen($path, 'rb');
         $del = ',';
         $csv_test_line = fgetcsv($myfile, 4096, $del);
         if ((count($csv_test_line) == 1) && (strpos($csv_test_line[0], ';') !== false)) {
@@ -100,7 +97,7 @@ class Hook_task_import_newsletter_subscribers
                         if (in_array(strtolower($val), array('username', strtolower(do_lang('NAME'))))) {
                             $username_index = $j;
                         }
-                        if (in_array(strtolower($val), array('hash', 'password', 'pass', 'code', 'secret', strtolower(do_lang('PASSWORD_HASH'))))) {
+                        if (in_array(strtolower($val), array('hash', 'password', 'pass', 'pword', 'pw', 'p/w', 'code', 'secret', strtolower(do_lang('PASSWORD_HASH'))))) {
                             $hash_index = $j;
                         }
                         if (in_array(strtolower($val), array('salt', strtolower(do_lang('SALT'))))) {
@@ -137,7 +134,7 @@ class Hook_task_import_newsletter_subscribers
                         $language = $_language;
                     }
                     $code_confirm = (($code_confirm_index !== null) && (array_key_exists($code_confirm_index, $csv_line))) ? intval($csv_line[$code_confirm_index]) : 0;
-                    $join_time = (($join_time_index !== null) && (array_key_exists($join_time_index, $csv_line))) ? strtotime($csv_line[$join_time_index]) : time();
+                    $join_time = (($join_time_index !== null) && (!empty($csv_line[$join_time_index]))) ? strtotime($csv_line[$join_time_index]) : time();
                     if ($join_time === false) {
                         $join_time = time();
                     }
@@ -204,7 +201,6 @@ class Hook_task_import_newsletter_subscribers
         log_it('IMPORT_NEWSLETTER_SUBSCRIBERS');
 
         @unlink($path);
-        sync_file($path);
         return array('text/html', $message);
     }
 }

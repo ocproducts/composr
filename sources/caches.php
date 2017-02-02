@@ -187,14 +187,7 @@ class Self_learning_cache
         if ($data !== null) {
             $this->data = $data;
         } elseif (is_file($this->path)) {
-            $_data = '';
-            $myfile = @fopen($this->path, 'rb');
-            if ($myfile !== false) {
-                @flock($myfile, LOCK_SH);
-                while (!feof($myfile)) {
-                    $_data .= fread($myfile, 32768);
-                }
-            }
+            $_data = cms_file_get_contents_safe($this->path);
             if ($_data !== false) {
                 $this->data = @unserialize($_data);
                 if ($this->data === false) {
@@ -325,12 +318,8 @@ class Self_learning_cache
         if ($this->path !== null) {
             $contents = serialize($this->data);
 
-            if (file_put_contents($this->path, $contents, LOCK_EX) < strlen($contents)) {
-                @unlink($this->path);
-                fix_permissions($this->path);
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-            }
-            fix_permissions($this->path);
+            require_code('files');
+            cms_file_put_contents_safe($this->path, $contents, FILE_WRITE_FIX_PERMISSIONS);
         } else {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -513,10 +502,10 @@ function erase_persistent_cache()
         }
     }
     closedir($d);
-    @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', LOCK_EX);
-    @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', LOCK_EX);
-    fix_permissions(get_custom_file_base() . '/data_custom/failover_rewritemap.txt');
-    fix_permissions(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt');
+
+    require_code('files');
+    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
+    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
 
     global $PERSISTENT_CACHE;
     if ($PERSISTENT_CACHE === null) {

@@ -32,6 +32,10 @@ function get_news_category_image_url($nc_img)
         $image = '';
     } elseif (looks_like_url($nc_img)) {
         $image = $nc_img;
+
+        if (url_is_local($image)) {
+            $image = get_custom_base_url() . '/' . $image;
+        }
     } else {
         $image = find_theme_image($nc_img, true);
         if ($image === null) {

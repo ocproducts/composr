@@ -90,10 +90,10 @@ class Block_side_weather
 
         $max_days = isset($map['max_days']) ? intval($map['max_days']) : 2;
 
-        if (array_key_exists('param', $map)) {
-            $loc_code = $map['param']; // need to pass loc ID ex :INXX0087
+        if (empty($map['param'])) {
+            $loc_code = '2487889'; // if not found setting a default location for weather
         } else {
-            $loc_code = '34503'; // if not found setting a default location for weather
+            $loc_code = $map['param']; // need to pass loc ID ex :INXX0087
         }
 
         if (!is_numeric($loc_code)) {

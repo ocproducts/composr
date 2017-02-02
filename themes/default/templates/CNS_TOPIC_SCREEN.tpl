@@ -162,7 +162,7 @@
 
 	{+START,SET,double_post_message}
 		{+START,IF_EMPTY,{QUICK_REPLY}}{+START,IF,{$EQ,{LAST_POSTER},{$MEMBER}}}{+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$NOT,{MAY_DOUBLE_POST}}}
-			<div class="box box__members_viewing"><div class="box_inner">
+			<div class="box box___members_viewing"><div class="box_inner">
 				{!NO_DOUBLE_POST}
 			</div></div>
 		{+END}{+END}{+END}{+END}

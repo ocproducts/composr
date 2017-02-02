@@ -56,7 +56,7 @@ calendar	event	diary	schedule
 admin zone	admincp	admin panel	control panel
 actionlog	audit
 atom	rss	feed	syndication
-login	logon	log-in	log-on
+ical	icalendar
 display	render	view
 gallery	album	galleries	podcast	multimedia
 audit	log	usage
@@ -118,7 +118,8 @@ ipb	invision
 random_quotes	testimonials
 join	register	signup	sign-up
 logout	log-out	sign-out	sign-off
-login	log-in	sign-in	sign-on
+login	log-in	sign-in	sign-on	logon	log-on	authorize
+credentials	password
 shopping	ecommerce	payment	purchase	products
 cache	decache	cleanup
 ssl	https
@@ -128,7 +129,8 @@ author	bio	biography
 block	widget
 moniker	slug
 guest	anonymous
-rules	license	licence	agreement	terms	conditions	legals
+rules	license	licence	agreement	terms	conditions	legals t&cs
 dashboard	console	status
 menu	navigation
 permalink	url	link
+importance	priority	precedence	level

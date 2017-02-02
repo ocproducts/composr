@@ -112,6 +112,9 @@ class Hook_fields_content_link
 
         require_code('content');
         list($title, , $info) = content_get_details($type, $ev);
+        if ($info === null) {
+            return new Tempcode();
+        }
 
         $page_link = str_replace('_WILD', $ev, $info['view_page_link_pattern']);
         $url = page_link_to_tempcode_url($page_link);
@@ -152,6 +155,9 @@ class Hook_fields_content_link
         require_code('content');
         $ob = get_content_object($type);
         $info = $ob->info();
+        if ($info === null) {
+            return new Tempcode();
+        }
         $db = $GLOBALS[(substr($info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
         $select = array();
         append_content_select_for_id($select, $info);
