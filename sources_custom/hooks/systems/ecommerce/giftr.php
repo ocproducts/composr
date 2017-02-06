@@ -86,6 +86,8 @@ class Hook_ecommerce_giftr
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => 0.00,
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );
         }
@@ -182,7 +184,7 @@ class Hook_ecommerce_giftr
                 $gift_image_url = get_custom_base_url() . '/' . $gift_row['image'];
                 $gift_row_id = $GLOBALS['SITE_DB']->query_insert('members_gifts', array('to_member_id' => $to_member_id, 'from_member_id' => $from_member_id, 'gift_id' => $gift_id, 'add_time' => time(), 'is_anonymous' => $anonymous, 'gift_message' => $gift_message), true);
 
-                $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $from_member_id, 'details' => $gift_name, 'details2' => $GLOBALS['FORUM_DRIVER']->get_username($to_member_id), 'transaction_id' => $details['TXN_ID']));
+                $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $from_member_id, 'details' => $gift_name, 'details2' => $GLOBALS['FORUM_DRIVER']->get_username($to_member_id), 'txn_id' => $details['TXN_ID']));
 
                 // Send notification to recipient
                 require_code('notifications');

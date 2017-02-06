@@ -107,17 +107,20 @@ class Hook_payment_gateway_secpay
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  REAL $amount A transaction amount.
+     * @param  REAL $price Transaction price in money.
+     * @param  REAL $tax Transaction tax in money.
+     * @param  REAL $shipping_cost Transaction shipping cost in money.
      * @param  ID_TEXT $currency The currency to use.
+     * @param  REAL $shipping_cost Shipping cost.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
     {
         // https://www.secpay.com/sc_api.html
 
         $username = $this->_get_username();
         $form_url = $this->_get_remote_form_url();
-        $digest = md5($trans_expecting_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
+        $digest = md5($trans_expecting_id . float_to_raw_string($price + $tax + $shipping_cost) . get_option('payment_gateway_password'));
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_SECPAY', array(
             '_GUID' => 'e68e80cb637f8448ef62cd7d73927722',
@@ -127,7 +130,10 @@ class Hook_payment_gateway_secpay
             'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'DIGEST' => $digest,
             'TEST' => ecommerce_test_mode(),
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'SHIPPING_COST' => float_to_raw_string($shipping_cost),
+            'AMOUNT' => float_to_raw_string($price + $tax + $shipping_cost),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
             'FORM_URL' => $form_url,
@@ -142,20 +148,21 @@ class Hook_payment_gateway_secpay
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  REAL $amount A transaction amount.
+     * @param  REAL $price Transaction price in money.
+     * @param  REAL $tax Transaction tax in money.
      * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
      * @return Tempcode The button.
      */
-    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
     {
         // https://www.secpay.com/sc_api.html
 
         $username = $this->_get_username();
         $form_url = $this->_get_remote_form_url();
-        $digest = md5($trans_expecting_id . float_to_raw_string($amount) . get_option('payment_gateway_password'));
+        $digest = md5($trans_expecting_id . float_to_raw_string($price + $tax) . get_option('payment_gateway_password'));
         list($length_units_2, $first_repeat) = $this->_translate_subscription_details($length, $length_units);
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_SECPAY', array(
@@ -169,7 +176,9 @@ class Hook_payment_gateway_secpay
             'FIRST_REPEAT' => $first_repeat,
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'AMOUNT' => float_to_raw_string($price + $tax),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
             'FORM_URL' => $form_url,
@@ -372,12 +381,7 @@ class Hook_payment_gateway_secpay
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 
-        // Shopping cart
-        if (addon_installed('shopping')) {
-            if (preg_match('#^CART_ORDER_#', $type_code) != 0) {
-                $this->store_shipping_address(intval($purchase_id));
-            }
-        }
+        $this->store_shipping_address($trans_expecting_id, $txn_id);
 
         // We need to echo the output of our finish page to SecPay's IPN caller
         if ($success) {
@@ -388,47 +392,41 @@ class Hook_payment_gateway_secpay
         $url = $_url->evaluate();
         echo http_download_file($url, null, false);
 
-        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
+        $tax = null;
+
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**
-     * Store shipping address for orders.
+     * Store shipping address for a transaction.
      *
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return ?mixed Address ID (null: No address record found).
+     * @param  $trans_expecting_id Expected transaction ID.
+     * @param  $txn_id Transaction ID.
+     * @return ?AUTO_LINK Address ID.
      */
-    public function store_shipping_address($order_id)
+    public function store_shipping_address($trans_expecting_id, $txn_id)
     {
-        if (post_param_string('first_name', null) === null) {
-            return null;
+        $_name = explode(' ', post_param_string('ship_name', ''));
+        $name = array();
+        if (count($_name) > 0) {
+            $name[1] = $_name[count($_name) - 1];
+            unset($_name[count($_name) - 1]);
         }
+        $name[0] = implode(' ', $_name);
 
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
-            $_name = explode(' ', post_param_string('ship_name', ''));
-            $name = array();
-            if (count($_name) > 0) {
-                $name[1] = $_name[count($_name) - 1];
-                unset($_name[count($_name) - 1]);
-            }
-            $name[0] = implode(' ', $_name);
-
-            $shipping_address = array(
-                'a_order_id' => $order_id,
-                'a_firstname' => $name[0],
-                'a_lastname' => trim($name[1] . ', ' . post_param_string('ship_company', ''), ' ,'),
-                'a_street_address' => trim(post_param_string('ship_addr_1', '') . "\n" . post_param_string('ship_addr_2', '')),
-                'a_city' => post_param_string('ship_city', ''),
-                'a_county' => '',
-                'a_state' => post_param_string('ship_state', ''),
-                'a_post_code' => post_param_string('ship_post_code', ''),
-                'a_country' => post_param_string('ship_country', ''),
-                'a_email' => '',
-                'a_phone' => post_param_string('ship_tel', ''),
-            );
-            return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
-        }
-
-        return null;
+        $shipping_address = array(
+            'a_firstname' => $name[0],
+            'a_lastname' => trim($name[1] . ', ' . post_param_string('ship_company', ''), ' ,'),
+            'a_street_address' => trim(post_param_string('ship_addr_1', '') . "\n" . post_param_string('ship_addr_2', '')),
+            'a_city' => post_param_string('ship_city', ''),
+            'a_county' => '',
+            'a_state' => post_param_string('ship_state', ''),
+            'a_post_code' => post_param_string('ship_post_code', ''),
+            'a_country' => post_param_string('ship_country', ''),
+            'a_email' => '',
+            'a_phone' => post_param_string('ship_tel', ''),
+        );
+        return store_shipping_address($trans_expecting_id, $txn_id, $shipping_address);
     }
 
     /**
@@ -528,8 +526,6 @@ class Hook_payment_gateway_secpay
         $billing_address .= 'bill_state=' . $billing_state . ',';
         $billing_address .= 'bill_country=' . $billing_country . ',';
         $billing_address .= 'bill_post_code=' . $billing_post_code;
-
-        require_lang('ecommerce');
 
         require_code('xmlrpc');
         if ($length !== null) {

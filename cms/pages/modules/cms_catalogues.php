@@ -851,15 +851,15 @@ class Module_cms_catalogues extends Standard_crud_module
             if ($delete_permission) {
                 $start = 0;
                 do {
-                    $details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_order_id', 'p_price'), array('p_id' => $id), '', 1000, $start);
+                    $details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_type_code' => strval($id)), '', 1000, $start);
                     foreach ($details as $d) {
-                        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'shopping_order SET total_price=total_price-' . float_to_raw_string($d['p_price']) . ' WHERE id=' . strval($d['p_order_id']) . ' AND ' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment'));
                         $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $d['p_order_id'], 'total_price' => 0.0), '', 1);
                     }
+                    recalculate_order_costs($d['p_order_id']);
                     $start += 1000;
                 } while (count($details) != 0);
-                $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_id' => $id));
-                $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('product_id' => $id));
+                $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_type_code' => strval($id)));
+                $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('type_code' => strval($id)));
                 $this->delete_actualisation($_id);
             }
 
@@ -910,9 +910,10 @@ class Module_cms_catalogues extends Standard_crud_module
             return true;
         }
         return
-            is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'id', array('p_id' => intval($id), 'p_type' => 'catalogue_items')))
+            is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'id', array('p_type_code' => $id)))
             &&
-            is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'product_id', array('product_id' => intval($id), 'product_type' => 'catalogue_items')));
+            is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'id', array('type_code' => $id)))
+            ;
     }
 
     /**

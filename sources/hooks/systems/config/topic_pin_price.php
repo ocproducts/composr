@@ -31,8 +31,8 @@ class Hook_config_topic_pin_price
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_topic_pin_price',
-            'type' => 'integer',
+            'human_name' => 'PRICE_topic_pin_price',
+            'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'TOPIC_PINNING',
             'explanation' => 'CONFIG_OPTION_topic_pin_price',

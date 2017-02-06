@@ -31,14 +31,14 @@ class Hook_config_banner_imp_price
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_banner_imp_price',
-            'type' => 'integer',
+            'human_name' => 'PRICE_banner_imp_price',
+            'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'BANNERS',
             'explanation' => 'CONFIG_OPTION_banner_imp_price',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 5,
+            'order_in_category_group' => 6,
             'required' => false,
 
             'addon' => 'ecommerce',

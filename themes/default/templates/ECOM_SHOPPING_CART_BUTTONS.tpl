@@ -9,7 +9,7 @@
 
 					<input class="button_screen_item buttons__cart_add"{+START,IF,{OUT_OF_STOCK}} onclick="window.fauxmodal_alert('{!OUT_OF_STOCK;}'); return false;"{+END} type="submit" value="{!ADD_TO_CART}" />
 					<input type="hidden" id="quantity" name="quantity" value="1" />
-					<input type="hidden" name="product_id" value="{PRODUCT_ID*}" />
+					<input type="hidden" name="type_code" value="{TYPE_CODE*}" />
 				</form>
 			</div>
 		{+END}
@@ -22,13 +22,6 @@
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<input class="button_screen_item buttons__cart_checkout" type="submit" value="{!BUY_NOW}" />
-
-						{+START,IF,{ALLOW_OPTOUT_TAX}}
-							<div class="tax_opted_out">
-								<input type="checkbox" name="tax_opted_out" id="tax_opted_out" value="1" />
-								<label for="tax_opted_out">{!CUSTOMER_OPTING_OUT_OF_TAX_SHORT}</label>
-							</div>
-						{+END}
 					</form>
 				</div>
 			{+END}

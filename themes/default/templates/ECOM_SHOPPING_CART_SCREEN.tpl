@@ -5,20 +5,11 @@
 
 	{RESULTS_TABLE}
 
-	{+START,IF_NON_EMPTY,{PRODUCT_IDS}}
-		{+START,IF,{ALLOW_OPTOUT_TAX}}
-			<div class="checkout_text">
-				<input type="checkbox" name="tax_opted_out" id="tax_opted_out" value="1"{+START,IF,{ALLOW_OPTOUT_TAX_VALUE}} checked="true"{+END} />
-				<label for="tax_opted_out">{!CUSTOMER_OPTING_OUT_OF_TAX}</label>
-			</div>
-		{+END}
-	{+END}
-
 	<div class="cart_buttons">
 		<div class="buttons_group cart_update_buttons" itemprop="significantLinks">
 			{$,Put first, so it associates with the enter key}
-			{+START,IF_NON_EMPTY,{PRODUCT_IDS}}
-				<input id="cart_update_button" class="buttons__cart_update button_screen_item{+START,IF,{$JS_ON}} button_faded{+END}" type="submit" name="update" onclick="return update_cart('{PRODUCT_IDS;*}');" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
+			{+START,IF_NON_EMPTY,{TYPE_CODES}}
+				<input id="cart_update_button" class="buttons__cart_update button_screen_item{+START,IF,{$JS_ON}} button_faded{+END}" type="submit" name="update" onclick="return update_cart('{TYPE_CODES;*}');" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
 			{+END}
 
 			{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}
@@ -27,7 +18,7 @@
 		</div>
 
 		<div class="buttons_group cart_continue_button" itemprop="significantLinks">
-			<input type="hidden" name="product_ids" id="product_ids" value="{PRODUCT_IDS*}" />
+			<input type="hidden" name="type_codes" id="type_codes" value="{TYPE_CODES*}" />
 
 			{+START,IF_NON_EMPTY,{CONTINUE_SHOPPING_URL}}
 				<a class="button_screen_item menu__rich_content__catalogues__products" href="{CONTINUE_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
@@ -36,7 +27,7 @@
 	</div>
 </form>
 
-{+START,IF_NON_EMPTY,{PRODUCT_IDS}}
+{+START,IF_NON_EMPTY,{TYPE_CODES}}
 	<table class="columned_table cart_payment_summary">
 		<tbody>
 			<tr>

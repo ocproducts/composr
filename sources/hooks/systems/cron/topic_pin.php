@@ -32,7 +32,7 @@ class Hook_cron_topic_pin
         $last_run = is_null($_last_run) ? 0 : intval($_last_run);
         if ($last_run < time() - 60 * 60 * 6) {
             $time = time();
-            $sql = 'SELECT details FROM ' . get_table_prefix() . 'ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id WHERE ' . db_string_equal_to('t_type_code', 'topic_pin') . ' AND ' . db_string_not_equal_to('details2', '') . ' AND date_and_time<' . strval($time) . '-details2*24*60*60' . ' AND date_and_time>' . strval($last_run) . '-details2*24*60*60';
+            $sql = 'SELECT details FROM ' . get_table_prefix() . 'ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id WHERE ' . db_string_equal_to('t_type_code', 'topic_pin') . ' AND ' . db_string_not_equal_to('details2', '') . ' AND date_and_time<' . strval($time) . '-details2*24*60*60' . ' AND date_and_time>' . strval($last_run) . '-details2*24*60*60';
             $rows = $GLOBALS['SITE_DB']->query($sql);
             foreach ($rows as $row) {
                 $GLOBALS['FORUM_DRIVER']->pin_topic(intval($row['details']), false);

@@ -6,6 +6,7 @@
 			<th>{!TITLE}</th>
 			<th>{!USERNAME}</th>
 			<th>{!AMOUNT}</th>
+			<th>{$TAX_LABEL}</th>
 			<th>{!DATE_TIME}</th>
 			<th>{!ACTIONS}</th>
 		</tr>
@@ -24,6 +25,9 @@
 				</td>
 				<td>
 					{$CURRENCY_SYMBOL}{AMOUNT*}
+				</td>
+				<td>
+					{$CURRENCY_SYMBOL}{TAX*}
 				</td>
 				<td>
 					{TIME*}

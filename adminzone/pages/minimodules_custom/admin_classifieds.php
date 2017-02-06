@@ -30,6 +30,7 @@ if (count($_POST) != 0) {
             $days = post_param_string('days_' . $matches[1] . '_' . $matches[2], '');
             $label = post_param_string('label_' . $matches[1] . '_' . $matches[2], '');
             $price = post_param_string('price_' . $matches[1] . '_' . $matches[2], '');
+            $tax = post_param_string('tax_' . $matches[1] . '_' . $matches[2], '');
 
             if (($catalogue != '') && ($days != '') && ($label != '') && ($price != '')) {
                 if ($matches[1] == 'existing') {
@@ -45,7 +46,8 @@ if (count($_POST) != 0) {
                         array(
                             'c_catalogue_name' => $catalogue,
                             'c_days' => intval($days),
-                            'c_price' => floatval($price),
+                            'c_price' => float_unformat($price),
+                            'c_tax' => float_unformat($tax),
                         ) + lang_remap('c_label', $_label, $label),
                         array('id' => intval($matches[2])),
                         '',
@@ -56,7 +58,8 @@ if (count($_POST) != 0) {
                     $GLOBALS['SITE_DB']->query_insert('ecom_classifieds_prices', array(
                         'c_catalogue_name' => $catalogue,
                         'c_days' => intval($days),
-                        'c_price' => floatval($price),
+                        'c_price' => float_unformat($price),
+                        'c_tax' => float_unformat($tax),
                     ) + insert_lang('c_label', $label, 2));
                 }
             } else {
@@ -80,7 +83,8 @@ foreach ($_prices as $_price) {
         'PRICE_CATALOGUE' => $_price['c_catalogue_name'],
         'PRICE_DAYS' => strval($_price['c_days']),
         'PRICE_LABEL' => get_translated_text($_price['c_label']),
-        'PRICE_PRICE' => float_to_raw_string($_price['c_price']),
+        'PRICE_PRICE' => float_format($_price['c_price']),
+        'PRICE_DAYS' => float_format($_price['c_price']),
         'ID' => 'existing_' . strval($_price['id']),
     );
 }
@@ -91,6 +95,7 @@ for ($i = 0; $i < 10; $i++) {
         'PRICE_DAYS' => '',
         'PRICE_LABEL' => '',
         'PRICE_PRICE' => '',
+        'PRICE_DAYS' => '',
         'ID' => 'new_' . strval($i),
     );
 }
@@ -105,5 +110,13 @@ foreach ($_catalogues as $_catalogue) {
     $catalogues[$_catalogue['c_name']] = get_translated_text($_catalogue['c_title']);
 }
 
-$ret = do_template('CLASSIFIEDS_PRICING_SCREEN', array('_GUID' => '8fd97a8bc88dfdd5c8455d41d290ae56', 'TITLE' => $title, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('SAVE'), 'CATALOGUES' => $catalogues, 'PRICES' => $prices, 'POST_URL' => get_self_url()));
+$ret = do_template('CLASSIFIEDS_PRICING_SCREEN', array(
+    '_GUID' => '8fd97a8bc88dfdd5c8455d41d290ae56',
+    'TITLE' => $title,
+    'SUBMIT_ICON' => 'buttons__save',
+    'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
+    'CATALOGUES' => $catalogues,
+    'PRICES' => $prices,
+    'POST_URL' => get_self_url(),
+));
 $ret->evaluate_echo();

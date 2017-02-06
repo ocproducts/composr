@@ -18,6 +18,15 @@
  * @package    ecommerce
  */
 
+/*
+We have:
+ - Sales log (high-level log of sales, links to other logs; there's a version in the Admin Zone and also for members)
+ - Order log (for shopping cart orders only; there's a version in the Admin Zone and also for members)
+ - Transactions log (raw log, in Admin Zone only)
+
+This file only contains the code for the sales log and code for viewing an individual order, the other code is not re-used so is coded directly into modules.
+*/
+
 /**
  * The UI to view sales logs.
  *
@@ -29,14 +38,26 @@
  */
 function build_sales_table($filter_member_id, $show_username = false, $show_delete = false, $max_default = 20)
 {
-    require_lang('ecommerce');
-
     require_code('templates_map_table');
     require_code('content');
     require_code('ecommerce');
 
     $max = get_param_integer('max_ecommerce_logs', $max_default);
     $start = get_param_integer('start_ecommerce_logs', 0);
+
+    $header_row = array();
+    $header_row[] = do_lang_tempcode('TRANSACTION');
+    if ($show_username) {
+        $header_row[] = do_lang_tempcode('USERNAME');
+    }
+    $header_row[] = do_lang_tempcode('PRODUCT');
+    $header_row[] = do_lang_tempcode('DETAILS');
+    $header_row[] = do_lang_tempcode('OTHER_DETAILS');
+    $header_row[] = do_lang_tempcode('DATE_TIME');
+    if ($show_delete) {
+        $header_row[] = do_lang_tempcode('ACTIONS');
+    }
+    $_header_row = columned_table_header_row($header_row);
 
     $permission_product_rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('id', 'p_module', 'p_category')));
 
@@ -45,13 +66,15 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
         $where['member_id'] = $filter_member_id;
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', array('*', 's.id AS s_id', 't.id AS t_id'), $where, 'ORDER BY date_and_time DESC', $max, $start);
+    $rows = $GLOBALS['SITE_DB']->query_select('ecom_sales s LEFT JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id', array('*', 's.id AS s_id', 't.id AS t_id'), $where, 'ORDER BY date_and_time DESC', $max, $start);
     $max_rows = $GLOBALS['SITE_DB']->query_select_value('ecom_sales', 'COUNT(*)', $where);
 
     $sales_rows = array();
     require_code('templates_results_table');
     require_code('templates_columned_table');
     foreach ($rows as $row) {
+        $transaction_linker = build_transaction_linker($row['txn_id'], $row['order_status'] == 'ORDER_STATUS_awaiting_payment', $row);
+
         if ($show_username) {
             $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id']);
         }
@@ -61,31 +84,8 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
             $item_name = $found['item_name'];
         }
 
-        $item_link = make_string_tempcode(escape_html($item_name));
-        $matches = array();
-        if (preg_match('#^PERMISSION\_(\d+)$#', $row['t_type_code'], $matches) != 0) {
-            $permission_product_id = intval($matches[1]);
-            if (isset($permission_product_rows[$permission_product_id])) {
-                $module = $permission_product_rows[$permission_product_id]['p_module'];
-                if ($module != '') {
-                    $category_id = $permission_product_rows[$permission_product_id]['p_category'];
-
-                    $resource_type = convert_composr_type_codes('module', $module, 'content_type');
-                    if ($resource_type != '') {
-                        $content_type_ob = get_content_object($resource_type);
-                        $cma_info = $content_type_ob->info();
-                        if (!$cma_info['is_category']) {
-                            $resource_type = $cma_info['parent_category_meta_aware_type'];
-                        }
-
-                        list(, , $cma_info) = content_get_details($resource_type, $category_id);
-
-                        $page_link = str_replace('_WILD', $category_id, $cma_info['view_page_link_pattern']);
-                        $item_link = hyperlink(page_link_to_url($page_link), $item_name, false, true);
-                    }
-                }
-            }
-        }
+        $product_det_url = get_product_det_url($row['t_type_code'], true, $filter_member_id);
+        $item_link = hyperlink($product_det_url, $item_name, false, true);
 
         if (strpos($item_name, $row['details']) === false) {
             $details_1 = $row['details'];
@@ -101,39 +101,20 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
 
         $date = get_timezoned_date($row['date_and_time']);
 
-        $transaction_fields = array(
-            'TRANSACTION' => $row['t_id'],
-            'IDENTIFIER' => $row['t_purchase_id'],
-            'LINKED_ID' => $row['t_parent_txn_id'],
-            'AMOUNT' => float_format($row['t_amount']),
-            'CURRENCY' => $row['t_currency'],
-            'STATUS' => $row['t_status'],
-            'REASON' => $row['t_reason'],
-            'PENDING_REASON' => $row['t_pending_reason'],
-            'NOTES' => $row['t_memo'],
-        );
-        $_transaction_fields = new Tempcode();
-        foreach ($transaction_fields as $key => $val) {
-            if ($val != '') {
-                $_transaction_fields->attach(map_table_field(do_lang_tempcode($key), $val));
-            }
-        }
-        $map_table = do_template('MAP_TABLE', array('FIELDS' => $_transaction_fields));
-        $date_with_tooltip = do_template('CROP_TEXT_MOUSE_OVER', array('TEXT_LARGE' => $map_table, 'TEXT_SMALL' => escape_html($date)));
-
         if ($show_delete) {
             $url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'delete_sales_log_entry', 'id' => $row['s_id']), '_SEARCH');
             $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'NAME' => '#' . strval($row['s_id']), 'URL' => $url));
         }
 
         $sales_row = array();
+        $sales_row[] = protect_from_escaping($transaction_linker->evaluate());
         if ($show_username) {
             $sales_row[] = $member_link;
         }
         $sales_row[] = $item_link;
         $sales_row[] = $details_1;
         $sales_row[] = $details_2;
-        $sales_row[] = protect_from_escaping($date_with_tooltip->evaluate());
+        $sales_row[] = $date;
         if ($show_delete) {
             $sales_row[] = $actions;
         }
@@ -143,19 +124,6 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
     if (count($sales_rows) == 0) {
         inform_exit(do_lang_tempcode('NO_ENTRIES'));
     }
-
-    $header_row = array();
-    if ($show_username) {
-        $header_row[] = do_lang_tempcode('USERNAME');
-    }
-    $header_row[] = do_lang_tempcode('PRODUCT');
-    $header_row[] = do_lang_tempcode('DETAILS');
-    $header_row[] = do_lang_tempcode('OTHER_DETAILS');
-    $header_row[] = do_lang_tempcode('DATE_TIME');
-    if ($show_delete) {
-        $header_row[] = do_lang_tempcode('ACTIONS');
-    }
-    $_header_row = columned_table_header_row($header_row);
 
     $_sales_rows = new Tempcode();
     foreach ($sales_rows as $sales_row) {
@@ -168,4 +136,123 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
     $pagination = pagination(do_lang('ECOM_PRODUCTS_MANAGE_SALES'), $start, 'start_ecommerce_logs', $max, 'max_ecommerce_logs', $max_rows, false, 5, null, 'tab__ecommerce_logs');
 
     return array($sales_table, $pagination);
+}
+
+/**
+ * The UI to view an order.
+ *
+ * @param  Tempcode $title The screen title
+ * @param  Tempcode $text Text to include on the order
+ * @param  AUTO_LINK $id The order ID
+ * @param  boolean $show_order_actions Whether to show order actions
+ * @return Tempcode The order details
+ */
+function build_order_details($title, $id, $text, $show_order_actions = false)
+{
+    $order_title = do_lang('CART_ORDER', strval($id));
+
+    // Collecting order details
+    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order o LEFT JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=o.txn_id', array('*', 'o.id AS o_id', 't.id AS t_id'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $order_rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+    $order_row = $order_rows[0];
+
+    $transaction_linker = build_transaction_linker($order_row['txn_id'], $order_row['order_status'] == 'ORDER_STATUS_awaiting_payment', $order_row);
+
+    // Order actions...
+
+    if ($show_order_actions) {
+        $ordered_by_member_id = $order_row['member_id'];
+        $ordered_by_username = $GLOBALS['FORUM_DRIVER']->get_username($order_row['member_id']);
+        $self_url = get_self_url(true, true);
+        $order_actualise_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_act', 'id' => $id, 'redirect' => $self_url), get_module_zone('admin_shopping'));
+        $order_actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array(
+            '_GUID' => '6a24f6fb7c23f60b049ebce0f9765736',
+            'ORDER_TITLE' => $order_title,
+            'ORDER_ACTUALISE_URL' => $order_actualise_url,
+            'ORDER_STATUS' => do_lang($order_row['order_status']),
+        ));
+    } else {
+        $order_actions = new Tempcode();
+    }
+
+    // Shipping address display...
+
+    $address_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_txn_id' => $order_row['txn_id']), '', 1);
+    if (array_key_exists(0, $address_rows)) {
+        require_lang('cns_special_cpf');
+
+        $address = $address_rows[0];
+        $shipping_address = do_template('ECOM_SHIPPING_ADDRESS', array(
+            '_GUID' => '332bc2e28a75cff64e6856bbeda6102e',
+            'FIRSTNAME' => $address['a_firstname'],
+            'LASTNAME' => $address['a_lastname'],
+            'STREET_ADDRESS' => $address['a_street_address'],
+            'CITY' => $address['a_city'],
+            'COUNTY' => $address['a_county'],
+            'STATE' => $address['a_state'],
+            'POST_CODE' => $address['a_post_code'],
+            'COUNTRY' => $address['a_country'],
+            'EMAIL' => $address['a_email'],
+            'PHONE' => $address['a_phone'],
+        ));
+    } else {
+        $shipping_address = new Tempcode();
+    }
+
+    // Show products in the order...
+
+    require_code('templates_results_table');
+
+    $fields_title = results_field_title(array(
+        do_lang_tempcode('SKU'),
+        do_lang_tempcode('PRODUCT_NAME'),
+        do_lang_tempcode('IDENTIFIER'),
+        do_lang_tempcode('PRICE'),
+        do_lang_tempcode(get_option('tax_system')),
+        do_lang_tempcode('QUANTITY'),
+        do_lang_tempcode('STATUS'),
+    ));
+
+    $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY id');
+    $product_entries = new Tempcode();
+    foreach ($product_rows as $product_row) {
+        $product_info_url = get_product_det_url($product_row['p_type_code'], false, $product_row['member_id']);
+        $product_name = $product_row['p_name'];
+        $product = hyperlink($product_info_url, $product_name, false, true, do_lang('VIEW'));
+
+        $product_entries->attach(results_entry(array(
+            escape_html($product_row['p_sku']),
+            $product,
+            escape_html($product_row['p_purchase_id']),
+            ecommerce_get_currency_symbol() . escape_html(float_format($product_row['p_price'])),
+            ecommerce_get_currency_symbol() . escape_html(float_format($product_row['p_tax'])),
+            escape_html(integer_format($product_row['p_quantity'])),
+            do_lang($product_row['p_dispatch_status'])
+        ), false, null));
+    }
+    $results_table = results_table(do_lang_tempcode('catalogues:DEFAULT_CATALOGUE_PRODUCTS_TITLE'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $product_entries);
+
+    // Show screen...
+
+    return do_template('ECOM_ORDER_DETAILS_SCREEN', array(
+        '_GUID' => '3ae59a343288eb6aa67e3627b5ea7eda',
+        'TITLE' => $title,
+        'TEXT' => $text,
+        'RESULTS_TABLE' => $results_table,
+        'ORDER_NUMBER' => strval($id),
+        'ADD_DATE' => get_timezoned_date($order_row['add_date'], true, false, true, true),
+        'CURRENCY' => get_option('currency'),
+        'TOTAL_PRICE' => float_format($order_row['total_price']),
+        'TOTAL_TAX' => float_format($order_row['total_tax']),
+        'TOTAL_SHIPPING_COST' => float_format($order_row['total_shipping_cost']),
+        'TRANSACTION_LINKER' => $transaction_linker,
+        'ORDERED_BY_MEMBER_ID' => strval($ordered_by_member_id),
+        'ORDERED_BY_USERNAME' => $ordered_by_username,
+        'ORDER_STATUS' => do_lang($order_row['order_status']),
+        'NOTES' => $order_row['notes'],
+        'ORDER_ACTIONS' => $order_actions,
+        'SHIPPING_ADDRESS' => $shipping_address,
+    ));
 }

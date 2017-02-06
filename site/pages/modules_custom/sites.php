@@ -165,7 +165,6 @@ class Module_sites
         require_lang('search');
         require_lang('downloads');
         require_code('form_templates');
-        require_lang('ecommerce');
         require_code('ecommerce');
         require_lang('cns');
 

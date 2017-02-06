@@ -31,14 +31,14 @@ class Hook_config_quota_price_points
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_quota_price_points',
+            'human_name' => 'PRICE_quota_price_points',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
             'group' => 'POP3',
             'explanation' => 'CONFIG_OPTION_quota_price_points',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 8,
             'required' => false,
 
             'addon' => 'ecommerce',

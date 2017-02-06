@@ -34,7 +34,7 @@ class Hook_config_store_credit_card_numbers
             'human_name' => 'STORE_CREDIT_CARD_NUMBERS',
             'type' => 'tick',
             'category' => 'ECOMMERCE',
-            'group' => 'SHOPPING',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_store_credit_card_numbers',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

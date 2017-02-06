@@ -1,6 +1,8 @@
 {TITLE}
 
-<p>{TEXT*}</p>
+{+START,IF_NON_EMPTY,{TEXT}}
+	<p>{TEXT*}</p>
+{+END}
 
 <div class="wide_table_wrap">
 	<table class="map_table results_table wide_table autosized_table">
@@ -31,47 +33,60 @@
 				</td>
 			</tr>
 
-
 			<tr>
-				<th>{!TOTAL_PRICE}</th>
+				<th>{!PRICE}</th>
 				<td>
 					{$CURRENCY_SYMBOL}{TOTAL_PRICE*}
 				</td>
 			</tr>
+
+			<tr>
+				<th>{$TAX_LABEL}</th>
+				<td>
+					{$CURRENCY_SYMBOL}{TOTAL_TAX*}
+				</td>
+			</tr>
+
+			<tr>
+				<th>{!SHIPPING_COST}</th>
+				<td>
+					{$CURRENCY_SYMBOL}{TOTAL_SHIPPING_COST*}
+				</td>
+			</tr>
+
 			<tr>
 				<th>{!NOTES}</th>
 				<td>
 					{NOTES*}
 				</td>
 			</tr>
+
 			<tr>
 				<th>{!ORDER_STATUS}</th>
 				<td>
 					{ORDER_STATUS}
 				</td>
 			</tr>
+
 			<tr>
 				<th>{!SHIPPING_ADDRESS}</th>
 				<td>
 					{SHIPPING_ADDRESS}
 				</td>
 			</tr>
-			<tr>
-				<th>{!ORDER_ACTIONS}</th>
-				<td>
-					{ORDER_ACTIONS}
-				</td>
-			</tr>
+
+			{+START,IF_NON_EMPTY,{ORDER_ACTIONS}}
+				<tr>
+					<th>{!ORDER_ACTIONS}</th>
+					<td>
+						{ORDER_ACTIONS}
+					</td>
+				</tr>
+			{+END}
 		</tbody>
 	</table>
-
-	<h2>{!ORDERED_PRODUCTS}</h2>
-
-	{RESULTS_TABLE}
-
-	{+START,IF_NON_EMPTY,{PAGINATION}}
-		<div class="float_surrounder pagination_spacing">
-			{PAGINATION}
-		</div>
-	{+END}
 </div>
+
+<h2>{!ORDERED_PRODUCTS}</h2>
+
+{RESULTS_TABLE}

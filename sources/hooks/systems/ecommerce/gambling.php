@@ -30,8 +30,6 @@ class Hook_ecommerce_gambling
      */
     public function get_product_category()
     {
-        require_lang('ecommerce');
-
         return array(
             'category_name' => do_lang('GAMBLING'),
             'category_description' => do_lang_tempcode('GAMBLING_DESCRIPTION'),
@@ -50,8 +48,6 @@ class Hook_ecommerce_gambling
      */
     public function get_products($search = null)
     {
-        require_lang('ecommerce');
-
         $products = array();
 
         $min = intval(get_option('minimum_gamble_amount'));
@@ -85,6 +81,8 @@ class Hook_ecommerce_gambling
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => 0.00,
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );
         }
@@ -122,8 +120,6 @@ class Hook_ecommerce_gambling
      */
     public function get_message($type_code)
     {
-        require_lang('ecommerce');
-
         return do_lang_tempcode('GAMBLE_WARNING');
     }
 
@@ -140,8 +136,6 @@ class Hook_ecommerce_gambling
         if ($details['STATUS'] != 'Completed') {
             return false;
         }
-
-        require_lang('ecommerce');
 
         $amount = intval(preg_replace('#^GAMBLING\_#', '', $type_code));
 
@@ -168,7 +162,7 @@ class Hook_ecommerce_gambling
             $winnings = mt_rand(0, intval(round($average_gamble_multiplier * $amount)));
         }
 
-        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('GAMBLING', null, null, null, get_site_default_lang()), 'details2' => strval($amount) . ' --> ' . strval($winnings), 'transaction_id' => $details['TXN_ID']));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('GAMBLING', null, null, null, get_site_default_lang()), 'details2' => strval($amount) . ' --> ' . strval($winnings), 'txn_id' => $details['TXN_ID']));
 
         // Actuate
         require_code('points2');

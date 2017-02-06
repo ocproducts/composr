@@ -50,6 +50,6 @@ class Hook_config_pd_address
      */
     public function get_default()
     {
-        return '';
+        return get_option('privacy_postal_address');
     }
 }

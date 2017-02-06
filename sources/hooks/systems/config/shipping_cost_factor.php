@@ -34,7 +34,7 @@ class Hook_config_shipping_cost_factor
             'human_name' => 'SHIPPING_COST_FACTOR',
             'type' => 'line',
             'category' => 'ECOMMERCE',
-            'group' => 'SHOPPING',
+            'group' => 'SHIPPING',
             'explanation' => 'CONFIG_OPTION_shipping_cost_factor',
             'shared_hosting_restricted' => '1',
             'list_options' => '',

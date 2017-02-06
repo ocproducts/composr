@@ -31,14 +31,14 @@ class Hook_config_topic_pin_price_points
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_topic_pin_price_points',
+            'human_name' => 'PRICE_topic_pin_price_points',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
             'group' => 'TOPIC_PINNING',
             'explanation' => 'CONFIG_OPTION_topic_pin_price_points',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 4,
             'required' => false,
 
             'addon' => 'ecommerce',

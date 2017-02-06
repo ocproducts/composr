@@ -34,8 +34,6 @@ class Hook_ecommerce_highlight_name
      */
     public function get_products($search = null)
     {
-        require_lang('ecommerce');
-
         $products = array(
             'HIGHLIGHT_NAME' => automatic_discount_calculation(array(
                 'item_name' => do_lang('NAME_HIGHLIGHTING'),
@@ -51,6 +49,8 @@ class Hook_ecommerce_highlight_name
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => float_unformat(get_option('highlight_name_tax')),
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             )),
         );
@@ -119,7 +119,7 @@ class Hook_ecommerce_highlight_name
 
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_highlighted_name' => 1), array('id' => $member_id), '', 1);
 
-        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'transaction_id' => $details['TXN_ID']));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'txn_id' => $details['TXN_ID']));
 
         return true;
     }

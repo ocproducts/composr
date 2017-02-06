@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_transaction_percentage_cost
+class Hook_config_banner_hit_tax
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_transaction_percentage_cost
     public function get_details()
     {
         return array(
-            'human_name' => 'TRANSACTION_PERCENTAGE_COST',
+            'human_name' => 'PRICE_banner_hit_tax',
             'type' => 'float',
             'category' => 'ECOMMERCE',
-            'group' => 'TRANSACTION_FEES',
-            'explanation' => 'CONFIG_OPTION_transaction_percentage_cost',
+            'group' => 'BANNERS',
+            'explanation' => 'CONFIG_OPTION_banner_hit_tax',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'required' => false,
+            'order_in_category_group' => 10,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +51,6 @@ class Hook_config_transaction_percentage_cost
      */
     public function get_default()
     {
-        return '';
+        return (!addon_installed('banners')) ? null : '0.00';
     }
 }

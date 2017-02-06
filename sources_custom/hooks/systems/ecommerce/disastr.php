@@ -81,6 +81,8 @@ class Hook_ecommerce_disastr
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => 0.00,
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );
 
@@ -98,6 +100,8 @@ class Hook_ecommerce_disastr
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => 0.00,
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );
         }
@@ -220,9 +224,9 @@ class Hook_ecommerce_disastr
         }
 
         if ($matches[1] == 'CURE') {
-            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('CURE', null, null, null, get_site_default_lang()), 'details2' => $disease_row['cure'], 'transaction_id' => $details['TXN_ID']));
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('CURE', null, null, null, get_site_default_lang()), 'details2' => $disease_row['cure'], 'txn_id' => $details['TXN_ID']));
         } elseif ($matches[1] == 'IMMUNISATION') {
-            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('IMMUNISATION', null, null, null, get_site_default_lang()), 'details2' => $disease_row['immunisation'], 'transaction_id' => $details['TXN_ID']));
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('IMMUNISATION', null, null, null, get_site_default_lang()), 'details2' => $disease_row['immunisation'], 'txn_id' => $details['TXN_ID']));
         }
 
         // There's an urgency, so show an instant message (plus buying via points, so will definitely be seen)

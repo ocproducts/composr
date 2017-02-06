@@ -110,18 +110,21 @@ class Hook_payment_gateway_worldpay
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  REAL $amount A transaction amount.
+     * @param  REAL $price Transaction price in money.
+     * @param  REAL $tax Transaction tax in money.
+     * @param  REAL $shipping_cost Transaction shipping cost in money.
      * @param  ID_TEXT $currency The currency to use.
+     * @param  REAL $shipping_cost Shipping cost.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
     {
         $username = $this->_get_username();
         $form_url = $this->_get_remote_form_url();
         $email_address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
         $digest_option = get_option('payment_gateway_digest');
-        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_expecting_id . ':' . float_to_raw_string($amount) . ':' . $currency);  Deprecated
-        $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_expecting_id . ';' . float_to_raw_string($amount) . ';' . $currency);
+        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_expecting_id . ':' . float_to_raw_string($price + $tax + $shipping_cost) . ':' . $currency);  Deprecated
+        $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency;' . $trans_expecting_id . ';' . float_to_raw_string($price + $tax + $shipping_cost) . ';' . $currency);
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_WORLDPAY', array(
             '_GUID' => '56c78a4e16c0e7f36fcfbe57d37bc3d3',
@@ -131,7 +134,10 @@ class Hook_payment_gateway_worldpay
             'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'DIGEST' => $digest,
             'TEST_MODE' => ecommerce_test_mode(),
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'SHIPPING_COST' => float_to_raw_string($shipping_cost),
+            'AMOUNT' => float_to_raw_string($price + $tax + $shipping_cost),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
             'FORM_URL' => $form_url,
@@ -147,14 +153,15 @@ class Hook_payment_gateway_worldpay
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  REAL $amount A transaction amount.
+     * @param  REAL $price Transaction price in money.
+     * @param  REAL $tax Transaction tax in money.
      * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
      * @return Tempcode The button.
      */
-    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
     {
         // https://support.worldpay.com/support/kb/bg/recurringpayments/rpfp.html
 
@@ -181,8 +188,8 @@ class Hook_payment_gateway_worldpay
                 break;
         }
         $digest_option = get_option('payment_gateway_digest');
-        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_expecting_id . ':' . float_to_raw_string($amount) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
-        $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_expecting_id . ';' . float_to_raw_string($amount) . ';' . $currency . $length_units_2 . strval($length));
+        //$digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . $trans_expecting_id . ':' . float_to_raw_string($price + $tax) . ':' . $currency . $length_units_2 . strval($length));   Deprecated
+        $digest = md5((($digest_option == '') ? ($digest_option . ':') : '') . ';' . 'cartId:amount:currency:intervalUnit:intervalMult;' . $trans_expecting_id . ';' . float_to_raw_string($price + $tax) . ';' . $currency . $length_units_2 . strval($length));
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_WORLDPAY', array(
             '_GUID' => '1f88716137762a467edbf5fbb980c6fe',
@@ -194,7 +201,9 @@ class Hook_payment_gateway_worldpay
             'TEST' => ecommerce_test_mode(),
             'LENGTH' => strval($length),
             'LENGTH_UNITS_2' => $length_units_2,
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'AMOUNT' => float_to_raw_string($price + $tax),
             'FIRST_REPEAT' => date('Y-m-d', $first_repeat),
             'CURRENCY' => $currency,
             'USERNAME' => $username,
@@ -299,14 +308,11 @@ class Hook_payment_gateway_worldpay
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));
         }
 
-        // Shopping cart
-        if (addon_installed('shopping')) {
-            if (preg_match('#^CART_ORDER_#', $type_code) != 0) {
-                $this->store_shipping_address(intval($purchase_id));
-            }
-        }
+        $this->store_shipping_address($trans_expecting_id, $txn_id);
 
-        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
+        $tax = null;
+
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**
@@ -325,39 +331,35 @@ class Hook_payment_gateway_worldpay
     }
 
     /**
-     * Store shipping address for orders.
+     * Store shipping address for a transaction.
      *
-     * @param  AUTO_LINK $order_id Order ID
-     * @return ?mixed Address ID (null: No address record found).
+     * @param  $trans_expecting_id Expected transaction ID.
+     * @param  $txn_id Transaction ID.
+     * @return ?AUTO_LINK Address ID.
      */
-    public function store_shipping_address($order_id)
+    public function store_shipping_address($trans_expecting_id, $txn_id)
     {
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)))) {
-            $_name = explode(' ', post_param_string('delvName', ''));
-            $name = array();
-            if (count($_name) > 0) {
-                $name[1] = $_name[count($_name) - 1];
-                unset($_name[count($_name) - 1]);
-            }
-            $name[0] = implode(' ', $_name);
-
-            $shipping_address = array(
-                'a_order_id' => $order_id,
-                'a_firstname' => $name[0],
-                'a_lastname' => $name[1],
-                'a_street_address' => trim(post_param_string('delvAddress1', '') . ' ' . post_param_string('delvAddress2', '') . ' ' . post_param_string('delvAddress3', '')),
-                'a_city' => post_param_string('city', ''),
-                'a_county' => '',
-                'a_state' => '',
-                'a_post_code' => post_param_string('delvPostcode', ''),
-                'a_country' => post_param_string('delvCountryString', ''),
-                'a_email' => post_param_string('email', ''),
-                'a_phone' => post_param_string('tel', ''),
-            );
-            return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
+        $_name = explode(' ', post_param_string('delvName', ''));
+        $name = array();
+        if (count($_name) > 0) {
+            $name[1] = $_name[count($_name) - 1];
+            unset($_name[count($_name) - 1]);
         }
+        $name[0] = implode(' ', $_name);
 
-        return null;
+        $shipping_address = array(
+            'a_firstname' => $name[0],
+            'a_lastname' => $name[1],
+            'a_street_address' => trim(post_param_string('delvAddress1', '') . ' ' . post_param_string('delvAddress2', '') . ' ' . post_param_string('delvAddress3', '')),
+            'a_city' => post_param_string('city', ''),
+            'a_county' => '',
+            'a_state' => '',
+            'a_post_code' => post_param_string('delvPostcode', ''),
+            'a_country' => post_param_string('delvCountryString', ''),
+            'a_email' => post_param_string('email', ''),
+            'a_phone' => post_param_string('tel', ''),
+        );
+        return store_shipping_address($trans_expecting_id, $txn_id, $shipping_address);
     }
 
     /**

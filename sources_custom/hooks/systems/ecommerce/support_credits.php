@@ -66,12 +66,14 @@ class Hook_ecommerce_support_credits
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => null,
 
-                'price' => $bundle * float_unformat(get_option('support_credit_value')),
+                'price' => $bundle * float_unformat(get_option('support_credit_price')),
                 'currency' => get_option('currency'),
                 'price_points' => null,
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => float_unformat(get_option('support_credit_tax')),
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );
         }
@@ -204,7 +206,7 @@ class Hook_ecommerce_support_credits
         // Update the row in the credit_purchases table
         $GLOBALS['SITE_DB']->query_update('credit_purchases', array('purchase_validated' => 1), array('purchase_id' => intval($purchase_id)));
 
-        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('CREDITS', null, null, null, get_site_default_lang()), 'details2' => strval($num_credits), 'transaction_id' => $details['TXN_ID']));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('CREDITS', null, null, null, get_site_default_lang()), 'details2' => strval($num_credits), 'txn_id' => $details['TXN_ID']));
 
         return true;
     }

@@ -30,7 +30,7 @@ class Module_buildr
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 3;
+        $info['version'] = 4;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -91,6 +91,10 @@ class Module_buildr
             $GLOBALS['SITE_DB']->alter_table_field('w_realms', 'private', 'BINARY', 'r_private');
         }
 
+        if ((!$upgrade_from !== null) && ($upgrade_from < 4)) {
+            $GLOBALS['SITE_DB']->alter_table_field('w_items', 'cost', 'INTEGER', 'price');
+        }
+
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('w_attempts', array(
                 'id' => '*AUTO',
@@ -124,7 +128,7 @@ class Module_buildr
                 'location_x' => '*INTEGER',
                 'location_y' => '*INTEGER',
                 'not_infinite' => 'BINARY',
-                'cost' => 'INTEGER',
+                'price' => 'INTEGER',
                 'i_count' => 'INTEGER',
                 'copy_owner' => '*MEMBER',
             ));
@@ -261,7 +265,7 @@ class Module_buildr
 
             $prices = get_buildr_prices_default();
             foreach ($prices as $name => $price) {
-                $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => null, 'price_points' => $price));
+                $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => null, 'tax' => null, 'price_points' => $price));
             }
 
             require_code('buildr_action');
@@ -639,7 +643,7 @@ class Module_buildr
             }
 
             $urls = get_url('url', 'pic', 'uploads/buildr_addon', 0, CMS_UPLOAD_IMAGE);
-            add_item_wrap($member_id, $name, post_param_integer('cost', 0), post_param_integer('not_infinite', 0), post_param_integer('bribable', 0), post_param_integer('healthy', 0), $urls[0], post_param_integer('max_per_player', -1), post_param_integer('replicateable', 0), post_param_string('description'));
+            add_item_wrap($member_id, $name, post_param_integer('price', 0), post_param_integer('not_infinite', 0), post_param_integer('bribable', 0), post_param_integer('healthy', 0), $urls[0], post_param_integer('max_per_player', -1), post_param_integer('replicateable', 0), post_param_string('description'));
         }
 
         if ($type == 'additemcopy') {
@@ -668,11 +672,11 @@ class Module_buildr
                     'PAGE_TYPE' => 'additemcopy',
                     'NOT_INFINITE' => '1',
                     'ITEMS' => $items,
-                    'COST' => '',
+                    'PRICE' => '',
                 ));
                 return $tpl;
             }
-            add_item_wrap_copy($member_id, $name, post_param_integer('cost'), post_param_integer('not_infinite', 0));
+            add_item_wrap_copy($member_id, $name, post_param_integer('price'), post_param_integer('not_infinite', 0));
         }
 
         if ($type == 'addroom') {
@@ -868,13 +872,13 @@ class Module_buildr
         if ($type == 'edititemcopy') {
             require_code('buildr_action');
 
-            $cost = post_param_integer('cost', -1);
+            $price = post_param_integer('price', -1);
 
-            if ($cost == -1) {
+            if ($price == -1) {
                 $member = get_param_integer('member');
                 list($realm, $x, $y) = get_loc_details($member_id);
 
-                $cost = $GLOBALS['SITE_DB']->query_select_value('w_items', 'cost', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item')));
+                $price = $GLOBALS['SITE_DB']->query_select_value('w_items', 'price', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item')));
                 $not_infinite = $GLOBALS['SITE_DB']->query_select_value('w_items', 'not_infinite', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item')));
 
                 $tpl = do_template('W_ITEMCOPY_SCREEN', array(
@@ -887,12 +891,12 @@ class Module_buildr
                     'REALM' => strval($realm),
                     'ITEM' => get_param_string('item'),
                     'OWNER' => strval($member),
-                    'COST' => strval($cost),
+                    'PRICE' => strval($price),
                 ));
                 return $tpl;
             }
 
-            edit_item_wrap_copy($member_id, $item, $cost, post_param_integer('not_infinite', 0), post_param_integer('new_x'), post_param_integer('new_y'), post_param_integer('new_realm'), grab_new_owner('new_owner'));
+            edit_item_wrap_copy($member_id, $item, $price, post_param_integer('not_infinite', 0), post_param_integer('new_x'), post_param_integer('new_y'), post_param_integer('new_realm'), grab_new_owner('new_owner'));
         }
 
         if ($type == 'editroom') {

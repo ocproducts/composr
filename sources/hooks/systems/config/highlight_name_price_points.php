@@ -31,14 +31,14 @@ class Hook_config_highlight_name_price_points
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_highlight_name_price_points',
+            'human_name' => 'PRICE_highlight_name_price_points',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
             'group' => 'NAME_HIGHLIGHTING',
             'explanation' => 'CONFIG_OPTION_highlight_name_price_points',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 4,
             'required' => false,
 
             'addon' => 'ecommerce',

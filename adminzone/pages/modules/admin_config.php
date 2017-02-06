@@ -473,7 +473,7 @@ class Module_admin_config
                         break;
 
                     case 'float':
-                        $out .= static_evaluate_tempcode(form_input_float($human_name, $explanation, $name, floatval(get_option($name)), $required));
+                        $out .= static_evaluate_tempcode(form_input_float($human_name, $explanation, $name, float_unformat(get_option($name)), $required));
                         break;
 
                     case 'line':

@@ -49,7 +49,7 @@ class Hook_realtime_rain_ecommerce
 
                 $timestamp = $row['t_timestamp'];
 
-                $ticker_text = do_lang('KA_CHING', ecommerce_get_currency_symbol(), $row['t_amount']);
+                $ticker_text = do_lang('KA_CHING', ecommerce_get_currency_symbol($row['t_currency']), $row['t_amount'], $row['t_currency']);
 
                 $drops[] = rain_get_special_icons(null, $timestamp, null, $ticker_text) + array(
                         'TYPE' => 'ecommerce',

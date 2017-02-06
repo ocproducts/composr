@@ -31,8 +31,8 @@ class Hook_config_highlight_name_price
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_highlight_name_price',
-            'type' => 'integer',
+            'human_name' => 'PRICE_highlight_name_price',
+            'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'NAME_HIGHLIGHTING',
             'explanation' => 'CONFIG_OPTION_highlight_name_price',

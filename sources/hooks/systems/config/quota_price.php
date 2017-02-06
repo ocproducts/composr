@@ -31,8 +31,8 @@ class Hook_config_quota_price
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_quota_price',
-            'type' => 'integer',
+            'human_name' => 'PRICE_quota_price',
+            'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'POP3',
             'explanation' => 'CONFIG_OPTION_quota_price',

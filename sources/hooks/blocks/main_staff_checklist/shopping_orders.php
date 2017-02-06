@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_checklist_ecommerce_orders
+class Hook_checklist_shopping_orders
 {
     /**
      * Find items to include on the staff checklist.
@@ -39,7 +39,7 @@ class Hook_checklist_ecommerce_orders
 
         require_lang('shopping');
 
-        $to_dispatch_order_cnt = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'count(id)', array('order_status' => 'ORDER_STATUS_payment_received'));
+        $to_dispatch_order_cnt = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'COUNT(id)', array('order_status' => 'ORDER_STATUS_payment_received'));
 
         if ($to_dispatch_order_cnt > 0) {
             $status = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0', array('_GUID' => 'a5138b84598f5c45113fc169a44d55c7'));
@@ -47,7 +47,7 @@ class Hook_checklist_ecommerce_orders
             $status = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1', array('_GUID' => 'b5138b84598f5c45113fc169a44d55c7'));
         }
 
-        $url = build_url(array('page' => 'admin_orders', 'type' => 'show_orders', 'filter' => 'undispatched'), get_module_zone('admin_orders'));
+        $url = build_url(array('page' => 'admin_shopping', 'type' => 'show_orders', 'filter' => 'undispatched'), get_module_zone('admin_shopping'));
 
         $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => '440a79b164533416f4d086a93efba9ea', 'URL' => $url, 'STATUS' => $status, 'TASK' => do_lang_tempcode('ORDERS'), 'INFO' => do_lang_tempcode('NUM_QUEUE', escape_html(integer_format($to_dispatch_order_cnt)))));
         return array(array($tpl, null, $to_dispatch_order_cnt, null));

@@ -35,7 +35,7 @@ class Hook_ecommerce_custom
         foreach ($rows as $i => $row) {
             $fields = new Tempcode();
             $hidden = new Tempcode();
-            $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['c_title']), get_translated_text($row['c_description']), $row['c_enabled'], $row['c_price'], $row['c_price_points'], $row['c_one_per_member'], get_translated_text($row['c_mail_subject']), get_translated_text($row['c_mail_body'])));
+            $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['c_title']), get_translated_text($row['c_description']), $row['c_enabled'], $row['c_price'], $row['c_tax'], $row['c_shipping_cost'], $row['c_price_points'], $row['c_one_per_member'], get_translated_text($row['c_mail_subject']), get_translated_text($row['c_mail_body'])));
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '01362c21b40d7905b76ee6134198a128', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_custom_' . strval($i), false));
             $hidden->attach(form_input_hidden('custom_' . strval($i), strval($row['id'])));
@@ -54,14 +54,16 @@ class Hook_ecommerce_custom
      * @param  SHORT_TEXT $title Title
      * @param  LONG_TEXT $description Description
      * @param  BINARY $enabled Whether it is enabled
-     * @param  ?REAL $price The cost (null: not set)
-     * @param  ?integer $price_points The cost in points (null: not set)
+     * @param  ?REAL $price The price (null: not set)
+     * @param  REAL $tax The tax
+     * @param  REAL $shipping_cost The shipping_cost
+     * @param  ?integer $price_points The price in points (null: not set)
      * @param  BINARY $one_per_member Whether it is restricted to one per member
      * @param  SHORT_TEXT $mail_subject Confirmation mail subject
      * @param  LONG_TEXT $mail_body Confirmation mail body
      * @return Tempcode The fields
      */
-    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = null, $price_points = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
+    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = null, $tax = 0.00, $shipping_cost = 0.00, $price_points = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
     {
         require_lang('points');
 
@@ -69,9 +71,11 @@ class Hook_ecommerce_custom
 
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'custom_title' . $name_suffix, $title, true));
         $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'custom_description' . $name_suffix, $description, true));
-        $fields->attach(form_input_float(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_COST'), 'custom_price' . $name_suffix, $price, false));
+        $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_PRICE'), 'custom_price' . $name_suffix, $price, false));
+        $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_INCLUDING_SHIPPING_COST_TAX'), 'custom_tax' . $name_suffix, $tax, true));
+        $fields->attach(form_input_float(do_lang_tempcode('SHIPPPING_COST'), do_lang_tempcode('DESCRIPTION_SHIPPPING_COST'), 'custom_shipping_cost' . $name_suffix, $shipping_cost, true));
         if (addon_installed('points')) {
-            $fields->attach(form_input_integer(do_lang_tempcode('COST_POINTS'), do_lang_tempcode('DESCRIPTION_COST_POINTS'), 'custom_price_points' . $name_suffix, $price_points, false));
+            $fields->attach(form_input_integer(do_lang_tempcode('PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_PRICE_POINTS'), 'custom_price_points' . $name_suffix, $price_points, false));
         }
         $fields->attach(form_input_tick(do_lang_tempcode('ONE_PER_MEMBER'), do_lang_tempcode('DESCRIPTION_ONE_PER_MEMBER'), 'custom_one_per_member' . $name_suffix, $one_per_member == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('ENABLED'), '', 'custom_enabled' . $name_suffix, $enabled == 1));
@@ -97,6 +101,10 @@ class Hook_ecommerce_custom
             $enabled = post_param_integer('custom_enabled_' . strval($i), 0);
             $_price = post_param_string('custom_price_' . strval($i), '');
             $price = ($_price == '') ? null : float_unformat($_price);
+            $_tax = post_param_string('custom_tax_' . strval($i));
+            $tax = float_unformat($_tax);
+            $_shipping_cost = post_param_string('custom_shipping_cost_' . strval($i));
+            $shipping_cost = float_unformat($_shipping_cost);
             if (addon_installed('points')) {
                 $price_points = post_param_integer('custom_price_points_' . strval($i), null);
             } else {
@@ -123,6 +131,8 @@ class Hook_ecommerce_custom
                 $map = array(
                     'c_enabled' => $enabled,
                     'c_price' => $price,
+                    'c_tax' => $tax,
+                    'c_shipping_cost' => $shipping_cost,
                     'c_price_points' => $price_points,
                     'c_one_per_member' => $one_per_member,
                 );
@@ -153,6 +163,8 @@ class Hook_ecommerce_custom
             $map = array(
                 'c_enabled' => $enabled,
                 'c_price' => $price,
+                'c_tax' => $tax,
+                'c_shipping_cost' => $shipping_cost,
                 'c_price_points' => $price_points,
                 'c_one_per_member' => $one_per_member,
             );
@@ -195,6 +207,8 @@ class Hook_ecommerce_custom
                 $image_url = '';
             }
 
+            $shipping_cost = $row['shipping_cost'];
+
             $products['CUSTOM_' . strval($row['id'])] = automatic_discount_calculation(array(
                 'item_name' => $row['_title'],
                 'item_description' => $description,
@@ -209,7 +223,9 @@ class Hook_ecommerce_custom
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
-                'needs_shipping_address' => false,
+                'tax' => $row['tax'],
+                'shipping_cost' => $shipping_cost,
+                'needs_shipping_address' => ($shipping_cost != 0.00),
             ));
         }
 
@@ -240,7 +256,7 @@ class Hook_ecommerce_custom
 
         if ($row['c_one_per_member'] == 1) {
             // Test to see if it's been purchased
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.transaction_id', 'id', array('details2' => strval($rows[0]['id']), 'member_id' => $member_id, 't_type_code' => $type_code));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id', 'id', array('details2' => strval($rows[0]['id']), 'member_id' => $member_id, 't_type_code' => $type_code));
             if ($test !== null) {
                 return ECOMMERCE_PRODUCT_ALREADY_HAS;
             }
@@ -277,8 +293,6 @@ class Hook_ecommerce_custom
             return false;
         }
 
-        require_lang('ecommerce');
-
         $custom_product_id = intval(preg_replace('#^CUSTOM\_#', '', $type_code));
 
         $member_id = intval($purchase_id);
@@ -291,7 +305,7 @@ class Hook_ecommerce_custom
 
         $c_title = get_translated_text($row['c_title']);
 
-        $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $c_title, 'details2' => strval($row['id']), 'transaction_id' => $details['TXN_ID']), true);
+        $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $c_title, 'details2' => strval($row['id']), 'txn_id' => $details['TXN_ID']), true);
 
         // Notification to staff
         require_code('notifications');

@@ -15,6 +15,7 @@
 					<th>{!CLASSIFIEDS_DAYS}</th>
 					<th>{!TITLE}</th>
 					<th>{!PRICE}</th>
+					<th>{$TAX_LABEL}</th>
 				</tr>
 			</thead>
 
@@ -41,6 +42,10 @@
 						<td>
 							<label for="price_{ID*}" class="accessibility_hidden">{!PRICE}</label>
 							<input maxlength="10" name="price_{ID*}" id="price_{ID*}" value="{PRICE_PRICE*}" class="input_float" step="0.01" type="number" onkeydown="if (!key_pressed(event,[null,'-','0','1','2','3','4','5','6','7','8','9','{$DECIMAL_POINT;}'])) return false; return null;" />
+						</td>
+						<td>
+							<label for="tax_{ID*}" class="accessibility_hidden">{$TAX_LABEL}</label>
+							<input maxlength="10" name="tax_{ID*}" id="tax_{ID*}" value="{PRICE_TAX*}" class="input_float" step="0.00" type="number" onkeydown="if (!key_pressed(event,[null,'-','0','1','2','3','4','5','6','7','8','9','{$DECIMAL_POINT;}'])) return false; return null;" />
 						</td>
 					</tr>
 				{+END}

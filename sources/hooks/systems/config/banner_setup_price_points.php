@@ -31,14 +31,14 @@ class Hook_config_banner_setup_price_points
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_banner_setup_price_points',
+            'human_name' => 'PRICE_banner_setup_price_points',
             'type' => 'integer',
             'category' => 'ECOMMERCE',
             'group' => 'BANNERS',
             'explanation' => 'CONFIG_OPTION_banner_setup_price_points',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 4,
+            'order_in_category_group' => 5,
             'required' => false,
 
             'addon' => 'ecommerce',

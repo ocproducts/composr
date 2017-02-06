@@ -60,6 +60,7 @@ class Module_classifieds
                 'c_days' => 'INTEGER',
                 'c_label' => 'SHORT_TRANS',
                 'c_price' => 'REAL',
+                'c_tax' => 'REAL',
             ));
             $GLOBALS['SITE_DB']->create_index('ecom_classifieds_prices', 'c_catalogue_name', array('c_catalogue_name'));
 
@@ -86,6 +87,8 @@ class Module_classifieds
 
         if (($upgrade_from < 3) && ($upgrade_from !== null)) {
             $GLOBALS['SITE_DB']->rename_table('classifieds_prices', 'ecom_classifieds_prices');
+
+            $GLOBALS['SITE_DB']->add_table_field('ecom_classifieds_prices', 'c_tax', 'REAL', 0.00);
         }
     }
 
@@ -198,6 +201,7 @@ class Module_classifieds
                     'T_STATUS' => $t['t_status'],
                     'T_REASON' => $t['t_reason'],
                     'T_AMOUNT' => float_format($t['t_amount']),
+                    'T_TAX' => float_format($t['t_tax']),
                     'T_CURRENCY' => $t['t_currency'],
                     'T_PARENT_TXN_ID' => $t['t_parent_txn_id'],
                     'T_TIME' => strval($t['t_time']),

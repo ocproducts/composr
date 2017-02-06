@@ -53,40 +53,34 @@ class Hook_ecommerce_cart_orders
             $where = 'id=' . strval(intval(substr($search, strlen('CART_ORDER_'))));
         } else {
             $where = '(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')';
-        }
 
-        if ($search === null) {
-            $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where);
-            if ($count > 50) {
-                return array(); // Too many to list
+            if (get_page_name() == 'purchase') {
+                $where .= ' AND member_id=' . strval(get_member()); // HACKHACK: A bit naughty, but we only do it if $search is null and on purchase page
             }
         }
 
-        $start = 0;
-        do {
-            $orders = $GLOBALS['SITE_DB']->query('SELECT id,total_price FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where, 500, null, false, true);
+        $orders = $GLOBALS['SITE_DB']->query('SELECT id,total_price,total_tax,total_shipping_cost FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where . ' ORDER BY add_date DESC', 50, null, false, true);
 
-            foreach ($orders as $order) {
-                $products['CART_ORDER_' . strval($order['id'])] = array(
-                    'item_name' => do_lang('CART_ORDER', strval($order['id'])),
-                    'item_description' => do_lang_tempcode('CART_ORDER_DESCRIPTION', escape_html(strval($order['id']))),
-                    'item_image_url' => find_theme_image('icons/48x48/menu/rich_content/ecommerce/shopping_cart'),
+        foreach ($orders as $order) {
+            $products['CART_ORDER_' . strval($order['id'])] = array(
+                'item_name' => do_lang('CART_ORDER', strval($order['id'])),
+                'item_description' => do_lang_tempcode('CART_ORDER_DESCRIPTION', escape_html(strval($order['id']))),
+                'item_image_url' => find_theme_image('icons/48x48/menu/rich_content/ecommerce/shopping_cart'),
 
-                    'type' => PRODUCT_ORDERS,
-                    'type_special_details' => array(),
+                'type' => PRODUCT_ORDERS,
+                'type_special_details' => array(),
 
-                    'price' => $order['total_price'],
-                    'currency' => get_option('currency'),
-                    'price_points' => null,
-                    'discount_points__num_points' => null,
-                    'discount_points__price_reduction' => null,
+                'price' => $order['total_price'],
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null,
+                'discount_points__price_reduction' => null,
 
-                    'needs_shipping_address' => true,
-                );
-            }
-
-            $start += 500;
-        } while (count($orders) == 500);
+                'tax' => $order['total_tax'],
+                'shipping_cost' => $order['shipping_cost'],
+                'needs_shipping_address' => true,
+            );
+        }
 
         return $products;
     }
@@ -102,6 +96,14 @@ class Hook_ecommerce_cart_orders
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
+        if (!has_actual_page_access($member_id, 'shopping')) {
+            if (is_guest()) {
+                return ECOMMERCE_PRODUCT_NO_GUESTS;
+            }
+
+            return ECOMMERCE_PRODUCT_PROHIBITED;
+        }
+
         return ECOMMERCE_PRODUCT_AVAILABLE;
     }
 
@@ -146,8 +148,29 @@ class Hook_ecommerce_cart_orders
         $order_id = intval($purchase_id);
 
         if ($details['STATUS'] == 'Completed') {
+            // Insert sale
             $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'member_id', array('id' => $order_id));
-            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'transaction_id' => $details['TXN_ID']));
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'txn_id' => $details['TXN_ID']));
+
+            $ordered_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id), '', 1);
+            foreach ($ordered_items as $ordered_item) {
+                list($sub_details, , $sub_product_object) = find_product_details($ordered_item['p_type_code']);
+
+                if ($sub_details === null) {
+                    continue;
+                }
+
+                // Reduce stock
+                if (method_exists($sub_product_object, 'reduce_stock')) {
+                    $sub_product_object->reduce_stock($ordered_item['p_type_code'], $ordered_item['p_quantity']);
+                }
+
+                // Call actualiser
+                $call_actualiser_from_cart = !isset($sub_details['type_special_details']['call_actualiser_from_cart']) || $sub_details['type_special_details']['call_actualiser_from_cart'];
+                if ($call_actualiser_from_cart) {
+                    $sub_product_object->actualiser($ordered_item['p_type_code'], $ordered_item['purchase_id'], $sub_details + $details/*Copy through transaction status etc, merge in this order gives precedence to $sub_details*/);
+                }
+            }
         }
 
         $old_status = $GLOBALS['SITE_DB']->query_select_value('shopping_order_details', 'p_dispatch_status', array('p_order_id' => $order_id));
@@ -155,7 +178,7 @@ class Hook_ecommerce_cart_orders
         if ($old_status != $details['ORDER_STATUS']) {
             $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => $details['ORDER_STATUS']), array('p_order_id' => $order_id));
 
-            $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => $details['ORDER_STATUS'], 'transaction_id' => $details['TXN_ID']), array('id' => $order_id));
+            $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => $details['ORDER_STATUS'], 'txn_id' => $details['TXN_ID']), array('id' => $order_id));
 
             // Copy in memo from transaction, as customer notes
             $old_memo = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => $order_id));
@@ -168,7 +191,7 @@ class Hook_ecommerce_cart_orders
             }
 
             if ($details['ORDER_STATUS'] == 'ORDER_STATUS_payment_received') {
-                purchase_done_staff_mail($order_id);
+                send_shopping_order_purchased_staff_mail($order_id);
             }
         }
 
@@ -197,16 +220,13 @@ class Hook_ecommerce_cart_orders
      */
     public function get_product_dispatch_type($order_id)
     {
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
+        $ordered_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
+        foreach ($ordered_items as $ordered_item) {
+            list(, , $product_object) = find_product_details($ordered_item['p_type_code']);
 
-        foreach ($rows as $item) {
-            if ($item['p_type'] === null) {
+            if ($product_object === null) {
                 continue;
             }
-
-            require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($item['p_type']));
-
-            $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($item['p_type']));
 
             // If any of the product's dispatch type is manual, return type as 'manual'
             if ($product_object->get_product_dispatch_type() == 'manual') {

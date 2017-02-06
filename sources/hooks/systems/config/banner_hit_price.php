@@ -31,14 +31,14 @@ class Hook_config_banner_hit_price
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_banner_hit_price',
-            'type' => 'integer',
+            'human_name' => 'PRICE_banner_hit_price',
+            'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'BANNERS',
             'explanation' => 'CONFIG_OPTION_banner_hit_price',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 9,
             'required' => false,
 
             'addon' => 'ecommerce',

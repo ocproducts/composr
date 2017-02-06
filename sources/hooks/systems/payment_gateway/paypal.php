@@ -84,11 +84,14 @@ class Hook_payment_gateway_paypal
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  REAL $amount A transaction amount.
+     * @param  REAL $price Transaction price in money.
+     * @param  REAL $tax Transaction tax in money.
+     * @param  REAL $shipping_cost Transaction shipping cost in money.
      * @param  ID_TEXT $currency The currency to use.
+     * @param  REAL $shipping_cost Shipping cost.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
     {
         // https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/formbasics/
 
@@ -101,7 +104,10 @@ class Hook_payment_gateway_paypal
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
             'TRANS_EXPECTING_ID' => $trans_expecting_id,
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'SHIPPING_COST' => float_to_raw_string($shipping_cost),
+            'AMOUNT' => float_to_raw_string($price + $tax + $shipping_cost),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
@@ -115,11 +121,12 @@ class Hook_payment_gateway_paypal
      *
      * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  array $items Items array.
+     * @param  REAL $shipping_cost Shipping cost.
      * @param  Tempcode $currency Currency symbol.
      * @param  AUTO_LINK $order_id Order ID.
      * @return Tempcode The button.
      */
-    public function make_cart_transaction_button($trans_expecting_id, $items, $currency, $order_id)
+    public function make_cart_transaction_button($trans_expecting_id, $items, $shipping_cost, $currency, $order_id)
     {
         $payment_address = $this->_get_payment_address();
 
@@ -131,6 +138,7 @@ class Hook_payment_gateway_paypal
             '_GUID' => '89b7edf976ef0143dd8dfbabd3378c95',
             'ITEMS' => $items,
             'CURRENCY' => $currency,
+            'SHIPPING_COST' => $shipping_cost,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
             'MEMBER_ADDRESS' => $this->_build_member_address(),
@@ -147,14 +155,15 @@ class Hook_payment_gateway_paypal
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  REAL $price Transaction price in money.
+     * @param  REAL $tax Transaction tax in money.
      * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
      * @return Tempcode The button.
      */
-    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
     {
         $payment_address = $this->_get_payment_address();
         $form_url = $this->_get_remote_form_url();
@@ -166,7 +175,9 @@ class Hook_payment_gateway_paypal
             'LENGTH_UNITS' => $length_units,
             'PURCHASE_ID' => $purchase_id,
             'TRANS_EXPECTING_ID' => $trans_expecting_id,
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'AMOUNT' => float_to_raw_string($price + $tax),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
@@ -244,16 +255,12 @@ class Hook_payment_gateway_paypal
         $parent_txn_id = post_param_string('parent_txn_id', '-1');
         $_amount = post_param_string('mc_gross', ''); // May be blank for subscription
         $amount = ($_amount == '') ? null : floatval($_amount);
-        $tax = post_param_string('tax', '');
-        if (($tax != '') && (intval($tax) > 0) && ($amount !== null)) {
-            $amount -= floatval($tax);
+        $_tax = post_param_string('tax', '');
+        if ($_tax == '') {
+            $tax = null;
+        } else
+            $tax = floatval($_tax);
         }
-        /* Actually, the hook will have added shipping to the overall product cost
-        $shipping = post_param_string('shipping', '');
-        if (($shipping != '') && (intval($shipping) > 0) && ($amount !== null)) {
-            $amount -= floatval($shipping);
-        }
-        */
         $currency = post_param_string('mc_currency', get_option('currency')); // May be blank for subscription
         $period = post_param_string('period3', '');
 
@@ -306,7 +313,7 @@ class Hook_payment_gateway_paypal
             // Subscription
             case '': // We map certain values of txn_type for subscriptions over to payment_status, as subscriptions have no payment status but similar data in txn_type which we do not use
                 $_amount = post_param_string('mc_amount3');
-                $amount = ($_amount == '') ? null : floatval($_amount);
+                $amount = floatval($_amount);
 
                 switch ($txn_type) {
                     case 'subscr_signup':
@@ -439,46 +446,37 @@ class Hook_payment_gateway_paypal
             fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR', $receiver_email, $primary_paypal_email));
         }
 
-        // Shopping cart
-        if (addon_installed('shopping')) {
-            if (preg_match('#^CART_ORDER_#', $type_code) != 0) {
-                $this->store_shipping_address(intval($purchase_id));
-            }
+        $this->store_shipping_address($trans_expecting_id, $txn_id);
+
+        if (($amount !== null) && ($tax !== null)) {
+            $amount -= $tax; // The sent amount includes tax, but we want it without
         }
 
-        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**
-     * Store shipping address for orders.
+     * Store shipping address for a transaction.
      *
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return ?mixed Address ID (null: No address record found).
+     * @param  $trans_expecting_id Expected transaction ID.
+     * @param  $txn_id Transaction ID.
+     * @return ?AUTO_LINK Address ID.
      */
-    public function store_shipping_address($order_id)
+    public function store_shipping_address($trans_expecting_id, $txn_id)
     {
-        if (is_null(post_param_string('address_name', null))) {
-            return null;
-        }
-
-        if (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)))) {
-            $shipping_address = array(
-                'a_order_id' => $order_id,
-                'a_firstname' => post_param_string('first_name', ''),
-                'a_lastname' => post_param_string('last_name', ''),
-                'a_street_address' => trim(post_param_string('address_name', '') . "\n" . post_param_string('address_street', '')),
-                'a_city' => post_param_string('address_city', ''),
-                'a_county' => '',
-                'a_state' => '',
-                'a_post_code' => post_param_string('address_zip', ''),
-                'a_country' => post_param_string('address_country', ''),
-                'a_email' => post_param_string('payer_email', ''),
-                'a_phone' => post_param_string('contact_phone', ''),
-            );
-            return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
-        }
-
-        return null;
+        $shipping_address = array(
+            'a_firstname' => post_param_string('first_name', ''),
+            'a_lastname' => post_param_string('last_name', ''),
+            'a_street_address' => trim(post_param_string('address_name', '') . "\n" . post_param_string('address_street', '')),
+            'a_city' => post_param_string('address_city', ''),
+            'a_county' => '',
+            'a_state' => '',
+            'a_post_code' => post_param_string('address_zip', ''),
+            'a_country' => post_param_string('address_country', ''),
+            'a_email' => post_param_string('payer_email', ''),
+            'a_phone' => post_param_string('contact_phone', ''),
+        );
+        return store_shipping_address($trans_expecting_id, $txn_id, $shipping_address);
     }
 
     /**

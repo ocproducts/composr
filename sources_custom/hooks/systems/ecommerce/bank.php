@@ -80,6 +80,8 @@ class Hook_ecommerce_bank
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => 0.00,
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );
         }
@@ -128,7 +130,7 @@ class Hook_ecommerce_bank
         $bank_dividend = intval(get_option('bank_dividend'));
         $GLOBALS['SITE_DB']->query_insert('bank', array('add_time' => time(), 'member_id' => $member_id, 'amount' => $amount, 'dividend' => $bank_dividend));
 
-        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('BANKING', null, null, null, get_site_default_lang()), 'details2' => strval($amount), 'transaction_id' => $details['TXN_ID']));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('BANKING', null, null, null, get_site_default_lang()), 'details2' => strval($amount), 'txn_id' => $details['TXN_ID']));
 
         // Show an instant message (plus buying via points, so will definitely be seen)
         $result = do_lang_tempcode('BANKING_CONGRATULATIONS', escape_html(integer_format($amount)), escape_html(integer_format($bank_dividend)));

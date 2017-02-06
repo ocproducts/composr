@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_transaction_flat_cost
+class Hook_config_tax_number
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,13 @@ class Hook_config_transaction_flat_cost
     public function get_details()
     {
         return array(
-            'human_name' => 'TRANSACTION_FLAT_COST',
-            'type' => 'float',
+            'human_name' => 'TAX_NUMBER',
+            'type' => 'line',
             'category' => 'ECOMMERCE',
-            'group' => 'TRANSACTION_FEES',
-            'explanation' => 'CONFIG_OPTION_transaction_flat_cost',
+            'group' => 'TAX',
+            'explanation' => 'CONFIG_OPTION_tax_number',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'required' => false,
 
             'addon' => 'ecommerce',
         );

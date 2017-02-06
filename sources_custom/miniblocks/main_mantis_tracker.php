@@ -45,7 +45,7 @@ if (empty($s_currency)) {
     $s_currency = 'USD';
 }
 
-$s_credit_value = floatval(get_option('support_credit_value'));
+$s_credit_value = floatval(get_option('support_credit_price'));
 
 $minutes_per_credit = intval(get_option('support_priority_backburner_minutes'));
 $credits_per_hour = intval(60 / $minutes_per_credit);

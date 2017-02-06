@@ -120,9 +120,10 @@ random_quotes	testimonials
 join	register	signup	sign-up
 logout	log-out	sign-out	sign-off
 login	log-in	sign-in	sign-on	logon	log-on	authorize
-shopping	ecommerce	payment	purchase	products	store	buy	bought
+shopping	ecommerce	payment	purchase	products	store	buy	bought	checkout
 cash	money	currency
-price	cost	amount	quantity	gross
+price	cost	amount	quantity	gross	fee
+tax	vat	duty	tariff
 coupon	voucher	discount	credit
 cache	decache	cleanup
 ssl	https
@@ -138,3 +139,4 @@ menu	navigation
 permalink	url	link
 importance	priority	precedence	level
 note	memo
+shipping	postage	freight

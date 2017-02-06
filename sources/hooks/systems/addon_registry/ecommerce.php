@@ -128,6 +128,9 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/resource_meta_aware/usergroup_subscription.php',
             'sources/hooks/systems/commandr_fs/usergroup_subscriptions.php',
             'sources/hooks/systems/config/payment_gateway_callback_password.php',
+            'sources/hooks/systems/config/tax_system.php',
+            'sources/hooks/systems/config/tax_number.php',
+            'sources/hooks/systems/config/business_address.php',
             'sources/hooks/systems/config/currency.php',
             'sources/hooks/systems/config/ecommerce_test_mode.php',
             'sources/hooks/systems/config/payment_gateway_username.php',
@@ -217,8 +220,8 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/credit_card_cleanup_days.php',
             'sources/hooks/systems/config/store_credit_card_numbers.php',
             'sources/hooks/systems/cron/credit_card_cleanup.php',
-            'sources/hooks/systems/config/transaction_percentage_cost.php',
-            'sources/hooks/systems/config/transaction_flat_cost.php',
+            'sources/hooks/systems/config/transaction_percentage_fee.php',
+            'sources/hooks/systems/config/transaction_flat_fee.php',
             'themes/default/images/icons/24x24/menu/adminzone/setup/ecommerce_products.png',
             'themes/default/images/icons/48x48/menu/adminzone/setup/ecommerce_products.png',
             'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/sales_log.png',
@@ -229,13 +232,17 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/notifications/ecom_product_request_quota.php',
             'sources/hooks/systems/config/average_gamble_multiplier.php',
             'sources/hooks/systems/config/banner_hit_price.php',
+            'sources/hooks/systems/config/banner_hit_tax.php',
             'sources/hooks/systems/config/banner_hit_price_points.php',
             'sources/hooks/systems/config/banner_imp_price.php',
+            'sources/hooks/systems/config/banner_imp_tax.php',
             'sources/hooks/systems/config/banner_imp_price_points.php',
             'sources/hooks/systems/config/banner_setup_price.php',
+            'sources/hooks/systems/config/banner_setup_tax.php',
             'sources/hooks/systems/config/banner_setup_price_points.php',
             'sources/hooks/systems/config/forw_url.php',
             'sources/hooks/systems/config/highlight_name_price.php',
+            'sources/hooks/systems/config/highlight_name_tax.php',
             'sources/hooks/systems/config/highlight_name_price_points.php',
             'sources/hooks/systems/config/initial_banner_hits.php',
             'sources/hooks/systems/config/initial_quota.php',
@@ -252,10 +259,13 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/minimum_gamble_amount.php',
             'sources/hooks/systems/config/pop_url.php',
             'sources/hooks/systems/config/quota_price.php',
+            'sources/hooks/systems/config/quota_tax.php',
             'sources/hooks/systems/config/quota_price_points.php',
             'sources/hooks/systems/config/quota_url.php',
             'sources/hooks/systems/config/topic_pin_price.php',
+            'sources/hooks/systems/config/topic_pin_tax.php',
             'sources/hooks/systems/config/topic_pin_price_points.php',
+            'sources/hooks/systems/config/shipping_cost_tax_rate.php',
             'sources/hooks/systems/cron/topic_pin.php',
             'sources/hooks/systems/commandr_fs_extended_config/ecom_prods_custom.php',
             'sources/hooks/systems/commandr_fs_extended_config/ecom_prods_permissions.php',
@@ -263,6 +273,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/blocks/main_staff_checklist/ecommerce_sales.php',
             'themes/default/templates/ECOM_PRODUCTS_PRICES_FORM_WRAP.tpl',
             'themes/default/templates/ECOM_SALES_LOG_SCREEN.tpl',
+            'themes/default/templates/ECOM_TAX_INVOICE.tpl',
             'themes/default/templates/ECOM_PRODUCT_PRICE_SCREEN.tpl',
             'themes/default/text/ECOM_PRODUCT_QUOTA_MAIL.txt',
             'themes/default/text/ECOM_PRODUCT_FORWARDER_MAIL.txt',
@@ -273,6 +284,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/ecommerce/permission.php',
             'sources/hooks/systems/ecommerce/email.php',
             'sources/hooks/systems/ecommerce/topic_pin.php',
+            'themes/default/javascript/ecommerce.js',
 
             'themes/default/templates/ECOM_TRANSACTION_BUTTON_VIA_PAYPAL.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL.tpl',
@@ -317,6 +329,7 @@ class Hook_addon_registry_ecommerce
             'templates/ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER.tpl' => 'ecom_subscriptions_screen',
             'templates/ECOM_TRANSACTION_LOGS_SCREEN.tpl' => 'administrative__ecom_transaction_logs_screen',
             'templates/ECOM_CASH_FLOW_SCREEN.tpl' => 'administrative__ecom_cash_flow_screen',
+            'templates/ECOM_TAX_INVOICE.tpl' => 'ecom_tax_invoice_screen',
             'templates/ECOM_PURCHASE_SCREEN.tpl' => 'purchase_screen',
             'templates/ECOM_LOGOS_WORLDPAY.tpl' => 'ecom_logos_worldpay',
             'templates/ECOM_LOGOS_AUTHORIZE.tpl' => 'ecom_logos_authorize',
@@ -426,6 +439,9 @@ class Hook_addon_registry_ecommerce
                 'TRANS_EXPECTING_ID' => placeholder_id(),
                 'DIGEST' => lorem_phrase(),
                 'TEST_MODE' => lorem_phrase(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
@@ -455,6 +471,8 @@ class Hook_addon_registry_ecommerce
                 'TEST' => lorem_phrase(),
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS_2' => lorem_phrase(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'FIRST_REPEAT' => lorem_phrase(),
                 'CURRENCY' => lorem_phrase(),
@@ -498,6 +516,9 @@ class Hook_addon_registry_ecommerce
                 'ITEM_NAME' => lorem_phrase(),
                 'PURCHASE_ID' => placeholder_id(),
                 'TRANS_EXPECTING_ID' => placeholder_id(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_word(),
@@ -524,6 +545,8 @@ class Hook_addon_registry_ecommerce
                 'TRANS_EXPECTING_ID' => placeholder_id(),
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS' => lorem_phrase(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_word(),
@@ -566,6 +589,9 @@ class Hook_addon_registry_ecommerce
                 'TRANS_EXPECTING_ID' => placeholder_id(),
                 'DIGEST' => lorem_phrase(),
                 'TEST' => lorem_phrase(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
@@ -595,6 +621,8 @@ class Hook_addon_registry_ecommerce
                 'FIRST_REPEAT' => lorem_phrase(),
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS_2' => lorem_phrase(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'USERNAME' => lorem_word(),
@@ -637,6 +665,9 @@ class Hook_addon_registry_ecommerce
                 'ITEM_NAME' => lorem_phrase(),
                 'PURCHASE_ID' => placeholder_id(),
                 'TRANS_EXPECTING_ID' => placeholder_id(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_paragraph(),
@@ -668,6 +699,8 @@ class Hook_addon_registry_ecommerce
                 'TRANS_EXPECTING_ID' => placeholder_id(),
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS_2' => lorem_phrase(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'CURRENCY' => lorem_phrase(),
                 'PAYMENT_ADDRESS' => lorem_paragraph(),
@@ -719,6 +752,9 @@ class Hook_addon_registry_ecommerce
                 'TIMESTAMP' => placeholder_date_raw(),
                 'FINGERPRINT' => lorem_word(),
                 'LOGIN_ID' => lorem_word(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'IS_TEST' => false,
                 'CUST_ID' => placeholder_id(),
@@ -748,6 +784,8 @@ class Hook_addon_registry_ecommerce
                 'TIMESTAMP' => placeholder_date_raw(),
                 'FINGERPRINT' => lorem_word(),
                 'LOGIN_ID' => lorem_word(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'IS_TEST' => false,
                 'CUST_ID' => placeholder_id(),
@@ -865,7 +903,7 @@ class Hook_addon_registry_ecommerce
                     break;
 
                 case 1:
-                    $_full_price = currency_convert(0.0, 'USD', null, true);
+                    $_full_price = currency_convert(0.00, 'USD', null, true);
                     $_discounted_price = do_lang('NA');
                     $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE');
 
@@ -904,7 +942,7 @@ class Hook_addon_registry_ecommerce
 
                 case 3:
                     $_full_price = currency_convert(1.23, 'USD', null, true);
-                    $_discounted_price = currency_convert(0.0, 'USD', null, true);
+                    $_discounted_price = currency_convert(0.00, 'USD', null, true);
                     $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE_WITH_POINTS', $_discounted_price, $_full_price, array(escape_html(integer_format(5))));
 
                     $map += array(
@@ -1111,6 +1149,7 @@ class Hook_addon_registry_ecommerce
                 'INVOICE_TITLE' => lorem_phrase(),
                 'INVOICE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
+                'TAX' => placeholder_number(),
                 'TIME' => placeholder_date(),
                 'STATE' => lorem_word(),
                 'DELIVERABLE' => lorem_word(),
@@ -1124,6 +1163,40 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('ECOM_INVOICES_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'CURRENCY' => lorem_phrase(),
+                'INVOICES' => $invoices,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__ecom_outstanding_invoices_screen()
+    {
+        $invoices = array();
+        foreach (placeholder_array() as $invoice) {
+            $invoices[] = array(
+                'INVOICE_TITLE' => lorem_word(),
+                'PROFILE_URL' => placeholder_url(),
+                'USERNAME' => lorem_word_2(),
+                'ID' => placeholder_id(),
+                'STATE' => lorem_phrase(),
+                'AMOUNT' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'TIME' => placeholder_date(),
+                'NOTE' => lorem_phrase(),
+                'TYPE_CODE' => lorem_phrase(),
+            );
+        }
+
+        return array(
+            lorem_globalise(do_lorem_template('ECOM_OUTSTANDING_INVOICES_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'FROM' => lorem_phrase(),
                 'INVOICES' => $invoices,
             )), null, '', true)
         );
@@ -1152,6 +1225,8 @@ class Hook_addon_registry_ecommerce
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS' => 'm',
                 'AMOUNT' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'TOTAL' => placeholder_number(),
                 '_START_TIME' => placeholder_date_raw(),
                 '_TERM_START_TIME' => placeholder_date_raw(),
                 '_TERM_END_TIME' => placeholder_date_raw(),
@@ -1169,8 +1244,8 @@ class Hook_addon_registry_ecommerce
                 'USERGROUP_SUBSCRIPTION_ID' => placeholder_id(),
                 'USERGROUP_ID' => placeholder_id(),
                 'USERGROUP_NAME' => lorem_phrase(),
-                '_VIA' => 'manual',
-                'VIA' => lorem_word(),
+                '_PAYMENT_GATEWAY' => 'manual',
+                'PAYMENT_GATEWAY' => lorem_word(),
             );
         }
 
@@ -1178,32 +1253,6 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('ECOM_SUBSCRIPTIONS_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'SUBSCRIPTIONS' => $subscriptions,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__ecom_view_manual_transactions_screen()
-    {
-        $lines = do_lorem_template('ECOM_VIEW_MANUAL_TRANSACTIONS_LINE', array(
-            'ID' => placeholder_id(),
-            'SUBSCRIPTION' => lorem_title(),
-            'ROWSPAN' => '1',
-            'MEMBER' => placeholder_link(),
-            'EXPIRY' => lorem_title(),
-            'CANCEL_URL' => placeholder_url(),
-        ));
-
-        return array(
-            lorem_globalise(do_lorem_template('ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'CONTENT' => $lines,
             )), null, '', true)
         );
     }
@@ -1231,6 +1280,8 @@ class Hook_addon_registry_ecommerce
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS' => 'm',
                 'AMOUNT' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'TOTAL' => placeholder_number(),
                 '_START_TIME' => placeholder_date_raw(),
                 '_TERM_START_TIME' => placeholder_date_raw(),
                 '_TERM_END_TIME' => placeholder_date_raw(),
@@ -1248,8 +1299,8 @@ class Hook_addon_registry_ecommerce
                 'USERGROUP_SUBSCRIPTION_ID' => placeholder_id(),
                 'USERGROUP_ID' => placeholder_id(),
                 'USERGROUP_NAME' => lorem_phrase(),
-                '_VIA' => 'manual',
-                'VIA' => lorem_word(),
+                '_PAYMENT_GATEWAY' => 'manual',
+                'PAYMENT_GATEWAY' => lorem_word(),
             );
         }
 
@@ -1257,6 +1308,32 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('ECOM_MEMBER_SUBSCRIPTION_STATUS', array(
                 'MEMBER_ID' => placeholder_id(),
                 'SUBSCRIPTIONS' => $subscriptions,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__ecom_view_manual_transactions_screen()
+    {
+        $lines = do_lorem_template('ECOM_VIEW_MANUAL_TRANSACTIONS_LINE', array(
+            'ID' => placeholder_id(),
+            'SUBSCRIPTION' => lorem_title(),
+            'ROWSPAN' => '1',
+            'MEMBER' => placeholder_link(),
+            'EXPIRY' => lorem_title(),
+            'CANCEL_URL' => placeholder_url(),
+        ));
+
+        return array(
+            lorem_globalise(do_lorem_template('ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'CONTENT' => $lines,
             )), null, '', true)
         );
     }
@@ -1304,29 +1381,13 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__administrative__ecom_outstanding_invoices_screen()
+    public function tpl_preview__administrative__cns_member_profile_ecommerce_logs_screen()
     {
-        $invoices = array();
-        foreach (placeholder_array() as $invoice) {
-            $invoices[] = array(
-                'INVOICE_TITLE' => lorem_word(),
-                'PROFILE_URL' => placeholder_url(),
-                'USERNAME' => lorem_word_2(),
-                'ID' => placeholder_id(),
-                'STATE' => lorem_phrase(),
-                'AMOUNT' => placeholder_number(),
-                'TIME' => placeholder_date(),
-                'NOTE' => lorem_phrase(),
-                'TYPE_CODE' => lorem_phrase(),
-            );
-        }
-
         return array(
-            lorem_globalise(do_lorem_template('ECOM_OUTSTANDING_INVOICES_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'FROM' => lorem_phrase(),
-                'INVOICES' => $invoices,
-            )), null, '', true)
+            lorem_globalise(do_lorem_template('CNS_MEMBER_PROFILE_ECOMMERCE_LOGS', array(
+                'CONTENT' => lorem_chunk_html(),
+                'PAGINATION' => placeholder_pagination(),
+            )), null, '', true),
         );
     }
 
@@ -1411,23 +1472,6 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__administrative__cns_member_profile_ecommerce_logs_screen()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('CNS_MEMBER_PROFILE_ECOMMERCE_LOGS', array(
-                'CONTENT' => lorem_chunk_html(),
-                'PAGINATION' => placeholder_pagination(),
-            )), null, '', true),
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
     public function tpl_preview__ecom_product_forwarder_mail()
     {
         $temp = do_lorem_template('ECOM_PRODUCT_FORWARDER_MAIL', array(
@@ -1489,6 +1533,45 @@ class Hook_addon_registry_ecommerce
                 'PRICE' => placeholder_number(),
             ), null, false, null, '.txt', 'text'
             ),
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    function tpl_ecom_tax_invoice_screen()
+    {
+        $items = array();
+        foreach (placeholder_array() as $k => $v) {
+            $items[] = array(
+                'TYPE_CODE' => $v,
+                'ITEM_NAME' => lorem_phrase(),
+                'QUANTITY' => placeholder_number(),
+                'UNIT_PRICE' => placeholder_number(),
+                'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'TAX_RATE' => placeholder_number(),
+            );
+        }
+
+        return array(
+            lorem_globalise(do_lorem_template('ECOM_TAX_INVOICE', array(
+                'TXN_ID' => placeholder_number(),
+                '_DATE' => placeholder_date_raw(),
+                'DATE' => placeholder_date(),
+                'TRANS_ADDRESS' => lorem_phrase() . "\n" . lorem_phrase() . "\n" . lorem_phrase(),
+                'ITEMS' => $items,
+                'CURRENCY_SYMBOL' => '$',
+                'CURRENCY' => 'USD',
+                'TOTAL_PRICE' => placeholder_number(),
+                'TOTAL_TAX' => placeholder_number(),
+                'TOTAL_AMOUNT' => placeholder_number(),
+                'PURCHASE_ID' => placeholder_id(),
+            )), null, '', true)
         );
     }
 }

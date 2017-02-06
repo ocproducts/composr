@@ -34,7 +34,7 @@ class Hook_config_credit_card_cleanup_days
             'human_name' => 'CREDIT_CARD_CLEANUP_DAYS',
             'type' => 'tick',
             'category' => 'ECOMMERCE',
-            'group' => 'SHOPPING',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_credit_card_cleanup_days',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

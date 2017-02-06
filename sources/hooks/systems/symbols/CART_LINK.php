@@ -37,7 +37,7 @@ class Hook_symbol_CART_LINK
 
         $cart_url = build_url(array('page' => 'shopping', 'type' => 'browse'), get_module_zone('shopping'));
 
-        $where = array('is_deleted' => 0);
+        $where = array();
         if (is_guest()) {
             $where['session_id'] = get_session_id();
         } else {

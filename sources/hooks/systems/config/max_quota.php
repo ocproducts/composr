@@ -38,7 +38,7 @@ class Hook_config_max_quota
             'explanation' => 'CONFIG_OPTION_max_quota',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 8,
+            'order_in_category_group' => 9,
 
             'addon' => 'ecommerce',
         );

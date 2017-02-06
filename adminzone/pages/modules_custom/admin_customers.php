@@ -45,9 +45,6 @@ class Module_admin_customers
         }
 
         /* NB: Does not delete CPFs and multi-mods. But that doesn't actually matter */
-        delete_config_option('support_credit_value');
-        delete_config_option('support_priority_backburner_minutes');
-        delete_config_option('support_priority_regular_minutes');
         $GLOBALS['SITE_DB']->drop_table_if_exists('credit_purchases');
         $GLOBALS['SITE_DB']->drop_table_if_exists('credit_charge_log');
         $GLOBALS['SITE_DB']->drop_table_if_exists('group_points');

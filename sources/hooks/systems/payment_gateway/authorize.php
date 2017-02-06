@@ -168,11 +168,14 @@ class Hook_payment_gateway_authorize
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  REAL $amount A transaction amount.
+     * @param  REAL $price Transaction price in money.
+     * @param  REAL $tax Transaction tax in money.
+     * @param  REAL $shipping_cost Transaction shipping cost in money.
      * @param  ID_TEXT $currency The currency to use.
+     * @param  REAL $shipping_cost Shipping cost.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
     {
         // http://www.authorize.net/content/dam/authorize/documents/SIM_guide.pdf
 
@@ -182,7 +185,7 @@ class Hook_payment_gateway_authorize
 
         $timestamp = time();
         $sequence = mt_rand(1, mt_getrandmax()); // Any random number
-        $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $amount, $sequence, $timestamp, $currency);
+        $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $price + $tax + $shipping_cost, $sequence, $timestamp, $currency);
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE', array(
             'TYPE_CODE' => $type_code,
@@ -195,7 +198,10 @@ class Hook_payment_gateway_authorize
             'TIMESTAMP' => strval($timestamp),
             'FINGERPRINT' => $fingerprint,
             'LOGIN_ID' => $login_id,
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'SHIPPING_COST' => float_to_raw_string($shipping_cost),
+            'AMOUNT' => float_to_raw_string($price + $tax + $shipping_cost),
             'IS_TEST' => ecommerce_test_mode(),
             'CUST_ID' => strval(get_member()),
             'CURRENCY' => $currency,
@@ -209,14 +215,15 @@ class Hook_payment_gateway_authorize
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  REAL $amount A transaction amount.
+     * @param  REAL $price Transaction price in money.
+     * @param  REAL $tax Transaction tax in money.
      * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
      * @return Tempcode The button.
      */
-    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $amount, $currency, $length, $length_units)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
     {
         // http://www.authorize.net/content/dam/authorize/documents/SIM_guide.pdf (DPM not SIM, see Appendix C)
 
@@ -226,7 +233,7 @@ class Hook_payment_gateway_authorize
 
         $timestamp = time();
         $sequence = mt_rand(1, mt_getrandmax());
-        $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $amount, $sequence, $timestamp, $currency);
+        $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $price + $tax, $sequence, $timestamp, $currency);
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE', array(
             '_GUID' => '8c8b9ce1f60323e118da1bef416adff3',
@@ -240,7 +247,9 @@ class Hook_payment_gateway_authorize
             'TIMESTAMP' => strval($timestamp),
             'FINGERPRINT' => $fingerprint,
             'LOGIN_ID' => $login_id,
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'AMOUNT' => float_to_raw_string($price + $tax),
             'IS_TEST' => ecommerce_test_mode(),
             'CUST_ID' => strval(get_member()),
             'CURRENCY' => $currency,
@@ -312,7 +321,7 @@ class Hook_payment_gateway_authorize
         $subscription_id = post_param_string('x_subscription_id', '');
         $is_subscription = ($subscription_id != '');
         $period = '';
-        $_transaction_id = post_param_string('x_trans_id');
+        $_txn_id = post_param_string('x_trans_id');
         $reason = post_param_string('x_response_reason_code', '');
         $_amount = post_param_string('x_amount');
         $amount = floatval($_amount);
@@ -325,51 +334,46 @@ class Hook_payment_gateway_authorize
         } else {
             $status = $success ? 'Completed' : 'Failed';
         }
-        $txn_id = ($subscription_id != '') ? $subscription_id : $_transaction_id;
+        $txn_id = ($subscription_id != '') ? $subscription_id : $_txn_id;
 
         // SECURITY: Check hash
         $hash = post_param_string('x_MD5_Hash');
-        if ($hash != md5($md5_hash_value . $login_id . $_transaction_id . float_to_raw_string($amount))) {
+        if ($hash != md5($md5_hash_value . $login_id . $_txn_id . float_to_raw_string($amount))) {
             if (!running_script('ecommerce')) {
                 return null;
             }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . flatten_slashed_array($_POST, true));
         }
 
-        // Shopping cart
-        if (addon_installed('shopping')) {
-            if (preg_match('#^CART_ORDER_#', $transaction_row['e_type_code']) != 0) {
-                $this->store_shipping_address(intval($purchase_id));
-            }
-        }
+        $this->store_shipping_address($trans_expecting_id, $txn_id);
 
-        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
+        $tax = null;
+
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**
-     * Store shipping address for orders.
+     * Store shipping address for a transaction.
      *
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return ?mixed Address ID (null: No address record found).
+     * @param  $trans_expecting_id Expected transaction ID.
+     * @param  $txn_id Transaction ID.
+     * @return ?AUTO_LINK Address ID.
      */
-    public function store_shipping_address($order_id)
+    public function store_shipping_address($trans_expecting_id, $txn_id)
     {
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
-            $shipping_address = array(
-                'a_order_id' => $order_id,
-                'a_firstname' => trim(post_param_string('x_ship_to_first_name', '') . ', ' . post_param_string('x_ship_to_company', ''), ' ,'),
-                'a_lastname' => post_param_string('x_ship_to_last_name', ''),
-                'a_street_address' => post_param_string('x_ship_to_address', ''),
-                'a_city' => post_param_string('x_ship_to_city', ''),
-                'a_county' => '',
-                'a_state' => post_param_string('x_ship_to_state', ''),
-                'a_post_code' => post_param_string('x_ship_to_zip', ''),
-                'a_country' => post_param_string('x_ship_to_country', ''),
-                'a_email' => post_param_string('x_email', ''),
-                'a_phone' => post_param_string('x_phone', ''),
-            );
-            return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
-        }
+        $shipping_address = array(
+            'a_firstname' => trim(post_param_string('x_ship_to_first_name', '') . ', ' . post_param_string('x_ship_to_company', ''), ' ,'),
+            'a_lastname' => post_param_string('x_ship_to_last_name', ''),
+            'a_street_address' => post_param_string('x_ship_to_address', ''),
+            'a_city' => post_param_string('x_ship_to_city', ''),
+            'a_county' => '',
+            'a_state' => post_param_string('x_ship_to_state', ''),
+            'a_post_code' => post_param_string('x_ship_to_zip', ''),
+            'a_country' => post_param_string('x_ship_to_country', ''),
+            'a_email' => post_param_string('x_email', ''),
+            'a_phone' => post_param_string('x_phone', ''),
+        );
+        return store_shipping_address($trans_expecting_id, $txn_id, $shipping_address);
     }
 
     /**

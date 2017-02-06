@@ -73,6 +73,8 @@ class Hook_ecommerce_community_billboard
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => float_unformat(get_option('community_billboard_tax')) * $days,
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             ));
         }
@@ -190,7 +192,7 @@ class Hook_ecommerce_community_billboard
         $map += insert_lang_comcode('the_message', $message, 2);
         $GLOBALS['SITE_DB']->query_insert('community_billboard', $map);
 
-        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('COMMUNITY_BILLBOARD_MESSAGE', null, null, null, get_site_default_lang()), 'details2' => strval($days), 'transaction_id' => $details['TXN_ID']));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('COMMUNITY_BILLBOARD_MESSAGE', null, null, null, get_site_default_lang()), 'details2' => strval($days), 'txn_id' => $details['TXN_ID']));
 
         // Notification to staff
         require_code('notifications');

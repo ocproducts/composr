@@ -26,8 +26,8 @@ class Hook_config_community_billboard_price
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_community_billboard_price',
-            'type' => 'integer',
+            'human_name' => 'PRICE_community_billboard_price',
+            'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'COMMUNITY_BILLBOARD_MESSAGE',
             'explanation' => 'CONFIG_OPTION_community_billboard_price',

@@ -77,7 +77,7 @@ class Module_subscriptions
                 's_time' => 'TIME',
                 's_auto_fund_source' => 'ID_TEXT', // The payment gateway
                 's_auto_fund_key' => 'SHORT_TEXT', // Used by PayPal for nothing much, but is of real use if we need to schedule our own subscription transactions
-                's_payment_gateway' => 'ID_TEXT', // An eCommerce hook or 'manual'
+                's_payment_gateway' => 'ID_TEXT', // An eCommerce hook or 'manual' or 'points'
 
                 // Copied through from what the hook says at setup, in case the hook later changes
                 's_length' => 'INTEGER',
@@ -88,7 +88,8 @@ class Module_subscriptions
                 'id' => '*AUTO',
                 's_title' => 'SHORT_TRANS',
                 's_description' => 'LONG_TRANS__COMCODE',
-                's_cost' => 'REAL',
+                's_price' => 'REAL',
+                's_tax' => 'REAL',
                 's_length' => 'INTEGER',
                 's_length_units' => 'SHORT_TEXT',
                 's_auto_recur' => 'BINARY',
@@ -145,12 +146,14 @@ class Module_subscriptions
             $GLOBALS['SITE_DB']->create_index('subscriptions', 's_member_id', array('s_member_id'));
         }
 
-        if (($upgrade_from < 7) && ($upgrade_from !== null)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
 
             $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_amount', 'REAL');
 
-            $GLOBALS['SITE_DB']->alter_table_field('f_usergroup_subs', 's_cost', 'REAL');
+            $GLOBALS['SITE_DB']->alter_table_field('f_usergroup_subs', 's_cost', 'REAL', 's_price');
+
+            $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_tax', 'REAL', 0.00);
         }
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
@@ -186,7 +189,7 @@ class Module_subscriptions
     {
         $type = get_param_string('type', 'browse');
 
-        require_lang('ecommerce');
+        require_code('ecommerce');
 
         if ($type == 'browse') {
             $this->title = get_screen_title('MY_SUBSCRIPTIONS');
@@ -208,7 +211,6 @@ class Module_subscriptions
      */
     public function run()
     {
-        require_code('ecommerce');
         require_css('ecommerce');
 
         // Kill switch
@@ -267,7 +269,7 @@ class Module_subscriptions
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
-        if (($payment_gateway != 'manual') && ($payment_gateway != '')) {
+        if (!in_array($payment_gateway, array('', 'manual', 'points'))) {
             require_code('hooks/systems/payment_gateway/' . filter_naughty($payment_gateway));
             $payment_gateway_object = object_factory($payment_gateway);
             if ($payment_gateway_object->auto_cancel($id) !== true) {

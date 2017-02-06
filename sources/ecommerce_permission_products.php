@@ -48,6 +48,7 @@ function permission_product_form($resource_type, $category_id = null)
     require_lang('ecommerce');
 
     $price = null;
+    $tax = null;
     $price_points = null;
     $hours = null;
     $section_hidden = true;
@@ -58,6 +59,7 @@ function permission_product_form($resource_type, $category_id = null)
             $existing_row = $existing_rows[0];
 
             $price = $existing_row['p_price'];
+            $tax = $existing_row['p_tax'];
             $price_points = $existing_row['p_price_points'];
             $hours = $existing_row['p_hours'];
 
@@ -69,9 +71,10 @@ function permission_product_form($resource_type, $category_id = null)
 
     $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '096274e977e4cd99ef20eb4b1c2174e3', 'TITLE' => do_lang_tempcode('SELL_CATEGORY_ACCESS'), 'HELP' => do_lang_tempcode('DESCRIPTION_SELL_CATEGORY_ACCESS'), 'SECTION_HIDDEN' => $section_hidden)));
 
-    $fields->attach(form_input_float(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_COST'), 'permission_product__price', $price, false));
+    $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_PRICE'), 'permission_product__price', $price, false));
+    $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX'), 'permission_product__tax', $tax, false));
     if (addon_installed('points')) {
-        $fields->attach(form_input_integer(do_lang_tempcode('COST_POINTS'), do_lang_tempcode('DESCRIPTION_COST_POINTS'), 'permission_product__price_points', $price_points, false));
+        $fields->attach(form_input_integer(do_lang_tempcode('PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_PRICE_POINTS'), 'permission_product__price_points', $price_points, false));
     }
     $fields->attach(form_input_integer(do_lang_tempcode('PERMISSION_HOURS'), do_lang_tempcode('DESCRIPTION_PERMISSION_HOURS'), 'permission_product__hours', $hours, false));
 
@@ -121,6 +124,9 @@ function permission_product_save($resource_type, $old_category_id, $new_category
     $_price = post_param_string('permission_product__price', '');
     $price = ($_price == '') ? null : float_unformat($_price);
 
+    $_tax = post_param_string('permission_product__tax');
+    $tax = ($_tax == '') ? null : float_unformat($_tax);
+
     $price_points = post_param_integer('permission_product__price_points', null);
 
     $hours = post_param_integer('permission_product__hours', null);
@@ -169,6 +175,7 @@ function permission_product_save($resource_type, $old_category_id, $new_category
             $map = $map_new;
             $map += array(
                 'p_price' => $price,
+                'p_tax' => $tax,
                 'p_price_points' => $price_points,
                 'p_hours' => $hours,
             );
@@ -183,6 +190,7 @@ function permission_product_save($resource_type, $old_category_id, $new_category
             $map = $map_new;
             $map += array(
                 'p_price' => $price,
+                'p_tax' => $tax,
                 'p_price_points' => $price_points,
                 'p_hours' => $hours,
             );

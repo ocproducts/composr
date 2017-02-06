@@ -50,7 +50,7 @@ class Module_shopping
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order_details');
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order');
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_logging');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order_addresses');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_addresses');
 
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'shopping'));
 
@@ -71,20 +71,13 @@ class Module_shopping
                 'id' => '*AUTO',
                 'session_id' => 'ID_TEXT',
                 'ordered_by' => 'MEMBER',
-                'product_id' => 'AUTO_LINK',
-                'product_name' => 'SHORT_TEXT',
-                'product_code' => 'SHORT_TEXT',
+                'type_code' => 'ID_TEXT',
+                'purchase_id' => 'ID_TEXT',
                 'quantity' => 'INTEGER',
-                'price_pre_tax' => 'REAL',
-                'price' => 'REAL',
-                'product_description' => 'LONG_TEXT',
-                'product_type' => 'SHORT_TEXT',
-                'product_weight' => 'REAL',
-                'is_deleted' => 'BINARY', // Indicates an item is no longer in the cart because the user deleted it
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_cart', 'ordered_by', array('ordered_by'));
             $GLOBALS['SITE_DB']->create_index('shopping_cart', 'session_id', array('session_id'));
-            $GLOBALS['SITE_DB']->create_index('shopping_cart', 'product_id', array('product_id'));
+            $GLOBALS['SITE_DB']->create_index('shopping_cart', 'type_code', array('type_code'));
 
             // Cart contents turns into order + details...
 
@@ -94,9 +87,11 @@ class Module_shopping
                 'member_id' => 'MEMBER',
                 'add_date' => 'TIME',
                 'total_price' => 'REAL',
+                'total_tax' => 'REAL',
+                'total_shipping_cost' => 'REAL',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
                 'notes' => 'LONG_TEXT',
-                'transaction_id' => 'SHORT_TEXT',
+                'txn_id' => 'SHORT_TEXT',
                 'purchase_through' => 'SHORT_TEXT', // cart|purchase_module
                 'tax_opted_out' => 'BINARY',
             ));
@@ -108,16 +103,17 @@ class Module_shopping
             $GLOBALS['SITE_DB']->create_table('shopping_order_details', array( // individual products in an order
                 'id' => '*AUTO',
                 'p_order_id' => '?AUTO_LINK',
-                'p_id' => '?AUTO_LINK',
+                'p_type_code' => 'ID_LINK',
+                'p_purchase_id' => 'ID_TEXT',
                 'p_name' => 'SHORT_TEXT',
-                'p_code' => 'SHORT_TEXT',
-                'p_type' => 'SHORT_TEXT',
+                'p_sku' => 'SHORT_TEXT',
                 'p_quantity' => 'INTEGER',
                 'p_price' => 'REAL',
+                'p_tax' => 'REAL',
                 'p_included_tax' => 'REAL',
                 'p_dispatch_status' => 'SHORT_TEXT'
             ));
-            $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'p_id', array('p_id'));
+            $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'type_code', array('p_type_code'));
             $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'order_id', array('p_order_id'));
 
             $GLOBALS['SITE_DB']->create_table('shopping_logging', array(
@@ -128,32 +124,10 @@ class Module_shopping
                 'l_last_action' => 'SHORT_TEXT',
                 'l_date_and_time' => 'TIME'
             ));
-            $GLOBALS['SITE_DB']->create_index('shopping_logging', 'calculate_bandwidth', array('l_date_and_time'));
-
-            $GLOBALS['SITE_DB']->create_table('shopping_order_addresses', array(
-                // These are filled after an order is made (maybe via what comes back from IPN, maybe from what is set for a local payment), and presented in the admin orders UI
-                'id' => '*AUTO',
-                'a_order_id' => '?AUTO_LINK',
-                'a_firstname' => 'SHORT_TEXT', // NB: May be full-name, or include company name
-                'a_lastname' => 'SHORT_TEXT',
-                'a_street_address' => 'LONG_TEXT',
-                'a_city' => 'SHORT_TEXT',
-                'a_county' => 'SHORT_TEXT',
-                'a_state' => 'SHORT_TEXT',
-                'a_post_code' => 'SHORT_TEXT',
-                'a_country' => 'SHORT_TEXT',
-                'a_email' => 'SHORT_TEXT',
-                'a_phone' => 'SHORT_TEXT',
-            ));
-            $GLOBALS['SITE_DB']->create_index('shopping_order_addresses', 'order_id', array('a_order_id'));
+            $GLOBALS['SITE_DB']->create_index('shopping_logging', 'cart_log', array('l_date_and_time'));
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_contact_phone', 'SHORT_TEXT');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_address_state', 'SHORT_TEXT');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_first_name', 'SHORT_TEXT');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_last_name', 'SHORT_TEXT');
-
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_cart', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'l_session_id', 'ID_TEXT');
@@ -164,12 +138,30 @@ class Module_shopping
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'price');
+            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'price_pre_tax');
+            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_name');
+            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_code');
+            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_description');
+            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_type');
+            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_weight');
+            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'is_deleted');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_cart', 'product_id', 'ID_TEXT', 'type_code');
+
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'tot_price', 'REAL', 'total_price');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order', 'total_tax', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order', 'total_shipping_cost', 'REAL');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'c_member', 'MEMBER', 'member_id');
 
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_price', 'REAL', 'p_price');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax', 'REAL');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'order_id', '?AUTO_LINK', 'p_order_id');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'included_tax', 'REAL', 'p_included_tax');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_order_details', 'included_tax');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'dispatch_status', 'SHORT_TEXT', 'p_dispatch_status');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_id', 'ID_TEXT', 'p_type_code');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_order_details', 'p_type');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_purchase_id', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_code', 'SHORT_TEXT', 'p_sku');
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'e_member_id', '*MEMBER', 'l_member_id');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'session_id', 'ID_TEXT', 'l_session_id');
@@ -177,18 +169,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'last_action', 'SHORT_TEXT', 'l_last_action');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'date_and_time', 'TIME', 'l_date_and_time');
 
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_addresses', 'a_address_county', 'SHORT_TEXT');
-
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'first_name', 'SHORT_TEXT', 'a_firstname');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'last_name', 'SHORT_TEXT', 'a_lastname');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_street', 'LONG_TEXT', 'a_street_address');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_city', 'SHORT_TEXT', 'a_city');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_county', 'SHORT_TEXT', 'a_county');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_state', 'SHORT_TEXT', 'a_state');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_zip', 'SHORT_TEXT', 'a_post_code');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'address_country', 'SHORT_TEXT', 'a_country');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'receiver_email', 'SHORT_TEXT', 'a_email');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_addresses', 'contact_phone', 'SHORT_TEXT', 'a_phone');
+            $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_addresses');
         }
     }
 
@@ -266,7 +247,7 @@ class Module_shopping
             breadcrumb_set_parents(array(array('_SELF:orders:browse', do_lang_tempcode('MY_ORDERS'))));
 
             $id = get_param_integer('id');
-            $this->title = get_screen_title('_MY_ORDER_DETAILS', true, array(escape_html($id)));
+            $this->title = get_screen_title('_ORDER_DETAILS', true, array(escape_html($id)));
         }
 
         return null;
@@ -283,7 +264,6 @@ class Module_shopping
 
         require_code('shopping');
         require_code('feedback');
-        require_lang('ecommerce');
         require_code('ecommerce');
 
         if (get_forum_type() != 'cns') {
@@ -305,7 +285,7 @@ class Module_shopping
             return $this->view_shopping_cart();
         }
         if ($type == 'add_item') {
-            return $this->add_item_to_cart();
+            return $this->add_item();
         }
         if ($type == 'update_cart') {
             return $this->update_cart();
@@ -324,83 +304,51 @@ class Module_shopping
     }
 
     /**
-     * The UI to show shopping cart
+     * The UI to show shopping cart.
      *
-     * @return Tempcode The UI
+     * @return Tempcode The UI.
      */
     public function view_shopping_cart()
     {
-        $products_ids = array();
-
         require_code('templates_results_table');
         require_code('form_templates');
         require_css('shopping');
         require_css('ecommerce');
         require_javascript('shopping');
 
-        log_cart_actions('View cart');
-
-        $where = array('is_deleted' => 0);
-        if (is_guest()) {
-            $where['session_id'] = get_session_id();
-        } else {
-            $where['ordered_by'] = get_member();
-        }
-        $shopping_cart_rows = $GLOBALS['SITE_DB']->query_select('shopping_cart', array('*'), $where);
-
+        $shopping_cart_rows = find_products_in_cart();
         $max_rows = count($shopping_cart_rows);
 
-        $grand_total = 0.0;
-        $shipping_cost = 0.0;
+        $type_codes = array();
 
         if ($max_rows > 0) {
             $shopping_cart = new Tempcode();
 
-            $fields_title = results_field_title(
-                array(
-                    '',
-                    do_lang_tempcode('PRODUCT'),
-                    do_lang_tempcode('UNIT_PRICE'),
-                    do_lang_tempcode('QUANTITY'),
-                    do_lang_tempcode('ORDER_PRICE_AMT'),
-                    do_lang_tempcode('TAX'),
-                    do_lang_tempcode('SHIPPING_PRICE'),
-                    do_lang_tempcode('TOTAL_PRICE'),
-                    do_lang_tempcode('REMOVE')
-                ), null
-            );
+            $fields_title = results_field_title(array(
+                '',
+                do_lang_tempcode('PRODUCT'),
+                do_lang_tempcode('UNIT_PRICE'),
+                do_lang_tempcode('QUANTITY'),
+                do_lang_tempcode('PRICE'),
+                do_lang_tempcode(get_option('tax_system')),
+                do_lang_tempcode('AMOUNT'),
+                do_lang_tempcode('REMOVE')
+            ), null);
 
-            foreach ($shopping_cart_rows as $i => $value) {
-                $products_ids[] = $value['product_id'];
+            foreach ($shopping_cart_rows as $item) {
+                list($details, , $product_object) = find_product_details($item['p_type_code']);
 
-                $_hook = $value['product_type'];
-
-                $value['sl_no'] = $i + 1;
-
-                require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
-
-                $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
-
-                if (method_exists($product_object, 'show_cart_entry')) {
-                    $product_object->show_cart_entry($shopping_cart, $value);
+                if ($details === null) {
+                    $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('id' => $item['id']), '', 1);
+                    continue;
                 }
 
-                // Tax
-                if (method_exists($product_object, 'calculate_tax')) {
-                    $tax = $product_object->calculate_tax($value['price'], $value['price_pre_tax']);
-                } else {
-                    $tax = 0.0;
-                }
+                $type_codes[] = $item['p_type_code']);
 
-                // Shipping
-                if (method_exists($product_object, 'calculate_shipping_cost')) {
-                    $shipping_cost = $product_object->calculate_shipping_cost($value['product_weight']);
-                } else {
-                    $shipping_cost = 0.0;
-                }
-
-                $grand_total += round($value['price'] + $tax + $shipping_cost, 2) * $value['quantity'];
+                $this->show_cart_entry($shopping_cart, $details, $item);
             }
+
+            list($total_price, $total_tax, $total_shipping_cost) = derive_cart_amounts($shopping_cart_rows);
 
             $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, null, 'cart');
 
@@ -409,14 +357,20 @@ class Module_shopping
 
             list($payment_form, $finish_url) = render_cart_payment_form();
         } else {
-            $update_cart_url = new Tempcode();
-            $empty_cart_url = new Tempcode();
+            $total_price = 0.00;
+            $total_tax = 0.00;
+            $total_shipping_cost = 0.00;
 
             $results_table = do_lang_tempcode('CART_EMPTY');
+
+            $update_cart_url = new Tempcode();
+            $empty_cart_url = new Tempcode();
 
             $payment_form = new Tempcode();
             $finish_url = '';
         }
+
+        $grand_total = $total_price + $total_tax + $total_shipping_cost;
 
         $ecom_catalogue_count = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', array('c_ecommerce' => 1));
         $ecom_catalogue = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_ecommerce' => 1));
@@ -427,10 +381,7 @@ class Module_shopping
             $continue_shopping_url = build_url(array('page' => 'catalogues', 'type' => 'browse', 'ecommerce' => 1), get_module_zone('catalogues'));
         }
 
-        $products_ids_val = is_array($products_ids) ? implode(',', $products_ids) : ''; // Product ID string for hidden field in Shopping cart
-
-        $allow_opt_out_tax = get_option('allow_opting_out_of_tax');
-        $allow_opt_out_tax_value = get_order_tax_opt_out_status();
+        log_cart_actions(do_lang('VIEW_CART'));
 
         $tpl = do_template('ECOM_SHOPPING_CART_SCREEN', array(
             '_GUID' => 'badff09daf52ee1c84b472c44be1bfae',
@@ -439,11 +390,11 @@ class Module_shopping
             'UPDATE_CART_URL' => $update_cart_url,
             'CONTINUE_SHOPPING_URL' => $continue_shopping_url,
             'MESSAGE' => '',
-            'PRODUCT_IDS' => $products_ids_val,
+            'TYPE_CODES' => implode(',', array_unique($type_codes)),
             'EMPTY_CART_URL' => $empty_cart_url,
-            'ALLOW_OPTOUT_TAX' => $allow_opt_out_tax,
-            'ALLOW_OPTOUT_TAX_VALUE' => strval($allow_opt_out_tax_value),
-            'SHIPPING_COST' => float_format($shipping_cost),
+            'TOTAL_PRICE' => float_format($total_price),
+            'TOTAL_TAX' => float_format($total_tax),
+            'TOTAL_SHIPPING_COST' => float_format($total_shipping_cost),
             'GRAND_TOTAL' => float_format($grand_total),
             'CURRENCY' => ecommerce_get_currency_symbol(),
             'PAYMENT_FORM' => $payment_form,
@@ -455,115 +406,136 @@ class Module_shopping
     }
 
     /**
+     * Produce a results table row for a particular shopping cart entry.
+     *
+     * @param  Tempcode $shopping_cart Tempcode object of shopping cart result table.
+     * @param  array $details Product details.
+     * @param  array $item Cart row.
+     */
+    protected function show_cart_entry(&$shopping_cart, $details, $item)
+    {
+        $tpl_set = 'cart';
+
+        $edit_quantity_link = do_template('ECOM_SHOPPING_ITEM_QUANTITY_FIELD', array(
+            'TYPE_CODE' => $item['p_type_code'],
+            'QUANTITY' => strval($item['quantity'])
+        ));
+
+        $delete_item_link = do_template('ECOM_SHOPPING_ITEM_REMOVE_FIELD', array(
+            'TYPE_CODE' => $item['p_type_code'],
+        ));
+
+        require_code('images');
+        $product_image = do_image_thumb($details['item_image_url'], $details['item_name'], $details['item_name'], false, 50, 50);
+
+        $currency = ecommerce_get_currency_symbol();
+        $price_singular = $details['price'];
+        $price_multiple = $details['price'] * $item['quantity'];
+        $tax = recalculate_tax_due($details, $details['tax'], 0.0, null, $item['quantity']);
+        $amount = $price_multiple + $tax;
+
+        $product_det_url = get_product_det_url($item['p_type_code'], false, get_member());
+        $product_link = hyperlink($product_det_url, $details['item_name'], false, true, do_lang('INDEX'));
+
+        require_code('templates_results_table');
+        $shopping_cart->attach(results_entry(array(
+            $product_image,
+            $product_link,
+            $currency . escape_html(float_format($price_singular)),
+            $edit_quantity_link,
+            $currency . escape_html(float_format($price_multiple)),
+            $currency . escape_html(float_format($tax)),
+            $currency . escape_html(float_format($amount)),
+            $delete_item_link,
+        ), false, $tpl_set));
+    }
+
+    /**
      * Add an item to the cart.
      *
-     * @return Tempcode The UI
+     * @return Tempcode The UI.
      */
-    public function add_item_to_cart()
+    public function add_item()
     {
         if (is_guest()) {
             require_code('users_inactive_occasionals');
             set_session_id(get_session_id(), true); // Persist guest sessions longer
         }
 
-        $product_details = get_product_details_for_cart();
+        $prefix = either_param_string('prefix', '');
+        $type_code = $prefix . either_param_string('type_code');
 
-        add_to_cart($product_details);
+        $purchase_id = either_param_string('purchase_id', '');
 
-        log_cart_actions('Added to cart');
+        $quantity = either_param_integer('quantity', 1);
+
+        add_to_cart($type_code, $purchase_id, $quantity);
+
+        log_cart_actions(do_lang('ADD_TO_CART'));
 
         $cart_view = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-
         return redirect_screen($this->title, $cart_view, do_lang_tempcode('ADDED_TO_CART'));
     }
 
     /**
-     * Update the cart.
+     * Update the cart, editing quantities and deleting items.
      *
-     * @return Tempcode The UI
+     * @return Tempcode The UI.
      */
     public function update_cart()
     {
-        $pids = explode(',', post_param_string('product_ids'));
-
         $product_to_remove = array();
 
-        $product_details = array();
+        $products_in_cart = array();
 
-        if (count($pids) > 0) {
-            foreach ($pids as $pid) {
-                $qty = post_param_integer('quantity_' . $pid);
+        $type_codes = explode(',', post_param_string('type_codes'));
+        foreach ($type_codes as $type_code) {
+            $quantity = post_param_integer('quantity_' . $type_code);
 
-                list(, , $product_object) = find_product_details($pid);
+            list($details, , $product_object) = find_product_details($type_code);
 
-                $remove = post_param_integer('remove_' . $pid, 0);
+            $remove = (post_param_integer('remove_' . $type_code, 0) == 1);
+            if ($remove) {
+                $product_to_remove[] = $type_code;
+            } else {
+                if (method_exists($product_object, 'get_available_quantity')) {
+                    $available_quantity = $product_object->get_available_quantity($type_code, false);
+                    if (($available_qty !== null) && ($available_qty <= $quantity)) {
+                        $quantity = $available_quantity;
 
-                if ($remove == 0) {
-                    if (method_exists($product_object, 'get_available_quantity')) {
-                        $available_qty = $product_object->get_available_quantity($pid, false);
-
-                        if (($available_qty !== null) && ($available_qty <= $qty)) {
-                            $qty = $available_qty;
-
-                            attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', strval($pid)), 'warn');
-                        }
+                        attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', escape_html($details['item_name'])), 'warn');
                     }
                 }
 
-                $product_details[] = array('product_id' => $pid, 'quantity' => $qty);
-
-                if ($remove == 1) {
-                    $product_to_remove[] = $pid;
-                }
+                $products_in_cart[] = array('type_code' => $type_code, 'quantity' => $quantity);
             }
         }
 
-        update_cart($product_details);
-
-        log_cart_actions('Updated cart');
+        update_cart($products_in_cart);
 
         if (count($product_to_remove) > 0) {
             remove_from_cart($product_to_remove);
         }
 
-        $cart_view = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
+        log_cart_actions(do_lang('UPDATE_CART'));
 
+        $cart_view = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         return redirect_screen($this->title, $cart_view, do_lang_tempcode('CART_UPDATED'));
     }
 
     /**
      * Empty the shopping cart.
      *
-     * @return Tempcode The UI
+     * @return Tempcode The UI.
      */
     public function empty_cart()
     {
-        log_cart_actions('Cart emptied');
-
         empty_cart(true);
 
+        log_cart_actions(do_lang('EMPTY_CART'));
+
         $cart_view = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-
         return redirect_screen($this->title, $cart_view, do_lang_tempcode('CART_EMPTIED'));
-    }
-
-    /**
-     * Wrap-up so as to remove redundancy in templates.
-     *
-     * @param  Tempcode $content To wrap.
-     * @param  Tempcode $title The title to use.
-     * @param  ?mixed $url URL (null: no next URL).
-     * @param  boolean $get Whether it is a GET form
-     * @return Tempcode Wrapped.
-     */
-    public function wrap($content, $title, $url, $get = false)
-    {
-        if ($url === null) {
-            $url = '';
-        }
-        require_javascript('checking');
-
-        return do_template('ECOM_PURCHASE_SCREEN', array('_GUID' => '02fd80e2b4d4fc2348736a72e504a208', 'GET' => $get ? true : null, 'TITLE' => $title, 'CONTENT' => $content, 'URL' => $url));
     }
 
     /**
@@ -573,40 +545,40 @@ class Module_shopping
      */
     public function my_orders()
     {
-        $member_id = get_member();
+        if (is_guest()) {
+            access_denied('NOT_AS_GUEST');
+        }
 
+        $member_id = get_member();
         if (has_privilege(get_member(), 'assume_any_member')) {
             $member_id = get_param_integer('id', $member_id);
         }
 
         $orders = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('member_id' => $member_id), 'ORDER BY add_date');
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order o LEFT JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=o.txn_id', array('*', 'o.id AS id', 't.id AS t_id'), array('member_id' => $member_id), 'ORDER BY add_date');
 
         foreach ($rows as $row) {
+            $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['o_id']), '_SELF');
+
             if ($row['purchase_through'] == 'cart') {
-                $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
-
-                $order_title = do_lang('CART_ORDER', strval($row['id']));
+                $order_title = do_lang('CART_ORDER', strval($row['o_id']));
             } else {
-                $res = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_id', 'p_name'), array('p_order_id' => $row['id']));
-
-                if (!array_key_exists(0, $res)) {
-                    continue; // DB corruption
-                }
-                $product_det = $res[0];
-
-                $order_title = $product_det['p_name'];
-
-                $order_details_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_det['p_id']), get_module_zone('catalogues'));
+                $order_title = do_lang('PURCHASE_ORDER', strval($row['o_id']));
             }
+
+            $transaction_linker = build_transaction_linker($row['txn_id'], $row['order_status'] == 'ORDER_STATUS_awaiting_payment', $row);
 
             $orders[] = array(
                 'ORDER_TITLE' => $order_title,
-                'ID' => strval($row['id']),
-                'AMOUNT' => float_format($row['total_price']),
+                'ID' => strval($row['o_id']),
+                'TXN_ID' => $row['txn_id'],
+                'TRANSACTION_LINKER' => $transaction_linker,
+                'TOTAL_PRICE' => float_format($row['total_price']),
+                'TOTAL_TAX' => float_format($row['total_tax']),
+                'TOTAL_SHIPPING_COST' => float_format($row['total_shipping_cost']),
                 'TIME' => get_timezoned_date($row['add_date'], true, false, true, true),
-                'STATE' => do_lang_tempcode($row['order_status']),
+                'STATUS' => do_lang_tempcode($row['order_status']),
                 'NOTE' => '',
                 'ORDER_DET_URL' => $order_details_url,
                 'DELIVERABLE' => '',
@@ -627,29 +599,24 @@ class Module_shopping
      */
     public function order_details()
     {
+        if (is_guest()) {
+            access_denied('NOT_AS_GUEST');
+        }
+
         $id = get_param_integer('id');
 
-        $products = array();
+        if (!has_privilege(get_member(), 'assume_any_member')) {
+            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'member_id', array('id' => $id));
+            if ($member_id === null) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY p_name');
-        foreach ($rows as $row) {
-            $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['p_id']), get_module_zone('catalogues'));
-
-            $products[] = array(
-                'PRODUCT_NAME' => $row['p_name'],
-                'ID' => strval($row['p_id']),
-                'AMOUNT' => float_format($row['p_price']),
-                'QUANTITY' => strval($row['p_quantity']),
-                'DISPATCH_STATUS' => do_lang_tempcode($row['p_dispatch_status']),
-                'PRODUCT_DET_URL' => $product_det_url,
-                'DELIVERABLE' => '',
-            );
+            if ($member_id != get_member()) {
+                access_denied('I_ERROR');
+            }
         }
 
-        if (count($products) == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
-        }
-
-        return do_template('ECOM_ORDERS_DETAILS_SCREEN', array('_GUID' => '8122a53dc0ccf27648af460759a2b6f6', 'TITLE' => $this->title, 'CURRENCY' => get_option('currency'), 'PRODUCTS' => $products));
+        require_code('ecommerce_logs');
+        return build_order_details($this->title, $id, new Tempcode());
     }
 }

@@ -3,12 +3,15 @@
 <div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table" itemprop="significantLinks">
 	<thead>
 		<tr>
-			<th>{!NAME}</th>
-			<th>{!AMOUNT}</th>
-			<th>{!DATE_TIME}</th>
+			<th>{!ECOM_ORDER}</th>
+			<th>{!PRICE}</th>
+			<th>{$TAX_LABEL}</th>
+			<th>{!SHIPPING_COST}</th>
+			<th>{!ORDERED_DATE}</th>
 			{+START,IF,{$NOT,{$MOBILE}}}
 				<th>{!STATUS}</th>
 			{+END}
+			<th>{!TRANSACTION}</th>
 		</tr>
 	</thead>
 
@@ -27,21 +30,30 @@
 
 					{+START,IF,{$MOBILE}}
 						<p class="assocated_details">
-							<span class="field_name">{!STATUS}:</span> {STATE*}
+							<span class="field_name">{!STATUS}:</span> {STATUS*}
 						</p>
 					{+END}
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{AMOUNT*}
+					{$CURRENCY_SYMBOL}{TOTAL_PRICE*}
+				</td>
+				<td>
+					{$CURRENCY_SYMBOL}{TOTAL_TAX*}
+				</td>
+				<td>
+					{$CURRENCY_SYMBOL}{TOTAL_SHIPPING_PRICE*}
 				</td>
 				<td>
 					{TIME*}
 				</td>
 				{+START,IF,{$NOT,{$MOBILE}}}
 					<td>
-						{STATE*}
+						{STATUS*}
 					</td>
 				{+END}
+				<td>
+					{TRANSACTION_LINKER}
+				</td>
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr>

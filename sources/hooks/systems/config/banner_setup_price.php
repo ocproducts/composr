@@ -31,8 +31,8 @@ class Hook_config_banner_setup_price
     public function get_details()
     {
         return array(
-            'human_name' => 'COST_banner_setup_price',
-            'type' => 'integer',
+            'human_name' => 'PRICE_banner_setup_price',
+            'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'BANNERS',
             'explanation' => 'CONFIG_OPTION_banner_setup_price',

@@ -245,7 +245,7 @@ class Module_cms_booking extends Standard_crud_module
             $details = array(
                 'title' => null,
                 'description' => null,
-                'price' => 0.0,
+                'price' => 0.00,
                 'categorisation' => null,
                 'cycle_type' => '',
                 'cycle_pattern' => '',
@@ -484,7 +484,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
             }
 
             $details = array(
-                'price' => 0.0,
+                'price' => 0.00,
                 'price_is_per_period' => 0,
                 'supports_quantities' => 0,
                 'title' => null,

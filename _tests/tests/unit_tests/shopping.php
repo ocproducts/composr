@@ -18,7 +18,7 @@
  */
 class shopping_test_set extends cms_test_case
 {
-    public $product_id;
+    public $entry_id;
 
     public function setUp()
     {
@@ -31,7 +31,6 @@ class shopping_test_set extends cms_test_case
         require_code('lorem');
         require_lang('catalogues');
         require_lang('shopping');
-        require_lang('ecommerce');
         require_code('lang3');
 
         // Cleanup if needed...
@@ -59,7 +58,7 @@ class shopping_test_set extends cms_test_case
             //     Name  Description  Type  Defines order  Required  Visible  Searchable
             array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1),
             array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 1, 1, 1, 'RANDOM'),
-            array('ECOM_CAT_price_pre_tax', 'ECOM_CATD_price_pre_tax', 'float', 0, 1, 1, 1, 'decimal_points_behaviour=price'),
+            array('ECOM_CAT_price', 'ECOM_CATD_price', 'float', 0, 1, 1, 1, 'decimal_points_behaviour=price'),
             array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0),
             array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0),
             array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'tick'/*will save as list*/, 0, 1, 0, 0),
@@ -105,7 +104,7 @@ class shopping_test_set extends cms_test_case
                     $_POST['field_' . strval($id)] = lorem_paragraph();
                     break;
                 case 'float':
-                    $_POST['field_' . strval($id)] = '68.35'; // Price
+                    $_POST['field_' . strval($id)] = float_format(68.35); // Price
                     break;
                 case 'list':
                     if ($val['cf_order'] == 6) { // Tax
@@ -118,7 +117,7 @@ class shopping_test_set extends cms_test_case
         }
 
         $map = $cms_module->get_set_field_map($catalogue_name, get_member());
-        $this->product_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
+        $this->entry_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
     }
 
     public function testAddtoCart()
@@ -128,9 +127,8 @@ class shopping_test_set extends cms_test_case
 
         $shopping_module->empty_cart();
 
-        $_POST['product_id'] = $this->product_id;
-        $_GET['hook'] = 'catalogue_items';
-        $shopping_module->add_item_to_cart();
+        $_POST['type_code'] = strval($this->entry_id);
+        $shopping_module->add_item();
 
         $_GET['page'] = 'shopping'; // Static setting to identify the module in payment form
         render_cart_payment_form();
@@ -145,7 +143,8 @@ class shopping_test_set extends cms_test_case
         $reason = '';
         $pending_reason = 'bar';
         $memo = 'foo';
-        $amount = (get_db_type() == 'xml'/*rounding difference*/) ? 71.40 : 71.77;
+        $amount = 68.35;
+        $tax = round($amount * 0.05, 2);
         $currency = get_option('currency');
         $txn_id = '0';
         $parent_txn_id = '0';
@@ -153,7 +152,7 @@ class shopping_test_set extends cms_test_case
         $payment_gateway = 'manual';
         $is_subscription = false;
 
-        handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, get_member(), $payment_gateway);
+        handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, true, $parent_txn_id, $pending_reason, $memo, $period, get_member(), $payment_gateway);
     }
 
     public function tearDown()

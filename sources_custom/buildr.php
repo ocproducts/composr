@@ -714,15 +714,15 @@ function buy($member_id, $item_name, $copy_owner)
 {
     // Check we have the points and that it exists
     list($realm, $x, $y) = get_loc_details($member_id);
-    $cost = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'cost', array('name' => $item_name, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'copy_owner' => $copy_owner));
-    if (is_null($cost)) {
+    $price = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'price', array('name' => $item_name, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'copy_owner' => $copy_owner));
+    if (is_null($price)) {
         buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
-    if ($cost > available_points($member_id)) {
-        buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($cost))), 'warn');
+    if ($price > available_points($member_id)) {
+        buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
     }
-    if ($cost == 0) {
+    if ($price == 0) {
         buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
@@ -730,7 +730,6 @@ function buy($member_id, $item_name, $copy_owner)
     if ((!has_privilege($member_id, 'administer_buildr')) || (!is_guest($copy_owner))) {
         require_code('points2');
 
-        $price = $cost;
         if (available_points($member_id) < $price) {
             buildr_refresh_with_message(do_lang_tempcode('W_EXPENSIVE', escape_html(integer_format($price))), 'warn');
         }
@@ -741,7 +740,7 @@ function buy($member_id, $item_name, $copy_owner)
 
     basic_pickup($member_id, $item_name, $copy_owner);
 
-    buildr_refresh_with_message(do_lang_tempcode('W_PURCHASED', escape_html($item_name), escape_html(integer_format($cost))));
+    buildr_refresh_with_message(do_lang_tempcode('W_PURCHASED', escape_html($item_name), escape_html(integer_format($price))));
 }
 
 /**
@@ -755,12 +754,12 @@ function take($member_id, $item_name, $copy_owner)
 {
     // Check its free and exists
     list($realm, $x, $y) = get_loc_details($member_id);
-    $cost = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'cost', array('name' => $item_name, 'copy_owner' => $copy_owner, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm));
-    if (is_null($cost)) {
+    $price = $GLOBALS['SITE_DB']->query_select_value_if_there('w_items', 'price', array('name' => $item_name, 'copy_owner' => $copy_owner, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm));
+    if (is_null($price)) {
         buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
-    if ($cost != 0) {
+    if ($price != 0) {
         buildr_refresh_with_message(do_lang_tempcode('ACCESS_DENIED__I_ERROR', $GLOBALS['FORUM_DRIVER']->get_username(get_member())), 'warn');
     }
 
@@ -828,10 +827,10 @@ function take_an_item_from_room($realm, $x, $y, $item_name, $copy_owner)
  * @param  integer $y The Y ordinate
  * @param  string $item_name The name of the item
  * @param  BINARY $not_infinite Whether the item source is finite in quantity
- * @param  integer $cost The cost of the item
+ * @param  integer $price The price of the item
  * @param  MEMBER $copy_owner The owner of the item copy
  */
-function add_item_to_room($realm, $x, $y, $item_name, $not_infinite, $cost, $copy_owner)
+function add_item_to_room($realm, $x, $y, $item_name, $not_infinite, $price, $copy_owner)
 {
     // Does the item need to be created or is it there? (and is it infinite, or maybe it has a count to be incremented?)
     // ================================================
@@ -853,7 +852,7 @@ function add_item_to_room($realm, $x, $y, $item_name, $not_infinite, $cost, $cop
             'location_x' => $x,
             'location_y' => $y,
             'not_infinite' => $not_infinite,
-            'cost' => $cost,
+            'price' => $price,
             'i_count' => 1,
             'copy_owner' => $copy_owner,
         ));

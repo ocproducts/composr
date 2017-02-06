@@ -5,6 +5,7 @@
 		<tr>
 			<th>{!NAME}</th>
 			<th>{!AMOUNT}</th>
+			<th>{$TAX_LABEL}</th>
 			<th>{!DATE_TIME}</th>
 			{+START,IF,{$NOT,{$MOBILE}}}
 				<th>{!STATUS}</th>
@@ -29,6 +30,9 @@
 				</td>
 				<td>
 					{$CURRENCY_SYMBOL}{AMOUNT*}
+				</td>
+				<td>
+					{$CURRENCY_SYMBOL}{TAX*}
 				</td>
 				<td>
 					{TIME*}

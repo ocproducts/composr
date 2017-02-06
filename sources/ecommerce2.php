@@ -23,7 +23,8 @@
  *
  * @param  SHORT_TEXT $title The title
  * @param  LONG_TEXT $description The description
- * @param  REAL $cost The cost
+ * @param  REAL $price The price
+ * @param  REAL $tax The tax
  * @param  integer $length The length
  * @param  SHORT_TEXT $length_units The units for the length
  * @set    y m d w
@@ -37,7 +38,7 @@
  * @param  ?array $mails Other e-mails to send (null: none)
  * @return AUTO_LINK The ID
  */
-function add_usergroup_subscription($title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
+function add_usergroup_subscription($title, $description, $price, $tax, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
 {
     if (is_null($mails)) {
         $mails = array();
@@ -50,7 +51,8 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
     $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
     $map = array(
-        's_cost' => $cost,
+        's_price' => $price,
+        's_tax' => $tax,
         's_length' => $length,
         's_length_units' => $length_units,
         's_auto_recur' => $auto_recur,
@@ -94,7 +96,8 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
  * @param  AUTO_LINK $id The ID
  * @param  SHORT_TEXT $title The title
  * @param  LONG_TEXT $description The description
- * @param  REAL $cost The cost
+ * @param  REAL $price The price
+ * @param  REAL $tax The tax
  * @param  integer $length The length
  * @param  SHORT_TEXT $length_units The units for the length
  * @set    y m d w
@@ -107,7 +110,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
  * @param  ?LONG_TEXT $mail_uhoh The text of the e-mail to send out when a subscription cannot be renewed because the subproduct is gone (null: default)
  * @param  ?array $mails Other e-mails to send (null: do not change)
  */
-function edit_usergroup_subscription($id, $title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
+function edit_usergroup_subscription($id, $title, $description, $price, $tax, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
 {
     $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
     $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
@@ -145,7 +148,8 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
     $_mail_uhoh = $myrow['s_mail_uhoh'];
 
     $map = array(
-        's_cost' => $cost,
+        's_price' => $price,
+        's_tax' => $tax,
         's_length' => $length,
         's_length_units' => $length_units,
         's_auto_recur' => $auto_recur,

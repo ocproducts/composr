@@ -35,7 +35,7 @@ class Hook_ecommerce_tax
     public function get_products($search = null)
     {
         $products = array(
-            'TAX' => array(
+            'TAX_GENERAL' => array(
                 'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_TAX'),
                 'item_description' => new Tempcode(),
                 'item_image_url' => '',
@@ -49,6 +49,8 @@ class Hook_ecommerce_tax
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => 0.00,
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             ),
         );

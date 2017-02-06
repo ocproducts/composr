@@ -30,8 +30,6 @@ class Hook_ecommerce_topic_pin
      */
     public function get_product_category()
     {
-        require_lang('ecommerce');
-
         return array(
             'category_name' => do_lang('TOPIC_PINNING'),
             'category_description' => do_lang_tempcode('TOPIC_PINNING_DESCRIPTION'),
@@ -50,7 +48,6 @@ class Hook_ecommerce_topic_pin
      */
     public function get_products($search = null)
     {
-        require_lang('ecommerce');
         require_lang('cns');
 
         $products = array();
@@ -70,6 +67,8 @@ class Hook_ecommerce_topic_pin
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => float_unformat(get_option('topic_pin_tax')),
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             ));
         }
@@ -107,7 +106,6 @@ class Hook_ecommerce_topic_pin
      */
     public function get_needed_fields($type_code)
     {
-        require_lang('ecommerce');
         require_lang('cns');
 
         $fields = new Tempcode();
@@ -139,7 +137,6 @@ class Hook_ecommerce_topic_pin
      */
     public function handle_needed_fields($type_code)
     {
-        require_lang('ecommerce');
         require_lang('cns');
 
         $member_id = get_member();
@@ -177,7 +174,6 @@ class Hook_ecommerce_topic_pin
             return false;
         }
 
-        require_lang('ecommerce');
         require_lang('cns');
 
         $days = intval(preg_replace('#^TOPIC_PIN_\_#', '', $type_code));
@@ -195,7 +191,7 @@ class Hook_ecommerce_topic_pin
 
         $GLOBALS['FORUM_DRIVER']->pin_topic($topic_id);
 
-        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('PIN_SPECIFIC_TOPIC', $topic_title, null, null, get_site_default_lang()), 'details2' => strval($days), 'transaction_id' => $details['TXN_ID']));
+        $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('PIN_SPECIFIC_TOPIC', $topic_title, null, null, get_site_default_lang()), 'details2' => strval($days), 'txn_id' => $details['TXN_ID']));
 
         return true;
     }

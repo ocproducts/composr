@@ -120,7 +120,7 @@ class Module_admin_ecommerce extends Standard_crud_module
     {
         $type = get_param_string('type', 'browse');
 
-        require_lang('ecommerce');
+        require_code('ecommerce');
 
         set_helper_panel_tutorial('tut_ecommerce');
 
@@ -150,7 +150,6 @@ class Module_admin_ecommerce extends Standard_crud_module
      */
     public function run_start($type)
     {
-        require_code('ecommerce');
         require_code('ecommerce2');
 
         if (get_value('unofficial_ecommerce') !== '1') {
@@ -203,7 +202,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      *
      * @param  SHORT_TEXT $title The title
      * @param  LONG_TEXT $description The description
-     * @param  REAL $cost The cost
+     * @param  REAL $price The price
      * @param  integer $length The length
      * @param  SHORT_TEXT $length_units The units for the length
      * @set    y m d w
@@ -218,7 +217,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  ?AUTO_LINK $id ID of existing subscription (null: new)
      * @return array Tuple: The input fields, The hidden fields, The delete fields
      */
-    public function get_form_fields($title = '', $description = '', $cost = 9.99, $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
+    public function get_form_fields($title = '', $description = '', $price = 9.99, $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
     {
         if (($title == '') && (get_forum_type() == 'cns')) {
             $add_usergroup_url = build_url(array('page' => 'admin_cns_groups', 'type' => 'add'), get_module_zone('admin_cns_groups'));
@@ -245,7 +244,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_TITLE'), 'title', $title, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_DESCRIPTION'), 'description', $description, true));
-        $fields->attach(form_input_float(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_COST'), 'cost', $cost, true));
+        $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_PRICE'), 'price', $price, true));
 
         $list = new Tempcode();
         foreach (array('d', 'w', 'm', 'y') as $unit) {
@@ -336,7 +335,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
         $sortables = array(
             's_title' => do_lang_tempcode('TITLE'),
-            's_cost' => do_lang_tempcode('COST'),
+            's_price' => do_lang_tempcode('PRICE'),
             's_length' => do_lang_tempcode('SUBSCRIPTION_LENGTH'),
             's_group_id' => do_lang_tempcode('USERGROUP'),
             's_enabled' => do_lang('ENABLED'),
@@ -347,7 +346,7 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $header_row = results_field_title(array(
             do_lang_tempcode('TITLE'),
-            do_lang_tempcode('COST'),
+            do_lang_tempcode('PRICE'),
             do_lang_tempcode('SUBSCRIPTION_LENGTH'),
             do_lang_tempcode('USERGROUP'),
             do_lang('ENABLED'),
@@ -356,14 +355,12 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_lang('ecommerce');
-
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, null, get_forum_type() != 'cns');
         foreach ($rows as $r) {
             $edit_link = build_url($url_map + array('id' => $r['id']), '_SELF');
 
-            $fields->attach(results_entry(array(get_translated_text($r['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']), $r['s_cost'], do_lang('_LENGTH_UNIT_' . $r['s_length_units'], integer_format($r['s_length'])), cns_get_group_name($r['s_group_id']), ($r['s_enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, '#' . strval($r['id'])))), true));
+            $fields->attach(results_entry(array(get_translated_text($r['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']), $r['s_price'], do_lang('_LENGTH_UNIT_' . $r['s_length_units'], integer_format($r['s_length'])), cns_get_group_name($r['s_group_id']), ($r['s_enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, '#' . strval($r['id'])))), true));
         }
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
@@ -421,7 +418,8 @@ class Module_admin_ecommerce extends Standard_crud_module
         $fields = $this->get_form_fields(
             get_translated_text($r['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']),
             get_translated_text($r['s_description'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']),
-            $r['s_cost'],
+            $r['s_price'],
+            $r['s_tax'],
             $r['s_length'],
             $r['s_length_units'],
             $r['s_auto_recur'],
@@ -493,7 +491,7 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $mails = $this->_mails();
 
-        $id = add_usergroup_subscription($title, post_param_string('description'), float_unformat(post_param_string('cost')), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
+        $id = add_usergroup_subscription($title, post_param_string('description'), float_unformat(post_param_string('price')), float_unformat(post_param_string('tax')), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
         return array(strval($id), $text);
     }
 
@@ -508,7 +506,7 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $mails = $this->_mails();
 
-        edit_usergroup_subscription(intval($id), $title, post_param_string('description'), float_unformat(post_param_string('cost')), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
+        edit_usergroup_subscription(intval($id), $title, post_param_string('description'), float_unformat(post_param_string('price')), float_unformat(post_param_string('tax')), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
     }
 
     /**

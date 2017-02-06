@@ -13,7 +13,7 @@
 					</th>
 
 					<th>
-						{!COST}
+						{!AMOUNT}
 					</th>
 
 					<th>
@@ -47,7 +47,7 @@
 						</th>
 
 						<td>
-							{$CURRENCY_SYMBOL}{AMOUNT*}, {PER}
+							{$CURRENCY_SYMBOL}{TOTAL*}, {PER}
 						</td>
 
 						<td>

@@ -250,18 +250,18 @@ function member_personal_links_and_details($member_id)
     if ((get_forum_type() == 'cns') && (addon_installed('ecommerce')) && (get_option('show_personal_sub_links') == '1') && (!has_zone_access($member_id, 'adminzone')) && (has_actual_page_access($member_id, 'purchase'))) {
         require_lang('ecommerce');
 
-        $usergroup_subs = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('id', 's_title', 's_group_id', 's_cost'), array('s_enabled' => 1));
+        $usergroup_subs = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('id', 's_title', 's_group_id', 's_price'), array('s_enabled' => 1));
         $in_one = false;
         $members_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id);
         foreach ($usergroup_subs as $i => $sub) {
-            $usergroup_subs[$i]['s_cost'] = floatval($sub['s_cost']);
+            $usergroup_subs[$i]['s_price'] = floatval($sub['s_price']);
             if (in_array($sub['s_group_id'], $members_groups)) {
                 $in_one = true;
                 break;
             }
         }
         if (!$in_one) {
-            sort_maps_by($usergroup_subs, 's_cost');
+            sort_maps_by($usergroup_subs, 's_price');
             foreach ($usergroup_subs as $sub) {
                 $url = build_url(array('page' => 'purchase', 'type' => 'message', 'type_code' => 'USERGROUP' . strval($sub['id'])), get_module_zone('purchase'));
                 $links_ecommerce->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '5c4a1f300b37722e587fe2f608f1ee3a', 'NAME' => do_lang_tempcode('UPGRADE_TO', escape_html(get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']))), 'URL' => $url)));

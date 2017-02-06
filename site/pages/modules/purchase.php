@@ -116,6 +116,7 @@ class Module_purchase
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
                 'e_price' => 'REAL',
+                'e_tax' => 'REAL',
                 'e_currency' => 'ID_TEXT',
                 'e_price_points' => 'INTEGER', // This is supplementary, not an alternative; if it is only points then no ecom_trans_expecting record will be created
                 'e_ip_address' => 'IP',
@@ -124,6 +125,7 @@ class Module_purchase
                 'e_length' => '?INTEGER',
                 'e_length_units' => 'ID_TEXT',
                 'e_memo' => 'LONG_TEXT',
+                'e_invoicing_breakdown' => 'LONG_TEXT',
             ));
 
             require_code('currency');
@@ -151,6 +153,7 @@ class Module_purchase
                 't_status' => 'SHORT_TEXT',
                 't_reason' => 'SHORT_TEXT',
                 't_amount' => 'REAL',
+                't_tax' => 'REAL',
                 't_currency' => 'ID_TEXT',
                 't_parent_txn_id' => 'ID_TEXT',
                 't_time' => '*TIME',
@@ -190,6 +193,24 @@ class Module_purchase
                 'e_details' => 'LONG_TEXT', // JSON encoded data
                 'e_time' => 'TIME',
             ));
+
+            $GLOBALS['SITE_DB']->create_table('ecom_trans_addresses', array(
+                // These are filled after an order is made (maybe via what comes back from IPN, maybe from what is set for a local payment), and presented in the admin orders UI
+                'id' => '*AUTO',
+                'a_trans_expecting_id' => 'ID_TEXT',
+                'a_txn_id' => 'ID_TEXT',
+                'a_firstname' => 'SHORT_TEXT', // NB: May be full-name, or include company name
+                'a_lastname' => 'SHORT_TEXT',
+                'a_street_address' => 'LONG_TEXT',
+                'a_city' => 'SHORT_TEXT',
+                'a_county' => 'SHORT_TEXT',
+                'a_state' => 'SHORT_TEXT',
+                'a_post_code' => 'SHORT_TEXT',
+                'a_country' => 'SHORT_TEXT',
+                'a_email' => 'SHORT_TEXT',
+                'a_phone' => 'SHORT_TEXT',
+            ));
+            $GLOBALS['SITE_DB']->create_index('ecom_trans_addresses', 'order_id', array('a_order_id'));
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
@@ -218,29 +239,39 @@ class Module_purchase
             $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_amount', 'REAL');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_tax', 'REAL');
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
 
             $GLOBALS['SITE_DB']->rename_table('trans_expecting', 'ecom_trans_expecting');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_trans_expecting', 'e_amount', 'REAL', 'e_price');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_memo', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_price_points', 'INTEGER', 0);
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_invoicing_breakdown', 'LONG_TEXT');
+
+            rename_config_option('transaction_flat_cost', 'transaction_flat_fee');
+            rename_config_option('transaction_percentage_cost', 'transaction_percentage_fee');
 
             if ($GLOBALS['SITE_DB']->table_exists('prices')) {
                 $GLOBALS['SITE_DB']->rename_table('prices', 'ecom_prods_prices');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_prices', 'price', '?INTEGER', 'price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'price', '?REAL', null);
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'tax', 'REAL', 0.00);
 
                 $GLOBALS['SITE_DB']->rename_table('pstore_customs', 'ecom_prods_custom');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_custom', 'c_cost', '?INTEGER', 'c_price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_price', '?REAL', null);
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_tax', 'REAL', 0.00);
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_shipping_cost', 'REAL', 0.00);
 
                 $GLOBALS['SITE_DB']->rename_table('pstore_permissions', 'ecom_prods_permissions');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_permissions', 'p_cost', '?INTEGER', 'p_price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_price', '?REAL', null);
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_tax', 'REAL', 0.00);
 
                 $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
-                $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'transaction_id', 'ID_TEXT', '');
+                $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'txn_id', 'ID_TEXT', '');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'memberid', 'MEMBER', 'member_id');
                 $sales = $GLOBALS['SITE_DB']->query_select('ecom_sales', array('*'));
                 foreach ($sales as $sale) {
@@ -271,14 +302,15 @@ class Module_purchase
                             $type_code = 'topic_pin';
                             break;
                     }
-                    $transaction_id = 'manual-' . substr(uniqid('', true), 0, 10);
+                    $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
                     $GLOBALS['SITE_DB']->query_insert('ecom_transactions', array(
-                        'id' => $transaction_id,
+                        'id' => $txn_id,
                         't_type_code' => $type_code,
                         't_purchase_id' => strval($sale['id']),
                         't_status' => 'Completed',
                         't_reason' => '',
-                        't_amount' => 0.0,
+                        't_amount' => 0.00,
+                        't_tax' => 0.00,
                         't_currency' => 'points',
                         't_parent_txn_id' => '',
                         't_time' => $sale['date_and_time'],
@@ -286,7 +318,7 @@ class Module_purchase
                         't_memo' => '',
                         't_payment_gateway' => ''
                     ), true);
-                    $GLOBALS['SITE_DB']->query_update('ecom_sales', array('transaction_id' => $transaction_id), array('id' => $sale['id']), '', 1);
+                    $GLOBALS['SITE_DB']->query_update('ecom_sales', array('txn_id' => $txn_id), array('id' => $sale['id']), '', 1);
                 }
                 $GLOBALS['SITE_DB']->delete_table_field('ecom_sales', 'purchasetype');
             }
@@ -296,6 +328,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->create_table('ecom_prods_prices', array(
                 'name' => '*ID_TEXT',
                 'price' => '?REAL',
+                'tax' => 'REAL',
                 'price_points' => '?INTEGER'
             ));
 
@@ -305,7 +338,7 @@ class Module_purchase
                 'member_id' => 'MEMBER',
                 'details' => 'SHORT_TEXT',
                 'details2' => 'SHORT_TEXT',
-                'transaction_id' => 'ID_TEXT',
+                'txn_id' => 'ID_TEXT',
             ));
 
             // Custom
@@ -317,6 +350,8 @@ class Module_purchase
                 'c_mail_body' => 'LONG_TRANS',
                 'c_enabled' => 'BINARY',
                 'c_price' => '?REAL',
+                'c_tax' => 'REAL',
+                'c_shipping_cost' => 'REAL',
                 'c_price_points' => '?INTEGER',
                 'c_one_per_member' => 'BINARY',
             ));
@@ -329,6 +364,7 @@ class Module_purchase
                 'p_mail_body' => 'LONG_TRANS',
                 'p_enabled' => 'BINARY',
                 'p_price' => '?REAL',
+                'p_tax' => 'REAL',
                 'p_price_points' => '?INTEGER',
                 'p_hours' => '?INTEGER',
                 'p_type' => 'ID_TEXT', // member_privileges,member_category_access,member_page_access,member_zone_access
@@ -368,7 +404,6 @@ class Module_purchase
     {
         $type = get_param_string('type', 'browse');
 
-        require_lang('ecommerce');
         require_code('ecommerce');
 
         if ($type == 'browse') {
@@ -592,7 +627,7 @@ class Module_purchase
                                 continue;
                             }
 
-                            list($_discounted_price, $_points_for_discount) = get_discounted_price($_details, true);
+                            list($_discounted_price, $_discounted_tax, $_points_for_discount) = get_discounted_price($_details, true);
                             $_can_purchase = ((($_discounted_price !== null) && (!$must_support_money)) || (($_details['price'] !== null) && (!$must_support_points)));
                             if ($_can_purchase) {
                                 $can_purchase = true;
@@ -647,7 +682,7 @@ class Module_purchase
                 $_full_price = currency_convert($full_price, $currency, null, true);
             }
 
-            list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
+            list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($details, true);
             $can_purchase = (($discounted_price !== null) || ($details['price'] !== null));
 
             if ($details['price'] !== null) {
@@ -660,11 +695,11 @@ class Module_purchase
             if (!$can_purchase) {
                 $_discounted_price = do_lang('NA');
                 $written_price = do_lang_tempcode('NA_EM');
-            } elseif ($full_price === 0.0/*free without any need for discount*/) {
+            } elseif ($full_price === 0.00/*free without any need for discount*/) {
                 $_discounted_price = do_lang('NA');
                 $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE');
-            } elseif ($discounted_price === 0.0/*discounted via points to zero*/) {
-                $_discounted_price = currency_convert(0.0, $currency, null, true);
+            } elseif ($discounted_price === 0.00/*discounted via points to zero*/) {
+                $_discounted_price = currency_convert(0.00, $currency, null, true);
                 $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE_WITH_POINTS', $_discounted_price, $_full_price, array(escape_html(integer_format($points_for_discount))));
             } elseif ($discounted_price !== null/*discounted via points*/) {
                 $_discounted_price = currency_convert($discounted_price, $currency, null, true);
@@ -954,16 +989,19 @@ class Module_purchase
             return $test;
         }
 
-        list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
+        list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($details, true);
         if ($discounted_price === null) {
             $price = $details['price'];
+            $tax = recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($details['shipping_cost']));
 
             if ($price === null) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
         } else {
             $price = $discounted_price;
+            $tax = $discounted_tax;
         }
+        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
 
         $item_name = $details['item_name'];
 
@@ -989,6 +1027,7 @@ class Module_purchase
                     's_member_id' => get_member(),
                     's_state' => 'new',
                     's_amount' => $price,
+                    's_tax' => $tax,
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
                     's_auto_fund_source' => '',
@@ -1018,7 +1057,7 @@ class Module_purchase
             }
         }
 
-        if ($price == 0.0) { // Free/point-based product
+        if ($price == 0.00) { // Free/point-based product
             if ($confirmation_box === null) {
                 if ($points_for_discount !== null) {
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_POINTS_CONFIRMATION', escape_html($item_name), escape_html(integer_format($points_for_discount)));
@@ -1050,7 +1089,8 @@ class Module_purchase
         } elseif (perform_local_payment()) { // Handle the transaction internally
             if ($confirmation_box === null) {
                 $_price = currency_convert($price, $currency, null, true);
-                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price);
+                $_tax = currency_convert($tax, $currency, null, true);
+                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price, array($_tax, do_lang(get_option('tax_system'))));
             }
 
             $needs_shipping_address = !empty($details['needs_shipping_address']);
@@ -1060,6 +1100,8 @@ class Module_purchase
                 $item_name,
                 $purchase_id,
                 $price,
+                $tax,
+                $shipping_cost,
                 $currency,
                 ($points_for_discount === null) ? 0 : $points_for_discount,
                 ($details['type'] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
@@ -1091,13 +1133,14 @@ class Module_purchase
         } else { // Pass through to the gateway's HTTP server
             if ($confirmation_box === null) {
                 $_price = currency_convert($price, $currency, null, true);
-                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price);
+                $_tax = currency_convert($tax, $currency, null, true);
+                $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price, array($_tax, do_lang(get_option('tax_system'))));
             }
 
             if ($details['type'] == PRODUCT_SUBSCRIPTION) {
-                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
+                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price + $shipping_cost, $tax, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
             } else {
-                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, $price, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $payment_gateway);
+                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $payment_gateway);
             }
 
             $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
@@ -1182,23 +1225,22 @@ class Module_purchase
             $purchase_id = get_param_string('purchase_id');
 
             list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
-            if (($discounted_price === null) && ($details['price'] !== 0.0)) {
+            if (($discounted_price === null) && ($details['price'] !== 0.00)) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Not discounted to free and not free, we should not be here
             }
 
             if ($points_for_discount !== null) {
-                require_code('points2');
-                charge_member($member_id, $points_for_discount, do_lang('FREE_ECOMMERCE_PRODUCT', $item_name));
+                // Paying with points
                 $message = do_lang_tempcode('POINTS_PURCHASE', escape_html(integer_format($points_for_discount)));
                 $memo = do_lang('POINTS');
-                $amount = floatval($points_for_discount);
-                $currency = 'points'; // No charge_member will occur in handle_confirmed_transaction as ($currency == 'points') makes it avoid the pricing code
+                $currency = 'points';
             } else {
+                // Completely free
                 $message = do_lang_tempcode('FREE_PURCHASE');
                 $memo = do_lang('FREE');
-                $amount = 0.0;
                 $currency = get_option('currency');
             }
+            $amount = 0.00;
 
             $status = 'Completed';
             $reason = '';
@@ -1211,7 +1253,7 @@ class Module_purchase
             } else {
                 $period = '';
             }
-            handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $currency, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual');
+            handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, 0.00, $currency, true, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual');
 
             global $ECOMMERCE_SPECIAL_SUCCESS_MESSAGE;
             if ($ECOMMERCE_SPECIAL_SUCCESS_MESSAGE !== null) {
@@ -1330,7 +1372,7 @@ class Module_purchase
     protected function _check_can_afford($type_code)
     {
         list($details) = find_product_details($type_code);
-        list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
+        list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($details, true);
 
         if ($points_for_discount !== null) {
             // Can't afford the points?

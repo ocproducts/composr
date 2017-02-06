@@ -30,8 +30,6 @@ class Hook_ecommerce_usergroup
      */
     public function get_product_category()
     {
-        require_lang('ecommerce');
-
         return array(
             'category_name' => do_lang('USERGROUP_SUBSCRIPTION'),
             'category_description' => do_lang_tempcode('USERGROUP_SUBSCRIPTION_DESCRIPTION'),
@@ -60,7 +58,7 @@ class Hook_ecommerce_usergroup
         $images = array('bronze', 'silver', 'gold', 'platinum');
 
         $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
-        $usergroup_subs = $db->query_select('f_usergroup_subs', array('*'), array('s_enabled' => 1), 'ORDER BY s_length_units, s_cost');
+        $usergroup_subs = $db->query_select('f_usergroup_subs', array('*'), array('s_enabled' => 1), 'ORDER BY s_length_units, s_price');
         $products = array();
         foreach ($usergroup_subs as $i => $sub) {
             $item_name = get_translated_text($sub['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
@@ -88,12 +86,14 @@ class Hook_ecommerce_usergroup
                 'type' => ($sub['s_auto_recur'] == 1) ? PRODUCT_SUBSCRIPTION : PRODUCT_PURCHASE, // Technically a non-recurring usergroup subscription is NOT a subscription (i.e. conflicting semantics here...)
                 'type_special_details' => array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
 
-                'price' => $sub['s_cost'],
+                'price' => $sub['s_price'],
                 'currency' => get_option('currency'),
                 'price_points' => null,
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
+                'tax' => $sub['s_tax'],
+                'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );
         }
@@ -352,7 +352,7 @@ class Hook_ecommerce_usergroup
             $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
             dispatch_notification('service_paid_for_staff', null, $subject, $body);
 
-            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => strval($usergroup_subscription_id), 'transaction_id' => $details['TXN_ID']));
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => strval($usergroup_subscription_id), 'txn_id' => $details['TXN_ID']));
         }
 
         return true;

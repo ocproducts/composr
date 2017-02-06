@@ -60,6 +60,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                     's_member_id' => $member_id,
                     's_state' => ($sub['timeout'] > time()) ? 'cancelled' : 'active',
                     's_amount' => $sub_trans['t_amount'],
+                    's_tax' => $sub_trans['t_tax'],
                     's_special' => '',
                     's_time' => $sub_trans['t_time'],
                     's_auto_fund_source' => '',
@@ -164,7 +165,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
 
                 'state' => $sub['s_state'],
 
-                'via' => $sub['s_payment_gateway'],
+                'payment_gateway' => $sub['s_payment_gateway'],
                 'auto_fund_source' => $sub['s_auto_fund_source'],
                 'auto_fund_key' => $sub['s_auto_fund_key'],
 
@@ -205,8 +206,10 @@ function prepare_templated_subscription($subscription)
         'LENGTH_UNITS' => $subscription['length_units'],
         'PER' => do_lang('_LENGTH_UNIT_' . $subscription['length_units'], integer_format($subscription['length'])),
         'AMOUNT' => float_format($subscription['amount']),
-        '_VIA' => $subscription['via'],
-        'VIA' => do_lang_tempcode('PAYMENT_GATEWAY_' . $subscription['via']),
+        'TAX' => float_format($subscription['tax']),
+        'TOTAL' => float_format($subscription['amount'] + $subscription['tax']),
+        '_PAYMENT_GATEWAY' => $subscription['payment_gateway'],
+        'PAYMENT_GATEWAY' => do_lang_tempcode('PAYMENT_GATEWAY_' . $subscription['payment_gateway']),
         '_STATE' => $subscription['state'],
         'STATE' => do_lang_tempcode('PAYMENT_STATE_' . $subscription['state']),
         '_START_TIME' => strval($subscription['start_time']),
@@ -217,6 +220,6 @@ function prepare_templated_subscription($subscription)
         'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false, false, false, true),
         'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false, false, false, true),
         'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false, false, false, true),
-        'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['via']) : new Tempcode(),
+        'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['payment_gateway']) : new Tempcode(),
     );
 }

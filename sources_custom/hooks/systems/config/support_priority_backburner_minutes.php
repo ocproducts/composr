@@ -33,7 +33,7 @@ class Hook_config_support_priority_backburner_minutes
             'explanation' => 'CONFIG_OPTION_support_priority_backburner_minutes',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 9,
+            'order_in_category_group' => 3,
 
             'addon' => 'composr_homesite_support_credits',
         );

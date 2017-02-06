@@ -74,7 +74,7 @@ class Module_admin_invoices
     {
         $type = get_param_string('type', 'add');
 
-        require_lang('ecommerce');
+        require_code('ecommerce');
 
         set_helper_panel_tutorial('tut_ecommerce');
 
@@ -136,8 +136,6 @@ class Module_admin_invoices
      */
     public function run()
     {
-        require_code('ecommerce');
-
         $type = get_param_string('type', 'add');
 
         if ($type == 'browse') {
@@ -212,7 +210,8 @@ class Module_admin_invoices
         $fields = new Tempcode();
         $fields->attach(form_input_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list));
         $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_INVOICE_FOR'), 'to', $to, true));
-        $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('INVOICE_AMOUNT_TEXT', escape_html(get_option('currency'))), 'amount', null, false));
+        $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_INVOICE_AMOUNT', escape_html(get_option('currency')), ecommerce_get_currency_symbol(get_option('currency'))), 'amount', null, false));
+        $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_INVOICE_TAX'), 'tax', null, false));
         $fields->attach(form_input_line(do_lang_tempcode('INVOICE_SPECIAL'), do_lang_tempcode('DESCRIPTION_INVOICE_SPECIAL'), 'special', '', false));
         $fields->attach(form_input_text(do_lang_tempcode('NOTE'), do_lang_tempcode('DESCRIPTION_INVOICE_NOTE'), 'note', '', false));
 
@@ -232,6 +231,12 @@ class Module_admin_invoices
         $type_code = post_param_string('type_code');
         list($details) = find_product_details($type_code);
 
+        $to = post_param_string('to');
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($to);
+        if (is_null($member_id)) {
+            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $to));
+        }
+
         $_amount = post_param_string('amount', '');
         $amount = ($_amount == '') ? null : float_unformat($_amount);
         if ($amount === null) {
@@ -240,11 +245,10 @@ class Module_admin_invoices
                 warn_exit(do_lang_tempcode('INVOICE_REQUIRED_AMOUNT'));
             }
         }
-
-        $to = post_param_string('to');
-        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($to);
-        if (is_null($member_id)) {
-            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $to));
+        $_tax = post_param_string('tax', '');
+        $tax = ($_tax == '') ? null : float_unformat($_tax);
+        if ($tax === null) {
+            $tax = recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($details['shipping_cost']), $member_id);
         }
 
         $id = $GLOBALS['SITE_DB']->query_insert('ecom_invoices', array(
@@ -252,6 +256,7 @@ class Module_admin_invoices
             'i_member_id' => $member_id,
             'i_state' => 'new',
             'i_amount' => $amount,
+            'i_tax' => $tax,
             'i_special' => post_param_string('special'),
             'i_time' => time(),
             'i_note' => post_param_string('note')
@@ -286,6 +291,7 @@ class Module_admin_invoices
                 'ID' => strval($row['id']),
                 'STATE' => $row['i_state'],
                 'AMOUNT' => float_format($row['i_amount']),
+                'TAX' => float_format($row['i_tax']),
                 'TIME' => $time,
                 'NOTE' => $row['i_note'],
                 'TYPE_CODE' => $row['i_type_code'],
@@ -319,6 +325,7 @@ class Module_admin_invoices
                 'ID' => strval($row['id']),
                 'STATE' => $row['i_state'],
                 'AMOUNT' => float_format($row['i_amount']),
+                'TAX' => float_format($row['i_tax']),
                 'TIME' => $time,
                 'NOTE' => $row['i_note'],
                 'TYPE_CODE' => $row['i_type_code'],

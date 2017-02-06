@@ -443,7 +443,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
             }
 
             $entry = $entries[$i];
-            $extra_map[$i]['ADD_TO_CART'] = build_url(array('page' => 'shopping', 'type' => 'add_item', 'product_id' => $entry['id'], 'hook' => 'catalogue_items'), get_module_zone('shopping'));
+            $extra_map[$i]['ADD_TO_CART'] = build_url(array('page' => 'shopping', 'type' => 'add_item', 'type_code' => $entry['id']), get_module_zone('shopping'));
         }
     }
 

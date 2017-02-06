@@ -275,7 +275,7 @@ On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. Th
 [title="3"]Permission products[/title]
 
 [media width="150" description="Configuring permission products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_permissions.png[/media]
-Staff can set up what permissions may be purchased, how long they last for, and how much they cost.
+Staff can set up what permissions may be purchased, how long they last for, and the prices.
 
 This is done via the inventory management screen at:
 Admin Zone > Setup > eCommerce inventory management
@@ -311,7 +311,7 @@ Categories that a user does not have permission to will not be linked. So to pro
 [title="3"]Custom products[/title]
 
 [media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_custom.png[/media]
-Staff set up custom products by description and cost, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
+Staff set up custom products by description and price, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
 This is done via the inventory management screen at:
 Admin Zone > Setup > eCommerce inventory management
 
@@ -405,13 +405,14 @@ You may add additional fields, such as extra product images or specifications. H
 
 [title="4"]Product options[/title]
 
-A popular request is to be able to specify options when purchasing a product, such as size or colour.
+A [url="popular request"]https://compo.sr/tracker/view.php?id=268[/url] is to be able to specify options when purchasing a product, such as size or colour.
 This would be a major task for us to implement, and complicate the system, so we are not currently planning to add it.
-There are, however, two workarounds:
+There are, however, three workarounds:
 1) Simply add the different product options as separate products.
 2) If you are using PayPal a template edit can be used to let the PayPal buy button carry through an option selection. We have left an example in the [tt]ECOM_CART_BUTTON_VIA_PAYPAL.tpl[/tt] template. This workaround shifts the configuration burden over to being a template editing task, and shifts the administration burden onto PayPal's end.
+3) Just ask the user what they want by e-mail after they order.
 
-If you need more flexibility than this (perhaps many different product options for different kinds of product), you should consider either sponsoring extended Composr development, or using a dedicated third-party eCommerce system.
+If you need more flexibility than this (perhaps many different product options for different kinds of product, or options that affect the price), you should consider either sponsoring extended Composr development, or using a dedicated third-party eCommerce system.
 
 [title="3"]Categories and entries (i.e. the contents of your product catalogue)[/title]
 
@@ -452,9 +453,39 @@ Orders may be reviewed by the purchaser from their [tt]orders[/tt] module (linke
 Order status can be changed (e.g. marked as dispatched) from:
 Audit > eCommerce > Shopping orders
 
-[title="3"]Advanced tax and shipping[/title]
+[title="3"]Handling tax[/title]
 
-Tax and shipping calculations have intentionally been kept very simple, but programmers may extend them. We intentionally have architected the calculations to go through some simple common functions that you can override to addon additional behaviour if you need to.
+You should not enable automatic tax deduction on your payment gateway as Composr handles it for you. If tax deduction was enabled then transactions would fail to go through due to mismatches in pricing.
+
+Tax calculation has been kept very simple because it's impossible to create configurability to cover every scenario people will need globally. Tax rules have too many special cases.
+We have architected the calculations to go through a simple common function that a programmer can override to add in additional behaviour if needed, [tt]recalculate_tax_due[/tt].
+
+Known limitations at this time which could be worked around with custom code...
+ - EU users:
+  - EU VAT-registered customers may not input a VAT number to disable VAT charging -- they must use the government rebate process when they file tax returns (https://compo.sr/tracker/view.php?id=3062)
+  - We don't support the digital goods taxation rules (https://compo.sr/tracker/view.php?id=3063)
+ - USA users:
+  - We don't support 'nexuses' -- we assume that all your operations are run out of a single state, and hence the complicated origin/destination tax rules won't apply (https://compo.sr/tracker/view.php?id=3063)
+  - We don't support destination taxation state rules (https://compo.sr/tracker/view.php?id=3063)
+ - Other users:
+  - No special consideration has been given for tax rules in any other particular jurisdiction -- instead we have tried to make it configurable
+
+We cannot verify that a user has given their correct address when they pay, and hence know the correct tax to charge. However we believe tax authorities would generally recognise that such fraud is the fault of users rather than your own libility (this is standard practice).
+
+We do not mention import duty in the software, which would often be due if shipping internationally. The buyer pays this to the shipping company before they will deliver the import. This is standard practice, and it is standard to not refer to it in eCommerce tax systems as it is outside the scope, but I thought it was worth mentioning.
+
+[title="3"]Handling shipping costs[/title]
+
+You should not enable automatic shipping cost calculation on your payment gateway as Composr handles it for you. If shipping cost calculation was enabled then customers would be double-charged for shipping.
+
+Shipping cost calculation has been kept very simple because it's impossible to create configurability to cover every scenario people will want globally. There are too many different special cases to cover.
+We have architected the calculations to go through 2 simple common functions that a programmer can override to add in additional behaviour if needed, [tt]recalculate_shipping_cost[/tt] and [tt]recalculate_shipping_cost_combo[/tt].
+
+Known limitations at this time which could be worked around with custom code...
+ - There's no way to give a product a flat rate for shipping (https://compo.sr/tracker/view.php?id=1520)
+ - Free shipping above a certain payment amount is not supported (https://compo.sr/tracker/view.php?id=3064)
+ - Customer-selectable shipping options are not supported (https://compo.sr/tracker/view.php?id=3065)
+ - Product catalogue shipping may be calculated by weight, physical dimensions and travel distance are not considered (https://compo.sr/tracker/view.php?id=3066)
 
 [title="3"]Shipping addresses[/title]
 
@@ -674,6 +705,11 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
  9_key="Purchasing module"             9_value="The [tt]purchase[/tt] module where one-off purchases are made"
  10_key="Subscription"                 10_value="Something purchased that has recurring payments for as long as the subscription is open"
  11_key="Invoice"                      11_value="An invoice created for a website member to pay"
+ 12_key="Unit price"                   12_value="The price of an item (gross, i.e. pre-tax), before quantity multiplication is applied"
+ 13_key="Price"                        13_value="The price of an item(s) (gross, i.e. pre-tax); this term is used roughly"
+ 14_key="Amount"                       14_value="The amount being paid in a transaction; this term is used roughly"
+ 15_key="Grand total"                  15_value="The total cost of an order including tax and shipping costs"
+ 16_key="Fee"                          16_value="A fee levied on your website for processing a transaction"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

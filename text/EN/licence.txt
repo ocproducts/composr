@@ -156,6 +156,7 @@ This product includes:
   - Sew, autocomplete implementation (BSD-like licence / public domain)
   - Modernizr (MIT & BSD-like licences)
   - Silktide Cookie consent (GPL licence, but remotely linked)
+  - Invoice template (MIT licence)
 
 Non-bundled addons will often have their own third party materials documented within the addon.
 

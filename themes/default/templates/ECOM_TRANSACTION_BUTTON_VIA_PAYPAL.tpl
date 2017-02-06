@@ -10,7 +10,9 @@
 	<input type="hidden" name="custom" value="{TRANS_EXPECTING_ID*}" />
 	<input type="hidden" name="item_name" value="{ITEM_NAME*}" />
 	<input type="hidden" name="item_number" value="1" />
-	<input type="hidden" name="amount" value="{AMOUNT*}" />
+	<input type="hidden" name="amount" value="{PRICE*}" />
+	<input type="hidden" name="tax" value="{TAX*}" />
+	<input type="hidden" name="shipping" value="{SHIPPING*}" />
 	<input type="hidden" name="rm" value="2" />
 	<input type="hidden" name="bn" value="ocproducts_SP" />
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}

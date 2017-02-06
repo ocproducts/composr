@@ -47,7 +47,7 @@ function booking_price_ajax_script()
 {
     header('Content-type: text/plain; charset=' . get_charset());
     $request = get_booking_request_from_form();
-    echo float_format(find_booking_price($request), 2);
+    echo float_format(find_booking_price($request));
 }
 
 /**

@@ -74,6 +74,7 @@ class Module_invoices
                 'i_member_id' => 'MEMBER',
                 'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
                 'i_amount' => 'REAL', // can't always find this from i_type_code
+                'i_tax' => 'REAL',
                 'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
                 'i_time' => 'TIME',
                 'i_note' => 'LONG_TEXT'
@@ -88,6 +89,7 @@ class Module_invoices
             $GLOBALS['SITE_DB']->rename_table('invoices', 'ecom_invoices');
 
             $GLOBALS['SITE_DB']->alter_table_field('ecom_invoices', 'i_amount', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax', 'REAL');
         }
     }
 
@@ -121,7 +123,7 @@ class Module_invoices
     {
         $type = get_param_string('type', 'browse');
 
-        require_lang('ecommerce');
+        require_code('ecommerce');
 
         if ($type == 'browse') {
             $this->title = get_screen_title('MY_INVOICES');
@@ -141,7 +143,6 @@ class Module_invoices
      */
     public function run()
     {
-        require_code('ecommerce');
         require_css('ecommerce');
 
         // Kill switch
@@ -194,13 +195,14 @@ class Module_invoices
             if (perform_local_payment()) {
                 $transaction_button = hyperlink(build_url(array('page' => '_SELF', 'type' => 'pay', 'id' => $row['id']), '_SELF'), do_lang_tempcode('MAKE_PAYMENT'), false, false);
             } else {
-                $transaction_button = make_transaction_button($type_code, $invoice_title, strval($row['id']), $row['i_amount'], $currency);
+                $transaction_button = make_transaction_button($type_code, $invoice_title, strval($row['id']), $row['i_amount'], $row['i_tax'], 0.00, $currency);
             }
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'INVOICE_TITLE' => $invoice_title,
                 'INVOICE_ID' => strval($row['id']),
                 'AMOUNT' => float_format($row['i_amount']),
+                'TAX' => float_format($row['i_tax']),
                 'TIME' => $time,
                 'STATE' => $state,
                 'DELIVERABLE' => $deliverable,
@@ -243,6 +245,8 @@ class Module_invoices
             $invoice_title,
             strval($id),
             $row['i_amount'],
+            $row['i_tax'],
+            0.00,
             get_option('currency'),
             0,
             null,

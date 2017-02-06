@@ -551,7 +551,8 @@ class Hook_cms_merge
                 }
 
                 $map = array(
-                    's_cost' => $row['s_cost'],
+                    's_price' => $row['s_price'],
+                    's_tax' => $row['s_tax'],
                     's_length' => $row['s_length'],
                     's_length_units' => $row['s_length_units'],
                     's_auto_recur' => array_key_exists('s_auto_recur', $row) ? $row['s_auto_recur'] : 1,
@@ -620,8 +621,8 @@ class Hook_cms_merge
                 continue;
             }
             unset($row['id']);
-            $transaction_id = import_id_remap_get('transactions', $row['transaction_id']);
-            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => $row['date_and_time'], 'member_id' => $member_id, 'details' => $row['details'], 'details2' => $row['details2'], 'transaction_id' => $transaction_id));
+            $txn_id = import_id_remap_get('transactions', $row['txn_id']);
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => $row['date_and_time'], 'member_id' => $member_id, 'details' => $row['details'], 'details2' => $row['details2'], 'txn_id' => $txn_id));
         }
 
         $this->_import_ecom_prods_custom($db, $table_prefix);

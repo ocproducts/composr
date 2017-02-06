@@ -18,7 +18,7 @@
  *
  * @param  MEMBER $member_id The member performing the action
  * @param  string $name The name of the item
- * @param  integer $cost The cost the item
+ * @param  integer $price The price the item
  * @param  BINARY $not_infinite Whether the item is finite
  * @param  BINARY $bribable Whether the item may be used for bribes
  * @param  BINARY $healthy Whether the item may be used to provide a health boost
@@ -27,7 +27,7 @@
  * @param  BINARY $replicateable Whether the item may be replicated via a new item copy source
  * @param  string $description Description for the item
  */
-function add_item_wrap($member_id, $name, $cost, $not_infinite, $bribable, $healthy, $picture_url, $max_per_player, $replicateable, $description)
+function add_item_wrap($member_id, $name, $price, $not_infinite, $bribable, $healthy, $picture_url, $max_per_player, $replicateable, $description)
 {
     if ($healthy != 1) {
         $healthy = 0;
@@ -38,8 +38,8 @@ function add_item_wrap($member_id, $name, $cost, $not_infinite, $bribable, $heal
     if ($not_infinite != 1) {
         $not_infinite = 0;
     }
-    if (!($cost > 0)) {
-        $cost = 0;
+    if (!($price > 0)) {
+        $price = 0;
     }
     if (!($max_per_player > 0)) {
         $max_per_player = 0;
@@ -81,7 +81,7 @@ function add_item_wrap($member_id, $name, $cost, $not_infinite, $bribable, $heal
 
     add_item($name, $bribable, $healthy, $picture_url, $member_id, $max_per_player, $replicateable, $description);
 
-    add_item_to_room($realm, $x, $y, $name, $not_infinite, $cost, $member_id);
+    add_item_to_room($realm, $x, $y, $name, $not_infinite, $price, $member_id);
 
     buildr_refresh_with_message(do_lang_tempcode('W_MADE_ITEM_AT', escape_html($name)));
 }
@@ -117,16 +117,16 @@ function add_item($name, $bribable, $healthy, $picture_url, $owner, $max_per_pla
  *
  * @param  MEMBER $member_id The member performing the action
  * @param  string $name The name of the item
- * @param  integer $cost The cost of the item copy
+ * @param  integer $price The price of the item copy
  * @param  BINARY $not_infinite Whether the item is finite.
  */
-function add_item_wrap_copy($member_id, $name, $cost, $not_infinite)
+function add_item_wrap_copy($member_id, $name, $price, $not_infinite)
 {
     if ($not_infinite != 1) {
         $not_infinite = 0;
     }
-    if (!($cost > 0)) {
-        $cost = 0;
+    if (!($price > 0)) {
+        $price = 0;
     }
 
     // Get $realm,$x,$y from $member_id
@@ -156,7 +156,7 @@ function add_item_wrap_copy($member_id, $name, $cost, $not_infinite)
         charge_member($member_id, $price, do_lang('W_MADE_BUILDR', $name));
     }
 
-    add_item_to_room($realm, $x, $y, $name, $not_infinite, $cost, $member_id);
+    add_item_to_room($realm, $x, $y, $name, $not_infinite, $price, $member_id);
 
     buildr_refresh_with_message(do_lang_tempcode('W_MADE_ITEM_COPY_AT', escape_html($name)));
 }
@@ -1038,17 +1038,17 @@ function edit_item($name, $original_name, $bribable, $healthy, $picture_url, $ne
  *
  * @param  MEMBER $member_id The member performing the action
  * @param  string $name The name of the item
- * @param  integer $cost The cost of the item copy
+ * @param  integer $price The price of the item copy
  * @param  BINARY $not_infinite Whether the item is finite.
  * @param  integer $new_x The X ordinate of the item copy
  * @param  integer $new_y The Y ordinate of the item copy
  * @param  AUTO_LINK $new_realm The realm of the item copy
  * @param  MEMBER $member The owner of the item copy source
  */
-function edit_item_wrap_copy($member_id, $name, $cost, $not_infinite, $new_x, $new_y, $new_realm, $member)
+function edit_item_wrap_copy($member_id, $name, $price, $not_infinite, $new_x, $new_y, $new_realm, $member)
 {
-    if (!($cost > 0)) {
-        $cost = 0;
+    if (!($price > 0)) {
+        $price = 0;
     }
 
     if ((!has_privilege($member_id, 'administer_buildr')) && ($GLOBALS['SITE_DB']->query_select_value('w_items', 'copy_owner', array('name' => $name)) != $member_id)) {
@@ -1081,7 +1081,7 @@ function edit_item_wrap_copy($member_id, $name, $cost, $not_infinite, $new_x, $n
         $not_infinite = 0;
     }
 
-    edit_item_copy($member, $name, $not_infinite, $cost, $new_x, $new_y, $new_realm, $x, $y, $realm);
+    edit_item_copy($member, $name, $not_infinite, $price, $new_x, $new_y, $new_realm, $x, $y, $realm);
     buildr_refresh_with_message(do_lang_tempcode('SUCCESS'));
 }
 
@@ -1091,7 +1091,7 @@ function edit_item_wrap_copy($member_id, $name, $cost, $not_infinite, $new_x, $n
  * @param  MEMBER $member_id The owner of the item copy source
  * @param  string $name The name of the item
  * @param  BINARY $not_infinite Whether the item is finite.
- * @param  integer $cost The cost of the item copy
+ * @param  integer $price The price of the item copy
  * @param  integer $new_x The X ordinate of the item copy
  * @param  integer $new_y The Y ordinate of the item copy
  * @param  AUTO_LINK $new_realm The realm of the item copy
@@ -1099,7 +1099,7 @@ function edit_item_wrap_copy($member_id, $name, $cost, $not_infinite, $new_x, $n
  * @param  integer $y The new Y ordinate of the item copy
  * @param  AUTO_LINK $realm The new realm of the item copy
  */
-function edit_item_copy($member_id, $name, $not_infinite, $cost, $new_x, $new_y, $new_realm, $x, $y, $realm)
+function edit_item_copy($member_id, $name, $not_infinite, $price, $new_x, $new_y, $new_realm, $x, $y, $realm)
 {
-    $GLOBALS['SITE_DB']->query_update('w_items', array('not_infinite' => $not_infinite, 'cost' => $cost, 'location_x' => $new_x, 'location_y' => $new_y, 'location_realm' => $new_realm), array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'copy_owner' => $member_id, 'name' => $name));
+    $GLOBALS['SITE_DB']->query_update('w_items', array('not_infinite' => $not_infinite, 'price' => $price, 'location_x' => $new_x, 'location_y' => $new_y, 'location_realm' => $new_realm), array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'copy_owner' => $member_id, 'name' => $name));
 }

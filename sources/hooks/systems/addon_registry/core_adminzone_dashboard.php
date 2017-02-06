@@ -291,10 +291,10 @@ class Hook_addon_registry_core_adminzone_dashboard
         $status = do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0', array());
 
         $url = build_url(array(
-            'page' => 'admin_orders',
+            'page' => 'admin_shopping',
             'type' => 'show_orders',
             'filter' => 'undispatched',
-        ), get_module_zone('admin_orders'));
+        ), get_module_zone('admin_shopping'));
 
         $no_times = do_lorem_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
             'URL' => placeholder_url(),
