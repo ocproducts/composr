@@ -41,7 +41,7 @@ function init__menus()
  */
 function build_menu($type, $menu, $silent_failure = false, $apply_highlighting = true)
 {
-    $is_sitemap_menu = (preg_match('#^[' . URL_CONTENT_REGEXP . ']*$#', $menu) == 0);
+    $is_sitemap_menu = (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $menu) == 0);
 
     if ($is_sitemap_menu) {
         $root = _build_sitemap_menu($menu);
