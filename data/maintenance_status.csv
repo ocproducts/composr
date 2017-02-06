@@ -109,6 +109,8 @@ firephp,FirePHP logging,ocProducts,,Not regularly tested.,No
 twitter,Twitter syndication,ocProducts,,Could potentially break due to third-party changes.,Yes
 webdav,WebDav access for The Repository,ocProducts,,Could potentially break due to third-party changes.,Yes
 rest,REST API from Composr Mobile SDK,ocProducts,,Not regularly tested.,Yes
+currency_codes,ISO currencies (internal list),ocProducts,,Could potentially break due to political changes.,No
+country_codes,ISO countries (internal list),ocProducts,,Could potentially break due to political changes.,No
 currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 geocode_internal,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No
