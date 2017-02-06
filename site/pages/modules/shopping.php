@@ -637,7 +637,7 @@ class Module_shopping
             if ((!perform_local_payment()) && (has_interesting_post_fields())) { // Alternative to IPN, *if* posted fields sent here
                 $order_id = handle_transaction_script();
 
-                $product_object = find_product(do_lang('CART_ORDER', $order_id));
+                $product_object = find_product(do_lang('CART_ORDER', $order_id, null, null, get_site_default_lang()));
 
                 if (method_exists($product_object, 'get_finish_url')) {
                     return redirect_screen($this->title, $product_object->get_finish_url(), $message);
@@ -663,6 +663,10 @@ class Module_shopping
      */
     public function my_orders()
     {
+        if (is_guest()) {
+            access_denied('NOT_AS_GUEST');
+        }
+
         $member_id = get_member();
 
         if (has_privilege(get_member(), 'assume_any_member')) {
@@ -677,7 +681,7 @@ class Module_shopping
             if ($row['purchase_through'] == 'cart') {
                 $order_det_url = build_url(array('page' => '_SELF', 'type' => 'order_det', 'id' => $row['id']), '_SELF');
 
-                $order_title = do_lang('CART_ORDER', $row['id']);
+                $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
                 $res = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_id', 'p_name'), array('order_id' => $row['id']));
 
@@ -708,7 +712,22 @@ class Module_shopping
      */
     public function order_det()
     {
+        if (is_guest()) {
+            access_denied('NOT_AS_GUEST');
+        }
+
         $id = get_param_integer('id');
+
+        if (!has_privilege(get_member(), 'assume_any_member')) {
+            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'member_id', array('id' => $id));
+            if ($member_id === null) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            }
+
+            if ($member_id != get_member()) {
+                access_denied('I_ERROR');
+            }
+        }
 
         $products = array();
 

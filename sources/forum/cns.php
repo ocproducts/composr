@@ -990,7 +990,7 @@ class Forum_driver_cns extends Forum_driver_base
                     }
                 }
 
-                $username = preg_replace('# +#', ' ', trim($username)); // Strip and double (or triple, etc) blanks, and leading/trailing blanks
+                $username = preg_replace('# +#', ' ', trim($username)); // Strip any double (or triple, etc) blanks, and leading/trailing blanks
 
                 if ($username == '') {
                     $username = $username_bak;

@@ -387,7 +387,7 @@ class Module_admin_orders
     {
         $id = get_param_integer('id');
 
-        $order_title = do_lang('CART_ORDER', $id);
+        $order_title = do_lang('CART_ORDER', strval($id));
 
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 10);
