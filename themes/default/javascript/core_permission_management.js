@@ -130,11 +130,7 @@
                 }
             }
 
-            if (node.getAttribute('serverid').includes(':cms_') && (is_cms !== false)) {
-                is_cms = true;
-            } else {
-                is_cms = false;
-            }
+            is_cms = !!(node.getAttribute('serverid').includes(':cms_') && (is_cms !== false));
 
             // Set view access
             for (j = 0; j < node.attributes.length; j++) {
@@ -274,7 +270,7 @@
         }
 
         // Set correct admin colspan
-        for (var i = 0; i < matrix.rows.length; i++) {
+        for (i = 0; i < matrix.rows.length; i++) {
             if (matrix.rows[i].cells.length == 3) {
                 matrix.rows[i].cells[2].colSpan = num_privilege_total + 1;
             }

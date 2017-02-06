@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 {$SET,RAND_WEBSITE_MONITORING,{$RAND}}
 
 <div class="form_ajax_target" data-view="BlockMainStaffWebsiteMonitoring" data-view-params="{+START,PARAMS_JSON,RAND_WEBSITE_MONITORING}{_*}{+END}">

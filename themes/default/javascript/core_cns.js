@@ -58,10 +58,11 @@
     });
 
     $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
-        var tabCode = $cms.filter.id(params.tabCode).toLowerCase();
-
-        $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function () {
-            select_tab('g','edit__' + tabCode)
+        $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
+            var tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
+            if (tabCode) {
+                select_tab('g', 'edit__' + tabCode)
+            }
         });
     };
 

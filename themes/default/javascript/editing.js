@@ -498,7 +498,7 @@ function wysiwyg_editor_init_for(element, id) {
     // Monitor pasting, for anti-spam reasons
     editor.on('paste', function (event) {
         if (event.data.html && event.data.html.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
-            $cms.set_post_data_flag('paste');
+            $cms.setPostDataFlag('paste');
         }
     });
 
@@ -684,11 +684,6 @@ function do_attachment(field_name, id, description) {
     var comcode = '\n\n[attachment description="' + escape_comcode(description) + '"]' + id + '[/attachment]';
 
     insert_textbox_opener(element, comcode);
-}
-
-function is_wysiwyg_field(the_element) {
-    var id = the_element.id;
-    return window.wysiwyg_editors && (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
 }
 
 function get_textbox(element) {
@@ -938,63 +933,58 @@ function set_selection_range(input, selection_start, selection_end) {
 }
 
 function show_upload_syndication_options(name, syndication_json, no_quota) {
+    name = strVal(name);
     no_quota = !!no_quota;
 
-    var html_spot = document.getElementById(name + '_syndication_options');
-    var html = '';
-    var num_checked = 0;
-    var file_ob = document.getElementById(name);
-    var pre_disabled = file_ob.disabled;
+    var html_spot = document.getElementById(name + '_syndication_options'),
+        html = '',
+        numChecked = 0,
+        fileOb = document.getElementById(name),
+        preDisabled = fileOb.disabled, hook,
+        syndication = JSON.parse(syndication_json),
+        num = Object.keys(syndication).length,
+        id, authorised, label, checked;
 
-    var syndication = JSON.parse(syndication_json), id, authorised, label, checked;
-    var num = 0;
-    for (var hook in syndication) {
-        num++;
-    }
-    for (var hook in syndication) {
+    for (hook in syndication) {
         id = 'upload_syndicate__' + hook + '__' + name;
         authorised = syndication[hook].authorised;
         label = syndication[hook].label;
 
         if (authorised) {
             checked = true;
-            num_checked++;
+            numChecked++;
         } else {
             checked = false;
         }
 
-        window.setTimeout(function (id, authorised) {
-            return function () {
-                document.getElementById(id).onclick = function () {
-                    var e = document.getElementById(id);
-                    if (e.checked) {
-                        if (!authorised) {
-                            //e.checked=false;	Better to assume success, not all oAuth support callback
-                            var url = '{$FIND_SCRIPT;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + keep_stub();
+        window.setTimeout((function (id, authorised, hook) {
+            document.getElementById(id).onclick = function () {
+                var el = document.getElementById(id);
+                if (el.checked && !authorised) {
+                    //e.checked=false;	Better to assume success, not all oAuth support callback
+                    var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + keep_stub();
 
-                            if ($cms.$MOBILE) {
-                                window.open(url);
-                            } else {
-                                faux_open(url, null, 'width=960;height=500', '_top');
-                            }
-
-                            if (!pre_disabled) {
-                                file_ob.disabled = false;
-                            }
-                        }
+                    if ($cms.$MOBILE) {
+                        window.open(url);
+                    } else {
+                        faux_open(url, null, 'width=960;height=500', '_top');
                     }
-                };
+
+                    if (!preDisabled) {
+                        fileOb.disabled = false;
+                    }
+                }
             };
-        }(id, authorised), 0);
+        }).bind(undefined, id, authorised, hook), 0);
 
-        html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO;^} ' + escape_html(label) + (((no_quota) && (num == 1)) ? ' ({!_REQUIRED;^})' : '') + '</label></span>';
+        html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO;^} ' + escape_html(label) + ((no_quota && (num === 1)) ? ' ({!_REQUIRED;^})' : '') + '</label></span>';
     }
 
-    if ((no_quota) && (num_checked == 0)) {
-        file_ob.disabled = true;
+    if (no_quota && (numChecked === 0)) {
+        fileOb.disabled = true;
     }
 
-    if ((html != '') && (!no_quota)) {
+    if ((html != '') && !no_quota) {
         html += '<span><label for="force_remove_locally"><input type="checkbox" id="force_remove_locally" name="force_remove_locally" value="1" />{!upload_syndication:FORCE_REMOVE_LOCALLY;^}</label></span>';
     }
 

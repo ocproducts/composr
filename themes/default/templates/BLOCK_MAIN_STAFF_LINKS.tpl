@@ -1,6 +1,7 @@
 {$REQUIRE_JAVASCRIPT,ajax}
 {$REQUIRE_JAVASCRIPT,checking}
 {$REQUIRE_JAVASCRIPT,staff}
+{$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 
 {$SET,RAND_STAFF_LINKS,{$RAND}}
 

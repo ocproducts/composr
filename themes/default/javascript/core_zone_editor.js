@@ -26,8 +26,8 @@
             set_edited_panel('panel_bottom');
             set_edited_panel(params.defaultZonePageName);
 
-            var form = $cms.dom.id('middle_fields');
-            var edit_field_store = $cms.dom.id('edit_field_store');
+            var form = $cms.dom.$id('middle_fields');
+            var edit_field_store = $cms.dom.$id('edit_field_store');
             var i, store;
             for (i = 0; i < form.elements.length; i++) {
                 store = document.createElement('input');
@@ -85,12 +85,12 @@
                 var i, j, element, elementh, selects;
 
                 for (i = 0; i < tabs.length; i++) {
-                    element = $cms.dom.id(tabs[i] + '_' + id);
-                    elementh = $cms.dom.id(tabs[i] + '_tab_' + id);
+                    element = $cms.dom.$id(tabs[i] + '_' + id);
+                    elementh = $cms.dom.$id(tabs[i] + '_tab_' + id);
                     if (element) {
                         element.style.display = (tabs[i] === tab) ? 'block' : 'none';
                         if ((tabs[i] == tab) && (tab == 'edit')) {
-                            if (is_wysiwyg_field($cms.dom.id('edit_' + id + '_textarea'))) {
+                            if (is_wysiwyg_field($cms.dom.$id('edit_' + id + '_textarea'))) {
                                 // Fix for Firefox
                                 if (window.wysiwyg_editors['edit_' + id + '_textarea'].document !== undefined) {
                                     window.wysiwyg_editors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'false';
@@ -111,9 +111,9 @@
             }
 
             function reload_preview(id) {
-                var element = $cms.dom.id('view_' + id);
+                var element = $cms.dom.$id('view_' + id);
 
-                var edit_element = $cms.dom.id('edit_' + id + '_textarea');
+                var edit_element = $cms.dom.$id('edit_' + id + '_textarea');
                 if (!edit_element) {
                     return; // Nothing interatively edited
                 }
@@ -134,7 +134,7 @@
                         return;
                     }
 
-                    var element = $cms.dom.id('view_' + loading_preview_of);
+                    var element = $cms.dom.$id('view_' + loading_preview_of);
                     $cms.dom.html(element, merge_text_nodes(ajax_result.childNodes).replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
 
                     disable_preview_scripts(element);
@@ -153,7 +153,7 @@
 
         setEditedPanel: function (e, field) {
             var params = this.params,
-                editor = $cms.dom.id('edit_tab_' + params.id);
+                editor = $cms.dom.$id('edit_tab_' + params.id);
 
             set_edited_panel(params.id);
 
@@ -219,14 +219,14 @@
 
         /* The WYSIWYG setting (not the actual HTML text value of the editor, the setting of whether WYSIWYG was used or not) */
 
-        el = $cms.dom.id('edit_' + id + '_textarea__is_wysiwyg');
+        el = $cms.dom.$id('edit_' + id + '_textarea__is_wysiwyg');
         if (el) {
-            store = $cms.dom.id('wysiwyg_store_' + id);
+            store = $cms.dom.$id('wysiwyg_store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
                 store.id = 'wysiwyg_store_' + id;
                 store.name = el.name;
-                $cms.dom.id('edit_field_store').appendChild(store);
+                $cms.dom.$id('edit_field_store').appendChild(store);
             }
             store.value = el.value;
         }
@@ -235,12 +235,12 @@
 
         el = $cms.dom.$('select#redirect_' + id);
         if (el) {
-            store = $cms.dom.id('redirects_store_' + id);
+            store = $cms.dom.$id('redirects_store_' + id);
             if (!store) {
                 store = document.createElement('textarea');
                 store.name = el.name;
                 store.id = 'redirects_store_' + id;
-                $cms.dom.id('edit_field_store').appendChild(store);
+                $cms.dom.$id('edit_field_store').appendChild(store);
             }
             store.value = el.options[el.selectedIndex].value;
         }

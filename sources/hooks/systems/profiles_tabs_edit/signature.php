@@ -73,7 +73,7 @@ class Hook_profiles_tabs_edit_signature
         $size = cns_get_member_best_group_property($member_id_of, 'max_sig_length_comcode');
 
         require_javascript('cns_signatures');
-        $javascript = /**@lang JavaScript*/'$cms.functions.hookProfilesTabsEditSignatureRenderTab(' . json_encode(strval($size)) . ');';
+        $javascript = /**@lang JavaScript*/'$cms.requireJavascript("cns_signatures").then(function () { $cms.functions.hookProfilesTabsEditSignatureRenderTab(' . json_encode(strval($size),  JSON_NUMERIC_CHECK) . ' ); });';
 
         require_code('form_templates');
         $required = false;

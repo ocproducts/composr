@@ -13411,7 +13411,7 @@ function preinit_file_input(page_type, name, _btn_submit_id, posting_field_name,
         return;
     }
 
-    posting_field_name || (posting_field_name = 'post');
+    posting_field_name = strVal(posting_field_name) || 'post';
 
     var rep;
 

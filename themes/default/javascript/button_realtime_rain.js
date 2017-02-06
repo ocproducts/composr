@@ -17,10 +17,11 @@ function load_realtime_rain() {
         tmp_element.id = 'realtime_rain_img_loader';
         img.parentNode.appendChild(tmp_element);
 
-        require_javascript('ajax', window.do_ajax_request);
-        require_javascript('realtime_rain', window.start_realtime_rain);
-        require_css('realtime_rain');
+        $cms.requireJavascript('ajax');
+        $cms.requireJavascript('realtime_rain');
+        $cms.requireCss('realtime_rain');
         window.setTimeout(load_realtime_rain, 200);
+
         return false;
     }
     if ((window.realtime_rain_button_load_handler !== undefined)) {

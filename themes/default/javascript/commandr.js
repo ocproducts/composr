@@ -29,7 +29,7 @@ window.previous_commands || (window.previous_commands = []);
 
         $cms.dom.on(container, 'click', '.js-click-set-file-command', function (e, clicked) {
             var filename = strVal(clicked.dataset.tpFilename),
-                commandInput = $cms.dom.$('#commandr_command')
+                commandInput = $cms.dom.$('#commandr_command');
 
             if (commandInput.value !== '') {
                 commandInput.value = commandInput.value.replace(/\s*$/, '') + ' "' + filename + '"';

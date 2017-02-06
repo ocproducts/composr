@@ -9,7 +9,9 @@
         this.form = this.$('form.js-form-comments');
         this.btnSubmit = this.$('.js-btn-submit-comments');
 
-        set_up_comcode_autocomplete('post', !!params.wysiwyg);
+        $cms.requireJavascript('jquery_autocomplete').then(function () {
+            set_up_comcode_autocomplete('post', !!params.wysiwyg);
+        });
 
         if ($cms.$CONFIG_OPTION.enable_previews && $cms.$FORCE_PREVIEWS) {
             this.btnSubmit.style.display = 'none';
@@ -226,7 +228,7 @@
             }
 
             for (var i = 0, len = params.allRatingCriteria; i < len; i++) {
-                rating = params.allRatingCriteria[i];
+                rating = objVal(params.allRatingCriteria[i]);
 
                 apply_rating_highlight_and_ajax_code((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
             }
@@ -245,7 +247,7 @@
 
         commentAjaxHandler: function (params) {
             var urlStem = params.urlStem,
-                wrapper = $cms.dom.id('comments_wrapper');
+                wrapper = $cms.dom.$id('comments_wrapper');
 
             replace_comments_form_with_ajax(params.options, params.hash, 'comments_form', 'comments_wrapper');
 
@@ -280,7 +282,7 @@
 
     /* Update a normal comments topic with AJAX replying */
     function replace_comments_form_with_ajax(options, hash, comments_form_id, comments_wrapper_id) {
-        var comments_form = $cms.dom.id(comments_form_id);
+        var comments_form = $cms.dom.$id(comments_form_id);
         if (comments_form) {
             comments_form.old_onsubmit = comments_form.onsubmit;
 
@@ -300,13 +302,13 @@
                     return false;
                 }
 
-                var comments_wrapper = $cms.dom.id(comments_wrapper_id);
+                var comments_wrapper = $cms.dom.$id(comments_wrapper_id);
                 if (!comments_wrapper) {// No AJAX, as stuff missing from template
                     comments_form.submit();
                     return true;
                 }
 
-                var submit_button = $cms.dom.id('submit_button');
+                var submit_button = $cms.dom.$id('submit_button');
                 if (submit_button) {
                     $cms.ui.disableButton(submit_button);
                 }
@@ -338,12 +340,12 @@
                         // Display
                         var old_action = comments_form.action;
                         $cms.dom.outerHtml(comments_wrapper, ajax_result.responseText);
-                        comments_form = $cms.dom.id(comments_form_id);
+                        comments_form = $cms.dom.$id(comments_form_id);
                         old_action = comments_form.action = old_action; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 
                         // Scroll back to comment
                         window.setTimeout(function () {
-                            var comments_wrapper = $cms.dom.id(comments_wrapper_id); // outerhtml set will have broken the reference
+                            var comments_wrapper = $cms.dom.$id(comments_wrapper_id); // outerhtml set will have broken the reference
                             smooth_scroll(find_pos_y(comments_wrapper, true));
                         }, 0);
 
@@ -351,7 +353,7 @@
                         force_reload_on_back();
 
                         // Collapse, so user can see what happening
-                        var outer = $cms.dom.id('comments_posting_form_outer');
+                        var outer = $cms.dom.$id('comments_posting_form_outer');
                         if (outer && outer.classList.contains('toggleable_tray')) {
                             $cms.toggleableTray(outer);
                         }
@@ -382,7 +384,7 @@
         visual_only = !!visual_only;
 
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function (number) {
-            var bit = $cms.dom.id('rating_bar_' + number + '__' + content_type + '__' + type + '__' + id);
+            var bit = $cms.dom.$id('rating_bar_' + number + '__' + content_type + '__' + type + '__' + id);
             if (!bit) {
                 return;
             }

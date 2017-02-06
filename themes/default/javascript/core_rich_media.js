@@ -11,7 +11,9 @@
         preinit_file_input("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
 
         if (params.syndicationJson !== undefined) {
-            show_upload_syndication_options("file" + params.i, params.syndicationJson, !!params.noQuota);
+            $cms.requireJavascript('editing').then(function () {
+                show_upload_syndication_options("file" + params.i, params.syndicationJson, !!params.noQuota);
+            });
         }
     }
 
@@ -277,7 +279,7 @@
             window.faux_open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
-        $cms.dom.on(contaienr, 'click', '.js-click-toggle-wysiwyg', function () {
+        $cms.dom.on(container, 'click', '.js-click-toggle-wysiwyg', function () {
             toggle_wysiwyg(name);
         });
     };
@@ -314,7 +316,9 @@
             }
             window.attachment_upload_button = attachment_upload_button;
 
-            prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, strVal(params.filter), window.attachment_upload_button);
+            $cms.requireJavascript('plupload').then(function () {
+                prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, strVal(params.filter), window.attachment_upload_button);
+            });
         }
 
         if (params.simpleUi) {
