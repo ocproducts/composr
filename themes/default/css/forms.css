@@ -347,7 +347,7 @@ span.validated_checkbox.checked {
 }
 span.validated_checkbox+input[name="validated"].input_tick {
 	padding-right: 0.5em;
-	z-index: 1000;
+	z-index: 100;
 	position: relative;
 	{$BETA_CSS_PROPERTY,opacity: 0;}
 }
