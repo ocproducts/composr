@@ -188,6 +188,7 @@ class Hook_addon_registry_core_themeing
     public function tpl_preview__administrative__theme_manage_screen()
     {
         require_lang('zones');
+
         $themes = array();
         foreach (placeholder_array() as $value) {
             $themes[] = array(

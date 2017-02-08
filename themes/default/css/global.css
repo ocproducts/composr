@@ -462,6 +462,7 @@ body.website_body, #wysiwyg_editor {
 	margin: 0;
 	color: {$GET,slightly_seeded_text};
 	background-color: {$GET,main_background};
+	{$BETA_CSS_PROPERTY,user-select: text !important;}
 }
 
 body#main_website {

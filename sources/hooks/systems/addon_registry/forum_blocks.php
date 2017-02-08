@@ -75,7 +75,7 @@ class Hook_addon_registry_forum_blocks
     {
         return array(
             'requires' => array(
-                'news_shared'
+                'news_shared',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -136,6 +136,7 @@ class Hook_addon_registry_forum_blocks
     public function tpl_preview__block_main_forum_topics()
     {
         require_lang('cns');
+
         $topics = array();
         foreach (placeholder_array() as $k => $v) {
             $topics[] = array(

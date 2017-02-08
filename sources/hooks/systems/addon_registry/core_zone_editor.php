@@ -135,6 +135,7 @@ class Hook_addon_registry_core_zone_editor
     public function tpl_preview__administrative__zone_editor_screen()
     {
         require_lang('zones');
+
         $comcode_editor = do_lorem_template('COMCODE_EDITOR_BUTTON', array(
             'DIVIDER' => true,
             'FIELD_NAME' => lorem_word(),

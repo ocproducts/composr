@@ -57,7 +57,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
         }
 
         return array(
-            'browse' => array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('POST_TEMPLATES'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value_if_there('f_post_templates', 'COUNT(*)', null, '', true))))), 'menu/adminzone/structure/forum/post_templates'),
+            'browse' => array(do_lang_tempcode('menus:ITEMS_HERE', do_lang_tempcode('POST_TEMPLATES'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value_if_there('f_post_templates', 'COUNT(*)', null, '', true))))), 'menu/adminzone/structure/forum/post_templates'),
         ) + parent::get_entry_points();
     }
 
@@ -187,6 +187,8 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      */
     public function _import()
     {
+        require_lang('dearchive');
+
         require_code('uploads');
         is_plupload(true);
 

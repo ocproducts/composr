@@ -71,8 +71,10 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
         $from = get_custom_base_url() . '/' . $from;
     }
     if (is_video($from, true)) {
-        require_code('galleries2');
-        create_video_thumb($full_url, $thumb_path);
+        if (addon_installed('galleries')) {
+            require_code('galleries2');
+            create_video_thumb($full_url, $thumb_path);
+        }
     } else {
         convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
         if (!file_exists($thumb_path) && file_exists($thumb_path . '.png'/*convert_image maybe had to change the extension*/)) {

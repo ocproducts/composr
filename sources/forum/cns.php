@@ -62,7 +62,7 @@ class Forum_driver_cns extends Forum_driver_base
         $CNS_DRIVER = mixed();
         $GLOBALS['CNS_DRIVER'] = &$this; // Done like this to workaround that PHP can't put a reference in a global'd variable
 
-        if ((function_exists('ldap_connect')) && (get_option('ldap_is_enabled', true) == '1')) {
+        if ((addon_installed('ldap')) && (function_exists('ldap_connect')) && (get_option('ldap_is_enabled', true) == '1')) {
             require_code('cns_members');
             require_code('cns_groups');
             require_code('cns_ldap');
@@ -1650,11 +1650,13 @@ class Forum_driver_cns extends Forum_driver_base
                 if ((!running_script('index')) && (!running_script('iframe'))) {
                     return; // Not when probably running some AJAX script
                 }
-                $captcha = post_param_string('captcha', '');
-                if ($captcha != '') { // Don't consider a CAPTCHA submitting, it'll drive people nuts to get flood control right after a CAPTCHA
-                    require_code('captcha');
-                    if (check_captcha($captcha, false)) {
-                        return;
+                if (addon_installed('captcha')) {
+                    $captcha = post_param_string('captcha', '');
+                    if ($captcha != '') { // Don't consider a CAPTCHA submitting, it'll drive people nuts to get flood control right after a CAPTCHA
+                        require_code('captcha');
+                        if (check_captcha($captcha, false)) {
+                            return;
+                        }
                     }
                 }
 

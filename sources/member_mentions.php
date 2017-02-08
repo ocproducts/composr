@@ -41,6 +41,7 @@ function dispatch_member_mention_notifications($content_type, $content_id, $subm
     require_code('notifications');
     require_code('content');
     require_code('feedback');
+    require_lang('comcode');
 
     $mentions = array_unique($MEMBER_MENTIONS_IN_COMCODE);
     $MEMBER_MENTIONS_IN_COMCODE = array(); // Reset

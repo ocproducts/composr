@@ -378,7 +378,7 @@ class Module_filedump
             $header_row = columned_table_header_row(array(
                 do_lang_tempcode('FILENAME'),
                 do_lang_tempcode('DESCRIPTION'),
-                do_lang_tempcode('LINK'),
+                do_lang_tempcode('menus:LINK'),
                 do_lang_tempcode('SUBMITTER'),
                 do_lang_tempcode('DATE_TIME'),
                 do_lang_tempcode('ACTIONS'),

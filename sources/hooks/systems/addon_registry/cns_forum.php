@@ -78,7 +78,7 @@ class Hook_addon_registry_cns_forum
     {
         return array(
             'requires' => array(
-                'polls'
+                'polls',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),

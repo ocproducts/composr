@@ -75,7 +75,9 @@ class Hook_addon_registry_commandr
     public function get_dependencies()
     {
         return array(
-            'requires' => array('import'),
+            'requires' => array(
+                'import',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );
@@ -554,6 +556,10 @@ class Hook_addon_registry_commandr
      */
     public function tpl_preview__administrative__commandr_chat_notification()
     {
+        if (!addon_installed('chat')) {
+            return array();
+        }
+
         require_lang('chat');
 
         $rooms = array();

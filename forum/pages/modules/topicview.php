@@ -836,7 +836,7 @@ class Module_topicview
                     }
                 }
             }
-            if ((array_key_exists('may_multi_moderate', $topic_info)) && (array_key_exists('forum_id', $topic_info))) {
+            if ((array_key_exists('may_multi_moderate', $topic_info)) && (array_key_exists('forum_id', $topic_info)) && (addon_installed('cns_multi_moderations'))) {
                 $multi_moderations = cns_list_multi_moderations($topic_info['forum_id']);
                 if (count($multi_moderations) != 0) {
                     require_lang('cns_multi_moderations');

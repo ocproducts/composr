@@ -336,7 +336,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         $moderator_actions .= '<option value="open_topics">' . do_lang('OPEN_TOPIC') . '</option>';
         $moderator_actions .= '<option value="close_topics">' . do_lang('CLOSE_TOPIC') . '</option>';
     }
-    if ((!is_null($id)) && (cns_may_perform_multi_moderation($id))) {
+    if ((!is_null($id)) && (addon_installed('cns_multi_moderations')) && (cns_may_perform_multi_moderation($id))) {
         $multi_moderations = cns_list_multi_moderations($id);
         if (count($multi_moderations) != 0) {
             require_lang('cns_multi_moderations');

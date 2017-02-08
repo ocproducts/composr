@@ -179,8 +179,12 @@ function namelike_script()
             echo '<option value="' . escape_html($name) . '" displayname="" />';
         }
     } elseif ($special == 'search') {
-        require_code('search');
-        $names = find_search_suggestions($id, get_param_string('search_type', ''));
+        if (addon_installed('search')) {
+            require_code('search');
+            $names = find_search_suggestions($id, get_param_string('search_type', ''));
+        } else {
+            $names = array();
+        }
 
         foreach ($names as $name) {
             echo '<option value="' . escape_html($name) . '" displayname="" />';

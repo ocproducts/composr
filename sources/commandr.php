@@ -59,6 +59,7 @@ function commandr_script()
         }
 
         if (!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) {
+            require_lang('permissions');
             fatal_exit(do_lang_tempcode('ACCESS_DENIED__PAGE_ACCESS', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));
         }
     }
