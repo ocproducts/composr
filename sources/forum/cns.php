@@ -978,13 +978,17 @@ class Forum_driver_cns extends Forum_driver_base
                 $username = $generator;
 
                 $matches = array();
-                $num_matches = preg_match_all('#\{(\d+)\}#', $generator, $matches);
+                $num_matches = preg_match_all('#\{(\!?)(\d+)\}#', $generator, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
-                    $field_key = 'field_' . $matches[1][$i];
+                    $field_key = 'field_' . $matches[2][$i];
                     if (isset($fields[$field_key])) {
                         $cpf_value = $fields[$field_key];
                         if (!is_string($cpf_value)) {
-                            $cpf_value = strval($cpf_value);
+                            if ($matches[1][$i] == '!') {
+                                $cpf_value = get_translated_text($cpf_value, $GLOBALS['FORUM_DB']);
+                            } else {
+                                $cpf_value = strval($cpf_value);
+                            }
                         }
                         $username = str_replace($matches[0][$i], $cpf_value, $username);
                     }

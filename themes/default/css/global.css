@@ -2802,12 +2802,12 @@ div .post_buttons>*, div .buttons_group_faded>* {
 =========================
 */
 
-ul.compact_list, ol.compact_list {
+ul.compact_list, .global_side_panel ul, ol.compact_list {
 	margin: 0;
 	padding: 0;
 	text-align: left; /* In case cascading from somewhere */
 }
-ul.compact_list>li, ol.compact_list>li {
+ul.compact_list>li, .global_side_panel ul>li, ol.compact_list>li {
 	margin: 0 0 0 17px;
 	padding: 0;
 }
