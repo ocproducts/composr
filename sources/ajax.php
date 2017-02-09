@@ -526,7 +526,7 @@ function load_template_script()
 {
     prepare_for_known_ajax_response();
 
-    if (!has_actual_page_access(get_member(), 'admin_themes', 'adminzone')) {
+    if (!has_actual_page_access(get_member(), 'admin_themes')) {
         exit();
     }
 

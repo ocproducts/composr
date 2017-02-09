@@ -448,7 +448,6 @@ function init__webstandards2()
         'body.onerror' => $enforce_javascript,
         'body.onhashchange' => $enforce_javascript,
         'body.onlanguagechange' => $enforce_javascript,
-        'body.onload' => $enforce_javascript,
         'body.onmessage' => $enforce_javascript,
         'body.onoffline' => $enforce_javascript,
         'body.ononline' => $enforce_javascript,

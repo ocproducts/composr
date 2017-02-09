@@ -557,21 +557,21 @@ class Module_admin_ecommerce_logs
     public function get_types($from, $to, $unpaid_invoices_count = false)
     {
         $types = array(
-            'OPENING' => array('TYPE' => do_lang_tempcode('OPENING_BALANCE'), 'AMOUNT' => 0, 'SPECIAL' => true),
-            'INTEREST_PLUS' => array('TYPE' => do_lang_tempcode('M_INTEREST_PLUS'), 'AMOUNT' => 0, 'SPECIAL' => false),
+            'OPENING' => array('TYPE' => do_lang_tempcode('OPENING_BALANCE'), 'AMOUNT' => 0.0, 'SPECIAL' => true),
+            'INTEREST_PLUS' => array('TYPE' => do_lang_tempcode('M_INTEREST_PLUS'), 'AMOUNT' => 0.0, 'SPECIAL' => false),
         );
         $products = find_all_products();
         foreach ($products as $type_code => $details) {
-            $types[$type_code] = array('TYPE' => $details[4], 'AMOUNT' => 0, 'SPECIAL' => false);
+            $types[$type_code] = array('TYPE' => $details[4], 'AMOUNT' => 0.0, 'SPECIAL' => false);
         }
         $types += array(
-            'COST' => array('TYPE' => do_lang_tempcode('EXPENSES'), 'AMOUNT' => 0, 'SPECIAL' => false),
-            'TRANS' => array('TYPE' => do_lang_tempcode('TRANSACTION_FEES'), 'AMOUNT' => 0, 'SPECIAL' => false),
-            'WAGE' => array('TYPE' => do_lang_tempcode('WAGES'), 'AMOUNT' => 0, 'SPECIAL' => false),
+            'COST' => array('TYPE' => do_lang_tempcode('EXPENSES'), 'AMOUNT' => 0.0, 'SPECIAL' => false),
+            'TRANS' => array('TYPE' => do_lang_tempcode('TRANSACTION_FEES'), 'AMOUNT' => 0.0, 'SPECIAL' => false),
+            'WAGE' => array('TYPE' => do_lang_tempcode('WAGES'), 'AMOUNT' => 0.0, 'SPECIAL' => false),
             'INTEREST_MINUS' => array('TYPE' => do_lang_tempcode('M_INTEREST_MINUS'), 'AMOUNT' => 0.0, 'SPECIAL' => false),
-            'TAX' => array('TYPE' => do_lang_tempcode('TAX_GENERAL'), 'AMOUNT' => 0, 'SPECIAL' => false),
-            'CLOSING' => array('TYPE' => do_lang_tempcode('CLOSING_BALANCE'), 'AMOUNT' => 0, 'SPECIAL' => true),
-            'PROFIT' => array('TYPE' => do_lang_tempcode('NET_PROFIT'), 'AMOUNT' => 0, 'SPECIAL' => true),
+            'TAX' => array('TYPE' => do_lang_tempcode('TAX_GENERAL'), 'AMOUNT' => 0.0, 'SPECIAL' => false),
+            'CLOSING' => array('TYPE' => do_lang_tempcode('CLOSING_BALANCE'), 'AMOUNT' => 0.0, 'SPECIAL' => true),
+            'PROFIT' => array('TYPE' => do_lang_tempcode('NET_PROFIT'), 'AMOUNT' => 0.0, 'SPECIAL' => true),
         );
 
         require_code('currency');
@@ -601,17 +601,17 @@ class Module_admin_ecommerce_logs
                 continue;
             }
 
-            if (($transaction['t_type_code'] == 'OTHER') && (floatval($transaction['t_amount']) < 0)) {
+            if (($transaction['t_type_code'] == 'OTHER') && (floatval($transaction['t_amount']) < 0.0)) {
                 $types['COST']['AMOUNT'] += floatval($transaction['t_amount']);
             } elseif ($transaction['t_type_code'] == 'TAX') {
                 $types['TAX']['AMOUNT'] += floatval($transaction['t_amount']);
             } elseif ($transaction['t_type_code'] == 'INTEREST') {
-                $types[$type_code][(floatval($transaction['t_amount']) < 0) ? 'INTEREST_MINUS' : 'INTEREST_PLUS']['AMOUNT'] += floatval($transaction['t_amount']);
+                $types[$type_code][(floatval($transaction['t_amount']) < 0.0) ? 'INTEREST_MINUS' : 'INTEREST_PLUS']['AMOUNT'] += floatval($transaction['t_amount']);
             } elseif ($transaction['t_type_code'] == 'WAGE') {
                 $types['WAGE']['AMOUNT'] += floatval($transaction['t_amount']);
             } else {
                 if (!array_key_exists($type_code, $types)) {
-                    $types[$type_code] = array('TYPE' => $type_code, 'AMOUNT' => 0, 'SPECIAL' => false); // In case product no longer exists
+                    $types[$type_code] = array('TYPE' => $type_code, 'AMOUNT' => 0.0, 'SPECIAL' => false); // In case product no longer exists
                 }
                 $types[$type_code]['AMOUNT'] += floatval($transaction['t_amount']);
             }

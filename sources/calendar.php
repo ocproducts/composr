@@ -513,7 +513,7 @@ function create_selection_list_event_types($it = null, $updated_since = null)
             $first_type = $type;
         }
     }
-    if ((addon_installed('commandr')) && (has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) && (!is_null($first_type)) && (is_null($GLOBALS['CURRENT_SHARE_USER']))) {
+    if ((addon_installed('commandr')) && (has_actual_page_access(get_member(), 'admin_commandr')) && (!is_null($first_type)) && (is_null($GLOBALS['CURRENT_SHARE_USER']))) {
         $type_list->attach(form_input_list_entry(strval(db_get_first_id()), db_get_first_id() == $it, get_translated_text($first_type['t_title'])));
     }
 
