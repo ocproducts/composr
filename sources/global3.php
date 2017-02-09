@@ -3036,6 +3036,9 @@ function titleify($boring)
         'SSL',
         'XML',
         'HPHP',
+        'CSS',
+        'SEO',
+        'JavaScript',
     );
     foreach ($acronyms as $acronym) {
         if (stripos($ret, $acronym) !== false) {
