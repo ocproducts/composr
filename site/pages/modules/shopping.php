@@ -355,7 +355,10 @@ class Module_shopping
             $update_cart_url = build_url(array('page' => '_SELF', 'type' => 'update_cart'), '_SELF');
             $empty_cart_url = build_url(array('page' => '_SELF', 'type' => 'empty_cart'), '_SELF');
 
-            list($payment_form, $finish_url) = render_cart_payment_form();
+            $fields = null;
+            ecommerce_attach_memo_field_if_needed($fields);
+
+            $next_url = build_url(array('page' => 'purchase', 'type' => 'pay', 'type_code' => 'CART_ORDER'), get_module_zone('purchase'));
         } else {
             $total_price = 0.00;
             $total_tax = 0.00;
@@ -366,8 +369,8 @@ class Module_shopping
             $update_cart_url = new Tempcode();
             $empty_cart_url = new Tempcode();
 
-            $payment_form = new Tempcode();
-            $finish_url = '';
+            $fields = new Tempcode();
+            $next_url = new Tempcode();
         }
 
         $grand_total = $total_price + $total_tax + $total_shipping_cost;
@@ -397,8 +400,8 @@ class Module_shopping
             'TOTAL_SHIPPING_COST' => float_format($total_shipping_cost),
             'GRAND_TOTAL' => float_format($grand_total),
             'CURRENCY' => ecommerce_get_currency_symbol(),
-            'PAYMENT_FORM' => $payment_form,
-            'FINISH_URL' => $finish_url,
+            'FIELDS' => $fields,
+            'NEXT_URL' => $next_url,
         ));
 
         require_code('templates_internalise_screen');

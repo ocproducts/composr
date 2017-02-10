@@ -42,25 +42,31 @@
 	</table>
 {+END}
 
-{+START,IF_NON_EMPTY,{PAYMENT_FORM}}
-	{$,Either a form or a button}
+<form title="{!PRIMARY_PAGE_FORM}" method="post" enctype="multipart/form-data" action="{NEXT_URL*}" autocomplete="off">
+	{$INSERT_SPAMMER_BLACKHOLE}
 
-	{+START,IF_NON_EMPTY,{FINISH_URL}}
-		{$,Form}
+	{+START,IF_PASSED,FIELDS}
+		<div class="wide_table_wrap"><table class="map_table form_table wide_table">
+			{+START,IF,{$NOT,{$MOBILE}}}
+				<colgroup>
+					<col class="purchase_field_name_column" />
+					<col class="purchase_field_input_column" />
+				</colgroup>
+			{+END}
 
-		<form title="{!PRIMARY_PAGE_FORM}" method="post" enctype="multipart/form-data" action="{FINISH_URL*}" autocomplete="off">
-			{$INSERT_SPAMMER_BLACKHOLE}
-
-			{PAYMENT_FORM}
-
-			<p class="purchase_button">
-				<input id="proceed_button" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; return do_form_submit(form,event);" class="button_screen buttons__proceed" accesskey="u" type="button" value="{!MAKE_PAYMENT}" />
-			</p>
-		</form>
+			<tbody>
+				{FIELDS}
+			</tbody>
+		</table></div>
 	{+END}
 
-	{+START,IF_EMPTY,{FINISH_URL}}
-		{$,Button}
-		{PAYMENT_FORM}
+	{+START,IF_PASSED,JAVASCRIPT}
+		<script>// <![CDATA[
+			{JAVASCRIPT/}
+		//]]></script>
 	{+END}
-{+END}
+
+	<p class="purchase_button">
+		<input id="proceed_button" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; return do_form_submit(form,event);" class="button_screen buttons__proceed" accesskey="u" type="button" value="{!CHECKOUT}" />
+	</p>
+</form>

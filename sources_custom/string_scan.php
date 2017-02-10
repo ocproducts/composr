@@ -7262,6 +7262,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_TOPIC
         ADD_TOPIC_POLL
         ADD_TO_CART
+        CHECKOUT
         ADD_TO_DIGG
         ADD_TO_FACEBOOK
         ADD_TO_FAVORITES

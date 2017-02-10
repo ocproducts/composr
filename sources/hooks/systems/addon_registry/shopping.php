@@ -670,8 +670,8 @@ class Hook_addon_registry_shopping
                 'GRAND_TOTAL' => float_format(floatval(placeholder_number())),
                 'PROCEED' => lorem_phrase(),
                 'CURRENCY' => lorem_word(),
-                'PAYMENT_FORM' => placeholder_form(),
-                'FINISH_URL' => placeholder_url(),
+                'FIELDS' => placeholder_fields(),
+                'NEXT_URL' => placeholder_url(),
             )), null, '', true)
         );
     }

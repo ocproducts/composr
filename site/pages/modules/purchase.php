@@ -978,6 +978,14 @@ class Module_purchase
     public function pay()
     {
         $type_code = get_param_string('type_code');
+
+        if ($type_code == 'CART_ORDER') {
+            // Copy cart into an order
+            require_code('shopping');
+            $order_id = copy_shopping_cart_to_order();
+            $type_code = 'CART_ORDER_' . strval($order_id);
+        }
+
         list($details, , $product_object) = find_product_details($type_code);
 
         $payment_gateway = get_option('payment_gateway');
@@ -1081,7 +1089,7 @@ class Module_purchase
             ));
 
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
-            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'points' => 1, 'purchase_id' => $purchase_id), '_SELF', array('include_message' => null), true);
+            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'points' => 1, 'purchase_id' => $purchase_id, 'type_code' => $type_code), '_SELF', array('include_message' => null), true);
             $submit_name = do_lang_tempcode('MAKE_PAYMENT');
             require_css('points');
             $icon = 'menu__social__points';
@@ -1126,7 +1134,7 @@ class Module_purchase
             ));
 
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
-            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => null), true);
+            $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array('include_message' => null), true);
             $submit_name = do_lang_tempcode('MAKE_PAYMENT');
             $icon = 'menu__rich_content__ecommerce__purchase';
 
@@ -1137,10 +1145,20 @@ class Module_purchase
                 $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price, array($_tax, do_lang(get_option('tax_system'))));
             }
 
-            if ($details['type'] == PRODUCT_SUBSCRIPTION) {
-                $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price + $shipping_cost, $tax, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
-            } else {
-                $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $payment_gateway);
+            switch ($details['type']) {
+                case PRODUCT_SUBSCRIPTION:
+                    $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price + $shipping_cost, $tax, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
+                    break;
+                case PRODUCT_ORDERS:
+                    $order_id = intval(preg_replace('#^CART\_ORDER\_#', '', $type_code));
+                    $transaction_button = make_cart_payment_button($order_id, $currency, ($points_for_discount === null) ? 0 : $points_for_discount);
+                    break;
+                case PRODUCT_PURCHASE:
+                case PRODUCT_INVOICE:
+                case PRODUCT_CATALOGUE:
+                default:
+                    $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $payment_gateway);
+                    break;
             }
 
             $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
@@ -1232,12 +1250,12 @@ class Module_purchase
             if ($points_for_discount !== null) {
                 // Paying with points
                 $message = do_lang_tempcode('POINTS_PURCHASE', escape_html(integer_format($points_for_discount)));
-                $memo = do_lang('POINTS');
+                $memo = post_param_string('memo', do_lang('POINTS'));
                 $currency = 'points';
             } else {
                 // Completely free
                 $message = do_lang_tempcode('FREE_PURCHASE');
-                $memo = do_lang('FREE');
+                $memo = post_param_string('memo', do_lang('FREE'));
                 $currency = get_option('currency');
             }
             $amount = 0.00;

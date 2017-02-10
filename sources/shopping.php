@@ -283,61 +283,6 @@ function copy_shopping_cart_to_order()
 }
 
 /**
- * Render the cart payment form.
- *
- * @return array Payment form, Payment form URL.
- */
-function render_cart_payment_form()
-{
-    $order_id = copy_shopping_cart_to_order();
-
-    $points_for_discount = null; // TODO (#3026) - We don't currently support point discounts for cart purchases
-
-    if (!perform_local_payment()) { // Pass through to the gateway's HTTP server
-        $payment_form = make_cart_payment_button($order_id, get_option('currency'), ($points_for_discount === null) ? 0 : $points_for_discount);
-
-        $finish_url = new Tempcode();
-    } else { // Handle the transaction internally
-        $item_name = do_lang('CART_ORDER', strval($order_id));
-        if ($order_id === null) {
-            $fields = new Tempcode();
-            $hidden = new Tempcode();
-            $logos = '';
-            $payment_processor_links = '';
-        } else {
-            $needs_shipping_address = true;
-
-            list($fields, $hidden, $logos, $payment_processor_links) = get_transaction_form_fields(
-                $type_code,
-                $item_name,
-                strval($order_id),
-                $total_price,
-                $total_tax,
-                $total_shipping_cost,
-                get_option('currency'),
-                ($points_for_discount === null) ? 0 : $points_for_discount,
-                null,
-                '',
-                get_option('payment_gateway'),
-                $needs_shipping_address
-            );
-        }
-
-        $payment_form = do_template('ECOM_PURCHASE_STAGE_TRANSACT', array(
-            '_GUID' => 'a70d6995baabb7e41e1af68409361f3c',
-            'FIELDS' => $fields,
-            'HIDDEN' => $hidden,
-            'LOGOS' => $logos,
-            'PAYMENT_PROCESSOR_LINKS' => $payment_processor_links,
-        ));
-
-        $finish_url = build_url(array('page' => 'shopping', 'type' => 'finish', 'type_code' => 'CART_ORDER_' . strval($order_id)), get_module_zone('purchase'));
-    }
-
-    return array($payment_form, $finish_url);
-}
-
-/**
  * Make a shopping cart payment button.
  *
  * @param  AUTO_LINK $order_id Order ID.

@@ -73,7 +73,7 @@ class Hook_ecommerce_cart_orders
                 'price' => $order['total_price'],
                 'currency' => get_option('currency'),
                 'price_points' => null,
-                'discount_points__num_points' => null,
+                'discount_points__num_points' => null, // TODO (#3026) - We don't currently support point discounts for cart purchases
                 'discount_points__price_reduction' => null,
 
                 'tax' => $order['total_tax'],
@@ -129,7 +129,7 @@ class Hook_ecommerce_cart_orders
      */
     public function handle_needed_fields($type_code)
     {
-        return array(preg_replace('#^.*\##', '', $type_code), null);
+        return array('', null);
     }
 
     /**
@@ -145,7 +145,7 @@ class Hook_ecommerce_cart_orders
         require_code('shopping');
         require_lang('shopping');
 
-        $order_id = intval($purchase_id);
+        $order_id = intval(preg_replace('#^CART\_ORDER\_#', '', $type_code));
 
         if ($details['STATUS'] == 'Completed') {
             // Insert sale
