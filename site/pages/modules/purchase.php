@@ -1150,6 +1150,7 @@ class Module_purchase
                     $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price + $shipping_cost, $tax, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
                     break;
                 case PRODUCT_ORDERS:
+                    require_code('shopping');
                     $order_id = intval(preg_replace('#^CART\_ORDER\_#', '', $type_code));
                     $transaction_button = make_cart_payment_button($order_id, $currency, ($points_for_discount === null) ? 0 : $points_for_discount);
                     break;

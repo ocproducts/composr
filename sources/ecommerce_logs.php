@@ -59,8 +59,6 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
     }
     $_header_row = columned_table_header_row($header_row);
 
-    $permission_product_rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('id', 'p_module', 'p_category')));
-
     $where = array();
     if ($filter_member_id !== null) {
         $where['member_id'] = $filter_member_id;
@@ -142,8 +140,8 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
  * The UI to view an order.
  *
  * @param  Tempcode $title The screen title
- * @param  Tempcode $text Text to include on the order
  * @param  AUTO_LINK $id The order ID
+ * @param  Tempcode $text Text to include on the order
  * @param  boolean $show_order_actions Whether to show order actions
  * @return Tempcode The order details
  */

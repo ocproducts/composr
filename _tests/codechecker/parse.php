@@ -1482,17 +1482,12 @@ function _parse_parameter()
                 // Variable with type hint
                 $var = pparse__parser_expect('variable');
                 if (pparse__parser_peek() == 'EQUAL') {
-                    // Variable with type hint and default value. This can only be null
+                    // Variable with type hint and default value
                     pparse__parser_next();        // Consume the EQUAL
-                    if (pparse__parser_peek() == 'null') {
-                        // If the default value is null, the hint is extended to allow null
-                        pparse__parser_next();        // Consume the null
-                        // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
-                        $parameter = array('RECEIVE_BY_VALUE', $var, null, $GLOBALS['I']);
-                        $parameter['HINT'] = '?' . $hint;
-                    } else {
-                        parser_error('Default arguments for type-hinted parameters can only be null');
-                    }
+
+                    // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
+                    $parameter = array('RECEIVE_BY_VALUE', $var, _parse_literal(), $GLOBALS['I']);
+                    $parameter['HINT'] = '?' . $hint;
                 } else {
                     // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
                     $parameter = array('RECEIVE_BY_VALUE', $var, null, $GLOBALS['I']);
@@ -1506,17 +1501,12 @@ function _parse_parameter()
             $variable = pparse__parser_expect('variable');
             // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
             if (pparse__parser_peek() == 'EQUAL') {
-                // Variable with type hint and default value. This can only be null
+                // Variable with type hint and default value
                 pparse__parser_next();        // Consume the EQUAL
-                if (pparse__parser_peek() == 'null') {
-                    // If the default value is null, the hint is extended to allow null
-                    pparse__parser_next();        // Consume the null
-                    // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
-                    $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);
-                    $parameter['HINT'] = '?' . $hint;
-                } else {
-                    parser_error('Default arguments for referenced parameters can only be null');
-                }
+
+                // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
+                $parameter = array('RECEIVE_BY_REFERENCE', $variable, _parse_literal(), $GLOBALS['I']);
+                $parameter['HINT'] = '?' . $hint;
             } else {
                 $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);
             }

@@ -81,7 +81,7 @@ function add_to_cart($type_code, $purchase_id = '', $quantity = 1)
     } else {
         $where['ordered_by'] = get_member();
     }
-    $existing_rows = $GLOBALS['SITE_DB']->query_select('shopping_cart', array('id', 'quantity'), $where), '', 1);
+    $existing_rows = $GLOBALS['SITE_DB']->query_select('shopping_cart', array('id', 'quantity'), $where, '', 1);
 
     if (!array_key_exists(0, $existing_rows)) {
         $cart_map = array(
@@ -93,10 +93,8 @@ function add_to_cart($type_code, $purchase_id = '', $quantity = 1)
         );
         $id = $GLOBALS['SITE_DB']->query_insert('shopping_cart', $cart_map, true);
     } else {
-        $GLOBALS['SITE_DB']->query_update('shopping_cart', array('quantity' => ($existing_rows[0]['quantity'] + $product_det['quantity']), $where, '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_cart', array('quantity' => ($existing_rows[0]['quantity'] + $quantity)), $where, '', 1);
     }
-
-    return $id;
 }
 
 /**
@@ -116,7 +114,7 @@ function update_cart($products_in_cart)
             $where['ordered_by'] = get_member();
         }
 
-        if ($product_row['quantity'] > 0) {
+        if ($quantity > 0) {
             $GLOBALS['SITE_DB']->query_update('shopping_cart', array('quantity' => $quantity), $where, '', 1);
         } else {
             $GLOBALS['SITE_DB']->query_delete('shopping_cart', $where, '', 1);
@@ -131,7 +129,7 @@ function update_cart($products_in_cart)
  */
 function remove_from_cart($products_to_remove)
 {
-    foreach ($product_to_remove as $type_code) {
+    foreach ($products_to_remove as $type_code) {
         $where = array('type_code' => $type_code);
         if (is_guest()) {
             $where['session_id'] = get_session_id();
@@ -240,7 +238,7 @@ function copy_shopping_cart_to_order()
         'add_date' => time(),
         'total_price' => $total_price,
         'total_tax' => $total_tax,
-        'total_shipping_cost' => $total_shipping_price,
+        'total_shipping_cost' => $total_shipping_cost,
         'order_status' => 'ORDER_STATUS_awaiting_payment',
         'notes' => '',
         'purchase_through' => 'cart',
@@ -250,7 +248,7 @@ function copy_shopping_cart_to_order()
     foreach ($shopping_cart_rows as $item) {
         $type_code = $item['type_code'];
 
-        list($details) = find_product_details($type_code);
+        list($details, , $product_object) = find_product_details($type_code);
 
         if ($details === null) {
             continue;
@@ -287,9 +285,10 @@ function copy_shopping_cart_to_order()
  *
  * @param  AUTO_LINK $order_id Order ID.
  * @param  ID_TEXT $currency The currency to use.
+ * @param  integer $price_points Transaction price in points.
  * @return Tempcode The button
  */
-function make_cart_payment_button($order_id, $currency)
+function make_cart_payment_button($order_id, $currency, $price_points = 0)
 {
     $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $order_id), '', 1);
     if (!array_key_exists(0, $order_rows)) {

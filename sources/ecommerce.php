@@ -98,7 +98,7 @@ function init__ecommerce()
         define('PRODUCT_SUBSCRIPTION', 2);
         define('PRODUCT_OTHER', 3);
         define('PRODUCT_CATALOGUE', 4); // used only with the cart
-        define('PRODUCT_ORDERS', 5);
+        define('PRODUCT_ORDERS', 5); // shopping cart contents purchase
 
         define('ECOMMERCE_PRODUCT_AVAILABLE', 0);
         define('ECOMMERCE_PRODUCT_NO_GUESTS', 1); // Only used if current user really is a Guest
@@ -260,7 +260,7 @@ function get_needed_fields($type_code, $force_extended = false)
         $shipping_state = '';
         $shipping_post_code = '';
         $shipping_country = '';
-        get_default_ecommerce_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
+        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
 
         if ($fields === null) {
             $fields = new Tempcode();
@@ -284,7 +284,7 @@ function get_needed_fields($type_code, $force_extended = false)
         $shipping_phone = '';
         $shipping_firstname = '';
         $shipping_lastname = '';
-        get_default_ecommerce_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname);
+        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname);
 
         $fields->attach(get_shipping_name_fields($shipping_firstname, $shipping_lastname, $require_all_details));
         $fields->attach(get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details));
@@ -400,6 +400,7 @@ function calculate_shipping_tax($shipping_cost)
  * @param  ?array $details Map of product details (null: it's for shipping cost only).
  * @param  REAL $tax The default tax due if liable. This may be different to $details['tax'], e.g. if a discount is in place.
  * @param  REAL $shipping_cost_tax The shipping cost tax.
+ * @param  ?MEMBER $member_id The member this is for (null: current member).
  * @param  integer $quantity The quantity of items.
  * @return REAL The tax actually due (either zero or same as $tax, unless you are doing something clever).
  */
@@ -415,7 +416,7 @@ function recalculate_tax_due($details, $tax, $shipping_cost_tax = 0.00, $member_
     $shipping_state = '';
     $shipping_post_code = '';
     $shipping_country = '';
-    get_default_ecommerce_fields($shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
+    get_default_ecommerce_fields($member_id, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
 
     $tax_country_regexp = get_option('tax_country_regexp');
     $tax_state_regexp = get_option('tax_state_regexp');
@@ -442,6 +443,7 @@ function backcalculate_tax_rate($price, $tax)
  * Recalculate shipping cost based on customer context.
  *
  * @param  array $products_in_cart List of product specifiers.
+ * @param  ?MEMBER $member_id The member this is for (null: current member).
  * @return REAL The shipping cost.
  */
 function recalculate_shipping_cost_combo($products_in_cart, $member_id = null)
@@ -463,6 +465,7 @@ function recalculate_shipping_cost_combo($products_in_cart, $member_id = null)
  *
  * @param  ?array $details Map of product details (null: it's for base shipping cost only).
  * @param  REAL $shipping_cost The default shipping cost.
+ * @param  ?MEMBER $member_id The member this is for (null: current member).
  * @param  integer $quantity The quantity of items.
  * @return REAL The shipping cost.
  */
@@ -483,6 +486,11 @@ function recalculate_shipping_cost($details, $shipping_cost, $member_id = null, 
  */
 function get_product_det_url($type_code, $post_purchase_access_url = false, $member_id = null)
 {
+    static $permission_product_rows = null;
+    if ($permission_product_rows === null) {
+        $permission_product_rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('id', 'p_module', 'p_category')));
+    }
+
     $matches = array();
     if (($post_purchase_access_url) && (preg_match('#^PERMISSION\_(\d+)$#', $type_code, $matches) != 0)) {
         $permission_product_id = intval($matches[1]);
@@ -506,7 +514,7 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
                 }
             }
         }
-    } else if (($post_purchase_access_url) && (preg_match('#^CART_ORDER\_(\d+)$#', $type_code, $matches) != 0)) {
+    } elseif (($post_purchase_access_url) && (preg_match('#^CART_ORDER\_(\d+)$#', $type_code, $matches) != 0)) {
         $product_det_url = build_url(array('page' => 'shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('shopping'));
     } elseif (is_numeric($type_code)) {
         $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $type_code), get_module_zone('catalogues'));
@@ -533,10 +541,9 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
 {
     if (($txn_id != '') && (!$awaiting_payment)) {
         if (has_actual_page_access(get_member(), 'admin_ecommerce_logs')) {
-            $transaction_details_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'logs', 'type_code' => $order_title, 'id' => $transaction_row['id']), get_module_zone('admin_ecommerce_logs'));
+            $transaction_details_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'logs', 'type_code' => $transaction_row['t_type_code'], 'id' => $transaction_row['id']), get_module_zone('admin_ecommerce_logs'));
             $transaction_link = hyperlink($transaction_details_url, $txn_id, false, true);
-        } else 
-        {
+        } else {
             $transaction_link = make_string_tempcode(escape_html($txn_id));
         }
 
@@ -926,7 +933,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
     $billing_state = '';
     $billing_post_code = '';
     $billing_country = '';
-    get_default_ecommerce_fields($shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
+    get_default_ecommerce_fields(null, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
 
     // Card fields...
 
@@ -998,7 +1005,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
  * @param  boolean $require_all_details Whether to require all details to be input.
  * @return Tempcode Address fields.
  */
-function get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $street_address, $city, $county, $state, $post_code, $country, $require_all_details = true)
+function get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $require_all_details = true)
 {
     $fields = new Tempcode();
 
@@ -1087,6 +1094,7 @@ function get_shipping_contact_fields($shipping_email, $shipping_phone, $require_
 /**
  * Fetch default eCommerce fields for a form (returns by reference).
  *
+ * @param  ?MEMBER $member_id The member this is for (null: current member).
  * @param  string $shipping_email Shipping e-mail address (blank: unknown).
  * @param  string $shipping_phone Shipping phone number (blank: unknown).
  * @param  string $shipping_firstname Shipping first name (blank: unknown).
@@ -1099,7 +1107,7 @@ function get_shipping_contact_fields($shipping_email, $shipping_phone, $require_
  * @param  string $shipping_country Shipping country (blank: unknown).
  * @param  string $cardholder_name Cardholder name (blank: unknown).
  * @param  string $card_type Card type (blank: unknown).
- * @param  ?integer $card_numberCard number (null: unknown).
+ * @param  ?integer $card_number Card number (null: unknown).
  * @param  ?integer $card_start_date_year Card start year (null: unknown).
  * @param  ?integer $card_start_date_month Card start month (null: unknown).
  * @param  ?integer $card_expiry_date_year Card expiry year (null: unknown).
@@ -1113,12 +1121,16 @@ function get_shipping_contact_fields($shipping_email, $shipping_phone, $require_
  * @param  string $billing_post_code Billing postcode (blank: unknown).
  * @param  string $billing_country Billing country (blank: unknown).
  */
-function get_default_ecommerce_fields(&$shipping_email = '', &$shipping_phone = '', &$shipping_firstname = '', &$shipping_lastname = '', &$shipping_street_address = '', &$shipping_city = '', &$shipping_county = '', &$shipping_state = '', &$shipping_post_code = '', &$shipping_country = '', &$cardholder_name = '', &$card_type = '', &$card_number = '', &$card_start_date_year = '', &$card_start_date_month = '', &$card_expiry_date_year = '', &$card_expiry_date_month = '', &$card_issue_number = '', &$card_cv2 = '', &$billing_street_address = '', &$billing_city = '', &$billing_county = '', &$billing_state = '', &$billing_post_code = '', &$billing_country = '')
+function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', &$shipping_phone = '', &$shipping_firstname = '', &$shipping_lastname = '', &$shipping_street_address = '', &$shipping_city = '', &$shipping_county = '', &$shipping_state = '', &$shipping_post_code = '', &$shipping_country = '', &$cardholder_name = '', &$card_type = '', &$card_number = null, &$card_start_date_year = null, &$card_start_date_month = null, &$card_expiry_date_year = null, &$card_expiry_date_month = null, &$card_issue_number = null, &$card_cv2 = null, &$billing_street_address = '', &$billing_city = '', &$billing_county = '', &$billing_state = '', &$billing_post_code = '', &$billing_country = '')
 {
-    $shipping_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+
+    $shipping_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
     if (ecommerce_test_mode()) {
-        $cardholder_name = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        $cardholder_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         $card_type = 'Visa';
         $card_number = 4444333322221111;
         $card_start_date_year = intval(date('Y', utctime_to_usertime(time() - 60 * 60 * 24 * 365)));
@@ -1148,18 +1160,28 @@ function get_default_ecommerce_fields(&$shipping_email = '', &$shipping_phone = 
         }
         $shipping_phone = '01234 56789';
     } else {
-        $cardholder_name = empty(get_cms_cpf('payment_cardholder_name')) ? '' : get_cms_cpf('payment_cardholder_name');
-        $card_type = empty(get_cms_cpf('payment_card_type')) ? '' : get_cms_cpf('payment_card_type');
-        $_card_number = empty(get_cms_cpf('payment_card_number')) ? '' : get_cms_cpf('payment_card_number');
+        $_cardholder_name = get_cms_cpf('payment_cardholder_name');
+        $cardholder_name = empty($_cardholder_name) ? '' : $_cardholder_name;
+
+        $_card_type = get_cms_cpf('payment_card_type');
+        $card_type = empty($_card_type) ? '' : $_card_type;
+
+        $_card_number = get_cms_cpf('payment_card_number');
         $card_number = empty($_card_number) ? null : intval($_card_number);
-        list($_card_start_date_year, $_card_start_date_month) = empty(get_cms_cpf('payment_card_start_date')) ? array('', '') : explode('/', get_cms_cpf('payment_card_start_date'));
+
+        $_card_start_date = get_cms_cpf('payment_card_start_date');
+        list($_card_start_date_year, $_card_start_date_month) = empty($_card_start_date) ? array('', '') : explode('/', $_card_start_date);
         $card_start_date_year = ($_card_start_date_year == '') ? null : intval($_card_start_date_year);
         $card_start_date_month = ($_card_start_date_month == '') ? null : intval($_card_start_date_month);
-        list($_card_expiry_date_year, $_card_expiry_date_month) = empty(get_cms_cpf('payment_card_expiry_date')) ? array('', '') : explode('/', get_cms_cpf('payment_card_expiry_date'));
+
+        $_card_expiry_date = get_cms_cpf('payment_card_expiry_date');
+        list($_card_expiry_date_year, $_card_expiry_date_month) = empty($_card_expiry_date) ? array('', '') : explode('/', $_card_expiry_date);
         $card_expiry_date_year = ($_card_expiry_date_year == '') ? null : intval($_card_expiry_date_year);
         $card_expiry_date_month = ($_card_expiry_date_month == '') ? null : intval($_card_expiry_date_month);
+
         $_card_issue_number = get_cms_cpf('payment_card_issue_number');
         $card_issue_number = empty($_card_issue_number) ? null : intval($_card_issue_number);
+
         $card_cv2 = null;
 
         $billing_street_address = get_cms_cpf('billing_street_address');
@@ -1177,7 +1199,7 @@ function get_default_ecommerce_fields(&$shipping_email = '', &$shipping_phone = 
         $shipping_state = get_cms_cpf('state');
         $shipping_post_code = get_cms_cpf('post_code');
         $shipping_country = get_cms_cpf('country');
-        $shipping_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+        $shipping_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
         $shipping_phone = get_cms_cpf('mobile_phone_number');
     }
 
@@ -1273,7 +1295,8 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
     $item_name = $transaction_row['e_item_name'];
     $purchase_id = $transaction_row['e_purchase_id'];
 
-    $amount = $transaction_row['e_price'] + $transaction_row['e_tax'];
+    $tax = $transaction_row['e_tax'];
+    $amount = $transaction_row['e_price'] + $tax;
     $currency = $transaction_row['e_currency'];
 
     $length = $transaction_row['e_length'];
@@ -1309,7 +1332,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
     $billing_state = '';
     $billing_post_code = '';
     $billing_country = '';
-    get_default_ecommerce_fields($shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
+    get_default_ecommerce_fields(null, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
 
     $card_start_date = ($card_start_date_year === null || $card_start_date_month === null) ? '' : (strval($card_start_date_year) . '/' . strval($card_start_date_month));
     $card_expiry_date = ($card_expiry_date_year === null || $card_expiry_date_month === null) ? '' : (strval($card_expiry_date_year) . '/' . strval($card_expiry_date_month));
@@ -1414,7 +1437,7 @@ function store_shipping_address($trans_expecting_id, $txn_id = '', $shipping_add
             }
         }
         if (implode('', $shipping_address) == '') {
-            return '';
+            return null;
         }
     }
 
@@ -1507,7 +1530,7 @@ function handle_ipn_transaction_script()
  * @set    Pending Completed SModified SCancelled
  * @param  SHORT_TEXT $reason A reason for the transaction's status (blank: unknown or N/A).
  * @param  REAL $amount Transaction amount.
- * @param  REAL $tax Transaction tax amount (null: not separated out, find the tax due and take it out of $amount).
+ * @param  ?REAL $tax Transaction tax amount (null: not separated out, find the tax due and take it out of $amount).
  * @param  ID_TEXT $currency The currency the amount is in (points: was done fully with points).
  * @param  boolean $check_amounts Check the amounts related to this transaction; if not set no points will be charged.
  * @param  ID_TEXT $parent_txn_id The ID of the parent transaction (blank: unknown or N/A).
@@ -1607,8 +1630,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             $expected_price_points = $found['price_points'];
         } else {
             // Will be paying with money (or possibly money & points)
-            $expected_amount = $found['price'] + recalculate_shipping_cost($found, $found['shipping_cost'], $member_id_paying);
-            $expected_tax = recalculate_tax($found, $found['tax'], $member_id_paying);
+            $shipping_cost = recalculate_shipping_cost($found, $found['shipping_cost'], $member_id_paying);
+            $expected_amount = $found['price'] + $shipping_cost;
+            $expected_tax = recalculate_tax_due($found, $found['tax'], calculate_shipping_tax($shipping_cost), $member_id_paying);
             $expected_price_points = 0;
 
             if (!paid_amount_matches($amount, $tax, $expected_amount, $expected_tax)) {
@@ -1742,7 +1766,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
 
     // Notifications
     if ($status == 'Completed') {
-        send_transaction_mails($txn_id, $item_name, $member_id, $amount, $tax, $currency, $amount_points, $memo);
+        send_transaction_mails($txn_id, $item_name, $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo);
     }
 
     // Cleanup very old data
@@ -1756,14 +1780,15 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
  *
  * @param  ID_TEXT $txn_id Transaction ID.
  * @param  string $item_name Item name.
+ * @param  boolean $automatic_setup Whether the product was automatically setup (i.e. is ready now).
  * @param  ?MEMBER $member_id Member ID transaction is for (null: unknown).
  * @param  REAL $amount Transaction amount.
  * @param  REAL $tax Transaction tax amount.
  * @param  ID_TEXT $currency The currency.
- * @param  integer $expected_price_points Points charge paid.
+ * @param  integer $amount_points Points charge paid.
  * @param  string $memo Customer memo.
  */
-function send_transaction_mails($txn_id, $item_name, $member_id, $amount, $tax, $currency, $amount_points, $memo = '')
+function send_transaction_mails($txn_id, $item_name, $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo = '')
 {
     require_code('notifications');
 
@@ -1773,7 +1798,7 @@ function send_transaction_mails($txn_id, $item_name, $member_id, $amount, $tax, 
         $symbol = '';
     } else {
         $_currency = $currency;
-        $amount = float_format($amount);
+        $_amount = float_format($amount);
         $symbol = ecommerce_get_currency_symbol($currency);
     }
 
@@ -2006,12 +2031,12 @@ function generate_tax_invoice($txn_id)
         'DATE' => get_timezoned_date($transaction_row['t_time'], false),
         'TRANS_ADDRESS' => $trans_address,
         'ITEMS' => $invoicing_breakdown,
-        'CURRENCY_SYMBOL' => ecommerce_get_currency_symbol($row['t_currency']),
-        'CURRENCY' => $row['t_currency'],
-        'TOTAL_PRICE' => float_format($row['t_amount']),
-        'TOTAL_TAX' => float_format($row['t_tax']),
-        'TOTAL_AMOUNT' => float_format($row['t_amount'] + $row['t_tax']),
-        'PURCHASE_ID' => $row['t_purchase_id'],
-        'STATUS' => do_lang($row['t_status']),
+        'CURRENCY_SYMBOL' => ecommerce_get_currency_symbol($transaction_row['t_currency']),
+        'CURRENCY' => $transaction_row['t_currency'],
+        'TOTAL_PRICE' => float_format($transaction_row['t_amount']),
+        'TOTAL_TAX' => float_format($transaction_row['t_tax']),
+        'TOTAL_AMOUNT' => float_format($transaction_row['t_amount'] + $transaction_row['t_tax']),
+        'PURCHASE_ID' => $transaction_row['t_purchase_id'],
+        'STATUS' => do_lang($transaction_row['t_status']),
     ));
 }

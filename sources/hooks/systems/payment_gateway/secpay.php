@@ -109,9 +109,8 @@ class Hook_payment_gateway_secpay
      * @param  ID_TEXT $purchase_id The purchase ID.
      * @param  REAL $price Transaction price in money.
      * @param  REAL $tax Transaction tax in money.
-     * @param  REAL $shipping_cost Transaction shipping cost in money.
-     * @param  ID_TEXT $currency The currency to use.
      * @param  REAL $shipping_cost Shipping cost.
+     * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
     public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
@@ -400,9 +399,9 @@ class Hook_payment_gateway_secpay
     /**
      * Store shipping address for a transaction.
      *
-     * @param  $trans_expecting_id Expected transaction ID.
-     * @param  $txn_id Transaction ID.
-     * @return ?AUTO_LINK Address ID.
+     * @param  ID_TEXT $trans_expecting_id Expected transaction ID.
+     * @param  ID_TEXT $txn_id Transaction ID.
+     * @return AUTO_LINK Address ID.
      */
     public function store_shipping_address($trans_expecting_id, $txn_id)
     {

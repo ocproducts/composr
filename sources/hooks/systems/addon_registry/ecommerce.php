@@ -631,7 +631,6 @@ class Hook_addon_registry_ecommerce
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
-                'PRICE' => placeholder_number(),
             )), null, '', true)
         );
     }
@@ -1546,7 +1545,7 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    function tpl_ecom_tax_invoice_screen()
+    public function tpl_ecom_tax_invoice_screen()
     {
         $items = array();
         foreach (placeholder_array() as $k => $v) {

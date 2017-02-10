@@ -138,14 +138,14 @@ class Module_shopping
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 8)) {
-            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'price');
-            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'price_pre_tax');
-            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_name');
-            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_code');
-            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_description');
-            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_type');
-            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'product_weight');
-            $GLOBALS['SITE_DB']->drop_table_field('shopping_cart', 'is_deleted');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'price');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'price_pre_tax');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'product_name');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'product_code');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'product_description');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'product_type');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'product_weight');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'is_deleted');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_cart', 'product_id', 'ID_TEXT', 'type_code');
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'tot_price', 'REAL', 'total_price');
@@ -343,7 +343,7 @@ class Module_shopping
                     continue;
                 }
 
-                $type_codes[] = $item['p_type_code']);
+                $type_codes[] = $item['p_type_code'];
 
                 $this->show_cart_entry($shopping_cart, $details, $item);
             }
@@ -503,7 +503,7 @@ class Module_shopping
             } else {
                 if (method_exists($product_object, 'get_available_quantity')) {
                     $available_quantity = $product_object->get_available_quantity($type_code, false);
-                    if (($available_qty !== null) && ($available_qty <= $quantity)) {
+                    if (($available_quantity !== null) && ($available_quantity <= $quantity)) {
                         $quantity = $available_quantity;
 
                         attach_message(do_lang_tempcode('PRODUCT_QUANTITY_CHANGED', escape_html($details['item_name'])), 'warn');
@@ -533,7 +533,7 @@ class Module_shopping
      */
     public function empty_cart()
     {
-        empty_cart(true);
+        empty_cart();
 
         log_cart_actions(do_lang('EMPTY_CART'));
 
