@@ -1160,8 +1160,7 @@ class Text_Diff_Engine_native
                     }
                 }
 
-                foreach ($matches as $_match) {
-                    list($junk, $y) = $_match;
+                while ($y = current($matches)) {
                     if ($y > $this->seq[$k - 1]) {
 //							assert($y < $this->seq[$k]);
                         /* Optimization: this is a common case: next match is
@@ -1174,6 +1173,8 @@ class Text_Diff_Engine_native
 //						assert($k > 0);
                         $ymids[$k] = $ymids[$k - 1];
                     }
+
+                    next($matches);
                 }
             }
         }
