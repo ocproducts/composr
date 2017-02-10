@@ -27,6 +27,10 @@ class CMSSocialWrite
     {
         cms_verify_parameters_phpdoc();
 
+        if (!addon_installed('points')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         if (is_guest()) {
             access_denied('NOT_AS_GUEST');
         }
@@ -63,6 +67,10 @@ class CMSSocialWrite
             access_denied('NOT_AS_GUEST');
         }
 
+        if (!addon_installed('chat')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         require_code('chat2');
         friend_add(get_member(), $user_id);
     }
@@ -78,6 +86,10 @@ class CMSSocialWrite
 
         if (is_guest()) {
             access_denied('NOT_AS_GUEST');
+        }
+
+        if (!addon_installed('chat')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
         require_code('chat2');

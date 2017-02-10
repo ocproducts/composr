@@ -281,7 +281,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
             $content_title = $title_field_dereference ? get_translated_text($_content_title, $db) : $_content_title;
             if (($content_title == '') && (!$resource_fs_style)) {
                 $content_title = do_lang($cma_info['content_type_label']) . ' (#' . (is_string($content_id) ? $content_id : strval($content_id)) . ')';
-                if ($content_type == 'image' || $content_type == 'video') { // A bit of a fudge, but worth doing
+                if (($content_type == 'image' || $content_type == 'video') && (addon_installed('galleries'))) { // A bit of a fudge, but worth doing
                     require_lang('galleries');
                     $fullname = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $content_row['cat']));
                     if (!is_null($fullname)) {

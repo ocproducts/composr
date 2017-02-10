@@ -118,6 +118,8 @@ This addon does not contain the compo.sr install code and the overall site and t
         return array(
             'requires' => array(
                 'downloads',
+                'ecommerce',
+                'news',
             ),
             'recommends' => array(
                 'composr_homesite_support_credits',

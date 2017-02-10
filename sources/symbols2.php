@@ -1419,6 +1419,10 @@ function ecv2_FIND_GUID_VIA_ID($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
+    if (!addon_installed('commandr')) {
+        return $value;
+    }
+
     if (isset($param[1])) {
         require_code('resource_fs');
         $value = find_guid_via_id($param[0], $param[1]);
@@ -1448,6 +1452,10 @@ function ecv2_FIND_ID_VIA_GUID($lang, $escaped, $param)
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
+    }
+
+    if (!addon_installed('commandr')) {
+        return $value;
     }
 
     if (isset($param[0])) {
@@ -1481,6 +1489,10 @@ function ecv2_FIND_ID_VIA_LABEL($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
+    if (!addon_installed('commandr')) {
+        return $value;
+    }
+
     if (isset($param[1])) {
         require_code('resource_fs');
         $value = find_id_via_label($param[0], $param[1], array_key_exists(2, $param) ? $param[2] : null);
@@ -1510,6 +1522,10 @@ function ecv2_FIND_ID_VIA_COMMANDR_FS_FILENAME($lang, $escaped, $param)
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
+    }
+
+    if (!addon_installed('commandr')) {
+        return $value;
     }
 
     if (isset($param[1])) {
@@ -1571,6 +1587,10 @@ function ecv2_FIND_LABEL_VIA_ID($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
+    if (!addon_installed('commandr')) {
+        return $value;
+    }
+
     if (isset($param[1])) {
         require_code('resource_fs');
         $value = find_label_via_id($param[0], $param[1]);
@@ -1600,6 +1620,10 @@ function ecv2_FIND_COMMANDR_FS_FILENAME_VIA_ID($lang, $escaped, $param)
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
+    }
+
+    if (!addon_installed('commandr')) {
+        return $value;
     }
 
     if (isset($param[1])) {

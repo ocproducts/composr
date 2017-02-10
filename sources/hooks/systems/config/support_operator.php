@@ -51,6 +51,7 @@ class Hook_config_support_operator
      */
     public function get_default()
     {
+        require_lang('tickets');
         $test = do_lang('SUPPORT_OPERATOR');
         if (is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($test))) {
             return '';

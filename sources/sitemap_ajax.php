@@ -34,7 +34,7 @@ function sitemap_script()
     require_code('xml');
     require_code('sitemap');
 
-    if (!has_actual_page_access(get_member(), 'admin_sitemap', 'adminzone')) {
+    if (!has_actual_page_access(get_member(), 'admin_sitemap')) {
         exit();
     }
 
@@ -465,7 +465,7 @@ function _get_overridable_privileges_for_privilege_page($privilege_page)
  */
 function sitemap_script_saving()
 {
-    if (!has_actual_page_access(get_member(), 'admin_permissions', 'adminzone')) {
+    if (!has_actual_page_access(get_member(), 'admin_permissions')) {
         exit();
     }
 

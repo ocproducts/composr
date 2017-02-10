@@ -1658,6 +1658,14 @@ function unixify_line_format($in, $desired_charset = null, $html = false, $from_
         $desired_charset = get_charset();
     }
 
+    static $bom = null;
+    if ($bom === null) {
+        $bom = chr(0xEF) . chr(0xBB) . chr(0xBF);
+    }
+    if (substr($in, 0, 3) == $bom) {
+        $in = substr($in, 3);
+    }
+
     static $from = null;
     if ($from === null) {
         $from = array("\r\n", '&#8298;', "\r"); // &#8298; is very odd- seems to come from open office copy & paste

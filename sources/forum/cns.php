@@ -62,7 +62,7 @@ class Forum_driver_cns extends Forum_driver_base
         $CNS_DRIVER = mixed();
         $GLOBALS['CNS_DRIVER'] = &$this; // Done like this to workaround that PHP can't put a reference in a global'd variable
 
-        if ((function_exists('ldap_connect')) && (get_option('ldap_is_enabled', true) == '1')) {
+        if ((addon_installed('ldap')) && (function_exists('ldap_connect')) && (get_option('ldap_is_enabled', true) == '1')) {
             require_code('cns_members');
             require_code('cns_groups');
             require_code('cns_ldap');
@@ -978,19 +978,23 @@ class Forum_driver_cns extends Forum_driver_base
                 $username = $generator;
 
                 $matches = array();
-                $num_matches = preg_match_all('#\{(\d+)\}#', $generator, $matches);
+                $num_matches = preg_match_all('#\{(\!?)(\d+)\}#', $generator, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
-                    $field_key = 'field_' . $matches[1][$i];
+                    $field_key = 'field_' . $matches[2][$i];
                     if (isset($fields[$field_key])) {
                         $cpf_value = $fields[$field_key];
                         if (!is_string($cpf_value)) {
-                            $cpf_value = strval($cpf_value);
+                            if ($matches[1][$i] == '!') {
+                                $cpf_value = get_translated_text($cpf_value, $GLOBALS['FORUM_DB']);
+                            } else {
+                                $cpf_value = strval($cpf_value);
+                            }
                         }
                         $username = str_replace($matches[0][$i], $cpf_value, $username);
                     }
                 }
 
-                $username = preg_replace('# +#', ' ', trim($username)); // Strip and double (or triple, etc) blanks, and leading/trailing blanks
+                $username = preg_replace('# +#', ' ', trim($username)); // Strip any double (or triple, etc) blanks, and leading/trailing blanks
 
                 if ($username == '') {
                     $username = $username_bak;
@@ -1650,11 +1654,13 @@ class Forum_driver_cns extends Forum_driver_base
                 if ((!running_script('index')) && (!running_script('iframe'))) {
                     return; // Not when probably running some AJAX script
                 }
-                $captcha = post_param_string('captcha', '');
-                if ($captcha != '') { // Don't consider a CAPTCHA submitting, it'll drive people nuts to get flood control right after a CAPTCHA
-                    require_code('captcha');
-                    if (check_captcha($captcha, false)) {
-                        return;
+                if (addon_installed('captcha')) {
+                    $captcha = post_param_string('captcha', '');
+                    if ($captcha != '') { // Don't consider a CAPTCHA submitting, it'll drive people nuts to get flood control right after a CAPTCHA
+                        require_code('captcha');
+                        if (check_captcha($captcha, false)) {
+                            return;
+                        }
                     }
                 }
 

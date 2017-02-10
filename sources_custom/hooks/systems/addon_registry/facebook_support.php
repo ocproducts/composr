@@ -124,7 +124,10 @@ The documentation for this addon is covered in a dedicated tutorial (' . get_bra
     public function get_dependencies()
     {
         return array(
-            'requires' => array('PHP sessions', 'PHP CuRL extension'),
+            'requires' => array(
+                'PHP sessions',
+                'PHP CuRL extension',
+            ),
             'recommends' => array('activity_feed'),
             'conflicts_with' => array()
         );

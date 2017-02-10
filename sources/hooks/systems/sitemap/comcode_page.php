@@ -219,7 +219,7 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
         }
 
         if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
-            $struct['title'] = make_string_tempcode(do_lang('COMCODE_PAGE') . ': ' . $page);
+            $struct['title'] = make_string_tempcode(do_lang('zones:COMCODE_PAGE') . ': ' . $page);
         }
 
         if (!$this->_check_node_permissions($struct)) {

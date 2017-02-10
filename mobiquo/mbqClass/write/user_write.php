@@ -53,6 +53,10 @@ class CMSUserWrite
             access_denied('NOT_AS_GUEST');
         }
 
+        if (!addon_installed('chat')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         require_code('chat2');
         if ($adding) {
             blocking_add(get_member(), $user_id);

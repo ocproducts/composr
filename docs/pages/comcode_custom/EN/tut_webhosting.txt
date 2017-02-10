@@ -33,6 +33,21 @@ Programmers will often prefer IaaS and PaaS hosting in order to get scalability.
 Regardless of your choice, you'll always be running the same underlying software (PHP etc). For the purpose of this tutorial the differences don't really matter, except where we provide specific advice on configuring platforms.
 We have various different installation tutorials that go into details on how to install on the different hosting options.
 
+[title="2"]Recommended shared webhost[/title]
+
+We don't currently recommend any particular webhosts because it is a tricky thing. I'm afraid the answer will be rather cynical, but I want you to get a realistic outlook.
+
+Webhosts have a tendency to take a turn for the worse at some point, as it's a race-to-the-bottom kind of industry -- any ones built on a good reputation tend to get taken over when the founders cash-out and then milked for it by a new team.
+
+We advise picking your own webhost based on good reviews that are both recent and credible. Actively look for people complaining about the company to get a sense for whether these complaints are reveal a pattern of genuine concern (as opposed to general frustration with technology / unreasonable expectations from the webhost). Don't pick the cheapest, but also don't assume paying more guarantees good service.
+
+Webhosts generally fit into 3 categories:
+1) Good infrastructure, good support (pick a company like this, but it usually doesn't last long -- they're likely either losing money, or propped up by a passionate underpaid founding team who won't be there forever)
+2) Good infrastructure, poor support (stick with a company like this because it's probably not worth the hassle to move)
+3) Poor infrastructure, poor support (this is when you leave to a company in state '1')
+
+Keep making sure you have your own backups so that you are able to always make a swift move if it becomes necessary.
+
 [staff_note][title="2"]Recommended webhost[/title]
 
 We recommend Arvixe for Composr hosting. Arvixe have worked with the Composr developers to ensure the hosting is perfectly tuned for Composr, and the Composr developers intend to make sure this remains the case across Composr versions. Arvixe is an established company, a friend to Open Source software, and provides good value and great quality servers. We maintain a good working relationship with the management of the company.

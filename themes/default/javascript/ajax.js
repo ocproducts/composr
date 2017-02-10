@@ -616,7 +616,7 @@ function process_request_changes()
 					{
 						if ((!window.network_down) && (!window.unloaded))
 						{
-							window.fauxmodal_alert('{!NETWORK_DOWN;^}');
+							//window.fauxmodal_alert('{!NETWORK_DOWN;^}');	Annoying because it happens when unsleeping a laptop (for example)
 							window.network_down=true;
 						}
 					} else

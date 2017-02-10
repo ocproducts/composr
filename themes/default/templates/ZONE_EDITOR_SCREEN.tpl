@@ -11,11 +11,11 @@
 </p>
 
 <div class="float_surrounder" id="ze_panels_wrap">
-	<div id="p_panel_left" class="ze_panel" onmouseover="this.className='ze_panel ze_panel_expanded'; if (!this.style.width) this.style.width='19em'; ze_animate_to(this,45,true);" onmouseout="this.className='ze_panel'; if (!this.style.width) this.style.width='45em'; ze_animate_to(this,19,false);">
+	<div id="p_panel_left" class="ze_panel" onmouseover="this.className='ze_panel ze_panel_expanded'; if (!this.style.width) this.style.width='19em'; ze_animate_to(this,45,true);" onmouseleave="this.className='ze_panel'; if (!this.style.width) this.style.width='45em'; ze_animate_to(this,19,false);">
 		{LEFT_EDITOR}
 	</div>
 
-	<div id="p_panel_right" class="ze_panel" onmouseover="this.className='ze_panel ze_panel_expanded'; if (!this.style.width) this.style.width='19em'; ze_animate_to(this,45,true);" onmouseout="this.className='ze_panel'; if (!this.style.width) this.style.width='45em'; ze_animate_to(this,19,false);">
+	<div id="p_panel_right" class="ze_panel" onmouseover="this.className='ze_panel ze_panel_expanded'; if (!this.style.width) this.style.width='19em'; ze_animate_to(this,45,true);" onmouseleave="this.className='ze_panel'; if (!this.style.width) this.style.width='45em'; ze_animate_to(this,19,false);">
 		{RIGHT_EDITOR}
 	</div>
 

@@ -2197,6 +2197,10 @@ abstract class Resource_fs_base
      */
     protected function _custom_fields_load($type, $id)
     {
+        if (!addon_installed('catalogues')) {
+            return array();
+        }
+
         require_code('fields');
         if (!has_tied_catalogue($type)) {
             return array();
@@ -2243,6 +2247,10 @@ abstract class Resource_fs_base
      */
     protected function _custom_fields_save($type, $id, $filename, $label, $properties)
     {
+        if (!addon_installed('catalogues')) {
+            return;
+        }
+
         require_code('fields');
         if (!has_tied_catalogue($type)) {
             return;

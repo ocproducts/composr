@@ -228,6 +228,7 @@ class Hook_addon_registry_core_comcode_pages
     public function tpl_preview__comcode_page_edit_actions()
     {
         require_lang('zones');
+
         return array(
             lorem_globalise(do_lorem_template('COMCODE_PAGE_EDIT_ACTIONS', array(
                 'EDIT_URL' => placeholder_url(),
