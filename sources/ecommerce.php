@@ -111,6 +111,8 @@ function init__ecommerce()
     }
 
     require_lang('ecommerce');
+
+    require_code('locations');
 }
 
 /**
@@ -208,13 +210,9 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
         $steps[] = array('_SELF:_SELF:terms' . ':' . $more_params, 'terms', do_lang_tempcode('ECOM_PURCHASE_STAGE_terms'));
     }
 
-    if (method_exists($product_object, 'get_needed_fields')) {
-        require_code('form_templates');
-        list($fields) = $product_object->get_needed_fields($type_code);
-        $has_details = ($fields !== null);
-    } else {
-        $has_details = false;
-    }
+    require_code('form_templates');
+    list($fields) = $product_object->get_needed_fields($type_code);
+    $has_details = ($fields !== null);
     if ($has_details) {
         $steps[] = array('_SELF:_SELF:details' . ':' . $more_params, 'details', do_lang_tempcode('ECOM_PURCHASE_STAGE_details'));
     }
@@ -229,6 +227,70 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
     $steps[] = array('_SELF:_SELF:finish' . ':' . $more_params, 'finish', do_lang_tempcode('ECOM_PURCHASE_STAGE_finish'));
 
     return $steps;
+}
+
+/**
+ * Get fields that need to be filled in in the purchasing module.
+ *
+ * @param  ID_TEXT $type_code The product codename.
+ * @param  boolean $force_extended Show all possible input fields.
+ * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+ */
+function get_needed_fields($type_code, $force_extended = false)
+{
+    list($details, , $product_object) = find_product_details($type_code);
+
+    $fields = mixed();
+    $text = mixed();
+    $javascript = mixed();
+
+    if (method_exists($product_object, 'get_needed_fields')) {
+        list($fields, $text, $javascript) = $product_object->get_needed_fields($product_object, $type_code);
+    }
+
+    $require_all_details = ($details['needs_shipping_address']) || (get_option('tax_detailed') == '1');
+    if (($require_all_details) || ($force_extended)) {
+        $shipping_email = '';
+        $shipping_phone = '';
+        $shipping_firstname = '';
+        $shipping_lastname = '';
+        $shipping_street_address = '';
+        $shipping_city = '';
+        $shipping_county = '';
+        $shipping_state = '';
+        $shipping_post_code = '';
+        $shipping_country = '';
+        get_default_ecommerce_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
+
+        if ($fields === null) {
+            $fields = new Tempcode();
+        }
+
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode($details['needs_shipping_address'] ? 'SHIPPING_ADDRESS' : 'INVOICING_ADDRESS'))));
+
+        $fields->attach(get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $require_all_details));
+
+        if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
+            $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'shipping_save_to_account', get_cms_cpf('firstname') == ''));
+        }
+    } elseif ((is_guest()) || ($GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()) == '')) { // We need an alternative way to contact the user (no member details)
+        $require_all_details = true;
+
+        if ($fields === null) {
+            $fields = new Tempcode();
+        }
+
+        $shipping_email = '';
+        $shipping_phone = '';
+        $shipping_firstname = '';
+        $shipping_lastname = '';
+        get_default_ecommerce_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname);
+
+        $fields->attach(get_shipping_name_fields($shipping_firstname, $shipping_lastname, $require_all_details));
+        $fields->attach(get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details));
+    }
+
+    return array($fields, $text, $javascript);
 }
 
 /**
@@ -345,9 +407,23 @@ function recalculate_tax_due($details, $tax, $shipping_cost_tax = 0.00, $member_
 {
     // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
 
-    TODO
+    $shipping_firstname = '';
+    $shipping_lastname = '';
+    $shipping_street_address = '';
+    $shipping_city = '';
+    $shipping_county = '';
+    $shipping_state = '';
+    $shipping_post_code = '';
+    $shipping_country = '';
+    get_default_ecommerce_fields($shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
 
-    return $tax * $quantity + $shipping_cost_tax;
+    $tax_country_regexp = get_option('tax_country_regexp');
+    $tax_state_regexp = get_option('tax_state_regexp');
+    if ((preg_match('#' . $tax_country_regexp . '#', $shipping_country)) && (($tax_state_regexp === null) || (preg_match('#' . $tax_state_regexp . '#', $shipping_state)))) {
+        return $tax * $quantity + $shipping_cost_tax;
+    }
+
+    return 0.00;
 }
 
 /**
@@ -548,6 +624,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         'e_memo' => post_param_string('memo', ''),
         'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
     ));
+    store_shipping_address($trans_expecting_id);
 
     $amount = $price + $tax;
 
@@ -606,6 +683,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         'e_memo' => post_param_string('memo', ''),
         'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
     ));
+    store_shipping_address($trans_expecting_id);
 
     $amount = $price + $tax;
 
@@ -817,14 +895,226 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         'e_memo' => post_param_string('memo', ''),
         'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
     ));
+    store_shipping_address($trans_expecting_id);
 
     require_code('form_templates');
-    require_code('locations');
 
     $fields = new Tempcode();
 
+    $shipping_firstname = '';
+    $shipping_lastname = '';
+    $shipping_street_address = '';
+    $shipping_city = '';
+    $shipping_county = '';
+    $shipping_state = '';
+    $shipping_post_code = '';
+    $shipping_country = '';
+    $shipping_email = '';
+    $shipping_phone = '';
+    $cardholder_name = '';
+    $card_type = '';
+    $card_number = null;
+    $card_start_date_year = null;
+    $card_start_date_month = null;
+    $card_expiry_date_year = null;
+    $card_expiry_date_month = null;
+    $card_issue_number = null;
+    $card_cv2 = null;
+    $billing_street_address = '';
+    $billing_city = '';
+    $billing_county = '';
+    $billing_state = '';
+    $billing_post_code = '';
+    $billing_country = '';
+    get_default_ecommerce_fields($shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
+
     // Card fields...
 
+    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('PAYMENT_DETAILS'))));
+
+    $fields->attach(form_input_line(do_lang_cpf('payment_cardholder_name'), do_lang_tempcode('DESCRIPTION_CARDHOLDER_NAME'), 'payment_cardholder_name', $cardholder_name, true));
+    if (method_exists($payment_gateway_object, 'create_selection_list_card_types')) {
+        $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $payment_gateway_object->create_selection_list_card_types($card_type)));
+    }
+    $fields->attach(form_input_integer(do_lang_cpf('payment_card_number'), do_lang_tempcode('DESCRIPTION_CARD_NUMBER'), 'payment_card_number', $card_number, true, null, 16));
+    $fields->attach(form_input_date_components(do_lang_cpf('payment_card_start_date'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'payment_card_start_date', true, true, false, intval(date('Y')) - 16, intval(date('Y')), $card_start_date_year, $card_start_date_month, null, false));
+    $fields->attach(form_input_date_components(do_lang_cpf('payment_card_expiry_date'), do_lang_tempcode('DESCRIPTION_CARD_EXPIRY_DATE'), 'payment_card_expiry_date', true, true, false, intval(date('Y')), intval(date('Y')) + 16, $card_expiry_date_year, $card_expiry_date_month, null, true));
+    $fields->attach(form_input_integer(do_lang_cpf('payment_card_issue_number'), do_lang_tempcode('DESCRIPTION_CARD_ISSUE_NUMBER'), 'payment_card_issue_number', $card_issue_number, false));
+    $fields->attach(form_input_integer(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'payment_card_cv2', $card_cv2, true, null, 4));
+
+    if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
+        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'payment_save_to_account', get_cms_cpf('payment_cardholder_name') == ''));
+    }
+
+    // Billing address fields...
+
+    $fields->attach(get_address_fields('billing_', $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country));
+
+    if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
+        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'billing_save_to_account', get_cms_cpf('billing_street_address') == ''));
+    }
+
+    // Shipping address fields...
+
+    if (($needs_shipping_address) && (post_param_string('shipping_firstname', null) === null)) {
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('SHIPPING_ADDRESS'))));
+
+        $fields->attach(get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country));
+
+        if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
+            $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'shipping_save_to_account', get_cms_cpf('firstname') == ''));
+        }
+    }
+
+    // Store transaction ID in hidden field...
+
+    $hidden = new Tempcode();
+    $hidden->attach(form_input_hidden('trans_id', $trans_expecting_id));
+    $hidden->attach(build_keep_post_fields());
+
+    // ---
+
+    $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
+    $payment_processor_links = method_exists($payment_gateway_object, 'get_payment_processor_links') ? $payment_gateway_object->get_payment_processor_links() : new Tempcode();
+
+    require_javascript('ecommerce');
+
+    return array($fields, $hidden, $logos, $payment_processor_links);
+}
+
+/**
+ * Get form fields for a shipping/invoice address.
+ *
+ * @param  string $shipping_email E-mail address.
+ * @param  string $shipping_phone Phone number.
+ * @param  string $shipping_firstname First name.
+ * @param  string $shipping_lastname Last name.
+ * @param  string $shipping_street_address Street address.
+ * @param  string $shipping_city Town/City.
+ * @param  string $shipping_county County.
+ * @param  string $shipping_state State.
+ * @param  string $shipping_post_code Postcode/Zip.
+ * @param  string $shipping_country Country.
+ * @param  boolean $require_all_details Whether to require all details to be input.
+ * @return Tempcode Address fields.
+ */
+function get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $street_address, $city, $county, $state, $post_code, $country, $require_all_details = true)
+{
+    $fields = new Tempcode();
+
+    $fields->attach(get_shipping_name_fields($shipping_firstname, $shipping_lastname, $require_all_details));
+    $fields->attach(get_address_fields('shipping_', $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $require_all_details));
+    $fields->attach(get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details));
+
+    return $fields;
+}
+
+/**
+ * Get form fields for a shipping/invoice address.
+ *
+ * @param  string $shipping_firstname First name.
+ * @param  string $shipping_lastname Last name.
+ * @param  boolean $require_all_details Whether to require all details to be input.
+ * @return Tempcode Name fields.
+ */
+function get_shipping_name_fields($shipping_firstname, $shipping_lastname, $require_all_details = true)
+{
+    $fields = new Tempcode();
+
+    $fields->attach(form_input_line(do_lang_cpf('firstname'), '', 'shipping_firstname', $shipping_firstname, $require_all_details));
+    $fields->attach(form_input_line(do_lang_cpf('lastname'), '', 'shipping_lastname', $shipping_lastname, $require_all_details));
+
+    return $fields;
+}
+
+/**
+ * Get form fields for an address.
+ *
+ * @param  string $prefix The prefix for the address input field.
+ * @param  string $street_address Street address.
+ * @param  string $city Town/City.
+ * @param  string $county County.
+ * @param  string $state State.
+ * @param  string $post_code Postcode/Zip.
+ * @param  string $country Country.
+ * @param  boolean $require_all_details Whether to require all details to be input.
+ * @return Tempcode Address fields.
+ */
+function get_address_fields($prefix, $street_address, $city, $county, $state, $post_code, $country, $require_all_details = true)
+{
+    $fields = new Tempcode();
+
+    $fields->attach(form_input_text(do_lang_cpf('street_address'), '', $prefix . 'street_address', $street_address, $require_all_details));
+
+    $fields->attach(form_input_line(do_lang_cpf('city'), '', $prefix . 'city', $city, $require_all_details));
+
+    if (get_option('cpf_enable_county') == '1') {
+        $fields->attach(form_input_line(do_lang_cpf('county'), '', $prefix . 'county', $county, $require_all_details));
+    }
+
+    if (get_option('cpf_enable_state') == '1') {
+        $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, $require_all_details));
+    }
+
+    $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, $require_all_details, null, 12, 'text', null, null, null, 8));
+
+    $countries = new Tempcode();
+    $countries->attach(form_input_list_entry('', $country == ''));
+    $countries->attach(create_region_selection_list(array($country)));
+    $fields->attach(form_input_list(do_lang_cpf('country'), '', $prefix . 'country', $countries, null, false, $require_all_details));
+
+    return $fields;
+}
+
+/**
+ * Get form fields for a shipping/invoice address.
+ *
+ * @param  string $shipping_email E-mail address.
+ * @param  string $shipping_phone Phone number.
+ * @param  boolean $require_all_details Whether to require all details to be input.
+ * @return Tempcode Contact fields.
+ */
+function get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details = true)
+{
+    $fields = new Tempcode();
+
+    $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), '', 'shipping_email', $shipping_email, $require_all_details));
+    $fields->attach(form_input_line(do_lang_tempcode('PHONE_NUMBER'), '', 'shipping_phone', $shipping_phone, $require_all_details));
+
+    return $fields;
+}
+
+/**
+ * Fetch default eCommerce fields for a form (returns by reference).
+ *
+ * @param  string $shipping_email Shipping e-mail address (blank: unknown).
+ * @param  string $shipping_phone Shipping phone number (blank: unknown).
+ * @param  string $shipping_firstname Shipping first name (blank: unknown).
+ * @param  string $shipping_lastname Shipping last name (blank: unknown).
+ * @param  string $shipping_street_address Shipping street address (blank: unknown).
+ * @param  string $shipping_city Shipping city (blank: unknown).
+ * @param  string $shipping_county Shipping county (blank: unknown).
+ * @param  string $shipping_state Shipping state (blank: unknown).
+ * @param  string $shipping_post_code Shipping postcode (blank: unknown).
+ * @param  string $shipping_country Shipping country (blank: unknown).
+ * @param  string $cardholder_name Cardholder name (blank: unknown).
+ * @param  string $card_type Card type (blank: unknown).
+ * @param  ?integer $card_numberCard number (null: unknown).
+ * @param  ?integer $card_start_date_year Card start year (null: unknown).
+ * @param  ?integer $card_start_date_month Card start month (null: unknown).
+ * @param  ?integer $card_expiry_date_year Card expiry year (null: unknown).
+ * @param  ?integer $card_expiry_date_month Card expiry month (null: unknown).
+ * @param  ?integer $card_issue_number Card issue number (null: unknown).
+ * @param  ?integer $card_cv2 Card CV2 number (null: unknown).
+ * @param  string $billing_street_address Billing street address (blank: unknown).
+ * @param  string $billing_city Billing city (blank: unknown).
+ * @param  string $billing_county Billing county (blank: unknown).
+ * @param  string $billing_state Billing state (blank: unknown).
+ * @param  string $billing_post_code Billing postcode (blank: unknown).
+ * @param  string $billing_country Billing country (blank: unknown).
+ */
+function get_default_ecommerce_fields(&$shipping_email = '', &$shipping_phone = '', &$shipping_firstname = '', &$shipping_lastname = '', &$shipping_street_address = '', &$shipping_city = '', &$shipping_county = '', &$shipping_state = '', &$shipping_post_code = '', &$shipping_country = '', &$cardholder_name = '', &$card_type = '', &$card_number = '', &$card_start_date_year = '', &$card_start_date_month = '', &$card_expiry_date_year = '', &$card_expiry_date_month = '', &$card_issue_number = '', &$card_cv2 = '', &$billing_street_address = '', &$billing_city = '', &$billing_county = '', &$billing_state = '', &$billing_post_code = '', &$billing_country = '')
+{
     $shipping_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
 
     if (ecommerce_test_mode()) {
@@ -858,14 +1148,18 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         }
         $shipping_phone = '01234 56789';
     } else {
-        $cardholder_name = get_cms_cpf('payment_cardholder_name');
-        $card_type = get_cms_cpf('payment_card_type');
-        $_card_number = get_cms_cpf('payment_card_number');
-        $card_number = ($_card_number === null) ? null : intval($_card_number);
-        list($card_start_date_year, $card_start_date_month) = explode('/', get_cms_cpf('payment_card_start_date'));
-        list($card_expiry_date_year, $card_expiry_date_month) = explode('/', get_cms_cpf('payment_card_expiry_date'));
+        $cardholder_name = empty(get_cms_cpf('payment_cardholder_name')) ? '' : get_cms_cpf('payment_cardholder_name');
+        $card_type = empty(get_cms_cpf('payment_card_type')) ? '' : get_cms_cpf('payment_card_type');
+        $_card_number = empty(get_cms_cpf('payment_card_number')) ? '' : get_cms_cpf('payment_card_number');
+        $card_number = empty($_card_number) ? null : intval($_card_number);
+        list($_card_start_date_year, $_card_start_date_month) = empty(get_cms_cpf('payment_card_start_date')) ? array('', '') : explode('/', get_cms_cpf('payment_card_start_date'));
+        $card_start_date_year = ($_card_start_date_year == '') ? null : intval($_card_start_date_year);
+        $card_start_date_month = ($_card_start_date_month == '') ? null : intval($_card_start_date_month);
+        list($_card_expiry_date_year, $_card_expiry_date_month) = empty(get_cms_cpf('payment_card_expiry_date')) ? array('', '') : explode('/', get_cms_cpf('payment_card_expiry_date'));
+        $card_expiry_date_year = ($_card_expiry_date_year == '') ? null : intval($_card_expiry_date_year);
+        $card_expiry_date_month = ($_card_expiry_date_month == '') ? null : intval($_card_expiry_date_month);
         $_card_issue_number = get_cms_cpf('payment_card_issue_number');
-        $card_issue_number = ($_card_issue_number === null) ? null : intval($_card_issue_number);
+        $card_issue_number = empty($_card_issue_number) ? null : intval($_card_issue_number);
         $card_cv2 = null;
 
         $billing_street_address = get_cms_cpf('billing_street_address');
@@ -887,97 +1181,32 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         $shipping_phone = get_cms_cpf('mobile_phone_number');
     }
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('PAYMENT_DETAILS'))));
-
-    $fields->attach(form_input_line(do_lang_cpf('payment_cardholder_name'), do_lang_tempcode('DESCRIPTION_CARDHOLDER_NAME'), 'payment_cardholder_name', $cardholder_name, true));
-    if (method_exists($payment_gateway_object, 'create_selection_list_card_types')) {
-        $fields->attach(form_input_list(do_lang_cpf('payment_card_type'), '', 'payment_card_type', $payment_gateway_object->create_selection_list_card_types($card_type)));
-    }
-    $fields->attach(form_input_integer(do_lang_cpf('payment_card_number'), do_lang_tempcode('DESCRIPTION_CARD_NUMBER'), 'payment_card_number', $card_number, true, null, 16));
-    $fields->attach(form_input_date_components(do_lang_cpf('payment_card_start_date'), do_lang_tempcode('DESCRIPTION_CARD_START_DATE'), 'payment_card_start_date', true, true, false, intval(date('Y')) - 16, intval(date('Y')), $card_start_date_year, $card_start_date_month, null, false));
-    $fields->attach(form_input_date_components(do_lang_cpf('payment_card_expiry_date'), do_lang_tempcode('DESCRIPTION_CARD_EXPIRY_DATE'), 'payment_card_expiry_date', true, true, false, intval(date('Y')), intval(date('Y')) + 16, $card_expiry_date_year, $card_expiry_date_month, null, true));
-    $fields->attach(form_input_integer(do_lang_cpf('payment_card_issue_number'), do_lang_tempcode('DESCRIPTION_CARD_ISSUE_NUMBER'), 'payment_card_issue_number', $card_issue_number, false));
-    $fields->attach(form_input_integer(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'payment_card_cv2', $card_cv2, true, null, 4));
-
-    if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
-        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'payment_save_to_account', get_cms_cpf('payment_cardholder_name') == ''));
-    }
-
-    // Billing address fields...
-
-    $fields->attach(get_address_fields('billing_', $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country));
-
-    if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
-        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'billing_save_to_account', get_cms_cpf('billing_street_address') == ''));
-    }
-
-    // Shipping address fields...
-
-    if ($needs_shipping_address) {
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('SHIPPING_ADDRESS'))));
-
-        $fields->attach(form_input_line(do_lang_cpf('firstname'), '', 'shipping_firstname', $shipping_firstname, true));
-        $fields->attach(form_input_line(do_lang_cpf('lastname'), '', 'shipping_lastname', $shipping_lastname, true));
-        $fields->attach(get_address_fields('shipping_', $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country));
-        $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), '', 'shipping_email', $shipping_email, true));
-        $fields->attach(form_input_line(do_lang_tempcode('PHONE_NUMBER'), '', 'shipping_phone', $shipping_phone, true));
-
-        if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
-            $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'shipping_save_to_account', get_cms_cpf('firstname') == ''));
-        }
-    }
-
-    // Store transaction ID in hidden field...
-
-    $hidden = new Tempcode();
-    $hidden->attach(form_input_hidden('trans_id', $trans_expecting_id));
-
-    // ---
-
-    $logos = method_exists($payment_gateway_object, 'get_logos') ? $payment_gateway_object->get_logos() : new Tempcode();
-    $payment_processor_links = method_exists($payment_gateway_object, 'get_payment_processor_links') ? $payment_gateway_object->get_payment_processor_links() : new Tempcode();
-
-    require_javascript('ecommerce');
-
-    return array($fields, $hidden, $logos, $payment_processor_links);
-}
-
-/**
- * Get form fields for an address.
- *
- * @param  string $prefix The prefix for the address input field.
- * @param  string $street_address Street address.
- * @param  string $city Town/City.
- * @param  string $county County.
- * @param  string $state State.
- * @param  string $post_code Postcode/Zip.
- * @param  string $country Country.
- * @return Tempcode Address fields.
- */
-function get_address_fields($prefix, $street_address, $city, $county, $state, $post_code, $country)
-{
-    $fields = new Tempcode();
-
-    $fields->attach(form_input_text(do_lang_cpf('street_address'), '', $prefix . 'street_address', $street_address, true));
-
-    $fields->attach(form_input_line(do_lang_cpf('city'), '', $prefix . 'city', $city, true));
-
-    if (get_option('cpf_enable_county') == '1') {
-        $fields->attach(form_input_line(do_lang_cpf('county'), '', $prefix . 'county', $county, true));
-    }
-
-    if (get_option('cpf_enable_state') == '1') {
-        $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, true));
-    }
-
-    $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, true, null, 12, 'text', null, null, null, 8));
-
-    $countries = new Tempcode();
-    $countries->attach(form_input_list_entry('', $country == ''));
-    $countries->attach(create_region_selection_list(array($country)));
-    $fields->attach(form_input_list(do_lang_cpf('country'), '', $prefix . 'country', $countries, null, false, true));
-
-    return $fields;
+    $shipping_email = post_param_string('shipping_email', $shipping_email);
+    $shipping_phone = post_param_string('shipping_phone', $shipping_phone);
+    $shipping_firstname = post_param_string('shipping_firstname', $shipping_firstname);
+    $shipping_lastname = post_param_string('shipping_lastname', $shipping_lastname);
+    $shipping_street_address = post_param_string('shipping_street_address', $shipping_street_address);
+    $shipping_city = post_param_string('shipping_city', $shipping_city);
+    $shipping_county = post_param_string('shipping_county', $shipping_county);
+    $shipping_state = post_param_string('shipping_state', $shipping_state);
+    $shipping_post_code = post_param_string('shipping_post_code', $shipping_post_code);
+    $shipping_country = post_param_string('shipping_country', $shipping_country);
+    $cardholder_name = post_param_string('cardholder_name', $cardholder_name);
+    $card_type = post_param_string('card_type', $card_type);
+    $_card_number = post_param_string('card_number', ($card_number === null) ? '' : $card_number);
+    $card_number = ($_card_number == '') ? null : str_replace(array('-', ' '), array('', ''), $_card_number);
+    $card_start_date_year = post_param_integer('card_start_date_year', $card_start_date_year);
+    $card_start_date_month = post_param_integer('card_start_date_month', $card_start_date_month);
+    $card_expiry_date_year = post_param_integer('card_expiry_date_year', $card_expiry_date_year);
+    $card_expiry_date_month = post_param_integer('card_expiry_date_month', $card_expiry_date_month);
+    $card_issue_number = post_param_integer('card_issue_number', $card_issue_number);
+    $card_cv2 = post_param_integer('card_cv2', $card_cv2);
+    $billing_street_address = post_param_string('billing_street_address', $billing_street_address);
+    $billing_city = post_param_string('billing_city', $billing_city);
+    $billing_county = post_param_string('billing_county', $billing_county);
+    $billing_state = post_param_string('billing_state', $billing_state);
+    $billing_post_code = post_param_string('billing_post_code', $billing_post_code);
+    $billing_country = post_param_string('billing_country', $billing_country);
 }
 
 /**
@@ -1053,50 +1282,41 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 
     $memo = $transaction_row['e_memo'];
 
-    $cardholder_name = post_param_string('payment_cardholder_name');
-    $card_type = post_param_string('payment_card_type', '');
-    $card_number = post_param_string('payment_card_number');
-    $card_start_date = post_param_string('payment_card_start_date_year') . '/' . post_param_string('payment_card_start_date_month');
-    $card_expiry_date = post_param_string('payment_card_expiry_date_year') . '/' . post_param_string('payment_card_expiry_date_month');
-    $card_issue_number = post_param_integer('payment_card_issue_number', null);
-    $card_cv2 = post_param_string('payment_card_cv2');
+    // Read in address fields...
 
-    // Read billing address
+    $shipping_firstname = '';
+    $shipping_lastname = '';
+    $shipping_street_address = '';
+    $shipping_city = '';
+    $shipping_county = '';
+    $shipping_state = '';
+    $shipping_post_code = '';
+    $shipping_country = '';
+    $shipping_email = '';
+    $shipping_phone = '';
+    $cardholder_name = '';
+    $card_type = '';
+    $card_number = null;
+    $card_start_date_year = null;
+    $card_start_date_month = null;
+    $card_expiry_date_year = null;
+    $card_expiry_date_month = null;
+    $card_issue_number = null;
+    $card_cv2 = null;
+    $billing_street_address = '';
+    $billing_city = '';
+    $billing_county = '';
+    $billing_state = '';
+    $billing_post_code = '';
+    $billing_country = '';
+    get_default_ecommerce_fields($shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
 
-    $billing_street_address = post_param_string('billing_street_address', '');
-    $billing_city = post_param_string('billing_city', '');
-    $billing_county = post_param_string('billing_county', '');
-    $billing_state = post_param_string('billing_state', '');
-    $billing_post_code = post_param_string('billing_post_code', '');
-    $billing_country = post_param_string('billing_country', '');
+    $card_start_date = ($card_start_date_year === null || $card_start_date_month === null) ? '' : (strval($card_start_date_year) . '/' . strval($card_start_date_month));
+    $card_expiry_date = ($card_expiry_date_year === null || $card_expiry_date_month === null) ? '' : (strval($card_expiry_date_year) . '/' . strval($card_expiry_date_month));
 
     // Save shipping address...
 
-    $shipping_firstname = post_param_string('shipping_firstname', '');
-    $shipping_lastname = post_param_string('shipping_lastname', '');
-    $shipping_street_address = post_param_string('shipping_street_address', '');
-    $shipping_city = post_param_string('shipping_city', '');
-    $shipping_county = post_param_string('shipping_county', '');
-    $shipping_state = post_param_string('shipping_state', '');
-    $shipping_post_code = post_param_string('shipping_post_code', '');
-    $shipping_country = post_param_string('shipping_country', '');
-    $shipping_email = post_param_string('shipping_email', '');
-    $shipping_phone = post_param_string('shipping_phone', '');
-    $shipping_address = array(
-        'a_trans_expecting_id' => $trans_expecting_id,
-        'a_txn_id' => '',
-        'a_firstname' => $shipping_firstname,
-        'a_lastname' => $shipping_lastname,
-        'a_street_address' => $shipping_street_address,
-        'a_city' => $shipping_city,
-        'a_county' => $shipping_county,
-        'a_state' => $shipping_state,
-        'a_post_code' => $shipping_post_code,
-        'a_country' => $shipping_country,
-        'a_email' => $shipping_email,
-        'a_phone' => $shipping_phone,
-    );
-    $GLOBALS['SITE_DB']->query_insert('ecom_trans_addresses', $shipping_address, true);
+    store_shipping_address($trans_expecting_id);
 
     // Save into CPFs...
 
@@ -1171,22 +1391,37 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
  * Store shipping address for a transaction.
  * We try and merge it with one we already have on record in a sensible way.
  *
- * @param  $trans_expecting_id Expected transaction ID.
- * @param  $txn_id Transaction ID.
- * @return ?AUTO_LINK Address ID.
+ * @param  ID_TEXT $trans_expecting_id Expected transaction ID.
+ * @param  ID_TEXT $txn_id Transaction ID (blank: not set yet).
+ * @param  ?array $shipping_address Shipping address (null: get from POST parameters).
+ * @return ?AUTO_LINK Address ID (null: none saved).
  */
-function store_shipping_address($trans_expecting_id, $txn_id, $shipping_address)
+function store_shipping_address($trans_expecting_id, $txn_id = '', $shipping_address = null)
 {
+    $field_groups = array(
+        array('a_firstname', 'a_lastname'),
+        array('a_street_address', 'a_city', 'a_county', 'a_state', 'a_post_code', 'a_country'),
+        array('a_email'),
+        array('a_phone'),
+    );
+
+    if ($shipping_address === null) {
+        $shipping_address = array();
+        foreach ($field_groups as $field_group) {
+            foreach ($field_group as $field) {
+                $_field = substr($field, 2);
+                $shipping_address[$_field] = post_param_string('shipping_' . $_field, '');
+            }
+        }
+        if (implode('', $shipping_address) == '') {
+            return '';
+        }
+    }
+
     $existing = $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_trans_expecting_id' => $trans_expecting_id), '', 1);
     if (array_key_exists(0, $existing)) {
         $e = $existing[0];
 
-        $field_groups = array(
-            array('a_firstname', 'a_lastname'),
-            array('a_street_address', 'a_city', 'a_county', 'a_state', 'a_post_code', 'a_country'),
-            array('a_email'),
-            array('a_phone'),
-        );
         foreach ($field_groups as $field_group) {
             $is_empty_new = true;
             foreach ($field_group as $field) {

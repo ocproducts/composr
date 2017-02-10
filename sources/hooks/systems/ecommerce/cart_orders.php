@@ -108,17 +108,6 @@ class Hook_ecommerce_cart_orders
     }
 
     /**
-     * Get the filled in fields and do something with them.
-     *
-     * @param  ID_TEXT $type_code The product codename.
-     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
-     */
-    public function handle_needed_fields($type_code)
-    {
-        return array(preg_replace('#^.*\##', '', $type_code), null);
-    }
-
-    /**
      * Get fields that need to be filled in in the purchasing module.
      *
      * @param  ID_TEXT $type_code The product codename.
@@ -130,6 +119,17 @@ class Hook_ecommerce_cart_orders
         ecommerce_attach_memo_field_if_needed($fields);
 
         return array(null, null, null);
+    }
+
+    /**
+     * Get the filled in fields and do something with them.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
+     */
+    public function handle_needed_fields($type_code)
+    {
+        return array(preg_replace('#^.*\##', '', $type_code), null);
     }
 
     /**

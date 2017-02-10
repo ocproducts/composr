@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_tax_number
+class Hook_config_tax_detailed
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_tax_number
     public function get_details()
     {
         return array(
-            'human_name' => 'TAX_NUMBER',
-            'type' => 'line',
+            'human_name' => 'TAX_DETAILED',
+            'type' => 'tick',
             'category' => 'ECOMMERCE',
             'group' => 'TAX',
-            'explanation' => 'CONFIG_OPTION_tax_number',
+            'explanation' => 'CONFIG_OPTION_tax_detailed',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 1,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +51,6 @@ class Hook_config_tax_number
      */
     public function get_default()
     {
-        return '';
+        return '1';
     }
 }

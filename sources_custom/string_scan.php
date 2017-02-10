@@ -7225,6 +7225,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACTIVITY_PASSED_TEST
         ACTIVITY_SUBSCRIBED_EVENT
         SHIPPING_ADDRESS
+        INVOICING_ADDRESS
         PAYMENT_DETAILS
         ADD
         ADDED

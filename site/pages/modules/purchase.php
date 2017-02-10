@@ -935,7 +935,7 @@ class Module_purchase
         $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => true), true);
 
         require_code('form_templates');
-        list($fields, $text, $javascript) = $product_object->get_needed_fields($type_code);
+        list($fields, $text, $javascript) = get_needed_fields($type_code);
 
         if (get_param_integer('include_message', 0) == 1) {
             // Request to show message on the details screen (we would have been hot-linked straight to here)

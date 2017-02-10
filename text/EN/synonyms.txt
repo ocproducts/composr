@@ -77,7 +77,7 @@ intl	internationalisation	regionalisation	i18n	l10n	localisation	translation
 permission	privilege	authorisation	authorization	right	access	grant	restrict	prohibite	credentials
 access	view
 overlay	popup	dialog	window
-option	setting	value	parameter
+option	setting	value	parameter	property	attribute
 configure	configuration	setup	install	core_configuration
 emoticon	smiley	smile	face	emoji
 forum	board	bbs	cns_forum	message board
@@ -121,6 +121,7 @@ join	register	signup	sign-up
 logout	log-out	sign-out	sign-off
 login	log-in	sign-in	sign-on	logon	log-on	authorize
 shopping	ecommerce	payment	purchase	products	store	buy	bought	checkout
+cvv	cid	csc	cvc2	cvd	cvv2	cv2
 cash	money	currency
 price	cost	amount	quantity	gross	fee
 tax	vat	duty	tariff

@@ -436,11 +436,11 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $cardholder_name Cardholder name.
      * @param  SHORT_TEXT $card_type Card Type.
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
-     * @param  SHORT_TEXT $card_number Card number.
-     * @param  SHORT_TEXT $card_start_date Card Start date.
-     * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
-     * @param  integer $card_issue_number Card Issue number.
-     * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
+     * @param  integer $card_number Card number.
+     * @param  SHORT_TEXT $card_start_date Card Start date (blank: none).
+     * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none).
+     * @param  ?integer $card_issue_number Card Issue number (null: none).
+     * @param  integer $card_cv2 Card CV2 number (security number).
      * @param  REAL $amount Transaction amount.
      * @param  ID_TEXT $currency The currency to use.
      * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
@@ -466,8 +466,6 @@ class Hook_payment_gateway_authorize
      */
     public function do_local_transaction($trans_expecting_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
-        $card_number = str_replace(array('-', ' '), array('', ''), $card_number);
-
         $result = array(false, null, null, null); // Default until re-set
 
         $cardholder_name_parts = explode(' ', $cardholder_name);
@@ -482,7 +480,7 @@ class Hook_payment_gateway_authorize
         if ($length === null) {
             // Direct transaction...
 
-            $this->_set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $trans_expecting_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
+            $this->_set_aim_parameters($card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $trans_expecting_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
 
             $response_data = http_download_file($this->url, null, true, false, 'Composr', $this->api_parameters, null, null, null, null, null, null, null, 12.0);
 
@@ -536,7 +534,7 @@ class Hook_payment_gateway_authorize
 
             $start_date = date('Y-m-d');
 
-            $this->_set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $trans_expecting_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
+            $this->_set_arb_parameters($card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $start_date, $length, $length_units, $trans_expecting_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone);
 
             $response_data = http_download_file($this->url, null, true, false, 'Composr', array($this->api_parameters), null, null, null, null, null, null, null, 30.0, true);
 
@@ -557,9 +555,13 @@ class Hook_payment_gateway_authorize
     /**
      * This function defines the parameters needed to make an Advanced Integration Method (AIM) call.
      *
-     * @param  SHORT_TEXT $card_number Card number.
-     * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
-     * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
+     * @param  SHORT_TEXT $card_type Card Type.
+     * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
+     * @param  integer $card_number Card number.
+     * @param  SHORT_TEXT $card_start_date Card Start date (blank: none).
+     * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none).
+     * @param  ?integer $card_issue_number Card Issue number (null: none).
+     * @param  integer $card_cv2 Card CV2 number (security number).
      * @param  ID_TEXT $trans_expecting_id Transaction ID
      * @param  REAL $amount Transaction amount.
      * @param  SHORT_TEXT $billing_firstname Cardholder first name.
@@ -579,7 +581,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
      * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      */
-    protected function _set_aim_parameters($card_number, $card_expiry_date, $card_cv2, $trans_expecting_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
+    protected function _set_aim_parameters($card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $trans_expecting_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
     {
         // http://www.authorize.net/content/dam/authorize/documents/AIM_guide.pdf
 
@@ -594,14 +596,14 @@ class Hook_payment_gateway_authorize
         $this->api_parameters['x_version'] = '3.1';
         $this->api_parameters['x_type'] = 'AUTH_CAPTURE';
         $this->api_parameters['x_method'] = 'CC';
-        $this->api_parameters['x_card_num'] = $card_number;
+        $this->api_parameters['x_card_num'] = strval($card_number);
         $this->api_parameters['x_exp_date'] = $card_expiry_date;
         $this->api_parameters['x_description'] = $trans_expecting_id;
         $this->api_parameters['x_delim_data'] = true;
         $this->api_parameters['x_delim_char'] = '|';
         $this->api_parameters['x_relay_response'] = false;
         $this->api_parameters['x_amount'] = float_to_raw_string($amount);
-        $this->api_parameters['x_card_code'] = $card_cv2;
+        $this->api_parameters['x_card_code'] = strval($card_cv2);
         $this->api_parameters['x_customer_ip'] = get_ip_address();
 
         if ($billing_firstname != '') {
@@ -649,9 +651,13 @@ class Hook_payment_gateway_authorize
     /**
      * This function defines the parameters needed to make an ARB (Automated Recurring Billing) call.
      *
-     * @param  SHORT_TEXT $card_number Card number.
-     * @param  SHORT_TEXT $card_expiry_date Card Expiry date.
-     * @param  SHORT_TEXT $card_cv2 Card CV2 number (security number).
+     * @param  SHORT_TEXT $card_type Card Type.
+     * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
+     * @param  integer $card_number Card number.
+     * @param  SHORT_TEXT $card_start_date Card Start date (blank: none).
+     * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none).
+     * @param  ?integer $card_issue_number Card Issue number (null: none).
+     * @param  integer $card_cv2 Card CV2 number (security number).
      * @param  SHORT_TEXT $start_date Start date.
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
@@ -675,7 +681,7 @@ class Hook_payment_gateway_authorize
      * @param  SHORT_TEXT $shipping_email E-mail address (shipping)
      * @param  SHORT_TEXT $shipping_phone Phone number (shipping)
      */
-    protected function _set_arb_parameters($card_number, $card_expiry_date, $card_cv2, $start_date, $length, $length_units, $trans_expecting_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
+    protected function _set_arb_parameters($card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $start_date, $length, $length_units, $trans_expecting_id, $amount, $billing_firstname, $billing_lastname, $billing_street_address, $billing_city, $billing_state, $billing_post_code, $billing_country, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone)
     {
         // http://www.authorize.net/content/dam/authorize/documents/ARB_guide.pdf
 
@@ -716,9 +722,9 @@ class Hook_payment_gateway_authorize
 
                 '<payment>' .
                     '<creditCard>' .
-                        '<cardNumber>' . $card_number . '</cardNumber>' .
+                        '<cardNumber>' . strval($card_number) . '</cardNumber>' .
                         '<expirationDate>' . $card_expiry_date . '</expirationDate>' .
-                        '<cardCode>' . $card_cv2 . '</cardCode>' .
+                        '<cardCode>' . strval($card_cv2) . '</cardCode>' .
                     '</creditCard>' .
                 '</payment>';
 
