@@ -74,7 +74,9 @@ class Hook_addon_registry_cns_avatars
     public function get_dependencies()
     {
         return array(
-            'requires' => array('cns_member_avatars'),
+            'requires' => array(
+                'cns_member_avatars',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

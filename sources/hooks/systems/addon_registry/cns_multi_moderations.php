@@ -74,7 +74,9 @@ class Hook_addon_registry_cns_multi_moderations
     public function get_dependencies()
     {
         return array(
-            'requires' => array('cns_forum'),
+            'requires' => array(
+                'cns_forum',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

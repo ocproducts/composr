@@ -442,8 +442,10 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
                 if (is_image($from)) {
                     convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
                 } else {
-                    require_code('galleries2');
-                    create_video_thumb($full_url, $thumb_path);
+                    if (addon_installed('galleries')) {
+                        require_code('galleries2');
+                        create_video_thumb($full_url, $thumb_path);
+                    }
                 }
             }
             return get_custom_base_url() . '/' . $thumb_url;

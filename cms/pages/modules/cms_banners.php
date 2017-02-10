@@ -726,7 +726,7 @@ class Module_cms_banners_cat extends Standard_crud_module
     /**
      * Get Tempcode for a post template adding/editing form.
      *
-     * @param  ID_TEXT $id The ID of the banner type (blank: new)
+     * @param  ?ID_TEXT $id The ID of the banner type (null: new)
      * @param  BINARY $is_textual Whether this is a textual banner
      * @param  integer $image_width The image width (ignored for textual banners)
      * @param  integer $image_height The image height (ignored for textual banners)
@@ -734,7 +734,7 @@ class Module_cms_banners_cat extends Standard_crud_module
      * @param  BINARY $comcode_inline Whether the banner will be automatically shown via Comcode hot-text (this can only happen if banners of the title are given title-text)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = '', $is_textual = 0, $image_width = 160, $image_height = 600, $max_file_size = 250, $comcode_inline = 0)
+    public function get_form_fields($id = null, $is_textual = 0, $image_width = 160, $image_height = 600, $max_file_size = 250, $comcode_inline = 0)
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -749,10 +749,10 @@ class Module_cms_banners_cat extends Standard_crud_module
         $fields->attach(form_input_integer(do_lang_tempcode('FILE_SIZE'), do_lang_tempcode('DESCRIPTION_BANNER_FILE_SIZE'), 'max_file_size', $max_file_size, true));
         $fields->attach(form_input_tick(do_lang_tempcode('COMCODE_INLINE'), do_lang_tempcode('DESCRIPTION_COMCODE_INLINE'), 'comcode_inline', $comcode_inline == 1));
 
-        $fields->attach(metadata_get_fields('banner_type', ($id == '') ? null : $id));
+        $fields->attach(metadata_get_fields('banner_type', ($id === null) ? null : $id));
 
         if (addon_installed('content_reviews')) {
-            $fields->attach(content_review_get_fields('banner_type', $id));
+            $fields->attach(content_review_get_fields('banner_type', ($id === null) ? null : $id));
         }
 
         return array($fields, $hidden);

@@ -533,7 +533,6 @@ class Hook_addon_registry_core
             'themes/default/templates/GROUP_MEMBER_TIMEOUT_MANAGE_SCREEN.tpl',
             'sources/inst_special.php',
             'sources/actionlog.php',
-            'sources/hooks/systems/cron/ip_address_sharing.php',
             'themes/admin/javascript/.htaccess',
             'themes/admin/javascript/index.html',
             'themes/admin/text/.htaccess',
@@ -1546,8 +1545,6 @@ class Hook_addon_registry_core
      */
     public function tpl_preview__email_log_screen()
     {
-        require_lang('email_log');
-
         return array(
             lorem_globalise(do_lorem_template('EMAIL_LOG_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -2113,6 +2110,7 @@ class Hook_addon_registry_core
     public function tpl_preview__administrative__broken_urls()
     {
         require_lang('cleanup');
+
         $found_404 = array();
         foreach (placeholder_array() as $value) {
             $found_404[] = array(
@@ -2149,6 +2147,7 @@ class Hook_addon_registry_core
     public function tpl_preview__administrative__broken_lang_strings()
     {
         require_lang('cleanup');
+
         return array(
             lorem_globalise(do_lorem_template('BROKEN_LANG_STRINGS', array(
                 'MISSING_LANG_STRINGS' => placeholder_array(),

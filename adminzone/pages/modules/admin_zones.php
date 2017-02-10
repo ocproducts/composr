@@ -517,11 +517,13 @@ class Module_admin_zones
                 $full_path = zone_black_magic_filterer(get_custom_file_base() . (((is_null($redirect) ? $id : $redirect) == '') ? '' : '/') . (is_null($redirect) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
 
                 // Store revision
-                require_code('revisions_engine_files');
-                $revision_engine = new RevisionEngineFiles();
-                list(, , $existing_path) = find_comcode_page($lang, $for, $id);
-                if ($existing_path != '') {
-                    $revision_engine->add_revision(dirname($existing_path), $for, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                if (addon_installed('actionlog')) {
+                    require_code('revisions_engine_files');
+                    $revision_engine = new RevisionEngineFiles();
+                    list(, , $existing_path) = find_comcode_page($lang, $for, $id);
+                    if ($existing_path != '') {
+                        $revision_engine->add_revision(dirname($existing_path), $for, 'txt', file_get_contents($existing_path), filemtime($existing_path));
+                    }
                 }
 
                 // Save

@@ -77,9 +77,7 @@ class Hook_addon_registry_redirects_editor
             'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
-            'previously_in_addon' => array(
-                'core_redirects_editor'
-            )
+            'previously_in_addon' => array('core_redirects_editor'),
         );
     }
 

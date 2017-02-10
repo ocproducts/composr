@@ -162,6 +162,8 @@ class Hook_addon_registry_shopping
             'themes/default/templates/RESULTS_cart_TABLE.tpl',
             'themes/default/templates/RESULTS_TABLE_cart_ENTRY.tpl',
             'themes/default/templates/RESULTS_TABLE_cart_FIELD.tpl',
+            'sources/hooks/systems/symbols/STOCK_CHECK.php',
+            'sources/hooks/systems/symbols/CART_LINK.php',
         );
     }
 
@@ -568,11 +570,9 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__products_entry_screen()
     {
-        require_lang('shopping');
         require_lang('catalogues');
         require_lang('ecommerce');
         require_css('catalogues');
-        require_lang('catalogues');
 
         $fields = new Tempcode();
         $fields_table = new Tempcode();
@@ -662,11 +662,9 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__grid_category_screen__products()
     {
-        require_lang('shopping');
         require_lang('catalogues');
         require_lang('ecommerce');
         require_css('catalogues');
-        require_lang('catalogues');
 
         $fields = new Tempcode();
         $fields_table = new Tempcode();

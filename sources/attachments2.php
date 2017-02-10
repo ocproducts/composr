@@ -258,6 +258,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
     require_code('uploads');
     require_code('files');
     require_code('files2');
+    require_lang('dearchive');
 
     $myfile = mixed();
 

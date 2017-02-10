@@ -622,7 +622,7 @@ class Hook_ecommerce_catalogue_items
             $stock_level_warn_threshold = intval($field_rows[4]['effective_value_pure']);
         }
 
-        $product_name = get_translated_text($row['cc_id']);
+        $product_name = $field_rows[0]['effective_value_pure'];
 
         if ($available_quantity < $quantity && !$stock_maintained) {
             require_code('site');

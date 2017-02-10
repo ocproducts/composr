@@ -32,7 +32,7 @@ class Persistent_caching_apccache
      *
      * @return array The list of objects
      */
-    public function load_objects_list()
+    public function &load_objects_list()
     {
         if (is_null($this->objects_list)) {
             $this->objects_list = apc_fetch(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
@@ -73,10 +73,10 @@ class Persistent_caching_apccache
     public function set($key, $data, $flags = 0, $expire_secs = null)
     {
         // Update list of persistent-objects
-        $objects_list = $this->load_objects_list();
-        if (!array_key_exists($key, $objects_list)) {
-            $objects_list[$key] = true;
-            @apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        $this->load_objects_list();
+        if (!array_key_exists($key, $this->objects_list)) {
+            $this->objects_list[$key] = true;
+            @apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list);
         }
 
         @apc_store($key, array(time(), $data), $expire_secs);
@@ -90,9 +90,9 @@ class Persistent_caching_apccache
     public function delete($key)
     {
         // Update list of persistent-objects
-        $objects_list = $this->load_objects_list();
-        unset($objects_list[$key]);
-        //@apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list); Wasteful
+        $this->load_objects_list();
+        unset($this->objects_list[$key]);
+        //@apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list); Wasteful
 
         apc_delete($key);
     }
@@ -103,8 +103,8 @@ class Persistent_caching_apccache
     public function flush()
     {
         // Update list of persistent-objects
-        $objects_list = array();
-        @apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        $this->objects_list = array();
+        @apc_store(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list);
 
         apc_clear_cache('user');
     }

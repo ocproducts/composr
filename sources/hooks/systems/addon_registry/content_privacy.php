@@ -74,7 +74,9 @@ class Hook_addon_registry_content_privacy
     public function get_dependencies()
     {
         return array(
-            'requires' => array('cns_cpfs'),
+            'requires' => array(
+                'cns_cpfs',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );
