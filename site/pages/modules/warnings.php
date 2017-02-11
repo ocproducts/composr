@@ -93,7 +93,9 @@ class Module_warnings extends Standard_crud_module
             cns_require_all_forum_stuff();
         }
         require_lang('cns_warnings');
-        require_lang('submitban');
+        if (addon_installed('securitylogging')) {
+            require_lang('submitban');
+        }
 
         if ($type == 'history') {
             $this->title = get_screen_title('PUNITIVE_HISTORY');

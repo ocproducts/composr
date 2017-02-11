@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    ecommerce
  */
 
 /**
@@ -45,6 +45,8 @@ class Hook_cron_ip_address_sharing
         if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_write)) {
             return;
         }
+
+        require_lang('ecommerce');
 
         $time = time();
 

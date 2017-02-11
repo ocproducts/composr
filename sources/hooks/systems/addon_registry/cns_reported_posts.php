@@ -75,7 +75,7 @@ class Hook_addon_registry_cns_reported_posts
     {
         return array(
             'requires' => array(
-                'cns_forum'
+                'cns_forum',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -130,6 +130,7 @@ class Hook_addon_registry_cns_reported_posts
     {
         require_lang('cns');
         require_css('cns');
+
         return array(
             lorem_globalise(do_lorem_template('CNS_REPORTED_POST_FCOMCODE', array(
                 'POST_ID' => placeholder_id(),

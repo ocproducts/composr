@@ -107,7 +107,9 @@ class Hook_addon_registry_free_article_import
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'news',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

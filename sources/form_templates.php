@@ -2007,7 +2007,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 if ($url == '') {
                     $url = find_theme_image($id, false, false, 'default', $lang, $db);
                 }
-                $pretty = $direct_titles ? make_string_tempcode($id) : make_string_tempcode(ucfirst((strrpos($id, '/') === false) ? $id : substr($id, strrpos($id, '/') + 1)));
+                $pretty = $direct_titles ? make_string_tempcode($id) : make_string_tempcode(titleify((strrpos($id, '/') === false) ? $id : substr($id, strrpos($id, '/') + 1)));
             }
             if ($url == '') {
                 continue;

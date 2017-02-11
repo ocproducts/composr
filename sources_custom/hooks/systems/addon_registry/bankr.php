@@ -111,6 +111,7 @@ class Hook_addon_registry_bankr
                 'Cron',
                 'points',
                 'ecommerce',
+                'points',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

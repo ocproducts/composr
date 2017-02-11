@@ -179,19 +179,48 @@ For templates of bundled functionality, the template editor will show a 'Preview
 
 It's a very useful feature.
 
-[title="3"]Images[/title]
+[title="3"]Theme images[/title]
 
-Many of the links and buttons in Composr are created as images ("theme images"). If you wish to edit these images (or add new ones), you can do so via Composr's "Edit Images" interface.
+An image used by a Composr theme (including the default theme) is called a "theme image"; this is basically every image that isn't a part of content (gallery images, banners, etc, would be content). There's a whole system for dealing with theme images.
+
+[title="4"]Naming convention[/title]
+
+Theme image codenames are mapped to URLs via a database table, but initially they are auto-detected from a very simple naming convention...
+
+[tt]themes/yourtheme/images_custom/foo/bar.png[/tt] would be the [tt]foo/bar[/tt] theme image and could be referenced by this Tempcode in templates or CSS files: [tt]{$IMG,foo/bar}[/tt].
+
+Composr searches under your theme's [tt]images_custom[/tt] and [tt]images[/tt] folders for matches, and if it can't find one it will fallback to searching the default theme's [tt]images_custom[/tt] and [tt]images[/tt] folders.
+
+All the following file extensions are recognised, in precedence order:
+ - [tt]png[/tt]
+ - [tt]jpg[/tt]
+ - [tt]jpeg[/tt]
+ - [tt]gif[/tt]
+ - [tt]ico[/tt]
+ - [tt]svg[/tt]
+Don't have multiple files with the same base name but different file extensions as only the highest-precedence one will ever be used.
+
+Once the correct URL has been detected, the database table is updated. This is basically a cache and can be cleared out from Admin Zone > Tools > Website Cleanup Tools.
 
 [title="4"]Editing theme images[/title]
 
 [media width="150" description="The \"edit theme image\" form" float="right"]data_custom/images/docs/tut_themes/edit_theme_image.png[/media]
 [media width="150" description="The \"edit theme image\" button appears after hovering some images for a few seconds" float="right"]data_custom/images/docs/tut_themes/button.png[/media]
-To edit a theme image, go to the Admin Zone > Style > Themes, then choose the "Edit theme images" link for the theme of your choice. You will be taken to a screen with a list of every image currently in use. Choose an image, then click "Edit Image".
+To edit a theme image from within Composr, go to the Admin Zone > Style > Themes, then choose the "Edit theme images" link for the theme of your choice. You will be taken to a screen with a list of every image currently in use. Choose an image, then click "Edit Image".
 
 Alternatively, for many images (larger ones using [tt]<img>[/tt] tags) you can get straight to their editing screen by hovering the mouse over the image and clicking the "Edit theme image" button that appears (see screenshot).
 
 On the edit theme image screen, you are shown the current version of this image in the top. You also have the opportunity to edit this image's name, location, or to upload a new image in its place.
+
+[box="Manually"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
+If you prefer to edit files directly using something like FTP you may do this too.
+However, if the theme image is currently only in the default theme you'll need to copy it to your theme's [tt]images_custom[/tt] folder first, then edit the theme image cache from Admin Zone > Tools > Website Cleanup Tools.
+
+If you delete a file with one extension then add a file with the same theme image codename but another extension, the theme image cache will also need clearing from Admin Zone > Tools > Website Cleanup Tools.
+[/box]
+
+[title="4"]Deleting theme images[/title]
 
 You can delete a theme image from the bottom of its edit form, if it's not a default theme image.
 
@@ -228,8 +257,8 @@ Go to Admin Zone > Style > Themes > Edit CSS (against your own theme).
 [media width="150" description="Edited CSS" float="right"]data_custom/images/docs/tut_themes/add_image_4.png[/media]
 [media width="150" description="Searching the CSS" float="right"]data_custom/images/docs/tut_themes/add_image_3.png[/media]
 [/surround]Select the [tt]global.css[/tt] file to edit (actually it's selected by default), and click the "Edit" button.
-[*] Find where [tt]outer_background[/tt] is used as a background property using either the browser's find feature or the find feature in the editor bar.
-[*] Change [tt]outer_background[/tt] to [tt]new_background[/tt] (our new theme image).
+[*] Find [tt]background: url('{$IMG_INLINE;,outer_background}');[/tt] using either the browser's find feature or the find feature in the editor bar.
+[*] Change [tt]background: url('{$IMG_INLINE;,outer_background}');[/tt] to [tt]background: url('{$IMG_INLINE;,new_background}');[/tt] (our new theme image).
 [/list]
 
 (a more sane option would have been to directly edit the [tt]outer_background[/tt] theme image, but I wanted to give a simple example of a new theme image while doing only minimal CSS editing)
@@ -237,7 +266,7 @@ Go to Admin Zone > Style > Themes > Edit CSS (against your own theme).
 [html]<div style="clear: right"></div>[/html]
 [box="Manually"]
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
-You can add new theme images by saving them directly into [tt]themes/yourtheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to Composr itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools. If you delete a file with one extension then add a file with the same theme image name but another extension, the theme image cache will need clearing first.
+You can add new theme images using something like FTP by saving them directly into [tt]themes/yourtheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image codename, see "Naming convention"). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to Composr itself.
 [/box]
 [html]<div style="clear: right"></div>[/html]
 [title="2"]Deleting themes[/title]

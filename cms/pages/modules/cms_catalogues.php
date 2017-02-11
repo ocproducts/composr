@@ -138,7 +138,7 @@ class Module_cms_catalogues extends Standard_crud_module
         set_helper_panel_tutorial('tut_catalogues');
 
         if ($type == '_import') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:import', do_lang_tempcode('MANAGE_CALENDARS')), array('_SELF:_SELF:import', do_lang_tempcode('IMPORT_CATALOGUE_ENTRIES'))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:import', do_lang_tempcode('MANAGE_CATALOGUES')), array('_SELF:_SELF:import', do_lang_tempcode('IMPORT_CATALOGUE_ENTRIES'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 

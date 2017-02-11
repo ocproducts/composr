@@ -114,6 +114,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
             'requires' => array(
                 'Cron',
                 'Conversr',
+                'points',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

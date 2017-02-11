@@ -75,7 +75,7 @@ class Hook_addon_registry_supermember_directory
     {
         return array(
             'requires' => array(
-                'collaboration_zone'
+                'collaboration_zone',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -134,8 +134,12 @@ class Hook_addon_registry_supermember_directory
      */
     public function tpl_preview__supermembers_screen()
     {
-        require_lang('authors');
-        require_lang('points');
+        if (addon_installed('authors')) {
+            require_lang('authors');
+        }
+        if (addon_installed('points')) {
+            require_lang('points');
+        }
 
         $groups = do_lorem_template('SUPERMEMBERS_SCREEN_GROUP', array(
             'ENTRIES' => array(

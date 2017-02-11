@@ -424,9 +424,9 @@ class Hook_addon_registry_galleries
     {
         require_css('forms');
 
-        //Need to create the form fields (instead of using placeholder_form()) because javascript is
-        //using a field called 'files' (list type).
         require_lang('dearchive');
+
+        // Need to create the form fields (instead of using placeholder_form()) because javascript is using a field called 'files' (list type).
         $fields = new Tempcode();
         $orphaned_content = new Tempcode();
         $orphaned_content->attach(do_lorem_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => false, 'DISABLED' => false, 'CLASS' => '', 'NAME' => 'test', 'TEXT' => 'test')));

@@ -46,6 +46,8 @@ class Hook_cron_manual_subscription_notification
         }
         $manual_subscription_expiry_notice = intval(get_option('manual_subscription_expiry_notice'));
 
+        require_lang('ecommerce');
+
         $max = 1000;
         $start = 0;
         do {

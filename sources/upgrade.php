@@ -106,7 +106,10 @@ function upgrade_script()
                         secure_serialized_data($news);
                         $details = unserialize($news);
                         if ($details[0] != '') {
-                            $l_refer_release_notes = $details[0] . '<div style="overflow: auto; height: 150px">' . $details[2] . '</div>';
+                            $l_refer_release_notes = $details[0];
+                            if ($details[2] != '') {
+                                $l_refer_release_notes .= '<div style="overflow: auto; height: 150px">' . $details[2] . '</div>';
+                            }
                         }
                         $tar_url = $details[1];
                     }

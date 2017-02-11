@@ -135,6 +135,7 @@ function dload_script()
 
                 $dif = $cost - available_points($member_id);
                 if (($dif > 0) && (!has_privilege($member_id, 'have_negative_gift_points'))) {
+                    require_lang('points');
                     warn_exit(do_lang_tempcode('LACKING_POINTS', escape_html(integer_format($dif))));
                 }
                 require_code('points2');

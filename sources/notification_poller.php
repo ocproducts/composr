@@ -322,6 +322,10 @@ function get_pts($max = null, $start = 0)
         return array(new Tempcode(), 0);
     }
 
+    if (!addon_installed('cns_forum')) {
+        return array(new Tempcode(), 0);
+    }
+
     if ($start == 0) {
         $test = get_cache_entry('_get_pts', serialize(array($max)), CACHE_AGAINST_MEMBER, 10000);
         if ($test !== null) {

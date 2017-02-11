@@ -370,7 +370,7 @@ function addinputs($inputsarray){
 
 	$query="insert into dstore (uid,name,value) values ";
 
-	for ($x=0;$x<sizeof($inputsarray);$x++){
+	for ($x=0;$x<count($inputsarray);$x++){
 
 		$value=addslashes(trim($inputsarray[$x]));
 
@@ -411,7 +411,7 @@ function addthats($inputsarray){
 
 	$query="insert into thatstack (thatid,value) values ";
 
-	for ($x=0;$x<sizeof($inputsarray);$x++){
+	for ($x=0;$x<count($inputsarray);$x++){
 
 		$value=trim($inputsarray[$x]);
 
@@ -586,7 +586,7 @@ function normalsentences($input){
 	// Now split based on .'s
 	$cfulls=explode(".",$cfull);
 
-	for ($x=0;$x<sizeof($cfulls);$x++){
+	for ($x=0;$x<count($cfulls);$x++){
 		if (trim($cfulls[$x])==""){
 
 		}
@@ -881,7 +881,7 @@ if (!function_exists('upperkeysarray'))
 		if (is_array($testa)){
 			$newtesta=array();
 			$newkeys=array_keys($testa);
-			for ($x=0;$x<sizeof($newkeys);$x++){
+			for ($x=0;$x<count($newkeys);$x++){
 				$newtesta[strtoupper($newkeys[$x])]=$testa[$newkeys[$x]];
 			}
 		}

@@ -119,10 +119,15 @@ class Module_sites
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        return array(
+        $ret = array(
             'demonstratr' => array('CMS_ADD_SITE', 'menu/_generic_admin/add_one'),
-            'hostingcopy_step1' => array('HOSTING_COPY', 'menu/rich_content/downloads'),
         );
+
+        if (addon_installed('search')) {
+            $ret['hostingcopy_step1'] = array('HOSTING_COPY', 'menu/rich_content/downloads');
+        }
+
+        return $ret;
     }
 
     public $title;
@@ -162,7 +167,6 @@ class Module_sites
     {
         require_code('composr_homesite');
         require_lang('installer');
-        require_lang('search');
         require_lang('downloads');
         require_code('form_templates');
         require_code('ecommerce');
@@ -199,6 +203,12 @@ class Module_sites
      */
     public function hostingcopy_step1()
     {
+        if (!addon_installed('search')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        require_lang('search');
+
         // Put together hosting-copy form
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('FTP_DOMAIN'), '', 'ftp_domain', '', true));
@@ -298,6 +308,10 @@ class Module_sites
      */
     public function hostingcopy_step2()
     {
+        if (!addon_installed('search')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
         }
@@ -334,6 +348,10 @@ class Module_sites
      */
     public function hostingcopy_step3()
     {
+        if (!addon_installed('search')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
         }

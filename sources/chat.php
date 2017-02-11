@@ -388,7 +388,10 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
     }
 
     require_lang('chat');
-    require_lang('submitban');
+
+    if (addon_installed('securitylogging')) {
+        require_lang('submitban');
+    }
 
     $room_check = null;
     $room_row = null;
@@ -462,7 +465,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
             $ban_url = new Tempcode();
         }
 
-        if (($room_id != -1) && (addon_installed('actionlog')) && ((has_actual_page_access(get_member(), 'admin_actionlog')) || (has_actual_page_access(get_member(), 'cms_chat')))) {
+        if (($room_id != -1) && (addon_installed('actionlog')) && (addon_installed('securitylogging')) && ((has_actual_page_access(get_member(), 'admin_actionlog')) || (has_actual_page_access(get_member(), 'cms_chat')))) {
             $staff_actions = do_template('CHAT_STAFF_ACTIONS', array('_GUID' => 'd3fbcaa9eee688452091583ee436e465', 'CHAT_BAN_URL' => $chat_ban_url, 'CHAT_UNBAN_URL' => $chat_unban_url, 'EDIT_URL' => $edit_url, 'BAN_URL' => $ban_url));
         } else {
             $staff_actions = new Tempcode();

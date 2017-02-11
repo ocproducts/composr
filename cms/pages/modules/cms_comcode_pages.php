@@ -740,7 +740,7 @@ class Module_cms_comcode_pages
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '__edit'), '_SELF');
 
-        if ((addon_installed('page_management')) && (has_actual_page_access(get_member(), 'adminzone'))) {
+        if ((addon_installed('page_management')) && (has_actual_page_access(get_member(), 'admin_sitemap'))) {
             $delete_url = build_url(array('page' => 'admin_sitemap', 'type' => '_delete', 'page__' . $file => 1, 'zone' => $zone), get_module_zone('admin_sitemap'));
         } else {
             $delete_url = new Tempcode();

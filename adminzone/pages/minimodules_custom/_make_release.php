@@ -59,9 +59,6 @@ $urls = array();
 // Bugs list
 
 if (!$is_bleeding_edge) {
-    require_code('catalogues');
-    require_code('catalogues2');
-
     $urls['Bugs'] = 'http://compo.sr/tracker/search.php?project_id=1&product_version=' . urlencode($version_dotted);
 }
 
