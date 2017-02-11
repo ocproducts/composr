@@ -107,7 +107,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 $usergroup_name = mixed();
 
                 $type_code = $sub['s_type_code'];
-                list(, , $product_object) = find_product_details($type_code);
+                list(, $product_object) = find_product_details($type_code);
                 if ($product_object === null) {
                     continue;
                 }

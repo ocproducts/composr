@@ -68,7 +68,7 @@ function find_products_in_cart()
  */
 function add_to_cart($type_code, $purchase_id = '', $quantity = 1)
 {
-    list($details, , $product_object) = find_product_details($type_code);
+    list($details, $product_object) = find_product_details($type_code);
 
     if ($product_object->is_available($type_code, get_member(), 1) != ECOMMERCE_PRODUCT_AVAILABLE) {
         require_lang('shopping');
@@ -251,7 +251,7 @@ function copy_shopping_cart_to_order()
     foreach ($shopping_cart_rows as $item) {
         $type_code = $item['type_code'];
 
-        list($details, , $product_object) = find_product_details($type_code);
+        list($details, $product_object) = find_product_details($type_code);
 
         if ($details === null) {
             continue;
@@ -273,8 +273,8 @@ function copy_shopping_cart_to_order()
             'p_name' => $details['item_name'],
             'p_sku' => isset($details['type_special_details']['sku']) ? $details['type_special_details']['sku'] : '',
             'p_quantity' => $item['quantity'],
-            'p_price' => $item['price'],
-            'p_tax' => $item['tax'],
+            'p_price' => $details['price'],
+            'p_tax' => $details['tax'],
             'p_order_id' => $order_id,
             'p_dispatch_status' => '',
         ), true);

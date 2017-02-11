@@ -496,7 +496,6 @@ function do_work()
             'p_tax' => 1.00,
             'p_order_id' => $order_id,
             'p_dispatch_status' => '',
-            'p_included_tax' => '1.00',
         ));
     }
     echo 'done store stuff' . "\n";

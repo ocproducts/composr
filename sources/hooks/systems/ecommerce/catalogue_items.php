@@ -81,8 +81,8 @@ class Hook_ecommerce_catalogue_items
         $start = 0;
         do {
             $items = $GLOBALS['SITE_DB']->query_select('catalogue_entries t1 LEFT JOIN ' . get_table_prefix() . 'catalogues t2 ON t1.c_name=t2.c_name', array('t1.id', 't1.c_name'), $where, '', 500, $start);
-            foreach ($items as $ecomm_item) {
-                $field_rows = get_catalogue_entry_field_values($ecomm_item['c_name'], $ecomm_item['id'], null, null, true);
+            foreach ($items as $item) {
+                $field_rows = get_catalogue_entry_field_values($item['c_name'], $item['id'], null, null, true);
 
                 $product_title = $field_rows[SHOPPING_CATALOGUE_product_title]['effective_value_pure'];
 
@@ -119,7 +119,7 @@ class Hook_ecommerce_catalogue_items
                 }
 
                 /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
-                $products[strval($ecomm_item['id'])/*We use numeric indices for shopping catalogue items*/] = array(
+                $products[strval($item['id'])/*We use numeric indices for shopping catalogue items*/] = array(
                     'item_name' => $product_title,
                     'item_description' => $field_rows[SHOPPING_CATALOGUE_description]['effective_value'],
                     'item_image_url' => $image_url,
@@ -525,7 +525,7 @@ class Hook_ecommerce_catalogue_items
      */
     protected function _send_stock_maintain_warn_mail($product_title, $type_code)
     {
-        $product_det_url = get_product_det_url($type_code, false, get_member());
+        $product_det_url = get_product_det_url($type_code, false, get_member(), true);
 
         require_code('notifications');
 

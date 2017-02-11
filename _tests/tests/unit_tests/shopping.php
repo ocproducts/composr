@@ -117,28 +117,31 @@ class shopping_test_set extends cms_test_case
         }
 
         $map = $cms_module->get_set_field_map($catalogue_name, get_member());
-        $this->entry_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
-    }
+        $entry_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
 
-    public function testAddtoCart()
-    {
+        // Add item to cart...
+
         require_code('site/pages/modules/shopping.php');
-        $shopping_module = new Module_shopping();
 
+        $shopping_module = new Module_shopping();
         $shopping_module->empty_cart();
 
-        $_POST['type_code'] = strval($this->entry_id);
+        $_POST['type_code'] = strval($entry_id);
         $shopping_module->add_item();
+    }
 
-        $_GET['page'] = 'shopping'; // Static setting to identify the module in payment form
+    public function testViewCart()
+    {
+        $shopping_module = new Module_shopping();
         $shopping_module->view_shopping_cart();
     }
 
     public function testHandleTransaction()
     {
-        $purchase_id = strval($GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)', array()));
-        $type_code = 'CART_ORDER_' . $purchase_id;
-        $item_name = do_lang('CART_ORDER', $purchase_id);
+        $order_id = copy_shopping_cart_to_order();
+        $type_code = 'CART_ORDER_' . strval($order_id);
+        $item_name = do_lang('CART_ORDER', strval($order_id));
+        $purchase_id = '';
         $status = 'Completed';
         $reason = '';
         $pending_reason = 'bar';

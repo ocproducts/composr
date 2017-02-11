@@ -22,10 +22,10 @@ function init__hooks__systems__ecommerce__cart_orders($in = null)
     require_code('referrals');
 
     return str_replace(
-        'send_shopping_order_purchased_staff_mail($purchase_id);',
+        'send_shopping_order_purchased_staff_mail($order_id);',
 
         '
-        send_shopping_order_purchased_staff_mail($purchase_id);
+        send_shopping_order_purchased_staff_mail($order_id);
         $member_id = $GLOBALS[\'SITE_DB\']->query_select_value(\'shopping_order\', \'member_id\', array(\'id\' => $purchase_id));
         if ($member_id !== null) {
             assign_referral_awards($member_id, \'misc_purchase\');

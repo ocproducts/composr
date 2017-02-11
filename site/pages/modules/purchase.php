@@ -160,7 +160,8 @@ class Module_purchase
                 't_time' => '*TIME',
                 't_pending_reason' => 'SHORT_TEXT',
                 't_memo' => 'LONG_TEXT',
-                't_payment_gateway' => 'ID_TEXT'
+                't_payment_gateway' => 'ID_TEXT',
+                't_invoicing_breakdown' => 'LONG_TEXT',
             ));
         }
 
@@ -244,6 +245,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_tax', 'REAL');
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_invoicing_breakdown', 'LONG_TEXT');
 
             $GLOBALS['SITE_DB']->rename_table('trans_expecting', 'ecom_trans_expecting');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_trans_expecting', 'e_amount', 'REAL', 'e_price');
@@ -318,7 +320,8 @@ class Module_purchase
                         't_time' => $sale['date_and_time'],
                         't_pending_reason' => '',
                         't_memo' => '',
-                        't_payment_gateway' => ''
+                        't_payment_gateway' => '',
+                        't_invoicing_breakdown' => '',
                     ), true);
                     $GLOBALS['SITE_DB']->query_update('ecom_sales', array('txn_id' => $txn_id), array('id' => $sale['id']), '', 1);
                 }
@@ -448,7 +451,7 @@ class Module_purchase
             $type_code = get_param_string('type_code', null);
             if ($type_code !== null) {
                 $breadcrumbs = array();
-                list(, , $product_object) = find_product_details($type_code);
+                list(, $product_object) = find_product_details($type_code);
                 $steps = get_product_purchase_steps($product_object, $type_code, true);
                 $step_at = 0;
                 foreach ($steps as $i => $step) {
@@ -836,7 +839,7 @@ class Module_purchase
         $type_code = get_param_string('type_code');
 
         $text = new Tempcode();
-        list($details, , $product_object) = find_product_details($type_code);
+        list($details, $product_object) = find_product_details($type_code);
         if ($product_object === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -880,7 +883,7 @@ class Module_purchase
     {
         $type_code = get_param_string('type_code');
 
-        list($details, , $product_object) = find_product_details($type_code);
+        list($details, $product_object) = find_product_details($type_code);
 
         $test = $this->_check_availability($type_code);
         if ($test !== null) {
@@ -925,7 +928,7 @@ class Module_purchase
 
         $type_code = get_param_string('type_code');
 
-        list($details, , $product_object) = find_product_details($type_code);
+        list($details, $product_object) = find_product_details($type_code);
 
         $test = $this->_check_availability($type_code);
         if ($test !== null) {
@@ -992,7 +995,7 @@ class Module_purchase
             $type_code = 'CART_ORDER_' . strval($order_id);
         }
 
-        list($details, , $product_object) = find_product_details($type_code);
+        list($details, $product_object) = find_product_details($type_code);
 
         $payment_gateway = get_option('payment_gateway');
         require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
@@ -1255,7 +1258,7 @@ class Module_purchase
         }
 
         if ($subtype == 'points_payment') { // No eCommerce payment required
-            list($details, , $product_object) = find_product_details($type_code);
+            list($details, $product_object) = find_product_details($type_code);
             $item_name = $details['item_name'];
 
             $purchase_id = get_param_string('purchase_id');
@@ -1313,7 +1316,7 @@ class Module_purchase
         $redirect = get_param_string('redirect', null);
 
         if ($redirect === null) {
-            list(, , $product_object) = find_product_details($type_code);
+            list(, $product_object) = find_product_details($type_code);
             if (method_exists($product_object, 'get_finish_url')) {
                 $redirect = $product_object->get_finish_url($type_code, $message);
             }
@@ -1346,7 +1349,7 @@ class Module_purchase
      */
     protected function _check_availability($type_code)
     {
-        list(, , $product_object) = find_product_details($type_code);
+        list(, $product_object) = find_product_details($type_code);
         if (!method_exists($product_object, 'is_available')) {
             return warn_screen($this->title, do_lang_tempcode('INTERNAL_ERROR'));
         }

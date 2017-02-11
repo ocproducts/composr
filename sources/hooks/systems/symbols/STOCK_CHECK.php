@@ -38,7 +38,7 @@ class Hook_symbol_STOCK_CHECK
 
             require_code('ecommerce');
 
-            list(, , $product_object) = find_product_details($type_code);
+            list(, $product_object) = find_product_details($type_code);
             if (method_exists($product_object, 'get_available_quantity')) {
                 $available_quantity = $product_object->get_available_quantity($type_code);
             } else {

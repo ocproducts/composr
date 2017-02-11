@@ -188,9 +188,9 @@ class Module_classifieds
             $transaction_details = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_transactions WHERE t_purchase_id=' . strval($row['id']) . ' AND t_type_code LIKE \'' . db_encode_like('CLASSIFIEDS\_ADVERT\_%') . '\'');
             $_transaction_details = array();
             foreach ($transaction_details as $t) {
-                list($found,) = find_product_details($t['t_type_code']);
-                if ($found !== null) {
-                    $item_title = $found['item_name'];
+                list($details) = find_product_details($t['t_type_code']);
+                if ($details !== null) {
+                    $item_title = $details['item_name'];
                 } else {
                     $item_title = $t['t_type_code'];
                 }
@@ -198,7 +198,7 @@ class Module_classifieds
                 $_transaction_details[] = array(
                     'T_ID' => strval($t['id']),
                     'T_PURCHASE_ID' => strval($t['t_purchase_id']),
-                    'T_STATUS' => $t['t_status'],
+                    'T_STATUS' => get_transaction_status_string($t['t_status']),
                     'T_REASON' => $t['t_reason'],
                     'T_AMOUNT' => float_format($t['t_amount']),
                     'T_TAX' => float_format($t['t_tax']),

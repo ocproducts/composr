@@ -108,7 +108,6 @@ class Module_shopping
                 'p_quantity' => 'INTEGER',
                 'p_price' => 'REAL',
                 'p_tax' => 'REAL',
-                'p_included_tax' => 'REAL',
                 'p_dispatch_status' => 'SHORT_TEXT'
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'type_code', array('p_type_code'));
@@ -349,7 +348,7 @@ class Module_shopping
             ), null);
 
             foreach ($shopping_cart_rows as $item) {
-                list($details, , $product_object) = find_product_details($item['type_code']);
+                list($details, $product_object) = find_product_details($item['type_code']);
 
                 if ($details === null) {
                     $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('id' => $item['id']), '', 1);
@@ -508,7 +507,7 @@ class Module_shopping
         foreach ($type_codes as $type_code) {
             $quantity = post_param_integer('quantity_' . $type_code);
 
-            list($details, , $product_object) = find_product_details($type_code);
+            list($details, $product_object) = find_product_details($type_code);
 
             $remove = (post_param_integer('remove_' . $type_code, 0) == 1);
             if ($remove) {

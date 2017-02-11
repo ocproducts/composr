@@ -238,7 +238,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
  */
 function get_needed_fields($type_code, $force_extended = false)
 {
-    list($details, , $product_object) = find_product_details($type_code);
+    list($details, $product_object) = find_product_details($type_code);
 
     $fields = mixed();
     $text = mixed();
@@ -478,9 +478,10 @@ function recalculate_shipping_cost($details, $shipping_cost, $member_id = null, 
  * @param  ID_TEXT $type_code The product codename.
  * @param  boolean $post_purchase_access_url Access a post-purchase URL appropriate to the buyer.
  * @param  ?MEMBER $member_id Member ID that this is for (null: unknown).
+ * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail.
  * @return Tempcode Product URL.
  */
-function get_product_det_url($type_code, $post_purchase_access_url = false, $member_id = null)
+function get_product_det_url($type_code, $post_purchase_access_url = false, $member_id = null, $email_safe = false)
 {
     static $permission_product_rows = null;
     if ($permission_product_rows === null) {
@@ -511,15 +512,15 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
             }
         }
     } elseif (($post_purchase_access_url) && (preg_match('#^CART_ORDER\_(\d+)$#', $type_code, $matches) != 0)) {
-        $product_det_url = build_url(array('page' => 'shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('shopping'));
+        $product_det_url = build_url(array('page' => 'shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('shopping'), null, false, false, true);
     } elseif (is_numeric($type_code)) {
-        $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $type_code), get_module_zone('catalogues'));
+        $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $type_code), get_module_zone('catalogues'), null, false, false, true);
     } elseif (($member_id !== null) && ($post_purchase_access_url) && (preg_match('#^USERGROUP(\d+)$#', $type_code, $matches) != 0)) {
-        $product_det_url = build_url(array('page' => 'subscriptions', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('subscriptions'));
+        $product_det_url = build_url(array('page' => 'subscriptions', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('subscriptions'), null, false, false, true);
     } elseif (($member_id !== null) && ($post_purchase_access_url) && ($type_code == 'work')) {
-        $product_det_url = build_url(array('page' => 'invoices', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('invoices'));
+        $product_det_url = build_url(array('page' => 'invoices', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('invoices'), null, false, false, true);
     } else {
-        $product_det_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $type_code), get_module_zone('purchase'));
+        $product_det_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $type_code), get_module_zone('purchase'), null, false, false, true);
     }
     return $product_det_url;
 }
@@ -550,7 +551,7 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
             'AMOUNT' => float_format($transaction_row['t_amount']),
             'TAX' => float_format($transaction_row['t_tax']),
             'CURRENCY' => $transaction_row['t_currency'],
-            'STATUS' => $transaction_row['t_status'],
+            'STATUS' => get_transaction_status_string($transaction_row['t_status']),
             'REASON' => $transaction_row['t_reason'],
             'PENDING_REASON' => $transaction_row['t_pending_reason'],
             'NOTES' => $transaction_row['t_memo'],
@@ -758,8 +759,8 @@ function find_all_products()
 /**
  * Find product info row and other details.
  *
- * @param  ID_TEXT $search The product codename/item name.
- * @return array A triple: The product info row, the product codename, the product object (all will be null if not found).
+ * @param  ID_TEXT $search The product codename.
+ * @return array A triple: The product info row, the product object (all will be null if not found).
  */
 function find_product_details($search)
 {
@@ -770,6 +771,7 @@ function find_product_details($search)
     }
 
     static $hook_products_cache = array();
+    $has_cache = ($hook_products_cache != array());
 
     $_hooks = find_all_hooks('systems', 'ecommerce');
     foreach (array_keys($_hooks) as $hook) {
@@ -797,14 +799,20 @@ function find_product_details($search)
             }
 
             if ($type_code == $search) {
-                $ret = array($details, $type_code, $product_object);
+                $ret = array($details, $product_object);
                 $cache[$sz] = $ret;
                 return $ret;
             }
         }
     }
 
-    $ret = array(null, null, null);
+    // Cache miss?
+    if ($has_cache) {
+        $hook_products_cache = array();
+        return find_product_details($search);
+    }
+
+    $ret = array(null, null);
     $cache[$sz] = $ret;
     return $ret;
 }
@@ -1542,7 +1550,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     // Try and locate the product
     if ($is_subscription) { // Subscription
         // Find what we sold
-        list($found, , $product_object) = find_product_details($type_code);
+        list($found, $product_object) = find_product_details($type_code);
 
         // Check subscription length
         if ($period != '') {
@@ -1554,14 +1562,14 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         }
     } else {
         // Find what we sold
-        list($found, $type_code, $product_object) = find_product_details($type_code);
+        list($found, $product_object) = find_product_details($type_code);
 
         if ($found['type'] == PRODUCT_SUBSCRIPTION) {
             exit(); // We ignore separate payment signal for subscriptions (for Paypal it is web_accept). Or, it could be a hacker, which we must block
         }
     }
     if ($found === null) {
-        fatal_ipn_exit(do_lang('PRODUCT_NO_SUCH', $item_name), true/*no logged error because we can't assume all transactions are generated by Composr*/);
+        fatal_ipn_exit(do_lang('PRODUCT_NO_SUCH', $item_name, $type_code), true/*no logged error because we can't assume all transactions are generated by Composr*/);
     }
 
     // Missing data, but we can find it
@@ -1594,6 +1602,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     $expected_amount = null;
     $expected_tax = null;
     $expected_price_points = null;
+    $invoicing_breakdown = '';
 
     // Grab expected price and tax: Locked in in advance in ecom_trans_expecting transaction (this is the standard case for an IPN)
     if ($trans_expecting_id !== null) {
@@ -1603,6 +1612,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             $expected_amount = $transaction_row['e_price'];
             $expected_tax = $transaction_row['e_tax'];
             $expected_price_points = $transaction_row['e_price_points'];
+            $invoicing_breakdown = $transaction_row['e_invoicing_breakdown'];
         }
     }
 
@@ -1692,6 +1702,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         't_parent_txn_id' => $parent_txn_id,
         't_time' => time(),
         't_payment_gateway' => $payment_gateway,
+        't_invoicing_breakdown' => $invoicing_breakdown,
     ));
 
     // Add in extra details to $found, so actualisers can track things better
@@ -1905,6 +1916,10 @@ function paid_amount_matches($amount, $tax, $expected_amount, $expected_tax)
  */
 function fatal_ipn_exit($error, $dont_trigger = false)
 {
+    if (get_param_integer('keep_fatalistic', 0) == 1) {
+        fatal_exit($error);
+    }
+
     echo $error . "\n";
     if (!$dont_trigger) {
         trigger_error($error, E_USER_NOTICE);
@@ -2006,7 +2021,7 @@ function generate_tax_invoice($txn_id)
         $trans_address = rtrim($trans_address);
     }
 
-    $items = ($transaction_row['e_invoicing_breakdown'] == '') ? array() : json_decode($transaction_row['e_invoicing_breakdown']);
+    $items = ($transaction_row['t_invoicing_breakdown'] == '') ? array() : json_decode($transaction_row['t_invoicing_breakdown']);
     $invoicing_breakdown = array();
     foreach ($items as $item) {
         $invoicing_breakdown[] = array(
@@ -2021,6 +2036,8 @@ function generate_tax_invoice($txn_id)
         );
     }
 
+    $status = get_transaction_status_string($transaction_row['t_status']);
+
     return do_template('ECOM_TAX_INVOICE', array(
         'TXN_ID' => $txn_id,
         '_DATE' => strval($transaction_row['t_time']),
@@ -2033,6 +2050,38 @@ function generate_tax_invoice($txn_id)
         'TOTAL_TAX' => float_format($transaction_row['t_tax']),
         'TOTAL_AMOUNT' => float_format($transaction_row['t_amount'] + $transaction_row['t_tax']),
         'PURCHASE_ID' => $transaction_row['t_purchase_id'],
-        'STATUS' => do_lang($transaction_row['t_status']),
+        'STATUS' => $status,
     ));
+}
+
+/**
+ * Get transaction status.
+ *
+ * @param  ID_TEXT $_status PayPal-style transaction status.
+ * @return string The status.
+ */
+function get_transaction_status_string($_status)
+{
+    $status = '';
+    switch ($_status) {
+        case 'Pending':
+            $status = do_lang('ORDER_STATUS_awaiting_payment');
+            break;
+
+        case 'Completed':
+            $status = do_lang('ORDER_STATUS_payment_received');
+            break;
+
+        case 'SCancelled':
+            $status = do_lang('ORDER_STATUS_cancelled');
+            break;
+
+        case 'SModified':
+            $status = do_lang('NA');
+            break;
+
+        default:
+            $status = do_lang($status);
+    }
+    return $status;
 }

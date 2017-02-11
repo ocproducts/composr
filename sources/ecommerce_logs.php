@@ -77,9 +77,9 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
             $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id']);
         }
 
-        list($found,) = find_product_details($row['t_type_code']);
-        if ($found !== null) {
-            $item_name = $found['item_name'];
+        list($details) = find_product_details($row['t_type_code']);
+        if ($details !== null) {
+            $item_name = $details['item_name'];
         }
 
         $product_det_url = get_product_det_url($row['t_type_code'], true, $filter_member_id);

@@ -42,12 +42,8 @@ class Hook_ecommerce_cart_orders
 
         require_lang('shopping');
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-
         if ($search !== null) {
-            if (preg_match('#^CART_ORDER_#', $search) != 0) {
+            if (preg_match('#^CART_ORDER_#', $search) == 0) {
                 return array();
             }
             $where = 'id=' . strval(intval(substr($search, strlen('CART_ORDER_'))));
@@ -77,7 +73,7 @@ class Hook_ecommerce_cart_orders
                 'discount_points__price_reduction' => null,
 
                 'tax' => $order['total_tax'],
-                'shipping_cost' => $order['shipping_cost'],
+                'shipping_cost' => $order['total_shipping_cost'],
                 'needs_shipping_address' => true,
             );
         }
@@ -154,7 +150,7 @@ class Hook_ecommerce_cart_orders
 
             $ordered_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id), '', 1);
             foreach ($ordered_items as $ordered_item) {
-                list($sub_details, , $sub_product_object) = find_product_details($ordered_item['p_type_code']);
+                list($sub_details, $sub_product_object) = find_product_details($ordered_item['p_type_code']);
 
                 if ($sub_details === null) {
                     continue;
@@ -222,7 +218,7 @@ class Hook_ecommerce_cart_orders
     {
         $ordered_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
         foreach ($ordered_items as $ordered_item) {
-            list(, , $product_object) = find_product_details($ordered_item['p_type_code']);
+            list(, $product_object) = find_product_details($ordered_item['p_type_code']);
 
             if ($product_object === null) {
                 continue;

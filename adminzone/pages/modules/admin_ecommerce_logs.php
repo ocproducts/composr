@@ -279,7 +279,7 @@ class Module_admin_ecommerce_logs
         $text = do_lang('MANUAL_TRANSACTION_TEXT');
         $submit_name = do_lang('MANUAL_TRANSACTION');
 
-        list(, , $product_object) = find_product_details($type_code);
+        list(, $product_object) = find_product_details($type_code);
 
         // To work out key
         if (post_param_integer('got_purchase_key_dependencies', 0) == 0) {
@@ -526,14 +526,18 @@ class Module_admin_ecommerce_logs
 
             if ($transaction_row['t_status'] != 'Completed') {
                 $trigger_url = build_url(array('page' => '_SELF', 'type' => 'trigger', 'type_code' => $transaction_row['t_type_code'], 'id' => $transaction_row['t_purchase_id']), '_SELF');
-                $status = do_template('ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER', array('_GUID' => '5e770b9b30db88032bcc56efe8e3dc23', 'STATUS' => $transaction_row['t_status'], 'TRIGGER_URL' => $trigger_url));
+                $status = do_template('ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER', array(
+                    '_GUID' => '5e770b9b30db88032bcc56efe8e3dc23',
+                    'STATUS' => get_transaction_status_string($transaction_row['t_status']),
+                    'TRIGGER_URL' => $trigger_url,
+                ));
             } else {
-                $status = make_string_tempcode(escape_html($transaction_row['t_status']));
+                $status = make_string_tempcode(escape_html(get_transaction_status_string($transaction_row['t_status'])));
             }
 
             // Find member link, if possible
             $member_id = null;
-            list(, , $product_object) = find_product_details($transaction_row['t_type_code']);
+            list(, $product_object) = find_product_details($transaction_row['t_type_code']);
             if ($product_object !== null) {
                 $member_id = method_exists($product_object, 'member_for') ? $product_object->member_for($transaction_row['t_type_code'], $transaction_row['t_purchase_id']) : null;
             }
@@ -644,7 +648,8 @@ class Module_admin_ecommerce_logs
 
         require_code('currency');
 
-        $transactions = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'ecom_transactions WHERE t_time<' . strval($to) . ' AND ' . db_string_equal_to('t_status', 'Completed') . ' ORDER BY t_time');
+        $sql = 'SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'ecom_transactions WHERE t_time<' . strval($to) . ' AND ' . db_string_equal_to('t_status', 'Completed') . ' ORDER BY t_time';
+        $transactions = $GLOBALS['SITE_DB']->query($sql);
         foreach ($transactions as $transaction) {
             if ($transaction['t_time'] > $from) {
                 $types['TRANS']['AMOUNT'] += get_transaction_fee($transaction['t_amount'], $transaction['t_payment_gateway']);
