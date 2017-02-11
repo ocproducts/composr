@@ -4791,7 +4791,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INCLUDE_SITEMAP_UNDER
         INCLUDE_SUBFOLDERS
         INCOMPATIBILITIES
-        INCOMPLETED_TRANSACTION
         INCOMPLETE_ERROR
         INCONSISTENT_BANNER_SET
         INCREMENTAL_BACKUP
@@ -4962,7 +4961,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         LICENCES
         LINE
         LINK
-        LINKED_ID
         LINKS
         LISTING_DIRECTORIES
         LISTING_FILES
@@ -5676,7 +5674,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAYMENT_STATE_pending
         PAYPAL
         PEAK
-        PENDING_REASON
         PERFORM_MULTI_MODERATION
         PERIODIC_BIWEEKLY_ON
         PERIODIC_CREATE

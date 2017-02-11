@@ -507,20 +507,24 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
                     list(, , $cma_info) = content_get_details($resource_type, $category_id);
 
                     $page_link = str_replace('_WILD', $category_id, $cma_info['view_page_link_pattern']);
-                    $apt_url = page_link_to_url($page_link);
+                    $apt_url = page_link_to_url($page_link, $email_safe);
                 }
             }
         }
     } elseif (($post_purchase_access_url) && (preg_match('#^CART_ORDER\_(\d+)$#', $type_code, $matches) != 0)) {
-        $product_det_url = build_url(array('page' => 'shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('shopping'), null, false, false, true);
+        if (has_actual_page_access(get_member(), 'admin_shopping')) {
+            $product_det_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('admin_shopping'), null, false, false, $email_safe);
+        } else {
+            $product_det_url = build_url(array('page' => 'shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('shopping'), null, false, false, $email_safe);
+        }
     } elseif (is_numeric($type_code)) {
-        $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $type_code), get_module_zone('catalogues'), null, false, false, true);
+        $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $type_code), get_module_zone('catalogues'), null, false, false, $email_safe);
     } elseif (($member_id !== null) && ($post_purchase_access_url) && (preg_match('#^USERGROUP(\d+)$#', $type_code, $matches) != 0)) {
-        $product_det_url = build_url(array('page' => 'subscriptions', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('subscriptions'), null, false, false, true);
+        $product_det_url = build_url(array('page' => 'subscriptions', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('subscriptions'), null, false, false, $email_safe);
     } elseif (($member_id !== null) && ($post_purchase_access_url) && ($type_code == 'work')) {
-        $product_det_url = build_url(array('page' => 'invoices', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('invoices'), null, false, false, true);
+        $product_det_url = build_url(array('page' => 'invoices', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('invoices'), null, false, false, $email_safe);
     } else {
-        $product_det_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $type_code), get_module_zone('purchase'), null, false, false, true);
+        $product_det_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $type_code), get_module_zone('purchase'), null, false, false, $email_safe);
     }
     return $product_det_url;
 }
@@ -538,7 +542,7 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
 {
     if (($txn_id != '') && (!$awaiting_payment)) {
         if (has_actual_page_access(get_member(), 'admin_ecommerce_logs')) {
-            $transaction_details_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'logs', 'type_code' => $transaction_row['t_type_code'], 'id' => $transaction_row['id']), get_module_zone('admin_ecommerce_logs'));
+            $transaction_details_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'logs', 'type_code' => $transaction_row['t_type_code'], 'txn_id' => $transaction_row['id']), get_module_zone('admin_ecommerce_logs'));
             $transaction_link = hyperlink($transaction_details_url, $txn_id, false, true);
         } else {
             $transaction_link = make_string_tempcode(escape_html($txn_id));
@@ -554,8 +558,7 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
             'TAX' => float_format($transaction_row['t_tax']),
             'CURRENCY' => $transaction_row['t_currency'],
             'STATUS' => get_transaction_status_string($transaction_row['t_status']),
-            'REASON' => $transaction_row['t_reason'],
-            'PENDING_REASON' => $transaction_row['t_pending_reason'],
+            'REASON' => trim($transaction_row['t_reason'] . '; ' . $transaction_row['t_pending_reason'], '; '),
             'NOTES' => $transaction_row['t_memo'],
         );
         $_transaction_fields = new Tempcode();
@@ -568,7 +571,7 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
 
         $transaction_linker = do_template('CROP_TEXT_MOUSE_OVER', array('TEXT_LARGE' => $map_table, 'TEXT_SMALL' => $transaction_link));
     } else {
-        $transaction_linker = do_lang_tempcode('INCOMPLETED_TRANSACTION');
+        $transaction_linker = do_lang_tempcode('ORDER_STATUS_awaiting_payment');
     }
     return $transaction_linker;
 }

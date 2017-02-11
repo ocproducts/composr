@@ -39,6 +39,8 @@ This file only contains the code for the sales log and code for viewing an indiv
 function build_sales_table($filter_member_id, $show_username = false, $show_delete = false, $max_default = 20)
 {
     require_code('templates_map_table');
+    require_code('templates_results_table');
+    require_code('templates_columned_table');
     require_code('content');
     require_code('ecommerce');
 
@@ -68,10 +70,8 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
     $max_rows = $GLOBALS['SITE_DB']->query_select_value('ecom_sales', 'COUNT(*)', $where);
 
     $sales_rows = array();
-    require_code('templates_results_table');
-    require_code('templates_columned_table');
     foreach ($rows as $row) {
-        $transaction_linker = build_transaction_linker($row['txn_id'], $row['order_status'] == 'ORDER_STATUS_awaiting_payment', $row);
+        $transaction_linker = build_transaction_linker($row['txn_id'], $row['t_status'] != 'Completed', $row);
 
         if ($show_username) {
             $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id']);
@@ -162,11 +162,12 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
 
     $transaction_linker = build_transaction_linker($order_row['txn_id'], $order_row['order_status'] == 'ORDER_STATUS_awaiting_payment', $order_row);
 
+    $ordered_by_member_id = $order_row['member_id'];
+    $ordered_by_username = $GLOBALS['FORUM_DRIVER']->get_username($order_row['member_id']);
+
     // Order actions...
 
     if ($show_order_actions) {
-        $ordered_by_member_id = $order_row['member_id'];
-        $ordered_by_username = $GLOBALS['FORUM_DRIVER']->get_username($order_row['member_id']);
         $self_url = get_self_url(true, true);
         $order_actualise_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_act', 'id' => $id, 'redirect' => $self_url), get_module_zone('admin_shopping'));
         $order_actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array(
@@ -220,7 +221,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
     $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY id');
     $product_entries = new Tempcode();
     foreach ($product_rows as $product_row) {
-        $product_info_url = get_product_det_url($product_row['p_type_code'], false, $product_row['member_id']);
+        $product_info_url = get_product_det_url($product_row['p_type_code'], false, $ordered_by_member_id);
         $product_name = $product_row['p_name'];
         $product = hyperlink($product_info_url, $product_name, false, true, do_lang('VIEW'));
 

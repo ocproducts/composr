@@ -1157,14 +1157,15 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
  * Given a URL or page-link, return an absolute URL.
  *
  * @param  string $url URL or page-link
+ * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail.
  * @return URLPATH URL
  */
-function page_link_to_url($url)
+function page_link_to_url($url, $email_safe = false)
 {
     $parts = array();
     if ((preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
         list($zone, $map, $hash) = page_link_decode($url);
-        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
+        $url = static_evaluate_tempcode(build_url($map, $zone, null, false, false, $email_safe, $hash));
     } else {
         $url = qualify_url($url, get_base_url());
     }

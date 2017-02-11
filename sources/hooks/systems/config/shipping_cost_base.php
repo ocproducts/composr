@@ -51,6 +51,6 @@ class Hook_config_shipping_cost_base
      */
     public function get_default()
     {
-        return '0.00';
+        return '10.00';
     }
 }

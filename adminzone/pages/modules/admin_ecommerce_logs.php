@@ -491,17 +491,22 @@ class Module_admin_ecommerce_logs
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $where = null;
+        $where = '1=1';
         $type_code = get_param_string('type_code', null);
-        $id = get_param_string('id', null);
         if ($type_code !== null) {
-            $where = array('t_type_code' => $type_code);
-            if (($id !== null) && ($id != '')) {
-                $where['t_purchase_id'] = $id;
-            }
+            $where .= ' AND ' . db_string_equal_to('t_type_code', $type_code);
         }
-        $max_rows = $GLOBALS['SITE_DB']->query_select_value('ecom_transactions', 'COUNT(*)', $where);
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('*'), $where, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+        $txn_id = get_param_string('txn_id', null);
+        if ($txn_id !== null) {
+            $where .= ' AND (' . db_string_equal_to('id', $txn_id) . ' OR ' . db_string_equal_to('t_parent_txn_id', $txn_id) . ')';
+        }
+        $purchase_id = get_param_string('purchase_id', null);
+        if ($purchase_id !== null) {
+            $where .= ' AND ' . db_string_equal_to('t_purchase_id', $purchase_id);
+        }
+
+        $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'ecom_transactions WHERE ' . $where);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'ecom_transactions WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         if (count($rows) == 0) {
             return inform_screen($this->title, do_lang_tempcode('NO_ENTRIES'));
         }
@@ -510,14 +515,12 @@ class Module_admin_ecommerce_logs
         $fields_title = results_field_title(array(
             do_lang('TRANSACTION'),
             do_lang('IDENTIFIER'),
-            do_lang('LINKED_ID'),
             do_lang('DATE'),
             do_lang('AMOUNT'),
             do_lang(get_option('tax_system')),
             do_lang('PRODUCT'),
             do_lang('STATUS'),
             do_lang('REASON'),
-            do_lang('PENDING_REASON'),
             do_lang('NOTES'),
             do_lang('MEMBER'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
@@ -537,7 +540,7 @@ class Module_admin_ecommerce_logs
 
             // Find member link, if possible
             $member_id = null;
-            list(, $product_object) = find_product_details($transaction_row['t_type_code']);
+            list($details, $product_object) = find_product_details($transaction_row['t_type_code']);
             if ($product_object !== null) {
                 $member_id = method_exists($product_object, 'member_for') ? $product_object->member_for($transaction_row['t_type_code'], $transaction_row['t_purchase_id']) : null;
             }
@@ -551,16 +554,14 @@ class Module_admin_ecommerce_logs
             $tax_linker = do_template('CROP_TEXT_MOUSE_OVER', array('TEXT_LARGE' => generate_tax_invoice($transaction_row['id']), 'TEXT_SMALL' => $tax));
 
             $fields->attach(results_entry(array(
-                escape_html($transaction_row['id']),
+                escape_html($transaction_row['id']) . (($transaction_row['t_parent_txn_id'] == '') ? '' : (' &rarr; ' . escape_html($transaction_row['t_parent_txn_id']))),
                 escape_html($transaction_row['t_purchase_id']),
-                escape_html($transaction_row['t_parent_txn_id']),
                 escape_html($date),
                 ecommerce_get_currency_symbol() . escape_html(float_format($transaction_row['t_amount'])),
                 $tax,
-                escape_html($transaction_row['t_type_code']),
+                escape_html(($details === null) ? $transaction_row['t_type_code'] : $details['item_name']),
                 $status,
-                escape_html($transaction_row['t_reason']),
-                escape_html($transaction_row['t_pending_reason']),
+                escape_html(trim($transaction_row['t_reason'] . '; ' . $transaction_row['t_pending_reason'], '; ')),
                 escape_html($transaction_row['t_memo']),
                 $member_link
             ), false));
