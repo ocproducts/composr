@@ -50,7 +50,6 @@ class Module_shopping
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order_details');
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order');
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_logging');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_addresses');
 
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'shopping'));
 
@@ -93,7 +92,6 @@ class Module_shopping
                 'notes' => 'LONG_TEXT',
                 'txn_id' => 'SHORT_TEXT',
                 'purchase_through' => 'SHORT_TEXT', // cart|purchase_module
-                'tax_opted_out' => 'BINARY',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order', 'finddispatchable', array('order_status'));
             $GLOBALS['SITE_DB']->create_index('shopping_order', 'somember_id', array('member_id'));
@@ -152,6 +150,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->add_table_field('shopping_order', 'total_tax', 'REAL');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order', 'total_shipping_cost', 'REAL');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'c_member', 'MEMBER', 'member_id');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_order', 'tax_opted_out');
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_price', 'REAL', 'p_price');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax', 'REAL');
@@ -350,14 +349,14 @@ class Module_shopping
             ), null);
 
             foreach ($shopping_cart_rows as $item) {
-                list($details, , $product_object) = find_product_details($item['p_type_code']);
+                list($details, , $product_object) = find_product_details($item['type_code']);
 
                 if ($details === null) {
                     $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('id' => $item['id']), '', 1);
                     continue;
                 }
 
-                $type_codes[] = $item['p_type_code'];
+                $type_codes[] = $item['type_code'];
 
                 $this->show_cart_entry($shopping_cart, $details, $item);
             }
@@ -434,12 +433,12 @@ class Module_shopping
         $tpl_set = 'cart';
 
         $edit_quantity_link = do_template('ECOM_SHOPPING_ITEM_QUANTITY_FIELD', array(
-            'TYPE_CODE' => $item['p_type_code'],
+            'TYPE_CODE' => $item['type_code'],
             'QUANTITY' => strval($item['quantity'])
         ));
 
         $delete_item_link = do_template('ECOM_SHOPPING_ITEM_REMOVE_FIELD', array(
-            'TYPE_CODE' => $item['p_type_code'],
+            'TYPE_CODE' => $item['type_code'],
         ));
 
         require_code('images');
@@ -451,7 +450,7 @@ class Module_shopping
         $tax = recalculate_tax_due($details, $details['tax'], 0.0, null, $item['quantity']);
         $amount = $price_multiple + $tax;
 
-        $product_det_url = get_product_det_url($item['p_type_code'], false, get_member());
+        $product_det_url = get_product_det_url($item['type_code'], false, get_member());
         $product_link = hyperlink($product_det_url, $details['item_name'], false, true, do_lang('INDEX'));
 
         require_code('templates_results_table');

@@ -33,7 +33,7 @@ class Hook_config_community_billboard_tax
             'explanation' => 'CONFIG_OPTION_community_billboard_tax',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 4,
 
             'addon' => 'community_billboard',
         );

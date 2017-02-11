@@ -68,9 +68,9 @@ function find_products_in_cart()
  */
 function add_to_cart($type_code, $purchase_id = '', $quantity = 1)
 {
-    list($details) = find_product_details($type_code);
+    list($details, , $product_object) = find_product_details($type_code);
 
-    if ($this->is_available($type_code, get_member(), 1) != ECOMMERCE_PRODUCT_AVAILABLE) {
+    if ($product_object->is_available($type_code, get_member(), 1) != ECOMMERCE_PRODUCT_AVAILABLE) {
         require_lang('shopping');
         warn_exit(do_lang_tempcode('PRODUCT_UNAVAILABLE_WARNING', escape_html($type_code['item_name'])));
     }
@@ -204,11 +204,14 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         }
 
         $price = $details['price'];
+        $tax = $details['tax'];
 
-        $total_price += $item[$field_name_prefix . 'price'] * $item[$field_name_prefix . 'quantity'];
-        $total_tax += recalculate_tax_due($item, $item[$field_name_prefix . 'tax'], 0.0, null, $item[$field_name_prefix . 'quantity']);
+        $quantity = $item[$field_name_prefix . 'quantity'];
 
-        $shipped_products[] = array($item, $item[$field_name_prefix . 'quantity']);
+        $total_price += $price * $quantity;
+        $total_tax += recalculate_tax_due($item, $tax, 0.0, null, $quantity);
+
+        $shipped_products[] = array($item, $quantity);
     }
 
     $total_shipping_cost = recalculate_shipping_cost_combo($shipped_products);

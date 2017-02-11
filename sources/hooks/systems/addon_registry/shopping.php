@@ -147,7 +147,6 @@ class Hook_addon_registry_shopping
             'themes/default/templates/ECOM_CART_LINK.tpl',
             'themes/default/templates/ECOM_ORDER_DETAILS_SCREEN.tpl',
             'themes/default/templates/ECOM_ADMIN_ORDERS_SCREEN.tpl',
-            'themes/default/templates/ECOM_ORDERS_DETAILS_SCREEN.tpl',
             'themes/default/templates/ECOM_ORDERS_SCREEN.tpl',
             'themes/default/templates/ECOM_SHIPPING_ADDRESS.tpl',
             'themes/default/templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl',

@@ -258,64 +258,8 @@ $EXT_FUNCS = array(
     'iptcparse' => true,
     'jpeg2wbmp' => true,
     'png2wbmp' => true,
-    'ftp_alloc' => true,
-    'ftp_cdup' => true,
-    'ftp_chdir' => true,
-    'ftp_chmod' => true,
-    'ftp_close' => true,
-    'ftp_connect' => true,
-    'ftp_delete' => true,
-    'ftp_exec' => true,
-    'ftp_fget' => true,
-    'ftp_fput' => true,
-    'ftp_get_option' => true,
-    'ftp_get' => true,
-    'ftp_login' => true,
-    'ftp_mdtm' => true,
-    'ftp_mkdir' => true,
-    'ftp_nb_continue' => true,
-    'ftp_nb_fget' => true,
-    'ftp_nb_fput' => true,
-    'ftp_nb_get' => true,
-    'ftp_nb_put' => true,
-    'ftp_nlist' => true,
-    'ftp_pasv' => true,
-    'ftp_put' => true,
-    'ftp_pwd' => true,
-    'ftp_quit' => true,
-    'ftp_raw' => true,
-    'ftp_rawlist' => true,
-    'ftp_rename' => true,
-    'ftp_rmdir' => true,
-    'ftp_set_option' => true,
-    'ftp_site' => true,
-    'ftp_size' => true,
-    'ftp_ssl_connect' => true,
-    'ftp_systype' => true,
     'utf8_decode' => true,
     'utf8_encode' => true,
-    'xml_error_string' => true,
-    'xml_get_current_byte_index' => true,
-    'xml_get_current_column_number' => true,
-    'xml_get_current_line_number' => true,
-    'xml_get_error_code' => true,
-    'xml_parse_into_struct' => true,
-    'xml_parse' => true,
-    'xml_parser_create_ns' => true,
-    'xml_parser_create' => true,
-    'xml_parser_free' => true,
-    'xml_parser_get_option' => true,
-    'xml_parser_set_option' => true,
-    'xml_set_character_data_handler' => true,
-    'xml_set_default_handler' => true,
-    'xml_set_element_handler' => true,
-    'xml_set_end_namespace_decl_handler' => true,
-    'xml_set_external_entity_ref_handler' => true,
-    'xml_set_notation_decl_handler' => true,
-    'xml_set_object' => true,
-    'xml_set_processing_instruction_handler' => true,
-    'xml_set_start_namespace_decl_handler' => true,
-    'xml_set_unparsed_entity_decl_handler' => true,
 );
 
 // Error funcs...
@@ -446,6 +390,8 @@ $FALSE_ERROR_FUNCS = array(
     'copy' => true,
     'file' => true,
     'fopen' => true,
+    'file_get_contents' => true,
+    'file_put_contents' => true,
     //'chmod' => true,
     //'chgrp' => true,
     //'unlink' => true,
@@ -744,8 +690,7 @@ function check($structure)
                 log_warning('Use __construct for construct name, not \'' . $function['name'] . '\'', $function['offset']);
             }
 
-            $LOCAL_VARIABLES['this'] = array('is_global' => false, 'conditioner' => array(), 'conditioned_zero' => false, 'conditioned_false' => false, 'conditioned_null' => false, 'types' => array('object'), 'references' => 0, 'object_type' => $CURRENT_CLASS, 'unused_value' => false, 'first_mention' => 0, 'mixed_tag' => false);
-            check_function($function);
+            check_function($function, true);
         }
     }
     check_variable_list($local_variables, 0);
@@ -754,10 +699,10 @@ function check($structure)
     check_variable_list($GLOBAL_VARIABLES);
 }
 
-function check_function($function)
+function check_function($function, $inside_class = false)
 {
     global $GLOBAL_VARIABLES, $LOCAL_VARIABLES, $CURRENT_CLASS;
-    $LOCAL_VARIABLES = reinitialise_local_variables(); // Map (by name) of maps : is_global, types. Note there is boolean-false and null types: boolean_false is when we KNOW a boolean is false, so it might map to ~
+    $LOCAL_VARIABLES = reinitialise_local_variables($inside_class); // Map (by name) of maps : is_global, types. Note there is boolean-false and null types: boolean_false is when we KNOW a boolean is false, so it might map to ~
 
     //if (isset($GLOBALS['PEDANTIC'])) if (strlen(serialize($function)) > 30000) log_warning('Function ' . $function['name'] . ' is too big', $function['offset']);
 
@@ -1541,7 +1486,7 @@ function get_insecure_functions()
 /*
 Demonstration of all the assignment checks we could make:
 
-$foo+='a';
+$foo += 'a';
 
 $bar = 1;
 $bar[] = 'a';
@@ -1889,7 +1834,7 @@ function check_variable($variable, $reference = false, $function_guard = '')
     }
 
     global $LOCAL_VARIABLES;
-    if ((!isset($LOCAL_VARIABLES[$identifier])) && ($identifier != 'this') && !((is_array($identifier) && (in_array($identifier[0], array('CALL_METHOD')))))) {
+    if ((!isset($LOCAL_VARIABLES[$identifier])) && !((is_array($identifier) && (in_array($identifier[0], array('CALL_METHOD')))))) {
         // We skip this check if the "variable" is coming from a function/method
         // (in which case we have a function/method call rather than a variable)
         log_warning('Variable \'' . $identifier . '\' referenced before initialised', $variable[3]);
@@ -2066,9 +2011,9 @@ function add_variable_reference($identifier, $first_mention, $reference = true)
     }
 }
 
-function reinitialise_local_variables()
+function reinitialise_local_variables($inside_class = false)
 {
-    return array(
+    $ret = array(
         'php_errormsg' => array('is_global' => true, 'conditioner' => array(), 'conditioned_zero' => false, 'conditioned_false' => false, 'conditioned_null' => false, 'types' => array('string'), 'references' => 0, 'object_type' => '', 'unused_value' => false, 'first_mention' => 0, 'mixed_tag' => false),
         'http_response_header' => array('is_global' => true, 'conditioner' => array(), 'conditioned_zero' => false, 'conditioned_false' => false, 'conditioned_null' => false, 'types' => array('array'), 'references' => 0, 'object_type' => '', 'unused_value' => false, 'first_mention' => 0, 'mixed_tag' => false),
         '_GET' => array('is_global' => true, 'conditioner' => array(), 'conditioned_zero' => false, 'conditioned_false' => false, 'conditioned_null' => false, 'types' => array('array'), 'references' => 0, 'object_type' => '', 'unused_value' => false, 'first_mention' => 0, 'mixed_tag' => false),
@@ -2081,6 +2026,11 @@ function reinitialise_local_variables()
         '_FILES' => array('is_global' => true, 'conditioner' => array(), 'conditioned_zero' => false, 'conditioned_false' => false, 'conditioned_null' => false, 'types' => array('array'), 'references' => 0, 'object_type' => '', 'unused_value' => false, 'first_mention' => 0, 'mixed_tag' => false),
         'GLOBALS' => array('is_global' => true, 'conditioner' => array(), 'conditioned_zero' => false, 'conditioned_false' => false, 'conditioned_null' => false, 'types' => array('array'), 'references' => 0, 'object_type' => '', 'unused_value' => false, 'first_mention' => 0, 'mixed_tag' => false),
     );
+    if ($inside_class) {
+        global $CURRENT_CLASS;
+        $ret['this'] = array('is_global' => false, 'conditioner' => array(), 'conditioned_zero' => false, 'conditioned_false' => false, 'conditioned_null' => false, 'types' => array('object'), 'references' => 0, 'object_type' => $CURRENT_CLASS, 'unused_value' => false, 'first_mention' => 0, 'mixed_tag' => false);
+    }
+    return $ret;
 }
 
 // If the given expression is a direct variable expression, this function will infer the type as the given type. This therefore allows type infering on usage as well as on assignment

@@ -484,7 +484,6 @@ function do_work()
             'notes' => '',
             'purchase_through' => 'purchase_module',
             'txn_id' => '',
-            'tax_opted_out' => 0,
         ), true);
 
         $GLOBALS['SITE_DB']->query_insert('shopping_order_details', array(

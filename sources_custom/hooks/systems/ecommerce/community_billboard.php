@@ -58,6 +58,8 @@ class Hook_ecommerce_community_billboard
 
         $products = array();
 
+        $price_points = get_option('community_billboard_price_points');
+
         foreach (array(1, 3, 5, 10, 20, 31, 90) as $days) {
             $products['COMMUNITY_BILLBOARD_' . strval($days)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('COMMUNITY_BILLBOARD_MESSAGE_FOR_DAYS', integer_format($days)),
@@ -69,7 +71,7 @@ class Hook_ecommerce_community_billboard
 
                 'price' => (get_option('community_billboard_price') == '') ? null : (float_unformat(get_option('community_billboard_price')) * $days),
                 'currency' => get_option('currency'),
-                'price_points' => (get_option('community_billboard_price_points') == '') ? null : (intval(get_option('community_billboard_price_points')) * $days),
+                'price_points' => empty($price_points) ? null : (intval($price_points) * $days),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 

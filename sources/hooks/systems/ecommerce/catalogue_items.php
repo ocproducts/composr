@@ -165,7 +165,7 @@ class Hook_ecommerce_catalogue_items
     protected function _calculate_shipping_cost($item_weight)
     {
         $base = get_base_shipping_cost();
-        $factor = float_unformat(get_option('shipping_cost_factor'))
+        $factor = float_unformat(get_option('shipping_cost_factor'));
         $shipping_cost = $base + $item_weight * $factor;
 
         return round($shipping_cost, 2);

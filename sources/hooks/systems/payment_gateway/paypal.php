@@ -127,6 +127,10 @@ class Hook_payment_gateway_paypal
      */
     public function make_cart_transaction_button($trans_expecting_id, $items, $shipping_cost, $currency, $order_id)
     {
+        if (!addon_installed('shopping')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $payment_address = $this->_get_payment_address();
 
         $form_url = $this->_get_remote_form_url();

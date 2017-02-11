@@ -344,7 +344,7 @@ If an eCommerce catalogue is not correctly configured errors will occur.
 The special eCommerce fields are:
  - title
  - code
- - price_pre_tax
+ - price
  - reduction_start
  - reduction_end
  - stock_level [allows blank, meaning 'not stock counted']

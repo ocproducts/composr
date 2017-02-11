@@ -194,6 +194,10 @@ class lang_no_unused_test_set extends cms_test_case
             'NEWPOP3_DESCRIPTION',
             'TITLE_POP3',
             'takes_lots_of_space',
+            'TAX_SALES_NUMBER',
+            'TAX_VAT_NUMBER',
+            'TAX_SALES',
+            'TAX_VAT',
         );
 
         $dh = opendir(get_file_base() . '/lang/EN/');

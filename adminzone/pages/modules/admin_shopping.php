@@ -329,7 +329,7 @@ class Module_admin_shopping
                 $transaction_linker,
                 $order_status,
                 $actions
-            ), false);
+            ), false));
         }
         if ($order_entries->is_empty()) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));

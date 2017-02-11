@@ -982,6 +982,10 @@ class Module_purchase
         $type_code = get_param_string('type_code');
 
         if ($type_code == 'CART_ORDER') {
+            if (!addon_installed('shopping')) {
+                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+
             // Copy cart into an order
             require_code('shopping');
             $order_id = copy_shopping_cart_to_order();
@@ -1070,9 +1074,18 @@ class Module_purchase
         if ($price == 0.00) { // Free/point-based product
             if ($confirmation_box === null) {
                 if ($points_for_discount !== null) {
+                    if (!addon_installed('points')) {
+                        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                    }
+
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_POINTS_CONFIRMATION', escape_html($item_name), escape_html(integer_format($points_for_discount)));
+
+                    require_css('points');
+                    $icon = 'menu__social__points';
                 } else {
                     $confirmation_box = do_lang_tempcode('BUYING_FOR_FREE_CONFIRMATION', escape_html($item_name));
+
+                    $icon = 'buttons__proceed';
                 }
             }
 
@@ -1093,8 +1106,6 @@ class Module_purchase
             $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'pay');
             $finish_url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'points' => 1, 'purchase_id' => $purchase_id, 'type_code' => $type_code), '_SELF', array('include_message' => null), true);
             $submit_name = do_lang_tempcode('MAKE_PAYMENT');
-            require_css('points');
-            $icon = 'menu__social__points';
 
         } elseif (perform_local_payment()) { // Handle the transaction internally
             if ($confirmation_box === null) {
@@ -1152,6 +1163,10 @@ class Module_purchase
                     $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price + $shipping_cost, $tax, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
                     break;
                 case PRODUCT_ORDERS:
+                    if (!addon_installed('shopping')) {
+                        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                    }
+
                     require_code('shopping');
                     $order_id = intval(preg_replace('#^CART\_ORDER\_#', '', $type_code));
                     $transaction_button = make_cart_payment_button($order_id, $currency, ($points_for_discount === null) ? 0 : $points_for_discount);
@@ -1396,6 +1411,10 @@ class Module_purchase
         list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($details, true);
 
         if ($points_for_discount !== null) {
+            if (!addon_installed('points')) {
+                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+
             // Can't afford the points?
             require_code('points');
             $available_points = available_points(get_member());

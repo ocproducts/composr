@@ -322,7 +322,7 @@ class Hook_ecommerce_permission
 
                 'price' => $row['p_price'],
                 'currency' => get_option('currency'),
-                'price_points' => $row['p_price_points'],
+                'price_points' => addon_installed('points') ? $row['p_price_points'] : null,
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 

@@ -38,6 +38,7 @@ class Hook_config_currency
             'explanation' => 'CONFIG_OPTION_currency',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 1,
 
             'addon' => 'ecommerce',
         );

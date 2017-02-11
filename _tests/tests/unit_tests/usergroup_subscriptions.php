@@ -26,14 +26,14 @@ class usergroup_subscriptions_test_set extends cms_test_case
 
         require_code('ecommerce2');
 
-        $this->group_id = add_usergroup_subscription('test', 'test', '123', 12, 'y', 1, 1, 1, 1, ' ', ' ', ' ', array());
+        $this->group_id = add_usergroup_subscription('test', 'test', 123.00, 10.00, 12, 'y', 1, 1, 1, 1, ' ', ' ', ' ', array());
 
         $this->assertTrue(12 == $GLOBALS['FORUM_DB']->query_select_value('f_usergroup_subs', 's_length', array('id' => $this->group_id)));
     }
 
     public function testEditusergroup()
     {
-        edit_usergroup_subscription($this->group_id, 'Edit usergroup subscription', 'new edit', '122', 3, 'y', 1, 0, 1, 1, ' ', ' ', ' ', array());
+        edit_usergroup_subscription($this->group_id, 'Edit usergroup subscription', 'new edit', 122.00, 10.00, 3, 'y', 1, 0, 1, 1, ' ', ' ', ' ', array());
 
         $this->assertTrue(3 == $GLOBALS['FORUM_DB']->query_select_value('f_usergroup_subs', 's_length', array('id' => $this->group_id)));
     }

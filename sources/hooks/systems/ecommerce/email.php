@@ -270,6 +270,7 @@ class Hook_ecommerce_email
             $current_amount += intval($quota_increase_row['details2']);
         }
 
+        $price_points = get_option('quota_price_points');
         foreach (array(100, 1000, 2000, 5000, 10000) as $amount) {
             if ($max_quota < $amount) {
                 continue;
@@ -285,7 +286,7 @@ class Hook_ecommerce_email
 
                 'price' => (get_option('quota_price') == '') ? null : (float_unformat(get_option('quota_price')) * $amount),
                 'currency' => get_option('currency'),
-                'price_points' => (get_option('quota_price_points') == '') ? null : (intval(get_option('quota_price_points')) * $amount),
+                'price_points' => empty($price_points) ? null : (intval($price_points) * $amount),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
@@ -323,7 +324,7 @@ class Hook_ecommerce_email
 
                     'price' => $row['price'],
                     'currency' => get_option('currency'),
-                    'price_points' => $row['price_points'],
+                    'price_points' => addon_installed('points') ? $row['price_points'] : null,
                     'discount_points__num_points' => null,
                     'discount_points__price_reduction' => null,
 

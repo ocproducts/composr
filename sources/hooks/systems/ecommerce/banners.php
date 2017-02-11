@@ -68,9 +68,9 @@ class Hook_ecommerce_banners
             'type' => PRODUCT_PURCHASE,
             'type_special_details' => array(),
 
-            'price' => float_unformat(get_option('banner_setup_price')),
+            'price' => (get_option('banner_setup_price') == '') ? null : (float_unformat(get_option('banner_setup_price'))),
             'currency' => get_option('currency'),
-            'price_points' => intval(get_option('banner_setup_price_points')),
+            'price_points' => (get_option('banner_setup_price_points') == '') ? null : (intval(get_option('banner_setup_price_points'))),
             'discount_points__num_points' => null,
             'discount_points__price_reduction' => null,
 
@@ -99,6 +99,7 @@ class Hook_ecommerce_banners
             }
         }
 
+        $price_points = get_option('banner_hit_price_points');
         foreach (array(10, 20, 50, 100, 1000, 2000, 5000, 10000, 20000, 50000, 100000) as $hits) {
             $products['BANNER_UPGRADE_HITS_' . strval($hits)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('BANNER_ADD_HITS', integer_format($hits), integer_format($current_hits)),
@@ -108,9 +109,9 @@ class Hook_ecommerce_banners
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => float_unformat(get_option('banner_hit_price')) * $hits,
+                'price' => (get_option('banner_hit_price') == '') ? null : (float_unformat(get_option('banner_hit_price')) * $hits),
                 'currency' => get_option('currency'),
-                'price_points' => intval(get_option('banner_hit_price_points')) * $hits,
+                'price_points' => empty($price_points) ? null : (intval($price_points) * $hits),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
@@ -120,6 +121,7 @@ class Hook_ecommerce_banners
             ));
         }
 
+        $price_points = get_option('banner_imp_price_points');
         foreach (array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) as $importance) {
             $percentage = intval(round(100.0 * floatval($current_importance + $importance) / floatval($total_importance)));
 
@@ -133,7 +135,7 @@ class Hook_ecommerce_banners
 
                 'price' => (get_option('banner_imp_price') == '') ? null : (float_unformat(get_option('banner_imp_price')) * $importance),
                 'currency' => get_option('currency'),
-                'price_points' => (get_option('banner_imp_price_points') == '') ? null : (intval(get_option('banner_imp_price_points')) * $importance),
+                'price_points' => empty($price_points) ? null : (intval($price_points) * $importance),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 

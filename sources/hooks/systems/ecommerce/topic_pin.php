@@ -52,6 +52,8 @@ class Hook_ecommerce_topic_pin
 
         $products = array();
 
+        $price_points = get_option('topic_pin_price_points');
+
         foreach (array(1, 3, 5, 10, 20, 31, 90) as $days) {
             $products['TOPIC_PIN_' . strval($days)] = automatic_discount_calculation(array(
                 'item_name' => do_lang('TOPIC_PINNED_FOR', integer_format($days)),
@@ -63,7 +65,7 @@ class Hook_ecommerce_topic_pin
 
                 'price' => (get_option('topic_pin_price') == '') ? null : (float_unformat(get_option('topic_pin_price')) * $days),
                 'currency' => get_option('currency'),
-                'price_points' => (get_option('topic_pin_price_points') == '') ? null : (intval(get_option('topic_pin_price_points')) * $days),
+                'price_points' => empty($price_points) ? null : (intval($price_points) * $days),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 

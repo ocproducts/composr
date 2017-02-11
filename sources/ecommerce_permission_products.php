@@ -124,7 +124,7 @@ function permission_product_save($resource_type, $old_category_id, $new_category
     $_price = post_param_string('permission_product__price', '');
     $price = ($_price == '') ? null : float_unformat($_price);
 
-    $_tax = post_param_string('permission_product__tax');
+    $_tax = post_param_string('permission_product__tax', '0.00');
     $tax = ($_tax == '') ? null : float_unformat($_tax);
 
     $price_points = post_param_integer('permission_product__price_points', null);

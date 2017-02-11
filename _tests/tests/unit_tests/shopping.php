@@ -131,7 +131,7 @@ class shopping_test_set extends cms_test_case
         $shopping_module->add_item();
 
         $_GET['page'] = 'shopping'; // Static setting to identify the module in payment form
-        render_cart_payment_form();
+        $shopping_module->view_shopping_cart();
     }
 
     public function testHandleTransaction()

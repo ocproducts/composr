@@ -34,6 +34,8 @@ class Hook_ecommerce_highlight_name
      */
     public function get_products($search = null)
     {
+        $price_points = get_option('highlight_name_price_points');
+
         $products = array(
             'HIGHLIGHT_NAME' => automatic_discount_calculation(array(
                 'item_name' => do_lang('NAME_HIGHLIGHTING'),
@@ -45,7 +47,7 @@ class Hook_ecommerce_highlight_name
 
                 'price' => (get_option('highlight_name_price') == '') ? null : float_unformat(get_option('highlight_name_price')),
                 'currency' => get_option('currency'),
-                'price_points' => (get_option('highlight_name_price_points') == '') ? null : (intval(get_option('highlight_name_price_points'))),
+                'price_points' => empty($price_points) ? null : intval($price_points),
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 

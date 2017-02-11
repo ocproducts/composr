@@ -37,7 +37,7 @@ class Hook_config_tax_system
             'group' => 'TAX',
             'explanation' => 'CONFIG_OPTION_tax_system',
             'shared_hosting_restricted' => '0',
-            'list_options' => 'tax_sales|tax_vat',
+            'list_options' => 'TAX_SALES|TAX_VAT',
             'order_in_category_group' => 2,
 
             'addon' => 'ecommerce',
@@ -51,6 +51,6 @@ class Hook_config_tax_system
      */
     public function get_default()
     {
-        return (get_option('yeehaw') == '1') ? 'tax_sales' : 'tax_vat';
+        return (get_option('yeehaw') == '1') ? 'TAX_SALES' : 'TAX_VAT';
     }
 }

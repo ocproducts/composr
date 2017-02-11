@@ -147,6 +147,10 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
  */
 function build_order_details($title, $id, $text, $show_order_actions = false)
 {
+    if (!addon_installed('shopping')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     $order_title = do_lang('CART_ORDER', strval($id));
 
     // Collecting order details
@@ -210,7 +214,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
         do_lang_tempcode('PRICE'),
         do_lang_tempcode(get_option('tax_system')),
         do_lang_tempcode('QUANTITY'),
-        do_lang_tempcode('STATUS'),
+        do_lang_tempcode('DISPATCH_STATUS'),
     ));
 
     $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY id');

@@ -113,6 +113,20 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        BANNERS_IN_TYPE_AS_SECONDARY
+        CONFIG_OPTION_tax_country_regexp
+        CONFIG_OPTION_tax_detailed
+        CONFIG_OPTION_tax_state_regexp
+        DESCRIPTION_BANNERS_IN_TYPE_AS_SECONDARY
+        DESCRIPTION_MAIL_TAX
+        DESCRIPTION_SHIPPING_COST
+        DESCRIPTION_TAX_PAID
+        MAIL_TAX
+        TAX_COUNTRY_REGEXP
+        TAX_DETAILED
+        TAX_STATE_REGEXP
+        VIEW_CART
+        _DESCRIPTION_MAIL_TAX
         MONIKER_TRANSLITERATION
         CONFIG_OPTION_moniker_transliteration
         BLOCKS_AT_TOP
@@ -3440,7 +3454,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_DOWNLOADS_STATISTICS
         DESCRIPTION_DOWNLOAD_AS_CSV
         DESCRIPTION_DOWNLOAD_COMPOSR_HOMESITE
-        DESCRIPTION_DOWNLOAD_PRICE
+        DESCRIPTION_DOWNLOAD_COST
         DESCRIPTION_DOWNLOAD_IMAGES
         DESCRIPTION_DOWNLOAD_IMAGE_SHORTCUT
         DESCRIPTION_DOWNLOAD_LICENCE
@@ -4294,8 +4308,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EXTERNAL_LINKS
         TAX_SYSTEM
         CONFIG_OPTION_tax_system
-        CONFIG_OPTION_tax_system_VALUE_tax_sales
-        CONFIG_OPTION_tax_system_VALUE_tax_vat
+        CONFIG_OPTION_tax_system_VALUE_TAX_SALES
+        CONFIG_OPTION_tax_system_VALUE_TAX_VAT
         TAX_NUMBER
         CONFIG_OPTION_tax_number
         EXTRACTING_MESSAGE
@@ -5972,7 +5986,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PRIVILEGE_vote_in_polls
         PRIVILEGE_warn_members
         PRIVILEGE_wiki_manage_tree
-        PAYMENT_MEMOS=Payment memos
+        PAYMENT_MEMOS
         CONFIG_OPTION_payment_memos
         ECOM_PRICE_HONOUR_TIME
         CONFIG_OPTION_ecom_price_honour_time
@@ -6035,7 +6049,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_site_message_end_datetime
         SITE_MESSAGE_STATUS_LEVEL
         CONFIG_OPTION_site_message_status_level
-        CONFIG_OPTION_site_message_status_level_VALUE_NEVER=Never
+        CONFIG_OPTION_site_message_status_level_VALUE_inform
+        CONFIG_OPTION_site_message_status_level_VALUE_notice
+        CONFIG_OPTION_site_message_status_level_VALUE_warn
         SITE_MESSAGE_USERGROUP_SELECT
         CONFIG_OPTION_site_message_usergroup_select
         Q_SURE_BAN
@@ -7113,7 +7129,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_about_NAME
         NO_DAYLIGHT_SAVING
         NOTIFICATION_TYPE_payment_received
-        notification_type_payment_received_staff
+        NOTIFICATION_TYPE_payment_received_staff
         AUTOMATIC_CATEGORY_ACCESS_BODY
         AUTOMATIC_CATEGORY_ACCESS_SUBJECT
         BANNERS_INTRO
@@ -7126,6 +7142,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BUYING_FOR_FREE_CONFIRMATION
         BUYING_FOR_MONEY_CONFIRMATION
         BUYING_FOR_POINTS_CONFIRMATION
+        TITLE_QUOTA
         CART_ORDER_DESCRIPTION
         CATALOGUE_ITEM
         CATALOGUE_ITEM_DESCRIPTION
@@ -8100,7 +8117,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FORUM_TOPIC
         FORUM_TOPICS
         FORUM_TOPIC_NUMBERED
-        FORWARDING
         FOUND_THIS_ON
         FREE_PURCHASE
         FRIEND
@@ -8801,7 +8817,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAUSE
         PAYMENT_RECEIVED_BODY
         PAYMENT_RECEIVED_SUBJECT
-        PAYMENT_SENT_BODY
+        PAYMENT_SENT_BODY_manual
+        PAYMENT_SENT_BODY_automatic
         PAYMENT_SENT_SUBJECT
         PEOPLE_NOW_FRIENDS
         PERCENTAGE
@@ -8874,7 +8891,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         POLL_NOT_ENOUGH_ERROR_2
         POLL_REQUIRES_REPLY
         POLL_RESULTS
-        POP3
         POPULARITY
         POSSIBLE_CORRECTIONS
         POSTED_TIME_SIMPLE
@@ -9360,7 +9376,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TITLE
         NEWFORWARDING_TITLE
         NEWPOP3_TITLE
-        QUOTA_TITLE
         TITLE_TOO_LONG
         TO
         TODAY
@@ -9589,7 +9604,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _ADD_PRIVATE_TOPIC_UNKNOWN
         _ADD_TOPIC
         _ALL
-        _ALREADY_HAVE
         _APPLY_TO_GROUP
         _ARE_YOU_SURE_DELETE
         _ASCENDING

@@ -73,7 +73,7 @@ class Hook_ecommerce_custom
         $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'custom_description' . $name_suffix, $description, true));
         $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_PRICE'), 'custom_price' . $name_suffix, $price, false));
         $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_INCLUDING_SHIPPING_COST_TAX'), 'custom_tax' . $name_suffix, $tax, true));
-        $fields->attach(form_input_float(do_lang_tempcode('SHIPPPING_COST'), do_lang_tempcode('DESCRIPTION_SHIPPPING_COST'), 'custom_shipping_cost' . $name_suffix, $shipping_cost, true));
+        $fields->attach(form_input_float(do_lang_tempcode('SHIPPING_COST'), do_lang_tempcode('DESCRIPTION_SHIPPING_COST'), 'custom_shipping_cost' . $name_suffix, $shipping_cost, true));
         if (addon_installed('points')) {
             $fields->attach(form_input_integer(do_lang_tempcode('PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_PRICE_POINTS'), 'custom_price_points' . $name_suffix, $price_points, false));
         }
@@ -219,7 +219,7 @@ class Hook_ecommerce_custom
 
                 'price' => $row['c_price'],
                 'currency' => get_option('currency'),
-                'price_points' => $row['c_price_points'],
+                'price_points' => addon_installed('points') ? $row['c_price_points'] : null,
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 

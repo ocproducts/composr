@@ -448,7 +448,9 @@ function recalculate_shipping_cost_combo($products_in_cart, $member_id = null)
     foreach ($products_in_cart as $_product) {
         list($product, $quantity) = $_product;
 
-        recalculate_shipping_cost($product, $product['shipping_cost'] - get_base_shipping_cost(), $member_id, $quantity);
+        list($details) = find_product_details($product['type_code']);
+
+        recalculate_shipping_cost($product, $details['shipping_cost'] - get_base_shipping_cost(), $member_id, $quantity);
     }
 
     return $shipping_cost;
@@ -544,7 +546,7 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
         $transaction_fields = array(
             'TRANSACTION' => $transaction_row['t_id'],
             'IDENTIFIER' => $transaction_row['t_purchase_id'],
-            'LINKED_ID' => $transaction_row['t_parent_txn_id'],
+            'PARENT' => $transaction_row['t_parent_txn_id'],
             'AMOUNT' => float_format($transaction_row['t_amount']),
             'TAX' => float_format($transaction_row['t_tax']),
             'CURRENCY' => $transaction_row['t_currency'],

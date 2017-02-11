@@ -3,10 +3,6 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.ecom_welcome {
-	text-align: center;
-}
-
 .purchase_button {
 	text-align: center;
 }
@@ -73,7 +69,7 @@
 .local_payment_verified_account_logo {
 }
 
-.local_payment_merchant_details p, .local_payment_merchant_details_simple p {
+.local_payment_merchant_details p {
 	margin: 0;
 }
 
@@ -93,12 +89,12 @@
 	max-width: 800px;
 	margin: auto;
 	padding: 30px;
-	border: 1px solid #eee;
+	border: 1px solid {$GET,pale_border};
 	box-shadow: 0 0 10px rgba(0, 0, 0, .15);
 	font-size: 16px;
 	line-height: 24px;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	color: #555;
+	color: {$GET,slightly_seeded_gray_text};
 }
 
 .invoice_box table {
@@ -123,7 +119,7 @@
 .invoice_box table tr.top table td.title {
 	font-size: 45px;
 	line-height: 45px;
-	color: #333;
+	color: {$GET,area_text};
 }
 
 .invoice_box table tr.top table td.title img {
@@ -136,17 +132,13 @@
 }
 
 .invoice_box table tr.heading td {
-	background: #eee;
-	border-bottom: 1px solid #ddd;
+	background: {$GET,area_background};
+	border-bottom: 1px solid {$GET,area_2_background};
 	font-weight: bold;
 }
 
-.invoice_box table tr.details td {
-	padding-bottom: 20px;
-}
-
 .invoice_box table tr.item td {
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid {$GET,area_background};
 }
 
 .invoice_box table tr.item.last td {
@@ -154,7 +146,7 @@
 }
 
 .invoice_box table tr.total td: nth-child(2) {
-	border-top: 2px solid #eee;
+	border-top: 2px solid {$GET,area_background};
 	font-weight: bold;
 }
 
