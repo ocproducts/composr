@@ -2865,6 +2865,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_session_expiry_time
         CONFIG_OPTION_session_prudence
         CONFIG_OPTION_shipping_cost_factor
+        CONFIG_OPTION_shipping_cost_base
         CONFIG_OPTION_show_conceded_mode_link
         CONFIG_OPTION_show_content_tagging
         CONFIG_OPTION_show_content_tagging_inline
@@ -6215,6 +6216,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SET_REDIRECTS
         SHARED_INSTALL_PROHIBIT
         SHIPPING_COST_FACTOR
+        SHIPPING_COST_BASE
         SHOPPING_FORCE_DELETE
         SHOULD_HAVE_BEEN_POSTED
         SHOULD_HAVE_BEEN_POSTED_FILE_ERROR

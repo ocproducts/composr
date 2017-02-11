@@ -126,6 +126,8 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/resource_meta_aware/usergroup_subscription.php',
             'sources/hooks/systems/commandr_fs/usergroup_subscriptions.php',
             'sources/hooks/systems/config/payment_gateway_callback_password.php',
+            'sources/hooks/systems/config/shipping_cost_base.php',
+            'sources/hooks/systems/config/shipping_cost_factor.php',
             'sources/hooks/systems/config/tax_system.php',
             'sources/hooks/systems/config/tax_number.php',
             'sources/hooks/systems/config/business_address.php',

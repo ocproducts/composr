@@ -371,13 +371,7 @@ function get_base_shipping_cost()
 
     if ($ret === null) {
         $option = get_option('shipping_cost_factor');
-        $base = 0.00;
-        $matches = array();
-        if (preg_match('#\(([\d\.]+)\)#', $option, $matches) != 0) {
-            $base = float_unformat($matches[1]);
-        }
-
-        $ret = round($base, 2);
+        $ret = round(float_unformat($option), 2);
     }
 
     return $ret;

@@ -164,17 +164,8 @@ class Hook_ecommerce_catalogue_items
      */
     protected function _calculate_shipping_cost($item_weight)
     {
-        $option = get_option('shipping_cost_factor');
-        $base = 0.00;
-        $matches = array();
-        if (preg_match('#\(([\d\.]+)\)#', $option, $matches) != 0) {
-            $base = float_unformat($matches[1]);
-            $option = str_replace($matches[0], '', $option);
-        }
-        if ($option == '') {
-            $option = float_format(0.0);
-        }
-        $factor = float_unformat($option) / 100.0;
+        $base = get_base_shipping_cost();
+        $factor = float_unformat(get_option('shipping_cost_factor'))
         $shipping_cost = $base + $item_weight * $factor;
 
         return round($shipping_cost, 2);

@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    shopping
+ * @package    ecommerce
  */
 
 /**
@@ -32,14 +32,15 @@ class Hook_config_shipping_cost_factor
     {
         return array(
             'human_name' => 'SHIPPING_COST_FACTOR',
-            'type' => 'line',
+            'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'SHIPPING',
             'explanation' => 'CONFIG_OPTION_shipping_cost_factor',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
-            'addon' => 'shopping',
+            'addon' => 'ecommerce',
         );
     }
 
@@ -50,6 +51,6 @@ class Hook_config_shipping_cost_factor
      */
     public function get_default()
     {
-        return '0';
+        return '0.0';
     }
 }

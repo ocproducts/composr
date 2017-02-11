@@ -123,7 +123,6 @@ class Hook_addon_registry_shopping
             'sources/hooks/systems/notifications/new_order.php',
             'sources/hooks/systems/notifications/low_stock.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/shopping.php',
-            'sources/hooks/systems/config/shipping_cost_factor.php',
             'sources/hooks/systems/config/cart_hold_hours.php',
             'sources/hooks/systems/ecommerce/catalogue_items.php',
             'sources/hooks/systems/ecommerce/cart_orders.php',

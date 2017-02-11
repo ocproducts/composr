@@ -170,6 +170,20 @@ class Module_shopping
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'date_and_time', 'TIME', 'l_date_and_time');
 
             $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_addresses');
+
+            $option = get_option('shipping_cost_factor');
+            $base = 0.00;
+            $matches = array();
+            if (preg_match('#\(([\d\.]+)\)#', $option, $matches) != 0) {
+                $base = float_unformat($matches[1]);
+                $option = str_replace($matches[0], '', $option);
+            }
+            if ($option == '') {
+                $option = float_format(0.0);
+            }
+            $factor = float_unformat($option) / 100.0;
+            set_option('shipping_cost_base', float_format($base));
+            set_option('shipping_cost_factor', float_format($factor));
         }
     }
 

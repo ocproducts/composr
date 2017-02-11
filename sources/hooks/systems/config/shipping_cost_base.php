@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_shipping_cost_tax_rate
+class Hook_config_shipping_cost_base
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_shipping_cost_tax_rate
     public function get_details()
     {
         return array(
-            'human_name' => 'SHIPPING_COST_TAX_RATE',
+            'human_name' => 'SHIPPING_COST_BASE',
             'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'SHIPPING',
-            'explanation' => 'CONFIG_OPTION_shipping_cost_tax_rate',
-            'shared_hosting_restricted' => '0',
+            'explanation' => 'CONFIG_OPTION_shipping_cost_base',
+            'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 1,
 
             'addon' => 'ecommerce',
         );
