@@ -71,18 +71,22 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
 
     $sales_rows = array();
     foreach ($rows as $row) {
-        $transaction_linker = build_transaction_linker($row['txn_id'], $row['t_status'] != 'Completed', $row);
+        $transaction_row = get_transaction_row($row['txn_id']);
+
+        $transaction_linker = build_transaction_linker($row['txn_id'], $transaction_row['t_status'] != 'Completed', $transaction_row);
 
         if ($show_username) {
             $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id']);
         }
 
-        list($details) = find_product_details($row['t_type_code']);
+        list($details) = find_product_details($transaction_row['t_type_code']);
         if ($details !== null) {
             $item_name = $details['item_name'];
+        } else {
+            $item_name = $transaction_row['t_type_code'];
         }
 
-        $product_det_url = get_product_det_url($row['t_type_code'], true, $filter_member_id);
+        $product_det_url = get_product_det_url($transaction_row['t_type_code'], true, $filter_member_id);
         $item_link = hyperlink($product_det_url, $item_name, false, true);
 
         if (strpos($item_name, $row['details']) === false) {
@@ -154,13 +158,13 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
     $order_title = do_lang('CART_ORDER', strval($id));
 
     // Collecting order details
-    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order o LEFT JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=o.txn_id', array('*', 'o.id AS o_id', 't.id AS t_id'), array('o.id' => $id), '', 1);
+    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $order_rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     $order_row = $order_rows[0];
 
-    $transaction_linker = build_transaction_linker($order_row['txn_id'], $order_row['order_status'] == 'ORDER_STATUS_awaiting_payment', $order_row);
+    $transaction_linker = build_transaction_linker($order_row['txn_id'], $order_row['order_status'] == 'ORDER_STATUS_awaiting_payment');
 
     $ordered_by_member_id = $order_row['member_id'];
     $ordered_by_username = $GLOBALS['FORUM_DRIVER']->get_username($order_row['member_id']);

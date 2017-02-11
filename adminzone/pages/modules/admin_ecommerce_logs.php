@@ -108,7 +108,12 @@ class Module_admin_ecommerce_logs
             $this->title = get_screen_title('TRANSACTIONS');
         }
 
-        if (($type != 'logs') && ($type != 'sales')) {
+        if ($type == 'tax_invoice') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:logs', do_lang_tempcode('TRANSACTIONS'))));
+            $this->title = get_screen_title('TAX_INVOICE');
+        }
+
+        if (($type != 'logs') && ($type != 'sales') && ($type != 'tax_invoice')) {
             set_helper_panel_tutorial('tut_ecommerce');
             set_helper_panel_text(comcode_lang_string('DOC_ECOMMERCE'));
         }
@@ -188,6 +193,9 @@ class Module_admin_ecommerce_logs
         }
         if ($type == 'logs') {
             return $this->logs();
+        }
+        if ($type == 'tax_invoice') {
+            return $this->tax_invoice();
         }
         if ($type == 'cash_flow') {
             return $this->cash_flow();
@@ -538,9 +546,15 @@ class Module_admin_ecommerce_logs
                 $status = make_string_tempcode(escape_html(get_transaction_status_string($transaction_row['t_status'])));
             }
 
+            list($details, $product_object) = find_product_details($transaction_row['t_type_code']);
+            if ($details !== null) {
+                $item_name = $details['item_name'];
+            } else {
+                $item_name = $transaction_row['t_type_code'];
+            }
+
             // Find member link, if possible
             $member_id = null;
-            list($details, $product_object) = find_product_details($transaction_row['t_type_code']);
             if ($product_object !== null) {
                 $member_id = method_exists($product_object, 'member_for') ? $product_object->member_for($transaction_row['t_type_code'], $transaction_row['t_purchase_id']) : null;
             }
@@ -551,15 +565,15 @@ class Module_admin_ecommerce_logs
             }
 
             $tax = ecommerce_get_currency_symbol() . escape_html(float_format($transaction_row['t_tax']));
-            $tax_linker = do_template('CROP_TEXT_MOUSE_OVER', array('TEXT_LARGE' => generate_tax_invoice($transaction_row['id']), 'TEXT_SMALL' => $tax));
+            $tax_linker = hyperlink(build_url(array('page' => '_SELF', 'type' => 'tax_invoice', 'id' => $transaction_row['id'], 'wide_high' => 1), '_SELF'), $tax, false, false, '', null, null, null, true);
 
             $fields->attach(results_entry(array(
                 escape_html($transaction_row['id']) . (($transaction_row['t_parent_txn_id'] == '') ? '' : (' &rarr; ' . escape_html($transaction_row['t_parent_txn_id']))),
                 escape_html($transaction_row['t_purchase_id']),
                 escape_html($date),
                 ecommerce_get_currency_symbol() . escape_html(float_format($transaction_row['t_amount'])),
-                $tax,
-                escape_html(($details === null) ? $transaction_row['t_type_code'] : $details['item_name']),
+                $tax_linker,
+                escape_html($item_name),
                 $status,
                 escape_html(trim($transaction_row['t_reason'] . '; ' . $transaction_row['t_pending_reason'], '; ')),
                 escape_html($transaction_row['t_memo']),
@@ -581,6 +595,20 @@ class Module_admin_ecommerce_logs
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
+    }
+
+    /**
+     * Show a tax invoice for a transaction.
+     *
+     * @return Tempcode The result of execution.
+     */
+    function tax_invoice()
+    {
+        $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
+
+        $txn_id = get_param_string('id');
+        $tax_invoice = generate_tax_invoice($txn_id);
+        return $tax_invoice;
     }
 
     /**

@@ -571,22 +571,22 @@ class Module_shopping
 
         $orders = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order o LEFT JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=o.txn_id', array('*', 'o.id AS id', 't.id AS t_id'), array('member_id' => $member_id), 'ORDER BY add_date');
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('member_id' => $member_id), 'ORDER BY add_date');
 
         foreach ($rows as $row) {
-            $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['o_id']), '_SELF');
+            $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
 
             if ($row['purchase_through'] == 'cart') {
-                $order_title = do_lang('CART_ORDER', strval($row['o_id']));
+                $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
-                $order_title = do_lang('PURCHASE_ORDER', strval($row['o_id']));
+                $order_title = do_lang('PURCHASE_ORDER', strval($row['id']));
             }
 
-            $transaction_linker = build_transaction_linker($row['txn_id'], $row['order_status'] == 'ORDER_STATUS_awaiting_payment', $row);
+            $transaction_linker = build_transaction_linker($row['txn_id'], $row['order_status'] == 'ORDER_STATUS_awaiting_payment');
 
             $orders[] = array(
                 'ORDER_TITLE' => $order_title,
-                'ID' => strval($row['o_id']),
+                'ID' => strval($row['id']),
                 'TXN_ID' => $row['txn_id'],
                 'TRANSACTION_LINKER' => $transaction_linker,
                 'TOTAL_PRICE' => float_format($row['total_price']),

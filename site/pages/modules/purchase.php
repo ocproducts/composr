@@ -153,7 +153,7 @@ class Module_purchase
                 't_purchase_id' => 'ID_TEXT',
                 't_status' => 'SHORT_TEXT',
                 't_reason' => 'SHORT_TEXT',
-                't_amount' => 'REAL',
+                't_amount' => 'REAL', // Does NOT include tax (unlike most 'amount' figures in Composr)
                 't_tax' => 'REAL',
                 't_currency' => 'ID_TEXT',
                 't_parent_txn_id' => 'ID_TEXT',

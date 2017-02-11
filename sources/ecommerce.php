@@ -535,12 +535,16 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
  *
  * @param  ID_TEXT $txn_id Transaction ID.
  * @param  boolean $awaiting_payment If payment is still required.
- * @param  array $transaction_row The transaction database row.
+ * @param  ?array $transaction_row The transaction database row (null: look it up).
  * @return Tempcode The linker.
  */
-function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
+function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row = null)
 {
     if (($txn_id != '') && (!$awaiting_payment)) {
+        if ($transaction_row === null) {
+            $transaction_row = get_transaction_row($txn_id);
+        }
+
         if (has_actual_page_access(get_member(), 'admin_ecommerce_logs')) {
             $transaction_details_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'logs', 'type_code' => $transaction_row['t_type_code'], 'txn_id' => $transaction_row['id']), get_module_zone('admin_ecommerce_logs'));
             $transaction_link = hyperlink($transaction_details_url, $txn_id, false, true);
@@ -551,7 +555,7 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
         require_code('templates_map_table');
 
         $transaction_fields = array(
-            'TRANSACTION' => $transaction_row['t_id'],
+            'TRANSACTION' => $txn_id,
             'IDENTIFIER' => $transaction_row['t_purchase_id'],
             'PARENT' => $transaction_row['t_parent_txn_id'],
             'AMOUNT' => float_format($transaction_row['t_amount']),
@@ -1989,6 +1993,21 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
 }
 
 /**
+ * Get a transaction row.
+ *
+ * @param  ID_TEXT $txn_id Transaction ID.
+ * @return array Row.
+ */
+function get_transaction_row($txn_id)
+{
+    $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('*'), array('id' => $txn_id), '', 1);
+    if (!array_key_exists(0, $transaction_rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+    return $transaction_rows[0];
+}
+
+/**
  * Generate tax invoice.
  *
  * @param  ID_TEXT $txn_id Transaction ID.
@@ -1998,11 +2017,7 @@ function generate_tax_invoice($txn_id)
 {
     require_css('ecommerce');
 
-    $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('*'), array('id' => $txn_id), '', 1);
-    if (!array_key_exists(0, $transaction_rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-    }
-    $transaction_row = $transaction_rows[0];
+    $transaction_row = get_transaction_row($txn_id);
 
     $address_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_trans_expecting_id' => $txn_id), '', 1);
     $trans_address = '';
@@ -2037,7 +2052,28 @@ function generate_tax_invoice($txn_id)
             'PRICE' => float_format($item['price'] * $item['quantity']),
             'UNIT_TAX' => float_format($item['tax']),
             'TAX' => float_format($item['tax'] * $item['quantity']),
-            'TAX_RATE' => float_format(backcalculate_tax_rate($item['price'], $item['tax']), 1),
+            'TAX_RATE' => float_format(backcalculate_tax_rate($item['price'], $item['tax']), 1, true),
+        );
+    }
+    if (count($invoicing_breakdown) == 0) { 
+        // We don't have a break-down so at least find a single line-item
+
+        list($details) = find_product_details($transaction_row['t_type_code']);
+        if ($details !== null) {
+            $item_name = $details['item_name'];
+        } else {
+            $item_name = $transaction_row['t_type_code'];
+        }
+
+        $invoicing_breakdown[] = array(
+            'TYPE_CODE' => $transaction_row['t_type_code'],
+            'ITEM_NAME' => $item_name,
+            'QUANTITY' => 1,
+            'UNIT_PRICE' => float_format($transaction_row['t_amount']),
+            'PRICE' => float_format($transaction_row['t_amount']),
+            'UNIT_TAX' => float_format($transaction_row['t_tax']),
+            'TAX' => float_format($transaction_row['t_tax']),
+            'TAX_RATE' => float_format(backcalculate_tax_rate($transaction_row['t_amount'], $transaction_row['t_tax']), 1, true),
         );
     }
 

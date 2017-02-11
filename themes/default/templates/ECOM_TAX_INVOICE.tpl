@@ -1,7 +1,7 @@
 <div class="invoice_box">
 	<table><tbody>
 		<tr class="top">
-			<td colspan="2">
+			<td colspan="6">
 				<table><tbody>
 					<tr>
 						<td class="title">
@@ -13,7 +13,7 @@
 
 						<td>
 							{!INVOICE} #: {TXN_ID*}<br />
-							{!STATUS}: {DATE*}
+							{STATUS*}: {DATE*}
 						</td>
 					</tr>
 				</tbody></table>
@@ -21,7 +21,7 @@
 		</tr>
 
 		<tr class="information">
-			<td colspan="2">
+			<td colspan="6">
 				<table><tbody>
 					<tr>
 						<td>
@@ -79,15 +79,15 @@
 				</td>
 
 				<td>
-					{CURRENCY_SYMBOL*}{UNIT_PRICE*}
+					{CURRENCY_SYMBOL}{UNIT_PRICE*}
 				</td>
 
 				<td>
-					{CURRENCY_SYMBOL*}{PRICE*}
+					{CURRENCY_SYMBOL}{PRICE*}
 				</td>
 
 				<td>
-					{CURRENCY_SYMBOL*}{TAX*} ({TAX_RATE*}%)
+					{CURRENCY_SYMBOL}{TAX*} ({TAX_RATE*}%)
 				</td>
 			</tr>
 		{+END}
@@ -96,17 +96,17 @@
 			<td colspan="4"></td>
 
 			<td>
-				{CURRENCY_SYMBOL*}{TOTAL_PRICE*}
+				{CURRENCY_SYMBOL}{TOTAL_PRICE*}
 			</td>
 
 			<td>
-				{CURRENCY_SYMBOL*}{TOTAL_TAX*}
+				{CURRENCY_SYMBOL}{TOTAL_TAX*}
 			</td>
 		</tr>
 
 		<tr class="total">
 			<td colspan="6">
-				{!GRAND_TOTAL}: {CURRENCY_SYMBOL*}{TOTAL_AMOUNT*}
+				{!GRAND_TOTAL}: {CURRENCY_SYMBOL}{TOTAL_AMOUNT*}
 			</td>
 		</tr>
 	</tbody></table>

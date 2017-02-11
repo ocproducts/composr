@@ -34,8 +34,16 @@ class Hook_cron_topic_pin
             $time = time();
             $sql = 'SELECT details FROM ' . get_table_prefix() . 'ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id WHERE ' . db_string_equal_to('t_type_code', 'topic_pin') . ' AND ' . db_string_not_equal_to('details2', '') . ' AND date_and_time<' . strval($time) . '-details2*24*60*60' . ' AND date_and_time>' . strval($last_run) . '-details2*24*60*60';
             $rows = $GLOBALS['SITE_DB']->query($sql);
+            $done = array();
             foreach ($rows as $row) {
-                $GLOBALS['FORUM_DRIVER']->pin_topic(intval($row['details']), false);
+                $topic_id = intval($row['details']);
+
+                if (isset($done[$topic_id])) {
+                    continue;
+                }
+                $done[$topic_id] = true;
+
+                $GLOBALS['FORUM_DRIVER']->pin_topic($topic_id, false);
             }
             set_value('last_time_cron_topic_pin', strval($time), true);
         }

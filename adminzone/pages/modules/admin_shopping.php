@@ -291,7 +291,7 @@ class Module_admin_shopping
         global $NO_DB_SCOPE_CHECK;
         $NO_DB_SCOPE_CHECK = true;
 
-        $sql = 'SELECT *,o.id AS id,t.id AS t_id FROM ' . get_table_prefix() . 'shopping_order o LEFT JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=o.txn_id WHERE ' . $where . ' ORDER BY ' . db_string_equal_to('order_status', 'ORDER_STATUS_cancelled')/*cancelled always last*/ . ',' . $sortable . ' ' . $sort_order;
+        $sql = 'SELECT * WHERE ' . $where . ' ORDER BY ' . db_string_equal_to('order_status', 'ORDER_STATUS_cancelled')/*cancelled always last*/ . ',' . $sortable . ' ' . $sort_order;
         $rows = $GLOBALS['SITE_DB']->query($sql, $max, $start, false, true);
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
@@ -312,7 +312,7 @@ class Module_admin_shopping
                 $member_link = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
             }
 
-            $transaction_linker = build_transaction_linker($row['txn_id'], $row['order_status'] == 'ORDER_STATUS_awaiting_payment', $row);
+            $transaction_linker = build_transaction_linker($row['txn_id'], $row['order_status'] == 'ORDER_STATUS_awaiting_payment');
 
             $order_status = do_lang_tempcode($row['order_status']);
 
