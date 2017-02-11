@@ -137,7 +137,7 @@ class Hook_ecommerce_email
         if (($price !== null) && ($price_points !== null)) {
             $dforw = post_param_string('dforw');
 
-            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'forw_' . $dforw, 'price' => $price, 'tax' => $tax, 'price_points' => $forw_price_points));
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'forw_' . $dforw, 'price' => $price, 'tax' => $tax, 'price_points' => $price_points));
 
             log_it('ECOM_PRODUCTS_ADD_MAIL_FORWARDER', $dforw);
         }
@@ -181,7 +181,7 @@ class Hook_ecommerce_email
     protected function _add_config_pop3()
     {
         $_price = post_param_string('pop3_price', '');
-        $price = ($_pop3_price == '') ? null : float_unformat($_price);
+        $price = ($_price == '') ? null : float_unformat($_price);
 
         $_tax = post_param_string('forw_tax');
         $tax = float_unformat($_tax);
@@ -195,7 +195,7 @@ class Hook_ecommerce_email
         if (($price !== null) && ($price_points !== null)) {
             $dpop3 = post_param_string('dpop3');
 
-            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'pop3_' . $dpop3, 'price' => $price, 'tax' => $tax, 'price_points' => $pop3_price_points));
+            $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'pop3_' . $dpop3, 'price' => $price, 'tax' => $tax, 'price_points' => $price_points));
 
             log_it('ECOM_PRODUCTS_ADD_MAIL_POP3', $dpop3);
         }
@@ -327,7 +327,7 @@ class Hook_ecommerce_email
                     'discount_points__num_points' => null,
                     'discount_points__price_reduction' => null,
 
-                    'tax' => $price['tax'],
+                    'tax' => $row['tax'],
                     'shipping_cost' => 0.00,
                     'needs_shipping_address' => false,
                 ));

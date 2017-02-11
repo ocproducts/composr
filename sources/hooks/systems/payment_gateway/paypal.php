@@ -257,7 +257,7 @@ class Hook_payment_gateway_paypal
         $_tax = post_param_string('tax', '');
         if ($_tax == '') {
             $tax = null;
-        } else
+        } else {
             $tax = floatval($_tax);
         }
         $currency = post_param_string('mc_currency', get_option('currency')); // May be blank for subscription

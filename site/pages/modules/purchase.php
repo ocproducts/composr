@@ -75,6 +75,7 @@ class Module_purchase
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_transactions');
         $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_expecting');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_addresses');
         $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_sales_expecting');
 
         delete_privilege('access_ecommerce_in_test_mode');
@@ -210,7 +211,8 @@ class Module_purchase
                 'a_email' => 'SHORT_TEXT',
                 'a_phone' => 'SHORT_TEXT',
             ));
-            $GLOBALS['SITE_DB']->create_index('ecom_trans_addresses', 'order_id', array('a_order_id'));
+            $GLOBALS['SITE_DB']->create_index('ecom_trans_addresses', 'trans_expecting_id', array('a_trans_expecting_id'));
+            $GLOBALS['SITE_DB']->create_index('ecom_trans_addresses', 'txn_id', array('a_txn_id'));
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {

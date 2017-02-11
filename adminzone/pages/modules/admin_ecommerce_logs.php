@@ -354,7 +354,7 @@ class Module_admin_ecommerce_logs
 
         list($details) = find_product_details($type_code);
         if ($amount === null) {
-            $amount = $details['price'] + ($tax_is_due ? $details['tax'] : 0.00) + $details['shipping_cost'];
+            $amount = $details['price'] + (($tax === null) ? 0.00 : $tax) + $details['shipping_cost'];
             if (isset($details['currency'])) {
                 $currency = $details['currency'];
             }
@@ -528,7 +528,7 @@ class Module_admin_ecommerce_logs
                 $trigger_url = build_url(array('page' => '_SELF', 'type' => 'trigger', 'type_code' => $transaction_row['t_type_code'], 'id' => $transaction_row['t_purchase_id']), '_SELF');
                 $status = do_template('ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER', array('_GUID' => '5e770b9b30db88032bcc56efe8e3dc23', 'STATUS' => $transaction_row['t_status'], 'TRIGGER_URL' => $trigger_url));
             } else {
-                $status = escape_html($transaction_row['t_status']);
+                $status = make_string_tempcode(escape_html($transaction_row['t_status']));
             }
 
             // Find member link, if possible

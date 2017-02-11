@@ -103,7 +103,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->create_table('shopping_order_details', array( // individual products in an order
                 'id' => '*AUTO',
                 'p_order_id' => '?AUTO_LINK',
-                'p_type_code' => 'ID_LINK',
+                'p_type_code' => 'ID_TEXT',
                 'p_purchase_id' => 'ID_TEXT',
                 'p_name' => 'SHORT_TEXT',
                 'p_sku' => 'SHORT_TEXT',

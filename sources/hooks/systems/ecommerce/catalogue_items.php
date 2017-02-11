@@ -88,22 +88,22 @@ class Hook_ecommerce_catalogue_items
 
                 $sku = $field_rows[SHOPPING_CATALOGUE_sku]['effective_value_pure'];
 
-                $item_price = 0.00;
+                $price = 0.00;
                 if (array_key_exists(SHOPPING_CATALOGUE_price, $field_rows)) {
-                    $item_price = floatval($field_rows[SHOPPING_CATALOGUE_price]['effective_value_pure']);
+                    $price = floatval($field_rows[SHOPPING_CATALOGUE_price]['effective_value_pure']);
                 }
 
                 $tax_rate_percentage = 0.00;
                 if (array_key_exists(SHOPPING_CATALOGUE_tax_type, $field_rows)) {
                     $tax_rate_percentage = floatval(preg_replace('#[^\d\.]#', '', $field_rows[SHOPPING_CATALOGUE_tax_type]['effective_value_pure']));
                 }
-                $tax = $this->_calculate_tax($item_price, $tax_rate_percentage);
+                $tax = $this->_calculate_tax($price, $tax_rate_percentage);
 
                 $product_weight = 0.00;
                 if (array_key_exists(SHOPPING_CATALOGUE_weight, $field_rows)) {
                     $product_weight = floatval($field_rows[SHOPPING_CATALOGUE_weight]['effective_value_pure']);
                 }
-                $shipping_cost = $this->_calculate_shipping_cost($item_price, $product_weight);
+                $shipping_cost = $this->_calculate_shipping_cost($price, $product_weight);
 
                 if (array_key_exists(SHOPPING_CATALOGUE_image, $field_rows)) {
                     $image_url = is_object($field_rows[SHOPPING_CATALOGUE_image]['effective_value']) ? $field_rows[SHOPPING_CATALOGUE_image]['effective_value']->evaluate() : $field_rows[SHOPPING_CATALOGUE_image]['effective_value'];
