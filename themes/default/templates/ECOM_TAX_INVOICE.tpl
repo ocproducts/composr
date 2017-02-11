@@ -1,11 +1,11 @@
 <div class="invoice_box">
-	<table>
+	<table><tbody>
 		<tr class="top">
 			<td colspan="2">
-				<table>
+				<table><tbody>
 					<tr>
 						<td class="title">
-							<img src="{$IMG*,logo/standalone_logo}" /><br />
+							<img alt="{$SITE_NAME*}" src="{$IMG*,logo/standalone_logo}" /><br />
 							{+START,IF_NON_EMPTY,{$CONFIG_OPTION,tax_number}}
 								<br />{$TAX_NUMBER_LABEL} {$CONFIG_OPTION,tax_number}
 							{+END}
@@ -16,13 +16,13 @@
 							{!STATUS}: {DATE*}
 						</td>
 					</tr>
-				</table>
+				</tbody></table>
 			</td>
 		</tr>
 
 		<tr class="information">
 			<td colspan="2">
-				<table>
+				<table><tbody>
 					<tr>
 						<td>
 							{$REPLACE,
@@ -34,7 +34,7 @@
 ,<br />,{TRANS_ADDRESS*}}
 						</td>
 					</tr>
-				</table>
+				</tbody></table>
 			</td>
 		</tr>
 
@@ -109,5 +109,5 @@
 				{!GRAND_TOTAL}: {CURRENCY_SYMBOL*}{TOTAL_AMOUNT*}
 			</td>
 		</tr>
-	</table>
+	</tbody></table>
 </div>

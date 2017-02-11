@@ -41,7 +41,7 @@
 					{$CURRENCY_SYMBOL}{TOTAL_TAX*}
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{TOTAL_SHIPPING_PRICE*}
+					{$CURRENCY_SYMBOL}{TOTAL_SHIPPING_COST*}
 				</td>
 				<td>
 					{TIME*}

@@ -12,7 +12,7 @@
 	<input type="hidden" name="item_number" value="1" />
 	<input type="hidden" name="amount" value="{PRICE*}" />
 	<input type="hidden" name="tax" value="{TAX*}" />
-	<input type="hidden" name="shipping" value="{SHIPPING*}" />
+	<input type="hidden" name="shipping" value="{SHIPPING_COST*}" />
 	<input type="hidden" name="rm" value="2" />
 	<input type="hidden" name="bn" value="ocproducts_SP" />
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}

@@ -187,7 +187,6 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
 {
     $total_price = 0.00;
     $total_tax = 0.00;
-    $total_shipping_price = 0.00;
     $shipped_products = array();
 
     foreach ($shopping_cart_rows as $item) {
@@ -309,6 +308,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
     foreach ($_items as $item) {
         $items[] = array(
             'PRODUCT_NAME' => $item['p_name'],
+            'TYPE_CODE' => $item['p_type_code'],
             'PRICE' => float_to_raw_string($item['p_price']),
             'TAX' => float_to_raw_string($item['p_tax']),
             'AMOUNT' => float_to_raw_string($item['p_price'] + $item['p_tax']),

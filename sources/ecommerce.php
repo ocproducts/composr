@@ -544,6 +544,8 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row)
             $transaction_link = make_string_tempcode(escape_html($txn_id));
         }
 
+        require_code('templates_map_table');
+
         $transaction_fields = array(
             'TRANSACTION' => $transaction_row['t_id'],
             'IDENTIFIER' => $transaction_row['t_purchase_id'],

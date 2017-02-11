@@ -148,6 +148,7 @@ class Hook_payment_gateway_paypal
             'ORDER_ID' => strval($order_id),
             'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'NOTIFICATION_TEXT' => $notification_text,
+            'TYPE_CODE' => $items[0]['TYPE_CODE'],
         ));
     }
 

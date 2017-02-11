@@ -171,7 +171,7 @@ class Hook_addon_registry_shopping
         return array(
             'templates/ECOM_ORDERS_SCREEN.tpl' => 'ecom_orders_screen',
             'templates/ECOM_ADMIN_ORDERS_SCREEN.tpl' => 'administrative__ecom_admin_orders_screen',
-            'templates/ECOM_ORDERS_DETAILS_SCREEN.tpl' => 'ecom_orders_details_screen',
+            'templates/ECOM_ORDER_DETAILS_SCREEN.tpl' => 'ecom_order_details_screen',
             'templates/ECOM_ADMIN_ORDER_ACTIONS.tpl' => 'ecom_order_details_screen',
             'templates/ECOM_SHIPPING_ADDRESS.tpl' => 'ecom_order_details_screen',
             'templates/ECOM_ORDER_DETAILS_SCREEN.tpl' => 'ecom_order_details_screen',
@@ -548,11 +548,16 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__ecom_cart_button_via_paypal()
     {
+        require_lang('ecommerce');
+
         $items = array();
         foreach (placeholder_array() as $k => $v) {
             $items[] = array(
                 'PRODUCT_NAME' => lorem_word(),
+                'TYPE_CODE' => lorem_word(),
                 'PRICE' => placeholder_number(),
+                'TAX' => placeholder_number(),
+                'AMOUNT' => placeholder_number(),
                 'QUANTITY' => placeholder_number(),
             );
         }
@@ -563,9 +568,11 @@ class Hook_addon_registry_shopping
                 'SHIPPING_COST' => placeholder_number(),
                 'PAYMENT_ADDRESS' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
-                'ORDER_ID' => placeholder_id(),
-                'NOTIFICATION_TEXT' => lorem_sentence_html(),
                 'MEMBER_ADDRESS' => placeholder_array(),
+                'ORDER_ID' => placeholder_id(),
+                'TRANS_EXPECTING_ID' => placeholder_id(),
+                'NOTIFICATION_TEXT' => lorem_sentence_html(),
+                'TYPE_CODE' => $items[0]['TYPE_CODE'],
             )), null, '', true)
         );
     }
@@ -579,9 +586,6 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__shopping_cart_screen()
     {
-        //results_table starts
-        //results_entry starts
-
         $shopping_cart = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $cells = new Tempcode();
@@ -624,7 +628,6 @@ class Hook_addon_registry_shopping
                 'VALUES' => $cells,
             )));
         }
-        //results_entry ends
 
         $selectors = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
@@ -649,7 +652,6 @@ class Hook_addon_registry_shopping
             'SORT' => $sort,
             'PAGINATION' => lorem_word(),
         ));
-        //results_table ends
 
         return array(
             lorem_globalise(do_lorem_template('ECOM_SHOPPING_CART_SCREEN', array(
@@ -687,6 +689,7 @@ class Hook_addon_registry_shopping
                 'ORDER_TITLE' => lorem_word(),
                 'ID' => placeholder_id(),
                 'TXN_ID' => placeholder_id(),
+                'TRANSACTION_LINKER' => lorem_word(),
                 'TOTAL_PRICE' => placeholder_number(),
                 'TOTAL_TAX' => placeholder_number(),
                 'TOTAL_SHIPPING_COST' => placeholder_number(),
@@ -737,13 +740,15 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__ecom_order_details_screen()
     {
+        require_lang('ecommerce');
+        require_lang('cns_special_cpf');
+
         $order_actions = do_lorem_template('ECOM_ADMIN_ORDER_ACTIONS', array(
             'ORDER_TITLE' => lorem_phrase(),
             'ORDER_ACTUALISE_URL' => placeholder_url(),
             'ORDER_STATUS' => lorem_word(),
         ));
 
-        require_lang('cns_special_cpf');
         $shipping_address = do_lorem_template('ECOM_SHIPPING_ADDRESS', array(
             'FIRSTNAME' => lorem_phrase(),
             'LASTNAME' => lorem_phrase(),
@@ -751,7 +756,7 @@ class Hook_addon_registry_shopping
             'CITY' => lorem_phrase(),
             'COUNTY' => lorem_phrase(),
             'STATE' => lorem_phrase(),
-            'ZIP' => lorem_phrase(),
+            'POST_CODE' => lorem_phrase(),
             'COUNTRY' => lorem_phrase(),
             'EMAIL' => lorem_phrase(),
             'PHONE' => lorem_phrase(),

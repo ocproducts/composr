@@ -41,7 +41,7 @@
 
 							{+START,IF,{$MOBILE}}
 								<p class="assocated_details">
-									<span class="field_name">{!PAYMENT_GATEWAY}:</span> {VIA*}
+									<span class="field_name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
 								</p>
 							{+END}
 						</th>
@@ -56,7 +56,7 @@
 
 						{+START,IF,{$NOT,{$MOBILE}}}
 							<td>
-								{VIA*}
+								{PAYMENT_GATEWAY*}
 							</td>
 						{+END}
 					</tr>

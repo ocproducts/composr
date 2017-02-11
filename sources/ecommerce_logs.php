@@ -154,7 +154,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
     $order_title = do_lang('CART_ORDER', strval($id));
 
     // Collecting order details
-    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order o LEFT JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=o.txn_id', array('*', 'o.id AS o_id', 't.id AS t_id'), array('id' => $id), '', 1);
+    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order o LEFT JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=o.txn_id', array('*', 'o.id AS o_id', 't.id AS t_id'), array('o.id' => $id), '', 1);
     if (!array_key_exists(0, $order_rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
