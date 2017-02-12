@@ -56,7 +56,7 @@ function find_products_in_cart()
     } else {
         $where['ordered_by'] = get_member();
     }
-    return $GLOBALS['SITE_DB']->query_select('shopping_cart', array('*'), $where);
+    return $GLOBALS['SITE_DB']->query_select('shopping_cart', array('*'), $where, 'ORDER BY id');
 }
 
 /**
@@ -226,6 +226,8 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
  */
 function copy_shopping_cart_to_order()
 {
+    // Prepare order...
+
     $shopping_cart_rows = find_products_in_cart();
 
     if (count($shopping_cart_rows) == 0) {
@@ -234,10 +236,9 @@ function copy_shopping_cart_to_order()
 
     list($total_price, $total_tax, $total_shipping_cost) = derive_cart_amounts($shopping_cart_rows);
 
-    $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', array(
+    $shopping_order = array(
         'member_id' => get_member(),
         'session_id' => get_session_id(),
-        'add_date' => time(),
         'total_price' => $total_price,
         'total_tax' => $total_tax,
         'total_shipping_cost' => $total_shipping_cost,
@@ -245,8 +246,9 @@ function copy_shopping_cart_to_order()
         'notes' => '',
         'purchase_through' => 'cart',
         'txn_id' => '',
-    ), true);
+    );
 
+    $shopping_order_details = array();
     foreach ($shopping_cart_rows as $item) {
         $type_code = $item['type_code'];
 
@@ -260,13 +262,14 @@ function copy_shopping_cart_to_order()
             continue; // Subscription type skipped, can't handle within an order
         }
 
-        if (method_exists($product_object, 'handle_needed_fields')) {
+        $call_actualiser_from_cart = !isset($details['type_special_details']['call_actualiser_from_cart']) || $details['type_special_details']['call_actualiser_from_cart'];
+        if ((method_exists($product_object, 'handle_needed_fields')) && ($call_actualiser_from_cart)) {
             list($purchase_id) = $product_object->handle_needed_fields($type_code);
         } else {
             $purchase_id = strval(get_member());
         }
 
-        $GLOBALS['SITE_DB']->query_insert('shopping_order_details', array(
+        $shopping_order_details[] = array(
             'p_type_code' => $type_code,
             'p_purchase_id' => $purchase_id,
             'p_name' => $details['item_name'],
@@ -274,9 +277,29 @@ function copy_shopping_cart_to_order()
             'p_quantity' => $item['quantity'],
             'p_price' => $details['price'],
             'p_tax' => $details['tax'],
-            'p_order_id' => $order_id,
             'p_dispatch_status' => '',
-        ), true);
+        );
+    }
+
+    // See if it matches an existing unpaid order...
+
+    $orders = $GLOBALS['SITE_DB']->query_select('shopping_order', array('id'), $shopping_order);
+    foreach ($orders as $order) {
+        $_shopping_order_details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order['id']), 'ORDER BY id');
+        foreach ($_shopping_order_details as &$_map) {
+            unset($_map['id']);
+            unset($_map['p_order_id']);
+        }
+        if ($shopping_order_details == $_shopping_order_details) {
+            return $order['id'];
+        }
+    }
+
+    // Insert order...
+
+    $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', $shopping_order + array('add_date' => time()), true);
+    foreach ($shopping_order_details as $map) {
+        $GLOBALS['SITE_DB']->query_insert('shopping_order_details', $map + array('p_order_id' => $order_id));
     }
 
     return $order_id;
@@ -292,6 +315,8 @@ function copy_shopping_cart_to_order()
  */
 function make_cart_payment_button($order_id, $currency, $price_points = 0)
 {
+    require_css('shopping');
+
     $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $order_id), '', 1);
     if (!array_key_exists(0, $order_rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -302,25 +327,25 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
     $tax = $order_row['total_tax'];
     $shipping_cost = $order_row['total_shipping_cost'];
 
-    $_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_name', 'p_price', 'p_quantity'), array('p_order_id' => $order_id));
+    $_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
     $items = array();
     $invoicing_breakdown = array();
-    foreach ($_items as $item) {
+    foreach ($_items as $_item) {
         $items[] = array(
-            'PRODUCT_NAME' => $item['p_name'],
-            'TYPE_CODE' => $item['p_type_code'],
-            'PRICE' => float_to_raw_string($item['p_price']),
-            'TAX' => float_to_raw_string($item['p_tax']),
-            'AMOUNT' => float_to_raw_string($item['p_price'] + $item['p_tax']),
-            'QUANTITY' => strval($item['p_quantity']),
+            'PRODUCT_NAME' => $_item['p_name'],
+            'TYPE_CODE' => $_item['p_type_code'],
+            'PRICE' => float_to_raw_string($_item['p_price']),
+            'TAX' => float_to_raw_string($_item['p_tax']),
+            'AMOUNT' => float_to_raw_string($_item['p_price'] + $_item['p_tax']),
+            'QUANTITY' => strval($_item['p_quantity']),
         );
 
         $invoicing_breakdown[] = array(
-            'type_code' => $item['p_type_code'],
-            'item_name' => $item['p_name'],
-            'quantity' => $item['p_quantity'],
-            'unit_price' => $item['p_price'],
-            'unit_tax' => float_format($item['p_tax']),
+            'type_code' => $_item['p_type_code'],
+            'item_name' => $_item['p_name'],
+            'quantity' => $_item['p_quantity'],
+            'unit_price' => $_item['p_price'],
+            'unit_tax' => float_format($_item['p_tax']),
         );
     }
 

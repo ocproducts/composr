@@ -7509,7 +7509,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHAT_TOGGLE_COMCODE_BOX
         CHAT_USERSONLINE_BOTMSG
         CHAT_WEBSITE_HELPER_BOT
-        CHECKOUT_NOTIFICATION_TEXT
         CHILD_PAGES
         CHILD_PLU
         CHOOSE

@@ -522,7 +522,7 @@ class Module_shopping
                     }
                 }
 
-                $products_in_cart[] = array('type_code' => $type_code, 'quantity' => $quantity);
+                $products_in_cart[] = array($type_code, $quantity);
             }
         }
 

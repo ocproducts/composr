@@ -1,17 +1,13 @@
 {$,Template is used for local payments only; may be embedded into shopping cart as well as serving in the purchasing module}
 
-{+START,IF_PASSED,TEXT}
-	{$PARAGRAPH,{TEXT}}
-{+END}
-
 {+START,IF_PASSED,CONFIRMATION_BOX}
-	<p>
-		{!CONFIRM_TEXT}
-	</p>
-
 	<div class="box box___ecom_purchase_stage_transact"><div class="box_inner">
 		{CONFIRMATION_BOX}
 	</div></div>
+{+END}
+
+{+START,IF_PASSED,TEXT}
+	{$PARAGRAPH,{TEXT}}
 {+END}
 
 {+START,IF_PASSED,FIELDS}

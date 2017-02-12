@@ -25,7 +25,7 @@
 	{+END}
 
 	<div class="purchase_button">
-		<input style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
+		<input id="purchase_button" onclick="disable_button_just_clicked(this);" style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" title="{!MAKE_PAYMENT}" />
 	</div>
 </form>
 

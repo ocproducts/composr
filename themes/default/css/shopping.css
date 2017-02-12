@@ -54,26 +54,6 @@ table.cart_payment_summary .price {
 	font-weight: bold;
 }
 
-.ecommerce_button {
-	float: right;
-	padding-left: 2em;
-}
-
-.checkout_text {
-	color: {$GET,slightly_seeded_text};
-	font-size: 0.9em;
-	margin-top: 1em;
-}
-
-.checkout_text input {
-	float: left;
-	margin-right: 1em;
-	margin-bottom: 1em; /* To prevent awkward wrapping of the label */
-}
-
-.checkout_text label {
-}
-
 /* Admin order management interface */
 
 .orders_actions_dropdown {

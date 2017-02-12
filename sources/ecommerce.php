@@ -211,7 +211,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
     }
 
     require_code('form_templates');
-    list($fields) = $product_object->get_needed_fields($type_code);
+    list($fields) = get_needed_fields($type_code);
     $has_details = ($fields !== null);
     if ($has_details) {
         $steps[] = array('_SELF:_SELF:details' . ':' . $more_params, 'details', do_lang_tempcode('ECOM_PURCHASE_STAGE_details'));

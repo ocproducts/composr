@@ -174,7 +174,6 @@ class Hook_addon_registry_shopping
             'templates/ECOM_ORDER_DETAILS_SCREEN.tpl' => 'ecom_order_details_screen',
             'templates/ECOM_ADMIN_ORDER_ACTIONS.tpl' => 'ecom_order_details_screen',
             'templates/ECOM_SHIPPING_ADDRESS.tpl' => 'ecom_order_details_screen',
-            'templates/ECOM_ORDER_DETAILS_SCREEN.tpl' => 'ecom_order_details_screen',
             'templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl' => 'ecom_cart_button_via_paypal',
@@ -571,7 +570,6 @@ class Hook_addon_registry_shopping
                 'MEMBER_ADDRESS' => placeholder_array(),
                 'ORDER_ID' => placeholder_id(),
                 'TRANS_EXPECTING_ID' => placeholder_id(),
-                'NOTIFICATION_TEXT' => lorem_sentence_html(),
                 'TYPE_CODE' => $items[0]['TYPE_CODE'],
             )), null, '', true)
         );

@@ -135,8 +135,6 @@ class Hook_payment_gateway_paypal
 
         $form_url = $this->_get_remote_form_url();
 
-        $notification_text = do_lang_tempcode('CHECKOUT_NOTIFICATION_TEXT', strval($order_id));
-
         return do_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(
             '_GUID' => '89b7edf976ef0143dd8dfbabd3378c95',
             'ITEMS' => $items,
@@ -147,7 +145,6 @@ class Hook_payment_gateway_paypal
             'MEMBER_ADDRESS' => $this->_build_member_address(),
             'ORDER_ID' => strval($order_id),
             'TRANS_EXPECTING_ID' => $trans_expecting_id,
-            'NOTIFICATION_TEXT' => $notification_text,
             'TYPE_CODE' => $items[0]['TYPE_CODE'],
         ));
     }

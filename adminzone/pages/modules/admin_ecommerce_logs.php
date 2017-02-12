@@ -565,7 +565,8 @@ class Module_admin_ecommerce_logs
             }
 
             $tax = ecommerce_get_currency_symbol() . escape_html(float_format($transaction_row['t_tax']));
-            $tax_linker = hyperlink(build_url(array('page' => '_SELF', 'type' => 'tax_invoice', 'id' => $transaction_row['id'], 'wide_high' => 1), '_SELF'), $tax, false, false, '', null, null, null, true);
+            $tax_invoice_url = build_url(array('page' => '_SELF', 'type' => 'tax_invoice', 'id' => $transaction_row['id'], 'wide_high' => 1), '_SELF');
+            $tax_linker = hyperlink($tax_invoice_url, $tax, false, false, '', null, null, null, '_top');
 
             $fields->attach(results_entry(array(
                 escape_html($transaction_row['id']) . (($transaction_row['t_parent_txn_id'] == '') ? '' : (' &rarr; ' . escape_html($transaction_row['t_parent_txn_id']))),
@@ -602,7 +603,7 @@ class Module_admin_ecommerce_logs
      *
      * @return Tempcode The result of execution.
      */
-    function tax_invoice()
+    public function tax_invoice()
     {
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 

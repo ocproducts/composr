@@ -116,13 +116,13 @@
 	padding-bottom: 20px;
 }
 
-.invoice_box table tr.top table td.title {
+.invoice_box table tr.top td.title {
 	font-size: 45px;
 	line-height: 45px;
 	color: {$GET,area_text};
 }
 
-.invoice_box table tr.top table td.title img {
+.invoice_box table tr.top td.title img {
 	width: 100%;
 	max-width: 300px;
 }
@@ -131,25 +131,28 @@
 	padding-bottom: 40px;
 }
 
-.invoice_box table tr.heading td {
+.invoice_box table thead tr th {
 	background: {$GET,area_background};
 	border-bottom: 1px solid {$GET,area_2_background};
 	font-weight: bold;
+	color: {$GET,slightly_seeded_text};
+	text-align: left;
 }
 
 .invoice_box table tr.item td {
 	border-bottom: 1px solid {$GET,area_background};
 }
 
-.invoice_box table tr.item.last td {
+.invoice_box table tr.item:last-child td {
 	border-bottom: none;
 }
 
-.invoice_box table tr.total td: nth-child(2) {
+.invoice_box table tr.total td.total {
 	border-top: 2px solid {$GET,area_background};
 	font-weight: bold;
 }
 
+{$,TODO: Fix in v11}
 {+START,IF,{$MOBILE}}
 	.invoice_box table tr.top table td {
 		width: 100%;
