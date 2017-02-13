@@ -78,15 +78,15 @@
 					</td>
 
 					<td>
-						{CURRENCY_SYMBOL}{UNIT_PRICE*}
+						{$CURRENCY_SYMBOL,{CURRENCY}}{UNIT_PRICE*}
 					</td>
 
 					<td>
-						{CURRENCY_SYMBOL}{PRICE*}
+						{$CURRENCY_SYMBOL,{CURRENCY}}{PRICE*}
 					</td>
 
 					<td>
-						{CURRENCY_SYMBOL}{TAX*} ({TAX_RATE*}%)
+						{$CURRENCY_SYMBOL,{CURRENCY}}{TAX*} ({TAX_RATE*}%)
 					</td>
 				</tr>
 			{+END}
@@ -97,17 +97,17 @@
 				<td colspan="4"></td>
 
 				<td class="total">
-					{CURRENCY_SYMBOL}{TOTAL_PRICE*}
+					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_PRICE*}
 				</td>
 
 				<td class="total">
-					{CURRENCY_SYMBOL}{TOTAL_TAX*}
+					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_TAX*}
 				</td>
 			</tr>
 
 			<tr class="total">
 				<td colspan="6">
-					{!GRAND_TOTAL}: {CURRENCY_SYMBOL}{TOTAL_AMOUNT*}
+					{!GRAND_TOTAL}: {$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_AMOUNT*}
 				</td>
 			</tr>
 		</tfoot>

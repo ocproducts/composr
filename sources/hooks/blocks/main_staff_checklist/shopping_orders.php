@@ -39,7 +39,7 @@ class Hook_checklist_shopping_orders
 
         require_lang('shopping');
 
-        $to_dispatch_order_cnt = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'COUNT(id)', array('order_status' => 'ORDER_STATUS_payment_received'));
+        $to_dispatch_order_cnt = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_orders', 'COUNT(id)', array('order_status' => 'ORDER_STATUS_payment_received'));
 
         if ($to_dispatch_order_cnt > 0) {
             $status = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0', array('_GUID' => 'a5138b84598f5c45113fc169a44d55c7'));

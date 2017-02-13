@@ -17,6 +17,10 @@
 					</th>
 
 					<th>
+						{$TAX_LABEL}
+					</th>
+
+					<th>
 						{!DATE}
 					</th>
 
@@ -47,7 +51,11 @@
 						</th>
 
 						<td>
-							{$CURRENCY_SYMBOL}{TOTAL*}, {PER}
+							{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL*}, {PER}
+						</td>
+
+						<td>
+							{$CURRENCY_SYMBOL,{CURRENCY}}{TAX*}
 						</td>
 
 						<td>

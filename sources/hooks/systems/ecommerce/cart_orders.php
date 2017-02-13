@@ -55,7 +55,7 @@ class Hook_ecommerce_cart_orders
             }
         }
 
-        $orders = $GLOBALS['SITE_DB']->query('SELECT id,total_price,total_tax,total_shipping_cost FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where . ' ORDER BY add_date DESC', 50, null, false, true);
+        $orders = $GLOBALS['SITE_DB']->query('SELECT id,total_price,total_tax,total_shipping_cost FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where . ' ORDER BY add_date DESC', 50, null, false, true);
 
         foreach ($orders as $order) {
             $products['CART_ORDER_' . strval($order['id'])] = array(
@@ -145,7 +145,7 @@ class Hook_ecommerce_cart_orders
 
         if ($details['STATUS'] == 'Completed') {
             // Insert sale
-            $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'member_id', array('id' => $order_id));
+            $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'member_id', array('id' => $order_id));
             $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'txn_id' => $details['TXN_ID']));
 
             $ordered_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id), '', 1);
@@ -174,15 +174,15 @@ class Hook_ecommerce_cart_orders
         if ($old_status != $details['ORDER_STATUS']) {
             $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => $details['ORDER_STATUS']), array('p_order_id' => $order_id));
 
-            $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => $details['ORDER_STATUS'], 'txn_id' => $details['TXN_ID']), array('id' => $order_id));
+            $GLOBALS['SITE_DB']->query_update('shopping_orders', array('order_status' => $details['ORDER_STATUS'], 'txn_id' => $details['TXN_ID']), array('id' => $order_id));
 
             // Copy in memo from transaction, as customer notes
-            $old_memo = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => $order_id));
+            $old_memo = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'notes', array('id' => $order_id));
             if ($old_memo == '') {
                 $memo = $GLOBALS['SITE_DB']->query_select_value('ecom_transactions', 't_memo', array('id' => $details['TXN_ID']));
                 if ($memo != '') {
                     $memo = do_lang('CUSTOMER_NOTES') . "\n" . $memo;
-                    $GLOBALS['SITE_DB']->query_update('shopping_order', array('notes' => $memo), array('id' => $order_id), '', 1);
+                    $GLOBALS['SITE_DB']->query_update('shopping_orders', array('notes' => $memo), array('id' => $order_id), '', 1);
                 }
             }
 
@@ -204,7 +204,7 @@ class Hook_ecommerce_cart_orders
     public function member_for($type_code, $purchase_id)
     {
         $order_id = intval($purchase_id);
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'member_id', array('id' => $order_id));
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_orders', 'member_id', array('id' => $order_id));
     }
 
     /**

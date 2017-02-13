@@ -19,6 +19,24 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__currency()
+{
+    if (!defined('CURRENCY_DISPLAY_RAW')) {
+        define('CURRENCY_DISPLAY_RAW', 0); // Float
+        define('CURRENCY_DISPLAY_STRING', 1); // Plain string
+        define('CURRENCY_DISPLAY_LOCALE', 2); // Plain string
+        define('CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST', 3); // HTML
+        define('CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLIFIED', 4); // HTML
+        define('CURRENCY_DISPLAY_WITH_CURRENCY_EXPLICIT', 5); // HTML
+        define('CURRENCY_DISPLAY_TEMPLATED', 6); // HTML
+    }
+}
+
+/**
  * Convert a country code to a currency code.
  *
  * @param  ID_TEXT $country The country code.
@@ -49,17 +67,17 @@ function get_currency()
 
     // keep_currency
     $currency = get_param_string('keep_currency', null);
-    if (is_null($currency)) {
+    if ($currency === null) {
         // a specially named custom profile field for the currency.
         $currency = get_cms_cpf('currency');
         if ($currency === '') {
             $currency = null;
         }
-        if (is_null($currency)) {
+        if ($currency === null) {
             require_code('locations');
 
             $country = get_country();
-            if (is_null($country)) {
+            if ($country === null) {
                 $currency = get_option('currency');
             } else {
                 $currency = country_to_currency($country);
@@ -71,75 +89,201 @@ function get_currency()
 }
 
 /**
- * Perform a currency conversion.
+ * Perform a currency conversion to the visitor's currency, if automatic conversions are enabled -- otherwise just display in the site currency.
+ * Not cache safe.
  *
  * @param  mixed $amount The starting amount (integer or float).
- * @param  ID_TEXT $from_currency The start currency code.
- * @param  ?ID_TEXT $to_currency The end currency code (null: unknown, guess it).
- * @param  boolean $string Whether to get as a string.
- * @return ?mixed The new amount as float, or if $string then as a string (null: failed to do it).
+ * @param  ?ID_TEXT $from_currency The start currency code (null: site currency).
+ * @param  integer $display_method A CURRENCY_DISPLAY_* constant.
+ * @return mixed The new amount with the specified display method (CURRENCY_DISPLAY_RAW is a float, otherwise a string).
  */
-function currency_convert($amount, $from_currency, $to_currency = null, $string = false)
+function currency_convert_wrap($amount, $from_currency = null, $display_method = 6)
 {
-    // Check data
-    $from_currency = strtoupper($from_currency);
-    $map = get_currency_map();
-    if (!array_key_exists($from_currency, $map)) {
-        return null;
+    if ($from_currency === null) {
+        $from_currency = get_option('currency');
+    }
+    $to_currency = (get_option('currency_auto') == '1') ? get_currency() : get_option('currency');
+
+    return currency_convert($amount, $from_currency, $to_currency, $display_method);
+}
+
+/**
+ * Perform a currency conversion.
+ * Not cache safe.
+ *
+ * @param  mixed $amount The starting amount (integer or float).
+ * @param  ?ID_TEXT $from_currency The start currency code (null: site currency).
+ * @param  ?ID_TEXT $to_currency The end currency code (null: unknown, guess it).
+ * @param  integer $display_method A CURRENCY_DISPLAY_* constant.
+ * @return mixed The new amount with the specified display method (CURRENCY_DISPLAY_RAW is a float, otherwise a string).
+ */
+function currency_convert($amount, $from_currency = null, $to_currency = null, $display_method = 0)
+{
+    if (is_integer($amount)) {
+        $amount = floatval($amount);
     }
 
-    if (is_null($to_currency)) {
+    if ($from_currency === null) {
+        $from_currency = get_option('currency');
+    }
+    if ($to_currency === null) {
         $to_currency = get_currency();
     }
 
-    // (We now know $to_currency)
+    $from_currency = strtoupper($from_currency);
+    $to_currency = strtoupper($to_currency);
 
-    // We'll use Google as a simple web service
-    if ($from_currency == $to_currency) {
-        $new_amount = is_integer($amount) ? floatval($amount) : $amount;
-    } else {
-        $cache_key = 'currency_' . $from_currency . '_' . $to_currency . (is_float($amount) ? float_to_raw_string($amount) : strval($amount));
-        $_new_amount = get_value_newer_than($cache_key, time() - 60 * 60 * 24 * 2, true);
-        $new_amount = is_null($_new_amount) ? null : floatval($_new_amount);
-        if (is_null($new_amount)) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('currency\_%') . '\' AND date_and_time<' . strval(time() - 60 * 60 * 24 * 2)); // Cleanup
+    $map = get_currency_map();
 
-            $google_url = 'http://www.google.com/finance/converter?a=' . (is_float($amount) ? float_to_raw_string($amount) : strval($amount)) . '&from=' . urlencode($from_currency) . '&to=' . urlencode(strtoupper($to_currency));
-            $result = http_download_file($google_url, null, false);
-            if (is_string($result)) {
-                $matches = array();
+    // Check from currency
+    $from_currency = strtoupper($from_currency);
+    if (!array_key_exists($from_currency, $map)) {
+        attach_message(do_lang_tempcode('UNKNOWN_CURRENCY', escape_html($from_currency))); // TODO: Error mail in v11
 
-                for ($i = 0; $i < strlen($result); $i++) { // bizarre unicode characters coming back from Google
-                    if (ord($result[$i]) > 127) {
-                        $result[$i] = ' ';
-                    }
-                }
-                if (preg_match('#<span class=bld>([\d\., ]+) [A-Z]+</span>#U', $result, $matches) != 0) { // e.g. <b>1400 British pounds = 2 024.4 U.S. dollars</b>
-                    $new_amount = floatval(str_replace(',', '', str_replace(' ', '', $matches[1])));
+        $from_currency = array_key_exists($to_currency, $map) ? $to_currency : 'USD';
+    }
 
-                    set_value($cache_key, float_to_raw_string($new_amount), true);
-                } else {
-                    return null;
-                }
-            } else { // no-can-do
-                $new_amount = is_integer($amount) ? floatval($amount) : $amount;
-                $to_currency = $from_currency;
-            }
+    $new_amount = null;
+
+    // Case: No conversion needed
+    if ($new_amount === null) {
+        if ($from_currency == $to_currency) {
+            $new_amount = $amount;
         }
     }
 
-    if ($string) {
-        list($symbol, $has_primacy) = get_currency_symbol($to_currency);
-        $ret = $symbol;
-        $ret .= escape_html(float_format($new_amount));
-        if (!$has_primacy) {
-            $ret .= '&nbsp;';
-            $ret .= escape_html($to_currency);
+    // Prepare for cache usage
+    $cache_key = 'currency_' . $from_currency . '_' . $to_currency . '_' . float_to_raw_string($amount);
+    $cache_minutes = 60 * 24;
+    $cache_cutoff = time() - 60 * $cache_minutes;
+    $save_caching = false;
+
+    // Case: Cached
+    if ($new_amount === null) {
+        $_new_amount = get_value_newer_than($cache_key, $cache_cutoff, true);
+        $new_amount = ($_new_amount === null) ? null : floatval($_new_amount);
+    }
+
+    // Case: Get using EU-central-bank data, using a free API
+    if ($new_amount === null) {
+        $new_amount = _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_minutes);
+        if ($new_amount !== null) {
+            $save_caching = true;
         }
-        return $ret;
+    }
+
+    // Case: Get from Google
+    if ($new_amount === null) {
+        $new_amount = _currency_convert__google($amount, $from_currency, $to_currency);
+        if ($new_amount !== null) {
+            $save_caching = true;
+        }
+    }
+
+    // Case: Fallback
+    if ($new_amount === null) {
+        attach_message(do_lang_tempcode('CURRENCY_CONVERSION_FAILED', escape_html(float_format($amount)), escape_html($from_currency), escape_html($to_currency))); // TODO: Error mail in v11
+
+        $new_amount = $amount;
+        $to_currency = $from_currency;
+    }
+
+    // Cache saving
+    if ($save_caching) {
+        $cleanup_sql = 'DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('currency\_%') . '\' AND date_and_time<' . strval($cache_cutoff);
+        $GLOBALS['SITE_DB']->query($cleanup_sql);
+        set_value($cache_key, float_to_raw_string($new_amount), true);
+    }
+
+    // Convert if needed
+    switch ($display_method) {
+        case CURRENCY_DISPLAY_STRING:
+            return float_to_raw_string($new_amount);
+
+        case CURRENCY_DISPLAY_LOCALE:
+            return float_format($new_amount);
+
+        case CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST:
+        case CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLIFIED:
+        case CURRENCY_DISPLAY_WITH_CURRENCY_EXPLICIT:
+            list($symbol, $has_primacy) = get_currency_symbol($to_currency);
+            $ret = $symbol;
+            $ret .= escape_html(float_format($new_amount));
+            if (($display_method != CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST) && ((!$has_primacy) || ($display_method == CURRENCY_DISPLAY_WITH_CURRENCY_EXPLICIT))) {
+                $ret .= '&nbsp;';
+                $ret .= escape_html($to_currency);
+            }
+            break;
+
+        case CURRENCY_DISPLAY_TEMPLATED:
+            $temp_tpl = do_template('CURRENCY', array(
+                'AMOUNT' => float_format($amount),
+                'NEW_AMOUNT' => float_format($new_amount),
+                'FROM_CURRENCY' => $from_currency,
+                'TO_CURRENCY' => $to_currency,
+            ));
+            return $temp_tpl->evaluate();
     }
 
     return $new_amount;
+}
+
+/**
+ * Perform a currency conversion using ECB data.
+ *
+ * @param  mixed $amount The starting amount (integer or float).
+ * @param  ID_TEXT $from_currency The start currency code.
+ * @param  ID_TEXT $to_currency The end currency code.
+ * @param  integer $cache_minutes The number of minutes to cache for.
+ * @return ?float The new amount (null: could not look up).
+ */
+function _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_minutes)
+{
+    $ecb_currencies = array('EUR', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'GBP', 'HKD', 'HRK', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'USD', 'ZAR');
+    if ((in_array($from_currency, $ecb_currencies)) && (in_array($to_currency, $ecb_currencies))) {
+        $url = 'http://api.fixer.io/latest?base=' . urlencode($from_currency);
+        require_code('files2'); // TODO: http in v11
+        list($http_data) = cache_and_carry('http_download_file', array($url), $cache_minutes); // TODO: Fix in v11
+        $data = @json_decode($http_data, true);
+        if (isset($data['rates'][$to_currency])) {
+            $new_amount = round($amount * $data['rates'][$to_currency], 2);
+            return $new_amount;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Perform a currency conversion using Google.
+ *
+ * @param  mixed $amount The starting amount (integer or float).
+ * @param  ID_TEXT $from_currency The start currency code.
+ * @param  ID_TEXT $to_currency The end currency code.
+ * @return ?float The new amount (null: could not look up).
+ */
+function _currency_convert__google($amount, $from_currency, $to_currency)
+{
+    $google_url = 'http://www.google.com/finance/converter?a=' . float_to_raw_string($amount) . '&from=' . urlencode($from_currency) . '&to=' . urlencode($to_currency);
+    $result = http_download_file($google_url, null, false);
+    if (is_string($result)) {
+        for ($i = 0; $i < strlen($result); $i++) { // bizarre unicode characters coming back from Google
+            if (ord($result[$i]) > 127) {
+                $result[$i] = ' ';
+            }
+        }
+
+        $matches = array();
+        if (preg_match('#<span class=bld>([\d\., ]+) [A-Z]+</span>#U', $result, $matches) != 0) { // e.g. <b>1400 British pounds = 2 024.4 U.S. dollars</b>
+            $_new_amount = str_replace(array(',', ' '), array('', ''), $matches[1]);
+            $new_amount = floatval($_new_amount);
+        } else {
+            return null;
+        }
+
+        return $new_amount;
+    }
+    return null;
 }
 
 /**

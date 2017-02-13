@@ -108,6 +108,10 @@ class Module_admin_ecommerce_logs
             $this->title = get_screen_title('TRANSACTIONS');
         }
 
+        if ($type == 'export_transactions' || $type == '_export_transactions') {
+            $this->title = get_screen_title('EXPORT_TRANSACTIONS');
+        }
+
         if ($type == 'tax_invoice') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:logs', do_lang_tempcode('TRANSACTIONS'))));
             $this->title = get_screen_title('TAX_INVOICE');
@@ -193,6 +197,12 @@ class Module_admin_ecommerce_logs
         }
         if ($type == 'logs') {
             return $this->logs();
+        }
+        if ($type == 'export_transactions') {
+            return $this->export_transactions();
+        }
+        if ($type == '_export_transactions') {
+            return $this->_export_transactions();
         }
         if ($type == 'tax_invoice') {
             return $this->tax_invoice();
@@ -287,7 +297,9 @@ class Module_admin_ecommerce_logs
         $text = do_lang('MANUAL_TRANSACTION_TEXT');
         $submit_name = do_lang('MANUAL_TRANSACTION');
 
-        list(, $product_object) = find_product_details($type_code);
+        list($details, $product_object) = find_product_details($type_code);
+
+        $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
         // To work out key
         if (post_param_integer('got_purchase_key_dependencies', 0) == 0) {
@@ -331,7 +343,7 @@ class Module_admin_ecommerce_logs
         }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f4e52dff9353fb767afbe0be9808591c', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
-        $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_MONEY_AMOUNT', get_option('currency'), ecommerce_get_currency_symbol()), 'amount', null, false));
+        $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_MONEY_AMOUNT', $currency, ecommerce_get_currency_symbol()), 'amount', null, false));
         $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_PAID'), 'tax', null, false));
 
         $hidden = new Tempcode();
@@ -358,15 +370,15 @@ class Module_admin_ecommerce_logs
         $_tax = post_param_string('tax', '');
         $tax = ($_tax == '') ? null : float_unformat($_tax);
         $custom_expiry = post_param_date('cexpiry');
-        $currency = get_option('currency');
 
         list($details) = find_product_details($type_code);
+
+        $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+
         if ($amount === null) {
             $amount = $details['price'] + (($tax === null) ? 0.00 : $tax) + $details['shipping_cost'];
-            if (isset($details['currency'])) {
-                $currency = $details['currency'];
-            }
         }
+
         $status = 'Completed';
         $reason = '';
         $pending_reason = '';
@@ -392,6 +404,7 @@ class Module_admin_ecommerce_logs
                     's_state' => 'new',
                     's_amount' => $details['price'],
                     's_tax' => $details['tax'],
+                    's_currency' => $currency,
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
                     's_auto_fund_source' => '',
@@ -500,16 +513,16 @@ class Module_admin_ecommerce_logs
         }
 
         $where = '1=1';
-        $type_code = get_param_string('type_code', null);
-        if ($type_code !== null) {
+        $type_code = get_param_string('type_code', '');
+        if ($type_code != '') {
             $where .= ' AND ' . db_string_equal_to('t_type_code', $type_code);
         }
-        $txn_id = get_param_string('txn_id', null);
-        if ($txn_id !== null) {
+        $txn_id = get_param_string('txn_id', '');
+        if ($txn_id != '') {
             $where .= ' AND (' . db_string_equal_to('id', $txn_id) . ' OR ' . db_string_equal_to('t_parent_txn_id', $txn_id) . ')';
         }
-        $purchase_id = get_param_string('purchase_id', null);
-        if ($purchase_id !== null) {
+        $purchase_id = get_param_string('purchase_id', '');
+        if ($purchase_id != '') {
             $where .= ' AND ' . db_string_equal_to('t_purchase_id', $purchase_id);
         }
 
@@ -564,7 +577,7 @@ class Module_admin_ecommerce_logs
                 $member_link = do_lang_tempcode('UNKNOWN_EM');
             }
 
-            $tax = ecommerce_get_currency_symbol() . escape_html(float_format($transaction_row['t_tax']));
+            $tax = ecommerce_get_currency_symbol($transaction_row['t_currency']) . escape_html(float_format($transaction_row['t_tax']));
             $tax_invoice_url = build_url(array('page' => '_SELF', 'type' => 'tax_invoice', 'id' => $transaction_row['id'], 'wide_high' => 1), '_SELF');
             $tax_linker = hyperlink($tax_invoice_url, $tax, false, false, '', null, null, null, '_top');
 
@@ -572,7 +585,7 @@ class Module_admin_ecommerce_logs
                 escape_html($transaction_row['id']) . (($transaction_row['t_parent_txn_id'] == '') ? '' : (' &rarr; ' . escape_html($transaction_row['t_parent_txn_id']))),
                 escape_html($transaction_row['t_purchase_id']),
                 escape_html($date),
-                ecommerce_get_currency_symbol() . escape_html(float_format($transaction_row['t_amount'])),
+                ecommerce_get_currency_symbol($transaction_row['t_currency']) . escape_html(float_format($transaction_row['t_amount'])),
                 $tax_linker,
                 escape_html($item_name),
                 $status,
@@ -588,14 +601,89 @@ class Module_admin_ecommerce_logs
 
         $products = new Tempcode();
         $product_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
+        $products->attach(form_input_list_entry('', $type_code == '', do_lang_tempcode('NA_EM')));
         foreach ($product_rows as $p) {
-            $products->attach(form_input_list_entry($p['t_type_code']));
+            $products->attach(form_input_list_entry($p['t_type_code'], $p['t_type_code'] === $type_code));
         }
 
-        $tpl = do_template('ECOM_TRANSACTION_LOGS_SCREEN', array('_GUID' => 'a6ba07e4be36ecc85157511e3807df75', 'TITLE' => $this->title, 'PRODUCTS' => $products, 'URL' => $post_url, 'RESULTS_TABLE' => $results_table));
+        $tpl = do_template('ECOM_TRANSACTION_LOGS_SCREEN', array(
+            '_GUID' => 'a6ba07e4be36ecc85157511e3807df75',
+            'TITLE' => $this->title,
+            'PRODUCTS' => $products,
+            'PURCHASE_ID' => $purchase_id,
+            'URL' => $post_url,
+            'RESULTS_TABLE' => $results_table,
+        ));
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
+    }
+
+    /**
+     * Method to display export transaction list filters.
+     *
+     * @return Tempcode The interface.
+     */
+    public function export_transactions()
+    {
+        require_code('form_templates');
+
+        $fields = new Tempcode();
+
+        $transaction_status_list = get_transaction_status_list();
+        $fields->attach(form_input_list(do_lang_tempcode('STATUS'), do_lang_tempcode('TRANSACTION_STATUS_FILTER_DESCRIPTION'), 'transaction_status', $transaction_status_list, null, false, false));
+
+        $products = new Tempcode();
+        $product_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
+        $products->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
+        foreach ($product_rows as $p) {
+            $products->attach(form_input_list_entry($p['t_type_code']));
+        }
+        $fields->attach(form_input_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $products, null, false, false));
+
+        // Dates...
+
+        $start_year = intval(date('Y')) - 1;
+        $start_month = intval(date('m'));
+        $start_day = intval(date('d'));
+        $start_hour = intval(date('H'));
+        $start_minute = intval(date('i'));
+
+        $end_year = $start_year + 1;
+        $end_month = $start_month;
+        $end_day = $start_day;
+        $end_hour = $start_hour;
+        $end_minute = $start_minute;
+
+        $fields->attach(form_input_date(do_lang_tempcode('ST_START_PERIOD'), do_lang_tempcode('ST_START_PERIOD_DESCRIPTION'), 'start_date', true, false, true, array($start_minute, $start_hour, $start_month, $start_day, $start_year)));
+        $fields->attach(form_input_date(do_lang_tempcode('ST_END_PERIOD'), do_lang_tempcode('ST_END_PERIOD_DESCRIPTION'), 'end_date', true, false, true, array($end_minute, $end_hour, $end_month, $end_day, $end_year)));
+
+        return do_template('FORM_SCREEN', array(
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_NAME' => do_lang_tempcode('EXPORT_TRANSACTIONS'),
+            'TEXT' => paragraph(do_lang_tempcode('EXPORT_TRANSACTIONS_TEXT')),
+            'URL' => build_url(array('page' => '_SELF', 'type' => '_export_transactions'), '_SELF'),
+            'HIDDEN' => '',
+            'FIELDS' => $fields,
+        ));
+    }
+
+    /**
+     * Actualiser to build CSV from the selected filters.
+     *
+     * @return Tempcode The result of execution.
+     */
+    public function _export_transactions()
+    {
+        $start_date = post_param_date('start_date', true);
+        $end_date = post_param_date('end_date', true);
+        $transaction_status = post_param_string('transaction_status');
+        $type_code = post_param_string('type_code');
+
+        require_code('tasks');
+        return call_user_func_array__long_task(do_lang('EXPORT_TRANSACTIONS'), $this->title, 'export_ecom_transactions', array($start_date, $end_date, $transaction_status, $type_code));
     }
 
     /**
@@ -687,7 +775,7 @@ class Module_admin_ecommerce_logs
 
             $type_code = $transaction['t_type_code'];
 
-            $transaction['t_amount'] = currency_convert($transaction['t_amount'], $transaction['t_currency'], get_option('currency'));
+            $transaction['t_amount'] = currency_convert($transaction['t_amount'], $transaction['t_currency'], get_option('currency')); // HACKHACK: Not ideal because exchange rates change, but we don't normally trade multiple currencies anyway
 
             $types['CLOSING']['AMOUNT'] += $transaction['t_amount']/*no sales tax on this figure as it goes straight out*/;
 

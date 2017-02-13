@@ -208,6 +208,7 @@ function prepare_templated_subscription($subscription)
         'AMOUNT' => float_format($subscription['amount']),
         'TAX' => float_format($subscription['tax']),
         'TOTAL' => float_format($subscription['amount'] + $subscription['tax']),
+        'CURRENCY' => $subscription['currency'],
         '_PAYMENT_GATEWAY' => $subscription['payment_gateway'],
         'PAYMENT_GATEWAY' => do_lang_tempcode('PAYMENT_GATEWAY_' . $subscription['payment_gateway']),
         '_STATE' => $subscription['state'],

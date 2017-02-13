@@ -167,6 +167,7 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN.tpl',
             'themes/default/templates/ECOM_MEMBER_SUBSCRIPTION_STATUS.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_ECOMMERCE_LOGS.tpl',
+            'themes/default/templates/CURRENCY.tpl',
             'themes/default/images/ecommerce/checkmark.png',
             'themes/default/images/ecommerce/index.html',
             'sources/hooks/systems/cron/manual_subscription_notification.php',
@@ -217,13 +218,17 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/notifications/ip_address_sharing.php',
             'sources/hooks/systems/cron/ip_address_sharing.php',
             'sources/hooks/systems/symbols/CURRENCY_SYMBOL.php',
+            'sources/hooks/systems/symbols/CURRENCY.php',
+            'sources/hooks/systems/symbols/CURRENCY_USER.php',
             'sources/hooks/systems/commandr_fs_extended_member/invoices.php',
             'sources/hooks/systems/commandr_fs_extended_member/subscriptions.php',
             'sources/hooks/systems/config/credit_card_cleanup_days.php',
             'sources/hooks/systems/config/store_credit_card_numbers.php',
             'sources/hooks/systems/cron/credit_card_cleanup.php',
+            'sources/hooks/systems/tasks/export_ecom_transactions.php',
             'sources/hooks/systems/config/transaction_percentage_fee.php',
             'sources/hooks/systems/config/transaction_flat_fee.php',
+            'sources/hooks/systems/config/currency_auto.php',
             'themes/default/images/icons/24x24/menu/adminzone/setup/ecommerce_products.png',
             'themes/default/images/icons/48x48/menu/adminzone/setup/ecommerce_products.png',
             'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/sales_log.png',
@@ -330,6 +335,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_previews()
     {
         return array(
+            'templates/CURRENCY.tpl' => 'currency',
             'templates/ECOM_OUTSTANDING_INVOICES_SCREEN.tpl' => 'administrative__ecom_outstanding_invoices_screen',
             'templates/ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER.tpl' => 'ecom_subscriptions_screen',
             'templates/ECOM_TRANSACTION_LOGS_SCREEN.tpl' => 'administrative__ecom_transaction_logs_screen',
@@ -374,6 +380,25 @@ class Hook_addon_registry_ecommerce
             'text/ECOM_PRODUCT_FORWARDER_MAIL.txt' => 'ecom_product_forwarder_mail',
             'text/ECOM_PRODUCT_POP3_MAIL.txt' => 'ecom_product_pop3_mail',
             'text/ECOM_PRODUCT_QUOTA_MAIL.txt' => 'ecom_product_quota_mail',
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__currency()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('CURRENCY', array(
+                'AMOUNT' => placeholder_number(),
+                'NEW_AMOUNT' => placeholder_number(),
+                'FROM_CURRENCY' => 'GBP',
+                'TO_CURRENCY' => 'GBP',
+            )), null, '', true)
         );
     }
 
@@ -448,7 +473,7 @@ class Hook_addon_registry_ecommerce
                 'TAX' => placeholder_number(),
                 'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -480,7 +505,7 @@ class Hook_addon_registry_ecommerce
                 'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
                 'FIRST_REPEAT' => lorem_phrase(),
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -525,7 +550,7 @@ class Hook_addon_registry_ecommerce
                 'TAX' => placeholder_number(),
                 'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'PAYMENT_ADDRESS' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -553,7 +578,7 @@ class Hook_addon_registry_ecommerce
                 'PRICE' => placeholder_number(),
                 'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'PAYMENT_ADDRESS' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -598,7 +623,7 @@ class Hook_addon_registry_ecommerce
                 'TAX' => placeholder_number(),
                 'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -629,7 +654,7 @@ class Hook_addon_registry_ecommerce
                 'PRICE' => placeholder_number(),
                 'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'USERNAME' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -673,7 +698,7 @@ class Hook_addon_registry_ecommerce
                 'TAX' => placeholder_number(),
                 'SHIPPING_COST' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'PAYMENT_ADDRESS' => lorem_paragraph(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -706,7 +731,7 @@ class Hook_addon_registry_ecommerce
                 'PRICE' => placeholder_number(),
                 'TAX' => placeholder_number(),
                 'AMOUNT' => placeholder_number(),
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'PAYMENT_ADDRESS' => lorem_paragraph(),
                 'FORM_URL' => placeholder_url(),
                 'MEMBER_ADDRESS' => placeholder_array(),
@@ -762,7 +787,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'IS_TEST' => false,
                 'CUST_ID' => placeholder_id(),
-                'CURRENCY' => lorem_word(),
+                'CURRENCY' => 'GBP',
             )), null, '', true)
         );
     }
@@ -793,7 +818,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'IS_TEST' => false,
                 'CUST_ID' => placeholder_id(),
-                'CURRENCY' => lorem_word(),
+                'CURRENCY' => 'GBP',
                 'LENGTH' => placeholder_number(),
                 'LENGTH_UNITS' => lorem_word(),
             )), null, '', true)
@@ -900,16 +925,17 @@ class Hook_addon_registry_ecommerce
                     $map += array(
                         'WRITTEN_PRICE' => $written_price,
 
-                        'FULL_PRICE' => '0.00 USD',
+                        'FULL_PRICE' => '0.00 GBP',
                         'DISCOUNTED_PRICE' => $_discounted_price,
 
-                        '_PRICE' => '0.00',
-                        '_CURRENCY' => 'USD',
+                        '_FULL_PRICE' => '0.00',
+                        '_DISCOUNTED_PRICE' => '',
+                        '_CURRENCY' => 'GBP',
                     );
                     break;
 
                 case 1:
-                    $_full_price = currency_convert(0.00, 'USD', null, true);
+                    $_full_price = currency_convert(0.00, 'GBP', 'GBP', CURRENCY_DISPLAY_TEMPLATED);
                     $_discounted_price = do_lang('NA');
                     $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE');
 
@@ -919,8 +945,9 @@ class Hook_addon_registry_ecommerce
                         'FULL_PRICE' => $_full_price,
                         'DISCOUNTED_PRICE' => $_discounted_price,
 
-                        '_PRICE' => '0.00',
-                        '_CURRENCY' => 'USD',
+                        '_FULL_PRICE' => '0.00',
+                        '_DISCOUNTED_PRICE' => '',
+                        '_CURRENCY' => 'GBP',
                         '_PRICE_POINTS' => null,
                         '_DISCOUNT_POINTS__NUM_POINTS' => null,
                         '_DISCOUNT_POINTS__PRICE_REDUCTION' => null,
@@ -928,8 +955,8 @@ class Hook_addon_registry_ecommerce
                     break;
 
                 case 2:
-                    $_full_price = currency_convert(4.56, 'USD', null, true);
-                    $_discounted_price = currency_convert(3.45, 'USD', null, true);
+                    $_full_price = currency_convert(4.56, 'GBP', 'GBP', CURRENCY_DISPLAY_TEMPLATED);
+                    $_discounted_price = currency_convert(3.45, 'GBP', 'GBP', CURRENCY_DISPLAY_TEMPLATED);
                     $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT', $_discounted_price, $_full_price, array(escape_html(integer_format(5))));
 
                     $map += array(
@@ -938,8 +965,9 @@ class Hook_addon_registry_ecommerce
                         'FULL_PRICE' => $_full_price,
                         'DISCOUNTED_PRICE' => $_discounted_price,
 
-                        '_PRICE' => '3.45',
-                        '_CURRENCY' => 'USD',
+                        '_FULL_PRICE' => '4.56',
+                        '_DISCOUNTED_PRICE' => '3.45',
+                        '_CURRENCY' => 'GBP',
                         '_PRICE_POINTS' => null,
                         '_DISCOUNT_POINTS__NUM_POINTS' => '5',
                         '_DISCOUNT_POINTS__PRICE_REDUCTION' => '1.11',
@@ -947,8 +975,8 @@ class Hook_addon_registry_ecommerce
                     break;
 
                 case 3:
-                    $_full_price = currency_convert(1.23, 'USD', null, true);
-                    $_discounted_price = currency_convert(0.00, 'USD', null, true);
+                    $_full_price = currency_convert(1.23, 'GBP', 'GBP', CURRENCY_DISPLAY_TEMPLATED);
+                    $_discounted_price = currency_convert(0.00, 'GBP', 'GBP', CURRENCY_DISPLAY_TEMPLATED);
                     $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE_WITH_POINTS', $_discounted_price, $_full_price, array(escape_html(integer_format(5))));
 
                     $map += array(
@@ -957,8 +985,9 @@ class Hook_addon_registry_ecommerce
                         'FULL_PRICE' => $_full_price,
                         'DISCOUNTED_PRICE' => $_discounted_price,
 
-                        '_PRICE' => '1.23',
-                        '_CURRENCY' => 'USD',
+                        '_FULL_PRICE' => '1.23',
+                        '_DISCOUNTED_PRICE' => '0.00',
+                        '_CURRENCY' => 'GBP',
                         '_PRICE_POINTS' => '5',
                         '_DISCOUNT_POINTS__NUM_POINTS' => null,
                         '_DISCOUNT_POINTS__PRICE_REDUCTION' => null,
@@ -966,7 +995,7 @@ class Hook_addon_registry_ecommerce
                     break;
 
                 case 4:
-                    $_full_price = currency_convert(1.23, 'USD', null, true);
+                    $_full_price = currency_convert(1.23, 'GBP', 'GBP', CURRENCY_DISPLAY_TEMPLATED);
                     $_discounted_price = do_lang('NA');
                     $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FULL_PRICE', $_full_price);
 
@@ -976,8 +1005,9 @@ class Hook_addon_registry_ecommerce
                         'FULL_PRICE' => $_full_price,
                         'DISCOUNTED_PRICE' => $_discounted_price,
 
-                        '_PRICE' => '1.23',
-                        '_CURRENCY' => 'USD',
+                        '_FULL_PRICE' => '1.23',
+                        '_DISCOUNTED_PRICE' => '',
+                        '_CURRENCY' => 'GBP',
                         '_PRICE_POINTS' => null,
                         '_DISCOUNT_POINTS__NUM_POINTS' => null,
                         '_DISCOUNT_POINTS__PRICE_REDUCTION' => null,
@@ -1106,7 +1136,7 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('ECOM_PURCHASE_STAGE_PAY', array(
                 'TITLE' => lorem_title(),
                 'TRANSACTION_BUTTON' => placeholder_button(),
-                'CURRENCY' => placeholder_number(),
+                'CURRENCY' => 'GBP',
                 'ITEM_NAME' => lorem_phrase(),
                 'TYPE_CODE' => lorem_word(),
                 'PURCHASE_ID' => placeholder_id(),
@@ -1156,6 +1186,7 @@ class Hook_addon_registry_ecommerce
                 'INVOICE_ID' => placeholder_id(),
                 'AMOUNT' => placeholder_number(),
                 'TAX' => placeholder_number(),
+                'CURRENCY' => 'GBP',
                 'TIME' => placeholder_date(),
                 'STATE' => lorem_word(),
                 'DELIVERABLE' => lorem_word(),
@@ -1168,7 +1199,6 @@ class Hook_addon_registry_ecommerce
         return array(
             lorem_globalise(do_lorem_template('ECOM_INVOICES_SCREEN', array(
                 'TITLE' => lorem_title(),
-                'CURRENCY' => lorem_phrase(),
                 'INVOICES' => $invoices,
             )), null, '', true)
         );
@@ -1193,6 +1223,7 @@ class Hook_addon_registry_ecommerce
                 'STATE' => lorem_phrase(),
                 'AMOUNT' => placeholder_number(),
                 'TAX' => placeholder_number(),
+                'CURRENCY' => 'GBP',
                 'TIME' => placeholder_date(),
                 'NOTE' => lorem_phrase(),
                 'TYPE_CODE' => lorem_phrase(),
@@ -1233,6 +1264,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'TAX' => placeholder_number(),
                 'TOTAL' => placeholder_number(),
+                'CURRENCY' => 'GBP',
                 '_START_TIME' => placeholder_date_raw(),
                 '_TERM_START_TIME' => placeholder_date_raw(),
                 '_TERM_END_TIME' => placeholder_date_raw(),
@@ -1288,6 +1320,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'TAX' => placeholder_number(),
                 'TOTAL' => placeholder_number(),
+                'CURRENCY' => 'GBP',
                 '_START_TIME' => placeholder_date_raw(),
                 '_TERM_START_TIME' => placeholder_date_raw(),
                 '_TERM_END_TIME' => placeholder_date_raw(),
@@ -1410,6 +1443,7 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('ECOM_TRANSACTION_LOGS_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'PRODUCTS' => placeholder_options(),
+                'PURCHASE_ID' => placeholder_id(),
                 'URL' => placeholder_url(),
                 'RESULTS_TABLE' => placeholder_table(),
             )), null, '', true)
@@ -1571,8 +1605,7 @@ class Hook_addon_registry_ecommerce
                 'DATE' => placeholder_date(),
                 'TRANS_ADDRESS' => lorem_phrase() . "\n" . lorem_phrase() . "\n" . lorem_phrase(),
                 'ITEMS' => $items,
-                'CURRENCY_SYMBOL' => '$',
-                'CURRENCY' => 'USD',
+                'CURRENCY' => 'GBP',
                 'TOTAL_PRICE' => placeholder_number(),
                 'TOTAL_TAX' => placeholder_number(),
                 'TOTAL_AMOUNT' => placeholder_number(),

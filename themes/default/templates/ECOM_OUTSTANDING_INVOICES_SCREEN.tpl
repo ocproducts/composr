@@ -24,10 +24,10 @@
 					<a href="{PROFILE_URL*}">{USERNAME*}</a>
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{AMOUNT*}
+					{$CURRENCY,{AMOUNT},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{TAX*}
+					{$CURRENCY,{TAX},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
 				</td>
 				<td>
 					{TIME*}

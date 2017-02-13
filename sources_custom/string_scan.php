@@ -4294,6 +4294,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EXPORT_LANGUAGE
         EXPORT_ORDER_LIST
         EXPORT_ORDER_LIST_TEXT
+        EXPORT_TRANSACTIONS
+        ORDER_STATUS_FILTER_DESCRIPTION
+        TRANSACTION_STATUS_FILTER_DESCRIPTION
+        EXPORT_TRANSACTIONS_TEXT
         EXPORT_POINTS
         EXPORT_QUIZ
         EXPORT_QUIZ_TEXT
@@ -4594,6 +4598,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FU_UP_INFO_1
         FU_UP_INFO_2
         FU_WILL_MERGE
+        UNKNOWN_CURRENCY
+        CURRENCY_CONVERSION_FAILED
         FXML_FIELD_NOT_IN_SET
         FXML_FIELD_NOT_IN_SET_SECRETIVE
         FXML_FIELD_PATTERN_FAIL
@@ -5607,6 +5613,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ORDER_STATUS_onhold
         ORDER_STATUS_payment_received
         ORDER_STATUS_returned
+        ORDER_STATUS_smodified
         ORDER_SUB_ALPHA
         ORGANISATION
         ORIGINAL
@@ -8077,6 +8084,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FILTER
         FILTER_REGIONS
         FIND_ME
+        CURRENCY_APPROXIMATION
+        CURRENCY_CONVERSIONS
         FINISH_PROFILE
         FINISH_STARTED_ALREADY
         FIRST

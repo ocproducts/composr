@@ -170,7 +170,6 @@ class Hook_addon_registry_core_rich_media
             'themes/default/templates/COMCODE_TEXTCODE_TAB.tpl',
             'themes/default/templates/COMCODE_WIKI_LINK.tpl',
             'themes/default/templates/COMCODE_CONCEPT_INLINE.tpl',
-            'themes/default/templates/COMCODE_CURRENCY.tpl',
             'themes/default/templates/COMCODE_FAKE_TABLE_WRAP_START.tpl',
             'themes/default/templates/COMCODE_FAKE_TABLE_START_CELL.tpl',
             'themes/default/templates/COMCODE_FAKE_TABLE_WIDE_START_CELL.tpl',
@@ -337,7 +336,6 @@ class Hook_addon_registry_core_rich_media
             'templates/COMCODE_MISTAKE_ERROR.tpl' => 'comcode_mistake_screen',
             'templates/COMCODE_MISTAKE_LINE.tpl' => 'comcode_mistake_screen',
             'templates/COMCODE_MISTAKE_SCREEN.tpl' => 'comcode_mistake_screen',
-            'templates/COMCODE_CURRENCY.tpl' => 'comcode_currency',
             'templates/COMCODE_OVERLAY.tpl' => 'comcode_overlay',
             'templates/COMCODE_SNAPBACK.tpl' => 'comcode_snapback',
             'templates/COMCODE_SECTION.tpl' => 'comcode_section_controller',
@@ -658,24 +656,6 @@ class Hook_addon_registry_core_rich_media
                 'LINE' => lorem_phrase(),
                 'MESSAGE' => lorem_phrase(),
                 'LINES' => $line,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__comcode_currency()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('COMCODE_CURRENCY', array(
-                'AMOUNT' => placeholder_number(),
-                'FROM_CURRENCY' => 'USD',
-                'BRACKET' => true,
             )), null, '', true)
         );
     }

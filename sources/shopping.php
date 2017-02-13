@@ -242,6 +242,7 @@ function copy_shopping_cart_to_order()
         'total_price' => $total_price,
         'total_tax' => $total_tax,
         'total_shipping_cost' => $total_shipping_cost,
+        'currency' => get_option('currency'),
         'order_status' => 'ORDER_STATUS_awaiting_payment',
         'notes' => '',
         'purchase_through' => 'cart',
@@ -283,7 +284,7 @@ function copy_shopping_cart_to_order()
 
     // See if it matches an existing unpaid order...
 
-    $orders = $GLOBALS['SITE_DB']->query_select('shopping_order', array('id'), $shopping_order);
+    $orders = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('id'), $shopping_order);
     foreach ($orders as $order) {
         $_shopping_order_details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order['id']), 'ORDER BY id');
         foreach ($_shopping_order_details as &$_map) {
@@ -297,7 +298,7 @@ function copy_shopping_cart_to_order()
 
     // Insert order...
 
-    $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', $shopping_order + array('add_date' => time()), true);
+    $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_orders', $shopping_order + array('add_date' => time()), true);
     foreach ($shopping_order_details as $map) {
         $GLOBALS['SITE_DB']->query_insert('shopping_order_details', $map + array('p_order_id' => $order_id));
     }
@@ -317,7 +318,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
 {
     require_css('shopping');
 
-    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $order_id), '', 1);
+    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('*'), array('id' => $order_id), '', 1);
     if (!array_key_exists(0, $order_rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
@@ -398,7 +399,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
  */
 function send_shopping_order_purchased_staff_mail($order_id)
 {
-    $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'member_id', array('id' => $order_id));
+    $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'member_id', array('id' => $order_id));
     $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
@@ -422,11 +423,11 @@ FOR ORDER MANAGEMENT
 function delete_incomplete_orders()
 {
     $where = db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' AND add_date<' . strval(time() - 60 * 60 * 24 * 14/*2 weeks*/);
-    $sql = 'SELECT id FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where;
+    $sql = 'SELECT id FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where;
     $order_rows = $GLOBALS['SITE_DB']->query($sql);
     foreach ($order_rows as $order_row) {
         $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_order_id' => $order_row['id']));
-        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $order_row['id']), '', 1);
+        $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $order_row['id']), '', 1);
     }
 }
 
@@ -442,11 +443,11 @@ function delete_pending_orders_for_current_user()
         $where['member_id'] = get_member();
     }
 
-    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('id'), $where);
+    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('id'), $where);
 
     foreach ($order_rows as $order_row) {
         $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_order_id' => $order_row['id']));
-        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $order_row['id']), '', 1);
+        $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $order_row['id']), '', 1);
     }
 }
 
@@ -461,7 +462,7 @@ function recalculate_order_costs($order_id)
 
     list($total_price, $total_tax, $total_shipping_cost) = derive_cart_amounts($product_rows, 'p_');
 
-    $GLOBALS['SITE_DB']->query_update('shopping_order', array(
+    $GLOBALS['SITE_DB']->query_update('shopping_orders', array(
         'total_price' => $total_price,
         'total_tax' => $total_tax,
         'total_shipping_cost' => $total_shipping_cost,
@@ -486,7 +487,7 @@ function get_order_status_list()
 
     $status_list = new Tempcode();
 
-    $status_list->attach(form_input_list_entry('all', false, do_lang_tempcode('NA')));
+    $status_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
 
     foreach ($status as $key => $string) {
         $status_list->attach(form_input_list_entry($key, false, $string));

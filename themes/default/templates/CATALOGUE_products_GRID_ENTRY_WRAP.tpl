@@ -14,7 +14,7 @@
 	{+END}
 
 	<div class="price_box">
-		<span class="price">{$CURRENCY_SYMBOL}{$FLOAT_FORMAT*,{FIELD_2_PLAIN}}</span>
+		<span class="price">{$CURRENCY,{FIELD_2_PLAIN},,{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>
 	</div>
 
 	<div class="buttons_group">

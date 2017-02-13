@@ -472,14 +472,15 @@ function do_work()
             'quantity' => 1,
         ));
     }
-    for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'COUNT(*)'); $j < $num_wanted; $j++) {
-        $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', array(
+    for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'COUNT(*)'); $j < $num_wanted; $j++) {
+        $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_orders', array(
             'member_id' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
             'session_id' => get_rand_password(),
             'add_date' => time(),
             'total_price' => 10.00,
             'total_tax' => 1.00,
             'total_shipping_cost' => 2.00,
+            'currency' => get_option('currency'),
             'order_status' => 'ORDER_STATUS_awaiting_payment',
             'notes' => '',
             'purchase_through' => 'purchase_module',

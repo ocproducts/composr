@@ -67,7 +67,7 @@
 
 	{+START,IF,{$JS_ON}}
 		<div class="box box___booking_flesh_out_screen"><div class="box_inner">
-			<strong>{!PRICE_AUTO_CALC}:</strong> {$CURRENCY_SYMBOL} <span id="price">{PRICE*}</span>
+			<strong>{!PRICE_AUTO_CALC}:</strong> {$CURRENCY_SYMBOL,{CURRENCY}} <span id="price">{PRICE*}</span>
 		</div></div>
 	{+END}
 

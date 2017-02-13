@@ -29,10 +29,10 @@
 					{+END}
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{AMOUNT*}
+					{$CURRENCY,{AMOUNT},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{TAX*}
+					{$CURRENCY,{AMOUNT},{TAX},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
 				</td>
 				<td>
 					{TIME*}

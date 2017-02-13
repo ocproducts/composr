@@ -39,7 +39,7 @@ class shopping_test_set extends cms_test_case
             actual_delete_catalogue('storetesting' . strval(get_member()));
         }
 
-        $GLOBALS['SITE_DB']->query_delete('shopping_order');
+        $GLOBALS['SITE_DB']->query_delete('shopping_orders');
         $GLOBALS['SITE_DB']->query_delete('shopping_order_details');
         $GLOBALS['SITE_DB']->query_delete('shopping_cart');
 

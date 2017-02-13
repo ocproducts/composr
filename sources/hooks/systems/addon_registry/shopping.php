@@ -127,6 +127,7 @@ class Hook_addon_registry_shopping
             'sources/hooks/systems/ecommerce/catalogue_items.php',
             'sources/hooks/systems/ecommerce/cart_orders.php',
             'sources/hooks/blocks/main_staff_checklist/shopping_orders.php',
+            'sources/hooks/systems/tasks/export_shopping_orders.php',
             'sources/shopping.php',
             'site/pages/modules/shopping.php',
             'themes/default/templates/CATALOGUE_products_CATEGORY_SCREEN.tpl',
@@ -563,7 +564,7 @@ class Hook_addon_registry_shopping
         return array(
             lorem_globalise(do_lorem_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(
                 'ITEMS' => $items,
-                'CURRENCY' => lorem_phrase(),
+                'CURRENCY' => 'GBP',
                 'SHIPPING_COST' => placeholder_number(),
                 'PAYMENT_ADDRESS' => lorem_word(),
                 'FORM_URL' => placeholder_url(),
@@ -660,12 +661,12 @@ class Hook_addon_registry_shopping
                 'MESSAGE' => lorem_phrase(),
                 'TYPE_CODES' => placeholder_id(),
                 'EMPTY_CART_URL' => placeholder_url(),
-                'TOTAL_PRICE' => float_format(floatval(placeholder_number())),
-                'TOTAL_TAX' => float_format(floatval(placeholder_number())),
-                'TOTAL_SHIPPING_COST' => float_format(floatval(placeholder_number())),
-                'GRAND_TOTAL' => float_format(floatval(placeholder_number())),
+                'TOTAL_PRICE' => placeholder_number(),
+                'TOTAL_TAX' => placeholder_number(),
+                'TOTAL_SHIPPING_COST' => placeholder_number(),
+                'GRAND_TOTAL' => placeholder_number(),
+                'CURRENCY' => 'GBP',
                 'PROCEED' => lorem_phrase(),
-                'CURRENCY' => lorem_word(),
                 'FIELDS' => placeholder_fields(),
                 'NEXT_URL' => placeholder_url(),
             )), null, '', true)
@@ -691,6 +692,7 @@ class Hook_addon_registry_shopping
                 'TOTAL_PRICE' => placeholder_number(),
                 'TOTAL_TAX' => placeholder_number(),
                 'TOTAL_SHIPPING_COST' => placeholder_number(),
+                'CURRENCY' => 'GBP',
                 'TIME' => placeholder_date(),
                 'STATUS' => lorem_word_2(),
                 'NOTE' => lorem_phrase(),
@@ -701,7 +703,6 @@ class Hook_addon_registry_shopping
         return array(
             lorem_globalise(do_lorem_template('ECOM_ORDERS_SCREEN', array(
                 'TITLE' => lorem_title(),
-                'CURRENCY' => lorem_phrase(),
                 'ORDERS' => $orders,
             )), null, '', true)
         );
@@ -719,7 +720,6 @@ class Hook_addon_registry_shopping
         return array(
             lorem_globalise(do_lorem_template('ECOM_ADMIN_ORDERS_SCREEN', array(
                 'TITLE' => lorem_title(),
-                'CURRENCY' => lorem_phrase(),
                 'RESULTS_TABLE' => placeholder_table(),
                 'PAGINATION' => placeholder_pagination(),
                 'SEARCH_URL' => placeholder_url(),
@@ -767,10 +767,10 @@ class Hook_addon_registry_shopping
                 'RESULTS_TABLE' => placeholder_table(),
                 'ORDER_NUMBER' => placeholder_number(),
                 'ADD_DATE' => placeholder_date(),
-                'CURRENCY' => lorem_phrase(),
                 'TOTAL_PRICE' => placeholder_number(),
                 'TOTAL_TAX' => placeholder_number(),
                 'TOTAL_SHIPPING_COST' => placeholder_number(),
+                'CURRENCY' => 'GBP',
                 'TRANSACTION_LINKER' => lorem_phrase(),
                 'ORDERED_BY_MEMBER_ID' => placeholder_id(),
                 'ORDERED_BY_USERNAME' => lorem_word(),

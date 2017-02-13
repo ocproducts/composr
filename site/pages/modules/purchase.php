@@ -661,6 +661,21 @@ class Module_purchase
                         'IS_CATEGORY' => true,
                         'NUM_PRODUCTS_IN_CATEGORY' => strval($num_products_in_category),
                         'NUM_PRODUCTS_IN_CATEGORY_AVAILABLE' => strval($num_products_in_category_available),
+
+                        'WRITTEN_PRICE' => null,
+
+                        'FULL_PRICE' => null,
+                        'DISCOUNTED_PRICE' => null,
+
+                        '_FULL_PRICE' => null,
+                        '_DISCOUNTED_PRICE' => null,
+                        '_CURRENCY' => null,
+                        '_PRICE_POINTS' => null,
+                        '_DISCOUNT_POINTS__NUM_POINTS' => null,
+                        '_DISCOUNT_POINTS__PRICE_REDUCTION' => null,
+
+                        'TYPE_SPECIAL_DETAILS_LENGTH' => null,
+                        'TYPE_SPECIAL_DETAILS_LENGTH_UNITS' => null,
                     );
 
                     continue;
@@ -684,7 +699,7 @@ class Module_purchase
                 $_full_price = do_lang('NA');
             } else {
                 $full_price = $details['price'];
-                $_full_price = currency_convert($full_price, $currency, null, true);
+                $_full_price = currency_convert_wrap($full_price, $currency);
             }
 
             list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($details, true);
@@ -704,10 +719,10 @@ class Module_purchase
                 $_discounted_price = do_lang('NA');
                 $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE');
             } elseif ($discounted_price === 0.00/*discounted via points to zero*/) {
-                $_discounted_price = currency_convert(0.00, $currency, null, true);
+                $_discounted_price = currency_convert_wrap(0.00, $currency);
                 $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_FOR_FREE_WITH_POINTS', $_discounted_price, $_full_price, array(escape_html(integer_format($points_for_discount))));
             } elseif ($discounted_price !== null/*discounted via points*/) {
-                $_discounted_price = currency_convert($discounted_price, $currency, null, true);
+                $_discounted_price = currency_convert_wrap($discounted_price, $currency);
                 $written_price = do_lang_tempcode('ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT', $_discounted_price, $_full_price, array(escape_html(integer_format($points_for_discount))));
             } else {
                 $_discounted_price = do_lang('NA');
@@ -743,7 +758,8 @@ class Module_purchase
                 'FULL_PRICE' => $_full_price,
                 'DISCOUNTED_PRICE' => $_discounted_price,
 
-                '_PRICE' => $full_price,
+                '_FULL_PRICE' => ($full_price === null) ? '' : float_to_raw_string($full_price),
+                '_DISCOUNTED_PRICE' => ($discounted_price === null) ? '' : float_to_raw_string($discounted_price),
                 '_CURRENCY' => $details['currency'],
                 '_PRICE_POINTS' => ($details['price_points'] === null) ? null : strval($details['price_points']),
                 '_DISCOUNT_POINTS__NUM_POINTS' => ($details['discount_points__num_points'] === null) ? null : strval($details['discount_points__num_points']),
@@ -1045,6 +1061,7 @@ class Module_purchase
                     's_state' => 'new',
                     's_amount' => $price,
                     's_tax' => $tax,
+                    's_currency' => $currency,
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
                     's_auto_fund_source' => '',
@@ -1112,8 +1129,8 @@ class Module_purchase
 
         } elseif (perform_local_payment()) { // Handle the transaction internally
             if ($confirmation_box === null) {
-                $_price = currency_convert($price, $currency, null, true);
-                $_tax = currency_convert($tax, $currency, null, true);
+                $_price = currency_convert_wrap($price, $currency);
+                $_tax = currency_convert_wrap($tax, $currency);
                 $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price, array($_tax, do_lang(get_option('tax_system'))));
             }
 
@@ -1156,8 +1173,8 @@ class Module_purchase
 
         } else { // Pass through to the gateway's HTTP server
             if ($confirmation_box === null) {
-                $_price = currency_convert($price, $currency, null, true);
-                $_tax = currency_convert($tax, $currency, null, true);
+                $_price = currency_convert_wrap($price, $currency);
+                $_tax = currency_convert_wrap($tax, $currency);
                 $confirmation_box = do_lang_tempcode('BUYING_FOR_MONEY_CONFIRMATION', escape_html($item_name), $_price, array($_tax, do_lang(get_option('tax_system'))));
             }
 
@@ -1195,7 +1212,7 @@ class Module_purchase
                 'PURCHASE_ID' => $purchase_id,
                 'LENGTH' => ($length === null) ? '' : strval($length),
                 'LENGTH_UNITS' => $length_units,
-                'PRICE' => float_format($price),
+                'PRICE' => float_to_raw_string($price),
                 'TEXT' => $text,
                 'CONFIRMATION_BOX' => $confirmation_box,
                 'LOGOS' => $logos,

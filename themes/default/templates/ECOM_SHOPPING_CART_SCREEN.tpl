@@ -28,18 +28,10 @@
 </form>
 
 {+START,IF_NON_EMPTY,{TYPE_CODES}}
-	<table class="columned_table cart_payment_summary">
-		<tbody>
-			<tr>
-				<th class="de_th">
-					{!GRAND_TOTAL}
-				</th>
-				<td>
-					<span class="price">{$CURRENCY_SYMBOL}{GRAND_TOTAL*}</span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="cart_payment_summary">
+		{!GRAND_TOTAL}:
+		<span class="price">{$CURRENCY,{GRAND_TOTAL},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>
+	</div>
 {+END}
 
 <form title="{!PRIMARY_PAGE_FORM}" method="post" enctype="multipart/form-data" action="{NEXT_URL*}" autocomplete="off">

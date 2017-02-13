@@ -117,7 +117,7 @@ class Module_admin_shopping
             $this->title = get_screen_title('ORDER_DETAILS');
         }
 
-        if ($type == 'export_orders') {
+        if ($type == 'export_orders' || $action == '_export_orders') {
             $this->title = get_screen_title('EXPORT_ORDER_LIST');
         }
 
@@ -246,10 +246,14 @@ class Module_admin_shopping
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
             $where .= ' AND (';
-            $where .= 'id LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\'';
+            if (is_numeric($filter)) {
+                $where .= 'id=' . strval(intval($filter));
+            }
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($search);
             if ($member_id !== null) {
-                $where .= ' OR ';
+                if (is_numeric($filter)) {
+                    $where .= ' OR ';
+                }
                 $where .= 'member_id=' . strval($member_id);
             }
             $where .= ')';
@@ -291,7 +295,7 @@ class Module_admin_shopping
         global $NO_DB_SCOPE_CHECK;
         $NO_DB_SCOPE_CHECK = true;
 
-        $sql = 'SELECT * WHERE ' . $where . ' ORDER BY ' . db_string_equal_to('order_status', 'ORDER_STATUS_cancelled')/*cancelled always last*/ . ',' . $sortable . ' ' . $sort_order;
+        $sql = 'SELECT * FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where . ' ORDER BY ' . db_string_equal_to('order_status', 'ORDER_STATUS_cancelled')/*cancelled always last*/ . ',' . $sortable . ' ' . $sort_order;
         $rows = $GLOBALS['SITE_DB']->query($sql, $max, $start, false, true);
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
@@ -336,7 +340,7 @@ class Module_admin_shopping
         }
 
         require_code('templates_pagination');
-        $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where);
+        $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where);
         $pagination = pagination(do_lang_tempcode('ORDERS'), $start, 'start', $max, 'max', $max_rows, true);
 
         $results_table = results_table(do_lang_tempcode('ORDERS'), 0, 'start', $max_rows, 'max', $max_rows, $fields_title, $order_entries, $sortables, $sortable, $sort_order, 'sort');
@@ -348,7 +352,6 @@ class Module_admin_shopping
         $tpl = do_template('ECOM_ADMIN_ORDERS_SCREEN', array(
             '_GUID' => '08afb0204c061644ec9c562b4eba24f4',
             'TITLE' => $this->title,
-            'CURRENCY' => get_option('currency'),
             'RESULTS_TABLE' => $results_table,
             'PAGINATION' => $pagination,
             'SEARCH_URL' => $search_url,
@@ -387,7 +390,7 @@ class Module_admin_shopping
     {
         $id = get_param_integer('id');
 
-        $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_dispatched'), array('id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_orders', array('order_status' => 'ORDER_STATUS_dispatched'), array('id' => $id), '', 1);
         $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => 'ORDER_STATUS_dispatched'), array('p_order_id' => $id)); // There may be more than one items to update status
 
         $add_note_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'action' => 'add_note', 'last_act' => 'dispatched', 'id' => $id), get_module_zone('admin_shopping'));
@@ -413,7 +416,7 @@ class Module_admin_shopping
 
         $fields = new Tempcode();
 
-        $note = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => $id));
+        $note = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'notes', array('id' => $id));
 
         if ($last_action !== null) {
             $note .= do_lang('ADD_NOTE_APPEND_TEXT', get_timezoned_date(time(), true, false, true, true), do_lang('ORDER_STATUS_' . $last_action));
@@ -425,7 +428,7 @@ class Module_admin_shopping
 
         if ($last_action == 'dispatched') {
             // Display dispatch mail preview
-            $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $id), '', 1);
+            $res = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('*'), array('id' => $id), '', 1);
             $order_details = $res[0];
 
             $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['member_id']);
@@ -464,7 +467,7 @@ class Module_admin_shopping
         $notes = post_param_string('note');
         $redirect = get_param_string('redirect', null);
 
-        $GLOBALS['SITE_DB']->query_update('shopping_order', array('notes' => $notes), array('id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_orders', array('notes' => $notes), array('id' => $id), '', 1);
 
         $this->send_dispatch_notification($id);
 
@@ -489,7 +492,7 @@ class Module_admin_shopping
             return;
         }
 
-        $res = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $order_id), '', 1);
+        $res = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('*'), array('id' => $order_id), '', 1);
         $order_details = $res[0];
 
         if (is_guest($order_details['member_id'])) {
@@ -509,7 +512,7 @@ class Module_admin_shopping
     {
         $id = get_param_integer('id');
 
-        $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_cancelled'), array('id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_orders', array('order_status' => 'ORDER_STATUS_cancelled'), array('id' => $id), '', 1);
         $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => 'ORDER_STATUS_cancelled'), array('p_order_id' => $id), '', 1);
 
         $add_note_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'action' => 'add_note', 'last_act' => 'cancelled', 'id' => $id), get_module_zone('admin_shopping'));
@@ -526,7 +529,7 @@ class Module_admin_shopping
     {
         $id = get_param_integer('id');
 
-        $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_returned'), array('id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_orders', array('order_status' => 'ORDER_STATUS_returned'), array('id' => $id), '', 1);
         $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => 'ORDER_STATUS_returned'), array('p_order_id' => $id), '', 1);
 
         $add_note_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'action' => 'add_note', 'last_act' => 'returned', 'id' => $id), get_module_zone('admin_shopping'));
@@ -543,7 +546,7 @@ class Module_admin_shopping
     {
         $id = get_param_integer('id');
 
-        $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_onhold'), array('id' => $id), '', 1);
+        $GLOBALS['SITE_DB']->query_update('shopping_orders', array('order_status' => 'ORDER_STATUS_onhold'), array('id' => $id), '', 1);
         $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => 'ORDER_STATUS_onhold'), array('p_order_id' => $id), '', 1);
 
         $add_note_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'action' => 'add_note', 'last_act' => 'onhold', 'id' => $id), get_module_zone('admin_shopping'));
@@ -563,7 +566,6 @@ class Module_admin_shopping
         $fields = new Tempcode();
 
         $order_status_list = get_order_status_list();
-
         $fields->attach(form_input_list(do_lang_tempcode('ORDER_STATUS'), do_lang_tempcode('ORDER_STATUS_FILTER_DESCRIPTION'), 'order_status', $order_status_list, null, false, false));
 
         // Dates...
@@ -599,80 +601,15 @@ class Module_admin_shopping
     /**
      * Actualiser to build CSV from the selected filters.
      *
-     * @param  boolean $inline Whether to avoid exit (useful for unit test).
+     * @return Tempcode The result of execution.
      */
-    public function _export_orders($inline = false)
+    public function _export_orders()
     {
         $start_date = post_param_date('start_date', true);
         $end_date = post_param_date('end_date', true);
         $order_status = post_param_string('order_status');
 
-        $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false, false, false, true) . '-' . get_timezoned_date($end_date, false, false, false, true) . '.csv';
-
-        $orders = array();
-        $data = array();
-
-        $where = 'add_date BETWEEN ' . strval($start_date) . ' AND ' . strval($end_date);
-        if ($order_status != 'all') {
-            $where .= ' AND ' . db_string_equal_to('order_status', $order_status);
-        }
-
-        $query = 'SELECT o.*,a.*
-            FROM ' . get_table_prefix() . 'shopping_order o
-            LEFT JOIN ' . get_table_prefix() . 'ecom_trans_addresses a ON o.txn_id=a.a_txn_id
-            WHERE ' . $where;
-        $rows = $GLOBALS['SITE_DB']->query($query);
-        remove_duplicate_rows($rows);
-
-        foreach ($rows as $order) {
-            $orders[do_lang('ORDER_NUMBER')] = strval($order['id']);
-            $orders[do_lang('ORDERED_DATE')] = get_timezoned_date($order['add_date'], true, false, true, true);
-            $orders[do_lang('ORDER_STATUS')] = do_lang($order['order_status']);
-            $orders[do_lang('PRICE')] = $order['total_price'];
-            $orders[do_lang(get_option('tax_system'))] = float_format($order['total_tax']);
-            $orders[do_lang('SHIPPING_COST')] = float_format($order['total_shipping_cost']);
-            $orders[do_lang('ORDERED_PRODUCTS')] = get_ordered_product_list_string($order['id']);
-            $orders[do_lang('ORDERED_BY')] = $GLOBALS['FORUM_DRIVER']->get_username($order['member_id']);
-            if ($orders[do_lang('ORDERED_BY')] === null) {
-                $orders[do_lang('ORDERED_BY')] = do_lang('UNKNOWN');
-            }
-
-            // Put address together
-            $address = array();
-            if ($order['a_firstname'] . $order['a_lastname'] != '') {
-                $address[] = trim($order['a_firstname'] . ' ' . $order['a_lastname']);
-            }
-            if ($order['a_street_address'] != '') {
-                $address[] = $order['a_street_address'];
-            }
-            if ($order['a_city'] != '') {
-                $address[] = $order['a_city'];
-            }
-            if ($order['a_county'] != '') {
-                $address[] = $order['a_county'];
-            }
-            if ($order['a_state'] != '') {
-                $address[] = $order['a_state'];
-            }
-            if ($order['a_post_code'] != '') {
-                $address[] = $order['a_post_code'];
-            }
-            if ($order['a_country'] != '') {
-                $address[] = $order['a_country'];
-            }
-            if ($order['a_email'] != '') {
-                $address[] = do_lang('EMAIL_ADDRESS') . ': ' . $order['a_email'];
-            }
-            if ($order['a_phone'] != '') {
-                $address[] = do_lang('PHONE_NUMBER') . ': ' . $order['a_phone'];
-            }
-            $full_address = implode("\n", $address);
-            $orders[do_lang('SHIPPING_ADDRESS')] = $full_address;
-
-            $data[] = $orders;
-        }
-
-        require_code('files2');
-        make_csv($data, $filename, !$inline, !$inline);
+        require_code('tasks');
+        return call_user_func_array__long_task(do_lang('EXPORT_ORDER_LIST'), $this->title, 'export_shopping_orders', array($start_date, $end_date, $order_status));
     }
 }

@@ -147,9 +147,7 @@
 									{+END}
 
 									<td class="vertical_alignment">
-										{$CURRENCY_SYMBOL}{$PREG_REPLACE*,\.00$,,{BOOKABLE_PRICE}}
-										(<a title="{!CURRENCY_CONVERT} {!LINK_NEW_WINDOW}" target="_blank" href="http://coinmill.com/SOS_calculator.html#{$CONFIG_OPTION,currency}={BOOKABLE_PRICE_RAW*}">{!CURRENCY_CONVERT}</a>)
-										{$,{$COMCODE,[currency bracket="1"]{BOOKABLE_PRICE_RAW}[/currency]}}
+										{$CURRENCY,{BOOKABLE_PRICE},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
 										<span class="associated_details">{!BOOKING_PER}</span>
 									</td>
 								</tr>

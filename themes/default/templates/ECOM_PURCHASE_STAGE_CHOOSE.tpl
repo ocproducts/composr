@@ -14,7 +14,7 @@
 {+START,IF_NON_EMPTY,{PRODUCTS}}
 	<div itemprop="significantLinks">
 		{+START,LOOP,PRODUCTS}
-			{+START,IF,{$NEQ,{NUM_PRODUCTS_IN_CATEGORY},0}}
+			{+START,IF,{$NEQ,{NUM_PRODUCTS_IN_CATEGORY},0}}{+START,IF,{CAN_PURCHASE}}
 				<div class="ecom_product">
 					<div class="box box___ecom_purchase_stage_choose"><div class="box_inner">
 						<h2>{ITEM_NAME*}</h2>
@@ -46,7 +46,7 @@
 				</div>
 
 				{$SET,has_products,1}
-			{+END}
+			{+END}{+END}
 		{+END}
 	</div>
 {+END}

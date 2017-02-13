@@ -853,7 +853,7 @@ class Module_cms_catalogues extends Standard_crud_module
                 do {
                     $details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_type_code' => strval($id)), '', 1000, $start);
                     foreach ($details as $d) {
-                        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $d['p_order_id'], 'total_price' => 0.0), '', 1);
+                        $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $d['p_order_id'], 'total_price' => 0.0), '', 1);
                     }
                     recalculate_order_costs($d['p_order_id']);
                     $start += 1000;

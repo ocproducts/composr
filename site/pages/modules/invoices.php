@@ -75,6 +75,7 @@ class Module_invoices
                 'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
                 'i_amount' => 'REAL', // can't always find this from i_type_code
                 'i_tax' => 'REAL',
+                'i_currency' => 'ID_TEXT',
                 'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
                 'i_time' => 'TIME',
                 'i_note' => 'LONG_TEXT'
@@ -87,9 +88,9 @@ class Module_invoices
 
         if (($upgrade_from < 4) && ($upgrade_from !== null)) {
             $GLOBALS['SITE_DB']->rename_table('invoices', 'ecom_invoices');
-
             $GLOBALS['SITE_DB']->alter_table_field('ecom_invoices', 'i_amount', 'REAL');
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_currency', 'ID_TEXT', get_option('currency'));
         }
     }
 
@@ -191,7 +192,7 @@ class Module_invoices
             $payable = ($row['i_state'] == 'new');
             $deliverable = ($row['i_state'] == 'paid');
             $state = do_lang('PAYMENT_STATE_' . $row['i_state']);
-            $currency = get_option('currency');
+            $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
             if (perform_local_payment()) {
                 $transaction_button = hyperlink(build_url(array('page' => '_SELF', 'type' => 'pay', 'id' => $row['id']), '_SELF'), do_lang_tempcode('MAKE_PAYMENT'), false, false);
             } else {
@@ -201,8 +202,9 @@ class Module_invoices
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'INVOICE_TITLE' => $invoice_title,
                 'INVOICE_ID' => strval($row['id']),
-                'AMOUNT' => float_format($row['i_amount']),
-                'TAX' => float_format($row['i_tax']),
+                'AMOUNT' => float_to_raw_string($row['i_amount']),
+                'TAX' => float_to_raw_string($row['i_tax']),
+                'CURRENCY' => $row['i_currency'],
                 'TIME' => $time,
                 'STATE' => $state,
                 'DELIVERABLE' => $deliverable,
@@ -215,7 +217,7 @@ class Module_invoices
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        return do_template('ECOM_INVOICES_SCREEN', array('_GUID' => '144a893d93090c105eecc48fa58921a7', 'TITLE' => $this->title, 'CURRENCY' => $currency, 'INVOICES' => $invoices));
+        return do_template('ECOM_INVOICES_SCREEN', array('_GUID' => '144a893d93090c105eecc48fa58921a7', 'TITLE' => $this->title, 'INVOICES' => $invoices));
     }
 
     /**
@@ -233,7 +235,11 @@ class Module_invoices
         }
         $row = $rows[0];
         $type_code = $row['i_type_code'];
+
         list($details) = find_product_details($type_code);
+
+        $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+
         $invoice_title = $details['item_name'];
 
         $post_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $type_code), get_module_zone('purchase'));
@@ -247,7 +253,7 @@ class Module_invoices
             $row['i_amount'],
             $row['i_tax'],
             0.00,
-            get_option('currency'),
+            $currency,
             0,
             null,
             '',

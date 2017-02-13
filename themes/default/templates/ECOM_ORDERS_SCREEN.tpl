@@ -35,13 +35,13 @@
 					{+END}
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{TOTAL_PRICE*}
+					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_PRICE*}
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{TOTAL_TAX*}
+					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_TAX*}
 				</td>
 				<td>
-					{$CURRENCY_SYMBOL}{TOTAL_SHIPPING_COST*}
+					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_SHIPPING_COST*}
 				</td>
 				<td>
 					{TIME*}

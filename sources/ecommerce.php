@@ -1612,6 +1612,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     $expected_tax = null;
     $expected_price_points = null;
     $invoicing_breakdown = '';
+    $expected_currency = null;
 
     // Grab expected price and tax: Locked in in advance in ecom_trans_expecting transaction (this is the standard case for an IPN)
     if ($trans_expecting_id !== null) {
@@ -1634,10 +1635,23 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         $expected_amount = $invoice_rows[0]['i_amount'];
         $expected_tax = $invoice_rows[0]['i_tax'];
         $expected_price_points = 0;
+        $expected_currency = $invoice_rows[0]['i_currency'];
     }
 
-    // Grab expected price and tax: Non-invoice
-    if (($found['type'] != PRODUCT_INVOICE) && ($expected_amount === null)) {
+    // Grab expected price and tax: Subscription
+    if (($found['type'] == PRODUCT_SUBSCRIPTION) && ($expected_amount === null)) {
+        $subscription_rows = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('id' => intval($purchase_id)), '', 1);
+        if (!array_key_exists(0, $subscription_rows)) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+        $expected_amount = $subscription_rows[0]['s_amount'];
+        $expected_tax = $subscription_rows[0]['s_tax'];
+        $expected_price_points = 0;
+        $expected_currency = $subscription_rows[0]['s_currency'];
+    }
+
+    // Grab expected price and tax: Other
+    if (($found['type'] != PRODUCT_INVOICE) && ($found['type'] != PRODUCT_SUBSCRIPTION) && ($expected_amount === null)) {
         if ($found['price'] === null) {
             // Will be paying with points only
             $expected_tax = 0.00;
@@ -1663,7 +1677,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     }
 
     // Grab expected currency
-    $expected_currency = isset($found['currency']) ? $found['currency'] : get_option('currency');
+    if ($expected_currency === null) {
+        $expected_currency = isset($found['currency']) ? $found['currency'] : get_option('currency');
+    }
     if ($trans_expecting_id !== null) {
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
         if ((array_key_exists(0, $transaction_rows)) && (time() - $transaction_rows[0]['e_time'] < 24 * 60 * 60 * intval(get_option('ecom_price_honour_time')))) {
@@ -2085,7 +2101,6 @@ function generate_tax_invoice($txn_id)
         'DATE' => get_timezoned_date($transaction_row['t_time'], false),
         'TRANS_ADDRESS' => $trans_address,
         'ITEMS' => $invoicing_breakdown,
-        'CURRENCY_SYMBOL' => ecommerce_get_currency_symbol($transaction_row['t_currency']),
         'CURRENCY' => $transaction_row['t_currency'],
         'TOTAL_PRICE' => float_format($transaction_row['t_amount']),
         'TOTAL_TAX' => float_format($transaction_row['t_tax']),
@@ -2118,11 +2133,35 @@ function get_transaction_status_string($_status)
             break;
 
         case 'SModified':
-            $status = do_lang('NA');
+            $status = do_lang('ORDER_STATUS_smodified');
             break;
 
         default:
             $status = do_lang($status);
     }
     return $status;
+}
+
+/**
+ * Return list entry of common transaction statuses of transactions.
+ *
+ * @return Tempcode Order status list entries
+ */
+function get_transaction_status_list()
+{
+    $status = array(
+        'Pending' => do_lang_tempcode('ORDER_STATUS_awaiting_payment'),
+        'Completed' => do_lang_tempcode('ORDER_STATUS_payment_received'),
+        'SCancelled' => do_lang_tempcode('ORDER_STATUS_cancelled'),
+        'SModified' => do_lang_tempcode('ORDER_STATUS_smodified'),
+    );
+
+    $status_list = new Tempcode();
+
+    $status_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+
+    foreach ($status as $key => $string) {
+        $status_list->attach(form_input_list_entry($key, false, $string));
+    }
+    return $status_list;
 }

@@ -231,6 +231,8 @@ class Module_admin_invoices
         $type_code = post_param_string('type_code');
         list($details) = find_product_details($type_code);
 
+        $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+
         $to = post_param_string('to');
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($to);
         if (is_null($member_id)) {
@@ -257,6 +259,7 @@ class Module_admin_invoices
             'i_state' => 'new',
             'i_amount' => $amount,
             'i_tax' => $tax,
+            'i_currency' => $currency,
             'i_special' => post_param_string('special'),
             'i_time' => time(),
             'i_note' => post_param_string('note')
@@ -290,8 +293,9 @@ class Module_admin_invoices
                 'USERNAME' => $username,
                 'ID' => strval($row['id']),
                 'STATE' => $row['i_state'],
-                'AMOUNT' => float_format($row['i_amount']),
-                'TAX' => float_format($row['i_tax']),
+                'AMOUNT' => float_to_raw_string($row['i_amount']),
+                'TAX' => float_to_raw_string($row['i_tax']),
+                'CURRENCY' => $row['i_currency'],
                 'TIME' => $time,
                 'NOTE' => $row['i_note'],
                 'TYPE_CODE' => $row['i_type_code'],
@@ -324,8 +328,9 @@ class Module_admin_invoices
                 'USERNAME' => $username,
                 'ID' => strval($row['id']),
                 'STATE' => $row['i_state'],
-                'AMOUNT' => float_format($row['i_amount']),
-                'TAX' => float_format($row['i_tax']),
+                'AMOUNT' => float_to_raw_string($row['i_amount']),
+                'TAX' => float_to_raw_string($row['i_tax']),
+                'CURRENCY' => $row['i_currency'],
                 'TIME' => $time,
                 'NOTE' => $row['i_note'],
                 'TYPE_CODE' => $row['i_type_code'],

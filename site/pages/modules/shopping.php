@@ -48,7 +48,7 @@ class Module_shopping
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_cart');
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order_details');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_orders');
         $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_logging');
 
         $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'shopping'));
@@ -80,7 +80,7 @@ class Module_shopping
 
             // Cart contents turns into order + details...
 
-            $GLOBALS['SITE_DB']->create_table('shopping_order', array(
+            $GLOBALS['SITE_DB']->create_table('shopping_orders', array(
                 'id' => '*AUTO',
                 'session_id' => 'ID_TEXT',
                 'member_id' => 'MEMBER',
@@ -88,15 +88,16 @@ class Module_shopping
                 'total_price' => 'REAL',
                 'total_tax' => 'REAL',
                 'total_shipping_cost' => 'REAL',
+                'currency' => 'ID_TEXT',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
                 'notes' => 'LONG_TEXT',
                 'txn_id' => 'SHORT_TEXT',
                 'purchase_through' => 'SHORT_TEXT', // cart|purchase_module
             ));
-            $GLOBALS['SITE_DB']->create_index('shopping_order', 'finddispatchable', array('order_status'));
-            $GLOBALS['SITE_DB']->create_index('shopping_order', 'somember_id', array('member_id'));
-            $GLOBALS['SITE_DB']->create_index('shopping_order', 'sosession_id', array('session_id'));
-            $GLOBALS['SITE_DB']->create_index('shopping_order', 'soadd_date', array('add_date'));
+            $GLOBALS['SITE_DB']->create_index('shopping_orders', 'finddispatchable', array('order_status'));
+            $GLOBALS['SITE_DB']->create_index('shopping_orders', 'somember_id', array('member_id'));
+            $GLOBALS['SITE_DB']->create_index('shopping_orders', 'sosession_id', array('session_id'));
+            $GLOBALS['SITE_DB']->create_index('shopping_orders', 'soadd_date', array('add_date'));
 
             $GLOBALS['SITE_DB']->create_table('shopping_order_details', array( // individual products in an order
                 'id' => '*AUTO',
@@ -125,13 +126,13 @@ class Module_shopping
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'session_id', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_cart', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'l_session_id', 'ID_TEXT');
 
             $GLOBALS['SITE_DB']->change_primary_key('shopping_cart', array('id'));
 
-            $GLOBALS['SITE_DB']->delete_index_if_exists('shopping_order', 'recent_shopped');
+            $GLOBALS['SITE_DB']->delete_index_if_exists('shopping_orders', 'recent_shopped');
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 8)) {
@@ -145,11 +146,13 @@ class Module_shopping
             $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'is_deleted');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_cart', 'product_id', 'ID_TEXT', 'type_code');
 
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'tot_price', 'REAL', 'total_price');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order', 'total_tax', 'REAL');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order', 'total_shipping_cost', 'REAL');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order', 'c_member', 'MEMBER', 'member_id');
-            $GLOBALS['SITE_DB']->delete_table_field('shopping_order', 'tax_opted_out');
+            $GLOBALS['SITE_DB']->rename_table('shopping_order', 'shopping_orders');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'tot_price', 'REAL', 'total_price');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_cost', 'REAL');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'c_member', 'MEMBER', 'member_id');
+            $GLOBALS['SITE_DB']->delete_table_field('shopping_orders', 'tax_opted_out');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_price', 'REAL', 'p_price');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax', 'REAL');
@@ -324,6 +327,7 @@ class Module_shopping
     {
         require_code('templates_results_table');
         require_code('form_templates');
+        require_code('currency');
         require_css('shopping');
         require_css('ecommerce');
         require_javascript('shopping');
@@ -407,11 +411,11 @@ class Module_shopping
             'MESSAGE' => '',
             'TYPE_CODES' => implode(',', array_unique($type_codes)),
             'EMPTY_CART_URL' => $empty_cart_url,
-            'TOTAL_PRICE' => float_format($total_price),
-            'TOTAL_TAX' => float_format($total_tax),
-            'TOTAL_SHIPPING_COST' => float_format($total_shipping_cost),
-            'GRAND_TOTAL' => float_format($grand_total),
-            'CURRENCY' => ecommerce_get_currency_symbol(),
+            'TOTAL_PRICE' => float_to_raw_string($total_price),
+            'TOTAL_TAX' => float_to_raw_string($total_tax),
+            'TOTAL_SHIPPING_COST' => float_to_raw_string($total_shipping_cost),
+            'GRAND_TOTAL' => float_to_raw_string($grand_total),
+            'CURRENCY' => get_option('currency'),
             'FIELDS' => $fields,
             'NEXT_URL' => $next_url,
         ));
@@ -443,7 +447,6 @@ class Module_shopping
         require_code('images');
         $product_image = do_image_thumb($details['item_image_url'], $details['item_name'], $details['item_name'], false, 50, 50);
 
-        $currency = ecommerce_get_currency_symbol();
         $price_singular = $details['price'];
         $price_multiple = $details['price'] * $item['quantity'];
         $tax = recalculate_tax_due($details, $details['tax'], 0.0, null, $item['quantity']);
@@ -456,11 +459,11 @@ class Module_shopping
         $shopping_cart->attach(results_entry(array(
             $product_image,
             $product_link,
-            $currency . escape_html(float_format($price_singular)),
+            currency_convert_wrap($price_singular),
             $edit_quantity_link,
-            $currency . escape_html(float_format($price_multiple)),
-            $currency . escape_html(float_format($tax)),
-            $currency . escape_html(float_format($amount)),
+            currency_convert_wrap($price_multiple),
+            currency_convert_wrap($tax),
+            currency_convert_wrap($amount),
             $delete_item_link,
         ), false, $tpl_set));
     }
@@ -478,18 +481,27 @@ class Module_shopping
         }
 
         $prefix = either_param_string('prefix', '');
-        $type_code = $prefix . either_param_string('type_code');
+        $_type_code = $prefix . either_param_string('type_code');
 
         $purchase_id = either_param_string('purchase_id', '');
 
         $quantity = either_param_integer('quantity', 1);
 
-        add_to_cart($type_code, $purchase_id, $quantity);
+        $purchase_through = either_param_string('purchase_through', 'cart');
+
+        foreach (explode('|', $_type_code) as $type_code) {
+            add_to_cart($type_code, $purchase_id, $quantity);
+        }
 
         log_cart_actions(do_lang('ADD_TO_CART'));
 
-        $cart_view = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-        return redirect_screen($this->title, $cart_view, do_lang_tempcode('ADDED_TO_CART'));
+        if ($purchase_through == 'cart') {
+            $next_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
+        } else {
+            $next_url = build_url(array('page' => 'purchase', 'type' => 'pay', 'type_code' => 'CART_ORDER'), get_module_zone('purchase'));
+        }
+
+        return redirect_screen($this->title, $next_url, do_lang_tempcode('ADDED_TO_CART'));
     }
 
     /**
@@ -534,8 +546,8 @@ class Module_shopping
 
         log_cart_actions(do_lang('UPDATE_CART'));
 
-        $cart_view = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-        return redirect_screen($this->title, $cart_view, do_lang_tempcode('CART_UPDATED'));
+        $cart_view_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
+        return redirect_screen($this->title, $cart_view_url, do_lang_tempcode('CART_UPDATED'));
     }
 
     /**
@@ -549,8 +561,8 @@ class Module_shopping
 
         log_cart_actions(do_lang('EMPTY_CART'));
 
-        $cart_view = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
-        return redirect_screen($this->title, $cart_view, do_lang_tempcode('CART_EMPTIED'));
+        $cart_view_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
+        return redirect_screen($this->title, $cart_view_url, do_lang_tempcode('CART_EMPTIED'));
     }
 
     /**
@@ -571,7 +583,7 @@ class Module_shopping
 
         $orders = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('member_id' => $member_id), 'ORDER BY add_date');
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('*'), array('member_id' => $member_id), 'ORDER BY add_date');
 
         foreach ($rows as $row) {
             $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
@@ -592,6 +604,7 @@ class Module_shopping
                 'TOTAL_PRICE' => float_format($row['total_price']),
                 'TOTAL_TAX' => float_format($row['total_tax']),
                 'TOTAL_SHIPPING_COST' => float_format($row['total_shipping_cost']),
+                'CURRENCY' => $row['currency'],
                 'TIME' => get_timezoned_date($row['add_date'], true, false, true, true),
                 'STATUS' => do_lang_tempcode($row['order_status']),
                 'NOTE' => '',
@@ -604,7 +617,7 @@ class Module_shopping
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        return do_template('ECOM_ORDERS_SCREEN', array('_GUID' => '79eb5f17cf4bc2dc4f0cccf438261c73', 'TITLE' => $this->title, 'CURRENCY' => get_option('currency'), 'ORDERS' => $orders));
+        return do_template('ECOM_ORDERS_SCREEN', array('_GUID' => '79eb5f17cf4bc2dc4f0cccf438261c73', 'TITLE' => $this->title, 'ORDERS' => $orders));
     }
 
     /**
@@ -621,7 +634,7 @@ class Module_shopping
         $id = get_param_integer('id');
 
         if (!has_privilege(get_member(), 'assume_any_member')) {
-            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'member_id', array('id' => $id));
+            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_orders', 'member_id', array('id' => $id));
             if ($member_id === null) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
             }

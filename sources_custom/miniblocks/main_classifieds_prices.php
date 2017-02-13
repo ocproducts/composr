@@ -33,7 +33,8 @@ foreach ($prices as $price) {
     }
 
     $data[] = array(
-        'PRICE' => float_format($price['c_price']),
+        'PRICE' => float_to_raw_string($price['c_price']),
+        'CURRENCY' => get_option('currency'),
         'LABEL' => get_translated_text($price['c_label']),
     );
 }

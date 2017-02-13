@@ -73,6 +73,8 @@ class Module_subscriptions
                 's_member_id' => 'MEMBER',
                 's_state' => 'ID_TEXT', // pending|new|active|cancelled (pending means payment has been requested)
                 's_amount' => 'REAL', // can't always find this from s_type_code
+                's_tax' => 'REAL',
+                's_currency' => 'ID_TEXT',
                 's_purchase_id' => 'ID_TEXT',
                 's_time' => 'TIME',
                 's_auto_fund_source' => 'ID_TEXT', // The payment gateway
@@ -148,11 +150,11 @@ class Module_subscriptions
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
-
             $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_amount', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('f_usergroup_subs', 's_cost', 'REAL', 's_price');
-
             $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_tax', 'REAL', 0.00);
         }
 

@@ -518,7 +518,6 @@ class Hook_addon_registry_core
             'sources/hooks/systems/symbols/COUNTRY.php',
             'sources/hooks/systems/symbols/COUNTRY_CODE_TO_NAME.php',
             'sources/hooks/systems/symbols/COUNTRY_NAME_TO_CODE.php',
-            'sources/hooks/systems/symbols/CURRENCY.php',
             'sources/hooks/systems/symbols/REGION.php',
             'lang/EN/locations.ini',
             'data/geocode.php',

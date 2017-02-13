@@ -36,21 +36,21 @@
 			<tr>
 				<th>{!PRICE}</th>
 				<td>
-					{$CURRENCY_SYMBOL}{TOTAL_PRICE*}
+					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_PRICE*}
 				</td>
 			</tr>
 
 			<tr>
 				<th>{$TAX_LABEL}</th>
 				<td>
-					{$CURRENCY_SYMBOL}{TOTAL_TAX*}
+					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_TAX*}
 				</td>
 			</tr>
 
 			<tr>
 				<th>{!SHIPPING_COST}</th>
 				<td>
-					{$CURRENCY_SYMBOL}{TOTAL_SHIPPING_COST*}
+					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_SHIPPING_COST*}
 				</td>
 			</tr>
 

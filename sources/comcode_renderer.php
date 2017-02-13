@@ -673,7 +673,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if ($attributes['param'] == '') {
                     $attributes['param'] = get_option('currency');
                 }
-                $temp_tpl = do_template('COMCODE_CURRENCY', array('_GUID' => 'ee1fcdae082af6397ff3bad89006e012', 'AMOUNT' => $embed, 'FROM_CURRENCY' => $attributes['param'], 'BRACKET' => $bracket));
+                require_code('currency');
+                $from_currency = $attributes['param'];
+                $to_currency = get_currency();
+                $temp_tpl = symbol_tempcode('CURRENCY', array($embed->evaluate(), $from_currency, $to_currency, strval($bracket ? CURRENCY_DISPLAY_TEMPLATED : CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLIFIED)));
             }
             break;
 

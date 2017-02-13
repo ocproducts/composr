@@ -31,7 +31,7 @@
 <nav>
 	<ul class="actions_list">
 		<li class="actions_list_strong">
-			<a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
+			<a href="{$PAGE_LINK*,_SELF:_SELF:export_orders}">{!EXPORT_ORDER_LIST}</a>
 		</li>
 	</ul>
 </nav>

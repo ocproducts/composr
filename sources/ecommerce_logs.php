@@ -158,7 +158,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
     $order_title = do_lang('CART_ORDER', strval($id));
 
     // Collecting order details
-    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('id' => $id), '', 1);
+    $order_rows = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $order_rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
@@ -250,10 +250,10 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
         'RESULTS_TABLE' => $results_table,
         'ORDER_NUMBER' => strval($id),
         'ADD_DATE' => get_timezoned_date($order_row['add_date'], true, false, true, true),
-        'CURRENCY' => get_option('currency'),
         'TOTAL_PRICE' => float_format($order_row['total_price']),
         'TOTAL_TAX' => float_format($order_row['total_tax']),
         'TOTAL_SHIPPING_COST' => float_format($order_row['total_shipping_cost']),
+        'CURRENCY' => $order_row['currency'],
         'TRANSACTION_LINKER' => $transaction_linker,
         'ORDERED_BY_MEMBER_ID' => strval($ordered_by_member_id),
         'ORDERED_BY_USERNAME' => $ordered_by_username,
