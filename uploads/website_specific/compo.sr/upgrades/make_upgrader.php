@@ -123,6 +123,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
         @deldir_contents($wip_path);
         @rmdir($wip_path);
     }
+    @mkdir($wip_path, 0777);
 
     // Unzip old
     if (!is_null($old_download_row)) {
@@ -144,7 +145,6 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
     _find_helper($new_base_path);
 
     // Work out files for upgrader
-    @mkdir($wip_path, 0777);
     make_upgrader_do_dir($wip_path, $new_base_path, $old_base_path, $addons_in_upgrader);
     if ($addons_in_upgrader !== null) {
         @mkdir($wip_path . '/imports', 0777);
