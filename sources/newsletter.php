@@ -197,7 +197,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                         $surnames[] = $_temp['n_surname'];
                         $username = trim($_temp['n_forename'] . ' ' . $_temp['n_surname']);
                         if ($username == '') {
-                            $username = do_lang('NEWSLETTER_SUBSCRIBER', get_site_name());
+                            $username = do_lang('NEWSLETTER_SUBSCRIBER_DEFAULT_NAME', get_site_name());
                         }
                         $usernames[] = $username;
                         $ids[] = 'n' . strval($_temp['id']);

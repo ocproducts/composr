@@ -116,7 +116,7 @@ class Hook_cron_cns_welcome_emails
                         $name = trim($forename . ' ' . $surname);
                         require_lang('newsletter');
                         if ($name == '') {
-                            $name = do_lang('NEWSLETTER_SUBSCRIBER', get_site_name());
+                            $name = do_lang('NEWSLETTER_SUBSCRIBER_DEFAULT_NAME', get_site_name());
                         }
                     } else {
                         $forename = '';
