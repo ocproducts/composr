@@ -243,7 +243,7 @@ function _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_mi
     if ((in_array($from_currency, $ecb_currencies)) && (in_array($to_currency, $ecb_currencies))) {
         $url = 'http://api.fixer.io/latest?base=' . urlencode($from_currency);
         require_code('files2'); // TODO: http in v11
-        list($http_data) = cache_and_carry('http_download_file', array($url), $cache_minutes); // TODO: Fix in v11
+        list($http_data) = cache_and_carry('http_download_file', array($url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.5), $cache_minutes); // TODO: Fix in v11
         $data = @json_decode($http_data, true);
         if (isset($data['rates'][$to_currency])) {
             $new_amount = round($amount * $data['rates'][$to_currency], 2);
