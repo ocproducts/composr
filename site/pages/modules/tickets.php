@@ -913,6 +913,10 @@ class Module_tickets
      */
     public function do_search($title, $ticket_id, $content)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         require_code('database_search');
 
         // We don't want to display too many --- just enough to show the top results

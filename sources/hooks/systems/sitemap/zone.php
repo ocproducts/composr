@@ -182,7 +182,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
         );
 
         if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
-            $struct['title'] = make_string_tempcode(do_lang('ZONE') . ': ' . $title);
+            $struct['title'] = make_string_tempcode(do_lang('zones:ZONE') . ': ' . $title);
         }
 
         $comcode_page_sitemap_ob = $this->_get_sitemap_object('comcode_page');
@@ -407,7 +407,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                                 if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
                                     list(, $redir_zone, $redir_page) = explode(':', $page_type);
                                     require_code('xml');
-                                    $struct['title'] = make_string_tempcode(strip_html(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))) . ': ' . (is_string($page) ? $page : strval($page)));
+                                    $struct['title'] = make_string_tempcode(strip_html(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('zones:REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))) . ': ' . (is_string($page) ? $page : strval($page)));
                                 }
                             }
 

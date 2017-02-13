@@ -325,7 +325,7 @@ function manage_custom_fields_entry_points($content_type)
 
             return array(
                 '_SEARCH:cms_catalogues:' . ($exists ? '_edit_catalogue' : 'add_catalogue') . ':_' . $content_type => array(
-                    do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label'])), make_string_tempcode(escape_html(integer_format($count[$content_type])))),
+                    do_lang_tempcode('menus:ITEMS_HERE', do_lang_tempcode('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label'])), make_string_tempcode(escape_html(integer_format($count[$content_type])))),
                     'menu/cms/catalogues/edit_one_catalogue'
                 ),
             );

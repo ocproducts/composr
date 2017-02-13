@@ -18,7 +18,6 @@
  */
 class Hook_addon_registry_less
 {
-
     /**
      * Get a list of file permissions to set
      *

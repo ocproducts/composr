@@ -777,7 +777,7 @@ class Module_admin_cns_members
             if (filesize($_FILES['file']['tmp_name']) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
                 $fixed_contents = unixify_line_format(file_get_contents($_FILES['file']['tmp_name']));
                 require_code('files');
-                cms_file_put_contents_safe($_FILES['upload']['tmp_name'], $fixed_contents, FILE_WRITE_FAILURE_SILENT);
+                cms_file_put_contents_safe($_FILES['file']['tmp_name'], $fixed_contents, FILE_WRITE_FAILURE_SILENT);
             }
 
             $target_path = get_custom_file_base() . '/safe_mode_temp/' . basename($_FILES['file']['tmp_name']);

@@ -31,7 +31,7 @@ function init__chat()
     global $EFFECT_SETTINGS_ROWS;
     $EFFECT_SETTINGS_ROWS = null;
 
-    if (!defined('CHAT_ACTIVITY_PRUNE')) {
+    if (!defined('CHAT_EVENT_PRUNE')) {
         define('CHAT_ACTIVITY_PRUNE', 25); // How many seconds before doing database cleanup operations, including member timeouts for going offline. NB: This define is duplicated in chat_poller.php for performance
         define('CHAT_EVENT_PRUNE', 60 * 60 * 24); // How many seconds to keep event messages for
     }
@@ -388,7 +388,10 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
     }
 
     require_lang('chat');
-    require_lang('submitban');
+
+    if (addon_installed('securitylogging')) {
+        require_lang('submitban');
+    }
 
     $room_check = null;
     $room_row = null;
@@ -462,7 +465,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
             $ban_url = new Tempcode();
         }
 
-        if (($room_id != -1) && (addon_installed('actionlog')) && ((has_actual_page_access(get_member(), 'admin_actionlog')) || (has_actual_page_access(get_member(), 'cms_chat')))) {
+        if (($room_id != -1) && (addon_installed('actionlog')) && (addon_installed('securitylogging')) && ((has_actual_page_access(get_member(), 'admin_actionlog')) || (has_actual_page_access(get_member(), 'cms_chat')))) {
             $staff_actions = do_template('CHAT_STAFF_ACTIONS', array('_GUID' => 'd3fbcaa9eee688452091583ee436e465', 'CHAT_BAN_URL' => $chat_ban_url, 'CHAT_UNBAN_URL' => $chat_unban_url, 'EDIT_URL' => $edit_url, 'BAN_URL' => $ban_url));
         } else {
             $staff_actions = new Tempcode();

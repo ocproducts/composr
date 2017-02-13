@@ -136,6 +136,7 @@ class Hook_addon_registry_cns_member_avatars
     {
         require_lang('cns');
         require_css('cns');
+
         $avatar = do_lorem_template('CNS_TOPIC_POST_AVATAR', array(
             'AVATAR' => placeholder_image_url(),
         ));

@@ -1165,7 +1165,6 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/codebook_2.txt',
             'docs/pages/comcode_custom/EN/codebook_3.txt',
             'docs/pages/comcode_custom/EN/faq.txt',
-            'docs/pages/comcode_custom/EN/panel_top.txt',
             'docs/pages/comcode_custom/EN/sup_a_detailed_look_at_the_composr_calendar_system.txt',
             'docs/pages/comcode_custom/EN/sup_add_a_booking_system_to_your_composr_website.txt',
             'docs/pages/comcode_custom/EN/sup_add_a_chatroom_to_composr.txt',

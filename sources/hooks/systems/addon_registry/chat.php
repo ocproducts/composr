@@ -265,7 +265,6 @@ class Hook_addon_registry_chat
      */
     public function tpl_preview__cns_member_profile_friends()
     {
-        require_lang('chat');
         require_lang('cns');
         require_css('cns');
 
@@ -330,12 +329,15 @@ class Hook_addon_registry_chat
      */
     public function tpl_preview__chat_message()
     {
-        require_lang('submitban');
+        if (addon_installed('securitylogging')) {
+            require_lang('submitban');
+        }
+
         $chat_actions = do_lorem_template('CHAT_STAFF_ACTIONS', array(
             'CHAT_BAN_URL' => placeholder_url(),
             'CHAT_UNBAN_URL' => placeholder_url(),
             'EDIT_URL' => placeholder_url(),
-            'BAN_URL' => placeholder_url(),
+            'BAN_URL' => addon_installed('securitylogging') ? placeholder_url() : '',
         ));
 
         return array(

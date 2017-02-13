@@ -369,7 +369,7 @@ class Module_points
                 $amount = -$amount;
             }
             if ($trans_type == 'charge') {
-                if (has_actual_page_access($member_id_viewing, 'adminzone')) {
+                if (has_actual_page_access($member_id_viewing, 'admin_points')) {
                     require_code('points2');
                     charge_member($member_id_of, $amount, $reason);
                     $left = available_points($member_id_of);

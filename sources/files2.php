@@ -368,6 +368,12 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
     }
 
     $out = '';
+
+    if (get_charset() == 'utf-8') {
+        $bom = chr(0xEF) . chr(0xBB) . chr(0xBF);
+        //$out .= $bom; Shows as gibberish on Mac unless you explicitly import it with the correct settings
+    }
+
     foreach ($data as $i => $line) {
         if ($i == 0) { // Header
             foreach (array_keys($line) as $j => $val) {

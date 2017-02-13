@@ -292,9 +292,12 @@ class Hook_addon_registry_iotds
     public function tpl_preview__iotd_view_screen()
     {
         require_lang('cns');
-        require_lang('captcha');
-
         require_lang('trackbacks');
+
+        if (addon_installed('captcha')) {
+            require_lang('captcha');
+        }
+
         $trackbacks = new Tempcode();
         foreach (placeholder_array(1) as $k => $v) {
             $trackbacks->attach(do_lorem_template('TRACKBACK', array(
@@ -331,7 +334,7 @@ class Hook_addon_registry_iotds
             'TYPE' => 'downloads',
             'ID' => placeholder_id(),
             'REVIEW_RATING_CRITERIA' => $review_titles,
-            'USE_CAPTCHA' => true,
+            'USE_CAPTCHA' => addon_installed('captcha'),
             'GET_EMAIL' => false,
             'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,

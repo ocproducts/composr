@@ -3026,6 +3026,9 @@ function titleify($boring)
         'SSL',
         'XML',
         'HPHP',
+        'CSS',
+        'SEO',
+        'JavaScript',
     );
     foreach ($acronyms as $acronym) {
         if (stripos($ret, $acronym) !== false) {
@@ -3229,6 +3232,10 @@ function is_cns_satellite_site()
  */
 function convert_guids_to_ids($text)
 {
+    if (!addon_installed('commandr')) {
+        return $text;
+    }
+
     $matches = array();
     $num_matches = preg_match_all('#^{?([0-9a-fA-F]){8}(-([0-9a-fA-F]){4}){3}-([0-9a-fA-F]){12}}?$#', $text, $matches);
     if ($num_matches != 0) {

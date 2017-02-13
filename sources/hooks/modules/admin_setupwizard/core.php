@@ -73,7 +73,7 @@ class Hook_sw_core
             $hidden->attach(form_input_hidden('show_screen_actions', get_theme_option('show_screen_actions', null, post_param_string('source_theme', 'default'))));
         }
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1f8970c551c886532158e16596f9c9b8', 'TITLE' => do_lang_tempcode('STRUCTURE'), 'HELP' => do_lang_tempcode('SETUPWIZARD_5x_DESCRIBE'))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1f8970c551c886532158e16596f9c9b8', 'TITLE' => do_lang_tempcode('menus:STRUCTURE'), 'HELP' => do_lang_tempcode('SETUPWIZARD_5x_DESCRIBE'))));
 
         if (get_theme_option('setupwizard__lock_collapse_user_zones', null, post_param_string('source_theme', 'default')) == '1') {
             $fields->attach(form_input_tick(do_lang_tempcode('COLLAPSE_USER_ZONES'), do_lang_tempcode('CONFIG_OPTION_collapse_user_zones'), 'collapse_user_zones', $field_defaults['collapse_user_zones'] == '1'));

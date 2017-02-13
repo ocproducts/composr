@@ -75,7 +75,7 @@ class Hook_addon_registry_cns_post_templates
     {
         return array(
             'requires' => array(
-                'cns_forum'
+                'cns_forum',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),

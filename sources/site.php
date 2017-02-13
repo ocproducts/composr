@@ -920,12 +920,12 @@ function do_site()
     if ((in_safe_mode()) && (!isset($GLOBALS['SITE_INFO']['safe_mode']))) {
         global $SITE_INFO;
         $safe_mode_via_config = (isset($SITE_INFO['safe_mode'])) && ($SITE_INFO['safe_mode'] == '1');
-        //$disable_safe_mode_url = get_self_url(true, true, array('keep_safe_mode' => $safe_mode_via_config ? 0 : null));
-        //attach_message(do_lang_tempcode('CURRENTLY_HAS_KEEP_SAFE_MODE', escape_html($disable_safe_mode_url)), 'notice');
+        $disable_safe_mode_url = get_self_url(true, true, array('keep_safe_mode' => $safe_mode_via_config ? 0 : null));
+        attach_message(do_lang_tempcode('CURRENTLY_HAS_KEEP_SAFE_MODE', escape_html($disable_safe_mode_url)), 'notice');
     }
     if (get_param_integer('keep_fatalistic', 0) == 1) {
         $disable_fatalistic_url = get_self_url(true, true, array('keep_fatalistic' => null));
-        //attach_message(do_lang_tempcode('CURRENTLY_HAS_KEEP_FATALISTIC', escape_html($disable_fatalistic_url)), 'notice');
+        attach_message(do_lang_tempcode('CURRENTLY_HAS_KEEP_FATALISTIC', escape_html($disable_fatalistic_url)), 'notice');
     }
 
     // We calculated the time before outputting so that latency and bandwidth do not adversely affect the result

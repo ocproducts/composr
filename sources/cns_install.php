@@ -763,10 +763,12 @@ function install_cns($upgrade_from = null)
             't_forum_multi_code' => 'SHORT_TEXT',
             't_use_default_forums' => 'BINARY'
         ));
-        require_lang('cns_post_templates');
-        cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_bug_title'), do_lang('DEFAULT_POST_TEMPLATE_bug_text'), '', 0);
-        cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_task_title'), do_lang('DEFAULT_POST_TEMPLATE_task_text'), '', 0);
-        cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_fault_title'), do_lang('DEFAULT_POST_TEMPLATE_fault_text'), '', 0);
+        if (addon_installed('cns_post_templates')) {
+            require_lang('cns_post_templates');
+            cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_bug_title'), do_lang('DEFAULT_POST_TEMPLATE_bug_text'), '', 0);
+            cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_task_title'), do_lang('DEFAULT_POST_TEMPLATE_task_text'), '', 0);
+            cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_fault_title'), do_lang('DEFAULT_POST_TEMPLATE_fault_text'), '', 0);
+        }
 
         $GLOBALS['FORUM_DB']->create_index('f_posts', '#p_title', array('p_title'));
 

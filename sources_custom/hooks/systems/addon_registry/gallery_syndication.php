@@ -113,6 +113,7 @@ class Hook_addon_registry_gallery_syndication
                 'PHP5.2',
                 'PHP mhash extension',
                 'PHP cURL extension',
+                'galleries',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

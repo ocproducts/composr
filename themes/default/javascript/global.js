@@ -2206,6 +2206,7 @@ function convert_tooltip(element)
 			// Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
 			if (!element.onmouseout) element.onmouseout=function() {};
 			if (!element.onmousemove) element.onmouseover=function() {};
+			if (!element.onmousemove) element.onmouseleave=function() {};
 
 			// And now define nice listeners for it all...
 			var win=get_main_cms_window(true);
@@ -2281,6 +2282,8 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 {
 	if (window.is_doing_a_drag) return; // Don't want tooltips appearing when doing a drag and drop operation
 
+	//console.log('activate_tooltip');
+
 	if (!have_links)
 	{
 		if (document.body.className.indexOf(' touch_enabled') != -1) return; // Too erratic
@@ -2299,6 +2302,8 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	if (!window.page_loaded) return;
 	if ((typeof tooltip!='function') && (tooltip=='')) return;
 
+	if ((typeof ac.deactivated_at!='undefined') && (ac.deactivated_at!=null) && (Date.now()-ac.deactivated_at<500)) return;
+
 	register_mouse_listener(event);
 
 	clear_out_tooltips(ac.tooltip_id);
@@ -2306,7 +2311,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	// Add in move/leave events if needed
 	if (!have_links)
 	{
-		if (!ac.onmouseout) ac.onmouseout=function(event) { win.deactivate_tooltip(ac); };
+		if (!ac.onmouseout && !ac.onmouseleave) ac.onmouseout=function(event) { win.deactivate_tooltip(ac); };
 		if (!ac.onmousemove) ac.onmousemove=function(event) { if (!event) var event=window.event; win.reposition_tooltip(ac,event,false,false,null,false,win); };
 	} else
 	{
@@ -2318,6 +2323,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	if (tooltip=='') return;
 
 	ac.is_over=true;
+	ac.deactivated_at=null;
 	ac.tooltip_on=false;
 	ac.initial_width=width;
 	ac.have_links=have_links;
@@ -2427,6 +2433,10 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 }
 function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width,win)
 {
+	if (!ac.is_over) return;
+
+	//console.log('reposition_tooltip');
+
 	if (!starting) // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
 	{
 		if (ac.getAttribute('title')) ac.setAttribute('title','');
@@ -2506,6 +2516,9 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 function deactivate_tooltip(ac,tooltip_element)
 {
 	ac.is_over=false;
+	ac.deactivated_at=Date.now();
+
+	//console.log('deactivate_tooltip');
 
 	if (typeof ac.tooltip_id=='undefined') return;
 

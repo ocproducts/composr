@@ -7139,6 +7139,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COUNT_TOPICSCOUNT
         CONTENTS
         FILE
+        NEWSLETTER_SUBSCRIBER_DEFAULT_NAME
         ABOUT
         ABOUT_BLOCKING
         ABOUT_POP3
@@ -7591,6 +7592,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COUNT_VIEWS
         COUNT_VISITS
         COUNT_VOTINGS
+        AUDIO_CAPTCHA_HELP
         CREATE_BIRTHDAY_TOPIC
         CREATE_HERE
         CREATE_PRIVATE_CHATROOM

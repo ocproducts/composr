@@ -75,7 +75,9 @@ class Hook_addon_registry_staff_messaging
     public function get_dependencies()
     {
         return array(
-            'requires' => array('cns_forum'),
+            'requires' => array(
+                'cns_forum',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );
@@ -231,6 +233,7 @@ class Hook_addon_registry_staff_messaging
     public function tpl_preview__block_main_contact_simple()
     {
         require_lang('cns');
+
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'FIRST_POST_URL' => placeholder_url(),

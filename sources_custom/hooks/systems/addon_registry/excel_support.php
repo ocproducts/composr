@@ -109,7 +109,12 @@ class Hook_addon_registry_excel_support
     public function get_dependencies()
     {
         return array(
-            'requires' => array('GD', 'Zip', 'XML', 'PHP5.3'),
+            'requires' => array(
+                'GD',
+                'Zip',
+                'XML',
+                'PHP5.3',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

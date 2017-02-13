@@ -367,24 +367,26 @@ class Hook_addon_registry_downloads
      */
     public function tpl_preview__download_screen()
     {
-        require_lang('galleries');
         $images_details = new Tempcode();
-        foreach (placeholder_array() as $row) {
-            $image = do_lorem_template('DOWNLOAD_SCREEN_IMAGE', array(
-                'ID' => placeholder_id(),
-                'VIEW_URL' => placeholder_url(),
-                'EDIT_URL' => placeholder_url(),
-                'THUMB' => placeholder_image(),
-                'DESCRIPTION' => lorem_phrase(),
-            ));
+        if (addon_installed('galleries')) {
+            require_lang('galleries');
+            foreach (placeholder_array() as $row) {
+                $image = do_lorem_template('DOWNLOAD_SCREEN_IMAGE', array(
+                    'ID' => placeholder_id(),
+                    'VIEW_URL' => placeholder_url(),
+                    'EDIT_URL' => placeholder_url(),
+                    'THUMB' => placeholder_image(),
+                    'DESCRIPTION' => lorem_phrase(),
+                ));
 
-            $cell = do_lorem_template('DOWNLOAD_GALLERY_IMAGE_CELL', array(
-                'CONTENT' => $image,
-            ));
+                $cell = do_lorem_template('DOWNLOAD_GALLERY_IMAGE_CELL', array(
+                    'CONTENT' => $image,
+                ));
 
-            $images_details->attach(do_lorem_template('DOWNLOAD_GALLERY_ROW', array(
-                'CELLS' => $cell,
-            )));
+                $images_details->attach(do_lorem_template('DOWNLOAD_GALLERY_ROW', array(
+                    'CELLS' => $cell,
+                )));
+            }
         }
 
         return array(

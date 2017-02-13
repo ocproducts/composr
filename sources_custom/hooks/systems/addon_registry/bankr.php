@@ -110,6 +110,7 @@ class Hook_addon_registry_bankr
             'requires' => array(
                 'Cron',
                 'pointstore',
+                'points',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

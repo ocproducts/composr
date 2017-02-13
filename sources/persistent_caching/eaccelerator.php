@@ -32,7 +32,7 @@ class Persistent_caching_eacceleratorcache
      *
      * @return array The list of objects
      */
-    public function load_objects_list()
+    public function &load_objects_list()
     {
         if (is_null($this->objects_list)) {
             $this->objects_list = eaccelerator_get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
@@ -73,10 +73,10 @@ class Persistent_caching_eacceleratorcache
     public function set($key, $data, $flags = 0, $expire_secs = null)
     {
         // Update list of persistent-objects
-        $objects_list = $this->load_objects_list();
-        if (!array_key_exists($key, $objects_list)) {
-            $objects_list[$key] = true;
-            eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
+        $this->load_objects_list();
+        if (!array_key_exists($key, $this->objects_list)) {
+            $this->objects_list[$key] = true;
+            eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list, 0);
         }
 
         eaccelerator_put($key, array(time(), serialize($data)), $expire_secs);
@@ -90,9 +90,9 @@ class Persistent_caching_eacceleratorcache
     public function delete($key)
     {
         // Update list of persistent-objects
-        $objects_list = $this->load_objects_list();
-        unset($objects_list[$key]);
-        //Wasteful eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
+        $this->load_objects_list();
+        unset($this->objects_list[$key]);
+        //Wasteful eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list, 0);
 
         eaccelerator_rm($key);
     }
@@ -102,12 +102,12 @@ class Persistent_caching_eacceleratorcache
      */
     public function flush()
     {
-        $objects_list = $this->load_objects_list();
-        foreach (array_keys($objects_list) as $obkey) {
+        $this->load_objects_list();
+        foreach (array_keys($this->objects_list) as $obkey) {
             eaccelerator_rm($obkey);
         }
 
-        $objects_list = array();
-        eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
+        $this->objects_list = array();
+        eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list, 0);
     }
 }

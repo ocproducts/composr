@@ -33,6 +33,10 @@
  */
 function cns_make_multi_moderation($name, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code = '*', $title_suffix = '')
 {
+    if (!addon_installed('cns_multi_moderations')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     require_code('global4');
     prevent_double_submit('ADD_MULTI_MODERATION', null, $name);
 

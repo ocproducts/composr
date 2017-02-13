@@ -33,7 +33,7 @@ class Hook_endpoint_content_commandr_fs
 
         require_lang('composr_mobile_sdk');
 
-        if (!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) {
+        if (!has_actual_page_access(get_member(), 'admin_commandr')) {
             access_denied('PAGE_ACCESS');
         }
 

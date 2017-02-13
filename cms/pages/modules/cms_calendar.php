@@ -683,7 +683,7 @@ class Module_cms_calendar extends Standard_crud_module
     public function get_event_parameters()
     {
         $type = post_param_integer('type', fractional_edit() ? INTEGER_MAGIC_NULL : false);
-        if ((!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) && ($type == db_get_first_id())) {
+        if ((!has_actual_page_access(get_member(), 'admin_commandr')) && ($type == db_get_first_id())) {
             access_denied('I_ERROR');
         }
 

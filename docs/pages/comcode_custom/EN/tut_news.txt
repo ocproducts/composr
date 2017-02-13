@@ -92,7 +92,7 @@ News entries may be in multiple news categories, but a user needs access to the 
 
 [title="2"]Alternative strategies[/title]
 
-[title="2"]Show RSS feeds[/title]
+[title="3"]Show RSS feeds[/title]
 
 RSS feeds can be displayed by placing the [tt]main_rss[/tt] block. This block is very straight-forward to configure, and like any block, may be added using the 'Add block' button when editing a Comcode page.
 

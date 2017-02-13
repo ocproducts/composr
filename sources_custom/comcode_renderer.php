@@ -23,7 +23,7 @@ if (!function_exists('init__comcode_renderer')) {
         $before = '$urls = get_url(\'\', \'file\' . $_id, \'uploads/attachments\', 2, CMS_UPLOAD_ANYTHING, (!array_key_exists(\'thumb\', $attributes)) || ($attributes[\'thumb\']!=\'0\'), \'\', \'\', true, true, true, true);';
         $after = $before . "
             \$gallery = post_param_string('gallery' . \$_id, '');
-            if (\$gallery != '') {
+            if ((\$gallery != '') && (addon_installed('galleries'))) {
                 \$urls_gal = get_url('', 'file' . \$_id, 'uploads/galleries', 0, CMS_UPLOAD_ANYTHING, true, '', '', true, true, true, true);
                 require_code('galleries2');
 

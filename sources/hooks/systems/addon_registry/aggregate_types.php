@@ -74,10 +74,12 @@ class Hook_addon_registry_aggregate_types
     public function get_dependencies()
     {
         return array(
-            'requires' => array('commandr', 'import'),
+            'requires' => array(
+                'commandr',
+                'import',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
-            'previously_in_addon' => array(),
         );
     }
 

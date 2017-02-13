@@ -216,7 +216,7 @@ class Module_admin_quiz
     }
 
     /**
-     * Standard crud_module delete actualiser.
+     * UI to export quiz CSV
      *
      * @return Tempcode The UI
      */
@@ -234,7 +234,7 @@ class Module_admin_quiz
     }
 
     /**
-     * Standard crud_module delete actualiser.
+     * Actualiser to export quiz CSV
      */
     public function _export_quiz()
     {

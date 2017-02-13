@@ -107,7 +107,9 @@ class Hook_addon_registry_group_points
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'points',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

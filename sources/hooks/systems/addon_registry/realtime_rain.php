@@ -74,7 +74,9 @@ class Hook_addon_registry_realtime_rain
     public function get_dependencies()
     {
         return array(
-            'requires' => array('stats'),
+            'requires' => array(
+                'stats',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );
@@ -406,7 +408,6 @@ class Hook_addon_registry_realtime_rain
      */
     public function tpl_preview__administrative__realtime_rain_overlay()
     {
-        require_lang('realtime_rain');
         return array(
             lorem_globalise(do_lorem_template('REALTIME_RAIN_OVERLAY', array(
                 'MIN_TIME' => placeholder_id(),
@@ -423,7 +424,6 @@ class Hook_addon_registry_realtime_rain
      */
     public function tpl_preview__administrative__realtime_rain_bubble()
     {
-        require_lang('realtime_rain');
         return array(
             lorem_globalise(do_lorem_template('REALTIME_RAIN_BUBBLE', array(
                 'TITLE' => lorem_phrase(),

@@ -27,7 +27,7 @@ class Hook_profiles_tabs_posts
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
-        return get_value('activities_and_posts') === '1';
+        return (get_value('activities_and_posts') === '1') && (addon_installed('cns_forum'));
     }
 
     /**

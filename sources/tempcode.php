@@ -2106,7 +2106,7 @@ function recall_named_function($id, $parameters, $code)
 {
     $k = 'TEMPCODE_FUNCTION__' . $id;
     if (!isset($GLOBALS[$k])) {
-        $GLOBALS[$k] = create_function($parameters, $code);
+        $GLOBALS[$k] = @create_function($parameters, $code);
     }
     return $GLOBALS[$k];
 }
