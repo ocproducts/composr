@@ -319,7 +319,7 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
         return;
     }
 
-    global $LANG_FILTER_OB, $DEV_MODE;
+    global $LANG_FILTER_OB;
 
     // Parse ini file
     $in_lang = false;
@@ -342,9 +342,6 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
                 $value = str_replace('\n', "\n", rtrim($parts[1], $nl));
                 if ($apply_filter) {
                     $value = $LANG_FILTER_OB->compile_time($key, $value, $lang);
-                }
-                if (($DEV_MODE) && (isset($entries[$key]))) {
-                    attach_message('Duplicated lang string in ' . $b . ':' . $key, 'warn');
                 }
                 $entries[$key] = $value;
             }
