@@ -303,11 +303,13 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
             if ((!is_null($time)) && (preg_match('#^(\d\d):(\d\d)(:| |$)#', $time, $matches) != 0)) {
                 $hour = intval($matches[1]);
                 $minute = intval($matches[2]);
-                if ($hour == 12) {
-                    $hour = 0;
-                }
-                if (strpos($time, 'PM') !== false) {
-                    $hour += 12;
+                if ((strpos($time, 'AM') !== false) || (strpos($time, 'PM') !== false)) {
+                    if ($hour == 12) {
+                        $hour = 0;
+                    }
+                    if (strpos($time, 'PM') !== false) {
+                        $hour += 12;
+                    }
                 }
             } else {
                 $hour = null;
@@ -346,11 +348,13 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
             if ((!is_null($time)) && (preg_match('#^(\d\d):(\d\d)(:| |$)#', $time, $matches) != 0)) {
                 $hour = intval($matches[1]);
                 $minute = intval($matches[2]);
-                if ($hour == 12) {
-                    $hour = 0;
-                }
-                if (strpos($time, 'PM') !== false) {
-                    $hour += 12;
+                if ((strpos($time, 'AM') !== false) || (strpos($time, 'PM') !== false)) {
+                    if ($hour == 12) {
+                        $hour = 0;
+                    }
+                    if (strpos($time, 'PM') !== false) {
+                        $hour += 12;
+                    }
                 }
             } else {
                 $hour = null;

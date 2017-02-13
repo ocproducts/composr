@@ -10,7 +10,7 @@
 			<img id="captcha_readable" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}" />
 		{+END}
 	</div>
-	<div class="accessibility_hidden"><label for="captcha">{!captcha:AUDIO_CAPTCHA}</label></div>
+	<div class="accessibility_hidden"><label for="captcha">{!captcha:AUDIO_CAPTCHA_HELP}</label></div>
 	<input{+START,IF_PASSED,TABINDEX} tabindex="{TABINDEX*}"{+END} maxlength="6" size="7" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
 
 	<script>// <![CDATA[

@@ -48,7 +48,11 @@ function upgrade_addon_soft($addon)
 
     $upgrade_from = $rows[0]['addon_version'];
 
-    require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
+    $code_file = 'hooks/systems/addon_registry/' . filter_naughty($addon);
+    if (!is_file(get_file_base() . '/sources_custom/' . $code_file . '.php')) {
+        return 0;
+    }
+    require_code($code_file);
     $ob = object_factory('Hook_addon_registry_' . $addon);
 
     $disk_version = float_to_raw_string($ob->get_version(), 2, true);
@@ -153,7 +157,11 @@ function uninstall_addon_soft($addon)
     require_code('files2');
 
     if (addon_installed($addon)) {
-        require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
+        $code_file = 'hooks/systems/addon_registry/' . filter_naughty($addon);
+        if (!is_file(get_file_base() . '/sources_custom/' . $code_file . '.php')) {
+            return;
+        }
+        require_code($code_file);
         $ob = object_factory('Hook_addon_registry_' . $addon);
 
         if (method_exists($ob, 'uninstall')) {
