@@ -360,7 +360,7 @@ function get_zone_name()
                         require_code('urls');
                         $GLOBALS['HTTP_STATUS_CODE'] = '301';
                         header('HTTP/1.0 301 Moved Permanently');
-                        header('Location: ' . str_replace('://www.', '://', str_replace("\r", '', str_replace("\n", '', get_self_url_easy()))));
+                        header('Location: ' . escape_header(str_replace('://www.', '://', get_self_url_easy())));
                         exit();
                     }
                 }

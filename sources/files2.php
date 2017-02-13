@@ -354,7 +354,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
 {
     if ($headers) {
         header('Content-Type: text/csv; charset=' . get_charset());
-        header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+        header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
         if (cms_srv('REQUEST_METHOD') == 'HEAD') {
             return '';
@@ -1485,14 +1485,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
         if (($proxy != '') && ($connect_to != 'localhost') && ($connect_to != '127.0.0.1')) {
             $out = '';
-            $out .= $http_verb . ' ' . str_replace("\r", '', str_replace("\n", '', $url)) . " HTTP/1.1\r\n";
+            $out .= $http_verb . ' ' . escape_header($url) . " HTTP/1.1\r\n";
             $proxy_user = get_option('proxy_user');
             if ($proxy_user != '') {
                 $proxy_password = get_option('proxy_password');
                 $out .= 'Proxy-Authorization: Basic ' . base64_encode($proxy_user . ':' . $proxy_password) . "\r\n";
             }
         } else {
-            $out = ((is_null($post_params)) ? (($byte_limit === 0) ? 'HEAD ' : 'GET ') : 'POST ') . str_replace("\r", '', str_replace("\n", '', $url2)) . " HTTP/1.1\r\n";
+            $out = ((is_null($post_params)) ? (($byte_limit === 0) ? 'HEAD ' : 'GET ') : 'POST ') . escape_header($url)) . " HTTP/1.1\r\n";
         }
         $out .= 'Host: ' . $url_parts['host'] . "\r\n";
         $out .= $headers;

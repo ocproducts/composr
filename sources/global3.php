@@ -3570,9 +3570,13 @@ function has_interesting_post_fields()
  * Apply escaping for an HTTP header.
  *
  * @param string $str Text to insert into header
+ * @param boolean $within_quotes Text is between quotes
  * @return string Escaped text
  */
-function escape_header($str)
+function escape_header($str, $within_quotes = false)
 {
-    return str_replace("\r", '', str_replace("\n", '', addslashes($str)));
+    if ($within_quotes) {
+        $str = addslashes($str);
+    }
+    return str_replace(array("\r", "\n"), array('', ''), $str);
 }

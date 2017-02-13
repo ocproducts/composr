@@ -62,7 +62,7 @@ function handle_facebook_connection_login($current_logged_in_member)
     try {
         $details = $FACEBOOK_CONNECT->api('/me', array('fields' => 'id,name,email,about,bio,website,currency,first_name,last_name,gender,location,hometown'));
     } catch (Exception $e) {
-        header('Facebook-Error: ' . str_replace("\n", '', $e->getMessage()));
+        header('Facebook-Error: ' . escape_header($e->getMessage()));
 
         return $current_logged_in_member;
     }
@@ -310,7 +310,7 @@ function handle_facebook_connection_login($current_logged_in_member)
                         }
                     }
                 } catch (Exception $e) {
-                    header('Facebook-Error: ' . str_replace("\n", '', $e->getMessage()));
+                    header('Facebook-Error: ' . escape_header($e->getMessage()));
                 }
             }
             if (!empty($changes)) {

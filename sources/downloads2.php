@@ -71,7 +71,7 @@ function download_gateway_script()
         $tpl_wrapped = globalise($tpl, null, '', true, true);
         $tpl_wrapped->evaluate_echo();
     } else {
-        header('Location:' . $download_url);
+        header('Location:' . escape_header($download_url));
     }
 }
 
@@ -171,10 +171,10 @@ function dload_script()
     $mime_type = get_mime_type(get_file_extension($myrow['original_filename']), false);
     if (get_option('immediate_downloads') == '1' && $mime_type != 'application/octet-stream') {
         header('Content-Type: ' . $mime_type . '; authoritative=true;');
-        header('Content-Disposition: inline; filename="' . escape_header($myrow['original_filename']) . '"');
+        header('Content-Disposition: inline; filename="' . escape_header($myrow['original_filename'], true) . '"');
     } else {
         header('Content-Type: application/octet-stream' . '; authoritative=true;');
-        header('Content-Disposition: attachment; filename="' . escape_header($myrow['original_filename']) . '"');
+        header('Content-Disposition: attachment; filename="' . escape_header($myrow['original_filename'], true) . '"');
     }
 
     // Is it non-local? If so, redirect
@@ -185,7 +185,7 @@ function dload_script()
         if ((strpos($full, "\n") !== false) || (strpos($full, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . str_replace("\r", '', str_replace("\n", '', $full)));
+        header('Location: ' . escape_header($full));
         log_download($id, 0, !is_null($got_before)); // Bandwidth used is 0 for an external download
         return;
     }

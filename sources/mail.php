@@ -1023,9 +1023,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         list($mime_type, $filename, $file_contents) = $test;
 
         $sending_message .= '--' . $boundary3 . $line_term;
-        $sending_message .= 'Content-Type: ' . str_replace("\r", '', str_replace("\n", '', $mime_type)) . $line_term;
+        $sending_message .= 'Content-Type: ' . escape_header($mime_type) . $line_term;
         $sending_message .= 'Content-ID: <' . $id . '>' . $line_term;
-        $sending_message .= 'Content-Disposition: inline; filename="' . str_replace("\r", '', str_replace("\n", '', $filename)) . '"' . $line_term;
+        $sending_message .= 'Content-Disposition: inline; filename="' . escape_header($filename) . '"' . $line_term;
         $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term . $line_term;
         if (is_string($file_contents)) {
             $sending_message .= chunk_split(base64_encode($file_contents), 76, $line_term);
@@ -1039,9 +1039,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     if (!is_null($attachments)) {
         foreach ($attachments as $path => $filename) {
             $sending_message .= '--' . $boundary . $line_term;
-            $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // . '; name="' . str_replace("\r", '', str_replace("\n", '', $filename)).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
+            $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // . '; name="' . escape_header($filename).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
             $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term;
-            $sending_message .= 'Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', $filename)) . '"' . $line_term . $line_term;
+            $sending_message .= 'Content-Disposition: attachment; filename="' . escape_header($filename) . '"' . $line_term . $line_term;
 
             if ((strpos($path, '://') === false) && (substr($path, 0, 5) != 'gs://')) {
                 if (!is_file($path)) {

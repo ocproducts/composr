@@ -110,7 +110,7 @@ function reprocess_url($url, $operation_base_url)
 
     global $HTTP_DOWNLOAD_MIME_TYPE;
     if (($HTTP_DOWNLOAD_MIME_TYPE != 'text/html') && ($HTTP_DOWNLOAD_MIME_TYPE != 'application/xhtml+xml')) {
-        header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+        header('Location: ' . escape_header($url));
         return '';
     }
 
