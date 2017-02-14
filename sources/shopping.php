@@ -328,9 +328,11 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
     $tax = $order_row['total_tax'];
     $shipping_cost = $order_row['total_shipping_cost'];
 
+    $type_code = 'CART_ORDER_' . strval($order_id);
+    $item_name = do_lang('CART_ORDER', strval($order_id));
+
     $_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
     $items = array();
-    $invoicing_breakdown = array();
     foreach ($_items as $_item) {
         $items[] = array(
             'PRODUCT_NAME' => $_item['p_name'],
@@ -340,30 +342,13 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
             'AMOUNT' => float_to_raw_string($_item['p_price'] + $_item['p_tax']),
             'QUANTITY' => strval($_item['p_quantity']),
         );
-
-        $invoicing_breakdown[] = array(
-            'type_code' => $_item['p_type_code'],
-            'item_name' => $_item['p_name'],
-            'quantity' => $_item['p_quantity'],
-            'unit_price' => $_item['p_price'],
-            'unit_tax' => float_format($_item['p_tax']),
-        );
     }
 
-    $invoicing_breakdown[] = array(
-        'type_code' => '',
-        'item_name' => do_lang('SHIPPING'),
-        'quantity' => 1,
-        'unit_price' => $shipping_cost,
-        'unit_tax' => calculate_shipping_tax($shipping_cost),
-    );
+    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, strval($order_id), $price, $tax, $shipping_cost);
 
     $payment_gateway = get_option('payment_gateway');
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
     $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
-
-    $type_code = 'CART_ORDER_' . strval($order_id);
-    $item_name = do_lang('CART_ORDER', strval($order_id));
 
     if (!method_exists($payment_gateway_object, 'make_cart_transaction_button')) {
         return $payment_gateway_object->make_transaction_button($type_code, $item_name, strval($order_id), $price, $tax, $shipping_cost, $currency, $price_points);

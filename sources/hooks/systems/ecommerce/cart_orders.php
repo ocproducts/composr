@@ -43,7 +43,7 @@ class Hook_ecommerce_cart_orders
         require_lang('shopping');
 
         if ($search !== null) {
-            if (preg_match('#^CART_ORDER_#', $search) == 0) {
+            if (preg_match('#^CART\_ORDER\_\d+$#', $search) == 0) {
                 return array();
             }
             $where = 'id=' . strval(intval(substr($search, strlen('CART_ORDER_'))));

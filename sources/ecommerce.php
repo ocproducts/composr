@@ -370,7 +370,7 @@ function get_base_shipping_cost()
     static $ret = null;
 
     if ($ret === null) {
-        $option = get_option('shipping_cost_factor');
+        $option = get_option('shipping_cost_base');
         $ret = round(float_unformat($option), 2);
     }
 
@@ -556,7 +556,7 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row =
 
         $transaction_fields = array(
             'TRANSACTION' => $txn_id,
-            'IDENTIFIER' => $transaction_row['t_purchase_id'],
+            'PURCHASE_ID' => $transaction_row['t_purchase_id'],
             'PARENT' => $transaction_row['t_parent_txn_id'],
             'AMOUNT' => float_format($transaction_row['t_amount']),
             'TAX' => float_format($transaction_row['t_tax']),
@@ -602,21 +602,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
     $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-    $invoicing_breakdown = array();
-    $invoicing_breakdown[] = array(
-        'type_code' => $type_code,
-        'item_name' => $item_name,
-        'quantity' => 1,
-        'unit_price' => $price,
-        'unit_tax' => $tax,
-    );
-    $invoicing_breakdown[] = array(
-        'type_code' => '',
-        'item_name' => do_lang('SHIPPING'),
-        'quantity' => 1,
-        'unit_price' => $shipping_cost,
-        'unit_tax' => calculate_shipping_tax($shipping_cost),
-    );
+    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost);
 
     $trans_expecting_id = $payment_gateway_object->generate_trans_id();
     $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
@@ -668,14 +654,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
     $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-    $invoicing_breakdown = array();
-    $invoicing_breakdown[] = array(
-        'type_code' => $type_code,
-        'item_name' => $item_name,
-        'quantity' => 1,
-        'unit_price' => $price,
-        'unit_tax' => $tax,
-    );
+    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax);
 
     $trans_expecting_id = $payment_gateway_object->generate_trans_id();
     $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
@@ -701,6 +680,78 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
     $amount = $price + $tax;
 
     return $payment_gateway_object->make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units);
+}
+
+/**
+ * Generate an invoicing breakdown.
+ *
+ * @param  ID_TEXT $type_code The product codename.
+ * @param  SHORT_TEXT $item_name The human-readable product title.
+ * @param  ID_TEXT $purchase_id The purchase ID.
+ * @param  REAL $price Transaction price.
+ * @param  REAL $tax Transaction tax.
+ * @param  ?REAL $shipping_cost Transaction shipping cost (null: no shipping).
+ * @return array Invoicing breakdown.
+ */
+function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost = null)
+{
+    $invoicing_breakdown = array();
+
+    if (preg_match('#^CART\_ORDER\_\d+$#', $type_code) == 0) {
+        $invoicing_breakdown[] = array(
+            'type_code' => $type_code,
+            'item_name' => $item_name,
+            'quantity' => 1,
+            'unit_price' => $price,
+            'unit_tax' => $tax,
+        );
+    } else {
+        $order_id = intval(substr($type_code, strlen('CART_ORDER_')));
+
+        $total_price = 0.00;
+        $total_tax = 0.00;
+
+        $_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
+        foreach ($_items as $_item) {
+            $invoicing_breakdown[] = array(
+                'type_code' => $_item['p_type_code'],
+                'item_name' => $_item['p_name'],
+                'quantity' => $_item['p_quantity'],
+                'unit_price' => $_item['p_price'],
+                'unit_tax' => $_item['p_tax'],
+            );
+
+            $total_price += $_item['p_price'];
+            $total_tax += $_item['p_tax'];
+        }
+
+        if ($shipping_cost !== null) {
+            $total_price += $shipping_cost;
+        }
+
+        if (($total_price != $price) || ($total_tax != $tax)) {
+            $invoicing_breakdown[] = array(
+                'type_code' => '',
+                'item_name' => do_lang('PRICING_ADJUSTMENT'),
+                'quantity' => 1,
+                'unit_price' => $price - $total_price,
+                'unit_tax' => $tax - $total_tax,
+            );
+        }
+    }
+
+    if ($shipping_cost !== null) {
+        $invoicing_breakdown[] = array(
+            'type_code' => '',
+            'item_name' => do_lang('SHIPPING'),
+            'quantity' => 1,
+            'unit_price' => $shipping_cost,
+            'unit_tax' => calculate_shipping_tax($shipping_cost),
+        );
+    }
+
+    return $invoicing_breakdown;
+
 }
 
 /**
@@ -879,21 +930,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($payment_gateway)));
     }
 
-    $invoicing_breakdown = array();
-    $invoicing_breakdown[] = array(
-        'type_code' => $type_code,
-        'item_name' => $item_name,
-        'quantity' => 1,
-        'unit_price' => $price,
-        'unit_tax' => $tax,
-    );
-    $invoicing_breakdown[] = array(
-        'type_code' => '',
-        'item_name' => do_lang('SHIPPING'),
-        'quantity' => 1,
-        'unit_price' => $shipping_cost,
-        'unit_tax' => calculate_shipping_tax($shipping_cost),
-    );
+    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost);
 
     $trans_expecting_id = $payment_gateway_object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
 
@@ -1446,7 +1483,7 @@ function store_shipping_address($trans_expecting_id, $txn_id = '', $shipping_add
         foreach ($field_groups as $field_group) {
             foreach ($field_group as $field) {
                 $_field = substr($field, 2);
-                $shipping_address[$_field] = post_param_string('shipping_' . $_field, '');
+                $shipping_address[$field] = post_param_string('shipping_' . $_field, '');
             }
         }
         if (implode('', $shipping_address) == '') {
@@ -1488,8 +1525,8 @@ function store_shipping_address($trans_expecting_id, $txn_id = '', $shipping_add
     }
 
     $more = array(
-        'trans_expecting_id' => '',
-        'txn_id' => $txn_id,
+        'a_trans_expecting_id' => '',
+        'a_txn_id' => $txn_id,
     );
     return $GLOBALS['SITE_DB']->query_insert('ecom_trans_addresses', $shipping_address + $more, true);
 }
@@ -1623,6 +1660,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             $expected_tax = $transaction_row['e_tax'];
             $expected_price_points = $transaction_row['e_price_points'];
             $invoicing_breakdown = $transaction_row['e_invoicing_breakdown'];
+            if ($memo == '') {
+                $memo = $transaction_row['e_memo'];
+            }
         }
     }
 
@@ -2057,18 +2097,18 @@ function generate_tax_invoice($txn_id)
         $trans_address = rtrim($trans_address);
     }
 
-    $items = ($transaction_row['t_invoicing_breakdown'] == '') ? array() : json_decode($transaction_row['t_invoicing_breakdown']);
+    $items = ($transaction_row['t_invoicing_breakdown'] == '') ? array() : json_decode($transaction_row['t_invoicing_breakdown'], true);
     $invoicing_breakdown = array();
     foreach ($items as $item) {
         $invoicing_breakdown[] = array(
             'TYPE_CODE' => $item['type_code'],
             'ITEM_NAME' => $item['item_name'],
             'QUANTITY' => $item['quantity'],
-            'UNIT_PRICE' => float_format($item['price']),
-            'PRICE' => float_format($item['price'] * $item['quantity']),
-            'UNIT_TAX' => float_format($item['tax']),
-            'TAX' => float_format($item['tax'] * $item['quantity']),
-            'TAX_RATE' => float_format(backcalculate_tax_rate($item['price'], $item['tax']), 1, true),
+            'UNIT_PRICE' => float_format($item['unit_price']),
+            'PRICE' => float_format($item['unit_price'] * $item['quantity']),
+            'UNIT_TAX' => float_format($item['unit_tax']),
+            'TAX' => float_format($item['unit_tax'] * $item['quantity']),
+            'TAX_RATE' => float_format(backcalculate_tax_rate($item['unit_price'], $item['unit_tax']), 1, true),
         );
     }
     if (count($invoicing_breakdown) == 0) { 
@@ -2098,7 +2138,7 @@ function generate_tax_invoice($txn_id)
     return do_template('ECOM_TAX_INVOICE', array(
         'TXN_ID' => $txn_id,
         '_DATE' => strval($transaction_row['t_time']),
-        'DATE' => get_timezoned_date($transaction_row['t_time'], false),
+        'DATE' => get_timezoned_date($transaction_row['t_time'], false, false, false, true),
         'TRANS_ADDRESS' => $trans_address,
         'ITEMS' => $invoicing_breakdown,
         'CURRENCY' => $transaction_row['t_currency'],

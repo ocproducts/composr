@@ -259,10 +259,14 @@ class Module_admin_ecommerce_logs
      */
     public function trigger()
     {
+        require_code('currency');
+
         require_code('form_templates');
         $fields = new Tempcode();
 
         url_default_parameters__enable();
+
+        $text = do_lang_tempcode('MANUAL_TRANSACTION_TEXT');
 
         // Choose product
         $type_code = get_param_string('type_code', null);
@@ -273,29 +277,31 @@ class Module_admin_ecommerce_logs
                 if (!is_string($type_code)) {
                     $type_code = strval($type_code);
                 }
-                $label = $details['item_name'];
+
+                $label = escape_html($details['item_name']);
                 $label .= ' (' . escape_html($type_code);
 
-                $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
-
                 if ($details['price'] !== null) {
-                    $label .= ', ' . escape_html(float_format($details['price']) . ' (' . $currency . ')');
+                    $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+                    $label .= ', ' . currency_convert($details['price'] + $details['shipping_cost'] + $details['tax'], $currency, $currency, CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST);
                 }
+
                 $label .= ')';
+
                 $list->attach(form_input_list_entry($type_code, $type_code === get_param_string('type_code', null), protect_from_escaping($label)));
             }
             $fields->attach(form_input_huge_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list, null, true));
 
-            $submit_name = do_lang('CHOOSE');
+            $submit_name = do_lang_tempcode('CHOOSE');
 
             url_default_parameters__disable();
 
-            return do_template('FORM_SCREEN', array('_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => '', 'URL' => get_self_url(), 'GET' => true, 'HIDDEN' => ''));
+            return do_template('FORM_SCREEN', array('_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => $text, 'URL' => get_self_url(), 'GET' => true, 'HIDDEN' => ''));
         }
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => get_param_string('redirect', null)), '_SELF');
-        $text = do_lang('MANUAL_TRANSACTION_TEXT');
-        $submit_name = do_lang('MANUAL_TRANSACTION');
+
+        $submit_name = do_lang_tempcode('MANUAL_TRANSACTION');
 
         list($details, $product_object) = find_product_details($type_code);
 
@@ -305,16 +311,21 @@ class Module_admin_ecommerce_logs
         if (post_param_integer('got_purchase_key_dependencies', 0) == 0) {
             list($needed_fields, $needed_text, $needed_javascript) = get_needed_fields($type_code, true);
             if ($needed_fields !== null) { // Only do step if we actually have fields - create intermediary step. get_self_url ensures first product-choose step choice is propagated.
-                $submit_name = do_lang('PROCEED');
+                $submit_name = do_lang_tempcode('PROCEED');
+
                 $extra_hidden = new Tempcode();
                 $extra_hidden->attach(form_input_hidden('got_purchase_key_dependencies', '1'));
                 if (is_array($needed_fields)) {
                     $extra_hidden->attach($needed_fields[0]);
                 }
 
+                if ($needed_text !== null) {
+                    $text = $needed_text;
+                }
+
                 url_default_parameters__disable();
 
-                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $needed_fields, 'TEXT' => $needed_text, 'JAVASCRIPT' => $needed_javascript, 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden));
+                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $needed_fields, 'TEXT' => $text, 'JAVASCRIPT' => $needed_javascript, 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden));
             }
         }
 
@@ -334,7 +345,7 @@ class Module_admin_ecommerce_logs
                 }
             }
 
-            $fields->attach(form_input_codename(do_lang_tempcode('IDENTIFIER'), do_lang('MANUAL_TRANSACTION_IDENTIFIER'), 'purchase_id', $default_purchase_id, false));
+            $fields->attach(form_input_codename(do_lang_tempcode('PURCHASE_ID'), do_lang('DESCRIPTION_MANUAL_PURCHASE_ID'), 'purchase_id', $default_purchase_id, false));
         }
 
         list($details) = find_product_details($type_code);
@@ -348,6 +359,7 @@ class Module_admin_ecommerce_logs
 
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('type_code', $type_code));
+        $hidden->attach(build_keep_post_fields());
 
         url_default_parameters__disable();
 
@@ -375,8 +387,14 @@ class Module_admin_ecommerce_logs
 
         $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
+        if ($tax === null) {
+            $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+            $tax = recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($shipping_cost));
+        }
+
         if ($amount === null) {
-            $amount = $details['price'] + (($tax === null) ? 0.00 : $tax) + $details['shipping_cost'];
+            $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+            $amount = $details['price'] + $shipping_cost + $tax;
         }
 
         $status = 'Completed';
@@ -443,10 +461,35 @@ class Module_admin_ecommerce_logs
                 $purchase_id = strval($member_id);
             }
 
+            $s_length = null;
+            $s_length_units = '';
+
             $period = '';
         }
 
-        handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, false, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual');
+        $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $amount, $tax);
+
+        $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
+            'id' => $txn_id,
+            'e_type_code' => $type_code,
+            'e_purchase_id' => $purchase_id,
+            'e_item_name' => $item_name,
+            'e_price' => $amount - $tax,
+            'e_tax' => $tax,
+            'e_currency' => $currency,
+            'e_price_points' => 0,
+            'e_member_id' => get_member(),
+            'e_ip_address' => get_ip_address(),
+            'e_session_id' => get_session_id(),
+            'e_time' => time(),
+            'e_length' => $s_length,
+            'e_length_units' => $s_length_units,
+            'e_memo' => post_param_string('memo', ''),
+            'e_invoicing_breakdown' => json_encode($invoicing_breakdown),
+        ));
+        store_shipping_address($txn_id);
+
+        handle_confirmed_transaction($txn_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, false, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual');
 
         $url = get_param_string('redirect', null);
         if ($url !== null) {
@@ -535,7 +578,7 @@ class Module_admin_ecommerce_logs
         require_code('templates_results_table');
         $fields_title = results_field_title(array(
             do_lang('TRANSACTION'),
-            do_lang('IDENTIFIER'),
+            do_lang('PURCHASE_ID'),
             do_lang('DATE'),
             do_lang('AMOUNT'),
             do_lang(get_option('tax_system')),
@@ -751,7 +794,7 @@ class Module_admin_ecommerce_logs
             $types[$type_code] = array('TYPE' => $details['item_name'], 'AMOUNT' => 0.00, 'SPECIAL' => false);
         }
         $types += array(
-            // Ones that are negative
+            // Ones that are negative (user expected to put in negative values)
             'COST' => array('TYPE' => do_lang_tempcode('EXPENSES'), 'AMOUNT' => 0.00, 'SPECIAL' => false),
             'TRANS' => array('TYPE' => do_lang_tempcode('TRANSACTION_FEES'), 'AMOUNT' => 0.00, 'SPECIAL' => false),
             'WAGE' => array('TYPE' => do_lang_tempcode('WAGES'), 'AMOUNT' => 0.00, 'SPECIAL' => false),
@@ -820,18 +863,24 @@ class Module_admin_ecommerce_logs
             }
         }
 
+        // Work out profit...
+
         $types['PROFIT']['AMOUNT'] = $types['CLOSING']['AMOUNT'] - $types['OPENING']['AMOUNT'] - $types['TAX_GENERAL']['AMOUNT']/*before corporation tax, so we add this back in (it's a negative figure)*/;
+
+        // Make sure CLOSING and PROFIT go last...
+
+        $temp = $types['CLOSING'];
+        unset($types['CLOSING']);
+        $types['CLOSING'] = $temp;
+
+        $temp = $types['PROFIT'];
+        unset($types['PROFIT']);
+        $types['PROFIT'] = $temp;
+
+        // Type conversion...
 
         foreach ($types as $type_code => $details) {
             $types[$type_code]['AMOUNT'] = float_format($types[$type_code]['AMOUNT']);
-        }
-
-        foreach ($types as $i => $t) {
-            if (is_float($t['AMOUNT'])) {
-                $types[$i]['AMOUNT'] = float_format($t['AMOUNT']);
-            } elseif (is_integer($t['AMOUNT'])) {
-                $types[$i]['AMOUNT'] = strval($t['AMOUNT']);
-            }
         }
 
         return $types;

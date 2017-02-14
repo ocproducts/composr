@@ -30,12 +30,19 @@ table.cart_table .associated_details {
 	float: right;
 }
 
+.cart_payment_line {
+	font-size: 1.1em;
+}
+
 .cart_payment_summary {
 	font-size: 1.2em;
-	margin: 2em 0;
 	padding: 0.5em 0;
 	border-top: 1px solid {$GET,pale_border};
 	border-bottom: 1px solid {$GET,pale_border};
+}
+
+.cart_payment_line, .cart_payment_summary {
+	margin: 1em 0;
 	text-align: right;
 }
 

@@ -213,7 +213,7 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
                 $ret .= '&nbsp;';
                 $ret .= escape_html($to_currency);
             }
-            break;
+            return $ret;
 
         case CURRENCY_DISPLAY_TEMPLATED:
             $temp_tpl = do_template('CURRENCY', array(

@@ -212,7 +212,7 @@ class Module_admin_invoices
         $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_INVOICE_FOR'), 'to', $to, true));
         $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_INVOICE_AMOUNT', escape_html(get_option('currency')), ecommerce_get_currency_symbol(get_option('currency'))), 'amount', null, false));
         $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_INVOICE_TAX'), 'tax', null, false));
-        $fields->attach(form_input_line(do_lang_tempcode('INVOICE_SPECIAL'), do_lang_tempcode('DESCRIPTION_INVOICE_SPECIAL'), 'special', '', false));
+        $fields->attach(form_input_line(do_lang_tempcode('PURCHASE_ID'), do_lang_tempcode('DESCRIPTION_PURCHASE_ID_INVOICE'), 'special', '', false));
         $fields->attach(form_input_text(do_lang_tempcode('NOTE'), do_lang_tempcode('DESCRIPTION_INVOICE_NOTE'), 'note', '', false));
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_add'), '_SELF');

@@ -67,7 +67,7 @@ class Hook_payment_gateway_paypal
     }
 
     /**
-     * Generate a transaction ID.
+     * Generate a transaction ID / trans-expecting ID.
      *
      * @return string A transaction ID.
      */

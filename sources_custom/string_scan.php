@@ -3557,7 +3557,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_INVOICE_FOR
         DESCRIPTION_INVOICE_NOTE
         DESCRIPTION_INVOICE_PAGE
-        DESCRIPTION_INVOICE_SPECIAL
+        DESCRIPTION_PURCHASE_ID_INVOICE
         DESCRIPTION_IP_ADDRESS_DISTRIBUTION
         DESCRIPTION_IS_DEFAULT_GROUP
         DESCRIPTION_IS_MEMBER_SYNCHED_GALLERY
@@ -4857,7 +4857,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INVOICES
         DESCRIPTION_INVOICE_AMOUNT
         DESCRIPTION_INVOICE_TAX
-        INVOICE_SPECIAL
+        PURCHASE_ID
         PAYMENT_GATEWAY_USERNAME
         PAYMENT_GATEWAY_TEST_USERNAME
         IPN_BAD_TRIAL
@@ -5074,7 +5074,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MANUAL_SUBSCRIPTION_NOTIFICATION_MAIL
         MANUAL_SUBSCRIPTION_NOTIFICATION_MAIL_SUBJECT
         MANUAL_TRANSACTION
-        MANUAL_TRANSACTION_IDENTIFIER
+        DESCRIPTION_MANUAL_PURCHASE_ID
         MANUAL_TRANSACTION_TEXT
         MANUAL_WCAG_ANIMATION
         MANUAL_WCAG_SCRIPT
@@ -6619,7 +6619,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TRACKBACK_SPAM
         TRANSACTIONS
         TRANSACTION_FEES
-        TRANSACTION_NOTES
         TRANSCODING
         TRANSCODING_ERROR
         TRANSCODING_ERROR_2
@@ -7841,6 +7840,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_REASON
         DESCRIPTION_REDIRECT_TO_TOPIC
         DESCRIPTION_REVEAL_AGE
+        TRANSACTION_NOTES
+        PRICING_ADJUSTMENT
         DESCRIPTION_SET_TICKET_EXTRA_ACCESS
         DESCRIPTION_SKIP_SIGNATURE
         DESCRIPTION_SUBSCRIBE_ADDRESS

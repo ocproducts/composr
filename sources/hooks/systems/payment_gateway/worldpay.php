@@ -93,7 +93,7 @@ class Hook_payment_gateway_worldpay
     }
 
     /**
-     * Generate a transaction ID.
+     * Generate a transaction ID / trans-expecting ID.
      *
      * @return string A transaction ID.
      */

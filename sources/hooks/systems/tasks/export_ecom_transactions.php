@@ -70,7 +70,7 @@ class Hook_task_export_ecom_transactions
 
             $transaction[do_lang('PARENT')] = $_transaction['t_parent_txn_id'];
 
-            $transaction[do_lang('IDENTIFIER')] = $_transaction['t_purchase_id'];
+            $transaction[do_lang('PURCHASE_ID')] = $_transaction['t_purchase_id'];
 
             $transaction[do_lang('DATE')] = get_timezoned_date($_transaction['t_time'], true, false, true, true);
 

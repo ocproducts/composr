@@ -215,7 +215,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
     $fields_title = results_field_title(array(
         do_lang_tempcode('SKU'),
         do_lang_tempcode('PRODUCT_NAME'),
-        do_lang_tempcode('IDENTIFIER'),
+        do_lang_tempcode('PURCHASE_ID'),
         do_lang_tempcode('PRICE'),
         do_lang_tempcode(get_option('tax_system')),
         do_lang_tempcode('QUANTITY'),

@@ -103,7 +103,7 @@ class Hook_ecommerce_catalogue_items
                 if (array_key_exists(SHOPPING_CATALOGUE_weight, $field_rows)) {
                     $product_weight = floatval($field_rows[SHOPPING_CATALOGUE_weight]['effective_value_pure']);
                 }
-                $shipping_cost = $this->_calculate_shipping_cost($price, $product_weight);
+                $shipping_cost = $this->_calculate_shipping_cost($product_weight);
 
                 if (array_key_exists(SHOPPING_CATALOGUE_image, $field_rows)) {
                     $image_url = is_object($field_rows[SHOPPING_CATALOGUE_image]['effective_value']) ? $field_rows[SHOPPING_CATALOGUE_image]['effective_value']->evaluate() : $field_rows[SHOPPING_CATALOGUE_image]['effective_value'];
@@ -168,7 +168,7 @@ class Hook_ecommerce_catalogue_items
         $factor = float_unformat(get_option('shipping_cost_factor'));
         $shipping_cost = $base + $item_weight * $factor;
 
-        return round($shipping_cost, 2);
+        return round($base, 2);
     }
 
     /**
