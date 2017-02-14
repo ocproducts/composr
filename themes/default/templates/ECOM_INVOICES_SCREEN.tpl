@@ -32,7 +32,7 @@
 					{$CURRENCY,{AMOUNT},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
 				</td>
 				<td>
-					{$CURRENCY,{AMOUNT},{TAX},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
+					{$CURRENCY,{TAX},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
 				</td>
 				<td>
 					{TIME*}
@@ -49,8 +49,8 @@
 					{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_invoices}}
 						<ul class="horizontal_links horiz_field_sep">
 							<li><a class="button_screen_item menu___generic_admin__delete" href="{$PAGE_LINK*,adminzone:admin_invoices:delete:{INVOICE_ID}}"><span>{!DELETE}: #{INVOICE_ID}</span></a></li>
-							{+START,IF,{DELIVERABLE}}
-								<li><a title="{!DELIVER}: #{INVOICE_ID}" href="{$PAGE_LINK*,adminzone:admin_invoices:deliver:{INVOICE_ID}}">{!DELIVER}</a></li>
+							{+START,IF,{FULFILLABLE}}
+								<li><a title="{!MARK_AS_FULFILLED}: #{INVOICE_ID}" href="{$PAGE_LINK*,adminzone:admin_invoices:fulfill:{INVOICE_ID}}">{!FULFILL}</a></li>
 							{+END}
 						</ul>
 					{+END}
@@ -58,7 +58,7 @@
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr class="{$GET,cycle}">
-					<td colspan="5">
+					<td colspan="6">
 						{NOTE*}
 					</td>
 				</tr>

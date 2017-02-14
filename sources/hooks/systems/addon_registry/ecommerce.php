@@ -115,10 +115,10 @@ class Hook_addon_registry_ecommerce
             'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/transactions.png',
             'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/create_invoice.png',
             'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/outstanding_invoices.png',
-            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/undelivered_invoices.png',
+            'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/unfulfilled_invoices.png',
             'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/create_invoice.png',
             'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/outstanding_invoices.png',
-            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/undelivered_invoices.png',
+            'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/unfulfilled_invoices.png',
             'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/index.html',
             'themes/default/images/icons/24x24/menu/rich_content/ecommerce/index.html',
             'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/index.html',
@@ -163,8 +163,8 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_PURCHASE_STAGE_PAY.tpl',
             'themes/default/templates/ECOM_TRANSACTION_LOGS_MANUAL_TRIGGER.tpl',
             'themes/default/templates/ECOM_TRANSACTION_LOGS_SCREEN.tpl',
-            'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_LINE.tpl',
-            'themes/default/templates/ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN.tpl',
+            'themes/default/templates/ECOM_VIEW_MANUAL_SUBSCRIPTIONS_LINE.tpl',
+            'themes/default/templates/ECOM_VIEW_MANUAL_SUBSCRIPTIONS_SCREEN.tpl',
             'themes/default/templates/ECOM_MEMBER_SUBSCRIPTION_STATUS.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_ECOMMERCE_LOGS.tpl',
             'themes/default/templates/CURRENCY.tpl',
@@ -370,8 +370,8 @@ class Hook_addon_registry_ecommerce
             'templates/ECOM_PURCHASE_STAGE_FINISH.tpl' => 'purchase_stage_finish',
             'templates/ECOM_INVOICES_SCREEN.tpl' => 'ecom_invoices_screen',
             'templates/ECOM_SUBSCRIPTIONS_SCREEN.tpl' => 'ecom_subscriptions_screen',
-            'templates/ECOM_VIEW_MANUAL_TRANSACTIONS_LINE.tpl' => 'ecom_view_manual_transactions_screen',
-            'templates/ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN.tpl' => 'ecom_view_manual_transactions_screen',
+            'templates/ECOM_VIEW_MANUAL_SUBSCRIPTIONS_LINE.tpl' => 'ecom_view_manual_transactions_screen',
+            'templates/ECOM_VIEW_MANUAL_SUBSCRIPTIONS_SCREEN.tpl' => 'ecom_view_manual_transactions_screen',
             'templates/ECOM_MEMBER_SUBSCRIPTION_STATUS.tpl' => 'member_subscription_status_screen',
             'templates/ECOM_SALES_LOG_SCREEN.tpl' => 'administrative__ecom_sales_log_screen',
             'templates/ECOM_PRODUCTS_PRICES_FORM_WRAP.tpl' => 'administrative__ecom_products_price_screen',
@@ -1189,7 +1189,7 @@ class Hook_addon_registry_ecommerce
                 'CURRENCY' => 'GBP',
                 'TIME' => placeholder_date(),
                 'STATE' => lorem_word(),
-                'DELIVERABLE' => lorem_word(),
+                'FULFILLABLE' => true,
                 'PAYABLE' => lorem_word(),
                 'NOTE' => lorem_phrase(),
                 'TYPE_CODE' => lorem_word(),
@@ -1360,7 +1360,7 @@ class Hook_addon_registry_ecommerce
      */
     public function tpl_preview__ecom_view_manual_transactions_screen()
     {
-        $lines = do_lorem_template('ECOM_VIEW_MANUAL_TRANSACTIONS_LINE', array(
+        $lines = do_lorem_template('ECOM_VIEW_MANUAL_SUBSCRIPTIONS_LINE', array(
             'ID' => placeholder_id(),
             'SUBSCRIPTION' => lorem_title(),
             'ROWSPAN' => '1',
@@ -1370,7 +1370,7 @@ class Hook_addon_registry_ecommerce
         ));
 
         return array(
-            lorem_globalise(do_lorem_template('ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN', array(
+            lorem_globalise(do_lorem_template('ECOM_VIEW_MANUAL_SUBSCRIPTIONS_SCREEN', array(
                 'TITLE' => lorem_title(),
                 'CONTENT' => $lines,
             )), null, '', true)

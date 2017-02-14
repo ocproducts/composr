@@ -144,9 +144,9 @@ class Module_admin_ecommerce_logs
             breadcrumb_set_self(do_lang_tempcode('DONE'));
             $type_code = get_param_string('type_code', null);
             if ($type_code === null) {
-                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:trigger', do_lang_tempcode('PRODUCT'))));
+                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:trigger', do_lang_tempcode('MANUAL_TRANSACTION'))));
             } else {
-                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:trigger', do_lang_tempcode('PRODUCT')), array('_SELF:_SELF:trigger:type_code=' . $type_code, do_lang_tempcode('MANUAL_TRANSACTION'))));
+                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:trigger', do_lang_tempcode('MANUAL_TRANSACTION')), array('_SELF:_SELF:trigger:type_code=' . $type_code, do_lang_tempcode('PRODUCT'))));
             }
 
             $this->title = get_screen_title('MANUAL_TRANSACTION');
@@ -388,13 +388,23 @@ class Module_admin_ecommerce_logs
         $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
         if ($tax === null) {
-            $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
-            $tax = recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($shipping_cost));
+            if ($details['type'] == PRODUCT_INVOICE) {
+                $tax = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_tax', array('id' => intval($purchase_id)));
+            }
+            if ($tax === null) {
+                $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+                $tax = recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($shipping_cost));
+            }
         }
 
         if ($amount === null) {
-            $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
-            $amount = $details['price'] + $shipping_cost + $tax;
+            if ($details['type'] == PRODUCT_INVOICE) {
+                $amount = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_amount', array('id' => intval($purchase_id))) + $tax;
+            }
+            if ($amount === null) {
+                $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+                $amount = $details['price'] + $shipping_cost + $tax;
+            }
         }
 
         $status = 'Completed';
@@ -960,7 +970,11 @@ class Module_admin_ecommerce_logs
             $expiry_time = strtotime('+' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $subs['s_time']);
             $expiry_date = get_timezoned_date($expiry_time, false, false, false, true);
             $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($subs['s_member_id'], true, '', false);
-            $cancel_url = build_url(array('page' => '_SELF', 'type' => 'cancel_subscription', 'subscription_id' => $subs['id']), '_SELF');
+            if ($subs['s_state'] == 'cancelled') {
+                $cancel_url = new Tempcode();
+            } else {
+                $cancel_url = build_url(array('page' => '_SELF', 'type' => 'cancel_subscription', 'subscription_id' => $subs['id']), '_SELF');
+            }
 
             $data[$item_name][] = array($member_link, $expiry_date, $cancel_url, $subs['id']);
         }
@@ -970,15 +984,15 @@ class Module_admin_ecommerce_logs
             $continues_for_same_product = true;
             foreach ($value as $val) {
                 if ($continues_for_same_product) {
-                    $result->attach(do_template('ECOM_VIEW_MANUAL_TRANSACTIONS_LINE', array('_GUID' => '979a0e7ca87437bc7ee1035afd16e07c', 'ID' => strval($val[3]), 'SUBSCRIPTION' => $key, 'MEMBER' => $val[0], 'EXPIRY' => $val[1], 'ROWSPAN' => strval(count($data[$key])), 'CANCEL_URL' => $val[2])));
+                    $result->attach(do_template('ECOM_VIEW_MANUAL_SUBSCRIPTIONS_LINE', array('_GUID' => '979a0e7ca87437bc7ee1035afd16e07c', 'ID' => strval($val[3]), 'SUBSCRIPTION' => $key, 'MEMBER' => $val[0], 'EXPIRY' => $val[1], 'ROWSPAN' => strval(count($data[$key])), 'CANCEL_URL' => $val[2])));
                     $continues_for_same_product = false;
                 } else {
-                    $result->attach(do_template('ECOM_VIEW_MANUAL_TRANSACTIONS_LINE', array('_GUID' => '4abea40b654471f0fec0961a1e8716e4', 'ID' => '', 'SUBSCRIPTION' => '', 'MEMBER' => $val[0], 'EXPIRY' => $val[1], 'ROWSPAN' => '', 'CANCEL_URL' => $val[2])));
+                    $result->attach(do_template('ECOM_VIEW_MANUAL_SUBSCRIPTIONS_LINE', array('_GUID' => '4abea40b654471f0fec0961a1e8716e4', 'ID' => '', 'SUBSCRIPTION' => '', 'MEMBER' => $val[0], 'EXPIRY' => $val[1], 'ROWSPAN' => '', 'CANCEL_URL' => $val[2])));
                 }
             }
         }
 
-        return do_template('ECOM_VIEW_MANUAL_TRANSACTIONS_SCREEN', array('_GUID' => '35a782b45d391f7766303b05c9422305', 'TITLE' => $this->title, 'CONTENT' => $result));
+        return do_template('ECOM_VIEW_MANUAL_SUBSCRIPTIONS_SCREEN', array('_GUID' => '35a782b45d391f7766303b05c9422305', 'TITLE' => $this->title, 'CONTENT' => $result));
     }
 
     /**

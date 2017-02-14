@@ -609,7 +609,6 @@ class Module_shopping
                 'STATUS' => do_lang_tempcode($row['order_status']),
                 'NOTE' => '',
                 'ORDER_DET_URL' => $order_details_url,
-                'DELIVERABLE' => '',
             );
         }
 

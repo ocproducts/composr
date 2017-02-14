@@ -190,7 +190,7 @@ class Module_invoices
             $invoice_title = $details['item_name'];
             $time = get_timezoned_date($row['i_time'], true, false, false, true);
             $payable = ($row['i_state'] == 'new');
-            $deliverable = ($row['i_state'] == 'paid');
+            $fulfillable = ($row['i_state'] == 'paid');
             $state = do_lang('PAYMENT_STATE_' . $row['i_state']);
             $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
             if (perform_local_payment()) {
@@ -207,7 +207,7 @@ class Module_invoices
                 'CURRENCY' => $row['i_currency'],
                 'TIME' => $time,
                 'STATE' => $state,
-                'DELIVERABLE' => $deliverable,
+                'FULFILLABLE' => $fulfillable,
                 'PAYABLE' => $payable,
                 'NOTE' => $row['i_note'],
                 'TYPE_CODE' => $row['i_type_code'],

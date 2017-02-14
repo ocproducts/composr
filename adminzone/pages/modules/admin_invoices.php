@@ -58,7 +58,7 @@ class Module_admin_invoices
         return array(
             'browse' => array('INVOICES', 'menu/adminzone/audit/ecommerce/invoices'),
             'outstanding' => array('OUTSTANDING_INVOICES', 'menu/adminzone/audit/ecommerce/outstanding_invoices'),
-            'undelivered' => array('UNDELIVERED_INVOICES', 'menu/adminzone/audit/ecommerce/undelivered_invoices'),
+            'unfulfilled' => array('UNFULFILLED_INVOICES', 'menu/adminzone/audit/ecommerce/unfulfilled_invoices'),
             'add' => array('CREATE_INVOICE', 'menu/adminzone/audit/ecommerce/create_invoice'),
         );
     }
@@ -102,14 +102,14 @@ class Module_admin_invoices
             $this->title = get_screen_title('OUTSTANDING_INVOICES');
         }
 
-        if ($type == 'undelivered') {
+        if ($type == 'unfulfilled') {
             breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('INVOICES'))));
 
-            $this->title = get_screen_title('UNDELIVERED_INVOICES');
+            $this->title = get_screen_title('UNFULFILLED_INVOICES');
         }
 
         if ($type == 'delete') {
-            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('INVOICES')), array('_SELF:_SELF:undelivered', do_lang_tempcode('UNDELIVERED_INVOICES'))));
+            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('INVOICES')), array('_SELF:_SELF:unfulfilled', do_lang_tempcode('UNFULFILLED_INVOICES'))));
             if (post_param_integer('confirmed', 0) != 1) {
                 breadcrumb_set_self(do_lang_tempcode('CONFIRM'));
             } else {
@@ -119,11 +119,11 @@ class Module_admin_invoices
             $this->title = get_screen_title('DELETE_INVOICE');
         }
 
-        if ($type == 'deliver') {
+        if ($type == 'fulfill') {
             breadcrumb_set_self(do_lang_tempcode('DONE'));
-            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('INVOICES')), array('_SELF:_SELF:undelivered', do_lang_tempcode('UNDELIVERED_INVOICES'))));
+            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('INVOICES')), array('_SELF:_SELF:unfulfilled', do_lang_tempcode('UNFULFILLED_INVOICES'))));
 
-            $this->title = get_screen_title('MARK_AS_DELIVERED');
+            $this->title = get_screen_title('MARK_AS_FULFILLED');
         }
 
         return null;
@@ -150,14 +150,14 @@ class Module_admin_invoices
         if ($type == 'outstanding') {
             return $this->outstanding();
         }
-        if ($type == 'undelivered') {
-            return $this->undelivered();
+        if ($type == 'unfulfilled') {
+            return $this->unfulfilled();
         }
         if ($type == 'delete') {
             return $this->delete();
         }
-        if ($type == 'deliver') {
-            return $this->deliver();
+        if ($type == 'fulfill') {
+            return $this->fulfill();
         }
         return new Tempcode();
     }
@@ -174,7 +174,7 @@ class Module_admin_invoices
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('CREATE_INVOICE')),
                 array('menu/adminzone/audit/ecommerce/outstanding_invoices', array('_SELF', array('type' => 'outstanding'), '_SELF'), do_lang('OUTSTANDING_INVOICES')),
-                array('menu/adminzone/audit/ecommerce/undelivered_invoices', array('_SELF', array('type' => 'undelivered'), '_SELF'), do_lang('UNDELIVERED_INVOICES')),
+                array('menu/adminzone/audit/ecommerce/unfulfilled_invoices', array('_SELF', array('type' => 'unfulfilled'), '_SELF'), do_lang('UNFULFILLED_INVOICES')),
             ),
             do_lang('INVOICES')
         );
@@ -309,11 +309,11 @@ class Module_admin_invoices
     }
 
     /**
-     * Show undelivered invoices.
+     * Show unfulfilled invoices.
      *
      * @return Tempcode The interface.
      */
-    public function undelivered()
+    public function unfulfilled()
     {
         $invoices = array();
         $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_state' => 'paid'), 'ORDER BY i_time');
@@ -340,7 +340,7 @@ class Module_admin_invoices
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        return do_template('ECOM_OUTSTANDING_INVOICES_SCREEN', array('_GUID' => '672e41d8cbe06f046a47762ff75c8337', 'TITLE' => $this->title, 'FROM' => 'undelivered', 'INVOICES' => $invoices));
+        return do_template('ECOM_OUTSTANDING_INVOICES_SCREEN', array('_GUID' => '672e41d8cbe06f046a47762ff75c8337', 'TITLE' => $this->title, 'FROM' => 'unfulfilled', 'INVOICES' => $invoices));
     }
 
     /**
@@ -368,15 +368,15 @@ class Module_admin_invoices
     }
 
     /**
-     * Actualiser to deliver an invoice.
+     * Actualiser to fulfill an invoice.
      *
      * @return Tempcode The result.
      */
-    public function deliver()
+    public function fulfill()
     {
         $GLOBALS['SITE_DB']->query_update('ecom_invoices', array('i_state' => 'delivered'), array('id' => get_param_integer('id')), '', 1);
 
-        $url = build_url(array('page' => '_SELF', 'type' => 'undelivered'), '_SELF');
+        $url = build_url(array('page' => '_SELF', 'type' => 'unfulfilled'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 }

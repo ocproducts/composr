@@ -5081,7 +5081,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MANUAL_WCAG_SEMANTIC_BLOCKQUOTE
         MANUAL_WCAG_SEMANTIC_LIST
         MANY_PANEL_TYPES
-        MARK_AS_DELIVERED
+        FULFILLED
         MARK_AS_SPAMMER
         MARK_TASK_DONE
         MASQUERADE_AS_MEMBER
@@ -5613,7 +5613,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ORDER_STATUS_onhold
         ORDER_STATUS_payment_received
         ORDER_STATUS_returned
-        ORDER_STATUS_smodified
+        PAYMENT_STATE_smodified
         ORDER_SUB_ALPHA
         ORGANISATION
         ORIGINAL
@@ -6649,7 +6649,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UNBAN_SUBMITTER_DESCRIPTION
         UNBLOCK_MEMBER
         UNCLOSED_DIRECTIVE_OR_BRACE
-        UNDELIVERED_INVOICES
+        UNFULFILLED_INVOICES
         UNDER_CONSTRUCTION
         UNDER_CONSTRUCTION_MARKERS
         UNDO
@@ -7764,7 +7764,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DELETE_TOPICS_AND_POSTS
         DELETE_TOPIC_POLL
         DELETE_TOPIC_TEXT
-        DELIVER
+        FULFILL
         DESCENDING
         DESCRIPTION
         DESCRIPTION_ADDITIONAL_ACCESS

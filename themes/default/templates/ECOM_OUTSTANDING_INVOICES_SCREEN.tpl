@@ -35,13 +35,13 @@
 				<td>
 					<a title="{!DELETE}: #{ID}" href="{$PAGE_LINK*,_SELF:_SELF:delete:{ID}:from={FROM}}"><img src="{$IMG*,icons/14x14/delete}" srcset="{$IMG*,icons/28x28/delete} 2x" title="{!DELETE_INVOICE}" alt="{!DELETE_INVOICE}" /></a>
 					{+START,IF,{$EQ,{STATE},paid}}
-						<a title="{!MARK_AS_DELIVERED}: #{ID}" href="{$PAGE_LINK*,_SELF:_SELF:deliver:{ID}}">{!MARK_AS_DELIVERED}</a>
+						<a title="{!MARK_AS_FULFILLED}: #{ID}" href="{$PAGE_LINK*,_SELF:_SELF:fulfill:{ID}}">{!MARK_AS_FULFILLED}</a>
 					{+END}
 				</td>
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr class="{$GET,cycle}">
-					<td colspan="5">
+					<td colspan="6">
 						<span class="field_name">{!NOTE}</span>: {NOTE*}
 					</td>
 				</tr>

@@ -203,6 +203,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  SHORT_TEXT $title The title
      * @param  LONG_TEXT $description The description
      * @param  REAL $price The price
+     * @param  REAL $tax The tax
      * @param  integer $length The length
      * @param  SHORT_TEXT $length_units The units for the length
      * @set    y m d w
@@ -217,7 +218,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  ?AUTO_LINK $id ID of existing subscription (null: new)
      * @return array Tuple: The input fields, The hidden fields, The delete fields
      */
-    public function get_form_fields($title = '', $description = '', $price = 9.99, $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
+    public function get_form_fields($title = '', $description = '', $price = 9.99, $tax = 0.00, $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
     {
         if (($title == '') && (get_forum_type() == 'cns')) {
             $add_usergroup_url = build_url(array('page' => 'admin_cns_groups', 'type' => 'add'), get_module_zone('admin_cns_groups'));
@@ -245,6 +246,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_TITLE'), 'title', $title, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_DESCRIPTION'), 'description', $description, true));
         $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_PRICE'), 'price', $price, true));
+        $fields->attach(form_input_float(do_lang_tempcode('TAX'), do_lang_tempcode('DESCRIPTION_TAX'), 'tax', $tax, true));
 
         $list = new Tempcode();
         foreach (array('d', 'w', 'm', 'y') as $unit) {

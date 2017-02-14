@@ -697,7 +697,7 @@ class Hook_addon_registry_shopping
                 'STATUS' => lorem_word_2(),
                 'NOTE' => lorem_phrase(),
                 'ORDER_DET_URL' => placeholder_url(),
-                'DELIVERABLE' => '',
+                'FULFILLABLE' => true,
             );
         }
         return array(

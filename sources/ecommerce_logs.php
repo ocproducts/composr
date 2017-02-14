@@ -151,6 +151,8 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
  */
 function build_order_details($title, $id, $text, $show_order_actions = false)
 {
+    require_code('locations');
+
     if (!addon_installed('shopping')) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
@@ -200,7 +202,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
             'COUNTY' => $address['a_county'],
             'STATE' => $address['a_state'],
             'POST_CODE' => $address['a_post_code'],
-            'COUNTRY' => $address['a_country'],
+            'COUNTRY' => find_country_name_from_iso($address['a_country']),
             'EMAIL' => $address['a_email'],
             'PHONE' => $address['a_phone'],
         ));

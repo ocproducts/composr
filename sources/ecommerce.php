@@ -430,6 +430,9 @@ function recalculate_tax_due($details, $tax, $shipping_cost_tax = 0.00, $member_
  */
 function backcalculate_tax_rate($price, $tax)
 {
+    if ($price == 0.00) {
+        return 0.0;
+    }
     return round(100.0 * ($tax / $price), 1);
 }
 
@@ -575,7 +578,7 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row =
 
         $transaction_linker = do_template('CROP_TEXT_MOUSE_OVER', array('TEXT_LARGE' => $map_table, 'TEXT_SMALL' => $transaction_link));
     } else {
-        $transaction_linker = do_lang_tempcode('ORDER_STATUS_awaiting_payment');
+        $transaction_linker = do_lang_tempcode('PAYMENT_STATE_new');
     }
     return $transaction_linker;
 }
@@ -1525,7 +1528,7 @@ function store_shipping_address($trans_expecting_id, $txn_id = '', $shipping_add
     }
 
     $more = array(
-        'a_trans_expecting_id' => '',
+        'a_trans_expecting_id' => $trans_expecting_id,
         'a_txn_id' => $txn_id,
     );
     return $GLOBALS['SITE_DB']->query_insert('ecom_trans_addresses', $shipping_address + $more, true);
@@ -2072,6 +2075,7 @@ function get_transaction_row($txn_id)
 function generate_tax_invoice($txn_id)
 {
     require_css('ecommerce');
+    require_code('locations');
 
     $transaction_row = get_transaction_row($txn_id);
 
@@ -2087,7 +2091,7 @@ function generate_tax_invoice($txn_id)
             $address_row['a_county'],
             $address_row['a_state'],
             $address_row['a_post_code'],
-            $address_row['a_country'],
+            find_country_name_from_iso($address_row['a_country']),
         );
         foreach ($lines as $line) {
             if (trim($line) != '') {
@@ -2161,19 +2165,19 @@ function get_transaction_status_string($_status)
     $status = '';
     switch ($_status) {
         case 'Pending':
-            $status = do_lang('ORDER_STATUS_awaiting_payment');
+            $status = do_lang('PAYMENT_STATE_pending');
             break;
 
         case 'Completed':
-            $status = do_lang('ORDER_STATUS_payment_received');
+            $status = do_lang('PAYMENT_STATE_paid');
             break;
 
         case 'SCancelled':
-            $status = do_lang('ORDER_STATUS_cancelled');
+            $status = do_lang('PAYMENT_STATE_cancelled');
             break;
 
         case 'SModified':
-            $status = do_lang('ORDER_STATUS_smodified');
+            $status = do_lang('PAYMENT_STATE_smodified');
             break;
 
         default:
@@ -2190,10 +2194,10 @@ function get_transaction_status_string($_status)
 function get_transaction_status_list()
 {
     $status = array(
-        'Pending' => do_lang_tempcode('ORDER_STATUS_awaiting_payment'),
-        'Completed' => do_lang_tempcode('ORDER_STATUS_payment_received'),
-        'SCancelled' => do_lang_tempcode('ORDER_STATUS_cancelled'),
-        'SModified' => do_lang_tempcode('ORDER_STATUS_smodified'),
+        'Pending' => do_lang_tempcode('PAYMENT_STATE_pending'),
+        'Completed' => do_lang_tempcode('PAYMENT_STATE_paid'),
+        'SCancelled' => do_lang_tempcode('PAYMENT_STATE_cancelled'),
+        'SModified' => do_lang_tempcode('PAYMENT_STATE_smodified'),
     );
 
     $status_list = new Tempcode();
