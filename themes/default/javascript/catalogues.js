@@ -73,7 +73,9 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (typeof form.old_submit != 'undefined' && form.old_submit) return form.old_submit();
+            if (form.old_submit) {
+                return form.old_submit();
+            }
             return true;
         };
     };

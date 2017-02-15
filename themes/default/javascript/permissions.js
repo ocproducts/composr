@@ -1,8 +1,12 @@
 "use strict";
 
 function show_permission_setting(ob, event) {
-    if (ob.disabled) return; // already showing default in disabled dropdown
-    if (ob.done) return;
+    if (ob.disabled) { // already showing default in disabled dropdown
+        return;
+    }
+    if (ob.done) {
+        return;
+    }
     ob.done = true;
 
     if (!ob.full_setting) {

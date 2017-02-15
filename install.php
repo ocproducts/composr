@@ -1003,17 +1003,19 @@ function step_4()
             $options->attach(make_option(do_lang_tempcode('DATABASE_PASSWORD'), new Tempcode(), 'gae_live_db_site_password', '', true));
             $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('HIDDEN' => '', 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
 
-            $js->attach('
-                var gae_application=document.getElementById(\'gae_application\');
-                gae_application.onchange=function () {
-                    var gae_live_db_site=document.getElementById(\'gae_live_db_site\');
-                    gae_live_db_site.value=gae_live_db_site.value.replace(/(<application>|composr)/g,gae_application.value);
-                    var gae_live_db_site_host=document.getElementById(\'gae_live_db_site_host\');
-                    gae_live_db_site_host.value=gae_live_db_site_host.value.replace(/(<application>|composr)/g,gae_application.value);
-                    var gae_bucket_name=document.getElementById(\'gae_bucket_name\');
-                    gae_bucket_name.value=gae_bucket_name.value.replace(/(<application>|composr)/g,gae_application.value);
-                };
-                gae_application.onchange();
+            $js->attach(/**@lang JavaScript*/
+                'var gae_application = document.getElementById(\'gae_application\');
+gae_application.addEventListener(\'change\', gaeOnChange);
+gaeOnChange();
+
+function gaeOnChange() {
+    var gae_live_db_site = document.getElementById(\'gae_live_db_site\');
+    gae_live_db_site.value = gae_live_db_site.value.replace(/(<application>|composr)/g, gae_application.value);
+    var gae_live_db_site_host = document.getElementById(\'gae_live_db_site_host\');
+    gae_live_db_site_host.value = gae_live_db_site_host.value.replace(/(<application>|composr)/g, gae_application.value);
+    var gae_bucket_name = document.getElementById(\'gae_bucket_name\');
+    gae_bucket_name.value = gae_bucket_name.value.replace(/(<application>|composr)/g, gae_application.value);
+}
             ');
         } else {
             $title = do_lang_tempcode((($forum_type == 'cns' || $forum_type == 'none') && $use_msn == 0) ? 'DATABASE_SETTINGS' : 'COMPOSR_SETTINGS');

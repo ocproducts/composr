@@ -3020,22 +3020,19 @@ END;
             var form=document.getElementById('post').form;
             form.old_submit=form.onsubmit;
             form.onsubmit=function() {
-                var post=form.elements['post'];
+                var post = form.elements['post'];
                 var text_value;
-                if (is_wysiwyg_field(post))
-                {
-                    try
-                    {
+                if (is_wysiwyg_field(post)) {
+                    try {
+
                         text_value=window.CKEDITOR.instances['post'].getData();
-                    }
-                    catch (e) {};
-                } else
-                {
+                    } catch (e) {};
+                } else {
                     if ((!post.value) && (post[1])) post=post[1];
                     text_value=post.value;
                 }
-                if (text_value.length>" . strval($size) . ")
-                {
+
+                if (text_value.length>" . strval($size) . ") {
                     window.fauxmodal_alert('" . php_addslashes(do_lang('POST_TOO_LONG')) . "');
                     return false;
                 }

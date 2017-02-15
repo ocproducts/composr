@@ -174,7 +174,7 @@ var encodeUC = encodeURIComponent;
             spam_heuristic_pasting: boolVal(symbols.CONFIG_OPTION.spam_heuristic_pasting),
 
             /**@var {string}*/
-            thumb_width: symbols.CONFIG_OPTION.thumb_width,
+            thumb_width: strVal(symbols.CONFIG_OPTION.thumb_width),
             /**@var {string}*/
             js_captcha: symbols.CONFIG_OPTION.js_captcha,
             /**@var {string}*/
@@ -324,8 +324,11 @@ var encodeUC = encodeURIComponent;
         /**@method*/
         parseJson: parseJson,
 
+        /**@method*/
         defineBehaviors: defineBehaviors,
+        /**@method*/
         attachBehaviors: attachBehaviors,
+        /**@method*/
         detachBehaviors: detachBehaviors
     });
 
@@ -614,7 +617,7 @@ var encodeUC = encodeURIComponent;
     // Using Math.round() will give you a non-uniform distribution!
     function random(min, max) {
         min = Number.isFinite(+min) ? +min : 0;
-        max = Number.isFinite(+max) ? +max : 1000000000000;
+        max = Number.isFinite(+max) ? +max : 1000000000000; // 1 Trillion
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -2200,6 +2203,7 @@ var encodeUC = encodeURIComponent;
     }
 
     /**
+     * @memberof $cms.dom
      * @param el { Window|Document|Element }
      * @param event {string|object}
      * @param selector {string|function}
@@ -2257,6 +2261,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
+     * @memberof $cms.dom
      * @param el { Window|Document|Element }
      * @param event {string|object}
      * @param selector {string|function}
@@ -2300,7 +2305,7 @@ var encodeUC = encodeURIComponent;
     var mouseEvents = { click: 1, mousedown: 1, mouseup: 1, mousemove: 1 };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param type
      * @param props
      * @returns { Event }
@@ -2330,7 +2335,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param event
      * @param args
@@ -2374,7 +2379,7 @@ var encodeUC = encodeURIComponent;
     }
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param property
      * @param value
@@ -2419,6 +2424,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
+     * @memberof $cms.dom
      * @param {Element} el
      * @param {string} property
      * @param {string|Array} values
@@ -2432,7 +2438,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @returns {boolean}
      */
@@ -2442,7 +2448,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @returns {boolean}
      */
@@ -2454,6 +2460,7 @@ var encodeUC = encodeURIComponent;
     var _initial = {};
     /**
      * Gets the 'initial' value for an element type's CSS property (only 'display' supported as of now)
+     * @memberof $cms.dom
      * @param el
      * @param property
      * @returns {*}
@@ -2484,7 +2491,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.show = function show(el) {
@@ -2509,7 +2516,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param show
      */
@@ -2525,7 +2532,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param show
      */
@@ -2543,7 +2550,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param disabled
      */
@@ -2555,7 +2562,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param checked
      */
@@ -2567,7 +2574,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param duration
      * @param callback
@@ -2613,7 +2620,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param duration
      * @param callback
@@ -2648,7 +2655,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param keyboardEvent
      * @param checkKey
      * @returns {*}
@@ -2683,6 +2690,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Returns the output character produced by a KeyboardEvent, or empty string if none
+     * @memberof $cms.dom
      * @param keyboardEvent
      * @param checkOutput
      * @returns {*}
@@ -2731,7 +2739,7 @@ var encodeUC = encodeURIComponent;
     }
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param name
      * @param value
@@ -2756,7 +2764,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param name
      */
@@ -2769,7 +2777,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param html
      * @returns {string|*}
@@ -2798,7 +2806,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.empty = function empty(el) {
@@ -2808,7 +2816,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.remove = function remove(el) {
@@ -2821,7 +2829,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param html
      */
@@ -2845,7 +2853,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param html
      */
@@ -2870,6 +2878,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Put some new HTML around the given element
+     * @memberof $cms.dom
      * @param el
      * @param html
      * @returns {*}
@@ -2897,6 +2906,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Returns the provided element's width excluding padding and borders
+     * @memberof $cms.dom
      * @param el
      * @returns {number}
      */
@@ -2912,6 +2922,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Returns the provided element's height excluding padding and border
+     * @memberof $cms.dom
      * @param el
      * @returns {number}
      */
@@ -2927,7 +2938,7 @@ var encodeUC = encodeURIComponent;
 
     var serializeExcludedTypes = { submit: 1, reset: 1, button: 1, file: 1 };
     /**
-     *
+     * @memberof $cms.dom
      * @param form
      * @returns {Array}
      */
@@ -2954,7 +2965,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param form
      * @returns {string}
      */
@@ -4424,7 +4435,7 @@ var encodeUC = encodeURIComponent;
 				<div> \
 					<input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escaped_title + '" title="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.url(!initially_expanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $cms.url(!initially_expanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" /> \
 					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" /> \
-					<label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" onmouseover="activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(this.firstElementChild.title),\'auto\');" class="ajax_tree_magic_button ' + colour + '"><input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + description_in_use + '" />' + escaped_title + '</label> \
+					<label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(description_in_use)) + '\', \'auto\']" class="ajax_tree_magic_button ' + colour + '"><input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + description_in_use + '" />' + escaped_title + '</label> \
 					<span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
 				</div> \
 			');
@@ -4521,7 +4532,9 @@ var encodeUC = encodeURIComponent;
                         img_url = node.getAttribute('img_url');
                         img_url_2 = node.getAttribute('img_url_2');
                     }
-                    $cms.dom.html(node_self, '<div><img alt="{!ENTRY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> <label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" onmouseover="activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(\'' + (description_in_use.replace(/\n/g, '').replace(/'/g, '\\' + '\'')) + '\'),\'800px\');"><input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
+                    $cms.dom.html(node_self, '<div><img alt="{!ENTRY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> ' +
+                        '<label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (description_in_use.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
+                        '<input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
                     var a = node_self.querySelector('label');
                     a.handleSelection = that.handleSelection;
                     a.firstElementChild.onfocus = function () {
@@ -5323,10 +5336,6 @@ function noop() {}
     /* Find if the user performed the Composr "magic keypress" to initiate some action */
     function magic_keypress(event) {
         // Cmd+Shift works on Mac - cannot hold down control or alt in Mac firefox at least
-        if (window.capture_event !== undefined) {
-            event = window.capture_event;
-        }
-
         var count = 0;
         if (event.shiftKey) {
             count++;
@@ -5343,11 +5352,6 @@ function noop() {}
 
         return count >= 2;
     }
-
-    // Workaround for a dodgy firefox extension
-    window.addEventListener('click', function (e) {
-        window.capture_event = e;
-    }, true);
 
     /* Data escaping */
     function escape_html(value) {
@@ -6023,6 +6027,8 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
         tooltip = tooltip();
     }
 
+    tooltip = strVal(tooltip);
+
     if (!tooltip) {
         return;
     }
@@ -6044,21 +6050,24 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
         $cms.dom.html(tooltipEl, '');
         window.setTimeout(function () {
             reposition_tooltip(el, event, bottom, true, tooltipEl, force_width);
-        });
+        }, 0);
     } else {
         tooltipEl = win.document.createElement('div');
         tooltipEl.role = 'tooltip';
         tooltipEl.style.display = 'none';
         var rt_pos = tooltip.indexOf('results_table');
         tooltipEl.className = 'tooltip ' + ((rt_pos == -1 || rt_pos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (have_links ? ' have_links' : '');
-        if (el.className.substr(0, 3) == 'tt_') {
+        if (el.className.substr(0, 3) === 'tt_') {
             tooltipEl.className += ' ' + el.className;
         }
-        if (tooltip.length < 50) tooltipEl.style.wordWrap = 'normal'; // Only break words on long tooltips. Otherwise it messes with alignment.
+        if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
+            tooltipEl.style.wordWrap = 'normal';
+        }
+
         if (force_width) {
             tooltipEl.style.width = width;
         } else {
-            if (width == 'auto') {
+            if (width === 'auto') {
                 var new_auto_width = get_window_width(win) - 30 - window.mouse_x;
                 if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
                 tooltipEl.style.maxWidth = new_auto_width + 'px';
@@ -6072,7 +6081,7 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
             tooltipEl.style.overflow = 'auto';
         }
         tooltipEl.style.position = 'absolute';
-        tooltipEl.id = 't_' + Math.floor(Math.random() * 1000);
+        tooltipEl.id = 't_' + $cms.random();
         el.tooltip_id = tooltipEl.id;
         reposition_tooltip(el, event, bottom, true, tooltipEl, force_width);
         document.body.appendChild(tooltipEl);
@@ -6084,10 +6093,10 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
         img.src = pic;
         img.className = 'tooltip_img';
         if (lights_off) {
-            img.className += ' faded_tooltip_img';
+            img.classList.add('faded_tooltip_img');
         }
         tooltipEl.appendChild(img);
-        tooltipEl.className += ' tooltip_with_img';
+        tooltipEl.classList.add('tooltip_with_img');
     }
 
     var event_copy = { // Needs to be copied as it will get erased on IE after this function ends
@@ -6627,92 +6636,6 @@ function play_self_audio_link(ob) {
  */
 'use strict';
 
-function open_images_into_lightbox(imgs, start) {
-    start = +start || 0;
-
-    var modal = _open_image_into_lightbox(imgs[start][0], imgs[start][1], start + 1, imgs.length, true, imgs[start][2]);
-    modal.positionInSet = start;
-
-    var previousButton = document.createElement('img');
-    previousButton.className = 'previous_button';
-    previousButton.src = $cms.img('{$IMG;,mediaset_previous}');
-    previousButton.onclick = clickPreviousButton;
-    function clickPreviousButton(e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var new_position = modal.positionInSet - 1;
-        if (new_position < 0) {
-            new_position = imgs.length - 1;
-        }
-        modal.positionInSet = new_position;
-        _open_different_image_into_lightbox(modal, new_position, imgs);
-    }
-
-    modal.left = previous;
-    modal.boxWrapperEl.firstElementChild.appendChild(previousButton);
-
-    var next_button = document.createElement('img');
-    next_button.className = 'next_button';
-    next_button.src = $cms.img('{$IMG;,mediaset_next}');
-    next_button.onclick = clickNextButton;
-    function clickNextButton(e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var new_position = modal.positionInSet + 1;
-        if (new_position >= imgs.length) {
-            new_position = 0;
-        }
-        modal.positionInSet = new_position;
-        _open_different_image_into_lightbox(modal, new_position, imgs);
-    }
-
-    modal.right = next;
-    modal.boxWrapperEl.firstElementChild.appendChild(next_button);
-
-    function _open_different_image_into_lightbox(modal, position, imgs) {
-        var is_video = imgs[position][2];
-
-        // Load proper image
-        window.setTimeout(function () { // Defer execution until the HTML was parsed
-            if (is_video) {
-                var video = document.createElement('video');
-                video.id = 'lightbox_image';
-                video.className = 'lightbox_image';
-                video.controls = 'controls';
-                video.autoplay = 'autoplay';
-                $cms.dom.html(video, imgs[position][0]);
-                video.addEventListener('loadedmetadata', function () {
-                    _resize_lightbox_dimensions_img(modal, video, true, true);
-                });
-            } else {
-                var img = modal.top_window.document.createElement('img');
-                img.className = 'lightbox_image';
-                img.id = 'lightbox_image';
-                img.src = '{$IMG_INLINE;,loading}';
-                window.setTimeout(function () { // Defer execution until after loading is set
-                    img.onload = function () {
-                        _resize_lightbox_dimensions_img(modal, img, true, is_video);
-                    };
-                    img.src = imgs[position][0];
-                });
-            }
-
-            var lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
-                lightbox_position_in_set_x = modal.top_window.$cms.dom.$id('lightbox_position_in_set_x');
-
-            if (lightbox_description) {
-                $cms.dom.html(lightbox_description, imgs[position][1]);
-            }
-
-            if (lightbox_position_in_set_x) {
-                $cms.dom.html(lightbox_position_in_set_x, position + 1);
-            }
-        });
-    }
-
-}
 
 function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_button, is_video) {
     has_full_button = !!has_full_button;
@@ -6744,11 +6667,11 @@ function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_
     window.setTimeout(function () { // Defer execution until the HTML was parsed
         if (is_video) {
             var video = document.createElement('video');
+            video.id = 'lightbox_image';
+            video.className = 'lightbox_image';
             video.controls = 'controls';
             video.autoplay = 'autoplay';
             $cms.dom.html(video, initial_img_url);
-            video.className = 'lightbox_image';
-            video.id = 'lightbox_image';
             video.addEventListener('loadedmetadata', function () {
                 _resize_lightbox_dimensions_img(modal, video, has_full_button, true);
             });
@@ -6777,7 +6700,6 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
         real_height = is_video ? img.videoHeight : img.height,
         height = real_height,
         lightbox_image = modal.top_window.$cms.dom.$id('lightbox_image'),
-
         lightbox_meta = modal.top_window.$cms.dom.$id('lightbox_meta'),
         lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
         lightbox_position_in_set = modal.top_window.$cms.dom.$id('lightbox_position_in_set'),
@@ -7751,14 +7673,21 @@ function password_strength(el) {
     }
     var strength = load_snippet('password_strength', post);
     strength *= 2;
-    if (strength > 10) strength = 10; // Normally too harsh!
+    if (strength > 10) {  // Normally too harsh!
+        strength = 10;
+    }
     ind.style.width = (strength * 10) + 'px';
-    if (strength >= 6)
+
+    if (strength >= 6) {
         ind.style.backgroundColor = 'green';
-    else if (strength < 4)
+    }
+    else if (strength < 4) {
         ind.style.backgroundColor = 'red';
-    else
+    }
+    else {
         ind.style.backgroundColor = 'orange';
+    }
+
     ind.parentNode.style.display = (el.value.length == 0) ? 'none' : 'block';
 }
 

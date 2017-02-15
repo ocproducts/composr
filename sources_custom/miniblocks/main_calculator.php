@@ -20,7 +20,7 @@ require_javascript('checking');
 $message = $map['message'];
 $equation = $map['equation'];
 $equation = str_replace('math.', 'Math.', strtolower($equation)); // Name fields come out lower case, so equation needs to be
-echo '<form onsubmit="return false;" action="#" method="post">';
+echo '<form onsubmit="return false;" action="#!" method="post">';
 foreach ($map as $key => $val) {
     $key = strtolower($key); // Firefox forces this, but we'll force it too just in case of browser inconsistency
     if (($key != 'equation') && ($key != 'block') && ($key != 'message') && ($key != 'cache')) {

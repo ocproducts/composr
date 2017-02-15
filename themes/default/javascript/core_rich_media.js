@@ -137,30 +137,28 @@
 
     $cms.inherits(ComcodeMediaSet, $cms.View, {
         setup: function (params) {
-            var imgs, imgsThumbs, setImgWidthHeight = false, mediaSet, as, containsVideo, x, i,
-                imgsId = 'imgs_' + params.rand,
-                imgsThumbsId = 'imgs_thumbs_' + params.rand,
-                thumbWidthConfig = ($cms.$CONFIG_OPTION.thumb_width || '') + 'x' + ($cms.$CONFIG_OPTION.thumb_width || '');
+            var imgs = window['imgs_' + params.rand] = [],
+                imgsThumbs = window['imgs_thumbs_' + params.rand] = [],
+                setImgWidthHeight = false,
+                mediaSet = $cms.dom.$id('media_set_' + params.rand),
+                as = window.as = mediaSet.querySelectorAll('a, video'),
+                containsVideo = false,
+                thumbWidthConfig = $cms.$CONFIG_OPTION.thumb_width + 'x' + $cms.$CONFIG_OPTION.thumb_width,
+                i, x;
 
             if ((thumbWidthConfig !== 'x') && ((params.width + 'x' + params.height) !== 'x')) {
                 setImgWidthHeight = true;
             }
 
-            imgs = window[imgsId] = [];
-            imgsThumbs = window[imgsThumbsId] = [];
-
-            mediaSet = document.getElementById('media_set_' + params.rand);
-            as = window.as = mediaSet.querySelectorAll('a, video');
-            containsVideo = false;
-
             x = 0;
             for (i = 0; i < as.length; i++) {
                 if (as[i].localName === 'video') {
-                    var span = as[i].getElementsByTagName('span');
-                    var title = '';
-                    if (span.length !== 0) {
-                        title = $cms.dom.html(span[0]);
-                        span[0].parentNode.removeChild(span[0]);
+                    var span = as[i].querySelector('span'),
+                        title = '';
+
+                    if (span) {
+                        title = $cms.dom.html(span);
+                        span.parentNode.removeChild(span);
                     }
 
                     imgs.push([$cms.dom.html(as[i]), title, true]);
@@ -169,25 +167,23 @@
                     containsVideo = true;
 
                     x++;
-                } else {
-                    if ((as[i].children.length === 1) && (as[i].firstElementChild.localName === 'img')) {
-                        as[i].title = as[i].title.replace('{!LINK_NEW_WINDOW^;}', '').replace(/^\s+/, '');
 
-                        imgs.push([as[i].href, (as[i].title === '') ? as[i].firstElementChild.alt : as[i].title, false]);
-                        imgsThumbs.push(as[i].firstElementChild.src);
+                } else if ((as[i].children.length === 1) && (as[i].firstElementChild.localName === 'img'))  {
+                    as[i].title = as[i].title.replace('{!LINK_NEW_WINDOW^;}', '').replace(/^\s+/, '');
 
-                        as[i].onclick = (function (x) {
-                            return function () {
-                                open_images_into_lightbox(imgs, x);
-                                return false;
-                            };
-                        }(x));
-                        if (as[i].rel) {
-                            as[i].rel = as[i].rel.replace('lightbox', '');
-                        }
+                    imgs.push([as[i].href, (as[i].title === '') ? as[i].firstElementChild.alt : as[i].title, false]);
+                    imgsThumbs.push(as[i].firstElementChild.src);
 
-                        x++;
+                    as[i].onclick = (function (x) {
+                        open_images_into_lightbox(imgs, x);
+                        return false;
+                    }).bind(undefined, x);
+
+                    if (as[i].rel) {
+                        as[i].rel = as[i].rel.replace('lightbox', '');
                     }
+
+                    x++;
                 }
             }
 
@@ -200,7 +196,7 @@
 						<figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', imgs.length) + '<\/figcaption>\
 						<div>\
 							<div class="attachment_details">\
-								<a onclick="open_images_into_lightbox(window.imgs);" target="_blank" title="' + escape_html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
+								<a class="js-click-open-images-into-lightbox" target="_blank" title="' + escape_html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
                                     <img ' + imgWidthHeight + ' src="' + escape_html(imgsThumbs[0]) + '" />\
                                 <\/a>\
 							<\/div>\
@@ -208,6 +204,96 @@
 					<\/figure>';
 
                 $cms.dom.html(mediaSet, mediaSetHtml);
+                $cms.dom.on(mediaSet.querySelector('.js-click-open-images-into-lightbox'), 'click', function () {
+                    open_images_into_lightbox(imgs);
+                });
+            }
+
+            function open_images_into_lightbox(imgs, start) {
+                start = +start || 0;
+
+                var modal = _open_image_into_lightbox(imgs[start][0], imgs[start][1], start + 1, imgs.length, true, imgs[start][2]);
+                modal.positionInSet = start;
+
+                var previousButton = document.createElement('img');
+                previousButton.className = 'previous_button';
+                previousButton.src = $cms.img('{$IMG;,mediaset_previous}');
+                previousButton.onclick = clickPreviousButton;
+                function clickPreviousButton(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    var new_position = modal.positionInSet - 1;
+                    if (new_position < 0) {
+                        new_position = imgs.length - 1;
+                    }
+                    modal.positionInSet = new_position;
+                    _open_different_image_into_lightbox(modal, new_position, imgs);
+                }
+
+                modal.left = previous;
+                modal.boxWrapperEl.firstElementChild.appendChild(previousButton);
+
+                var next_button = document.createElement('img');
+                next_button.className = 'next_button';
+                next_button.src = $cms.img('{$IMG;,mediaset_next}');
+                next_button.onclick = clickNextButton;
+                function clickNextButton(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    var new_position = modal.positionInSet + 1;
+                    if (new_position >= imgs.length) {
+                        new_position = 0;
+                    }
+                    modal.positionInSet = new_position;
+                    _open_different_image_into_lightbox(modal, new_position, imgs);
+                }
+
+                modal.right = next;
+                modal.boxWrapperEl.firstElementChild.appendChild(next_button);
+
+                function _open_different_image_into_lightbox(modal, position, imgs) {
+                    var is_video = imgs[position][2];
+
+                    // Load proper image
+                    window.setTimeout(function () { // Defer execution until the HTML was parsed
+                        if (is_video) {
+                            var video = document.createElement('video');
+                            video.id = 'lightbox_image';
+                            video.className = 'lightbox_image';
+                            video.controls = 'controls';
+                            video.autoplay = 'autoplay';
+                            $cms.dom.html(video, imgs[position][0]);
+                            video.addEventListener('loadedmetadata', function () {
+                                _resize_lightbox_dimensions_img(modal, video, true, true);
+                            });
+                        } else {
+                            var img = modal.top_window.document.createElement('img');
+                            img.className = 'lightbox_image';
+                            img.id = 'lightbox_image';
+                            img.src = '{$IMG_INLINE;,loading}';
+                            window.setTimeout(function () { // Defer execution until after loading is set
+                                img.onload = function () {
+                                    _resize_lightbox_dimensions_img(modal, img, true, is_video);
+                                };
+                                img.src = imgs[position][0];
+                            });
+                        }
+
+                        var lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
+                            lightbox_position_in_set_x = modal.top_window.$cms.dom.$id('lightbox_position_in_set_x');
+
+                        if (lightbox_description) {
+                            $cms.dom.html(lightbox_description, imgs[position][1]);
+                        }
+
+                        if (lightbox_position_in_set_x) {
+                            $cms.dom.html(lightbox_position_in_set_x, position + 1);
+                        }
+                    });
+                }
+
             }
         }
     });
@@ -236,9 +322,9 @@
     $cms.functions.comcodeToolsComcodeConvertScript = function comcodeToolsComcodeConvertScript() {
         var form = $cms.dom.$('#semihtml').form;
 
-        form.elements.from_html[0].onclick = refresh_locked_inputs;
-        form.elements.from_html[1].onclick = refresh_locked_inputs;
-        form.elements.from_html[2].onclick = refresh_locked_inputs;
+        form.elements['from_html'][0].onclick = refresh_locked_inputs;
+        form.elements['from_html'][1].onclick = refresh_locked_inputs;
+        form.elements['from_html'][2].onclick = refresh_locked_inputs;
 
         function refresh_locked_inputs() {
             var value = radio_value(form.elements['from_html']);
@@ -250,9 +336,7 @@
         }
     };
 
-    $cms.templates.comcodeMemberLink = function comcodeMemberLink(params) {
-        var container = this;
-
+    $cms.templates.comcodeMemberLink = function comcodeMemberLink(params, container) {
         $cms.dom.on(container, 'mouseover', '.js-mouseover-comcode-member-link', activateComcodeMemberLink);
         $cms.dom.on(container, 'focus', '.js-focus-comcode-member-link', activateComcodeMemberLink);
 
@@ -293,9 +377,7 @@
         });
     };
 
-    $cms.templates.attachments = function attachments(params) {
-        var container = this;
-
+    $cms.templates.attachments = function attachments(params, container) {
         window.attachment_template = params.attachmentTemplate;
         window.max_attachments = +params.maxAttachments || 0;
         window.num_attachments = +params.numAttachments || 0;
@@ -342,7 +424,9 @@
 
         if (refreshTime > 0) {
             window.setInterval(function () {
-                if (!img.timer) img.timer = 0;
+                if (!img.timer) {
+                    img.timer = 0;
+                }
                 img.timer += refreshTime;
 
                 if (img.src.indexOf('?') == -1) {
@@ -564,57 +648,40 @@
             }
         };
 
-    $cms.templates.comcodeTicker = function (params) {
-            var el = document.getElementById('ticktickticker' + params.randIdTicker),
-                width = $cms.filter.id(params.width);
+    $cms.templates.comcodeTicker = function (params, container) {
+        window.tick_pos || (window.tick_pos = []);
 
-            window.tick_pos = window.tick_pos || [];
+        var width = $cms.filter.id(params.width),
+            id = $cms.random();
 
-            if (document.createElement('marquee').scrolldelay === undefined) { // Slower, but chrome does not support marquee's
-                var my_id = parseInt(Math.random() * 10000);
-                window.tick_pos[my_id] = params.width;
-                $cms.dom.html(el, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
-                    'style="text-indent: ' + width + 'px; width: ' + width + 'px;" id="' + my_id + '"><span>' +
-                    $cms.filter.nl(params.text) + '<\/span><\/div>'
-                );
-                window.focused = true;
-                window.addEventListener('focus', function () {
-                    window.focused = true;
-                });
-                window.addEventListener('blur', function () {
-                    window.focused = false;
-                });
-                window.setInterval(function () {
-                    ticker_tick(my_id, params.width);
-                }, 100 / params.speed);
-            } else {
-                $cms.dom.html(el, '<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" ' +
-                    'onmouseout="this.setAttribute(\'scrolldelay\',' + (100 / params.speed) + ');" scrollamount="2" scrolldelay="' + (100 / params.speed) + '" ' +
-                    'width="' + width + '">' + $cms.filter.nl(params.text) + '<\/marquee>');
-            }
-        };
+        window.tick_pos[id] = params.width;
+        $cms.dom.html(container, '<div class="ticker" style="text-indent: ' + width + 'px; width: ' + width + 'px;" id="' + id + '"><span>' +
+            $cms.filter.nl(params.text) + '<\/span><\/div>'
+        );
 
-    $cms.templates.comcodeJumping = function (params) {
-            var id = parseInt(Math.random() * 10000);
+        window.setInterval(function () {
+            ticker_tick(id, params.width);
+        }, 100 / params.speed);
+    };
 
-            jumper_parts[id] = [];
-            jumper_pos[id] = 1;
+    $cms.templates.comcodeJumping = function (params, container) {
+        var id = $cms.random();
 
-            for (var i = 0, len = params.parts.length; i < len; i++) {
-                jumper_parts[id].push(params.parts[i]);
-            }
+        window.jumper_parts[id] = [];
+        window.jumper_pos[id] = 1;
 
-            var comcodejumping = document.getElementById('comcodejumping' + params.randIdJumping);
-            $cms.dom.html(comcodejumping, '<span id="' + id + '">' + jumper_parts[id][0] + '<\/span>');
+        for (var i = 0, len = params.parts.length; i < len; i++) {
+            window.jumper_parts[id].push(params.parts[i]);
+        }
 
-            window.setInterval(function () {
-                jumper_tick(id);
-            }, params.time);
-        };
+        $cms.dom.html(container, '<span id="' + id + '">' + window.jumper_parts[id][0] + '<\/span>');
 
-    $cms.templates.mediaYoutube = function (params) {
-            var element = this;
+        window.setInterval(function () {
+            jumper_tick(id);
+        }, params.time);
+    };
 
+    $cms.templates.mediaYoutube = function (params, element) {
             // Tie into callback event to see when finished, for our slideshows}
             // API: https://developers.google.com/youtube/iframe_api_reference}
             var youtube_callback = function () {
@@ -652,38 +719,38 @@
         };
 
     $cms.templates.mediaRealmedia = function (params) {
-            // Tie into callback event to see when finished, for our slideshows
-            // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
-            $cms.load.then(function () {
-                if (document.getElementById('next_slide')) {
-                    stop_slideshow_timer();
-                    window.setTimeout(function () {
-                        document.getElementById(params.playerId).addEventListener('stateChange', function (newState) {
-                            if (newState == 0) {
-                                player_stopped();
-                            }
-                        });
-                        document.getElementById(params.playerId).DoPlay();
-                    }, 1000);
-                }
-            });
-        };
+        // Tie into callback event to see when finished, for our slideshows
+        // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
+        $cms.load.then(function () {
+            if (document.getElementById('next_slide')) {
+                stop_slideshow_timer();
+                window.setTimeout(function () {
+                    document.getElementById(params.playerId).addEventListener('stateChange', function (newState) {
+                        if (newState == 0) {
+                            player_stopped();
+                        }
+                    });
+                    document.getElementById(params.playerId).DoPlay();
+                }, 1000);
+            }
+        });
+    };
 
     $cms.templates.mediaQuicktime = function (params) {
-            // Tie into callback event to see when finished, for our slideshows
-            // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
-            $cms.load.then(function () {
-                if (document.getElementById('next_slide')) {
-                    stop_slideshow_timer();
-                    window.setTimeout(function () {
-                        document.getElementById(params.playerId).addEventListener('qt_ended', function () {
-                            player_stopped();
-                        });
-                        document.getElementById(params.playerId).Play();
-                    }, 1000);
-                }
-            });
-        };
+        // Tie into callback event to see when finished, for our slideshows
+        // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
+        $cms.load.then(function () {
+            if (document.getElementById('next_slide')) {
+                stop_slideshow_timer();
+                window.setTimeout(function () {
+                    document.getElementById(params.playerId).addEventListener('qt_ended', function () {
+                        player_stopped();
+                    });
+                    document.getElementById(params.playerId).Play();
+                }, 1000);
+            }
+        });
+    };
 
     $cms.templates.mediaVideoGeneral = function (params) {
             // Tie into callback event to see when finished, for our slideshows
@@ -960,7 +1027,7 @@
     // =======
     // COMCODE
     // =======
-
+    window.countdown = countdown;
     function countdown(id, direction, tailing) {
         var countdown = (typeof id === 'object') ? id : document.getElementById(id), i;
         var inside = $cms.dom.html(countdown);
@@ -1002,16 +1069,16 @@
     }
 
 
-    if (window.ticker_tick === undefined) {
-        window.tick_pos = [];
-    }
+    window.tick_pos || (window.tick_pos = []);
+
+    window.ticker_tick = ticker_tick;
     function ticker_tick(id, width) {
-        if ((document.hidden === true) || !window.focused) {
+        if (document.hidden === true) {
             return;
         }
 
         var el = document.getElementById(id);
-        if (!el || el.mouseisover) {
+        if (!el || $cms.dom.$('#' + id + ':hover')) {
             return;
         }
 
@@ -1022,10 +1089,10 @@
         }
     }
 
-    if (window.jumper_pos === undefined) {
-        window.jumper_pos = [];
-        window.jumper_parts = [];
-    }
+    window.jumper_pos || (window.jumper_pos = []);
+    window.jumper_parts || (window.jumper_parts = []);
+
+    window.jumper_tick = jumper_tick;
     function jumper_tick(id) {
         if (document.hidden === true) {
             return;
@@ -1042,6 +1109,7 @@
         window.jumper_pos[id]++;
     }
 
+    window.crazy_tick = crazy_tick;
     function crazy_tick() {
         if (window.mouse_x === undefined) {
             return;
@@ -1058,23 +1126,34 @@
             s_width = e.clientWidth;
 
             biasx = window.mouse_x - e.offsetLeft;
-            if (biasx > 0) biasx = 2; else biasx = -1;
-            if (Math.random() * 4 < 1) biasx = 0;
-            biasy = window.mouse_y - e.offsetTop;
-            if (biasy > 0) biasy = 2; else biasy = -1;
-            if (Math.random() * 4 < 1) biasy = 0;
+            if (biasx > 0) {
+                biasx = 2;
+            } else {
+                biasx = -1;
+            }
 
-            if (s_width < 100)
+            if (Math.random() * 4 < 1) {
+                biasx = 0;
+            }
+
+            biasy = window.mouse_y - e.offsetTop;
+            if (biasy > 0) {
+                biasy = 2;
+            } else {
+                biasy = -1;
+            }
+
+            if (Math.random() * 4 < 1) {
+                biasy = 0;
+            }
+
+            if (s_width < 100) {
                 e.style.width = (s_width + 1) + 'px';
+            }
+
             e.style.left = (e.offsetLeft + (Math.random() * 2 - 1 + biasx) * 30) + 'px';
             e.style.top = (e.offsetTop + (Math.random() * 2 - 1 + biasy) * 30) + 'px';
             e.style.position = 'absolute';
         }
     }
-
-    // Exports (legacy)
-    window.countdown = countdown;
-    window.ticker_tick = ticker_tick;
-    window.jumper_tick = jumper_tick;
-    window.crazy_tick = crazy_tick;
 }(window.$cms));

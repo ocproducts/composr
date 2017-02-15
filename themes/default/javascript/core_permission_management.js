@@ -191,7 +191,12 @@
                             new_cell = row.insertBefore(document.createElement('td'), row.cells[row.cells.length - 1]);
                             new_cell.className = 'form_table_field_input privilege_cell';
                             if (document.getElementById('access_' + group).name != '_ignore') {
-                                $cms.dom.html(new_cell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + escape_html(privilege_title) + '" onmouseover="if (this.options[this.selectedIndex].value==\'-1\') show_permission_setting(this,event);" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
+                                $cms.dom.html(new_cell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + escape_html(privilege_title) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
+                                $cms.dom.on(new_cell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
+                                    if (select.value === '-1') {
+                                        show_permission_setting(select, e);
+                                    }
+                                });
 
                                 element = document.getElementById('access_' + group + '_privilege_' + privilege);
 

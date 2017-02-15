@@ -231,6 +231,7 @@
 
     $cms.templates.galleryImportScreen = function () {
         var files = document.getElementById('second_files'), i;
+
         if (!files) {
             return;
         }
@@ -248,9 +249,9 @@
         }
 
         for (i = 0; i < files.options.length; i++) {
-            files[i].onmouseover = preview_generator_mouseover;
-            files[i].onmousemove = preview_generator_mousemove;
-            files[i].onmouseout = preview_generator_mouseout;
+            $cms.dom.on(files[i], 'mouseover', preview_generator_mouseover);
+            $cms.dom.on(files[i], 'mousemove', preview_generator_mousemove);
+            $cms.dom.on(files[i], 'mouseout', preview_generator_mouseout);
         }
     };
 

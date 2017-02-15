@@ -18,7 +18,7 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (typeof form.old_submit_b != 'undefined' && form.old_submit_b) {
+            if (form.old_submit_b) {
                 return form.old_submit_b();
             }
             return true;

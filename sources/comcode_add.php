@@ -1008,7 +1008,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
     } elseif ($tag == 'attachment') {
         if (get_option('eager_wysiwyg') == '0') {
             if ((!isset($_COOKIE['use_wysiwyg'])) || ($_COOKIE['use_wysiwyg'] != '0')) {
-                $javascript .= /** @lang JavaScript */ "document.getElementById('framed').onchange=function() { if (this.checked && document.getElementById('_safe')) document.getElementById('_safe').checked=false; };";
+                $javascript .= /** @lang JavaScript */ "document.getElementById('framed').addEventListener('change', function() { if (this.checked && document.getElementById('_safe')) { document.getElementById('_safe').checked=false; } });";
             }
         }
 
