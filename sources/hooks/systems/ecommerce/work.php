@@ -58,13 +58,16 @@ class Hook_ecommerce_work
     }
 
     /**
-     * Function for administrators to pick an identifier (only used by admins, usually the identifier would be picked via some other means in the wider Composr codebase).
+     * Get fields that need to be filled in in the purchasing module.
      *
-     * @param  ID_TEXT $type_code Product codename.
-     * @return ?Tempcode Input field in standard Tempcode format for fields (null: no identifier).
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
      */
-    public function get_identifier_manual_field_inputter($type_code)
+    public function get_needed_fields($type_code, $from_admin = false)
     {
+        $fields = new Tempcode();
+
         $list = new Tempcode();
         $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_type_code' => $type_code), 'ORDER BY id DESC');
         foreach ($rows as $row) {
@@ -74,7 +77,12 @@ class Hook_ecommerce_work
             }
             $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('INVOICE_OF', strval($row['id']), $username)));
         }
-        return form_input_list(do_lang_tempcode('INVOICE'), '', 'purchase_id', $list);
+
+        $fields->attach(form_input_list(do_lang_tempcode('INVOICE'), '', 'purchase_id', $list));
+
+        ecommerce_attach_memo_field_if_needed($fields);
+
+        return array($fields, null, null);
     }
 
     /**

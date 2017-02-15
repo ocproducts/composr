@@ -111,9 +111,10 @@ class Hook_ecommerce_support_credits
      * Get fields that need to be filled in in the purchasing module.
      *
      * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
      * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
      */
-    public function get_needed_fields($type_code)
+    public function get_needed_fields($type_code, $from_admin = false)
     {
         if (!has_actual_page_access(get_member(), 'admin_ecommerce', get_module_zone('admin_ecommerce'))) {
             return null;

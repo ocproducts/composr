@@ -117,40 +117,37 @@ class Hook_ecommerce_classifieds
     }
 
     /**
-     * Function for administrators to pick an identifier (only used by admins, usually the identifier would be picked via some other means in the wider Composr codebase).
-     *
-     * @param  ID_TEXT $type_code Product codename.
-     * @return ?Tempcode Input field in standard Tempcode format for fields (null: no identifier).
-     */
-    public function get_identifier_manual_field_inputter($type_code)
-    {
-        require_lang('classifieds');
-        require_code('catalogues');
-
-        $list = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices c ON c.c_catalogue_name=e.c_name', array('e.*'), null, 'GROUP BY e.id ORDER BY ce_add_date DESC');
-        foreach ($rows as $row) {
-            $data_map = get_catalogue_entry_map($row, null, 'CATEGORY', 'DEFAULT', null, null, array(0));
-            $ad_title = $data_map['FIELD_0'];
-
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['ce_submitter']);
-            if ($username === null) {
-                $username = do_lang('UNKNOWN');
-            }
-            $list->attach(form_input_list_entry(strval($row['id']), get_param_integer('id', null) === $row['id'], do_lang('CLASSIFIED_OF', strval($row['id']), $username, $ad_title)));
-        }
-        return form_input_list(do_lang_tempcode('ENTRY'), '', 'purchase_id', $list);
-    }
-
-    /**
      * Get fields that need to be filled in in the purchasing module.
      *
      * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
      * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
      */
-    public function get_needed_fields($type_code)
+    public function get_needed_fields($type_code, $from_admin = false)
     {
         $fields = mixed();
+
+        if ($from_admin) {
+            require_lang('classifieds');
+            require_code('catalogues');
+
+            $fields = new Tempcode();
+
+            $list = new Tempcode();
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries e JOIN ' . get_table_prefix() . 'ecom_classifieds_prices c ON c.c_catalogue_name=e.c_name', array('e.*'), null, 'GROUP BY e.id ORDER BY ce_add_date DESC');
+            foreach ($rows as $row) {
+                $data_map = get_catalogue_entry_map($row, null, 'CATEGORY', 'DEFAULT', null, null, array(0));
+                $ad_title = $data_map['FIELD_0'];
+
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['ce_submitter']);
+                if ($username === null) {
+                    $username = do_lang('UNKNOWN');
+                }
+                $list->attach(form_input_list_entry(strval($row['id']), get_param_integer('id', null) === $row['id'], do_lang('CLASSIFIED_OF', strval($row['id']), $username, $ad_title)));
+            }
+            $fields->attach(form_input_list(do_lang_tempcode('ENTRY'), '', 'purchase_id', $list));
+        }
+
         ecommerce_attach_memo_field_if_needed($fields);
 
         return array(null, null, null);

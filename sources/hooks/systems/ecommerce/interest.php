@@ -56,4 +56,16 @@ class Hook_ecommerce_interest
         );
         return $products;
     }
+
+    /**
+     * Get fields that need to be filled in in the purchasing module.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     */
+    public function get_needed_fields($type_code, $from_admin = false)
+    {
+        return null;
+    }
 }

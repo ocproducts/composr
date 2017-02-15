@@ -170,49 +170,44 @@ class Hook_ecommerce_usergroup
     }
 
     /**
-     * Function for administrators to pick an identifier (only used by admins, usually the identifier would be picked via some other means in the wider Composr codebase).
-     *
-     * @param  ID_TEXT $type_code Product codename.
-     * @return ?Tempcode Input field in standard Tempcode format for fields (null: no identifier).
-     */
-    public function get_identifier_manual_field_inputter($type_code)
-    {
-        $list = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code, 's_state' => 'new'), 'ORDER BY id DESC');
-        foreach ($rows as $row) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['s_member_id']);
-            if ($username === null) {
-                $username = do_lang('UNKNOWN');
-            }
-            $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('SUBSCRIPTION_OF', strval($row['id']), $username, get_timezoned_date($row['s_time']))));
-        }
-
-        $fields = alternate_fields_set__start('options');
-
-        $fields_inner = new Tempcode();
-
-        if (!$list->is_empty()) {
-            $fields_inner->attach(form_input_list(do_lang_tempcode('FINISH_STARTED_ALREADY'), do_lang_tempcode('DESCRIPTION_FINISH_STARTED_ALREADY'), 'purchase_id', $list, null, false, true));
-        }
-
-        $pretty_name = do_lang_tempcode('NEW_UGROUP_SUB_FOR');
-        $description = do_lang_tempcode('DESCRIPTION_NEW_UGROUP_SUB_FOR');
-        $fields_inner->attach(form_input_username($pretty_name, $description, 'username', '', true, true));
-
-        $fields->attach(alternate_fields_set__end('options', do_lang_tempcode('SUBSCRIPTION'), '', $fields_inner, true));
-
-        return $fields;
-    }
-
-    /**
      * Get fields that need to be filled in in the purchasing module.
      *
      * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
      * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
      */
-    public function get_needed_fields($type_code)
+    public function get_needed_fields($type_code, $from_admin = false)
     {
         $fields = mixed();
+
+        if ($from_admin) {
+            $fields = new Tempcode();
+
+            $list = new Tempcode();
+            $rows = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code, 's_state' => 'new'), 'ORDER BY id DESC');
+            foreach ($rows as $row) {
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['s_member_id']);
+                if ($username === null) {
+                    $username = do_lang('UNKNOWN');
+                }
+                $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('SUBSCRIPTION_OF', strval($row['id']), $username, get_timezoned_date($row['s_time']))));
+            }
+
+            $fields = alternate_fields_set__start('options');
+
+            $fields_inner = new Tempcode();
+
+            if (!$list->is_empty()) {
+                $fields_inner->attach(form_input_list(do_lang_tempcode('FINISH_STARTED_ALREADY'), do_lang_tempcode('DESCRIPTION_FINISH_STARTED_ALREADY'), 'purchase_id', $list, null, false, true));
+            }
+
+            $pretty_name = do_lang_tempcode('NEW_UGROUP_SUB_FOR');
+            $description = do_lang_tempcode('DESCRIPTION_NEW_UGROUP_SUB_FOR');
+            $fields_inner->attach(form_input_username($pretty_name, $description, 'username', '', true, true));
+
+            $fields->attach(alternate_fields_set__end('options', do_lang_tempcode('SUBSCRIPTION'), '', $fields_inner, true));
+        }
+
         ecommerce_attach_memo_field_if_needed($fields);
 
         return array(null, null, null);

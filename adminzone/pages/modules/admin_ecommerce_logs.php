@@ -330,23 +330,15 @@ class Module_admin_ecommerce_logs
         }
 
         // Remaining fields, customised for product chosen
-        if (method_exists($product_object, 'get_identifier_manual_field_inputter')) {
-            $f = $product_object->get_identifier_manual_field_inputter($type_code);
-            if ($f !== null) {
-                $fields->attach($f);
+        $default_purchase_id = get_param_string('id', null);
+        if ($default_purchase_id === null) {
+            if (method_exists($product_object, 'handle_needed_fields')) {
+                list($default_purchase_id) = $product_object->handle_needed_fields($type_code);
+            } else {
+                $default_purchase_id = strval(get_member());
             }
-        } else {
-            $default_purchase_id = get_param_string('id', null);
-            if ($default_purchase_id === null) {
-                if (method_exists($product_object, 'handle_needed_fields')) {
-                    list($default_purchase_id) = $product_object->handle_needed_fields($type_code);
-                } else {
-                    $default_purchase_id = strval(get_member());
-                }
-            }
-
-            $fields->attach(form_input_codename(do_lang_tempcode('PURCHASE_ID'), do_lang('DESCRIPTION_MANUAL_PURCHASE_ID'), 'purchase_id', $default_purchase_id, false));
         }
+        $fields->attach(form_input_codename(do_lang_tempcode('PURCHASE_ID'), do_lang('DESCRIPTION_MANUAL_PURCHASE_ID'), 'purchase_id', $default_purchase_id, false));
 
         list($details) = find_product_details($type_code);
         if ($details['type'] == PRODUCT_SUBSCRIPTION) {
@@ -375,15 +367,23 @@ class Module_admin_ecommerce_logs
     {
         $type_code = post_param_string('type_code');
 
-        $purchase_id = post_param_string('purchase_id', '');
+        list($details, $product_object) = find_product_details($type_code);
+
+        $purchase_id = post_param_string('purchase_id', null);
+        if ($purchase_id === null) {
+            if (method_exists($product_object, 'handle_needed_fields')) {
+                $purchase_id = $product_object->handle_needed_fields($type_code);
+            } else {
+                $purchase_id = '';
+            }
+        }
+
         $memo = post_param_string('memo', '');
         $_amount = post_param_string('amount', '');
         $amount = ($_amount == '') ? null : float_unformat($_amount);
         $_tax = post_param_string('tax', '');
         $tax = ($_tax == '') ? null : float_unformat($_tax);
         $custom_expiry = post_param_date('cexpiry');
-
-        list($details) = find_product_details($type_code);
 
         $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
