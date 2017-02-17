@@ -648,8 +648,7 @@ function set_up_parent_page_highlighting(file, file_id) {
 
             element.addEventListener('mouseover', function (a, element) {
                 return function (event) {
-
-                    if ((window) && (!event.ctrlKey) && (!event.metaKey)) {
+                    if (window && !event.ctrlKey && !event.metaKey) {
                         var target = event.target;
                         var target_distance = 0;
                         var element_recurse = element;

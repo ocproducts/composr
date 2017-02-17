@@ -174,10 +174,10 @@
                     imgs.push([as[i].href, (as[i].title === '') ? as[i].firstElementChild.alt : as[i].title, false]);
                     imgsThumbs.push(as[i].firstElementChild.src);
 
-                    as[i].onclick = (function (x) {
+                    as[i].addEventListener('click', (function (x) {
                         open_images_into_lightbox(imgs, x);
                         return false;
-                    }).bind(undefined, x);
+                    }).bind(undefined, x));
 
                     if (as[i].rel) {
                         as[i].rel = as[i].rel.replace('lightbox', '');
@@ -218,7 +218,7 @@
                 var previousButton = document.createElement('img');
                 previousButton.className = 'previous_button';
                 previousButton.src = $cms.img('{$IMG;,mediaset_previous}');
-                previousButton.onclick = clickPreviousButton;
+                previousButton.addEventListener('click', clickPreviousButton);
                 function clickPreviousButton(e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -237,7 +237,7 @@
                 var next_button = document.createElement('img');
                 next_button.className = 'next_button';
                 next_button.src = $cms.img('{$IMG;,mediaset_next}');
-                next_button.onclick = clickNextButton;
+                next_button.addEventListener('click', clickNextButton);
                 function clickNextButton(e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -274,11 +274,11 @@
                             img.id = 'lightbox_image';
                             img.src = '{$IMG_INLINE;,loading}';
                             window.setTimeout(function () { // Defer execution until after loading is set
-                                img.onload = function () {
+                                img.addEventListener('load', function () {
                                     _resize_lightbox_dimensions_img(modal, img, true, is_video);
-                                };
+                                });
                                 img.src = imgs[position][0];
-                            });
+                            }, 0);
                         }
 
                         var lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
@@ -322,9 +322,9 @@
     $cms.functions.comcodeToolsComcodeConvertScript = function comcodeToolsComcodeConvertScript() {
         var form = $cms.dom.$('#semihtml').form;
 
-        form.elements['from_html'][0].onclick = refresh_locked_inputs;
-        form.elements['from_html'][1].onclick = refresh_locked_inputs;
-        form.elements['from_html'][2].onclick = refresh_locked_inputs;
+        form.elements['from_html'][0].addEventListener('click', refresh_locked_inputs);
+        form.elements['from_html'][1].addEventListener('click', refresh_locked_inputs);
+        form.elements['from_html'][2].addEventListener('click', refresh_locked_inputs);
 
         function refresh_locked_inputs() {
             var value = radio_value(form.elements['from_html']);

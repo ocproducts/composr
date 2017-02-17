@@ -125,65 +125,19 @@ class Module_cms_banners extends Standard_crud_module
             return $this->export_csv();
         }
 
-        $this->javascript = /** @lang JavaScript */'
-            document.getElementById("importancemodulus").onkeyup=function() {
-                var _im_here=document.getElementById("im_here");
-                if (_im_here) {
-                    var _im_total=document.getElementById("im_total");
-                    var im_here=window.parseInt(document.getElementById("importancemodulus").value);
-                    var im_total=window.parseInt(_im_total.className.replace("im_",""))+im_here;
-                    $cms.dom.html(_im_here,im_here);
-                    $cms.dom.html(document.getElementById("im_here_2"),im_here);
-                    $cms.dom.html(_im_total,im_total);
-                    $cms.dom.html(document.getElementById("im_total_2"),im_total);
-                }
-            }
-        ';
+        require_javascript('banners');
+        $this->javascript = /** @lang JavaScript */'$cms.functions.moduleCmsBannersRunStart();';
 
         if ($type == 'add') {
             require_javascript('ajax');
             $script = find_script('snippet');
-            $this->javascript .= /** @lang JavaScript */"
-                var form=document.getElementById('main_form');
-                form.old_submit=form.onsubmit;
-                form.onsubmit=function() {
-                    document.getElementById('submit_button').disabled=true;
-                    var url='" . addslashes($script) . "?snippet=exists_banner&name='+encodeURIComponent(form.elements['name'].value);
-                    if (!do_ajax_field_test(url)) {
-                        document.getElementById('submit_button').disabled=false;
-                        return false;
-                    }
-                    document.getElementById('submit_button').disabled=false;
-                    if (form.old_submit) {
-                        return form.old_submit();
-                    }
-
-                    return true;
-                };
-            ";
+            $this->javascript .= /** @lang JavaScript */'$cms.functions.moduleCmsBannersRunStartAdd();';
         }
 
         if ($type == 'add_category') {
             require_javascript('ajax');
             $script = find_script('snippet');
-            $this->cat_crud_module->javascript = /** @lang JavaScript */"
-                var form=document.getElementById('main_form');
-                form.old_submit=form.onsubmit;
-                form.onsubmit=function() {
-                    document.getElementById('submit_button').disabled=true;
-                    var url='" . addslashes($script) . "?snippet=exists_banner_type&name='+encodeURIComponent(form.elements['new_id'].value);
-                    if (!do_ajax_field_test(url))
-                    {
-                        document.getElementById('submit_button').disabled=false;
-                        return false;
-                    }
-                    document.getElementById('submit_button').disabled=false;
-                    if (form.old_submit) {
-                        return form.old_submit();
-                    }
-                    return true;
-                };
-            ";
+            $this->cat_crud_module->javascript = /** @lang JavaScript */'$cms.functions.moduleCmsBannersRunStartAddCategory();';
         }
 
         return new Tempcode();

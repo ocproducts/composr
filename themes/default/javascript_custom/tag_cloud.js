@@ -237,12 +237,12 @@ function load_tag_cloud(container) {
     var lis = container.getElementsByTagName("li");
     container.readyToClick = false;
     for (var i = 0; i < lis.length; i++) {
-        lis[i].onmouseover = function () {
+        lis[i].addEventListener('mouseover', function () {
             container.readyToClick = true;
-        };
-        lis[i].onmouseout = function () {
+        });
+        lis[i].addEventListener('mouseout', function () {
             container.readyToClick = false;
-        };
+        });
     }
 
     var sizing = (width > height && height != 0) ? height : width;

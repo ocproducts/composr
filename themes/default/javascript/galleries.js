@@ -154,7 +154,7 @@
     });
 
     $cms.functions.moduleCmsQuiz = function moduleCmsQuiz() {
-        document.getElementById('type').onchange = hide_func;
+        document.getElementById('type').addEventListener('change', hide_func);
         hide_func();
 
         function hide_func() {
@@ -179,18 +179,17 @@
         var fn = document.getElementById('fullname');
         if (fn) {
             var form = fn.form;
-            fn.onchange = function () {
+            fn.addEventListener('change', function () {
                 if ((form.elements['name']) && (form.elements['name'].value === '')) {
                     form.elements['name'].value = fn.value.toLowerCase().replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '_').replace(/\_+$/, '').substr(0, 80);
                 }
-            };
+            });
         }
     };
 
     $cms.functions.moduleCmsGalleriesRunStartAddCategory = function moduleCmsGalleriesRunStartAddCategory() {
         var form = document.getElementById('main_form');
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_gallery&name=' + encodeURIComponent(form.elements['name'].value);
             if (!do_ajax_field_test(url)) {
@@ -198,11 +197,7 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
 

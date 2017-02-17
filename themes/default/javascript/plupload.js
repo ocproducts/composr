@@ -13355,7 +13355,9 @@ function upload_finished(ob, file, data) {
                 return true;
             }
         } else {
-            if ((btn_submit.form.onsubmit) && (false === btn_submit.form.onsubmit())) return;
+            if ((btn_submit.form.onsubmit) && (false === btn_submit.form.onsubmit())) {
+                return;
+            }
             submit_form_with_the_upload(btn_submit);
         }
     }

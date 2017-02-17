@@ -61,7 +61,7 @@
                 form.elements['delete_topics'].disabled = (!form.elements['delete'].checked);
             };
             crf();
-            form.elements['delete'].onchange = crf;
+            form.elements['delete'].addEventListener('change', crf);
         }
     };
 
@@ -72,7 +72,7 @@
                 form.elements['target_forum_grouping'].disabled = (!form.elements['delete'].checked);
             };
             crf();
-            form.elements['delete'].onchange = crf;
+            form.elements['delete'].addEventListener('change', crf);
         }
     };
 

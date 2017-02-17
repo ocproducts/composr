@@ -384,17 +384,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $fields->attach(results_entry($fr, true));
         }
         require_javascript('cns_cpfs');
-        $this->javascript_for_choose = /**@lang JavaScript*/"
-            var select_elements=document.getElementById('{$this->form_id}').getElementsByTagName('select');
-            var select_submit=document.getElementById('selection_submit');
-            var select_element_length=select_elements.length;
-            for (var counter=0; counter < select_element_length; counter++) {
-                select_elements[counter].onchange=function() {
-                    select_elements[0].form.submit();
-                };
-            }
-            select_submit.style.display='none';
-        ";
+        $this->javascript_for_choose = /**@lang JavaScript*/'$cms.functions.module_AdminCnsCustomprofilefields_createSelectionListChooseTable("' . $this->form_id . '")';
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order, 'sort', null, array(), null, 8, 'gdfg43tfdgdfgdrfgd', true), true);
     }
 

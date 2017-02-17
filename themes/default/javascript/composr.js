@@ -1125,13 +1125,13 @@ var encodeUC = encodeURIComponent;
                 _requireJsPromises[script] = new Promise(function (resolve, reject) {
                     var sEl = document.createElement('script');
                     sEl.id = 'javascript-' + script;
-                    sEl.onload = function (e) {
+                    sEl.addEventListener('load', function (e) {
                         resolve(e)
-                    };
-                    sEl.onerror = function (e) {
+                    });
+                    sEl.addEventListener('error', function (e) {
                         $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
                         reject(e);
-                    };
+                    });
                     sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + keep_stub();
                     document.body.appendChild(sEl);
                 });
@@ -1900,6 +1900,8 @@ var encodeUC = encodeURIComponent;
      * @returns {*}
      */
     $cms.dom.offset = function offset(el, coordinates) {
+        el = elArg(el);
+
         if (coordinates === undefined) {
             if (!document.documentElement.contains(el)) {
                 return { top: 0, left: 0 };
@@ -1934,6 +1936,8 @@ var encodeUC = encodeURIComponent;
      * @returns { Element }
      */
     $cms.dom.offsetParent = function offsetParent(el) {
+        el = elArg(el);
+
         var parent = el.offsetParent || el.ownerDocument.body;
         while (parent && (parent.localName !== 'html') && (parent.localName !== 'body') && ($cms.dom.css(parent, 'position') === 'static')) {
             parent = parent.offsetParent;
@@ -1968,6 +1972,7 @@ var encodeUC = encodeURIComponent;
      */
     $cms.dom.matches = function matches(el, selector) {
         el = elArg(el);
+
         return ((selector === '*') || el[_matchesFnName](selector));
     };
 
@@ -2004,7 +2009,7 @@ var encodeUC = encodeURIComponent;
         var parents = [],
             parent;
 
-        while (parent = parent.parentElement) {
+        while (parent = el.parentElement) {
             if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
                 parents.push(parent);
             }
@@ -2024,7 +2029,7 @@ var encodeUC = encodeURIComponent;
 
         var parent;
 
-        while (parent = parent.parentElement) {
+        while (parent = el.parentElement) {
             if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
                 return parent;
             }
@@ -2466,6 +2471,8 @@ var encodeUC = encodeURIComponent;
      * @returns {*}
      */
     $cms.dom.initial = function initial(el, property) {
+        el = elArg(el);
+
         var tag = el.localName, doc;
 
         _initial[tag] || (_initial[tag] = {});
@@ -4457,29 +4464,30 @@ var encodeUC = encodeURIComponent;
                     var a = node_self.querySelector('label');
                     expand_button.onkeypress = a.onkeypress = a.firstElementChild.onkeypress = function (expand_button) {
                         return function (event) {
-                            if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].indexOf(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode)) != -1)
+                            if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
                                 expand_button.onclick(event);
+                            }
                         }
                     }(expand_button);
                     a.oncontextmenu = returnFalse;
                     a.handleSelection = that.handleSelection;
-                    a.firstElementChild.onfocus = function () {
+                    a.firstElementChild.addEventListener('focus', function () {
                         this.parentNode.style.outline = '1px dotted';
-                    };
-                    a.firstElementChild.onblur = function () {
+                    });
+                    a.firstElementChild.addEventListener('blur', function () {
                         this.parentNode.style.outline = '';
-                    };
-                    a.firstElementChild.onclick = a.handleSelection;
-                    a.onclick = a.handleSelection; // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
+                    });
+                    a.firstElementChild.addEventListener('click', a.handleSelection);
+                    a.addEventListener('click', a.handleSelection); // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
                     a.firstElementChild.object = this;
                     a.object = this;
-                    a.onmousedown = function (event) { // To disable selection of text when holding shift or control
+                    a.addEventListener('mousedown', function (event) { // To disable selection of text when holding shift or control
                         if (event.ctrlKey || event.metaKey || event.shiftKey) {
                             if (event.cancelable) {
                                 event.preventDefault();
                             }
                         }
-                    };
+                    });
                     html.appendChild(node_self_wrap);
 
                     // Do any children
@@ -4537,23 +4545,23 @@ var encodeUC = encodeURIComponent;
                         '<input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
                     var a = node_self.querySelector('label');
                     a.handleSelection = that.handleSelection;
-                    a.firstElementChild.onfocus = function () {
+                    a.firstElementChild.addEventListener('focus', function () {
                         this.parentNode.style.outline = '1px dotted';
-                    };
-                    a.firstElementChild.onblur = function () {
+                    });
+                    a.firstElementChild.addEventListener('blur', function () {
                         this.parentNode.style.outline = '';
-                    };
-                    a.firstElementChild.onclick = a.handleSelection;
-                    a.onclick = a.handleSelection; // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
+                    });
+                    a.firstElementChild.addEventListener('click', a.handleSelection);
+                    a.addEventListener('click', a.handleSelection); // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
                     a.firstElementChild.object = that;
                     a.object = that;
-                    a.onmousedown = function (event) { // To disable selection of text when holding shift or control
+                    a.('mousedown', function (event) { // To disable selection of text when holding shift or control
                         if (event.ctrlKey || event.metaKey || event.shiftKey) {
                             if (event.cancelable) {
                                 event.preventDefault();
                             }
                         }
-                    };
+                    });
                     html.appendChild(node_self_wrap);
                     var selected = ((that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
                     if ((that.multi_selection) && (!selected)) {
@@ -7132,14 +7140,18 @@ function faux_open(url, name, options, target, cancel_text) {
         var links = [];
         for (var i = 0; i < _link_wrappers.length; i++) {
             var _links = _link_wrappers[i].getElementsByTagName('a');
+
             for (var j = 0; j < _links.length; j++) {
                 links.push(_links[j]);
             }
+
             if (forms_too) {
                 _links = _link_wrappers[i].getElementsByTagName('form');
+
                 for (var j = 0; j < _links.length; j++) {
                     links.push(_links[j]);
                 }
+
                 if (_link_wrappers[i].localName === 'form') {
                     links.push(_link_wrappers[i]);
                 }
@@ -7152,25 +7164,9 @@ function faux_open(url, name, options, target, cancel_text) {
             }
 
             if (link.localName === 'a') {
-                if (link.onclick) {
-                    link.onclick = function (old_onclick) {
-                        return function (event) {
-                            return (old_onclick.call(this, event) !== false) && submit_func.call(this, event);
-                        }
-                    }(link.onclick);
-                } else {
-                    link.onclick = submit_func;
-                }
+                $cms.dom.on(link, 'click', submit_func);
             } else {
-                if (link.onsubmit) {
-                    link.onsubmit = function (old_onsubmit) {
-                        return function (event) {
-                            return (old_onsubmit.call(this, event) !== false) && submit_func.call(this, event);
-                        }
-                    }(link.onsubmit);
-                } else {
-                    link.onsubmit = submit_func;
-                }
+                $cms.dom.on(link, 'submit', submit_func);
             }
         });
 
@@ -7211,11 +7207,11 @@ function faux_open(url, name, options, target, cancel_text) {
                 }
             }
 
-            if (window.history.pushState) {
+            if (window.history && window.history.pushState) {
                 try {
                     window.has_js_state = true;
                     window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
-                } catch (e) {
+                } catch (ignore) {
                     // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
                     // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
                 }
@@ -7608,8 +7604,7 @@ function faux_open(url, name, options, target, cancel_text) {
                     }, 1000);
 
                     var temp = current_list_for_copy.onblur;
-                    current_list_for_copy.onblur = function () {
-                    };
+                    current_list_for_copy.onblur = function () {};
                     list.focus();
                     current_list_for_copy.onblur = temp;
                     if (!current_list_for_copy.down_once) {
@@ -8172,7 +8167,7 @@ function set_locked(field, is_locked, chosen_ob) {
     if (is_locked) {
         var labels = document.getElementsByTagName('label'), label = null;
         for (var i = 0; i < labels.length; i++) {
-            if ((chosen_ob) && (labels[i].getAttribute('for') == chosen_ob.id)) {
+            if (chosen_ob && (labels[i].getAttribute('for') == chosen_ob.id)) {
                 label = labels[i];
                 break;
             }
@@ -8267,7 +8262,7 @@ function disable_preview_scripts(context) {
 
     elements = $cms.dom.$$(context, 'button, input[type="button"], input[type="image"]');
     for (i = 0; i < elements.length; i++) {
-        elements[i].onclick = alertNotInPreviewMode;
+        elements[i].addEventListener('click', alertNotInPreviewMode);
     }
 
     // Make sure links in the preview don't break it - put in a new window

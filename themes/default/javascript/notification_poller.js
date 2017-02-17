@@ -150,11 +150,11 @@ function display_alert(notification) {
                     notification_wrapper.close();
                 });
 
-                notification_wrapper.notification.onclick = function () {
+                notification_wrapper.notification.addEventListener('click', function () {
                     try {
                         window.focus();
                     } catch (ignore) {}
-                };
+                });
             }
         } else {
             window.notify.requestPermission(); // Probably won't actually work (silent fail), as we're not running via a user-initiated event; this is why we have explicit_notifications_enable_request called elsewhere

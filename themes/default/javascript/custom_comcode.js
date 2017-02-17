@@ -21,23 +21,22 @@
         do {
             param = document.getElementById('parameters_' + i);
             if (param) {
-                param.onblur = update_func;
+                param.addEventListener('blur', update_func);
             }
             i++;
         } while (param != null);
-        tag.onblur = function () {
+        tag.addEventListener('blur', function () {
             update_func();
             var title = document.getElementById('title');
             if (title.value == '') {
                 title.value = tag.value.substr(0, 1).toUpperCase() + tag.value.substring(1, tag.value.length).replace(/\_/g, ' ');
             }
-        }
+        });
     };
 
     $cms.functions.moduleAdminCustomComcodeRunStart = function moduleAdminCustomComcodeRunStart() {
         var form = document.getElementById('main_form');
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_tag&name=' + encodeURIComponent(form.elements['tag'].value);
             if (!do_ajax_field_test(url)) {
@@ -45,11 +44,7 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
 }(window.$cms));

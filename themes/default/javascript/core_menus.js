@@ -217,9 +217,9 @@
 
         window.all_menus = params.allMenus;
 
-        $cms.dom.$('#url').ondblclick = doubleClick;
-        $cms.dom.$('#caption_long').ondblclick = doubleClick;
-        $cms.dom.$('#page_only').ondblclick = doubleClick;
+        $cms.dom.$('#url').addEventListener('dblclick', doubleClick);
+        $cms.dom.$('#caption_long').addEventListener('dblclick', doubleClick);
+        $cms.dom.$('#page_only').addEventListener('dblclick', doubleClick);
 
         window.current_selection = '';
         window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1', null, '', false, null, false, true);

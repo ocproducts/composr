@@ -1233,7 +1233,6 @@
                 form.elements['intro_title'].value = '{!cns:INTRO_POST_DEFAULT;^}'.replace(/\{1\}/g, form.elements['username'].value);
         };
 
-        form.old_submit = form.onsubmit;
         form.onsubmit = function () {
             if ((form.elements['confirm'] !== undefined) && (form.elements['confirm'].type == 'checkbox') && (!form.elements['confirm'].checked)) {
                 window.fauxmodal_alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
@@ -1284,12 +1283,6 @@
             }
 
             document.getElementById('submit_button').disabled = false;
-
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-
-            return true;
         };
     }
 
@@ -1694,7 +1687,7 @@ function ensure_next_field_upload(this_field) {
         var next_field = document.createElement('input');
         next_field.className = 'input_upload';
         next_field.setAttribute('id', 'multi_' + next_num);
-        next_field.onchange = _ensure_next_field_upload;
+        next_field.addEventListener('change', _ensure_next_field_upload);
         next_field.setAttribute('type', 'file');
         next_field.name = name_stub + next_num;
         this_field.parentNode.appendChild(next_field);

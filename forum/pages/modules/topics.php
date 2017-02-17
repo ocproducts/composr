@@ -71,7 +71,20 @@ class Module_topics
     public function get_privilege_overrides()
     {
         require_lang('cns');
-        return array('submit_lowrange_content' => array(1, 'MAKE_POST'), 'bypass_validation_lowrange_content' => array(1, 'BYPASS_POST_VALIDATION'), 'edit_own_lowrange_content' => array(1, 'EDIT_OWN_POST'), 'edit_lowrange_content' => array(1, 'EDIT_POST'), 'delete_own_lowrange_content' => array(1, 'DELETE_OWN_POST'), 'delete_lowrange_content' => array(1, 'DELETE_POST'), 'submit_midrange_content' => array(1, 'ADD_TOPIC'), 'bypass_validation_midrange_content' => array(1, 'BYPASS_TOPIC_VALIDATION'), 'edit_own_midrange_content' => array(1, 'EDIT_OWN_TOPIC'), 'edit_midrange_content' => array(1, 'EDIT_TOPIC'), 'delete_own_midrange_content' => array(1, 'DELETE_OWN_TOPIC'), 'delete_midrange_content' => array(1, 'DELETE_TOPIC'));
+        return array(
+            'submit_lowrange_content' => array(1, 'MAKE_POST'),
+            'bypass_validation_lowrange_content' => array(1, 'BYPASS_POST_VALIDATION'),
+            'edit_own_lowrange_content' => array(1, 'EDIT_OWN_POST'),
+            'edit_lowrange_content' => array(1, 'EDIT_POST'),
+            'delete_own_lowrange_content' => array(1, 'DELETE_OWN_POST'),
+            'delete_lowrange_content' => array(1, 'DELETE_POST'),
+            'submit_midrange_content' => array(1, 'ADD_TOPIC'),
+            'bypass_validation_midrange_content' => array(1, 'BYPASS_TOPIC_VALIDATION'),
+            'edit_own_midrange_content' => array(1, 'EDIT_OWN_TOPIC'),
+            'edit_midrange_content' => array(1, 'EDIT_TOPIC'),
+            'delete_own_midrange_content' => array(1, 'DELETE_OWN_TOPIC'),
+            'delete_midrange_content' => array(1, 'DELETE_TOPIC')
+        );
     }
 
     public $title;
@@ -554,7 +567,8 @@ class Module_topics
         // Certain aspects relating to the posting system
         $fields = new Tempcode();
         $hidden = $this->keep_markers();
-        $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION_FORUM'), do_lang_tempcode('DESCRIPTION_POSTS_DESTINATION_FORUM'), 'to_forum_id', null, 'choose_forum', array(), true, strval($topic_info['t_forum_id'])));
+        $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION_FORUM'), do_lang_tempcode('DESCRIPTION_POSTS_DESTINATION_FORUM'), 'to_forum_id', null, 'choose_forum', array(), true,
+            strval($topic_info['t_forum_id'])));
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('TOPIC_TITLE_WILL_BE'), 'title', $default_title, false, null, 120));
         $fields->attach(form_input_tick(do_lang_tempcode('DELETE_IF_EMPTY'), do_lang_tempcode('DESCRIPTION_DELETE_IF_EMPTY'), 'delete_if_empty', true));
         $fields->attach(form_input_line(do_lang_tempcode('REASON'), do_lang_tempcode('DESCRIPTION_REASON'), 'reason', '', false));
@@ -600,7 +614,8 @@ class Module_topics
                 }
             } else {
                 if (!is_numeric($_to_topic_id)) {
-                    $_to_topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_moniker' => urldecode($_to_topic_id)));
+                    $_to_topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id',
+                        array('m_resource_page' => 'topicview', 'm_resource_type' => 'browse', 'm_moniker' => urldecode($_to_topic_id)));
                     if ($_to_topic_id === null) {
                         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                     }
@@ -708,7 +723,8 @@ class Module_topics
         }
 
         if ($success != count($topics)) {
-            attach_message(do_lang_tempcode('MARK_UNREAD_TOO_OLD', escape_html(integer_format(count($topics) - $success)), escape_html(integer_format(intval(get_option('post_read_history_days'))))), 'warn');
+            attach_message(do_lang_tempcode('MARK_UNREAD_TOO_OLD', escape_html(integer_format(count($topics) - $success)), escape_html(integer_format(intval(get_option('post_read_history_days'))))),
+                'warn');
         }
 
         if ($forum_id === null) {
@@ -1246,7 +1262,17 @@ class Module_topics
 
         $title = get_screen_title('CATEGORISE_PTS');
         $submit_name = do_lang_tempcode('CATEGORISE_PTS');
-        return do_template('FORM_SCREEN', array('_GUID' => 'c6d0e273b5ce0e84d50a1c6294ece157', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $title, 'FIELDS' => $fields, 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'c6d0e273b5ce0e84d50a1c6294ece157',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => $hidden,
+            'TITLE' => $title,
+            'FIELDS' => $fields,
+            'TEXT' => '',
+            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url
+        ));
     }
 
     /**
@@ -1332,7 +1358,14 @@ class Module_topics
         $content = new Tempcode();
         $extra = has_privilege(get_member(), 'use_special_emoticons') ? array() : array('e_is_special' => 0);
         $rows = $GLOBALS['FORUM_DB']->query_select('f_emoticons', array('e_theme_img_code'), array('e_use_topics' => 1) + $extra);
-        $content->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => 'd9f9399072af3f19f21695aef01168c7', 'PRETTY' => do_lang_tempcode('NONE'), 'CODE' => '', 'URL' => find_theme_image('cns_emoticons/none'), 'CHECKED' => $selected_path == '', 'NAME' => 'emoticon')));
+        $content->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array(
+            '_GUID' => 'd9f9399072af3f19f21695aef01168c7',
+            'PRETTY' => do_lang_tempcode('NONE'),
+            'CODE' => '',
+            'URL' => find_theme_image('cns_emoticons/none'),
+            'CHECKED' => $selected_path == '',
+            'NAME' => 'emoticon'
+        )));
 
         if (count($rows) == 0) {
             return new Tempcode();
@@ -1341,10 +1374,19 @@ class Module_topics
             $path = $row['e_theme_img_code'];
 
             $url = find_theme_image($path);
-            $content->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => '22050272aebe90adf8cd4c89e4a7b06a', 'PRETTY' => '', 'CHECKED' => $path == $selected_path, 'NAME' => 'emoticon', 'CODE' => $path, 'URL' => $url)));
+            $content->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY',
+                array('_GUID' => '22050272aebe90adf8cd4c89e4a7b06a', 'PRETTY' => '', 'CHECKED' => $path == $selected_path, 'NAME' => 'emoticon', 'CODE' => $path, 'URL' => $url)));
         }
 
-        $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array('_GUID' => '80fe581b26d04876180605cdbb111f6a', 'NAME' => 'emoticon', 'REQUIRED' => false, 'CODE' => $selected_path, 'TABINDEX' => strval($tabindex), 'CONTENT' => $content, 'IMAGES' => true));
+        $input = do_template('FORM_SCREEN_INPUT_RADIO_LIST', array(
+            '_GUID' => '80fe581b26d04876180605cdbb111f6a',
+            'NAME' => 'emoticon',
+            'REQUIRED' => false,
+            'CODE' => $selected_path,
+            'TABINDEX' => strval($tabindex),
+            'CONTENT' => $content,
+            'IMAGES' => true
+        ));
 
         return _form_input('', do_lang_tempcode('TOPIC_EMOTICON'), '', $input, false);
     }
@@ -1361,7 +1403,8 @@ class Module_topics
 
         $post = new Tempcode();
         foreach ($quotes as $quote) {
-            $_postdetails = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_cache_forum_id', 'p_post', 'p_poster_name_if_guest', 'p_topic_id', 'p_intended_solely_for', 'p_poster', 'p_validated', 'p_ip_address'), array('id' => $quote), '', 1);
+            $_postdetails = $GLOBALS['FORUM_DB']->query_select('f_posts',
+                array('p_cache_forum_id', 'p_post', 'p_poster_name_if_guest', 'p_topic_id', 'p_intended_solely_for', 'p_poster', 'p_validated', 'p_ip_address'), array('id' => $quote), '', 1);
             if (!array_key_exists(0, $_postdetails)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
             }
@@ -1371,10 +1414,14 @@ class Module_topics
                 }
                 if ((is_guest()) && ($_postdetails[0]['p_intended_solely_for'] !== null)) {
                     access_denied('I_ERROR');
-                } elseif ((!has_privilege(get_member(), 'view_other_pt')) && ($_postdetails[0]['p_intended_solely_for'] != get_member()) && ($_postdetails[0]['p_poster'] != get_member()) && ($_postdetails[0]['p_intended_solely_for'] !== null)) {
+                } elseif ((!has_privilege(get_member(),
+                        'view_other_pt')) && ($_postdetails[0]['p_intended_solely_for'] != get_member()) && ($_postdetails[0]['p_poster'] != get_member()) && ($_postdetails[0]['p_intended_solely_for'] !== null)
+                ) {
                     access_denied('I_ERROR');
                 }
-                if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated')) && ($_postdetails[0]['p_validated'] == 0) && (($_postdetails[0]['p_poster'] != get_member()) || ((is_guest($_postdetails[0]['p_poster'])) && ($_postdetails[0]['p_ip_address'] != get_ip_address())))) {
+                if ((!has_privilege(get_member(),
+                        'see_unvalidated')) && (addon_installed('unvalidated')) && ($_postdetails[0]['p_validated'] == 0) && (($_postdetails[0]['p_poster'] != get_member()) || ((is_guest($_postdetails[0]['p_poster'])) && ($_postdetails[0]['p_ip_address'] != get_ip_address())))
+                ) {
                     access_denied('I_ERROR');
                 }
 
@@ -1513,7 +1560,8 @@ class Module_topics
         $existing_description = post_param_string('description', '');
         $post = post_param_string('post', '');
         if ($clone_id !== null) {
-            $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p.*', 't.t_description'), array('t.id' => $clone_id), '', 1);
+            $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON t.id=p.p_topic_id', array('p.*', 't.t_description'),
+                array('t.id' => $clone_id), '', 1);
             if ((array_key_exists(0, $post_rows)) && ($post_rows[0]['p_cache_forum_id'] !== null) && (has_category_access(get_member(), 'forums', strval($post_rows[0]['p_cache_forum_id'])))) {
                 $existing_title = $post_rows[0]['p_title'];
                 $existing_description = $post_rows[0]['t_description'];
@@ -1587,7 +1635,12 @@ class Module_topics
                 array(do_lang_tempcode('PINNED'), 'pinned', false, do_lang_tempcode('DESCRIPTION_PINNED')),
             );
             if (addon_installed('unvalidated')) {
-                $moderation_options[] = array(do_lang_tempcode('VALIDATED'), 'validated', true, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'));
+                $moderation_options[] = array(
+                    do_lang_tempcode('VALIDATED'),
+                    'validated',
+                    true,
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic')
+                );
             }
             if (!$private_topic) {
                 $moderation_options[] = array(do_lang_tempcode('CASCADING'), 'cascading', false, do_lang_tempcode('DESCRIPTION_CASCADING'));
@@ -1668,7 +1721,8 @@ class Module_topics
         }
 
         // Render form
-        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons__new_topic', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, null, $this->_post_javascript() . (function_exists('captcha_ajax_check') ? captcha_ajax_check() : ''), null, true, true, false, true, is_mobile());
+        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons__new_topic', $post, $post_url, $hidden_fields, $specialisation, null, '',
+            $specialisation2, null, $this->_post_javascript() . (function_exists('captcha_ajax_check') ? captcha_ajax_check() : ''), null, true, true, false, true, is_mobile());
 
         url_default_parameters__disable();
 
@@ -1690,7 +1744,8 @@ class Module_topics
         }
         $_title = get_screen_title($title, false);
 
-        return do_template('POSTING_SCREEN', array('_GUID' => 'ba5308fe0a8f9f9a24988209423a3a16', 'STAFF_HELP_URL' => $staff_help_url, 'TEXT' => $text, 'TITLE' => $_title, 'POSTING_FORM' => $posting_form));
+        return do_template('POSTING_SCREEN',
+            array('_GUID' => 'ba5308fe0a8f9f9a24988209423a3a16', 'STAFF_HELP_URL' => $staff_help_url, 'TEXT' => $text, 'TITLE' => $_title, 'POSTING_FORM' => $posting_form));
     }
 
     /**
@@ -1720,7 +1775,14 @@ class Module_topics
             if (($agreed == 0) && (!$rules->is_empty())) {
                 $url = get_self_url(false, false, array('agreed' => '1'));
                 $title = get_screen_title('NEW_PRIVATE_TOPIC');
-                return do_template('CNS_MEMBER_PT_RULES_SCREEN', array('_GUID' => '0c39906d4aeb728cc386cd9a79a338c7', 'TITLE' => $title, 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id), 'MEMBER_ID' => strval($member_id), 'URL' => $url, 'RULES' => $rules));
+                return do_template('CNS_MEMBER_PT_RULES_SCREEN', array(
+                    '_GUID' => '0c39906d4aeb728cc386cd9a79a338c7',
+                    'TITLE' => $title,
+                    'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id),
+                    'MEMBER_ID' => strval($member_id),
+                    'URL' => $url,
+                    'RULES' => $rules
+                ));
             }
         }
 
@@ -1848,7 +1910,12 @@ class Module_topics
                 array(do_lang_tempcode('EMPHASISED'), 'is_emphasised', false, do_lang_tempcode('DESCRIPTION_EMPHASISED'))
             );
             if (addon_installed('unvalidated')) {
-                $moderation_options[] = array(do_lang_tempcode('VALIDATED'), 'validated', true, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post'));
+                $moderation_options[] = array(
+                    do_lang_tempcode('VALIDATED'),
+                    'validated',
+                    true,
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post')
+                );
             }
             //if ($intended_solely_for === null) $moderation_options[] = array(do_lang_tempcode('CASCADING'), 'cascading', false, do_lang_tempcode('DESCRIPTION_CASCADING'));     Too much to offer this too
         } else {
@@ -1937,9 +2004,11 @@ class Module_topics
         if (cns_may_moderate_forum($forum_id, get_member())) {
             require_code('cns_forums2');
 
-            $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '061fdbebcc17e08e8d6ff2c329f3d483', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('TOPIC_MODERATION'))));
+            $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER',
+                array('_GUID' => '061fdbebcc17e08e8d6ff2c329f3d483', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('TOPIC_MODERATION'))));
             $specialisation2->attach(form_input_line(do_lang_tempcode('TITLE'), '', 'new_title', $topic_title, false));
-            $specialisation2->attach(form_input_tree_list(do_lang_tempcode('DESTINATION_FORUM'), do_lang_tempcode('DESCRIPTION_DESTINATION_FORUM'), 'to', null, 'choose_forum', array(), false, ($forum_id === null) ? '' : strval($forum_id)));
+            $specialisation2->attach(form_input_tree_list(do_lang_tempcode('DESTINATION_FORUM'), do_lang_tempcode('DESCRIPTION_DESTINATION_FORUM'), 'to', null, 'choose_forum', array(), false,
+                ($forum_id === null) ? '' : strval($forum_id)));
             $options = array(
                 array(do_lang_tempcode('OPEN'), 'open', $topic_info['t_is_open'] == 1, do_lang_tempcode('DESCRIPTION_OPEN')),
                 array(do_lang_tempcode('PINNED'), 'pinned', $topic_info['t_pinned'] == 1, do_lang_tempcode('DESCRIPTION_PINNED')),
@@ -1952,7 +2021,12 @@ class Module_topics
                     }
                 }
 
-                $options[] = array(do_lang_tempcode('VALIDATED'), 'topic_validated', $topic_info['t_validated'] == 1, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'));
+                $options[] = array(
+                    do_lang_tempcode('VALIDATED'),
+                    'topic_validated',
+                    $topic_info['t_validated'] == 1,
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic')
+                );
             }
             if ($forum_id !== null) {
                 $options[] = array(do_lang_tempcode('CASCADING'), 'cascading', $topic_info['t_cascading'] == 1, do_lang_tempcode('DESCRIPTION_CASCADING'));
@@ -1967,7 +2041,8 @@ class Module_topics
         $specialisation2->attach(metadata_get_fields('post', null));
 
         $topic_posts = new Tempcode();
-        $posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE p_topic_id=' . strval($topic_id) . ' AND (p_intended_solely_for IS NULL OR p_intended_solely_for=' . strval(get_member()) . ' OR p_poster=' . strval(get_member()) . ') AND p_validated=1 ORDER BY p_time DESC,p.id DESC', 20);
+        $posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE p_topic_id=' . strval($topic_id) . ' AND (p_intended_solely_for IS NULL OR p_intended_solely_for=' . strval(get_member()) . ' OR p_poster=' . strval(get_member()) . ') AND p_validated=1 ORDER BY p_time DESC,p.id DESC',
+            20);
         foreach ($posts as $row) {
             $topic_posts->attach(render_post_box($row, true, false, false));
         }
@@ -1978,7 +2053,8 @@ class Module_topics
         if (is_object($post)) {
             $post = $post->evaluate();
         }
-        $posting_form = get_posting_form(do_lang('REPLY'), 'buttons__new_reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $this->_post_javascript());
+        $posting_form = get_posting_form(do_lang('REPLY'), 'buttons__new_reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null,
+            $this->_post_javascript());
 
         if ($parent_id === null) {
             if ($forum_id !== null && get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1) {
@@ -1987,7 +2063,8 @@ class Module_topics
                 $title = get_screen_title('_ADD_POST', true, array(escape_html($topic_title)));
             }
         } else {
-            $title = get_screen_title('_ADD_POST_UNDER', true, array(escape_html($topic_title), escape_html($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_poster_name_if_guest', array('id' => $parent_id)))));
+            $title = get_screen_title('_ADD_POST_UNDER', true,
+                array(escape_html($topic_title), escape_html($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_poster_name_if_guest', array('id' => $parent_id)))));
         }
 
         if (post_param_integer('add_poll', 0) == 1) {
@@ -2163,7 +2240,8 @@ class Module_topics
                     }
                 }
 
-                $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), post_param_integer('cascading', 0), get_member(), $member_id, true, $metadata['views']);
+                $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0),
+                    post_param_integer('pinned', 0), post_param_integer('cascading', 0), get_member(), $member_id, true, $metadata['views']);
                 $first_post = true;
                 $_title = get_screen_title('ADD_PRIVATE_TOPIC');
             } else { // New topic
@@ -2175,7 +2253,8 @@ class Module_topics
                     }
                 }
 
-                $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), post_param_integer('cascading', 0), null, null, true, $metadata['views']);
+                $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0),
+                    post_param_integer('pinned', 0), post_param_integer('cascading', 0), null, null, true, $metadata['views']);
                 $first_post = true;
                 $_title = get_screen_title('ADD_TOPIC');
 
@@ -2194,7 +2273,8 @@ END;
                     $start_hour = intval(date('H', $schedule));
                     $start_minute = intval(date('i', $schedule));
                     require_code('calendar2');
-                    $event_id = add_calendar_event(db_get_first_id(), '', null, 0, do_lang('ADD_SCHEDULED_TOPIC', $topic_title), $schedule_code, 3, $start_year, $start_month, $start_day, 'day_of_month', $start_hour, $start_minute);
+                    $event_id = add_calendar_event(db_get_first_id(), '', null, 0, do_lang('ADD_SCHEDULED_TOPIC', $topic_title), $schedule_code, 3, $start_year, $start_month, $start_day,
+                        'day_of_month', $start_hour, $start_minute);
                     regenerate_event_reminder_jobs($event_id);
 
                     $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_validated' => 0), array('id' => $topic_id), '', 1);
@@ -2267,7 +2347,8 @@ END;
                     $start_hour = intval(date('H', $schedule));
                     $start_minute = intval(date('i', $schedule));
                     require_code('calendar2');
-                    $event_id = add_calendar_event(db_get_first_id(), '', null, 0, do_lang('ADD_POST'), $schedule_code, 3, $start_year, $start_month, $start_day, 'day_of_month', $start_hour, $start_minute);
+                    $event_id = add_calendar_event(db_get_first_id(), '', null, 0, do_lang('ADD_POST'), $schedule_code, 3, $start_year, $start_month, $start_day, 'day_of_month', $start_hour,
+                        $start_minute);
                     regenerate_event_reminder_jobs($event_id);
 
                     $text = do_lang_tempcode('SUCCESS');
@@ -2312,7 +2393,9 @@ END;
             }
         }
 
-        $post_id = cns_make_post($topic_id, $title, $post, $skip_sig, $first_post, $validated, $is_emphasised, $poster_name_if_guest, null, $metadata['add_time'], $metadata['submitter'], $intended_solely_for, null, null, $check_permissions, true, null, true, $topic_title, null, $anonymous == 1, $forum_id === null || ($forum_id === null), $forum_id === null || ($forum_id === null), false, $parent_id);
+        $post_id = cns_make_post($topic_id, $title, $post, $skip_sig, $first_post, $validated, $is_emphasised, $poster_name_if_guest, null, $metadata['add_time'], $metadata['submitter'],
+            $intended_solely_for, null, null, $check_permissions, true, null, true, $topic_title, null, $anonymous == 1, $forum_id === null || ($forum_id === null),
+            $forum_id === null || ($forum_id === null), false, $parent_id);
 
         set_url_moniker('post', strval($post_id));
 
@@ -2325,7 +2408,8 @@ END;
             require_code('users2');
             if ((has_actual_page_access(get_modal_user(), 'forumview')) && (has_category_access(get_modal_user(), 'forums', strval($forum_id)))) {
                 require_code('activities');
-                syndicate_described_activity($first_post ? 'cns:ACTIVITY_ADD_TOPIC' : 'cns:ACTIVITY_ADD_POST_IN', $first_post ? $title : $topic_title, '', '', '_SEARCH:topicview:browse:' . strval($topic_id) . '#post_' . strval($post_id), '', '', 'cns_forum');
+                syndicate_described_activity($first_post ? 'cns:ACTIVITY_ADD_TOPIC' : 'cns:ACTIVITY_ADD_POST_IN', $first_post ? $title : $topic_title, '', '',
+                    '_SEARCH:topicview:browse:' . strval($topic_id) . '#post_' . strval($post_id), '', '', 'cns_forum');
             }
         }
 
@@ -2508,7 +2592,8 @@ END;
             }
             $ip = $post_rows[0]['p_ip_address'];
             $time = $post_rows[0]['p_time'];
-            $count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($time - 60 * 60 * 24) . ' AND p_time<' . strval($time + 60 * 60 * 24) . ' AND ' . db_string_equal_to('p_ip_address', $ip));
+            $count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($time - 60 * 60 * 24) . ' AND p_time<' . strval($time + 60 * 60 * 24) . ' AND ' . db_string_equal_to('p_ip_address',
+                    $ip));
             $_ip_url = build_url(array('page' => 'admin_lookup', 'param' => get_ip_address()), get_module_zone('admin_lookup'));
             $ip_url = $_ip_url->evaluate();
             $text = paragraph(do_lang_tempcode('DELETE_POSTS_DESCRIPTION', escape_html(integer_format($count)), escape_html($ip), escape_html($ip_url)));
@@ -2564,7 +2649,8 @@ END;
             $ip = $post_rows[0]['p_ip_address'];
             $time = $post_rows[0]['p_time'];
             $topic_id = $post_rows[0]['p_topic_id'];
-            $posts = $GLOBALS['FORUM_DB']->query('SELECT id,p_topic_id,p_title FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($time - 60 * 60 * 24) . ' AND p_time<' . strval($time + 60 * 60 * 24) . ' AND ' . db_string_equal_to('p_ip_address', $ip));
+            $posts = $GLOBALS['FORUM_DB']->query('SELECT id,p_topic_id,p_title FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($time - 60 * 60 * 24) . ' AND p_time<' . strval($time + 60 * 60 * 24) . ' AND ' . db_string_equal_to('p_ip_address',
+                    $ip));
 
             $post_id = post_param_integer('id', null);
             if ($post_id === null) {
@@ -2591,7 +2677,14 @@ END;
                     }
                 }
 
-                return do_template('CONFIRM_SCREEN', array('_GUID' => 'ec5fd36fd869e42c59a0e7e3efa8a123', 'TITLE' => get_screen_title('DELETE_POSTS'), 'TEXT' => do_lang_tempcode('CONFIRM_DELETE', $stuff), 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => ''));
+                return do_template('CONFIRM_SCREEN', array(
+                    '_GUID' => 'ec5fd36fd869e42c59a0e7e3efa8a123',
+                    'TITLE' => get_screen_title('DELETE_POSTS'),
+                    'TEXT' => do_lang_tempcode('CONFIRM_DELETE', $stuff),
+                    'URL' => $post_url,
+                    'HIDDEN' => $hidden,
+                    'FIELDS' => ''
+                ));
             }
 
             foreach ($posts as $post) {
@@ -2738,10 +2831,12 @@ END;
         // Find polls we can grab
         require_code('cns_forums');
         $or_list = get_forum_access_sql('t.t_forum_id');
-        $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY id DESC', 30);
+        $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY id DESC',
+            30);
         $javascript = '';
         if (count($polls) !== 0) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1fb2af282b014c3a6ae09d986e4f72eb', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ALT_COPY_EXISTING_POLL'))));
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER',
+                array('_GUID' => '1fb2af282b014c3a6ae09d986e4f72eb', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ALT_COPY_EXISTING_POLL'))));
 
             $list = new Tempcode();
             $list->attach(form_input_list_entry('', true, ''));
@@ -2751,7 +2846,8 @@ END;
             $fields->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('COPY_EXISTING_POLL'), 'existing', $list, null, false, false));
 
             require_javascript('cns_forum');
-            $javascript = /**@lang JavaScript*/'$cms.functions.moduleTopicsAddPoll();';
+            $javascript = /**@lang JavaScript */
+                '$cms.functions.moduleTopicsAddPoll();';
         }
 
         $title = get_screen_title('ADD_TOPIC_POLL');
@@ -2764,7 +2860,17 @@ END;
         $topic_info = $_topic_info[0];
         $this->handle_topic_breadcrumbs($topic_info['t_forum_id'], $topic_id, $topic_info['t_cache_first_title'], do_lang_tempcode('ADD_TOPIC_POLL'));
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'ce1752a0c5508a061bffbf242a13e5bd', 'HIDDEN' => '', 'TITLE' => $title, 'FIELDS' => $fields, 'TEXT' => '', 'SUBMIT_ICON' => 'menu___generic_admin__add_to_category', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url, 'JAVASCRIPT' => $javascript));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'ce1752a0c5508a061bffbf242a13e5bd',
+            'HIDDEN' => '',
+            'TITLE' => $title,
+            'FIELDS' => $fields,
+            'TEXT' => '',
+            'SUBMIT_ICON' => 'menu___generic_admin__add_to_category',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+            'JAVASCRIPT' => $javascript
+        ));
     }
 
     /**
@@ -2783,7 +2889,8 @@ END;
         if ($_existing != '') {
             $existing = intval($_existing);
 
-            $_poll_row = $GLOBALS['FORUM_DB']->query_select('f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON t.t_poll_id=p.id', array('t_forum_id', 'p.*'), array('p.id' => $existing), '', 1);
+            $_poll_row = $GLOBALS['FORUM_DB']->query_select('f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON t.t_poll_id=p.id', array('t_forum_id', 'p.*'),
+                array('p.id' => $existing), '', 1);
             if (!array_key_exists(0, $_poll_row)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
             }
@@ -2931,7 +3038,12 @@ END;
                         attach_message(do_lang_tempcode('WILL_BE_VALIDATED_WHEN_SAVING'));
                     }
                 }
-                $moderation_options[] = array(do_lang_tempcode('VALIDATED'), 'validated', $post_details[0]['p_validated'] == 1, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post'));
+                $moderation_options[] = array(
+                    do_lang_tempcode('VALIDATED'),
+                    'validated',
+                    $post_details[0]['p_validated'] == 1,
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post')
+                );
             }
         } else {
             $moderation_options = array();
@@ -3002,60 +3114,55 @@ END;
         $javascript = '';
 
         if (get_option('force_guest_names') == '1') {
-            $javascript .= /** @lang JavaScript */'
+            $javascript .= /** @lang JavaScript */
+                '
                 var poster_name_if_guest=document.getElementById("poster_name_if_guest");
                 if (poster_name_if_guest) {
                     var crf = function() {
                         if (poster_name_if_guest.value == "' . php_addslashes(do_lang('GUEST')) . '") {
-                            poster_name_if_guest.value="";
+                            poster_name_if_guest.value = "";
                         }
                     };
                     crf();
-                    poster_name_if_guest.onblur=crf;
+                    poster_name_if_guest.addEventListener("blur", crf);
                 }
             ';
         }
 
-        $javascript .= /** @lang JavaScript */ "
-            var form=document.getElementById('post').form;
-            form.old_submit=form.onsubmit;
-            form.onsubmit=function() {
-                var post = form.elements['post'];
-                var text_value;
+        $stub = str_replace("\n", '\n', addslashes(unixify_line_format(either_param_string('stub', ''))));
+
+        $javascript .= /** @lang JavaScript */
+            "var form = document.getElementById('post').form;
+            form.addEventListener('submit', function () {
+                var post = form.elements['post'],
+                    text_value;
+
                 if (is_wysiwyg_field(post)) {
                     try {
 
-                        text_value=window.CKEDITOR.instances['post'].getData();
-                    } catch (e) {};
+                        text_value = window.CKEDITOR.instances['post'].getData();
+                    } catch (ignore) { }
                 } else {
-                    if ((!post.value) && (post[1])) post=post[1];
-                    text_value=post.value;
+                    if (!post.value && post[1]) {
+                        post = post[1];
+                    }
+                    text_value = post.value;
                 }
 
-                if (text_value.length>" . strval($size) . ") {
+                if (text_value.length > " . strval($size) . ") {
                     window.fauxmodal_alert('" . php_addslashes(do_lang('POST_TOO_LONG')) . "');
                     return false;
                 }
-        ";
 
-        $stub = unixify_line_format(either_param_string('stub', ''));
-        if ($stub != '') {
-            $javascript .= /** @lang JavaScript */ "
-                var df='" . str_replace("\n", '\n', addslashes($stub)) . "';
-
-                var pv=post.value;
-                if ((post) && (pv.substring(0,df.length)==df))
-                {
-                    pv=pv.substring(df.length,pv.length);
+                if ('$stub' != '') {
+                    var df = '$stub';
+                    var pv = post.value;
+                    if (post && (pv.substring(0, df.length) == df)) {
+                        pv = pv.substring(df.length, pv.length);
+                    }
+                    post.value = pv;
                 }
-                post.value=pv;
-            ";
-        }
-
-        $javascript .=  /** @lang JavaScript */ "
-                return form.old_submit ? form.old_submit() : true;
-            };
-        ";
+            })";
 
         return $javascript;
     }
@@ -3094,7 +3201,9 @@ END;
         require_code('content2');
         $metadata = actual_metadata_get_fields('post', strval($post_id));
 
-        $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0), $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $metadata['edit_time'], $metadata['add_time'], $metadata['submitter'], true);
+        $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0),
+            $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $metadata['edit_time'],
+            $metadata['add_time'], $metadata['submitter'], true);
 
         require_code('fields');
         if (has_tied_catalogue('post')) {
@@ -3162,7 +3271,9 @@ END;
         $forum_id = $topic_info['t_forum_id'];
         $private_topic = ($forum_id === null);
 
-        if (($private_topic) && ($topic_info['t_pt_from'] != get_member()) && ($topic_info['t_pt_to'] != get_member()) && (!cns_has_special_pt_access($topic_id)) && (!has_privilege(get_member(), 'view_other_pt'))) {
+        if (($private_topic) && ($topic_info['t_pt_from'] != get_member()) && ($topic_info['t_pt_to'] != get_member()) && (!cns_has_special_pt_access($topic_id)) && (!has_privilege(get_member(),
+                'view_other_pt'))
+        ) {
             access_denied('I_ERROR');
         }
 
@@ -3224,7 +3335,12 @@ END;
                         attach_message(do_lang_tempcode('WILL_BE_VALIDATED_WHEN_SAVING'));
                     }
                 }
-                $moderation_options[] = array(do_lang_tempcode('VALIDATED'), 'validated', $topic_info['t_validated'] == 1, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'));
+                $moderation_options[] = array(
+                    do_lang_tempcode('VALIDATED'),
+                    'validated',
+                    $topic_info['t_validated'] == 1,
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic')
+                );
             }
             if (!$private_topic) {
                 $options[] = array(do_lang_tempcode('CASCADING'), 'cascading', $topic_info['t_cascading'] == 1, do_lang_tempcode('DESCRIPTION_CASCADING'));
@@ -3287,7 +3403,8 @@ END;
         require_code('content2');
         $metadata = actual_metadata_get_fields('topic', strval($topic_id), array('submitter', 'add_time', 'edit_time'));
 
-        cns_edit_topic($topic_id, post_param_string('description', STRING_MAGIC_NULL), post_param_string('emoticon', STRING_MAGIC_NULL), $validated, $open, $pinned, $cascading, post_param_string('reason', STRING_MAGIC_NULL), $title, null, true, $metadata['views']);
+        cns_edit_topic($topic_id, post_param_string('description', STRING_MAGIC_NULL), post_param_string('emoticon', STRING_MAGIC_NULL), $validated, $open, $pinned, $cascading,
+            post_param_string('reason', STRING_MAGIC_NULL), $title, null, true, $metadata['views']);
 
         require_code('fields');
         if (has_tied_catalogue('topic')) {
@@ -3965,7 +4082,8 @@ END;
     public function birthday()
     {
         $id = get_param_string('id');
-        $topic_id = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_cache_first_time>' . strval(time() - 60 * 60 * 24 * 3) . ' AND ' . db_string_equal_to('t_cache_first_title', do_lang('HAPPY_BIRTHDAY_PERSON', $id)));
+        $topic_id = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_cache_first_time>' . strval(time() - 60 * 60 * 24 * 3) . ' AND ' . db_string_equal_to('t_cache_first_title',
+                do_lang('HAPPY_BIRTHDAY_PERSON', $id)));
         if ($topic_id !== null) {
             $title = get_screen_title('VIEW_TOPIC');
             $url = $GLOBALS['FORUM_DRIVER']->topic_url($topic_id, '', true);

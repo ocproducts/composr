@@ -14,7 +14,7 @@
             var form = target.form;
 
             window.fauxmodal_confirm('{!VOTE_FORFEIGHT;^}',function(answer) {
-                if (answer && (!form.onsubmit || form.onsubmit())) {
+                if (answer) {
                     form.submit();
                 }
             });

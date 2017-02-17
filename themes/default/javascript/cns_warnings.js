@@ -3,15 +3,15 @@
 
     $cms.functions.moduleWarningsGetFormFields = function moduleWarningsGetFormFields() {
         document.getElementById('message').disabled = true;
-        document.getElementById('add_private_topic').onclick = function() {
+        document.getElementById('add_private_topic').addEventListener('click', function() {
             document.getElementById('message').disabled = !document.getElementById('add_private_topic').checked;
-        }
+        });
     };
 
     $cms.templates.cnsSavedWarning = function cnsSavedWarning(params) {
         var id = $cms.filter.id(params.title);
 
-        document.getElementById('saved_use__' + id).onsubmit = function () {
+        document.getElementById('saved_use__' + id).addEventListener('submit', function () {
             var win = get_main_cms_window();
 
             var explanation = win.document.getElementById('explanation');
@@ -27,9 +27,9 @@
             }
 
             return false;
-        };
+        });
 
-        document.getElementById('saved_delete__' + id).getElementsByTagName('input')[1].onclick = function () {
+        document.getElementById('saved_delete__' + id).getElementsByTagName('input')[1].addEventListener('click', function () {
             var form = this.form;
 
             window.fauxmodal_confirm(params.question, function (answer) {
@@ -39,7 +39,7 @@
             });
 
             return false;
-        };
+        });
     };
 
 }(window.$cms));

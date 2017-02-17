@@ -113,26 +113,25 @@
             copy = document.getElementById('copy');
 
         if (copy) {
-            copy.onchange = function () {
+            copy.addEventListener('change', function () {
                 if (copy.checked && !themee.value.includes('-copy')) {
                     themee.value += '-copy';
                     themet.value += ' copy';
                 }
-            };
+            });
         }
     };
 
     $cms.functions.adminThemesAddTheme = function () {
         var title = document.getElementById('title');
-        title.onchange = function () {
+        title.addEventListener('change', function () {
             var codename = document.getElementById('theme');
             if (codename.value == '') {
                 codename.value = title.value.replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '');
             }
-        };
+        });
         var form = document.getElementById('main_form');
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(form.elements['theme'].value);
 
@@ -141,11 +140,7 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
     $cms.templates.tempcodeTesterScreen = function tempcodeTesterScreen(params, container) {
@@ -330,14 +325,16 @@
         header.setAttribute('href', '#');
         header.id = 't_' + file_id;
         header.className = 'tab file_nonchanged';
-        header.onclick = function (event) {
+        header.addEventListener('click', function (event) {
             select_tab('g', file_id);
             template_editor_show_tab(file_id);
             return false;
-        };
+        });
 
         var ext = (tab_title.indexOf('.') != -1) ? tab_title.substring(tab_title.indexOf('.') + 1, tab_title.length) : '';
-        if (ext != '') tab_title = tab_title.substr(0, tab_title.length - 4);
+        if (ext != '') {
+            tab_title = tab_title.substr(0, tab_title.length - 4);
+        }
         var icon_img = document.createElement('img');
         if (ext == 'tpl') {
             icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/tpl}');
@@ -375,7 +372,7 @@
         close_button.style.width = '16px';
         close_button.style.height = '16px';
         close_button.style.verticalAlign = 'middle';
-        close_button.onclick = function (event) {
+        close_button.addEventListener('click', function (event) {
             cancel_bubbling(event);
             if (event.cancelable) {
                 event.preventDefault();
@@ -390,7 +387,7 @@
             } else {
                 template_editor_tab_unload_content(file);
             }
-        };
+        });
         header.appendChild(close_button);
         headers.appendChild(header);
 

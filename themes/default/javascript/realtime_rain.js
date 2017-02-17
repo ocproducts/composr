@@ -221,20 +221,20 @@ function received_events(ajax_result_frame, ajax_result) {
             cloned_message.style.top = (-(vertical_slot + 1) * cloned_message.offsetHeight) + 'px';
 
             // JS events, for pausing and changing z-index
-            cloned_message.onmouseover = function () {
+            cloned_message.addEventListener('mouseover', function () {
                 this.style.zIndex = 160;
                 if (!window.paused) {
                     this.pausing = true;
                     window.paused = true;
                 }
-            };
-            cloned_message.onmouseout = function () {
+            });
+            cloned_message.addEventListener('mouseout', function () {
                 this.style.zIndex = 50;
                 if (this.pausing) {
                     this.pausing = false;
                     window.paused = false;
                 }
-            };
+            });
 
             // Draw lines and emails animation (after delay, so that we know it's rendered by then and hence knows full coordinates)
             window.setTimeout(function () {

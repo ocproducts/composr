@@ -38,8 +38,8 @@
                     _length.value = 1;
             }
         };
-        _length_units.onchange = adjust_lengths;
-        _length.onchange = adjust_lengths;
+        _length_units.addEventListener('change', adjust_lengths);
+        _length.addEventListener('change', adjust_lengths);
     };
 
     $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params, container) {

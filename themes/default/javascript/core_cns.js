@@ -120,8 +120,7 @@
 
     $cms.functions.moduleAdminCnsGroupsRunStart = function moduleAdminCnsGroupsRunStart() {
         var form = document.getElementById('main_form');
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.onsubmit = (function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_usergroup&name=' + encodeURIComponent(form.elements['name'].value);
             if (!do_ajax_field_test(url)) {
@@ -129,17 +128,12 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
     $cms.functions.moduleAdminCnsEmoticons = function moduleAdminCnsEmoticons() {
         var form = document.getElementById('main_form');
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.onsubmit = (function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_emoticon&name=' + encodeURIComponent(form.elements['code'].value);
             if (!do_ajax_field_test(url)) {
@@ -147,11 +141,7 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
     $cms.functions.adminCnsMembersDownloadCsv = function adminCnsMembersDownloadCsv() {
@@ -196,7 +186,7 @@
     $cms.functions.hookProfilesTabsEditSettingsRenderTab = function hookProfilesTabsEditSettingsRenderTab() {
         var form = document.getElementById('email_address').form;
         form.prior_profile_edit_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.onsubmit = (function () {
             if (form.elements['edit_password'] !== undefined) {
                 if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['edit_password'].value)) {
                     document.getElementById('submit_button').disabled = false;
@@ -216,7 +206,7 @@
                 return form.prior_profile_edit_submit();
             }
             return true;
-        };
+        });
     };
 
     $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen() {

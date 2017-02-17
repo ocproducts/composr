@@ -8,8 +8,7 @@
             form = document.getElementById('posting_form');
         }
 
-        form.old_submit_b = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
             if (!do_ajax_field_test(url)) {
@@ -18,10 +17,6 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit_b) {
-                return form.old_submit_b();
-            }
-            return true;
-        };
+        });
     };
 }(window.$cms));

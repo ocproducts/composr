@@ -28,10 +28,10 @@ function copy_fields_into_bottom(i, changed) {
     var form = $cms.dom.$id('edit_form');
 
     form.elements['caption_long'].value = $cms.dom.$id('caption_long_' + i).value;
-    form.elements['caption_long'].onchange = function () {
+    form.elements['caption_long'].addEventListener('change', function () {
         $cms.dom.$('#caption_long_' + i).value = this.value;
         $cms.dom.$('#caption_long_' + i).disabled = (this.value == '');
-    };
+    });
 
     form.elements['url'].value = $cms.dom.$id('url_' + i).value;
     form.elements['url'].onchange = function () {
@@ -39,10 +39,10 @@ function copy_fields_into_bottom(i, changed) {
     };
 
     form.elements['page_only'].value = $cms.dom.$id('page_only_' + i).value;
-    form.elements['page_only'].onchange = function () {
+    form.elements['page_only'].addEventListener('change', function () {
         $cms.dom.$('#page_only_' + i).value = this.value;
         $cms.dom.$('#page_only_' + i).disabled = (this.value === '');
-    };
+    });
 
     var s;
     for (s = 0; s < form.elements['theme_img_code'].options.length; s++)
@@ -52,43 +52,43 @@ function copy_fields_into_bottom(i, changed) {
         fauxmodal_alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.dom.$id('theme_img_code_' + i).value));
     }
     form.elements['theme_img_code'].selectedIndex = s;
-    form.elements['theme_img_code'].onchange = function () {
+    form.elements['theme_img_code'].addEventListener('change', function () {
         $cms.dom.$('#theme_img_code_' + i).value = this.options[this.selectedIndex].value;
         $cms.dom.$('#theme_img_code_' + i).disabled = (this.selectedIndex == 0);
-    };
+    });
     if (window.jQuery && window.jQuery.fn.select2) {
         window.jQuery(form.elements['theme_img_code']).trigger('change');
     }
 
     form.elements['new_window'].checked = $cms.dom.$id('new_window_' + i).value == '1';
-    form.elements['new_window'].onclick = function () {
+    form.elements['new_window'].addEventListener('click', function () {
         $cms.dom.$('#new_window_' + i).value = this.checked ? '1' : '0';
         $cms.dom.$('#new_window_' + i).disabled = !this.checked;
-    };
+    });
 
     form.elements['check_perms'].checked = $cms.dom.$id('check_perms_' + i).value == '1';
-    form.elements['check_perms'].onclick = function () {
+    form.elements['check_perms'].addEventListener('click', function () {
         $cms.dom.$('#check_perms_' + i).value = this.checked ? '1' : '0';
         $cms.dom.$('#check_perms_' + i).disabled = !this.checked;
-    };
+    });
 
     //$cms.dom.html(form.elements['branch_type'],$cms.dom.html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
     form.elements['branch_type'].selectedIndex = $cms.dom.$id('branch_type_' + i).selectedIndex;
-    form.elements['branch_type'].onchange = function (event) {
+    form.elements['branch_type'].addEventListener('change', function (event) {
         $cms.dom.$('#branch_type_' + i).selectedIndex = this.selectedIndex;
         if ($cms.dom.$('#branch_type_' + i).onchange) {
             $cms.dom.$('#branch_type_' + i).onchange(event);
         }
-    };
+    });
     if (window.jQuery && window.jQuery.fn.select2) {
         window.jQuery(form.elements['branch_type']).trigger('change');
     }
 
     form.elements['include_sitemap'].selectedIndex = $cms.dom.$id('include_sitemap_' + i).value;
-    form.elements['include_sitemap'].onchange = function (event) {
+    form.elements['include_sitemap'].addEventListener('change', function (event) {
         $cms.dom.$('#include_sitemap_' + i).value = this.selectedIndex;
         $cms.dom.$('#include_sitemap_' + i).disabled = (this.selectedIndex == 0);
-    };
+    });
     if (window.jQuery && window.jQuery.fn.select2) {
         window.jQuery(form.elements['include_sitemap']).trigger('change');
     }

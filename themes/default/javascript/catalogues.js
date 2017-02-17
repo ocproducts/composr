@@ -64,8 +64,7 @@
 
     $cms.functions.moduleCmsCataloguesRunStartAddCatalogue = function moduleCmsCataloguesRunStartAddCatalogue() {
         var form = document.getElementById('new_field_0_name').form;
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.onsubmit = (function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(form.elements['name'].value);
             if (!do_ajax_field_test(url)) {
@@ -73,11 +72,7 @@
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
     $cms.functions.moduleCmsCataloguesCat = function moduleCmsCataloguesCat() {

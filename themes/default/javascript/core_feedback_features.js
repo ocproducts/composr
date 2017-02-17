@@ -195,8 +195,7 @@
         /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
         addCaptchaChecking: function () {
             var form = this.form;
-            form.old_submit = form.onsubmit;
-            form.onsubmit = function () {
+            form.addEventListener('submit', function () {
                 form.elements['submit_button'].disabled = true;
                 var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
                 if (!do_ajax_field_test(url)) {
@@ -207,11 +206,7 @@
                     return false;
                 }
                 form.elements['submit_button'].disabled = false;
-                if (form.old_submit) {
-                    return form.old_submit();
-                }
-                return true;
-            };
+            });
 
             window.addEventListener('pageshow', function () {
                 form.elements['captcha'].src += '&'; // Force it to reload latest captcha
@@ -394,18 +389,18 @@
                 return;
             }
 
-            bit.onmouseover = function () {
+            bit.addEventListener('mouseover', function () {
                 apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, number, content_url, content_title, false);
-            };
-            bit.onmouseout = function () {
+            });
+            bit.addEventListener('mouseout', function () {
                 apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, initial_rating, content_url, content_title, false);
-            };
+            });
 
             if (visual_only) {
                 return;
             }
 
-            bit.onclick = function (event) {
+            bit.addEventListener('click', function (event) {
                 event.preventDefault();
 
                 // Find where the rating replacement will go
@@ -448,7 +443,7 @@
                 });
 
                 return false;
-            };
+            });
         });
     }
 }(window.$cms));
