@@ -1,6 +1,8 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.NotificationButtons = NotificationButtons;
+
     function NotificationButtons(params) {
         NotificationButtons.base(this, 'constructor', arguments);
 

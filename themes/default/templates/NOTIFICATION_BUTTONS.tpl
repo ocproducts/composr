@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,core_notifications}
+
 {+START,IF_PASSED,NOTIFICATIONS_TYPE}
 	{$SET,NOTIFICATIONS_TYPE,{NOTIFICATIONS_TYPE}}
 {+END}
@@ -34,7 +36,7 @@
 {+END}
 
 {+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$NOTIFICATIONS_AVAILABLE,{$GET,NOTIFICATIONS_TYPE}}}
-	<div data-view="NotificationButtons" data-view-params="{+START,PARAMS_JSON,notification_id}{_*}{+END}">
+	<div data-require-javascript="core_notifications" data-view="NotificationButtons" data-view-params="{+START,PARAMS_JSON,notification_id}{_*}{+END}">
 	{+START,IF_PASSED_AND_TRUE,RIGHT}<div class="float_surrounder"><div class="right force_margin">{+END}
 
 	{$INC,notification_id}

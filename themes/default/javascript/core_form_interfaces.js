@@ -869,18 +869,12 @@
                 shutdown_overlay();
             } else {
                 var message = '';
-                if (comcode.indexOf('[attachment') != -1) {
-                    if (comcode.indexOf('[attachment_safe') != -1) {
-                        if (is_wysiwyg) {
-                            message = '';//'{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^}'; Not really needed
-                        } else {
-                            message = '{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
-                        }
+                if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
+                    if (is_wysiwyg) {
+                        message = '';//'!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^ }'; Not really needed
                     } else {
-                        //message='{!ADDED_COMCODE_ONLY_ATTACHMENT;^}';	Kind of states the obvious
+                        message = '!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^ }';
                     }
-                } else {
-                    //message='{!ADDED_COMCODE_ONLY;^}';	Kind of states the obvious
                 }
 
                 target_window.insert_comcode_tag = function (rep_from, rep_to, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
@@ -936,7 +930,7 @@
                     ob.bind('Error', shutdown_overlay);
 
                     // Keep copying the upload indicator
-                    var progress = target_window.document.getElementById('fsUploadProgress_' + field).innerHTML;
+                    var progress = $cms.dom.html(target_window.document.getElementById('fsUploadProgress_' + field));
                     window.setInterval(function () {
                         if (progress != '') {
                             $cms.dom.html(loading_space, progress);

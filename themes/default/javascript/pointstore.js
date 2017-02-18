@@ -1,3 +1,4 @@
+/*{$REQUIRE_LANG,pointstore}*/
 (function ($cms) {
     'use strict';
     $cms.functions.hookPointStoreTopicPin = function hookPointStoreTopicPin() {

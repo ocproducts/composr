@@ -368,30 +368,28 @@ window.all_conversations = {};
 
 // Code...
 
-window.has_focus = true;
-
-window.addEventListener('blur', function () {
-    window.has_focus = false;
-});
-
-window.addEventListener('focus', function () {
-    window.has_focus = true;
-});
-
 function play_sound_url(url) {// Used for testing different sounds
-    if (window.soundManager === undefined) return;
+    if (window.soundManager === undefined) {
+        return;
+    }
 
     var base_url = ((url.indexOf('data_custom') == -1) && (url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;}' : '{$CUSTOM_BASE_URL_NOHTTP;}';
     var sound_object = window.soundManager.createSound({url: base_url + '/' + url});
-    if (sound_object) sound_object.play();
+    if (sound_object) {
+        sound_object.play();
+    }
 }
 
 function play_chat_sound(s_id, for_member) {
-    if (window.soundManager === undefined) return;
+    if (window.soundManager === undefined) {
+        return;
+    }
 
     var play_sound = window.document.getElementById('play_sound');
 
-    if ((play_sound) && (!play_sound.checked)) return;
+    if ((play_sound) && (!play_sound.checked)) {
+        return;
+    }
 
     if (for_member) {
         var override = window.top_window.soundManager.getSoundById(s_id + '_' + for_member, true);
@@ -412,9 +410,7 @@ function chat_load(room_id) {
 
     try {
         document.getElementById('post').focus();
-    }
-    catch (e) {
-    }
+    } catch (ignore) {}
 
     if (window.location.href.indexOf('keep_chattest') == -1) begin_chatting(room_id);
 
@@ -462,7 +458,7 @@ function get_ticked_people(form) {
             people += ((people != '') ? ',' : '') + form.elements[i].name.substr(7);
     }
 
-    if (people == '') {
+    if (people === '') {
         window.fauxmodal_alert('{!chat:NOONE_SELECTED_YET;^}');
         return '';
     }
@@ -776,7 +772,9 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
                 if (!first_set) // Only if no other message sound already for this event update
                 {
                     if (!skip_incoming_sound) {
-                        if (window.play_chat_sound !== undefined) play_chat_sound(window.has_focus ? 'message_received' : 'message_background', messages[i].getAttribute('sender_id'));
+                        if (window.play_chat_sound !== undefined) {
+                            play_chat_sound(document.hidden ?  'message_background' : 'message_received', messages[i].getAttribute('sender_id'));
+                        }
                     }
                     flashable_alert = true;
                 }

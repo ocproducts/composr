@@ -53,7 +53,7 @@ function get_future_version_information()
         require_code('http');
         $http_result = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), 5/*5 minute cache*/);
     }
-    if ($http_result->data !== null) {
+    if (is_object($http_result) && ($http_result->data !== null)) {
         $data = $http_result->data;
         $data = str_replace('"../upgrader.php"', '"' . get_base_url() . '/upgrader.php"', $data);
 

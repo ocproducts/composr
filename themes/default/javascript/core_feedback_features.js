@@ -97,7 +97,7 @@
         },
 
         focusTexareaPost: function (e, textarea) {
-            if (((textarea.value.replace(/\s/g, '') === '{POST_WARNING;^}'.replace(/\s/g, '')) && ('{POST_WARNING;^}' !== '')) || ((textarea.strip_on_focus != null) && (textarea.value == textarea.strip_on_focus))) {
+            if (((textarea.value.replace(/\s/g, '') === '{!POST_WARNING;^}'.replace(/\s/g, '')) && ('{!POST_WARNING;^}' !== '')) || ((textarea.strip_on_focus != null) && (textarea.value == textarea.strip_on_focus))) {
                 textarea.value = '';
             }
 

@@ -4555,7 +4555,7 @@ var encodeUC = encodeURIComponent;
                     a.addEventListener('click', a.handleSelection); // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
                     a.firstElementChild.object = that;
                     a.object = that;
-                    a.('mousedown', function (event) { // To disable selection of text when holding shift or control
+                    a.addEventListener('mousedown', function (event) { // To disable selection of text when holding shift or control
                         if (event.ctrlKey || event.metaKey || event.shiftKey) {
                             if (event.cancelable) {
                                 event.preventDefault();
@@ -5726,7 +5726,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     if (!$cms.$CONFIG_OPTION.enable_animations) {
         try {
             window.scrollTo(0, dest_y);
-        } catch (e) {}
+        } catch (ignore) {}
         return;
     }
 
@@ -5737,7 +5737,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     if (dest_y < 0) {
         dest_y = 0;
     }
-    if ((expected_scroll_y !== undefined) && (expected_scroll_y != null) && (expected_scroll_y != scroll_y)) {
+    if ((expected_scroll_y != null) && (expected_scroll_y != scroll_y)) {
         // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
         return;
     }
@@ -6513,14 +6513,7 @@ function find_if_children_set(container) {
 
 /* Used by audio CAPTCHA. */
 function play_self_audio_link(ob) {
-    $cms.requireJavascript('sound');
-
-    var timer = window.setInterval(function () {
-        if (window.soundManager === undefined) {
-            return;
-        }
-
-        window.clearInterval(timer);
+    $cms.requireJavascript('sound').then(function () {
         window.soundManager.setup({
             url: $cms.baseUrl('data'),
             debugMode: false,
@@ -6531,7 +6524,7 @@ function play_self_audio_link(ob) {
                 }
             }
         });
-    }, 50);
+    });
 }
 
 ((function () {
