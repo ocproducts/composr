@@ -245,8 +245,8 @@ function init__global2()
     define('STATIC_CACHE__FAILOVER_MODE', 4);
 
     // Most critical things
-    require_code('web_resources');
     require_code('global3'); // A lot of support code is present in this
+    require_code('web_resources');
     if (!running_script('webdav')) {
         $http_method = cms_srv('REQUEST_METHOD');
         if ($http_method != 'GET' && $http_method != 'POST' && $http_method != 'HEAD' && $http_method != '') {
@@ -1096,13 +1096,13 @@ function get_site_name()
 function in_safe_mode()
 {
     global $SITE_INFO;
-    if (isset($SITE_INFO['safe_mode'])) {
+    if (!empty($SITE_INFO['safe_mode'])) {
         if (!isset($_GET['keep_safe_mode'])) {
             return ($SITE_INFO['safe_mode'] == '1'); // Useful for testing HPHP support, and generally more robust and fast
         }
     }
 
-    $backdoor_ip = ((isset($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == ''));
+    $backdoor_ip = ((!empty($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == ''));
 
     global $CHECKING_SAFEMODE, $REQUIRED_CODE;
     if (!$backdoor_ip) {
@@ -1117,6 +1117,55 @@ function in_safe_mode()
     $ret = ((get_param_integer('keep_safe_mode', 0) == 1) && ($backdoor_ip || (isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
     $CHECKING_SAFEMODE = false;
     return $ret;
+}
+
+/**
+ * Get server environment variables.
+ *
+ * @param  string $key The variable name
+ * @return string The variable value ('' means unknown)
+ */
+function cms_srv($key)
+{
+    if (isset($_SERVER[$key])) {
+        return /*stripslashes*/
+            ($_SERVER[$key]);
+    }
+    if ((isset($_ENV)) && (isset($_ENV[$key]))) {
+        return /*stripslashes*/
+            ($_ENV[$key]);
+    }
+
+    if ($key == 'HTTP_HOST') {
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            return $_SERVER['HTTP_HOST'];
+        }
+        if (!empty($_ENV['HTTP_HOST'])) {
+            return $_ENV['HTTP_HOST'];
+        }
+        if (function_exists('gethostname')) {
+            return gethostname();
+        }
+        if (!empty($_SERVER['SERVER_ADDR'])) {
+            return $_SERVER['SERVER_ADDR'];
+        }
+        if (!empty($_ENV['SERVER_ADDR'])) {
+            return $_ENV['SERVER_ADDR'];
+        }
+        if (!empty($_SERVER['LOCAL_ADDR'])) {
+            return $_SERVER['LOCAL_ADDR'];
+        }
+        if (!empty($_ENV['LOCAL_ADDR'])) {
+            return $_ENV['LOCAL_ADDR'];
+        }
+        return 'localhost';
+    }
+
+    if ($key == 'SERVER_ADDR') { // IIS issue
+        return cms_srv('LOCAL_ADDR');
+    }
+
+    return '';
 }
 
 /**

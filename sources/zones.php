@@ -348,7 +348,7 @@ function get_zone_name()
             if (($key[0] === 'Z') && (substr($key, 0, 13) === 'ZONE_MAPPING_') && (is_array($val))) {
                 $VIRTUALISED_ZONES_CACHE = true;
                 if (($host === $val[0]) && (preg_match('#^' . (($val[1] === '') ? '' : ('/' . preg_quote($val[1]))) . '(/|$)#', $url_path) != 0)) {
-                    return substr($key, 13);
+                    return @strval(substr($key, 13));
                 }
             }
         }

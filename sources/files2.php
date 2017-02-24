@@ -1492,7 +1492,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $out .= 'Proxy-Authorization: Basic ' . base64_encode($proxy_user . ':' . $proxy_password) . "\r\n";
             }
         } else {
-            $out = ((is_null($post_params)) ? (($byte_limit === 0) ? 'HEAD ' : 'GET ') : 'POST ') . escape_header($url)) . " HTTP/1.1\r\n";
+            $out = ((is_null($post_params)) ? (($byte_limit === 0) ? 'HEAD ' : 'GET ') : 'POST ') . escape_header($url) . " HTTP/1.1\r\n";
         }
         $out .= 'Host: ' . $url_parts['host'] . "\r\n";
         $out .= $headers;
