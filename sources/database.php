@@ -128,18 +128,26 @@ function _general_db_init()
  * Reload language fields from the database.
  *
  * @param boolean $full Whether we need to know about non-Comcode language fields
+ * @param ?string $only_table The only table to reload for (null: all tables)
  */
-function reload_lang_fields($full = false)
+function reload_lang_fields($full = false, $only_table = null)
 {
     global $TABLE_LANG_FIELDS_CACHE;
-    $TABLE_LANG_FIELDS_CACHE = array();
+    if ($only_table === null) {
+        $TABLE_LANG_FIELDS_CACHE = array();
+    } else {
+        unset($TABLE_LANG_FIELDS_CACHE[$only_table]);
+    }
 
     if (multi_lang_content() || $full) {
         $like = db_string_equal_to('m_type', 'SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS');
     } else {
         $like = db_string_equal_to('m_type', 'SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', 'LONG_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?SHORT_TRANS__COMCODE') . ' OR ' . db_string_equal_to('m_type', '?LONG_TRANS__COMCODE');
     }
-    $sql = 'SELECT m_name,m_table,m_type FROM ' . get_table_prefix() . 'db_meta WHERE ' . $like;
+    $sql = 'SELECT m_name,m_table,m_type FROM ' . get_table_prefix() . 'db_meta WHERE (' . $like . ')';
+    if ($only_table !== null) {
+        $sql .= ' AND ' . db_string_equal_to('m_table', $only_table);
+    }
     $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, null, true);
     if ($_table_lang_fields !== null) {
         foreach ($_table_lang_fields as $lang_field) {
@@ -688,19 +696,39 @@ class DatabaseConnector
     }
 
     /**
+     * Turn a list of maps into the bulk-insert format used by query_insert.
+     *
+     * @param  array $maps List of maps
+     * @return array The row format for bulk-inserts.
+     */
+    public function bulk_insert_flip($maps)
+    {
+        $data = array();
+        foreach ($maps as $map) {
+            foreach ($map as $key => $val) {
+                if (!isset($data[$key])) {
+                    $data[$key] = array();
+                }
+                $data[$key][] = $val;
+            }
+        }
+        return $data;
+    }
+
+    /**
      * Insert a row.
      *
      * @param  string $table The table name
-     * @param  array $map The insertion map
+     * @param  array $map The insertion map. Each map may point to an array of values for bulk-inserts, as long as the size of each array is the same
      * @param  boolean $ret Whether to return the auto-insert-id
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
-     * @return integer The ID of the new row
+     * @return mixed The ID of the new row
      */
     public function query_insert($table, $map, $ret = false, $fail_ok = false, $save_as_volatile = false)
     {
         $keys = '';
-        $all_values = array();
+        $all_values = array(); // will usually only have a single entry; for bulk-inserts it will have as many as there are inserts
 
         $eis = $this->static_ob->db_empty_is_null();
 
@@ -755,6 +783,10 @@ class DatabaseConnector
                 $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
             }
         } else {
+            if (count($all_values) === 0) {
+                return null;
+            }
+
             // So we can do batch inserts...
             $all_v = '';
             foreach ($all_values as $v) {
