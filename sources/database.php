@@ -251,7 +251,7 @@ function db_full_text_assemble($content, $boolean)
 
     if (($GLOBALS['DEV_MODE']) || (!has_solemnly_declared(I_UNDERSTAND_SQL_INJECTION))) {
         require_code('database_security_filter');
-        $GLOBALS['DB_ESCAPE_STRING_LIST'][$content] = true;
+        $GLOBALS['DB_ESCAPE_STRING_LIST'][$GLOBALS['DB_STATIC_OBJECT']->db_escape_string($content)] = true;
     }
 
     return $ret;
@@ -309,14 +309,16 @@ function db_escape_string($string)
         _general_db_init();
     }
 
+    $ret = $GLOBALS['DB_STATIC_OBJECT']->db_escape_string($string);
+
     if (function_exists('has_solemnly_declared')) {
         if (($GLOBALS['DEV_MODE']) || (!has_solemnly_declared(I_UNDERSTAND_SQL_INJECTION))) {
             require_code('database_security_filter');
-            $GLOBALS['DB_ESCAPE_STRING_LIST'][trim($GLOBALS['DB_STATIC_OBJECT']->db_escape_string($string), ' %')] = true;
+            $GLOBALS['DB_ESCAPE_STRING_LIST'][trim($ret, ' %')] = true;
         }
     }
 
-    return $GLOBALS['DB_STATIC_OBJECT']->db_escape_string($string);
+    return $ret;
 }
 
 /**
@@ -921,7 +923,7 @@ class DatabaseConnector
                 }
 
                 if (!has_escaped_dynamic_sql($query)) {
-                    fatal_exit('Dynamic SQL has not been escaped properly');
+                    fatal_exit('Dynamic SQL has not been escaped properly in ' . $query);
                 }
             }
         }

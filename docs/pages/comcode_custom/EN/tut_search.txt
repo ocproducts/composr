@@ -27,7 +27,11 @@ The [tt]search[/tt] module has many options:
 
 This is the text box where you type the content that you're searching for.
 
-[title="3"]Boolean Search[/title]
+[title="3"]Full-text vs Boolean searching[/title]
+
+By default full-text searches are used. These are inexact but high performance and more natural. For example a search for "think" would match the word "thinking" or "thinker", and words that are not indexed like "the" would be ignored. Results are returned based on how well they match, so you'll get results that don't match your whole query. Word sequence does not matter unless you use quotes around the words that must be in sequence.
+
+You may also do boolean searches which are exact.
 
 Choosing to do a boolean search will make several more options available:
  - Content must contain all of these words
@@ -92,7 +96,7 @@ Unfortunately result counts have to be an approximation. To de-duplicate the res
 
 [title="2"]Improving search results[/title]
 
-The title fields, and meta keyword fields, get precedence when search results are determined. Tuning these manually for your can improve search results considerably. Additionally keywords are individually queried, rather than having to go through a textual search -- so you can specify things more precisely, e.g. to include hyphens (which full-text search treats like spaces).
+The title fields, and meta keyword fields, get precedence when search results are determined. Tuning these manually for your can improve search results considerably. Additionally keywords are individually queried, rather than having to go through full sentence searching -- so you can specify things more precisely, e.g. to include hyphens (which full-text search treats like spaces).
 
 If you are using MySQL, also considering turning the [url="MySQL minimum word length"]http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_ft_min_word_len[/url] down to 3 (the default 4).
 
