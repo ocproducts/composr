@@ -568,6 +568,11 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
         $setting = _find_member_statistical_notification_type($to_member_id, $notification_code);
     }
 
+    // Banned members can't access the site, force to be an e-mail notification (which actually will only go through if it is an urgent priority notification)
+    if (($GLOBALS['FORUM_DRIVER']->is_banned($to_member_id)) && ($setting != 0) && (_notification_setting_available(A_INSTANT_EMAIL, $to_member_id))) {
+        $setting = A_INSTANT_EMAIL;
+    }
+
     $needs_manual_cc = true;
 
     $message_to_send = $message; // May get tweaked, if we have some kind of error to explain, etc
