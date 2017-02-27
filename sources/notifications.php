@@ -186,6 +186,10 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
         return;
     }
 
+    if (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_param_integer('keep_no_notifications', 0) == 1)) {
+        return;
+    }
+
     if ($subject == '') {
         $subject = '<' . $notification_code . ' -- ' . (is_null($code_category) ? '' : $code_category) . '>';
     }
