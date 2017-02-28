@@ -359,6 +359,9 @@ function init__global2()
     // Register Internationalisation settings
     @header('Content-type: text/html; charset=' . get_charset());
     setlocale(LC_ALL, explode(',', do_lang('locale')));
+    if (substr(strftime('%M'), 0, 2) == '??') {
+        setlocale(LC_ALL, explode(',', 'en-GB.UTF-8,en_GB.UTF-8,en.UTF-8,en-GB,en_GB,en-US.UTF-8,en_US.UTF-8,en.UTF-8,en-US,en_US,en'));
+    } 
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
