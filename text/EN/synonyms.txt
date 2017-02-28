@@ -135,3 +135,4 @@ dashboard	console	status
 menu	navigation
 permalink	url	link
 importance	priority	precedence	level
+chance	probability	likelihood
