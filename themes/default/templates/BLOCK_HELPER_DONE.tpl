@@ -83,8 +83,11 @@
 				var _comcode=comcode;
 				if (typeof rep_from!='undefined')
 				{
-					_comcode_semihtml=_comcode_semihtml.replace(rep_from,rep_to);
-					_comcode=_comcode.replace(rep_from,rep_to);
+					for (var i=0;i<rep_from.length;i++)
+					{
+						_comcode_semihtml=_comcode_semihtml.replace(rep_from[i],rep_to[i]);
+						_comcode=_comcode.replace(rep_from[i],rep_to[i]);
+					}
 				}
 
 				if (typeof ret!='undefined' && ret)
