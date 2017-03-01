@@ -607,7 +607,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $filename = 'subscribers_' . $id . '.csv';
 
             header('Content-type: text/csv; charset=' . get_charset());
-            header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+            header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
             if (cms_srv('REQUEST_METHOD') == 'HEAD') {
                 exit();

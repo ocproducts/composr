@@ -270,7 +270,7 @@ class Hook_syndication_facebook
                 $this->auth_set($member_id, get_self_url());
             }
 
-            header('Facebook-Error: ' . str_replace("\n", '', $e->getMessage()));
+            header('Facebook-Error: ' . escape_header($e->getMessage()));
 
             if (!$silent_warn) {
                 attach_message($e->getMessage(), 'warn');

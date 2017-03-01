@@ -984,6 +984,7 @@ class Module_filedump
                 break;
 
             case 'edit':
+            case 'delete':
                 break;
 
             default:

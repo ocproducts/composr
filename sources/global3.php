@@ -1812,55 +1812,6 @@ function collapse_1d_complexity($key, $list)
 }
 
 /**
- * Get server environment variables.
- *
- * @param  string $key The variable name
- * @return string The variable value ('' means unknown)
- */
-function cms_srv($key)
-{
-    if (isset($_SERVER[$key])) {
-        return /*stripslashes*/
-            ($_SERVER[$key]);
-    }
-    if ((isset($_ENV)) && (isset($_ENV[$key]))) {
-        return /*stripslashes*/
-            ($_ENV[$key]);
-    }
-
-    if ($key == 'HTTP_HOST') {
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            return $_SERVER['HTTP_HOST'];
-        }
-        if (!empty($_ENV['HTTP_HOST'])) {
-            return $_ENV['HTTP_HOST'];
-        }
-        if (function_exists('gethostname')) {
-            return gethostname();
-        }
-        if (!empty($_SERVER['SERVER_ADDR'])) {
-            return $_SERVER['SERVER_ADDR'];
-        }
-        if (!empty($_ENV['SERVER_ADDR'])) {
-            return $_ENV['SERVER_ADDR'];
-        }
-        if (!empty($_SERVER['LOCAL_ADDR'])) {
-            return $_SERVER['LOCAL_ADDR'];
-        }
-        if (!empty($_ENV['LOCAL_ADDR'])) {
-            return $_ENV['LOCAL_ADDR'];
-        }
-        return 'localhost';
-    }
-
-    if ($key == 'SERVER_ADDR') { // IIS issue
-        return cms_srv('LOCAL_ADDR');
-    }
-
-    return '';
-}
-
-/**
  * Find whether an IP address is valid
  *
  * @param  IP $ip IP address to check.
@@ -3560,9 +3511,13 @@ function has_interesting_post_fields()
  * Apply escaping for an HTTP header.
  *
  * @param string $str Text to insert into header
+ * @param boolean $within_quotes Text is between quotes
  * @return string Escaped text
  */
-function escape_header($str)
+function escape_header($str, $within_quotes = false)
 {
-    return str_replace("\r", '', str_replace("\n", '', addslashes($str)));
+    if ($within_quotes) {
+        $str = addslashes($str);
+    }
+    return str_replace(array("\r", "\n"), array('', ''), $str);
 }

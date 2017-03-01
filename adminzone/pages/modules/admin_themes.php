@@ -437,8 +437,13 @@ class Module_admin_themes
         $zones = $GLOBALS['SITE_DB']->query_select('zones', array('*'), null, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
         $free_choices = 0;
         $zone_list_free_choices = new Tempcode();
+        $no_themes_explicitly_set = true;
         foreach ($zones as $zone) {
-            if (!array_key_exists($zone['zone_theme'], $_themes)) {
+            if (array_key_exists($zone['zone_theme'], $_themes)) {
+                if (($zone['zone_name'] == '') && ($zone['zone_theme'] != '-1')) {
+                    $no_themes_explicitly_set = false;
+                }
+            } else {
                 if (!$zone_list_free_choices->is_empty()) {
                     $zone_list_free_choices->attach(do_lang_tempcode('LIST_SEP'));
                 }
@@ -459,6 +464,8 @@ class Module_admin_themes
                 $theme = strval($theme);
             }
 
+            $is_main_theme = false;
+
             // Get URLs
             $css_url = build_url(array('page' => '_SELF', 'type' => 'choose_css', 'theme' => $theme), '_SELF');
             $templates_url = build_url(array('page' => '_SELF', 'type' => 'edit_templates', 'theme' => $theme), '_SELF');
@@ -478,6 +485,10 @@ class Module_admin_themes
                     $zone_list->attach($zone_list_free_choices); // Actually will do nothing, as $free_choices == 0
                 } else {
                     $zone_list->attach(do_lang_tempcode('THEME_DEFAULT_FOR_SITE'));
+
+                    if ($no_themes_explicitly_set) {
+                        $is_main_theme = true;
+                    }
                 }
 
                 // Why is this the site-default theme?
@@ -489,6 +500,10 @@ class Module_admin_themes
             }
             foreach ($zones as $zone) {
                 if ($zone['zone_theme'] == $theme) {
+                    if ($zone['zone_name'] == '') {
+                        $is_main_theme = true;
+                    }
+
                     if ((get_option('collapse_user_zones') == '1') && ($zone['zone_name'] == 'site')) {
                         continue;
                     }
@@ -528,6 +543,7 @@ class Module_admin_themes
                 'EDIT_URL' => $edit_url,
                 'DELETE_URL' => $delete_url,
                 'SCREEN_PREVIEW_URL' => $screen_preview_url,
+                'IS_MAIN_THEME' => $is_main_theme,
             );
         }
 

@@ -53,7 +53,7 @@ class Hook_login_provider_facebook
                         }
                     }
                 } catch (Exception $e) {
-                    header('Facebook-Error: ' . str_replace("\n", '', $e->getMessage()));
+                    header('Facebook-Error: ' . escape_header($e->getMessage()));
 
                     // User will know what is wrong already (Facebook wil have said), so don't show on our end
                 }

@@ -45,8 +45,8 @@ class Hook_content_meta_aware_calendar_type
             'parent_category_meta_aware_type' => null,
             'is_category' => true,
             'is_entry' => false,
-            'category_field' => null, // For category permissions
-            'category_type' => null, // For category permissions
+            'category_field' => 'id', // For category permissions
+            'category_type' => 'calendar', // For category permissions
             'parent_spec__table_name' => null,
             'parent_spec__parent_name' => null,
             'parent_spec__field_name' => null,
@@ -80,7 +80,7 @@ class Hook_content_meta_aware_calendar_type
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // null if has no permissions
+            'permissions_type_code' => 'calendar', // null if has no permissions
 
             'search_hook' => null,
             'rss_hook' => null,

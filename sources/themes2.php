@@ -317,7 +317,7 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, false);
 
         $theme_img_code = $type . '/' . basename($urls[2], '.' . get_file_extension($urls[2]));
-        if (find_theme_image($theme_img_code, true) != '') {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('id' => $theme_img_code)) !== null) {
             $theme_img_code = $type . '/' . uniqid('', true);
         }
 
@@ -524,7 +524,7 @@ function find_images_do_dir($theme, $subdir, $langs)
  * @param  ID_TEXT $type The type of image (e.g. 'cns_emoticons')
  * @param  boolean $recurse Whether to search recursively; i.e. in subdirectories of the type subdirectory
  * @param  ?object $db The database connection to work over (null: site db)
- * @param  ?ID_TEXT $theme The theme to search in, in addition to the default theme (null: current theme)
+ * @param  ?ID_TEXT $theme The theme to search in, in addition to the default theme (null: no other)
  * @param  boolean $dirs_only Whether to only return directories (advanced option, rarely used)
  * @param  boolean $db_only Whether to only return from the database (advanced option, rarely used)
  * @param  ?array $skip The list of files/directories to skip (null: none)
@@ -550,7 +550,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
     global $THEME_IMAGES_CACHE;
 
     if (is_null($theme)) {
-        $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+        $theme = 'default';
     }
     if (is_null($skip)) {
         $skip = array();
@@ -896,7 +896,22 @@ function find_all_themes()
         }
     }
 
+    // Sort
     natsort($themes);
+
+    // Default theme should go first
+    if (isset($themes['default'])) {
+        $temp = $themes['default'];
+        $temp_2 = $themes;
+        $themes = array('default' => $temp) + $temp_2;
+    }
+
+    // Admin theme should go last
+    if (isset($themes['admin'])) {
+        $temp = $themes['admin'];
+        unset($themes['admin']);
+        $themes['admin'] = $temp;
+    }
 
     return $themes;
 }

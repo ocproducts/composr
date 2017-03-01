@@ -20,7 +20,7 @@ class Hook_startup_facebook
 {
     public function run($MICRO_BOOTUP, $MICRO_AJAX_BOOTUP)
     {
-        if (running_script('index')) {
+        if (running_script('index') || running_script('preview') || running_script('iframe')) {
             require_javascript('facebook');
             require_code('site');
 

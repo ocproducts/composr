@@ -376,6 +376,55 @@ function in_safe_mode()
 }
 
 /**
+ * Get server environment variables.
+ *
+ * @param  string $key The variable name
+ * @return string The variable value ('' means unknown)
+ */
+function cms_srv($key)
+{
+    if (isset($_SERVER[$key])) {
+        return /*stripslashes*/
+            ($_SERVER[$key]);
+    }
+    if ((isset($_ENV)) && (isset($_ENV[$key]))) {
+        return /*stripslashes*/
+            ($_ENV[$key]);
+    }
+
+    if ($key == 'HTTP_HOST') {
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            return $_SERVER['HTTP_HOST'];
+        }
+        if (!empty($_ENV['HTTP_HOST'])) {
+            return $_ENV['HTTP_HOST'];
+        }
+        if (function_exists('gethostname')) {
+            return gethostname();
+        }
+        if (!empty($_SERVER['SERVER_ADDR'])) {
+            return $_SERVER['SERVER_ADDR'];
+        }
+        if (!empty($_ENV['SERVER_ADDR'])) {
+            return $_ENV['SERVER_ADDR'];
+        }
+        if (!empty($_SERVER['LOCAL_ADDR'])) {
+            return $_SERVER['LOCAL_ADDR'];
+        }
+        if (!empty($_ENV['LOCAL_ADDR'])) {
+            return $_ENV['LOCAL_ADDR'];
+        }
+        return 'localhost';
+    }
+
+    if ($key == 'SERVER_ADDR') { // IIS issue
+        return cms_srv('LOCAL_ADDR');
+    }
+
+    return '';
+}
+
+/**
  * Find whether a certain script is being run to get here.
  *
  * @param  string $is_this_running Script filename (canonically we want NO .php file type suffix)

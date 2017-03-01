@@ -1743,7 +1743,6 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_FIELD_NAME'), $prefix . 'name', $name, ($name != '') || $first_field)); // If this is gonna be a new field that might not be filled in, don't make them fill it in
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_FIELD_DESCRIPTION'), $prefix . 'description', $description, false));
-        $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_FIELD_DEFAULT'), $prefix . 'default', $default, false, null, pow(2, 31) - 1));
 
         require_code('fields');
         require_lang('fields');
@@ -1751,7 +1750,11 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $type_list = create_selection_list_field_type($type, $name != '');
 
         $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode(($name == '') ? 'DESCRIPTION_FIELD_TYPE_FIRST_TIME' : 'DESCRIPTION_FIELD_TYPE'), $prefix . 'type', $type_list));
+
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS', escape_html(get_tutorial_url('tut_fields'))), $prefix . 'options', $options, false));
+
+        $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_FIELD_DEFAULT'), $prefix . 'default', $default, false, null, pow(2, 31) - 1));
+
         //$order_list = new Tempcode();
         $order_list = '';
         for ($i = 0; $i < $num_fields_to_show; $i++) {

@@ -591,9 +591,9 @@ END;
         ce_sync_file($save_path . '.editfrom');
 
         if (!isset($_POST['delete'])) {
-            $message = "Saved " . code_editor_escape_html($save_path) . " (and if applicable, placed a backup in its directory)!";
+            $message = "Saved " . code_editor_escape_html(str_replace('/', DIRECTORY_SEPARATOR, $save_path)) . " (and if applicable, placed a backup in its directory)!";
         } else {
-            $message = "Deleted " . code_editor_escape_html($save_path) . ". You may edit to recreate the file if you wish however.";
+            $message = "Deleted " . code_editor_escape_html(str_replace('/', DIRECTORY_SEPARATOR, $save_path)) . ". You may edit to recreate the file if you wish however.";
         }
         echo <<<END
 <script>

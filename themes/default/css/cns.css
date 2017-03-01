@@ -412,6 +412,7 @@ div.cns_table_footer>div>div {
 	text-align: center;
 	display: inline-block;
 	margin: 1em 0;
+	max-width: 100%;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.cns_topic_poster_name {
