@@ -462,7 +462,7 @@ function do_set()
     co_sync_file($config_file);
 
     echo '<hr /><p>Edited configuration. If you wish to continue editing you must <a href="config_editor.php">login again.</a></p>';
-    echo '<hr /><p>The _config.php file was backed up at <kbd>' . htmlentities($path) . '</kbd></p>';
+    echo '<hr /><p>The _config.php file was backed up at <kbd>' . htmlentities(str_replace('/', DIRECTORY_SEPARATOR, $path)) . '</kbd></p>';
 }
 
 /**

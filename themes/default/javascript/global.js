@@ -2305,7 +2305,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	if (!window.page_loaded) return;
 	if ((typeof tooltip!='function') && (tooltip=='')) return;
 
-	if ((typeof ac.deactivated_at!='undefined') && (ac.deactivated_at!=null) && (Date.now()-ac.deactivated_at<500)) return;
+	if ((typeof ac.deactivated_at!='undefined') && (ac.deactivated_at!=null) && (Date.now()-ac.deactivated_at<200)) return;
 
 	register_mouse_listener(event);
 
@@ -2518,8 +2518,8 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 }
 function deactivate_tooltip(ac,tooltip_element)
 {
+	if (ac.is_over) ac.deactivated_at=Date.now();
 	ac.is_over=false;
-	ac.deactivated_at=Date.now();
 
 	//console.log('deactivate_tooltip');
 

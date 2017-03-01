@@ -116,6 +116,17 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
     if (!is_null($access_mapping)) {
         $groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(false, true);
 
+        $cat_ins_module_the_name = array();
+        $cat_ins_category_name = array();
+        $cat_ins_group_id = array();
+
+        $ins_privilege = array();
+        $ins_group_id = array();
+        $ins_the_page = array();
+        $ins_module_the_name = array();
+        $ins_category_name = array();
+        $ins_the_value = array();
+
         foreach (array_keys($groups) as $group_id) {
             $level = 0; // No-access
             if (array_key_exists($group_id, $access_mapping)) {
@@ -123,25 +134,59 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
             }
 
             if ($level >= 1) { // Access
-                $GLOBALS['FORUM_DB']->query_insert('group_category_access', array(
-                    'module_the_name' => 'forums',
-                    'category_name' => strval($forum_id),
-                    'group_id' => $group_id
-                ));
+                $cat_ins_module_the_name[] = 'forums';
+                $cat_ins_category_name[] = strval($forum_id);
+                $cat_ins_group_id[] = $group_id;
 
                 if ($level == 1) { // May not post - so specifically override to say this
-                    $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
-                    $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
+                    $ins_privilege[] = 'submit_lowrange_content';
+                    $ins_group_id[] = $group_id;
+                    $ins_the_page[] = '';
+                    $ins_module_the_name[] = 'forums';
+                    $ins_category_name[] = strval($forum_id);
+                    $ins_the_value[] = 0;
+
+                    $ins_privilege[] = 'submit_midrange_content';
+                    $ins_group_id[] = $group_id;
+                    $ins_the_page[] = '';
+                    $ins_module_the_name[] = 'forums';
+                    $ins_category_name[] = strval($forum_id);
+                    $ins_the_value[] = 0;
                 }
                 if ($level >= 3) {
-                    $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'bypass_validation_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 1));
+                    $ins_privilege[] = 'bypass_validation_lowrange_content';
+                    $ins_group_id[] = $group_id;
+                    $ins_the_page[] = '';
+                    $ins_module_the_name[] = 'forums';
+                    $ins_category_name[] = strval($forum_id);
+                    $ins_the_value[] = 1;
                 }
                 if ($level >= 4) {
-                    $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'bypass_validation_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 1));
+                    $ins_privilege[] = 'bypass_validation_midrange_content';
+                    $ins_group_id[] = $group_id;
+                    $ins_the_page[] = '';
+                    $ins_module_the_name[] = 'forums';
+                    $ins_category_name[] = strval($forum_id);
+                    $ins_the_value[] = 1;
                 }
                 // 2=May post, [3=May post instantly , 4=May start topics instantly , 5=Moderator  --  these ones will not be treated specially, so as to avoid overriding permissions unnecessary - let the admins configure it optimally manually]
             }
         }
+
+        $GLOBALS['FORUM_DB']->query_insert('group_category_access', array(
+            'module_the_name' => $cat_ins_module_the_name,
+            'category_name' => $cat_ins_category_name,
+            'group_id' => $cat_ins_group_id
+        ));
+
+        $GLOBALS['SITE_DB']->query_insert('group_privileges', array(
+            'privilege' => $ins_privilege,
+            'group_id' => $ins_group_id,
+            'the_page' => $ins_the_page,
+            'module_the_name' => $ins_module_the_name,
+            'category_name' => $ins_category_name,
+            'the_value' => $ins_the_value,
+        ));
     }
 
     log_it('ADD_FORUM', strval($forum_id), $name);

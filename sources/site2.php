@@ -194,7 +194,7 @@ function assign_refresh($url, $multiplier = 0.0)
 
     // HTTP redirect
     if ((running_script('index')) && (!$FORCE_META_REFRESH)) {
-        header('Location: ' . $url);
+        header('Location: ' . escape_header($url));
         if (strpos($url, '#') === false) {
             $GLOBALS['QUICK_REDIRECT'] = true;
         }

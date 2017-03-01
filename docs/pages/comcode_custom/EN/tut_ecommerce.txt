@@ -106,7 +106,7 @@ The option requirements for PayPal are as follows:
 	</tr>
 	<tr>
 		<th>
-			Email address
+			Gateway username
 		</th>
 		<td>
 			For PayPal it is your PayPal e-mail address, but for other gateways it probably is just be any you receive e-mail on

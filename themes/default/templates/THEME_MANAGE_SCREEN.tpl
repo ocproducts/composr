@@ -21,7 +21,7 @@
 		<tbody>
 			{$SET,done_one_theme,0}
 			{+START,LOOP,THEMES}
-				<tr{+START,IF,{$GET,done_one_theme}} class="thick_border"{+END}>
+				<tr class="{+START,IF,{$GET,done_one_theme}}thick_border{+END}{+START,IF,{IS_MAIN_THEME}} active_item{+END}">
 					<td role="note">
 						{+START,SET,TOOLTIP}
 							<kbd>{NAME*}</kbd>, {!BY_SIMPLE,<em>{AUTHOR`}</em>}

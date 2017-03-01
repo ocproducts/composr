@@ -94,7 +94,7 @@ if (!$okay) {
 header('Content-Type: application/octet-stream' . '; authoritative=true;');
 require_code('mime_types');
 header('Content-Type: ' . get_mime_type(get_file_extension($filename), false) . '; authoritative=true;');
-header('Content-Disposition: inline; filename="' . escape_header($filename) . '"');
+header('Content-Disposition: inline; filename="' . escape_header($filename, true) . '"');
 header('Accept-Ranges: bytes');
 
 // Caching

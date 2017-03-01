@@ -550,7 +550,7 @@ class Module_search
         // Did you mean?
         require_code('spelling');
         $corrected = spell_correct_phrase($content);
-        if ($corrected != $content) {
+        if (cms_mb_strtolower($corrected) != cms_mb_strtolower($content)) {
             $search_url = get_self_url(true, false, array('content' => $corrected));
             attach_message(do_lang_tempcode('DID_YOU_MEAN', escape_html($corrected), escape_html($search_url)), 'notice');
         }

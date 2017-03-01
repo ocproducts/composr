@@ -665,7 +665,7 @@ class Module_warnings extends Standard_crud_module
             $_title = do_lang('NEW_WARNING_TO_YOU');
 
             $pt_topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, get_member(), $member_id);
-            $post_id = cns_make_post($pt_topic_id, $_title, $message, 0, true, 1, 1, null, null, null, null, null, null, null, false);
+            $post_id = cns_make_post($pt_topic_id, $_title, $message, 0, true, 1, 1/*emphasised*/, null, null, null, null, null, null, null, false);
 
             send_pt_notification($post_id, $_title, $pt_topic_id, $member_id);
         }

@@ -1307,6 +1307,16 @@ function constrain_gallery_image_to_max_size($file_path, $filename, $box_width)
     }
 
     if (function_exists('imagepng')) {
+        // TODO: Fix in v11, use new function
+        if ((function_exists('getimagesize')) && (is_image($filename))) {
+            $details = @getimagesize($file_path);
+            if ($details !== false) {
+                if (($details[0] <= $box_width) && ($details[1] <= $box_width)) {
+                    return;
+                }
+            }
+        }
+
         convert_image($file_path, $file_path, -1, -1, $box_width, false, get_file_extension($filename), true, true);
     }
 }

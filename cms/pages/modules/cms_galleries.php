@@ -452,7 +452,7 @@ class Module_cms_galleries extends Standard_crud_module
 
         require_code('uploads');
         if ((!is_plupload(true)) && ((!array_key_exists('file_1', $_FILES)) || (!is_uploaded_file($_FILES['file_1']['tmp_name'])))) {
-            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'file'));
+            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'file_1'));
         }
 
         $media_imported = array();

@@ -58,7 +58,7 @@ function init__site()
             set_http_status_code('301');
             header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
             require_code('urls');
-            header('Location: ' . get_self_url(true, false, $non_canonical));
+            header('Location: ' . escape_header(get_self_url(true, false, $non_canonical)));
             exit();
         }
     }
@@ -85,7 +85,7 @@ function init__site()
             if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
                 set_http_status_code('301');
                 header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
-                header('Location: ' . get_self_url(true));
+                header('Location: ' . escape_header(get_self_url(true)));
                 exit();
             }
         }
@@ -94,7 +94,7 @@ function init__site()
     // Search engine having session in URL, we don't like this
     if ((get_bot_type() !== null) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_string('keep_session', null) !== null)) {
         set_http_status_code('301');
-        header('Location: ' . get_self_url(true, false, array('keep_session' => null, 'keep_print' => null)));
+        header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null))));
         exit();
     }
 
@@ -112,7 +112,7 @@ function init__site()
                         attach_message(do_lang_tempcode('BAD_ACCESS_DOMAIN', escape_html($parsed_base_url['host']), escape_html($access_host)), 'warn');
                     }
 
-                    header('Location: ' . get_self_url(true, false));
+                    header('Location: ' . escape_header(get_self_url(true, false)));
                     exit();
                 }
             }
@@ -749,7 +749,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                             header('HTTP/1.0 301 Moved Permanently');
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                             $new_url = $_new_url->evaluate();
-                            header('Location: ' . $new_url);
+                            header('Location: ' . escape_header($new_url));
                             exit();
                         }
                     } else {
@@ -774,7 +774,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                                 header('HTTP/1.0 301 Moved Permanently');
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                                 $new_url = $_new_url->evaluate();
-                                header('Location: ' . $new_url);
+                                header('Location: ' . escape_header($new_url));
                                 exit();
                             }
                         }

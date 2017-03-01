@@ -25,7 +25,7 @@ require_code('tar');
 
 $filename = 'composr-' . get_site_name() . '.' . date('Y-m-d') . '.tar';
 
-header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
 $tar = tar_open(null, 'wb');
 

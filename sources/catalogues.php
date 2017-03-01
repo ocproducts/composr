@@ -1610,7 +1610,11 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
 
     // Put our title onto our breadcrumbs
     if ($title === null) {
-        $title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'cc_title', array('id' => $category_id)));
+        $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'cc_title', array('id' => $category_id));
+        if ($_title === null) {
+            return array();
+        }
+        $title = get_translated_text($_title);
     }
     $breadcrumbs .= $title;
 

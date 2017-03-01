@@ -1582,6 +1582,10 @@ class Module_topics
 
         // Where it goes to
         if ($private_topic) {
+            if ($GLOBALS['FORUM_DRIVER']->is_banned($member_id)) {
+                warn_exit(do_lang_tempcode('mail:NO_ACCEPT_EMAILS'));
+            }
+
             if ($member_id == get_member()) {
                 $specialisation->attach(form_input_username_multi(do_lang_tempcode('TO'), '', 'to_member_id_', array(), 1, true, 1));
                 cns_check_make_private_topic();

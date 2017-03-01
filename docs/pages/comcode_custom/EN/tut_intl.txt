@@ -68,6 +68,22 @@ For dates and times we use the PHP [url]http://php.net/manual/en/function.strfti
  - [tt]%l[/tt] is the 12-hour clock hour but will not have a leading space digit (because that's ugly)
  - [tt]%o[/tt] is an English date ordinal (e.g. [tt]st[/tt] or [tt]th[/tt])
 
+[title="4"]Locales[/title]
+
+Setting the correct locale may be tricky. Different operating systems may use a number of different values, for example in English:
+ - [tt]en-GB.UTF-8[/tt] -- British English, for systems that use hyphens and support a flag for utf-8 output
+ - [tt]en_GB.UTF-8[/tt] -- British English, for systems that use underscores and support a flag for utf-8 output
+ - [tt]en-US.UTF-8[/tt] -- American English (maybe British is not installed), for systems that use hyphens and support a flag for utf-8 output
+ - [tt]en_US.UTF-8[/tt] -- American English (maybe British is not installed), for systems that use hyphens and support a flag for utf-8 output
+ - [tt]en.UTF-8[/tt] -- English (maybe specific British or American is not installed), for systems that support a flag for utf-8 output
+ - [tt]en-GB[/tt] -- British English, for systems that use hyphens and do not support a flag for utf-8 output
+ - [tt]en_GB[/tt] -- British English, for systems that use underscores and do not support a flag for utf-8 output
+ - [tt]en-US[/tt] -- American English (maybe British is not installed), for systems that use hyphens and do not support a flag for utf-8 output
+ - [tt]en_US[/tt] -- American English (maybe British is not installed), for systems that use hyphens and do not support a flag for utf-8 output
+ - [tt]en[/tt] -- English (maybe specific British or American is not installed), for systems that do not support a flag for utf-8 output
+Microsoft Windows is good at accepting anything that vaguely matches, but it unfortunately cannot produce utf-8. So if you want a non-Latin-based language to work on Windows you'll need to fill in the [tt]locale_subst[/tt] language string with all the long and short month and day names. See what the Tamil language pack does as an example:
+[tt]locale_subst=Monday=திங்கட்கிழமை,Tuesday=செவ்வாய்க்கிழமை,Wednesday=புதன்கிழமை,Thursday=வியாழக்கிழமை,Friday=வெள்ளிக்கிழமை,Saturday=சனிக்கிழமை,Sunday=ஞாயிற்றுக்கிழமை,Mon=தி,Tue=செ,Wed=பு,Thu=வி,Fri=வெ,Sat=ச,Sun=ஞா,January=ஜனவரி,February=பிப்ரவரி,March=மார்ச்,April=ஏப்ரல்,May=மே,June=ஜூன்,July=ஜுலை,August=ஆகஸ்ட்,September=ஸெப்டம்பர்,October=அக்டோபர்,November=நவம்பர்,December=டிஸம்பர்,Jan=ஜன,Feb=பிப்,Mar=மார்,Apr=ஏப்ரல்,May=மே,Jun=ஜூன்,Jul=ஜூலை,Aug=ஆக,Sep=செப்,Oct=அக்,Nov=நவ,Dec=டிச,th=,st=,nd=[/tt]
+
 [title="4"]Common points of confusion[/title]
 
 [b]The software[/b]:

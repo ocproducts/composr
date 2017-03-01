@@ -489,7 +489,7 @@ function transifex_pull_script()
         } else {
             $filename = 'language-' . escape_header($lang) . '-' . get_version_branch(floatval(cms_version_number())) . '.tar';
         }
-        header('Content-Disposition: attachment; filename="' . addslashes($filename) . '"');
+        header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
         safe_ini_set('ocproducts.xss_detect', '0');
 
         require_code('tar');

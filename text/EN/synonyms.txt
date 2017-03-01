@@ -141,3 +141,4 @@ permalink	url	link
 importance	priority	precedence	level
 note	memo
 shipping	postage	freight
+chance	probability	likelihood

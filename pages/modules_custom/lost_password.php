@@ -45,7 +45,7 @@ class Mx_lost_password extends Module_lost_password
     {
         $redirect_url = get_value('external_lost_password_url', null, true);
         if (!empty($redirect_url)) {
-            header('Location: ' . $redirect_url);
+            header('Location: ' . escape_header($redirect_url));
             exit();
         }
 
