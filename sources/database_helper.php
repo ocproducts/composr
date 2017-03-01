@@ -208,10 +208,15 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
 
     // Note that interbase has a 31000byte limit on LONG_TEXT/LONG_TRANS, because we can't use blobs on it (those have too many restraints)
 
+    $ins_m_table = array();
+    $ins_m_name = array();
+    $ins_m_type = array();
     $fields_copy = $fields;
     foreach ($fields_copy as $name => $type) {
         if (($table_name != 'db_meta') && ($table_name != 'db_meta_indices')) {
-            $this_ref->query_insert('db_meta', array('m_table' => $table_name, 'm_name' => $name, 'm_type' => $type), false, true); // Allow errors because sometimes bugs when developing can call for this happening twice
+            $ins_m_table[] = $table_name;
+            $ins_m_name[] = $name;
+            $ins_m_type[] = $type;
         }
 
         if (!multi_lang_content()) {
@@ -225,6 +230,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
             }
         }
     }
+    $this_ref->query_insert('db_meta', array('m_table' => $ins_m_table, 'm_name' => $ins_m_name, 'm_type' => $ins_m_type), false, true); // Allow errors because sometimes bugs when developing can call for this happening twice
     if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
@@ -249,7 +255,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         }
     }
 
-    reload_lang_fields();
+    reload_lang_fields(false, $table_name);
 }
 
 /**
@@ -269,11 +275,13 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
     //if ($GLOBALS['DEV_MODE']) {  Actually, no we want to run in installer, which would not be in dev mode
     if ($table_name != 'db_meta') {
+        $db_types = collapse_2d_complexity('m_name', 'm_type', $this_ref->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table_name)));
+
         $fields_full = array();
         foreach ($fields as $field) {
             $_field = preg_replace('#\(.*\)$#', '', $field);
 
-            $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $_field));
+            $db_type = isset($db_types[$_field]) ? $db_types[$_field] : null;
             if (is_null($db_type)) {
                 $db_type = 'INTEGER';
                 if (running_script('install')) {
@@ -302,7 +310,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
     $ok_to_create = true;
 
-    reload_lang_fields(true);
+    reload_lang_fields(true, $table_name);
 
     $_fields = '';
     foreach ($fields as $field) {
@@ -502,7 +510,7 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     }
 
     $this_ref->query_insert('db_meta', array('m_table' => $table_name, 'm_name' => $name, 'm_type' => $_type));
-    reload_lang_fields();
+    reload_lang_fields(false, $table_name);
 
     if (!multi_lang_content()) {
         if (strpos($_type, '_TRANS') !== false) {

@@ -71,6 +71,10 @@ abstract class FieldsSearchHook
      */
     protected function _get_fields($catalogue_name)
     {
+        if (!addon_installed('catalogues')) {
+            return array();
+        }
+
         $fields = array();
         $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         require_code('fields');

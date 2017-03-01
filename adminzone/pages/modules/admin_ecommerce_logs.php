@@ -735,7 +735,11 @@ class Module_admin_ecommerce_logs
             $expiry_time = strtotime('+' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $subs['s_time']);
             $expiry_date = get_timezoned_date($expiry_time, false, false, false, true);
             $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($subs['s_member_id'], true, '', false);
-            $cancel_url = build_url(array('page' => '_SELF', 'type' => 'cancel_subscription', 'subscription_id' => $subs['id']), '_SELF');
+            if ($subs['s_state'] == 'cancelled') {
+                $cancel_url = new Tempcode();
+            } else {
+                $cancel_url = build_url(array('page' => '_SELF', 'type' => 'cancel_subscription', 'subscription_id' => $subs['id']), '_SELF');
+            }
 
             $data[$item_name][] = array($member_link, $expiry_date, $cancel_url, $subs['id']);
         }

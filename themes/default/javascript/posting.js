@@ -110,9 +110,16 @@ function set_attachment(field_name,number,filename,multi,uploader_settings)
 				for (var i=0;i<split_filename.length;i++)
 				{
 					if (i!=0) window.num_attachments++;
+
+					var new_comcode=comcode.replace(']new_'+number+'[',']new_'+window.num_attachments+'[');
+					if (split_filename[i].indexOf('fakepath')==-1)
+					{
+						new_comcode=new_comcode.replace(' description="'+defaults.description.replace(/"/g,'\\"')+'"',' description="'+split_filename[i].replace(/"/g,'\\"')+'"');
+					}
+
 					insert_textbox(
 						post,
-						comcode.replace(']new_'+number+'[',']new_'+window.num_attachments+'[')
+						new_comcode
 					);
 				}
 				number=''+(window.parseInt(number)+split_filename.length-1);
@@ -123,15 +130,15 @@ function set_attachment(field_name,number,filename,multi,uploader_settings)
 					comcode,
 					document.selection?document.selection:null
 				);
-
-				// Add field for next one
-				var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
-				if (add_another_field)
-				{
-					add_attachment(window.num_attachments+1,field_name);
-				}
 			}
 			if (suffix!='') insert_textbox(post,suffix);
+
+			// Add field for next one
+			var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
+			if (add_another_field)
+			{
+				add_attachment(window.num_attachments+1,field_name);
+			}
 
 			if (typeof uploader_settings!='undefined')
 			{
@@ -183,7 +190,11 @@ function set_attachment(field_name,number,filename,multi,uploader_settings)
 							for (var i=1;i<split_filename.length;i++)
 							{
 								window.num_attachments++;
-								var tmp=window.insert_comcode_tag(']new_'+number+'[',']new_'+window.num_attachments+'[',true);
+								var tmp=window.insert_comcode_tag(
+									[']new_'+number+'[',' description="'+defaults.description.replace(/"/g,'\\"')+'"'],
+									[']new_'+window.num_attachments+'[',' description="'+((filepath.indexOf('fakepath')==-1)?filepath:defaults.description).replace(/"/g,'\\"')+'"'],
+									true
+								);
 								comcode_semihtml+=tmp[0];
 								comcode+=tmp[1];
 							}

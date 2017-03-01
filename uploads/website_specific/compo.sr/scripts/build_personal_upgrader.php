@@ -89,6 +89,6 @@ if ($tar_path === null) {
 }
 
 header('Content-Type: application/octet-stream; authoritative=true;');
-header('Content-Disposition: inline; filename="' . escape_header(basename($tar_path)) . '.tar"');
+header('Content-Disposition: inline; filename="' . escape_header(basename($tar_path), true) . '.tar"');
 
 readfile($tar_path);

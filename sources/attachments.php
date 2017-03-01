@@ -229,14 +229,14 @@ function attachments_script()
     if ((strpos($original_filename, "\n") !== false) || (strpos($original_filename, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    header('Content-Disposition: inline; filename="' . escape_header($original_filename) . '"');
+    header('Content-Disposition: inline; filename="' . escape_header($original_filename, true) . '"');
 
     // Is it non-local? If so, redirect
     if (!url_is_local($full)) {
         if ((strpos($full, "\n") !== false) || (strpos($full, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . str_replace("\r", '', str_replace("\n", '', $full)));
+        header('Location: ' . escape_header($full));
         return;
     }
 

@@ -59,4 +59,4 @@ if (is_null($news_id)) {
 }
 
 $news_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $news_id), get_module_zone('news'));
-header('Location: ' . $news_url->evaluate());
+header('Location: ' . escape_header($news_url->evaluate()));

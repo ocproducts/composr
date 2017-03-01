@@ -196,7 +196,7 @@ You have the following template variables available to you (beyond all the defau
  - [b]title[/b], The subject line of the e-mail (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL.tpl[/tt] template)
  - [b]forename[/b], The forename of the subscriber (may be blank if it is not known)
  - [b]surname[/b], The surname of the subscriber (may be blank if it is not known)
- - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER[/tt] language string -- depending on what data is available on the reader)
+ - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER_DEFAULT_NAME[/tt] language string -- depending on what data is available on the reader)
  - [b]member_id[/b], The member ID of the subscriber, or blank if there is no discerned member ID
  - [b]email_address[/b], The e-mail address of the subscriber
  - [b]sendid[/b], A special code identifying the subscriber (starts with [tt]m[/tt] if it is a member, or [tt]n[/tt] if it is a newsletter subscriber)
