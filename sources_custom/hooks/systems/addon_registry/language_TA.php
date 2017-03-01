@@ -139,10 +139,6 @@ Translations may also be downloaded directly from Transifex.';
         return array(
             'sources_custom/hooks/systems/addon_registry/language_TA.php',
             'sources_custom/lang_filter_TA.php',
-            'adminzone/pages/comcode_custom/TA/netlink.txt',
-            'adminzone/pages/comcode_custom/TA/start.txt',
-            'collaboration/pages/comcode_custom/TA/about.txt',
-            'collaboration/pages/comcode_custom/TA/start.txt',
             'data_custom/modules/cms_comcode_pages/TA/rules_balanced.txt',
             'data_custom/modules/cms_comcode_pages/TA/rules_corporate.txt',
             'data_custom/modules/cms_comcode_pages/TA/rules_liberal.txt',
