@@ -186,7 +186,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
         return;
     }
 
-    if (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_param_integer('keep_no_notifications', 0) == 1)) {
+    if ((function_exists('get_member')) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_param_integer('keep_no_notifications', 0) == 1)) {
         return;
     }
 

@@ -138,6 +138,7 @@ Translations may also be downloaded directly from Transifex.';
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/language_TA.php',
+            'sources_custom/lang_filter_TA.php',
             'adminzone/pages/comcode_custom/TA/netlink.txt',
             'adminzone/pages/comcode_custom/TA/start.txt',
             'collaboration/pages/comcode_custom/TA/about.txt',
@@ -156,7 +157,6 @@ Translations may also be downloaded directly from Transifex.';
             'site/pages/comcode_custom/TA/popup_blockers.txt',
             'site/pages/comcode_custom/TA/userguide_chatcode.txt',
             'site/pages/comcode_custom/TA/userguide_comcode.txt',
-            'text_custom/TA/synonyms.txt',
             'text_custom/TA/too_common_words.txt',
             'lang_custom/TA/banners.ini',
             'lang_custom/TA/ecommerce.ini',

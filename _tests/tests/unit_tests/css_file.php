@@ -266,6 +266,8 @@ class css_file_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'active_item',
+            'thick_border',
             'access_restricted_in_list',
             'activated_quote_button',
             'activities_content__remove_failure',
