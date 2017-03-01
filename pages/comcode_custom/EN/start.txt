@@ -203,7 +203,7 @@
 	</div>
 
 	<div class="cntRow">
-		{$BLOCK,block=main_news,title=Latest News,fallback_full=6,fallback_archive=0,param=0}
+		{$BLOCK,block=main_news,title=Latest News,fallback_full=5,fallback_archive=0,param=0}
 
 		{$BLOCK,block=main_newsletter_signup,title=Newsletter Sign up}
 	</div>

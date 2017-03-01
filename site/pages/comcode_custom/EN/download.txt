@@ -100,6 +100,7 @@
 
 				<div class="niceBoxInner">
 					<p>Instead of using this page, you should login to your Admin Zone. You'll see a link to upgrade there.</p>
+					<p>Upgrading from ocPortal? You need to use a <a href="https://compo.sr/news/view/announcements/upgrading-from-ocportal.htm">special omni-upgrader</a>.</p>
 				</div>
 			</div>
 		</div>
