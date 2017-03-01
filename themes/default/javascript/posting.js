@@ -130,15 +130,15 @@ function set_attachment(field_name,number,filename,multi,uploader_settings)
 					comcode,
 					document.selection?document.selection:null
 				);
-
-				// Add field for next one
-				var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
-				if (add_another_field)
-				{
-					add_attachment(window.num_attachments+1,field_name);
-				}
 			}
 			if (suffix!='') insert_textbox(post,suffix);
+
+			// Add field for next one
+			var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
+			if (add_another_field)
+			{
+				add_attachment(window.num_attachments+1,field_name);
+			}
 
 			if (typeof uploader_settings!='undefined')
 			{
