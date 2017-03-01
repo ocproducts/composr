@@ -33,6 +33,8 @@ function init__chat()
 
     if (!defined('CHAT_ACTIVITY_PRUNE')) {
         define('CHAT_ACTIVITY_PRUNE', 25); // How many seconds before doing database cleanup operations, including member timeouts for going offline. NB: This define is duplicated in chat_poller.php for performance
+    }
+    if (!defined('CHAT_EVENT_PRUNE')) {
         define('CHAT_EVENT_PRUNE', 60 * 60 * 24); // How many seconds to keep event messages for
     }
 }

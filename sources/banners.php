@@ -105,7 +105,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if (url_is_local($img_url)) {
             $img_url = get_custom_base_url() . '/' . $img_url;
         }
-        header('Location: ' . $img_url);
+        header('Location: ' . escape_header($img_url));
     } elseif ($type == 'click') {
         // Input parameters
         if ($source === null) {
@@ -180,7 +180,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if ((strpos($url, "\n") !== false) || (strpos($url, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . $url);
+        header('Location: ' . escape_header($url));
     } // Being called to display a banner
     else {
         if ($dest === null) {

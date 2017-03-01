@@ -116,7 +116,7 @@ function disable_content_translation()
         // Create fulltext search index
         $GLOBALS['SITE_DB']->create_index($field['m_table'], '#' . $field['m_name'], array($field['m_name']));
 
-        reload_lang_fields(true);
+        reload_lang_fields(true, $field['m_table']);
     }
 
     global $HAS_MULTI_LANG_CONTENT;
@@ -223,7 +223,7 @@ function enable_content_translation()
             $db->_query($query);
         }
 
-        reload_lang_fields(true);
+        reload_lang_fields(true, $field['m_table']);
     }
 
     global $HAS_MULTI_LANG_CONTENT;

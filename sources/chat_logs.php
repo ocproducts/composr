@@ -87,7 +87,7 @@ function chat_logs_script()
     if ((strpos($room_name, "\n") !== false) || (strpos($room_name, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+    header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
     if (cms_srv('REQUEST_METHOD') == 'HEAD') {
         return;

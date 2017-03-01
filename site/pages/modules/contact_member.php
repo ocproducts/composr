@@ -131,7 +131,7 @@ class Module_contact_member
         $type = get_param_string('type', 'browse');
 
         $member_id = get_param_integer('id');
-        if (($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address') == '') || ((get_option('allow_email_disable') == '1') && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_allow_emails') == 0)) || (is_guest($member_id))) {
+        if (($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address') == '') || ((get_option('allow_email_disable') == '1') && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_allow_emails') == 0)) || (is_guest($member_id)) || ($GLOBALS['FORUM_DRIVER']->is_banned($member_id))) {
             warn_exit(do_lang_tempcode('NO_ACCEPT_EMAILS'));
         }
 

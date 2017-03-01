@@ -384,6 +384,7 @@ div.cns_table_footer>div>div {
 		{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 	/*{+END}*/
 	margin: 1em 0;
+	max-width: 100%;
 }
 
 .cns_topic_post_avatar {

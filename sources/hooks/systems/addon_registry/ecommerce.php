@@ -812,7 +812,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'TIME' => placeholder_date(),
                 'STATE' => lorem_word(),
-                'DELIVERABLE' => lorem_word(),
+                'DELIVERABLE' => true,
                 'PAYABLE' => lorem_word(),
                 'NOTE' => lorem_phrase(),
                 'TYPE_CODE' => lorem_word(),

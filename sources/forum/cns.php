@@ -1367,7 +1367,7 @@ class Forum_driver_cns extends Forum_driver_base
                 return $id;
             }
         }
-        $row = $this->connection->query_select('f_members', array('*'), array('m_email_address' => $email_address), '', 1);
+        $row = $this->connection->query_select('f_members', array('*'), array('m_email_address' => $email_address), 'ORDER BY m_is_perm_banned,m_join_time DESC', 1);
         if (!array_key_exists(0, $row)) {
             return null;
         }
