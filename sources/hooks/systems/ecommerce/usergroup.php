@@ -203,7 +203,7 @@ class Hook_ecommerce_usergroup
 
             $pretty_name = do_lang_tempcode('NEW_UGROUP_SUB_FOR');
             $description = do_lang_tempcode('DESCRIPTION_NEW_UGROUP_SUB_FOR');
-            $fields_inner->attach(form_input_username($pretty_name, $description, 'username', '', true, true));
+            $fields_inner->attach(form_input_username($pretty_name, $description, 'username', '', true, true)); // This is handled as a special case in admin_ecommerce_logs.php
 
             $fields->attach(alternate_fields_set__end('options', do_lang_tempcode('SUBSCRIPTION'), '', $fields_inner, true));
         }
@@ -211,6 +211,23 @@ class Hook_ecommerce_usergroup
         ecommerce_attach_memo_field_if_needed($fields);
 
         return array(null, null, null);
+    }
+
+    /**
+     * Get the filled in fields and do something with them.
+     * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
+     */
+    public function handle_needed_fields($type_code, $from_admin = false)
+    {
+        if (($from_admin) && (post_param_string('purchase_id', null) !== null)) {
+            return array(post_param_string('purchase_id'), null);
+        }
+
+        return array('', null);
     }
 
     /**

@@ -92,7 +92,8 @@ class Hook_ecommerce_community_billboard
      * @param  integer $req_quantity The number required.
      * @param  boolean $must_be_listed Whether the product must be available for public listing.
      * @return integer The availability code (a ECOMMERCE_PRODUCT_* constant).
-     */
+     */include 'classifieds.php';
+     
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
         if (get_option('is_on_community_billboard_buy') == '0') {
@@ -147,14 +148,16 @@ class Hook_ecommerce_community_billboard
 
     /**
      * Get the filled in fields and do something with them.
+     * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
      *
      * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
      * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
-    public function handle_needed_fields($type_code)
+    public function handle_needed_fields($type_code, $from_admin = false)
     {
         $member_id = get_member();
-        $message = post_param_string('message');
+        $message = post_param_string('message', '');
 
         $e_details = json_encode(array($member_id, $message));
 

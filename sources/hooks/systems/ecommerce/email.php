@@ -456,11 +456,13 @@ class Hook_ecommerce_email
 
     /**
      * Get the filled in fields and do something with them.
+     * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
      *
      * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
      * @return array A pair: The purchase ID, a confirmation box to show (null no specific confirmation).
      */
-    public function handle_needed_fields($type_code)
+    public function handle_needed_fields($type_code, $from_admin = false)
     {
         $member_id = get_member();
 
@@ -468,7 +470,10 @@ class Hook_ecommerce_email
             case 'POP3':
                 $suffix = preg_replace('#^POP3\_#', '', $type_code);
 
-                $prefix = post_param_string('email_prefix');
+                $prefix = post_param_string('email_prefix', $from_admin ? '' : false);
+                if ($prefix == '') {
+                    return array('', null); // Default is blank
+                }
                 $pass1 = post_param_string('pass1');
                 $pass2 = post_param_string('pass2');
 
@@ -494,7 +499,10 @@ class Hook_ecommerce_email
             case 'FORWARDING':
                 $suffix = preg_replace('#^FORWARDING\_#', '', $type_code);
 
-                $email = post_param_string('email');
+                $email = post_param_string('email', $from_admin ? '' : false);
+                if ($email == '') {
+                    return array('', null); // Default is blank
+                }
                 $prefix = post_param_string('email_prefix');
 
                 // Does the prefix contain valid characters?

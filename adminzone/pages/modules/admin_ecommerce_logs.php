@@ -333,7 +333,7 @@ class Module_admin_ecommerce_logs
         $default_purchase_id = get_param_string('id', null);
         if ($default_purchase_id === null) {
             if (method_exists($product_object, 'handle_needed_fields')) {
-                list($default_purchase_id) = $product_object->handle_needed_fields($type_code);
+                list($default_purchase_id) = $product_object->handle_needed_fields($type_code, true);
             } else {
                 $default_purchase_id = strval(get_member());
             }
@@ -369,13 +369,10 @@ class Module_admin_ecommerce_logs
 
         list($details, $product_object) = find_product_details($type_code);
 
-        $purchase_id = post_param_string('purchase_id', null);
-        if ($purchase_id === null) {
-            if (method_exists($product_object, 'handle_needed_fields')) {
-                $purchase_id = $product_object->handle_needed_fields($type_code);
-            } else {
-                $purchase_id = '';
-            }
+        if (method_exists($product_object, 'handle_needed_fields')) {
+            $purchase_id = $product_object->handle_needed_fields($type_code, true);
+        } else {
+            $purchase_id = '';
         }
 
         $memo = post_param_string('memo', '');

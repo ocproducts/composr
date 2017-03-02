@@ -68,8 +68,13 @@ class Hook_ecommerce_work
     {
         $fields = new Tempcode();
 
+        $where = array('i_type_code' => $type_code);
+        if (!$from_admin) {
+            $where['i_member_id'] = get_member();
+        }
+
         $list = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_type_code' => $type_code), 'ORDER BY id DESC');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), $where, 'ORDER BY id DESC');
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
             if ($username === null) {
@@ -83,6 +88,19 @@ class Hook_ecommerce_work
         ecommerce_attach_memo_field_if_needed($fields);
 
         return array($fields, null, null);
+    }
+
+    /**
+     * Get the filled in fields and do something with them.
+     * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
+     */
+    public function handle_needed_fields($type_code, $from_admin = false)
+    {
+        return array(post_param_string('purchase_id'), null);
     }
 
     /**

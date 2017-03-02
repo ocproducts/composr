@@ -258,11 +258,13 @@ class Hook_ecommerce_banners
 
     /**
      * Get the filled in fields and do something with them.
+     * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
      *
      * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
      * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
-    public function handle_needed_fields($type_code)
+    public function handle_needed_fields($type_code, $from_admin = false)
     {
         require_lang('banners');
 
@@ -272,7 +274,11 @@ class Hook_ecommerce_banners
 
                 require_code('uploads');
 
-                $name = post_param_string('name');
+                $name = post_param_string('name', $from_admin ? '' : false);
+                if ($name == '') {
+                    return array('', null); // Default is blank
+                }
+
                 $urls = get_url('image_url', 'file', 'uploads/banners', 0, CMS_UPLOAD_IMAGE);
                 $image_url = $urls[0];
                 $site_url = post_param_string('site_url');

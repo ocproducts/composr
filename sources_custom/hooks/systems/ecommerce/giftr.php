@@ -136,15 +136,21 @@ class Hook_ecommerce_giftr
 
     /**
      * Get the filled in fields and do something with them.
+     * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
      *
      * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
      * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
      */
-    public function handle_needed_fields($type_code)
+    public function handle_needed_fields($type_code, $from_admin = false)
     {
-        $to_member = post_param_string('username', '');
+        $to_member = post_param_string('username', $from_admin ? '' : false);
         $gift_message = post_param_string('gift_message', '');
         $anonymous = post_param_integer('anonymous', 0);
+
+        if ($to_member == '') {
+            return array('', null); // Default is blank
+        }
 
         $e_details = json_encode(array(get_member(), $to_member, $gift_message, $anonymous));
         $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_sales_expecting', array('e_details' => $e_details, 'e_time' => time()), true));
