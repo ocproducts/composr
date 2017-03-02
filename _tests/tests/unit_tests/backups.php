@@ -77,5 +77,7 @@ $SITE_INFO[\'table_prefix\'] = \'bt_\';
         $db = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), 'bt_');
         $count = $db->query_select_value('zones', 'COUNT(*)');
         $this->assertTrue($count > 0, 'Failed to restore database');
+
+        deldir_contents($temp_test_dir_full);
     }
 }
