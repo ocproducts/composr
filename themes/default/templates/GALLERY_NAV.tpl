@@ -10,7 +10,7 @@
 
 	{$REQUIRE_JAVASCRIPT,ajax}
 
-	<div class="trinav_wrap">
+	<div class="trinav_wrap" id="gallery_nav">
 		<div class="trinav_left" onclick="/*Access-note: code has other activation*/ cancel_bubbling(event);">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
