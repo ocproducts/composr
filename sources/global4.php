@@ -272,10 +272,10 @@ function member_personal_links_and_details($member_id)
     // Admin Zone link
     if (get_option('show_personal_adminzone_link') == '1') {
         if (has_zone_access($member_id, 'adminzone')) {
-            $url = build_url(array('page' => ''), 'adminzone');
+            $url = build_url(array('page' => '', 'keep_theme' => null), 'adminzone');
             $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => 'ae243058f780f9528016f7854763a5fa', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'ACCESSKEY' => 'I', 'NAME' => do_lang_tempcode('ADMIN_ZONE'), 'URL' => $url)));
         } else {
-            $url = build_url(array('page' => ''), 'cms');
+            $url = build_url(array('page' => '', 'keep_theme' => null), 'cms');
             $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '3f63dad2645b6c39f68dcfebe7d7a0ab', 'ACCESSKEY' => 'I', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'NAME' => do_lang_tempcode('CMS'), 'URL' => $url)));
         }
     }
