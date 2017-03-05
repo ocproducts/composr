@@ -46,7 +46,7 @@ class Hook_addon_registry_google_search
      */
     public function get_category()
     {
-        return 'New Features';
+        return 'Development';
     }
 
     /**
@@ -88,7 +88,9 @@ class Hook_addon_registry_google_search
     {
         return 'Embed Google site search onto your site.
 
-This addon consists of two blocks: a side block with the google search form and a main block, where google results are displayed. When you install this addon it will create a standard results page called _google_search; this page can be edited or customised in the same way as any other page. In addition you can create your own page or put a main_google_results block on an existing page. When you add the side_google_search block you can choose a page_name parameter, but it is only needed if you are sending the results to a non-default page you have added the google results block on. [code="Comcode"][block]side_google_search[/block][/code]Note that it is a requirement that your _google_search page is in a zone where the side search block displays, as these two interface together once a search is initiated.';
+This addon consists of two blocks: a side block with the google search form and a main block, where google results are displayed. When you install this addon it will create a standard results page called _google_search; this page can be edited or customised in the same way as any other page. In addition you can create your own page or put a main_google_results block on an existing page. When you add the side_google_search block you can choose a page_name parameter, but it is only needed if you are sending the results to a non-default page you have added the google results block on. [code="Comcode"][block]side_google_search[/block][/code]Note that it is a requirement that your _google_search page is in a zone where the side search block displays, as these two interface together once a search is initiated.
+        
+This addon has been moved to the "Development" category as it now needs custom templating work on [tt]BLOCK_SIDE_GOOGLE_SEARCH.tpl[/tt]. Google deprecated the "Linked Custom Search Engine" feature (the feature to define a search engine parameters directly within HTML), meaning you need to edit that template to use the code for your own custom configured search engine. Google supplies that code for you.';
     }
 
     /**

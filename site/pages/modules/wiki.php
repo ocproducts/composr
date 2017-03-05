@@ -151,10 +151,10 @@ class Module_wiki
 
             $GLOBALS['SITE_DB']->add_table_field('wiki_pages', 'edit_date', '?TIME');
 
-            rename_config_option('is_on_wiki', 'is_on_seedy');
-            rename_config_option('points_wiki', 'points_cedi');
-            rename_config_option('wiki_show_stats_count_pages', 'cedi_show_stats_count_pages');
-            rename_config_option('wiki_show_stats_count_posts', 'cedi_show_stats_count_posts');
+            rename_config_option('is_on_seedy', 'is_on_wiki');
+            rename_config_option('points_cedi', 'points_wiki');
+            rename_config_option('cedi_show_stats_count_pages', 'wiki_show_stats_count_pages');
+            rename_config_option('cedi_show_stats_count_posts', 'wiki_show_stats_count_posts');
 
             rename_privilege('seedy_manage_tree', 'wiki_manage_tree');
             rename_privilege('seedy_edit_pages', 'wiki_edit_pages');
@@ -178,6 +178,8 @@ class Module_wiki
                     $GLOBALS['SITE_DB']->query_update($table, array('c_name' => '_wiki_post'), array('c_name' => '_seedy_post'));
                 }
             }
+            $GLOBALS['SITE_DB']->query_update('catalogue_entry_linkage', array('content_type' => 'wiki_page'), array('content_type' => 'cedi_page'));
+            $GLOBALS['SITE_DB']->query_update('catalogue_entry_linkage', array('content_type' => 'wiki_post'), array('content_type' => 'cedi_post'));
 
             $GLOBALS['SITE_DB']->drop_table_if_exists('seedy_changes');
 

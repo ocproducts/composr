@@ -36,7 +36,6 @@ class Module_admin_cns_ldap
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
-        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }

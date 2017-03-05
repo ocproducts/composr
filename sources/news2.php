@@ -257,7 +257,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     if (is_null($main_news_category)) {
         $main_news_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'id', array('nc_owner' => $submitter));
         if (is_null($main_news_category_id)) {
-            if (!has_privilege(get_member(), 'have_personal_category', 'cms_news')) {
+            if ((!has_privilege(get_member(), 'have_personal_category', 'cms_news')) && (!running_script('stress_test_loader'))) {
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
 

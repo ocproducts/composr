@@ -121,8 +121,8 @@
 	vertical-align: bottom; /* Removes gap under this centered inline image, by moving it to baseline */
 
 	/* Maybe the thumbnail size has been reduced at some point - guard against this */
-	max-width: {$GET,gallery_thumb_size};
-	max-height: {$GET,gallery_thumb_size};
+	max-width: {$GET,gallery_thumb_size} !important;
+	max-height: {$GET,gallery_thumb_size} !important;
 }
 
 

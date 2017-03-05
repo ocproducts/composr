@@ -37,7 +37,6 @@ class Module_admin_cleanup
         $info['hack_version'] = null;
         $info['version'] = 3;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = true;
         return $info;
     }
 

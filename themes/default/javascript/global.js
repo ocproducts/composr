@@ -2190,7 +2190,7 @@ function _modsecurity_workaround(data)
 function convert_tooltip(element)
 {
 	var title=element.title;
-	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
+	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (element.parentNode.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
 	{
 		// Remove old tooltip
 		if (element.nodeName=='img' && element.alt=='') element.alt=element.title;
