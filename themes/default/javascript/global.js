@@ -2258,7 +2258,7 @@ function clear_out_tooltips(tooltip_being_opened)
 
 function preactivate_rich_semantic_tooltip(ob,event,have_links)
 {
-	if (typeof ob.ttitle=='undefined') ob.ttitle=ob.title;
+	if (typeof ob.ttitle=='undefined') ob.ttitle=((typeof ob.attributes['data-title']!='undefined')?ob.getAttribute('data-title'):ob.title);
 	ob.title='';
 	ob.onmouseover=null;
 	ob.onclick=function() { activate_rich_semantic_tooltip(ob,event,have_links); };

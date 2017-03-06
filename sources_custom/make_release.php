@@ -891,7 +891,7 @@ function make_install_sql()
     require_code('install_headless');
     $test = do_install_to($database, $username, $password, $table_prefix, true, 'cns', null, null, null, null, null, null, false);
     if (!$test) {
-        warn_exit('Failed to execute installer, while building install.sql. It\'s likely that recursive write file permissions need setting.');
+        warn_exit(protect_from_escaping('Failed to execute installer, while building <kbd>install.sql</kbd>. It\'s likely that recursive write file permissions need setting.'));
     }
 
     // Get database connection
