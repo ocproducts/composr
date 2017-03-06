@@ -37,7 +37,6 @@ class Block_main_rss
         $info['hack_version'] = null;
         $info['version'] = 3;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = true;
         $info['parameters'] = array('param', 'max_entries', 'title', 'copyright');
         return $info;
     }

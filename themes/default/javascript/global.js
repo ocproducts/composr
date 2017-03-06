@@ -2190,7 +2190,7 @@ function _modsecurity_workaround(data)
 function convert_tooltip(element)
 {
 	var title=element.title;
-	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
+	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (element.parentNode.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
 	{
 		// Remove old tooltip
 		if (element.nodeName=='img' && element.alt=='') element.alt=element.title;
@@ -2421,7 +2421,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 
 		ac.tooltip_on=true;
 		tooltip_element.style.display='block';
-		if (tooltip_element.style.width=='auto')
+		if ((tooltip_element.style.width=='auto') && ((tooltip_element.childNodes.length>1) || (tooltip_element.childNodes[0].nodeName.toLowerCase()!='img')))
 			tooltip_element.style.width=(find_width(tooltip_element,true)+1/*for rounding issues from em*/)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
 		if (!no_delay)

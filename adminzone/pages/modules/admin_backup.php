@@ -319,13 +319,14 @@ class Module_admin_backup
      */
     public function make_backup()
     {
+        require_code('crypt');
         $b_type = post_param_string('b_type', 'full');
         if ($b_type == 'full') {
-            $file = 'Backup_full_' . date('Y-m-d', utctime_to_usertime()) . '__' . uniqid('', true); // The last bit is unfortunate, but we need to stop URL guessing
+            $file = 'Backup_full_' . date('Y-m-d', utctime_to_usertime()) . '__' . get_rand_password(); // The last bit is unfortunate, but we need to stop URL guessing
         } elseif ($b_type == 'incremental') {
-            $file = 'Backup_incremental' . date('Y-m-d', utctime_to_usertime()) . '__' . uniqid('', true); // The last bit is unfortunate, but we need to stop URL guessing
+            $file = 'Backup_incremental' . date('Y-m-d', utctime_to_usertime()) . '__' . get_rand_password(); // The last bit is unfortunate, but we need to stop URL guessing
         } elseif ($b_type == 'sql') {
-            $file = 'Backup_database' . date('Y-m-d', utctime_to_usertime()) . '__' . uniqid('', true); // The last bit is unfortunate, but we need to stop URL guessing
+            $file = 'Backup_database' . date('Y-m-d', utctime_to_usertime()) . '__' . get_rand_password(); // The last bit is unfortunate, but we need to stop URL guessing
         } else {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

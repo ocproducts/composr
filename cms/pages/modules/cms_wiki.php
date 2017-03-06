@@ -39,7 +39,6 @@ class Module_cms_wiki
         $info['hack_version'] = null;
         $info['version'] = 4;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -259,7 +258,7 @@ class Module_cms_wiki
             }
 
             if (has_tied_catalogue('wiki_page')) {
-                append_form_custom_fields('wiki_page', ($page_id == -1) ? null : strval($page_id), $fields, $hidden);
+                append_form_custom_fields('wiki_page', ($page_id == -1) ? null : strval($page_id), $fields2, $hidden);
             }
         }
 

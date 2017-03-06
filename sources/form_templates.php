@@ -198,7 +198,6 @@ function attach_wysiwyg()
         attach_to_javascript(do_template('WYSIWYG_LOAD'));
     }
     $WYSIWYG_ATTACHED = true;
-    @header('Content-type: text/html; charset=' . get_charset());
 }
 
 /**

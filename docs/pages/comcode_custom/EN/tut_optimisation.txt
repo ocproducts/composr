@@ -547,5 +547,6 @@ Find the hooks that run by looking in [tt]sources/hooks/systems/cron[/tt].
  - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
  - https://www.woorank.com
+ - https://compo.sr/tracker/tag_view_page.php?tag_id=16
 
 {$SET,tutorial_tags,Performance,textbased_persistent_caching,cloudinary,failover,hphp_buildkit,Maintenance,Development,Power tools,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr is very heavily optimised for high performance out-of-the-box, but here are some advanced performance tips.}[block]main_tutorial_rating[/block]

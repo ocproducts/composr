@@ -45,6 +45,8 @@
 					{+END}
 					if (document.getElementById('next_slide'))
 					{
+						media.preload='auto';
+						media.loop=false;
 						media.addEventListener('canplay',function() { stop_slideshow_timer(); player.play(); });
 						media.addEventListener('ended',function() { player_stopped(); });
 					}
