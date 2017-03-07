@@ -614,12 +614,16 @@ function find_tags_in_editor(editor, element) {
                         self_ob.is_over = true;
 
                         var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + keep_stub());
-                        if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
-                        var request = do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+                        if (window.location.href.indexOf('topics') != -1) {
+                            url += '&forum_db=1';
+                        }
+
+                        do_ajax_request(url, function (ajax_result_frame, ajax_result) {
                             if (ajax_result) {
                                 var tmp_rendered = merge_text_nodes(ajax_result.childNodes);
-                                if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;^}') == -1)
+                                if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
                                     self_ob.rendered_tooltip = tmp_rendered;
+                                }
                             }
                             if (self_ob.rendered_tooltip !== undefined) {
                                 if (self_ob.is_over) {

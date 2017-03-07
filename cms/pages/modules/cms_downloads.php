@@ -33,28 +33,7 @@ class Module_cms_downloads extends Standard_crud_module
     public $user_facing = true;
     public $seo_type = 'downloads_download';
     public $upload = 'file';
-    public $javascript = /** @lang JavaScript */ "
-        var url = document.getElementById('file__url');
-        var form = file_size.form;
-        var crf = function () {
-            var s = url.value != '';
-            if (form.elements['copy_to_server']) form.elements['copy_to_server'].disabled = !s;
-            if (form.elements['file_size']) form.elements['file_size'].disabled = !s;
-        };
-        crf();
-        url.onchange = crf;
-        url.onkeyup = crf;
-        var cost = document.getElementById('cost');
-        if (cost) {
-            form = cost.form;
-            var crf2 = function () {
-                var s = (cost.value != '') && (cost.value != '0');
-                if (form.elements['submitter_gets_points']) form.elements['submitter_gets_points'].disabled = !s;
-            };
-            crf2();
-            cost.onchange = crf2;
-            cost.onkeyup = crf2;
-        }";
+    public $javascript = /** @lang JavaScript */'$cms.requireJavascript("downloads").then(function () { $cms.functions.module_CmsDownloads() });';
     public $content_type = 'download';
     public $menu_label = 'SECTION_DOWNLOADS';
     public $table = 'download_downloads';

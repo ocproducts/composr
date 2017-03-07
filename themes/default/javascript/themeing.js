@@ -593,20 +593,20 @@ function set_up_parent_page_highlighting(file, file_id) {
         } else  {// IE
             css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
         }
-        li.onmouseout = function (event) {
+        li.addEventListener('mouseout', function (event) {
             deactivate_tooltip(this);
-        };
-        li.onmousemove = function (event) {
+        });
+        li.addEventListener('mousemove', function (event) {
             reposition_tooltip(this, event);
-        };
-        li.onmouseover = function (css_text) {
+        });
+        li.addEventListener('mouseover', function (css_text) {
             return function (event) {
                 activate_tooltip(this, event, css_text, 'auto');
             }
-        }(css_text);
+        }(css_text));
 
         // Jump-to
-        a.onclick = function (selector) {
+        a.addEventListener('click', function (selector) {
             return function (event) {
                 cancel_bubbling(event);
                 editarea_do_search(
@@ -615,10 +615,10 @@ function set_up_parent_page_highlighting(file, file_id) {
                 ); // Opera does not support \s
                 return false;
             }
-        }(selector);
+        }(selector));
 
         // Highlighting on parent page
-        a.onmouseover = function (selector) {
+        a.addEventListener('onmouseover', function (selector) {
             return function (event) {
                 if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
                     var elements = find_selectors_for(window.opener, selector);
@@ -628,8 +628,8 @@ function set_up_parent_page_highlighting(file, file_id) {
                     }
                 }
             }
-        }(selector);
-        a.onmouseout = function (selector) {
+        }(selector));
+        a.addEventListener('mouseout', function (selector) {
             return function (event) {
                 if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
                     var elements = find_selectors_for(window.opener, selector);
@@ -639,7 +639,7 @@ function set_up_parent_page_highlighting(file, file_id) {
                     }
                 }
             }
-        }(selector);
+        }(selector));
 
         // Highlighting from parent page
         elements = find_selectors_for(window.opener, selector);

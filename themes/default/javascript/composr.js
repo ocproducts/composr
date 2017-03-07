@@ -1023,6 +1023,7 @@ var encodeUC = encodeURIComponent;
         return strVal(url).replace(rgxHttp, window.location.protocol);
     }
 
+    /* Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click) */
     function navigate(url, target) {
         var el;
 
@@ -5797,8 +5798,7 @@ function register_mouse_listener(e) {
             } else if (event.clientX) {
                 return event.clientX + window.pageXOffset;
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
 
         return 0;
     }
@@ -5878,6 +5878,8 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
 }
 
 (function (){
+    'use strict';
+
     window.modsecurity_workaround = modsecurity_workaround;
     window.modsecurity_workaround_ajax = modsecurity_workaround_ajax;
 
@@ -6014,21 +6016,17 @@ function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_del
 
     // Add in move/leave events if needed
     if (!have_links) {
-        if (!el.onmouseout) {
-            el.onmouseout = function () {
-                win.deactivate_tooltip(el);
-            };
-        }
-        if (!el.onmousemove) {
-            el.onmousemove = function (event) {
-                win.reposition_tooltip(el, event, false, false, null, false, win);
-            };
-        }
-    } else {
-        el.old_onclick = el.onclick;
-        el.onclick = function () {
+        el.addEventListener('mouseout', function () {
             win.deactivate_tooltip(el);
-        };
+        });
+
+        el.addEventListener('mousemove', function () {
+            win.reposition_tooltip(el, event, false, false, null, false, win);
+        });
+    } else {
+        el.addEventListener('click', function () {
+            win.deactivate_tooltip(el);
+        });
     }
 
     if (typeof tooltip === 'function') {
@@ -6245,7 +6243,7 @@ function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_
 function deactivate_tooltip(el, tooltip_element) {
     el.is_over = false;
 
-    if (el.tooltip_id === undefined) {
+    if (el.tooltip_id == null) {
         return;
     }
 
@@ -6253,10 +6251,6 @@ function deactivate_tooltip(el, tooltip_element) {
 
     if (tooltip_element) {
         $cms.dom.hide(tooltip_element);
-    }
-
-    if (el.old_onclick !== undefined) {
-        el.onclick = el.old_onclick;
     }
 }
 
@@ -6449,36 +6443,10 @@ function ga_track(el, category, action) {
 
     if (el) {
         setTimeout(function () {
-            click_link(el);
+            $cms.navigate(el);
         }, 100);
 
         return false;
-    }
-}
-
-/* Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click) */
-function click_link(link) {
-    var old, cancelled;
-
-    if (link && (link.localName !== 'a') && (link.localName !== 'input')) {
-        link = link.querySelector('a, input');
-    }
-
-    if (!link) {
-        return;
-    }
-
-    old = link.onclick;
-    link.onclick = null;
-    cancelled = !$cms.dom.trigger(link, {type: 'click', bubbles: false});
-    link.onclick = old;
-
-    if (!cancelled && link.href) {
-        if (!link.target || (link.target === '_self')) {
-            window.location = link.href;
-        } else {
-            window.open(link.href, link.target);
-        }
     }
 }
 
@@ -6497,8 +6465,9 @@ function set_up_change_monitor(container) {
 
 
 function find_if_children_set(container) {
-    var value, blank = true, el;
-    var elements = $cms.dom.$$(container, 'input, select, textarea');
+    var value, blank = true, el,
+        elements = $cms.dom.$$(container, 'input, select, textarea');
+
     for (var i = 0; i < elements.length; i++) {
         el = elements[i];
         if (((el.type === 'hidden') || ((el.style.display === 'none') && !is_wysiwyg_field(el))) && !el.classList.contains('hidden_but_needed')) {
@@ -6898,8 +6867,8 @@ function faux_showModalDialog(url, name, options, callback, target, cancel_text)
         }
     }
 
-    if (url.indexOf(window.location.host) !== -1) {
-        url += ((url.indexOf('?') == -1) ? '?' : '&') + 'overlay=1';
+    if (url.includes(window.location.host)) {
+        url += (!url.includes('?') ? '?' : '&') + 'overlay=1';
     }
 
     var my_frame = {
@@ -7238,7 +7207,10 @@ function faux_open(url, name, options, target, cancel_text) {
         }
 
         var ajax_url = url;
-        if (new_block_params != '') ajax_url += '&block_map_sup=' + encodeUC(new_block_params);
+        if (new_block_params != '') {
+            ajax_url += '&block_map_sup=' + encodeUC(new_block_params);
+        }
+
         ajax_url += '&utheme=' + $cms.$THEME;
         if ((_blockDataCache[ajax_url] !== undefined) && post_params == null) {
             // Show results from cache
@@ -7604,7 +7576,9 @@ function faux_open(url, name, options, target, cancel_text) {
                         current_list_for_copy.down_once = true;
                         list.selectedIndex = 0;
                     } else {
-                        if (list.selectedIndex > 0) list.selectedIndex--;
+                        if (list.selectedIndex > 0) {
+                            list.selectedIndex--;
+                        }
                     }
                     list.options[list.selectedIndex].selected = true;
                     return cancel_bubbling(event);
@@ -7637,642 +7611,620 @@ function faux_open(url, name, options, target, cancel_text) {
 }());
 
 
-/* Validation code and other general code relating to forms */
+(function (){
+    /* Validation code and other general code relating to forms */
+    'use strict';
 
-"use strict";
+    window.radio_value = radio_value;
+    window.set_field_error = set_field_error;
+    window.do_form_submit = do_form_submit;
+    window.do_form_preview = do_form_preview;
+    window.is_wysiwyg_field = is_wysiwyg_field;
+    window.clever_find_value = clever_find_value;
+    window.check_form = check_form;
+    window.set_locked = set_locked;
+    window.set_required = set_required;
+    window.disable_preview_scripts = disable_preview_scripts;
 
-function password_strength(el) {
-    if (el.name.includes('2') || el.name.includes('confirm')) {
-        return;
-    }
-
-    var _ind = $cms.dom.$('#password_strength_' + el.id);
-    if (!_ind) {
-        return;
-    }
-    var ind = _ind.querySelector('div');
-    var post = 'password=' + encodeUC(el.value);
-    if (el.form && (el.form.elements.username !== undefined)) {
-        post += '&username=' + el.form.elements['username'].value;
-    } else {
-        if (el.form && el.form.elements.edit_username !== undefined) {
-            post += '&username=' + el.form.elements['edit_username'].value;
-        }
-    }
-    var strength = load_snippet('password_strength', post);
-    strength *= 2;
-    if (strength > 10) {  // Normally too harsh!
-        strength = 10;
-    }
-    ind.style.width = (strength * 10) + 'px';
-
-    if (strength >= 6) {
-        ind.style.backgroundColor = 'green';
-    }
-    else if (strength < 4) {
-        ind.style.backgroundColor = 'red';
-    }
-    else {
-        ind.style.backgroundColor = 'orange';
-    }
-
-    ind.parentNode.style.display = (el.value.length == 0) ? 'none' : 'block';
-}
-
-
-function radio_value(radios) {
-    for (var i = 0; i < radios.length; i++) {
-        if (radios[i].checked) {
-            return radios[i].value;
-        }
-    }
-    return '';
-}
-
-function set_field_error(the_element, error_msg) {
-    if (the_element.name !== undefined) {
-        var id = the_element.name;
-        var errormsg_element = get_errormsg_element(id);
-        if ((error_msg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) return; // Do not blank out as day/month/year (which comes first) would have already done it
-        if (errormsg_element) {
-            // Make error message visible, if there's an error
-            errormsg_element.style.display = (error_msg == '') ? 'none' : 'block';
-
-            // Changed error message
-            if ($cms.dom.html(errormsg_element) != escape_html(error_msg)) {
-                $cms.dom.html(errormsg_element, '');
-                if (error_msg != '') // If there actually an error
-                {
-                    the_element.setAttribute('aria-invalid', 'true');
-
-                    // Need to switch tab?
-                    var p = errormsg_element;
-                    while (p !== null) {
-                        p = p.parentNode;
-                        if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
-                            select_tab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
-                            break;
-                        }
-                    }
-
-                    // Set error message
-                    var msg_node = document.createTextNode(error_msg);
-                    errormsg_element.appendChild(msg_node);
-                    errormsg_element.setAttribute('role', 'alert');
-
-                    // Fade in
-                    clear_transition_and_set_opacity(errormsg_element, 0.0);
-                    fade_transition(errormsg_element, 100, 30, 4);
-
-                } else {
-                    the_element.setAttribute('aria-invalid', 'false');
-                    errormsg_element.setAttribute('role', '');
-                }
+    function radio_value(radios) {
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                return radios[i].value;
             }
         }
-    }
-    if ((window.is_wysiwyg_field !== undefined) && (is_wysiwyg_field(the_element))) {
-        the_element = the_element.parentNode;
+        return '';
     }
 
-    the_element.classList.remove('input_erroneous');
+    function set_field_error(the_element, error_msg) {
+        if (the_element.name !== undefined) {
+            var id = the_element.name;
+            var errormsg_element = get_errormsg_element(id);
+            if ((error_msg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) return; // Do not blank out as day/month/year (which comes first) would have already done it
+            if (errormsg_element) {
+                // Make error message visible, if there's an error
+                errormsg_element.style.display = (error_msg == '') ? 'none' : 'block';
 
-    if (error_msg != '') {
-        the_element.classList.add('input_erroneous');
-    }
+                // Changed error message
+                if ($cms.dom.html(errormsg_element) != escape_html(error_msg)) {
+                    $cms.dom.html(errormsg_element, '');
+                    if (error_msg != '') // If there actually an error
+                    {
+                        the_element.setAttribute('aria-invalid', 'true');
 
-    function get_errormsg_element(id) {
-        var errormsg_element = $cms.dom.$('#error_' + id);
-        if (!errormsg_element) {
-            errormsg_element = $cms.dom.$('#error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
-        }
-        return errormsg_element;
-    }
-}
-
-function do_form_submit(form, event) {
-    if (!check_form(form, false)) {
-        return false;
-    }
-
-    if (form.old_action) {
-        form.setAttribute('action', form.old_action);
-    }
-    if (form.old_target) {
-        form.setAttribute('target', form.old_target);
-    }
-    if (!form.getAttribute('target')) {
-        form.setAttribute('target', '_top');
-    }
-
-    /* Remove any stuff that is only in the form for previews if doing a GET request */
-    if (form.method.toLowerCase() === 'get') {
-        var i = 0, name, elements = [];
-        for (i = 0; i < form.elements.length; i++) {
-            elements.push(form.elements[i]);
-        }
-        for (i = 0; i < elements.length; i++) {
-            name = elements[i].name;
-            if (name && ((name.substr(0, 11) == 'label_for__') || (name.substr(0, 14) == 'tick_on_form__') || (name.substr(0, 9) == 'comcode__') || (name.substr(0, 9) == 'require__'))) {
-                elements[i].parentNode.removeChild(elements[i]);
-            }
-        }
-    }
-    if (form.onsubmit) {
-        var ret = form.onsubmit.call(form, event);
-        if (!ret) {
-            return false;
-        }
-    }
-    if (!window.just_checking_requirements) {
-        form.submit();
-    }
-
-    $cms.ui.disableSubmitAndPreviewButtons();
-
-    if (window.detect_interval !== undefined) {
-        window.clearInterval(window.detect_interval);
-        delete window.detect_interval;
-    }
-
-    return true;
-}
-
-function do_form_preview(event, form, preview_url, has_separate_preview) {
-    has_separate_preview = !!has_separate_preview;
-
-    if (!$cms.dom.$id('preview_iframe')) {
-        fauxmodal_alert('{!ADBLOCKER;^}');
-        return false;
-    }
-
-    preview_url += ((window.mobile_version_for_preview === undefined) ? '' : ('&keep_mobile=' + (window.mobile_version_for_preview ? '1' : '0')));
-
-    var old_action = form.getAttribute('action');
-
-    if (!form.old_action) {
-        form.old_action = old_action;
-    }
-    form.setAttribute('action', /*maintain_theme_in_link - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
-    var old_target = form.getAttribute('target');
-    if (!old_target) {
-        old_target = '_top';
-    }
-    /* not _self due to edit screen being a frame itself */
-    if (!form.old_target) {
-        form.old_target = old_target;
-    }
-    form.setAttribute('target', 'preview_iframe');
-
-    if ((window.check_form) && (!check_form(form, true))) {
-        return false;
-    }
-
-    if (form.onsubmit) {
-        var test = form.onsubmit.call(form, event, true);
-        if (!test) {
-            return false;
-        }
-    }
-
-    if ((has_separate_preview) || (window.has_separate_preview)) {
-        form.setAttribute('action', form.old_action + ((form.old_action.indexOf('?') == -1) ? '?' : '&') + 'preview=1');
-        return true;
-    }
-
-    $cms.dom.$id('submit_button').style.display = 'inline';
-
-    /* Do our loading-animation */
-    if (!window.just_checking_requirements) {
-        window.setInterval(window.trigger_resize, 500);
-        /* In case its running in an iframe itself */
-        illustrate_frame_load('preview_iframe');
-    }
-
-    $cms.ui.disableSubmitAndPreviewButtons();
-
-    // Turn main post editing back off
-    if (window.wysiwyg_set_readonly !== undefined) {
-        wysiwyg_set_readonly('post', true);
-    }
-
-    return true;
-}
-
-function is_wysiwyg_field(the_element) {
-    var id = the_element.id;
-    return window.wysiwyg_editors && (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
-}
-
-function clever_find_value(form, element) {
-    if ((element.length !== undefined) && (element.nodeName === undefined)) {
-        // Radio button
-        element = element[0];
-    }
-
-    var value;
-    switch (element.localName) {
-        case 'textarea':
-            value = (window.get_textbox === undefined) ? element.value : get_textbox(element);
-            break;
-        case 'select':
-            value = '';
-            if (element.selectedIndex >= 0) {
-                if (element.multiple) {
-                    for (var i = 0; i < element.options.length; i++) {
-                        if (element.options[i].selected) {
-                            if (value != '') value += ',';
-                            value += element.options[i].value;
+                        // Need to switch tab?
+                        var p = errormsg_element;
+                        while (p !== null) {
+                            p = p.parentNode;
+                            if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
+                                select_tab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
+                                break;
+                            }
                         }
-                    }
-                } else if (element.selectedIndex >= 0) {
-                    value = element.options[element.selectedIndex].value;
-                    if ((value == '') && (element.getAttribute('size') > 1)) {
-                        value = '-1';  // Fudge, as we have selected something explicitly that is blank
+
+                        // Set error message
+                        var msg_node = document.createTextNode(error_msg);
+                        errormsg_element.appendChild(msg_node);
+                        errormsg_element.setAttribute('role', 'alert');
+
+                        // Fade in
+                        clear_transition_and_set_opacity(errormsg_element, 0.0);
+                        fade_transition(errormsg_element, 100, 30, 4);
+
+                    } else {
+                        the_element.setAttribute('aria-invalid', 'false');
+                        errormsg_element.setAttribute('role', '');
                     }
                 }
             }
-            break;
-        case 'input':
-            switch (element.type) {
-                case 'checkbox':
-                    value = (element.checked) ? element.value : '';
-                    break;
-
-                case 'radio':
-                    value = '';
-                    for (var i = 0; i < form.elements.length; i++) {
-                        if ((form.elements[i].name == element.name) && (form.elements[i].checked)) {
-                            value = form.elements[i].value;
-                        }
-                    }
-                    break;
-
-                case 'hidden':
-                case 'text':
-                case 'color':
-                case 'date':
-                case 'datetime':
-                case 'datetime-local':
-                case 'email':
-                case 'month':
-                case 'number':
-                case 'range':
-                case 'search':
-                case 'tel':
-                case 'time':
-                case 'url':
-                case 'week':
-                case 'password':
-                default:
-                    value = element.value;
-                    break;
-            }
-    }
-    return value;
-}
-
-function check_form(the_form, for_preview) {
-    var delete_element = $cms.dom.$('#delete');
-    if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (delete_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
-        return true;
-    }
-
-    var j, the_element, erroneous = false, total_file_size = 0, alerted = false, error_element = null, check_result;
-    for (j = 0; j < the_form.elements.length; j++) {
-        if (!the_form.elements[j]) {
-            continue;
+        }
+        if ((window.is_wysiwyg_field !== undefined) && (is_wysiwyg_field(the_element))) {
+            the_element = the_element.parentNode;
         }
 
-        the_element = the_form.elements[j];
+        the_element.classList.remove('input_erroneous');
 
-        check_result = check_field(the_element, the_form, for_preview);
-        if (check_result != null) {
-            erroneous = check_result[0] || erroneous;
-            if (!error_element && erroneous) error_element = the_element;
-            total_file_size += check_result[1];
-            alerted = check_result[2] || alerted;
-
-            if (check_result[0]) {
-                var auto_reset_error = function (the_element) {
-                    return function (event, no_recurse) {
-                        var check_result = check_field(the_element, the_form, for_preview);
-                        if ((check_result != null) && (!check_result[0])) {
-                            set_field_error(the_element, '');
-                        }
-
-                        if ((!no_recurse) && (the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/))) {
-                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_day'));
-                            if (e != the_element) e.onblur(event, true);
-                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_month'));
-                            if (e != the_element) e.onblur(event, true);
-                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_year'));
-                            if (e != the_element) e.onblur(event, true);
-                        }
-                    };
-                };
-
-                if (the_element.getAttribute('type') == 'radio') {
-                    for (var i = 0; i < the_form.elements.length; i++) {
-                        the_form.elements[i].onchange = auto_reset_error(the_form.elements[i]);
-                    }
-                } else {
-                    the_element.onblur = auto_reset_error(the_element);
-                }
-            }
+        if (error_msg != '') {
+            the_element.classList.add('input_erroneous');
         }
-    }
-
-    if ((total_file_size > 0) && (the_form.elements['MAX_FILE_SIZE'])) {
-        if (total_file_size > the_form.elements['MAX_FILE_SIZE'].value) {
-            if (!erroneous) {
-                error_element = the_element;
-                erroneous = true;
-            }
-            if (!alerted) {
-                window.fauxmodal_alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(total_file_size / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(the_form.elements['MAX_FILE_SIZE'].value / 1024)));
-            }
-            alerted = true;
-        }
-    }
-
-    if (erroneous) {
-        if (!alerted) window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
-        var posy = find_pos_y(error_element, true);
-        if (posy == 0) {
-            posy = find_pos_y(error_element.parentNode, true);
-        }
-        if (posy != 0)
-            smooth_scroll(posy - 50, null, null, function () {
-                try {
-                    error_element.focus();
-                } catch (e) {
-                }
-                /* Can have exception giving focus on IE for invisible fields */
-            });
-    }
-
-    // Try and workaround max_input_vars problem if lots of usergroups
-    if (!erroneous) {
-        var delete_e = $cms.dom.$id('delete');
-        var is_delete = delete_e && delete_e.type == 'checkbox' && delete_e.checked;
-        var es = document.getElementsByTagName('select'), e;
-        for (var i = 0; i < es.length; i++) {
-            e = es[i];
-            if ((e.name.match(/^access_\d+_privilege_/)) && ((is_delete) || (e.options[e.selectedIndex].value == '-1'))) {
-                e.disabled = true;
-            }
-        }
-    }
-
-    return !erroneous;
-
-    function check_field(the_element, the_form) {
-        var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
-
-        // No checking for hidden elements
-        if (((the_element.type === 'hidden') || (((the_element.style.display == 'none') || (the_element.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.parentNode.style.display == 'none')) && ((window.is_wysiwyg_field === undefined) || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (the_element.classList.contains('hidden_but_needed')) == null)) {
-            return null;
-        }
-        if (the_element.disabled) {
-            return null;
-        }
-
-        // Test file sizes
-        if ((the_element.type == 'file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
-            total_file_size += the_element.files.item(0).fileSize;
-
-        // Test file types
-        if ((the_element.type == 'file') && (the_element.value) && (the_element.name != 'file_anytype')) {
-            var allowed_types = '{$VALID_FILE_TYPES;^}'.split(/,/);
-            var type_ok = false;
-            var theFileType = the_element.value.indexOf('.') ? the_element.value.substr(the_element.value.lastIndexOf('.') + 1) : '{!NONE;^}';
-            for (var k = 0; k < allowed_types.length; k++) {
-                if (allowed_types[k].toLowerCase() == theFileType.toLowerCase()) type_ok = true;
-            }
-            if (!type_ok) {
-                error_msg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
-                if (!alerted) window.fauxmodal_alert(error_msg);
-                alerted = true;
-            }
-        }
-
-        // Fix up bad characters
-        if ((browser_matches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
-            var bad_word_chars = [8216, 8217, 8220, 8221];
-            var fixed_word_chars = ['\'', '\'', '"', '"'];
-            for (i = 0; i < bad_word_chars.length; i++) {
-                regexp = new RegExp(String.fromCharCode(bad_word_chars[i]), 'gm');
-                the_element.value = the_element.value.replace(regexp, fixed_word_chars[i]);
-            }
-        }
-
-        // Class name
-        the_class = the_element.classList[0];
-
-        // Find whether field is required and value of it
-        if (the_element.type == 'radio') {
-            required = (the_form.elements['require__' + the_element.name] !== undefined) && (the_form.elements['require__' + the_element.name].value == '1');
-        } else {
-            required = the_element.className.includes('_required');
-        }
-        my_value = clever_find_value(the_form, the_element);
-
-        // Prepare for custom error messages, stored as HTML5 data on the error message display element
-        var errormsg_element = (the_element.name === undefined) ? null : get_errormsg_element(the_element.name);
-
-        // Blank?
-        if ((required) && (my_value.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
-            error_msg = '{!REQUIRED_NOT_FILLED_IN;^}';
-            if ((errormsg_element) && (errormsg_element.getAttribute('data-errorUnfilled') != null) && (errormsg_element.getAttribute('data-errorUnfilled') != ''))
-                error_msg = errormsg_element.getAttribute('data-errorUnfilled');
-        } else {
-            // Standard field-type checks
-            if ((the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/)) && (my_value != '')) {
-                var day = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
-                var month = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
-                var year = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
-                var source_date = new Date(year, month - 1, day);
-                if (year != source_date.getFullYear()) error_msg = '{!javascript:NOT_A_DATE;^}';
-                if (month != source_date.getMonth() + 1) error_msg = '{!javascript:NOT_A_DATE;^}';
-                if (day != source_date.getDate()) error_msg = '{!javascript:NOT_A_DATE;^}';
-            }
-            if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
-                error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
-            }
-            if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeUC(my_value)))) {
-                error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
-            }
-            if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
-                error_msg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', my_value);
-            }
-            if (((the_class == 'input_integer') || (the_class == 'input_integer_required')) && (my_value != '') && (parseInt(my_value, 10) != my_value - 0)) {
-                error_msg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', my_value);
-            }
-            if (((the_class == 'input_float') || (the_class == 'input_float_required')) && (my_value != '') && (parseFloat(my_value) != my_value - 0)) {
-                error_msg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', my_value);
-            }
-
-            // Shim for HTML5 regexp patterns
-            if (the_element.getAttribute('pattern')) {
-                if ((my_value != '') && (!my_value.match(new RegExp(the_element.getAttribute('pattern'))))) {
-                    error_msg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', my_value);
-                }
-            }
-
-            // Custom error messages
-            if (error_msg != '' && errormsg_element != null) {
-                var custom_msg = errormsg_element.getAttribute('data-errorRegexp');
-                if ((custom_msg != null) && (custom_msg != ''))
-                    error_msg = custom_msg;
-            }
-        }
-
-        // Show error?
-        set_field_error(the_element, error_msg);
-
-        if ((error_msg != '') && (!erroneous)) {
-            erroneous = true;
-        }
-
-        return [erroneous, total_file_size, alerted];
 
         function get_errormsg_element(id) {
-            var errormsg_element = $cms.dom.$id('error_' + id);
+            var errormsg_element = $cms.dom.$('#error_' + id);
             if (!errormsg_element) {
-                errormsg_element = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                errormsg_element = $cms.dom.$('#error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
             }
             return errormsg_element;
         }
     }
-}
 
-function set_locked(field, is_locked, chosen_ob) {
-    var radio_button = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
-    if (!radio_button) {
-        radio_button = $cms.dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
-    }
-
-    // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: set_locked assumes that the calling code is clever
-    // special input types are coded to observe their master input field readonly status)
-    var button = $cms.dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
-
-    if (is_locked) {
-        var labels = document.getElementsByTagName('label'), label = null;
-        for (var i = 0; i < labels.length; i++) {
-            if (chosen_ob && (labels[i].getAttribute('for') == chosen_ob.id)) {
-                label = labels[i];
-                break;
-            }
+    function do_form_submit(form, event) {
+        if (!check_form(form, false)) {
+            return false;
         }
-        if (!radio_button) {
-            if (label) {
-                var label_nice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
-                if (field.type == 'file') {
-                    set_field_error(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\\{1\\}/, label_nice));
-                } else {
-                    set_field_error(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\\{1\\}/, label_nice));
+
+        if (form.old_action) {
+            form.setAttribute('action', form.old_action);
+        }
+        if (form.old_target) {
+            form.setAttribute('target', form.old_target);
+        }
+        if (!form.getAttribute('target')) {
+            form.setAttribute('target', '_top');
+        }
+
+        /* Remove any stuff that is only in the form for previews if doing a GET request */
+        if (form.method.toLowerCase() === 'get') {
+            var i = 0, name, elements = [];
+            for (i = 0; i < form.elements.length; i++) {
+                elements.push(form.elements[i]);
+            }
+            for (i = 0; i < elements.length; i++) {
+                name = elements[i].name;
+                if (name && ((name.substr(0, 11) == 'label_for__') || (name.substr(0, 14) == 'tick_on_form__') || (name.substr(0, 9) == 'comcode__') || (name.substr(0, 9) == 'require__'))) {
+                    elements[i].parentNode.removeChild(elements[i]);
                 }
-            } else {
-                set_field_error(field, '{!DISABLED_FORM_FIELD;^}');
             }
         }
-        field.classList.remove('input_erroneous');
-    } else if (!radio_button) {
-        set_field_error(field, '');
-    }
-    field.disabled = is_locked;
-
-    if (button) {
-        button.disabled = is_locked;
-    }
-}
-
-function set_required(fieldName, isRequired) {
-    var radio_button = $cms.dom.$('#choose_' + fieldName);
-
-    isRequired = !!isRequired;
-
-    if (radio_button) {
-        if (isRequired) {
-            radio_button.checked = true;
+        if (form.onsubmit) {
+            var ret = form.onsubmit.call(form, event);
+            if (!ret) {
+                return false;
+            }
         }
-    } else {
-        var required_a = $cms.dom.$('#form_table_field_name__' + fieldName),
-            required_b = $cms.dom.$('#required_readable_marker__' + fieldName),
-            required_c = $cms.dom.$('#required_posted__' + fieldName),
-            required_d = $cms.dom.$('#form_table_field_input__' + fieldName);
+        if (!window.just_checking_requirements) {
+            form.submit();
+        }
 
-        if (required_a) {
-            required_a.className = 'form_table_field_name';
+        $cms.ui.disableSubmitAndPreviewButtons();
+
+        if (window.detect_interval !== undefined) {
+            window.clearInterval(window.detect_interval);
+            delete window.detect_interval;
+        }
+
+        return true;
+    }
+
+    function do_form_preview(event, form, preview_url, has_separate_preview) {
+        has_separate_preview = !!has_separate_preview;
+
+        if (!$cms.dom.$id('preview_iframe')) {
+            fauxmodal_alert('{!ADBLOCKER;^}');
+            return false;
+        }
+
+        preview_url += ((window.mobile_version_for_preview === undefined) ? '' : ('&keep_mobile=' + (window.mobile_version_for_preview ? '1' : '0')));
+
+        var old_action = form.getAttribute('action');
+
+        if (!form.old_action) {
+            form.old_action = old_action;
+        }
+        form.setAttribute('action', /*maintain_theme_in_link - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
+        var old_target = form.getAttribute('target');
+        if (!old_target) {
+            old_target = '_top';
+        }
+        /* not _self due to edit screen being a frame itself */
+        if (!form.old_target) {
+            form.old_target = old_target;
+        }
+        form.setAttribute('target', 'preview_iframe');
+
+        if ((window.check_form) && (!check_form(form, true))) {
+            return false;
+        }
+
+        if (form.onsubmit) {
+            var test = form.onsubmit.call(form, event, true);
+            if (!test) {
+                return false;
+            }
+        }
+
+        if ((has_separate_preview) || (window.has_separate_preview)) {
+            form.setAttribute('action', form.old_action + ((form.old_action.indexOf('?') == -1) ? '?' : '&') + 'preview=1');
+            return true;
+        }
+
+        $cms.dom.$id('submit_button').style.display = 'inline';
+
+        /* Do our loading-animation */
+        if (!window.just_checking_requirements) {
+            window.setInterval(window.trigger_resize, 500);
+            /* In case its running in an iframe itself */
+            illustrate_frame_load('preview_iframe');
+        }
+
+        $cms.ui.disableSubmitAndPreviewButtons();
+
+        // Turn main post editing back off
+        if (window.wysiwyg_set_readonly !== undefined) {
+            wysiwyg_set_readonly('post', true);
+        }
+
+        return true;
+    }
+
+    function is_wysiwyg_field(the_element) {
+        var id = the_element.id;
+        return window.wysiwyg_editors && (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
+    }
+
+    function clever_find_value(form, element) {
+        if ((element.length !== undefined) && (element.nodeName === undefined)) {
+            // Radio button
+            element = element[0];
+        }
+
+        var value;
+        switch (element.localName) {
+            case 'textarea':
+                value = (window.get_textbox === undefined) ? element.value : get_textbox(element);
+                break;
+            case 'select':
+                value = '';
+                if (element.selectedIndex >= 0) {
+                    if (element.multiple) {
+                        for (var i = 0; i < element.options.length; i++) {
+                            if (element.options[i].selected) {
+                                if (value != '') value += ',';
+                                value += element.options[i].value;
+                            }
+                        }
+                    } else if (element.selectedIndex >= 0) {
+                        value = element.options[element.selectedIndex].value;
+                        if ((value == '') && (element.getAttribute('size') > 1)) {
+                            value = '-1';  // Fudge, as we have selected something explicitly that is blank
+                        }
+                    }
+                }
+                break;
+            case 'input':
+                switch (element.type) {
+                    case 'checkbox':
+                        value = (element.checked) ? element.value : '';
+                        break;
+
+                    case 'radio':
+                        value = '';
+                        for (var i = 0; i < form.elements.length; i++) {
+                            if ((form.elements[i].name == element.name) && (form.elements[i].checked)) {
+                                value = form.elements[i].value;
+                            }
+                        }
+                        break;
+
+                    case 'hidden':
+                    case 'text':
+                    case 'color':
+                    case 'date':
+                    case 'datetime':
+                    case 'datetime-local':
+                    case 'email':
+                    case 'month':
+                    case 'number':
+                    case 'range':
+                    case 'search':
+                    case 'tel':
+                    case 'time':
+                    case 'url':
+                    case 'week':
+                    case 'password':
+                    default:
+                        value = element.value;
+                        break;
+                }
+        }
+        return value;
+    }
+
+    function check_form(the_form, for_preview) {
+        var delete_element = $cms.dom.$('#delete');
+        if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (delete_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
+            return true;
+        }
+
+        var j, the_element, erroneous = false, total_file_size = 0, alerted = false, error_element = null, check_result;
+        for (j = 0; j < the_form.elements.length; j++) {
+            if (!the_form.elements[j]) {
+                continue;
+            }
+
+            the_element = the_form.elements[j];
+
+            check_result = check_field(the_element, the_form, for_preview);
+            if (check_result != null) {
+                erroneous = check_result[0] || erroneous;
+                if (!error_element && erroneous) error_element = the_element;
+                total_file_size += check_result[1];
+                alerted = check_result[2] || alerted;
+
+                if (check_result[0]) {
+                    var auto_reset_error = function (the_element) {
+                        return function (event, no_recurse) {
+                            var check_result = check_field(the_element, the_form, for_preview);
+                            if ((check_result != null) && (!check_result[0])) {
+                                set_field_error(the_element, '');
+                            }
+
+                            if ((!no_recurse) && (the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/))) {
+                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_day'));
+                                if (e != the_element) {
+                                    e.onblur(event, true);
+                                }
+                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_month'));
+                                if (e != the_element) {
+                                    e.onblur(event, true);
+                                }
+                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_year'));
+                                if (e != the_element) {
+                                    e.onblur(event, true);
+                                }
+                            }
+                        };
+                    };
+
+                    if (the_element.getAttribute('type') == 'radio') {
+                        for (var i = 0; i < the_form.elements.length; i++) {
+                            the_form.elements[i].onchange = auto_reset_error(the_form.elements[i]);
+                        }
+                    } else {
+                        the_element.onblur = auto_reset_error(the_element);
+                    }
+                }
+            }
+        }
+
+        if ((total_file_size > 0) && (the_form.elements['MAX_FILE_SIZE'])) {
+            if (total_file_size > the_form.elements['MAX_FILE_SIZE'].value) {
+                if (!erroneous) {
+                    error_element = the_element;
+                    erroneous = true;
+                }
+                if (!alerted) {
+                    window.fauxmodal_alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(total_file_size / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(the_form.elements['MAX_FILE_SIZE'].value / 1024)));
+                }
+                alerted = true;
+            }
+        }
+
+        if (erroneous) {
+            if (!alerted) window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
+            var posy = find_pos_y(error_element, true);
+            if (posy == 0) {
+                posy = find_pos_y(error_element.parentNode, true);
+            }
+            if (posy != 0)
+                smooth_scroll(posy - 50, null, null, function () {
+                    try {
+                        error_element.focus();
+                    } catch (e) {
+                    }
+                    /* Can have exception giving focus on IE for invisible fields */
+                });
+        }
+
+        // Try and workaround max_input_vars problem if lots of usergroups
+        if (!erroneous) {
+            var delete_e = $cms.dom.$id('delete');
+            var is_delete = delete_e && delete_e.type == 'checkbox' && delete_e.checked;
+            var es = document.getElementsByTagName('select'), e;
+            for (var i = 0; i < es.length; i++) {
+                e = es[i];
+                if ((e.name.match(/^access_\d+_privilege_/)) && ((is_delete) || (e.options[e.selectedIndex].value == '-1'))) {
+                    e.disabled = true;
+                }
+            }
+        }
+
+        return !erroneous;
+
+        function check_field(the_element, the_form) {
+            var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
+
+            // No checking for hidden elements
+            if (((the_element.type === 'hidden') || (((the_element.style.display == 'none') || (the_element.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.parentNode.style.display == 'none')) && ((window.is_wysiwyg_field === undefined) || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (the_element.classList.contains('hidden_but_needed')) == null)) {
+                return null;
+            }
+            if (the_element.disabled) {
+                return null;
+            }
+
+            // Test file sizes
+            if ((the_element.type == 'file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
+                total_file_size += the_element.files.item(0).fileSize;
+
+            // Test file types
+            if ((the_element.type == 'file') && (the_element.value) && (the_element.name != 'file_anytype')) {
+                var allowed_types = '{$VALID_FILE_TYPES;^}'.split(/,/);
+                var type_ok = false;
+                var theFileType = the_element.value.indexOf('.') ? the_element.value.substr(the_element.value.lastIndexOf('.') + 1) : '{!NONE;^}';
+                for (var k = 0; k < allowed_types.length; k++) {
+                    if (allowed_types[k].toLowerCase() == theFileType.toLowerCase()) type_ok = true;
+                }
+                if (!type_ok) {
+                    error_msg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
+                    if (!alerted) window.fauxmodal_alert(error_msg);
+                    alerted = true;
+                }
+            }
+
+            // Fix up bad characters
+            if ((browser_matches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
+                var bad_word_chars = [8216, 8217, 8220, 8221];
+                var fixed_word_chars = ['\'', '\'', '"', '"'];
+                for (i = 0; i < bad_word_chars.length; i++) {
+                    regexp = new RegExp(String.fromCharCode(bad_word_chars[i]), 'gm');
+                    the_element.value = the_element.value.replace(regexp, fixed_word_chars[i]);
+                }
+            }
+
+            // Class name
+            the_class = the_element.classList[0];
+
+            // Find whether field is required and value of it
+            if (the_element.type == 'radio') {
+                required = (the_form.elements['require__' + the_element.name] !== undefined) && (the_form.elements['require__' + the_element.name].value == '1');
+            } else {
+                required = the_element.className.includes('_required');
+            }
+            my_value = clever_find_value(the_form, the_element);
+
+            // Prepare for custom error messages, stored as HTML5 data on the error message display element
+            var errormsg_element = (the_element.name === undefined) ? null : get_errormsg_element(the_element.name);
+
+            // Blank?
+            if ((required) && (my_value.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
+                error_msg = '{!REQUIRED_NOT_FILLED_IN;^}';
+                if ((errormsg_element) && (errormsg_element.getAttribute('data-errorUnfilled') != null) && (errormsg_element.getAttribute('data-errorUnfilled') != ''))
+                    error_msg = errormsg_element.getAttribute('data-errorUnfilled');
+            } else {
+                // Standard field-type checks
+                if ((the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/)) && (my_value != '')) {
+                    var day = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
+                    var month = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
+                    var year = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
+                    var source_date = new Date(year, month - 1, day);
+                    if (year != source_date.getFullYear()) error_msg = '{!javascript:NOT_A_DATE;^}';
+                    if (month != source_date.getMonth() + 1) error_msg = '{!javascript:NOT_A_DATE;^}';
+                    if (day != source_date.getDate()) error_msg = '{!javascript:NOT_A_DATE;^}';
+                }
+                if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                    error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
+                }
+                if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeUC(my_value)))) {
+                    error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
+                }
+                if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
+                    error_msg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', my_value);
+                }
+                if (((the_class == 'input_integer') || (the_class == 'input_integer_required')) && (my_value != '') && (parseInt(my_value, 10) != my_value - 0)) {
+                    error_msg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', my_value);
+                }
+                if (((the_class == 'input_float') || (the_class == 'input_float_required')) && (my_value != '') && (parseFloat(my_value) != my_value - 0)) {
+                    error_msg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', my_value);
+                }
+
+                // Shim for HTML5 regexp patterns
+                if (the_element.getAttribute('pattern')) {
+                    if ((my_value != '') && (!my_value.match(new RegExp(the_element.getAttribute('pattern'))))) {
+                        error_msg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', my_value);
+                    }
+                }
+
+                // Custom error messages
+                if (error_msg != '' && errormsg_element != null) {
+                    var custom_msg = errormsg_element.getAttribute('data-errorRegexp');
+                    if ((custom_msg != null) && (custom_msg != ''))
+                        error_msg = custom_msg;
+                }
+            }
+
+            // Show error?
+            set_field_error(the_element, error_msg);
+
+            if ((error_msg != '') && (!erroneous)) {
+                erroneous = true;
+            }
+
+            return [erroneous, total_file_size, alerted];
+
+            function get_errormsg_element(id) {
+                var errormsg_element = $cms.dom.$id('error_' + id);
+                if (!errormsg_element) {
+                    errormsg_element = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                }
+                return errormsg_element;
+            }
+        }
+    }
+
+    function set_locked(field, is_locked, chosen_ob) {
+        var radio_button = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
+        if (!radio_button) {
+            radio_button = $cms.dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
+        }
+
+        // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: set_locked assumes that the calling code is clever
+        // special input types are coded to observe their master input field readonly status)
+        var button = $cms.dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
+
+        if (is_locked) {
+            var labels = document.getElementsByTagName('label'), label = null;
+            for (var i = 0; i < labels.length; i++) {
+                if (chosen_ob && (labels[i].getAttribute('for') == chosen_ob.id)) {
+                    label = labels[i];
+                    break;
+                }
+            }
+            if (!radio_button) {
+                if (label) {
+                    var label_nice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
+                    if (field.type == 'file') {
+                        set_field_error(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\\{1\\}/, label_nice));
+                    } else {
+                        set_field_error(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\\{1\\}/, label_nice));
+                    }
+                } else {
+                    set_field_error(field, '{!DISABLED_FORM_FIELD;^}');
+                }
+            }
+            field.classList.remove('input_erroneous');
+        } else if (!radio_button) {
+            set_field_error(field, '');
+        }
+        field.disabled = is_locked;
+
+        if (button) {
+            button.disabled = is_locked;
+        }
+    }
+
+    function set_required(fieldName, isRequired) {
+        var radio_button = $cms.dom.$('#choose_' + fieldName);
+
+        isRequired = !!isRequired;
+
+        if (radio_button) {
+            if (isRequired) {
+                radio_button.checked = true;
+            }
+        } else {
+            var required_a = $cms.dom.$('#form_table_field_name__' + fieldName),
+                required_b = $cms.dom.$('#required_readable_marker__' + fieldName),
+                required_c = $cms.dom.$('#required_posted__' + fieldName),
+                required_d = $cms.dom.$('#form_table_field_input__' + fieldName);
+
+            if (required_a) {
+                required_a.className = 'form_table_field_name';
+
+                if (isRequired) {
+                    required_a.classList.add('required');
+                }
+            }
+
+            if (required_b) {
+                $cms.dom.toggle(required_b, isRequired);
+            }
+
+            if (required_c) {
+                required_c.value = isRequired ? 1 : 0;
+            }
+
+            if (required_d) {
+                required_d.className = 'form_table_field_input';
+            }
+        }
+
+        var element = $cms.dom.$('#' + fieldName);
+
+        if (element) {
+            element.className = element.className.replace(/(input_[a-z_]+)_required/g, '$1');
 
             if (isRequired) {
-                required_a.classList.add('required');
+                element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
+            }
+
+            if (element.plupload_object) {
+                element.plupload_object.settings.required = isRequired;
             }
         }
 
-        if (required_b) {
-            $cms.dom.toggle(required_b, isRequired);
-        }
-
-        if (required_c) {
-            required_c.value = isRequired ? 1 : 0;
-        }
-
-        if (required_d) {
-            required_d.className = 'form_table_field_input';
+        if (!isRequired) {
+            var error = $cms.dom.$('#error__' + fieldName);
+            if (error) {
+                error.style.display = 'none';
+            }
         }
     }
 
-    var element = $cms.dom.$('#' + fieldName);
-
-    if (element) {
-        element.className = element.className.replace(/(input_[a-z_]+)_required/g, '$1');
-
-        if (isRequired) {
-            element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
+    function disable_preview_scripts(context) {
+        if (context === undefined) {
+            context = document;
         }
 
-        if (element.plupload_object) {
-            element.plupload_object.settings.required = isRequired;
+        var elements, i;
+
+        elements = $cms.dom.$$(context, 'button, input[type="button"], input[type="image"]');
+        for (i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('click', alertNotInPreviewMode);
+        }
+
+        // Make sure links in the preview don't break it - put in a new window
+        elements = $cms.dom.$$(context, 'a');
+        for (i = 0; i < elements.length; i++) {
+            if (elements[i].href && elements[i].href.includes('://')) {
+                try {
+                    if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) {// guard due to weird Firefox bug, JS actions still opening new window
+                        elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
+                    }
+                } catch (ignore) {} // IE can have security exceptions
+            }
+        }
+
+        function alertNotInPreviewMode() {
+            window.fauxmodal_alert('{!NOT_IN_PREVIEW_MODE;^}');
+            return false;
         }
     }
-
-    if (!isRequired) {
-        var error = $cms.dom.$('#error__' + fieldName);
-        if (error) {
-            error.style.display = 'none';
-        }
-    }
-}
-
-function disable_preview_scripts(context) {
-    if (context === undefined) {
-        context = document;
-    }
-
-    var elements, i;
-
-    elements = $cms.dom.$$(context, 'button, input[type="button"], input[type="image"]');
-    for (i = 0; i < elements.length; i++) {
-        elements[i].addEventListener('click', alertNotInPreviewMode);
-    }
-
-    // Make sure links in the preview don't break it - put in a new window
-    elements = $cms.dom.$$(context, 'a');
-    for (i = 0; i < elements.length; i++) {
-        if (elements[i].href && elements[i].href.includes('://')) {
-            try {
-                if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) {// guard due to weird Firefox bug, JS actions still opening new window
-                    elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
-                }
-            } catch (ignore) {} // IE can have security exceptions
-        }
-    }
-
-    function alertNotInPreviewMode() {
-        window.fauxmodal_alert('{!NOT_IN_PREVIEW_MODE;^}');
-        return false;
-    }
-}
-
+}());

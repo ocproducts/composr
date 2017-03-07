@@ -148,10 +148,15 @@
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copy_permission_presets(prefix, '0', true)) list.selectedIndex = list.options.length - 4;
-            else if (!copy_permission_presets(prefix, '1', true)) list.selectedIndex = list.options.length - 3;
-            else if (!copy_permission_presets(prefix, '2', true)) list.selectedIndex = list.options.length - 2;
-            else if (!copy_permission_presets(prefix, '3', true)) list.selectedIndex = list.options.length - 1;
+            if (!copy_permission_presets(prefix, '0', true)) {
+                list.selectedIndex = list.options.length - 4;
+            } else if (!copy_permission_presets(prefix, '1', true)) {
+                list.selectedIndex = list.options.length - 3;
+            } else if (!copy_permission_presets(prefix, '2', true)) {
+                list.selectedIndex = list.options.length - 2;
+            } else if (!copy_permission_presets(prefix, '3', true)) {
+                list.selectedIndex = list.options.length - 1;
+            }
         }
     }
 
@@ -270,11 +275,43 @@
             if (el.parentNode.title !== undefined) {
                 el.parentNode.title = '';
             }
-            activate_tooltip(el, e, '{!PASSWORD_STRENGTH}', 'auto');
+            activate_tooltip(el, e, '{!PASSWORD_STRENGTH;^}', 'auto');
         });
 
         $cms.dom.on(container, 'change', '.js-input-change-check-password-strength', function (e, input) {
-            password_strength(input);
+            if (input.name.includes('2') || input.name.includes('confirm')) {
+                return;
+            }
+
+            var _ind = $cms.dom.$('#password_strength_' + input.id);
+            if (!_ind) {
+                return;
+            }
+            var ind = _ind.querySelector('div');
+            var post = 'password=' + encodeUC(input.value);
+            if (input.form && (input.form.elements.username !== undefined)) {
+                post += '&username=' + input.form.elements['username'].value;
+            } else {
+                if (input.form && input.form.elements.edit_username !== undefined) {
+                    post += '&username=' + input.form.elements['edit_username'].value;
+                }
+            }
+            var strength = load_snippet('password_strength', post);
+            strength *= 2;
+            if (strength > 10) {  // Normally too harsh!
+                strength = 10;
+            }
+            ind.style.width = (strength * 10) + 'px';
+
+            if (strength >= 6) {
+                ind.style.backgroundColor = 'green';
+            } else if (strength < 4) {
+                ind.style.backgroundColor = 'red';
+            } else {
+                ind.style.backgroundColor = 'orange';
+            }
+
+            ind.parentNode.style.display = (input.value.length == 0) ? 'none' : 'block';
         });
     };
 
@@ -349,7 +386,7 @@
         });
     };
 
-    $cms.templates.formScreenInputCombo = function (params, container) {
+    $cms.templates.formScreenInputCombo = function formScreenInputCombo(params, container) {
         var name = strVal(params.name),
             comboInput = $cms.dom.$('#' + name),
             fallbackList = $cms.dom.$('#' + name + '_fallback_list');
@@ -464,22 +501,32 @@
         });
 
         function permissions_toggle(cell) {
-            var index = cell.cellIndex;
-            var table = cell.parentNode.parentNode;
-            if (table.localName !== 'table') table = table.parentNode;
-            var state_list = null, state_checkbox = null;
+            var index = cell.cellIndex,
+                table = cell.parentNode.parentNode;
+
+            if (table.localName !== 'table') {
+                table = table.parentNode;
+            }
+
+            var state_list = null,
+                state_checkbox = null;
+
             for (var i = 0; i < table.rows.length; i++) {
                 if (i >= 1) {
                     var cell2 = table.rows[i].cells[index];
                     var input = cell2.querySelector('input');
                     if (input) {
                         if (!input.disabled) {
-                            if (state_checkbox == null) state_checkbox = input.checked;
+                            if (state_checkbox == null) {
+                                state_checkbox = input.checked;
+                            }
                             input.checked = !state_checkbox;
                         }
                     } else {
                         input = cell2.querySelector('select');
-                        if (state_list == null) state_list = input.selectedIndex;
+                        if (state_list == null) {
+                            state_list = input.selectedIndex;
+                        }
                         input.selectedIndex = ((state_list != input.options.length - 1) ? (input.options.length - 1) : (input.options.length - 2));
                         input.disabled = false;
 
@@ -841,18 +888,16 @@
         var loading_space = document.getElementById('loading_space');
 
         function shutdown_overlay() {
-            var win = window;
-
             window.setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
-                if (win.faux_close !== undefined)
-                    win.faux_close();
-                else
-                    win.close();
+                if (window.faux_close !== undefined) {
+                    window.faux_close();
+                } else {
+                    window.close();
+                }
             }, 200);
         }
 
         function dispatch_block_helper() {
-            var win = window;
             if ((typeof params.saveToId === 'string') && (params.saveToId !== '')) {
                 var ob = target_window.wysiwyg_editors[element.id].document.$.getElementById(params.saveToId);
 
@@ -871,9 +916,9 @@
                 var message = '';
                 if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
                     if (is_wysiwyg) {
-                        message = '';//'!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^ }'; Not really needed
+                        message = '';//'!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^}'; Not really needed
                     } else {
-                        message = '!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^ }';
+                        message = '!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
                     }
                 }
 
@@ -889,8 +934,7 @@
                         return [_comcode_semihtml, _comcode];
                     }
 
-                    if ((element.value.indexOf(comcode_semihtml) == -1) || (comcode.indexOf('[attachment') == -1)) // Don't allow attachments to add twice
-                    {
+                    if ((element.value.indexOf(comcode_semihtml) == -1) || (comcode.indexOf('[attachment') == -1)) { // Don't allow attachments to add twice
                         target_window.insert_textbox(element, _comcode, target_window.document.selection ? target_window.document.selection : null, true, _comcode_semihtml);
                     }
                 };
@@ -901,12 +945,9 @@
                 target_window.insert_comcode_tag();
 
                 if (message != '') {
-                    window.fauxmodal_alert(
-                        message,
-                        function () {
-                            shutdown_overlay();
-                        }
-                    );
+                    window.fauxmodal_alert(message, function () {
+                        shutdown_overlay();
+                    });
                 } else {
                     shutdown_overlay();
                 }
@@ -977,6 +1018,35 @@
                 input.fakeonchange(e);
             }
         });
+
+
+        function ensure_next_field_upload(this_field) {
+            var mid = this_field.name.lastIndexOf('_'),
+                name_stub = this_field.name.substring(0, mid + 1),
+                this_num = this_field.name.substring(mid + 1, this_field.name.length) - 0,
+                next_num = this_num + 1,
+                next_field = document.getElementById('multi_' + next_num),
+                name = name_stub + next_num,
+                this_id = this_field.id;
+
+            if (!next_field) {
+                next_num = this_num + 1;
+                this_field = document.getElementById(this_id);
+                next_field = document.createElement('input');
+                next_field.className = 'input_upload';
+                next_field.setAttribute('id', 'multi_' + next_num);
+                next_field.addEventListener('change', _ensure_next_field_upload);
+                next_field.setAttribute('type', 'file');
+                next_field.name = name_stub + next_num;
+                this_field.parentNode.appendChild(next_field);
+            }
+
+            function _ensure_next_field_upload(event) {
+                if (!$cms.dom.keyPressed(event, 'Tab')) {
+                    ensure_next_field_upload(this);
+                }
+            }
+        }
     };
 
     $cms.templates.formScreenInputRadioList = function (params) {
@@ -1215,8 +1285,7 @@
                     }
                 });
             });
-        } catch (e) {
-        }
+        } catch (ignore) {}
     }
 
     function joinForm(params) {
@@ -1663,33 +1732,5 @@ function ensure_next_field(this_field) {
         next_field.name = (this_field.name.includes('[]') ? this_field.name : (name_stub + next_num));
         next_field_wrap.appendChild(next_field);
         this_field.parentNode.parentNode.insertBefore(next_field_wrap, this_field.parentNode.nextSibling);
-    }
-}
-
-function ensure_next_field_upload(this_field) {
-    var mid = this_field.name.lastIndexOf('_'),
-        name_stub = this_field.name.substring(0, mid + 1),
-        this_num = this_field.name.substring(mid + 1, this_field.name.length) - 0,
-        next_num = this_num + 1,
-        next_field = document.getElementById('multi_' + next_num),
-        name = name_stub + next_num,
-        this_id = this_field.id;
-
-    if (!next_field) {
-        next_num = this_num + 1;
-        this_field = document.getElementById(this_id);
-        var next_field = document.createElement('input');
-        next_field.className = 'input_upload';
-        next_field.setAttribute('id', 'multi_' + next_num);
-        next_field.addEventListener('change', _ensure_next_field_upload);
-        next_field.setAttribute('type', 'file');
-        next_field.name = name_stub + next_num;
-        this_field.parentNode.appendChild(next_field);
-    }
-
-    function _ensure_next_field_upload(event) {
-        if (!$cms.dom.keyPressed(event, 'Tab')) {
-            ensure_next_field_upload(this);
-        }
     }
 }

@@ -1044,7 +1044,7 @@
              */
 
             function apply_comcode_tooltip(hook, id, link) {
-                link.addEventListener('mouseout', function (event) {
+                link.addEventListener('mouseout', function () {
                     deactivate_tooltip(link);
                 });
                 link.addEventListener('mousemove', function (event) {
@@ -1059,13 +1059,14 @@
                     if (link.rendered_tooltip === undefined) {
                         link.is_over = true;
 
-                        var request = do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + keep_stub()), function (ajax_result_frame) {
+                        do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + keep_stub()), function (ajax_result_frame) {
                             if (ajax_result_frame && ajax_result_frame.responseText) {
                                 link.rendered_tooltip = ajax_result_frame.responseText;
                             }
                             if (link.rendered_tooltip !== undefined) {
-                                if (link.is_over)
+                                if (link.is_over) {
                                     activate_tooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
+                                }
                             }
                         }, 'data=' + encodeURIComponent(comcode));
                     } else {
@@ -1079,8 +1080,12 @@
              */
             function handle_image_mouse_over(event) {
                 var target = event.target;
-                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) return;
-                if (target.offsetWidth < 130) return;
+                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
+                    return;
+                }
+                if (target.offsetWidth < 130) {
+                    return;
+                }
 
                 var src = (target.src === undefined) ? $cms.dom.css(target, 'background-image') : target.src;
 

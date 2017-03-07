@@ -232,7 +232,7 @@
         }
 
         function preview_generator_mouseover(event) {
-            activate_tooltip(this, event, '<img width="500" src="{$BASE_URL*}/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
+            activate_tooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
         }
 
         function preview_generator_mousemove(event) {
@@ -270,7 +270,7 @@
     function show_current_slideshow_time() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, '{!galleries:CHANGING_IN,xxx}'.replace('xxx', (window.slideshow_time < 0) ? 0 : window.slideshow_time));
+            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', Math.max(0, window.slideshow_time)));
         }
     }
 
@@ -299,7 +299,9 @@
             message = '{!galleries:STOPPED;^}';
         }
         var changer = document.getElementById('changer_wrap');
-        if (changer) $cms.dom.html(changer, message);
+        if (changer) {
+            $cms.dom.html(changer, message);
+        }
         if (window.slideshow_timer) {
             window.clearInterval(window.slideshow_timer);
         }

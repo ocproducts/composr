@@ -762,7 +762,7 @@ foreach (($map['param'] == '') ? array_keys($collapsed_tree) : explode(',', $map
             }
             echo '</ul></div>';
             if ($see_more) {
-                echo '<p class="button"><a class="seemore" href="#" onclick="toggle_seemore(this); return false;">See more</a></p>'/*."\n\n"*/;
+                echo '<p class="button"><a class="seemore" href="#!" onclick="toggle_seemore(this); return false;">See more</a></p>'/*."\n\n"*/;
             }
         }
 

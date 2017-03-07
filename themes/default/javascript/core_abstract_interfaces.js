@@ -121,7 +121,7 @@
                                 link.href += autoAdd + '=1';
                             }
 
-                            click_link(link);
+                            $cms.navigate(link);
                         }
                     );
                     return false;
