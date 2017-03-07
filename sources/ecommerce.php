@@ -538,6 +538,9 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
 
         // Pending transactions stop here
+        if ((get_page_name() == 'purchase') || (get_page_name() == 'shopping')) {
+            return;
+        }
         fatal_ipn_exit(do_lang('TRANSACTION_NOT_COMPLETE', $type_code . ':' . strval($purchase_id), $payment_status), true);
     }
 
