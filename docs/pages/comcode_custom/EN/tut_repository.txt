@@ -39,6 +39,7 @@ The default meta-filesystems are as follows, and are all mounted as subdirectori
  - [tt]database[/tt]: Access to the raw relational database; level 1: tables, level 2: rows (identified by ID)
  - [tt]etc[/tt]: Access to Composr configuration options
  - [tt]home[/tt]: Access to the filedump (aka the File/Media Library)
+ - [tt]filedump[/tt]: Access to the filedump (aka the File/Media Library) with meta-data, all provided in a JSON format
  - [tt]members[/tt]: A listing of every member registered on the system, with their account/profile settings and usergroups
  - [tt]raw[/tt]: A raw listing of the actual Composr installation directory
  - [tt]root[/tt]: A listing of the Composr installation directory, taking source code overrides into account (featuring automatically overriding when files are edited)
