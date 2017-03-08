@@ -157,6 +157,9 @@ function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
 
     require_code('catalogues');
     $field_values = get_catalogue_entry_field_values($catalogue_name, intval($url_parts['id']), array($unique_key_num), $fields);
+    if (!isset($field_values[$unique_key_num])) {
+        return uniqid('', true);
+    }
     $field = $field_values[$unique_key_num];
     if (is_null($field)) {
         return uniqid('', true);
