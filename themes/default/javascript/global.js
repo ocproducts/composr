@@ -2986,7 +2986,8 @@ function inner_html_load(xml_string) {
 	{
 		try
 		{
-			xml=(new DOMParser()).parseFromString(xml_string,"application/xml");
+			xml=(new DOMParser()).parseFromString(xml_string,'application/xml');
+			if (xml.documentElement.nodeName=='parsererror') xml=null;
 		}
 		catch (e) { xml=null; }
 
