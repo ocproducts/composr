@@ -575,7 +575,7 @@ header h1 {
 	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 
-.global_navigation .top_form {
+.global_navigation .top_form.top_search {
 	margin-top: 3px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 .global_navigation .top_form * {

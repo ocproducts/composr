@@ -204,7 +204,7 @@ function prepare_templated_subscription($subscription)
         'USERGROUP_NAME' => $subscription['usergroup_name'],
         'LENGTH' => strval($subscription['length']),
         'LENGTH_UNITS' => $subscription['length_units'],
-        'PER' => do_lang('_LENGTH_UNIT_' . $subscription['length_units'], integer_format($subscription['length'])),
+        'PER' => do_lang_tempcode('_LENGTH_UNIT_' . $subscription['length_units'], integer_format($subscription['length'])),
         'AMOUNT' => $subscription['amount'],
         '_VIA' => $subscription['via'],
         'VIA' => do_lang_tempcode('PAYMENT_GATEWAY_' . $subscription['via']),

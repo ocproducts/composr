@@ -37,14 +37,14 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 					<div class="global_navigation_inner">
 						{$,Login form for guests}
 						{+START,IF,{$IS_GUEST}}{+START,IF,{$CONFIG_OPTION,block_top_login}}
-							<div class="top_form">
+							<div class="top_form top_login">
 								{$BLOCK,block=top_login}
 							</div>
 						{+END}{+END}
 
 						{$,Search box for logged in users [could show to guests, except space is lacking]}
 						{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$NOT,{$MOBILE}},{$NOT,{$IS_GUEST}}}}{+START,IF,{$CONFIG_OPTION,block_top_search}}
-							<div class="top_form">
+							<div class="top_form top_search">
 								{$BLOCK,block=top_search,failsafe=1}
 							</div>
 						{+END}{+END}

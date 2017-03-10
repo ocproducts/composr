@@ -1281,7 +1281,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 			<td>Generate a thumbnail URL from another image URL</td>
 		</tr>
 		<tr style="background: #FFDDDD">
-			<td>SUPPORTS_FRACTIONAL_EDITABLE,cms:cms_example,1</td>
+			<td>{$SUPPORTS_FRACTIONAL_EDITABLE,cms:cms_example,1}</td>
 			<td>Whether some content has permissions to be editable inline, via the <kbd>FRACTIONAL_EDITABLE</kbd> directive. The '1' is if an access check passed (if omitted, does an Admin Zone access check instead).</td>
 		</tr>
 		<tr style="background: #DDFFDD">
