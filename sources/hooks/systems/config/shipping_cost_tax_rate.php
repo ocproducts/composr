@@ -32,7 +32,7 @@ class Hook_config_shipping_cost_tax_rate
     {
         return array(
             'human_name' => 'SHIPPING_COST_TAX_RATE',
-            'type' => 'float',
+            'type' => 'tax',
             'category' => 'ECOMMERCE',
             'group' => 'SHIPPING',
             'explanation' => 'CONFIG_OPTION_shipping_cost_tax_rate',

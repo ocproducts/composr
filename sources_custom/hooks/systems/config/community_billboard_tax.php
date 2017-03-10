@@ -27,7 +27,7 @@ class Hook_config_community_billboard_tax
     {
         return array(
             'human_name' => 'PRICE_community_billboard_tax',
-            'type' => 'float',
+            'type' => 'tax',
             'category' => 'ECOMMERCE',
             'group' => 'COMMUNITY_BILLBOARD_MESSAGE',
             'explanation' => 'CONFIG_OPTION_community_billboard_tax',

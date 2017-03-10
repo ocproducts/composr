@@ -615,11 +615,11 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 	<tbody>
 		<tr style="background: #DDFFDD">
 			<td>{$CURRENCY,123,USD}</td>
-			<td>Do a currency conversion / Get the currency (first parameter is a number for the amount in the site's default currency, second parameter is the source currency, optional third parameter is the target currency [defaults to the site currency], optional fourth parameter defines a display method 1-6)</td>
+			<td>Do a currency conversion / Get the currency (first parameter is a number for the amount in the site's default currency, second parameter is the source currency, optional third parameter is the target currency [defaults to the site currency], optional fourth parameter defines a display method 1-6). Requires the eCommerce addon.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$CURRENCY_SYMBOL}</td>
-			<td>Get the nice currency symbol for the site's default currency</td>
+			<td>Get the nice currency symbol for the site's default currency. Requires the eCommerce addon.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$COUNTRY}</td>
@@ -1144,6 +1144,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		<tr style="background: #DDFFDD">
 			<td>{$TAX_NUMBER_LABEL}</td>
 			<td>A label for identifying the tax system, in English either &ldquo;VAT&rdquo; or &ldquo;Sales tax&rdquo;</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BUSINESS_ADDRESS}</td>
+			<td>The configured business address. Requires the eCommerce addon.</td>
 		</tr>
 	</tbody>
 </table>

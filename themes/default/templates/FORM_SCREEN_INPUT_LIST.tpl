@@ -21,6 +21,14 @@
 				return escape_html(o.text);
 			}
 		{+END}
+		{+START,IF_NON_PASSED,IMAGES}
+			function format_select_simple(o)
+			{
+				if (!o.id)
+					return o.text; // optgroup
+				return '<span title="' + escape_html(o.element[0].title) + '">' + escape_html(o.text) + '</span>';
+			}
+		{+END}
 
 		add_event_listener_abstract(window,'load',function() {
 			var element=document.getElementById("{NAME#/}");
@@ -31,6 +39,9 @@
 					$(element).select2({
 						{+START,IF_PASSED,IMAGES}
 							formatResult: format_select_image,
+						{+END}
+						{+START,IF_NON_PASSED,IMAGES}
+							formatResult: format_select_simple,
 						{+END}
 						dropdownAutoWidth: true,
 						containerCssClass: 'wide_field'

@@ -32,7 +32,7 @@ class Hook_config_highlight_name_tax
     {
         return array(
             'human_name' => 'PRICE_highlight_name_tax',
-            'type' => 'float',
+            'type' => 'tax',
             'category' => 'ECOMMERCE',
             'group' => 'NAME_HIGHLIGHTING',
             'explanation' => 'CONFIG_OPTION_highlight_name_tax',

@@ -1299,15 +1299,17 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
  * @param  boolean $ticked Whether this is ticked by default
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ID_TEXT $value The value the checkbox passes when ticked
+ * @param  boolean $read_only Whether this box should be disabled
+ * @param  boolean $disabled Whether this box should be disabled
  * @return Tempcode The input field
  */
-function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1')
+function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1', $read_only = false, $disabled = false)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
     $ticked = (filter_form_field_default($name, $ticked ? '1' : '0') == '1');
 
-    $input = do_template('FORM_SCREEN_INPUT_TICK', array('_GUID' => '340a68c271b838d327f042d101df27eb', 'VALUE' => $value, 'CHECKED' => $ticked, 'TABINDEX' => strval($tabindex), 'NAME' => $name));
+    $input = do_template('FORM_SCREEN_INPUT_TICK', array('_GUID' => 'f765a641c7527c0027b2d5c1da408aca', 'VALUE' => $value, 'CHECKED' => $ticked, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'READ_ONLY' => $read_only, 'DISABLED' => $disabled));
     return _form_input($name, $pretty_name, $description, $input, false, false, $tabindex);
 }
 

@@ -475,6 +475,11 @@ class Module_admin_config
                         $out .= static_evaluate_tempcode(form_input_float($human_name, $explanation, $name, float_unformat(get_option($name)), $required));
                         break;
 
+                    case 'tax':
+                        require_code('ecommerce');
+                        $out .= static_evaluate_tempcode(form_input_tax($human_name, $explanation, $name, get_option($name), $required));
+                        break;
+
                     case 'line':
                     case 'transline':
                         $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
@@ -553,6 +558,16 @@ class Module_admin_config
                         } else {
                             $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
                         }
+                        break;
+
+                    case 'country':
+                        require_code('locations');
+                        $_list = new Tempcode();
+                        if (!$required) {
+                            $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+                        }
+                        $_list = create_country_selection_list(array(get_option($name)));
+                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
                         break;
 
                     case 'forum_grouping':
@@ -720,7 +735,10 @@ class Module_admin_config
         // Go through all options on the page, saving
         foreach ($options as $name => $option) {
             // Save
-            if ($option['type'] == 'tick') {
+            if ($option['type'] == 'tax') {
+                require_code('ecommerce');
+                $value = post_param_tax($name);
+            } elseif ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif (($option['type'] == 'date') || ($option['type'] == 'datetime')) {
                 $date_value = post_param_date($name);

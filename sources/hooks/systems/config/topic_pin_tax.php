@@ -32,7 +32,7 @@ class Hook_config_topic_pin_tax
     {
         return array(
             'human_name' => 'PRICE_topic_pin_tax',
-            'type' => 'float',
+            'type' => 'tax',
             'category' => 'ECOMMERCE',
             'group' => 'TOPIC_PINNING',
             'explanation' => 'CONFIG_OPTION_topic_pin_tax',

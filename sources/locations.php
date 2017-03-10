@@ -409,25 +409,113 @@ function find_country_name_from_iso($iso)
 }
 
 /**
- * Get a nice, formatted XHTML list of regions
+ * Get a nice, formatted XHTML list of countries
  *
- * @param  ?array $regions The currently selected regions (null: none selected)
- * @return Tempcode The list of regions
+ * @param  ?array $selected_countries The currently selected countries (null: none selected)
+ * @return Tempcode The list of countries
  */
-function create_region_selection_list($regions = null)
+function create_country_selection_list($selected_countries = null) // TODO: In v11 make it default to array()
 {
-    require_code('locations');
     $continents_and_countries = find_continents_and_countries();
 
     $list_groups = new Tempcode();
     foreach ($continents_and_countries as $continent => $countries) {
         $list = new Tempcode();
         foreach ($countries as $country_code => $country_name) {
-            $list->attach(form_input_list_entry($country_code, !is_null($regions) && in_array($country_code, $regions), $country_name));
+            $list->attach(form_input_list_entry($country_code, ($selected_countries !== null) && in_array($country_code, $selected_countries), $country_name));
         }
         $list_groups->attach(form_input_list_group($continent, $list));
     }
     return $list_groups;
+}
+
+/**
+ * Get a nice, formatted XHTML list of regions
+ *
+ * @param  ?array $selected_regions The currently selected regions (null: none selected)
+ * @return Tempcode The list of regions
+ */
+function create_region_selection_list($selected_regions = null) // TODO: In v11 make it default to array()
+{
+    return create_country_selection_list($regions); // The standard implementation is for a region to just be a country
+}
+
+/**
+ * Get a nice, formatted XHTML list of USA states
+ *
+ * @param  ?array $selected_states The currently selected states (null: none selected)
+ * @return Tempcode The list of states
+ */
+function create_usa_state_selection_list($selected_states = null) // TODO: In v11 make it default to array()
+{
+    $state_list = new Tempcode();
+
+    $state_choices = array(
+        'AL' => 'Alabama',
+        'AK' => 'Alaska',
+        'AS' => 'American Samoa',
+        'AZ' => 'Arizona',
+        'AR' => 'Arkansas',
+        'CA' => 'California',
+        'CO' => 'Colorado',
+        'CT' => 'Connecticut',
+        'DE' => 'Delaware',
+        'DC' => 'District of Columbia',
+        'FM' => 'Federated States of Micronesia',
+        'FL' => 'Florida',
+        'GA' => 'Georgia',
+        'GU' => 'Guam',
+        'HI' => 'Hawaii',
+        'ID' => 'Idaho',
+        'IL' => 'Illinois',
+        'IN' => 'Indiana',
+        'IA' => 'Iowa',
+        'KS' => 'Kansas',
+        'KY' => 'Kentucky',
+        'LA' => 'Louisiana',
+        'ME' => 'Maine',
+        'MH' => 'Marshall Islands',
+        'MD' => 'Maryland',
+        'MA' => 'Massachusetts',
+        'MI' => 'Michigan',
+        'MN' => 'Minnesota',
+        'MS' => 'Mississippi',
+        'MO' => 'Missouri',
+        'MT' => 'Montana',
+        'NE' => 'Nebraska',
+        'NV' => 'Nevada',
+        'NH' => 'New Hampshire',
+        'NJ' => 'New Jersey',
+        'NM' => 'New Mexico',
+        'NY' => 'New York',
+        'NC' => 'North Carolina',
+        'ND' => 'North Dakota',
+        'MP' => 'Northern Mariana Islands',
+        'OH' => 'Ohio',
+        'OK' => 'Oklahoma',
+        'OR' => 'Oregon',
+        'PW' => 'Palau',
+        'PA' => 'Pennsylvania',
+        'PR' => 'Puerto Rico',
+        'RI' => 'Rhode Island',
+        'SC' => 'South Carolina',
+        'SD' => 'South Dakota',
+        'TN' => 'Tennessee',
+        'TX' => 'Texas',
+        'UT' => 'Utah',
+        'VT' => 'Vermont',
+        'VI' => 'Virgin Islands',
+        'VA' => 'Virginia',
+        'WA' => 'Washington',
+        'WV' => 'West Virginia',
+        'WI' => 'Wisconsin',
+        'WY' => 'Wyoming',
+    );
+    foreach ($state_choices as $state_code => $state_title) {
+        $state_list->attach(form_input_list_entry($state_code, ($selected_states !== null) && in_array($state_code, $selected_states), $state_title));
+    }
+
+    return $state_list;
 }
 
 /**

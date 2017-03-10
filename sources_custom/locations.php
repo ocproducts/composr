@@ -13,6 +13,10 @@
  * @package    world_regions
  */
 
+/*
+Note that regions are an amorphous concept. They should not be used for strict addresses, they are designed more for creating a location hierarchy.
+*/
+
 /**
  * Get a nice, formatted XHTML list of regions
  *

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_business_address
+class Hook_config_business_county
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,14 @@ class Hook_config_business_address
     public function get_details()
     {
         return array(
-            'human_name' => 'BUSINESS_ADDRESS',
-            'type' => 'text',
+            'human_name' => 'BUSINESS_COUNTY',
+            'type' => 'line',
             'category' => 'ECOMMERCE',
             'group' => 'ADDRESS',
-            'explanation' => 'CONFIG_OPTION_business_address',
+            'explanation' => 'CONFIG_OPTION_business_county',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'ecommerce',
         );
@@ -50,6 +51,7 @@ class Hook_config_business_address
      */
     public function get_default()
     {
-        return get_option('privacy_postal_address');
+        require_code('locations');
+        return geolocate_ip();
     }
 }

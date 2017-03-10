@@ -32,7 +32,7 @@ class Hook_config_banner_hit_tax
     {
         return array(
             'human_name' => 'PRICE_banner_hit_tax',
-            'type' => 'float',
+            'type' => 'tax',
             'category' => 'ECOMMERCE',
             'group' => 'BANNERS',
             'explanation' => 'CONFIG_OPTION_banner_hit_tax',

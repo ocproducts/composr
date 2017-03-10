@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_pd_email
+class Hook_config_business_city
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_pd_email
     public function get_details()
     {
         return array(
-            'human_name' => 'EMAIL_ADDRESS',
+            'human_name' => 'BUSINESS_CITY',
             'type' => 'line',
             'category' => 'ECOMMERCE',
             'group' => 'ADDRESS',
-            'explanation' => 'CONFIG_OPTION_pd_email',
+            'explanation' => 'CONFIG_OPTION_business_city',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 8,
+            'order_in_category_group' => 3,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +52,6 @@ class Hook_config_pd_email
      */
     public function get_default()
     {
-        return get_option('staff_address');
+        return '';
     }
 }

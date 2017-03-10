@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_pd_email
+class Hook_config_taxcloud_api_key
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_pd_email
     public function get_details()
     {
         return array(
-            'human_name' => 'EMAIL_ADDRESS',
+            'human_name' => 'TAXCLOUD_API_KEY',
             'type' => 'line',
             'category' => 'ECOMMERCE',
-            'group' => 'ADDRESS',
-            'explanation' => 'CONFIG_OPTION_pd_email',
+            'group' => 'TAX',
+            'explanation' => 'CONFIG_OPTION_taxcloud_api_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 8,
+            'order_in_category_group' => 6,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +51,6 @@ class Hook_config_pd_email
      */
     public function get_default()
     {
-        return get_option('staff_address');
+        return '';
     }
 }

@@ -27,7 +27,7 @@ class Hook_config_support_credit_tax
     {
         return array(
             'human_name' => 'SUPPORT_CREDIT_TAX',
-            'type' => 'float',
+            'type' => 'tax',
             'category' => 'FEATURE',
             'group' => 'CUSTOMERS',
             'explanation' => 'CONFIG_OPTION_support_credit_tax',

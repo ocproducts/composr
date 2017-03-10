@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_pd_address
+class Hook_config_business_name
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,15 @@ class Hook_config_pd_address
     public function get_details()
     {
         return array(
-            'human_name' => 'POSTAL_ADDRESS',
-            'type' => 'text',
+            'human_name' => 'BUSINESS_NAME',
+            'type' => 'line',
             'category' => 'ECOMMERCE',
             'group' => 'ADDRESS',
-            'explanation' => 'CONFIG_OPTION_pd_address',
+            'explanation' => 'CONFIG_OPTION_business_name',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 1,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );
@@ -50,6 +52,6 @@ class Hook_config_pd_address
      */
     public function get_default()
     {
-        return get_option('privacy_postal_address');
+        return '';
     }
 }

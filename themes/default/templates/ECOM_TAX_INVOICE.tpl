@@ -22,7 +22,7 @@
 			<tr class="information">
 				<td>
 					{$REPLACE,
-,<br />,{$CONFIG_OPTION*,business_address}}
+,<br />,{$BUSINESS_ADDRESS*}}
 				</td>
 
 				<td>

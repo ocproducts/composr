@@ -2815,7 +2815,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_password_reset_process_VALUE_temporary
         CONFIG_OPTION_password_reset_process_VALUE_ultra
         CONFIG_OPTION_payment_gateway
-        CONFIG_OPTION_pd_address
         CONFIG_OPTION_pd_email
         CONFIG_OPTION_pd_number
         CONFIG_OPTION_personal_sub_links
@@ -5778,7 +5777,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         POP3_MAINTAIN_URL
         PORT
         PORTFOLIO
-        POSTAL_ADDRESS
         POSTING_RATES
         POSTING_TICKET_AS
         POST_COUNT_INCREMENT
@@ -5996,8 +5994,25 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_ecom_price_honour_time
         SHIPPING_COST_TAX_RATE
         CONFIG_OPTION_shipping_cost_tax_rate
-        BUSINESS_ADDRESS
-        CONFIG_OPTION_business_address
+        TAXCLOUD_API_ID
+        TAXCLOUD_API_KEY
+        CONFIG_OPTION_taxcloud_api_id
+        CONFIG_OPTION_taxcloud_api_key
+        BUSINESS_NAME
+        BUSINESS_STREET_ADDRESS
+        BUSINESS_CITY
+        BUSINESS_COUNTY
+        BUSINESS_STATE
+        BUSINESS_POST_CODE
+        BUSINESS_COUNTRY
+        CONFIG_OPTION_business_name
+        CONFIG_OPTION_business_street_address
+        CONFIG_OPTION_business_city
+        CONFIG_OPTION_business_county
+        CONFIG_OPTION_business_state
+        CONFIG_OPTION_business_post_code
+        CONFIG_OPTION_business_country
+        INVALID_REGULAR_EXPRESSION
         PROBATION_USERGROUP
         PROBLEM_ACCESSING_RESPONSE
         PROBLEM_RETRIEVING_XML
@@ -9288,6 +9303,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUBMIT_AWARD
         SUBMIT_UNVALIDATED_FORUM_POSTS
         SUBMIT_UNVALIDATED_FORUM_TOPICS
+        STATE_NEEDED_FOR_USA
+        INVALID_STATE_FOR_NON_USA
         SUBSCRIBE
         SUBSCRIBED_REMINDERS
         SUBSCRIBE_EVENT

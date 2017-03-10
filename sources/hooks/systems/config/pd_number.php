@@ -38,6 +38,7 @@ class Hook_config_pd_number
             'explanation' => 'CONFIG_OPTION_pd_number',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 9,
 
             'addon' => 'ecommerce',
         );

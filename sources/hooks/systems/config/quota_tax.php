@@ -32,7 +32,7 @@ class Hook_config_quota_tax
     {
         return array(
             'human_name' => 'PRICE_quota_tax',
-            'type' => 'float',
+            'type' => 'tax',
             'category' => 'ECOMMERCE',
             'group' => 'POP3',
             'explanation' => 'CONFIG_OPTION_quota_tax',

@@ -829,6 +829,8 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => true,
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
+            'READ_ONLY' => false,
+            'DISABLED' => false,
         ));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,

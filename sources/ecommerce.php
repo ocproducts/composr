@@ -113,6 +113,8 @@ function init__ecommerce()
     require_lang('ecommerce');
 
     require_code('locations');
+    require_code('ecommerce_tax');
+    require_code('ecommerce_shipping');
 }
 
 /**
@@ -361,121 +363,6 @@ function get_transaction_fee($amount, $payment_gateway)
 }
 
 /**
- * Get the base shipping cost for the shopping cart.
- *
- * @return float Base shipping cost.
- */
-function get_base_shipping_cost()
-{
-    static $ret = null;
-
-    if ($ret === null) {
-        $option = get_option('shipping_cost_base');
-        $ret = round(float_unformat($option), 2);
-    }
-
-    return $ret;
-}
-
-/**
- * Calculate shipping tax.
- *
- * @param  REAL $shipping_cost The shipping cost.
- * @return REAL The tax.
- */
-function calculate_shipping_tax($shipping_cost)
-{
-    return $shipping_cost * float_unformat(get_option('shipping_cost_tax_rate')) / 100.0;
-}
-
-/**
- * Recalculate tax that is due based on customer context.
- *
- * @param  ?array $details Map of product details (null: it's for shipping cost only).
- * @param  REAL $tax The default tax due if liable. This may be different to $details['tax'], e.g. if a discount is in place.
- * @param  REAL $shipping_cost_tax The shipping cost tax.
- * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @param  integer $quantity The quantity of items.
- * @return REAL The tax actually due (either zero or same as $tax, unless you are doing something clever).
- */
-function recalculate_tax_due($details, $tax, $shipping_cost_tax = 0.00, $member_id = null, $quantity = 1)
-{
-    // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
-
-    $shipping_firstname = '';
-    $shipping_lastname = '';
-    $shipping_street_address = '';
-    $shipping_city = '';
-    $shipping_county = '';
-    $shipping_state = '';
-    $shipping_post_code = '';
-    $shipping_country = '';
-    get_default_ecommerce_fields($member_id, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
-
-    $tax_country_regexp = get_option('tax_country_regexp');
-    $tax_state_regexp = get_option('tax_state_regexp');
-    if ((preg_match('#' . $tax_country_regexp . '#', $shipping_country)) && (($tax_state_regexp === null) || (preg_match('#' . $tax_state_regexp . '#', $shipping_state)))) {
-        return $tax * $quantity + $shipping_cost_tax;
-    }
-
-    return 0.00;
-}
-
-/**
- * Work out the tax rate for a given flat tax figure.
- *
- * @param  REAL $price Price.
- * @param  REAL $tax Tax.
- * @return REAL The tax rate (as a percentage).
- */
-function backcalculate_tax_rate($price, $tax)
-{
-    if ($price == 0.00) {
-        return 0.0;
-    }
-    return round(100.0 * ($tax / $price), 1);
-}
-
-/**
- * Recalculate shipping cost based on customer context.
- *
- * @param  array $products_in_cart List of product specifiers.
- * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @return REAL The shipping cost.
- */
-function recalculate_shipping_cost_combo($products_in_cart, $member_id = null)
-{
-    // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
-
-    $shipping_cost = get_base_shipping_cost();
-    foreach ($products_in_cart as $_product) {
-        list($product, $quantity) = $_product;
-
-        list($details) = find_product_details($product['type_code']);
-
-        recalculate_shipping_cost($product, $details['shipping_cost'] - get_base_shipping_cost(), $member_id, $quantity);
-    }
-
-    return $shipping_cost;
-}
-
-/**
- * Recalculate shipping cost based on customer context.
- *
- * @param  ?array $details Map of product details (null: it's for base shipping cost only).
- * @param  REAL $shipping_cost The default shipping cost.
- * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @param  integer $quantity The quantity of items.
- * @return REAL The shipping cost.
- */
-function recalculate_shipping_cost($details, $shipping_cost, $member_id = null, $quantity = 1)
-{
-    // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
-
-    return $shipping_cost * $quantity;
-}
-
-/**
  * Get a URL to a product.
  *
  * @param  ID_TEXT $type_code The product codename.
@@ -686,78 +573,6 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
 }
 
 /**
- * Generate an invoicing breakdown.
- *
- * @param  ID_TEXT $type_code The product codename.
- * @param  SHORT_TEXT $item_name The human-readable product title.
- * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  REAL $price Transaction price.
- * @param  REAL $tax Transaction tax.
- * @param  ?REAL $shipping_cost Transaction shipping cost (null: no shipping).
- * @return array Invoicing breakdown.
- */
-function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost = null)
-{
-    $invoicing_breakdown = array();
-
-    if (preg_match('#^CART\_ORDER\_\d+$#', $type_code) == 0) {
-        $invoicing_breakdown[] = array(
-            'type_code' => $type_code,
-            'item_name' => $item_name,
-            'quantity' => 1,
-            'unit_price' => $price,
-            'unit_tax' => $tax,
-        );
-    } else {
-        $order_id = intval(substr($type_code, strlen('CART_ORDER_')));
-
-        $total_price = 0.00;
-        $total_tax = 0.00;
-
-        $_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
-        foreach ($_items as $_item) {
-            $invoicing_breakdown[] = array(
-                'type_code' => $_item['p_type_code'],
-                'item_name' => $_item['p_name'],
-                'quantity' => $_item['p_quantity'],
-                'unit_price' => $_item['p_price'],
-                'unit_tax' => $_item['p_tax'],
-            );
-
-            $total_price += $_item['p_price'];
-            $total_tax += $_item['p_tax'];
-        }
-
-        if ($shipping_cost !== null) {
-            $total_price += $shipping_cost;
-        }
-
-        if (($total_price != $price) || ($total_tax != $tax)) {
-            $invoicing_breakdown[] = array(
-                'type_code' => '',
-                'item_name' => do_lang('PRICING_ADJUSTMENT'),
-                'quantity' => 1,
-                'unit_price' => $price - $total_price,
-                'unit_tax' => $tax - $total_tax,
-            );
-        }
-    }
-
-    if ($shipping_cost !== null) {
-        $invoicing_breakdown[] = array(
-            'type_code' => '',
-            'item_name' => do_lang('SHIPPING'),
-            'quantity' => 1,
-            'unit_price' => $shipping_cost,
-            'unit_tax' => calculate_shipping_tax($shipping_cost),
-        );
-    }
-
-    return $invoicing_breakdown;
-
-}
-
-/**
  * Make a subscription cancellation button.
  *
  * @param  AUTO_LINK $purchase_id The purchase ID.
@@ -775,23 +590,6 @@ function make_cancel_button($purchase_id, $payment_gateway)
         return null;
     }
     return $payment_gateway_object->make_cancel_button($purchase_id);
-}
-
-/**
- * Send an invoice notification to a member.
- *
- * @param  MEMBER $member_id The member to send to.
- * @param  AUTO_LINK $id The invoice ID.
- */
-function send_invoice_notification($member_id, $id)
-{
-    // Send out notification
-    require_code('notifications');
-    $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), null, false, false, true);
-    $url = $_url->evaluate();
-    $subject = do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id));
-    $body = do_notification_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id));
-    dispatch_notification('invoice', null, $subject, $body, array($member_id));
 }
 
 /**
@@ -961,6 +759,8 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
 
     $fields = new Tempcode();
 
+    $shipping_email = '';
+    $shipping_phone = '';
     $shipping_firstname = '';
     $shipping_lastname = '';
     $shipping_street_address = '';
@@ -986,7 +786,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
     $billing_state = '';
     $billing_post_code = '';
     $billing_country = '';
-    get_default_ecommerce_fields(null, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
+    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
 
     // Card fields...
 
@@ -1043,51 +843,6 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
 }
 
 /**
- * Get form fields for a shipping/invoice address.
- *
- * @param  string $shipping_email E-mail address.
- * @param  string $shipping_phone Phone number.
- * @param  string $shipping_firstname First name.
- * @param  string $shipping_lastname Last name.
- * @param  string $shipping_street_address Street address.
- * @param  string $shipping_city Town/City.
- * @param  string $shipping_county County.
- * @param  string $shipping_state State.
- * @param  string $shipping_post_code Postcode/Zip.
- * @param  string $shipping_country Country.
- * @param  boolean $require_all_details Whether to require all details to be input.
- * @return Tempcode Address fields.
- */
-function get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $require_all_details = true)
-{
-    $fields = new Tempcode();
-
-    $fields->attach(get_shipping_name_fields($shipping_firstname, $shipping_lastname, $require_all_details));
-    $fields->attach(get_address_fields('shipping_', $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $require_all_details));
-    $fields->attach(get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details));
-
-    return $fields;
-}
-
-/**
- * Get form fields for a shipping/invoice address.
- *
- * @param  string $shipping_firstname First name.
- * @param  string $shipping_lastname Last name.
- * @param  boolean $require_all_details Whether to require all details to be input.
- * @return Tempcode Name fields.
- */
-function get_shipping_name_fields($shipping_firstname, $shipping_lastname, $require_all_details = true)
-{
-    $fields = new Tempcode();
-
-    $fields->attach(form_input_line(do_lang_cpf('firstname'), '', 'shipping_firstname', $shipping_firstname, $require_all_details));
-    $fields->attach(form_input_line(do_lang_cpf('lastname'), '', 'shipping_lastname', $shipping_lastname, $require_all_details));
-
-    return $fields;
-}
-
-/**
  * Get form fields for an address.
  *
  * @param  string $prefix The prefix for the address input field.
@@ -1109,37 +864,33 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
     $fields->attach(form_input_line(do_lang_cpf('city'), '', $prefix . 'city', $city, $require_all_details));
 
     if (get_option('cpf_enable_county') == '1') {
-        $fields->attach(form_input_line(do_lang_cpf('county'), '', $prefix . 'county', $county, $require_all_details));
+        $fields->attach(form_input_line(do_lang_cpf('county'), '', $prefix . 'county', $county, false));
     }
 
-    if (get_option('cpf_enable_state') == '1') {
-        $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, $require_all_details));
+    $definitely_usa = (get_option('cpf_enable_country') == '0') && (get_option('business_country') == 'US');
+    if ((get_option('cpf_enable_state') == '1') || (get_option('business_country') == 'US')) {
+        if (get_option('business_country') == 'US') { // TaxCloud needs exact states, and Americans are a bit pampered, so show an explicit list
+            $state_list = new Tempcode();
+            if (!$definitely_usa) {
+                $state_list->attach(form_input_list_entry('', '' == $state, do_lang_tempcode('NA_EM'))); // Need to provide an N/A option if different countries may be selected
+            }
+            $states = create_usa_state_selection_list(array($state));
+            $fields->attach(form_input_list(do_lang_cpf('state'), '', $prefix . 'state', $states, null, false, false));
+        } else {
+            $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, $definitely_usa));
+        }
     }
 
-    $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, $require_all_details, null, 12, 'text', null, null, null, 8));
+    if (get_option('cpf_enable_post_code') == '1') {
+        $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, $definitely_usa, null, $definitely_usa ? 9 : 12, 'text', null, $definitely_usa ? '\d*' : null, null, $definitely_usa ? 5 : 8));
+    }
 
-    $countries = new Tempcode();
-    $countries->attach(form_input_list_entry('', $country == ''));
-    $countries->attach(create_region_selection_list(array($country)));
-    $fields->attach(form_input_list(do_lang_cpf('country'), '', $prefix . 'country', $countries, null, false, $require_all_details));
-
-    return $fields;
-}
-
-/**
- * Get form fields for a shipping/invoice address.
- *
- * @param  string $shipping_email E-mail address.
- * @param  string $shipping_phone Phone number.
- * @param  boolean $require_all_details Whether to require all details to be input.
- * @return Tempcode Contact fields.
- */
-function get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details = true)
-{
-    $fields = new Tempcode();
-
-    $fields->attach(form_input_email(do_lang_tempcode('EMAIL_ADDRESS'), '', 'shipping_email', $shipping_email, $require_all_details));
-    $fields->attach(form_input_line(do_lang_tempcode('PHONE_NUMBER'), '', 'shipping_phone', $shipping_phone, $require_all_details));
+    if (get_option('cpf_enable_country') == '1') {
+        $countries = new Tempcode();
+        $countries->attach(form_input_list_entry('', $country == ''));
+        $countries->attach(create_country_selection_list(array($country)));
+        $fields->attach(form_input_list(do_lang_cpf('country'), '', $prefix . 'country', $countries, null, false, $require_all_details));
+    }
 
     return $fields;
 }
@@ -1173,8 +924,9 @@ function get_shipping_contact_fields($shipping_email, $shipping_phone, $require_
  * @param  string $billing_state Billing state (blank: unknown).
  * @param  string $billing_post_code Billing postcode (blank: unknown).
  * @param  string $billing_country Billing country (blank: unknown).
+ * @param  boolean $default_to_store Default to the store address if we don't know the shipping address. Useful for a default tax calculation.
  */
-function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', &$shipping_phone = '', &$shipping_firstname = '', &$shipping_lastname = '', &$shipping_street_address = '', &$shipping_city = '', &$shipping_county = '', &$shipping_state = '', &$shipping_post_code = '', &$shipping_country = '', &$cardholder_name = '', &$card_type = '', &$card_number = null, &$card_start_date_year = null, &$card_start_date_month = null, &$card_expiry_date_year = null, &$card_expiry_date_month = null, &$card_issue_number = null, &$card_cv2 = null, &$billing_street_address = '', &$billing_city = '', &$billing_county = '', &$billing_state = '', &$billing_post_code = '', &$billing_country = '')
+function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', &$shipping_phone = '', &$shipping_firstname = '', &$shipping_lastname = '', &$shipping_street_address = '', &$shipping_city = '', &$shipping_county = '', &$shipping_state = '', &$shipping_post_code = '', &$shipping_country = '', &$cardholder_name = '', &$card_type = '', &$card_number = null, &$card_start_date_year = null, &$card_start_date_month = null, &$card_expiry_date_year = null, &$card_expiry_date_month = null, &$card_issue_number = null, &$card_cv2 = null, &$billing_street_address = '', &$billing_city = '', &$billing_county = '', &$billing_state = '', &$billing_post_code = '', &$billing_country = '', $default_to_store = false)
 {
     if ($member_id === null) {
         $member_id = get_member();
@@ -1282,6 +1034,50 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
     $billing_state = post_param_string('billing_state', $billing_state);
     $billing_post_code = post_param_string('billing_post_code', $billing_post_code);
     $billing_country = post_param_string('billing_country', $billing_country);
+
+    if ($default_to_store) {
+        if ($shipping_street_address == '') {
+            $shipping_street_address = get_option('business_street_address');
+        }
+        if ($shipping_city == '') {
+            $shipping_city = get_option('business_city');
+        }
+        if ($shipping_county == '') {
+            $shipping_county = get_option('business_county');
+        }
+        if ($shipping_state == '') {
+            $shipping_state = get_option('business_state');
+        }
+        if ($shipping_post_code == '') {
+            $shipping_post_code = get_option('business_post_code');
+        }
+        if ($shipping_country == '') {
+            $shipping_country = get_option('business_country');
+        }
+    }
+
+    if (get_option('cpf_enable_country') == '0') {
+        if ($billing_country == '') {
+            $billing_country = get_option('business_country');
+        }
+
+        if ($shipping_country == '') {
+            $shipping_country = get_option('business_country');
+        }
+    }
+
+    if (
+            (($billing_country == 'US') && ($billing_state == '')) ||
+            (($shipping_country == 'US') && ($shipping_state == ''))
+        ) {
+        warn_exit(do_lang_tempcode('STATE_NEEDED_FOR_USA'));
+    }
+    if (
+            (($billing_country != 'US') && (get_option('business_country') == 'US') && ($billing_state != '')) ||
+            (($shipping_country != 'US') && (get_option('business_country') == 'US') && ($shipping_state != ''))
+        ) {
+        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_NON_USA'));
+    }
 }
 
 /**
@@ -1360,6 +1156,8 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
 
     // Read in address fields...
 
+    $shipping_email = '';
+    $shipping_phone = '';
     $shipping_firstname = '';
     $shipping_lastname = '';
     $shipping_street_address = '';
@@ -1385,7 +1183,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
     $billing_state = '';
     $billing_post_code = '';
     $billing_country = '';
-    get_default_ecommerce_fields(null, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
+    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
 
     $card_start_date = ($card_start_date_year === null || $card_start_date_month === null) ? '' : (strval($card_start_date_year) . '/' . strval($card_start_date_month));
     $card_expiry_date = ($card_expiry_date_year === null || $card_expiry_date_month === null) ? '' : (strval($card_expiry_date_year) . '/' . strval($card_expiry_date_month));
@@ -1461,77 +1259,6 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
     }
 
     return array($success, $message, $message_raw);
-}
-
-/**
- * Store shipping address for a transaction.
- * We try and merge it with one we already have on record in a sensible way.
- *
- * @param  ID_TEXT $trans_expecting_id Expected transaction ID.
- * @param  ID_TEXT $txn_id Transaction ID (blank: not set yet).
- * @param  ?array $shipping_address Shipping address (null: get from POST parameters).
- * @return ?AUTO_LINK Address ID (null: none saved).
- */
-function store_shipping_address($trans_expecting_id, $txn_id = '', $shipping_address = null)
-{
-    $field_groups = array(
-        array('a_firstname', 'a_lastname'),
-        array('a_street_address', 'a_city', 'a_county', 'a_state', 'a_post_code', 'a_country'),
-        array('a_email'),
-        array('a_phone'),
-    );
-
-    if ($shipping_address === null) {
-        $shipping_address = array();
-        foreach ($field_groups as $field_group) {
-            foreach ($field_group as $field) {
-                $_field = substr($field, 2);
-                $shipping_address[$field] = post_param_string('shipping_' . $_field, '');
-            }
-        }
-        if (implode('', $shipping_address) == '') {
-            return null;
-        }
-    }
-
-    $existing = $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_trans_expecting_id' => $trans_expecting_id), '', 1);
-    if (array_key_exists(0, $existing)) {
-        $e = $existing[0];
-
-        foreach ($field_groups as $field_group) {
-            $is_empty_new = true;
-            foreach ($field_group as $field) {
-                if ($shipping_address[$field] != '') {
-                    $is_empty_new = false;
-                    break;
-                }
-            }
-
-            if ($is_empty_new) {
-                $is_empty_existing = true;
-                foreach ($field_group as $field) {
-                    if ($e[$field] != '') {
-                        $is_empty_existing = false;
-                        break;
-                    }
-                }
-
-                if (!$is_empty_existing) {
-                    foreach ($field_group as $field) {
-                        $shipping_address[$field] = $e[$field];
-                    }
-                }
-            }
-        }
-
-        $GLOBALS['SITE_DB']->query_delete('ecom_trans_addresses', array('a_trans_expecting_id' => $trans_expecting_id), '', 1);
-    }
-
-    $more = array(
-        'a_trans_expecting_id' => $trans_expecting_id,
-        'a_txn_id' => $txn_id,
-    );
-    return $GLOBALS['SITE_DB']->query_insert('ecom_trans_addresses', $shipping_address + $more, true);
 }
 
 /**
@@ -2067,94 +1794,6 @@ function get_transaction_row($txn_id)
 }
 
 /**
- * Generate tax invoice.
- *
- * @param  ID_TEXT $txn_id Transaction ID.
- * @return Tempcode Tax invoice.
- */
-function generate_tax_invoice($txn_id)
-{
-    require_css('ecommerce');
-    require_code('locations');
-
-    $transaction_row = get_transaction_row($txn_id);
-
-    $address_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_trans_expecting_id' => $txn_id), '', 1);
-    $trans_address = '';
-    if (array_key_exists(0, $address_rows)) {
-        $address_row = $address_rows[0];
-
-        $lines = array(
-            $address_row['a_firstname'] . ' ' . $address_row['a_lastname'],
-            $address_row['a_street_address'],
-            $address_row['a_city'],
-            $address_row['a_county'],
-            $address_row['a_state'],
-            $address_row['a_post_code'],
-            find_country_name_from_iso($address_row['a_country']),
-        );
-        foreach ($lines as $line) {
-            if (trim($line) != '') {
-                $trans_address .= trim($line) . "\n";
-            }
-        }
-        $trans_address = rtrim($trans_address);
-    }
-
-    $items = ($transaction_row['t_invoicing_breakdown'] == '') ? array() : json_decode($transaction_row['t_invoicing_breakdown'], true);
-    $invoicing_breakdown = array();
-    foreach ($items as $item) {
-        $invoicing_breakdown[] = array(
-            'TYPE_CODE' => $item['type_code'],
-            'ITEM_NAME' => $item['item_name'],
-            'QUANTITY' => $item['quantity'],
-            'UNIT_PRICE' => float_format($item['unit_price']),
-            'PRICE' => float_format($item['unit_price'] * $item['quantity']),
-            'UNIT_TAX' => float_format($item['unit_tax']),
-            'TAX' => float_format($item['unit_tax'] * $item['quantity']),
-            'TAX_RATE' => float_format(backcalculate_tax_rate($item['unit_price'], $item['unit_tax']), 1, true),
-        );
-    }
-    if (count($invoicing_breakdown) == 0) { 
-        // We don't have a break-down so at least find a single line-item
-
-        list($details) = find_product_details($transaction_row['t_type_code']);
-        if ($details !== null) {
-            $item_name = $details['item_name'];
-        } else {
-            $item_name = $transaction_row['t_type_code'];
-        }
-
-        $invoicing_breakdown[] = array(
-            'TYPE_CODE' => $transaction_row['t_type_code'],
-            'ITEM_NAME' => $item_name,
-            'QUANTITY' => 1,
-            'UNIT_PRICE' => float_format($transaction_row['t_amount']),
-            'PRICE' => float_format($transaction_row['t_amount']),
-            'UNIT_TAX' => float_format($transaction_row['t_tax']),
-            'TAX' => float_format($transaction_row['t_tax']),
-            'TAX_RATE' => float_format(backcalculate_tax_rate($transaction_row['t_amount'], $transaction_row['t_tax']), 1, true),
-        );
-    }
-
-    $status = get_transaction_status_string($transaction_row['t_status']);
-
-    return do_template('ECOM_TAX_INVOICE', array(
-        'TXN_ID' => $txn_id,
-        '_DATE' => strval($transaction_row['t_time']),
-        'DATE' => get_timezoned_date($transaction_row['t_time'], false, false, false, true),
-        'TRANS_ADDRESS' => $trans_address,
-        'ITEMS' => $invoicing_breakdown,
-        'CURRENCY' => $transaction_row['t_currency'],
-        'TOTAL_PRICE' => float_format($transaction_row['t_amount']),
-        'TOTAL_TAX' => float_format($transaction_row['t_tax']),
-        'TOTAL_AMOUNT' => float_format($transaction_row['t_amount'] + $transaction_row['t_tax']),
-        'PURCHASE_ID' => $transaction_row['t_purchase_id'],
-        'STATUS' => $status,
-    ));
-}
-
-/**
  * Get transaction status.
  *
  * @param  ID_TEXT $_status PayPal-style transaction status.
@@ -2208,4 +1847,34 @@ function get_transaction_status_list()
         $status_list->attach(form_input_list_entry($key, false, $string));
     }
     return $status_list;
+}
+
+/**
+ * Get the full business address.
+ *
+ * @return string Full business address
+ */
+function get_full_business_address()
+{
+    $options = array(
+        'business_name',
+        'business_street_address',
+        'business_city',
+        'business_county',
+        'business_state',
+        'business_post_code',
+        'business_country',
+    );
+    $address = '';
+    foreach ($options as $option) {
+        $address_part = get_option($option);
+        if ($address_part != '') {
+            if (($option == 'business_post_code') && (get_option('business_state') != '') && (get_option('business_country') == 'USA')) {
+                $address_part = rtrim($address_part); // We want the zip code to show after the state
+            }
+
+            $address_part .= $address_part . "\n";
+        }
+    }
+    return rtrim($address_part);
 }
