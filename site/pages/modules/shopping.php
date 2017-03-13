@@ -357,7 +357,9 @@ class Module_shopping
                 do_lang_tempcode('REMOVE')
             ), null);
 
-            foreach ($shopping_cart_rows as $item) {
+            list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = derive_cart_amounts($shopping_cart_rows);
+
+            foreach ($shopping_cart_rows as $i => $item) {
                 list($details, $product_object) = find_product_details($item['type_code']);
 
                 if ($details === null) {
@@ -367,10 +369,8 @@ class Module_shopping
 
                 $type_codes[] = $item['type_code'];
 
-                $this->show_cart_entry($shopping_cart, $details, $item);
+                $this->show_cart_entry($shopping_cart, $details, $item, isset($shopping_cart_rows_taxes[$i]) ? $shopping_cart_rows_taxes[$i] : null);
             }
-
-            list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $total_shipping_cost) = derive_cart_amounts($shopping_cart_rows);
 
             $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, null, 'cart');
 
@@ -435,9 +435,10 @@ class Module_shopping
      *
      * @param  Tempcode $shopping_cart Tempcode object of shopping cart result table.
      * @param  array $details Product details.
+     * @param  ?array $tax_details (null: none known, look them up)
      * @param  array $item Cart row.
      */
-    protected function show_cart_entry(&$shopping_cart, $details, $item)
+    protected function show_cart_entry(&$shopping_cart, $details, $item, $tax_details = null)
     {
         $tpl_set = 'cart';
 
@@ -455,7 +456,13 @@ class Module_shopping
 
         $price_singular = $details['price'];
         $price_multiple = $details['price'] * $item['quantity'];
-        list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+
+        if ($tax_details === null) {
+            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+        } else {
+            list($tax_derivation, $tax, $tax_tracking) = $tax_details;
+        }
+
         $amount = $price_multiple + $tax;
 
         $product_det_url = get_product_det_url($item['type_code'], false, get_member());

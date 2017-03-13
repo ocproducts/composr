@@ -45,7 +45,7 @@ function tax_multiplier($tax_code, $multiplier)
  * @param  REAL $shipping_cost The shipping cost.
  * @param  ?MEMBER $member_id The member this is for (null: current member).
  * @param  integer $quantity The quantity of items.
- * @return array A tuple: The tax due, tax derivation, tax tracking ID (at time of writing this is just with TaxCloud)
+ * @return array A tuple: The tax derivation, tax due, tax tracking ID (at time of writing this is just with TaxCloud)
  */
 function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, $member_id = null, $quantity = 1)
 {
@@ -70,6 +70,23 @@ function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, 
         TODO,
         TODO
     );
+}
+
+/**
+ * Find the tax for a number of items being sold together.
+ *
+ * @param  array $item_details A list of pairs: shopping-cart/order style row, product details. This is returned by reference as a list of tuples: (tax, tax_derivation, tax_tracking) is appended.
+ * @param  string $field_name_prefix Field name prefix. Pass as blank for cart items or 'p_' for order items.
+ * @param  REAL $shipping_cost The shipping cost.
+ * @return array A tuple: The tax derivation, tax due, tax tracking ID (at time of writing this is just with TaxCloud)
+ */
+function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipping_cost = 0.00)
+{
+    TODO
+
+    if ($shipping_cost != 0.00) {
+        TODO TIC:11010
+    }
 }
 
 /**
@@ -146,7 +163,7 @@ function get_tax_using_tax_code($tax_code, $price)
         } else {
             $rate = 0.00; // Not in Europe
         }
-        return $rate;
+        return ($rate / 100.0) * $price;
     }
 
     // America
@@ -217,7 +234,8 @@ function get_tax_using_tax_code($tax_code, $price)
 
     // Simple rate
     if (substr($tax_code, -1) == '%') {
-        return (floatval($tax_code) / 100.0) * $price;
+        $rate = floatval($tax_code);
+        return ($rate / 100.0) * $price;
     }
 
     // Simple flat

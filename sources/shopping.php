@@ -185,50 +185,120 @@ FOR MAKING PURCHASE
  */
 function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
 {
-    $total_price = 0.00;
-    $total_tax_derivation = array();
-    $total_tax = 0.00;
-    $shipped_products = array();
-
-    foreach ($shopping_cart_rows as $item) {
+    // Filter out non-saleable items
+    foreach ($shopping_cart_rows as $i => $item) {
         $type_code = $item[$field_name_prefix . 'type_code'];
-
         list($details) = find_product_details($type_code);
 
         if ($details === null) {
+            unset($shopping_cart_rows[$i]);
             continue;
         }
 
         if ($details['type'] == PRODUCT_SUBSCRIPTION) {
+            unset($shopping_cart_rows[$i]);
             continue; // Subscription type skipped, can't handle within an order
         }
+    }
 
-        $price = $details['price'];
+    // Work out shipping cost
+    $shipped_products = array();
+    foreach ($shopping_cart_rows as $i => $item) {
+        $quantity = $item[$field_name_prefix . 'quantity'];
+        $shipped_products[] = array($item, $quantity);
+    }
+    $total_shipping_cost = recalculate_shipping_cost_combo($shipped_products);
+
+    // Work out total price
+    $total_price = 0.00;
+    foreach ($shopping_cart_rows as $i => $item) {
+        $quantity = $item[$field_name_prefix . 'quantity'];
+        $total_price += $price * $quantity;
+    }
+
+    // Split into TaxCloud and non-TaxCloud
+    $taxcloud_items = array();
+    $non_taxcloud_items = array();
+    foreach ($shopping_cart_rows as $i => $item) {
+        $type_code = $item[$field_name_prefix . 'type_code'];
+        list($details) = find_product_details($type_code);
+
         $tax_code = $details['tax_code'];
 
-        $quantity = $item[$field_name_prefix . 'quantity'];
+        $usa_tic = (preg_match('#^TIC:#', $tax_code) != 0);
+        if ($usa_tic) {
+            $taxcloud_items[$i] = array($item, $details);
+        } else {
+            $non_taxcloud_items[$i] = array($item, $details);
+        }
+    }
 
-        $total_price += $price * $quantity;
-        list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($item, $tax_code, $price, 0.0, null, $quantity);
-        $total_tax += $tax;
+    // Taxes will be put in here
+    $total_tax_derivation = array();
+    $total_tax = 0.00;
+    $shopping_cart_rows_taxes = array();
+    $shipping_tax_derivation = array();
+    $shipping_tax = 0.00;
+    $shipping_tax_tracking = array();
 
-        if ($tax_derivation != '') {
+    // Do TaxCloud call
+    if (count($taxcloud_items) > 0) {
+        $do_shipping_in_tax_cloud = (count($non_taxcloud_items) == 0);
+
+        $shipping_tax_details = get_tax_using_tax_codes($item_details, $field_name_prefix, $do_shipping_in_tax_cloud ? $total_shipping_cost : 0.00/*don't incorporate as we have our own calculation anyway*/);
+
+        foreach ($taxcloud_items as $i => $parts) {
+            list($item, $details, $tax, $tax_derivation, $tax_tracking) = $parts;
+
+            $shopping_cart_rows_taxes[$i] = array($tax_derivation, $tax, $tax_tracking);
+
+            $total_tax += $tax;
+
             foreach ($tax_derivation as $tax_category => $tax_category_amount) {
-                if (!array_key_exists($tax_category, $tax_derivation)) {
-                    $tax_derivation[$tax_category] = 0.00;
+                if (!array_key_exists($tax_category, $total_tax_derivation)) {
+                    $total_tax_derivation[$tax_category] = 0.00;
                 }
-                $tax_derivation[$tax_category] += $tax_category_amount;
+                $total_tax_derivation[$tax_category] += $tax_category_amount;
             }
         }
 
-        $shipped_products[] = array($item, $quantity);
+        $total_tax_tracking = $tax_tracking; // Any one of them, they'll all be the same
+
+        if ($do_shipping_in_tax_cloud) {
+            list($shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = $shipping_tax_details;
+        }
     }
 
-    $total_shipping_cost = recalculate_shipping_cost_combo($shipped_products);
-    list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due(null, '0.0', 0.00, $total_shipping_cost);
-    $total_tax += $tax;
+    // Work out taxes for non-TaxCloud
+    if (count($non_taxcloud_items) > 0) {
+        foreach ($non_taxcloud_items as $i => $parts) {
+            list($item, $details) = $parts;
 
-    return array($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $total_shipping_cost);
+            $price = $details['price'];
+            $tax_code = $details['tax_code'];
+
+            $quantity = $item[$field_name_prefix . 'quantity'];
+
+            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($item, $tax_code, $price, 0.0, null, $quantity);
+
+            $shopping_cart_rows_taxes[$i] = array($tax_derivation, $tax, $tax_tracking);
+
+            $total_tax += $tax;
+
+            foreach ($tax_derivation as $tax_category => $tax_category_amount) {
+                if (!array_key_exists($tax_category, $total_tax_derivation)) {
+                    $total_tax_derivation[$tax_category] = 0.00;
+                }
+                $total_tax_derivation[$tax_category] += $tax_category_amount;
+            }
+        }
+
+        // We always calculate shipping manually when doing any non-TaxCloud products, as it's more tuned
+        list($shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = calculate_tax_due(null, '0.0', 0.00, $total_shipping_cost);
+        $total_tax += $shipping_tax;
+    }
+
+    return array($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking);
 }
 
 /**
@@ -246,7 +316,7 @@ function copy_shopping_cart_to_order()
         warn_exit(do_lang_tempcode('CART_EMPTY'));
     }
 
-    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $total_shipping_cost) = derive_cart_amounts($shopping_cart_rows);
+    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = derive_cart_amounts($shopping_cart_rows);
 
     $shopping_order = array(
         'member_id' => get_member(),
@@ -264,7 +334,7 @@ function copy_shopping_cart_to_order()
     );
 
     $shopping_order_details = array();
-    foreach ($shopping_cart_rows as $item) {
+    foreach ($shopping_cart_rows as $i => $item) {
         $type_code = $item['type_code'];
 
         list($details, $product_object) = find_product_details($type_code);
@@ -284,7 +354,11 @@ function copy_shopping_cart_to_order()
             $purchase_id = strval(get_member());
         }
 
-        list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($item, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+        if (isset($shopping_cart_rows_taxes[$i])) {
+            list($tax_derivation, $tax, $tax_tracking) = $shopping_cart_rows_taxes[$i];
+        } else {
+            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($item, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+        }
 
         $shopping_order_details[] = array(
             'p_type_code' => $type_code,
@@ -466,7 +540,7 @@ function recalculate_order_costs($order_id)
 {
     $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
 
-    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $total_shipping_cost) = derive_cart_amounts($product_rows, 'p_');
+    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = derive_cart_amounts($product_rows, 'p_');
 
     $GLOBALS['SITE_DB']->query_update('shopping_orders', array(
         'total_price' => $total_price,
