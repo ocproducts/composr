@@ -117,7 +117,9 @@ class Module_purchase
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
                 'e_price' => 'REAL',
+                'e_tax_derivation' => 'LONG_TEXT',
                 'e_tax' => 'REAL',
+                'e_tax_tracking' => 'SHORT_TEXT',
                 'e_currency' => 'ID_TEXT',
                 'e_price_points' => 'INTEGER', // This is supplementary, not an alternative; if it is only points then no ecom_trans_expecting record will be created
                 'e_ip_address' => 'IP',
@@ -154,7 +156,9 @@ class Module_purchase
                 't_status' => 'SHORT_TEXT',
                 't_reason' => 'SHORT_TEXT',
                 't_amount' => 'REAL', // Does NOT include tax (unlike most 'amount' figures in Composr)
+                't_tax_derivation' => 'LONG_TEXT',
                 't_tax' => 'REAL',
+                't_tax_tracking' => 'SHORT_TEXT',
                 't_currency' => 'ID_TEXT',
                 't_parent_txn_id' => 'ID_TEXT',
                 't_time' => '*TIME',
@@ -166,6 +170,8 @@ class Module_purchase
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
+
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'purchase_id', 'ID_TEXT', 't_purchase_id');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'status', 'SHORT_TEXT', 't_status');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'reason', 'SHORT_TEXT', 't_reason');
@@ -173,8 +179,6 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'linked', 'ID_TEXT', 't_parent_txn_id');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'item', 'ID_TEXT', 't_type_code');
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'pending_reason', 'SHORT_TEXT', 't_pending_reason');
-
-            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->add_table_field('pstore_permissions', 'p_mail_subject', 'SHORT_TRANS');
             $GLOBALS['SITE_DB']->add_table_field('pstore_permissions', 'p_mail_body', 'LONG_TRANS');
@@ -217,7 +221,7 @@ class Module_purchase
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
-            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_type_code', 'ID_TEXT');
+            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_type_code', 'ID_TEXT', '');
 
             $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
 
@@ -239,20 +243,24 @@ class Module_purchase
             rename_config_option('vpn_password', 'payment_gateway_vpn_password');
             rename_config_option('callback_password', 'payment_gateway_callback_password');
 
-            $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
-            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT');
-            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_amount', 'REAL');
-            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_tax', 'REAL');
-            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
-            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
-            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_invoicing_breakdown', 'LONG_TEXT');
-
             $GLOBALS['SITE_DB']->rename_table('trans_expecting', 'ecom_trans_expecting');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_trans_expecting', 'e_amount', 'REAL', 'e_price');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_memo', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax_tracking', 'SHORT_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_price_points', 'INTEGER', 0);
-            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_invoicing_breakdown', 'LONG_TEXT');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_invoicing_breakdown', 'LONG_TEXT', '');
+
+            $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_amount', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax_derivation', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax_tracking', 'SHORT_TEXT', '');
+            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
+            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_invoicing_breakdown', 'LONG_TEXT', '');
 
             rename_config_option('transaction_flat_cost', 'transaction_flat_fee');
             rename_config_option('transaction_percentage_cost', 'transaction_percentage_fee');
@@ -261,12 +269,12 @@ class Module_purchase
                 $GLOBALS['SITE_DB']->rename_table('prices', 'ecom_prods_prices');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_prices', 'price', '?INTEGER', 'price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'price', '?REAL', null);
-                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'tax', 'REAL', 0.00);
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'tax_code', 'ID_TEXT', '0.0');
 
                 $GLOBALS['SITE_DB']->rename_table('pstore_customs', 'ecom_prods_custom');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_custom', 'c_cost', '?INTEGER', 'c_price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_price', '?REAL', null);
-                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_tax', 'REAL', 0.00);
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_tax_code', 'ID_TEXT', '0.0');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_shipping_cost', 'REAL', 0.00);
 
                 $GLOBALS['SITE_DB']->rename_table('pstore_permissions', 'ecom_prods_permissions');
@@ -276,7 +284,7 @@ class Module_purchase
 
                 $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'txn_id', 'ID_TEXT', '');
-                $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'memberid', 'MEMBER', 'member_id');
+                $GLOBALS['SITE_DB']->alter_table_field('ecom_sales', 'memberid', 'MEMBER', 'member_id');
                 $sales = $GLOBALS['SITE_DB']->query_select('ecom_sales', array('*'));
                 foreach ($sales as $sale) {
                     $type_code = '';
@@ -314,7 +322,9 @@ class Module_purchase
                         't_status' => 'Completed',
                         't_reason' => '',
                         't_amount' => 0.00,
+                        't_tax_derivation' => '',
                         't_tax' => 0.00,
+                        't_tax_tracking' => '',
                         't_currency' => 'points',
                         't_parent_txn_id' => '',
                         't_time' => $sale['date_and_time'],
@@ -333,7 +343,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->create_table('ecom_prods_prices', array(
                 'name' => '*ID_TEXT',
                 'price' => '?REAL',
-                'tax' => 'REAL',
+                'tax_code' => 'ID_TEXT',
                 'price_points' => '?INTEGER'
             ));
 
@@ -355,7 +365,7 @@ class Module_purchase
                 'c_mail_body' => 'LONG_TRANS',
                 'c_enabled' => 'BINARY',
                 'c_price' => '?REAL',
-                'c_tax' => 'REAL',
+                'c_tax_code' => 'ID_TEXT',
                 'c_shipping_cost' => 'REAL',
                 'c_price_points' => '?INTEGER',
                 'c_one_per_member' => 'BINARY',
@@ -1022,17 +1032,17 @@ class Module_purchase
             return $test;
         }
 
-        list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($details, true);
+        list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($details, true);
         if ($discounted_price === null) {
             $price = $details['price'];
-            $tax = recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($details['shipping_cost']));
+            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $details['tax_code'], $price, $details['shipping_cost']);
 
             if ($price === null) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
         } else {
             $price = $discounted_price;
-            $tax = $discounted_tax;
+            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $discounted_tax_code, $discounted_price, $details['shipping_cost']);
         }
         $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
 
@@ -1060,7 +1070,10 @@ class Module_purchase
                     's_member_id' => get_member(),
                     's_state' => 'new',
                     's_amount' => $price,
+                    's_tax_code' => $details['tax_code'],
+                    's_tax_derivation' => json_encode($tax_derivation),
                     's_tax' => $tax,
+                    's_tax_tracking' => json_encode($tax_tracking),
                     's_currency' => $currency,
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
@@ -1141,7 +1154,9 @@ class Module_purchase
                 $item_name,
                 $purchase_id,
                 $price,
+                $tax_derivation,
                 $tax,
+                $tax_tracking,
                 $shipping_cost,
                 $currency,
                 ($points_for_discount === null) ? 0 : $points_for_discount,
@@ -1180,7 +1195,7 @@ class Module_purchase
 
             switch ($details['type']) {
                 case PRODUCT_SUBSCRIPTION:
-                    $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price + $shipping_cost, $tax, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
+                    $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price + $shipping_cost, $tax_derivation, $tax, $tax_tracking, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
                     break;
                 case PRODUCT_ORDERS:
                     if (!addon_installed('shopping')) {
@@ -1195,7 +1210,7 @@ class Module_purchase
                 case PRODUCT_INVOICE:
                 case PRODUCT_CATALOGUE:
                 default:
-                    $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $payment_gateway);
+                    $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $payment_gateway);
                     break;
             }
 

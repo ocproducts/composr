@@ -73,7 +73,10 @@ class Module_subscriptions
                 's_member_id' => 'MEMBER',
                 's_state' => 'ID_TEXT', // pending|new|active|cancelled (pending means payment has been requested)
                 's_amount' => 'REAL', // can't always find this from s_type_code
-                's_tax' => 'REAL',
+                's_tax_code' => 'ID_TEXT',
+                's_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as it's locked in time
+                's_tax' => 'REAL', // Needs to be stored, as it's locked in time
+                's_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as it's locked in time
                 's_currency' => 'ID_TEXT',
                 's_purchase_id' => 'ID_TEXT',
                 's_time' => 'TIME',
@@ -91,7 +94,7 @@ class Module_subscriptions
                 's_title' => 'SHORT_TRANS',
                 's_description' => 'LONG_TRANS__COMCODE',
                 's_price' => 'REAL',
-                's_tax' => 'REAL',
+                's_tax_code' => 'ID_TEXT',
                 's_length' => 'INTEGER',
                 's_length_units' => 'SHORT_TEXT',
                 's_auto_recur' => 'BINARY',
@@ -151,11 +154,14 @@ class Module_subscriptions
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_amount', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_code', 'ID_TEXT', '0.0');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_tracking', 'SHORT_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('f_usergroup_subs', 's_cost', 'REAL', 's_price');
-            $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_tax_code', 'ID_TEXT', '0.0');
         }
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;

@@ -56,6 +56,15 @@ class Hook_task_export_ecom_transactions
         $rows = $GLOBALS['SITE_DB']->query($query);
         remove_duplicate_rows($rows);
 
+        $tax_categories = array();
+        foreach ($rows as $_transaction) {
+            $tax_derivation = ($_transaction['s_tax_derivation'] == '') ? array() : json_decode($_transaction['s_tax_derivation'], true);
+            foreach (array_keys($tax_derivation) as $tax_category) {
+                $tax_categories[$tax_category] = true;
+            }
+        }
+        $tax_categories = array_keys($tax_categories);
+
         foreach ($rows as $_transaction) {
             list($details, $product_object) = find_product_details($_transaction['t_type_code']);
             if ($details !== null) {
@@ -78,7 +87,11 @@ class Hook_task_export_ecom_transactions
 
             $transaction[do_lang('AMOUNT')] = float_format($_transaction['t_amount']);
 
-            $transaction[do_lang(get_option('tax_system'))] = float_format($_transaction['t_tax']);
+            $transaction[do_lang(get_option('tax_system')) . ' (' . do_lang('TOTAL') . ')'] = float_format($_transaction['t_tax']);
+            $tax_derivation = ($_transaction['s_tax_derivation'] == '') ? array() : json_decode($_transaction['s_tax_derivation'], true);
+            foreach ($tax_categories as $tax_category) {
+                $transaction[do_lang(get_option('tax_system')) . ' (' . $tax_category . ')'] = float_format(isset($tax_derivation[$tax_category]) ? $tax_derivation[$tax_category] : 0.00);
+            }
 
             $transaction[do_lang('PRODUCT')] = $item_name;
 

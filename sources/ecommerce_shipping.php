@@ -36,17 +36,6 @@ function get_base_shipping_cost()
 }
 
 /**
- * Calculate shipping tax.
- *
- * @param  REAL $shipping_cost The shipping cost.
- * @return REAL The tax.
- */
-function calculate_shipping_tax($shipping_cost)
-{
-    return $shipping_cost * float_unformat(get_option('shipping_cost_tax_rate')) / 100.0;
-}
-
-/**
  * Recalculate shipping cost based on customer context.
  *
  * @param  array $products_in_cart List of product specifiers.

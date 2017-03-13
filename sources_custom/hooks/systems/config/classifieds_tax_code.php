@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    ecommerce
+ * @package    classified_ads
  */
 
 /**
  * Hook class.
  */
-class Hook_config_quota_tax
+class Hook_config_classifieds_tax_code
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,13 @@ class Hook_config_quota_tax
     public function get_details()
     {
         return array(
-            'human_name' => 'PRICE_quota_tax',
-            'type' => 'tax',
-            'category' => 'ECOMMERCE',
-            'group' => 'POP3',
-            'explanation' => 'CONFIG_OPTION_quota_tax',
+            'human_name' => 'CLASSIFIEDS_TAX_CODE',
+            'type' => 'tax_code',
+            'category' => 'FEATURE',
+            'group' => 'CLASSIFIEDS',
+            'explanation' => 'CONFIG_OPTION_classifieds_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +50,6 @@ class Hook_config_quota_tax
      */
     public function get_default()
     {
-        return '0.00';
+        return '0.0';
     }
 }

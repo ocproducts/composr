@@ -283,7 +283,7 @@ class Module_admin_ecommerce_logs
 
                 if ($details['price'] !== null) {
                     $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
-                    $label .= ', ' . currency_convert($details['price'] + $details['shipping_cost'] + $details['tax'], $currency, $currency, CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST);
+                    $label .= ', ' . currency_convert($details['price'] + $details['shipping_cost'], $currency, $currency, CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST);
                 }
 
                 $label .= ')';
@@ -347,7 +347,6 @@ class Module_admin_ecommerce_logs
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f4e52dff9353fb767afbe0be9808591c', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
         $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_MONEY_AMOUNT', $currency, ecommerce_get_currency_symbol()), 'amount', null, false));
-        $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_PAID'), 'tax', null, false));
 
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('type_code', $type_code));
@@ -378,30 +377,30 @@ class Module_admin_ecommerce_logs
         $memo = post_param_string('memo', '');
         $_amount = post_param_string('amount', '');
         $amount = ($_amount == '') ? null : float_unformat($_amount);
-        $_tax = post_param_string('tax', '');
-        $tax = ($_tax == '') ? null : float_unformat($_tax);
         $custom_expiry = post_param_date('cexpiry');
 
         $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
-        if ($tax === null) {
+        if ($amount === null) {
             if ($details['type'] == PRODUCT_INVOICE) {
-                $tax = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_tax', array('id' => intval($purchase_id)));
-            }
-            if ($tax === null) {
+                $amount = $tax_details[0]['i_amount'];
+            } else {
                 $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
-                $tax = recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($shipping_cost));
+                $amount = $details['price'] + $shipping_cost;
             }
         }
 
-        if ($amount === null) {
-            if ($details['type'] == PRODUCT_INVOICE) {
-                $amount = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_amount', array('id' => intval($purchase_id))) + $tax;
-            }
-            if ($amount === null) {
-                $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
-                $amount = $details['price'] + $shipping_cost + $tax;
-            }
+        if ($details['type'] == PRODUCT_INVOICE) {
+            // Tax details are locked in in advance for an invoice
+            $tax_details = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('i_tax_code', 'i_tax_derivation', 'i_tax'), array('id' => intval($purchase_id)), '', 1);
+            $tax_code = $tax_details[0]['i_tax_code'];
+            $tax_derivation = ($tax_details[0]['i_tax_derivation'] == '') ? array() : json_decode($tax_details[0]['i_tax_derivation'], true);
+            $tax = $tax_details[0]['i_tax'];
+            $tax_tracking = ($tax_details[0]['i_tax_tracking'] == '') ? array() : json_decode($tax_details[0]['i_tax_tracking'], true);
+        } else {
+            $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+            $tax_code = $details['tax_code'];
+            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $tax_code, $amount, $shipping_cost);
         }
 
         $status = 'Completed';
@@ -428,7 +427,10 @@ class Module_admin_ecommerce_logs
                     's_member_id' => $member_id,
                     's_state' => 'new',
                     's_amount' => $details['price'],
-                    's_tax' => $details['tax'],
+                    's_tax_code' => $details['tax_code'],
+                    's_tax_derivation' => json_encode($tax_derivation),
+                    's_tax' => $tax_code,
+                    's_tax_tracking' => json_encode($tax_tracking),
                     's_currency' => $currency,
                     's_purchase_id' => $purchase_id,
                     's_time' => time(),
@@ -474,15 +476,17 @@ class Module_admin_ecommerce_logs
             $period = '';
         }
 
-        $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $amount, $tax);
+        $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $amount + $tax, $tax);
 
         $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
             'id' => $txn_id,
             'e_type_code' => $type_code,
             'e_purchase_id' => $purchase_id,
             'e_item_name' => $item_name,
-            'e_price' => $amount - $tax,
+            'e_price' => $amount,
+            'e_tax_derivation' => json_encode($tax_derivation),
             'e_tax' => $tax,
+            'e_tax_tracking' => json_encode($tax_tracking),
             'e_currency' => $currency,
             'e_price_points' => 0,
             'e_member_id' => get_member(),
@@ -496,7 +500,7 @@ class Module_admin_ecommerce_logs
         ));
         store_shipping_address($txn_id);
 
-        handle_confirmed_transaction($txn_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, false, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual');
+        handle_confirmed_transaction($txn_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount + $tax, $tax, $currency, false, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual');
 
         $url = get_param_string('redirect', null);
         if ($url !== null) {

@@ -87,17 +87,19 @@ class Hook_ecommerce_catalogue_items
                 $product_title = $field_rows[SHOPPING_CATALOGUE_product_title]['effective_value_pure'];
 
                 $sku = $field_rows[SHOPPING_CATALOGUE_sku]['effective_value_pure'];
+                if (array_key_exists(SHOPPING_CATALOGUE_sku, $field_rows)) {
+                    $sku = '';
+                }
 
                 $price = 0.00;
                 if (array_key_exists(SHOPPING_CATALOGUE_price, $field_rows)) {
                     $price = floatval($field_rows[SHOPPING_CATALOGUE_price]['effective_value_pure']);
                 }
 
-                $tax_rate_percentage = 0.00;
-                if (array_key_exists(SHOPPING_CATALOGUE_tax_type, $field_rows)) {
-                    $tax_rate_percentage = floatval(preg_replace('#[^\d\.]#', '', $field_rows[SHOPPING_CATALOGUE_tax_type]['effective_value_pure']));
+                $tax_code = '0.0';
+                if (array_key_exists(SHOPPING_CATALOGUE_tax_code, $field_rows)) {
+                    $tax = $field_rows[SHOPPING_CATALOGUE_tax_code]['effective_value_pure'];
                 }
-                $tax = $this->_calculate_tax($price, $tax_rate_percentage);
 
                 $product_weight = 0.00;
                 if (array_key_exists(SHOPPING_CATALOGUE_weight, $field_rows)) {
@@ -121,7 +123,7 @@ class Hook_ecommerce_catalogue_items
                 /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
                 $products[strval($item['id'])/*We use numeric indices for shopping catalogue items*/] = array(
                     'item_name' => $product_title,
-                    'item_description' => $field_rows[SHOPPING_CATALOGUE_description]['effective_value'],
+                    'item_description' => empty($field_rows[SHOPPING_CATALOGUE_description]['effective_value']) ? $field_rows[SHOPPING_CATALOGUE_description]['effective_value'] : '',
                     'item_image_url' => $image_url,
 
                     'type' => PRODUCT_CATALOGUE,
@@ -133,7 +135,7 @@ class Hook_ecommerce_catalogue_items
                     'discount_points__num_points' => null,
                     'discount_points__price_reduction' => null,
 
-                    'tax' => $tax,
+                    'tax_code' => $tax_code,
                     'shipping_cost' => $shipping_cost,
                     'needs_shipping_address' => true,
                 );
@@ -142,18 +144,6 @@ class Hook_ecommerce_catalogue_items
         } while (count($items) == 500);
 
         return $products;
-    }
-
-    /**
-     * Calculate tax of product.
-     *
-     * @param  float $price Gross price of product.
-     * @param  float $tax_percentage Tax in percentage.
-     * @return float Calculated tax for the product.
-     */
-    protected function _calculate_tax($price, $tax_percentage)
-    {
-        return round($price * ($tax_percentage / 100.0), 2);
     }
 
     /**
@@ -240,6 +230,9 @@ class Hook_ecommerce_catalogue_items
 
         $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
+        if (!array_key_exists(SHOPPING_CATALOGUE_stock_level_maintain, $field_rows)) {
+            return null;
+        }
         $stock_maintained = ($field_rows[SHOPPING_CATALOGUE_stock_level_maintain]['effective_value_pure'] == do_lang('YES'));
         if ($stock_maintained) {
             return null;
@@ -377,12 +370,16 @@ class Hook_ecommerce_catalogue_items
     {
         list($details) = find_product_details($type_code);
 
+        list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $details['tax_code'], $details['price'], $details['shipping_cost']);
+
         $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_orders', array(
             'member_id' => get_member(),
             'session_id' => get_session_id(),
             'add_date' => time(),
             'total_price' => $details['price'],
-            'total_tax' => recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($details['shipping_cost'])),
+            'total_tax_derivation' => json_encode($tax_derivation),
+            'total_tax' => $tax,
+            'total_tax_tracking' => $tax_tracking,
             'total_shipping_cost' => $details['shipping_cost'],
             'currency' => isset($details['currency']) ? $details['currency'] : get_option('currency'),
             'order_status' => 'ORDER_STATUS_awaiting_payment',
@@ -398,7 +395,8 @@ class Hook_ecommerce_catalogue_items
             'p_sku' => $details['type_special_details']['sku'],
             'p_quantity' => 1,
             'p_price' => $details['price'],
-            'p_tax' => recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($details['shipping_cost'])),
+            'p_tax_code' => $details['tax_code'],
+            'p_tax' => $tax,
             'p_order_id' => $order_id,
             'p_dispatch_status' => '',
         ));

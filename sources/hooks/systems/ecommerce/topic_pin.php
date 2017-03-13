@@ -69,7 +69,7 @@ class Hook_ecommerce_topic_pin
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
-                'tax' => float_unformat(get_option('topic_pin_tax')),
+                'tax_code' => get_option('topic_pin_tax_code'),
                 'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             ));

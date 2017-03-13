@@ -86,7 +86,9 @@ class Module_shopping
                 'member_id' => 'MEMBER',
                 'add_date' => 'TIME',
                 'total_price' => 'REAL',
-                'total_tax' => 'REAL',
+                'total_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as it's locked in time
+                'total_tax' => 'REAL', // Needs to be stored, as it's locked in time
+                'total_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as it's locked in time
                 'total_shipping_cost' => 'REAL',
                 'currency' => 'ID_TEXT',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
@@ -108,7 +110,8 @@ class Module_shopping
                 'p_sku' => 'SHORT_TEXT',
                 'p_quantity' => 'INTEGER',
                 'p_price' => 'REAL',
-                'p_tax' => 'REAL',
+                'p_tax_code' => 'ID_TEXT',
+                'p_tax' => 'REAL', // We need this for accurate logging (we can't have it changing while looking at a past order)
                 'p_dispatch_status' => 'SHORT_TEXT'
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'type_code', array('p_type_code'));
@@ -148,20 +151,23 @@ class Module_shopping
 
             $GLOBALS['SITE_DB']->rename_table('shopping_order', 'shopping_orders');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'tot_price', 'REAL', 'total_price');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax', 'REAL');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_cost', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax_derivation', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax_tracking', 'SHORT_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_cost', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'c_member', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_orders', 'tax_opted_out');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_price', 'REAL', 'p_price');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax_code', 'ID_TEXT', '0.0');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax', 'REAL', 0.0);
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'order_id', '?AUTO_LINK', 'p_order_id');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_order_details', 'included_tax');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'dispatch_status', 'SHORT_TEXT', 'p_dispatch_status');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_id', 'ID_TEXT', 'p_type_code');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_order_details', 'p_type');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_purchase_id', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_purchase_id', 'ID_TEXT', '');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_code', 'SHORT_TEXT', 'p_sku');
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'e_member_id', '*MEMBER', 'l_member_id');
@@ -364,7 +370,7 @@ class Module_shopping
                 $this->show_cart_entry($shopping_cart, $details, $item);
             }
 
-            list($total_price, $total_tax, $total_shipping_cost) = derive_cart_amounts($shopping_cart_rows);
+            list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $total_shipping_cost) = derive_cart_amounts($shopping_cart_rows);
 
             $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, null, 'cart');
 
@@ -449,7 +455,7 @@ class Module_shopping
 
         $price_singular = $details['price'];
         $price_multiple = $details['price'] * $item['quantity'];
-        $tax = recalculate_tax_due($details, $details['tax'], 0.0, null, $item['quantity']);
+        list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
         $amount = $price_multiple + $tax;
 
         $product_det_url = get_product_det_url($item['type_code'], false, get_member());

@@ -350,7 +350,7 @@ The special eCommerce fields are:
  - stock_level [allows blank, meaning 'not stock counted']
  - stock_level_warn_at [allows blank, meaning 'not stock counted']
  - stock_level_maintain
- - tax_type
+ - tax_code
  - weight
  - description
 

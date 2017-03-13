@@ -92,7 +92,7 @@ class Hook_ecommerce_usergroup
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
-                'tax' => $sub['s_tax'],
+                'tax_code' => $sub['s_tax_code'],
                 'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );

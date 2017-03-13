@@ -118,15 +118,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_tax_detailed
         CONFIG_OPTION_tax_state_regexp
         DESCRIPTION_BANNERS_IN_TYPE_AS_SECONDARY
-        DESCRIPTION_MAIL_TAX
+        DESCRIPTION_MAIL_TAX_CODE
         DESCRIPTION_SHIPPING_COST
-        DESCRIPTION_TAX_PAID
-        MAIL_TAX
+        MAIL_TAX_CODE
         TAX_COUNTRY_REGEXP
         TAX_DETAILED
         TAX_STATE_REGEXP
         VIEW_CART
-        _DESCRIPTION_MAIL_TAX
+        _DESCRIPTION_MAIL_TAX_CODE
         MONIKER_TRANSLITERATION
         CONFIG_OPTION_moniker_transliteration
         BLOCKS_AT_TOP
@@ -2441,9 +2440,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_banner_hit_price
         CONFIG_OPTION_banner_imp_price
         CONFIG_OPTION_banner_setup_price
-        CONFIG_OPTION_banner_hit_tax
-        CONFIG_OPTION_banner_imp_tax
-        CONFIG_OPTION_banner_setup_tax
+        CONFIG_OPTION_banner_hit_tax_code
+        CONFIG_OPTION_banner_imp_tax_code
+        CONFIG_OPTION_banner_setup_tax_code
         CONFIG_OPTION_banner_hit_price_points
         CONFIG_OPTION_banner_imp_price_points
         CONFIG_OPTION_banner_setup_price_points
@@ -2638,7 +2637,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_has_low_memory_limit
         CONFIG_OPTION_header_menu_call_string
         CONFIG_OPTION_highlight_name_price
-        CONFIG_OPTION_highlight_name_tax
+        CONFIG_OPTION_highlight_name_tax_code
         CONFIG_OPTION_highlight_name_price_points
         CONFIG_OPTION_honeypot_phrase
         CONFIG_OPTION_honeypot_url
@@ -2858,7 +2857,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_proxy_user
         CONFIG_OPTION_pt_notifications_as_web
         CONFIG_OPTION_quota_price
-        CONFIG_OPTION_quota_tax
+        CONFIG_OPTION_quota_tax_code
         CONFIG_OPTION_quota_price_points
         CONFIG_OPTION_quota_url
         CONFIG_OPTION_random_avatars
@@ -2958,7 +2957,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_ticket_text
         CONFIG_OPTION_ticket_type_forums
         CONFIG_OPTION_topic_pin_price
-        CONFIG_OPTION_topic_pin_tax
+        CONFIG_OPTION_topic_pin_tax_code
         CONFIG_OPTION_topic_pin_price_points
         CONFIG_OPTION_tornevall_api_password
         CONFIG_OPTION_tornevall_api_username
@@ -3084,12 +3083,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PRICE_highlight_name_price
         PRICE_quota_price
         PRICE_topic_pin_price
-        PRICE_banner_hit_tax
-        PRICE_banner_imp_tax
-        PRICE_banner_setup_tax
-        PRICE_highlight_name_tax
-        PRICE_quota_tax
-        PRICE_topic_pin_tax
+        PRICE_banner_hit_tax_code
+        PRICE_banner_imp_tax_code
+        PRICE_banner_setup_tax_code
+        PRICE_highlight_name_tax_code
+        PRICE_quota_tax_code
+        PRICE_topic_pin_tax_code
         PRICE_banner_hit_price_points
         PRICE_banner_imp_price_points
         PRICE_banner_setup_price_points
@@ -4042,7 +4041,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_CATD_stock_level
         ECOM_CATD_stock_level_maintain
         ECOM_CATD_stock_level_warn_at
-        ECOM_CATD_tax_type
+        ECOM_CATD_tax_code
         ECOM_CATD_weight
         ECOM_CAT_description
         ECOM_CAT_image
@@ -4054,7 +4053,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_CAT_stock_level
         ECOM_CAT_stock_level_maintain
         ECOM_CAT_stock_level_warn_at
-        ECOM_CAT_tax_type
+        ECOM_CAT_tax_code
         ECOM_CAT_weight
         ECOM_ORDER
         EDITAREA
@@ -4713,8 +4712,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HOURLY_BREAKDOWNS
         HOVER_FOR_CONTENTS
         DESCRIPTION_PRICE
-        DESCRIPTION_TAX
-        DESCRIPTION_TAX_INCLUDING_SHIPPING_COST_TAX
+        DESCRIPTION_TAX_CODE
         PRICE_POINTS
         DESCRIPTION_PRICE_POINTS
         HTACCESS_SEO_PROBLEM
@@ -4855,7 +4853,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INVITES_PER_DAY
         INVOICES
         DESCRIPTION_INVOICE_AMOUNT
-        DESCRIPTION_INVOICE_TAX
+        DESCRIPTION_INVOICE_TAX_CODE
         PURCHASE_ID
         PAYMENT_GATEWAY_USERNAME
         PAYMENT_GATEWAY_TEST_USERNAME
@@ -5485,6 +5483,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_TYPE_ticket_reply_staff
         EDIT_ECOMMERCE_CONFIG
         SELL_CATEGORY_ACCESS
+        TIC__BUSINESS_COUNTRY_NOT_USA
+        TIC__TAXCLOUD_NOT_CONFIGURED
+        TIC__USA_STATE_INVALID
         NOT_ADDON
         NOT_A_DIR
         NOT_A_FILE
@@ -5992,8 +5993,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_payment_memos
         ECOM_PRICE_HONOUR_TIME
         CONFIG_OPTION_ecom_price_honour_time
-        SHIPPING_COST_TAX_RATE
-        CONFIG_OPTION_shipping_cost_tax_rate
+        SHIPPING_COST_TAX_CODE
+        CONFIG_OPTION_shipping_cost_tax_code
         TAXCLOUD_API_ID
         TAXCLOUD_API_KEY
         CONFIG_OPTION_taxcloud_api_id
@@ -7262,6 +7263,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACTIVITY_LIKES_UNTITLED
         ACTIVITY_PASSED_TEST
         ACTIVITY_SUBSCRIBED_EVENT
+        BILLING_ADDRESS
         SHIPPING_ADDRESS
         INVOICING_ADDRESS
         PAYMENT_DETAILS
@@ -9304,6 +9306,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUBMIT_UNVALIDATED_FORUM_POSTS
         SUBMIT_UNVALIDATED_FORUM_TOPICS
         STATE_NEEDED_FOR_USA
+        ZIP_NEEDED_FOR_USA
+        INVALID_ZIP_FOR_USA
         INVALID_STATE_FOR_NON_USA
         SUBSCRIBE
         SUBSCRIBED_REMINDERS

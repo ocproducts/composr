@@ -537,6 +537,16 @@ class Hook_cms_merge
                 $row['t_invoicing_breakdown'] = '';
             }
 
+            if (!array_key_exists('t_tax_derivation', $row)) {
+                $row['t_tax_derivation'] = '';
+            }
+            if (!array_key_exists('t_tax', $row)) {
+                $row['t_tax'] = 0.00;
+            }
+            if (!array_key_exists('t_tax_tracking', $row)) {
+                $row['t_tax_tracking'] = '';
+            }
+
             if (is_string($row['t_amount'])) {
                 $row['t_amount'] = floatval($row['t_amount']);
             }
@@ -568,9 +578,20 @@ class Hook_cms_merge
             if (is_string($row['i_amount'])) {
                 $row['i_amount'] = floatval($row['i_amount']);
             }
+
+            if (!array_key_exists('i_tax_code', $row)) {
+                $row['i_tax_code'] = '0.0';
+            }
+            if (!array_key_exists('i_tax_derivation', $row)) {
+                $row['i_tax_derivation'] = '';
+            }
             if (!array_key_exists('i_tax', $row)) {
                 $row['i_tax'] = 0.00;
             }
+            if (!array_key_exists('i_tax_tracking', $row)) {
+                $row['i_tax_tracking'] = '';
+            }
+
             if (!array_key_exists('i_currency', $row)) {
                 $row['i_currency'] = get_option('currency');
             }
@@ -595,13 +616,13 @@ class Hook_cms_merge
                     continue;
                 }
 
-                if (!array_key_exists('s_tax', $row)) {
-                    $row['s_tax'] = 0.00;
+                if (!array_key_exists('s_tax_code', $row)) {
+                    $row['s_tax_code'] = '0.0';
                 }
 
                 $map = array(
                     's_price' => $row['s_price'],
-                    's_tax' => $row['s_tax'],
+                    's_tax_code' => $row['s_tax_code'],
                     's_length' => $row['s_length'],
                     's_length_units' => $row['s_length_units'],
                     's_auto_recur' => array_key_exists('s_auto_recur', $row) ? $row['s_auto_recur'] : 1,
@@ -643,9 +664,20 @@ class Hook_cms_merge
             if (is_string($row['s_amount'])) {
                 $row['s_amount'] = floatval($row['s_amount']);
             }
+
+            if (!array_key_exists('s_tax_code', $row)) {
+                $row['s_tax_code'] = '0.0';
+            }
+            if (!array_key_exists('s_tax_derivation', $row)) {
+                $row['s_tax_derivation'] = '';
+            }
             if (!array_key_exists('s_tax', $row)) {
                 $row['s_tax'] = 0.00;
             }
+            if (!array_key_exists('s_tax_tracking', $row)) {
+                $row['s_tax_tracking'] = '';
+            }
+
             if (!array_key_exists('s_currency', $row)) {
                 $row['s_currency'] = get_option('currency');
             }
@@ -678,8 +710,8 @@ class Hook_cms_merge
             if (!array_key_exists('price', $row)) {
                 $row['price'] = null;
             }
-            if (!array_key_exists('tax', $row)) {
-                $row['tax'] = 0.00;
+            if (!array_key_exists('tax_code', $row)) {
+                $row['tax_code'] = '0.0';
             }
 
             $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $row['name']), '', 1);
@@ -740,8 +772,8 @@ class Hook_cms_merge
             if (!array_key_exists('c_price', $row)) {
                 $row['c_price'] = null;
             }
-            if (!array_key_exists('c_tax', $row)) {
-                $row['c_tax'] = 0.00;
+            if (!array_key_exists('c_tax_code', $row)) {
+                $row['c_tax_code'] = '0.0';
             }
             if (!array_key_exists('c_shipping_cost', $row)) {
                 $row['c_shipping_cost'] = 0.00;
@@ -776,8 +808,8 @@ class Hook_cms_merge
             if (!array_key_exists('p_price', $row)) {
                 $row['p_price'] = null;
             }
-            if (!array_key_exists('p_tax', $row)) {
-                $row['p_tax'] = 0.00;
+            if (!array_key_exists('p_tax_code', $row)) {
+                $row['p_tax_code'] = '0.0';
             }
 
             if (!array_key_exists('p_privilege', $row)) {

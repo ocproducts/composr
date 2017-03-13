@@ -19,16 +19,35 @@
  */
 
 /**
- * Recalculate tax that is due based on customer context.
+ * Multiply tax up or down to reflect a price being multiplied up or down.
+ * This does nothing for a semantic tax code or a simple percentage.
+ * For a simple flat figure it does though.
+ *
+ * @param  ID_TEXT $tax_code The tax code.
+ * @param  float $multipler The multipler.
+ * @return ID_TEXT The amended tax code.
+ */
+function tax_multiplier($tax_code, $multiplier)
+{
+    if (($tax_code != '') && (is_numeric($tax_code[0])) && (substr($tax_code, -1) != '%')) {
+        return float_to_raw_string(floatval($tax_code) * $multiplier);
+    }
+
+    return $tax_code;
+}
+
+/**
+ * Calculate tax that is due based on customer context.
  *
  * @param  ?array $details Map of product details (null: it's for shipping cost only).
- * @param  REAL $tax The default tax due if liable. This may be different to $details['tax'], e.g. if a discount is in place.
- * @param  REAL $shipping_cost_tax The shipping cost tax.
+ * @param  ID_TEXT $tax_code The tax code. This may be different to the product default, e.g. if a discount is in place.
+ * @param  REAL $amount The amount.
+ * @param  REAL $shipping_cost The shipping cost.
  * @param  ?MEMBER $member_id The member this is for (null: current member).
  * @param  integer $quantity The quantity of items.
- * @return REAL The tax actually due (either zero or same as $tax, unless you are doing something clever).
+ * @return array A tuple: The tax due, tax derivation, tax tracking ID (at time of writing this is just with TaxCloud)
  */
-function recalculate_tax_due($details, $tax, $shipping_cost_tax = 0.00, $member_id = null, $quantity = 1)
+function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, $member_id = null, $quantity = 1)
 {
     // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
 
@@ -44,25 +63,32 @@ function recalculate_tax_due($details, $tax, $shipping_cost_tax = 0.00, $member_
     $shipping_country = '';
     get_default_ecommerce_fields($member_id, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
 
-    $tax = get_tax_rate_from_tax_code($tax); // TODO
+    $tax = get_tax_using_tax_code($tax_rate); // TODO
 
-    return $tax * $quantity + $shipping_cost_tax;
+    return array(
+        $tax * $quantity + $shipping_cost_tax,
+        TODO,
+        TODO
+    );
 }
 
 /**
- * Get a tax rate from a tax code.
+ * Find the tax for a tax code and purchase price.
  *
  * @param  string $tax_code The tax code.
- * @return float The tax rate.
+ * @param  REAL $price The price.
+ * @return REAL The tax.
  */
-function get_tax_rate_from_tax_code($tax_code)
+function get_tax_using_tax_code($tax_code, $price)
 {
-    // Europe
-    if ($tax_code == 'EU') {
-        require_code('files2');
-        list($__rates) = cache_and_carry('http_download_file', array('http://euvat.ga/rates.json'));
-        $_rates = json_decode($__rates, true); // TODO: Fix in v11
+    if ($price == 0.00) {
+        return 0.00;
+    }
 
+    $eu_digital_goods = ($tax_code == 'EU');
+    $usa_tic = (preg_match('#^TIC:#', $tax_code) != 0);
+
+    if ($eu_digital_goods || $usa_tic) {
         $shipping_email = '';
         $shipping_phone = '';
         $shipping_firstname = '';
@@ -92,8 +118,31 @@ function get_tax_rate_from_tax_code($tax_code)
         $billing_country = '';
         get_default_ecommerce_fields(get_member(), $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, true)
 
-        if (isset($_rates['rates'][$shipping_country])) {
-            $rate = $_rates['rates'][$shipping_country]['standard_rate'];
+        if ($shipping_street_address == '') {
+            $street_address = $billing_street_address;
+            $city = $billing_city;
+            $county = $billing_county;
+            $state = $billing_state;
+            $post_code = $billing_post_code;
+            $country = $billing_country;
+        } else {
+            $street_address = $billing_street_address;
+            $city = $billing_city;
+            $county = $billing_county;
+            $state = $billing_state;
+            $post_code = $billing_post_code;
+            $country = $billing_country;
+        }
+    }
+
+    // Europe
+    if ($eu_digital_goods) {
+        require_code('files2');
+        list($__rates) = cache_and_carry('http_download_file', array('http://euvat.ga/rates.json'));
+        $_rates = json_decode($__rates, true); // TODO: Fix in v11
+
+        if (isset($_rates['rates'][$country])) {
+            $rate = $_rates['rates'][$country]['standard_rate'];
         } else {
             $rate = 0.00; // Not in Europe
         }
@@ -101,33 +150,54 @@ function get_tax_rate_from_tax_code($tax_code)
     }
 
     // America
-    if (preg_match('#^TIC:#', $tax_code) != 0) {
-        if ((get_option('taxcloud_api_key') != '') && (get_option('taxcloud_api_id') != '')) {
+    if ($usa_tic) {
+        if ($country == 'USA') {
+            // Check for configuration errors
+            if (get_option('business_country') != 'USA') {
+                warn_exit(do_lang_tempcode('TIC__BUSINESS_COUNTRY_NOT_USA')); // TODO: Error mail to site in v11
+            }
+            global $USA_STATE_LIST;
+            if (array_key_exists(get_option('business_state'), $USA_STATE_LIST)) {
+                warn_exit(do_lang_tempcode('TIC__USA_STATE_INVALID')); // TODO: Error mail to site in v11
+            }
+            if ((get_option('taxcloud_api_key') == '') || (get_option('taxcloud_api_id') == '')) {
+                warn_exit(do_lang_tempcode('TIC__TAXCLOUD_NOT_CONFIGURED')); // TODO: Error mail to site in v11
+            }
+
+            $zip_parts = explode('-', $post_code, 2);
+
             $url = 'https://api.taxcloud.com/1.0/TaxCloud/VerifyAddress';
-            $data = array()
+            $request = array()
                 'apiLoginID': get_option('taxcloud_api_id'),
                 'apiKey': get_option('taxcloud_api_id'),
-                'Address1': get_option('business_street_address'),
+                'Address1': $street_address,
                 'Address2': '',
-                'City': get_option('business_city'),
-                'State': get_option('business_state'),
-                'Zip5': '06851',
-                'Zip4': '',
+                'City': $city,
+                'State': $state,
+                'Zip5': $zip_parts[0],
+                'Zip4': array_key_exists(1, $zip_parts) ? $zip_parts[1] : '',
             );
             $post_params = array('' => json_encode($data);
-            http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, false, null, null, null, 'application/json'); // TODO: Fix in v11
+            $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, false, null, null, null, 'application/json'); // TODO: Fix in v11
+            $response = json_decode($_response, true);
+            if ($response['ErrNumber'] == 0) {
+                $street_address = $response['Address1'];
+                $city = $response['City'];
+                $state = $response['State'];
+                $post_code = $response['Zip5'] . (($response['Zip4'] == '') ? '' : ('-' . $response['Zip4']));
+            }
 
             // TODO
         } else {
-            return 0.00;
+            return 0.00; // Not in USA
         }
     }
 
-    // Simple flat rate, with some guards...
+    // Simple, with some guards...
 
     $php_errormsg = mixed();
     $tax_country_regexp = get_option('tax_country_regexp');
-    $check = @preg_match('#' . $tax_country_regexp . '#', $shipping_country);
+    $check = @preg_match('#' . $tax_country_regexp . '#', $country);
     if ($check === false) {
         warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_COUNTRY_REGEXP'), escape_html($tax_country_regexp), $php_errormsg));
     }
@@ -136,7 +206,7 @@ function get_tax_rate_from_tax_code($tax_code)
     }
     $tax_state_regexp = get_option('tax_state_regexp');
     if ($tax_state_regexp !== null) {
-        $check = @preg_match('#' . $tax_state_regexp . '#', $shipping_state);
+        $check = @preg_match('#' . $tax_state_regexp . '#', $state);
         if ($check === false) {
             warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_STATE_REGEXP'), escape_html($tax_country_regexp), $php_errormsg));
         }
@@ -145,14 +215,20 @@ function get_tax_rate_from_tax_code($tax_code)
         }
     }
 
-    return float_unformat($tax_code);
+    // Simple rate
+    if (substr($tax_code, -1) == '%') {
+        return (floatval($tax_code) / 100.0) * $price;
+    }
+
+    // Simple flat
+    return floatval($tax_code);
 }
 
 /**
  * Work out the tax rate for a given flat tax figure.
  *
  * @param  REAL $price Price.
- * @param  REAL $tax Tax.
+ * @param  REAL $tax Tax in money.
  * @return REAL The tax rate (as a percentage).
  */
 function backcalculate_tax_rate($price, $tax)
@@ -169,9 +245,9 @@ function backcalculate_tax_rate($price, $tax)
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The human-readable product title.
  * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  REAL $price Transaction price.
- * @param  REAL $tax Transaction tax.
- * @param  ?REAL $shipping_cost Transaction shipping cost (null: no shipping).
+ * @param  REAL $price Transaction price in money.
+ * @param  REAL $tax Transaction tax in money.
+ * @param  ?REAL $shipping_cost Transaction shipping cost in money (null: no shipping).
  * @return array Invoicing breakdown.
  */
 function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost = null)
@@ -222,12 +298,14 @@ function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $pri
     }
 
     if ($shipping_cost !== null) {
+        list($shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = calculate_tax_due(null, get_option('shipping_cost_tax_code'), 0.00, $shipping_cost);
+
         $invoicing_breakdown[] = array(
             'type_code' => '',
             'item_name' => do_lang('SHIPPING'),
             'quantity' => 1,
             'unit_price' => $shipping_cost,
-            'unit_tax' => calculate_shipping_tax($shipping_cost),
+            'unit_tax' => $shipping_tax,
         );
     }
 
@@ -345,16 +423,16 @@ function generate_tax_invoice($txn_id)
  * @param  mixed $set_title A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $set_name The name which this input field is for
- * @param  ?string $default The default value for this input field (null: blank)
+ * @param  string $default The default value for this input field
  * @param  boolean $required Whether this is a required input field
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @return Tempcode The input field
  */
-function form_input_tax($set_title, $description, $set_name, $default, $required, $tabindex = null)
+function form_input_tax_code($set_title, $description, $set_name, $default, $required, $tabindex = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
-    $default = filter_form_field_default($set_name, ($default === null) ? '' : $default);
+    $default = filter_form_field_default($set_name, $default);
 
     $required = filter_form_field_required($set_name, $required);
     $_required = ($required) ? '_required' : '';
@@ -367,10 +445,10 @@ function form_input_tax($set_title, $description, $set_name, $default, $required
     $input = do_template('FORM_SCREEN_INPUT_FLOAT', array(
         'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
-        'NAME' => $set_name . '_float',
-        'DEFAULT' => (($default === null) || ($default === '') || (!is_numeric($default[0]))) ? '' : float_format($default, 2, false),
+        'NAME' => $set_name . '_rate',
+        'DEFAULT' => (($default === '') || (!is_numeric($default[0]))) ? '' : float_format($default, 2, false),
     ));
-    $field_set->attach(_form_input($set_name . '_float', do_lang_tempcode('TAX_RATE'), do_lang_tempcode('DESCRIPTION_TAX_RATE'), $input, $required, false, $tabindex));
+    $field_set->attach(_form_input($set_name . '_rate', do_lang_tempcode('TAX_RATE'), do_lang_tempcode('DESCRIPTION_TAX_RATE'), $input, $required, false, $tabindex));
 
     // EU rate input...
 
@@ -386,26 +464,24 @@ function form_input_tax($set_title, $description, $set_name, $default, $required
 
     // TaxCloud input...
 
-    if ((get_option('taxcloud_api_key') != '') && (get_option('taxcloud_api_id') != '')) {
-        require_code('files2');
-        list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=json'));
-        $_tics = json_decode($__tics, true); // TODO: Fix in v11
-        $tics = new Tempcode();
-        $tics->attach(_prepare_tics_list($_tics['tic_list'], $default, 'root'));
-        $tics->attach(_prepare_tics_list($_tics['tic_list'], $default, ''));
-        require_css('widget_select2');
-        require_javascript('jquery');
-        require_javascript('select2');
-        $input = do_template('FORM_SCREEN_INPUT_LIST', array(
-            'TABINDEX' => strval($tabindex),
-            'REQUIRED' => $_required,
-            'NAME' => $set_name . '_tic',
-            'CONTENT' => $tics,
-            'INLINE_LIST' => false,
-            'SIZE' => strval(5),
-        ));
-        $field_set->attach(_form_input($set_name . '_tic', do_lang_tempcode('TAX_TIC'), do_lang_tempcode('DESCRIPTION_TAX_TIC'), $input, $required, false, $tabindex));
-    }
+    require_code('files2');
+    list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=json'));
+    $_tics = json_decode($__tics, true); // TODO: Fix in v11
+    $tics = new Tempcode();
+    $tics->attach(_prepare_tics_list($_tics['tic_list'], $default, 'root'));
+    $tics->attach(_prepare_tics_list($_tics['tic_list'], $default, ''));
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
+    $input = do_template('FORM_SCREEN_INPUT_LIST', array(
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $set_name . '_tic',
+        'CONTENT' => $tics,
+        'INLINE_LIST' => false,
+        'SIZE' => strval(5),
+    ));
+    $field_set->attach(_form_input($set_name . '_tic', do_lang_tempcode('TAX_TIC'), do_lang_tempcode('DESCRIPTION_TAX_TIC'), $input, $required, false, $tabindex));
 
     // --
 
@@ -444,7 +520,7 @@ function _prepare_tics_list($all_tics, $default, $parent, $pre = '')
     foreach ($child_tics as $tic) {
         $text = $pre . html_entity_decode($tic['label'], ENT_QUOTES, get_charset());
         $title = html_entity_decode($tic['title'], ENT_QUOTES, get_charset());
-        $tics_list->attach(form_input_list_entry('TIC:' . $tic['id'], $tic['id'] == $default, $text, false, false, $title));
+        $tics_list->attach(form_input_list_entry($tic['id'], $tic['id'] == $default, $text, false, false, $title));
 
         $under = _prepare_tics_list($all_tics, $default, $tic['id'], $text . ' > ');
         $tics_list->attach($under);
@@ -460,17 +536,28 @@ function _prepare_tics_list($all_tics, $default, $parent, $pre = '')
  * @param  string $default Default value
  * @return string The value
  */
-function post_param_tax($name, $default = '')
+function post_param_tax_code($name, $default = '0.0')
 {
-    $value = post_param_string($name . '_float', ''); // Simple rate
+    $value = post_param_string($name . '_flat', ''); // Simple flat figure
     if ($value == '') {
-        $value = post_param_string($name . '_eu', ''); // EU rate
+        $value = post_param_string($name . '_rate', ''); // Simple rate
         if ($value == '') {
-            $value = post_param_string($name . '_tic', ''); // TaxCloud
+            $value = post_param_string($name . '_eu', ''); // Semantic: EU rate
             if ($value == '') {
-                $value = $default; // Default
+                $value = post_param_string($name . '_tic', ''); // Semantic: TaxCloud
+                if ($value == '') {
+                    $value = $default; // Default
+                } else {
+                    $value = 'TIC:' . $value;
+                }
+            } else {
+                $value = 'EU';
             }
+        } else {
+            $value = float_to_raw_string(float_unformat($value)) . '%';
         }
+    } else {
+        $value = float_to_raw_string(float_unformat($value)); // There's actually no UI option for simple flat figure, but it may be used internally
     }
     return $value;
 }

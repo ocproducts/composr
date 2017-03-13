@@ -72,7 +72,7 @@ class Hook_ecommerce_cart_orders
                 'discount_points__num_points' => null, // TODO (#3026) - We don't currently support point discounts for cart purchases
                 'discount_points__price_reduction' => null,
 
-                'tax' => $order['total_tax'],
+                'tax_code' => float_to_raw_string($order['total_tax']),
                 'shipping_cost' => $order['total_shipping_cost'],
                 'needs_shipping_address' => true,
             );

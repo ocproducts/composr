@@ -49,7 +49,7 @@ class Hook_ecommerce_wage
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
-                'tax' => 0.00,
+                'tax_code' => '0.0',
                 'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             ),

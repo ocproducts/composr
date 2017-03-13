@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_topic_pin_tax
+class Hook_config_shipping_cost_tax_code
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_topic_pin_tax
     public function get_details()
     {
         return array(
-            'human_name' => 'PRICE_topic_pin_tax',
-            'type' => 'tax',
+            'human_name' => 'SHIPPING_COST_TAX_CODE',
+            'type' => 'tax_code',
             'category' => 'ECOMMERCE',
-            'group' => 'TOPIC_PINNING',
-            'explanation' => 'CONFIG_OPTION_topic_pin_tax',
+            'group' => 'SHIPPING',
+            'explanation' => 'CONFIG_OPTION_shipping_cost_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,
@@ -51,6 +51,6 @@ class Hook_config_topic_pin_tax
      */
     public function get_default()
     {
-        return has_no_forum() ? null : '0.00';
+        return '0.0';
     }
 }

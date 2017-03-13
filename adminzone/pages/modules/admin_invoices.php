@@ -211,7 +211,7 @@ class Module_admin_invoices
         $fields->attach(form_input_list(do_lang_tempcode('PRODUCT'), '', 'type_code', $list));
         $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), do_lang_tempcode('DESCRIPTION_INVOICE_FOR'), 'to', $to, true));
         $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_INVOICE_AMOUNT', escape_html(get_option('currency')), ecommerce_get_currency_symbol(get_option('currency'))), 'amount', null, false));
-        $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_INVOICE_TAX'), 'tax', null, false));
+        $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_INVOICE_TAX_CODE'), 'tax_code', '', false));
         $fields->attach(form_input_line(do_lang_tempcode('PURCHASE_ID'), do_lang_tempcode('DESCRIPTION_PURCHASE_ID_INVOICE'), 'special', '', false));
         $fields->attach(form_input_text(do_lang_tempcode('NOTE'), do_lang_tempcode('DESCRIPTION_INVOICE_NOTE'), 'note', '', false));
 
@@ -247,18 +247,19 @@ class Module_admin_invoices
                 warn_exit(do_lang_tempcode('INVOICE_REQUIRED_AMOUNT'));
             }
         }
-        $_tax = post_param_string('tax', '');
-        $tax = ($_tax == '') ? null : float_unformat($_tax);
-        if ($tax === null) {
-            $tax = recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($details['shipping_cost']), $member_id);
-        }
+
+        $tax_code = post_param_tax('tax_code', $details['tax_code']);
+        list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $tax_code, $amount, $details['shipping_cost'], $member_id);
 
         $id = $GLOBALS['SITE_DB']->query_insert('ecom_invoices', array(
             'i_type_code' => $type_code,
             'i_member_id' => $member_id,
             'i_state' => 'new',
             'i_amount' => $amount,
+            'i_tax_code' => $tax_code,
+            'i_tax_derivation' => json_encode($tax_derivation),
             'i_tax' => $tax,
+            'i_tax_tracking' => $tax_tracking,
             'i_currency' => $currency,
             'i_special' => post_param_string('special'),
             'i_time' => time(),

@@ -475,9 +475,9 @@ class Module_admin_config
                         $out .= static_evaluate_tempcode(form_input_float($human_name, $explanation, $name, float_unformat(get_option($name)), $required));
                         break;
 
-                    case 'tax':
+                    case 'tax_code':
                         require_code('ecommerce');
-                        $out .= static_evaluate_tempcode(form_input_tax($human_name, $explanation, $name, get_option($name), $required));
+                        $out .= static_evaluate_tempcode(form_input_tax_code($human_name, $explanation, $name, get_option($name), $required));
                         break;
 
                     case 'line':
@@ -735,9 +735,9 @@ class Module_admin_config
         // Go through all options on the page, saving
         foreach ($options as $name => $option) {
             // Save
-            if ($option['type'] == 'tax') {
+            if ($option['type'] == 'tax_code') {
                 require_code('ecommerce');
-                $value = post_param_tax($name);
+                $value = post_param_tax_code($name);
             } elseif ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif (($option['type'] == 'date') || ($option['type'] == 'datetime')) {

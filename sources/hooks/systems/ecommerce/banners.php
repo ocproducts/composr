@@ -74,7 +74,7 @@ class Hook_ecommerce_banners
             'discount_points__num_points' => null,
             'discount_points__price_reduction' => null,
 
-            'tax' => float_unformat(get_option('banner_setup_tax')),
+            'tax_code' => get_option('banner_setup_tax_code'),
             'shipping_cost' => 0.00,
             'needs_shipping_address' => false,
         ));
@@ -115,7 +115,7 @@ class Hook_ecommerce_banners
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
-                'tax' => float_unformat(get_option('banner_hit_tax')) * $hits,
+                'tax_code' => tax_multiplier(get_option('banner_hit_tax_code'), $hits),
                 'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             ));
@@ -139,7 +139,7 @@ class Hook_ecommerce_banners
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
-                'tax' => float_unformat(get_option('banner_imp_tax')) * $importance,
+                'tax_code' => tax_multiplier(get_option('banner_imp_tax_code'), $importance),
                 'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             ));

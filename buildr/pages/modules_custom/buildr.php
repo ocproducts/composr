@@ -265,7 +265,7 @@ class Module_buildr
 
             $prices = get_buildr_prices_default();
             foreach ($prices as $name => $price) {
-                $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => null, 'tax' => null, 'price_points' => $price));
+                $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => null, 'tax_code' => '', 'price_points' => $price));
             }
 
             require_code('buildr_action');

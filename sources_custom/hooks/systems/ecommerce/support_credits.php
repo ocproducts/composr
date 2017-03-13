@@ -72,7 +72,7 @@ class Hook_ecommerce_support_credits
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
-                'tax' => float_unformat(get_option('support_credit_tax')),
+                'tax_code' => get_option('support_credit_tax_code'),
                 'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             );

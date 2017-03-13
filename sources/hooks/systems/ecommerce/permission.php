@@ -61,7 +61,7 @@ class Hook_ecommerce_permission
      * @param  LONG_TEXT $description Description
      * @param  BINARY $enabled Whether it is enabled
      * @param  ?REAL $price The price (null: not set)
-     * @param  REAL $tax The tax
+     * @param  ID_TEXT $tax_code The tax code
      * @param  ?integer $price_points The price in points (null: not set)
      * @param  ?integer $hours Number of hours for it to last for (null: unlimited)
      * @param  ID_TEXT $type Permission scope 'type'
@@ -75,7 +75,7 @@ class Hook_ecommerce_permission
      * @param  LONG_TEXT $mail_body Confirmation mail body
      * @return Tempcode The fields
      */
-    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = 0.00, $tax = 0.00, $price_points = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
+    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = 0.00, $tax_code = '0.0', $price_points = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
     {
         require_lang('points');
 
@@ -84,7 +84,7 @@ class Hook_ecommerce_permission
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'permission_title' . $name_suffix, $title, true));
         $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'permission_description' . $name_suffix, $description, true));
         $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_PRICE'), 'permission_price' . $name_suffix, $price, false));
-        $fields->attach(form_input_float(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX'), 'permission_tax' . $name_suffix, $tax, true));
+        $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_CODE'), 'permission_tax_code' . $name_suffix, $tax_code, true));
         if (addon_installed('points')) {
             $fields->attach(form_input_integer(do_lang_tempcode('PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_PRICE_POINTS'), 'permission_price_points' . $name_suffix, $price_points, false));
         }
@@ -179,8 +179,7 @@ class Hook_ecommerce_permission
             $enabled = post_param_integer('permission_enabled_' . strval($i), 0);
             $_price = post_param_string('permission_price_' . strval($i), '');
             $price = ($_price == '') ? null : float_unformat($_price);
-            $_tax = post_param_string('permission_tax_' . strval($i));
-            $tax = float_unformat($_tax);
+            $tax = post_param_tax_code('permission_tax_code_' . strval($i));
             if (addon_installed('points')) {
                 $price_points = post_param_integer('permission_price_points_' . strval($i), null);
             } else {
@@ -213,7 +212,7 @@ class Hook_ecommerce_permission
                 $map = array(
                     'p_enabled' => $enabled,
                     'p_price' => $price,
-                    'p_tax' => $tax,
+                    'p_tax_code' => $tax_code,
                     'p_price_points' => $price_points,
                     'p_hours' => $hours,
                     'p_type' => $type,
@@ -238,8 +237,7 @@ class Hook_ecommerce_permission
             $enabled = post_param_integer('permission_enabled', 0);
             $_price = post_param_string('permission_price', '');
             $price = ($_price == '') ? null : float_unformat($_price);
-            $_tax = post_param_string('permission_tax');
-            $tax = float_unformat($_tax);
+            $tax = post_param_tax_code('permission_tax_code');
             if (addon_installed('points')) {
                 $price_points = post_param_integer('permission_price_points', null);
             } else {
@@ -258,7 +256,7 @@ class Hook_ecommerce_permission
             $map = array(
                 'p_enabled' => $enabled,
                 'p_price' => $price,
-                'p_tax' => $tax,
+                'p_tax_code' => $tax_code,
                 'p_price_points' => $price_points,
                 'p_hours' => $hours,
                 'p_type' => $type,
@@ -326,7 +324,7 @@ class Hook_ecommerce_permission
                 'discount_points__num_points' => null,
                 'discount_points__price_reduction' => null,
 
-                'tax' => $row['p_tax'],
+                'tax_code' => $row['p_tax_code'],
                 'shipping_cost' => 0.00,
                 'needs_shipping_address' => false,
             ));

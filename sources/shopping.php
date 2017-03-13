@@ -32,7 +32,7 @@ function init__shopping()
         define('SHOPPING_CATALOGUE_stock_level', 3);
         define('SHOPPING_CATALOGUE_stock_level_warn_at', 4);
         define('SHOPPING_CATALOGUE_stock_level_maintain', 5);
-        define('SHOPPING_CATALOGUE_tax_type', 6);
+        define('SHOPPING_CATALOGUE_tax_code', 6);
         define('SHOPPING_CATALOGUE_image', 7);
         define('SHOPPING_CATALOGUE_weight', 8);
         define('SHOPPING_CATALOGUE_description', 9);
@@ -181,11 +181,12 @@ FOR MAKING PURCHASE
  *
  * @param  array $shopping_cart_rows List of cart/order items.
  * @param  string $field_name_prefix Field name prefix. Pass as blank for cart items or 'p_' for order items.
- * @return array A tuple: total price, total tax, total shipping price.
+ * @return array A tuple: total price, total tax derivation, total tax, total tax tracking ID, total shipping price.
  */
 function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
 {
     $total_price = 0.00;
+    $total_tax_derivation = array();
     $total_tax = 0.00;
     $shipped_products = array();
 
@@ -203,20 +204,31 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         }
 
         $price = $details['price'];
-        $tax = $details['tax'];
+        $tax_code = $details['tax_code'];
 
         $quantity = $item[$field_name_prefix . 'quantity'];
 
         $total_price += $price * $quantity;
-        $total_tax += recalculate_tax_due($item, $tax, 0.0, null, $quantity);
+        list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($item, $tax_code, $price, 0.0, null, $quantity);
+        $total_tax += $tax;
+
+        if ($tax_derivation != '') {
+            foreach ($tax_derivation as $tax_category => $tax_category_amount) {
+                if (!array_key_exists($tax_category, $tax_derivation)) {
+                    $tax_derivation[$tax_category] = 0.00;
+                }
+                $tax_derivation[$tax_category] += $tax_category_amount;
+            }
+        }
 
         $shipped_products[] = array($item, $quantity);
     }
 
     $total_shipping_cost = recalculate_shipping_cost_combo($shipped_products);
-    $total_tax += recalculate_tax_due(null, 0.00, calculate_shipping_tax($total_shipping_cost));
+    list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due(null, '0.0', 0.00, $total_shipping_cost);
+    $total_tax += $tax;
 
-    return array($total_price, $total_tax, $total_shipping_cost);
+    return array($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $total_shipping_cost);
 }
 
 /**
@@ -234,13 +246,15 @@ function copy_shopping_cart_to_order()
         warn_exit(do_lang_tempcode('CART_EMPTY'));
     }
 
-    list($total_price, $total_tax, $total_shipping_cost) = derive_cart_amounts($shopping_cart_rows);
+    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $total_shipping_cost) = derive_cart_amounts($shopping_cart_rows);
 
     $shopping_order = array(
         'member_id' => get_member(),
         'session_id' => get_session_id(),
         'total_price' => $total_price,
+        'total_tax_derivation' => json_encode($total_tax_derivation),
         'total_tax' => $total_tax,
+        'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
         'currency' => get_option('currency'),
         'order_status' => 'ORDER_STATUS_awaiting_payment',
@@ -270,6 +284,8 @@ function copy_shopping_cart_to_order()
             $purchase_id = strval(get_member());
         }
 
+        list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($item, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+
         $shopping_order_details[] = array(
             'p_type_code' => $type_code,
             'p_purchase_id' => $purchase_id,
@@ -277,7 +293,8 @@ function copy_shopping_cart_to_order()
             'p_sku' => isset($details['type_special_details']['sku']) ? $details['type_special_details']['sku'] : '',
             'p_quantity' => $item['quantity'],
             'p_price' => $details['price'],
-            'p_tax' => $details['tax'],
+            'p_tax_code' => $details['tax_code'],
+            'p_tax' => $tax,
             'p_dispatch_status' => '',
         );
     }
@@ -325,7 +342,9 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
     $order_row = $order_rows[0];
 
     $price = $order_row['total_price'];
+    $tax_derivation = ($order_row['total_tax_derivation'] == '') ? array() : json_decode($order_row['total_tax_derivation'], true);
     $tax = $order_row['total_tax'];
+    $tax_tracking = ($order_row['i_tax_tracking'] == '') ? array() : json_decode($order_row['i_tax_tracking'], true);
     $shipping_cost = $order_row['total_shipping_cost'];
 
     $type_code = 'CART_ORDER_' . strval($order_id);
@@ -362,7 +381,9 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
         'e_price' => $price + $shipping_cost,
+        'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
+        'e_tax_tracking' => json_encode($tax_tracking),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -445,11 +466,13 @@ function recalculate_order_costs($order_id)
 {
     $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
 
-    list($total_price, $total_tax, $total_shipping_cost) = derive_cart_amounts($product_rows, 'p_');
+    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $total_shipping_cost) = derive_cart_amounts($product_rows, 'p_');
 
     $GLOBALS['SITE_DB']->query_update('shopping_orders', array(
         'total_price' => $total_price,
+        'total_tax_derivation' => json_encode($total_tax_derivation),
         'total_tax' => $total_tax,
+        'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
     ), array('id' => $order_id, 'order_status' => 'ORDER_STATUS_awaiting_payment'), '', 1);
 }

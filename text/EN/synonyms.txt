@@ -143,3 +143,5 @@ note	memo
 shipping	postage	freight
 chance	probability	likelihood
 empty	blank
+merchant retailer seller
+customer buyer

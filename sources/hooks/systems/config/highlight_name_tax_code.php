@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_shipping_cost_tax_rate
+class Hook_config_highlight_name_tax_code
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_shipping_cost_tax_rate
     public function get_details()
     {
         return array(
-            'human_name' => 'SHIPPING_COST_TAX_RATE',
-            'type' => 'tax',
+            'human_name' => 'PRICE_highlight_name_tax_code',
+            'type' => 'tax_code',
             'category' => 'ECOMMERCE',
-            'group' => 'SHIPPING',
-            'explanation' => 'CONFIG_OPTION_shipping_cost_tax_rate',
+            'group' => 'NAME_HIGHLIGHTING',
+            'explanation' => 'CONFIG_OPTION_highlight_name_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,
@@ -51,6 +51,6 @@ class Hook_config_shipping_cost_tax_rate
      */
     public function get_default()
     {
-        return '0.00';
+        return (get_forum_type() != 'cns') ? null : '0.0';
     }
 }

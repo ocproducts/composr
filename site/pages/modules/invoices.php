@@ -74,7 +74,10 @@ class Module_invoices
                 'i_member_id' => 'MEMBER',
                 'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
                 'i_amount' => 'REAL', // can't always find this from i_type_code
-                'i_tax' => 'REAL',
+                'i_tax_code' => 'ID_TEXT',
+                'i_tax_derivation' => 'LONG_TEXT', // Needs to be stored up-front, as it's locked in time
+                'i_tax' => 'REAL', // Needs to be stored up-front, as it's locked in time
+                'i_tax_tracking' => 'SHORT_TEXT', // Needs to be stored up-front, as it's locked in time
                 'i_currency' => 'ID_TEXT',
                 'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
                 'i_time' => 'TIME',
@@ -89,7 +92,10 @@ class Module_invoices
         if (($upgrade_from < 4) && ($upgrade_from !== null)) {
             $GLOBALS['SITE_DB']->rename_table('invoices', 'ecom_invoices');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_invoices', 'i_amount', 'REAL');
-            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_code', 'ID_TEXT', '0.0');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_derivation', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_tracking', 'SHORT_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_currency', 'ID_TEXT', get_option('currency'));
         }
     }
@@ -196,7 +202,17 @@ class Module_invoices
             if (perform_local_payment()) {
                 $transaction_button = hyperlink(build_url(array('page' => '_SELF', 'type' => 'pay', 'id' => $row['id']), '_SELF'), do_lang_tempcode('MAKE_PAYMENT'), false, false);
             } else {
-                $transaction_button = make_transaction_button($type_code, $invoice_title, strval($row['id']), $row['i_amount'], $row['i_tax'], 0.00, $currency);
+                $transaction_button = make_transaction_button(
+                    $type_code,
+                    $invoice_title,
+                    strval($row['id']),
+                    $row['i_amount'],
+                    ($row['i_tax_derivation'] == '') ? array() : json_decode($row['i_tax_derivation'], true),
+                    $row['i_tax'],
+                    ($row['i_tax_tracking'] == '') ? array() : json_decode($row['i_tax_tracking'], true),
+                    0.00,
+                    $currency
+                );
             }
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => $transaction_button,
@@ -251,7 +267,9 @@ class Module_invoices
             $invoice_title,
             strval($id),
             $row['i_amount'],
+            ($row['i_tax_derivation'] == '') ? array() : json_decode($row['i_tax_derivation'], true),
             $row['i_tax'],
+            ($row['i_tax_tracking'] == '') ? array() : json_decode($row['i_tax_tracking'], true),
             0.00,
             $currency,
             0,

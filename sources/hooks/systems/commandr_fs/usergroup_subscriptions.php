@@ -93,7 +93,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
 
         $description = $this->_default_property_str($properties, 'description');
         $price = $this->_default_property_float($properties, 'price');
-        $tax = $this->_default_property_float($properties, 'tax');
+        $tax_code = $this->_default_property_float($properties, 'tax_code');
         $length = $this->_default_property_int($properties, 'length');
         $length_units = $this->_default_property_str($properties, 'length_units');
         $auto_recur = $this->_default_property_int($properties, 'auto_recur');
@@ -105,7 +105,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $mail_uhoh = $this->_default_property_str($properties, 'mail_uhoh');
         $_mails = $this->_default_property_str($properties, 'mails');
 
-        $id = add_usergroup_subscription($label, $description, $price, $tax, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
+        $id = add_usergroup_subscription($label, $description, $price, $tax_code, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
 
         if (isset($properties['mails'])) {
             table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => $id), TABLE_REPLACE_MODE_NONE);
@@ -137,7 +137,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
             'label' => get_translated_text($row['s_title'], $GLOBALS['FORUM_DB']),
             'description' => get_translated_text($row['s_description'], $GLOBALS['FORUM_DB']),
             'price' => $row['s_price'],
-            'tax' => $row['s_tax'],
+            'tax_code' => $row['s_tax_code'],
             'length' => $row['s_length'],
             'length_units' => $row['s_length_units'],
             'group_id' => remap_resource_id_as_portable('group', $row['s_group_id']),
@@ -170,7 +170,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $label = $this->_default_property_str($properties, 'label');
         $description = $this->_default_property_str($properties, 'description');
         $price = $this->_default_property_float($properties, 'price');
-        $tax = $this->_default_property_float($properties, 'tax');
+        $tax_code = $this->_default_property_float($properties, 'tax_code');
         $length = $this->_default_property_int($properties, 'length');
         $length_units = $this->_default_property_str($properties, 'length_units');
         $auto_recur = $this->_default_property_int($properties, 'auto_recur');
@@ -182,7 +182,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $mail_uhoh = $this->_default_property_str($properties, 'mail_uhoh');
         $_mails = $this->_default_property_str($properties, 'mails');
 
-        edit_usergroup_subscription(intval($resource_id), $label, $description, $price, $tax, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
+        edit_usergroup_subscription(intval($resource_id), $label, $description, $price, $tax_code, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
 
         if (isset($properties['mails'])) {
             table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);

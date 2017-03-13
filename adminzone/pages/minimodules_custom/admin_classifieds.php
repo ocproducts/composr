@@ -30,7 +30,7 @@ if (count($_POST) != 0) {
             $days = post_param_string('days_' . $matches[1] . '_' . $matches[2], '');
             $label = post_param_string('label_' . $matches[1] . '_' . $matches[2], '');
             $price = post_param_string('price_' . $matches[1] . '_' . $matches[2], '');
-            $tax = post_param_string('tax_' . $matches[1] . '_' . $matches[2], '');
+            $tax_code = post_param_tax_code('tax_code_' . $matches[1] . '_' . $matches[2], '');
 
             if (($catalogue != '') && ($days != '') && ($label != '') && ($price != '')) {
                 if ($matches[1] == 'existing') {
@@ -47,7 +47,6 @@ if (count($_POST) != 0) {
                             'c_catalogue_name' => $catalogue,
                             'c_days' => intval($days),
                             'c_price' => float_unformat($price),
-                            'c_tax' => float_unformat($tax),
                         ) + lang_remap('c_label', $_label, $label),
                         array('id' => intval($matches[2])),
                         '',
@@ -59,7 +58,6 @@ if (count($_POST) != 0) {
                         'c_catalogue_name' => $catalogue,
                         'c_days' => intval($days),
                         'c_price' => float_unformat($price),
-                        'c_tax' => float_unformat($tax),
                     ) + insert_lang('c_label', $label, 2));
                 }
             } else {

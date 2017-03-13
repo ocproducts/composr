@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_banner_imp_tax
+class Hook_config_topic_pin_tax_code
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_banner_imp_tax
     public function get_details()
     {
         return array(
-            'human_name' => 'PRICE_banner_imp_tax',
-            'type' => 'tax',
+            'human_name' => 'PRICE_topic_pin_tax_code',
+            'type' => 'tax_code',
             'category' => 'ECOMMERCE',
-            'group' => 'BANNERS',
-            'explanation' => 'CONFIG_OPTION_banner_imp_tax',
+            'group' => 'TOPIC_PINNING',
+            'explanation' => 'CONFIG_OPTION_topic_pin_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 3,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +51,6 @@ class Hook_config_banner_imp_tax
      */
     public function get_default()
     {
-        return (!addon_installed('banners')) ? null : '0.00';
+        return has_no_forum() ? null : '0.0';
     }
 }

@@ -476,15 +476,17 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row =
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The human-readable product title.
  * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  REAL $price Transaction price.
- * @param  REAL $tax Transaction tax.
- * @param  REAL $shipping_cost Transaction shipping cost.
+ * @param  REAL $price Transaction price in money.
+ * @param  array $tax_derivation Transaction tax derivation.
+ * @param  REAL $tax Transaction tax in money.
+ * @param  array $tax_tracking Transaction tax tracking ID.
+ * @param  REAL $shipping_cost Transaction shipping cost in money.
  * @param  ID_TEXT $currency The currency to use.
  * @param  integer $price_points Transaction price in points.
  * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
  * @return Tempcode The button.
  */
-function make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency, $price_points = 0, $payment_gateway = null)
+function make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $currency, $price_points = 0, $payment_gateway = null)
 {
     if ($payment_gateway === null) {
         $payment_gateway = get_option('payment_gateway');
@@ -502,7 +504,9 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
         'e_price' => $price + $shipping_cost,
+        'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
+        'e_tax_tracking' => json_encode($tax_tracking),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -526,8 +530,10 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The human-readable product title.
  * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  REAL $price Transaction price.
- * @param  REAL $tax Transaction tax.
+ * @param  REAL $price Transaction price in money.
+ * @param  array $tax_derivation Transaction tax derivation.
+ * @param  REAL $tax Transaction tax in money.
+ * @param  array $tax_tracking Transaction tax tracking ID.
  * @param  ID_TEXT $currency The currency to use.
  * @param  integer $price_points Transaction price in points (only for first transaction).
  * @param  integer $length The subscription length in the units.
@@ -536,7 +542,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
  * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
  * @return Tempcode The button.
  */
-function make_subscription_button($type_code, $item_name, $purchase_id, $price, $tax, $currency, $price_points = 0, $length, $length_units, $payment_gateway = null)
+function make_subscription_button($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $currency, $price_points = 0, $length, $length_units, $payment_gateway = null)
 {
     if ($payment_gateway === null) {
         $payment_gateway = get_option('payment_gateway');
@@ -554,7 +560,9 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
         'e_price' => $price,
+        'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
+        'e_tax_tracking' => json_encode($tax_tracking),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
@@ -703,9 +711,11 @@ function perform_local_payment()
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The item name
  * @param  ID_TEXT $purchase_id The purchase ID
- * @param  REAL $price Transaction price.
- * @param  REAL $tax Transaction tax.
- * @param  REAL $shipping_cost Transaction shipping cost.
+ * @param  REAL $price Transaction price in money.
+ * @param  array $tax_derivation Transaction tax derivation.
+ * @param  REAL $tax Transaction tax in money.
+ * @param  array $tax_tracking Transaction tax tracking ID.
+ * @param  REAL $shipping_cost Transaction shipping cost in money.
  * @param  ID_TEXT $currency The currency to use.
  * @param  integer $price_points Transaction price in points (only for first transaction).
  * @param  ?integer $length The length (null: not a subscription)
@@ -714,7 +724,7 @@ function perform_local_payment()
  * @param  boolean $needs_shipping_address Whether a shipping address is needed.
  * @return array A tuple: The form fields, Hidden fields, Confidence logos, Payment processor links.
  */
-function get_transaction_form_fields($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency, $price_points, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
+function get_transaction_form_fields($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $currency, $price_points, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
 {
     if ((!tacit_https()) && (!ecommerce_test_mode())) {
         warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
@@ -741,7 +751,9 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_price' => $price + $shipping_cost,
+        'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
+        'e_tax_tracking' => json_encode($tax_tracking),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_member_id' => get_member(),
@@ -808,10 +820,14 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
 
     // Billing address fields...
 
-    $fields->attach(get_address_fields('billing_', $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country));
+    if (post_param_string('billing_firstname', null) === null) {
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('BILLING_ADDRESS'))));
 
-    if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
-        $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'billing_save_to_account', get_cms_cpf('billing_street_address') == ''));
+        $fields->attach(get_address_fields('billing_', $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country));
+
+        if ((!is_guest()) && (get_forum_type() == 'cns') && (get_option('store_credit_card_numbers') == '1')) {
+            $fields->attach(form_input_tick(do_lang_tempcode('SAVE_TO_ACCOUNT'), '', 'billing_save_to_account', get_cms_cpf('billing_street_address') == ''));
+        }
     }
 
     // Shipping address fields...
@@ -881,8 +897,8 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
         }
     }
 
-    if (get_option('cpf_enable_post_code') == '1') {
-        $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, $definitely_usa, null, $definitely_usa ? 9 : 12, 'text', null, $definitely_usa ? '\d*' : null, null, $definitely_usa ? 5 : 8));
+    if ((get_option('cpf_enable_post_code') == '1') || (get_option('business_country') == 'US')) {
+        $fields->attach(form_input_line(do_lang_cpf('post_code'), '', $prefix . 'post_code', $post_code, $definitely_usa, null, $definitely_usa ? 10 : 12, 'text', null, $definitely_usa ? '^[0-9]{5}(-[0-9]{4})?$' : null, null, $definitely_usa ? 5 : 8));
     }
 
     if (get_option('cpf_enable_country') == '1') {
@@ -1067,16 +1083,29 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
     }
 
     if (
-            (($billing_country == 'US') && ($billing_state == '')) ||
-            (($shipping_country == 'US') && ($shipping_state == ''))
-        ) {
+        (($billing_country == 'US') && ($billing_state == '')) ||
+        (($shipping_country == 'US') && ($shipping_state == ''))
+    ) {
         warn_exit(do_lang_tempcode('STATE_NEEDED_FOR_USA'));
     }
+    global $USA_STATE_LIST;
     if (
-            (($billing_country != 'US') && (get_option('business_country') == 'US') && ($billing_state != '')) ||
-            (($shipping_country != 'US') && (get_option('business_country') == 'US') && ($shipping_state != ''))
-        ) {
+        (($billing_country != 'US') && (get_option('business_country') == 'US') && ($billing_state != '') && (array_key_exists($billing_state, $USA_STATE_LIST))) ||
+        (($shipping_country != 'US') && (get_option('business_country') == 'US') && ($shipping_state != '') && (array_key_exists($shipping_state, $USA_STATE_LIST)))
+    ) {
         warn_exit(do_lang_tempcode('INVALID_STATE_FOR_NON_USA'));
+    }
+    if (
+        (($billing_country == 'US') && ($billing_post_code == '')) ||
+        (($shipping_country == 'US') && ($shipping_post_code == ''))
+    ) {
+        warn_exit(do_lang_tempcode('ZIP_NEEDED_FOR_USA'));
+    }
+    if (
+        (($billing_country == 'US') && (preg_match('#^[0-9]{5}(-[0-9]{4})?$#', $billing_post_code) == 0)) ||
+        (($shipping_country == 'US') && (preg_match('#^[0-9]{5}(-[0-9]{4})?$#', $shipping_post_code) == 0))
+    ) {
+        warn_exit(do_lang_tempcode('INVALID_ZIP_FOR_USA'));
     }
 }
 
@@ -1088,7 +1117,7 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
 function ecommerce_attach_memo_field_if_needed(&$fields)
 {
     if (get_option('payment_memos') == '1') {
-        if (perform_local_payment()) {
+        if ((perform_local_payment()) || (get_module_zone() == 'admin_ecommerce_logs')) {
             $get_memo = true;
         } else {
             $payment_gateway = get_option('payment_gateway');
@@ -1376,6 +1405,8 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
 
     // We need to grab these from somewhere
     $expected_amount = null;
+    $expected_tax_derivation = array();
+    $expected_tax_tracking = array();
     $expected_tax = null;
     $expected_price_points = null;
     $invoicing_breakdown = '';
@@ -1387,7 +1418,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         if ((array_key_exists(0, $transaction_rows)) && (time() - $transaction_rows[0]['e_time'] < 24 * 60 * 60 * intval(get_option('ecom_price_honour_time')))) {
             $transaction_row = $transaction_rows[0];
             $expected_amount = $transaction_row['e_price'];
+            $expected_tax_derivation = ($transaction_row['e_tax_derivation'] == '') ? array() : json_decode($transaction_row['e_tax_derivation'], true);
             $expected_tax = $transaction_row['e_tax'];
+            $expected_tax_tracking = ($transaction_row['e_tax_tracking'] == '') ? array() : json_decode($transaction_row['e_tax_tracking'], true);
             $expected_price_points = $transaction_row['e_price_points'];
             $invoicing_breakdown = $transaction_row['e_invoicing_breakdown'];
             if ($memo == '') {
@@ -1403,7 +1436,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $expected_amount = $invoice_rows[0]['i_amount'];
+        $expected_tax_derivation = ($invoice_rows[0]['i_tax_derivation'] == '') ? array() : json_decode($invoice_rows[0]['i_tax_derivation'], true);
         $expected_tax = $invoice_rows[0]['i_tax'];
+        $expected_tax_tracking = ($invoice_rows[0]['i_tax_tracking'] == '') ? array() : json_decode($invoice_rows[0]['i_tax_tracking'], true);
         $expected_price_points = 0;
         $expected_currency = $invoice_rows[0]['i_currency'];
     }
@@ -1415,7 +1450,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $expected_amount = $subscription_rows[0]['s_amount'];
+        $expected_tax_derivation = ($subscription_rows[0]['s_tax_derivation'] == '') ? array() : json_decode($subscription_rows[0]['s_tax_derivation'], true);
         $expected_tax = $subscription_rows[0]['s_tax'];
+        $expected_tax_tracking = ($subscription_rows[0]['s_tax_tracking'] == '') ? array() : json_decode($subscription_rows[0]['s_tax_tracking'], true);
         $expected_price_points = 0;
         $expected_currency = $subscription_rows[0]['s_currency'];
     }
@@ -1431,15 +1468,15 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             // Will be paying with money (or possibly money & points)
             $shipping_cost = recalculate_shipping_cost($found, $found['shipping_cost'], $member_id_paying);
             $expected_amount = $found['price'] + $shipping_cost;
-            $expected_tax = recalculate_tax_due($found, $found['tax'], calculate_shipping_tax($shipping_cost), $member_id_paying);
+            list($expected_tax_derivation, $expected_tax, $expected_tax_tracking) = calculate_tax_due($found, $found['tax_code'], $found['price'], $shipping_cost, $member_id_paying);
             $expected_price_points = 0;
 
             if (!paid_amount_matches($amount, $tax, $expected_amount, $expected_tax)) {
                 // Maybe a discount then
-                list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($found, false, $member_id_paying);
+                list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($found, false, $member_id_paying);
                 if (paid_amount_matches($amount, $tax, $discounted_price, $discounted_tax)) {
                     $expected_amount = $discounted_price;
-                    $expected_tax = $discounted_tax;
+                    list($expected_tax_derivation, $expected_tax, $expected_tax_tracking) = calculate_tax_due($found, $discounted_tax_code, $discounted_price, $shipping_cost, $member_id_paying);
                     $expected_price_points = $points_for_discount;
                 }
             }
@@ -1492,7 +1529,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         't_pending_reason' => $pending_reason,
         't_reason' => $reason,
         't_amount' => $amount,
+        't_tax_derivation' => json_encode($tax_derivation),
         't_tax' => $tax,
+        't_tax_tracking' => json_encode($tax_tracking),
         't_currency' => $currency,
         't_parent_txn_id' => $parent_txn_id,
         't_time' => time(),
@@ -1735,7 +1774,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
     if ((!addon_installed('points')) || (is_guest())) {
         return array(
             null,
-            recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($details['shipping_cost']), $member_id),
+            $details['tax_code'],
             null,
             false
         );
@@ -1763,7 +1802,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
             $discounted_price = max(0.00, $details['price'] - $details['discount_points__price_reduction']);
             return array(
                 $discounted_price,
-                recalculate_tax_due($details, round($details['tax'] * ($discounted_price / $details['price']), 2), calculate_shipping_tax($details['shipping_cost']), $member_id),
+                tax_multiplier($details['tax_code'], ($discounted_price / $details['price'])),
                 $details['discount_points__num_points'],
                 true
             );
@@ -1772,7 +1811,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
 
     return array(
         null,
-        recalculate_tax_due($details, $details['tax'], calculate_shipping_tax($details['shipping_cost']), $member_id),
+        $details['tax_code'],
         null,
         false
     );

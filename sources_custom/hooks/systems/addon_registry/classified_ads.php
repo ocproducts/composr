@@ -153,6 +153,7 @@ Fully integrated with catalogues, eCommerce, and Conversr member accounts.';
             'site/pages/modules_custom/classifieds.php',
             'sources_custom/classifieds.php',
             'sources_custom/hooks/modules/members/classifieds.php',
+            'sources_custom/hooks/systems/config/classifieds_tax_code.php',
             'sources_custom/hooks/systems/cron/classifieds.php',
             'sources_custom/hooks/systems/page_groupings/classifieds.php',
             'sources_custom/hooks/systems/ecommerce/classifieds.php',

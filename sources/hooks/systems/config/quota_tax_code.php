@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_highlight_name_tax
+class Hook_config_quota_tax_code
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_highlight_name_tax
     public function get_details()
     {
         return array(
-            'human_name' => 'PRICE_highlight_name_tax',
-            'type' => 'tax',
+            'human_name' => 'PRICE_quota_tax_code',
+            'type' => 'tax_code',
             'category' => 'ECOMMERCE',
-            'group' => 'NAME_HIGHLIGHTING',
-            'explanation' => 'CONFIG_OPTION_highlight_name_tax',
+            'group' => 'POP3',
+            'explanation' => 'CONFIG_OPTION_quota_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 7,
 
             'addon' => 'ecommerce',
         );
@@ -51,6 +51,6 @@ class Hook_config_highlight_name_tax
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : '0.00';
+        return '0.0';
     }
 }

@@ -75,7 +75,7 @@ class Hook_ecommerce_classifieds
                     'discount_points__num_points' => null,
                     'discount_points__price_reduction' => null,
 
-                    'tax' => $price['c_tax'],
+                    'tax_code' => get_option('classifieds_tax_code'),
                     'shipping_cost' => 0.00,
                     'needs_shipping_address' => false,
                 ));

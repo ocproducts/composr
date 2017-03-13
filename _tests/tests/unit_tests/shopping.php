@@ -62,7 +62,7 @@ class shopping_test_set extends cms_test_case
             array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0),
             array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0),
             array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'tick'/*will save as list*/, 0, 1, 0, 0),
-            array('ECOM_CAT_tax_type', 'ECOM_CATD_tax_type', 'list', 0, 1, 0, 0, "0%|5%|17.5%"),
+            array('ECOM_CAT_tax_code', 'ECOM_CATD_tax_code', 'tax_code', 0, 1, 0, 0),
             array('ECOM_CAT_image', 'ECOM_CATD_image', 'picture', 0, 0, 1, 1),
             array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0),
             array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1)
@@ -108,7 +108,7 @@ class shopping_test_set extends cms_test_case
                     break;
                 case 'list':
                     if ($val['cf_order'] == 6) { // Tax
-                        $_POST['field_' . strval($id)] = '5%';
+                        $_POST['field_' . strval($id)] = '5.0';
                     } elseif ($val['cf_order'] == 5) { // Keep Stock
                         $_POST['field_' . strval($id)] = '1';
                     }
