@@ -479,12 +479,13 @@ Tax codes are carried through the system until it is time to turn into an actual
 
 Known limitations and important considerations:
  - You should not enable automatic tax deduction on your payment gateway as Composr handles it for you. If tax deduction was enabled then transactions would fail to go through due to mismatches in pricing.
- - We cannot verify that a user has given their correct address when they pay, and hence know the correct tax to charge. However we believe tax authorities would generally recognise that such fraud is the fault of users rather than your own libility (this is standard practice), plus the address is also used for shipping which creates a reasonable barrier to fraud.
+ - We cannot verify that a user has given their correct address when they pay, and hence know the correct tax to charge. However we believe tax authorities would generally recognise that such fraud is the fault of users rather than your own liability (this is standard practice), plus the address is also used for shipping which creates a reasonable barrier to fraud.
  - Before a customer's address is known taxation is calculated as if the customer was buying from the business's own address. This is so we can provide a "best estimate" of tax as early as possible.
  - We do not mention import duty in the software, which would often be due if shipping internationally. The buyer pays this to the shipping company before they will deliver the import. This is standard practice, and it is standard to not refer to it in eCommerce tax systems as it is outside the scope, but I thought it was worth mentioning.
  - We have designed the tax system to be legally compliant with at least EU and USA rules, although we cannot guarantee this -- you must take your own responsibility for your legal compliance.
  - Sales tax rates may be changed, but they would be changed at the start of a new tax accounting period. Unless you are a USA seller using TaxCloud for all the taxes then you must be aware of this, ready to switch in new rates at midnight when the new ones apply.
  - Avoid taking and holding multiple currencies (e.g. on PayPal) unless you have a very good reason to -- it will make your accounting particularly complicated. It is better to just force the payer's credit card to charge in your own currency.
+ - You should strongly consider setting the site timezone to that where you collect tax so that if tax rates change you can more easily tell what dates the transactions happened on.
 
 [title="4"]Regional considerations[/title]
 
@@ -498,18 +499,18 @@ All the taxes need to be individually tracked and paid out.
 As mentioned above we use the TaxCloud to handle most of the complexity.
 
 To use the TaxCloud system:
-1) Your site must have working SSL functionality
+1) Your site must have working SSL functionality (outbound)
 2) Set up an account on TaxCloud
-3) Set up your site on TaxCloud
-4) Set up required details on the TaxCloud Profile/Websites/Contacts/Locations tabs; you will need your filing details such as your Federal Tax ID (EIN)
-5) Set up your payment information in the TaxCloud Payment Information tabs
-6) Consider adding the "Sales Tax Policy" text to your Composr rules page
-7) Fill in the TaxCloud API key configuration option on your Composr site
-8) Fill in the TaxCloud API ID configuration option on your Composr site
-9) Set the Business country configuration option on your Composr site to USA
-10) Set the Business state configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper-case, not the full written state name)
-11) You may ignore the "Tax countries" and "Tax states" Composr configuration options
-12) Configure tax configuration options, and shopping catalogue products, to use the appropriate TIC code
+3) Set up required details on the TaxCloud Profile/Websites/Contacts/Locations tabs; you will need your filing details such as your Federal Tax ID (EIN)
+4) Set up your payment information in the TaxCloud Payment Information tabs
+5) Consider adding the "Sales Tax Policy" text to your Composr rules page
+6) Fill in the TaxCloud API key configuration option on your Composr site
+7) Fill in the TaxCloud API ID configuration option on your Composr site
+8) Set the Business country configuration option on your Composr site to USA
+9) Set the Business state configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper-case, not the full written state name)
+10) You may ignore the "Tax countries" and "Tax states" Composr configuration options
+11) Set the Currency configuration option on your Composr site to USD
+12) Configure tax configuration options, and shopping catalogue products, to use the appropriate TIC code(s)
 Note that TaxCloud will automatically debit the tax from you and do tax forms for you in many cases -- and in any case will keep records of all the itemised sales taxes due.
 
 Known limitations at this time which could be worked around with custom code...

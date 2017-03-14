@@ -504,6 +504,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
+        'e_session_id' => get_session(),
         'e_price' => $price + $shipping_cost,
         'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
@@ -560,6 +561,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
+        'e_session_id' => get_session(),
         'e_price' => $price,
         'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
@@ -752,6 +754,8 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         'e_type_code' => $type_code,
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
+        'e_member_id' => get_member(),
+        'e_session_id' => get_session(),
         'e_price' => $price + $shipping_cost,
         'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
@@ -1384,6 +1388,37 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         $item_name = $found['item_name'];
     }
 
+    // We need to grab these from somewhere
+    $expected_amount = null;
+    $expected_tax_derivation = array();
+    $expected_tax_tracking = array();
+    $expected_tax = null;
+    $expected_price_points = null;
+    $invoicing_breakdown = '';
+    $expected_currency = null;
+    $sale_timestamp = time();
+    $session_id = get_session();
+
+    // Grab expected price and tax: Locked in in advance in ecom_trans_expecting transaction (this is the standard case for an IPN)
+    if ($trans_expecting_id !== null) {
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
+        if ((array_key_exists(0, $transaction_rows)) && (time() - $transaction_rows[0]['e_time'] < 24 * 60 * 60 * intval(get_option('ecom_price_honour_time')))) {
+            $transaction_row = $transaction_rows[0];
+            $expected_amount = $transaction_row['e_price'];
+            $expected_tax_derivation = ($transaction_row['e_tax_derivation'] == '') ? array() : json_decode($transaction_row['e_tax_derivation'], true);
+            $expected_tax = $transaction_row['e_tax'];
+            $expected_tax_tracking = ($transaction_row['e_tax_tracking'] == '') ? array() : json_decode($transaction_row['e_tax_tracking'], true);
+            $expected_price_points = $transaction_row['e_price_points'];
+            $sale_timestamp = $transaction_row['e_time']; // Important: as sales tax should be locked in at the time of it all being generated, not when the payment came through
+            $session_id = $transaction_row['e_session_id'];
+            $member_id_paying = $transaction_row['e_member_id'];
+            $invoicing_breakdown = $transaction_row['e_invoicing_breakdown'];
+            if ($memo == '') {
+                $memo = $transaction_row['e_memo'];
+            }
+        }
+    }
+
     // Find which member the transaction was for, if we can (otherwise we leave it as who did the transaction, or null if that's not set)
     $member_id = $member_id_paying;
     if (method_exists($product_object, 'member_for')) {
@@ -1403,34 +1438,6 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     }
     if ($member_id_paying === null) {
         $member_id_paying = $member_id;
-    }
-
-    // We need to grab these from somewhere
-    $expected_amount = null;
-    $expected_tax_derivation = array();
-    $expected_tax_tracking = array();
-    $expected_tax = null;
-    $expected_price_points = null;
-    $invoicing_breakdown = '';
-    $expected_currency = null;
-    $sale_timestamp = time();
-
-    // Grab expected price and tax: Locked in in advance in ecom_trans_expecting transaction (this is the standard case for an IPN)
-    if ($trans_expecting_id !== null) {
-        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
-        if ((array_key_exists(0, $transaction_rows)) && (time() - $transaction_rows[0]['e_time'] < 24 * 60 * 60 * intval(get_option('ecom_price_honour_time')))) {
-            $transaction_row = $transaction_rows[0];
-            $expected_amount = $transaction_row['e_price'];
-            $expected_tax_derivation = ($transaction_row['e_tax_derivation'] == '') ? array() : json_decode($transaction_row['e_tax_derivation'], true);
-            $expected_tax = $transaction_row['e_tax'];
-            $expected_tax_tracking = ($transaction_row['e_tax_tracking'] == '') ? array() : json_decode($transaction_row['e_tax_tracking'], true);
-            $expected_price_points = $transaction_row['e_price_points'];
-            $sale_timestamp = $transaction_row['e_time']; // Important: as sales tax should be locked in at the time of it all being generated, not when the payment came through
-            $invoicing_breakdown = $transaction_row['e_invoicing_breakdown'];
-            if ($memo == '') {
-                $memo = $transaction_row['e_memo'];
-            }
-        }
     }
 
     // Grab expected price and tax: Invoice
@@ -1543,6 +1550,15 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         't_payment_gateway' => $payment_gateway,
         't_invoicing_breakdown' => $invoicing_breakdown,
     ));
+
+    // Mark tax collected with external services as required
+    foreach ($expected_tax_tracking as $tracking_service => $tracking_id) {
+        switch ($tracking_service) {
+            case 'taxcloud':
+                taxcloud_declare_completed($tracking_id, $txn_id, $member_id_paying, $session_id);
+                break;
+        }
+    }
 
     // Add in extra details to $found, so actualisers can track things better
     $found['TXN_ID'] = $txn_id;

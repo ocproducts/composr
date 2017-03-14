@@ -29,10 +29,12 @@ class ecommerce_tax_test_set extends cms_test_case
         // This test will break if tax rates change, so correct it if that happens...
 
         $_POST['shipping_country'] = 'UK';
-        $this->assertTrue(get_tax_using_tax_code('EU', 100.00) == 20.0);
+        list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'EU', 100.00);
+        $this->assertTrue($tax == 20.0);
 
         $_POST['shipping_country'] = 'DE';
-        $this->assertTrue(get_tax_using_tax_code('EU', 100.00) == 19.0);
+        list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'EU', 100.00);
+        $this->assertTrue($tax == 19.0);
     }
 
     public function testUSTax()
@@ -51,20 +53,24 @@ class ecommerce_tax_test_set extends cms_test_case
         set_option('business_state', 'CA');
         set_option('business_country', 'US');
         set_option('business_post_code', '90021');
-        $this->assertTrue(get_tax_using_tax_code('TIC:00000', 100.00) == 20.0);
+        list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'TIC:00000', 100.00);
+        $this->assertTrue($tax == 20.0);
 
         $_POST['shipping_country'] = 'UK';
-        $this->assertTrue(get_tax_using_tax_code('TIC:00000', 100.00) == 0.0);
+        list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'TIC:00000', 100.00);
+        $this->assertTrue($tax == 0.0);
     }
 
     public function testFlatTax()
     {
         set_option('tax_country_regexp', '^.*$');
         $_POST['shipping_country'] = 'US';
-        $this->assertTrue(get_tax_using_tax_code(float_to_raw_string(18.0), 100.00) == 18.0);
+        list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, float_to_raw_string(18.0), 100.00);
+        $this->assertTrue($tax == 18.0);
 
         set_option('tax_country_regexp', '^(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|GR|HU|IE|IT|LV|LT|LU|MT|NL|PL|PT|RO|SK|SI|ES|SE|UK|AX)$'); // Europe only
         $_POST['shipping_country'] = 'US';
-        $this->assertTrue(get_tax_using_tax_code(float_to_raw_string(18.0), 100.00) == 0.0);
+        list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, float_to_raw_string(18.0), 100.00);
+        $this->assertTrue($tax == 0.0);
     }
 }

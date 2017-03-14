@@ -5483,6 +5483,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_TYPE_ticket_reply_staff
         EDIT_ECOMMERCE_CONFIG
         SELL_CATEGORY_ACCESS
+        TIC__CURRENCY_NOT_USD
         TIC__BUSINESS_COUNTRY_NOT_USA
         TIC__TAXCLOUD_NOT_CONFIGURED
         TIC__USA_STATE_INVALID

@@ -498,6 +498,7 @@ function get_relation_map()
         'shopping_cart.ordered_by' => 'f_members.id',
         'shopping_cart.type_code' => 'catalogue_entries.id',
         'ecom_trans_addresses.a_trans_expecting_id' => 'ecom_trans_expecting.id',
+        'ecom_trans_addresses.a_session_id' => 'sessions.id',
         'ecom_trans_addresses.a_txn_id' => 'ecom_transactions.id',
         'shopping_order_details.p_order_id' => 'shopping_orders.id',
         'shopping_order_details.p_type_code' => 'catalogue_entries.id',

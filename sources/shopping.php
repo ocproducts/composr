@@ -467,6 +467,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_purchase_id' => strval($order_id),
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
+        'e_session_id' => get_session(),
         'e_price' => $price + $shipping_cost,
         'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,

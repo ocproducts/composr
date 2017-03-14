@@ -116,6 +116,7 @@ class Module_purchase
                 'e_purchase_id' => 'ID_TEXT',
                 'e_item_name' => 'SHORT_TEXT',
                 'e_member_id' => 'MEMBER',
+                'e_session_id' => 'ID_TEXT',
                 'e_price' => 'REAL',
                 'e_tax_derivation' => 'LONG_TEXT',
                 'e_tax' => 'REAL',
@@ -251,6 +252,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax_tracking', 'SHORT_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_price_points', 'INTEGER', 0);
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_invoicing_breakdown', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_session_id', 'ID_TEXT', '');
 
             $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT');

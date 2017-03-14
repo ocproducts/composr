@@ -492,6 +492,7 @@ class Module_admin_ecommerce_logs
             'e_currency' => $currency,
             'e_price_points' => 0,
             'e_member_id' => get_member(),
+            'e_session_id' => get_session(),
             'e_ip_address' => get_ip_address(),
             'e_session_id' => get_session_id(),
             'e_time' => time(),
