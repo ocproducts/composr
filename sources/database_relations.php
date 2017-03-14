@@ -508,6 +508,7 @@ function get_relation_map()
         'tickets.topic_id' => 'f_topics.id',
         'trackbacks.trackback_for_id' => null,
         'ecom_transactions.t_parent_txn_id' => 'ecom_transactions.id',
+        'ecom_transactions.t_session_id' => 'sessions.id',
         'url_id_monikers.m_resource_id' => null,
         'url_id_monikers.m_resource_page' => 'modules.module_the_name',
         'videos.cat' => 'galleries.name',

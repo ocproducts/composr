@@ -1349,7 +1349,7 @@ function _parse_create_array()
                 unset($expression[2]);
             }
             if (isset($seen[serialize($expression)])) {
-                parser_warning('Duplicated key in array creation,' . serialize($expression));
+                parser_warning('Duplicated key in array creation, ' . serialize($expression));
             }
             $seen[serialize($expression)] = 1;
             $next = pparse__parser_peek();

@@ -179,7 +179,7 @@ class Hook_ecommerce_permission
             $enabled = post_param_integer('permission_enabled_' . strval($i), 0);
             $_price = post_param_string('permission_price_' . strval($i), '');
             $price = ($_price == '') ? null : float_unformat($_price);
-            $tax = post_param_tax_code('permission_tax_code_' . strval($i));
+            $tax_code = post_param_tax_code('permission_tax_code_' . strval($i));
             if (addon_installed('points')) {
                 $price_points = post_param_integer('permission_price_points_' . strval($i), null);
             } else {

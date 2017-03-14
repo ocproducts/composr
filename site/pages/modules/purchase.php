@@ -124,7 +124,6 @@ class Module_purchase
                 'e_currency' => 'ID_TEXT',
                 'e_price_points' => 'INTEGER', // This is supplementary, not an alternative; if it is only points then no ecom_trans_expecting record will be created
                 'e_ip_address' => 'IP',
-                'e_session_id' => 'ID_TEXT',
                 'e_time' => 'TIME',
                 'e_length' => '?INTEGER',
                 'e_length_units' => 'ID_TEXT',
@@ -167,6 +166,8 @@ class Module_purchase
                 't_memo' => 'LONG_TEXT',
                 't_payment_gateway' => 'ID_TEXT',
                 't_invoicing_breakdown' => 'LONG_TEXT',
+                't_member_id' => 'MEMBER', // Of the paying member
+                't_session_id' => 'ID_TEXT', // Of the paying user
             ));
         }
 
@@ -222,10 +223,6 @@ class Module_purchase
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 7)) {
-            $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_type_code', 'ID_TEXT', '');
-
-            $GLOBALS['SITE_DB']->alter_table_field('trans_expecting', 'e_session_id', 'ID_TEXT');
-
             require_code('cns_members');
             $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
             if ($cf_id !== null) {
@@ -253,6 +250,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_price_points', 'INTEGER', 0);
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_invoicing_breakdown', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_session_id', 'ID_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_type_code', 'ID_TEXT', '');
 
             $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT');
@@ -263,6 +261,8 @@ class Module_purchase
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_invoicing_breakdown', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_member_id', 'MEMBER', $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_session_id', 'ID_TEXT', '');
 
             rename_config_option('transaction_flat_cost', 'transaction_flat_fee');
             rename_config_option('transaction_percentage_cost', 'transaction_percentage_fee');
@@ -334,6 +334,8 @@ class Module_purchase
                         't_memo' => '',
                         't_payment_gateway' => '',
                         't_invoicing_breakdown' => '',
+                        't_member_id' => get_member(),
+                        't_session_id' => get_session_id(),
                     ), true);
                     $GLOBALS['SITE_DB']->query_update('ecom_sales', array('txn_id' => $txn_id), array('id' => $sale['id']), '', 1);
                 }

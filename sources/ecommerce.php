@@ -504,7 +504,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
-        'e_session_id' => get_session(),
+        'e_session_id' => get_session_id(),
         'e_price' => $price + $shipping_cost,
         'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
@@ -512,7 +512,6 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
-        'e_session_id' => get_session_id(),
         'e_time' => time(),
         'e_length' => null,
         'e_length_units' => '',
@@ -561,7 +560,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
-        'e_session_id' => get_session(),
+        'e_session_id' => get_session_id(),
         'e_price' => $price,
         'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
@@ -569,7 +568,6 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
-        'e_session_id' => get_session_id(),
         'e_time' => time(),
         'e_length' => $length,
         'e_length_units' => $length_units,
@@ -755,16 +753,14 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
-        'e_session_id' => get_session(),
+        'e_session_id' => get_session_id(),
         'e_price' => $price + $shipping_cost,
         'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
         'e_tax_tracking' => json_encode($tax_tracking),
         'e_currency' => $currency,
         'e_price_points' => $price_points,
-        'e_member_id' => get_member(),
         'e_ip_address' => get_ip_address(),
-        'e_session_id' => get_session_id(),
         'e_time' => time(),
         'e_length' => $length,
         'e_length_units' => $length_units,
@@ -804,7 +800,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
     $billing_state = '';
     $billing_post_code = '';
     $billing_country = '';
-    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
+    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
 
     // Card fields...
 
@@ -1123,7 +1119,7 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
 function ecommerce_attach_memo_field_if_needed(&$fields)
 {
     if (get_option('payment_memos') == '1') {
-        if ((perform_local_payment()) || (get_module_zone() == 'admin_ecommerce_logs')) {
+        if ((perform_local_payment()) || (get_page_name() == 'admin_ecommerce_logs')) {
             $get_memo = true;
         } else {
             $payment_gateway = get_option('payment_gateway');
@@ -1218,7 +1214,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
     $billing_state = '';
     $billing_post_code = '';
     $billing_country = '';
-    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $shipping_email, $shipping_phone, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
+    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
 
     $card_start_date = ($card_start_date_year === null || $card_start_date_month === null) ? '' : (strval($card_start_date_year) . '/' . strval($card_start_date_month));
     $card_expiry_date = ($card_expiry_date_year === null || $card_expiry_date_month === null) ? '' : (strval($card_expiry_date_year) . '/' . strval($card_expiry_date_month));
@@ -1397,7 +1393,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     $invoicing_breakdown = '';
     $expected_currency = null;
     $sale_timestamp = time();
-    $session_id = get_session();
+    $session_id = get_session_id();
 
     // Grab expected price and tax: Locked in in advance in ecom_trans_expecting transaction (this is the standard case for an IPN)
     if ($trans_expecting_id !== null) {
@@ -1541,14 +1537,16 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         't_pending_reason' => $pending_reason,
         't_reason' => $reason,
         't_amount' => $amount,
-        't_tax_derivation' => json_encode($tax_derivation),
+        't_tax_derivation' => json_encode($expected_tax_derivation),
         't_tax' => $tax,
-        't_tax_tracking' => json_encode($tax_tracking),
+        't_tax_tracking' => json_encode($expected_tax_tracking),
         't_currency' => $currency,
         't_parent_txn_id' => $parent_txn_id,
         't_time' => $sale_timestamp,
         't_payment_gateway' => $payment_gateway,
         't_invoicing_breakdown' => $invoicing_breakdown,
+        't_member_id' => $member_id_paying,
+        't_session_id' => $session_id,
     ));
 
     // Mark tax collected with external services as required

@@ -126,7 +126,7 @@ class Hook_ecommerce_email
         $_price = post_param_string('forw_price', '');
         $price = ($_price == '') ? null : float_unformat($_price);
 
-        $tax_code = post_param_tax('forw_tax_code');
+        $tax_code = post_param_tax_code('forw_tax_code');
 
         if (addon_installed('points')) {
             $price_points = post_param_integer('forw_price_points', null);
@@ -153,7 +153,7 @@ class Hook_ecommerce_email
             $_price = post_param_string('forw_' . strval($i) . '_price', '');
             $price = ($_price == '') ? null : float_unformat($_price);
 
-            $tax_code = post_param_tax('forw_tax_code');
+            $tax_code = post_param_tax_code('forw_tax_code');
 
             if (addon_installed('points')) {
                 $price_points = post_param_integer('forw_' . strval($i) . '_price_points', null);
@@ -182,7 +182,7 @@ class Hook_ecommerce_email
         $_price = post_param_string('pop3_price', '');
         $price = ($_price == '') ? null : float_unformat($_price);
 
-        $tax_code = post_param_tax('pop3_tax_code');
+        $tax_code = post_param_tax_code('pop3_tax_code');
 
         if (addon_installed('points')) {
             $price_points = post_param_integer('pop3_price_points', null);
@@ -209,7 +209,7 @@ class Hook_ecommerce_email
             $_price = post_param_string('pop3_' . strval($i) . '_price', '');
             $price = ($_price == '') ? null : float_unformat($_price);
 
-            $tax_code = post_param_tax('pop3_tax_code');
+            $tax_code = post_param_tax_code('pop3_tax_code');
 
             if (addon_installed('points')) {
                 $price_points = post_param_integer('pop3_' . strval($i) . '_price_points', null);

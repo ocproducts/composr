@@ -536,6 +536,12 @@ class Hook_cms_merge
             if (!array_key_exists('t_invoicing_breakdown', $row)) {
                 $row['t_invoicing_breakdown'] = '';
             }
+            if (!array_key_exists('t_session_id', $row)) {
+                $row['t_session_id'] = '';
+            }
+            if (!array_key_exists('t_member_id', $row)) {
+                $row['t_member_id'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            }
 
             if (!array_key_exists('t_tax_derivation', $row)) {
                 $row['t_tax_derivation'] = '';
@@ -730,11 +736,11 @@ class Hook_cms_merge
 
                 unset($row['id']);
 
-                if (!array_key_existS('member_id', $row)) {
+                if (!array_key_exists('member_id', $row)) {
                     $row['member_id'] = $row['memberid'];
                 }
 
-                if (!array_key_existS('txn_id', $row)) {
+                if (!array_key_exists('txn_id', $row)) {
                     $row['txn_id'] = '';
                 }
 
@@ -1718,7 +1724,7 @@ class Hook_cms_merge
                 $row['member_id'] = $row['the_user'];
             }
             $member_id = $on_same_msn ? $row['member_id'] : import_id_remap_get('member', $row['member_id'], true);
-            if (is_null($member)) {
+            if (is_null($member_id)) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 

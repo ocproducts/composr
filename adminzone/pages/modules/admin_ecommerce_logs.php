@@ -381,9 +381,13 @@ class Module_admin_ecommerce_logs
 
         $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
+        if ($details['type'] == PRODUCT_INVOICE) {
+            $invoice_details = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('id' => intval($purchase_id)), '', 1);
+        }
+
         if ($amount === null) {
             if ($details['type'] == PRODUCT_INVOICE) {
-                $amount = $tax_details[0]['i_amount'];
+                $amount = $invoice_details[0]['i_amount'];
             } else {
                 $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
                 $amount = $details['price'] + $shipping_cost;
@@ -392,11 +396,10 @@ class Module_admin_ecommerce_logs
 
         if ($details['type'] == PRODUCT_INVOICE) {
             // Tax details are locked in in advance for an invoice
-            $tax_details = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('i_tax_code', 'i_tax_derivation', 'i_tax'), array('id' => intval($purchase_id)), '', 1);
-            $tax_code = $tax_details[0]['i_tax_code'];
-            $tax_derivation = ($tax_details[0]['i_tax_derivation'] == '') ? array() : json_decode($tax_details[0]['i_tax_derivation'], true);
-            $tax = $tax_details[0]['i_tax'];
-            $tax_tracking = ($tax_details[0]['i_tax_tracking'] == '') ? array() : json_decode($tax_details[0]['i_tax_tracking'], true);
+            $tax_code = $invoice_details[0]['i_tax_code'];
+            $tax_derivation = ($invoice_details[0]['i_tax_derivation'] == '') ? array() : json_decode($invoice_details[0]['i_tax_derivation'], true);
+            $tax = $invoice_details[0]['i_tax'];
+            $tax_tracking = ($invoice_details[0]['i_tax_tracking'] == '') ? array() : json_decode($invoice_details[0]['i_tax_tracking'], true);
             $shipping_cost = 0.00;
             $shipping_tax = 0.00;
         } else {
@@ -492,9 +495,8 @@ class Module_admin_ecommerce_logs
             'e_currency' => $currency,
             'e_price_points' => 0,
             'e_member_id' => get_member(),
-            'e_session_id' => get_session(),
-            'e_ip_address' => get_ip_address(),
             'e_session_id' => get_session_id(),
+            'e_ip_address' => get_ip_address(),
             'e_time' => time(),
             'e_length' => $s_length,
             'e_length_units' => $s_length_units,

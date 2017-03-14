@@ -18,12 +18,10 @@
  * @package    core_fields
  */
 
-/*EXTRA FUNCTIONS: get_nested_csv_structure*/
-
 /**
  * Hook class.
  */
-class Hook_fields_list_multi
+class Hook_fields_list_multi extends ListFieldHook
 {
     // ==============
     // Module: search
@@ -149,61 +147,6 @@ class Hook_fields_list_multi
     // Frontend: fields input
     // ======================
 
-    /**
-     * Get field list.
-     *
-     * @param  array $field The field details
-     * @param  ?boolean $dynamic_choices Whether to put custom choices from previous data back into the main list (null: decide based on field options)
-     * @return array List
-     */
-    private function get_input_list_map($field, $dynamic_choices = null)
-    {
-        $default = $field['cf_default'];
-
-        if (addon_installed('nested_cpf_csv_lists') && substr(strtolower($default), -4) == '.csv') {
-            $csv_heading = option_value_from_field_array($field, 'csv_heading', '');
-
-            require_code('nested_csv');
-            $csv_structure = get_nested_csv_structure();
-
-            $list = array();
-            foreach ($csv_structure['csv_files'][$default]['data'] as $row) {
-                if ($csv_heading == '') {
-                    $list[array_shift($row)] = true;
-                } else {
-                    $list[$row[$csv_heading]] = true;
-                }
-            }
-            $list = array_keys($list);
-        } else {
-            $list = ($default == '') ? array() : explode('|', $default);
-        }
-
-        $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
-
-        if ($custom_values != 'off') { // Only makes sense to allow dynamic choices if custom values are enterable
-            if (is_null($dynamic_choices)) {
-                $dynamic_choices = (option_value_from_field_array($field, 'dynamic_choices', 'off') == 'on');
-            }
-            if ($dynamic_choices) {
-                if (isset($field['c_name'])) {
-                    $existing_data = $GLOBALS['SITE_DB']->query_select('catalogue_efv_long', array('DISTINCT cv_value AS d'), array('cf_id' => $field['id']));
-                } else {
-                    $existing_data = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('DISTINCT field_' . strval($field['id']) . ' AS d'));
-                }
-                $_list = array_flip($list); // Much more efficient to do unique value merge using hashes
-                foreach ($existing_data as $d) {
-                    if ($d['d'] != '') {
-                        $_list += array_flip(explode("\n", $d['d']));
-                    }
-                }
-                $list = @array_map('strval', array_keys($_list));
-            }
-        }
-
-        return $list;
-    }
- 
     /**
      * Get form inputter.
      *

@@ -248,7 +248,7 @@ class Module_admin_invoices
             }
         }
 
-        $tax_code = post_param_tax('tax_code', $details['tax_code']);
+        $tax_code = post_param_tax_code('tax_code', $details['tax_code']);
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $tax_code, $amount, $details['shipping_cost'], $member_id);
 
         $id = $GLOBALS['SITE_DB']->query_insert('ecom_invoices', array(

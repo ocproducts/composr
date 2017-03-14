@@ -439,8 +439,8 @@ class Module_shopping
      *
      * @param  Tempcode $shopping_cart Tempcode object of shopping cart result table.
      * @param  array $details Product details.
-     * @param  ?array $tax_details (null: none known, look them up)
      * @param  array $item Cart row.
+     * @param  ?array $tax_details Tax details (null: none known, look them up)
      */
     protected function show_cart_entry(&$shopping_cart, $details, $item, $tax_details = null)
     {

@@ -39,6 +39,20 @@ class cms_test_case extends WebTestCase
         }
     }
 
+    public function should_filter_cqc_line($line)
+    {
+        return (
+            (trim($line) == '') ||
+            (substr($line, 0, 5) == 'SKIP:') ||
+            (substr($line, 0, 5) == 'DONE ') ||
+            (substr($line, 0, 6) == 'FINAL ') ||
+            ((strpos($line, 'comment found') !== false) && (strpos($line, '#') !== false)) ||
+            (strpos($line, 'FUDGE') !== false) ||
+            (strpos($line, 'LEGACY') !== false) ||
+            ((strpos($line, 'TODO') !== false) && (strpos($line, 'v' . strval(intval(cms_version_number()))) !== false))
+        );
+    }
+
     public function get($url, $parameters = null)
     {
         $parts = array();

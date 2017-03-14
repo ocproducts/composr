@@ -212,8 +212,11 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
     // Work out total price
     $total_price = 0.00;
     foreach ($shopping_cart_rows as $i => $item) {
+        $type_code = $item[$field_name_prefix . 'type_code'];
+        list($details) = find_product_details($type_code);
+
         $quantity = $item[$field_name_prefix . 'quantity'];
-        $total_price += $price * $quantity;
+        $total_price += $details['price'] * $quantity;
     }
 
     // Split into TaxCloud and non-TaxCloud
@@ -245,7 +248,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
     if (count($taxcloud_items) > 0) {
         $do_shipping_in_tax_cloud = (count($non_taxcloud_items) == 0);
 
-        $shipping_tax_details = get_tax_using_tax_codes($item_details, $field_name_prefix, $do_shipping_in_tax_cloud ? $total_shipping_cost : 0.00/*don't incorporate as we have our own calculation anyway*/);
+        $shipping_tax_details = get_tax_using_tax_codes($taxcloud_items, $field_name_prefix, $do_shipping_in_tax_cloud ? $total_shipping_cost : 0.00/*don't incorporate as we have our own calculation anyway*/);
 
         foreach ($taxcloud_items as $i => $parts) {
             list($item, $details, $tax, $tax_derivation, $tax_tracking) = $parts;
@@ -467,7 +470,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_purchase_id' => strval($order_id),
         'e_item_name' => $item_name,
         'e_member_id' => get_member(),
-        'e_session_id' => get_session(),
+        'e_session_id' => get_session_id(),
         'e_price' => $price + $shipping_cost,
         'e_tax_derivation' => json_encode($tax_derivation),
         'e_tax' => $tax,
@@ -475,7 +478,6 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         'e_currency' => $currency,
         'e_price_points' => $price_points,
         'e_ip_address' => get_ip_address(),
-        'e_session_id' => get_session_id(),
         'e_time' => time(),
         'e_length' => null,
         'e_length_units' => '',

@@ -500,7 +500,7 @@ function create_country_selection_list($selected_countries = null) // TODO: In v
  */
 function create_region_selection_list($selected_regions = null) // TODO: In v11 make it default to array()
 {
-    return create_country_selection_list($regions); // The standard implementation is for a region to just be a country
+    return create_country_selection_list($selected_regions); // The standard implementation is for a region to just be a country
 }
 
 /**

@@ -24,7 +24,7 @@
  * For a simple flat figure it does though.
  *
  * @param  ID_TEXT $tax_code The tax code.
- * @param  float $multipler The multipler.
+ * @param  float $multiplier The multipler.
  * @return ID_TEXT The amended tax code.
  */
 function tax_multiplier($tax_code, $multiplier)
@@ -100,7 +100,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
     $non_taxcloud_item_details = array();
     $free_item_details = array();
     $has_eu_digital_goods = false;
-    $tax_tracking = '';
+    $tax_tracking = array();
     $shipping_tax_derivation = array();
     $shipping_tax = 0.00;
     foreach ($item_details as $i => $parts) {
@@ -111,11 +111,11 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 
         $usa_tic = (preg_match('#^TIC:#', $tax_code) != 0);
         if ($usa_tic) {
-            $taxcloud_items[$i] = $parts;
+            $taxcloud_item_details[$i] = $parts;
         } elseif ($amount == 0.00) {
             $free_item_details[$i] = $parts;
         } else {
-            $non_taxcloud_items[$i] = $parts;
+            $non_taxcloud_item_details[$i] = $parts;
 
             if ($tax_code == 'EU') {
                 $has_eu_digital_goods = true;
@@ -151,7 +151,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
         $billing_state = '';
         $billing_post_code = '';
         $billing_country = '';
-        get_default_ecommerce_fields($member_id, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, true)
+        get_default_ecommerce_fields($member_id, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, true);
 
         if ($shipping_street_address == '') {
             $street_address = $billing_street_address;
@@ -188,7 +188,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                 'Zip5' => $zip_parts[0],
                 'Zip4' => array_key_exists(1, $zip_parts) ? $zip_parts[1] : '',
             );
-            $post_params = array('' => json_encode($data);
+            $post_params = array('' => json_encode($request));
 
             $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, false, null, null, null, 'application/json'); // TODO: Fix in v11
             $response = json_decode($_response, true);
@@ -237,7 +237,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             $request = array(
                 'apiLoginID' => get_option('taxcloud_api_id'),
                 'apiKey' => get_option('taxcloud_api_id'),
-                'customerID' => is_guest($member_id) ? ('guest-' . get_session()) : ('member-' . strval($member_id)),
+                'customerID' => is_guest($member_id) ? ('guest-' . get_session_id()) : ('member-' . strval($member_id)),
                 'deliveredBySeller' => false,
                 'cartID' => '',
                 'destination' => array(
@@ -256,6 +256,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                 ),
                 'cartItems' => $cart_items,
             );
+            $post_params = array('' => json_encode($request));
 
             // Do TaxCloud call...
 
@@ -296,7 +297,6 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                 $free_item_details[$i] = $parts;
                 unset($non_taxcloud_item_details[$i]);
             }
-            continue;
         }
     }
 
@@ -434,7 +434,7 @@ function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_
         'dateAuthorized' => $date,
         'dateCaptured' => $date,
     );
-    $post_params = array('' => json_encode($data);
+    $post_params = array('' => json_encode($request));
 
     $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, false, null, null, null, 'application/json'); // TODO: Fix in v11
     $response = json_decode($_response, true);
@@ -669,7 +669,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
         'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
         'NAME' => $set_name . '_rate',
-        'DEFAULT' => (($default === '') || (!is_numeric($default[0]))) ? '' : float_format($default, 2, false),
+        'DEFAULT' => (($default === '') || (!is_numeric($default[0]))) ? '' : float_format(floatval($default), 2, false),
     ));
     $field_set->attach(_form_input($set_name . '_rate', do_lang_tempcode('TAX_RATE'), do_lang_tempcode('DESCRIPTION_TAX_RATE'), $input, $required, false, $tabindex));
 
@@ -731,8 +731,8 @@ function _prepare_tics_list($all_tics, $default, $parent, $pre = '')
         }
 
         if (isset($tic['children'])) {
-            foreach ($tic['children'] as $_tic) {
-                $all_tics[] = $_tic;
+            foreach ($tic['children'] as $__tic) {
+                $all_tics[] = $__tic;
             }
             unset($all_tics[$i]['tic']['children']);
         }

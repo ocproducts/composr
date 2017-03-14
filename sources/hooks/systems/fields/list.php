@@ -18,12 +18,10 @@
  * @package    core_fields
  */
 
-/*EXTRA FUNCTIONS: find_country_name_from_iso|get_nested_csv_structure*/
-
 /**
  * Hook class.
  */
-class Hook_fields_list
+class Hook_fields_list extends ListFieldHook
 {
     // ==============
     // Module: search
@@ -113,72 +111,6 @@ class Hook_fields_list
     // Frontend: fields input
     // ======================
 
-    /**
-     * Get field list.
-     *
-     * @param  array $field The field details
-     * @param  ?boolean $dynamic_choices Whether to put custom choices from previous data back into the main list (null: decide based on field options)
-     * @return array List
-     */
-    private function get_input_list_map($field, $dynamic_choices = null)
-    {
-        $default = $field['cf_default'];
-
-        if (addon_installed('nested_cpf_csv_lists') && substr(strtolower($default), -4) == '.csv') {
-            $csv_heading = option_value_from_field_array($field, 'csv_heading', '');
-
-            require_code('nested_csv');
-            $csv_structure = get_nested_csv_structure();
-
-            $list = array();
-            foreach ($csv_structure['csv_files'][$default]['data'] as $row) {
-                if ($csv_heading == '') {
-                    $l = array_shift($row);
-                    $list[$l] = $l;
-                } else {
-                    $l = $row[$csv_heading];
-                    $list[$l] = $l;
-                }
-            }
-        } else {
-            if ($default == '') {
-                $list = array();
-            } else {
-                if (substr_count($default, '|') + 1 == substr_count($default, '=')) {
-                    foreach (explode('|', $default) as $l) {
-                        list($l, $written) = explode('=', $l, 2);
-                        $list[$l] = $written;
-                    }
-                } else {
-                    foreach (explode('|', $default) as $l) {
-                        $list[preg_replace('#=.*$#', '', $l)] = preg_replace('#^.*=#', '', $l);
-                    }
-                }
-            }
-        }
-
-        $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
-
-        if ($custom_values == 'on') { // Only makes sense to allow dynamic choices if custom values are enterable
-            if (is_null($dynamic_choices)) {
-                $dynamic_choices = (option_value_from_field_array($field, 'dynamic_choices', 'off') == 'on');
-            }
-            if (isset($field['c_name'])) {
-                $existing_data = $GLOBALS['SITE_DB']->query_select('catalogue_efv_long', array('DISTINCT cv_value AS d'), array('cf_id' => $field['id']));
-            } else {
-                $existing_data = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('DISTINCT field_' . strval($field['id']) . ' AS d'));
-            }
-            foreach ($existing_data as $d) {
-                if ($d['d'] != '') {
-                    $parts = explode("\n", $d['d']);
-                    $list += array_combine($parts, $parts);
-                }
-            }
-        }
-
-        return $list;
-    }
- 
     /**
      * Get form inputter.
      *
