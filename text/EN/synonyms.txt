@@ -144,4 +144,4 @@ shipping	postage	freight
 chance	probability	likelihood
 empty	blank
 merchant retailer seller
-customer buyer
+customer	payer buyer
