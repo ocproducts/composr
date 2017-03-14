@@ -75,9 +75,9 @@ class Module_invoices
                 'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
                 'i_amount' => 'REAL', // can't always find this from i_type_code
                 'i_tax_code' => 'ID_TEXT',
-                'i_tax_derivation' => 'LONG_TEXT', // Needs to be stored up-front, as it's locked in time
-                'i_tax' => 'REAL', // Needs to be stored up-front, as it's locked in time
-                'i_tax_tracking' => 'SHORT_TEXT', // Needs to be stored up-front, as it's locked in time
+                'i_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
+                'i_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
+                'i_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
                 'i_currency' => 'ID_TEXT',
                 'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
                 'i_time' => 'TIME',

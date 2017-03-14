@@ -1331,7 +1331,7 @@ function handle_ipn_transaction_script()
  * Handle IPN's that have been confirmed as backed up by real money.
  * Variables largely emulate PayPal's IPN API.
  *
- * @param  ?ID_TEXT $trans_expecting_id Our internal temporary transaction ID (null: an immediate transaction that didn't require this table).
+ * @param  ?ID_TEXT $trans_expecting_id Our internal temporary transaction ID (null: an immediate transaction that didn't require this table). For a live payment you should always pass a $trans_expecting_id in case tax rates or price changes over the interim, which can cause a mismatch or tax filing errors.
  * @param  ID_TEXT $txn_id The transaction ID.
  * @param  ID_TEXT $type_code The product codename.
  * @param  SHORT_TEXT $item_name The human-readable product title (blank: doing a subscription cancellation, unknown item name; but can get from $found).
@@ -1413,6 +1413,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
     $expected_price_points = null;
     $invoicing_breakdown = '';
     $expected_currency = null;
+    $sale_timestamp = time();
 
     // Grab expected price and tax: Locked in in advance in ecom_trans_expecting transaction (this is the standard case for an IPN)
     if ($trans_expecting_id !== null) {
@@ -1424,6 +1425,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             $expected_tax = $transaction_row['e_tax'];
             $expected_tax_tracking = ($transaction_row['e_tax_tracking'] == '') ? array() : json_decode($transaction_row['e_tax_tracking'], true);
             $expected_price_points = $transaction_row['e_price_points'];
+            $sale_timestamp = $transaction_row['e_time']; // Important: as sales tax should be locked in at the time of it all being generated, not when the payment came through
             $invoicing_breakdown = $transaction_row['e_invoicing_breakdown'];
             if ($memo == '') {
                 $memo = $transaction_row['e_memo'];
@@ -1476,9 +1478,10 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             if (!paid_amount_matches($amount, $tax, $expected_amount, $expected_tax)) {
                 // Maybe a discount then
                 list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($found, false, $member_id_paying);
-                if (paid_amount_matches($amount, $tax, $discounted_price, $discounted_tax)) {
+                $discount_tax_details = calculate_tax_due($found, $discounted_tax_code, $discounted_price, $shipping_cost, $member_id_paying);
+                if (paid_amount_matches($amount, $tax, $discounted_price, $discount_tax_details[1])) {
                     $expected_amount = $discounted_price;
-                    list($expected_tax_derivation, $expected_tax, $expected_tax_tracking, $expected_shipping_tax) = calculate_tax_due($found, $discounted_tax_code, $discounted_price, $shipping_cost, $member_id_paying);
+                    list($expected_tax_derivation, $expected_tax, $expected_tax_tracking, $expected_shipping_tax) = $discount_tax_details;
                     $expected_price_points = $points_for_discount;
                 }
             }
@@ -1536,7 +1539,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         't_tax_tracking' => json_encode($tax_tracking),
         't_currency' => $currency,
         't_parent_txn_id' => $parent_txn_id,
-        't_time' => time(),
+        't_time' => $sale_timestamp,
         't_payment_gateway' => $payment_gateway,
         't_invoicing_breakdown' => $invoicing_breakdown,
     ));
@@ -1769,7 +1772,7 @@ function fatal_ipn_exit($error, $dont_trigger = false)
  * @param  array $details Product details.
  * @param  boolean $consider_free Consider the potential for a 0.00 price by paying entirely with points.
  * @param  ?MEMBER $member_id The member who this is for (null: current member).
- * @return array A tuple: Discounted price (null is no discount), Discounted price tax, Points required to get discount (null is no discount), Whether this is a discount.
+ * @return array A tuple: Discounted price (null is no discount), Discounted price tax code, Points required to get discount (null is no discount), Whether this is a discount.
  */
 function get_discounted_price($details, $consider_free = false, $member_id = null)
 {

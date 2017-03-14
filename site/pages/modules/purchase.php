@@ -379,7 +379,7 @@ class Module_purchase
                 'p_mail_body' => 'LONG_TRANS',
                 'p_enabled' => 'BINARY',
                 'p_price' => '?REAL',
-                'p_tax' => 'REAL',
+                'p_tax_code' => 'ID_TEXT',
                 'p_price_points' => '?INTEGER',
                 'p_hours' => '?INTEGER',
                 'p_type' => 'ID_TEXT', // member_privileges,member_category_access,member_page_access,member_zone_access
@@ -642,7 +642,7 @@ class Module_purchase
                                 continue;
                             }
 
-                            list($_discounted_price, $_discounted_tax, $_points_for_discount) = get_discounted_price($_details, true);
+                            list($_discounted_price, $_discounted_tax_code, $_points_for_discount) = get_discounted_price($_details, true);
                             $_can_purchase = ((($_discounted_price !== null) && (!$must_support_money)) || (($_details['price'] !== null) && (!$must_support_points)));
                             if ($_can_purchase) {
                                 $can_purchase = true;
@@ -712,7 +712,7 @@ class Module_purchase
                 $_full_price = currency_convert_wrap($full_price, $currency);
             }
 
-            list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($details, true);
+            list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($details, true);
             $can_purchase = (($discounted_price !== null) || ($details['price'] !== null));
 
             if ($details['price'] !== null) {
@@ -1336,7 +1336,7 @@ class Module_purchase
 
             $purchase_id = get_param_string('purchase_id');
 
-            list($discounted_price, $points_for_discount) = get_discounted_price($details, true);
+            list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($details, true);
             if (($discounted_price === null) && ($details['price'] !== 0.00)) {
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR')); // Not discounted to free and not free, we should not be here
             }
@@ -1484,7 +1484,7 @@ class Module_purchase
     protected function _check_can_afford($type_code)
     {
         list($details) = find_product_details($type_code);
-        list($discounted_price, $discounted_tax, $points_for_discount) = get_discounted_price($details, true);
+        list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($details, true);
 
         if ($points_for_discount !== null) {
             if (!addon_installed('points')) {

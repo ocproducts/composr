@@ -86,11 +86,11 @@ class Module_shopping
                 'member_id' => 'MEMBER',
                 'add_date' => 'TIME',
                 'total_price' => 'REAL',
-                'total_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as it's locked in time
-                'total_tax' => 'REAL', // Needs to be stored, as it's locked in time
-                'total_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as it's locked in time
+                'total_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
+                'total_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
+                'total_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
                 'total_shipping_cost' => 'REAL',
-                'total_shipping_tax' => 'REAL', // Needs to be stored, as it's locked in time
+                'total_shipping_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
                 'currency' => 'ID_TEXT',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
                 'notes' => 'LONG_TEXT',
