@@ -478,15 +478,16 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row =
  * @param  ID_TEXT $purchase_id The purchase ID.
  * @param  REAL $price Transaction price in money.
  * @param  array $tax_derivation Transaction tax derivation.
- * @param  REAL $tax Transaction tax in money.
+ * @param  REAL $tax Transaction tax in money (including shipping tax).
  * @param  array $tax_tracking Transaction tax tracking ID.
  * @param  REAL $shipping_cost Transaction shipping cost in money.
+ * @param  REAL $shipping_tax Transaction shipping tax in money.
  * @param  ID_TEXT $currency The currency to use.
  * @param  integer $price_points Transaction price in points.
  * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
  * @return Tempcode The button.
  */
-function make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $currency, $price_points = 0, $payment_gateway = null)
+function make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $shipping_tax, $currency, $price_points = 0, $payment_gateway = null)
 {
     if ($payment_gateway === null) {
         $payment_gateway = get_option('payment_gateway');
@@ -494,7 +495,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
     $payment_gateway_object = object_factory('Hook_payment_gateway_' . $payment_gateway);
 
-    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost);
+    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $shipping_tax);
 
     $trans_expecting_id = $payment_gateway_object->generate_trans_id();
     $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
@@ -713,9 +714,10 @@ function perform_local_payment()
  * @param  ID_TEXT $purchase_id The purchase ID
  * @param  REAL $price Transaction price in money.
  * @param  array $tax_derivation Transaction tax derivation.
- * @param  REAL $tax Transaction tax in money.
+ * @param  REAL $tax Transaction tax in money (including shipping tax).
  * @param  array $tax_tracking Transaction tax tracking ID.
  * @param  REAL $shipping_cost Transaction shipping cost in money.
+ * @param  REAL $shipping_tax Transaction shipping tax in money.
  * @param  ID_TEXT $currency The currency to use.
  * @param  integer $price_points Transaction price in points (only for first transaction).
  * @param  ?integer $length The length (null: not a subscription)
@@ -724,7 +726,7 @@ function perform_local_payment()
  * @param  boolean $needs_shipping_address Whether a shipping address is needed.
  * @return array A tuple: The form fields, Hidden fields, Confidence logos, Payment processor links.
  */
-function get_transaction_form_fields($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $currency, $price_points, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
+function get_transaction_form_fields($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $shipping_tax, $currency, $price_points, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
 {
     if ((!tacit_https()) && (!ecommerce_test_mode())) {
         warn_exit(do_lang_tempcode('NO_SSL_SETUP'));
@@ -741,7 +743,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
         warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($payment_gateway)));
     }
 
-    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost);
+    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $shipping_tax);
 
     $trans_expecting_id = $payment_gateway_object->generate_trans_id(); // gateway-compatible, probably random, transaction ID
 
@@ -1468,7 +1470,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             // Will be paying with money (or possibly money & points)
             $shipping_cost = recalculate_shipping_cost($found, $found['shipping_cost'], $member_id_paying);
             $expected_amount = $found['price'] + $shipping_cost;
-            list($expected_tax_derivation, $expected_tax, $expected_tax_tracking) = calculate_tax_due($found, $found['tax_code'], $found['price'], $shipping_cost, $member_id_paying);
+            list($expected_tax_derivation, $expected_tax, $expected_tax_tracking, $expected_shipping_tax) = calculate_tax_due($found, $found['tax_code'], $found['price'], $shipping_cost, $member_id_paying);
             $expected_price_points = 0;
 
             if (!paid_amount_matches($amount, $tax, $expected_amount, $expected_tax)) {
@@ -1476,7 +1478,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
                 list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($found, false, $member_id_paying);
                 if (paid_amount_matches($amount, $tax, $discounted_price, $discounted_tax)) {
                     $expected_amount = $discounted_price;
-                    list($expected_tax_derivation, $expected_tax, $expected_tax_tracking) = calculate_tax_due($found, $discounted_tax_code, $discounted_price, $shipping_cost, $member_id_paying);
+                    list($expected_tax_derivation, $expected_tax, $expected_tax_tracking, $expected_shipping_tax) = calculate_tax_due($found, $discounted_tax_code, $discounted_price, $shipping_cost, $member_id_paying);
                     $expected_price_points = $points_for_discount;
                 }
             }

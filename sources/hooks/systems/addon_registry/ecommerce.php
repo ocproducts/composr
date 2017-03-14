@@ -280,7 +280,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/topic_pin_price.php',
             'sources/hooks/systems/config/topic_pin_tax_code.php',
             'sources/hooks/systems/config/topic_pin_price_points.php',
-            'sources/hooks/systems/config/shipping_cost_tax_code.php',
+            'sources/hooks/systems/config/shipping_tax_code.php',
             'sources/hooks/systems/config/tax_detailed.php',
             'sources/hooks/systems/config/tax_country_regexp.php',
             'sources/hooks/systems/config/tax_state_regexp.php',

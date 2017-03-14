@@ -30,7 +30,7 @@
 {+START,IF_NON_EMPTY,{TYPE_CODES}}
 	<div class="cart_payment_line">
 		{!SHIPPING}:
-		<span class="tax">{$CURRENCY,{TOTAL_SHIPPING_COST},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>
+		<span class="tax">{$CURRENCY,{$ADD,{TOTAL_SHIPPING_COST},{TOTAL_SHIPPING_TAX}},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>
 	</div>
 
 	<div class="cart_payment_summary">

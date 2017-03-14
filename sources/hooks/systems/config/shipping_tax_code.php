@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_shipping_cost_tax_code
+class Hook_config_shipping_tax_code
 {
     /**
      * Gets the details relating to the config option.
@@ -35,7 +35,7 @@ class Hook_config_shipping_cost_tax_code
             'type' => 'tax_code',
             'category' => 'ECOMMERCE',
             'group' => 'SHIPPING',
-            'explanation' => 'CONFIG_OPTION_shipping_cost_tax_code',
+            'explanation' => 'CONFIG_OPTION_shipping_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,

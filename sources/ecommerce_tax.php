@@ -45,11 +45,18 @@ function tax_multiplier($tax_code, $multiplier)
  * @param  REAL $shipping_cost The shipping cost.
  * @param  ?MEMBER $member_id The member this is for (null: current member).
  * @param  integer $quantity The quantity of items.
- * @return array A tuple: The tax derivation, tax due, tax tracking ID (at time of writing this is just with TaxCloud)
+ * @return array A tuple: The tax derivation, tax due (including shipping cost tax), tax tracking ID (at time of writing this is just with TaxCloud), shipping cost tax
  */
 function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, $member_id = null, $quantity = 1)
 {
     // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
+
+    if ($amount == $details['price']) {
+        // Carry through, when tax was pre-stored (e.g. for an invoice or an order)
+        if ((isset($details['tax_derivation'])) && (isset($details['tax'])) && (isset($details['tax_tracking']))) {
+            return array($details['tax_derivation'], $details['tax'], $details['tax_tracking']);
+        }
+    }
 
     $shipping_email = '';
     $shipping_phone = '';
@@ -66,9 +73,10 @@ function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, 
     $tax = get_tax_using_tax_code($tax_rate); // TODO
 
     return array(
-        $tax * $quantity + $shipping_cost_tax,
+        $tax * $quantity + $shipping_tax,
         TODO,
-        TODO
+        TODO,
+        $shipping_tax
     );
 }
 
@@ -78,7 +86,7 @@ function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, 
  * @param  array $item_details A list of pairs: shopping-cart/order style row, product details. This is returned by reference as a list of tuples: (tax, tax_derivation, tax_tracking) is appended.
  * @param  string $field_name_prefix Field name prefix. Pass as blank for cart items or 'p_' for order items.
  * @param  REAL $shipping_cost The shipping cost.
- * @return array A tuple: The tax derivation, tax due, tax tracking ID (at time of writing this is just with TaxCloud)
+ * @return array A tuple: The tax derivation, tax due (including shipping cost tax), tax tracking ID (at time of writing this is just with TaxCloud), shipping cost tax
  */
 function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipping_cost = 0.00)
 {
@@ -264,23 +272,28 @@ function backcalculate_tax_rate($price, $tax)
  * @param  SHORT_TEXT $item_name The human-readable product title.
  * @param  ID_TEXT $purchase_id The purchase ID.
  * @param  REAL $price Transaction price in money.
- * @param  REAL $tax Transaction tax in money.
- * @param  ?REAL $shipping_cost Transaction shipping cost in money (null: no shipping).
+ * @param  REAL $tax Transaction tax in money (including shipping tax).
+ * @param  REAL $shipping_cost Transaction shipping cost in money.
+ * @param  REAL $shipping_tax Transaction shipping tax in money.
  * @return array Invoicing breakdown.
  */
-function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost = null)
+function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost = 0.00, $shipping_tax = 0.00)
 {
     $invoicing_breakdown = array();
 
     if (preg_match('#^CART\_ORDER\_\d+$#', $type_code) == 0) {
+        // Not a cart order...
+
         $invoicing_breakdown[] = array(
             'type_code' => $type_code,
             'item_name' => $item_name,
             'quantity' => 1,
             'unit_price' => $price,
-            'unit_tax' => $tax,
+            'unit_tax' => $tax - $shipping_tax,
         );
     } else {
+        // A cart order...
+
         $order_id = intval(substr($type_code, strlen('CART_ORDER_')));
 
         $total_price = 0.00;
@@ -304,7 +317,7 @@ function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $pri
             $total_price += $shipping_cost;
         }
 
-        if (($total_price != $price) || ($total_tax != $tax)) {
+        if (($total_price != $price) || ($total_tax != $tax - $shipping_tax)) {
             $invoicing_breakdown[] = array(
                 'type_code' => '',
                 'item_name' => do_lang('PRICING_ADJUSTMENT'),
@@ -315,9 +328,7 @@ function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $pri
         }
     }
 
-    if ($shipping_cost !== null) {
-        list($shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = calculate_tax_due(null, get_option('shipping_cost_tax_code'), 0.00, $shipping_cost);
-
+    if (($shipping_cost !== 0.00) || ($shipping_tax !== 0.00)) {
         $invoicing_breakdown[] = array(
             'type_code' => '',
             'item_name' => do_lang('SHIPPING'),

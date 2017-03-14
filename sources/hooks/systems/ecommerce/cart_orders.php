@@ -55,7 +55,7 @@ class Hook_ecommerce_cart_orders
             }
         }
 
-        $orders = $GLOBALS['SITE_DB']->query('SELECT id,total_price,total_tax,total_shipping_cost FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where . ' ORDER BY add_date DESC', 50, null, false, true);
+        $orders = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where . ' ORDER BY add_date DESC', 50, null, false, true);
 
         foreach ($orders as $order) {
             $products['CART_ORDER_' . strval($order['id'])] = array(
@@ -73,6 +73,10 @@ class Hook_ecommerce_cart_orders
                 'discount_points__price_reduction' => null,
 
                 'tax_code' => float_to_raw_string($order['total_tax']),
+                'tax_derivation' => json_decode($order['total_tax_derivation'], true),
+                'tax' => $order['total_tax'],
+                'tax_tracking' => json_decode($order['total_tax_tracking'], true),
+
                 'shipping_cost' => $order['total_shipping_cost'],
                 'needs_shipping_address' => true,
             );

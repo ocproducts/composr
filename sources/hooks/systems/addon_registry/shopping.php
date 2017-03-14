@@ -664,6 +664,7 @@ class Hook_addon_registry_shopping
                 'TOTAL_PRICE' => placeholder_number(),
                 'TOTAL_TAX' => placeholder_number(),
                 'TOTAL_SHIPPING_COST' => placeholder_number(),
+                'TOTAL_SHIPPING_TAX' => placeholder_number(),
                 'GRAND_TOTAL' => placeholder_number(),
                 'CURRENCY' => 'GBP',
                 'PROCEED' => lorem_phrase(),

@@ -5994,7 +5994,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_PRICE_HONOUR_TIME
         CONFIG_OPTION_ecom_price_honour_time
         SHIPPING_COST_TAX_CODE
-        CONFIG_OPTION_shipping_cost_tax_code
+        CONFIG_OPTION_shipping_tax_code
         TAXCLOUD_API_ID
         TAXCLOUD_API_KEY
         CONFIG_OPTION_taxcloud_api_id

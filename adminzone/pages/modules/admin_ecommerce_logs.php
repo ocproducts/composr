@@ -397,10 +397,12 @@ class Module_admin_ecommerce_logs
             $tax_derivation = ($tax_details[0]['i_tax_derivation'] == '') ? array() : json_decode($tax_details[0]['i_tax_derivation'], true);
             $tax = $tax_details[0]['i_tax'];
             $tax_tracking = ($tax_details[0]['i_tax_tracking'] == '') ? array() : json_decode($tax_details[0]['i_tax_tracking'], true);
+            $shipping_cost = 0.00;
+            $shipping_tax = 0.00;
         } else {
             $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
             $tax_code = $details['tax_code'];
-            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $tax_code, $amount, $shipping_cost);
+            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $tax_code, $amount, $shipping_cost);
         }
 
         $status = 'Completed';
@@ -476,7 +478,7 @@ class Module_admin_ecommerce_logs
             $period = '';
         }
 
-        $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $amount + $tax, $tax);
+        $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $amount + $tax, $tax, $shipping_cost, $shipping_tax);
 
         $GLOBALS['SITE_DB']->query_insert('ecom_trans_expecting', array(
             'id' => $txn_id,

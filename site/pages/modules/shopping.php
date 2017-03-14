@@ -90,6 +90,7 @@ class Module_shopping
                 'total_tax' => 'REAL', // Needs to be stored, as it's locked in time
                 'total_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as it's locked in time
                 'total_shipping_cost' => 'REAL',
+                'total_shipping_tax' => 'REAL', // Needs to be stored, as it's locked in time
                 'currency' => 'ID_TEXT',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
                 'notes' => 'LONG_TEXT',
@@ -111,7 +112,7 @@ class Module_shopping
                 'p_quantity' => 'INTEGER',
                 'p_price' => 'REAL',
                 'p_tax_code' => 'ID_TEXT',
-                'p_tax' => 'REAL', // We need this for accurate logging (we can't have it changing while looking at a past order)
+                'p_tax' => 'REAL', // We need this for accurate logging (we can't have it changing while looking at a past order); we use it for tax invoices
                 'p_dispatch_status' => 'SHORT_TEXT'
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'type_code', array('p_type_code'));
@@ -155,6 +156,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax_tracking', 'SHORT_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_cost', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_tax', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'c_member', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_orders', 'tax_opted_out');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'currency', 'ID_TEXT', get_option('currency'));
@@ -357,7 +359,7 @@ class Module_shopping
                 do_lang_tempcode('REMOVE')
             ), null);
 
-            list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = derive_cart_amounts($shopping_cart_rows);
+            list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax) = derive_cart_amounts($shopping_cart_rows);
 
             foreach ($shopping_cart_rows as $i => $item) {
                 list($details, $product_object) = find_product_details($item['type_code']);
@@ -385,6 +387,7 @@ class Module_shopping
             $total_price = 0.00;
             $total_tax = 0.00;
             $total_shipping_cost = 0.00;
+            $total_shipping_tax = 0.00;
 
             $results_table = do_lang_tempcode('CART_EMPTY');
 
@@ -395,7 +398,7 @@ class Module_shopping
             $next_url = new Tempcode();
         }
 
-        $grand_total = $total_price + $total_tax + $total_shipping_cost;
+        $grand_total = $total_price + $total_tax/*already included $total_shipping_tax*/ + $total_shipping_cost;
 
         $ecom_catalogue_count = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', array('c_ecommerce' => 1));
         $ecom_catalogue = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_ecommerce' => 1));
@@ -420,6 +423,7 @@ class Module_shopping
             'TOTAL_PRICE' => float_to_raw_string($total_price),
             'TOTAL_TAX' => float_to_raw_string($total_tax),
             'TOTAL_SHIPPING_COST' => float_to_raw_string($total_shipping_cost),
+            'TOTAL_SHIPPING_TAX' => float_to_raw_string($total_shipping_tax),
             'GRAND_TOTAL' => float_to_raw_string($grand_total),
             'CURRENCY' => get_option('currency'),
             'FIELDS' => $fields,
@@ -458,10 +462,11 @@ class Module_shopping
         $price_multiple = $details['price'] * $item['quantity'];
 
         if ($tax_details === null) {
-            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
         } else {
-            list($tax_derivation, $tax, $tax_tracking) = $tax_details;
+            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = $tax_details;
         }
+        unset($shipping_tax); // Meaningless
 
         $amount = $price_multiple + $tax;
 

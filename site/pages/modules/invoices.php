@@ -211,6 +211,7 @@ class Module_invoices
                     $row['i_tax'],
                     ($row['i_tax_tracking'] == '') ? array() : json_decode($row['i_tax_tracking'], true),
                     0.00,
+                    0.00,
                     $currency
                 );
             }
@@ -270,6 +271,7 @@ class Module_invoices
             ($row['i_tax_derivation'] == '') ? array() : json_decode($row['i_tax_derivation'], true),
             $row['i_tax'],
             ($row['i_tax_tracking'] == '') ? array() : json_decode($row['i_tax_tracking'], true),
+            0.00,
             0.00,
             $currency,
             0,

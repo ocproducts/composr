@@ -181,7 +181,7 @@ FOR MAKING PURCHASE
  *
  * @param  array $shopping_cart_rows List of cart/order items.
  * @param  string $field_name_prefix Field name prefix. Pass as blank for cart items or 'p_' for order items.
- * @return array A tuple: total price, total tax derivation, total tax, total tax tracking ID, total shipping price.
+ * @return array A tuple: total price, total tax derivation, total tax, total tax tracking ID, total shipping cost, total shipping tax.
  */
 function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
 {
@@ -265,7 +265,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         $total_tax_tracking = $tax_tracking; // Any one of them, they'll all be the same
 
         if ($do_shipping_in_tax_cloud) {
-            list($shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = $shipping_tax_details;
+            list($total_shipping_tax_derivation, $total_shipping_tax, $total_shipping_tax_tracking) = $shipping_tax_details;
         }
     }
 
@@ -279,7 +279,8 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
 
             $quantity = $item[$field_name_prefix . 'quantity'];
 
-            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($item, $tax_code, $price, 0.0, null, $quantity);
+            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($item, $tax_code, $price, 0.0, null, $quantity);
+            unset($shipping_tax); // Meaningless
 
             $shopping_cart_rows_taxes[$i] = array($tax_derivation, $tax, $tax_tracking);
 
@@ -294,11 +295,20 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         }
 
         // We always calculate shipping manually when doing any non-TaxCloud products, as it's more tuned
-        list($shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = calculate_tax_due(null, '0.0', 0.00, $total_shipping_cost);
-        $total_tax += $shipping_tax;
+        list($total_shipping_tax_derivation, $total_shipping_tax, $total_shipping_tax_tracking, $total_shipping_tax) = calculate_tax_due(null, '0.0', 0.00, $total_shipping_cost);
+        $total_tax += $total_shipping_tax;
     }
 
-    return array($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking);
+    // Integrate shipping tax derivation into main derivation
+    foreach ($total_shipping_tax_derivation as $tax_category => $tax_category_amount) {
+        if (!array_key_exists($tax_category, $total_tax_derivation)) {
+            $total_tax_derivation[$tax_category] = 0.00;
+        }
+        $total_tax_derivation[$tax_category] += $tax_category_amount;
+    }
+
+    // Return
+    return array($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax);
 }
 
 /**
@@ -316,7 +326,7 @@ function copy_shopping_cart_to_order()
         warn_exit(do_lang_tempcode('CART_EMPTY'));
     }
 
-    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = derive_cart_amounts($shopping_cart_rows);
+    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax) = derive_cart_amounts($shopping_cart_rows);
 
     $shopping_order = array(
         'member_id' => get_member(),
@@ -326,6 +336,7 @@ function copy_shopping_cart_to_order()
         'total_tax' => $total_tax,
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
+        'total_shipping_tax' => $total_shipping_tax,
         'currency' => get_option('currency'),
         'order_status' => 'ORDER_STATUS_awaiting_payment',
         'notes' => '',
@@ -355,10 +366,11 @@ function copy_shopping_cart_to_order()
         }
 
         if (isset($shopping_cart_rows_taxes[$i])) {
-            list($tax_derivation, $tax, $tax_tracking) = $shopping_cart_rows_taxes[$i];
+            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = $shopping_cart_rows_taxes[$i];
         } else {
-            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($item, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($item, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
         }
+        unset($shipping_tax); // Meaningless
 
         $shopping_order_details[] = array(
             'p_type_code' => $type_code,
@@ -420,6 +432,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
     $tax = $order_row['total_tax'];
     $tax_tracking = ($order_row['i_tax_tracking'] == '') ? array() : json_decode($order_row['i_tax_tracking'], true);
     $shipping_cost = $order_row['total_shipping_cost'];
+    $shipping_tax = $order_row['total_shipping_tax'];
 
     $type_code = 'CART_ORDER_' . strval($order_id);
     $item_name = do_lang('CART_ORDER', strval($order_id));
@@ -437,7 +450,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
         );
     }
 
-    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, strval($order_id), $price, $tax, $shipping_cost);
+    $invoicing_breakdown = generate_invoicing_breakdown($type_code, $item_name, strval($order_id), $price, $tax, $shipping_cost, $shipping_tax);
 
     $payment_gateway = get_option('payment_gateway');
     require_code('hooks/systems/payment_gateway/' . filter_naughty_harsh($payment_gateway));
@@ -540,7 +553,7 @@ function recalculate_order_costs($order_id)
 {
     $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
 
-    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = derive_cart_amounts($product_rows, 'p_');
+    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax) = derive_cart_amounts($product_rows, 'p_');
 
     $GLOBALS['SITE_DB']->query_update('shopping_orders', array(
         'total_price' => $total_price,
@@ -548,6 +561,7 @@ function recalculate_order_costs($order_id)
         'total_tax' => $total_tax,
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
+        'total_shipping_tax' => $total_shipping_tax,
     ), array('id' => $order_id, 'order_status' => 'ORDER_STATUS_awaiting_payment'), '', 1);
 }
 

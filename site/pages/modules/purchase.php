@@ -1032,23 +1032,7 @@ class Module_purchase
             return $test;
         }
 
-        list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($details, true);
-        if ($discounted_price === null) {
-            $price = $details['price'];
-            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $details['tax_code'], $price, $details['shipping_cost']);
-
-            if ($price === null) {
-                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
-            }
-        } else {
-            $price = $discounted_price;
-            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $discounted_tax_code, $discounted_price, $details['shipping_cost']);
-        }
-        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
-
         $item_name = $details['item_name'];
-
-        $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
         if (method_exists($product_object, 'handle_needed_fields')) {
             list($purchase_id, $confirmation_box) = $product_object->handle_needed_fields($type_code);
@@ -1056,6 +1040,36 @@ class Module_purchase
             $purchase_id = strval(get_member());
             $confirmation_box = null;
         }
+
+        list($discounted_price, $discounted_tax_code, $points_for_discount) = get_discounted_price($details, true);
+        if ($discounted_price === null) {
+            $price = $details['price'];
+            if ($price === null) {
+                warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+        } else {
+            $price = $discounted_price;
+        }
+
+        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+
+        if ($details['type'] == PRODUCT_INVOICE) {
+            // Tax details are locked in in advance for an invoice
+            $tax_details = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('i_tax_code', 'i_tax_derivation', 'i_tax'), array('id' => intval($purchase_id)), '', 1);
+            $tax_code = $tax_details[0]['i_tax_code'];
+            $tax_derivation = ($tax_details[0]['i_tax_derivation'] == '') ? array() : json_decode($tax_details[0]['i_tax_derivation'], true);
+            $tax = $tax_details[0]['i_tax'];
+            $tax_tracking = ($tax_details[0]['i_tax_tracking'] == '') ? array() : json_decode($tax_details[0]['i_tax_tracking'], true);
+            $shipping_tax = 0.00;
+        } else {
+            if ($discounted_price === null) {
+                list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $details['tax_code'], $price, $details['shipping_cost']);
+            } else {
+                list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $discounted_tax_code, $discounted_price, $details['shipping_cost']);
+            }
+        }
+
+        $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
 
         if ($details['type'] == PRODUCT_SUBSCRIPTION) {
             // For a subscription we need to add in the subscription record in advance of payment. This will become our $purchase_id
@@ -1158,6 +1172,7 @@ class Module_purchase
                 $tax,
                 $tax_tracking,
                 $shipping_cost,
+                $shipping_tax,
                 $currency,
                 ($points_for_discount === null) ? 0 : $points_for_discount,
                 ($details['type'] == PRODUCT_SUBSCRIPTION) ? intval($length) : null,
@@ -1195,7 +1210,20 @@ class Module_purchase
 
             switch ($details['type']) {
                 case PRODUCT_SUBSCRIPTION:
-                    $transaction_button = make_subscription_button($type_code, $item_name, $purchase_id, $price + $shipping_cost, $tax_derivation, $tax, $tax_tracking, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $length, $length_units, $payment_gateway);
+                    $transaction_button = make_subscription_button(
+                        $type_code,
+                        $item_name,
+                        $purchase_id,
+                        $price + $shipping_cost,
+                        $tax_derivation,
+                        $tax,
+                        $tax_tracking,
+                        $currency,
+                        ($points_for_discount === null) ? 0 : $points_for_discount,
+                        $length,
+                        $length_units,
+                        $payment_gateway
+                    );
                     break;
                 case PRODUCT_ORDERS:
                     if (!addon_installed('shopping')) {
@@ -1210,7 +1238,20 @@ class Module_purchase
                 case PRODUCT_INVOICE:
                 case PRODUCT_CATALOGUE:
                 default:
-                    $transaction_button = make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $currency, ($points_for_discount === null) ? 0 : $points_for_discount, $payment_gateway);
+                    $transaction_button = make_transaction_button(
+                        $type_code,
+                        $item_name,
+                        $purchase_id,
+                        $price,
+                        $tax_derivation,
+                        $tax,
+                        $tax_tracking,
+                        $shipping_cost,
+                        $shipping_tax,
+                        $currency,
+                        ($points_for_discount === null) ? 0 : $points_for_discount,
+                        $payment_gateway
+                    );
                     break;
             }
 
