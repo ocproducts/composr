@@ -895,7 +895,7 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
             $states = create_usa_state_selection_list(array($state));
             $fields->attach(form_input_list(do_lang_cpf('state'), '', $prefix . 'state', $states, null, false, false));
         } else {
-            $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, $definitely_usa));
+            $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, false));
         }
     }
 

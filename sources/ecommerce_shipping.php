@@ -18,6 +18,8 @@
  * @package    ecommerce
  */
 
+// DON'T include this file directly. Include 'ecommerce' instead.
+
 /**
  * Get the base shipping cost for the shopping cart.
  *

@@ -340,7 +340,7 @@ function copy_shopping_cart_to_order()
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
         'total_shipping_tax' => $total_shipping_tax,
-        'currency' => get_option('currency'),
+        'order_currency' => get_option('currency'),
         'order_status' => 'ORDER_STATUS_awaiting_payment',
         'notes' => '',
         'purchase_through' => 'cart',

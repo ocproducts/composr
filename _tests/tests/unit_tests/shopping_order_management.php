@@ -46,7 +46,7 @@ class shopping_order_management_test_set extends cms_test_case
             'total_tax_tracking' => '',
             'total_shipping_cost' => 2.00,
             'total_shipping_tax' => 0.00,
-            'currency' => 'GBP',
+            'order_currency' => 'GBP',
             'notes' => '',
             'txn_id' => 'ddfsfdsdfsdfs',
             'purchase_through' => 'cart',

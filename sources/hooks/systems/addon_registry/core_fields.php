@@ -117,6 +117,7 @@ class Hook_addon_registry_core_fields
             'sources/hooks/systems/fields/email.php',
             'sources/hooks/systems/fields/float.php',
             'sources/hooks/systems/fields/guid.php',
+            'sources/hooks/systems/fields/state.php',
             'sources/hooks/systems/fields/index.html',
             'sources_custom/hooks/systems/fields/index.html',
             'sources/hooks/systems/fields/integer.php',

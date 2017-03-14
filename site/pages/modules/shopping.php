@@ -91,7 +91,7 @@ class Module_shopping
                 'total_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
                 'total_shipping_cost' => 'REAL',
                 'total_shipping_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
-                'currency' => 'ID_TEXT',
+                'order_currency' => 'ID_TEXT',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
                 'notes' => 'LONG_TEXT',
                 'txn_id' => 'SHORT_TEXT',
@@ -159,7 +159,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_tax', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'c_member', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_orders', 'tax_opted_out');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'currency', 'ID_TEXT', get_option('currency'));
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'order_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_price', 'REAL', 'p_price');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax_code', 'ID_TEXT', '0.0');

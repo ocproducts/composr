@@ -173,6 +173,7 @@ class Hook_addon_registry_ecommerce
             'themes/default/templates/ECOM_MEMBER_SUBSCRIPTION_STATUS.tpl',
             'themes/default/templates/CNS_MEMBER_PROFILE_ECOMMERCE_LOGS.tpl',
             'themes/default/templates/CURRENCY.tpl',
+            'sources/hooks/systems/fields/tax_code.php',
             'themes/default/images/ecommerce/checkmark.png',
             'themes/default/images/ecommerce/index.html',
             'sources/hooks/systems/cron/manual_subscription_notification.php',

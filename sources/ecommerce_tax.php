@@ -18,6 +18,8 @@
  * @package    ecommerce
  */
 
+// DON'T include this file directly. Include 'ecommerce' instead.
+
 /**
  * Multiply tax up or down to reflect a price being multiplied up or down.
  * This does nothing for a semantic tax code or a simple percentage.

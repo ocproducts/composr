@@ -382,7 +382,7 @@ class Hook_ecommerce_catalogue_items
             'total_tax_tracking' => $tax_tracking,
             'total_shipping_cost' => $details['shipping_cost'],
             'total_shipping_tax' => $details['shipping_tax'],
-            'currency' => isset($details['currency']) ? $details['currency'] : get_option('currency'),
+            'order_currency' => isset($details['currency']) ? $details['currency'] : get_option('currency'),
             'order_status' => 'ORDER_STATUS_awaiting_payment',
             'notes' => '',
             'purchase_through' => 'purchase_module',

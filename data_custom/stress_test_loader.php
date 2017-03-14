@@ -486,7 +486,7 @@ function do_work()
             'total_tax_tracking' => '',
             'total_shipping_cost' => 2.00,
             'total_shipping_tax' => 0.00,
-            'currency' => get_option('currency'),
+            'order_currency' => get_option('currency'),
             'order_status' => 'ORDER_STATUS_awaiting_payment',
             'notes' => '',
             'purchase_through' => 'purchase_module',
