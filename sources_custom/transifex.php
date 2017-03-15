@@ -602,13 +602,13 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 $files_str .= "\n            '" . $file . "',";
             }
 
-            $description = 'Translation into {$language_name}.
+            $description = "Translation into {$language_name}.
 
 Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings).
 
 This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases.
 
-Translations may also be downloaded directly from Transifex.';
+Translations may also be downloaded directly from Transifex.";
 
             $open = '<' . '?php';
 

@@ -102,9 +102,10 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
  * @param  ?MEMBER $submitter Submitter (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $run_checks Whether to run checks
+ * @param  ?string $poster_name_if_guest The name of the person making the post (null: no change).
  * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
  */
-function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_emphasised, $intended_solely_for, $show_as_edited, $mark_as_unread, $reason, $check_perms = true, $edit_time = null, $add_time = null, $submitter = null, $null_is_literal = false, $run_checks = true)
+function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_emphasised, $intended_solely_for, $show_as_edited, $mark_as_unread, $reason, $check_perms = true, $edit_time = null, $add_time = null, $submitter = null, $null_is_literal = false, $run_checks = true, $poster_name_if_guest = null)
 {
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
@@ -184,6 +185,9 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         'p_skip_sig' => $skip_sig,
     );
     $update_map += update_lang_comcode_attachments('p_post', $_post, $post, 'cns_post', strval($post_id), $GLOBALS['FORUM_DB'], $post_owner);
+    if ($poster_name_if_guest !== null) {
+        $update_map['p_poster_name_if_guest'] = $poster_name_if_guest;
+    }
 
     if ($show_as_edited) {
         $update_map['p_last_edit_time'] = $edit_time;
