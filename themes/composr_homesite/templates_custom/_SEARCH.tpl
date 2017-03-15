@@ -23,7 +23,7 @@
 			var search_button=get_elements_by_class_name(cse_form,'gsc-search-button')[1];
 			search_button.value='Search tutorials';
 
-			get_elements_by_class_name(cse_form,'gsc-search-box')[0].action='{$SELF_URL;}';
+			get_elements_by_class_name(cse_form,'gsc-search-box')[0].action='{$PAGE_LINK;,docs:tutorials}';
 			get_elements_by_class_name(cse_form,'gsc-search-box')[0].method='post';
 			get_elements_by_class_name(cse_form,'gsc-search-box')[0].innerHTML+='{$INSERT_SPAMMER_BLACKHOLE;^/}';
 			get_elements_by_class_name(cse_form,'gsc-search-box')[0].onkeypress=function(event) {
