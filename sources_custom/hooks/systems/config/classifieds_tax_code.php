@@ -39,7 +39,7 @@ class Hook_config_classifieds_tax_code
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'ecommerce',
+            'addon' => 'classified_ads',
         );
     }
 

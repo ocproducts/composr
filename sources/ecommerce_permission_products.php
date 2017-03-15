@@ -45,7 +45,7 @@ function permission_product_form($resource_type, $category_id = null)
         return new Tempcode();
     }
 
-    require_lang('ecommerce');
+    require_code('ecommerce');
 
     $price = null;
     $tax_code = '0.0';
