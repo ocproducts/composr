@@ -57,6 +57,14 @@ class Block_main_staff_checklist
     }
 
     /**
+     * Uninstall the block.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_checklist_cus_tasks');
+    }
+
+    /**
      * Install the block.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -100,14 +108,6 @@ class Block_main_staff_checklist
                 ));
             }
         }
-    }
-
-    /**
-     * Uninstall the block.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_checklist_cus_tasks');
     }
 
     /**

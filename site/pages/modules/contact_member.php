@@ -50,6 +50,7 @@ class Module_contact_member
      */
     public function uninstall()
     {
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'contact_member'));
     }
 
     /**

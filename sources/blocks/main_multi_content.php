@@ -110,6 +110,14 @@ class Block_main_multi_content
     }
 
     /**
+     * Uninstall the block.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('feature_lifetime_monitor');
+    }
+
+    /**
      * Install the block.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -124,14 +132,6 @@ class Block_main_multi_content
             'running_now' => 'BINARY',
             'last_update' => 'TIME',
         ));
-    }
-
-    /**
-     * Uninstall the block.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('feature_lifetime_monitor');
     }
 
     /**

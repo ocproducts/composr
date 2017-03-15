@@ -4,7 +4,7 @@
 	<div id="cse-search-form">
 		<script>
 		(function() {
-			var cx = '{ID*}';
+			var cx = '{ID;/}';
 			var gcse = document.createElement('script');
 			gcse.type = 'text/javascript';
 			gcse.async = true;
