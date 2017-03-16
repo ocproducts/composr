@@ -61,24 +61,27 @@ function phase_0()
         $release_description = 'This version is a beta release of the next major version of Composr';
     } elseif (strpos($on_disk_version, 'RC') !== false) {
         $release_description = 'This version is a release candidate for the next major version of Composr';
-    } elseif (substr($on_disk_version, -2) == '.0') {
-        $release_description = 'This version is the gold release of the next version of Composr';
-    } else {
+    } elseif (substr_count($on_disk_version, '.') == 2) {
         $release_description = 'This version is a patch release that introduces a number of bug fixes since the last release';
+    } else {
+        $release_description = 'This version is the gold release of the next version of Composr';
     }
 
     $changes = 'All reported bugs since the last release have been fixed.';
-    if (strpos($release_description, 'patch release') !== false) {
-        $on_disk_version_parts = explode('.', $on_disk_version);
-        $last = count($on_disk_version_parts) - 1;
-        $on_disk_version_parts[$last] = strval(intval($on_disk_version_parts[$last]) - 1);
-        $on_disk_version_previous = implode('.', $on_disk_version_parts);
 
-        $changes .= ' For a list of the more important fixes, see the [url="bugs catalogue"]http://compo.sr/tracker/search.php?project_id=1&product_version=' . urlencode($on_disk_version_previous) . '[/url]. For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/' . $on_disk_version_previous . '[/url].';
+    $on_disk_version_parts = explode('.', $on_disk_version);
+    $last = count($on_disk_version_parts) - 1;
+    $on_disk_version_parts[$last] = strval(intval($on_disk_version_parts[$last]) - 1);
+    $on_disk_version_previous = implode('.', $on_disk_version_parts);
+
+    $tracker_url = 'http://compo.sr/tracker/search.php?project_id=1';
+    if (($on_disk_version_parts[$last] >= 0) && (substr_count($on_disk_version, '.') == 2)) {
+        $tracker_url .= '&product_version=' . urlencode($on_disk_version_previous);
     }
-    if (strpos($release_description, 'gold') !== false) {
-        $changes = 'TODO';
-    }
+
+    $changes .= ' For a list of the more important fixes, see the [url="tracker"]' . $tracker_url . '[/url].
+
+For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/[/url].';
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 
