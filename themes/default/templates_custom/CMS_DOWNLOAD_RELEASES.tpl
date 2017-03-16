@@ -11,7 +11,7 @@
 
 			<div class="sept"></div>
 
-			<p><a class="alLft niceLink" href="{QUICK_URL*}">Download &dtrif;</a> <a class="alRht" href="{MANUAL_URL*}">{QUICK_VERSION*} | {QUICK_FILESIZE*}</a></p>
+			<p><a class="alLft niceLink" href="{QUICK_URL*}">Download &dtrif;</a> <a class="alRht" href="{MANUAL_URL*}">v{QUICK_VERSION*} | {QUICK_FILESIZE*}</a></p>
 		</div>
 	</div>
 {+END}{+END}{+END}
