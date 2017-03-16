@@ -32,7 +32,7 @@ class Block_side_google_search
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('page_name');
+        $info['parameters'] = array('param', 'page_name');
         return $info;
     }
 

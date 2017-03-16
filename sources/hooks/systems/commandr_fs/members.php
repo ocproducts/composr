@@ -49,7 +49,6 @@ class Hook_commandr_fs_members
         'max_email_attach_size_mb' => 'm_max_email_attach_size_mb',
         'last_visit_time' => 'm_last_visit_time',
         'last_submit_time' => 'm_last_submit_time',
-        'reveal_age' => 'm_reveal_age',
         'ip_address' => 'm_ip_address',
         'highlighted_name' => 'm_highlighted_name',
         'pt_allow' => 'm_pt_allow',

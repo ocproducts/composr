@@ -2844,7 +2844,7 @@ dl.compact_list>dt:after {
 	content: ":";
 }
 dl.compact_list>dd {
-	margin: 0;,
+	margin: 0;
 }
 
 ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul:not([class]), .zone_running_docs .comcode_page ol:not([class]) {
