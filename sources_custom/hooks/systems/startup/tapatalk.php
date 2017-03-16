@@ -82,8 +82,11 @@ class Hook_startup_tapatalk
                     break;
                 case 'members':
                     $page_type = 'profile';
-                    $id = get_param_integer('id', get_member());
-                    $extra = '&uid=' . strval($id);
+                    $id = get_param_string('id', strval(get_member()));
+                    if (!is_numeric($id)) {
+                        $id = strval($GLOBALS['FORUM_DRIVER']->get_member_from_username($id));
+                    }
+                    $extra = '&uid=' . $id;
                     break;
                 case 'users_online':
                     $page_type = 'online';

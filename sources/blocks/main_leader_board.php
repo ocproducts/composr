@@ -56,6 +56,14 @@ class Block_main_leader_board
     }
 
     /**
+     * Uninstall the block.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('leader_board');
+    }
+
+    /**
      * Install the block.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -70,14 +78,6 @@ class Block_main_leader_board
                 'date_and_time' => '*TIME'
             ));
         }
-    }
-
-    /**
-     * Uninstall the block.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('leader_board');
     }
 
     /**

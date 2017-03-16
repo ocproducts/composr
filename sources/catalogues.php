@@ -1700,7 +1700,8 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
         if (!array_key_exists($category_id, $PT_PAIR_CACHE)) {
             $category_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_parent_id', 'cc_title'), array('id' => $category_id), '', 1);
             if (!array_key_exists(0, $category_rows)) {
-                fatal_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'));
+                attach_message(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'), 'warn');
+                return array();
             }
             $PT_PAIR_CACHE[$category_id] = $category_rows[0];
         }

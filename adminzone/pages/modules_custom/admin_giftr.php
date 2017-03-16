@@ -47,6 +47,18 @@ class Module_admin_giftr extends Standard_crud_module
     }
 
     /**
+     * Uninstall the module.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('giftr');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('members_gifts');
+
+        //require_code('files');
+        //deldir_contents(get_custom_file_base() . '/uploads/giftr_addon', true);
+    }
+
+    /**
      * Install the module.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -117,18 +129,6 @@ class Module_admin_giftr extends Standard_crud_module
         if ((!is_null($upgrade_from)) && ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->rename_table('ocgifts', 'giftr');
         }
-    }
-
-    /**
-     * Uninstall the module.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('giftr');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('members_gifts');
-
-        //require_code('files');
-        //deldir_contents(get_custom_file_base() . '/uploads/giftr_addon', true);
     }
 
     /**

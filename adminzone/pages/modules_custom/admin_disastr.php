@@ -47,6 +47,18 @@ class Module_admin_disastr extends Standard_crud_module
     }
 
     /**
+     * Uninstall the module.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('diseases');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('members_diseases');
+
+        //require_code('files');
+        //deldir_contents(get_custom_file_base() . '/uploads/diseases_addon', true);
+    }
+
+    /**
      * Install the module.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -90,18 +102,6 @@ class Module_admin_disastr extends Standard_crud_module
             $GLOBALS['SITE_DB']->alter_table_field('members_diseases', 'desease_id', 'AUTO_LINK', 'disease_id');
             $GLOBALS['SITE_DB']->alter_table_field('members_diseases', 'user_id', '*MEMBER', 'member_id');
         }
-    }
-
-    /**
-     * Uninstall the module.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('diseases');
-        $GLOBALS['SITE_DB']->drop_table_if_exists('members_diseases');
-
-        //require_code('files');
-        //deldir_contents(get_custom_file_base() . '/uploads/diseases_addon', true);
     }
 
     /**

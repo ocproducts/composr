@@ -1,4 +1,4 @@
-<div class="checklist_row" onkeypress="this.onclick(event);" onclick="{$?,{$EQ,{TASK_DONE},not_completed},mark_done,mark_undone}(this,{ID%});" onmouseover="this.getElementsByTagName('img')[0].setAttribute('src','{$IMG;*,checklist/cross2}');" onmouseout="this.getElementsByTagName('img')[0].setAttribute('src','{$IMG;*,checklist/cross}');">
+<div class="checklist_row" onclick="{$?,{$EQ,{TASK_DONE},not_completed},mark_done,mark_undone}(this,{ID%});" onmouseover="this.getElementsByTagName('img')[0].setAttribute('src','{$IMG;*,checklist/cross2}');" onmouseout="this.getElementsByTagName('img')[0].setAttribute('src','{$IMG;*,checklist/cross}');">
 	<div class="float_surrounder">
 		<p class="checklist_task_status">
 			<span>{!ADDED_SIMPLE,<strong>{ADD_TIME*}</strong>}{+START,IF_NON_EMPTY,{RECUR_INTERVAL}}, {!RECUR_EVERY,{RECUR_INTERVAL*},{RECUR_EVERY*}}{+END}</span>

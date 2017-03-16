@@ -25,5 +25,5 @@ foreach ($patreons as $patron) {
     );
 }
 
-$tpl = do_template('BLOCK_MAIN_PATREON_SPONSORS', array('PATREONS' => $_patreons));
+$tpl = do_template('BLOCK_MAIN_PATREON_SPONSORS', array('_GUID' => '8b7ed8319aa6ec0e6bc0e8b5e1fede4d', 'PATREONS' => $_patreons));
 $tpl->evaluate_echo();

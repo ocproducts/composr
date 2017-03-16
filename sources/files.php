@@ -493,7 +493,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                                     array('google.*\.html', ''), // Google authorisation files
                                                     array('\.\_.*', '.*'), // MacOS extended attributes
                                                     array('tmpfile__.*', '.*'), // cms_tempnam produced temporarily files (unfortunately we can't specify a .tmp suffix)
-                                                    array('.*\.\d+', 'exports/file_backups'), // File backups (saved as revisions)
+                                                    array('.*\.\d+.*', 'exports/file_backups'), // File backups (saved as revisions)
     );
     $ignore_filename_patterns = array( // Case insensitive; we'll use this only when we *need* directories that would match to be valid
     );
@@ -603,7 +603,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
     if (($bitmask & IGNORE_REVISION_FILES) != 0) { // E.g. global.css.<timestamp>
         $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
-            array('.*\.\d+', '.*'),
+            array('.*\.\d+.*', '.*'),
         ));
     }
 

@@ -145,3 +145,4 @@ chance	probability	likelihood
 empty	blank
 merchant retailer seller	business	company	firm	enterprise	corporation	store	shop
 customer	payer buyer
+empty	blank	purge	flush

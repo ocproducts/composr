@@ -102,7 +102,7 @@ abstract class Resource_fs_base
         if (!is_null($this->folder_resource_type)) {
             $ret = array_merge($ret, is_array($this->folder_resource_type) ? $this->folder_resource_type : array($this->folder_resource_type));
         }
-        if (!is_null($this->folder_resource_type)) {
+        if (!is_null($this->file_resource_type)) {
             $ret = array_merge($ret, is_array($this->file_resource_type) ? $this->file_resource_type : array($this->file_resource_type));
         }
         return $ret;
@@ -1845,7 +1845,7 @@ abstract class Resource_fs_base
         // URL monikers
         if ($cma_info['support_url_monikers']) {
             $page_bits = explode(':', $cma_info['view_page_link_pattern']);
-            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), $connection);
+            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => isset($page_bits[2]) ? $page_bits[2] : '', 'm_resource_id' => $resource_id), $connection);
         }
 
         // Attachments

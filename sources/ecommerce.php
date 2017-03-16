@@ -1350,7 +1350,7 @@ function handle_ipn_transaction_script()
  * @param  string $period The subscription period (blank: N/A or unknown because trust is checked on the gateway's code).
  * @param  ?MEMBER $member_id_paying The member ID of who is doing the transaction (null: unknown).
  * @param  ID_TEXT $payment_gateway The payment gateway (manual: was a manual transaction, not through a real gateway).
- * @return array ID_TEXT A pair: The product purchased, The purchasing member ID (or null).
+ * @return ?array ID_TEXT A pair: The product purchased, The purchasing member ID (or null) (null: error).
  */
 function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $check_amounts, $parent_txn_id, $pending_reason, $memo, $period, $member_id_paying, $payment_gateway)
 {
@@ -1575,6 +1575,11 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
         // Call actualiser code
         if (method_exists($found, 'actualiser')) {
             $product_object->actualiser($type_code, $purchase_id, $found);
+        }
+
+        // Pending transactions stop here
+        if ((get_page_name() == 'purchase') || (get_page_name() == 'shopping')) {
+            return null;
         }
 
         // Pending transactions stop here

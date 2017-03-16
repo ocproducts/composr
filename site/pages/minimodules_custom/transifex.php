@@ -72,6 +72,7 @@ ksort($_languages);
 $_languages = array_reverse($_languages);
 
 return do_template('TRANSIFEX_SCREEN', array(
+    '_GUID' => '56c6b6d32f1794be3114a1b95f0a7ec5',
     'TITLE' => $title,
     'LANGUAGES' => $_languages,
 ));

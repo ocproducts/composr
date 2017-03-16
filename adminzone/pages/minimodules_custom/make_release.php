@@ -143,6 +143,7 @@ function phase_1_pre()
         <li>Run the <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'plug_guid'), 'adminzone'))) . '" target="_blank">plug_guid</a> tool to build needed GUIDs into the PHP.</li>
         <li>Test with a non-Conversr forum driver (e.g. phpBB)</li>
         <li>Test with the none forum driver (no forums and members)</li>
+        <li>Test doing an upgrade from the prior version</li>
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
         <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
         <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes). TODO: Update this when Convertr done.</li>
@@ -156,10 +157,6 @@ function phase_1_pre()
         <li>For all data entry forms, add <kbd>' . escape_html('<IMG """><SCRIPT>alert("XSS hole")</SCRIPT>"><script>alert(\'XSS hole\')</script>') . '</kbd> wherever possible. Go through all screens on the sitemap, all Comcode tags in the add tag assistant, and all blocks in the add block assistant, ensuring no alerts, console warnings, or corruption (double-escaping or other bad output) happens.</li>
     </ul>
     ';
-
-    if (strpos(file_get_contents(get_file_base() . '/install.sql'), file_get_contents(get_file_base() . '/install1.sql')) === false) {
-        warn_exit('install1.sql seems out-dated. Run the \'installsql\' unit test.');
-    }
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 

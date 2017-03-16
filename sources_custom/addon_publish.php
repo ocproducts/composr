@@ -14,7 +14,7 @@
  */
 
 // Find existing category ID for a named category. Insert into the database if the category does not exist
-function find_addon_category_download_category($category_name, $parent_id = null/*null means under "Addons" category*/, $description = null)
+function find_addon_category_download_category($category_name, $parent_id = null/*null means under "Addons" category or under root category if Addons*/, $description = null)
 {
     static $cache = array();
 
@@ -22,18 +22,24 @@ function find_addon_category_download_category($category_name, $parent_id = null
         return $cache[$category_name][$parent_id];
     }
 
-    if (is_null($parent_id)) {
-        $parent_id = $GLOBALS['SITE_DB']->query_select_value('download_categories', 'id', array('parent_id' => db_get_first_id(), $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Addons'));
-        // ^ Result must return, composr_homesite_install.php added the category
+    if ($parent_id === null) {
+        if ($category_name == 'Addons') {
+            $parent_id = db_get_first_id();
+        } else {
+            $parent_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => db_get_first_id(), $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Addons'));
+            if ($parent_id === null) {
+                $parent_id = find_addon_category_download_category('Addons'); // This will auto-create it
+            }
 
-        if (isset($cache[$category_name][$parent_id])) {
-            return $cache[$category_name][$parent_id];
-        }
+            if (isset($cache[$category_name][$parent_id])) {
+                return $cache[$category_name][$parent_id];
+            }
 
-        if (is_null($description)) {
-            // Copy version category description from parent ("Addons")
-            $description = get_translated_text($GLOBALS['SITE_DB']->query_select_value('download_categories', 'description', array('id' => $parent_id)));
-            $description = str_replace('[title="2"]Choose Composr version below[/title]', '[title="2"]Choose addon category below[/title]', $description);
+            if (is_null($description)) {
+                // Copy version category description from parent ("Addons")
+                $description = get_translated_text($GLOBALS['SITE_DB']->query_select_value('download_categories', 'description', array('id' => $parent_id)));
+                $description = str_replace('[title="2"]Choose Composr version below[/title]', '[title="2"]Choose addon category below[/title]', $description);
+            }
         }
     }
 

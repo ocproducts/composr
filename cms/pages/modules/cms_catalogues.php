@@ -328,7 +328,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $fh[] = do_lang_tempcode('COUNT_VIEWS');
         $fh[] = do_lang_tempcode('metadata:OWNER');
         if (addon_installed('unvalidated')) {
-            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
+            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '4341bfe5e713c94c8fd14ce1cb2e21aa', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fh[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);

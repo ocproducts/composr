@@ -226,7 +226,7 @@ class Module_cms_news extends Standard_crud_module
         $fh[] = do_lang_tempcode('ADDED');
         $fh[] = do_lang_tempcode('COUNT_VIEWS');
         if (addon_installed('unvalidated')) {
-            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
+            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '5e5269c25a2eb44fd92b554a50f6007f', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fh[] = do_lang_tempcode('metadata:OWNER');
         $fh[] = do_lang_tempcode('ACTIONS');

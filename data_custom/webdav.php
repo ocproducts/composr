@@ -36,35 +36,35 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 @chdir($FILE_BASE);
 
 // Workaround for MacOS slow-downs
-$method = cms_srv('REQUEST_METHOD');
+$method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'PROPFIND') {
-    $filename = basename(cms_srv('SCRIPT_NAME'));
+    $filename = basename($_SERVER['SCRIPT_NAME']);
     $bad_files = array(
-        '.DS_Store',
+        '.ds_store',
         '.hidden',
         '.metadata_never_index',
         '.metadata_never_index_unless_rootfs',
-        '.Spotlight-V100',
-        'Backups.backupdb',
+        '.spotlight-v100',
+        'backups.backupdb',
         'mach_kernel',
-        '.Trashes',
-        '.TemporaryItems',
+        '.trashes',
+        '.temporaryitems',
 
         // Windows too
-        'Desktop.ini',
-        'AutoRun.inf',
+        'desktop.ini',
+        'autorun.inf',
         'srvsvc',
     );
-    if (in_array($filename, $bad_files)) {
+    if (in_array(strtolower($filename), $bad_files)) {
         return;
     }
 }
 if ($method == 'GET' || $method == 'PROPFIND') {
-    $filename = basename(cms_srv('SCRIPT_NAME'));
+    $filename = basename($_SERVER['SCRIPT_NAME']);
     $bad_files = array(
         '.DS_Store',
     );
-    if (in_array($filename, $bad_files)) {
+    if (in_array(strtolower($filename), $bad_files)) {
         return;
     }
     if (substr($filename, 0, 2) == '._') {

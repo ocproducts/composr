@@ -52,6 +52,8 @@ class Module_filedump
         delete_privilege('upload_filedump');
         delete_privilege('upload_anything_filedump');
 
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'filedump'));
+
         //require_code('files');
         //deldir_contents(get_custom_file_base() . '/uploads/filedump', true);
     }

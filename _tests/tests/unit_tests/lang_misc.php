@@ -20,6 +20,20 @@ class lang_misc_test_set extends cms_test_case
 {
     private $lang_file_mapping = array();
 
+    public function testUnbalancedSmartQuotes()
+    {
+        require_code('lang2');
+        require_code('lang_compile');
+
+        $lang_files = get_lang_files(fallback_lang());
+        foreach (array_keys($lang_files) as $lang_file) {
+            $map = get_lang_file_map(fallback_lang(), $lang_file, false, false) + get_lang_file_map(fallback_lang(), $lang_file, true, false);
+            foreach ($map as $key => $value) {
+                $this->assertTrue(preg_match('#\} \w+\(s\)#', $value) == 0, 'Do better pluralisation for ' . $key);
+            }
+        }
+    }
+
     public function testUnknownReferences()
     {
         require_code('lang_compile');

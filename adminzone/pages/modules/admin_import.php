@@ -49,6 +49,8 @@ class Module_admin_import
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_id_remap');
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_session');
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_parts_done');
+
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'admin_import'));
     }
 
     /**
