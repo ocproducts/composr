@@ -869,7 +869,14 @@ class Module_admin_themes
     {
         $theme = get_param_string('theme', false, true);
 
+        if (($theme == 'default') || ($theme == 'admin')) {
+            if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
+                warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
+            }
+        }
+
         $fields = $this->get_theme_fields($theme, false);
+
         if ($theme != 'default') {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '66a48b082356b9e9bfdb1a8107f5e567', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('COPY_THEME'), do_lang_tempcode('DESCRIPTION_COPY_THEME', escape_html($theme)), 'copy', false));
@@ -906,14 +913,20 @@ class Module_admin_themes
      */
     public function _edit_theme()
     {
+        $theme = get_param_string('old_theme', false, true);
+
+        if (($theme == 'default') || ($theme == 'admin')) {
+            if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
+                warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
+            }
+        }
+
         if (post_param_integer('delete', 0) == 1) {
-            $theme = get_param_string('old_theme', false, true);
             require_code('themes3');
             actual_delete_theme($theme);
 
             $to = '';
         } elseif (post_param_integer('copy', 0) == 1) {
-            $theme = get_param_string('old_theme', false, true);
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme == $to) {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
@@ -924,7 +937,6 @@ class Module_admin_themes
 
             $this->save_theme_changes($to);
         } else {
-            $theme = get_param_string('old_theme', false, true);
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme != $to) {
                 require_code('type_sanitisation');
