@@ -759,6 +759,12 @@ class Module_admin_themes
     {
         $theme = get_param_string('theme', false, true);
 
+        if (($theme == 'default') || ($theme == 'admin')) {
+            if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
+                warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
+            }
+        }
+
         $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (!file_exists($ini_file)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -801,14 +807,20 @@ class Module_admin_themes
      */
     public function _edit_theme()
     {
+        $theme = get_param_string('old_theme', false, true);
+
+        if (($theme == 'default') || ($theme == 'admin')) {
+            if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
+                warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
+            }
+        }
+
         if (post_param_integer('delete', 0) == 1) {
-            $theme = get_param_string('old_theme', false, true);
             require_code('themes3');
             actual_delete_theme($theme);
 
             $to = '';
         } elseif (post_param_integer('copy', 0) == 1) {
-            $theme = get_param_string('old_theme', false, true);
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme == $to) {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
@@ -819,7 +831,6 @@ class Module_admin_themes
 
             $this->save_theme_changes($to);
         } else {
-            $theme = get_param_string('old_theme', false, true);
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme != $to) {
                 require_code('type_sanitisation');
