@@ -60,7 +60,7 @@ function handle_facebook_connection_login($current_logged_in_member)
         return $current_logged_in_member;
     }
     try {
-        $details = $FACEBOOK_CONNECT->api('/me', array('fields' => 'id,name,email,about,bio,website,currency,first_name,last_name,gender,location,hometown'));
+        $details = $FACEBOOK_CONNECT->api('/me', array('fields' => 'id,name,email,about,website,currency,first_name,last_name,gender,location,hometown'));
     } catch (Exception $e) {
         header('Facebook-Error: ' . escape_header($e->getMessage()));
 
@@ -224,7 +224,7 @@ function handle_facebook_connection_login($current_logged_in_member)
             return null;
         }
 
-        $completion_form_submitted = post_param_string('email_address', '') != '';
+        $completion_form_submitted = (post_param_integer('finishing_profile', 0) == 1);
 
         require_code('cns_members_action2');
 
@@ -264,7 +264,6 @@ function handle_facebook_connection_login($current_logged_in_member)
             require_lang('cns_special_cpf');
             $mappings = array(
                 'about' => do_lang('DEFAULT_CPF_about_NAME'),
-                'bio' => do_lang('DEFAULT_CPF_interests_NAME'),
                 'website' => do_lang('DEFAULT_CPF_website_NAME'),
                 'currency' => 'cms_currency',
                 'first_name' => 'cms_firstname',
