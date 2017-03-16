@@ -296,6 +296,12 @@ When testing log in, make sure you're not starting a login from a URL with any o
 
 Be aware that logging in with Facebook is putting a dependency on Facebook's systems always working. Every once in a while, perhaps an hour per month, Facebook does have some problems on their end that block things working correctly.
 
+[title="3"]Debugging[/title]
+
+Facebook does sometimes changes things in its API, which may require changes to the Composr addon. As it is running under-the-hood it can be a bit tricky to see what is a sticking point.
+If clicking the Facebook log in button doesn't appear to do anything, look in your browser's developer tools, at the network request for the page view.
+You may see a [tt]Facebook-Error[/tt] header with an error message.
+
 [title="3"]Logging out[/title]
 
 [surround]
@@ -307,6 +313,8 @@ A user who wishes to de-link Facebook to your site has two choices:
 1) Log out of Facebook entirely (probably undesirable)
 2) Remove your website from the allowed apps, via Facebook's privacy settings (see images).
 [/surround]
+
+If you find the log out buttons are not doing anything, and you see an error in the browser error console about "X-Frame-Options", then it may mean the "App Domain" option is blank. To set that you need to add a "Website" platform, with your base URL as the Site URL.
 
 [title="3"]Account binding (advanced)[/title]
 
