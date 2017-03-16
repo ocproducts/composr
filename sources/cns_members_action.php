@@ -99,9 +99,11 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
  * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member.
  * @param  ?TIME $on_probation_until When the member is on probation until (null: not on probation)
  * @param  BINARY $auto_mark_read Mark topics as read automatically
+ * @param  BINARY $profile_views Total number of views to the profile
+ * @param  BINARY $total_sessions Total number of sessions (basically, visits)
  * @return AUTO_LINK The ID of the new member.
  */
-function cns_make_member($username, $password, $email_address, $secondary_groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone = null, $primary_group = null, $validated = 1, $join_time = null, $last_visit_time = null, $theme = '', $avatar_url = null, $signature = '', $is_perm_banned = 0, $preview_posts = null, $reveal_age = 0, $title = '', $photo_url = '', $photo_thumb_url = '', $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $ip_address = null, $validated_email_confirm_code = '', $check_correctness = true, $password_compatibility_scheme = null, $salt = '', $last_submit_time = null, $id = null, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $auto_mark_read = 1)
+function cns_make_member($username, $password, $email_address, $secondary_groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone = null, $primary_group = null, $validated = 1, $join_time = null, $last_visit_time = null, $theme = '', $avatar_url = null, $signature = '', $is_perm_banned = 0, $preview_posts = null, $reveal_age = 0, $title = '', $photo_url = '', $photo_thumb_url = '', $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $ip_address = null, $validated_email_confirm_code = '', $check_correctness = true, $password_compatibility_scheme = null, $salt = '', $last_submit_time = null, $id = null, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $auto_mark_read = 1, $profile_views = 0, $total_sessions = 0)
 {
     require_code('form_templates');
 
@@ -289,8 +291,8 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
         'm_password_change_code' => '',
         'm_password_compat_scheme' => $password_compatibility_scheme,
         'm_on_probation_until' => $on_probation_until,
-        'm_profile_views' => 0,
-        'm_total_sessions' => 0,
+        'm_profile_views' => $profile_views,
+        'm_total_sessions' => $total_sessions,
         'm_auto_mark_read' => $auto_mark_read,
     );
     $map += insert_lang_comcode('m_signature', $signature, 4, $GLOBALS['FORUM_DB']);
@@ -611,8 +613,17 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         'cf_order' => $order,
         'cf_only_group' => $only_group,
         'cf_show_on_join_form' => $show_on_join_form,
-        'cf_options' => $options,
     );
+
+    // LEGACY
+    $_version_database = get_value('ocf_version');
+    if ($_version_database === null) {
+        $_version_database = get_value('cns_version');
+    }
+    if ((intval($_version_database) !== 8) && (intval($_version_database) !== 9)) {
+        $map['cf_options'] = $options;
+    }
+
     if (substr($name, 0, 4) == 'cms_') {
         require_code('lang3');
         $map += lang_code_to_static_content('cf_name', $name, false, 2, $GLOBALS['FORUM_DB']);
@@ -620,10 +631,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         $map += insert_lang('cf_name', $name, 2, $GLOBALS['FORUM_DB']);
     }
     $map += insert_lang('cf_description', $description, 2, $GLOBALS['FORUM_DB']);
-    $id = $GLOBALS['FORUM_DB']->query_insert('f_custom_fields', $map + array('cf_encrypted' => $encrypted), true, true);
-    if (is_null($id)) {
-        $id = $GLOBALS['FORUM_DB']->query_insert('f_custom_fields', $map, true); // Still upgrading, cf_encrypted does not exist yet
-    }
+    $id = $GLOBALS['FORUM_DB']->query_insert('f_custom_fields', $map + array('cf_encrypted' => $encrypted), true);
 
     list($_type, $index, $_default) = get_cpf_storage_for($type, $encrypted, $default);
 

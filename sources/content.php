@@ -379,7 +379,7 @@ function get_content_where_for_str_id($str_id, $cma_info, $table_alias = null)
 {
     $where = array();
     $id_field = $cma_info['id_field'];
-    $id_parts = explode(':', $str_id);
+    $id_parts = is_array($id_field) ? explode(':', $str_id) : array($str_id);
     $id_parts = array_reverse($id_parts);
     foreach (is_array($id_field) ? $id_field : array($id_field) as $i => $id_field_part) {
         $val = array_key_exists($i, $id_parts) ? $id_parts[$i] : '';

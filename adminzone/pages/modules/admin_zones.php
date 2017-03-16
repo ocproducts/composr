@@ -586,10 +586,17 @@ class Module_admin_zones
         // Theme
         require_code('themes2');
         $entries = create_selection_list_themes($theme, false, true);
-        $fields .= static_evaluate_tempcode(form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode((get_forum_type() == 'cns') ? '_DESCRIPTION_THEME_CNS' : '_DESCRIPTION_THEME', get_default_theme_name()), 'theme', $entries));
+        $theme_field = form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode((get_forum_type() == 'cns') ? '_DESCRIPTION_THEME_CNS' : '_DESCRIPTION_THEME', get_default_theme_name()), 'theme', $entries);
+        $is_normal_zone = ($zone !== 'adminzone') && ($zone !== 'cms');
+        if ($is_normal_zone) {
+            $fields .= static_evaluate_tempcode($theme_field);
+        }
 
         $fields .= static_evaluate_tempcode(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b997e901934b59fa72c944e0ce6fc1b0', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
         $fields .= static_evaluate_tempcode(form_input_tick(do_lang_tempcode('REQUIRE_SESSION'), do_lang_tempcode('DESCRIPTION_REQUIRE_SESSION'), 'require_session', ($require_session == 1)));
+        if (!$is_normal_zone) {
+            $fields .= static_evaluate_tempcode($theme_field);
+        }
 
         $base_url = '';
         if (($zone !== null) && ($zone != '')) {

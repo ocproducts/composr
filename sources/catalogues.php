@@ -705,7 +705,6 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
         $order_by = 'average_rating';
     }
 
-    $cf_type = is_numeric($order_by) ? $fields[intval($order_by)]['cf_type'] : '';
     $can_do_db_sorting = ($order_by != 'distance');
 
     require_code('hooks/systems/content_meta_aware/catalogue_entry');
@@ -1701,7 +1700,8 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
         if (!array_key_exists($category_id, $PT_PAIR_CACHE)) {
             $category_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_parent_id', 'cc_title'), array('id' => $category_id), '', 1);
             if (!array_key_exists(0, $category_rows)) {
-                fatal_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'));
+                attach_message(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'), 'warn');
+                return array();
             }
             $PT_PAIR_CACHE[$category_id] = $category_rows[0];
         }

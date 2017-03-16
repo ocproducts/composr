@@ -3274,7 +3274,14 @@ END;
         require_code('content2');
         $metadata = actual_metadata_get_fields('post', strval($post_id));
 
-        $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0), $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $metadata['edit_time'], $metadata['add_time'], $metadata['submitter'], true);
+        $poster_name_if_guest = null;
+        if (isset($metadata['submitter'])) {
+            if (($metadata['submitter'] != $post_details[0]['p_poster']) && ($post_details[0]['p_poster_name_if_guest'] == $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster'], true))) {
+                $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($metadata['submitter'], true);
+            }
+        }
+
+        $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0), $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $metadata['edit_time'], $metadata['add_time'], $metadata['submitter'], true, true, $poster_name_if_guest);
 
         require_code('fields');
         if (has_tied_catalogue('post')) {

@@ -32,7 +32,7 @@ if (!isset($_GET['testing'])) {
 
 require_code('database_relations');
 
-$tables = get_all_tables();
+$tables = get_all_innodb_tables();
 
 echo get_innodb_table_sql($tables, $tables);
 

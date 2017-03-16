@@ -28,6 +28,8 @@ Once this is done, all you need to do is to upload the addon to our site:
 
 Your theme will at first be non-validated (i.e. not live for download), but we will go and validate the theme as soon as we can after we receive it. Please be patient.
 
+If your theme has only been tested with certain bundled addons it is a good idea to say which addons in the Description.
+
 [title="2"]Editing your theme pack[/title]
 
 If you have improved your theme somehow (e.g. fixed a bug), you'll want to replace the download with a newer version.
@@ -52,7 +54,7 @@ In order to allow such CSS changes to (hopefully) come through to the new theme 
 
 This upgrade process happens on individual site's that use your theme, and hence why the [tt]*.editfrom[/tt] files are included with what you release.
 
-The process will never be perfect, so some manual fixes may be required.
+The process will never be perfect, so some manual fixes may be required. We also may change the process in the future, if/as we find better ways to do this.
 
 In any event, it is good for you to maintain the theme over time if anything has changed. Between Composr patch releases do it by editing your theme pack. Between Composr major releases do it by releasing a new version to the new Composr version's new Themes category.
 

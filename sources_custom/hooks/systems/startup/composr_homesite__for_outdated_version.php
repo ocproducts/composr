@@ -47,7 +47,7 @@ class Hook_startup_composr_homesite__for_outdated_version
                 $cat_id = $id;
             }
             if ($type == 'entry') {
-                $cat_id = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'category_id', array('id' => $id));
+                $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'category_id', array('id' => $id));
             }
             if ($cat_id !== null) {
                 $in_bad_cat = false;

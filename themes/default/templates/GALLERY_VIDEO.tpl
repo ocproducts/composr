@@ -60,8 +60,8 @@
 			{+END}
 		{+END}
 
-		<div class="img_thumb_wrap" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,TOOLTIP}','auto',null,null,false,true);">
-			<a href="{VIEW_URL*}">{$TRIM,{THUMB}}</a>
+		<div class="img_thumb_wrap">
+			<a href="{VIEW_URL*}" class="leave_native_tooltip" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,TOOLTIP}','auto',null,null,false,true);" onmouseleave="deactivate_tooltip(this);">{$TRIM,{THUMB}}</a>
 		</div>
 
 		<p class="gallery_media_title_cropped">

@@ -642,6 +642,7 @@ The 'keep' parameters available are:
  - [tt]keep_infinite_scroll[/tt] -- set this to '0' or '1' to temporarily change the infinite scrolling setting
  - [tt]keep_test_version[/tt] -- set to a dotted version number to test the version block in the Admin Zone dashboard as if you're running a different version. Likely needs combining with [tt]keep_cache_blocks=0[/tt]
  - [tt]keep_no_notifications[/tt] -- set this to '1' to suppress sending of notifications (only works if logged in as an administrator)
+ - [tt]keep_quick_hybrid[/tt] -- set this to '1' in a quick installer to let the installer read code files from disk while installing if they are there; this allows hot-fixing/hot-debugging of installation bugs
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr
