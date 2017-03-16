@@ -210,8 +210,8 @@ class Module_vforums
         $title = do_lang_tempcode('INVOLVED_TOPICS');
 
         $_condition = 'pos.p_poster=' . strval(get_member());
-        if (($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 1000) && (get_value('innodb') !== '1')) { // Too many posts, so make time-sensitive
-            $_condition .= ' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 90);
+        if (($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 5000) && (get_value('innodb') !== '1')) { // Too many posts, so make time-sensitive
+            $_condition .= ' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 365);
         }
         $condition = array($_condition);
 
@@ -303,12 +303,15 @@ class Module_vforums
             if (!is_guest()) {
                 $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (top.id=l.l_topic_id AND l.l_member_id=' . strval(get_member()) . ')';
             }
+            $query_cnt = $query;
+            $_query_cnt = $query;
             if (!multi_lang_content()) {
                 $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=top.t_cache_first_post_id';
             }
-            $query .= ' WHERE ((' . $_condition . ')' . $extra . ') AND t_forum_id IS NOT NULL';
-            $query_cnt = $query;
-            $_query_cnt = $query;
+            $where = ' WHERE ((' . $_condition . ')' . $extra . ') AND t_forum_id IS NOT NULL';
+            $query .= $where;
+            $query_cnt .= $where;
+            $_query_cnt .= $where;
             $query .= $sql_sup;
             if ((can_arbitrary_groupby()) && (!is_null($initial_table))) {
                 $query .= ' GROUP BY top.id';

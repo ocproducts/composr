@@ -126,21 +126,21 @@
 
 			<!-- <p><a href="{URL*}">{!TO_DOWNLOAD_VIDEO}</a></p> -->
 		{+END}
-
-		{+START,IF,{SLIDESHOW}}
-			{+START,IF_NON_EMPTY,{E_TITLE}{COMMENT_DETAILS}}
-				<p itemprop="caption">
-					{+START,IF_NON_EMPTY,{E_TITLE}}
-						<strong>{E_TITLE*}</strong>{+START,IF_NON_EMPTY,{COMMENT_DETAILS}} &ndash;{+END}
-					{+END}
-
-					{+START,IF_NON_EMPTY,{COMMENT_DETAILS}}
-						{COMMENT_DETAILS}
-					{+END}
-				</p>
-			{+END}
-		{+END}
 	</div>
+
+	{+START,IF,{SLIDESHOW}}
+		{+START,IF_NON_EMPTY,{E_TITLE}{COMMENT_DETAILS}}
+			<p itemprop="caption">
+				{+START,IF_NON_EMPTY,{E_TITLE}}
+					<strong>{E_TITLE*}</strong>
+				{+END}
+
+				{+START,IF_NON_EMPTY,{COMMENT_DETAILS}}
+					{COMMENT_DETAILS}
+				{+END}
+			</p>
+		{+END}
+	{+END}
 
 	{+START,IF,{$NOT,{SLIDESHOW}}}
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}

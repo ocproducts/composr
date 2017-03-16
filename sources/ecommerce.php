@@ -449,7 +449,7 @@ function handle_transaction_script()
  * @param  SHORT_TEXT $parent_txn_id The ID of the parent transaction
  * @param  string $period The subscription period (blank: N/A / unknown: trust is correct on the gateway)
  * @param  ID_TEXT $via The payment gateway
- * @return ID_TEXT The product purchased
+ * @return ?ID_TEXT The product purchased (null: error)
  */
 function handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $via)
 {
@@ -538,6 +538,9 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
 
         // Pending transactions stop here
+        if ((get_page_name() == 'purchase') || (get_page_name() == 'shopping')) {
+            return null;
+        }
         fatal_ipn_exit(do_lang('TRANSACTION_NOT_COMPLETE', $type_code . ':' . strval($purchase_id), $payment_status), true);
     }
 

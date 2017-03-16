@@ -433,7 +433,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 }
 .page_running_topics .radio_list_picture {
 	/* Numbers based around topic emoticons emoticons */
-	min-height: 30px;
+	min-height: 32px;
 	min-width: 30px;
 }
 .radio_list_picture_na {

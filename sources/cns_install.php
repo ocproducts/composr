@@ -265,6 +265,8 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_options', 'SHORT_TEXT');
 
+        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
+        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'codename', 'cf_default' => 'RANDOM'), array('cf_type' => 'random'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=vertical_checkboxes,custom_values=yes'), array('cf_type' => 'combo_multi'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi'), array('cf_type' => 'multilist'));

@@ -49,6 +49,8 @@ class Module_admin_import
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_id_remap');
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_session');
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_parts_done');
+
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'admin_import'));
     }
 
     /**
@@ -539,7 +541,7 @@ class Module_admin_import
             safe_ini_set('display_errors', '0'); // So that the timeout message does not show, which made the user not think the refresh was going to happen automatically, and could thus result in double-requests
         }
         send_http_output_ping();
-        header('Content-type: text/html; charset=' . get_charset());
+
         safe_ini_set('log_errors', '0');
         global $I_REFRESH_URL;
         $I_REFRESH_URL = $refresh_url;
@@ -654,8 +656,10 @@ class Module_admin_import
         }
         if (!$all_skipped) {
             $lang_code = 'SUCCESS';
-            if (count($GLOBALS['ATTACHED_MESSAGES_RAW']) != 0) {
-                $lang_code = 'SOME_ERRORS_OCCURRED';
+            foreach ($GLOBALS['ATTACHED_MESSAGES_RAW'] as $message) {
+                if ($message[1] == 'warn') {
+                    $lang_code = 'SOME_ERRORS_OCCURRED';
+                }
             }
             $out->attach(do_template('IMPORT_MESSAGE', array('_GUID' => '4c4860d021814ffd1df6e21e712c7b44', 'MESSAGE' => do_lang_tempcode($lang_code))));
         }

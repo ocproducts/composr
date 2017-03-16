@@ -1707,12 +1707,13 @@ abstract class Standard_crud_module
     public function mass_delete($top_level = true)
     {
         $delete = array();
-        foreach ($_POST as $key => $val) {
-            if (($val === '1') && (strpos($key, '_') !== false)) {
-                list($type, $id) = explode('_', $key, 2);
+        if ($this->supports_mass_delete) {
+            foreach ($_POST as $key => $val) {
+                $matches = array();
+                if (($val === '1') && (preg_match('#^' . preg_quote($this->content_type) . '_(.*)$#', $key, $matches) != 0)) {
+                    $id = $matches[1];
 
-                if ($type == $this->content_type) {
-                    if (!is_null($this->permissions_require)) {
+                    if ($this->permissions_require !== null) {
                         if (method_exists($this, 'get_submitter')) {
                             list($submitter, $date_and_time) = $this->get_submitter($id);
                         } else {
@@ -1724,9 +1725,9 @@ abstract class Standard_crud_module
                     $delete[] = $id; // Don't do right away, we want to check all permissions first so that we don't do a partial action
                 }
             }
-        }
-        foreach ($delete as $id) {
-            $this->delete_actualisation($id);
+            foreach ($delete as $id) {
+                $this->delete_actualisation($id);
+            }
         }
         if ((!is_null($this->cat_crud_module)) && (!is_null($this->cat_crud_module->content_type))) {
             foreach ($_POST as $key => $val) {

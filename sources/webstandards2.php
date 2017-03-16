@@ -1712,7 +1712,7 @@ function _check_labelling($tag, $attributes, $self_close, $close)
 
             //if ((!in_array('label', $TAG_STACK)))//&& ((!isset($attributes['value']) || ($attributes['value'] == '')))) { // Compromise - sometimes we will use a default value as a substitute for a label. Not strictly allowed in accessibility rules, but writers mention as ok (+ we need it so we don't clutter things unless we start hiding labels, which is not nice)
             if (!isset($attributes['id'])) {
-                $attributes['id'] = 'unnamed_' . strval(mt_rand(0, 10000));
+                $attributes['id'] = 'unnamed_' . strval(mt_rand(0, mt_getrandmax()));
             }
 
             if ((!isset($FOR_LABEL_IDS[$attributes['id']])) && ($attributes['id'] != 'x') && (preg_match('#<label[^<>]+for="' . preg_quote($attributes['id'], '#') . '"#', $OUT) == 0)) {

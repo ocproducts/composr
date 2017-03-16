@@ -466,9 +466,6 @@ class Module_catalogues
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
-            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
-            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
-
             $GLOBALS['SITE_DB']->add_table_field('catalogues', 'c_default_review_freq', '?INTEGER', null);
 
             require_code('content2');
@@ -476,6 +473,8 @@ class Module_catalogues
 
             $GLOBALS['SITE_DB']->add_table_field('catalogue_fields', 'cf_options', 'SHORT_TEXT');
 
+            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
+            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'codename', 'cf_default' => 'RANDOM'), array('cf_type' => 'random'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=vertical_checkboxes,custom_values=yes'), array('cf_type' => 'combo_multi'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list_multi'), array('cf_type' => 'multilist'));

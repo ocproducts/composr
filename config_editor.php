@@ -430,10 +430,10 @@ function do_set()
     // _config.php
     global $FILE_BASE;
     $config_file = '_config.php';
-    $path = $FILE_BASE . '/exports/file_backups/' . $config_file . '.' . strval(time());
-    $copied_ok = @copy($FILE_BASE . '/' . $config_file, $path);
+    $backup_path = $FILE_BASE . '/exports/file_backups/' . $config_file . '.' . strval(time()) . '_' . strval(mt_rand(0, mt_getrandmax()));
+    $copied_ok = @copy($FILE_BASE . '/' . $config_file, $backup_path);
     if ($copied_ok !== false) {
-        co_sync_file($path);
+        co_sync_file($backup_path);
     }
     $config_file_handle = fopen($FILE_BASE . '/' . $config_file, 'wt');
     if ($config_file_handle === false) {
@@ -462,7 +462,7 @@ function do_set()
     co_sync_file($config_file);
 
     echo '<hr /><p>Edited configuration. If you wish to continue editing you must <a href="config_editor.php">login again.</a></p>';
-    echo '<hr /><p>The _config.php file was backed up at <kbd>' . htmlentities(str_replace('/', DIRECTORY_SEPARATOR, $path)) . '</kbd></p>';
+    echo '<hr /><p>The <kbd>_config.php</kbd> file was backed up at <kbd>' . htmlentities(str_replace('/', DIRECTORY_SEPARATOR, $backup_path)) . '</kbd></p>';
 }
 
 /**

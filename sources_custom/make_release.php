@@ -625,7 +625,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
     while (($file = readdir($dh)) !== false) {
         $is_dir = is_dir(get_file_base() . '/' . $dir . $file);
 
-        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES, 0)) {
             continue;
         }
 
@@ -891,7 +891,7 @@ function make_install_sql()
     require_code('install_headless');
     $test = do_install_to($database, $username, $password, $table_prefix, true, 'cns', null, null, null, null, null, null, false);
     if (!$test) {
-        warn_exit('Failed to execute installer, while building install.sql. It\'s likely that recursive write file permissions need setting.');
+        warn_exit(protect_from_escaping('Failed to execute installer, while building <kbd>install.sql</kbd>. It\'s likely that recursive write file permissions need setting.'));
     }
 
     // Get database connection
@@ -908,7 +908,10 @@ function make_install_sql()
 
     // Build SQL dump
     require_code('database_toolkit');
+    global $HAS_MULTI_LANG_CONTENT;
+    $HAS_MULTI_LANG_CONTENT = false;
     $st = get_sql_dump(true, false, null, null, null, false, $conn);
+    $HAS_MULTI_LANG_CONTENT = true;
     $sql_contents = '';
     foreach ($st as $s) {
         $sql_contents .= $s;

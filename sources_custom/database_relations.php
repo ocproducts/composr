@@ -155,6 +155,10 @@ function get_innodb_tables_by_addon()
         $addon_name = $hook;
         foreach ($files as $file) {
             if ((strpos($file, 'blocks/') !== false) || (strpos($file, 'pages/modules') !== false) || (strpos($file, 'hooks/systems/addon_registry') !== false)) {
+                if (!is_file(get_file_base() . '/' . $file)) {
+                    continue;
+                }
+
                 $file_contents = file_get_contents(get_file_base() . '/' . $file);
 
                 $matches = array();

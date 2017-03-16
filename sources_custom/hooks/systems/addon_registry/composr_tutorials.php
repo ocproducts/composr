@@ -1494,6 +1494,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'themes/default/images_custom/tutorial_icons/wiki.png',
             'themes/default/images_custom/tutorial_icons/internet_technology.png',
             'themes/default/images_custom/tutorial_icons/mobile.png',
+            'themes/default/images_custom/tutorial_icons/video.png',
             'docs/codebook_data_dictionary.docx',
             'docs/custom_modules_example__pty.zip',
             'docs/erd_rendered__by_addon.zip',

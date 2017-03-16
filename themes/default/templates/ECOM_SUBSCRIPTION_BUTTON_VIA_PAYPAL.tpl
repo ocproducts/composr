@@ -14,7 +14,7 @@
 	<input type="hidden" name="src" value="1" />
 	<input type="hidden" name="sra" value="1" />
 	<input type="hidden" value="1" name="no_note" />
-	<input type="hidden" value="{!SUBSCRIPTION_FOR,{$USERNAME}} ({ITEM_NAME*})" name="item_name" />
+	<input type="hidden" value="{!SUBSCRIPTION_FOR,{$USERNAME*},{ITEM_NAME*}}" name="item_name" />
 	<input type="hidden" name="rm" value="2" />
 	<input type="hidden" name="bn" value="ocproducts_SP" />
 

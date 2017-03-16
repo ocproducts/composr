@@ -46,6 +46,7 @@ class Module_admin_staff
      */
     public function uninstall()
     {
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'admin_staff'));
     }
 
     /**

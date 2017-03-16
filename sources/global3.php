@@ -151,6 +151,9 @@ function init__global3()
     define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
     define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
     define('WYSIWYG_COMCODE__HTML', 128);
+
+    global $DOING_OUTPUT_PINGS;
+    $DOING_OUTPUT_PINGS = false;
 }
 
 /**
@@ -500,7 +503,8 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         $global->singular_bind('MIDDLE', $middle);
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
-        if (headers_sent()) {
+        global $DOING_OUTPUT_PINGS;
+        if (headers_sent() && !$DOING_OUTPUT_PINGS) {
             $global = do_template('STANDALONE_HTML_WRAP', array(
                 '_GUID' => 'd579b62182a0f815e0ead1daa5904793',
                 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -2891,8 +2895,8 @@ function get_loaded_tags($limit_to = null, $the_tags = null)
 
             $tags[] = array(
                 'TAG' => $tag,
-                'LINK_LIMITEDSCOPE' => build_url(array('page' => 'search', 'type' => 'results', 'content' => $tag, 'only_search_meta' => '1') + $search_limiter_yes, get_module_zone('search')),
-                'LINK_FULLSCOPE' => build_url(array('page' => 'search', 'type' => 'results', 'content' => $tag, 'only_search_meta' => '1') + $search_limiter_no, get_module_zone('search')),
+                'LINK_LIMITEDSCOPE' => build_url(array('page' => 'search', 'type' => 'results', 'content' => '"' . $tag . '"', 'only_search_meta' => '1') + $search_limiter_yes, get_module_zone('search')),
+                'LINK_FULLSCOPE' => build_url(array('page' => 'search', 'type' => 'results', 'content' => '"' . $tag . '"', 'only_search_meta' => '1') + $search_limiter_no, get_module_zone('search')),
             );
         }
     }
@@ -3367,6 +3371,8 @@ function cms_profile_end_for($identifier, $specifics = null)
  */
 function send_http_output_ping()
 {
+    global $DOING_OUTPUT_PINGS;
+    $DOING_OUTPUT_PINGS = true;
     echo ' ';
 }
 

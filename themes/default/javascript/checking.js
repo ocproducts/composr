@@ -466,7 +466,7 @@ function check_field(the_element,the_form,for_preview)
 	var errormsg_element=(typeof the_element.name=='undefined')?null:get_errormsg_element(the_element.name);
 
 	// Blank?
-	if ((required) && (my_value.replace(/&nbsp;/g,' ').replace(/<br\s*\/?>/g,' ').replace(/\s/g,'')==''))
+	if ((required) && ((my_value.replace(/&nbsp;/g,' ').replace(/<br\s*\/?>/g,' ').replace(/\s/g,'')=='') || (my_value=='****') || (my_value==the_element.alt)))
 	{
 		error_msg='{!REQUIRED_NOT_FILLED_IN;^}';
 		if ((errormsg_element) && (errormsg_element.getAttribute('data-errorUnfilled')!=null) && (errormsg_element.getAttribute('data-errorUnfilled')!=''))

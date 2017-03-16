@@ -46,6 +46,7 @@ error_reporting(E_ALL);
 
 safe_ini_set('display_errors', '1');
 safe_ini_set('assert.active', '0');
+safe_ini_set('opcache.revalidate_freq', '1'); // Bitnami WAMP puts it to 60 by default, breaking reading of _config.php
 
 global $DEFAULT_FORUM;
 $DEFAULT_FORUM = 'cns';
@@ -284,6 +285,23 @@ if (@is_resource($DATADOTCMS_FILE)) {
     }
 }
 
+/**
+ * Propagate certain keep_ parameters to a URL.
+ *
+ * @param URLPATH The URL
+ * @return URLPATH Corrected URL
+ */
+function prepare_installer_url($url)
+{
+    if (in_safe_mode()) {
+        $url .= '&keep_safe_mode=1';
+    }
+    if (get_param_integer('keep_quick_hybrid', 0) == 1) {
+        $url .= '&keep_quick_hybrid=1';
+    }
+    return $url;
+}
+
 // ========================================
 // Installation steps
 // ========================================
@@ -467,10 +485,7 @@ function step_1()
 
     // UI...
 
-    $url = 'install.php?step=2';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=2');
 
     $hidden = build_keep_post_fields();
     $max = strval(get_param_integer('max', 1000));
@@ -501,10 +516,7 @@ function step_2()
         }
     }
 
-    $url = 'install.php?step=3';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=3');
 
     $hidden = build_keep_post_fields();
     return do_template('INSTALLER_STEP_2', array('_GUID' => 'b08b0268784c9a0f44863ae3aece6789', 'URL' => $url, 'HIDDEN' => $hidden, 'LICENCE' => $licence));
@@ -673,10 +685,7 @@ function step_3()
     $js->attach("\n");
     $js->attach(do_template('ajax', null, null, false, null, '.js', 'javascript'));
 
-    $url = 'install.php?step=4';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=4');
 
     $hidden = build_keep_post_fields();
     return do_template('INSTALLER_STEP_3', array(
@@ -1071,10 +1080,7 @@ function step_4()
         $message->attach(paragraph(do_lang_tempcode('FORUM_DRIVER_NATIVE_LOGIN')));
     }
 
-    $url = 'install.php?step=5';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=5');
 
     $hidden = build_keep_post_fields();
     return do_template('INSTALLER_STEP_4', array(
@@ -1107,10 +1113,7 @@ function step_5()
         @set_time_limit(180);
     }
 
-    $url = 'install.php?step=6';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=6');
 
     $use_msn = post_param_integer('use_msn', 0);
     if ($use_msn == 0) {
@@ -1229,10 +1232,7 @@ function step_5()
             global $INSTALL_LANG;
             $sections = new Tempcode();
 
-            $url = 'install.php?step=5';
-            if (in_safe_mode()) {
-                $url .= '&keep_safe_mode=1';
-            }
+            $url = prepare_installer_url('install.php?step=5');
 
             $hidden = build_keep_post_fields();
             $hidden->attach(form_input_hidden('confirm', '1'));
@@ -1267,10 +1267,7 @@ function step_5()
         $ftp_status = step_5_ftp();
         $log->attach($ftp_status[0]);
         if ($ftp_status[1] != -1) {
-            $url = 'install.php?step=5&start_from=' . strval($ftp_status[1]);
-            if (in_safe_mode()) {
-                $url .= '&keep_safe_mode=1';
-            }
+            $url = prepare_installer_url('install.php?step=5&start_from=' . strval($ftp_status[1]));
             $still_ftp = true;
         }
     }
@@ -2164,10 +2161,7 @@ function step_6()
         exit(do_lang('INST_POST_ERROR'));
     }
 
-    $url = 'install.php?step=7';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=7');
 
     $log = new Tempcode();
 
@@ -2268,10 +2262,7 @@ function step_7()
         $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ag3', 'SOMETHING' => do_lang_tempcode('INSTALLED_ADDON', escape_html($addon)))));
     }
 
-    $url = 'install.php?step=8';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=8');
 
     return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'c016b2a364d20cf711af7e14c60a7921', 'PREVIOUS_STEP' => '6', 'CURRENT_STEP' => '7', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
@@ -2294,10 +2285,7 @@ function step_8()
         }
     }
 
-    $url = 'install.php?step=9';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=9');
 
     return do_template('INSTALLER_STEP_LOG', array('_GUID' => '27fad5aa7f96d26a51e6afb6b7e5c7b1', 'PREVIOUS_STEP' => '7', 'CURRENT_STEP' => '8', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
@@ -2334,10 +2322,7 @@ function step_9()
         }
     }
 
-    $url = 'install.php?step=10';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=10');
 
     return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'b20121b8f4f84dd8e625e3b821c753b3', 'PREVIOUS_STEP' => '8', 'CURRENT_STEP' => '9', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }

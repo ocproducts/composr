@@ -701,7 +701,7 @@ header h1 {
 	}
 /*{+END}*/
 
-.global_navigation .top_form {
+.global_navigation .top_form.top_search {
 	margin-top: 3px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 .global_navigation .top_form * {
@@ -3236,14 +3236,14 @@ dl.compact_list>dd {
 	margin: 0;
 }
 
-ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul, .zone_running_docs .comcode_page ol {
+ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul:not([class]), .zone_running_docs .comcode_page ol:not([class]) {
 	margin: 0;
 	padding: 0 !important;
 }
-ul.spaced_list, .spaced_list ul, .zone_running_docs .comcode_page ul {
+ul.spaced_list, .spaced_list ul, .zone_running_docs .comcode_page ul:not([class]) {
 	list-style-type: square;
 }
-.spaced_list li, .zone_running_docs .comcode_page li {
+.spaced_list li, .zone_running_docs .comcode_page ul:not([class])>li, .zone_running_docs .comcode_page ol:not([class])>li {
 	margin: 0.5em 0 0.5em 30px !important;
 	padding: 0;
 }
@@ -3331,6 +3331,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 }
 .meta_details>dl.meta_details_list {
 	margin-bottom: 0;
+	overflow: hidden;
 }
 
 /*
