@@ -375,7 +375,7 @@ class Module_cms_calendar extends Standard_crud_module
             do_lang_tempcode('TITLE'),
             do_lang_tempcode('DATE_TIME'),
             do_lang_tempcode('TYPE'),
-            protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT')))),
+            protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => 'fb1dd2bde0067a726dfc9443c873a5f1', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT')))),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 
@@ -565,7 +565,7 @@ class Module_cms_calendar extends Standard_crud_module
         // Member calendar
         $member_calendar = get_param_integer('member_id', $member_calendar);
         if (has_privilege(get_member(), 'calendar_add_to_others') || $member_calendar == get_member()) {
-            $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => $member_calendar === null, 'TITLE' => do_lang_tempcode('ADVANCED'))));
+            $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c40661dec7b2e3a59114d1dd846890ff', 'SECTION_HIDDEN' => $member_calendar === null, 'TITLE' => do_lang_tempcode('ADVANCED'))));
 
             $_member_calendar = is_null($member_calendar) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
             $fields2->attach(form_input_username(do_lang_tempcode('MEMBER_CALENDAR'), do_lang_tempcode('DESCRIPTION_MEMBER_CALENDAR'), 'member_calendar', $_member_calendar, !has_privilege(get_member(), 'add_public_events')));

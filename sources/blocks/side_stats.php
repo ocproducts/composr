@@ -36,7 +36,6 @@ class Block_side_stats
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 3;
-        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         $info['parameters'] = array();
         return $info;

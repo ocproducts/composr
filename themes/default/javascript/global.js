@@ -584,7 +584,7 @@ function check_field_for_blankness(field,event)
 
 	var ee=document.getElementById('error_'+field.id);
 
-	if ((value.replace(/\s/g,'')=='') || (value=='****') || (value=='{!POST_WARNING;^}') || (value=='{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}'))
+	if ((value.replace(/\s/g,'')=='') || (value=='****') || (value==field.alt) || (value=='{!POST_WARNING;^}') || (value=='{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}'))
 	{
 		if (event)
 		{
@@ -2190,7 +2190,7 @@ function _modsecurity_workaround(data)
 function convert_tooltip(element)
 {
 	var title=element.title;
-	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
+	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (element.parentNode.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
 	{
 		// Remove old tooltip
 		if (element.nodeName=='img' && element.alt=='') element.alt=element.title;
@@ -2258,7 +2258,7 @@ function clear_out_tooltips(tooltip_being_opened)
 
 function preactivate_rich_semantic_tooltip(ob,event,have_links)
 {
-	if (typeof ob.ttitle=='undefined') ob.ttitle=ob.title;
+	if (typeof ob.ttitle=='undefined') ob.ttitle=((typeof ob.attributes['data-title']!='undefined')?ob.getAttribute('data-title'):ob.title);
 	ob.title='';
 	ob.onmouseover=null;
 	ob.onclick=function() { activate_rich_semantic_tooltip(ob,event,have_links); };
@@ -2421,7 +2421,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 
 		ac.tooltip_on=true;
 		tooltip_element.style.display='block';
-		if (tooltip_element.style.width=='auto')
+		if ((tooltip_element.style.width=='auto') && ((tooltip_element.childNodes.length!=1) || (tooltip_element.childNodes[0].nodeName.toLowerCase()!='img')))
 			tooltip_element.style.width=(find_width(tooltip_element,true)+1/*for rounding issues from em*/)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
 		if (!no_delay)
@@ -2986,7 +2986,8 @@ function inner_html_load(xml_string) {
 	{
 		try
 		{
-			xml=(new DOMParser()).parseFromString(xml_string,"application/xml");
+			xml=(new DOMParser()).parseFromString(xml_string,'application/xml');
+			if ((xml) && (xml.documentElement.nodeName=='parsererror')) xml=null;
 		}
 		catch (e) { xml=null; }
 

@@ -883,7 +883,7 @@ class Module_tickets
             if ($email == '') {
                 $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
             }
-            send_ticket_email($id, $__title, $post, $home_url, $email, $ticket_type_id, null);
+            send_ticket_email($id, $__title, $post, $home_url, ($ticket_type_id !== null) ? $email : '', $ticket_type_id, null);
         }
 
         // Close ticket, if requested

@@ -31,12 +31,14 @@
 
 			var uses_plupload = false;
 
-			if (typeof window.rebuild_attachment_button_for_next != 'undefined') {
-				var aub=document.getElementById('attachment_upload_button');
-				if (!aub || aub.parentNode.parentNode.style.display=='none') // If attachment button was not placed elsewhere
+			var aub = document.getElementById('attachment_upload_button');
+			var doing_attachment_uploads = (aub) && (aub.className.indexOf('for_field_' + editor.element.$.id + ' ')!=-1);
+
+			if ((typeof window.rebuild_attachment_button_for_next != 'undefined') && (doing_attachment_uploads)) {
+				if ((!aub) || (aub.parentNode.parentNode.style.display == 'none')) // If attachment button was not placed elsewhere
 				{
 					window.setTimeout(function () {
-						rebuild_attachment_button_for_next(editor.element.$.id, document.getElementsByClassName('cke_button__composr_image')[0].id);
+						rebuild_attachment_button_for_next(editor.element.$.id, document.getElementById('cke_' + editor.element.$.id).getElementsByClassName('cke_button__composr_image')[0].id);
 					}, 0);
 
 					uses_plupload = true;
@@ -45,11 +47,12 @@
 
 			var func = {
 				exec: function (e) {
-					var has_selection = (e.getSelection().getSelectedElement() != null);
+					if (doing_attachment_uploads) {
+						var has_selection = (e.getSelection().getSelectedElement() != null);
+						if (uses_plupload && !has_selection) return; // Not selected an image for editing, so don't show an edit dialogue
+					}
 
-					if (uses_plupload && !has_selection) return;
-
-					if (typeof window.lang_PREFER_CMS_ATTACHMENTS == 'undefined' || has_selection) {
+					if (typeof window.lang_PREFER_CMS_ATTACHMENTS == 'undefined' || has_selection || !doing_attachment_uploads) {
 						editor.execCommand('image');
 					} else {
 						fauxmodal_alert(window.lang_PREFER_CMS_ATTACHMENTS, function () {
