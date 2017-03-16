@@ -2421,7 +2421,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 
 		ac.tooltip_on=true;
 		tooltip_element.style.display='block';
-		if ((tooltip_element.style.width=='auto') && ((tooltip_element.childNodes.length>1) || (tooltip_element.childNodes[0].nodeName.toLowerCase()!='img')))
+		if ((tooltip_element.style.width=='auto') && ((tooltip_element.childNodes.length!=1) || (tooltip_element.childNodes[0].nodeName.toLowerCase()!='img')))
 			tooltip_element.style.width=(find_width(tooltip_element,true)+1/*for rounding issues from em*/)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
 		if (!no_delay)
@@ -2987,7 +2987,7 @@ function inner_html_load(xml_string) {
 		try
 		{
 			xml=(new DOMParser()).parseFromString(xml_string,'application/xml');
-			if (xml.documentElement.nodeName=='parsererror') xml=null;
+			if ((xml) && (xml.documentElement.nodeName=='parsererror')) xml=null;
 		}
 		catch (e) { xml=null; }
 

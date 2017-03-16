@@ -488,7 +488,7 @@ class Module_cms_comcode_pages
             $columns[] = do_lang_tempcode('PARENT_PAGE');
             $columns[] = do_lang_tempcode('metadata:OWNER');
             $columns[] = do_lang_tempcode('ADDED');
-            $columns[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
+            $columns[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => 'bd3e38aa0885f27174b4ccb4515eb727', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $columns[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($columns, $sortables, 'sort', $sortable . ' ' . $sort_order);

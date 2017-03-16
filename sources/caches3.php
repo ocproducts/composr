@@ -214,7 +214,7 @@ function erase_cached_language()
         $_dir = @opendir($path);
         if ($_dir === false) {
             require_code('files2');
-            make_missing_directory($path);
+            @make_missing_directory($path);
         } else {
             while (false !== ($file = readdir($_dir))) {
                 if (substr($file, -4) == '.lcd') {
@@ -341,7 +341,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
             $_dir = @opendir($path);
             if ($_dir === false) {
                 require_code('files2');
-                make_missing_directory($path);
+                @make_missing_directory($path);
             } else {
                 $rebuilt = array();
 

@@ -463,8 +463,6 @@ class Module_catalogues
 
             add_privilege('SEARCH', 'autocomplete_keyword_catalogue_category', false);
             add_privilege('SEARCH', 'autocomplete_title_catalogue_category', false);
-
-            $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 8)) {
@@ -484,6 +482,10 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio,custom_values=yes'), array('cf_type' => 'combo'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
         }
     }
 

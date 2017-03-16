@@ -1026,6 +1026,6 @@ class Module_admin_version
             );
         }
 
-        return do_template('SPONSORS_SCREEN', array('TITLE' => $this->title, 'PATREONS' => $_patreons));
+        return do_template('SPONSORS_SCREEN', array('_GUID' => '504a3975e168ac7d32ed78f3fadf2cbe', 'TITLE' => $this->title, 'PATREONS' => $_patreons));
     }
 }

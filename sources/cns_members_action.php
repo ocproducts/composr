@@ -613,8 +613,17 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         'cf_order' => $order,
         'cf_only_group' => $only_group,
         'cf_show_on_join_form' => $show_on_join_form,
-        'cf_options' => $options,
     );
+
+    // LEGACY
+    $_version_database = get_value('ocf_version');
+    if ($_version_database === null) {
+        $_version_database = get_value('cns_version');
+    }
+    if ((intval($_version_database) !== 8) && (intval($_version_database) !== 9)) {
+        $map['cf_options'] = $options;
+    }
+
     if (substr($name, 0, 4) == 'cms_') {
         require_code('lang3');
         $map += lang_code_to_static_content('cf_name', $name, false, 2, $GLOBALS['FORUM_DB']);
