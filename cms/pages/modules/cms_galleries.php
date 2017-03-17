@@ -399,6 +399,10 @@ class Module_cms_galleries extends Standard_crud_module
                 $temp_keys = array_keys($there);
                 $last_time = $there[$temp_keys[0]];
                 foreach ($there as $file => $time) {
+                    if (!is_string($file)) {
+                        $file = strval($file);
+                    }
+
                     if ((!in_array('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file)), $test1)) && (!in_array('uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file)), $test2))) {
                         $orphaned_content->attach(form_input_list_entry($file, ($time >= $last_time - 60 * 60 * 3) || (strpos($file, '/') !== false), $file));
                     }
@@ -443,6 +447,7 @@ class Module_cms_galleries extends Standard_crud_module
         $cat = get_param_string('cat');
 
         require_code('images');
+        require_code('files');
 
         check_privilege('mass_import'/*Not currently scoped to categories, array('galleries', $cat)*/);
 
@@ -497,6 +502,10 @@ class Module_cms_galleries extends Standard_crud_module
                             $entry = $d['resource'];
                             $_file = $d['path'];
 
+                            if (should_ignore_file($_file)) {
+                                continue;
+                            }
+
                             // Load in file
                             zip_entry_open($myfile, $entry);
                             $tmp_name_2 = cms_tempnam();
@@ -536,6 +545,10 @@ class Module_cms_galleries extends Standard_crud_module
                         $this->_sort_media($directory);
 
                         foreach ($directory as $entry) {
+                            if (should_ignore_file($entry['path'])) {
+                                continue;
+                            }
+
                             $tmp_name_2 = cms_tempnam();
 
                             // Load in file

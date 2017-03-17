@@ -1036,7 +1036,7 @@ class Module_galleries
         $video_select = get_param_string('video_select', '*');
         $sort = get_param_string('sort', get_option('galleries_default_sort_order'));
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_gallery_embed', array('param' => $cat_select, 'zone' => '_SELF', 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_regular_per_page'), 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module'));
+        $entries = do_block('main_gallery_embed', array('param' => $cat_select, 'zone' => get_zone_name(), 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_regular_per_page'), 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module'));
 
         // Member gallery?
         $member_id = get_member_id_from_gallery_name($cat, null, true);
