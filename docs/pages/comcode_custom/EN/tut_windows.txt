@@ -34,17 +34,26 @@ Installing Composr on WampServer:
 
 [url="EasyPHP"]http://www.easyphp.org/[/url] is similar to WampServer.
 
+(there's also XAMPP and MAMP)
+
 [title="3"]Microsoft Web Platform[/title]
 
-This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a Microsoft Web Platform installer for Composr. If you download the Microsoft Web Platform, you'll find Composr is in there. [staff_note]LEGACY[/staff_note](Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
+This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a Microsoft Web Platform Installer for Composr. If you download the Microsoft Web Platform Installer, you'll find Composr is in there. This uses IIS, not Apache.
 
-This should work well, however we aren't able to regularly test it as it is very different from our normal development environment and workflow. Microsoft test the integration each time we publish an update.
+This should work well, however we aren't able to regularly test it as it is very different from our normal development environment and workflow. Let us know if you have any issues.
 
 If you'd like to use Microsoft Web Platform, proceed to the [url="Web Platform website"]http://www.microsoft.com/web/downloads/platform.aspx[/url].
 
 You may want to set full permissions on the install directory, at least initially, as this will be required for addon management (which the Setup Wizard does). Assign full write permissions to 'IIS_IUSRS' and 'IUSR'.
 
 One small note -- if you are developing locally, then choose to use WebMatrix to push a local site live, make sure you adjust the base URL setting in your [tt]_config.php[/tt] file to reflect your live URL.
+
+[title="4"]Manually deploying a package[/title]
+
+You can also find the packages on our [url="download directory"]https://compo.sr/downloads/browse/composr-releases/microsoft-integration.htm[/url].
+To install these you need IIS and Microsoft Web Deploy installed. From IIS manager you can right click on a site, and choose to deploy.
+
+You may find it is buggy, e.g. complaining about a MySQL Connector not being installed, even if it is. To workaround this you need to install a similar webapp package from Microsoft Web Platform Installer. This 'magically' seems to fix the dependency problem.
 
 [title="2"]Manually installing the software[/title]
 
@@ -86,13 +95,13 @@ CREATE DATABASE <your-database name>;
 [/code]
 [/list]
 
-[title="2"]Installing a forum[/title]
+[title="3"]Installing a forum[/title]
 
 If you want to install a supported third-party forum on your computer, follow their documentation to install it. We don't recommend using third-party forums, however, so we recommend you skip this step and just install Composr with the Conversr option.
 
-[title="2"]Installing Composr[/title]
+[title="3"]Installing Composr[/title]
 
-[title="3"]Setting file permissions, Extracting files[/title]
+[title="4"]Setting file permissions, Extracting files[/title]
 
 [surround]
 [media width="150" description="Setting permissions (2)" float="right"]data_custom/images/docs/tut_windows/windows_perm2.png[/media]
@@ -114,7 +123,7 @@ By default when you extract files, they are set to inherit permissions of the pa
 If you find that some files underneath your install directory, often ones moved in, have the wrong permissions, you can manually set them to inherit permissions (from the security tab of the file, click the advanced button, and set inheriting). Or you can tell Windows to reset permissions on all the files underneath the install directory (from the security tab of the install directory, click the advanced button, and select as demonstrated in the screen-shot).
 [/surround]
 
-[title="3"]The Composr installer[/title]
+[title="4"]The Composr installer[/title]
 
 Launch the installer by opening up [tt]http://yourbaseurl/install.php[/tt] in your web browser.
 Just run through the installer normally, and by the end you should have a working Composr installation.
