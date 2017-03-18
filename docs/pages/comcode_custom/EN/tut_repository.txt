@@ -53,7 +53,7 @@ The [tt]var[/tt] meta-filesystem is perhaps the most interesting because if Webd
 WebDAV is a web-based-filesystem protocol that most operating systems support (theoretically). This lets you access the repository as a normal folder on your computer. Composr uses a PHP WebDAV-library called SabreDAV to bind Commandr-fs to WebDAV. To get this, you'll need to install the WebDAV non-bundled addon.
 
 Be aware that some operating systems do not support WebDAV very well in practice. The SabreDAV team have excellent documentation illustrating issues that are outside our control, and in most cases third-party software can be used for a better experience:
- - On Mac [url="Finder has some slowness issues"]https://code.google.com/p/sabredav/wiki/Finder[/url]. Cyberduck works well, but doesn't currently provide a way to mount to a folder.
+ - On Mac [url="Finder has some slowness issues"]https://code.google.com/p/sabredav/wiki/Finder[/url]. Cyberduck works well, but doesn't currently provide a way to mount to a folder. Yummy FTP Pro works on HTTP but not HTTPS.
  - On Windows, you may want to use [url="NetDrive"]http://www.netdrive.net/[/url] to mount WebDAV, as [url="Windows has some issues"]https://code.google.com/p/sabredav/wiki/Windows[/url] (some versions of Windows cannot run a share off a subdirectory, basic authentication needs a registry patch to make it work, and you have to disable "Automatic Detect Settings")
   - You can use BitKinex, NetDrive, WinSCP, or Cyberduck, but only NetDrive can mount to a directory
   - If you use BitKinex: you need to ensure you specify your WebDAV folder is a folder, not a file (it may default to a file, which is a bit odd)
@@ -63,6 +63,17 @@ Be aware that some operating systems do not support WebDAV very well in practice
 Access WebDAV by connecting to: [tt]http://yourbaseurl/webdav[/tt], or [tt]http://webdav.yourbaseurl[/tt] if you've configured a [tt]webdav[/tt] subdomain to point to your base directory. Some WebDAV clients only work with subdomains.
 You will need to enable this by the association rewrite rule in our recommended configuration.
 You will need to authorise against a Composr administrative user.
+
+[title="3"]Nginx reverse proxy[/title]
+
+If you are using an Nginx reverse proxy you may need to comment out or remove some code from your site's configuration:
+[code="nginx"]
+location ~ /$ {
+	index index.html index.cgi index.pl index.php index.xhtml index.htm index.shtml;
+}
+[/code]
+...then restart nginx.
+This code is supplied by default on Plesk servers and provides directory index handling at the nginx level. Unfortunately we need to handle this within our WebDAV implementation. The code takes precedence over the nginx code block doing the proxying, so you have to remove this whole block to re-enable proxying on any URLs with trailing slashes.
 
 [title="2"]The [tt]var[/tt] meta-filesystems[/title]
 
