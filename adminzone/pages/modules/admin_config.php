@@ -476,8 +476,10 @@ class Module_admin_config
                         break;
 
                     case 'tax_code':
-                        require_code('ecommerce');
-                        $out .= static_evaluate_tempcode(form_input_tax_code($human_name, $explanation, $name, get_option($name), $required));
+						if (addon_installed('ecommerce')) {
+	                        require_code('ecommerce');
+	                        $out .= static_evaluate_tempcode(form_input_tax_code($human_name, $explanation, $name, get_option($name), $required));
+						}
                         break;
 
                     case 'line':
@@ -736,8 +738,12 @@ class Module_admin_config
         foreach ($options as $name => $option) {
             // Save
             if ($option['type'] == 'tax_code') {
-                require_code('ecommerce');
-                $value = post_param_tax_code($name);
+				if (addon_installed('ecommerce')) {
+	                require_code('ecommerce');
+	                $value = post_param_tax_code($name);
+				} else {
+	                $value = post_param_string($name);
+				}
             } elseif ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif (($option['type'] == 'date') || ($option['type'] == 'datetime')) {

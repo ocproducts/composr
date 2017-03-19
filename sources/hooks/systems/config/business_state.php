@@ -51,7 +51,7 @@ class Hook_config_business_state
      */
     public function get_default()
     {
-        if (get_option('cpf_enable_state') == 0) {
+        if (get_option('cpf_enable_state') == '0') {
             return null;
         }
 

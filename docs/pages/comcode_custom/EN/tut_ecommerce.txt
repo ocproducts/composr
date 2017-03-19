@@ -506,7 +506,7 @@ To use the TaxCloud system:
 5) Consider adding the "Sales Tax Policy" text to your Composr rules page
 6) Fill in the TaxCloud API key configuration option on your Composr site
 7) Fill in the TaxCloud API ID configuration option on your Composr site
-8) Set the Business country configuration option on your Composr site to USA
+8) Set the Business country configuration option on your Composr site to US
 9) Set the Business state configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper-case, not the full written state name)
 10) You may ignore the "Tax countries" and "Tax states" Composr configuration options
 11) Set the Currency configuration option on your Composr site to USD
@@ -593,12 +593,12 @@ The configuration options also impact what shipping/billing address fields show,
  - County input:
   - If the County field is disabled then County input will not be available
  - State input:
-  - If the State field is disabled then State input will not be available, unless the Business country is USA (as required for tax calculation)
-  - If the Business country is USA then State input will be a drop-down list, otherwise it will be a free-text input
-  - If the Country field is enabled or the Business country is not USA then an 'N/A' option will be included on the list (to signify a non-USA state)
+  - If the State field is disabled then State input will not be available, unless the Business country is US (as it is required for tax calculation)
+  - If the Business country is US then State input will be a drop-down list, otherwise it will be a free-text input
+  - If the Country field is enabled or the Business country is not US then an 'N/A' option will be included on the list (to signify a non-USA state)
   - If a customer's state selection is not appropriate for the country selection then an error message will be shown
  - Postcode/Zip input:
-  - If the Postcode/Zip field is disabled then Postcode/Zip input will not be enabled, unless the Business country is USA (as required for tax calculation)
+  - If the Postcode/Zip field is disabled then Postcode/Zip input will not be enabled, unless the Business country is US (as required for tax calculation)
   - If a customer's Postcode/Zip selection is not appropriate for the country selection then an error message will be shown
  - Country input:
   - If the Country field is disabled the Business country will be used automatically for the customer's shipping/billing address

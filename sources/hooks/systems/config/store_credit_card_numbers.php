@@ -38,7 +38,7 @@ class Hook_config_store_credit_card_numbers
             'explanation' => 'CONFIG_OPTION_store_credit_card_numbers',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 5,
+            'order_in_category_group' => 6,
 
             'addon' => 'ecommerce',
         );

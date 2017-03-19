@@ -49,7 +49,7 @@ class cms_test_case extends WebTestCase
             ((strpos($line, 'comment found') !== false) && (strpos($line, '#') !== false)) ||
             (strpos($line, 'FUDGE') !== false) ||
             (strpos($line, 'LEGACY') !== false) ||
-            ((strpos($line, 'TODO') !== false) && (strpos($line, 'v' . strval(intval(cms_version_number()))) !== false))
+            ((strpos($line, 'TODO') !== false) && (strpos($line, 'v' . strval(intval(cms_version_number()) + 1)) !== false))
         );
     }
 

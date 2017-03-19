@@ -293,7 +293,7 @@ function _parse_command_actual($no_term_needed = false)
                 $command = _parse_command_actual();
                 if ($command[0] == 'CALL_DIRECT') {
                     $command[0] = 'CALL_METHOD';
-                    $command[1] = array('VARIABLE', 'this', array('DEREFERENCE', array('VARIABLE', $command[1], array(), $command[4]), array(), $command[4]), $command[4]);
+                    $command[1] = array('VARIABLE', null, array('DEREFERENCE', array('VARIABLE', $command[1], array(), $command[4]), array(), $command[4]), $command[4]);
                 } else {
                     $expression = array('REFERENCE', $command, $GLOBALS['I']);
                 }

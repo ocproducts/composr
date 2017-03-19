@@ -963,13 +963,6 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
         $card_issue_number = 1;
         $card_cv2 = 123;
 
-        $billing_street_address = '3 Example Road';
-        $billing_city = 'Coolborough';
-        $billing_county = 'West testsome';
-        $billing_state = 'England';
-        $billing_post_code = 'L3 3T';
-        $billing_country = 'GB';
-
         $shipping_firstname = 'John';
         $shipping_lastname = 'Doe';
         $shipping_street_address = '3 Example Road';
@@ -982,6 +975,13 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
             $shipping_email = 'test@example.com';
         }
         $shipping_phone = '01234 56789';
+
+        $billing_street_address = '3 Example Road';
+        $billing_city = 'Coolborough';
+        $billing_county = 'West testsome';
+        $billing_state = 'England';
+        $billing_post_code = 'L3 3T';
+        $billing_country = 'GB';
     } else {
         $_cardholder_name = get_cms_cpf('payment_cardholder_name');
         $cardholder_name = empty($_cardholder_name) ? '' : $_cardholder_name;
@@ -1007,13 +1007,6 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
 
         $card_cv2 = null;
 
-        $billing_street_address = get_cms_cpf('billing_street_address');
-        $billing_city = get_cms_cpf('billing_city');
-        $billing_county = get_cms_cpf('billing_county');
-        $billing_state = get_cms_cpf('billing_state');
-        $billing_post_code = get_cms_cpf('billing_post_code');
-        $billing_country = get_cms_cpf('billing_country');
-
         $shipping_firstname = get_cms_cpf('firstname');
         $shipping_lastname = get_cms_cpf('lastname');
         $shipping_street_address = get_cms_cpf('street_address');
@@ -1024,6 +1017,13 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
         $shipping_country = get_cms_cpf('country');
         $shipping_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
         $shipping_phone = get_cms_cpf('mobile_phone_number');
+
+        $billing_street_address = get_cms_cpf('billing_street_address');
+        $billing_city = get_cms_cpf('billing_city');
+        $billing_county = get_cms_cpf('billing_county');
+        $billing_state = get_cms_cpf('billing_state');
+        $billing_post_code = get_cms_cpf('billing_post_code');
+        $billing_country = get_cms_cpf('billing_country');
     }
 
     $shipping_email = post_param_string('shipping_email', $shipping_email);
@@ -1056,58 +1056,73 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
     if ($default_to_store) {
         if ($shipping_street_address == '') {
             $shipping_street_address = get_option('business_street_address');
-        }
-        if ($shipping_city == '') {
-            $shipping_city = get_option('business_city');
-        }
-        if ($shipping_county == '') {
-            $shipping_county = get_option('business_county');
-        }
-        if ($shipping_state == '') {
-            $shipping_state = get_option('business_state');
-        }
-        if ($shipping_post_code == '') {
-            $shipping_post_code = get_option('business_post_code');
-        }
-        if ($shipping_country == '') {
-            $shipping_country = get_option('business_country');
+            if ($shipping_city == '') {
+                $shipping_city = get_option('business_city');
+            }
+            if ($shipping_county == '') {
+                $shipping_county = get_option('business_county');
+            }
+            if ($shipping_state == '') {
+                $shipping_state = get_option('business_state');
+            }
+            if ($shipping_post_code == '') {
+                $shipping_post_code = get_option('business_post_code');
+            }
+            if ($shipping_country == '') {
+                $shipping_country = get_option('business_country');
+            }
+            if ($shipping_country == '') {
+                $shipping_country = get_option('business_country');
+            }
         }
     }
 
     if (get_option('cpf_enable_country') == '0') {
-        if ($billing_country == '') {
-            $billing_country = get_option('business_country');
-        }
-
         if ($shipping_country == '') {
             $shipping_country = get_option('business_country');
         }
+
+        if ($billing_country == '') {
+            $billing_country = get_option('business_country');
+        }
     }
 
-    if (
-        (($billing_country == 'US') && ($billing_state == '')) ||
-        (($shipping_country == 'US') && ($shipping_state == ''))
-    ) {
+    if (($shipping_country == 'US') && ($shipping_state == '')) {
         warn_exit(do_lang_tempcode('STATE_NEEDED_FOR_USA'));
     }
-    global $USA_STATE_LIST;
-    if (
-        (($billing_country != 'US') && (get_option('business_country') == 'US') && ($billing_state != '') && (array_key_exists($billing_state, $USA_STATE_LIST))) ||
-        (($shipping_country != 'US') && (get_option('business_country') == 'US') && ($shipping_state != '') && (array_key_exists($shipping_state, $USA_STATE_LIST)))
-    ) {
-        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_NON_USA'));
+    if (($shipping_country == '') && ($billing_country == 'US') && ($billing_state == '')) {
+        warn_exit(do_lang_tempcode('STATE_NEEDED_FOR_USA'));
     }
-    if (
-        (($billing_country == 'US') && ($billing_post_code == '')) ||
-        (($shipping_country == 'US') && ($shipping_post_code == ''))
-    ) {
+
+    if (($shipping_country == 'US') && ($shipping_state != '') && (!array_key_exists($shipping_state, $USA_STATE_LIST))) {
+        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_USA'), escape_html($shipping_state));
+    }
+    if (($shipping_country == '') && ($billing_country == 'US') && ($billing_state != '') && (!array_key_exists($billing_state, $USA_STATE_LIST))) {
+        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_USA'), escape_html($billing_state));
+    }
+
+	 // We make sure a non-USA country does not select a USA state as the mistake is 'easy' to make in the default list
+	 // We only do it if it is a list though, hence the business_country check
+    global $USA_STATE_LIST;
+    if (($shipping_country != 'US') && (get_option('business_country') == 'US') && ($shipping_state != '') && (array_key_exists($shipping_state, $USA_STATE_LIST))) {
+        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_NON_USA', escape_html($shipping_country), escape_html($shipping_state)));
+    }
+    if (($shipping_country == '') && ($billing_country != 'US') && (get_option('business_country') == 'US') && ($billing_state != '') && (array_key_exists($billing_state, $USA_STATE_LIST))) {
+        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_NON_USA', escape_html($shipping_country), escape_html($billing_state)));
+    }
+
+    if (($shipping_country == 'US') && ($shipping_post_code == '')) {
         warn_exit(do_lang_tempcode('ZIP_NEEDED_FOR_USA'));
     }
-    if (
-        (($billing_country == 'US') && (preg_match('#^[0-9]{5}(-[0-9]{4})?$#', $billing_post_code) == 0)) ||
-        (($shipping_country == 'US') && (preg_match('#^[0-9]{5}(-[0-9]{4})?$#', $shipping_post_code) == 0))
-    ) {
-        warn_exit(do_lang_tempcode('INVALID_ZIP_FOR_USA'));
+    if (($shipping_country == '') && ($billing_country == 'US') && ($billing_post_code == '')) {
+        warn_exit(do_lang_tempcode('ZIP_NEEDED_FOR_USA'));
+    }
+
+    if (($shipping_country == '') && ($billing_country == 'US') && (preg_match('#^[0-9]{5}(-[0-9]{4})?$#', $billing_post_code) == 0)) {
+        warn_exit(do_lang_tempcode('INVALID_ZIP_FOR_USA', escape_html($billing_post_code)));
+    }
+    if (($shipping_country == 'US') && (preg_match('#^[0-9]{5}(-[0-9]{4})?$#', $shipping_post_code) == 0)) {
+        warn_exit(do_lang_tempcode('INVALID_ZIP_FOR_USA', escape_html($shipping_post_code)));
     }
 }
 

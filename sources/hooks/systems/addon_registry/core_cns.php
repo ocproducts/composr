@@ -414,7 +414,7 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/config/valid_email_domains.php',
             'sources/hooks/systems/config/enable_birthdays.php',
             'sources/cns_field_editability.php',
-            'sources/hooks/systems/tasks/download_member_csv.php',
+            'sources/hooks/systems/tasks/export_member_csv.php',
             'sources/hooks/systems/tasks/cns_members_recache.php',
             'sources/hooks/systems/tasks/import_member_csv.php',
             'sources/blocks/main_members.php',

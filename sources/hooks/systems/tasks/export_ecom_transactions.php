@@ -87,7 +87,7 @@ class Hook_task_export_ecom_transactions
 
             $transaction[do_lang('AMOUNT')] = float_format($_transaction['t_amount']);
 
-            $transaction[do_lang(get_option('tax_system')) . ' (' . do_lang('TOTAL') . ')'] = float_format($_transaction['t_tax']);
+            $transaction[do_lang(get_option('tax_system')) . ' (' . do_lang('COUNT_TOTAL') . ')'] = float_format($_transaction['t_tax']);
             $tax_derivation = ($_transaction['s_tax_derivation'] == '') ? array() : json_decode($_transaction['s_tax_derivation'], true);
             foreach ($tax_categories as $tax_category) {
                 $transaction[do_lang(get_option('tax_system')) . ' (' . $tax_category . ')'] = float_format(isset($tax_derivation[$tax_category]) ? $tax_derivation[$tax_category] : 0.00);

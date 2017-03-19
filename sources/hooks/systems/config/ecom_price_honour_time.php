@@ -38,7 +38,7 @@ class Hook_config_ecom_price_honour_time
             'explanation' => 'CONFIG_OPTION_ecom_price_honour_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 3,
 
             'addon' => 'ecommerce',
         );

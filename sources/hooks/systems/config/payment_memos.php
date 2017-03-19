@@ -38,7 +38,7 @@ class Hook_config_payment_memos
             'explanation' => 'CONFIG_OPTION_payment_memos',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 4,
 
             'addon' => 'ecommerce',
         );

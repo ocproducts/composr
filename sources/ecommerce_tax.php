@@ -175,7 +175,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
     if (count($taxcloud_item_details) != 0) {
         check_taxcloud_configured_correctly();
 
-        if ($country == 'USA') {
+        if ($country == 'US') {
             // Cleanup address...
 
             $url = 'https://api.taxcloud.com/1.0/TaxCloud/VerifyAddress';
@@ -280,8 +280,8 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                     $tax = $cart_item['TaxAmount'];
                     $tax_derivation = array('TaxCloud' => $tax);
 
-                    $taxcloud_item_details[$i][2] = $tax;
-                    $taxcloud_item_details[$i][3] = $tax_derivation;
+                    $taxcloud_item_details[$i][2] = $tax_derivation;
+                    $taxcloud_item_details[$i][3] = $tax;
                     $taxcloud_item_details[$i][4] = $response['CartID'];
                     $item_details[$i] = $taxcloud_item_details[$i];
                 } else {
@@ -367,8 +367,8 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             $tax_derivation = array('?' => $tax);
         }
 
-        $non_taxcloud_item_details[$i][2] = $tax;
-        $non_taxcloud_item_details[$i][3] = $tax_derivation;
+        $non_taxcloud_item_details[$i][2] = $tax_derivation;
+        $non_taxcloud_item_details[$i][3] = $tax;
         $non_taxcloud_item_details[$i][4] = array();
         $item_details[$i] = $non_taxcloud_item_details[$i];
     }
@@ -376,8 +376,8 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
     foreach ($free_item_details as $i => $parts) {
         list($item, $details) = $parts;
 
-        $free_item_details[$i][2] = 0.00;
-        $free_item_details[$i][3] = array();
+        $free_item_details[$i][2] = array();
+        $free_item_details[$i][3] = 0.00;
         $free_item_details[$i][4] = array();
         $item_details[$i] = $free_item_details[$i];
     }
@@ -399,7 +399,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 function check_taxcloud_configured_correctly()
 {
     // Check for configuration errors
-    if (get_option('business_country') != 'USA') {
+    if (get_option('business_country') != 'US') {
         warn_exit(do_lang_tempcode('TIC__BUSINESS_COUNTRY_NOT_USA')); // TODO: Error mail to site in v11
     }
     if (get_option('currency') != 'USD') {

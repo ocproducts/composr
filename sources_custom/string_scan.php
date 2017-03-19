@@ -5039,6 +5039,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAIN_FORUM_NAME
         MAKE_MEMBER_GROUP_LEADER
         MAKE_PERIODIC_NEWSLETTER
+        CONFIG_OPTION_currency_auto
+        CURRENCY_AUTO
+        DESCRIPTION_TAX_EU
+        DESCRIPTION_TAX_RATE
+        DESCRIPTION_TAX_TIC
+        TAX_EU
+        TAX_RATE
+        TAX_TIC
+        MARK_AS_FULFILLED
         MANAGE_AWARDS
         MANAGE_BANNERS
         MANAGE_BLOGS
@@ -5078,7 +5087,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MANUAL_WCAG_SEMANTIC_BLOCKQUOTE
         MANUAL_WCAG_SEMANTIC_LIST
         MANY_PANEL_TYPES
-        FULFILLED
         MARK_AS_SPAMMER
         MARK_TASK_DONE
         MASQUERADE_AS_MEMBER
@@ -9234,6 +9242,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPACER_POST
         SPACER_POST_MATCHER
         SPACER_TOPIC_TITLE_WRAP
+        SPECIAL_CPF__cms_billing_city
+        SPECIAL_CPF__cms_billing_country
+        SPECIAL_CPF__cms_billing_county
+        SPECIAL_CPF__cms_billing_post_code
+        SPECIAL_CPF__cms_billing_state
+        SPECIAL_CPF__cms_billing_street_address
+        TAX_INVOICE
         SPECIAL_CPF__cms_city
         SPECIAL_CPF__cms_country
         SPECIAL_CPF__cms_county
@@ -9284,7 +9299,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         STARTER
         START_IM
         START_NEW_SUBSCRIPTION
-        START_SUBSCRIPTION
         STATIC_USERS_ONLINE
         STATISTICS
         STATUS
@@ -9310,6 +9324,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ZIP_NEEDED_FOR_USA
         INVALID_ZIP_FOR_USA
         INVALID_STATE_FOR_NON_USA
+        INVALID_STATE_FOR_USA
         SUBSCRIBE
         SUBSCRIBED_REMINDERS
         SUBSCRIBE_EVENT

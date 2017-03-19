@@ -1832,6 +1832,9 @@ function check_variable($variable, $reference = false, $function_guard = '')
     if (is_array($identifier)) {
         return null;
     }
+    if ($identifier === null) {
+        return null;
+    }
 
     global $LOCAL_VARIABLES;
     if ((!isset($LOCAL_VARIABLES[$identifier])) && !((is_array($identifier) && (in_array($identifier[0], array('CALL_METHOD')))))) {
