@@ -206,6 +206,7 @@ class Block_main_members
         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
             $where .= ' AND m_validated=1';
         }
+        $where .= ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
 
         $include_form = array_key_exists('include_form', $map) ? ($map['include_form'] == '1') : true;
 

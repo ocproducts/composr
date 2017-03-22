@@ -574,7 +574,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         if (!is_string($val)) {
             continue;
         }
-        $post .= $key . '=>' . $val . "\n\n";
+        $post .= $key . ' => ' . $val . "\n\n";
     }
 
     $count = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', array('ip' => $ip));

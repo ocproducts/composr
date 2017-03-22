@@ -1105,6 +1105,10 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         $update['m_validated_email_confirm_code'] = '';
         if (addon_installed('unvalidated')) {
             $update['m_validated'] = $validated;
+
+            if (($validated == 1) && ($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_validated') == 0)) {
+                $update['m_join_time'] = time(); // So welcome mails go out correctly
+            }
         }
     }
     if (!is_null($highlighted_name)) {

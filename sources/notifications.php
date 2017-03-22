@@ -1233,7 +1233,10 @@ class Hook_Notification
         }
         $clause_2 = is_null($only_if_enabled_on__category) ? db_string_equal_to('l_code_category', '') : ('(' . db_string_equal_to('l_code_category', '') . ' OR ' . db_string_equal_to('l_code_category', $only_if_enabled_on__category) . ')');
 
-        $clause_3 = '1=1';
+        $clause_3 = db_string_equal_to('m_validated_email_confirm_code', '');
+        if (addon_installed('unvalidated')) {
+            $clause_3 .= ' AND m_validated=1';
+        }
         if (!is_null($to_member_ids)) {
             if (count($to_member_ids) == 0) {
                 return array(array(), false);
