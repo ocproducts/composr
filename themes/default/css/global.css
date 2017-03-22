@@ -2150,7 +2150,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
 }
-.tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
+.tooltip_ownlayout, .tooltip_nolayout td {
 	background-color: {$GET,area_faded_background};
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 }

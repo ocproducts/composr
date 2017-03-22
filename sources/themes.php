@@ -142,6 +142,16 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
                         if ($missing) {
                             $url_path = '';
 
+                            // Dynamic fixup possible?
+                            if ($theme != 'default') {
+                                $url_path = $db->query_select_value_if_there('theme_images', 'path', array('id' => $id, 'theme' => 'default', 'lang' => $lang));
+                                if ($url_path !== null) {
+                                    $db->query_update('theme_images', array('path' => $url_path), array('id' => $id, 'theme' => $theme, 'lang' => $lang), '', 1);
+                                } else {
+                                    $db->query_delete('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang), '', 1);
+                                }
+                            }
+
                             $force_recache = true;
                         }
                     }

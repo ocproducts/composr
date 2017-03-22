@@ -2285,6 +2285,8 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 {
 	if (window.is_doing_a_drag) return; // Don't want tooltips appearing when doing a drag and drop operation
 
+	if (!ac) return;
+
 	//console.log('activate_tooltip');
 
 	if (!have_links)

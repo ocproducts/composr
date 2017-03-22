@@ -262,7 +262,7 @@ function count_catalogue_category_children($category_id)
 
     $rec_record = $GLOBALS['SITE_DB']->query_select('catalogue_childcountcache', array('c_num_rec_children', 'c_num_rec_entries'), array('cc_id' => $category_id), '', 1);
     if (!array_key_exists(0, $rec_record)) {
-        $rec_record[0] = array('c_num_rec_children' => 0, 'c_num_rec_entries' => 0);
+        $rec_record[0] = array('c_num_rec_children' => $out['num_children'], 'c_num_rec_entries' => $out['num_entries']);
     }
 
     $out['num_children_children'] = $rec_record[0]['c_num_rec_children'];
