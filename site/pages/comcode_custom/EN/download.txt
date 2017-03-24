@@ -38,13 +38,13 @@
 			<div class="cntLRow">
 				<div class="dlLogo" id="div_dlLogo">
 					<ul>
-						<li><a href="http://www.microsoft.com/web/gallery/composr.aspx" target="_blank"><img alt="Microsoft Web Platform" src="{$IMG*,composr_homesite/download/logo-microsoft}" /></a></li>
+						<li><a href="https://webgallery.microsoft.com/apps/ocPortal" target="_blank"><img alt="Microsoft Web Platform" src="{$IMG*,composr_homesite/download/logo-microsoft}" /></a></li>
 						<li><a href="http://www.softaculous.com/softwares/cms/composr" target="_blank"><img alt="Softaculous" src="{$IMG*,composr_homesite/download/logo-softaculous}" /></a></li>
 						<li><a href="http://installatron.com/" target="_blank"><img alt="Installatron" src="{$IMG*,composr_homesite/download/logo-installatron}" /></a></li>
 						<li><a href="http://bitnami.org/" target="_blank"><img alt="Bitnami" src="{$IMG*,composr_homesite/download/logo-bitnami}" /></a></li>
-						<li><a href="http://www.mojomarketplace.com/search?query=composr&amp;item_type_id=all"><img alt="Mojo marketplace" src="{$IMG*,composr_homesite/download/logo-mojo}" /></a></li>
-						<!--<li><a href="http://apsstandard.org"><img alt="APS standard" src="{$IMG*,composr_homesite/download/logo-aps}" /></a></li>-->
-						<li><a href="http://www.ampps.com/"><img src="{$IMG*,composr_homesite/download/logo-ampps}" alt="AMPPS"></a></li>
+						<li><a href="https://www.mojomarketplace.com/install/composr" target="_blank"><img alt="Mojo marketplace" src="{$IMG*,composr_homesite/download/logo-mojo}" /></a></li>
+						<!--<li><a href="http://apsstandard.org" target="_blank"><img alt="APS standard" src="{$IMG*,composr_homesite/download/logo-aps}" /></a></li>-->
+						<li><a href="http://www.ampps.com/" target="_blank"><img src="{$IMG*,composr_homesite/download/logo-ampps}" alt="AMPPS"></a></li>
 					</ul>
 				</div>
 
