@@ -30,11 +30,15 @@ Installing Composr on WampServer:
 [img]data_custom/images/docs/tut_windows/wampserver_composr.jpg[/img]
 [/hide]
 
-[title="3"]EasyPHP[/title]
+[title="3"]Further WAMP-style packages[/title]
 
-[url="EasyPHP"]http://www.easyphp.org/[/url] is similar to WampServer.
+Here are a few more:
+ - [url="EasyPHP"]http://www.easyphp.org/[/url]
+ - [url="XAMPP"]https://www.apachefriends.org/index.html[/url]
+ - [url="MAMP"]https://www.mamp.info/en/[/url]
+ - [url="AMPPS"]http://www.ampps.com/[/url] (which includes Softaculous)
 
-(there's also XAMPP and MAMP)
+We aren't in a position to tell you which is best at this time, we're just listing some options for you.
 
 [title="3"]Microsoft Web Platform[/title]
 
