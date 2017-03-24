@@ -163,12 +163,12 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             $post_code = $billing_post_code;
             $country = $billing_country;
         } else {
-            $street_address = $billing_street_address;
-            $city = $billing_city;
-            $county = $billing_county;
-            $state = $billing_state;
-            $post_code = $billing_post_code;
-            $country = $billing_country;
+            $street_address = $shipping_street_address;
+            $city = $shipping_city;
+            $county = $shipping_county;
+            $state = $shipping_state;
+            $post_code = $shipping_post_code;
+            $country = $shipping_country;
         }
     }
 
@@ -406,7 +406,7 @@ function check_taxcloud_configured_correctly()
         warn_exit(do_lang_tempcode('TIC__CURRENCY_NOT_USD')); // TODO: Error mail to site in v11
     }
     global $USA_STATE_LIST;
-    if (array_key_exists(get_option('business_state'), $USA_STATE_LIST)) {
+    if (!array_key_exists(get_option('business_state'), $USA_STATE_LIST)) {
         warn_exit(do_lang_tempcode('TIC__USA_STATE_INVALID')); // TODO: Error mail to site in v11
     }
     if ((get_option('taxcloud_api_key') == '') || (get_option('taxcloud_api_id') == '')) {

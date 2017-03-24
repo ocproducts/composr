@@ -22,10 +22,15 @@ class ecommerce_tax_test_set extends cms_test_case
     {
         require_code('ecommerce');
         require_code('config2');
+
+        set_option('taxcloud_api_id', '447BBD0');
+        set_option('taxcloud_api_key', '78C9B361-6015-480D-9956-D75F9A8C06EA');
     }
 
     public function testEUTax()
     {
+        set_option('currency', 'GBP');
+
         set_option('business_street_address', '1234 Scope');
         set_option('business_city', 'Hope');
         set_option('business_county', '');
@@ -51,6 +56,8 @@ class ecommerce_tax_test_set extends cms_test_case
 
     public function testUSTax()
     {
+        set_option('currency', 'USD');
+
         set_option('business_street_address', '1444 S. Alameda Street');
         set_option('business_city', 'Los Angeles');
         set_option('business_county', '');

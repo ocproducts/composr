@@ -1087,6 +1087,8 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
         }
     }
 
+    global $USA_STATE_LIST;
+
     if (($shipping_country == 'US') && ($shipping_state == '')) {
         warn_exit(do_lang_tempcode('STATE_NEEDED_FOR_USA'));
     }
@@ -1095,15 +1097,14 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
     }
 
     if (($shipping_country == 'US') && ($shipping_state != '') && (!array_key_exists($shipping_state, $USA_STATE_LIST))) {
-        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_USA'), escape_html($shipping_state));
+        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_USA', escape_html($shipping_state)));
     }
     if (($shipping_country == '') && ($billing_country == 'US') && ($billing_state != '') && (!array_key_exists($billing_state, $USA_STATE_LIST))) {
-        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_USA'), escape_html($billing_state));
+        warn_exit(do_lang_tempcode('INVALID_STATE_FOR_USA', escape_html($billing_state)));
     }
 
 	 // We make sure a non-USA country does not select a USA state as the mistake is 'easy' to make in the default list
 	 // We only do it if it is a list though, hence the business_country check
-    global $USA_STATE_LIST;
     if (($shipping_country != 'US') && (get_option('business_country') == 'US') && ($shipping_state != '') && (array_key_exists($shipping_state, $USA_STATE_LIST))) {
         warn_exit(do_lang_tempcode('INVALID_STATE_FOR_NON_USA', escape_html($shipping_country), escape_html($shipping_state)));
     }
