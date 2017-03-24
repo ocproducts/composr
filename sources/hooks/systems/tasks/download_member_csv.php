@@ -53,8 +53,10 @@ class Hook_task_download_member_csv
 
         // What to filter on
         if ($preset == '') {
-            if (!in_array($order_by, $fields_to_use)) {
-                $fields_to_use[] = $order_by;
+            foreach (explode(',', $order_by) as $_order_by) {
+                if ((!in_array($_order_by, $fields_to_use)) && (isset($_headings[$_order_by]))) {
+                    $fields_to_use[] = $_order_by;
+                }
             }
         } else {
             $presets = $this->_get_export_presets();

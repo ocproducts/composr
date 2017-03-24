@@ -431,6 +431,11 @@ function step_1()
         }
     }
 
+    // Github downloads should not be used directly
+    if (file_exists(get_file_base() . '/_tests')) {
+        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => 'You appear to be installing via the official github repository. This is not intended for end-users and will lead to a bloated insecure site. You should use an official package from the Composr download page.')));
+    }
+
     // Language selection...
 
     if (file_exists('lang_custom/langs.ini')) {
