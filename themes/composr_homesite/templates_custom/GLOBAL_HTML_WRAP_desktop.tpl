@@ -173,6 +173,10 @@
 					<div class="ftrBtm">
 						Copyright &copy; <a href="{$PAGE_LINK*,ocproducts:}">ocProducts Ltd</a>, {$FROM_TIMESTAMP*,%Y}. All rights reserved. Composr was formerly known as ocPortal.
 					</div>
+
+					<div class="ftrBtm">
+						<strong>Did you know?</strong> {$BLOCK,block=main_quotes}
+					</div>
 				</div>
 
 				<div class="ftrRight">

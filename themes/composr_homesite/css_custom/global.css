@@ -170,12 +170,12 @@ ul.ftr {
 		width:820px;
 		display:block;
 	{+END}
-	height:32px;
+	overflow: hidden;
 	margin:0;
 	padding:0;
-	padding-bottom:10px;
+	padding-bottom:4px;
 }
-ul.ftr li { list-style:none; float:left; margin:0; padding:0px 22px; font-size:13px; color:#666; line-height:32px; background-image:url('{$IMG;,composr_homesite/head-bullet}'); background-repeat:no-repeat; background-position:right 15px; font-weight:bold; }
+ul.ftr li { list-style:none; float:left; margin:0; padding:0px 22px; font-size:13px; color:#666; background-image:url('{$IMG;,composr_homesite/head-bullet}'); background-repeat:no-repeat; background-position:right 6px; font-weight:bold; }
 ul.ftr li:last-child { background-image:none; }
 ul.ftr li a, ul.ftr li .button_hyperlink { color:#666; text-decoration:none; }
 ul.ftr li a:hover, ul.ftr li .button_hyperlink:hover { color:#E5922C; text-decoration:none; }
@@ -185,7 +185,7 @@ ul.ftr li a:hover, ul.ftr li .button_hyperlink:hover { color:#E5922C; text-decor
 	.ftrImg .one { float:left; width:66px; height:55px; margin-right:6px; }
 	.ftrImg .two { float:left; width:41px; height:55px; }
 
-	.ftrBtm { overflow:hidden; color:#666; font-size:13px; text-align:center; background-image:url('{$IMG;,composr_homesite/ftr-sep-bg}'); background-position:top center; background-repeat:no-repeat; padding-top:15px; }
+	.ftrBtm { overflow:hidden; color:#666; font-size:13px; padding-top:10px; padding-left:20px; background-position:top center; background-repeat:no-repeat; }
 
 	.ttGeekCred, .ttGeekCred h2 { background:black !important; color:green !important; }
 	.ttGeekCred .geekCred {	font-family:courier !important; }
