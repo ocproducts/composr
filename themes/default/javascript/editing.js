@@ -13,7 +13,7 @@ function wysiwyg_on() {
 
 function toggle_wysiwyg(name) {
     if (!$cms.$CONFIG_OPTION.wysiwyg) {
-        window.fauxmodal_alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
+        $cms.ui.alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
         return false;
     }
 
@@ -576,10 +576,10 @@ function find_tags_in_editor(editor, element) {
                     var block_name = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
                     var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(block_name) + '&field_name=' + field_name + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + keep_stub();
                     url = url + '&block_type=' + (((field_name.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
-                    window.faux_open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+                    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 } else {
                     var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tag_type) + '&field_name=' + field_name + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + keep_stub();
-                    window.faux_open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+                    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 }
                 return false;
             }
@@ -971,7 +971,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
                     if ($cms.$MOBILE) {
                         window.open(url);
                     } else {
-                        faux_open(url, null, 'width=960;height=500', '_top');
+                        $cms.ui.open(url, null, 'width=960;height=500', '_top');
                     }
 
                     if (!preDisabled) {

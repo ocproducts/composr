@@ -100,7 +100,7 @@
             result = load_snippet(url);
 
             if (!result || result.includes('<html')) {
-                window.fauxmodal_alert('{!ERROR_OCCURRED;^}');
+                $cms.ui.alert('{!ERROR_OCCURRED;^}');
             } else {
                 document.getElementById('css_result_' + params.fileId).value = result;
             }
@@ -217,17 +217,17 @@
         });
 
         function add_template() {
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 '{!themes:INPUT_TEMPLATE_TYPE;^}',
                 'templates',
                 function (subdir) {
                     if (subdir !== null) {
                         if (subdir != 'templates' && subdir != 'css' && subdir != 'javascript' && subdir != 'text' && subdir != 'xml') {
-                            window.fauxmodal_alert('{!BAD_TEMPLATE_TYPE;^}');
+                            $cms.ui.alert('{!BAD_TEMPLATE_TYPE;^}');
                             return;
                         }
 
-                        window.fauxmodal_prompt(
+                        $cms.ui.prompt(
                             '{!themes:INPUT_TEMPLATE_NAME;^}',
                             'example',
                             function (file) {
@@ -379,7 +379,7 @@
             }
 
             if (window.template_editor_open_files[file].unsaved_changes) {
-                fauxmodal_confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
+                $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
                     if (result) {
                         template_editor_tab_unload_content(file);
                     }

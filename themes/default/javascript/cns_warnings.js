@@ -32,7 +32,7 @@
         document.getElementById('saved_delete__' + id).getElementsByTagName('input')[1].addEventListener('click', function () {
             var form = this.form;
 
-            window.fauxmodal_confirm(params.question, function (answer) {
+            $cms.ui.confirm(params.question, function (answer) {
                 if (answer) {
                     form.submit();
                 }

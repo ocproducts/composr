@@ -30,7 +30,7 @@
             if (add_form_marked_posts(btn.form, 'mark_')) {
                 $cms.ui.disableButton(btn);
             } else {
-                window.fauxmodal_alert('{!NOTHING_SELECTED;}');
+                $cms.ui.alert('{!NOTHING_SELECTED;}');
                 e.preventDefault();
             }
         }
@@ -90,11 +90,11 @@
             introQuestionUrl = params.introQuestionUrl;
 
         $cms.dom.on(container, 'click', '.js-click-open-forum-rules-popup', function () {
-            window.faux_open(maintain_theme_in_link(forumRulesUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
+            $cms.ui.open(maintain_theme_in_link(forumRulesUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
 
         $cms.dom.on(container, 'click', '.js-click-open-intro-question-popup', function () {
-            window.faux_open(maintain_theme_in_link(introQuestionUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
+            $cms.ui.open(maintain_theme_in_link(introQuestionUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
     };
 
@@ -108,7 +108,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-check-marked-form-and-submit', function (e, clicked) {
             if (!add_form_marked_posts(markedPostActionsForm, 'mark_')) {
-                window.fauxmodal_alert('{!NOTHING_SELECTED;}');
+                $cms.ui.alert('{!NOTHING_SELECTED;}');
                 e.preventDefault();
                 return;
             }
@@ -151,7 +151,7 @@
             }
             var answer = ((j >= minSelections) && (j <= maxSelections));
             if (!answer) {
-                window.fauxmodal_alert(error);
+                $cms.ui.alert(error);
                 return false;
             }
 
@@ -170,7 +170,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
             if (checkbox.checked) {
-                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
                     }

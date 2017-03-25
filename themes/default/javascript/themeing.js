@@ -122,7 +122,7 @@ function template_editor_tab_save_content(file) {
 
     var post = 'contents=' + encodeURIComponent(get_file_textbox(file).value);
     load_snippet(url, post, function (ajax_result) {
-        fauxmodal_alert(ajax_result.responseText, null, null, true);
+        $cms.ui.alert(ajax_result.responseText, null, null, true);
         template_editor_tab_mark_nonchanged_content(file);
     });
 }
@@ -227,7 +227,7 @@ function template_editor_preview(file_id, url, button, ask_for_url) {
     }
 
     if (ask_for_url) {
-        window.fauxmodal_prompt(
+        $cms.ui.prompt(
             '{!themes:URL_TO_PREVIEW_WITH;^}',
             url,
             function (url) {
@@ -290,9 +290,9 @@ function template_insert_parameter(dropdown_name, file_id) {
 
     var has_editarea = editarea_is_loaded(textbox.name);
 
-    if ((value == 'BLOCK') && ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays)) {
+    if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays)) {
         var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + keep_stub();
-        window.faux_showModalDialog(
+        $cms.ui.showModalDialog(
             maintain_theme_in_link(url),
             null,
             'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
@@ -352,7 +352,7 @@ function template_insert_parameter(dropdown_name, file_id) {
 
 function _get_parameter_parameters(definite_gets, parameter, arity, box, name, value, num_done, params, callback) {
     if (num_done < definite_gets) {
-        window.fauxmodal_prompt(
+        $cms.ui.prompt(
             '{!themes:INPUT_NECESSARY_PARAMETER;^}' + ', ' + parameter[num_done],
             '',
             function (v) {
@@ -365,7 +365,7 @@ function _get_parameter_parameters(definite_gets, parameter, arity, box, name, v
         );
     } else {
         if ((arity == '0+') || (arity == '1+')) {
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
                 '',
                 function (v) {
@@ -378,7 +378,7 @@ function _get_parameter_parameters(definite_gets, parameter, arity, box, name, v
             );
         }
         else if ((arity == '0-1') || (arity == '3-4')) {
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
                 '',
                 function (v) {
@@ -798,7 +798,7 @@ function css_equation_helper(file_id, theme) {
     var result = load_snippet(url);
 
     if (result == '' || result.indexOf('<html') != -1) {
-        window.fauxmodal_alert('{!ERROR_OCCURRED;^}');
+        $cms.ui.alert('{!ERROR_OCCURRED;^}');
     } else {
         document.getElementById('css_result_' + file_id).value = result;
     }

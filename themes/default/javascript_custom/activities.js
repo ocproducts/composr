@@ -112,7 +112,7 @@ function s_update_show(data, stat) {
 }
 
 function s_update_remove(event, id) {
-    window.fauxmodal_confirm(
+    $cms.ui.confirm(
         '{!activities:DELETE_CONFIRM;^}',
         function (result) {
             if (result) {

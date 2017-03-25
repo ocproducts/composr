@@ -233,12 +233,12 @@
         $cms.dom.on(container, 'click', '.js-click-menu-editor-add-new-page', function () {
             var form = $cms.dom.$id('edit_form');
 
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 $cms.$CONFIG_OPTION.collapse_user_zones ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}',
                 '',
                 function (zone) {
                     if (zone !== null) {
-                        window.fauxmodal_prompt(
+                        $cms.ui.prompt(
                             '{!javascript:ENTER_PAGE;^}',
                             '',
                             function (page) {
@@ -393,7 +393,7 @@
                     }
                 );
             } else {
-                window.fauxmodal_confirm(
+                $cms.ui.confirm(
                     '{!CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     function (result) {
                         if (result)

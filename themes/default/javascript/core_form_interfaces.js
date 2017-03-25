@@ -102,7 +102,7 @@
             if (old_permission_copying !== name) {// Starting a new copying session
                 button.style.textDecoration = 'blink';
                 window.permission_copying = name;
-                window.fauxmodal_alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
+                $cms.ui.alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
                 for (var i = 0; i < trs.length; i++) {
                     if (trs[i] !== tr) {
                         trs[i].onclick = copy_permissions_function(trs[i], tr);
@@ -585,7 +585,7 @@
 
             el.onchange = function () {
                 if (this.checked) {
-                    window.fauxmodal_confirm(
+                    $cms.ui.confirm(
                         '{!ARE_YOU_SURE_DELETE;^}',
                         function (result) {
                             if (result) {
@@ -811,12 +811,12 @@
 
         $cms.dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
             var url = maintain_theme_in_link(link.href);
-            window.faux_open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $cms.dom.on(inputRow, 'click', '.js-link-click-open-site-emoticon-chooser-window', function (e, link) {
             var url = maintain_theme_in_link(link.href);
-            window.faux_open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
     };
 
@@ -841,10 +841,10 @@
                     if ((inputs[i].value != '-1') && (inputs[i].value != '')) {
                         if (!done_one) {
                             if (old_comcode.indexOf('attachment_safe') == -1) {
-                                window.fauxmodal_alert('{!javascript:ATTACHMENT_SAVED;^}');
+                                $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             } else {
                                 if (!main_window.is_wysiwyg_field(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
-                                    window.fauxmodal_alert('{!javascript:ATTACHMENT_SAVED;^}');
+                                    $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             }
                         }
                         done_one = true;
@@ -945,7 +945,7 @@
                 target_window.insert_comcode_tag();
 
                 if (message != '') {
-                    window.fauxmodal_alert(message, function () {
+                    $cms.ui.alert(message, function () {
                         shutdown_overlay();
                     });
                 } else {
@@ -1068,7 +1068,7 @@
                 if (e) {
                     e.onchange = function () {
                         if (this.checked) {
-                            window.fauxmodal_confirm(
+                            $cms.ui.confirm(
                                 '{!ARE_YOU_SURE_DELETE;^}',
                                 function (result) {
                                     var e = document.getElementById('j_' + name + '_0');
@@ -1207,7 +1207,7 @@
             found.onchange = function () {
                 if (iframe) {
                     if ((iframe.contentDocument) && (iframe.contentDocument.getElementsByTagName('form').length != 0)) {
-                        window.fauxmodal_confirm(
+                        $cms.ui.confirm(
                             '{!Q_SURE_LOSE;^}',
                             function (result) {
                                 if (result) {
@@ -1298,17 +1298,17 @@
 
         form.onsubmit = function () {
             if ((form.elements['confirm'] !== undefined) && (form.elements['confirm'].type == 'checkbox') && (!form.elements['confirm'].checked)) {
-                window.fauxmodal_alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
+                $cms.ui.alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
                 return false;
             }
 
             if ((form.elements['email_address_confirm'] !== undefined) && (form.elements['email_address_confirm'].value != form.elements['email_address'].value)) {
-                window.fauxmodal_alert('{!cns:EMAIL_ADDRESS_MISMATCH;^}');
+                $cms.ui.alert('{!cns:EMAIL_ADDRESS_MISMATCH;^}');
                 return false;
             }
 
             if ((form.elements['password_confirm'] !== undefined) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
-                window.fauxmodal_alert('{!cns:PASSWORD_MISMATCH;^}');
+                $cms.ui.alert('{!cns:PASSWORD_MISMATCH;^}');
                 return false;
             }
 

@@ -101,7 +101,7 @@
 
                         if (successEl.textContent === '0') {
                             if (feedbackEl.textContent.startsWith('{!MUST_LOGIN;^}')) { //if refusal is due to login expiry...
-                                window.fauxmodal_alert('{!MUST_LOGIN;^}');
+                                $cms.ui.alert('{!MUST_LOGIN;^}');
                             } else {
                                 view.notificationEl.className = 'update_error';
                                 view.notificationEl.textContent = feedbackEl.textContent;

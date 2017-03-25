@@ -175,7 +175,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         url += keep_stub();
 
         window.setTimeout(function () {
-            window.faux_showModalDialog(
+            $cms.ui.showModalDialog(
                 maintain_theme_in_link(url),
                 '',
                 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes',
@@ -267,7 +267,7 @@ function do_input_quote(field_name) {
     if (window.insert_textbox_wrapping === undefined) return;
 
     var post = document.getElementById(field_name);
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_QUOTE_BY;^}',
         '',
         function (va) {
@@ -281,7 +281,7 @@ function do_input_box(field_name) {
     if (window.insert_textbox_wrapping === undefined) return;
 
     var post = document.getElementById(field_name);
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_BOX_TITLE;^}',
         '',
         function (va) {
@@ -294,12 +294,12 @@ function do_input_box(field_name) {
 function do_input_menu(field_name) {
     if (window.insert_textbox === undefined) return;
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_MENU_NAME;^,' + (document.getElementById(field_name).form.menu_items.value) + '}',
         '',
         function (va) {
             if (va) {
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_MENU_CAPTION;^}',
                     '',
                     function (vb) {
@@ -321,7 +321,7 @@ function do_input_menu(field_name) {
 function do_input_block(field_name) {
     var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + field_name + keep_stub();
     url = url + '&block_type=' + (((field_name.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
-    window.faux_open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
 function do_input_comcode(field_name, tag) {
@@ -390,7 +390,7 @@ function do_input_comcode(field_name, tag) {
     }
     url += keep_stub();
 
-    window.faux_open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
 function do_input_list(field_name, add) {
@@ -400,7 +400,7 @@ function do_input_list(field_name, add) {
 
     var post = document.getElementById(field_name);
     insert_textbox(post, '\n');
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_LIST_ENTRY;^}',
         '',
         function (va) {
@@ -429,12 +429,12 @@ function do_input_list(field_name, add) {
 function do_input_hide(field_name) {
     if (window.insert_textbox === undefined) return;
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_WARNING;^}',
         '',
         function (va) {
             if (va) {
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_HIDDEN_TEXT;^}',
                     '',
                     function (vb) {
@@ -459,12 +459,12 @@ function do_input_thumb(field_name, va) {
         if (test) return;
     }
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_URL;^}',
         va,
         function (va) {
             if ((va != null) && (va.indexOf('://') == -1)) {
-                window.fauxmodal_alert('{!javascript:NOT_A_URL;^}', function () {
+                $cms.ui.alert('{!javascript:NOT_A_URL;^}', function () {
                     do_input_url(field_name, va);
                 });
                 return;
@@ -477,7 +477,7 @@ function do_input_thumb(field_name, va) {
                     '{!comcode:INPUT_COMCODE_img;^}',
                     null,
                     function (vb) {
-                        window.fauxmodal_prompt(
+                        $cms.ui.prompt(
                             '{!javascript:ENTER_IMAGE_CAPTION;^}',
                             '',
                             function (vc) {
@@ -505,12 +505,12 @@ function do_input_attachment(field_name) {
         return;
     }
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_ATTACHMENT;^}',
         '',
         function (val) {
             if (!is_integer(val)) {
-                window.fauxmodal_alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
+                $cms.ui.alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
             } else {
                 var element = document.getElementById(field_name);
                 insert_textbox(element, '[attachment]new_' + val + '[/attachment]');
@@ -535,19 +535,19 @@ function do_input_attachment(field_name) {
 function do_input_url(field_name, va) {
     if (window.insert_textbox === undefined) return;
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_URL;^}',
         va,
         function (va) {
             if ((va != null) && (va.indexOf('://') == -1)) {
-                window.fauxmodal_alert('{!javascript:NOT_A_URL;^}', function () {
+                $cms.ui.alert('{!javascript:NOT_A_URL;^}', function () {
                     do_input_url(field_name, va);
                 });
                 return;
             }
 
             if (va !== null) {
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_LINK_NAME;^}',
                     '',
                     function (vb) {
@@ -569,15 +569,15 @@ function do_input_page(field_name) {
 
     var result;
 
-    if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
-        window.faux_showModalDialog(
+    if (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
+        $cms.ui.showModalDialog(
             maintain_theme_in_link('{$FIND_SCRIPT;,page_link_chooser}' + keep_stub(true)),
             null,
             'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',
             function (result) {
                 if ((result === undefined) || (result === null)) return;
 
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_CAPTION;^}',
                     '',
                     function (vc) {
@@ -588,19 +588,19 @@ function do_input_page(field_name) {
             }
         );
     } else {
-        window.fauxmodal_prompt(
+        $cms.ui.prompt(
             '{!javascript:ENTER_ZONE;^}',
             '',
             function (va) {
                 if (va !== null) {
-                    window.fauxmodal_prompt(
+                    $cms.ui.prompt(
                         '{!javascript:ENTER_PAGE;^}',
                         '',
                         function (vb) {
                             if (vb !== null) {
                                 result = va + ':' + vb;
 
-                                window.fauxmodal_prompt(
+                                $cms.ui.prompt(
                                     '{!javascript:ENTER_CAPTION;^}',
                                     '',
                                     function (vc) {
@@ -626,19 +626,19 @@ function _do_input_page(field_name, result, vc) {
 function do_input_email(field_name, va) {
     if (window.insert_textbox === undefined) return;
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_ADDRESS;^}',
         va,
         function (va) {
             if ((va != null) && (va.indexOf('@') == -1)) {
-                window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;^}', function () {
+                $cms.ui.alert('{!javascript:NOT_A_EMAIL;^}', function () {
                     do_input_url(field_name, va);
                 });
                 return;
             }
 
             if (va !== null) {
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_CAPTION;^}',
                     '',
                     function (vb) {
@@ -679,7 +679,7 @@ function do_input_font(field_name) {
     var size = form.elements['f_size'];
     var colour = form.elements['f_colour'];
     if ((face.value == '') && (size.value == '') && (colour.value == '')) {
-        window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
+        $cms.ui.alert('{!javascript:NO_FONT_SELECTED;^}');
         return;
     }
     insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]');
@@ -830,7 +830,7 @@ function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
     // If we've found something to restore then invite user to restore it
     biggest_length_data = biggest_length_data.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').replace(/&nbsp;/g, ' '); // Strip HTML and new lines
     if (biggest_length_data.length > 100) biggest_length_data = biggest_length_data.substr(0, 100) + '...'; // Trim down if needed
-    window.fauxmodal_confirm(
+    $cms.ui.confirm(
         '{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggest_length_data,
         function (result) {
             if (result) {
@@ -969,7 +969,7 @@ function handle_form_saving_explicit(event, form) {
                     if (document.body.style.cursor == 'wait') document.body.style.cursor = '';
 
                     var message = found_validated_field ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
-                    fauxmodal_alert(message, null, '{!javascript:DRAFT_SAVE;^}');
+                    $cms.ui.alert(message, null, '{!javascript:DRAFT_SAVE;^}');
                 }, post);
             }
         }

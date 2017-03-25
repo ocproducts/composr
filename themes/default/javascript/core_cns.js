@@ -190,7 +190,7 @@
             if (form.elements['edit_password'] !== undefined) {
                 if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['edit_password'].value)) {
                     document.getElementById('submit_button').disabled = false;
-                    window.fauxmodal_alert('{!PASSWORD_MISMATCH;^}');
+                    $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
                     return false;
                 }
 

@@ -35,7 +35,7 @@
                 $cms.ui.disableButton(btn);
             } else {
                 e.preventDefault();
-                window.fauxmodal_alert('{!NOTHING_SELECTED=;}');
+                $cms.ui.alert('{!NOTHING_SELECTED=;}');
             }
         });
     };

@@ -32,7 +32,7 @@ CKEDITOR.plugins.add('imagepaste',{
 			// Safari cannot work
 			if (CKEDITOR.env.webkit && (html.indexOf('webkit-fake-url')>0))
 			{
-				fauxmodal_alert(window.lang_NO_IMAGE_PASTE_SAFARI);
+				$cms.ui.alert(window.lang_NO_IMAGE_PASTE_SAFARI);
 				html=html.replace(/<img src="webkit-fake-url:.*?">/g,'');
 			}
 

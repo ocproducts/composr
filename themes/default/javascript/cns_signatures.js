@@ -20,7 +20,7 @@
             }
             if (post.value.length > size) {
 
-                window.fauxmodal_alert('{!SIGNATURE_TOO_BIG;^}');
+                $cms.ui.alert('{!SIGNATURE_TOO_BIG;^}');
                 return false;
             }
         });

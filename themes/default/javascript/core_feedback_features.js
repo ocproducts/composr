@@ -106,7 +106,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         },
 
         clickBtnSubmit: function (e, button) {

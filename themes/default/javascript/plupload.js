@@ -13120,7 +13120,7 @@ function begin_form_uploading(e, ob, recurse) {
 
         var ret2 = ob.original_click_handler(e, ob, btn_submit.form, true);
         if (ret2 && !ret) {
-            window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN^;}');
+            $cms.ui.alert('{!IMPROPERLY_FILLED_IN^;}');
         }
 
         if (!recurse && ret && ret2) {
@@ -13150,7 +13150,7 @@ function begin_form_uploading(e, ob, recurse) {
         smooth_scroll(find_pos_y(filename_field, true));
 
         if (btn_submit.form.offsetHeight > get_window_height()) // If possibly cannot see upload progress bars
-            window.fauxmodal_alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
+            $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
     } else {
         if (!ob.original_click_handler) {
             if ((btn_submit.form.onsubmit) && (false === btn_submit.form.onsubmit())) {
@@ -13382,7 +13382,7 @@ function upload_error(ob, error) {
 
     var filename_field = document.getElementById(ob.settings.txtFileName);
     if (filename_field.value != '')
-        window.fauxmodal_alert(error.message);
+        $cms.ui.alert(error.message);
     filename_field.value = '';
 
     if (file) {
@@ -13907,7 +13907,7 @@ function html5_upload(event, field_name, files) {
             }
         }
         if (!good_type) {
-            window.fauxmodal_alert('{!INVALID_FILE_TYPE_GENERAL;^}'.replace(/\{\1\\}/g, file_ext).replace(/\\{2\\}/g, valid_types.join(', ')));
+            $cms.ui.alert('{!INVALID_FILE_TYPE_GENERAL;^}'.replace(/\{\1\\}/g, file_ext).replace(/\\{2\\}/g, valid_types.join(', ')));
             continue;
         }
 

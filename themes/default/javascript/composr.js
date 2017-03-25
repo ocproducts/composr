@@ -1322,7 +1322,7 @@ var encodeUC = encodeURIComponent;
         var read = read_cookie(cookieName);
 
         if (read && (read !== cookieValue) && $cms.$DEV_MODE && !alertedCookieConflict) {
-            window.fauxmodal_alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
+            $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
             alertedCookieConflict = true;
         }
     }
@@ -3441,6 +3441,12 @@ var encodeUC = encodeURIComponent;
             : '';
     };
 
+    /**
+     * JS port of the escape_comcode()
+     * @memberof $cms.filter
+     * @param {string} str
+     * @returns {string}
+     */
     $cms.filter.comcode = function comcode(str) {
         return ((str != null) && (str = strVal(str))) ?
             str.replace(/\\/g, '\\\\')
@@ -3448,9 +3454,194 @@ var encodeUC = encodeURIComponent;
             : '';
     };
 
-    var tempDisabledButtons = {};
+    /**
+     * @memberof $cms.ui
+     */
+    $cms.ui.confirm = function confirm(question, callback, title, unescaped) {
+        title || (title = '{!Q_SURE;^}');
+        unescaped = !!unescaped;
+
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            callback(window.confirm(question));
+            return;
+        }
+
+        var my_confirm = {
+            type: 'confirm',
+            text: unescaped ? question : $cms.filter.html(question).replace(/\n/g, '<br />'),
+            yes_button: '{!YES;^}',
+            no_button: '{!NO;^}',
+            cancel_button: null,
+            title: title,
+            yes: function () {
+                callback(true);
+            },
+            no: function () {
+                callback(false);
+            },
+            width: '450'
+        };
+        $cms.openModalWindow(my_confirm);
+    };
 
     /**
+     * @memberof $cms.ui
+     */
+    $cms.ui.alert = function alert(notice, callback, title, unescaped) {
+        notice = strVal(notice);
+        callback || (callback = noop);
+        title = strVal(title) || '{!MESSAGE;^}';
+        unescaped = !!unescaped;
+
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            window.alert(notice);
+            callback();
+            return;
+        }
+
+        var myAlert = {
+            type: 'alert',
+            text: unescaped ? notice : $cms.filter.html(notice).replace(/\n/g, '<br />'),
+            yes_button: '{!INPUTSYSTEM_OK;^}',
+            width: '600',
+            yes: callback,
+            title: title,
+            cancel_button: null
+        };
+
+        $cms.openModalWindow(myAlert);
+    };
+
+    /**
+     * @memberof $cms.ui
+     */
+    $cms.ui.prompt = function prompt(question, defaultValue, callback, title, input_type) {
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            callback(window.prompt(question, defaultValue));
+            return;
+        }
+
+        var myPrompt = {
+            type: 'prompt',
+            text: $cms.filter.html(question).replace(/\n/g, '<br />'),
+            yes_button: '{!INPUTSYSTEM_OK;^}',
+            cancel_button: '{!INPUTSYSTEM_CANCEL;^}',
+            defaultValue: (defaultValue === null) ? '' : defaultValue,
+            title: title,
+            yes: function (value) {
+                callback(value);
+            },
+            cancel: function () {
+                callback(null);
+            },
+            width: '450'
+        };
+        if (input_type) {
+            myPrompt.input_type = input_type;
+        }
+        $cms.openModalWindow(myPrompt);
+
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            callback(window.prompt(question, defaultValue));
+            return;
+        }
+    };
+
+    /**
+     * @memberof $cms.ui
+     */
+    $cms.ui.showModalDialog = function showModalDialog(url, name, options, callback, target, cancel_text) {
+        callback = callback || noop;
+
+        if (!($cms.$CONFIG_OPTION.js_overlays)) {
+            options = options.replace('height=auto', 'height=520');
+
+            var timer = new Date().getTime();
+            try {
+                var result = window.showModalDialog(url, name, options);
+            } catch (ignore) {
+                // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
+            }
+            var timer_now = new Date().getTime();
+            if (timer_now - 100 > timer) {// Not popup blocked
+                if ((result === undefined) || (result === null)) {
+                    callback(null);
+                } else {
+                    callback(result);
+                }
+            }
+            return;
+        }
+
+        var width = null, height = null, scrollbars = null, unadorned = null;
+
+        if (cancel_text === undefined) {
+            cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
+        }
+
+        if (options) {
+            var parts = options.split(/[;,]/g), i;
+            for (i = 0; i < parts.length; i++) {
+                var bits = parts[i].split('=');
+                if (bits[1] !== undefined) {
+                    if ((bits[0] == 'dialogWidth') || (bits[0] == 'width'))
+                        width = bits[1].replace(/px$/, '');
+                    if ((bits[0] == 'dialogHeight') || (bits[0] == 'height')) {
+                        if (bits[1] == '100%') {
+                            height = '' + (get_window_height() - 200);
+                        } else {
+                            height = bits[1].replace(/px$/, '');
+                        }
+                    }
+                    if (((bits[0] == 'resizable') || (bits[0] == 'scrollbars')) && scrollbars !== true)
+                        scrollbars = ((bits[1] == 'yes') || (bits[1] == '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
+                    if (bits[0] == 'unadorned') unadorned = ((bits[1] == 'yes') || (bits[1] == '1'));
+                }
+            }
+        }
+
+        if (url.includes(window.location.host)) {
+            url += (!url.includes('?') ? '?' : '&') + 'overlay=1';
+        }
+
+        var my_frame = {
+            type: 'iframe',
+            finished: function (value) {
+                callback(value);
+            },
+            name: name,
+            width: width,
+            height: height,
+            scrollbars: scrollbars,
+            href: url.replace(/^https?:/, window.location.protocol)
+        };
+        my_frame.cancel_button = (unadorned !== true) ? cancel_text : null;
+        if (target) {
+            my_frame.target = target;
+        }
+        $cms.openModalWindow(my_frame);
+    };
+
+    /**
+     * @memberof $cms.ui
+     */
+    $cms.ui.open = function open(url, name, options, target, cancel_text) {
+        if (cancel_text === undefined) {
+            cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
+        }
+
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            options = options.replace('height=auto', 'height=520');
+            window.open(url, name, options);
+            return;
+        }
+
+        $cms.ui.showModalDialog(url, name, options, null, target, cancel_text);
+    };
+
+    var tempDisabledButtons = {};
+    /**
+     * @memberof $cms.ui
      * @param btn
      * @param permanent
      */
@@ -3486,7 +3677,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.ui
      * @param form
      * @param permanent
      */
@@ -3500,6 +3691,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
+     * @memberof $cms.ui
      * @param permanent
      */
     $cms.ui.disableSubmitAndPreviewButtons = function disableSubmitAndPreviewButtons(permanent) {
@@ -3516,7 +3708,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms
      * @param options
      * @returns { $cms.views.ModalWindow }
      */
@@ -4936,7 +5128,7 @@ var encodeUC = encodeURIComponent;
             if (dialog_height === undefined) {
                 dialog_height = 180;
             }
-            window.faux_showModalDialog(
+            $cms.ui.showModalDialog(
                 url,
                 null,
                 'dialogWidth=' + dialog_width + ';dialogHeight=' + dialog_height + ';status=no;unadorned=yes',
@@ -4953,7 +5145,7 @@ var encodeUC = encodeURIComponent;
         }
 
         if (button_set.length == 1) {
-            window.fauxmodal_alert(
+            $cms.ui.alert(
                 fallback_message ? fallback_message : message,
                 function () {
                     callback(button_set[0]);
@@ -4961,7 +5153,7 @@ var encodeUC = encodeURIComponent;
                 window_title
             );
         } else if (button_set.length == 2) {
-            window.fauxmodal_confirm(
+            $cms.ui.confirm(
                 fallback_message ? fallback_message : message,
                 function (result) {
                     callback(result ? button_set[1] : button_set[0]);
@@ -4979,7 +5171,7 @@ var encodeUC = encodeURIComponent;
                 message = fallback_message;
             }
 
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 message,
                 '',
                 function (result) {
@@ -5088,7 +5280,7 @@ var encodeUC = encodeURIComponent;
                     try {
                         if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
                             if (!networkDownAlerted && !window.unloaded) {
-                                window.fauxmodal_alert('{!NETWORK_DOWN;^}');
+                                $cms.ui.alert('{!NETWORK_DOWN;^}');
                                 networkDownAlerted = true;
                             }
                         } else {
@@ -5121,11 +5313,11 @@ var encodeUC = encodeURIComponent;
 
                 if (ajaxResultFrame.querySelector('error')) {
                     // It's an error :|
-                    window.fauxmodal_alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.data + ') message was returned by the server: ' + message);
+                    $cms.ui.alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.data + ') message was returned by the server: ' + message);
                     return;
                 }
 
-                window.fauxmodal_alert('An informational message was returned by the server: ' + message);
+                $cms.ui.alert('An informational message was returned by the server: ' + message);
                 return;
             }
 
@@ -5151,7 +5343,7 @@ var encodeUC = encodeURIComponent;
 
             if (xhr.responseText && xhr.responseText.includes('<html')) {
                 $cms.error('do_ajax_request(): ', xhr);
-                fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
 
@@ -5292,7 +5484,7 @@ function noop() {}
                 $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
             }
 
-            window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
+            $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
             return false;
         }
 
@@ -5463,7 +5655,7 @@ function noop() {}
 
             // But non blank tells us the username, and there is an implication that no session is confirmed for this login
             if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!USERNAME;^}',
                     '',
                     function (promptt) {
@@ -5478,7 +5670,7 @@ function noop() {}
         });
 
         function _confirm_session(callback, username, url) {
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
                 '',
                 function (promptt) {
@@ -6724,172 +6916,6 @@ function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) 
     }
 }
 
-
-function fauxmodal_confirm(question, callback, title, unescaped) {
-    title || (title = '{!Q_SURE;^}');
-    unescaped = !!unescaped;
-
-    if (!$cms.$CONFIG_OPTION.js_overlays) {
-        callback(window.confirm(question));
-        return;
-    }
-
-    var my_confirm = {
-        type: 'confirm',
-        text: unescaped ? question : $cms.filter.html(question).replace(/\n/g, '<br />'),
-        yes_button: '{!YES;^}',
-        no_button: '{!NO;^}',
-        cancel_button: null,
-        title: title,
-        yes: function () {
-            callback(true);
-        },
-        no: function () {
-            callback(false);
-        },
-        width: '450'
-    };
-    $cms.openModalWindow(my_confirm);
-}
-
-function fauxmodal_alert(notice, callback, title, unescaped) {
-    notice = strVal(notice);
-    callback || (callback = noop);
-    title = strVal(title) || '{!MESSAGE;^}';
-    unescaped = !!unescaped;
-
-    if (!$cms.$CONFIG_OPTION.js_overlays) {
-        window.alert(notice);
-        callback();
-        return;
-    }
-
-    var myAlert = {
-        type: 'alert',
-        text: unescaped ? notice : $cms.filter.html(notice).replace(/\n/g, '<br />'),
-        yes_button: '{!INPUTSYSTEM_OK;^}',
-        width: '600',
-        yes: callback,
-        title: title,
-        cancel_button: null
-    };
-
-    $cms.openModalWindow(myAlert);
-}
-
-function fauxmodal_prompt(question, defaultValue, callback, title, input_type) {
-    if (!$cms.$CONFIG_OPTION.js_overlays) {
-        callback(window.prompt(question, defaultValue));
-        return;
-    }
-
-    var myPrompt = {
-        type: 'prompt',
-        text: $cms.filter.html(question).replace(/\n/g, '<br />'),
-        yes_button: '{!INPUTSYSTEM_OK;^}',
-        cancel_button: '{!INPUTSYSTEM_CANCEL;^}',
-        defaultValue: (defaultValue === null) ? '' : defaultValue,
-        title: title,
-        yes: function (value) {
-            callback(value);
-        },
-        cancel: function () {
-            callback(null);
-        },
-        width: '450'
-    };
-    if (input_type) {
-        myPrompt.input_type = input_type;
-    }
-    $cms.openModalWindow(myPrompt);
-}
-
-function faux_showModalDialog(url, name, options, callback, target, cancel_text) {
-    callback = callback || noop;
-
-    if (!($cms.$CONFIG_OPTION.js_overlays)) {
-        options = options.replace('height=auto', 'height=520');
-
-        var timer = new Date().getTime();
-        try {
-            var result = window.showModalDialog(url, name, options);
-        } catch (ignore) {
-            // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
-        }
-        var timer_now = new Date().getTime();
-        if (timer_now - 100 > timer) {// Not popup blocked
-            if ((result === undefined) || (result === null)) {
-                callback(null);
-            } else {
-                callback(result);
-            }
-        }
-        return;
-    }
-
-    var width = null, height = null, scrollbars = null, unadorned = null;
-
-    if (cancel_text === undefined) {
-        cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
-    }
-
-    if (options) {
-        var parts = options.split(/[;,]/g), i;
-        for (i = 0; i < parts.length; i++) {
-            var bits = parts[i].split('=');
-            if (bits[1] !== undefined) {
-                if ((bits[0] == 'dialogWidth') || (bits[0] == 'width'))
-                    width = bits[1].replace(/px$/, '');
-                if ((bits[0] == 'dialogHeight') || (bits[0] == 'height')) {
-                    if (bits[1] == '100%') {
-                        height = '' + (get_window_height() - 200);
-                    } else {
-                        height = bits[1].replace(/px$/, '');
-                    }
-                }
-                if (((bits[0] == 'resizable') || (bits[0] == 'scrollbars')) && scrollbars !== true)
-                    scrollbars = ((bits[1] == 'yes') || (bits[1] == '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
-                if (bits[0] == 'unadorned') unadorned = ((bits[1] == 'yes') || (bits[1] == '1'));
-            }
-        }
-    }
-
-    if (url.includes(window.location.host)) {
-        url += (!url.includes('?') ? '?' : '&') + 'overlay=1';
-    }
-
-    var my_frame = {
-        type: 'iframe',
-        finished: function (value) {
-            callback(value);
-        },
-        name: name,
-        width: width,
-        height: height,
-        scrollbars: scrollbars,
-        href: url.replace(/^https?:/, window.location.protocol)
-    };
-    my_frame.cancel_button = (unadorned !== true) ? cancel_text : null;
-    if (target) {
-        my_frame.target = target;
-    }
-    $cms.openModalWindow(my_frame);
-}
-
-function faux_open(url, name, options, target, cancel_text) {
-    if (cancel_text === undefined) {
-        cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
-    }
-
-    if (!$cms.$CONFIG_OPTION.js_overlays) {
-        options = options.replace('height=auto', 'height=520');
-        window.open(url, name, options);
-        return;
-    }
-
-    faux_showModalDialog(url, name, options, null, target, cancel_text);
-}
-
 (function () {
     /*
      Faux frames and faux scrolling
@@ -7318,9 +7344,9 @@ function faux_open(url, name, options, target, cancel_text) {
             if (xhr.responseText !== 'false') {
                 if (xhr.responseText.length > 1000) {
                     $cms.log('do_ajax_field_test()', 'xhr.responseText:', xhr.responseText);
-                    window.fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                    $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
                 } else {
-                    window.fauxmodal_alert(xhr.responseText);
+                    $cms.ui.alert(xhr.responseText);
                 }
             }
             return false;
@@ -7735,7 +7761,7 @@ function faux_open(url, name, options, target, cancel_text) {
         has_separate_preview = !!has_separate_preview;
 
         if (!$cms.dom.$id('preview_iframe')) {
-            fauxmodal_alert('{!ADBLOCKER;^}');
+            $cms.ui.alert('{!ADBLOCKER;^}');
             return false;
         }
 
@@ -7929,14 +7955,14 @@ function faux_open(url, name, options, target, cancel_text) {
                     erroneous = true;
                 }
                 if (!alerted) {
-                    window.fauxmodal_alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(total_file_size / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(the_form.elements['MAX_FILE_SIZE'].value / 1024)));
+                    $cms.ui.alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(total_file_size / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(the_form.elements['MAX_FILE_SIZE'].value / 1024)));
                 }
                 alerted = true;
             }
         }
 
         if (erroneous) {
-            if (!alerted) window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
+            if (!alerted) $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
             var posy = find_pos_y(error_element, true);
             if (posy == 0) {
                 posy = find_pos_y(error_element.parentNode, true);
@@ -7991,7 +8017,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 }
                 if (!type_ok) {
                     error_msg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
-                    if (!alerted) window.fauxmodal_alert(error_msg);
+                    if (!alerted) $cms.ui.alert(error_msg);
                     alerted = true;
                 }
             }
@@ -8210,7 +8236,7 @@ function faux_open(url, name, options, target, cancel_text) {
         }
 
         function alertNotInPreviewMode() {
-            window.fauxmodal_alert('{!NOT_IN_PREVIEW_MODE;^}');
+            $cms.ui.alert('{!NOT_IN_PREVIEW_MODE;^}');
             return false;
         }
     }

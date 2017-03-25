@@ -62,7 +62,7 @@
                 message = params.confirmDeleteMessage,
                 id = encodeURIComponent(params.id);
 
-            window.fauxmodal_confirm(message, function (result) {
+            $cms.ui.confirm(message, function (result) {
                 if (result) {
                     load_snippet('checklist_task_manage', 'type=delete&id=' + id);
                     viewEl.style.display = 'none';
@@ -294,7 +294,7 @@
 
                 $cms.dom.html(element_replace, xhtml);
 
-                window.fauxmodal_alert('{!SUCCESS;^}');
+                $cms.ui.alert('{!SUCCESS;^}');
 
                 return false; // We've handled it internally
             }

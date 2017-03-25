@@ -57,7 +57,7 @@
             progressTicker.style.verticalAlign = 'middle';
             progressTicker.style.marginLeft = '20px';
             button.parentNode.appendChild(progressTicker, button);
-            window.fauxmodal_alert('{!CALCULATED_SIZE;^}'.replace('\{1\}', load_snippet('backup_size&max_size=' + encodeURIComponent(max_size_field.value))));
+            $cms.ui.alert('{!CALCULATED_SIZE;^}'.replace('\{1\}', load_snippet('backup_size&max_size=' + encodeURIComponent(max_size_field.value))));
             button.parentNode.removeChild(progressTicker);
         });
 

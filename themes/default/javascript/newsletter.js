@@ -5,7 +5,7 @@
         var form = document.getElementById('password').form;
         form.addEventListener('submit', function () {
             if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
-                window.fauxmodal_alert('{!PASSWORD_MISMATCH;^}');
+                $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
                 return false;
             }
         });
@@ -52,7 +52,7 @@
             }
 
             e.preventDefault();
-            window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;}');
+            $cms.ui.alert('{!javascript:NOT_A_EMAIL;}');
         });
     };
 

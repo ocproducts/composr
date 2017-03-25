@@ -175,7 +175,7 @@
                     imgsThumbs.push(as[i].firstElementChild.src);
 
                     as[i].addEventListener('click', (function (x) {
-                        open_images_into_lightbox(imgs, x);
+                        openImageIntoLightbox(imgs, x);
                         return false;
                     }).bind(undefined, x));
 
@@ -205,11 +205,11 @@
 
                 $cms.dom.html(mediaSet, mediaSetHtml);
                 $cms.dom.on(mediaSet.querySelector('.js-click-open-images-into-lightbox'), 'click', function () {
-                    open_images_into_lightbox(imgs);
+                    openImageIntoLightbox(imgs);
                 });
             }
 
-            function open_images_into_lightbox(imgs, start) {
+            function openImageIntoLightbox(imgs, start) {
                 start = +start || 0;
 
                 var modal = _open_image_into_lightbox(imgs[start][0], imgs[start][1], start + 1, imgs.length, true, imgs[start][2]);
@@ -360,7 +360,7 @@
 
         $cms.dom.on(container, 'click', '.js-link-click-open-emoticon-chooser-window', function (e, link) {
             var url = maintain_theme_in_link(link.href);
-            window.faux_open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $cms.dom.on(container, 'click', '.js-click-toggle-wysiwyg', function () {
@@ -384,7 +384,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
             e.preventDefault();
-            window.faux_open(maintain_theme_in_link(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
+            $cms.ui.open(maintain_theme_in_link(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
         window.rebuild_attachment_button_for_next = rebuild_attachment_button_for_next;

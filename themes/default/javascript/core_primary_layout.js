@@ -38,7 +38,7 @@
                 }
             } else {
                 if (read_cookie('hide_helper_panel') == '') {
-                    window.fauxmodal_confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
+                    $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
                         if (answer) {
                             _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
                         }

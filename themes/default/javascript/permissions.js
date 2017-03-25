@@ -94,7 +94,7 @@ function copy_permission_presets(name, value, just_track) {
     }
 
     if ((!just_track) && (elements.length == 2) && (made_change)) {
-        window.fauxmodal_alert('{!permissions:JUST_PRESETS;^}');
+        $cms.ui.alert('{!permissions:JUST_PRESETS;^}');
     }
 
     return made_change;

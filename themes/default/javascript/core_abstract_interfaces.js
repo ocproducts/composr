@@ -25,7 +25,7 @@
             message = $cms.format('{!javascript:ENTER_PAGE_NUMBER;^}', numPages);
 
         $cms.dom.on(link, 'click', function () {
-            window.fauxmodal_prompt(message, numPages, function (res) {
+            $cms.ui.prompt(message, numPages, function (res) {
                 if (!res) {
                     return;
                 }
@@ -55,7 +55,7 @@
 
             if (autoAdd) {
                 e.preventDefault();
-                window.fauxmodal_confirm('{!KEEP_ADDING_QUESTION;^}', function (answer) {
+                $cms.ui.confirm('{!KEEP_ADDING_QUESTION;^}', function (answer) {
                     var append = '';
                     if (answer) {
                         append += url.includes('?') ? '&' : '?';
@@ -68,7 +68,7 @@
 
             if (warning && clickedLink.classList.contains('js-click-confirm-warning')) {
                 e.preventDefault();
-                window.fauxmodal_confirm(warning, function (answer) {
+                $cms.ui.confirm(warning, function (answer) {
                     if (answer) {
                         $cms.navigate(url, target);
                     }
@@ -113,7 +113,7 @@
                 link.onclick = function (event) {
                     event.preventDefault();
                     cancel_bubbling(event);
-                    window.fauxmodal_confirm(
+                    $cms.ui.confirm(
                         '{!KEEP_ADDING_QUESTION;^}',
                         function (test) {
                             if (test) {

@@ -45,7 +45,7 @@
 
         checkChatOptions: function (e, form) {
             if (!form.elements.text_colour.value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) {
-                window.fauxmodal_alert('{!chat:BAD_HTML_COLOUR;^}');
+                $cms.ui.alert('{!chat:BAD_HTML_COLOUR;^}');
                 e.preventDefault();
                 return;
             }
@@ -73,7 +73,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         }
     });
 
@@ -159,7 +159,7 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-open-chat-emoticons-popup', function () {
-            var openFunc = (window.opener ? window.open : window.faux_open),
+            var openFunc = (window.opener ? window.open : $cms.ui.open),
                 popupUrl = strVal(params.emoticonsPopupUrl);
 
             openFunc(maintain_theme_in_link(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
@@ -223,7 +223,7 @@
         $cms.dom.on(container, 'click', '.js-click-btn-dump-friends-confirm', function (e, btn) {
             var people = get_ticked_people(btn.form);
             if (people) {
-                window.fauxmodal_confirm('{!Q_SURE=;}', function (result) {
+                $cms.ui.confirm('{!Q_SURE=;}', function (result) {
                     if (result) {
                         $cms.ui.disableButton(btn);
                         btn.form.submit();
@@ -249,7 +249,7 @@
             if (add_form_marked_posts(btn.form, 'del_')) {
                 $cms.ui.disableButton(btn);
             } else {
-                window.fauxmodal_alert('{!NOTHING_SELECTED=;}');
+                $cms.ui.alert('{!NOTHING_SELECTED=;}');
                 e.preventDefault();
             }
         });
@@ -336,7 +336,7 @@
         $cms.dom.on(container, 'click', '.js-click-require-sound-selection', function () {
             var select = $cms.dom.$('#select_' + key +  (memberId ? ('_' + memberId) : ''));
             if (select.value === '') {
-                window.fauxmodal_alert('{!PLEASE_SELECT_SOUND;}');
+                $cms.ui.alert('{!PLEASE_SELECT_SOUND;}');
             } else {
                 play_sound_url(select.value);
             }
@@ -459,7 +459,7 @@ function get_ticked_people(form) {
     }
 
     if (people === '') {
-        window.fauxmodal_alert('{!chat:NOONE_SELECTED_YET;^}');
+        $cms.ui.alert('{!chat:NOONE_SELECTED_YET;^}');
         return '';
     }
 
@@ -470,12 +470,12 @@ function do_input_private_message(field_name) {
     if (window.insert_textbox === undefined) {
         return;
     }
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
         function (va) {
             if (va != null) {
-                var vb = window.fauxmodal_prompt(
+                var vb = $cms.ui.prompt(
                     '{!MESSAGE;^}',
                     '',
                     function (vb) {
@@ -495,12 +495,12 @@ function do_input_invite(field_name) {
     if (window.insert_textbox === undefined) {
         return;
     }
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
         function (va) {
             if (va != null) {
-                var vb = window.fauxmodal_prompt(
+                var vb = $cms.ui.prompt(
                     '{!chat:ENTER_CHATROOM;^}',
                     '',
                     function (vb) {
@@ -518,7 +518,7 @@ function do_input_new_room(field_name) {
     if (window.insert_textbox === undefined) {
         return;
     }
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!chat:ENTER_CHATROOM;^}',
         '',
         function (va) {
@@ -574,7 +574,7 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
 
                 play_chat_sound('message_sent');
             } else {
-                window.fauxmodal_alert('{!MESSAGE_POSTING_ERROR;^}');
+                $cms.ui.alert('{!MESSAGE_POSTING_ERROR;^}');
             }
 
             // Reschedule the next check (cc_timer was reset already higher up in function)
@@ -1160,7 +1160,7 @@ function start_im(people, just_refocus) {
             } catch (ignore) {}
         }
 
-        window.fauxmodal_confirm(
+        $cms.ui.confirm(
             message,
             function (answer) {
                 if (answer) _start_im(people, false); // false, because can't recycle if its already open
@@ -1192,7 +1192,7 @@ function _start_im(people, may_recycle) {
 function invite_im(people) {
     var room_id = find_current_im_room();
     if (!room_id) {
-        window.fauxmodal_alert('{!NO_IM_ACTIVE;^}');
+        $cms.ui.alert('{!NO_IM_ACTIVE;^}');
     } else {
         do_ajax_request('{$FIND_SCRIPT;,messages}?action=invite_im' + keep_stub(false), function () {
         }, 'room_id=' + encodeURIComponent(room_id) + '&people=' + people);
@@ -1370,7 +1370,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
         var im_popup_window_options = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
         var new_window = window.open($cms.baseUrl('data/empty.html?instant_messaging'), 'room_' + room_id, im_popup_window_options); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
         if ((!new_window) || (new_window.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
-            fauxmodal_alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
+            $cms.ui.alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
         }
         window.setTimeout(function () // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
         {

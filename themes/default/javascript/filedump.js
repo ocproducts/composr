@@ -20,7 +20,7 @@
         var container = this;
 
         if(params.fileLink) {
-            faux_open(params.fileLink, null, 'width=950;height=700', '_top');
+            $cms.ui.open(params.fileLink, null, 'width=950;height=700', '_top');
         }
 
         find_url_tab();
@@ -43,7 +43,7 @@
             var action = form.elements['action'].value;
 
             if (!action) {
-                fauxmodal_alert('{!SELECT_AN_ACTION;^}');
+                $cms.ui.alert('{!SELECT_AN_ACTION;^}');
                 return false;
             }
 
@@ -57,7 +57,7 @@
                 }
             }
 
-            fauxmodal_alert('{!NOTHING_SELECTED_YET;^}');
+            $cms.ui.alert('{!NOTHING_SELECTED_YET;^}');
             return false;
         }
     };

@@ -529,7 +529,7 @@
 
             e.preventDefault();
             message = clicked.dataset.cmsConfirmClick;
-            window.fauxmodal_confirm(message, function (result) {
+            $cms.ui.confirm(message, function (result) {
                 if (result) {
                     view._confirmedClick = uid;
                     clicked.click();
@@ -549,7 +549,7 @@
         // Implementation for [data-click-alert] and [data-keypress-alert]
         showModalAlert: function (e, target) {
             var options = objVal($cms.dom.data(target, e.type + 'Alert'), 'notice');
-            fauxmodal_alert(options.notice);
+            $cms.ui.alert(options.notice);
         },
 
         preventDefault: function (e) {
@@ -698,7 +698,7 @@
         // Implementation for [data-click-faux-open]
         clickFauxOpen: function (e, el) {
             var args = arrVal($cms.dom.data(el, 'clickFauxOpen'));
-            window.faux_open.apply(undefined, args);
+            $cms.ui.open.apply(undefined, args);
         },
 
         // Implementation for `click a[rel*="lightbox"]`
@@ -1172,7 +1172,7 @@
                     if (src.includes('{$BASE_URL_NOHTTP;^}/themes/')) {
                         ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG) + '&theme=' + encodeURIComponent($cms.$THEME) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + keep_stub(), 'edit_theme_image_' + ob.id);
                     } else {
-                        window.fauxmodal_alert('{!NOT_THEME_IMAGE;^}');
+                        $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
                     }
 
                     return false;
@@ -1223,7 +1223,7 @@
                     window.done_one_error = true;
                     var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
                     if (window.document.body) {// i.e. if loaded
-                        window.fauxmodal_alert(alert, null, '{!ERROR_OCCURRED;^}');
+                        $cms.ui.alert(alert, null, '{!ERROR_OCCURRED;^}');
                     }
                 }
                 return false;
@@ -1473,7 +1473,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
             if (checkbox.checked) {
-                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
                     }
@@ -1501,7 +1501,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
             if (checkbox.checked) {
-                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
                     }
@@ -1555,7 +1555,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
             if (checkbox.checked) {
-                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
                     }
@@ -1627,7 +1627,7 @@
             url_stripped = url.replace(/#.*/, ''),
             new_url = url_stripped + (!url_stripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
 
-        faux_open(new_url, null, 'width=' + options.width + ';height=' + options.height, options.target);
+        $cms.ui.open(new_url, null, 'width=' + options.width + ';height=' + options.height, options.target);
     }
 
     function convert_tooltip(el) {
@@ -1690,7 +1690,7 @@
     function confirm_delete(form, multi, callback) {
         multi = !!multi;
 
-        window.fauxmodal_confirm(
+        $cms.ui.confirm(
             multi ? '{!_ARE_YOU_SURE_DELETE;^}' : '{!ARE_YOU_SURE_DELETE;^}',
             function (result) {
                 if (result) {

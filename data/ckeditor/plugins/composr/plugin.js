@@ -52,7 +52,7 @@
 					if (typeof window.lang_PREFER_CMS_ATTACHMENTS == 'undefined' || has_selection) {
 						editor.execCommand('image');
 					} else {
-						fauxmodal_alert(window.lang_PREFER_CMS_ATTACHMENTS, function () {
+						$cms.ui.alert(window.lang_PREFER_CMS_ATTACHMENTS, function () {
 							editor.execCommand('image');
 						});
 					}

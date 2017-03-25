@@ -173,7 +173,7 @@ class Hook_pointstore_pop3
             var form = document.getElementById('pass1').form;
             form.addEventListener('submit', function() {
                 if ((form.elements['pass1'].value!=form.elements['pass2'].value)) {
-                    window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
+                    $cms.ui.alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
                     return false;
                 }
             });

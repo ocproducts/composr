@@ -17,7 +17,7 @@
 					<div class="login_block_cookies">
 						<div class="float_surrounder">
 							<label for="ps_remember">{!REMEMBER_ME}</label>
-							<input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} type="checkbox" value="1" id="ps_remember" name="remember" />
+							<input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} type="checkbox" value="1" id="ps_remember" name="remember" />
 						</div>
 						{+START,IF,{$CONFIG_OPTION,is_on_invisibility}}
 							<div class="float_surrounder">
