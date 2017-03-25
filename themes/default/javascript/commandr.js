@@ -171,11 +171,11 @@ function commandr_command_response(ajax_result_frame, ajax_result) {
     }
 
     // Deal with the response: add the result to the command_line
-    var method = merge_text_nodes(ajax_result.querySelector('command').childNodes);
-    var stdcommand = merge_text_nodes(ajax_result.querySelector('stdcommand').childNodes);
+    var method = ajax_result.querySelector('command').textContent;
+    var stdcommand = ajax_result.querySelector('stdcommand').textContent;
     var stdhtml = ajax_result.querySelector('stdhtml').firstElementChild;
-    var stdout = merge_text_nodes(ajax_result.querySelector('stdout').childNodes);
-    var stderr = merge_text_nodes(ajax_result.querySelector('stderr').childNodes);
+    var stdout = ajax_result.querySelector('stdout').textContent;
+    var stderr = ajax_result.querySelector('stderr').textContent;
 
     var past_command_text = document.createTextNode(method + ' \u2192 ');
     past_command_prompt.appendChild(past_command_text);

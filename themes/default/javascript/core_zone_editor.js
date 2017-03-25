@@ -135,7 +135,7 @@
                     }
 
                     var element = $cms.dom.$id('view_' + loading_preview_of);
-                    $cms.dom.html(element, merge_text_nodes(ajax_result.childNodes).replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
+                    $cms.dom.html(element, ajax_result.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
 
                     $cms.form.disablePreviewScripts(element);
                 }

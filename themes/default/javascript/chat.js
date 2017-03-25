@@ -796,7 +796,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
         else if (messages[i].nodeName == 'chat_members_update') // UPDATE MEMBERS LIST IN ROOM
         {
             var members_element = document.getElementById('chat_members_update');
-            if (members_element) $cms.dom.html(members_element, merge_text_nodes(messages[i].childNodes));
+            if (members_element) $cms.dom.html(members_element, messages[i].textContent);
         }
 
         else if ((messages[i].nodeName == 'chat_event') && (window.im_participant_template !== undefined)) // Some kind of transitory event
@@ -807,7 +807,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
             username = messages[i].getAttribute('username');
             avatar_url = messages[i].getAttribute('avatar_url');
 
-            id = merge_text_nodes(messages[i].childNodes);
+            id = messages[i].textContent;
 
             switch (event_type) {
                 case 'BECOME_ACTIVE':
@@ -948,7 +948,7 @@ function process_chat_xml_messages(ajax_result, skip_incoming_sound) {
         } else // INVITES
 
         if ((messages[i].nodeName == 'chat_invite') && (window.im_participant_template !== undefined)) {
-            room_id = merge_text_nodes(messages[i].childNodes);
+            room_id = messages[i].textContent;
 
             if ((!document.getElementById('room_' + room_id)) && (( opened_popups['room_' + room_id] === undefined) || (opened_popups['room_' + room_id].is_shutdown))) {
                 room_name = messages[i].getAttribute('room_name');

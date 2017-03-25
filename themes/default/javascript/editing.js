@@ -167,7 +167,7 @@ function disable_wysiwyg(forms, so, so2, discard) {
                     } else {
                         var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
                         var result = result_tags[0];
-                        textarea.value = merge_text_nodes(result.childNodes).replace(/\s*$/, '');
+                        textarea.value = result.textContent.replace(/\s*$/, '');
                     }
                     if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') == -1) && (textarea.value != '')) textarea.value += '{\$,page hint: no_wysiwyg}';
                 }
@@ -294,7 +294,7 @@ function load_html_edit(posting_form, ajax_copy) {
                         posting_form.elements[counter].value = '';
                     } else {
                         var result = result_tags[0];
-                        posting_form.elements[counter].value = merge_text_nodes(result.childNodes);
+                        posting_form.elements[counter].value = result.textContent;
                     }
                 }
             }
@@ -620,7 +620,7 @@ function find_tags_in_editor(editor, element) {
 
                         do_ajax_request(url, function (ajax_result_frame, ajax_result) {
                             if (ajax_result) {
-                                var tmp_rendered = merge_text_nodes(ajax_result.childNodes);
+                                var tmp_rendered = ajax_result.textConten;
                                 if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
                                     self_ob.rendered_tooltip = tmp_rendered;
                                 }
@@ -746,7 +746,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
             if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
                 var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
                 var result = result_tags[0];
-                insert = merge_text_nodes(result.childNodes).replace(/\s*$/, '');
+                insert = result.textContent.replace(/\s*$/, '');
             }
         }
 
@@ -873,7 +873,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
             var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
             var result = result_tags[0];
-            new_html = merge_text_nodes(result.childNodes).replace(/\s*$/, '');
+            new_html = result.textContent.replace(/\s*$/, '');
             /* result is an XML-escaped string of HTML, so we get via looking at the node text */
         } else {
             new_html = selected_html;

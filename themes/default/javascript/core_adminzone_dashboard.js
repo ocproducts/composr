@@ -282,7 +282,7 @@
             var result = request.responseXML.documentElement.querySelector('result');
 
             if (result) {
-                var xhtml = merge_text_nodes(result.childNodes);
+                var xhtml = result.textContent;
 
                 var element_replace = form;
                 while (element_replace.className !== 'form_ajax_target') {

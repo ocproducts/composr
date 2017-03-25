@@ -6508,7 +6508,7 @@ var encodeUC = encodeURIComponent;
                 methodEl = ajaxResultFrame.querySelector('method');
 
             if (methodEl || ajaxCallbacks[i]) {
-                method = methodEl ? eval('return ' + merge_text_nodes(methodEl)) : ajaxCallbacks[i];
+                method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallbacks[i];
             }
 
             var messageEl = ajaxResultFrame.querySelector('message');
@@ -8188,7 +8188,6 @@ function play_self_audio_link(ob) {
 
 (function () {
     window.call_block = call_block;
-    window.merge_text_nodes = merge_text_nodes;
 
     var _blockDataCache = {};
     // This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
@@ -8308,15 +8307,5 @@ function play_self_audio_link(ob) {
                 $cms.dom.outerHtml(target_div, new_html);
             }
         }
-    }
-
-    function merge_text_nodes(childNodes) {
-        var i, text = '';
-        for (i = 0; i < childNodes.length; i++) {
-            if (childNodes[i].nodeName === '#text') {
-                text += childNodes[i].data;
-            }
-        }
-        return text;
     }
 }());
