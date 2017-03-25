@@ -832,7 +832,7 @@
 
         if (!($cms.$CONFIG_OPTION.show_inline_stats)) {
             playerOptions.events.onPlay = function () {
-                ga_track(null, '{!AUDIO;^}', params.url);
+                $cms.gaTrack(null, '{!AUDIO;^}', params.url);
             };
         }
 
@@ -875,7 +875,7 @@
 
         if (!$cms.$CONFIG_OPTION.show_inline_stats) {
             playerOptions.events.onPlay = function () {
-                ga_track(null, '{!VIDEO;^}', params.url);
+                $cms.gaTrack(null, '{!VIDEO;^}', params.url);
             };
         }
 

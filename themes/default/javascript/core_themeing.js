@@ -373,7 +373,7 @@
         close_button.style.height = '16px';
         close_button.style.verticalAlign = 'middle';
         close_button.addEventListener('click', function (event) {
-            cancel_bubbling(event);
+            event.stopPropagation();
             if (event.cancelable) {
                 event.preventDefault();
             }

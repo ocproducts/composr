@@ -38,7 +38,7 @@
 
 				success: function(media) {
 					{+START,IF,{$NOT,{$INLINE_STATS}}}
-						media.addEventListener('play',function() { ga_track(null,'{!AUDIO;/}','{URL;/}'); });
+						media.addEventListener('play',function() { $cms.gaTrack(null,'{!AUDIO;/}','{URL;/}'); });
 					{+END}
 					if (document.getElementById('next_slide'))
 					{

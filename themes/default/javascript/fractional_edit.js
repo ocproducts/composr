@@ -13,7 +13,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         return null;
     }
 
-    cancel_bubbling(event);
+    event.stopPropagation();
     event.preventDefault();
 
     // Position form
@@ -162,7 +162,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
 
     // If we activate it again, we actually treat this as a cancellation
     object.onclick = object.ondblclick = function (event) {
-        cancel_bubbling(event);
+        event.stopPropagation();
         if (event.cancelable) {
             event.preventDefault();
         }

@@ -112,7 +112,7 @@
             links.forEach(function (link) {
                 link.onclick = function (event) {
                     event.preventDefault();
-                    cancel_bubbling(event);
+                    event.stopPropagation();
                     $cms.ui.confirm(
                         '{!KEEP_ADDING_QUESTION;^}',
                         function (test) {

@@ -782,7 +782,7 @@
             var options = objVal($cms.dom.data(clicked, 'clickGaTrack'));
 
             e.preventDefault();
-            ga_track(clicked, options.category, options.action);
+            $cms.gaTrack(clicked, options.category, options.action);
         },
 
         // Implementation for [data-click-tray-toggle="<TRAY ID>"]
@@ -1165,7 +1165,7 @@
                 var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
                 if (src && (force || (magic_keypress(event)))) {
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)
-                    cancel_bubbling(event);
+                    event.stopPropagation();
 
                     if (event.preventDefault !== undefined) event.preventDefault();
 

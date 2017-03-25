@@ -4762,13 +4762,13 @@
                         current_list_for_copy.disabled = false;
                     }, 200);
 
-                    return cancel_bubbling(event);
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }
                 if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
                     if (event.cancelable) {
                         event.preventDefault();
                     }
-                    return cancel_bubbling(event);
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }
                 return null;
             };
@@ -4778,7 +4778,7 @@
                     if (event.cancelable) {
                         event.preventDefault();
                     }
-                    return cancel_bubbling(event);
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }
                 return null;
             };
@@ -4787,7 +4787,7 @@
                     if (event.cancelable) {
                         event.preventDefault();
                     }
-                    return cancel_bubbling(event);
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }
                 return null;
             };
@@ -4815,7 +4815,7 @@
                         if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
                     }
                     list.options[list.selectedIndex].selected = true;
-                    return cancel_bubbling(event);
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }
 
                 if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
@@ -4837,7 +4837,7 @@
                         }
                     }
                     list.options[list.selectedIndex].selected = true;
-                    return cancel_bubbling(event);
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }
                 return null;
             }
@@ -5282,7 +5282,7 @@
 
             $cms.dom.on(this.boxWrapperEl.firstElementChild, 'click', function (e) {
                 try {
-                    that.top_window.cancel_bubbling(e);
+                    e && e.target && e.stopPropagation && e.stopPropagation();
                 } catch (e) {}
 
                 if ($cms.$MOBILE && (that.type === 'lightbox')) {// IDEA: Swipe detect would be better, but JS does not have this natively yet
@@ -6134,7 +6134,7 @@
             var i,
                 selected_before = (element.value == '') ? [] : (this.object.multi_selection ? element.value.split(',') : [element.value]);
 
-            cancel_bubbling(event);
+            event.stopPropagation();
             event.preventDefault();
 
             if (!assume_ctrl && event.shiftKey && this.object.multi_selection) {
@@ -7692,7 +7692,7 @@ function resize_frame(name, min_height) {
                     } catch (e) {
                     }
 
-                    return cancel_bubbling(event);
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }; // Needed for Opera
             }
         }
@@ -7727,12 +7727,6 @@ function trigger_resize(and_subframes) {
     }
 }
 
-/* Event listeners */
-
-function cancel_bubbling(event) {
-    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
-}
-
 /* Update a URL to maintain the current theme into it */
 function maintain_theme_in_link(url) {
     var usp = $cms.uspFromUrl(url),
@@ -7759,8 +7753,14 @@ function keep_stub(starting) {// `starting` set to true means "Put a '?' for the
     return (starting ? '?' : '&') + keep;
 }
 
-/* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
-function ga_track(el, category, action) {
+/**
+ * Google Analytics tracking for links; particularly useful if you have no server-side stat collection
+ * @param el
+ * @param category
+ * @param action
+ * @returns {boolean}
+ */
+$cms.gaTrack = function ga_track(el, category, action) {
     if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
         return;
     }
@@ -7784,7 +7784,7 @@ function ga_track(el, category, action) {
 
         return false;
     }
-}
+};
 
 /* Used by audio CAPTCHA. */
 function play_self_audio_link(ob) {

@@ -13131,7 +13131,7 @@ function begin_form_uploading(e, ob, recurse) {
     }
 
     if (e) {
-        cancel_bubbling(e);
+        e.stopPropagation();
         e.preventDefault();
     }
 
@@ -13859,7 +13859,7 @@ function initialise_html5_dragdrop_upload(id, id2) {
 
 function html5_upload_event_drag_over(event) {
     if ((event.dataTransfer != null) && (event.dataTransfer.types != null) && !event.dataTransfer.types[0].includes('text')) {
-        cancel_bubbling(event);
+        event.stopPropagation();
         event.preventDefault();
     }
     // NB: don't use dropEffect, prevents drop on Firefox.
@@ -13883,7 +13883,7 @@ function html5_upload(event, field_name, files) {
     var count = files.length;
 
     if (count > 0) {
-        cancel_bubbling(event);
+        event.stopPropagation();
         event.preventDefault();
     }
 

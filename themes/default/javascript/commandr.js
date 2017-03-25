@@ -63,7 +63,7 @@ window.previous_commands || (window.previous_commands = []);
 // Deal with Commandr history
 function commandr_handle_history(element, key_code, e) {
     if ((key_code == 38) && (window.previous_commands.length > 0)) {// Up button
-        cancel_bubbling(e);
+        e && event.stopPropagation();
         if (e.cancelable) {
             e.preventDefault();
         }
@@ -79,7 +79,7 @@ function commandr_handle_history(element, key_code, e) {
         return false;
     } else if ((key_code == 40) && (window.previous_commands.length > 0)) {// Down button
 
-        cancel_bubbling(e);
+        e && e.stopPropagation();
         if (e.cancelable) {
             e.preventDefault();
         }

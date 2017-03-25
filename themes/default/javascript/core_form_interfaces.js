@@ -684,7 +684,7 @@
                 form.submit();
             }
 
-            cancel_bubbling(event);
+            event.stopPropagation();
         }
 
         img.onkeypress = click_func;
@@ -693,7 +693,7 @@
 
         label.className = 'js_widget';
 
-        input.onclick = function () {
+        input.onclick = function (event) {
             if (this.disabled) {
                 return;
             }
@@ -703,7 +703,7 @@
             if (window.main_form_very_simple !== undefined) {
                 this.form.submit();
             }
-            cancel_bubbling(event);
+            event.stopPropagation();
         };
 
         function deselect_alt_url(form) {
@@ -745,7 +745,7 @@
         if (inner) {
             $cms.dom.on(inner, browser_matches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
-                cancel_bubbling(event);
+                event.stopPropagation();
                 event.preventDefault();
                 return false;
             });

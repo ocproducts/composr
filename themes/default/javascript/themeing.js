@@ -608,7 +608,7 @@ function set_up_parent_page_highlighting(file, file_id) {
         // Jump-to
         a.addEventListener('click', function (selector) {
             return function (event) {
-                cancel_bubbling(event);
+                event.stopPropagation();
                 editarea_do_search(
                     'e_' + file_id,
                     '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'

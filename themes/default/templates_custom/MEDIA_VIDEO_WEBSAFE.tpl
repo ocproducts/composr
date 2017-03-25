@@ -41,7 +41,7 @@
 
 				success: function(media) {
 					{+START,IF,{$NOT,{$INLINE_STATS}}}
-						media.addEventListener('play',function() { ga_track(null,'{!VIDEO;/}','{URL;/}'); });
+						media.addEventListener('play',function() { $cms.gaTrack(null,'{!VIDEO;/}','{URL;/}'); });
 					{+END}
 					if (document.getElementById('next_slide'))
 					{

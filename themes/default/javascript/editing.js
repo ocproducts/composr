@@ -589,7 +589,7 @@ function find_tags_in_editor(editor, element) {
                 event = editor.window.$.event;
             }
 
-            cancel_bubbling(event);
+            event.stopPropagation();
 
             if (window.activate_tooltip) {
                 var tag_text = '';

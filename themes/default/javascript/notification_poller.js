@@ -199,7 +199,7 @@ function _toggle_messaging_box(event, name, hide) {
     }
 
     event.within_message_box = true;
-    cancel_bubbling(event);
+    event.stopPropagation();
 
     var body = document.body;
     if (e.parentNode != body) {// Move over, so it is not cut off by overflow:hidden of the header
