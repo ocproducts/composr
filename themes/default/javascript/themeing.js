@@ -121,7 +121,7 @@ function template_editor_tab_save_content(file) {
     editarea_reverse_refresh('e_' + file_to_file_id(file));
 
     var post = 'contents=' + encodeURIComponent(get_file_textbox(file).value);
-    load_snippet(url, post, function (ajax_result) {
+    $cms.loadSnippet(url, post, function (ajax_result) {
         $cms.ui.alert(ajax_result.responseText, null, null, true);
         template_editor_tab_mark_nonchanged_content(file);
     });
@@ -206,7 +206,7 @@ function template_editor_restore_revision(file, revision_id) {
 
     // Set content from revision
     var url = template_editor_loading_url(file, revision_id);
-    load_snippet(url, null, function (ajax_result) {
+    $cms.loadSnippet(url, null, function (ajax_result) {
         document.getElementById('t_' + file_id).className = 'tab tab_active';
 
         template_editor_tab_loaded_content(ajax_result, file);
@@ -795,7 +795,7 @@ function css_equation_helper(file_id, theme) {
     url += '&theme=' + encodeURIComponent(theme);
     url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + file_id).value);
 
-    var result = load_snippet(url);
+    var result = $cms.loadSnippet(url);
 
     if (result == '' || result.indexOf('<html') != -1) {
         $cms.ui.alert('{!ERROR_OCCURRED;^}');

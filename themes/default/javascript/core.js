@@ -265,7 +265,7 @@
 
         if (($cms.$ZONE === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
             var page = $cms.filter.url($cms.$PAGE);
-            load_snippet('background_template_compilation&page=' + page, '', function () {
+            $cms.loadSnippet('background_template_compilation&page=' + page, '', function () {
             });
         }
 

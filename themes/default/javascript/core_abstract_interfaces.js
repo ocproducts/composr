@@ -5,7 +5,7 @@
 
         $cms.dom.on(container, 'mouseover', '.js-mouseover-activate-member-tooltip', function (e, el) {
             el.cancelled = false;
-            load_snippet('member_tooltip&member_id=' + submitter, null, function (result) {
+            $cms.loadSnippet('member_tooltip&member_id=' + submitter, null, function (result) {
                 if (!el.cancelled) {
                     activate_tooltip(el, e, result.responseText, 'auto', null, null, false, true);
                 }

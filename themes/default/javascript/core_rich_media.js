@@ -342,7 +342,7 @@
 
         function activateComcodeMemberLink(e, el) {
             el.cancelled = false;
-            load_snippet('member_tooltip&member_id=' + params.memberId, null, function (result) {
+            $cms.loadSnippet('member_tooltip&member_id=' + params.memberId, null, function (result) {
                 if (!el.cancelled) {
                     activate_tooltip(el, e, result.responseText, 'auto', null, null, false, true);
                 }

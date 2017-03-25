@@ -237,7 +237,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-form-submit-add-friend', function (e, form) {
-            load_snippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements.friend_username.value), function (ajax_result) {
+            $cms.loadSnippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements.friend_username.value), function (ajax_result) {
                 $cms.dom.html($cms.dom.$('#friends_wrap'), ajax_result.responseText);
                 form.elements.friend_username.value = '';
             });

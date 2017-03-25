@@ -87,7 +87,7 @@
                 }
                 url += '&do_timezone_conv=' + (do_timezone_conv.checked ? '1' : '0');
                 url += '&all_day_event=' + (all_day_event.checked ? '1' : '0');
-                var new_data = load_snippet(url);
+                var new_data = $cms.loadSnippet(url);
                 var tr = form.elements['monthly_spec_type'][0];
                 while (tr.nodeName.toLowerCase() != 'tr') {
                     tr = tr.parentNode;

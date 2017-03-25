@@ -437,7 +437,7 @@
                 // AJAX call
                 var snippet_request = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(content_type) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent(content_url) + '&content_title=' + encodeURIComponent(content_title);
 
-                load_snippet(snippet_request, 'rating=' + encodeURIComponent(number), function (ajax_result) {
+                $cms.loadSnippet(snippet_request, 'rating=' + encodeURIComponent(number), function (ajax_result) {
                     var message = ajax_result.responseText;
                     $cms.dom.outerHtml(_replace_spot, (template === '') ? ('<strong>' + message + '</strong>') : message);
                 });

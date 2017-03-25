@@ -97,7 +97,7 @@
             url += '&theme=' + encodeURIComponent(params.theme);
             url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + params.fileId).value);
 
-            result = load_snippet(url);
+            result = $cms.loadSnippet(url);
 
             if (!result || result.includes('<html')) {
                 $cms.ui.alert('{!ERROR_OCCURRED;^}');
@@ -407,7 +407,7 @@
 
         // Set content
         var url = template_editor_loading_url(file);
-        load_snippet(url, null, function (ajax_result) {
+        $cms.loadSnippet(url, null, function (ajax_result) {
             template_editor_tab_loaded_content(ajax_result, file);
         });
 

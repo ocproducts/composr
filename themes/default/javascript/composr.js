@@ -1,12 +1,8 @@
-var encodeUC = encodeURIComponent;
-
 (function ($cms, symbols) {
     'use strict';
 
     // Cached references
     var smile = ':)',
-        encodeUC = encodeURIComponent,
-        decodeUC = decodeURIComponent,
         emptyObj = {},
         emptyArr = [],
         docEl = document.documentElement,
@@ -1237,8 +1233,8 @@ var encodeUC = encodeURIComponent;
                     cookie = cookie.slice(1, -1);
                 }
 
-                var name = parts[0].replace(rdecode, decodeUC);
-                cookie = cookie.replace(rdecode, decodeUC);
+                var name = parts[0].replace(rdecode, decodeURIComponent);
+                cookie = cookie.replace(rdecode, decodeURIComponent);
 
                 if (cookieName == null) {
                     result[name] = cookie;
@@ -1276,11 +1272,11 @@ var encodeUC = encodeURIComponent;
                 details.expires = expires;
             }
 
-            value = encodeUC(strVal(details.value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeUC);
+            value = encodeURIComponent(strVal(details.value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
 
             var cookieName = strVal(details.name);
-            cookieName = encodeUC(cookieName);
-            cookieName = cookieName.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeUC);
+            cookieName = encodeURIComponent(cookieName);
+            cookieName = cookieName.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
             cookieName = cookieName.replace(/[\(\)]/g, escape);
 
             document.cookie = [
@@ -1313,7 +1309,7 @@ var encodeUC = encodeURIComponent;
 
         expires.setDate(expires.getDate() + numDays); // Add days to date
 
-        output = cookieName + '=' + encodeUC(cookieValue) + ';expires=' + expires.toUTCString();
+        output = cookieName + '=' + encodeURIComponent(cookieValue) + ';expires=' + expires.toUTCString();
 
         if ($cms.$COOKIE_PATH) {
             output += ';path=' + $cms.$COOKIE_PATH;
@@ -1353,7 +1349,7 @@ var encodeUC = encodeURIComponent;
             endIdx = cookies.length;
         }
 
-        return decodeUC(cookies.substring(startIdx + cookieName.length + 1, endIdx));
+        return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
 
     // If the browser has support for CSS transitions
@@ -2989,7 +2985,7 @@ var encodeUC = encodeURIComponent;
         form = elArg(form);
 
         $cms.dom.serializeArray(form).forEach(function (el) {
-            result.push(encodeUC(el.name) + '=' + encodeUC(el.value))
+            result.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value))
         });
         return result.join('&');
     };
@@ -3336,7 +3332,7 @@ var encodeUC = encodeURIComponent;
      */
     function urlencode(str) {
         return ((str != null) && (str = strVal(str))) ?
-            encodeUC(str)
+            encodeURIComponent(str)
                 .replace(/!/g, '%21')
                 .replace(/'/g, '%27')
                 .replace(/\(/g, '%28')
@@ -4347,7 +4343,7 @@ var encodeUC = encodeURIComponent;
                 if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
                     error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
                 }
-                if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.$cms.form.doAjaxFieldTest) && (!$cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeUC(my_value)))) {
+                if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.$cms.form.doAjaxFieldTest) && (!$cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(my_value)))) {
                     error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
                 }
                 if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
@@ -5665,10 +5661,10 @@ var encodeUC = encodeURIComponent;
         // Initial rendering
         var url = $cms.baseUrl(this.ajax_url);
         if (params.root_id) {
-            url += '&id=' + encodeUC(params.root_id);
+            url += '&id=' + encodeURIComponent(params.root_id);
         }
         url += '&options=' + this.options;
-        url += '&default=' + encodeUC($cms.dom.$id(this.name).value);
+        url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
 
         do_ajax_request(url, this);
 
@@ -5779,7 +5775,7 @@ var encodeUC = encodeURIComponent;
 
                 // Special handling of 'options' nodes, inject new options
                 if (node.localName === 'options') {
-                    that.options = encodeUC($cms.dom.html(node));
+                    that.options = encodeURIComponent($cms.dom.html(node));
                     return;
                 }
 
@@ -6085,7 +6081,7 @@ var encodeUC = encodeURIComponent;
                 }
 
                 if ((xml_node.getAttribute('has_children') === 'true') && !xml_node.firstElementChild) {
-                    var url = $cms.baseUrl(this.object.ajax_url + '&id=' + encodeUC(real_clicked_id) + '&options=' + this.object.options + '&default=' + encodeUC(element.value));
+                    var url = $cms.baseUrl(this.object.ajax_url + '&id=' + encodeURIComponent(real_clicked_id) + '&options=' + this.object.options + '&default=' + encodeURIComponent(element.value));
                     var ob = this.object;
                     do_ajax_request(url, function (ajax_result_frame, ajax_result) {
                         $cms.dom.html(html_node, '');
@@ -6330,7 +6326,7 @@ var encodeUC = encodeURIComponent;
             }
 
             // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-            var url = maintain_theme_in_link('{$FIND_SCRIPT;,question_ui}?message=' + encodeUC(message) + '&image_set=' + encodeUC(image_set.join(',')) + '&button_set=' + encodeUC(button_set.join(',')) + '&window_title=' + encodeUC(window_title) + keep_stub());
+            var url = maintain_theme_in_link('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(image_set.join(',')) + '&button_set=' + encodeURIComponent(button_set.join(',')) + '&window_title=' + encodeURIComponent(window_title) + keep_stub());
             if (dialog_width === undefined) {
                 dialog_width = 440;
             }
@@ -6433,7 +6429,7 @@ var encodeUC = encodeURIComponent;
 
         if (typeof post === 'string') {
             if (!post.includes('&csrf_token')) { // For CSRF prevention
-                post += '&csrf_token=' + encodeUC(get_csrf_token());
+                post += '&csrf_token=' + encodeURIComponent(get_csrf_token());
             }
 
             ajaxInstances[index].open('POST', url, async);
@@ -6890,7 +6886,7 @@ function noop() {}
                             } else {
                                 _confirm_session(callback, username, url); // Recurse
                             }
-                        }, 'login_username=' + encodeUC(username) + '&password=' + encodeUC(promptt));
+                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
                     } else {
                         callback(false);
                     }
@@ -6903,8 +6899,14 @@ function noop() {}
 }());
 
 
-/* Dynamic inclusion */
-function load_snippet(snippet_hook, post, callback) {
+/**
+ * Dynamic inclusion
+ * @memberof $cms
+ * @param snippet_hook
+ * @param post
+ * @param callback
+ */
+$cms.loadSnippet = function loadSnippet(snippet_hook, post, callback) {
     if (!window.location) { // In middle of page navigation away
         return null;
     }
@@ -6927,7 +6929,7 @@ function load_snippet(snippet_hook, post, callback) {
         return null;
     }
     return html.responseText;
-}
+};
 
 /* Tabs */
 function find_url_tab(hash) {
@@ -7309,7 +7311,7 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     }
 
     function modsecurity_workaround_ajax(data) {
-        return '_data=' + encodeUC(_modsecurity_workaround(data));
+        return '_data=' + encodeURIComponent(_modsecurity_workaround(data));
     }
 
     function _modsecurity_workaround(data) {
@@ -7734,7 +7736,7 @@ function cancel_bubbling(event) {
 /* Update a URL to maintain the current theme into it */
 function maintain_theme_in_link(url) {
     var usp = $cms.uspFromUrl(url),
-        theme = encodeUC($cms.$THEME);
+        theme = encodeURIComponent($cms.$THEME);
 
     if (usp.keys().next().done) {
         // `url` doesn't have a query string
@@ -8135,7 +8137,7 @@ function play_self_audio_link(ob) {
             }
             for (j in extra_params) {
                 url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-                url_stub += j + '=' + encodeUC(extra_params[j]);
+                url_stub += j + '=' + encodeURIComponent(extra_params[j]);
             }
 
             // Any POST parameters?
@@ -8196,7 +8198,7 @@ function play_self_audio_link(ob) {
 
         var ajax_url = url;
         if (new_block_params != '') {
-            ajax_url += '&block_map_sup=' + encodeUC(new_block_params);
+            ajax_url += '&block_map_sup=' + encodeURIComponent(new_block_params);
         }
 
         ajax_url += '&utheme=' + $cms.$THEME;
@@ -8259,32 +8261,32 @@ function play_self_audio_link(ob) {
         );
 
         return false;
-    }
 
-    function _call_block_render(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
-        var new_html = raw_ajax_result.responseText;
-        _blockDataCache[ajax_url] = new_html;
+        function _call_block_render(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
+            var new_html = raw_ajax_result.responseText;
+            _blockDataCache[ajax_url] = new_html;
 
-        // Remove loading animation if there is one
-        var ajax_loading = target_div.querySelector('.ajax_loading_block');
-        if (ajax_loading) {
-            ajax_loading.parentNode.parentNode.removeChild(ajax_loading.parentNode);
-        }
-        window.document.body.style.cursor = '';
+            // Remove loading animation if there is one
+            var ajax_loading = target_div.querySelector('.ajax_loading_block');
+            if (ajax_loading) {
+                ajax_loading.parentNode.parentNode.removeChild(ajax_loading.parentNode);
+            }
+            window.document.body.style.cursor = '';
 
-        // Put in HTML
-        show_block_html(new_html, target_div, append, inner);
+            // Put in HTML
+            show_block_html(new_html, target_div, append, inner);
 
-        // Scroll up if required
-        if (scroll_to_top_of_wrapper) {
-            try {
-                window.scrollTo(0, find_pos_y(target_div));
-            } catch (e) {}
-        }
+            // Scroll up if required
+            if (scroll_to_top_of_wrapper) {
+                try {
+                    window.scrollTo(0, find_pos_y(target_div));
+                } catch (e) {}
+            }
 
-        // Defined callback
-        if (callback) {
-            callback();
+            // Defined callback
+            if (callback) {
+                callback();
+            }
         }
     }
 

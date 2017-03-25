@@ -124,7 +124,7 @@ function realtime_rain_button_load_handler() {
 
     var x = document.createElement('div');
     document.body.appendChild(x);
-    $cms.dom.html(x, load_snippet('realtime_rain_load'));
+    $cms.dom.html(x, $cms.loadSnippet('realtime_rain_load'));
     e = document.getElementById('real_time_surround');
     e.style.position = 'absolute';
     e.style.zIndex = 100;

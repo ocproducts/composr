@@ -59,7 +59,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            load_snippet('comments&id=' + encodeUC(id) + '&ids=' + encodeUC(ids) + '&serialized_options=' + encodeUC(window.comments_serialized_options) + '&hash=' + encodeUC(window.comments_hash), null, function (ajax_result) {
+            $cms.loadSnippet('comments&id=' + encodeUC(id) + '&ids=' + encodeUC(ids) + '&serialized_options=' + encodeUC(window.comments_serialized_options) + '&hash=' + encodeUC(window.comments_hash), null, function (ajax_result) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $cms.dom.$('#post_children_' + id);

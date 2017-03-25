@@ -46,11 +46,11 @@
             }
 
             if (data.vwTaskDone === 'not_completed') {
-                load_snippet('checklist_task_manage', 'type=mark_done&id=' + id);
+                $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
                 this.imgChecklistStatus.src = $IMG_checklist_checklist1;
                 data.vwTaskDone = 'checklist1';
             } else {
-                load_snippet('checklist_task_manage', 'type=mark_undone&id=' + id);
+                $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
                 this.imgChecklistStatus.src = $IMG_checklist_not_completed;
                 data.vwTaskDone = 'not_completed';
             }
@@ -64,7 +64,7 @@
 
             $cms.ui.confirm(message, function (result) {
                 if (result) {
-                    load_snippet('checklist_task_manage', 'type=delete&id=' + id);
+                    $cms.loadSnippet('checklist_task_manage', 'type=delete&id=' + id);
                     viewEl.style.display = 'none';
                 }
             });
@@ -230,7 +230,7 @@
         }
 
         function submit_custom_task(form) {
-            var new_task = load_snippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
+            var new_task = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
 
             form.elements.recur_every.value = '';
             form.elements.recur_interval.value = '';

@@ -3,7 +3,7 @@
 
     $cms.templates.blockMainCount = function (params) {
         if (params.update !== undefined) {
-            load_snippet('count', 'name=' + params.update);
+            $cms.loadSnippet('count', 'name=' + params.update);
         }
     };
 

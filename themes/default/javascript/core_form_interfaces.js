@@ -296,7 +296,7 @@
                     post += '&username=' + input.form.elements['edit_username'].value;
                 }
             }
-            var strength = load_snippet('password_strength', post);
+            var strength = $cms.loadSnippet('password_strength', post);
             strength *= 2;
             if (strength > 10) {  // Normally too harsh!
                 strength = 10;
