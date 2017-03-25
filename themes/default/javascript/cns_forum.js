@@ -27,7 +27,7 @@
         },
 
         addFormMarkedPosts: function (e, btn) {
-            if (add_form_marked_posts(btn.form, 'mark_')) {
+            if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
                 $cms.ui.disableButton(btn);
             } else {
                 $cms.ui.alert('{!NOTHING_SELECTED;}');
@@ -107,7 +107,7 @@
         }
 
         $cms.dom.on(container, 'click', '.js-click-check-marked-form-and-submit', function (e, clicked) {
-            if (!add_form_marked_posts(markedPostActionsForm, 'mark_')) {
+            if (!$cms.form.addFormMarkedPosts(markedPostActionsForm, 'mark_')) {
                 $cms.ui.alert('{!NOTHING_SELECTED;}');
                 e.preventDefault();
                 return;

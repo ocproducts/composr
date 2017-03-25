@@ -246,7 +246,7 @@
 
     $cms.templates.chatModerateScreen = function chatModerateScreen(params, container) {
         $cms.dom.on(container, 'click', '.js-click-btn-delete-marked-posts', function (e, btn) {
-            if (add_form_marked_posts(btn.form, 'del_')) {
+            if ($cms.form.addFormMarkedPosts(btn.form, 'del_')) {
                 $cms.ui.disableButton(btn);
             } else {
                 $cms.ui.alert('{!NOTHING_SELECTED=;}');

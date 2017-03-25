@@ -4869,6 +4869,51 @@ var encodeUC = encodeURIComponent;
         }
     };
 
+    /* Marking things (to avoid illegally nested forms) */
+    $cms.form.addFormMarkedPosts = function addFormMarkedPosts(form, prefix) {
+        prefix = strVal(prefix);
+
+        var get = form.method.toLowerCase() === 'get',
+            i;
+
+        if (get) {
+            for (i = 0; i < form.elements.length; i++) {
+                if ((new RegExp('&' + prefix + '\d+=1$', 'g')).test(form.elements[i].name)) {
+                    form.elements[i].parentNode.removeChild(form.elements[i]);
+                }
+            }
+        } else {
+            // Strip old marks out of the URL
+            form.action = form.action.replace('?', '&')
+                .replace(new RegExp('&' + prefix + '\d+=1$', 'g'), '')
+                .replace('&', '?'); // will just do first due to how JS works
+        }
+
+        var checkboxes = $cms.dom.$$('input[type="checkbox"][name^="' + prefix + '"]:checked'),
+            append = '';
+
+        for (i = 0; i < checkboxes.length; i++) {
+            append += (((append === '') && !form.action.includes('?') && !form.action.includes('/pg/') && !get) ? '?' : '&') + checkboxes[i].name + '=1';
+        }
+
+        if (get) {
+            var bits = append.split('&');
+            for (i = 0; i < bits.length; i++) {
+                if (bits[i] !== '') {
+                    $cms.dom.append(form, $cms.dom.create('input', {
+                        name: bits[i].substr(0, bits[i].indexOf('=1')),
+                        type: 'hidden',
+                        value: '1'
+                    }));
+                }
+            }
+        } else {
+            form.action += append;
+        }
+
+        return append !== '';
+    };
+
     /**
      * @memberof $cms
      * @param options
@@ -7678,51 +7723,6 @@ function trigger_resize(and_subframes) {
     }
 }
 
-/* Marking things (to avoid illegally nested forms) */
-function add_form_marked_posts(form, prefix) {
-    prefix = strVal(prefix);
-
-    var get = form.method.toLowerCase() === 'get',
-        i;
-
-    if (get) {
-        for (i = 0; i < form.elements.length; i++) {
-            if ((new RegExp('&' + prefix + '\d+=1$', 'g')).test(form.elements[i].name)) {
-                form.elements[i].parentNode.removeChild(form.elements[i]);
-            }
-        }
-    } else {
-        // Strip old marks out of the URL
-        form.action = form.action.replace('?', '&')
-            .replace(new RegExp('&' + prefix + '\d+=1$', 'g'), '')
-            .replace('&', '?'); // will just do first due to how JS works
-    }
-
-    var checkboxes = $cms.dom.$$('input[type="checkbox"][name^="' + prefix + '"]:checked'),
-        append = '';
-
-    for (i = 0; i < checkboxes.length; i++) {
-        append += (((append === '') && !form.action.includes('?') && !form.action.includes('/pg/') && !get) ? '?' : '&') + checkboxes[i].name + '=1';
-    }
-
-    if (get) {
-        var bits = append.split('&');
-        for (i = 0; i < bits.length; i++) {
-            if (bits[i] !== '') {
-                $cms.dom.append(form, $cms.dom.create('input', {
-                    name: bits[i].substr(0, bits[i].indexOf('=1')),
-                    type: 'hidden',
-                    value: '1'
-                }));
-            }
-        }
-    } else {
-        form.action += append;
-    }
-
-    return append !== '';
-}
-
 /* Event listeners */
 
 function cancel_bubbling(event) {
@@ -8188,6 +8188,7 @@ function play_self_audio_link(ob) {
 
 (function () {
     window.call_block = call_block;
+    window.merge_text_nodes = merge_text_nodes;
 
     var _blockDataCache = {};
     // This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
@@ -8308,8 +8309,6 @@ function play_self_audio_link(ob) {
             }
         }
     }
-
-    window.merge_text_nodes = merge_text_nodes;
 
     function merge_text_nodes(childNodes) {
         var i, text = '';

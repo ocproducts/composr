@@ -31,7 +31,7 @@
 
     $cms.templates.wikiPageScreen = function wikiPageScreen(params, container) {
         $cms.dom.on(container, 'click', '.js-click-btn-add-form-marked-posts', function (e, btn) {
-            if (add_form_marked_posts(btn.form, 'mark_')) {
+            if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
                 $cms.ui.disableButton(btn);
             } else {
                 e.preventDefault();
