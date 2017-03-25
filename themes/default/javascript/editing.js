@@ -150,9 +150,7 @@ function disable_wysiwyg(forms, so, so2, discard) {
                 var wysiwyg_data = window.wysiwyg_editors[id].getData();
                 try {
                     window.wysiwyg_editors[id].destroy();
-                }
-                catch (e) {
-                }
+                } catch (e) {}
                 delete window.wysiwyg_editors[id];
 
                 // Comcode conversion
@@ -179,14 +177,16 @@ function disable_wysiwyg(forms, so, so2, discard) {
                 // Unload editor
                 try {
                     window.wysiwyg_editors[id].destroy();
-                }
-                catch (e) {
-                }
+                } catch (e) {}
             }
         }
     }
-    if (so) so.style.display = 'block';
-    if (so2) so2.style.display = 'none';
+    if (so) {
+        so.style.display = 'block';
+    }
+    if (so2) {
+        so2.style.display = 'none';
+    }
 
     window.wysiwyg_on = function () {
         return false;
