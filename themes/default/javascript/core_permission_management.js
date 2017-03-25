@@ -22,7 +22,7 @@
         },
 
         updateGroupDisplayer: function (e, select) {
-            $cms.dom.html(document.getElementById('group_name'), escape_html(window.usergroup_titles[select.options[select.selectedIndex].value]));
+            $cms.dom.html(document.getElementById('group_name'), $cms.filter.html(window.usergroup_titles[select.options[select.selectedIndex].value]));
             var tree = document.getElementById('tree_list__root_tree_list');
             $cms.dom.html(tree, '');
             window.sitemap.renderTree(window.sitemap.tree_list_data, tree);
@@ -177,7 +177,7 @@
                                 row = rows[0];
                                 new_cell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 new_cell.className = 'privilege_header';
-                                $cms.dom.html(new_cell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.column_color + '&amp;text=' + encodeURIComponent(privilege_title) + escape_html(keep_stub()) + '" title="' + escape_html(privilege_title) + '" alt="' + escape_html(privilege_title) + '" />');
+                                $cms.dom.html(new_cell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.column_color + '&amp;text=' + encodeURIComponent(privilege_title) + $cms.filter.html(keep_stub()) + '" title="' + $cms.filter.html(privilege_title) + '" alt="' + $cms.filter.html(privilege_title) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 
@@ -191,7 +191,7 @@
                             new_cell = row.insertBefore(document.createElement('td'), row.cells[row.cells.length - 1]);
                             new_cell.className = 'form_table_field_input privilege_cell';
                             if (document.getElementById('access_' + group).name != '_ignore') {
-                                $cms.dom.html(new_cell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + escape_html(privilege_title) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
+                                $cms.dom.html(new_cell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilege_title) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
                                 $cms.dom.on(new_cell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
                                     if (select.value === '-1') {
                                         show_permission_setting(select, e);

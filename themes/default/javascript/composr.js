@@ -3920,7 +3920,7 @@ var encodeUC = encodeURIComponent;
                     $cms.dom.on(iframe, 'load', function () {
                         if (($cms.dom.hasIframeAccess(iframe)) && (!iframe.contentWindow.document.querySelector('h1')) && (!iframe.contentWindow.document.querySelector('h2'))) {
                             if (iframe.contentWindow.document.title) {
-                                $cms.dom.html(overlay_header, escape_html(iframe.contentWindow.document.title));
+                                $cms.dom.html(overlay_header, $cms.filter.html(iframe.contentWindow.document.title));
                                 overlay_header.style.display = 'block';
                             }
                         }
@@ -4422,16 +4422,16 @@ var encodeUC = encodeURIComponent;
                     // Render self
                     node_self.className = (node.getAttribute('highlighted') == 'true') ? 'tree_list_highlighted' : 'tree_list_nonhighlighted';
                     initially_expanded = (node.getAttribute('has_children') != 'true') || (node.getAttribute('expanded') == 'true');
-                    escaped_title = escape_html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
+                    escaped_title = $cms.filter.html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
                     if (escaped_title == '') escaped_title = '{!NA_EM;^}';
                     var description = '';
                     var description_in_use = '';
                     if (node.getAttribute('description_html')) {
                         description = node.getAttribute('description_html');
-                        description_in_use = escape_html(description);
+                        description_in_use = $cms.filter.html(description);
                     } else {
-                        if (node.getAttribute('description')) description = escape_html('. ' + node.getAttribute('description'));
-                        description_in_use = escaped_title + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + escape_html(node.getAttribute('serverid')) + ')') : '');
+                        if (node.getAttribute('description')) description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        description_in_use = escaped_title + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
                     var img_url = $cms.img('{$IMG;,1x/treefield/category}');
                     var img_url_2 = $cms.img('{$IMG;,2x/treefield/category}');
@@ -4442,7 +4442,7 @@ var encodeUC = encodeURIComponent;
                     $cms.dom.html(node_self, ' \
 				<div> \
 					<input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escaped_title + '" title="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.url(!initially_expanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $cms.url(!initially_expanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" /> \
-					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" /> \
+					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + $cms.filter.html(img_url) + '" srcset="' + $cms.filter.html(img_url_2) + ' 2x" /> \
 					<label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(description_in_use)) + '\', \'auto\']" class="ajax_tree_magic_button ' + colour + '"><input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + description_in_use + '" />' + escaped_title + '</label> \
 					<span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
 				</div> \
@@ -4520,17 +4520,17 @@ var encodeUC = encodeURIComponent;
                 } else { // Assume entry
                     new_html = null;
 
-                    escaped_title = escape_html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
+                    escaped_title = $cms.filter.html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
                     if (escaped_title == '') escaped_title = '{!NA_EM;^}';
 
                     var description = '';
                     var description_in_use = '';
                     if (node.getAttribute('description_html')) {
                         description = node.getAttribute('description_html');
-                        description_in_use = escape_html(description);
+                        description_in_use = $cms.filter.html(description);
                     } else {
-                        if (node.getAttribute('description')) description = escape_html('. ' + node.getAttribute('description'));
-                        description_in_use = escaped_title + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + escape_html(node.getAttribute('serverid')) + ')') : '');
+                        if (node.getAttribute('description')) description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        description_in_use = escaped_title + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
 
                     // Render self
@@ -4541,7 +4541,7 @@ var encodeUC = encodeURIComponent;
                         img_url = node.getAttribute('img_url');
                         img_url_2 = node.getAttribute('img_url_2');
                     }
-                    $cms.dom.html(node_self, '<div><img alt="{!ENTRY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> ' +
+                    $cms.dom.html(node_self, '<div><img alt="{!ENTRY;^}" src="' + $cms.filter.html(img_url) + '" srcset="' + $cms.filter.html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> ' +
                         '<label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (description_in_use.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
                         '<input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
                     var a = node_self.querySelector('label');
@@ -5248,7 +5248,6 @@ function noop() {}
     window.manage_scroll_height = manage_scroll_height;
     window.get_main_cms_window = get_main_cms_window;
     window.magic_keypress = magic_keypress;
-    window.escape_html = escape_html;
     window.escape_comcode = escape_comcode;
     window.create_rollover = create_rollover;
     window.browser_matches = browser_matches;
@@ -5363,14 +5362,6 @@ function noop() {}
     }
 
     /* Data escaping */
-    function escape_html(value) {
-        value = strVal(value);
-        if (!value) {
-            return '';
-        }
-        return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
     function escape_comcode(value) {
         value = strVal(value);
         if (!value) {
@@ -6618,7 +6609,7 @@ function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_
 				<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
 					<span id="lightbox_description">' + description + '</span> \
 					' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
-					' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + escape_html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
+					' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
 				</p> \
 			</div> \
 		';
@@ -6749,7 +6740,7 @@ function fauxmodal_confirm(question, callback, title, unescaped) {
 
     var my_confirm = {
         type: 'confirm',
-        text: unescaped ? question : escape_html(question).replace(/\n/g, '<br />'),
+        text: unescaped ? question : $cms.filter.html(question).replace(/\n/g, '<br />'),
         yes_button: '{!YES;^}',
         no_button: '{!NO;^}',
         cancel_button: null,
@@ -6779,7 +6770,7 @@ function fauxmodal_alert(notice, callback, title, unescaped) {
 
     var myAlert = {
         type: 'alert',
-        text: unescaped ? notice : escape_html(notice).replace(/\n/g, '<br />'),
+        text: unescaped ? notice : $cms.filter.html(notice).replace(/\n/g, '<br />'),
         yes_button: '{!INPUTSYSTEM_OK;^}',
         width: '600',
         yes: callback,
@@ -6798,7 +6789,7 @@ function fauxmodal_prompt(question, defaultValue, callback, title, input_type) {
 
     var myPrompt = {
         type: 'prompt',
-        text: escape_html(question).replace(/\n/g, '<br />'),
+        text: $cms.filter.html(question).replace(/\n/g, '<br />'),
         yes_button: '{!INPUTSYSTEM_OK;^}',
         cancel_button: '{!INPUTSYSTEM_CANCEL;^}',
         defaultValue: (defaultValue === null) ? '' : defaultValue,
@@ -7645,7 +7636,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 errormsg_element.style.display = (error_msg == '') ? 'none' : 'block';
 
                 // Changed error message
-                if ($cms.dom.html(errormsg_element) != escape_html(error_msg)) {
+                if ($cms.dom.html(errormsg_element) != $cms.filter.html(error_msg)) {
                     $cms.dom.html(errormsg_element, '');
                     if (error_msg != '') // If there actually an error
                     {

@@ -196,8 +196,8 @@
 						<figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', imgs.length) + '<\/figcaption>\
 						<div>\
 							<div class="attachment_details">\
-								<a class="js-click-open-images-into-lightbox" target="_blank" title="' + escape_html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
-                                    <img ' + imgWidthHeight + ' src="' + escape_html(imgsThumbs[0]) + '" />\
+								<a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
+                                    <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '" />\
                                 <\/a>\
 							<\/div>\
 						<\/div>\

@@ -73,9 +73,9 @@
                         case 'modules':
                         case 'modules_custom':
                             action_buildup += actions_tpl_item.replace(/\[1\]/, '{!permissions:PERMISSIONS_TREE;^}').replace(/\[2\]/, permission_tree_editor_url.replace(/%21/, page_link.replace(/:/, '%3A', page_link)));
-                            if (node.getAttribute('author')) info_buildup += info_tpl_item.replace(/\[1\]/, '{!AUTHOR;^}').replace(/\[2\]/, escape_html(node.getAttribute('author')));
-                            if (node.getAttribute('organisation')) info_buildup += info_tpl_item.replace(/\[1\]/, '{!ORGANISATION;^}').replace(/\[2\]/, escape_html(node.getAttribute('organisation')));
-                            if (node.getAttribute('version')) info_buildup += info_tpl_item.replace(/\[1\]/, '{!VERSION;^}').replace(/\[2\]/, escape_html(node.getAttribute('version')));
+                            if (node.getAttribute('author')) info_buildup += info_tpl_item.replace(/\[1\]/, '{!AUTHOR;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('author')));
+                            if (node.getAttribute('organisation')) info_buildup += info_tpl_item.replace(/\[1\]/, '{!ORGANISATION;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('organisation')));
+                            if (node.getAttribute('version')) info_buildup += info_tpl_item.replace(/\[1\]/, '{!VERSION;^}').replace(/\[2\]/, $cms.filter.html(node.getAttribute('version')));
                             break;
                         case 'minimodule':
                         case 'minimodule_custom':
@@ -109,10 +109,10 @@
 
             // All
             if (full_type !== 'root') {
-                action_buildup += actions_tpl_item.replace(/\[1\]/, '{!VIEW;^}').replace(/\[2\]/, escape_html(('{$BASE_URL;,0}/data/page_link_redirect.php?id=' + encodeURIComponent(page_link) + keep_stub())));
-                info_buildup += info_tpl_item.replace(/\[1\]/, '{!PAGE_LINK;^}').replace(/\[2\]/, '<kbd>' + escape_html(page_link) + '</kbd>');
+                action_buildup += actions_tpl_item.replace(/\[1\]/, '{!VIEW;^}').replace(/\[2\]/, $cms.filter.html(('{$BASE_URL;,0}/data/page_link_redirect.php?id=' + encodeURIComponent(page_link) + keep_stub())));
+                info_buildup += info_tpl_item.replace(/\[1\]/, '{!PAGE_LINK;^}').replace(/\[2\]/, '<kbd>' + $cms.filter.html(page_link) + '</kbd>');
                 if (element.selected_editlink) {
-                    action_buildup += actions_tpl_item.replace(/\[1\]/, '{!EDIT;^}').replace(/\[2\]/, escape_html('{$FIND_SCRIPT_NOHTTP;,page_link_redirect}?id=' + element.selected_editlink + keep_stub()));
+                    action_buildup += actions_tpl_item.replace(/\[1\]/, '{!EDIT;^}').replace(/\[2\]/, $cms.filter.html('{$FIND_SCRIPT_NOHTTP;,page_link_redirect}?id=' + element.selected_editlink + keep_stub()));
                 }
             }
 

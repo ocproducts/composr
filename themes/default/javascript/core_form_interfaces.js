@@ -487,7 +487,7 @@
             var mirror = document.getElementById(name + '_mirror');
             if (mirror) {
                 $cms.dom.toggle(mirror.parentElement, !!input.selected_title);
-                $cms.dom.html(mirror, input.selected_title ? escape_html(input.selected_title) : '{!NA_EM;}');
+                $cms.dom.html(mirror, input.selected_title ? $cms.filter.html(input.selected_title) : '{!NA_EM;}');
             }
         });
     };
@@ -647,11 +647,11 @@
 
             for (var imageName in imageSources) {
                 if (opt.id === imageName) {
-                    return '<span class="vertical_alignment inline_lined_up"><img style="width: 24px;" src="' + imageSources[imageName] + '" \/> ' + escape_html(opt.text) + '</span>';
+                    return '<span class="vertical_alignment inline_lined_up"><img style="width: 24px;" src="' + imageSources[imageName] + '" \/> ' + $cms.filter.html(opt.text) + '</span>';
                 }
             }
 
-            return escape_html(opt.text);
+            return $cms.filter.html(opt.text);
         }
     };
 

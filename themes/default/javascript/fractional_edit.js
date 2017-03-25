@@ -59,7 +59,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             var list_option;
             for (var i = 0; i < list_options.length; i++) {
                 list_option = document.createElement('option');
-                $cms.dom.html(list_option, escape_html(list_options[i]));
+                $cms.dom.html(list_option, $cms.filter.html(list_options[i]));
                 list_option.selected = (populated_value == list_options[i]);
                 input.appendChild(list_option);
             }

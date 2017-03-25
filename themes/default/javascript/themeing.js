@@ -583,7 +583,7 @@ function set_up_parent_page_highlighting(file, file_id) {
         li.appendChild(a);
         a.href = '#!';
         a.id = 'selector_' + i;
-        $cms.dom.html(a, escape_html(selector));
+        $cms.dom.html(a, $cms.filter.html(selector));
         list.appendChild(li);
 
         // Add tooltip so we can see what the CSS text is in when hovering the selector

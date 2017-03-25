@@ -152,7 +152,7 @@
             }
 
             do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}' + keep_stub(true), function (ajax_result) {
-                $cms.dom.html(document.getElementById('preview_raw'), escape_html(ajax_result.responseText));
+                $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(ajax_result.responseText));
                 $cms.dom.html(document.getElementById('preview_html'), ajax_result.responseText);
             }, request);
 

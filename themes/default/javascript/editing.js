@@ -704,7 +704,7 @@ function get_textbox(element) {
 function set_textbox(element, text, html) {
     if (is_wysiwyg_field(element)) {
         if (html === undefined) {
-            html = escape_html(text).replace(new RegExp('\\\\n', 'gi'), '<br />');
+            html = $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />');
         }
 
         window.wysiwyg_editors[element.id].setData(html);
@@ -738,7 +738,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
 
         var insert = '';
         if (plain_insert) {
-            insert = get_selected_html(editor) + (html ? html : escape_html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
+            insert = get_selected_html(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
         } else {
             var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + keep_stub());
             if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
@@ -981,7 +981,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
             };
         }).bind(undefined, id, authorised, hook), 0);
 
-        html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO;^} ' + escape_html(label) + ((no_quota && (num === 1)) ? ' ({!_REQUIRED;^})' : '') + '</label></span>';
+        html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO;^} ' + $cms.filter.html(label) + ((no_quota && (num === 1)) ? ' ({!_REQUIRED;^})' : '') + '</label></span>';
     }
 
     if (no_quota && (numChecked === 0)) {

@@ -1352,7 +1352,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
         // Add tab
         new_div = document.createElement('div');
         new_div.className = 'chat_lobby_convos_tab_uptodate' + ((count == 0) ? ' chat_lobby_convos_tab_first' : '');
-        $cms.dom.html(new_div, escape_html(room_name));
+        $cms.dom.html(new_div, $cms.filter.html(room_name));
         new_div.setAttribute('id', 'tab_' + room_id);
         new_div.participants = participants;
         new_div.onclick = function () {

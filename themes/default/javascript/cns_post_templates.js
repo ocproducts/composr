@@ -8,7 +8,7 @@
             if (params.resets) {
                 set_textbox(form.elements.post, '');
             }
-            insert_textbox(form.elements.post, ins.replace(/\\n/g, '\n'), null, true, escape_html(ins).replace(/\\n/g, '<br />'));
+            insert_textbox(form.elements.post, ins.replace(/\\n/g, '\n'), null, true, $cms.filter.html(ins).replace(/\\n/g, '<br />'));
         });
     };
 }(window.$cms));
