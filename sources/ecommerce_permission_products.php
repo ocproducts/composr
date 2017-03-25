@@ -117,6 +117,8 @@ function permission_product_save($resource_type, $old_category_id, $new_category
         return;
     }
 
+    require_code('ecommerce');
+
     if ($new_category_id === null) {
         $new_category_id = $old_category_id;
     }

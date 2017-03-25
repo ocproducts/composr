@@ -88,7 +88,7 @@ class Module_shopping
                 'total_price' => 'REAL',
                 'total_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
                 'total_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
-                'total_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
+                'total_tax_tracking' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
                 'total_shipping_cost' => 'REAL',
                 'total_shipping_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
                 'order_currency' => 'ID_TEXT',
@@ -154,7 +154,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'tot_price', 'REAL', 'total_price');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax', 'REAL', 0.00);
-            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax_tracking', 'SHORT_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax_tracking', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_cost', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_tax', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'c_member', 'MEMBER', 'member_id');
@@ -462,11 +462,10 @@ class Module_shopping
         $price_multiple = $details['price'] * $item['quantity'];
 
         if ($tax_details === null) {
-            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+            list($tax_derivation, $tax, $tax_tracking) = calculate_tax_due($details, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
         } else {
-            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = $tax_details;
+            list($tax_derivation, $tax, $tax_tracking) = $tax_details;
         }
-        unset($shipping_tax); // Meaningless
 
         $amount = $price_multiple + $tax;
 

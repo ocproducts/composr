@@ -239,6 +239,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
     // Taxes will be put in here
     $total_tax_derivation = array();
     $total_tax = 0.00;
+    $total_tax_tracking = '';
     $shopping_cart_rows_taxes = array();
     $shipping_tax_derivation = array();
     $shipping_tax = 0.00;
@@ -369,11 +370,11 @@ function copy_shopping_cart_to_order()
         }
 
         if (isset($shopping_cart_rows_taxes[$i])) {
-            list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = $shopping_cart_rows_taxes[$i];
+            list($tax_derivation, $tax, $tax_tracking) = $shopping_cart_rows_taxes[$i];
         } else {
             list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($item, $details['tax_code'], $details['price'], 0.0, null, $item['quantity']);
+            unset($shipping_tax); // Meaningless
         }
-        unset($shipping_tax); // Meaningless
 
         $shopping_order_details[] = array(
             'p_type_code' => $type_code,

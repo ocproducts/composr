@@ -120,7 +120,7 @@ class Module_purchase
                 'e_price' => 'REAL',
                 'e_tax_derivation' => 'LONG_TEXT',
                 'e_tax' => 'REAL',
-                'e_tax_tracking' => 'SHORT_TEXT',
+                'e_tax_tracking' => 'LONG_TEXT',
                 'e_currency' => 'ID_TEXT',
                 'e_price_points' => 'INTEGER', // This is supplementary, not an alternative; if it is only points then no ecom_trans_expecting record will be created
                 'e_ip_address' => 'IP',
@@ -153,12 +153,12 @@ class Module_purchase
                 'id' => '*ID_TEXT', // Often referenced as txn_id in code
                 't_type_code' => 'ID_TEXT',
                 't_purchase_id' => 'ID_TEXT',
-                't_status' => 'SHORT_TEXT',
+                't_status' => 'SHORT_TEXT', // Pending|Completed|SModified|SCancelled
                 't_reason' => 'SHORT_TEXT',
                 't_amount' => 'REAL', // Does NOT include tax (unlike most 'amount' figures in Composr)
                 't_tax_derivation' => 'LONG_TEXT',
                 't_tax' => 'REAL',
-                't_tax_tracking' => 'SHORT_TEXT',
+                't_tax_tracking' => 'LONG_TEXT',
                 't_currency' => 'ID_TEXT',
                 't_parent_txn_id' => 'ID_TEXT',
                 't_time' => '*TIME',
@@ -246,7 +246,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_memo', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax', 'REAL', 0.00);
-            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax_tracking', 'SHORT_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax_tracking', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_price_points', 'INTEGER', 0);
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_invoicing_breakdown', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_session_id', 'ID_TEXT', '');
@@ -257,7 +257,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_amount', 'REAL');
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax', 'REAL', 0.00);
-            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax_tracking', 'SHORT_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax_tracking', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_invoicing_breakdown', 'LONG_TEXT', '');

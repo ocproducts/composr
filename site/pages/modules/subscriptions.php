@@ -76,7 +76,7 @@ class Module_subscriptions
                 's_tax_code' => 'ID_TEXT',
                 's_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as it's locked in time
                 's_tax' => 'REAL', // Needs to be stored, as it's locked in time
-                's_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as it's locked in time
+                's_tax_tracking' => 'LONG_TEXT', // Needs to be stored, as it's locked in time
                 's_currency' => 'ID_TEXT',
                 's_purchase_id' => 'ID_TEXT',
                 's_time' => 'TIME',
@@ -157,7 +157,7 @@ class Module_subscriptions
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_code', 'ID_TEXT', '0.0');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax', 'REAL', 0.00);
-            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_tracking', 'SHORT_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_tracking', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('f_usergroup_subs', 's_cost', 'REAL', 's_price');

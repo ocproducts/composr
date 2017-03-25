@@ -35,6 +35,8 @@ class shopping_order_management_test_set extends cms_test_case
 
         require_lang('shopping');
 
+        $txn_id = 'ddfsfdsdfsdfs';
+
         $this->order_id = $GLOBALS['SITE_DB']->query_insert('shopping_orders', array(
             'member_id' => get_member(),
             'session_id' => get_session_id(),
@@ -48,9 +50,31 @@ class shopping_order_management_test_set extends cms_test_case
             'total_shipping_tax' => 0.00,
             'order_currency' => 'GBP',
             'notes' => '',
-            'txn_id' => 'ddfsfdsdfsdfs',
+            'txn_id' => $txn_id,
             'purchase_through' => 'cart',
         ), true);
+
+        $GLOBALS['SITE_DB']->query_delete('ecom_transactions', array('id' => $txn_id), '', 1);
+        $GLOBALS['SITE_DB']->query_insert('ecom_transactions', array(
+            'id' => $txn_id,
+            't_type_code' => 'cart_orders',
+            't_purchase_id' => strval($this->order_id),
+            't_status' => 'Completed',
+            't_reason' => '',
+            't_amount' => 12.00,
+            't_tax_derivation' => '',
+            't_tax' => 1.00,
+            't_tax_tracking' => '',
+            't_currency' => 'GBP',
+            't_parent_txn_id' => '',
+            't_time' => time(),
+            't_pending_reason' => '',
+            't_memo' => '',
+            't_payment_gateway' => 'manual',
+            't_invoicing_breakdown' => '',
+            't_member_id' => get_member(),
+            't_session_id' => get_session_id(),
+        ));
 
         $this->access_mapping = array(db_get_first_id() => 4);
 
@@ -131,29 +155,6 @@ class shopping_order_management_test_set extends cms_test_case
     public function testOrderExportUI()
     {
         $this->admin_shopping->export_orders();
-    }
-
-    public function testOrderExportActualiser()
-    {
-        $_POST = array(
-            'order_status' => 'ORDER_STATUS_awaiting_payment',
-            'require__order_status' => 0,
-            'start_date_day' => 10,
-            'start_date_month' => 12,
-            'start_date_year' => 2008,
-            'start_date_hour' => 7,
-            'start_date_minute' => 0,
-            'require__start_date' => 1,
-            'end_date_day' => 10,
-            'end_date_month' => 12,
-            'end_date_year' => 2009,
-            'end_date_hour' => 7,
-            'end_date_minute' => 0,
-            'require__end_date' => 1,
-            'is_from_unit_test' => 1
-        );
-
-        $this->admin_shopping->_export_orders(true);
     }
 
     public function tearDown()

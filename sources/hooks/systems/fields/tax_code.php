@@ -84,10 +84,49 @@ class Hook_fields_tax_code
             return '';
         }
 
-        require_code('ecommerce');
         $tax_code = $ev;
-        list(, $tax, , ) = calculate_tax_due(null, $tax_code, 100.00/*So we get a percentage*/);
-        return escape_html(float_format($tax, 2, true) . '%');
+
+        require_code('ecommerce');
+
+        $in_money = (option_value_from_field_array($field, 'in_money', 'off') == 'on');
+
+        // Render as money...
+
+        if ($in_money) {
+            list(, $tax, , ) = calculate_tax_due(null, $tax_code, 100.00/*So we get a percentage*/); // TODO: Make sure correct for current user's region
+
+            require_code('currency');
+            return currency_convert_wrap($tax, null, CURRENCY_DISPLAY_TEMPLATED);
+        }
+
+        // Render as a tax rate...
+
+        if (preg_match('#^TIC:#', $tax_code) != 0) {
+            $current_tic = intval(substr($tax_code, 4));
+            require_code('files2');
+            list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=text'));
+            $_tics = explode("\n", $__tics);
+            foreach ($_tics as $tic_line) {
+                if (strpos($tic_line, '=') !== false) {
+                    list($tic, $tic_label) = explode('=', $tic_line, 2);
+                    if (intval($tic) == $current_tic) {
+                        return escape_html($tic_label);
+                    }
+                }
+            }
+            return escape_html($tax_code);
+        }
+
+        if ($tax_code == 'EU') {
+            return do_lang_tempcode('TAX_EU');
+        }
+
+        if (substr($tax_code, -1) == '%') {
+            return escape_html(float_format(floatval(substr($tax_code, 0, strlen($tax_code) - 1)), 2, true) . '%');
+        }
+
+        require_code('currency');
+        return currency_convert_wrap(floatval($tax_code), null, CURRENCY_DISPLAY_TEMPLATED);
     }
 
     // ======================
@@ -107,6 +146,7 @@ class Hook_fields_tax_code
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
         require_code('ecommerce');
+
         if ($actual_value == '') {
             $actual_value = null;
         }
@@ -133,8 +173,11 @@ class Hook_fields_tax_code
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
+        require_code('ecommerce');
+
         $id = $field['id'];
         $tmp_name = 'field_' . strval($id);
-        return post_param_string($tmp_name, $editing ? STRING_MAGIC_NULL : '');
+        $tax_code = post_param_tax_code($tmp_name, $editing ? STRING_MAGIC_NULL : '');
+        return $tax_code;
     }
 }

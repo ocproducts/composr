@@ -672,21 +672,9 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
         'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
         'NAME' => $set_name . '_rate',
-        'DEFAULT' => (($default === '') || (!is_numeric($default[0]))) ? '' : float_format(floatval($default), 2, false),
+        'DEFAULT' => (substr($default, -1) == '%') ? float_format(floatval($default), 2, false) : '',
     ));
     $field_set->attach(_form_input($set_name . '_rate', do_lang_tempcode('TAX_RATE'), do_lang_tempcode('DESCRIPTION_TAX_RATE'), $input, $required, false, $tabindex));
-
-    // EU rate input...
-
-    $input = do_template('FORM_SCREEN_INPUT_TICK', array(
-        'VALUE' => 'EU',
-        'CHECKED' => true,
-        'TABINDEX' => strval($tabindex),
-        'NAME' => $set_name . '_eu',
-        'READ_ONLY' => true,
-        'DISABLED' => false,
-    ));
-    $field_set->attach(_form_input($set_name . '_eu', do_lang_tempcode('TAX_EU'), do_lang_tempcode('DESCRIPTION_TAX_EU'), $input, $required, false, $tabindex));
 
     // TaxCloud input...
 
@@ -694,8 +682,8 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
     list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=json'));
     $_tics = json_decode($__tics, true); // TODO: Fix in v11
     $tics = new Tempcode();
-    $tics->attach(_prepare_tics_list($_tics['tic_list'], $default, 'root'));
-    $tics->attach(_prepare_tics_list($_tics['tic_list'], $default, ''));
+    $tics->attach(_prepare_tics_list($_tics['tic_list'], (preg_match('#^TIC:#', $default) != 0) ? substr($default, 4) : '', 'root'));
+    $tics->attach(_prepare_tics_list($_tics['tic_list'], (preg_match('#^TIC:#', $default) != 0) ? substr($default, 4) : '', ''));
     require_css('widget_select2');
     require_javascript('jquery');
     require_javascript('select2');
@@ -708,6 +696,18 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
         'SIZE' => strval(5),
     ));
     $field_set->attach(_form_input($set_name . '_tic', do_lang_tempcode('TAX_TIC'), do_lang_tempcode('DESCRIPTION_TAX_TIC'), $input, $required, false, $tabindex));
+
+    // EU rate input...
+
+    $input = do_template('FORM_SCREEN_INPUT_TICK', array(
+        'VALUE' => 'EU',
+        'CHECKED' => true,
+        'TABINDEX' => strval($tabindex),
+        'NAME' => $set_name . '_eu',
+        'READ_ONLY' => true,
+        'DISABLED' => false,
+    ));
+    $field_set->attach(_form_input($set_name . '_eu', do_lang_tempcode('TAX_EU'), do_lang_tempcode('DESCRIPTION_TAX_EU'), $input, $required, false, $tabindex));
 
     // --
 

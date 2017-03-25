@@ -77,7 +77,7 @@ class Module_invoices
                 'i_tax_code' => 'ID_TEXT',
                 'i_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
                 'i_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
-                'i_tax_tracking' => 'SHORT_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
+                'i_tax_tracking' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
                 'i_currency' => 'ID_TEXT',
                 'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
                 'i_time' => 'TIME',
@@ -95,7 +95,7 @@ class Module_invoices
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_code', 'ID_TEXT', '0.0');
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax', 'REAL', 0.00);
-            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_tracking', 'SHORT_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_tracking', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_currency', 'ID_TEXT', get_option('currency'));
         }
     }

@@ -86,32 +86,50 @@ class shopping_test_set extends cms_test_case
 
         $catalogue_name = 'storetesting' . strval(get_member());
 
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY id');
 
-        foreach ($fields as $val) {
-            $type = $val['cf_type'];
+        foreach ($fields as $i => $field) {
+            $id = $field['id'];
 
-            $id = $val['id'];
-
-            switch ($type) {
-                case 'integer':
-                    $_POST['field_' . strval($id)] = '500'; // Stock
-                    break;
-                case 'short_trans':
+            switch ($i) {
+                case SHOPPING_CATALOGUE_product_title:
                     $_POST['field_' . strval($id)] = lorem_phrase();
                     break;
-                case 'long_trans':
+
+                case SHOPPING_CATALOGUE_sku:
+                    $_POST['field_' . strval($id)] = lorem_phrase();
+                    break;
+
+                case SHOPPING_CATALOGUE_price:
+                    $_POST['field_' . strval($id)] = float_format(60.00);
+                    break;
+
+                case SHOPPING_CATALOGUE_stock_level:
+                    $_POST['field_' . strval($id)] = '500';
+                    break;
+
+                case SHOPPING_CATALOGUE_stock_level_warn_at:
+                    $_POST['field_' . strval($id)] = '0';
+                    break;
+
+                case SHOPPING_CATALOGUE_stock_level_maintain:
+                    $_POST['field_' . strval($id)] = '1';
+                    break;
+
+                case SHOPPING_CATALOGUE_tax_code:
+                    $_POST['field_' . strval($id)] = '5.0';
+                    break;
+
+                case SHOPPING_CATALOGUE_image:
+                    $_POST['field_' . strval($id)] = '';
+                    break;
+
+                case SHOPPING_CATALOGUE_weight:
+                    $_POST['field_' . strval($id)] = float_format(2.0);
+                    break;
+
+                case SHOPPING_CATALOGUE_description:
                     $_POST['field_' . strval($id)] = lorem_paragraph();
-                    break;
-                case 'float':
-                    $_POST['field_' . strval($id)] = float_format(68.35); // Price
-                    break;
-                case 'list':
-                    if ($val['cf_order'] == 6) { // Tax
-                        $_POST['field_' . strval($id)] = '5.0';
-                    } elseif ($val['cf_order'] == 5) { // Keep Stock
-                        $_POST['field_' . strval($id)] = '1';
-                    }
                     break;
             }
         }
@@ -146,8 +164,8 @@ class shopping_test_set extends cms_test_case
         $reason = '';
         $pending_reason = 'bar';
         $memo = 'foo';
-        $amount = 68.35;
-        $tax = round($amount * 0.05, 2);
+        $amount = 65.00;
+        $tax = 5.00;
         $currency = get_option('currency');
         $txn_id = '0';
         $parent_txn_id = '0';

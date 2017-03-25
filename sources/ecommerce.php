@@ -892,8 +892,8 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
             if (!$definitely_usa) {
                 $state_list->attach(form_input_list_entry('', '' == $state, do_lang_tempcode('NA_EM'))); // Need to provide an N/A option if different countries may be selected
             }
-            $states = create_usa_state_selection_list(array($state));
-            $fields->attach(form_input_list(do_lang_cpf('state'), '', $prefix . 'state', $states, null, false, false));
+            $state_list->attach(create_usa_state_selection_list(array($state)));
+            $fields->attach(form_input_list(do_lang_cpf('state'), '', $prefix . 'state', $state_list, null, false, false));
         } else {
             $fields->attach(form_input_line(do_lang_cpf('state'), '', $prefix . 'state', $state, false));
         }

@@ -1002,6 +1002,72 @@ NB: There is no special styling by default: this field exists so as to provide a
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__tel.png[/media]
 |}
 
+[title="3"]tax_code[/title]
+
+{| 15em wide
+! Title
+| A tax code
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [tt]in_money=on|off[/tt]: Show the tax in money, rather than as a tax code (will use the user's address for tax calculation if known, otherwise the site address)
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__tax_code.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__tax_code.png[/media]
+|}
+
+[title="3"]year_month[/title]
+
+{| 15em wide
+! Title
+| A year month
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__year_month.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__year_month.png[/media]
+|}
+
+[title="3"]state[/title]
+
+{| 15em wide
+! Title
+| A state within a country
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__state.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__state.png[/media]
+|}
+
 [title="2"]Blank fields[/title]
 
 In almost all cases a field left as blank will not show in the default templates at all.

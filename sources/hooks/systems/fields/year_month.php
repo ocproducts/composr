@@ -155,7 +155,7 @@ class Hook_fields_year_month
 
         $default_year = null;
         $default_month = null;
-        if ($actual_value !== null) {
+        if (!empty($actual_value)) {
             $date_components = explode('/', $actual_value, 2);
             $default_year = intval($date_components[0]);
             $default_month = intval($date_components[1]);
@@ -185,6 +185,9 @@ class Hook_fields_year_month
         }
         if (is_null($month)) {
             return $editing ? STRING_MAGIC_NULL : '';
+        }
+        if (($year == '') || ($month == '')) {
+            return '';
         }
 
         return str_pad(strval($year), 4, '0', STR_PAD_LEFT) . '/' . str_pad(strval($month), 2, '0', STR_PAD_LEFT);
