@@ -7757,15 +7757,6 @@ function keep_stub(starting) {// `starting` set to true means "Put a '?' for the
     return (starting ? '?' : '&') + keep;
 }
 
-/* Import an XML node into the current document */
-function careful_import_node(node) {
-    try {
-        return document.importNode(node, true);
-    } catch (e) {
-        return node;
-    }
-}
-
 /* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
 function ga_track(el, category, action) {
     if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
