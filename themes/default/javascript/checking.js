@@ -646,7 +646,7 @@ function check_form(the_form,for_preview)
 	return !erroneous;
 }
 
-function standard_alternate_fields_within(set_name,something_required)
+function standard_alternate_fields_within(set_name,something_required,default_set)
 {
 	var form=document.getElementById('set_wrapper_'+set_name);
 	while (form.nodeName.toLowerCase()!='form')
@@ -667,11 +667,11 @@ function standard_alternate_fields_within(set_name,something_required)
 				field_names.push(fields[i][0].id.replace(/^choose\_/,''));
 		}
 	}
-	standard_alternate_fields(field_names,something_required);
+	standard_alternate_fields(field_names,something_required,false,default_set);
 }
 
 // Do dynamic set_locked/set_required such that one of these must be set, but only one may be
-function standard_alternate_fields(field_names,something_required,second_run)
+function standard_alternate_fields(field_names,something_required,second_run,default_set)
 {
 	if (typeof second_run=='undefined') second_run=false;
 
@@ -690,7 +690,7 @@ function standard_alternate_fields(field_names,something_required,second_run)
 		var field=fields[i];
 		if ((!field) || (typeof field.alternating=='undefined')) // ... but only if not already set
 		{
-			var self_function=function (e) { standard_alternate_fields(field_names,something_required,true); } ; // We'll re-call ourself on change
+			var self_function=function (e) { standard_alternate_fields(field_names,something_required,true,''); } ; // We'll re-call ourself on change
 			_standard_alternate_field_create_listeners(field,self_function);
 		}
 	}
@@ -699,7 +699,7 @@ function standard_alternate_fields(field_names,something_required,second_run)
 	for (var i=0;i<field_names.length;i++)
 	{
 		var field=fields[i];
-		if (_standard_alternate_field_is_filled_in(field,second_run,false))
+		if ((default_set=='') && (_standard_alternate_field_is_filled_in(field,second_run,false)) || (default_set!='') && (field_names[i].indexOf('_'+default_set)!=-1))
 			return _standard_alternate_field_update_editability(field,fields,something_required);
 	}
 
@@ -848,6 +848,11 @@ function ___standard_alternate_field_update_editability(field,chosen_field,is_lo
 	{
 		set_required(field.name.replace(/\[\]$/,''),is_chosen);
 	}
+	var radio_button=document.getElementById('choose_'+field.name);
+	if (radio_button)
+	{
+		radio_button.checked=is_chosen;
+	}
 }
 
 function set_locked(field,is_locked,chosen_ob)
@@ -903,10 +908,7 @@ function set_required(field_name,is_required)
 {
 	var radio_button=document.getElementById('choose_'+field_name);
 
-	if (radio_button)
-	{
-		if (is_required) radio_button.checked=true;
-	} else
+	if (!radio_button)
 	{
 		var required_a=document.getElementById('form_table_field_name__'+field_name);
 		var required_b=document.getElementById('required_readable_marker__'+field_name);

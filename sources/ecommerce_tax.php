@@ -332,18 +332,20 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 
             $php_errormsg = mixed();
             $tax_country_regexp = get_option('tax_country_regexp');
-            $check = @preg_match('#' . $tax_country_regexp . '#', $country);
-            if ($check === false) {
-                warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_COUNTRY_REGEXP'), escape_html($tax_country_regexp), $php_errormsg));
-            }
-            if ($check == 0) {
-                // EXCEPTION: Country not covered
-                $free_item_details[$i] = $parts;
-                unset($non_taxcloud_item_details[$i]);
-                continue;
+            if (!empty($tax_country_regexp)) {
+                $check = @preg_match('#' . $tax_country_regexp . '#', $country);
+                if ($check === false) {
+                    warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_COUNTRY_REGEXP'), escape_html($tax_country_regexp), $php_errormsg));
+                }
+                if ($check == 0) {
+                    // EXCEPTION: Country not covered
+                    $free_item_details[$i] = $parts;
+                    unset($non_taxcloud_item_details[$i]);
+                    continue;
+                }
             }
             $tax_state_regexp = get_option('tax_state_regexp');
-            if ($tax_state_regexp !== null) {
+            if (!empty($tax_state_regexp)) {
                 $check = @preg_match('#' . $tax_state_regexp . '#', $state);
                 if ($check === false) {
                     warn_exit(do_lang_tempcode('INVALID_REGULAR_EXPRESSION', do_lang('TAX_STATE_REGEXP'), escape_html($tax_country_regexp), $php_errormsg));
@@ -666,24 +668,34 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
     $fields = new Tempcode();
     $field_set = alternate_fields_set__start($set_name);
 
+    $default_set = 'rate';
+
     // Simple rate input ...
 
+    $has_rate = (substr($default, -1) == '%');
+    if ($has_rate) {
+        $default_set = 'rate';
+    }
     $input = do_template('FORM_SCREEN_INPUT_FLOAT', array(
         'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
         'NAME' => $set_name . '_rate',
-        'DEFAULT' => (substr($default, -1) == '%') ? float_format(floatval($default), 2, false) : '',
+        'DEFAULT' => $has_rate ? float_format(floatval($default), 2, false) : '',
     ));
     $field_set->attach(_form_input($set_name . '_rate', do_lang_tempcode('TAX_RATE'), do_lang_tempcode('DESCRIPTION_TAX_RATE'), $input, $required, false, $tabindex));
 
     // TaxCloud input...
 
     require_code('files2');
+    $has_tic = (preg_match('#^TIC:#', $default) != 0);
+    if ($has_tic) {
+        $default_set = 'tic';
+    }
     list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=json'));
     $_tics = json_decode($__tics, true); // TODO: Fix in v11
     $tics = new Tempcode();
-    $tics->attach(_prepare_tics_list($_tics['tic_list'], (preg_match('#^TIC:#', $default) != 0) ? substr($default, 4) : '', 'root'));
-    $tics->attach(_prepare_tics_list($_tics['tic_list'], (preg_match('#^TIC:#', $default) != 0) ? substr($default, 4) : '', ''));
+    $tics->attach(_prepare_tics_list($_tics['tic_list'], $has_tic ? substr($default, 4) : '', 'root'));
+    $tics->attach(_prepare_tics_list($_tics['tic_list'], $has_tic ? substr($default, 4) : '', ''));
     require_css('widget_select2');
     require_javascript('jquery');
     require_javascript('select2');
@@ -699,19 +711,16 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
 
     // EU rate input...
 
-    $input = do_template('FORM_SCREEN_INPUT_TICK', array(
-        'VALUE' => 'EU',
-        'CHECKED' => true,
-        'TABINDEX' => strval($tabindex),
-        'NAME' => $set_name . '_eu',
-        'READ_ONLY' => true,
-        'DISABLED' => false,
-    ));
+    $has_eu = ($default == 'EU');
+    if ($has_eu) {
+        $default_set = 'eu';
+    }
+    $input = form_input_hidden($set_name . '_eu', '1');
     $field_set->attach(_form_input($set_name . '_eu', do_lang_tempcode('TAX_EU'), do_lang_tempcode('DESCRIPTION_TAX_EU'), $input, $required, false, $tabindex));
 
     // --
 
-    $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required));
+    $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, null, false, $default_set));
     return $fields;
 }
 
@@ -768,16 +777,15 @@ function post_param_tax_code($name, $default = '0.0')
     if ($value == '') {
         $value = post_param_string($name . '_rate', ''); // Simple rate
         if ($value == '') {
-            $value = post_param_string($name . '_eu', ''); // Semantic: EU rate
+            $value = post_param_string($name . '_tic', ''); // Semantic: TaxCloud
             if ($value == '') {
-                $value = post_param_string($name . '_tic', ''); // Semantic: TaxCloud
-                if ($value == '') {
-                    $value = $default; // Default
+                if (substr(post_param_string($name, ''), -3) == '_eu') { // Semantic: EU rate
+                    $value = 'EU';
                 } else {
-                    $value = 'TIC:' . $value;
+                    $value = $default; // Default
                 }
             } else {
-                $value = 'EU';
+                $value = 'TIC:' . $value;
             }
         } else {
             $value = float_to_raw_string(float_unformat($value)) . '%';

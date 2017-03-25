@@ -2382,9 +2382,10 @@ function alternate_fields_set__start($set_name)
  * @param  boolean $required Whether it is required that this field set be filled in
  * @param  ?URLPATH $existing_image_preview_url Image URL to show, of the existing selection for this field (null: N/A) (blank: N/A)
  * @param  boolean $raw Whether we just want the raw set contents, without any wrapper field row
+ * @param  string $default_set The default set to pre-select
  * @return Tempcode The field set
  */
-function alternate_fields_set__end($set_name, $pretty_name, $description, $fields, $required, $existing_image_preview_url = null, $raw = false)
+function alternate_fields_set__end($set_name, $pretty_name, $description, $fields, $required, $existing_image_preview_url = null, $raw = false, $default_set = '')
 {
     global $DOING_ALTERNATE_FIELDS_SET;
     if ($DOING_ALTERNATE_FIELDS_SET === null) {
@@ -2397,7 +2398,15 @@ function alternate_fields_set__end($set_name, $pretty_name, $description, $field
         }
     }
 
-    $set = do_template('FORM_SCREEN_FIELDS_SET', array('_GUID' => 'ae81cf68280aef067de1e8e71b2919a7', 'FIELDS' => $fields, 'PRETTY_NAME' => $pretty_name, 'SET_NAME' => $set_name, 'REQUIRED' => $required, 'EXISTING_IMAGE_PREVIEW_URL' => $existing_image_preview_url));
+    $set = do_template('FORM_SCREEN_FIELDS_SET', array(
+        '_GUID' => 'ae81cf68280aef067de1e8e71b2919a7',
+        'FIELDS' => $fields,
+        'PRETTY_NAME' => $pretty_name,
+        'SET_NAME' => $set_name,
+        'REQUIRED' => $required,
+        'EXISTING_IMAGE_PREVIEW_URL' => $existing_image_preview_url,
+        'DEFAULT_SET' => $default_set,
+    ));
 
     if (is_null($DOING_ALTERNATE_FIELDS_SET)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
