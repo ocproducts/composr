@@ -307,7 +307,7 @@ function do_input_menu(field_name) {
 
                         var add;
                         var element = document.getElementById(field_name);
-                        add = '[block=\""+escape_comcode(va)+"\" caption=\""+escape_comcode(vb)+"\" type=\"tree\"]menu[/block]';
+                        add = '[block=\""+$cms.filter.comcode(va)+"\" caption=\""+$cms.filter.comcode(vb)+"\" type=\"tree\"]menu[/block]';
                         insert_textbox(element, add);
                     },
                     '{!comcode:INPUT_COMCODE_menu;^}'
@@ -440,7 +440,7 @@ function do_input_hide(field_name) {
                     function (vb) {
                         var element = document.getElementById(field_name);
                         if (vb) {
-                            insert_textbox(element, '[hide=\"' + escape_comcode(va) + '\"]' + escape_comcode(vb) + '[/hide]');
+                            insert_textbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
                         }
                     },
                     '{!comcode:INPUT_COMCODE_hide;^}'
@@ -485,9 +485,9 @@ function do_input_thumb(field_name, va) {
 
                                 var element = document.getElementById(field_name);
                                 if (vb.toLowerCase() == '{!IMAGE;^}'.toLowerCase()) {
-                                    insert_textbox(element, '[img=\"' + escape_comcode(vc) + '\"]' + escape_comcode(va) + '[/img]');
+                                    insert_textbox(element, '[img=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/img]');
                                 } else {
-                                    insert_textbox(element, '[thumb caption=\"' + escape_comcode(vc) + '\"]' + escape_comcode(va) + '[/thumb]');
+                                    insert_textbox(element, '[thumb caption=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/thumb]');
                                 }
                             },
                             '{!comcode:INPUT_COMCODE_img;^}'
@@ -552,7 +552,7 @@ function do_input_url(field_name, va) {
                     '',
                     function (vb) {
                         var element = document.getElementById(field_name);
-                        if (vb != null) insert_textbox(element, '[url=\"' + escape_comcode(vb) + '\"]' + escape_comcode(va) + '[/url]');
+                        if (vb != null) insert_textbox(element, '[url=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/url]');
                     },
                     '{!comcode:INPUT_COMCODE_url;^}'
                 );
@@ -620,7 +620,7 @@ function do_input_page(field_name) {
 
 function _do_input_page(field_name, result, vc) {
     var element = document.getElementById(field_name);
-    insert_textbox(element, '[page=\"' + escape_comcode(result) + '\"]' + escape_comcode(vc) + '[/page]');
+    insert_textbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
 }
 
 function do_input_email(field_name, va) {
@@ -643,7 +643,7 @@ function do_input_email(field_name, va) {
                     '',
                     function (vb) {
                         var element = document.getElementById(field_name);
-                        if (vb !== null) insert_textbox(element, '[email=\"' + escape_comcode(vb) + '\"]' + escape_comcode(va) + '[/email]');
+                        if (vb !== null) insert_textbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
                     },
                     '{!comcode:INPUT_COMCODE_email;^}'
                 );
@@ -682,7 +682,7 @@ function do_input_font(field_name) {
         window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
         return;
     }
-    insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + escape_comcode(face.value) + '\" color=\"' + escape_comcode(colour.value) + '\" size=\"' + escape_comcode(size.value) + '\"]', '[/font]');
+    insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]');
 }
 
 // ==================

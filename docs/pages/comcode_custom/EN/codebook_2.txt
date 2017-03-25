@@ -138,7 +138,7 @@ In Composr, JavaScript libraries are automatically minified to save on bandwidth
 
 [title="3"]Useful Composr JavaScript functions[/title]
 
- - [b]Escaping[/b]: [tt]escape_html[/tt], [tt]escape_comcode[/tt]
+ - [b]Escaping[/b]: [tt]$cms.filter.html[/tt], [tt]$cms.filter.comcode[/tt]
  - [b]Cookies[/b]: [tt]set_cookie[/tt], [tt]read_cookie[/tt]
  - [b]Introspection[/b]: [tt]get_elements_by_class_name[/tt], [tt]abstract_get_computed_style[/tt], [tt]browser_matches[/tt]
  - [b]Calling up dependencies[/b]: [tt]load_snippet[/tt], [tt]require_javascript[/tt]

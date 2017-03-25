@@ -3441,6 +3441,12 @@ var encodeUC = encodeURIComponent;
             : '';
     };
 
+    $cms.filter.comcode = function comcode(str) {
+        return ((str != null) && (str = strVal(str))) ?
+            str.replace(/\\/g, '\\\\')
+                .replace(/"/g, '\\"')
+            : '';
+    };
 
     var tempDisabledButtons = {};
 
@@ -5248,7 +5254,6 @@ function noop() {}
     window.manage_scroll_height = manage_scroll_height;
     window.get_main_cms_window = get_main_cms_window;
     window.magic_keypress = magic_keypress;
-    window.escape_comcode = escape_comcode;
     window.create_rollover = create_rollover;
     window.browser_matches = browser_matches;
     window.confirm_session = confirm_session;
@@ -5359,15 +5364,6 @@ function noop() {}
         }
 
         return count >= 2;
-    }
-
-    /* Data escaping */
-    function escape_comcode(value) {
-        value = strVal(value);
-        if (!value) {
-            return '';
-        }
-        return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
     }
 
     /* Image rollover effects */

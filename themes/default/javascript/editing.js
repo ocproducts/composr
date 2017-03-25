@@ -685,7 +685,7 @@ function do_attachment(field_name, id, description) {
 
     var element = get_main_cms_window().document.getElementById(field_name);
 
-    var comcode = '\n\n[attachment description="' + escape_comcode(description) + '"]' + id + '[/attachment]';
+    var comcode = '\n\n[attachment description="' + $cms.filter.comcode(description) + '"]' + id + '[/attachment]';
 
     insert_textbox_opener(element, comcode);
 }
