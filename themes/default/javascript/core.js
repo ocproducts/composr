@@ -717,7 +717,7 @@
 
             function openImageIntoLightbox(el) {
                 var has_full_button = (el.firstElementChild === null) || (el.href !== el.firstElementChild.src);
-                _open_image_into_lightbox(el.href, ((el.cms_tooltip_title !== undefined) ? el.cms_tooltip_title : el.title), null, null, has_full_button);
+                $cms.ui.openImageIntoLightbox(el.href, ((el.cms_tooltip_title !== undefined) ? el.cms_tooltip_title : el.title), null, null, has_full_button);
             }
         },
 

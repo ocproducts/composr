@@ -212,7 +212,7 @@
             function openImageIntoLightbox(imgs, start) {
                 start = +start || 0;
 
-                var modal = _open_image_into_lightbox(imgs[start][0], imgs[start][1], start + 1, imgs.length, true, imgs[start][2]);
+                var modal = $cms.ui.openImageIntoLightbox(imgs[start][0], imgs[start][1], start + 1, imgs.length, true, imgs[start][2]);
                 modal.positionInSet = start;
 
                 var previousButton = document.createElement('img');
@@ -266,7 +266,7 @@
                             video.autoplay = 'autoplay';
                             $cms.dom.html(video, imgs[position][0]);
                             video.addEventListener('loadedmetadata', function () {
-                                _resize_lightbox_dimensions_img(modal, video, true, true);
+                                $cms.ui.resizeLightboxDimensionsImg(modal, video, true, true);
                             });
                         } else {
                             var img = modal.top_window.document.createElement('img');
@@ -275,7 +275,7 @@
                             img.src = '{$IMG_INLINE;,loading}';
                             window.setTimeout(function () { // Defer execution until after loading is set
                                 img.addEventListener('load', function () {
-                                    _resize_lightbox_dimensions_img(modal, img, true, is_video);
+                                    $cms.ui.resizeLightboxDimensionsImg(modal, img, true, is_video);
                                 });
                                 img.src = imgs[position][0];
                             }, 0);

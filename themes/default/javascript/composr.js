@@ -3460,6 +3460,25 @@ var encodeUC = encodeURIComponent;
             : '';
     };
 
+
+    /*
+
+     This code does a lot of stuff relating to overlays...
+
+     It provides callback-based *overlay*-driven substitutions for the standard browser windowing API...
+     - alert
+     - prompt
+     - confirm
+     - open (known as popups)
+     - showModalDialog
+     A term we are using for these kinds of 'overlay' is '(faux) modal window'.
+
+     It provides a generic function to open a link as an overlay.
+
+     It provides a function to open an image link as a 'lightbox' (we use the term lightbox exclusively to refer to images in an overlay).
+
+     */
+
     /**
      * @memberof $cms.ui
      */
@@ -3711,6 +3730,154 @@ var encodeUC = encodeURIComponent;
                 $cms.ui.disableButton(btn, permanent);
             }
         });
+    };
+
+    /**
+     * Originally _open_image_into_lightbox
+     * @memberof $cms.ui
+     * @param initial_img_url
+     * @param description
+     * @param x
+     * @param n
+     * @param has_full_button
+     * @param is_video
+     * @returns {$cms.views.ModalWindow}
+     */
+    $cms.ui.openImageIntoLightbox = function openImageIntoLightbox(initial_img_url, description, x, n, has_full_button, is_video) {
+        has_full_button = !!has_full_button;
+        is_video = !!is_video;
+
+        // Set up overlay for Lightbox
+        var lightbox_code = /** @lang HTML */' \
+        <div style="text-align: center"> \
+            <p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p> \
+            <p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
+                <span id="lightbox_description">' + description + '</span> \
+                ' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
+                ' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
+            </p> \
+        </div> \
+    ';
+
+        // Show overlay
+        var my_lightbox = {
+                type: 'lightbox',
+                text: lightbox_code,
+                cancel_button: '{!INPUTSYSTEM_CLOSE;^}',
+                width: '450', // This will be updated with the real image width, when it has loaded
+                height: '300' // "
+            },
+            modal = $cms.openModalWindow(my_lightbox);
+
+        // Load proper image
+        window.setTimeout(function () { // Defer execution until the HTML was parsed
+            if (is_video) {
+                var video = document.createElement('video');
+                video.id = 'lightbox_image';
+                video.className = 'lightbox_image';
+                video.controls = 'controls';
+                video.autoplay = 'autoplay';
+                $cms.dom.html(video, initial_img_url);
+                video.addEventListener('loadedmetadata', function () {
+                    $cms.ui.resizeLightboxDimensionsImg(modal, video, has_full_button, true);
+                });
+            } else {
+                var img = modal.top_window.document.createElement('img');
+                img.className = 'lightbox_image';
+                img.id = 'lightbox_image';
+                img.onload = function () {
+                    $cms.ui.resizeLightboxDimensionsImg(modal, img, has_full_button, false);
+                };
+                img.src = initial_img_url;
+            }
+        }, 0);
+
+        return modal;
+    };
+
+    /**
+     * @memberof $cms.ui
+     * @param modal
+     * @param img
+     * @param has_full_button
+     * @param is_video
+     */
+    $cms.ui.resizeLightboxDimensionsImg = function resizeLightboxDimensionsImg(modal, img, has_full_button, is_video) {
+        if (!modal.boxWrapperEl) {
+            /* Overlay closed already */
+            return;
+        }
+
+        var real_width = is_video ? img.videoWidth : img.width,
+            width = real_width,
+            real_height = is_video ? img.videoHeight : img.height,
+            height = real_height,
+            lightbox_image = modal.top_window.$cms.dom.$id('lightbox_image'),
+            lightbox_meta = modal.top_window.$cms.dom.$id('lightbox_meta'),
+            lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
+            lightbox_position_in_set = modal.top_window.$cms.dom.$id('lightbox_position_in_set'),
+            lightbox_full_link = modal.top_window.$cms.dom.$id('lightbox_full_link');
+
+        var sup = lightbox_image.parentNode;
+        sup.removeChild(lightbox_image);
+        if (sup.firstChild) {
+            sup.insertBefore(img, sup.firstChild);
+        } else {
+            sup.appendChild(img);
+        }
+        sup.className = '';
+        sup.style.textAlign = 'center';
+        sup.style.overflow = 'hidden';
+
+        dims_func();
+        $cms.dom.on(window, 'resize', dims_func);
+
+        function dims_func() {
+            lightbox_description.style.display = (lightbox_description.firstChild) ? 'inline' : 'none';
+            if (lightbox_full_link) {
+                var showLightboxFullLink = !!(!is_video && has_full_button && ((real_width > max_width) || (real_height > max_height)));
+                $cms.dom.toggle(lightbox_full_link, showLightboxFullLink);
+            }
+            var showLightboxMeta = !!((lightbox_description.style.display === 'inline') || (lightbox_position_in_set !== null) || (lightbox_full_link && lightbox_full_link.style.display === 'inline'));
+            $cms.dom.toggle(lightbox_meta, showLightboxMeta);
+
+            // Might need to rescale using some maths, if natural size is too big
+            var max_dims = _get_max_lightbox_img_dims(modal, has_full_button),
+                max_width = max_dims[0],
+                max_height = max_dims[1];
+
+            if (width > max_width) {
+                width = max_width;
+                height = window.parseInt(max_width * real_height / real_width - 1);
+            }
+
+            if (height > max_height) {
+                width = window.parseInt(max_height * real_width / real_height - 1);
+                height = max_height;
+            }
+
+            img.width = width;
+            img.height = height;
+            modal.reset_dimensions('' + width, '' + height, false, true); // Temporarily forced, until real height is known (includes extra text space etc)
+
+            window.setTimeout(function () {
+                modal.reset_dimensions('' + width, '' + height, false);
+            });
+
+            if (img.parentElement) {
+                img.parentElement.parentElement.parentElement.style.width = 'auto';
+                img.parentElement.parentElement.parentElement.style.height = 'auto';
+            }
+
+            function _get_max_lightbox_img_dims(modal, has_full_button) {
+                var max_width = modal.top_window.get_window_width() - 20;
+                var max_height = modal.top_window.get_window_height() - 60;
+                if (has_full_button) {
+                    max_height -= 120;
+                }
+                return [max_width, max_height];
+            }
+        }
     };
 
     /**
@@ -7425,156 +7592,6 @@ function play_self_audio_link(ob) {
         el.style.opacity = fraction;
     }
 })());
-
-/*
-
- This code does a lot of stuff relating to overlays...
-
- It provides callback-based *overlay*-driven substitutions for the standard browser windowing API...
- - alert
- - prompt
- - confirm
- - open (known as popups)
- - showModalDialog
- A term we are using for these kinds of 'overlay' is '(faux) modal window'.
-
- It provides a generic function to open a link as an overlay.
-
- It provides a function to open an image link as a 'lightbox' (we use the term lightbox exclusively to refer to images in an overlay).
-
- */
-'use strict';
-
-
-function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_button, is_video) {
-    has_full_button = !!has_full_button;
-    is_video = !!is_video;
-
-    // Set up overlay for Lightbox
-    var lightbox_code = /** @lang HTML */' \
-			<div style="text-align: center"> \
-				<p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p> \
-				<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
-					<span id="lightbox_description">' + description + '</span> \
-					' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
-					' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
-				</p> \
-			</div> \
-		';
-
-    // Show overlay
-    var my_lightbox = {
-            type: 'lightbox',
-            text: lightbox_code,
-            cancel_button: '{!INPUTSYSTEM_CLOSE;^}',
-            width: '450', // This will be updated with the real image width, when it has loaded
-            height: '300' // "
-        },
-        modal = $cms.openModalWindow(my_lightbox);
-
-    // Load proper image
-    window.setTimeout(function () { // Defer execution until the HTML was parsed
-        if (is_video) {
-            var video = document.createElement('video');
-            video.id = 'lightbox_image';
-            video.className = 'lightbox_image';
-            video.controls = 'controls';
-            video.autoplay = 'autoplay';
-            $cms.dom.html(video, initial_img_url);
-            video.addEventListener('loadedmetadata', function () {
-                _resize_lightbox_dimensions_img(modal, video, has_full_button, true);
-            });
-        } else {
-            var img = modal.top_window.document.createElement('img');
-            img.className = 'lightbox_image';
-            img.id = 'lightbox_image';
-            img.onload = function () {
-                _resize_lightbox_dimensions_img(modal, img, has_full_button, false);
-            };
-            img.src = initial_img_url;
-        }
-    });
-
-    return modal;
-}
-
-function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) {
-    if (!modal.boxWrapperEl) {
-        /* Overlay closed already */
-        return;
-    }
-
-    var real_width = is_video ? img.videoWidth : img.width,
-        width = real_width,
-        real_height = is_video ? img.videoHeight : img.height,
-        height = real_height,
-        lightbox_image = modal.top_window.$cms.dom.$id('lightbox_image'),
-        lightbox_meta = modal.top_window.$cms.dom.$id('lightbox_meta'),
-        lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
-        lightbox_position_in_set = modal.top_window.$cms.dom.$id('lightbox_position_in_set'),
-        lightbox_full_link = modal.top_window.$cms.dom.$id('lightbox_full_link');
-
-    var sup = lightbox_image.parentNode;
-    sup.removeChild(lightbox_image);
-    if (sup.firstChild) {
-        sup.insertBefore(img, sup.firstChild);
-    } else {
-        sup.appendChild(img);
-    }
-    sup.className = '';
-    sup.style.textAlign = 'center';
-    sup.style.overflow = 'hidden';
-
-    dims_func();
-    $cms.dom.on(window, 'resize', dims_func);
-
-    function dims_func() {
-        lightbox_description.style.display = (lightbox_description.firstChild) ? 'inline' : 'none';
-        if (lightbox_full_link) {
-            var showLightboxFullLink = !!(!is_video && has_full_button && ((real_width > max_width) || (real_height > max_height)));
-            $cms.dom.toggle(lightbox_full_link, showLightboxFullLink);
-        }
-        var showLightboxMeta = !!((lightbox_description.style.display === 'inline') || (lightbox_position_in_set !== null) || (lightbox_full_link && lightbox_full_link.style.display === 'inline'));
-        $cms.dom.toggle(lightbox_meta, showLightboxMeta);
-
-        // Might need to rescale using some maths, if natural size is too big
-        var max_dims = _get_max_lightbox_img_dims(modal, has_full_button),
-            max_width = max_dims[0],
-            max_height = max_dims[1];
-
-        if (width > max_width) {
-            width = max_width;
-            height = window.parseInt(max_width * real_height / real_width - 1);
-        }
-
-        if (height > max_height) {
-            width = window.parseInt(max_height * real_width / real_height - 1);
-            height = max_height;
-        }
-
-        img.width = width;
-        img.height = height;
-        modal.reset_dimensions('' + width, '' + height, false, true); // Temporarily forced, until real height is known (includes extra text space etc)
-
-        window.setTimeout(function () {
-            modal.reset_dimensions('' + width, '' + height, false);
-        });
-
-        if (img.parentElement) {
-            img.parentElement.parentElement.parentElement.style.width = 'auto';
-            img.parentElement.parentElement.parentElement.style.height = 'auto';
-        }
-
-        function _get_max_lightbox_img_dims(modal, has_full_button) {
-            var max_width = modal.top_window.get_window_width() - 20;
-            var max_height = modal.top_window.get_window_height() - 60;
-            if (has_full_button) {
-                max_height -= 120;
-            }
-            return [max_width, max_height];
-        }
-    }
-}
 
 (function () {
     /*
