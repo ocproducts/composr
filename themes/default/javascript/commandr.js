@@ -195,7 +195,12 @@ function commandr_command_response(ajax_result_frame, ajax_result) {
         var child_node, new_child, cloned_node;
         for (i = 0; i < stdhtml.childNodes.length; i++) {
             child_node = stdhtml.childNodes[i];
-            new_child = careful_import_node(child_node);
+
+            new_child = child_node;
+            try {
+                new_child = document.importNode(child_node, true);
+            } catch (ignore) {}
+
             cloned_node = new_child.cloneNode(true);
             past_command.appendChild(cloned_node);
         }

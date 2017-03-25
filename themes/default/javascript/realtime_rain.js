@@ -197,7 +197,12 @@ function received_events(ajax_result_frame, ajax_result) {
         }
 
         // Set up HTML (difficult, as we are copying from XML)
-        _cloned_message = careful_import_node(element);
+        _cloned_message = element;
+
+        try {
+            _cloned_message = document.importNode(element, true);
+        } catch (ignore) {}
+
         cloned_message = $cms.dom.create('div', {
             id: _cloned_message.getAttribute('id'),
             class: _cloned_message.getAttribute('class'),

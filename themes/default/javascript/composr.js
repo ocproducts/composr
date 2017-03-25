@@ -5727,7 +5727,9 @@ var encodeUC = encodeURIComponent;
                 return;
             }
 
-            ajax_result = careful_import_node(ajax_result);
+            try {
+                ajax_result = document.importNode(ajax_result, true);
+            } catch (e) {}
 
             var i, xml, temp_node, html;
             if (!expanding_id) {// Root
