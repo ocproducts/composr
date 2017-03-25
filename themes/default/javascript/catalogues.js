@@ -67,7 +67,7 @@
         form.onsubmit = (function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(form.elements['name'].value);
-            if (!do_ajax_field_test(url)) {
+            if (!$cms.form.doAjaxFieldTest(url)) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }

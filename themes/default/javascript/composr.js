@@ -4347,7 +4347,7 @@ var encodeUC = encodeURIComponent;
                 if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
                     error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
                 }
-                if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeUC(my_value)))) {
+                if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.$cms.form.doAjaxFieldTest) && (!$cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeUC(my_value)))) {
                     error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
                 }
                 if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
@@ -4573,6 +4573,300 @@ var encodeUC = encodeURIComponent;
             blank = blank && (value == '');
         }
         return !blank;
+    };
+
+    /**
+     * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
+     * @memberof $cms.form
+     * @param url
+     * @param post
+     * @returns {boolean}
+     */
+    $cms.form.doAjaxFieldTest = function doAjaxFieldTest(url, post) {
+        var xhr = do_ajax_request(url, null, post);
+        if ((xhr.responseText != '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
+            if (xhr.responseText !== 'false') {
+                if (xhr.responseText.length > 1000) {
+                    $cms.log('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
+                    $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                } else {
+                    $cms.ui.alert(xhr.responseText);
+                }
+            }
+            return false;
+        }
+        return true;
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param target
+     * @param e
+     * @param search_type
+     */
+    $cms.form.updateAjaxSearchList = function updateAjaxSearchList(target, e, search_type) {
+        var special = 'search';
+        search_type = strVal(search_type);
+        if (search_type) {
+            special += '&search_type=' + encodeURIComponent(search_type);
+        }
+        $cms.form.updateAjaxMemberList(target, special, false, e);
+    };
+
+    var currentlyDoingListTimer = 0,
+        currentListForEl = null;
+
+    /**
+     * @memberof $cms.form
+     * @param target
+     * @param special
+     * @param delayed
+     * @param event
+     */
+    $cms.form.updateAjaxMemberList = function updateAjaxMemberList(target, special, delayed, event) {
+        if ((event && $cms.dom.keyPressed(event, 'Enter')) || target.disabled) {
+            return;
+        }
+
+        if (!browser_matches('ios') && !target.onblur) {
+            target.onblur = function () {
+                setTimeout(function () {
+                    close_down_ajax_list();
+                }, 300);
+            }
+        }
+
+        if (!delayed) {// A delay, so as not to throw out too many requests
+            if (currentlyDoingListTimer) {
+                window.clearTimeout(currentlyDoingListTimer);
+            }
+            var e_copy = { 'keyCode': event.keyCode, 'which': event.which };
+
+            currentlyDoingListTimer = window.setTimeout(function () {
+                $cms.form.updateAjaxMemberList(target, special, true, e_copy);
+            }, 400);
+            return;
+        } else {
+            currentlyDoingListTimer = 0;
+        }
+
+        target.special = special;
+
+        var v = target.value;
+
+        currentListForEl = target;
+        var script = '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(v);
+        if (special) {
+            script = script + '&special=' + special;
+        }
+
+        do_ajax_request(script + keep_stub(), updateAjaxNemberListResponse);
+
+        function close_down_ajax_list() {
+            var current = $cms.dom.$('#ajax_list');
+            if (current) {
+                current.parentNode.removeChild(current);
+            }
+        }
+
+        function updateAjaxNemberListResponse(result, list_contents) {
+            if (!list_contents || !currentListForEl) {
+                return;
+            }
+
+            close_down_ajax_list();
+
+            var isDataList = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
+
+            //if (list_contents.childNodes.length==0) return;
+            var list = document.createElement(isDataList ? 'datalist' : 'select');
+            list.className = 'people_list';
+            list.setAttribute('id', 'ajax_list');
+            if (isDataList) {
+                currentListForEl.setAttribute('list', 'ajax_list');
+            } else {
+                if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
+                    list.setAttribute('multiple', 'multiple');
+                } else {
+                    list.setAttribute('size', list_contents.childNodes.length + 1);
+                }
+                list.style.position = 'absolute';
+                list.style.left = (find_pos_x(currentListForEl)) + 'px';
+                list.style.top = (find_pos_y(currentListForEl) + currentListForEl.offsetHeight) + 'px';
+            }
+            setTimeout(function () {
+                list.style.zIndex++;
+            }, 100); // Fixes Opera by causing a refresh
+
+            if (list_contents.children.length === 0) {
+                return;
+            }
+
+            var i, item, displaytext;
+            for (i = 0; i < list_contents.children.length; i++) {
+                item = document.createElement('option');
+                item.value = list_contents.children[i].getAttribute('value');
+                displaytext = item.value;
+                if (list_contents.children[i].getAttribute('displayname') != '')
+                    displaytext = list_contents.children[i].getAttribute('displayname');
+                item.text = displaytext;
+                item.textContent = displaytext;
+                list.appendChild(item);
+            }
+            item = document.createElement('option');
+            item.disabled = true;
+            item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+            item.textContent = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+            list.appendChild(item);
+            currentListForEl.parentNode.appendChild(list);
+
+            if (isDataList) {
+                return;
+            }
+
+            clear_transition_and_set_opacity(list, 0.0);
+            fade_transition(list, 100, 30, 8);
+
+            var current_list_for_copy = currentListForEl;
+
+            if (currentListForEl.old_onkeyup === undefined) {
+                currentListForEl.old_onkeyup = currentListForEl.onkeyup;
+            }
+
+            if (currentListForEl.old_onchange === undefined) {
+                currentListForEl.old_onchange = currentListForEl.onchange;
+            }
+
+            currentListForEl.down_once = false;
+
+            currentListForEl.onkeyup = function (event) {
+                var ret = handle_arrow_usage(event);
+                if (ret != null) {
+                    return ret;
+                }
+                return $cms.form.updateAjaxMemberList(current_list_for_copy, current_list_for_copy.special, false, event);
+            };
+            currentListForEl.onchange = function (event) {
+                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
+                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
+                if (current_list_for_copy.onchange) {
+                    current_list_for_copy.onchange(event);
+                }
+            };
+            list.onkeyup = function (event) {
+                var ret = handle_arrow_usage(event);
+                if (ret != null) {
+                    return ret;
+                }
+
+                if ($cms.dom.keyPressed(event, 'Enter')) {// ENTER
+                    make_selection(event);
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 200);
+
+                    return cancel_bubbling(event);
+                }
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return cancel_bubbling(event);
+                }
+                return null;
+            };
+
+            currentListForEl.onkeypress = function (event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return cancel_bubbling(event);
+                }
+                return null;
+            };
+            list.onkeypress = function (event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['Enter', 'ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return cancel_bubbling(event);
+                }
+                return null;
+            };
+
+            list.addEventListener(browser_matches('ios') ? 'change' : 'click', make_selection, false);
+
+            currentListForEl = null;
+
+            function handle_arrow_usage(event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 1000);
+
+                    var temp = current_list_for_copy.onblur;
+                    current_list_for_copy.onblur = function () {
+                    };
+                    list.focus();
+                    current_list_for_copy.onblur = temp;
+                    if (!current_list_for_copy.down_once) {
+                        current_list_for_copy.down_once = true;
+                        list.selectedIndex = 0;
+                    } else {
+                        if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
+                    }
+                    list.options[list.selectedIndex].selected = true;
+                    return cancel_bubbling(event);
+                }
+
+                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 1000);
+
+                    var temp = current_list_for_copy.onblur;
+                    current_list_for_copy.onblur = function () {};
+                    list.focus();
+                    current_list_for_copy.onblur = temp;
+                    if (!current_list_for_copy.down_once) {
+                        current_list_for_copy.down_once = true;
+                        list.selectedIndex = 0;
+                    } else {
+                        if (list.selectedIndex > 0) {
+                            list.selectedIndex--;
+                        }
+                    }
+                    list.options[list.selectedIndex].selected = true;
+                    return cancel_bubbling(event);
+                }
+                return null;
+            }
+
+            function make_selection(e) {
+                var el = e.target;
+
+                current_list_for_copy.value = el.value;
+                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
+                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
+                current_list_for_copy.onkeypress = function () {
+                };
+                if (current_list_for_copy.onrealchange) {
+                    current_list_for_copy.onrealchange(e);
+                }
+                if (current_list_for_copy.onchange) {
+                    current_list_for_copy.onchange(e);
+                }
+                var al = $cms.dom.$id('ajax_list');
+                al.parentNode.removeChild(al);
+                window.setTimeout(function () {
+                    current_list_for_copy.focus();
+                }, 300);
+            }
+        }
     };
 
     /**
@@ -8015,32 +8309,7 @@ function play_self_audio_link(ob) {
         }
     }
 
-
-    /*
-     Validation
-     */
-
-    window.do_ajax_field_test = do_ajax_field_test;
     window.merge_text_nodes = merge_text_nodes;
-    window.update_ajax_search_list = update_ajax_search_list;
-    window.update_ajax_member_list = update_ajax_member_list;
-
-    /* Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message) */
-    function do_ajax_field_test(url, post) {
-        var xhr = do_ajax_request(url, null, post);
-        if ((xhr.responseText != '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
-            if (xhr.responseText !== 'false') {
-                if (xhr.responseText.length > 1000) {
-                    $cms.log('do_ajax_field_test()', 'xhr.responseText:', xhr.responseText);
-                    $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
-                } else {
-                    $cms.ui.alert(xhr.responseText);
-                }
-            }
-            return false;
-        }
-        return true;
-    }
 
     function merge_text_nodes(childNodes) {
         var i, text = '';
@@ -8050,263 +8319,5 @@ function play_self_audio_link(ob) {
             }
         }
         return text;
-    }
-
-    function update_ajax_search_list(target, e, search_type) {
-        var special = 'search';
-        search_type = strVal(search_type);
-        if (search_type) {
-            special += '&search_type=' + encodeURIComponent(search_type);
-        }
-        update_ajax_member_list(target, special, false, e);
-    }
-
-    var currentlyDoingListTimer = 0,
-        currentListForEl = null;
-
-    function update_ajax_member_list(target, special, delayed, event) {
-        if ((event && $cms.dom.keyPressed(event, 'Enter')) || target.disabled) {
-            return;
-        }
-
-        if (!browser_matches('ios') && !target.onblur) {
-            target.onblur = function () {
-                setTimeout(function () {
-                    close_down_ajax_list();
-                }, 300);
-            }
-        }
-
-        if (!delayed) {// A delay, so as not to throw out too many requests
-            if (currentlyDoingListTimer) {
-                window.clearTimeout(currentlyDoingListTimer);
-            }
-            var e_copy = { 'keyCode': event.keyCode, 'which': event.which };
-
-            currentlyDoingListTimer = window.setTimeout(function () {
-                update_ajax_member_list(target, special, true, e_copy);
-            }, 400);
-            return;
-        } else {
-            currentlyDoingListTimer = 0;
-        }
-
-        target.special = special;
-
-        var v = target.value;
-
-        currentListForEl = target;
-        var script = '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(v);
-        if (special) {
-            script = script + '&special=' + special;
-        }
-
-        do_ajax_request(script + keep_stub(), update_ajax_member_list_response);
-
-        function close_down_ajax_list() {
-            var current = $cms.dom.$('#ajax_list');
-            if (current) {
-                current.parentNode.removeChild(current);
-            }
-        }
-
-        function update_ajax_member_list_response(result, list_contents) {
-            if (!list_contents || !currentListForEl) {
-                return;
-            }
-
-            close_down_ajax_list();
-
-            var isDataList = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
-
-            //if (list_contents.childNodes.length==0) return;
-            var list = document.createElement(isDataList ? 'datalist' : 'select');
-            list.className = 'people_list';
-            list.setAttribute('id', 'ajax_list');
-            if (isDataList) {
-                currentListForEl.setAttribute('list', 'ajax_list');
-            } else {
-                if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
-                    list.setAttribute('multiple', 'multiple');
-                } else {
-                    list.setAttribute('size', list_contents.childNodes.length + 1);
-                }
-                list.style.position = 'absolute';
-                list.style.left = (find_pos_x(currentListForEl)) + 'px';
-                list.style.top = (find_pos_y(currentListForEl) + currentListForEl.offsetHeight) + 'px';
-            }
-            setTimeout(function () {
-                list.style.zIndex++;
-            }, 100); // Fixes Opera by causing a refresh
-
-            if (list_contents.children.length === 0) {
-                return;
-            }
-
-            var i, item, displaytext;
-            for (i = 0; i < list_contents.children.length; i++) {
-                item = document.createElement('option');
-                item.value = list_contents.children[i].getAttribute('value');
-                displaytext = item.value;
-                if (list_contents.children[i].getAttribute('displayname') != '')
-                    displaytext = list_contents.children[i].getAttribute('displayname');
-                item.text = displaytext;
-                item.textContent = displaytext;
-                list.appendChild(item);
-            }
-            item = document.createElement('option');
-            item.disabled = true;
-            item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
-            item.textContent = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
-            list.appendChild(item);
-            currentListForEl.parentNode.appendChild(list);
-
-            if (isDataList) {
-                return;
-            }
-
-            clear_transition_and_set_opacity(list, 0.0);
-            fade_transition(list, 100, 30, 8);
-
-            var current_list_for_copy = currentListForEl;
-
-            if (currentListForEl.old_onkeyup === undefined) {
-                currentListForEl.old_onkeyup = currentListForEl.onkeyup;
-            }
-
-            if (currentListForEl.old_onchange === undefined) {
-                currentListForEl.old_onchange = currentListForEl.onchange;
-            }
-
-            currentListForEl.down_once = false;
-
-            currentListForEl.onkeyup = function (event) {
-                var ret = handle_arrow_usage(event);
-                if (ret != null) {
-                    return ret;
-                }
-                return update_ajax_member_list(current_list_for_copy, current_list_for_copy.special, false, event);
-            };
-            currentListForEl.onchange = function (event) {
-                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
-                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-                if (current_list_for_copy.onchange) {
-                    current_list_for_copy.onchange(event);
-                }
-            };
-            list.onkeyup = function (event) {
-                var ret = handle_arrow_usage(event);
-                if (ret != null) {
-                    return ret;
-                }
-
-                if ($cms.dom.keyPressed(event, 'Enter')) {// ENTER
-                    make_selection(event);
-                    current_list_for_copy.disabled = true;
-                    window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
-                    }, 200);
-
-                    return cancel_bubbling(event);
-                }
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
-                    if (event.cancelable) {
-                        event.preventDefault();
-                    }
-                    return cancel_bubbling(event);
-                }
-                return null;
-            };
-
-            currentListForEl.onkeypress = function (event) {
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
-                    if (event.cancelable) {
-                        event.preventDefault();
-                    }
-                    return cancel_bubbling(event);
-                }
-                return null;
-            };
-            list.onkeypress = function (event) {
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['Enter', 'ArrowUp', 'ArrowDown'])) {
-                    if (event.cancelable) {
-                        event.preventDefault();
-                    }
-                    return cancel_bubbling(event);
-                }
-                return null;
-            };
-
-            list.addEventListener(browser_matches('ios') ? 'change' : 'click', make_selection, false);
-
-            currentListForEl = null;
-
-            function handle_arrow_usage(event) {
-                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
-                    current_list_for_copy.disabled = true;
-                    window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
-                    }, 1000);
-
-                    var temp = current_list_for_copy.onblur;
-                    current_list_for_copy.onblur = function () {
-                    };
-                    list.focus();
-                    current_list_for_copy.onblur = temp;
-                    if (!current_list_for_copy.down_once) {
-                        current_list_for_copy.down_once = true;
-                        list.selectedIndex = 0;
-                    } else {
-                        if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
-                    }
-                    list.options[list.selectedIndex].selected = true;
-                    return cancel_bubbling(event);
-                }
-
-                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
-                    current_list_for_copy.disabled = true;
-                    window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
-                    }, 1000);
-
-                    var temp = current_list_for_copy.onblur;
-                    current_list_for_copy.onblur = function () {};
-                    list.focus();
-                    current_list_for_copy.onblur = temp;
-                    if (!current_list_for_copy.down_once) {
-                        current_list_for_copy.down_once = true;
-                        list.selectedIndex = 0;
-                    } else {
-                        if (list.selectedIndex > 0) {
-                            list.selectedIndex--;
-                        }
-                    }
-                    list.options[list.selectedIndex].selected = true;
-                    return cancel_bubbling(event);
-                }
-                return null;
-            }
-
-            function make_selection(e) {
-                var el = e.target;
-
-                current_list_for_copy.value = el.value;
-                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
-                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-                current_list_for_copy.onkeypress = function () {
-                };
-                if (current_list_for_copy.onrealchange) {
-                    current_list_for_copy.onrealchange(e);
-                }
-                if (current_list_for_copy.onchange) {
-                    current_list_for_copy.onchange(e);
-                }
-                var al = $cms.dom.$id('ajax_list');
-                al.parentNode.removeChild(al);
-                window.setTimeout(function () {
-                    current_list_for_copy.focus();
-                }, 300);
-            }
-        }
     }
 }());

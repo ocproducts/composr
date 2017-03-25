@@ -34,7 +34,7 @@
         form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_banner&name=' + encodeURIComponent(form.elements['name'].value);
-            if (!do_ajax_field_test(url)) {
+            if (!$cms.form.doAjaxFieldTest(url)) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }
@@ -47,7 +47,7 @@
         form.onsubmit = (function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_banner_type&name=' + encodeURIComponent(form.elements['new_id'].value);
-            if (!do_ajax_field_test(url)) {
+            if (!$cms.form.doAjaxFieldTest(url)) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }

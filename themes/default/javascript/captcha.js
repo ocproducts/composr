@@ -11,7 +11,7 @@
         form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
-            if (!do_ajax_field_test(url)) {
+            if (!$cms.form.doAjaxFieldTest(url)) {
                 document.getElementById('captcha').src += '&'; // Force it to reload latest captcha
                 document.getElementById('submit_button').disabled = false;
                 return false;

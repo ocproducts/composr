@@ -66,19 +66,19 @@
 
 				if (!check_passwords(form)) return false;
 
-				if ((form.elements['db_site_password']) && (window.do_ajax_field_test)) {
+				if ((form.elements['db_site_password']) && (window.$cms.form.doAjaxFieldTest)) {
 					var url = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(form.elements['db_type'].value) + '&db_site_host=' + encodeURIComponent(form.elements['db_site_host'].value) + '&db_site=' + encodeURIComponent(form.elements['db_site'].value) + '&db_site_user=' + encodeURIComponent(form.elements['db_site_user'].value) + '&db_site_password=' + encodeURIComponent(form.elements['db_site_password'].value);
-					if (!do_ajax_field_test(url)) return false;
+					if (!$cms.form.doAjaxFieldTest(url)) return false;
 				}
 
-				if ((form.elements['db_forums_password']) && (window.do_ajax_field_test)) {
+				if ((form.elements['db_forums_password']) && (window.$cms.form.doAjaxFieldTest)) {
 					var url = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(form.elements['db_type'].value) + '&db_forums_host=' + encodeURIComponent(form.elements['db_forums_host'].value) + '&db_forums=' + encodeURIComponent(form.elements['db_forums'].value) + '&db_forums_user=' + encodeURIComponent(form.elements['db_forums_user'].value) + '&db_forums_password=' + encodeURIComponent(form.elements['db_forums_password'].value);
-					if (!do_ajax_field_test(url)) return false;
+					if (!$cms.form.doAjaxFieldTest(url)) return false;
 				}
 
-				if ((form.elements['ftp_domain']) && (window.do_ajax_field_test)) {
+				if ((form.elements['ftp_domain']) && (window.$cms.form.doAjaxFieldTest)) {
 					var url = 'install.php?type=ajax_ftp_details&ftp_domain=' + encodeURIComponent(form.elements['ftp_domain'].value) + '&ftp_folder=' + encodeURIComponent(form.elements['ftp_folder'].value) + '&ftp_username=' + encodeURIComponent(form.elements['ftp_username'].value) + '&ftp_password=' + encodeURIComponent(form.elements['ftp_password'].value);
-					if (!do_ajax_field_test(url)) return false;
+					if (!$cms.form.doAjaxFieldTest(url)) return false;
 				}
 
 				return true;

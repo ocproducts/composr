@@ -408,12 +408,12 @@
     $cms.templates.formScreenInputUsernameMulti = function formScreenInputUsernameMulti(params, container) {
         $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
             if (input.value === '') {
-                update_ajax_member_list(input, null, true, e);
+                $cms.form.updateAjaxMemberList(input, null, true, e);
             }
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
-            update_ajax_member_list(input, null, false, e);
+            $cms.form.updateAjaxMemberList(input, null, false, e);
         });
 
         $cms.dom.on(container, 'change', '.js-change-ensure-next-field', function (e, input) {
@@ -428,12 +428,12 @@
     $cms.templates.formScreenInputUsername = function formScreenInputUsername(params, container) {
         $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
             if (input.value === '') {
-                update_ajax_member_list(input, null, true, e);
+                $cms.form.updateAjaxMemberList(input, null, true, e);
             }
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
-            update_ajax_member_list(input, null, false, e);
+            $cms.form.updateAjaxMemberList(input, null, false, e);
         });
     };
 
@@ -463,7 +463,7 @@
 
     $cms.templates.formScreenInputAuthor = function formScreenInputAuthor(params, container) {
         $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-author-list', function (e, target) {
-            update_ajax_member_list(target, 'author', false, e);
+            $cms.form.updateAjaxMemberList(target, 'author', false, e);
         });
     };
 
@@ -1316,14 +1316,14 @@
 
             var url = params.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value);
 
-            if (!do_ajax_field_test(url, 'password=' + encodeURIComponent(form.elements['password'].value))) {
+            if (!$cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value))) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }
 
             if (params.invitesEnabled) {
                 url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value);
-                if (!do_ajax_field_test(url)) {
+                if (!$cms.form.doAjaxFieldTest(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
                 }
@@ -1331,7 +1331,7 @@
 
             if (params.onePerEmailAddress) {
                 url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value);
-                if (!do_ajax_field_test(url)) {
+                if (!$cms.form.doAjaxFieldTest(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
                 }
@@ -1339,7 +1339,7 @@
 
             if (params.useCaptcha) {
                 url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
-                if (!do_ajax_field_test(url)) {
+                if (!$cms.form.doAjaxFieldTest(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
                 }

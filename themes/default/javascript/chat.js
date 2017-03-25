@@ -233,7 +233,7 @@
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-input-update-ajax-member-list', function (e, btn) {
-            update_ajax_member_list(btn, null, false, e);
+            $cms.form.updateAjaxMemberList(btn, null, false, e);
         });
 
         $cms.dom.on(container, 'submit', '.js-form-submit-add-friend', function (e, form) {
@@ -275,7 +275,7 @@
         }
 
         $cms.dom.on(container, 'keyup', '.js-input-friends-search', function (e, input) {
-            update_ajax_search_list(input, e);
+            $cms.form.updateAjaxSearchList(input, e);
         });
     };
 
