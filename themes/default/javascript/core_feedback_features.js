@@ -93,7 +93,7 @@
 
         playSelfAudioLink: function (e, link) {
             e.preventDefault();
-            play_self_audio_link(link);
+            $cms.playSelfAudioLink(link);
         },
 
         focusTexareaPost: function (e, textarea) {

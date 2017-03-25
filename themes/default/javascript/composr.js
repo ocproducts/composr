@@ -7755,6 +7755,7 @@ function keep_stub(starting) {// `starting` set to true means "Put a '?' for the
 
 /**
  * Google Analytics tracking for links; particularly useful if you have no server-side stat collection
+ * @memberof $cms
  * @param el
  * @param category
  * @param action
@@ -7786,8 +7787,12 @@ $cms.gaTrack = function ga_track(el, category, action) {
     }
 };
 
-/* Used by audio CAPTCHA. */
-function play_self_audio_link(ob) {
+/**
+ * Used by audio CAPTCHA.
+ * @memberof $cms
+ * @param ob
+ */
+$cms.playSelfAudioLink = function playSelfAudioLink(ob) {
     $cms.requireJavascript('sound').then(function () {
         window.soundManager.setup({
             url: $cms.baseUrl('data'),
@@ -7800,7 +7805,7 @@ function play_self_audio_link(ob) {
             }
         });
     });
-}
+};
 
 ((function () {
     window.fade_transition = fade_transition;

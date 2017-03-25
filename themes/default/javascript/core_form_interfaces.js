@@ -614,7 +614,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-play-self-audio-link', function (e, link) {
             e.preventDefault();
-            play_self_audio_link(link);
+            $cms.playSelfAudioLink(link);
         });
     };
 
