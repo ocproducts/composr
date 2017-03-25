@@ -1482,7 +1482,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
-            if (check_field_for_blankness(form.elements.login_username)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -1492,7 +1492,7 @@
 
     $cms.templates.blockTopLogin = function (blockTopLogin, container) {
         $cms.dom.on(container, 'submit', '.js-form-top-login', function (e, form) {
-            if (check_field_for_blankness(form.elements.login_username)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -1546,7 +1546,7 @@
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
         $cms.dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
-            if (check_field_for_blankness(form.elements.login_username)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();

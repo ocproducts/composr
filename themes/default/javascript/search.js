@@ -16,7 +16,7 @@
         },
 
         submitMainSearch: function (e, form) {
-            if ((form.elements.content == null) || check_field_for_blankness(form.elements.content, e)) {
+            if ((form.elements.content == null) || $cms.form.checkFieldForBlankness(form.elements.content, e)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -42,7 +42,7 @@
                 return;
             }
 
-            if (check_field_for_blankness(form.elements.content, e)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.content, e)) {
                 $cms.ui.disableFormButtons(form);
                 return;
             }

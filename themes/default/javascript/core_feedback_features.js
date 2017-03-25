@@ -141,12 +141,12 @@
                 return;
             }
 
-            if (!check_field_for_blankness(form.elements.post, e)) {
+            if (!$cms.form.checkFieldForBlankness(form.elements.post, e)) {
                 e.preventDefault();
                 return;
             }
 
-            if (opts.getEmail && !opts.emailOptional && !check_field_for_blankness(form.elements.email, e)) {
+            if (opts.getEmail && !opts.emailOptional && !$cms.form.checkFieldForBlankness(form.elements.email, e)) {
                 e.preventDefault();
             }
         },

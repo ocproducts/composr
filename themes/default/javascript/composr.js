@@ -4910,6 +4910,38 @@
         return append !== '';
     };
 
+
+    /**
+     * Very simple form control flow
+     * @param field
+     * @returns {boolean}
+     */
+    $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field) {
+        if (!field) {
+            // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
+            return true;
+        }
+
+        var value = field.value,
+            errorEl = $cms.dom.$('#error_' + field.id);
+
+        if ((value.trim() === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
+            if (errorEl !== null) {
+                errorEl.style.display = 'block';
+                $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
+            }
+
+            $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
+            return false;
+        }
+
+        if (errorEl != null) {
+            errorEl.style.display = 'none';
+        }
+
+        return true;
+    };
+
     /**
      * @memberof $cms
      * @param options

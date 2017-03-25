@@ -24,7 +24,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-check-post-and-ticket-type-id-fields', function (e, form) {
-            if (!check_field_for_blankness(form.elements.post) || (form.elements.ticket_type_id && !check_field_for_blankness(form.elements.ticket_type_id))) {
+            if (!$cms.form.checkFieldForBlankness(form.elements.post) || (form.elements.ticket_type_id && !$cms.form.checkFieldForBlankness(form.elements.ticket_type_id))) {
                 e.preventDefault();
             }
         });

@@ -19,7 +19,7 @@
 		{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
 	</div></div>
 
-	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'])) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
+	<form title="{!_LOGIN}" onsubmit="if ($cms.form.checkFieldForBlankness(this.elements['login_username'])) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
 		<div>
 			{$INSERT_SPAMMER_BLACKHOLE}
 

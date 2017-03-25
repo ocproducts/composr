@@ -224,7 +224,7 @@
 
     $cms.templates.cnsViewGroupScreen = function cnsViewGroupScreen(params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-add-member-to-group', function (e, form) {
-            if (check_field_for_blankness(form.elements.username, e)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.username, e)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
