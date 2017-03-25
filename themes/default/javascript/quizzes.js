@@ -24,7 +24,7 @@
 
         var e = $cms.dom.$$(form, '.field_input');
         for (var i = 0; i < e.length; i++) {
-            set_up_change_monitor(e[i]);
+            $cms.form.setUpChangeMonitor(e[i]);
         }
     };
 

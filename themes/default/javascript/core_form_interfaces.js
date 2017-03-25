@@ -365,7 +365,7 @@
     $cms.templates.formScreenField_input = function (params) {
         var el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
         if (el) {
-            set_up_change_monitor(el.parentElement);
+            $cms.form.setUpChangeMonitor(el.parentElement);
         }
     };
 
@@ -452,7 +452,7 @@
         }
 
         if (input) {
-            set_up_change_monitor(input.parentElement);
+            $cms.form.setUpChangeMonitor(input.parentElement);
         }
 
         manage_scroll_height(textarea);
@@ -541,7 +541,7 @@
         var el = $cms.dom.$('#form_table_field_input__' + params.name);
 
         if (el) {
-            set_up_change_monitor(el.parentElement);
+            $cms.form.setUpChangeMonitor(el.parentElement);
         }
     };
 
@@ -719,7 +719,7 @@
             el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
 
         if (el) {
-            set_up_change_monitor(el.parentElement);
+            $cms.form.setUpChangeMonitor(el.parentElement);
         }
 
         manage_scroll_height(textArea);
@@ -735,7 +735,7 @@
         var el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
 
         if (!params.inlineList && el) {
-            set_up_change_monitor(el.parentElement);
+            $cms.form.setUpChangeMonitor(el.parentElement);
         }
     };
 

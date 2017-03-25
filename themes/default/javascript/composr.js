@@ -4396,6 +4396,9 @@ var encodeUC = encodeURIComponent;
 
     /**
      * @memberof $cms.form
+     * @param field
+     * @param is_locked
+     * @param chosen_ob
      */
     $cms.form.setLocked = function setLocked(field, is_locked, chosen_ob) {
         var radio_button = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
@@ -4503,6 +4506,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * @memberof $cms.form
+     * @param context
      */
     $cms.form.disablePreviewScripts = function disablePreviewScripts(context) {
         if (context === undefined) {
@@ -4532,6 +4536,43 @@ var encodeUC = encodeURIComponent;
             $cms.ui.alert('{!NOT_IN_PREVIEW_MODE;^}');
             return false;
         }
+    };
+
+    /**
+     * Set it up so a form field is known and can be monitored for changes
+     * @memberof $cms.form
+     * @param container
+     */
+    $cms.form.setUpChangeMonitor = function setUpChangeMonitor(container) {
+        var firstInp = $cms.dom.$(container, 'input, select, textarea');
+
+        if (!firstInp || firstInp.id.includes('choose_')) {
+            return;
+        }
+
+        $cms.dom.on(container, 'blur change', function () {
+            container.classList.toggle('filledin', $cms.form.findIfChildrenSet(container));
+        });
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param container
+     * @returns {boolean}
+     */
+    $cms.form.findIfChildrenSet = function findIfChildrenSet(container) {
+        var value, blank = true, el,
+            elements = $cms.dom.$$(container, 'input, select, textarea');
+
+        for (var i = 0; i < elements.length; i++) {
+            el = elements[i];
+            if (((el.type === 'hidden') || ((el.style.display === 'none') && !$cms.form.isWysiwygField(el))) && !el.classList.contains('hidden_but_needed')) {
+                continue;
+            }
+            value = $cms.form.cleverFindValue(el.form, el);
+            blank = blank && (value == '');
+        }
+        return !blank;
     };
 
     /**
@@ -7455,36 +7496,6 @@ function ga_track(el, category, action) {
         return false;
     }
 }
-
-/* Set it up so a form field is known and can be monitored for changes */
-function set_up_change_monitor(container) {
-    var firstInp = $cms.dom.$(container, 'input, select, textarea');
-
-    if (!firstInp || firstInp.id.includes('choose_')) {
-        return;
-    }
-
-    $cms.dom.on(container, 'blur change', function () {
-        container.classList.toggle('filledin', find_if_children_set(container));
-    });
-}
-
-
-function find_if_children_set(container) {
-    var value, blank = true, el,
-        elements = $cms.dom.$$(container, 'input, select, textarea');
-
-    for (var i = 0; i < elements.length; i++) {
-        el = elements[i];
-        if (((el.type === 'hidden') || ((el.style.display === 'none') && !$cms.form.isWysiwygField(el))) && !el.classList.contains('hidden_but_needed')) {
-            continue;
-        }
-        value = $cms.form.cleverFindValue(el.form, el);
-        blank = blank && (value == '');
-    }
-    return !blank;
-}
-
 
 /* Used by audio CAPTCHA. */
 function play_self_audio_link(ob) {
