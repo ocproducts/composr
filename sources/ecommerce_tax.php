@@ -183,16 +183,17 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             $zip_parts = explode('-', $post_code, 2);
             $request = array(
                 'apiLoginID' => get_option('taxcloud_api_id'),
-                'apiKey' => get_option('taxcloud_api_id'),
+                'apiKey' => get_option('taxcloud_api_key'),
                 'Address1' => $street_address,
+                'Address2' => '',
                 'City' => $city,
                 'State' => $state,
                 'Zip5' => $zip_parts[0],
                 'Zip4' => array_key_exists(1, $zip_parts) ? $zip_parts[1] : '',
             );
-            $post_params = array('' => json_encode($request));
+            $post_params = array(json_encode($request));
 
-            $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, false, null, null, null, 'application/json'); // TODO: Fix in v11
+            $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, null, null, 'application/json'); // TODO: Fix in v11
             $response = json_decode($_response, true);
 
             if ($response['ErrNumber'] == 0) {
@@ -232,13 +233,13 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                 );
             }
 
-            $url = 'https://api.taxcloud.com/1.0/TaxCloud/VerifyAddress';
+            $url = 'https://api.taxcloud.com/1.0/TaxCloud/Lookup';
 
             $zip_parts = explode('-', $post_code, 2);
             $business_zip_parts = explode('-', get_option('business_post_code'), 2);
             $request = array(
-                'apiLoginID' => get_option('taxcloud_api_id'),
-                'apiKey' => get_option('taxcloud_api_id'),
+                'apiLoginId' => get_option('taxcloud_api_id'),
+                'apiKey' => get_option('taxcloud_api_key'),
                 'customerID' => is_guest($member_id) ? ('guest-' . get_session_id()) : ('member-' . strval($member_id)),
                 'deliveredBySeller' => false,
                 'cartID' => '',
@@ -258,17 +259,17 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                 ),
                 'cartItems' => $cart_items,
             );
-            $post_params = array('' => json_encode($request));
+            $post_params = array(json_encode($request));
 
             // Do TaxCloud call...
 
-            $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, false, null, null, null, 'application/json'); // TODO: Fix in v11
+            $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, null, null, 'application/json'); // TODO: Fix in v11
             $response = json_decode($_response, true);
 
             // Error handling...
 
             if ($response['ResponseType'] != 3) {
-                fatal_exit(implode(';', $response['Messages']));
+                fatal_exit($response['Messages'][0]['Message']);
             }
 
             // Process TaxCloud results...
@@ -429,16 +430,16 @@ function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_
     $date = date('Y-m-d', tz_time(time(), get_site_timezone()));
     $request = array(
         'apiLoginID' => get_option('taxcloud_api_id'),
-        'apiKey' => get_option('taxcloud_api_id'),
+        'apiKey' => get_option('taxcloud_api_key'),
         'customerID' => is_guest($member_id) ? ('guest-' . $session_id) : ('member-' . strval($member_id)),
         'cartID' => $tracking_id,
         'orderID' => $txn_id,
         'dateAuthorized' => $date,
         'dateCaptured' => $date,
     );
-    $post_params = array('' => json_encode($request));
+    $post_params = array(json_encode($request));
 
-    $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, false, null, null, null, 'application/json'); // TODO: Fix in v11
+    $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, null, null, 'application/json'); // TODO: Fix in v11
     $response = json_decode($_response, true);
 
     if ($response['ResponseType'] != 3) {

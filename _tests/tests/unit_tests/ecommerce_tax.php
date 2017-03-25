@@ -74,7 +74,7 @@ class ecommerce_tax_test_set extends cms_test_case
         $_POST['shipping_country'] = 'US';
         $_POST['shipping_post_code'] = '90021';
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'TIC:00000', 100.00);
-        $this->assertTrue($tax == 20.0);
+        $this->assertTrue($tax == 8.75);
 
         $_POST['shipping_street_address'] = '1234 Scope';
         $_POST['shipping_city'] = 'Hope';
