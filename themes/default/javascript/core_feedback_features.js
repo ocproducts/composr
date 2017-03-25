@@ -128,7 +128,7 @@
             var form = this.form,
                 url = maintain_theme_in_link($cms.$PREVIEW_URL + $cms.$KEEP);
 
-            if (do_form_preview(e, form, url)) {
+            if ($cms.form.doFormPreview(e, form, url)) {
                 form.submit();
             }
         },
@@ -326,7 +326,7 @@
                 }
                 for (var i = 0; i < comments_form.elements.length; i++) {
                     if ((comments_form.elements[i].name) && (comments_form.elements[i].name != 'post')) {
-                        post += '&' + comments_form.elements[i].name + '=' + encodeURIComponent(clever_find_value(comments_form, comments_form.elements[i]));
+                        post += '&' + comments_form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(comments_form, comments_form.elements[i]));
                     }
                 }
                 post += '&post=' + encodeURIComponent(post_value);

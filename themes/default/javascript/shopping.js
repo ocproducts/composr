@@ -48,7 +48,7 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-do-cart-form-submit', function (e, btn) {
-            do_form_submit(btn.form, e);
+            $cms.form.doFormSubmit(btn.form, e);
         });
 
         function update_cart(pro_ids) {

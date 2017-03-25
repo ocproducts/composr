@@ -50,7 +50,7 @@
                 return;
             }
 
-            if (check_form(form) === false) {
+            if ($cms.form.checkForm(form) === false) {
                 e.preventDefault();
             }
         },

@@ -3132,15 +3132,15 @@ END;
         $stub = str_replace("\n", '\n', addslashes(unixify_line_format(either_param_string('stub', ''))));
 
         $javascript .= /** @lang JavaScript */
-            "var form = document.getElementById('post').form;
-            form.addEventListener('submit', function () {
-                var post = form.elements['post'],
+            'var form = document.getElementById(\'post\').form;
+            form.addEventListener(\'submit\', function () {
+                var post = form.elements[\'post\'],
                     text_value;
 
-                if (is_wysiwyg_field(post)) {
+                if ($cms.form.isWysiwygField(post)) {
                     try {
 
-                        text_value = window.CKEDITOR.instances['post'].getData();
+                        text_value = window.CKEDITOR.instances[\'post\'].getData();
                     } catch (ignore) { }
                 } else {
                     if (!post.value && post[1]) {
@@ -3149,8 +3149,8 @@ END;
                     text_value = post.value;
                 }
 
-                if (text_value.length > " . strval($size) . ") {
-                    $cms.ui.alert('" . php_addslashes(do_lang('POST_TOO_LONG')) . "');
+                if (text_value.length > ' . strval($size) . ') {
+                    $cms.ui.alert(\'' . php_addslashes(do_lang('POST_TOO_LONG')) . "');
                     return false;
                 }
 

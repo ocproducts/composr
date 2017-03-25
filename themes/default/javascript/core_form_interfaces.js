@@ -222,13 +222,13 @@
             var form = this.form,
                 separatePreview = !!this.params.separatePreview;
 
-            if (do_form_preview(e, form, window.form_preview_url, separatePreview) && !window.just_checking_requirements) {
+            if ($cms.form.doFormPreview(e, form, window.form_preview_url, separatePreview) && !window.just_checking_requirements) {
                 form.submit();
             }
         },
 
         doFormSubmit: function (e) {
-            if (!do_form_submit(this.form, e)) {
+            if (!$cms.form.doFormSubmit(this.form, e)) {
                 e.preventDefault();
             }
         },
@@ -843,7 +843,7 @@
                             if (old_comcode.indexOf('attachment_safe') == -1) {
                                 $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             } else {
-                                if (!main_window.is_wysiwyg_field(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
+                                if (!main_window.$cms.form.isWysiwygField(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
                                     $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             }
                         }
@@ -878,7 +878,7 @@
             target_window = target_window.frames['iframe_page'];
             element = target_window.document.getElementById(params.fieldName);
         }
-        var is_wysiwyg = target_window.is_wysiwyg_field(element);
+        var is_wysiwyg = target_window.$cms.form.isWysiwygField(element);
 
         var comcode, comcode_semihtml;
         comcode = params.comcode;
@@ -1156,7 +1156,7 @@
     /* Set up a word count for a form field */
     function setup_word_counter(post, count_element) {
         window.setInterval(function () {
-            if (is_wysiwyg_field(post)) {
+            if ($cms.form.isWysiwygField(post)) {
                 try {
                     var text_value = window.CKEDITOR.instances[post.name].getData();
                     var matches = text_value.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
@@ -1232,7 +1232,7 @@
     }
 
     function _simplified_form_continue_submit(iframe, form_cat_selector) {
-        if (check_form(form_cat_selector)) {
+        if ($cms.form.checkForm(form_cat_selector)) {
             if (iframe) {
                 animate_frame_load(iframe, 'iframe_under');
             }
@@ -1483,7 +1483,7 @@
 
         standard_alternate_fields(field_names, something_required);
 
-        // Do dynamic set_locked/set_required such that one of these must be set, but only one may be
+        // Do dynamic $cms.form.setLocked/$cms.form.setRequired such that one of these must be set, but only one may be
         function standard_alternate_fields(field_names, something_required, second_run) {
             second_run = !!second_run;
 
@@ -1550,9 +1550,9 @@
                         var radio_button = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
                         if (!radio_button) radio_button = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
 
-                        set_locked(field, is_locked, chosen_field);
+                        $cms.form.setLocked(field, is_locked, chosen_field);
                         if (something_required) {
-                            set_required(field.name.replace(/\[\]$/, ''), is_chosen);
+                            $cms.form.setRequired(field.name.replace(/\[\]$/, ''), is_chosen);
                         }
                     }
                 }

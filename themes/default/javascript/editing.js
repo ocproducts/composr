@@ -482,7 +482,7 @@ function wysiwyg_editor_init_for(element, id) {
         find_tags_in_editor(editor, element);
     });
     window.setInterval(function () {
-        if (is_wysiwyg_field(element))
+        if ($cms.form.isWysiwygField(element))
             find_tags_in_editor(editor, element);
     }, 1000);
 
@@ -691,7 +691,7 @@ function do_attachment(field_name, id, description) {
 }
 
 function get_textbox(element) {
-    if (is_wysiwyg_field(element)) {
+    if ($cms.form.isWysiwygField(element)) {
         var ret = window.wysiwyg_editors[element.id].getData();
         if ((ret === '\n') || (ret === '<br />')) {
             ret = '';
@@ -702,7 +702,7 @@ function get_textbox(element) {
 }
 
 function set_textbox(element, text, html) {
-    if (is_wysiwyg_field(element)) {
+    if ($cms.form.isWysiwygField(element)) {
         if (html === undefined) {
             html = $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />');
         }
@@ -733,7 +733,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
     plain_insert = !!plain_insert;
     html = strVal(html);
 
-    if (is_wysiwyg_field(element)) {
+    if ($cms.form.isWysiwygField(element)) {
         var editor = window.wysiwyg_editors[element.id];
 
         var insert = '';
@@ -855,7 +855,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         before_wrap_tag = '[' + before_wrap_tag + ']';
     }
 
-    if (is_wysiwyg_field(element)) {
+    if ($cms.form.isWysiwygField(element)) {
         var editor = window.wysiwyg_editors[element.id];
 
         editor.focus(); // Needed on some browsers, but on Opera will defocus our selection

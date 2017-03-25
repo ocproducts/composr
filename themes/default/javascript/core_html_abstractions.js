@@ -19,7 +19,7 @@
         }
 
         if (params.isPreview) {
-            disable_preview_scripts();
+            $cms.form.disablePreviewScripts();
         }
     };
 

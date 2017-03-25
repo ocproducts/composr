@@ -327,7 +327,7 @@
         form.elements['from_html'][2].addEventListener('click', refresh_locked_inputs);
 
         function refresh_locked_inputs() {
-            var value = radio_value(form.elements['from_html']);
+            var value = $cms.form.radioValue(form.elements['from_html']);
             $cms.dom.$('#semihtml').disabled = (value != 0);
             $cms.dom.$('#is_semihtml').disabled = (value != 0);
             $cms.dom.$('#lax').disabled = (value != 0);

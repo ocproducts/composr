@@ -46,7 +46,7 @@ echo '
         }
     </script>
     <p class="proceed_button">
-        <input onclick="if (check_form(this.form)) $cms.ui.alert(\'' . $message . '\'.replace(\'xxx\',calculate_sum_' . $uniqid . '(this.form.elements))); return false;" class="buttons__calculate button_screen_item" type="submit" value="Calculate" />
+        <input onclick="if ($cms.form.checkForm(this.form)) $cms.ui.alert(\'' . $message . '\'.replace(\'xxx\',calculate_sum_' . $uniqid . '(this.form.elements))); return false;" class="buttons__calculate button_screen_item" type="submit" value="Calculate" />
     </p>
 </form>
 ';

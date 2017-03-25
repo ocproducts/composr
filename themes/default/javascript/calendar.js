@@ -71,7 +71,7 @@
 
             if ((typeof event != 'undefined') && (has_date_set)) { // Something changed
                 var url = 'calendar_recurrence_suggest';
-                url += '&monthly_spec_type=' + encodeURIComponent(radio_value(form.elements['monthly_spec_type']));
+                url += '&monthly_spec_type=' + encodeURIComponent($cms.form.radioValue(form.elements['monthly_spec_type']));
                 if (start_day) {
                     url += '&date_day=' + encodeURIComponent(start_day.options[start_day.selectedIndex].value);
                     url += '&date_month=' + encodeURIComponent(start_month.options[start_month.selectedIndex].value);

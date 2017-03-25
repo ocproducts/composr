@@ -148,7 +148,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
             if (uploader_settings !== undefined) {
                 uploader_settings.callbacks.push(function () {
                     // Do insta-preview
-                    if (is_wysiwyg_field(post)) {
+                    if ($cms.form.isWysiwygField(post)) {
                         generate_background_preview(post);
                     }
                 });
@@ -157,7 +157,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
             return;
         }
 
-        var wysiwyg = is_wysiwyg_field(post);
+        var wysiwyg = $cms.form.isWysiwygField(post);
 
         var url = '{$FIND_SCRIPT;,comcode_helper}';
         url += '?field_name=' + field_name;
@@ -208,7 +208,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
                         }
 
                         // Do insta-preview
-                        if ((comcode_added.indexOf('[attachment_safe') != -1) && (is_wysiwyg_field(post))) {
+                        if ((comcode_added.indexOf('[attachment_safe') != -1) && ($cms.form.isWysiwygField(post))) {
                             generate_background_preview(post);
                         }
                     } else // Cancelled
@@ -235,7 +235,7 @@ function generate_background_preview(post) {
     for (var i = 0; i < form.elements.length; i++) {
         if ((!form.elements[i].disabled) && ( form.elements[i].name !== undefined) && (form.elements[i].name != '')) {
             var name = form.elements[i].name;
-            var value = clever_find_value(form, form.elements[i]);
+            var value = $cms.form.cleverFindValue(form, form.elements[i]);
             if (name == 'title' && value == '') value = 'x'; // Fudge, title must be filled in on many forms
             form_post += '&' + name + '=' + encodeURIComponent(value);
         }
@@ -331,7 +331,7 @@ function do_input_comcode(field_name, tag) {
 
     if (tag == null) {
         var element = document.getElementById(field_name);
-        if (is_wysiwyg_field(element)) {
+        if ($cms.form.isWysiwygField(element)) {
             var selection = window.wysiwyg_editors[field_name].getSelection();
             var ranges = selection.getRanges();
             if ( ranges[0] !== undefined) {
@@ -378,7 +378,7 @@ function do_input_comcode(field_name, tag) {
             url += '&type=step2';
         }
     }
-    if (is_wysiwyg_field(document.getElementById(field_name))) url += '&in_wysiwyg=1';
+    if ($cms.form.isWysiwygField(document.getElementById(field_name))) url += '&in_wysiwyg=1';
     for (var key in attributes) {
         url += '&default_' + key + '=' + encodeURIComponent(attributes[key]);
     }
@@ -875,7 +875,7 @@ function field_supports_autosave(element) {
     if (name == '') return false;
     if (name.substr(-2) == '[]') return false;
 
-    if (is_wysiwyg_field(element)) return true;
+    if ($cms.form.isWysiwygField(element)) return true;
 
     if (element.disabled) return false;
 
@@ -1010,7 +1010,7 @@ function _handle_form_saving(event, element, force) {
         return null; // Some weird error, perhaps an extension fired this event
     }
 
-    var value = clever_find_value(element.form, element);
+    var value = $cms.form.cleverFindValue(element.form, element);
     if ((event.type == 'keypress') && (is_typed_input(element))) {
         value += String.fromCharCode(event.keyCode ? event.keyCode : event.charCode);
     }

@@ -273,7 +273,7 @@
         }
         for (var i = 0; i < form.elements.length; i++) {
             if (!form.elements[i].disabled && form.elements[i].name) {
-                post += '&' + form.elements[i].name + '=' + encodeURIComponent(clever_find_value(form, form.elements[i]));
+                post += '&' + form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(form, form.elements[i]));
             }
         }
         var request = do_ajax_request(maintain_theme_in_link($SCRIPT_comcode_convert + keep_stub(true)), null, post);

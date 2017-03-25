@@ -52,7 +52,7 @@
         this.id = params.id;
 
         if (params.preview !== undefined) {
-            disable_preview_scripts($cms.dom.$('#view_' + params.id));
+            $cms.form.disablePreviewScripts($cms.dom.$('#view_' + params.id));
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
@@ -90,7 +90,7 @@
                     if (element) {
                         element.style.display = (tabs[i] === tab) ? 'block' : 'none';
                         if ((tabs[i] == tab) && (tab == 'edit')) {
-                            if (is_wysiwyg_field($cms.dom.$id('edit_' + id + '_textarea'))) {
+                            if ($cms.form.isWysiwygField($cms.dom.$id('edit_' + id + '_textarea'))) {
                                 // Fix for Firefox
                                 if (window.wysiwyg_editors['edit_' + id + '_textarea'].document !== undefined) {
                                     window.wysiwyg_editors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'false';
@@ -124,8 +124,8 @@
 
                 var data = '';
                 data += get_textbox(edit_element);
-                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + (is_wysiwyg_field(edit_element) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + keep_stub();
-                var post = (is_wysiwyg_field(edit_element) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
+                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(edit_element) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + keep_stub();
+                var post = ($cms.form.isWysiwygField(edit_element) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
                 post = modsecurity_workaround_ajax(post);
                 do_ajax_request(url, reloaded_preview, post);
 
@@ -137,7 +137,7 @@
                     var element = $cms.dom.$id('view_' + loading_preview_of);
                     $cms.dom.html(element, merge_text_nodes(ajax_result.childNodes).replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
 
-                    disable_preview_scripts(element);
+                    $cms.form.disablePreviewScripts(element);
                 }
             }
         },

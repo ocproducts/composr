@@ -6,7 +6,7 @@
             timeout = +params.timeout || 0;
 
         $cms.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
-            if (!check_form(form)) {
+            if (!$cms.form.checkForm(form)) {
                 e.preventDefault();
             }
         });

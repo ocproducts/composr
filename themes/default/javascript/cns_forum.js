@@ -46,8 +46,8 @@
             var disable_all = (existing.selectedIndex !== 0);
             for (var i = 0; i < form.elements.length; i++) {
                 if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].getAttribute('type') === 'checkbox') || (form.elements[i].getAttribute('type') === 'text'))) {
-                    set_required(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
-                    set_locked(form.elements[i], disable_all);
+                    $cms.form.setRequired(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
+                    $cms.form.setLocked(form.elements[i], disable_all);
                 }
             }
         }

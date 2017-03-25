@@ -13,7 +13,7 @@
             'click .js-click-do-form-submit': 'doFormSubmit'
         },
         doFormSubmit: function (e) {
-            if (!do_form_submit(this.formEl, e)) {
+            if (!$cms.form.doFormSubmit(this.formEl, e)) {
                 e.preventDefault();
             }
         }

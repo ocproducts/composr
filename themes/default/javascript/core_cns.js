@@ -152,7 +152,7 @@
         }
 
         function crf() {
-            var preset = radio_value(form.elements['preset']);
+            var preset = $cms.form.radioValue(form.elements['preset']);
             if (preset == '') {
                 form.elements['fields_to_use'].disabled = false;
                 form.elements['order_by'].disabled = false;

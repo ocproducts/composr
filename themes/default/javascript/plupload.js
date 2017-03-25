@@ -13100,7 +13100,7 @@ function begin_form_uploading(e, ob, recurse) {
         if (ob.settings.required) {
             var element = document.getElementById(ob.settings.txtName);
             if (element) {
-                set_field_error(element, '{!REQUIRED_NOT_FILLED_IN^;}');
+                $cms.form.setFieldError(element, '{!REQUIRED_NOT_FILLED_IN^;}');
             }
             ret = false;
         }
@@ -13907,7 +13907,7 @@ function html5_upload(event, field_name, files) {
             }
         }
         if (!good_type) {
-            $cms.ui.alert('{!INVALID_FILE_TYPE_GENERAL;^}'.replace(/\{\1\\}/g, file_ext).replace(/\\{2\\}/g, valid_types.join(', ')));
+            window.fauxmodal_alert('{!INVALID_FILE_TYPE_GENERAL;^}'.replace(/\{\1\\}/g, file_ext).replace(/\\{2\\}/g, valid_types.join(', ')));
             continue;
         }
 
@@ -13992,7 +13992,7 @@ function build_html5_upload_handler(request, file_progress, attachment_base, fie
                     var decoded_data = eval('(' + request.responseText + ')');
                     document.getElementById('hidFileID_file' + attachment_base).value = decoded_data['upload_id'];
 
-                    if (is_wysiwyg_field(element)) {
+                    if ($cms.form.isWysiwygField(element)) {
                         generate_background_preview(element);
                     }
                 }

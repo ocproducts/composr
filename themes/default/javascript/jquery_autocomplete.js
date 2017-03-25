@@ -205,7 +205,7 @@ jQuery(function($) {
 
 	function Plugin(element, options) {
 		this.element = element;
-		this.$element = is_wysiwyg_field(element) ? null : $(element);
+		this.$element = $cms.form.isWysiwygField(element) ? null : $(element);
 		this.$itemList = $(Plugin.MENU_TEMPLATE);
 		this.currentToken = undefined;
 		this.startPos = null;
@@ -634,7 +634,7 @@ jQuery(function($) {
 
 	$.fn[pluginName] = function (options) {
 		return this.each(function () {
-			if(!$.data(this, 'plugin_' + pluginName) || this.element && is_wysiwyg_field(this.element)) {
+			if(!$.data(this, 'plugin_' + pluginName) || this.element && $cms.form.isWysiwygField(this.element)) {
 				$.data(this, 'plugin_' + pluginName, new Plugin(this, options));
 			}
 		});
