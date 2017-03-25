@@ -6679,7 +6679,6 @@ function noop() {}
 
 (function () {
     window.undo_staff_unload_action = undo_staff_unload_action;
-    window.check_field_for_blankness = check_field_for_blankness;
     window.manage_scroll_height = manage_scroll_height;
     window.get_main_cms_window = get_main_cms_window;
     window.magic_keypress = magic_keypress;
@@ -6703,33 +6702,6 @@ function noop() {}
             clear_transition(bi);
             bi.classList.remove('site_unloading');
         }
-    }
-
-    /* Very simple form control flow */
-    function check_field_for_blankness(field, event) {
-        if (!field) {
-            // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
-            return true;
-        }
-
-        var value = field.value,
-            errorEl = $cms.dom.$('#error_' + field.id);
-
-        if ((value.trim() === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
-            if (errorEl !== null) {
-                errorEl.style.display = 'block';
-                $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
-            }
-
-            $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
-            return false;
-        }
-
-        if (errorEl != null) {
-            errorEl.style.display = 'none';
-        }
-
-        return true;
     }
 
     /* Making the height of a textarea match its contents */
