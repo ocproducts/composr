@@ -7228,8 +7228,6 @@
         post.scrollTop = post.scrollHeight;
     }
 
-
-
 }(window.$cms, JSON.parse(document.getElementById('composr-symbol-data').content)));
 
 function noop() {}
@@ -7720,8 +7718,13 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     return top;
 }
 
-/* Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes! */
-function resize_frame(name, min_height) {
+/**
+ * Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes!
+ * @memberof $cms.dom
+ * @param name
+ * @param min_height
+ */
+$cms.dom.resizeFrame = function resizeFrame(name, min_height) {
     min_height = +min_height || 0;
 
     var frame_element = $cms.dom.$id(name),
@@ -7775,7 +7778,7 @@ function resize_frame(name, min_height) {
     }
 
     frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
-}
+};
 
 $cms.dom.triggerResize = function triggerResize(and_subframes) {
     and_subframes = !!and_subframes;
@@ -7790,7 +7793,7 @@ $cms.dom.triggerResize = function triggerResize(and_subframes) {
             if (iframes[i].style.height === '900px') {
                 iframes[i].style.height = 'auto';
             }
-            window.parent.resize_frame(iframes[i].name);
+            window.parent.$cms.dom.resizeFrame(iframes[i].name);
         }
     }
 
@@ -7798,7 +7801,7 @@ $cms.dom.triggerResize = function triggerResize(and_subframes) {
         iframes = document.querySelectorAll('iframe');
         for (i = 0; i < iframes.length; i++) {
             if ((iframes[i].name != '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
-                resize_frame(iframes[i].name);
+                $cms.dom.resizeFrame(iframes[i].name);
             }
         }
     }

@@ -345,7 +345,7 @@
 
         if (params.iframeUrl) {
             window.setInterval(function () {
-                resize_frame('iframe_under');
+                $cms.dom.resizeFrame('iframe_under');
             }, 1500);
 
             $cms.dom.on(container, 'click', '.js-checkbox-will-open-new', function (e, checkbox) {

@@ -1388,7 +1388,7 @@
     $cms.templates.forumsEmbed = function () {
         var frame = this;
         window.setInterval(function () {
-            resize_frame(frame.name);
+            $cms.dom.resizeFrame(frame.name);
         }, 500);
     };
 

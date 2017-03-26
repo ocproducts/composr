@@ -34,11 +34,11 @@
                 $cms.dom.html(body, adjusted_preview.replace(/^(.|\n)*<body[^>]*>((.|\n)*)<\/body>(.|\n)*$/i, '$2'));
             }
 
-            resize_frame(frame_id, 300);
+            $cms.dom.resizeFrame(frame_id, 300);
         }, 500);
 
         window.setInterval(function () {
-            resize_frame(frame_id, 300);
+            $cms.dom.resizeFrame(frame_id, 300);
         }, 1000);
     };
 
