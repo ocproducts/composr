@@ -4947,7 +4947,7 @@
      * @param form
      * @returns {boolean}
      */
-    $cms.form.modsecurityWorkaround = function modsecurity_workaround(form) {
+    $cms.form.modsecurityWorkaround = function modsecurityWorkaround(form) {
         var temp_form = document.createElement('form');
         temp_form.method = 'post';
 
@@ -4957,7 +4957,7 @@
         temp_form.action = form.action;
 
         var data = $cms.dom.serialize(form);
-        data = _modsecurity_workaround(data);
+        data = _modsecurityWorkaround(data);
 
         var input = document.createElement('input');
         input.type = 'hidden';
@@ -4989,11 +4989,11 @@
      * @param data
      * @returns {string}
      */
-    $cms.form.modsecurityWorkaroundAjax = function modsecurity_workaround_ajax(data) {
-        return '_data=' + encodeURIComponent(_modsecurity_workaround(data));
+    $cms.form.modsecurityWorkaroundAjax = function modsecurityWorkaroundAjax(data) {
+        return '_data=' + encodeURIComponent(_modsecurityWorkaround(data));
     };
 
-    function _modsecurity_workaround(data) {
+    function _modsecurityWorkaround(data) {
         data = strVal(data);
 
         var remapper = {
