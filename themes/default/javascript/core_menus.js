@@ -782,7 +782,7 @@
         clear_transition_and_set_opacity(el, 0.0);
         fade_transition(el, 100, 30, 8);
 
-        var full_width = (window.scrollX == 0) ? get_window_width() : get_window_scroll_width();
+        var full_width = (window.scrollX == 0) ? get_window_width() : window.document.body.scrollWidth;
 
         if ($cms.$CONFIG_OPTION.fixed_width && !outside_fixed_width) {
             var main_website_inner = document.getElementById('main_website_inner');

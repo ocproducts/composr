@@ -5729,7 +5729,7 @@
 
         getPageSize: function () {
             return {
-                'page_width': this.top_window.get_window_scroll_width(this.top_window),
+                'page_width': this.top_window.document.body.scrollWidth,
                 'page_height': this.top_window.get_window_scroll_height(this.top_window),
                 'window_width': this.top_window.get_window_width(this.top_window),
                 'window_height': this.top_window.get_window_height()
@@ -7296,10 +7296,6 @@ function get_window_width(win) {
 
 function get_window_height(win) {
     return (win || window).innerHeight - 18;
-}
-
-function get_window_scroll_width(win) {
-    return (win || window).document.body.scrollWidth;
 }
 
 function get_window_scroll_height(win) {

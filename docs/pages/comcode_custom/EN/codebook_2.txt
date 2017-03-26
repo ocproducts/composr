@@ -142,7 +142,7 @@ In Composr, JavaScript libraries are automatically minified to save on bandwidth
  - [b]Cookies[/b]: [tt]set_cookie[/tt], [tt]read_cookie[/tt]
  - [b]Introspection[/b]: [tt]get_elements_by_class_name[/tt], [tt]abstract_get_computed_style[/tt], [tt]browser_matches[/tt]
  - [b]Calling up dependencies[/b]: [tt]$cms.loadSnippet[/tt], [tt]$cms.requireJavascript[/tt]
- - [b]Viewport[/b]: [tt]get_window_width[/tt], [tt]get_window_height[/tt], [tt]get_window_scroll_width[/tt], [tt]get_window_scroll_height[/tt], [tt]get_window_scroll_x[/tt], [tt]get_window_scroll_y[/tt]
+ - [b]Viewport[/b]: [tt]get_window_width[/tt], [tt]get_window_height[/tt], [tt]get_window_scroll_height[/tt], [tt]get_window_scroll_x[/tt], [tt]get_window_scroll_y[/tt]
  - [b]Element positioning[/b]: [tt]find_pos_x[/tt], [tt]find_pos_y[/tt], [tt]find_width[/tt], [tt]find_height[/tt]
  - [b]Tooltips[/b]: [tt]activate_tooltip[/tt]
  - [b]Misc[/b]: [tt]set_opacity[/tt], [tt]$cms.dom.on[/tt], [tt]keep_stub[/tt]
