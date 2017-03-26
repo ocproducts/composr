@@ -3,17 +3,12 @@
 
     $cms.functions.newsletterNewsletterForm = function newsletterNewsletterForm() {
         var form = document.getElementById('password').form;
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
-                window.fauxmodal_alert('{!PASSWORD_MISMATCH;^}');
+                $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
                 return false;
             }
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
     $cms.templates.newsletterPreview = function (params) {
@@ -39,11 +34,11 @@
                 $cms.dom.html(body, adjusted_preview.replace(/^(.|\n)*<body[^>]*>((.|\n)*)<\/body>(.|\n)*$/i, '$2'));
             }
 
-            resize_frame(frame_id, 300);
+            $cms.dom.resizeFrame(frame_id, 300);
         }, 500);
 
         window.setInterval(function () {
-            resize_frame(frame_id, 300);
+            $cms.dom.resizeFrame(frame_id, 300);
         }, 1000);
     };
 
@@ -51,13 +46,13 @@
         var nid = strVal(params.nid);
 
         $cms.dom.on(container, 'submit', '.js-form-submit-newsletter-check-email-field', function (e, form) {
-            if ((check_field_for_blankness(form.elements['address' + nid])) && (form.elements['address' + nid].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+            if (($cms.form.checkFieldForBlankness(form.elements['address' + nid])) && (form.elements['address' + nid].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
                 $cms.ui.disableFormButtons(form);
                 return;
             }
 
             e.preventDefault();
-            window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;}');
+            $cms.ui.alert('{!javascript:NOT_A_EMAIL;}');
         });
     };
 

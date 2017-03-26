@@ -26,7 +26,7 @@ if (!function_exists('mu_ui')) {
     <br />
     If you'd prefer though you can enter in your version number right here:
 </p>
-<form onsubmit="this.elements['make_upgrader_button'].disabled=true;" action="#" method="post">
+<form onsubmit="this.elements['make_upgrader_button'].disabled=true;" action="#!" method="post">
     {$spammer_blackhole}
 
     <p style="margin: 4px 0">

@@ -27,10 +27,10 @@
         },
 
         addFormMarkedPosts: function (e, btn) {
-            if (add_form_marked_posts(btn.form, 'mark_')) {
+            if ($cms.form.addFormMarkedPosts(btn.form, 'mark_')) {
                 $cms.ui.disableButton(btn);
             } else {
-                window.fauxmodal_alert('{!NOTHING_SELECTED;}');
+                $cms.ui.alert('{!NOTHING_SELECTED;}');
                 e.preventDefault();
             }
         }
@@ -46,8 +46,8 @@
             var disable_all = (existing.selectedIndex !== 0);
             for (var i = 0; i < form.elements.length; i++) {
                 if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].getAttribute('type') === 'checkbox') || (form.elements[i].getAttribute('type') === 'text'))) {
-                    set_required(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
-                    set_locked(form.elements[i], disable_all);
+                    $cms.form.setRequired(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
+                    $cms.form.setLocked(form.elements[i], disable_all);
                 }
             }
         }
@@ -61,7 +61,7 @@
                 form.elements['delete_topics'].disabled = (!form.elements['delete'].checked);
             };
             crf();
-            form.elements['delete'].onchange = crf;
+            form.elements['delete'].addEventListener('change', crf);
         }
     };
 
@@ -72,7 +72,7 @@
                 form.elements['target_forum_grouping'].disabled = (!form.elements['delete'].checked);
             };
             crf();
-            form.elements['delete'].onchange = crf;
+            form.elements['delete'].addEventListener('change', crf);
         }
     };
 
@@ -90,11 +90,11 @@
             introQuestionUrl = params.introQuestionUrl;
 
         $cms.dom.on(container, 'click', '.js-click-open-forum-rules-popup', function () {
-            window.faux_open(maintain_theme_in_link(forumRulesUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
+            $cms.ui.open(maintain_theme_in_link(forumRulesUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
 
         $cms.dom.on(container, 'click', '.js-click-open-intro-question-popup', function () {
-            window.faux_open(maintain_theme_in_link(introQuestionUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
+            $cms.ui.open(maintain_theme_in_link(introQuestionUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
     };
 
@@ -107,8 +107,8 @@
         }
 
         $cms.dom.on(container, 'click', '.js-click-check-marked-form-and-submit', function (e, clicked) {
-            if (!add_form_marked_posts(markedPostActionsForm, 'mark_')) {
-                window.fauxmodal_alert('{!NOTHING_SELECTED;}');
+            if (!$cms.form.addFormMarkedPosts(markedPostActionsForm, 'mark_')) {
+                $cms.ui.alert('{!NOTHING_SELECTED;}');
                 e.preventDefault();
                 return;
             }
@@ -151,7 +151,7 @@
             }
             var answer = ((j >= minSelections) && (j <= maxSelections));
             if (!answer) {
-                window.fauxmodal_alert(error);
+                $cms.ui.alert(error);
                 return false;
             }
 
@@ -161,7 +161,7 @@
 
     $cms.templates.cnsGuestBar = function cnsGuestBar(params, container) {
         $cms.dom.on(container, 'submit', '.js-submit-check-field-login-username', function (e, form) {
-            if (check_field_for_blankness(form.elements.login_username)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -170,7 +170,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
             if (checkbox.checked) {
-                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
                     }

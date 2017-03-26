@@ -12,8 +12,8 @@
             newsletter_field.form.elements['usergroup_type'][1].disabled = has_newsletter || !has_usergroup;
             newsletter_field.form.elements['usergroup_type'][2].disabled = has_newsletter || !has_usergroup;
         };
-        newsletter_field.onchange = update_newsletter_settings;
-        usergroup_field.onchange = update_newsletter_settings;
+        newsletter_field.addEventListener('change', update_newsletter_settings);
+        usergroup_field.addEventListener('change', update_newsletter_settings);
         update_newsletter_settings();
     };
 

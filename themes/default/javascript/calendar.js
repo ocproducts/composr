@@ -17,26 +17,28 @@
             all_day_event = document.getElementById('all_day_event');
 
         crf();
-        for (var i = 0; i < form.elements['recurrence'].length; i++) form.elements['recurrence'][i].onclick = crf;
+        for (var i = 0; i < form.elements['recurrence'].length; i++) {
+            form.elements['recurrence'][i].addEventListener('click', crf);
+        }
+
         if (start_day) {
-            start_day.onchange = crf;
-            start_month.onchange = crf;
-            start_year.onchange = crf;
+            start_day.addEventListener('change', crf);
+            start_month.addEventListener('change', crf);
+            start_year.addEventListener('change', crf);
         } else {
-            start.onchange = crf;
+            start.addEventListener('change', crf);
         }
         if (start_hour) {
-            start_hour.onchange = crf;
-            start_minute.onchange = crf;
+            start_hour.addEventListener('change', crf);
+            start_minute.addEventListener('change', crf);
         } else {
-            start_time.onchange = crf;
+            start_time.addEventListener('change', crf);
         }
 
         crf2();
         document.getElementById('all_day_event').onclick = crf2;
 
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             if (typeof form.elements['end_day'] != 'undefined' && form.elements['end_day'].selectedIndex != 0 || typeof form.elements['end'] != 'undefined' && form.elements['end'].value != '') {
                 var start_date, end_date;
                 if (start_day) {
@@ -48,13 +50,11 @@
                 }
 
                 if (start_date > end_date) {
-                    window.fauxmodal_alert('{!EVENT_CANNOT_AROUND;}');
+                    $cms.ui.alert('{!EVENT_CANNOT_AROUND;}');
                     return false;
                 }
             }
-            if (typeof form.old_submit != 'undefined' && form.old_submit) return form.old_submit();
-            return true;
-        };
+        });
 
         function crf(event) {
             var s = (form.elements['recurrence'][0].checked);
@@ -71,7 +71,7 @@
 
             if ((typeof event != 'undefined') && (has_date_set)) { // Something changed
                 var url = 'calendar_recurrence_suggest';
-                url += '&monthly_spec_type=' + encodeURIComponent(radio_value(form.elements['monthly_spec_type']));
+                url += '&monthly_spec_type=' + encodeURIComponent($cms.form.radioValue(form.elements['monthly_spec_type']));
                 if (start_day) {
                     url += '&date_day=' + encodeURIComponent(start_day.options[start_day.selectedIndex].value);
                     url += '&date_month=' + encodeURIComponent(start_month.options[start_month.selectedIndex].value);
@@ -87,7 +87,7 @@
                 }
                 url += '&do_timezone_conv=' + (do_timezone_conv.checked ? '1' : '0');
                 url += '&all_day_event=' + (all_day_event.checked ? '1' : '0');
-                var new_data = load_snippet(url);
+                var new_data = $cms.loadSnippet(url);
                 var tr = form.elements['monthly_spec_type'][0];
                 while (tr.nodeName.toLowerCase() != 'tr') {
                     tr = tr.parentNode;

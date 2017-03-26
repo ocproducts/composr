@@ -13,8 +13,8 @@
         confirmForfeit: function (e, target) {
             var form = target.form;
 
-            window.fauxmodal_confirm('{!VOTE_FORFEIGHT;^}',function(answer) {
-                if (answer && (!form.onsubmit || form.onsubmit())) {
+            $cms.ui.confirm('{!VOTE_FORFEIGHT;^}',function(answer) {
+                if (answer) {
                     form.submit();
                 }
             });

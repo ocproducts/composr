@@ -15,8 +15,51 @@
             };
         },
         toggleHelperPanel: function () {
-            var show = $cms.dom.notDisplayed(this.contentsEl);
-            helper_panel(show);
+            var show = $cms.dom.notDisplayed(this.contentsEl),
+                panel_right = $cms.dom.$('#panel_right'),
+                helper_panel_contents = $cms.dom.$('#helper_panel_contents'),
+                helper_panel_toggle = $cms.dom.$('#helper_panel_toggle');
+
+            if (show) {
+                panel_right.classList.remove('helper_panel_hidden');
+                helper_panel_contents.setAttribute('aria-expanded', 'true');
+                helper_panel_contents.style.display = 'block';
+                $cms.dom.clearTransitionAndSetOpacity(helper_panel_contents, 0.0);
+                $cms.dom.fadeTransition(helper_panel_contents, 100, 30, 4);
+
+                if (read_cookie('hide_helper_panel') === '1') {
+                    set_cookie('hide_helper_panel', '0', 100);
+                }
+
+                helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
+
+                if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
+                    helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
+                }
+            } else {
+                if (read_cookie('hide_helper_panel') == '') {
+                    $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
+                        if (answer) {
+                            _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
+                        }
+                    });
+                } else {
+                    _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
+
+                }
+            }
+
+            function _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle) {
+                panel_right.classList.add('helper_panel_hidden');
+                helper_panel_contents.setAttribute('aria-expanded', 'false');
+                helper_panel_contents.style.display = 'none';
+                set_cookie('hide_helper_panel', '1', 100);
+                helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_show}');
+
+                if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
+                    helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_show} 2x');
+                }
+            }
         }
     });
 
@@ -35,53 +78,4 @@
             try { window.print(); } catch (ignore) {}
         }
     };
-
-    // The help panel
-    function helper_panel(show) {
-        show = !!show;
-
-        var panel_right = $cms.dom.$('#panel_right'),
-            helper_panel_contents = $cms.dom.$('#helper_panel_contents'),
-            helper_panel_toggle = $cms.dom.$('#helper_panel_toggle');
-
-        if (show) {
-            panel_right.classList.remove('helper_panel_hidden');
-            helper_panel_contents.setAttribute('aria-expanded', 'true');
-            helper_panel_contents.style.display = 'block';
-            clear_transition_and_set_opacity(helper_panel_contents, 0.0);
-            fade_transition(helper_panel_contents, 100, 30, 4);
-
-            if (read_cookie('hide_helper_panel') === '1') {
-                set_cookie('hide_helper_panel', '0', 100);
-            }
-
-            helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
-            if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
-                helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
-            }
-        } else {
-            if (read_cookie('hide_helper_panel') == '') {
-                window.fauxmodal_confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
-                    if (answer) {
-                        _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
-                    }
-                });
-            } else {
-                _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
-
-            }
-        }
-    }
-
-    function _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle) {
-        panel_right.classList.add('helper_panel_hidden');
-        helper_panel_contents.setAttribute('aria-expanded', 'false');
-        helper_panel_contents.style.display = 'none';
-        set_cookie('hide_helper_panel', '1', 100);
-        helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_show}');
-
-        if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
-            helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_show} 2x');
-        }
-    }
 }(window.$cms));

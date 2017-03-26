@@ -121,8 +121,8 @@ function template_editor_tab_save_content(file) {
     editarea_reverse_refresh('e_' + file_to_file_id(file));
 
     var post = 'contents=' + encodeURIComponent(get_file_textbox(file).value);
-    load_snippet(url, post, function (ajax_result) {
-        fauxmodal_alert(ajax_result.responseText, null, null, true);
+    $cms.loadSnippet(url, post, function (ajax_result) {
+        $cms.ui.alert(ajax_result.responseText, null, null, true);
         template_editor_tab_mark_nonchanged_content(file);
     });
 }
@@ -158,7 +158,7 @@ function template_editor_tab_unload_content(file) {
         if (c[0] !== undefined) {
             var next_file_id = c[0].id.substr(2);
 
-            select_tab('g', next_file_id);
+            $cms.ui.selectTab('g', next_file_id);
 
             template_editor_show_tab(next_file_id);
         }
@@ -206,7 +206,7 @@ function template_editor_restore_revision(file, revision_id) {
 
     // Set content from revision
     var url = template_editor_loading_url(file, revision_id);
-    load_snippet(url, null, function (ajax_result) {
+    $cms.loadSnippet(url, null, function (ajax_result) {
         document.getElementById('t_' + file_id).className = 'tab tab_active';
 
         template_editor_tab_loaded_content(ajax_result, file);
@@ -227,7 +227,7 @@ function template_editor_preview(file_id, url, button, ask_for_url) {
     }
 
     if (ask_for_url) {
-        window.fauxmodal_prompt(
+        $cms.ui.prompt(
             '{!themes:URL_TO_PREVIEW_WITH;^}',
             url,
             function (url) {
@@ -290,9 +290,9 @@ function template_insert_parameter(dropdown_name, file_id) {
 
     var has_editarea = editarea_is_loaded(textbox.name);
 
-    if ((value == 'BLOCK') && ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays)) {
+    if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays)) {
         var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + keep_stub();
-        window.faux_showModalDialog(
+        $cms.ui.showModalDialog(
             maintain_theme_in_link(url),
             null,
             'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
@@ -352,7 +352,7 @@ function template_insert_parameter(dropdown_name, file_id) {
 
 function _get_parameter_parameters(definite_gets, parameter, arity, box, name, value, num_done, params, callback) {
     if (num_done < definite_gets) {
-        window.fauxmodal_prompt(
+        $cms.ui.prompt(
             '{!themes:INPUT_NECESSARY_PARAMETER;^}' + ', ' + parameter[num_done],
             '',
             function (v) {
@@ -365,7 +365,7 @@ function _get_parameter_parameters(definite_gets, parameter, arity, box, name, v
         );
     } else {
         if ((arity == '0+') || (arity == '1+')) {
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
                 '',
                 function (v) {
@@ -378,7 +378,7 @@ function _get_parameter_parameters(definite_gets, parameter, arity, box, name, v
             );
         }
         else if ((arity == '0-1') || (arity == '3-4')) {
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
                 '',
                 function (v) {
@@ -553,7 +553,7 @@ function load_contextual_css_editor(file, file_id) {
                 var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + keep_stub());
                 do_ajax_request(url, function (ajax_result_frame) {
                     receive_compiled_css(ajax_result_frame, file);
-                }, modsecurity_workaround_ajax('css=' + encodeURIComponent(new_css)));
+                }, $cms.form.modsecurityWorkaroundAjax('css=' + encodeURIComponent(new_css)));
 
                 last_css = new_css;
             }
@@ -583,7 +583,7 @@ function set_up_parent_page_highlighting(file, file_id) {
         li.appendChild(a);
         a.href = '#!';
         a.id = 'selector_' + i;
-        $cms.dom.html(a, escape_html(selector));
+        $cms.dom.html(a, $cms.filter.html(selector));
         list.appendChild(li);
 
         // Add tooltip so we can see what the CSS text is in when hovering the selector
@@ -593,32 +593,32 @@ function set_up_parent_page_highlighting(file, file_id) {
         } else  {// IE
             css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
         }
-        li.onmouseout = function (event) {
-            deactivate_tooltip(this);
-        };
-        li.onmousemove = function (event) {
-            reposition_tooltip(this, event);
-        };
-        li.onmouseover = function (css_text) {
+        li.addEventListener('mouseout', function (event) {
+            $cms.ui.deactivateTooltip(this);
+        });
+        li.addEventListener('mousemove', function (event) {
+            $cms.ui.repositionTooltip(this, event);
+        });
+        li.addEventListener('mouseover', function (css_text) {
             return function (event) {
-                activate_tooltip(this, event, css_text, 'auto');
+                $cms.ui.activateTooltip(this, event, css_text, 'auto');
             }
-        }(css_text);
+        }(css_text));
 
         // Jump-to
-        a.onclick = function (selector) {
+        a.addEventListener('click', function (selector) {
             return function (event) {
-                cancel_bubbling(event);
+                event.stopPropagation();
                 editarea_do_search(
                     'e_' + file_id,
                     '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'
                 ); // Opera does not support \s
                 return false;
             }
-        }(selector);
+        }(selector));
 
         // Highlighting on parent page
-        a.onmouseover = function (selector) {
+        a.addEventListener('onmouseover', function (selector) {
             return function (event) {
                 if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
                     var elements = find_selectors_for(window.opener, selector);
@@ -628,8 +628,8 @@ function set_up_parent_page_highlighting(file, file_id) {
                     }
                 }
             }
-        }(selector);
-        a.onmouseout = function (selector) {
+        }(selector));
+        a.addEventListener('mouseout', function (selector) {
             return function (event) {
                 if ((window.opener) && (!event.ctrlKey) && (!event.metaKey)) {
                     var elements = find_selectors_for(window.opener, selector);
@@ -639,7 +639,7 @@ function set_up_parent_page_highlighting(file, file_id) {
                     }
                 }
             }
-        }(selector);
+        }(selector));
 
         // Highlighting from parent page
         elements = find_selectors_for(window.opener, selector);
@@ -648,8 +648,7 @@ function set_up_parent_page_highlighting(file, file_id) {
 
             element.addEventListener('mouseover', function (a, element) {
                 return function (event) {
-
-                    if ((window) && (!event.ctrlKey) && (!event.metaKey)) {
+                    if (window && !event.ctrlKey && !event.metaKey) {
                         var target = event.target;
                         var target_distance = 0;
                         var element_recurse = element;
@@ -796,10 +795,10 @@ function css_equation_helper(file_id, theme) {
     url += '&theme=' + encodeURIComponent(theme);
     url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + file_id).value);
 
-    var result = load_snippet(url);
+    var result = $cms.loadSnippet(url);
 
     if (result == '' || result.indexOf('<html') != -1) {
-        window.fauxmodal_alert('{!ERROR_OCCURRED;^}');
+        $cms.ui.alert('{!ERROR_OCCURRED;^}');
     } else {
         document.getElementById('css_result_' + file_id).value = result;
     }
@@ -811,7 +810,7 @@ function css_equation_helper(file_id, theme) {
 
 window.done_cleanup_template_markers = false;
 if (window.location.href.includes('keep_template_magic_markers=1')) {
-    $cms.ready.then(function () {
+    (window.$cmsReady || (window.$cmsReady = [])).push(function () {
         cleanup_template_markers(window);
     });
 }

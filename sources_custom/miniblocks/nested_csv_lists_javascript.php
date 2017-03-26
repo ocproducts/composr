@@ -45,7 +45,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
     /** @type {Object} */
     window.nested_csv_structure = <?= json_encode((array)$csv_structure) ?>;
 
-    $cms.ready.then(function () {
+    (window.$cmsReady || (window.$cmsReady = [])).push(function () {
         var forms = document.getElementsByTagName('form');
 
         for (var i = 0; i < forms.length; i++) {

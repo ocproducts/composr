@@ -13,7 +13,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         return null;
     }
 
-    cancel_bubbling(event);
+    event.stopPropagation();
     event.preventDefault();
 
     // Position form
@@ -59,7 +59,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             var list_option;
             for (var i = 0; i < list_options.length; i++) {
                 list_option = document.createElement('option');
-                $cms.dom.html(list_option, escape_html(list_options[i]));
+                $cms.dom.html(list_option, $cms.filter.html(list_options[i]));
                 list_option.selected = (populated_value == list_options[i]);
                 input.appendChild(list_option);
             }
@@ -121,7 +121,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
     function cancel_function() {
         cleanup_function();
 
-        window.fauxmodal_alert('{!FRACTIONAL_EDIT_CANCELLED;^}', null, '{!FRACTIONAL_EDIT;^}');
+        $cms.ui.alert('{!FRACTIONAL_EDIT_CANCELLED;^}', null, '{!FRACTIONAL_EDIT;^}');
 
         return false;
     }
@@ -136,7 +136,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             var session_test_ret = do_ajax_request(session_test_url + keep_stub(true), null);
 
             if (session_test_ret.responseText) {// If it failed, see if it is due to a non-confirmed session
-                confirm_session(
+                $cms.ui.confirmSession(
                     function (result) {
                         if (result) {
                             save_function();
@@ -148,7 +148,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             } else {
                 cleanup_function(); // Has to happen before, as that would cause defocus then refocus, causing a second save attempt
 
-                window.fauxmodal_alert((response.status == 500) ? response.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
+                $cms.ui.alert((response.status == 500) ? response.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
             }
         } else {// Success
             object.raw_text = input.value;
@@ -162,7 +162,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
 
     // If we activate it again, we actually treat this as a cancellation
     object.onclick = object.ondblclick = function (event) {
-        cancel_bubbling(event);
+        event.stopPropagation();
         if (event.cancelable) {
             event.preventDefault();
         }
@@ -181,7 +181,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             if ($cms.dom.keyPressed(event, 'Escape')) {// Cancel (escape key)
                 var tmp = input.onblur;
                 input.onblur = null;
-                fauxmodal_confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;^}', function (result) {
+                $cms.ui.confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;^}', function (result) {
                     if (result) {
                         cancel_function();
                     } else {

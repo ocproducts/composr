@@ -15,11 +15,12 @@
             hide_func = function () {
                 $cms.dom.$('#recurrance_days').disabled = ((d_ob[0].selectedIndex + d_ob[1].selectedIndex + d_ob[2].selectedIndex + d_ob[3].selectedIndex + d_ob[4].selectedIndex) > 0);
             };
-            d_ob[0].onchange = hide_func;
-            d_ob[1].onchange = hide_func;
-            d_ob[2].onchange = hide_func;
-            d_ob[3].onchange = hide_func;
-            d_ob[4].onchange = hide_func;
+
+            d_ob[0].addEventListener('change', hide_func);
+            d_ob[1].addEventListener('change', hide_func);
+            d_ob[2].addEventListener('change', hide_func);
+            d_ob[3].addEventListener('change', hide_func);
+            d_ob[4].addEventListener('change', hide_func);
         } else {
             d_ob = [
                 $cms.dom.$('#schedule'),
@@ -28,8 +29,8 @@
             hide_func = function () {
                 $cms.dom.$('#recurrance_days').disabled = ((d_ob[0].value != '') || (d_ob[1].value != ''));
             };
-            d_ob[0].onchange = hide_func;
-            d_ob[1].onchange = hide_func;
+            d_ob[0].addEventListener('change', hide_func);
+            d_ob[1].addEventListener('change', hide_func);
         }
         hide_func();
     };
@@ -42,25 +43,23 @@
             return;
         }
 
-        submit_button.old_onclick = submit_button.onclick;
-        submit_button.onclick = function (event) {
-            submit_button.old_onclick(event);
+        submit_button.addEventListener('click', function (event) {
             submit_button.disabled = true;
-        };
+        });
 
         var button = document.createElement('input');
         button.type = 'button';
         button.className = 'button_micro buttons__proceed';
         button.value = '{!backups:CALCULATE_SIZE;^}';
-        button.onclick = function () {
+        button.addEventListener('click', function () {
             var progressTicker = document.createElement('img');
             progressTicker.setAttribute('src', '{$IMG;,loading}');
             progressTicker.style.verticalAlign = 'middle';
             progressTicker.style.marginLeft = '20px';
             button.parentNode.appendChild(progressTicker, button);
-            window.fauxmodal_alert('{!CALCULATED_SIZE;^}'.replace('\{1\}', load_snippet('backup_size&max_size=' + encodeURIComponent(max_size_field.value))));
+            $cms.ui.alert('{!CALCULATED_SIZE;^}'.replace('\{1\}', $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(max_size_field.value))));
             button.parentNode.removeChild(progressTicker);
-        };
+        });
 
         max_size_field.parentNode.appendChild(button, max_size_field);
     };

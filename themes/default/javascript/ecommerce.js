@@ -13,7 +13,7 @@
             'click .js-click-do-form-submit': 'doFormSubmit'
         },
         doFormSubmit: function (e) {
-            if (!do_form_submit(this.formEl, e)) {
+            if (!$cms.form.doFormSubmit(this.formEl, e)) {
                 e.preventDefault();
             }
         }
@@ -38,8 +38,8 @@
                     _length.value = 1;
             }
         };
-        _length_units.onchange = adjust_lengths;
-        _length.onchange = adjust_lengths;
+        _length_units.addEventListener('change', adjust_lengths);
+        _length.addEventListener('change', adjust_lengths);
     };
 
     $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params, container) {

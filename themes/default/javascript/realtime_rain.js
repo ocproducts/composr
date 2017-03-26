@@ -124,7 +124,7 @@ function realtime_rain_button_load_handler() {
 
     var x = document.createElement('div');
     document.body.appendChild(x);
-    $cms.dom.html(x, load_snippet('realtime_rain_load'));
+    $cms.dom.html(x, $cms.loadSnippet('realtime_rain_load'));
     e = document.getElementById('real_time_surround');
     e.style.position = 'absolute';
     e.style.zIndex = 100;
@@ -197,7 +197,12 @@ function received_events(ajax_result_frame, ajax_result) {
         }
 
         // Set up HTML (difficult, as we are copying from XML)
-        _cloned_message = careful_import_node(element);
+        _cloned_message = element;
+
+        try {
+            _cloned_message = document.importNode(element, true);
+        } catch (ignore) {}
+
         cloned_message = $cms.dom.create('div', {
             id: _cloned_message.getAttribute('id'),
             class: _cloned_message.getAttribute('class'),
@@ -221,20 +226,20 @@ function received_events(ajax_result_frame, ajax_result) {
             cloned_message.style.top = (-(vertical_slot + 1) * cloned_message.offsetHeight) + 'px';
 
             // JS events, for pausing and changing z-index
-            cloned_message.onmouseover = function () {
+            cloned_message.addEventListener('mouseover', function () {
                 this.style.zIndex = 160;
                 if (!window.paused) {
                     this.pausing = true;
                     window.paused = true;
                 }
-            };
-            cloned_message.onmouseout = function () {
+            });
+            cloned_message.addEventListener('mouseout', function () {
                 this.style.zIndex = 50;
                 if (this.pausing) {
                     this.pausing = false;
                     window.paused = false;
                 }
-            };
+            });
 
             // Draw lines and emails animation (after delay, so that we know it's rendered by then and hence knows full coordinates)
             window.setTimeout(function () {
@@ -269,7 +274,7 @@ function received_events(ajax_result_frame, ajax_result) {
                             next_icon.style.left = left + 'px';
                             var top = ((parseInt(next_icon.style.top) || 0) + next_icon.y_vector);
                             next_icon.style.top = top + 'px';
-                            clear_transition_and_set_opacity(next_icon, next_icon.opacity);
+                            $cms.dom.clearTransitionAndSetOpacity(next_icon, next_icon.opacity);
                             next_icon.opacity *= 0.98;
                             next_icon.y_vector += 0.2;
                             if ((top > max_height) || (next_icon.opacity < 0.05) || (left + 50 > window_width) || (left < 0)) {

@@ -170,17 +170,13 @@ class Hook_pointstore_pop3
         $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'pass2', true));
 
         $javascript =  /** @lang JavaScript */ "
-            var form=document.getElementById('pass1').form;
-            form.old_submit=form.onsubmit;
-            form.onsubmit=function() {
-                if ((form.elements['pass1'].value!=form.elements['pass2'].value))
-                {
-                    window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
+            var form = document.getElementById('pass1').form;
+            form.addEventListener('submit', function() {
+                if ((form.elements['pass1'].value!=form.elements['pass2'].value)) {
+                    $cms.ui.alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
                     return false;
                 }
-                if (typeof form.old_submit!='undefined' && form.old_submit) return form.old_submit();
-                return true;
-            };
+            });
         ";
 
         // Return template

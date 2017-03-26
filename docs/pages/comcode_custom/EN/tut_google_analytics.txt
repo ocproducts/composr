@@ -367,7 +367,7 @@ You can split test things you might never have thought about, even outside the s
 
 The [i]Google Analytics[/i] JavaScript library, which comes pre-integrated as a part of a [i]Google Analytics[/i] deployment, provides a means for tracking custom events. That is events beyond just basic page views.
 
-Composr provides a JavaScript function, [tt]ga_track[/tt], to abstract this, which is pre-integrated in a number of places:
+Composr provides a JavaScript function, [tt]$cms.gaTrack[/tt], to abstract this, which is pre-integrated in a number of places:
  - clicking banners
  - clicking Comcode links (the [tt]url[/tt] Comcode tag)
  - clicking system links put out for many things (the [tt]HYPERLINK.tpl[/tt] template)
@@ -378,7 +378,7 @@ Composr provides a JavaScript function, [tt]ga_track[/tt], to abstract this, whi
 
 You may easily extend this with whatever custom events you want, then configure [i]Google Analytics[/i] against those events. Just edit it into HTML within pages/templates, adding an [tt]onclick[/tt] to links like follows:
 [code="HTML"]
-onclick="return ga_track(this,'My Event Name','My Event Parameter');"
+onclick="return $cms.gaTrack(this,'My Event Name','My Event Parameter');"
 [/code]
 The [tt]'My Event Parameter'[/tt] bit is optional, but often you will want to define different parameter value underneath the same event name. For example, for the banner click events this is the codename of the clicked banner.
 

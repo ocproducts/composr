@@ -29,16 +29,16 @@
             var params = this.params;
 
             if (params.searchType !== undefined) {
-                update_ajax_search_list(input, e, $cms.filter.nl(params.searchType));
+                $cms.form.updateAjaxSearchList(input, e, $cms.filter.nl(params.searchType));
             } else {
-                update_ajax_search_list(input, e);
+                $cms.form.updateAjaxSearchList(input, e);
             }
         },
         updateAuthorList: function (e, target) {
-            update_ajax_member_list(target, 'author', false, e);
+            $cms.form.updateAjaxMemberList(target, 'author', false, e);
         },
         triggerResize: function () {
-            trigger_resize();
+            $cms.dom.triggerResize();
         },
         toggleBooleanOptions: function (e, checkbox) {
             $cms.dom.toggle(this.booleanOptionsEl, checkbox.checked);

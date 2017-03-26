@@ -7,7 +7,7 @@
 	{$REQUIRE_JAVASCRIPT,core_rich_media}
 	<div id="emoticoncrazy{$GET%,rndx}"></div>
 	<script>// <![CDATA[
-		$cms.ready.then(function() {
+		(window.$cmsReady || (window.$cmsReady = [])).push(function() {
 			if (typeof window.crazy_criters=='undefined')
 			{
 				window.crazy_criters=[];

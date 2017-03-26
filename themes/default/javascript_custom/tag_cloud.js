@@ -172,7 +172,7 @@ Scene3D.prototype.renderCamera = function (camera) {
                 currItem.style.left = currItem._x + 'px';
                 currItem.style.fontSize = 100 * currItem.scale + '%';
 
-                clear_transition_and_set_opacity(currItem, (currItem.scale - 0.75) * 2);
+                $cms.dom.clearTransitionAndSetOpacity(currItem, (currItem.scale - 0.75) * 2);
 
             }
 
@@ -237,12 +237,12 @@ function load_tag_cloud(container) {
     var lis = container.getElementsByTagName("li");
     container.readyToClick = false;
     for (var i = 0; i < lis.length; i++) {
-        lis[i].onmouseover = function () {
+        lis[i].addEventListener('mouseover', function () {
             container.readyToClick = true;
-        };
-        lis[i].onmouseout = function () {
+        });
+        lis[i].addEventListener('mouseout', function () {
             container.readyToClick = false;
-        };
+        });
     }
 
     var sizing = (width > height && height != 0) ? height : width;

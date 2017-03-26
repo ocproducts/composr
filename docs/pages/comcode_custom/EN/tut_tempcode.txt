@@ -323,7 +323,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$FACILITATE_AJAX_BLOCK_CALL,block code,differing parameters}</td>
-			<td>This symbol generates a string parameter suitable for the Composr JavaScript <kbd>call_block</kbd> function, which is used to make an AJAX call to load up a block and overwrite the contents of a specific div with it. Calling this symbol has the side-effects of triggering an include of Composr's AJAX code, and setting up a permission so that the server-side AJAX handler knows that the current session is authorised to load up this pattern of block. The symbol is best used by example -- see how it is currently used by code.</td>
+			<td>This symbol generates a string parameter suitable for the Composr JavaScript <kbd>$cms.callBlock</kbd> function, which is used to make an AJAX call to load up a block and overwrite the contents of a specific div with it. Calling this symbol has the side-effects of triggering an include of Composr's AJAX code, and setting up a permission so that the server-side AJAX handler knows that the current session is authorised to load up this pattern of block. The symbol is best used by example -- see how it is currently used by code.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$REQUIRE_CSS,css_example}</td>

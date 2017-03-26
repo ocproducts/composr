@@ -9,7 +9,7 @@
         var textLarge = $cms.filter.nl(params.textLarge);
 
         $cms.dom.on(el, 'mouseover', function (e) {
-            activate_tooltip(el, e, textLarge, '40%');
+            $cms.ui.activateTooltip(el, e, textLarge, '40%');
         });
     };
 
@@ -18,7 +18,7 @@
 
         $cms.dom.on(el, 'mouseover', function (e) {
             var window = get_main_cms_window(true);
-            window.activate_tooltip(el, e, textLarge, '40%', null, null, null, false, false, false, window);
+            window.$cms.ui.activateTooltip(el, e, textLarge, '40%', null, null, null, false, false, false, window);
         });
     };
 
@@ -59,7 +59,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            load_snippet('comments&id=' + encodeUC(id) + '&ids=' + encodeUC(ids) + '&serialized_options=' + encodeUC(window.comments_serialized_options) + '&hash=' + encodeUC(window.comments_hash), null, function (ajax_result) {
+            $cms.loadSnippet('comments&id=' + encodeUC(id) + '&ids=' + encodeUC(ids) + '&serialized_options=' + encodeUC(window.comments_serialized_options) + '&hash=' + encodeUC(window.comments_hash), null, function (ajax_result) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $cms.dom.$('#post_children_' + id);
@@ -75,8 +75,8 @@
                     for (var i = 0; i < _ids.length; i++) {
                         var element = document.getElementById('post_wrap_' + _ids[i]);
                         if (element) {
-                            clear_transition_and_set_opacity(element, 0);
-                            fade_transition(element, 100, 30, 10);
+                            $cms.dom.clearTransitionAndSetOpacity(element, 0);
+                            $cms.dom.fadeTransition(element, 100, 30, 10);
                         }
                     }
                 }, 0);

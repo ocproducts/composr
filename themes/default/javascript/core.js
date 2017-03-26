@@ -1,10 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    var encodeUC = encodeURIComponent,
-        decodeUC = decodeURIComponent;
-
-    $cms.ready.then(function () {
+    window.$cmsReady.push(function () {
         $cms.attachBehaviors(document);
     });
 
@@ -265,7 +262,7 @@
 
         if (($cms.$ZONE === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
             var page = $cms.filter.url($cms.$PAGE);
-            load_snippet('background_template_compilation&page=' + page, '', function () {
+            $cms.loadSnippet('background_template_compilation&page=' + page, '', function () {
             });
         }
 
@@ -326,7 +323,7 @@
 
         var view = this;
         /* Tidying up after the page is rendered */
-        $cms.load.then(function () {
+        window.$cmsLoad.push(function () {
             // When images etc have loaded
             // Move the help panel if needed
             if ($cms.$CONFIG_OPTION.fixed_width || (get_window_width() > 990)) {
@@ -529,7 +526,7 @@
 
             e.preventDefault();
             message = clicked.dataset.cmsConfirmClick;
-            window.fauxmodal_confirm(message, function (result) {
+            $cms.ui.confirm(message, function (result) {
                 if (result) {
                     view._confirmedClick = uid;
                     clicked.click();
@@ -549,7 +546,7 @@
         // Implementation for [data-click-alert] and [data-keypress-alert]
         showModalAlert: function (e, target) {
             var options = objVal($cms.dom.data(target, e.type + 'Alert'), 'notice');
-            fauxmodal_alert(options.notice);
+            $cms.ui.alert(options.notice);
         },
 
         preventDefault: function (e) {
@@ -643,7 +640,7 @@
         // Implementation for form[data-submit-modsecurity-workaround]
         submitModsecurityWorkaround: function (e, form) {
             e.preventDefault();
-            modsecurity_workaround(form);
+            $cms.form.modsecurityWorkaround(form);
         },
 
         // Implementation for input[data-cms-invalid-pattern]
@@ -698,7 +695,7 @@
         // Implementation for [data-click-faux-open]
         clickFauxOpen: function (e, el) {
             var args = arrVal($cms.dom.data(el, 'clickFauxOpen'));
-            window.faux_open.apply(undefined, args);
+            $cms.ui.open.apply(undefined, args);
         },
 
         // Implementation for `click a[rel*="lightbox"]`
@@ -717,7 +714,7 @@
 
             function openImageIntoLightbox(el) {
                 var has_full_button = (el.firstElementChild === null) || (el.href !== el.firstElementChild.src);
-                _open_image_into_lightbox(el.href, ((el.cms_tooltip_title !== undefined) ? el.cms_tooltip_title : el.title), null, null, has_full_button);
+                $cms.ui.openImageIntoLightbox(el.href, ((el.cms_tooltip_title !== undefined) ? el.cms_tooltip_title : el.title), null, null, has_full_button);
             }
         },
 
@@ -732,9 +729,9 @@
             args.unshift(el, e);
 
             try {
-                activate_tooltip.apply(undefined, args);
+                $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
+                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -745,15 +742,15 @@
             args.unshift(el, e);
 
             try {
-                activate_tooltip.apply(undefined, args);
+                $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
+                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
         // Implementation for [data-blur-deactivate-tooltip]
         blurDeactivateTooltip: function (e, el) {
-            deactivate_tooltip(el);
+            $cms.ui.deactivateTooltip(el);
         },
 
         activateRichTooltip: function (e, el) {
@@ -764,9 +761,9 @@
             var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, !!el.have_links];
 
             try {
-                activate_tooltip.apply(undefined, args);
+                $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
+                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -782,7 +779,7 @@
             var options = objVal($cms.dom.data(clicked, 'clickGaTrack'));
 
             e.preventDefault();
-            ga_track(clicked, options.category, options.action);
+            $cms.gaTrack(clicked, options.category, options.action);
         },
 
         // Implementation for [data-click-tray-toggle="<TRAY ID>"]
@@ -850,24 +847,24 @@
             }
             url += '#composrcms';
 
-            var SOFTWARE_CHAT_EXTRA = '{!SOFTWARE_CHAT_EXTRA;^}'.replace(/\{1\}/, escape_html(window.location.href.replace($cms.$BASE_URL, 'http://baseurl')));
+            var SOFTWARE_CHAT_EXTRA = '{!SOFTWARE_CHAT_EXTRA;^}'.replace(/\{1\}/, $cms.filter.html(window.location.href.replace($cms.$BASE_URL, 'http://baseurl')));
             var html = '\
     <div class="software_chat">\
         <h2>{!CMS_COMMUNITY_HELP}</h2>\
         <ul class="spaced_list">' + SOFTWARE_CHAT_EXTRA + '</ul>\
         <p class="associated_link associated_links_block_group">\
-            <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + escape_html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a>\
+            <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + $cms.filter.html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a>\
             <a href="#!" class="js-click-load-software-chat">{!HIDE}</a>\
         </p>\
     </div>\
-    <iframe class="software_chat_iframe" style="border: 0" src="' + escape_html(url) + '"></iframe>';
+    <iframe class="software_chat_iframe" style="border: 0" src="' + $cms.filter.html(url) + '"></iframe>';
 
             var box = $cms.dom.$('#software_chat_box'), img;
             if (box) {
                 box.parentNode.removeChild(box);
 
                 img = $cms.dom.$('#software_chat_img');
-                clear_transition_and_set_opacity(img, 1.0);
+                $cms.dom.clearTransitionAndSetOpacity(img, 1.0);
             } else {
                 var width = 950,
                     height = 550;
@@ -894,7 +891,7 @@
                 smooth_scroll(0);
 
                 img = $cms.dom.$('#software_chat_img');
-                clear_transition_and_set_opacity(img, 0.5);
+                $cms.dom.clearTransitionAndSetOpacity(img, 0.5);
             }
         },
 
@@ -1017,7 +1014,7 @@
                 var bi = $cms.dom.$id('main_website_inner');
                 if (bi) {
                     bi.classList.add('site_unloading');
-                    fade_transition(bi, 20, 30, -4);
+                    $cms.dom.fadeTransition(bi, 20, 30, -4);
                 }
                 var div = document.createElement('div');
                 div.className = 'unload_action';
@@ -1044,11 +1041,11 @@
              */
 
             function apply_comcode_tooltip(hook, id, link) {
-                link.addEventListener('mouseout', function (event) {
-                    deactivate_tooltip(link);
+                link.addEventListener('mouseout', function () {
+                    $cms.ui.deactivateTooltip(link);
                 });
                 link.addEventListener('mousemove', function (event) {
-                    reposition_tooltip(link, event, false, false, null, true);
+                    $cms.ui.repositionTooltip(link, event, false, false, null, true);
                 });
                 link.addEventListener('mouseover', function (event) {
                     var id_chopped = id[1];
@@ -1059,17 +1056,18 @@
                     if (link.rendered_tooltip === undefined) {
                         link.is_over = true;
 
-                        var request = do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + keep_stub()), function (ajax_result_frame) {
+                        do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + keep_stub()), function (ajax_result_frame) {
                             if (ajax_result_frame && ajax_result_frame.responseText) {
                                 link.rendered_tooltip = ajax_result_frame.responseText;
                             }
                             if (link.rendered_tooltip !== undefined) {
-                                if (link.is_over)
-                                    activate_tooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
+                                if (link.is_over) {
+                                    $cms.ui.activateTooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
+                                }
                             }
                         }, 'data=' + encodeURIComponent(comcode));
                     } else {
-                        activate_tooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
+                        $cms.ui.activateTooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
                     }
                 });
             }
@@ -1079,8 +1077,12 @@
              */
             function handle_image_mouse_over(event) {
                 var target = event.target;
-                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) return;
-                if (target.offsetWidth < 130) return;
+                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
+                    return;
+                }
+                if (target.offsetWidth < 130) {
+                    return;
+                }
 
                 var src = (target.src === undefined) ? $cms.dom.css(target, 'background-image') : target.src;
 
@@ -1160,14 +1162,14 @@
                 var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
                 if (src && (force || (magic_keypress(event)))) {
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)
-                    cancel_bubbling(event);
+                    event.stopPropagation();
 
                     if (event.preventDefault !== undefined) event.preventDefault();
 
                     if (src.includes('{$BASE_URL_NOHTTP;^}/themes/')) {
                         ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG) + '&theme=' + encodeURIComponent($cms.$THEME) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + keep_stub(), 'edit_theme_image_' + ob.id);
                     } else {
-                        window.fauxmodal_alert('{!NOT_THEME_IMAGE;^}');
+                        $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
                     }
 
                     return false;
@@ -1218,7 +1220,7 @@
                     window.done_one_error = true;
                     var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
                     if (window.document.body) {// i.e. if loaded
-                        window.fauxmodal_alert(alert, null, '{!ERROR_OCCURRED;^}');
+                        $cms.ui.alert(alert, null, '{!ERROR_OCCURRED;^}');
                     }
                 }
                 return false;
@@ -1340,7 +1342,7 @@
             }
         }
 
-        trigger_resize(true);
+        $cms.dom.triggerResize(true);
 
         // Execution ends here
 
@@ -1386,7 +1388,7 @@
     $cms.templates.forumsEmbed = function () {
         var frame = this;
         window.setInterval(function () {
-            resize_frame(frame.name);
+            $cms.dom.resizeFrame(frame.name);
         }, 500);
     };
 
@@ -1433,12 +1435,12 @@
     $cms.templates.groupMemberTimeoutManageScreen = function groupMemberTimeoutManageScreen(params, container) {
         $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
             if (input.value === '') {
-                update_ajax_member_list(input, null, true, e);
+                $cms.form.updateAjaxMemberList(input, null, true, e);
             }
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
-            update_ajax_member_list(input, null, false, e)
+            $cms.form.updateAjaxMemberList(input, null, false, e)
         });
     };
 
@@ -1468,7 +1470,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
             if (checkbox.checked) {
-                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
                     }
@@ -1477,7 +1479,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
-            if (check_field_for_blankness(form.elements.login_username)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -1487,7 +1489,7 @@
 
     $cms.templates.blockTopLogin = function (blockTopLogin, container) {
         $cms.dom.on(container, 'submit', '.js-form-top-login', function (e, form) {
-            if (check_field_for_blankness(form.elements.login_username)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -1496,7 +1498,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
             if (checkbox.checked) {
-                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
                     }
@@ -1517,7 +1519,7 @@
     };
 
     $cms.templates.jsBlock = function jsBlock(params) {
-        call_block(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, null, false, null, false, false);
+        $cms.callBlock(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, null, false, null, false, false);
     };
 
     $cms.templates.massSelectMarker = function (params) {
@@ -1541,7 +1543,7 @@
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
         $cms.dom.on(container, 'submit', '.js-submit-check-login-username-field', function (e, form) {
-            if (check_field_for_blankness(form.elements.login_username)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -1550,7 +1552,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
             if (checkbox.checked) {
-                window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
                     if (!answer) {
                         checkbox.checked = false;
                     }
@@ -1622,7 +1624,7 @@
             url_stripped = url.replace(/#.*/, ''),
             new_url = url_stripped + (!url_stripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
 
-        faux_open(new_url, null, 'width=' + options.width + ';height=' + options.height, options.target);
+        $cms.ui.open(new_url, null, 'width=' + options.width + ';height=' + options.height, options.target);
     }
 
     function convert_tooltip(el) {
@@ -1670,22 +1672,22 @@
         el.cms_tooltip_title = $cms.filter.html(title);
 
         $cms.dom.on(el, 'mouseover', function (event) {
-            global.activate_tooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, global);
+            global.$cms.ui.activateTooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, global);
         });
 
         $cms.dom.on(el, 'mousemove', function (event) {
-            global.reposition_tooltip(el, event, false, false, null, false, global);
+            global.$cms.ui.repositionTooltip(el, event, false, false, null, false, global);
         });
 
         $cms.dom.on(el, 'mouseout', function () {
-            global.deactivate_tooltip(el);
+            global.$cms.ui.deactivateTooltip(el);
         });
     }
 
     function confirm_delete(form, multi, callback) {
         multi = !!multi;
 
-        window.fauxmodal_confirm(
+        $cms.ui.confirm(
             multi ? '{!_ARE_YOU_SURE_DELETE;^}' : '{!ARE_YOU_SURE_DELETE;^}',
             function (result) {
                 if (result) {

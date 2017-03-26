@@ -249,7 +249,7 @@ class DecisionTree
                                         selected=(_e.value==\'' . addslashes($value) . '\');
                                     }
                                     if (selected) {
-                                        fauxmodal_alert(\'' . addslashes($_notice->evaluate()) . '\',null,\'' . addslashes($notice_title) . '\',true);
+                                        $cms.ui.alert(\'' . addslashes($_notice->evaluate()) . '\',null,\'' . addslashes($notice_title) . '\',true);
                                     }
                                 }}(e[i]));
                             }

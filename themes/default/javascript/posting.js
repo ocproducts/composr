@@ -32,7 +32,7 @@ function add_attachment(start_num, posting_field_name) {
         element.setAttribute('unselectable', 'on');
     }
 
-    trigger_resize();
+    $cms.dom.triggerResize();
 }
 
 function attachment_present(post_value, number) {
@@ -148,7 +148,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
             if (uploader_settings !== undefined) {
                 uploader_settings.callbacks.push(function () {
                     // Do insta-preview
-                    if (is_wysiwyg_field(post)) {
+                    if ($cms.form.isWysiwygField(post)) {
                         generate_background_preview(post);
                     }
                 });
@@ -157,7 +157,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
             return;
         }
 
-        var wysiwyg = is_wysiwyg_field(post);
+        var wysiwyg = $cms.form.isWysiwygField(post);
 
         var url = '{$FIND_SCRIPT;,comcode_helper}';
         url += '?field_name=' + field_name;
@@ -175,7 +175,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         url += keep_stub();
 
         window.setTimeout(function () {
-            window.faux_showModalDialog(
+            $cms.ui.showModalDialog(
                 maintain_theme_in_link(url),
                 '',
                 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes',
@@ -208,7 +208,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
                         }
 
                         // Do insta-preview
-                        if ((comcode_added.indexOf('[attachment_safe') != -1) && (is_wysiwyg_field(post))) {
+                        if ((comcode_added.indexOf('[attachment_safe') != -1) && ($cms.form.isWysiwygField(post))) {
                             generate_background_preview(post);
                         }
                     } else // Cancelled
@@ -235,12 +235,12 @@ function generate_background_preview(post) {
     for (var i = 0; i < form.elements.length; i++) {
         if ((!form.elements[i].disabled) && ( form.elements[i].name !== undefined) && (form.elements[i].name != '')) {
             var name = form.elements[i].name;
-            var value = clever_find_value(form, form.elements[i]);
+            var value = $cms.form.cleverFindValue(form, form.elements[i]);
             if (name == 'title' && value == '') value = 'x'; // Fudge, title must be filled in on many forms
             form_post += '&' + name + '=' + encodeURIComponent(value);
         }
     }
-    form_post = modsecurity_workaround_ajax(form_post.substr(1));
+    form_post = $cms.form.modsecurityWorkaroundAjax(form_post.substr(1));
     var preview_ret = do_ajax_request(window.form_preview_url + '&js_only=1&known_utf8=1', null, form_post);
     eval(preview_ret.responseText.replace('<script>', '').replace('</script>', ''));
 }
@@ -267,7 +267,7 @@ function do_input_quote(field_name) {
     if (window.insert_textbox_wrapping === undefined) return;
 
     var post = document.getElementById(field_name);
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_QUOTE_BY;^}',
         '',
         function (va) {
@@ -281,7 +281,7 @@ function do_input_box(field_name) {
     if (window.insert_textbox_wrapping === undefined) return;
 
     var post = document.getElementById(field_name);
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_BOX_TITLE;^}',
         '',
         function (va) {
@@ -294,12 +294,12 @@ function do_input_box(field_name) {
 function do_input_menu(field_name) {
     if (window.insert_textbox === undefined) return;
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_MENU_NAME;^,' + (document.getElementById(field_name).form.menu_items.value) + '}',
         '',
         function (va) {
             if (va) {
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_MENU_CAPTION;^}',
                     '',
                     function (vb) {
@@ -307,7 +307,7 @@ function do_input_menu(field_name) {
 
                         var add;
                         var element = document.getElementById(field_name);
-                        add = '[block=\""+escape_comcode(va)+"\" caption=\""+escape_comcode(vb)+"\" type=\"tree\"]menu[/block]';
+                        add = '[block=\""+$cms.filter.comcode(va)+"\" caption=\""+$cms.filter.comcode(vb)+"\" type=\"tree\"]menu[/block]';
                         insert_textbox(element, add);
                     },
                     '{!comcode:INPUT_COMCODE_menu;^}'
@@ -321,7 +321,7 @@ function do_input_menu(field_name) {
 function do_input_block(field_name) {
     var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + field_name + keep_stub();
     url = url + '&block_type=' + (((field_name.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
-    window.faux_open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
 function do_input_comcode(field_name, tag) {
@@ -331,7 +331,7 @@ function do_input_comcode(field_name, tag) {
 
     if (tag == null) {
         var element = document.getElementById(field_name);
-        if (is_wysiwyg_field(element)) {
+        if ($cms.form.isWysiwygField(element)) {
             var selection = window.wysiwyg_editors[field_name].getSelection();
             var ranges = selection.getRanges();
             if ( ranges[0] !== undefined) {
@@ -378,7 +378,7 @@ function do_input_comcode(field_name, tag) {
             url += '&type=step2';
         }
     }
-    if (is_wysiwyg_field(document.getElementById(field_name))) url += '&in_wysiwyg=1';
+    if ($cms.form.isWysiwygField(document.getElementById(field_name))) url += '&in_wysiwyg=1';
     for (var key in attributes) {
         url += '&default_' + key + '=' + encodeURIComponent(attributes[key]);
     }
@@ -390,7 +390,7 @@ function do_input_comcode(field_name, tag) {
     }
     url += keep_stub();
 
-    window.faux_open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
 function do_input_list(field_name, add) {
@@ -400,7 +400,7 @@ function do_input_list(field_name, add) {
 
     var post = document.getElementById(field_name);
     insert_textbox(post, '\n');
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_LIST_ENTRY;^}',
         '',
         function (va) {
@@ -429,18 +429,18 @@ function do_input_list(field_name, add) {
 function do_input_hide(field_name) {
     if (window.insert_textbox === undefined) return;
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_WARNING;^}',
         '',
         function (va) {
             if (va) {
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_HIDDEN_TEXT;^}',
                     '',
                     function (vb) {
                         var element = document.getElementById(field_name);
                         if (vb) {
-                            insert_textbox(element, '[hide=\"' + escape_comcode(va) + '\"]' + escape_comcode(vb) + '[/hide]');
+                            insert_textbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
                         }
                     },
                     '{!comcode:INPUT_COMCODE_hide;^}'
@@ -459,12 +459,12 @@ function do_input_thumb(field_name, va) {
         if (test) return;
     }
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_URL;^}',
         va,
         function (va) {
             if ((va != null) && (va.indexOf('://') == -1)) {
-                window.fauxmodal_alert('{!javascript:NOT_A_URL;^}', function () {
+                $cms.ui.alert('{!javascript:NOT_A_URL;^}', function () {
                     do_input_url(field_name, va);
                 });
                 return;
@@ -477,7 +477,7 @@ function do_input_thumb(field_name, va) {
                     '{!comcode:INPUT_COMCODE_img;^}',
                     null,
                     function (vb) {
-                        window.fauxmodal_prompt(
+                        $cms.ui.prompt(
                             '{!javascript:ENTER_IMAGE_CAPTION;^}',
                             '',
                             function (vc) {
@@ -485,9 +485,9 @@ function do_input_thumb(field_name, va) {
 
                                 var element = document.getElementById(field_name);
                                 if (vb.toLowerCase() == '{!IMAGE;^}'.toLowerCase()) {
-                                    insert_textbox(element, '[img=\"' + escape_comcode(vc) + '\"]' + escape_comcode(va) + '[/img]');
+                                    insert_textbox(element, '[img=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/img]');
                                 } else {
-                                    insert_textbox(element, '[thumb caption=\"' + escape_comcode(vc) + '\"]' + escape_comcode(va) + '[/thumb]');
+                                    insert_textbox(element, '[thumb caption=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/thumb]');
                                 }
                             },
                             '{!comcode:INPUT_COMCODE_img;^}'
@@ -505,12 +505,12 @@ function do_input_attachment(field_name) {
         return;
     }
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_ATTACHMENT;^}',
         '',
         function (val) {
             if (!is_integer(val)) {
-                window.fauxmodal_alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
+                $cms.ui.alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
             } else {
                 var element = document.getElementById(field_name);
                 insert_textbox(element, '[attachment]new_' + val + '[/attachment]');
@@ -535,24 +535,24 @@ function do_input_attachment(field_name) {
 function do_input_url(field_name, va) {
     if (window.insert_textbox === undefined) return;
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_URL;^}',
         va,
         function (va) {
             if ((va != null) && (va.indexOf('://') == -1)) {
-                window.fauxmodal_alert('{!javascript:NOT_A_URL;^}', function () {
+                $cms.ui.alert('{!javascript:NOT_A_URL;^}', function () {
                     do_input_url(field_name, va);
                 });
                 return;
             }
 
             if (va !== null) {
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_LINK_NAME;^}',
                     '',
                     function (vb) {
                         var element = document.getElementById(field_name);
-                        if (vb != null) insert_textbox(element, '[url=\"' + escape_comcode(vb) + '\"]' + escape_comcode(va) + '[/url]');
+                        if (vb != null) insert_textbox(element, '[url=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/url]');
                     },
                     '{!comcode:INPUT_COMCODE_url;^}'
                 );
@@ -569,15 +569,15 @@ function do_input_page(field_name) {
 
     var result;
 
-    if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
-        window.faux_showModalDialog(
+    if (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
+        $cms.ui.showModalDialog(
             maintain_theme_in_link('{$FIND_SCRIPT;,page_link_chooser}' + keep_stub(true)),
             null,
             'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',
             function (result) {
                 if ((result === undefined) || (result === null)) return;
 
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_CAPTION;^}',
                     '',
                     function (vc) {
@@ -588,19 +588,19 @@ function do_input_page(field_name) {
             }
         );
     } else {
-        window.fauxmodal_prompt(
+        $cms.ui.prompt(
             '{!javascript:ENTER_ZONE;^}',
             '',
             function (va) {
                 if (va !== null) {
-                    window.fauxmodal_prompt(
+                    $cms.ui.prompt(
                         '{!javascript:ENTER_PAGE;^}',
                         '',
                         function (vb) {
                             if (vb !== null) {
                                 result = va + ':' + vb;
 
-                                window.fauxmodal_prompt(
+                                $cms.ui.prompt(
                                     '{!javascript:ENTER_CAPTION;^}',
                                     '',
                                     function (vc) {
@@ -620,30 +620,30 @@ function do_input_page(field_name) {
 
 function _do_input_page(field_name, result, vc) {
     var element = document.getElementById(field_name);
-    insert_textbox(element, '[page=\"' + escape_comcode(result) + '\"]' + escape_comcode(vc) + '[/page]');
+    insert_textbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
 }
 
 function do_input_email(field_name, va) {
     if (window.insert_textbox === undefined) return;
 
-    window.fauxmodal_prompt(
+    $cms.ui.prompt(
         '{!javascript:ENTER_ADDRESS;^}',
         va,
         function (va) {
             if ((va != null) && (va.indexOf('@') == -1)) {
-                window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;^}', function () {
+                $cms.ui.alert('{!javascript:NOT_A_EMAIL;^}', function () {
                     do_input_url(field_name, va);
                 });
                 return;
             }
 
             if (va !== null) {
-                window.fauxmodal_prompt(
+                $cms.ui.prompt(
                     '{!javascript:ENTER_CAPTION;^}',
                     '',
                     function (vb) {
                         var element = document.getElementById(field_name);
-                        if (vb !== null) insert_textbox(element, '[email=\"' + escape_comcode(vb) + '\"]' + escape_comcode(va) + '[/email]');
+                        if (vb !== null) insert_textbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
                     },
                     '{!comcode:INPUT_COMCODE_email;^}'
                 );
@@ -679,10 +679,10 @@ function do_input_font(field_name) {
     var size = form.elements['f_size'];
     var colour = form.elements['f_colour'];
     if ((face.value == '') && (size.value == '') && (colour.value == '')) {
-        window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
+        $cms.ui.alert('{!javascript:NO_FONT_SELECTED;^}');
         return;
     }
-    insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + escape_comcode(face.value) + '\" color=\"' + escape_comcode(colour.value) + '\" size=\"' + escape_comcode(size.value) + '\"]', '[/font]');
+    insert_textbox_wrapping(document.getElementById(field_name), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]');
 }
 
 // ==================
@@ -830,7 +830,7 @@ function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
     // If we've found something to restore then invite user to restore it
     biggest_length_data = biggest_length_data.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').replace(/&nbsp;/g, ' '); // Strip HTML and new lines
     if (biggest_length_data.length > 100) biggest_length_data = biggest_length_data.substr(0, 100) + '...'; // Trim down if needed
-    window.fauxmodal_confirm(
+    $cms.ui.confirm(
         '{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggest_length_data,
         function (result) {
             if (result) {
@@ -875,7 +875,7 @@ function field_supports_autosave(element) {
     if (name == '') return false;
     if (name.substr(-2) == '[]') return false;
 
-    if (is_wysiwyg_field(element)) return true;
+    if ($cms.form.isWysiwygField(element)) return true;
 
     if (element.disabled) return false;
 
@@ -964,12 +964,12 @@ function handle_form_saving_explicit(event, form) {
 
             // Save remotely
             if (navigator.onLine) {
-                post = modsecurity_workaround_ajax(post);
+                post = $cms.form.modsecurityWorkaroundAjax(post);
                 do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + keep_stub(), function () {
                     if (document.body.style.cursor == 'wait') document.body.style.cursor = '';
 
                     var message = found_validated_field ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
-                    fauxmodal_alert(message, null, '{!javascript:DRAFT_SAVE;^}');
+                    $cms.ui.alert(message, null, '{!javascript:DRAFT_SAVE;^}');
                 }, post);
             }
         }
@@ -988,7 +988,7 @@ function handle_form_saving(event, element, force) {
                 console.log('Doing AJAX auto-save');
             }
 
-            post = modsecurity_workaround_ajax(post);
+            post = $cms.form.modsecurityWorkaroundAjax(post);
             do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + keep_stub(), function () {
             }, post);
         }
@@ -1010,7 +1010,7 @@ function _handle_form_saving(event, element, force) {
         return null; // Some weird error, perhaps an extension fired this event
     }
 
-    var value = clever_find_value(element.form, element);
+    var value = $cms.form.cleverFindValue(element.form, element);
     if ((event.type == 'keypress') && (is_typed_input(element))) {
         value += String.fromCharCode(event.keyCode ? event.keyCode : event.charCode);
     }

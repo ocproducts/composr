@@ -145,7 +145,7 @@
 	<div id="map_canvas" style="width: {WIDTH}; height: {HEIGHT}"></div>
 
 	<script>// <![CDATA[
-	$cms.ready.then(function() {
+	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
 			google.load('maps','3',{callback: google_map_users_initialize,other_params:'{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_map_key}}key={$CONFIG_OPTION;/,google_map_key}{+END}'{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 		});
 	//]]></script>

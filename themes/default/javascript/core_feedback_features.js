@@ -93,11 +93,11 @@
 
         playSelfAudioLink: function (e, link) {
             e.preventDefault();
-            play_self_audio_link(link);
+            $cms.playSelfAudioLink(link);
         },
 
         focusTexareaPost: function (e, textarea) {
-            if (((textarea.value.replace(/\s/g, '') === '{POST_WARNING;^}'.replace(/\s/g, '')) && ('{POST_WARNING;^}' !== '')) || ((textarea.strip_on_focus != null) && (textarea.value == textarea.strip_on_focus))) {
+            if (((textarea.value.replace(/\s/g, '') === '{!POST_WARNING;^}'.replace(/\s/g, '')) && ('{!POST_WARNING;^}' !== '')) || ((textarea.strip_on_focus != null) && (textarea.value == textarea.strip_on_focus))) {
                 textarea.value = '';
             }
 
@@ -106,7 +106,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         },
 
         clickBtnSubmit: function (e, button) {
@@ -128,7 +128,7 @@
             var form = this.form,
                 url = maintain_theme_in_link($cms.$PREVIEW_URL + $cms.$KEEP);
 
-            if (do_form_preview(e, form, url)) {
+            if ($cms.form.doFormPreview(e, form, url)) {
                 form.submit();
             }
         },
@@ -141,12 +141,12 @@
                 return;
             }
 
-            if (!check_field_for_blankness(form.elements.post, e)) {
+            if (!$cms.form.checkFieldForBlankness(form.elements.post, e)) {
                 e.preventDefault();
                 return;
             }
 
-            if (opts.getEmail && !opts.emailOptional && !check_field_for_blankness(form.elements.email, e)) {
+            if (opts.getEmail && !opts.emailOptional && !$cms.form.checkFieldForBlankness(form.elements.email, e)) {
                 e.preventDefault();
             }
         },
@@ -195,11 +195,10 @@
         /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
         addCaptchaChecking: function () {
             var form = this.form;
-            form.old_submit = form.onsubmit;
-            form.onsubmit = function () {
+            form.addEventListener('submit', function () {
                 form.elements['submit_button'].disabled = true;
                 var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
-                if (!do_ajax_field_test(url)) {
+                if (!$cms.form.doAjaxFieldTest(url)) {
                     var image = document.getElementById('captcha_image');
                     if (!image) image = document.getElementById('captcha_frame');
                     image.src += '&'; // Force it to reload latest captcha
@@ -207,11 +206,7 @@
                     return false;
                 }
                 form.elements['submit_button'].disabled = false;
-                if (form.old_submit) {
-                    return form.old_submit();
-                }
-                return true;
-            };
+            });
 
             window.addEventListener('pageshow', function () {
                 form.elements['captcha'].src += '&'; // Force it to reload latest captcha
@@ -331,7 +326,7 @@
                 }
                 for (var i = 0; i < comments_form.elements.length; i++) {
                     if ((comments_form.elements[i].name) && (comments_form.elements[i].name != 'post')) {
-                        post += '&' + comments_form.elements[i].name + '=' + encodeURIComponent(clever_find_value(comments_form, comments_form.elements[i]));
+                        post += '&' + comments_form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(comments_form, comments_form.elements[i]));
                     }
                 }
                 post += '&post=' + encodeURIComponent(post_value);
@@ -362,8 +357,8 @@
                         var known_posts = comments_wrapper.querySelectorAll('.post');
                         for (var i = 0; i < known_posts.length; i++) {
                             if (!known_times.includes(known_posts[i].className.replace(/^post /, ''))) {
-                                clear_transition_and_set_opacity(known_posts[i], 0.0);
-                                fade_transition(known_posts[i], 100, 20, 5);
+                                $cms.dom.clearTransitionAndSetOpacity(known_posts[i], 0.0);
+                                $cms.dom.fadeTransition(known_posts[i], 100, 20, 5);
                             }
                         }
 
@@ -394,18 +389,18 @@
                 return;
             }
 
-            bit.onmouseover = function () {
+            bit.addEventListener('mouseover', function () {
                 apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, number, content_url, content_title, false);
-            };
-            bit.onmouseout = function () {
+            });
+            bit.addEventListener('mouseout', function () {
                 apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, initial_rating, content_url, content_title, false);
-            };
+            });
 
             if (visual_only) {
                 return;
             }
 
-            bit.onclick = function (event) {
+            bit.addEventListener('click', function (event) {
                 event.preventDefault();
 
                 // Find where the rating replacement will go
@@ -442,13 +437,13 @@
                 // AJAX call
                 var snippet_request = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(content_type) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent(content_url) + '&content_title=' + encodeURIComponent(content_title);
 
-                load_snippet(snippet_request, 'rating=' + encodeURIComponent(number), function (ajax_result) {
+                $cms.loadSnippet(snippet_request, 'rating=' + encodeURIComponent(number), function (ajax_result) {
                     var message = ajax_result.responseText;
                     $cms.dom.outerHtml(_replace_spot, (template === '') ? ('<strong>' + message + '</strong>') : message);
                 });
 
                 return false;
-            };
+            });
         });
     }
 }(window.$cms));

@@ -217,9 +217,9 @@
 
         window.all_menus = params.allMenus;
 
-        $cms.dom.$('#url').ondblclick = doubleClick;
-        $cms.dom.$('#caption_long').ondblclick = doubleClick;
-        $cms.dom.$('#page_only').ondblclick = doubleClick;
+        $cms.dom.$('#url').addEventListener('dblclick', doubleClick);
+        $cms.dom.$('#caption_long').addEventListener('dblclick', doubleClick);
+        $cms.dom.$('#page_only').addEventListener('dblclick', doubleClick);
 
         window.current_selection = '';
         window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.$KEEP + '&start_links=1', null, '', false, null, false, true);
@@ -233,12 +233,12 @@
         $cms.dom.on(container, 'click', '.js-click-menu-editor-add-new-page', function () {
             var form = $cms.dom.$id('edit_form');
 
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 $cms.$CONFIG_OPTION.collapse_user_zones ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}',
                 '',
                 function (zone) {
                     if (zone !== null) {
-                        window.fauxmodal_prompt(
+                        $cms.ui.prompt(
                             '{!javascript:ENTER_PAGE;^}',
                             '',
                             function (page) {
@@ -255,7 +255,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-modsecurity-workaround', function (e, form) {
-            modsecurity_workaround(form);
+            $cms.form.modsecurityWorkaround(form);
         });
 
         $cms.dom.on(container, 'change', '.js-input-change-update-selection', function (e, input) {
@@ -393,7 +393,7 @@
                     }
                 );
             } else {
-                window.fauxmodal_confirm(
+                $cms.ui.confirm(
                     '{!CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     function (result) {
                         if (result)
@@ -779,10 +779,10 @@
         el.style.position = 'absolute';
         el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
         el.style.display = 'block';
-        clear_transition_and_set_opacity(el, 0.0);
-        fade_transition(el, 100, 30, 8);
+        $cms.dom.clearTransitionAndSetOpacity(el, 0.0);
+        $cms.dom.fadeTransition(el, 100, 30, 8);
 
-        var full_width = (window.scrollX == 0) ? get_window_width() : get_window_scroll_width();
+        var full_width = (window.scrollX == 0) ? get_window_width() : window.document.body.scrollWidth;
 
         if ($cms.$CONFIG_OPTION.fixed_width && !outside_fixed_width) {
             var main_website_inner = document.getElementById('main_website_inner');

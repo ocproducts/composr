@@ -97,10 +97,10 @@
             url += '&theme=' + encodeURIComponent(params.theme);
             url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + params.fileId).value);
 
-            result = load_snippet(url);
+            result = $cms.loadSnippet(url);
 
             if (!result || result.includes('<html')) {
-                window.fauxmodal_alert('{!ERROR_OCCURRED;^}');
+                $cms.ui.alert('{!ERROR_OCCURRED;^}');
             } else {
                 document.getElementById('css_result_' + params.fileId).value = result;
             }
@@ -113,39 +113,34 @@
             copy = document.getElementById('copy');
 
         if (copy) {
-            copy.onchange = function () {
+            copy.addEventListener('change', function () {
                 if (copy.checked && !themee.value.includes('-copy')) {
                     themee.value += '-copy';
                     themet.value += ' copy';
                 }
-            };
+            });
         }
     };
 
     $cms.functions.adminThemesAddTheme = function () {
         var title = document.getElementById('title');
-        title.onchange = function () {
+        title.addEventListener('change', function () {
             var codename = document.getElementById('theme');
             if (codename.value == '') {
                 codename.value = title.value.replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '');
             }
-        };
+        });
         var form = document.getElementById('main_form');
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(form.elements['theme'].value);
 
-            if (!do_ajax_field_test(url)) {
+            if (!$cms.form.doAjaxFieldTest(url)) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
     $cms.templates.tempcodeTesterScreen = function tempcodeTesterScreen(params, container) {
@@ -157,7 +152,7 @@
             }
 
             do_ajax_request('{$FIND_SCRIPT;,tempcode_tester}' + keep_stub(true), function (ajax_result) {
-                $cms.dom.html(document.getElementById('preview_raw'), escape_html(ajax_result.responseText));
+                $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(ajax_result.responseText));
                 $cms.dom.html(document.getElementById('preview_html'), ajax_result.responseText);
             }, request);
 
@@ -222,17 +217,17 @@
         });
 
         function add_template() {
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 '{!themes:INPUT_TEMPLATE_TYPE;^}',
                 'templates',
                 function (subdir) {
                     if (subdir !== null) {
                         if (subdir != 'templates' && subdir != 'css' && subdir != 'javascript' && subdir != 'text' && subdir != 'xml') {
-                            window.fauxmodal_alert('{!BAD_TEMPLATE_TYPE;^}');
+                            $cms.ui.alert('{!BAD_TEMPLATE_TYPE;^}');
                             return;
                         }
 
-                        window.fauxmodal_prompt(
+                        $cms.ui.prompt(
                             '{!themes:INPUT_TEMPLATE_NAME;^}',
                             'example',
                             function (file) {
@@ -314,7 +309,7 @@
 
         // Switch to tab if exists
         if (document.getElementById('t_' + file_id)) {
-            select_tab('g', file_id);
+            $cms.ui.selectTab('g', file_id);
 
             template_editor_show_tab(file_id);
 
@@ -330,14 +325,16 @@
         header.setAttribute('href', '#');
         header.id = 't_' + file_id;
         header.className = 'tab file_nonchanged';
-        header.onclick = function (event) {
-            select_tab('g', file_id);
+        header.addEventListener('click', function (event) {
+            $cms.ui.selectTab('g', file_id);
             template_editor_show_tab(file_id);
             return false;
-        };
+        });
 
         var ext = (tab_title.indexOf('.') != -1) ? tab_title.substring(tab_title.indexOf('.') + 1, tab_title.length) : '';
-        if (ext != '') tab_title = tab_title.substr(0, tab_title.length - 4);
+        if (ext != '') {
+            tab_title = tab_title.substr(0, tab_title.length - 4);
+        }
         var icon_img = document.createElement('img');
         if (ext == 'tpl') {
             icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/tpl}');
@@ -375,14 +372,14 @@
         close_button.style.width = '16px';
         close_button.style.height = '16px';
         close_button.style.verticalAlign = 'middle';
-        close_button.onclick = function (event) {
-            cancel_bubbling(event);
+        close_button.addEventListener('click', function (event) {
+            event.stopPropagation();
             if (event.cancelable) {
                 event.preventDefault();
             }
 
             if (window.template_editor_open_files[file].unsaved_changes) {
-                fauxmodal_confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
+                $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
                     if (result) {
                         template_editor_tab_unload_content(file);
                     }
@@ -390,7 +387,7 @@
             } else {
                 template_editor_tab_unload_content(file);
             }
-        };
+        });
         header.appendChild(close_button);
         headers.appendChild(header);
 
@@ -410,7 +407,7 @@
 
         // Set content
         var url = template_editor_loading_url(file);
-        load_snippet(url, null, function (ajax_result) {
+        $cms.loadSnippet(url, null, function (ajax_result) {
             template_editor_tab_loaded_content(ajax_result, file);
         });
 
@@ -418,7 +415,7 @@
         template_editor_clean_tabs();
 
         // Select tab
-        select_tab('g', file_id);
+        $cms.ui.selectTab('g', file_id);
 
         template_editor_show_tab(file_id);
     }

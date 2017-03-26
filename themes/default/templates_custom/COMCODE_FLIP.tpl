@@ -10,24 +10,26 @@
 </div>
 
 <script>// <![CDATA[
-$cms.ready.then(function() {
-		var _e=document.getElementById("flipbox_{$GET%,RAND_FLIP}");
-		_e.onclick=function() {
-			var e=$("#flipbox_{$GET%,RAND_FLIP}");
-			if (typeof _e.flipped=='undefined') _e.flipped=false;
-			if (_e.flipped)
-			{
-				e.revertFlip();
-			} else
-			{
-				e.flip({
-					color:'{+START,IF,{$NOT,{$IN_STR,{FINAL_COLOR},#}}}#{+END}{FINAL_COLOR;^/}',
-					speed:{SPEED%},
-					direction:'tb',
-					content:'{CONTENT;^/}'
-				})
-			};
-			_e.flipped=!_e.flipped;
-		}
-	});
+(window.$cmsReady || (window.$cmsReady = [])).push(function() {
+    var _el = document.getElementById("flipbox_{$GET%,RAND_FLIP}");
+
+    _el.onclick = function () {
+        var el = $("#flipbox_{$GET%,RAND_FLIP}");
+
+        if (_el.flipped === undefined) {
+            _el.flipped = false;
+        }
+        if (_el.flipped) {
+            el.revertFlip();
+        } else {
+            el.flip({
+                color: '{+START,IF,{$NOT,{$IN_STR,{FINAL_COLOR},#}}}#{+END}{FINAL_COLOR;^/}',
+                speed: +'{SPEED%}',
+                direction: 'tb',
+                content: '{CONTENT;^/}'
+            })
+        }
+        _el.flipped = !_el.flipped;
+    }
+});
 //]]></script>

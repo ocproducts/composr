@@ -14,7 +14,7 @@
         },
 
         checkForm: function (e, form) {
-            if (!check_form(form)) {
+            if (!$cms.form.checkForm(form)) {
                 e.preventDefault();
             }
         }

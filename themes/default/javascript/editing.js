@@ -13,7 +13,7 @@ function wysiwyg_on() {
 
 function toggle_wysiwyg(name) {
     if (!$cms.$CONFIG_OPTION.wysiwyg) {
-        window.fauxmodal_alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
+        $cms.ui.alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
         return false;
     }
 
@@ -150,9 +150,7 @@ function disable_wysiwyg(forms, so, so2, discard) {
                 var wysiwyg_data = window.wysiwyg_editors[id].getData();
                 try {
                     window.wysiwyg_editors[id].destroy();
-                }
-                catch (e) {
-                }
+                } catch (e) {}
                 delete window.wysiwyg_editors[id];
 
                 // Comcode conversion
@@ -162,14 +160,14 @@ function disable_wysiwyg(forms, so, so2, discard) {
                     var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + keep_stub());
                     if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
                     var post = 'data=' + encodeURIComponent(wysiwyg_data.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
-                    post = modsecurity_workaround_ajax(post);
+                    post = $cms.form.modsecurityWorkaroundAjax(post);
                     var request = do_ajax_request(url, null, post);
                     if ((!request.responseXML) || (!request.responseXML.documentElement.querySelector('result'))) {
                         textarea.value = '[semihtml]' + wysiwyg_data + '[/semihtml]';
                     } else {
                         var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
                         var result = result_tags[0];
-                        textarea.value = merge_text_nodes(result.childNodes).replace(/\s*$/, '');
+                        textarea.value = result.textContent.replace(/\s*$/, '');
                     }
                     if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') == -1) && (textarea.value != '')) textarea.value += '{\$,page hint: no_wysiwyg}';
                 }
@@ -179,14 +177,16 @@ function disable_wysiwyg(forms, so, so2, discard) {
                 // Unload editor
                 try {
                     window.wysiwyg_editors[id].destroy();
-                }
-                catch (e) {
-                }
+                } catch (e) {}
             }
         }
     }
-    if (so) so.style.display = 'block';
-    if (so2) so2.style.display = 'none';
+    if (so) {
+        so.style.display = 'block';
+    }
+    if (so2) {
+        so2.style.display = 'none';
+    }
 
     window.wysiwyg_on = function () {
         return false;
@@ -294,7 +294,7 @@ function load_html_edit(posting_form, ajax_copy) {
                         posting_form.elements[counter].value = '';
                     } else {
                         var result = result_tags[0];
-                        posting_form.elements[counter].value = merge_text_nodes(result.childNodes);
+                        posting_form.elements[counter].value = result.textContent;
                     }
                 }
             }
@@ -482,7 +482,7 @@ function wysiwyg_editor_init_for(element, id) {
         find_tags_in_editor(editor, element);
     });
     window.setInterval(function () {
-        if (is_wysiwyg_field(element))
+        if ($cms.form.isWysiwygField(element))
             find_tags_in_editor(editor, element);
     }, 1000);
 
@@ -530,7 +530,7 @@ function find_tags_in_editor(editor, element) {
 
         comcodes[i].orig_title = comcodes[i].title;
         comcodes[i].onmouseout = function () {
-            deactivate_tooltip(this);
+            $cms.ui.deactivateTooltip(this);
         };
         comcodes[i].onmousemove = function (event) {
             if (event === undefined) {
@@ -544,7 +544,7 @@ function find_tags_in_editor(editor, element) {
                 if (event.pageY) eventCopy.pageY = 3000;
                 if (event.clientY) eventCopy.clientY = 3000;
 
-                reposition_tooltip(this, eventCopy);
+                $cms.ui.repositionTooltip(this, eventCopy);
                 this.title = this.orig_title;
             }
         };
@@ -576,10 +576,10 @@ function find_tags_in_editor(editor, element) {
                     var block_name = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
                     var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(block_name) + '&field_name=' + field_name + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + keep_stub();
                     url = url + '&block_type=' + (((field_name.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
-                    window.faux_open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+                    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 } else {
                     var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tag_type) + '&field_name=' + field_name + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + keep_stub();
-                    window.faux_open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+                    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 }
                 return false;
             }
@@ -589,9 +589,9 @@ function find_tags_in_editor(editor, element) {
                 event = editor.window.$.event;
             }
 
-            cancel_bubbling(event);
+            event.stopPropagation();
 
-            if (window.activate_tooltip) {
+            if (window.$cms.ui.activateTooltip) {
                 var tag_text = '';
                 if (this.nodeName.toLowerCase() === 'input') {
                     tag_text = this.orig_title;
@@ -614,22 +614,26 @@ function find_tags_in_editor(editor, element) {
                         self_ob.is_over = true;
 
                         var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + keep_stub());
-                        if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
-                        var request = do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+                        if (window.location.href.indexOf('topics') != -1) {
+                            url += '&forum_db=1';
+                        }
+
+                        do_ajax_request(url, function (ajax_result_frame, ajax_result) {
                             if (ajax_result) {
-                                var tmp_rendered = merge_text_nodes(ajax_result.childNodes);
-                                if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;^}') == -1)
+                                var tmp_rendered = ajax_result.textConten;
+                                if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
                                     self_ob.rendered_tooltip = tmp_rendered;
+                                }
                             }
                             if (self_ob.rendered_tooltip !== undefined) {
                                 if (self_ob.is_over) {
-                                    activate_tooltip(self_ob, eventCopy, self_ob.rendered_tooltip, 'auto', null, null, false, true);
+                                    $cms.ui.activateTooltip(self_ob, eventCopy, self_ob.rendered_tooltip, 'auto', null, null, false, true);
                                     self_ob.title = self_ob.orig_title;
                                 }
                             }
                         }, 'data=' + encodeURIComponent('[semihtml]' + tag_text.replace(/<\/?span[^>]*>/gi, '')).substr(0, 1000).replace(new RegExp(String.fromCharCode(8203), 'g'), '') + '[/semihtml]');
                     } else if (this.rendered_tooltip !== undefined) {
-                        activate_tooltip(self_ob, eventCopy, self_ob.rendered_tooltip, '400px', null, null, false, true);
+                        $cms.ui.activateTooltip(self_ob, eventCopy, self_ob.rendered_tooltip, '400px', null, null, false, true);
                     }
                 }
             }
@@ -681,13 +685,13 @@ function do_attachment(field_name, id, description) {
 
     var element = get_main_cms_window().document.getElementById(field_name);
 
-    var comcode = '\n\n[attachment description="' + escape_comcode(description) + '"]' + id + '[/attachment]';
+    var comcode = '\n\n[attachment description="' + $cms.filter.comcode(description) + '"]' + id + '[/attachment]';
 
     insert_textbox_opener(element, comcode);
 }
 
 function get_textbox(element) {
-    if (is_wysiwyg_field(element)) {
+    if ($cms.form.isWysiwygField(element)) {
         var ret = window.wysiwyg_editors[element.id].getData();
         if ((ret === '\n') || (ret === '<br />')) {
             ret = '';
@@ -698,9 +702,9 @@ function get_textbox(element) {
 }
 
 function set_textbox(element, text, html) {
-    if (is_wysiwyg_field(element)) {
+    if ($cms.form.isWysiwygField(element)) {
         if (html === undefined) {
-            html = escape_html(text).replace(new RegExp('\\\\n', 'gi'), '<br />');
+            html = $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />');
         }
 
         window.wysiwyg_editors[element.id].setData(html);
@@ -729,12 +733,12 @@ function insert_textbox(element, text, sel, plain_insert, html) {
     plain_insert = !!plain_insert;
     html = strVal(html);
 
-    if (is_wysiwyg_field(element)) {
+    if ($cms.form.isWysiwygField(element)) {
         var editor = window.wysiwyg_editors[element.id];
 
         var insert = '';
         if (plain_insert) {
-            insert = get_selected_html(editor) + (html ? html : escape_html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
+            insert = get_selected_html(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
         } else {
             var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + keep_stub());
             if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
@@ -742,7 +746,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
             if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
                 var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
                 var result = result_tags[0];
-                insert = merge_text_nodes(result.childNodes).replace(/\s*$/, '');
+                insert = result.textContent.replace(/\s*$/, '');
             }
         }
 
@@ -851,7 +855,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         before_wrap_tag = '[' + before_wrap_tag + ']';
     }
 
-    if (is_wysiwyg_field(element)) {
+    if ($cms.form.isWysiwygField(element)) {
         var editor = window.wysiwyg_editors[element.id];
 
         editor.focus(); // Needed on some browsers, but on Opera will defocus our selection
@@ -869,7 +873,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
             var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
             var result = result_tags[0];
-            new_html = merge_text_nodes(result.childNodes).replace(/\s*$/, '');
+            new_html = result.textContent.replace(/\s*$/, '');
             /* result is an XML-escaped string of HTML, so we get via looking at the node text */
         } else {
             new_html = selected_html;
@@ -967,7 +971,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
                     if ($cms.$MOBILE) {
                         window.open(url);
                     } else {
-                        faux_open(url, null, 'width=960;height=500', '_top');
+                        $cms.ui.open(url, null, 'width=960;height=500', '_top');
                     }
 
                     if (!preDisabled) {
@@ -977,7 +981,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
             };
         }).bind(undefined, id, authorised, hook), 0);
 
-        html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO;^} ' + escape_html(label) + ((no_quota && (num === 1)) ? ' ({!_REQUIRED;^})' : '') + '</label></span>';
+        html += '<span><label for="' + id + '"><input type="checkbox" ' + (checked ? 'checked="checked" ' : '') + 'id="' + id + '" name="' + id + '" value="1" />{!upload_syndication:UPLOAD_TO;^} ' + $cms.filter.html(label) + ((no_quota && (num === 1)) ? ' ({!_REQUIRED;^})' : '') + '</label></span>';
     }
 
     if (no_quota && (numChecked === 0)) {

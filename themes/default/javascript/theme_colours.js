@@ -48,7 +48,7 @@ function make_colour_chooser(name, color, context, tabindex, label, className) {
     t = t + '<div class="css_colour_chooser">';
     t = t + '	<div class="css_colour_chooser_name">';
     t = t + '		<label class="field_name" for="' + name + '"> ' + label + '</label><br />';
-    t = t + '<input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" size="7" id="' + name + '" name="' + name + '" size="6" onchange="update_chooser(\'' + name + '\'); return false;" />';
+    t = t + '<input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" size="7" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
     t = t + '	</div>';
     t = t + '	<div class="css_colour_chooser_fixed">';
     t = t + '	<div class="css_colour_chooser_from" style="background-color: ' + ((color == '') ? '#000' : color) + '" id="cc_source_' + name + '">';
@@ -64,13 +64,20 @@ function make_colour_chooser(name, color, context, tabindex, label, className) {
     t = t + '	</div>';
     t = t + '	</div>';
     t = t + '</div>';
-    if (context != '') t = t + '<div class="css_colour_chooser_context">' + context + '</div>';
+
+    if (context != '') {
+        t = t + '<div class="css_colour_chooser_context">' + context + '</div>';
+    }
 
     if (p.id === 'colours_go_here') {
         $cms.dom.appendHtml(p, t);
     } else {
         $cms.dom.html(p, t);
     }
+
+    $cms.dom.on(p, 'change', '.js-change-update-chooser', function (e, target) {
+        update_chooser(target.id);
+    });
 
     /*
      Uncomment if you want to force spectrum widget even when there is native browser input support
@@ -92,77 +99,86 @@ function do_color_chooser() {
     for (ce = 0; ce < a; ce++) {
         do_color_chooser_element(my_elements[ce]);
     }
-}
 
-function do_color_chooser_element(element) {
-    var id = element.id.substring(10);
 
-    var source = document.getElementById('cc_source_' + id);
-    var bg_color = source.style.backgroundColor;
-    if ((bg_color.substr(0, 1) !== '#') && (bg_color.substr(0, 3) != 'rgb')) {
-        bg_color = '#000000';
-    }
-    if (bg_color.substr(0, 1) === '#') {
-        bg_color = 'rgb(' + hex_to_dec(bg_color.substr(1, 2)) + ',' + hex_to_dec(bg_color.substr(3, 2)) + ',' + hex_to_dec(bg_color.substr(5, 2)) + ')';
-    }
-    var s_rgb = bg_color.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
-    var rgb = s_rgb.split(',');
-    rgb[0] = Math.round(rgb[0] / 4) * 4;
-    rgb[1] = Math.round(rgb[1] / 4) * 4;
-    rgb[2] = Math.round(rgb[2] / 4) * 4;
-    if (rgb[0] >= 256) {
-        rgb[0] = 252;
-    }
-    if (rgb[1] >= 256) {
-        rgb[1] = 252;
-    }
-    if (rgb[2] >= 256) {
-        rgb[2] = 252;
-    }
+    function do_color_chooser_element(element) {
+        var id = element.id.substring(10),
+            source = document.getElementById('cc_source_' + id),
+            bgColor = source.style.backgroundColor;
 
-    element.style.color = 'rgb(' + (255 - rgb[0]) + ',' + (255 - rgb[1]) + ',' + (255 - rgb[2]) + ')';
-    source.style.color = element.style.color;
-
-    var c = [];
-    c[0] = document.getElementById('cc_0_' + id);
-    c[1] = document.getElementById('cc_1_' + id);
-    c[2] = document.getElementById('cc_2_' + id);
-
-    var d, i, _rgb = [], bg, innert, tid, selected, style;
-    for (d = 0; d <= 2; d++) {
-        window.last_cc_i[d + window.names_to_numbers[id] * 3] = 0;
-        innert = '';
-        //for (i=0;i<256;i++)
-        for (i = 0; i < 256; i += 4) {
-            selected = (i == rgb[d]);
-            if (!selected) {
-                _rgb[0] = 0;
-                _rgb[1] = 0;
-                _rgb[2] = 0;
-                _rgb[d] = i;
-            } else {
-                _rgb[0] = 255;
-                _rgb[1] = 255;
-                _rgb[2] = 255;
-                window.last_cc_i[d + window.names_to_numbers[id] * 3] = i;
-            }
-            bg = 'rgb(' + _rgb[0] + ',' + _rgb[1] + ',' + _rgb[2] + ')';
-            tid = 'cc_col_' + d + '_' + i + '#' + id;
-
-            style = ((i == rgb[d]) ? '' : 'cursor: pointer; ') + 'background-color: ' + bg + ';';
-            if (selected) {
-                style += 'outline: 3px solid gray; position: relative;';
-            }
-            innert = innert + '<div onclick="do_color_change(event);" class="css_colour_strip" style="' + style + '" id="' + tid + '"></div>';
+        if ((bgColor.substr(0, 1) !== '#') && (bgColor.substr(0, 3) != 'rgb')) {
+            bgColor = '#000000';
         }
-        $cms.dom.html(c[d], innert);
+        if (bgColor.substr(0, 1) === '#') {
+            bgColor = 'rgb(' + hex_to_dec(bgColor.substr(1, 2)) + ',' + hex_to_dec(bgColor.substr(3, 2)) + ',' + hex_to_dec(bgColor.substr(5, 2)) + ')';
+        }
+
+        var s_rgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
+        var rgb = s_rgb.split(',');
+
+        rgb[0] = Math.round(rgb[0] / 4) * 4;
+        rgb[1] = Math.round(rgb[1] / 4) * 4;
+        rgb[2] = Math.round(rgb[2] / 4) * 4;
+
+        if (rgb[0] >= 256) {
+            rgb[0] = 252;
+        }
+        if (rgb[1] >= 256) {
+            rgb[1] = 252;
+        }
+        if (rgb[2] >= 256) {
+            rgb[2] = 252;
+        }
+
+        element.style.color = 'rgb(' + (255 - rgb[0]) + ',' + (255 - rgb[1]) + ',' + (255 - rgb[2]) + ')';
+        source.style.color = element.style.color;
+
+        var c = [];
+        c[0] = document.getElementById('cc_0_' + id);
+        c[1] = document.getElementById('cc_1_' + id);
+        c[2] = document.getElementById('cc_2_' + id);
+
+        var d, i, _rgb = [], bg, innert, tid, selected, style;
+        for (d = 0; d <= 2; d++) {
+            window.last_cc_i[d + window.names_to_numbers[id] * 3] = 0;
+            innert = '';
+
+            for (i = 0; i < 256; i += 4) {
+                selected = (i == rgb[d]);
+                if (!selected) {
+                    _rgb[0] = 0;
+                    _rgb[1] = 0;
+                    _rgb[2] = 0;
+                    _rgb[d] = i;
+                } else {
+                    _rgb[0] = 255;
+                    _rgb[1] = 255;
+                    _rgb[2] = 255;
+                    window.last_cc_i[d + window.names_to_numbers[id] * 3] = i;
+                }
+                bg = 'rgb(' + _rgb[0] + ',' + _rgb[1] + ',' + _rgb[2] + ')';
+                tid = 'cc_col_' + d + '_' + i + '#' + id;
+
+                style = ((i == rgb[d]) ? '' : 'cursor: pointer; ') + 'background-color: ' + bg + ';';
+                if (selected) {
+                    style += 'outline: 3px solid gray; position: relative;';
+                }
+                innert = innert + '<div class="css_colour_strip js-click-do-color-change" style="' + style + '" id="' + tid + '"></div>';
+            }
+            $cms.dom.html(c[d], innert);
+            $cms.dom.on(c[d].querySelector('.js-click-do-color-change'), 'click', function (e) {
+                do_color_change(e);
+            });
+        }
     }
 }
 
 function do_color_change(e) {
     // Find our colour element we clicked on
     var targ;
-    if (e.target !== undefined) targ = e.target;
+    if (e.target !== undefined) {
+        targ = e.target;
+    }
 
     // Find the colour chooser's ID of this element
     var _id = targ.id.substring(targ.id.lastIndexOf('#') + 1);

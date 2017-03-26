@@ -46,11 +46,11 @@
             }
 
             if (data.vwTaskDone === 'not_completed') {
-                load_snippet('checklist_task_manage', 'type=mark_done&id=' + id);
+                $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
                 this.imgChecklistStatus.src = $IMG_checklist_checklist1;
                 data.vwTaskDone = 'checklist1';
             } else {
-                load_snippet('checklist_task_manage', 'type=mark_undone&id=' + id);
+                $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
                 this.imgChecklistStatus.src = $IMG_checklist_not_completed;
                 data.vwTaskDone = 'not_completed';
             }
@@ -62,9 +62,9 @@
                 message = params.confirmDeleteMessage,
                 id = encodeURIComponent(params.id);
 
-            window.fauxmodal_confirm(message, function (result) {
+            $cms.ui.confirm(message, function (result) {
                 if (result) {
-                    load_snippet('checklist_task_manage', 'type=delete&id=' + id);
+                    $cms.loadSnippet('checklist_task_manage', 'type=delete&id=' + id);
                     viewEl.style.display = 'none';
                 }
             });
@@ -217,8 +217,8 @@
                     }
                 } else {
                     if (!$cms.dom.isDisplayed(checklist_rows[i])) {
-                        clear_transition_and_set_opacity(checklist_rows[i], 0.0);
-                        fade_transition(checklist_rows[i], 100, 30, 4);
+                        $cms.dom.clearTransitionAndSetOpacity(checklist_rows[i], 0.0);
+                        $cms.dom.fadeTransition(checklist_rows[i], 100, 30, 4);
                     }
                     $cms.dom.show(checklist_rows[i]);
                     checklist_rows[i].classList.remove('task_hidden');
@@ -230,7 +230,7 @@
         }
 
         function submit_custom_task(form) {
-            var new_task = load_snippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
+            var new_task = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
 
             form.elements.recur_every.value = '';
             form.elements.recur_interval.value = '';
@@ -273,7 +273,7 @@
         }
         for (var i = 0; i < form.elements.length; i++) {
             if (!form.elements[i].disabled && form.elements[i].name) {
-                post += '&' + form.elements[i].name + '=' + encodeURIComponent(clever_find_value(form, form.elements[i]));
+                post += '&' + form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(form, form.elements[i]));
             }
         }
         var request = do_ajax_request(maintain_theme_in_link($SCRIPT_comcode_convert + keep_stub(true)), null, post);
@@ -282,7 +282,7 @@
             var result = request.responseXML.documentElement.querySelector('result');
 
             if (result) {
-                var xhtml = merge_text_nodes(result.childNodes);
+                var xhtml = result.textContent;
 
                 var element_replace = form;
                 while (element_replace.className !== 'form_ajax_target') {
@@ -294,7 +294,7 @@
 
                 $cms.dom.html(element_replace, xhtml);
 
-                window.fauxmodal_alert('{!SUCCESS;^}');
+                $cms.ui.alert('{!SUCCESS;^}');
 
                 return false; // We've handled it internally
             }

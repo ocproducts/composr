@@ -1,4 +1,4 @@
-{$,If editing this template, make sure that the set_required JavaScript function is updated}
+{$,If editing this template, make sure that the $cms.form.setRequired JavaScript function is updated}
 
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$SET,randomised_id,{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}}

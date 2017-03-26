@@ -80,10 +80,10 @@
 
             // Set up fade}
             fp_animation_news.src = fp_animation.src;
-            clear_transition_and_set_opacity(fp_animation_news, 1.0);
-            fade_transition(fp_animation_news, 0, 30, -4);
-            clear_transition_and_set_opacity(fp_animation, 0.0);
-            fade_transition(fp_animation, 100, 30, 4);
+            $cms.dom.clearTransitionAndSetOpacity(fp_animation_news, 1.0);
+            $cms.dom.fadeTransition(fp_animation_news, 0, 30, -4);
+            $cms.dom.clearTransitionAndSetOpacity(fp_animation, 0.0);
+            $cms.dom.fadeTransition(fp_animation, 100, 30, 4);
             fp_animation.src = data[j].image_url;
             window.setTimeout(function () { // Will know dimensions by the time the timeout happens}
                 fp_animation_news.style.left = ((fp_animation_news.parentNode.offsetHeight - fp_animation_news.offsetWidth) / 2) + 'px';
@@ -118,28 +118,18 @@
     };
 
     $cms.templates.blockBottomNews = function blockBottomNews(params) {
-        var newsTickerText = $cms.filter.nl(params.newsTickerText);
-
         window.tick_pos = window.tick_pos || [];
-        var ticktickticker = $cms.dom.$('#ticktickticker_news' + params.bottomNewsId);
-        if (document.createElement('marquee').scrolldelay === undefined) {// Slower, but chrome does not support marquee's
-            var my_id = parseInt(Math.random() * 10000);
-            window.tick_pos[my_id] = 400;
-            $cms.dom.html(ticktickticker, '<div onmouseover="this.mouseisover=true;" onmouseout="this.mouseisover=false;" class="ticker" ' +
-                'style="text-indent: 400px; width: 400px;" id="' + my_id + '"><span>' + newsTickerText + '</span></div>');
-            window.focused = true;
-            window.addEventListener("focus", function () {
-                window.focused = true;
-            });
-            window.addEventListener("blur", function () {
-                window.focused = false;
-            });
-            window.setInterval(function () {
-                ticker_tick(my_id, 400);
-            }, 50);
-        } else {
-            $cms.dom.html(ticktickticker, '<marquee style="display: block" class="ticker" onmouseover="this.setAttribute(\'scrolldelay\',\'10000\');" ' +
-                'onmouseout="this.setAttribute(\'scrolldelay\',50);" scrollamount="2" scrolldelay="' + (50) + '" width="400">' + newsTickerText + '</marquee>');
-        }
+
+        var newsTickerText = $cms.filter.nl(params.newsTickerText),
+            ticktickticker = $cms.dom.$('#ticktickticker_news' + params.bottomNewsId),
+            myId = $cms.random();
+
+        window.tick_pos[myId] = 400;
+        $cms.dom.html(ticktickticker, '<div class="ticker" style="text-indent: 400px; width: 400px;" id="' + myId + '"><span>' + newsTickerText + '</span></div>');
+
+        window.setInterval(function () {
+            ticker_tick(myId, 400);
+        }, 50);
+
     };
 }(window.$cms));

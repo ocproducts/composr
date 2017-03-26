@@ -24,7 +24,7 @@
 	</audio>
 
 	<script>// <![CDATA[
-	$cms.ready.then(function() {
+	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
 			var player=new MediaElementPlayer('#{$GET%,player_id}',{
 				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
 				{+START,IF_NON_EMPTY,{WIDTH}}
@@ -38,7 +38,7 @@
 
 				success: function(media) {
 					{+START,IF,{$NOT,{$INLINE_STATS}}}
-						media.addEventListener('play',function() { ga_track(null,'{!AUDIO;/}','{URL;/}'); });
+						media.addEventListener('play',function() { $cms.gaTrack(null,'{!AUDIO;/}','{URL;/}'); });
 					{+END}
 					if (document.getElementById('next_slide'))
 					{

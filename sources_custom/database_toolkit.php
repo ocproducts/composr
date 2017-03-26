@@ -105,7 +105,7 @@ function xml_dump_script()
             ';
         }
 
-        echo '<p><input class="menu___generic_admin__sync button_screen" type="submit" value="Sync" /> &nbsp;&nbsp;&nbsp;&nbsp; [<a href="#" onclick="var form=document.getElementsByTagName(\'form\')[0]; for (var i=0;i&lt;form.elements.length;i++) if (form.elements[i].checked) form.elements[i].checked=false; return false;">un-tick all</a>]</p>';
+        echo '<p><input class="menu___generic_admin__sync button_screen" type="submit" value="Sync" /> &nbsp;&nbsp;&nbsp;&nbsp; [<a href="#!" onclick="var form=document.getElementsByTagName(\'form\')[0]; for (var i=0;i&lt;form.elements.length;i++) if (form.elements[i].checked) form.elements[i].checked=false; return false;">un-tick all</a>]</p>';
         echo '</form>';
 
         echo '

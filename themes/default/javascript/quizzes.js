@@ -6,7 +6,7 @@
             timeout = +params.timeout || 0;
 
         $cms.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {
-            if (!check_form(form)) {
+            if (!$cms.form.checkForm(form)) {
                 e.preventDefault();
             }
         });
@@ -24,7 +24,7 @@
 
         var e = $cms.dom.$$(form, '.field_input');
         for (var i = 0; i < e.length; i++) {
-            set_up_change_monitor(e[i]);
+            $cms.form.setUpChangeMonitor(e[i]);
         }
     };
 

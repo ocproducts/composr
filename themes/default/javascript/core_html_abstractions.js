@@ -3,23 +3,23 @@
 
     $cms.templates.standaloneHtmlWrap = function (params) {
         if (window.parent) {
-            $cms.load.then(function () {
+            window.$cmsLoad.push(function () {
                 document.body.classList.add('frame');
 
                 try {
-                    trigger_resize();
+                    $cms.dom.triggerResize();
                 } catch (e) {}
 
                 window.setTimeout(function () { // Needed for IE10
                     try {
-                        trigger_resize();
+                        $cms.dom.triggerResize();
                     } catch (e) {}
                 }, 1000);
             });
         }
 
         if (params.isPreview) {
-            disable_preview_scripts();
+            $cms.form.disablePreviewScripts();
         }
     };
 

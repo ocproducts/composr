@@ -68,10 +68,10 @@
             window.setTimeout(function () {
                 function func() {
                     data.fp_animation_fader.src = data.fp_animation.src;
-                    clear_transition_and_set_opacity(data.fp_animation_fader, 1.0);
-                    fade_transition(data.fp_animation_fader, 0, period_in_msecs, increment * -1);
-                    clear_transition_and_set_opacity(data.fp_animation, 0.0);
-                    fade_transition(data.fp_animation, 100, period_in_msecs, increment);
+                    $cms.dom.clearTransitionAndSetOpacity(data.fp_animation_fader, 1.0);
+                    $cms.dom.fadeTransition(data.fp_animation_fader, 0, period_in_msecs, increment * -1);
+                    $cms.dom.clearTransitionAndSetOpacity(data.fp_animation, 0.0);
+                    $cms.dom.fadeTransition(data.fp_animation, 100, period_in_msecs, increment);
                     data.fp_animation.src = data['url' + k];
                     data.fp_animation_fader.style.left = ((data.fp_animation_fader.parentNode.offsetWidth - data.fp_animation_fader.offsetWidth) / 2) + 'px';
                     data.fp_animation_fader.style.top = ((data.fp_animation_fader.parentNode.offsetHeight - data.fp_animation_fader.offsetHeight) / 2) + 'px';
@@ -154,7 +154,7 @@
     });
 
     $cms.functions.moduleCmsQuiz = function moduleCmsQuiz() {
-        document.getElementById('type').onchange = hide_func;
+        document.getElementById('type').addEventListener('change', hide_func);
         hide_func();
 
         function hide_func() {
@@ -179,30 +179,25 @@
         var fn = document.getElementById('fullname');
         if (fn) {
             var form = fn.form;
-            fn.onchange = function () {
+            fn.addEventListener('change', function () {
                 if ((form.elements['name']) && (form.elements['name'].value === '')) {
                     form.elements['name'].value = fn.value.toLowerCase().replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '_').replace(/\_+$/, '').substr(0, 80);
                 }
-            };
+            });
         }
     };
 
     $cms.functions.moduleCmsGalleriesRunStartAddCategory = function moduleCmsGalleriesRunStartAddCategory() {
         var form = document.getElementById('main_form');
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_gallery&name=' + encodeURIComponent(form.elements['name'].value);
-            if (!do_ajax_field_test(url)) {
+            if (!$cms.form.doAjaxFieldTest(url)) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
 
@@ -225,32 +220,33 @@
 
             currentLoadingFromPos += +params.max || 0;
 
-            window.call_block(blockCallUrl, 'raw=1,cache=0', ob, true);
+            $cms.callBlock(blockCallUrl, 'raw=1,cache=0', ob, true);
         });
     };
 
     $cms.templates.galleryImportScreen = function () {
         var files = document.getElementById('second_files'), i;
+
         if (!files) {
             return;
         }
 
         function preview_generator_mouseover(event) {
-            activate_tooltip(this, event, '<img width="500" src="{$BASE_URL*}/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
+            $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
         }
 
         function preview_generator_mousemove(event) {
-            reposition_tooltip(this, event);
+            $cms.ui.repositionTooltip(this, event);
         }
 
         function preview_generator_mouseout(event) {
-            deactivate_tooltip(this);
+            $cms.ui.deactivateTooltip(this);
         }
 
         for (i = 0; i < files.options.length; i++) {
-            files[i].onmouseover = preview_generator_mouseover;
-            files[i].onmousemove = preview_generator_mousemove;
-            files[i].onmouseout = preview_generator_mouseout;
+            $cms.dom.on(files[i], 'mouseover', preview_generator_mouseover);
+            $cms.dom.on(files[i], 'mousemove', preview_generator_mousemove);
+            $cms.dom.on(files[i], 'mouseout', preview_generator_mouseout);
         }
     };
 
@@ -274,7 +270,7 @@
     function show_current_slideshow_time() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, '{!galleries:CHANGING_IN,xxx}'.replace('xxx', (window.slideshow_time < 0) ? 0 : window.slideshow_time));
+            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', Math.max(0, window.slideshow_time)));
         }
     }
 
@@ -303,7 +299,9 @@
             message = '{!galleries:STOPPED;^}';
         }
         var changer = document.getElementById('changer_wrap');
-        if (changer) $cms.dom.html(changer, message);
+        if (changer) {
+            $cms.dom.html(changer, message);
+        }
         if (window.slideshow_timer) {
             window.clearInterval(window.slideshow_timer);
         }
@@ -365,7 +363,7 @@
                 });
             }
         } else {
-            window.fauxmodal_alert('Internal error: should not be preloading more than one step ahead');
+            $cms.ui.alert('Internal error: should not be preloading more than one step ahead');
         }
     }
 
@@ -394,12 +392,12 @@
                 fade_elements = document.body.querySelectorAll('.scale_down');
                 if ((fade_elements[0] !== undefined) && (fade_elements_old[0] !== undefined)) {
                     var fade_element = fade_elements[0];
-                    clear_transition_and_set_opacity(fade_element, 0);
+                    $cms.dom.clearTransitionAndSetOpacity(fade_element, 0);
                     fade_element.parentNode.insertBefore(fade_element_old, fade_element);
                     fade_element.parentNode.style.position = 'relative';
-                    fade_transition(fade_element, 100.0, 30, 10);
-                    clear_transition_and_set_opacity(fade_element_old, 1.0);
-                    fade_transition(fade_element_old, 0.0, 30, -10, true);
+                    $cms.dom.fadeTransition(fade_element, 100.0, 30, 10);
+                    $cms.dom.clearTransitionAndSetOpacity(fade_element_old, 1.0);
+                    $cms.dom.fadeTransition(fade_element_old, 0.0, 30, -10, true);
                 } // else probably a video
 
                 if (slideshow_from){

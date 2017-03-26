@@ -2,7 +2,7 @@
     'use strict';
 
     /* TODO: fix for v11 */
-    $cms.ready.then(function() {
+    window.$cmsReady.push(function() {
         var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
 
         addressFields.forEach(function (field) {
@@ -48,7 +48,7 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-do-cart-form-submit', function (e, btn) {
-            do_form_submit(btn.form, e);
+            $cms.form.doFormSubmit(btn.form, e);
         });
 
         function update_cart(pro_ids) {
@@ -62,14 +62,14 @@
                 var qval = document.getElementById(quantity_data).value;
 
                 if (isNaN(qval)) {
-                    window.fauxmodal_alert('{!shopping:CART_VALIDATION_REQUIRE_NUMBER;^}');
+                    $cms.ui.alert('{!shopping:CART_VALIDATION_REQUIRE_NUMBER;^}');
                     return false;
                 }
             }
         }
 
         function confirm_empty(message, action_url, form) {
-            window.fauxmodal_confirm(
+            $cms.ui.confirm(
                 message,
                 function () {
                     form.action = action_url;
@@ -101,7 +101,7 @@
             var actionName = form.elements.action.value;
 
             if (actionName === 'dispatch') {
-                window.fauxmodal_confirm(
+                $cms.ui.confirm(
                     '{!shopping:DISPATCH_CONFIRMATION_MESSAGE;^}',
                     function (result) {
                         if (result) {
@@ -113,7 +113,7 @@
             }
 
             if (actionName === 'del_order') {
-                window.fauxmodal_confirm(
+                $cms.ui.confirm(
                     '{!shopping:CANCEL_ORDER_CONFIRMATION_MESSAGE;^}',
                     function (result) {
                         if (result) {

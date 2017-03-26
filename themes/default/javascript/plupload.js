@@ -13100,7 +13100,7 @@ function begin_form_uploading(e, ob, recurse) {
         if (ob.settings.required) {
             var element = document.getElementById(ob.settings.txtName);
             if (element) {
-                set_field_error(element, '{!REQUIRED_NOT_FILLED_IN^;}');
+                $cms.form.setFieldError(element, '{!REQUIRED_NOT_FILLED_IN^;}');
             }
             ret = false;
         }
@@ -13120,7 +13120,7 @@ function begin_form_uploading(e, ob, recurse) {
 
         var ret2 = ob.original_click_handler(e, ob, btn_submit.form, true);
         if (ret2 && !ret) {
-            window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN^;}');
+            $cms.ui.alert('{!IMPROPERLY_FILLED_IN^;}');
         }
 
         if (!recurse && ret && ret2) {
@@ -13131,7 +13131,7 @@ function begin_form_uploading(e, ob, recurse) {
     }
 
     if (e) {
-        cancel_bubbling(e);
+        e.stopPropagation();
         e.preventDefault();
     }
 
@@ -13150,7 +13150,7 @@ function begin_form_uploading(e, ob, recurse) {
         smooth_scroll(find_pos_y(filename_field, true));
 
         if (btn_submit.form.offsetHeight > get_window_height()) // If possibly cannot see upload progress bars
-            window.fauxmodal_alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
+            $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
     } else {
         if (!ob.original_click_handler) {
             if ((btn_submit.form.onsubmit) && (false === btn_submit.form.onsubmit())) {
@@ -13355,7 +13355,9 @@ function upload_finished(ob, file, data) {
                 return true;
             }
         } else {
-            if ((btn_submit.form.onsubmit) && (false === btn_submit.form.onsubmit())) return;
+            if ((btn_submit.form.onsubmit) && (false === btn_submit.form.onsubmit())) {
+                return;
+            }
             submit_form_with_the_upload(btn_submit);
         }
     }
@@ -13380,7 +13382,7 @@ function upload_error(ob, error) {
 
     var filename_field = document.getElementById(ob.settings.txtFileName);
     if (filename_field.value != '')
-        window.fauxmodal_alert(error.message);
+        $cms.ui.alert(error.message);
     filename_field.value = '';
 
     if (file) {
@@ -13857,7 +13859,7 @@ function initialise_html5_dragdrop_upload(id, id2) {
 
 function html5_upload_event_drag_over(event) {
     if ((event.dataTransfer != null) && (event.dataTransfer.types != null) && !event.dataTransfer.types[0].includes('text')) {
-        cancel_bubbling(event);
+        event.stopPropagation();
         event.preventDefault();
     }
     // NB: don't use dropEffect, prevents drop on Firefox.
@@ -13881,7 +13883,7 @@ function html5_upload(event, field_name, files) {
     var count = files.length;
 
     if (count > 0) {
-        cancel_bubbling(event);
+        event.stopPropagation();
         event.preventDefault();
     }
 
@@ -13990,7 +13992,7 @@ function build_html5_upload_handler(request, file_progress, attachment_base, fie
                     var decoded_data = eval('(' + request.responseText + ')');
                     document.getElementById('hidFileID_file' + attachment_base).value = decoded_data['upload_id'];
 
-                    if (is_wysiwyg_field(element)) {
+                    if ($cms.form.isWysiwygField(element)) {
                         generate_background_preview(element);
                     }
                 }

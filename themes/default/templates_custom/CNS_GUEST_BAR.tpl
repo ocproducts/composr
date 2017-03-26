@@ -8,7 +8,7 @@
 	<div class="toggleable_tray js-tray-content">
 		<div class="cns_information_bar float_surrounder">
 			<div class="cns_guest_column cns_guest_column_a">
-				<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'])) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="inline" autocomplete="on">
+				<form title="{!_LOGIN}" onsubmit="if ($cms.form.checkFieldForBlankness(this.elements['login_username'])) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="inline" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>
@@ -17,7 +17,7 @@
 						<input size="15" type="text" placeholder="{!USERNAME}" id="member_bar_login_username" name="login_username" />
 						<input size="15" type="password" placeholder="{!PASSWORD}" value="" name="password" id="member_bar_s_password" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
-							<label for="remember">{!REMEMBER_ME}:</label> <input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} type="checkbox" value="1" id="remember" name="remember" />
+							<label for="remember">{!REMEMBER_ME}:</label> <input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} type="checkbox" value="1" id="remember" name="remember" />
 						{+END}
 						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 

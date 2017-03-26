@@ -180,20 +180,20 @@
 {+END}
 {+START,IF,{$GT,{$VERSION},8}}
 	<script>// <![CDATA[
-	$cms.ready.then(function() {
-			create_rollover('{$GET;/,reply_id}','{$IMG;/,twitter_feed/reply_hover}');
-		});
+	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
+		create_rollover('{$GET;/,reply_id}','{$IMG;/,twitter_feed/reply_hover}');
+	});
 	//]]></script>
 
 	<script>// <![CDATA[
-	$cms.ready.then(function() {
-			create_rollover('{$GET;/,retweet_id}','{$IMG;/,twitter_feed/retweet_hover}');
-		});
+	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
+		create_rollover('{$GET;/,retweet_id}','{$IMG;/,twitter_feed/retweet_hover}');
+	});
 	//]]></script>
 
 	<script>// <![CDATA[
-	$cms.ready.then(function() {
-			create_rollover('{$GET;/,favorite_id}','{$IMG;/,twitter_feed/favorite_hover}');
-		});
+	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
+		create_rollover('{$GET;/,favorite_id}','{$IMG;/,twitter_feed/favorite_hover}');
+	});
 	//]]></script>
 {+END}

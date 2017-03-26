@@ -20,7 +20,7 @@
 
         workaround: function (e, target) {
             e.preventDefault();
-            modsecurity_workaround(target);
+            $cms.form.modsecurityWorkaround(target);
         },
 
         toggleSubordinateFields: function (e, target) {
@@ -102,7 +102,7 @@
             if (old_permission_copying !== name) {// Starting a new copying session
                 button.style.textDecoration = 'blink';
                 window.permission_copying = name;
-                window.fauxmodal_alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
+                $cms.ui.alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
                 for (var i = 0; i < trs.length; i++) {
                     if (trs[i] !== tr) {
                         trs[i].onclick = copy_permissions_function(trs[i], tr);
@@ -148,10 +148,15 @@
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copy_permission_presets(prefix, '0', true)) list.selectedIndex = list.options.length - 4;
-            else if (!copy_permission_presets(prefix, '1', true)) list.selectedIndex = list.options.length - 3;
-            else if (!copy_permission_presets(prefix, '2', true)) list.selectedIndex = list.options.length - 2;
-            else if (!copy_permission_presets(prefix, '3', true)) list.selectedIndex = list.options.length - 1;
+            if (!copy_permission_presets(prefix, '0', true)) {
+                list.selectedIndex = list.options.length - 4;
+            } else if (!copy_permission_presets(prefix, '1', true)) {
+                list.selectedIndex = list.options.length - 3;
+            } else if (!copy_permission_presets(prefix, '2', true)) {
+                list.selectedIndex = list.options.length - 2;
+            } else if (!copy_permission_presets(prefix, '3', true)) {
+                list.selectedIndex = list.options.length - 1;
+            }
         }
     }
 
@@ -217,13 +222,13 @@
             var form = this.form,
                 separatePreview = !!this.params.separatePreview;
 
-            if (do_form_preview(e, form, window.form_preview_url, separatePreview) && !window.just_checking_requirements) {
+            if ($cms.form.doFormPreview(e, form, window.form_preview_url, separatePreview) && !window.just_checking_requirements) {
                 form.submit();
             }
         },
 
         doFormSubmit: function (e) {
-            if (!do_form_submit(this.form, e)) {
+            if (!$cms.form.doFormSubmit(this.form, e)) {
                 e.preventDefault();
             }
         },
@@ -270,11 +275,43 @@
             if (el.parentNode.title !== undefined) {
                 el.parentNode.title = '';
             }
-            activate_tooltip(el, e, '{!PASSWORD_STRENGTH}', 'auto');
+            $cms.ui.activateTooltip(el, e, '{!PASSWORD_STRENGTH;^}', 'auto');
         });
 
         $cms.dom.on(container, 'change', '.js-input-change-check-password-strength', function (e, input) {
-            password_strength(input);
+            if (input.name.includes('2') || input.name.includes('confirm')) {
+                return;
+            }
+
+            var _ind = $cms.dom.$('#password_strength_' + input.id);
+            if (!_ind) {
+                return;
+            }
+            var ind = _ind.querySelector('div');
+            var post = 'password=' + encodeUC(input.value);
+            if (input.form && (input.form.elements.username !== undefined)) {
+                post += '&username=' + input.form.elements['username'].value;
+            } else {
+                if (input.form && input.form.elements.edit_username !== undefined) {
+                    post += '&username=' + input.form.elements['edit_username'].value;
+                }
+            }
+            var strength = $cms.loadSnippet('password_strength', post);
+            strength *= 2;
+            if (strength > 10) {  // Normally too harsh!
+                strength = 10;
+            }
+            ind.style.width = (strength * 10) + 'px';
+
+            if (strength >= 6) {
+                ind.style.backgroundColor = 'green';
+            } else if (strength < 4) {
+                ind.style.backgroundColor = 'red';
+            } else {
+                ind.style.backgroundColor = 'orange';
+            }
+
+            ind.parentNode.style.display = (input.value.length == 0) ? 'none' : 'block';
         });
     };
 
@@ -299,7 +336,7 @@
 
         $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
             e.preventDefault();
-            modsecurity_workaround(form);
+            $cms.form.modsecurityWorkaround(form);
         });
     };
 
@@ -308,7 +345,7 @@
 
         if (params.iframeUrl) {
             window.setInterval(function () {
-                resize_frame('iframe_under');
+                $cms.dom.resizeFrame('iframe_under');
             }, 1500);
 
             $cms.dom.on(container, 'click', '.js-checkbox-will-open-new', function (e, checkbox) {
@@ -328,7 +365,7 @@
     $cms.templates.formScreenField_input = function (params) {
         var el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
         if (el) {
-            set_up_change_monitor(el.parentElement);
+            $cms.form.setUpChangeMonitor(el.parentElement);
         }
     };
 
@@ -349,7 +386,7 @@
         });
     };
 
-    $cms.templates.formScreenInputCombo = function (params, container) {
+    $cms.templates.formScreenInputCombo = function formScreenInputCombo(params, container) {
         var name = strVal(params.name),
             comboInput = $cms.dom.$('#' + name),
             fallbackList = $cms.dom.$('#' + name + '_fallback_list');
@@ -371,12 +408,12 @@
     $cms.templates.formScreenInputUsernameMulti = function formScreenInputUsernameMulti(params, container) {
         $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
             if (input.value === '') {
-                update_ajax_member_list(input, null, true, e);
+                $cms.form.updateAjaxMemberList(input, null, true, e);
             }
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
-            update_ajax_member_list(input, null, false, e);
+            $cms.form.updateAjaxMemberList(input, null, false, e);
         });
 
         $cms.dom.on(container, 'change', '.js-change-ensure-next-field', function (e, input) {
@@ -391,12 +428,12 @@
     $cms.templates.formScreenInputUsername = function formScreenInputUsername(params, container) {
         $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {
             if (input.value === '') {
-                update_ajax_member_list(input, null, true, e);
+                $cms.form.updateAjaxMemberList(input, null, true, e);
             }
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-member-list', function (e, input) {
-            update_ajax_member_list(input, null, false, e);
+            $cms.form.updateAjaxMemberList(input, null, false, e);
         });
     };
 
@@ -415,7 +452,7 @@
         }
 
         if (input) {
-            set_up_change_monitor(input.parentElement);
+            $cms.form.setUpChangeMonitor(input.parentElement);
         }
 
         manage_scroll_height(textarea);
@@ -426,7 +463,7 @@
 
     $cms.templates.formScreenInputAuthor = function formScreenInputAuthor(params, container) {
         $cms.dom.on(container, 'keyup', '.js-keyup-update-ajax-author-list', function (e, target) {
-            update_ajax_member_list(target, 'author', false, e);
+            $cms.form.updateAjaxMemberList(target, 'author', false, e);
         });
     };
 
@@ -450,7 +487,7 @@
             var mirror = document.getElementById(name + '_mirror');
             if (mirror) {
                 $cms.dom.toggle(mirror.parentElement, !!input.selected_title);
-                $cms.dom.html(mirror, input.selected_title ? escape_html(input.selected_title) : '{!NA_EM;}');
+                $cms.dom.html(mirror, input.selected_title ? $cms.filter.html(input.selected_title) : '{!NA_EM;}');
             }
         });
     };
@@ -464,22 +501,32 @@
         });
 
         function permissions_toggle(cell) {
-            var index = cell.cellIndex;
-            var table = cell.parentNode.parentNode;
-            if (table.localName !== 'table') table = table.parentNode;
-            var state_list = null, state_checkbox = null;
+            var index = cell.cellIndex,
+                table = cell.parentNode.parentNode;
+
+            if (table.localName !== 'table') {
+                table = table.parentNode;
+            }
+
+            var state_list = null,
+                state_checkbox = null;
+
             for (var i = 0; i < table.rows.length; i++) {
                 if (i >= 1) {
                     var cell2 = table.rows[i].cells[index];
                     var input = cell2.querySelector('input');
                     if (input) {
                         if (!input.disabled) {
-                            if (state_checkbox == null) state_checkbox = input.checked;
+                            if (state_checkbox == null) {
+                                state_checkbox = input.checked;
+                            }
                             input.checked = !state_checkbox;
                         }
                     } else {
                         input = cell2.querySelector('select');
-                        if (state_list == null) state_list = input.selectedIndex;
+                        if (state_list == null) {
+                            state_list = input.selectedIndex;
+                        }
                         input.selectedIndex = ((state_list != input.options.length - 1) ? (input.options.length - 1) : (input.options.length - 2));
                         input.disabled = false;
 
@@ -494,7 +541,7 @@
         var el = $cms.dom.$('#form_table_field_input__' + params.name);
 
         if (el) {
-            set_up_change_monitor(el.parentElement);
+            $cms.form.setUpChangeMonitor(el.parentElement);
         }
     };
 
@@ -538,7 +585,7 @@
 
             el.onchange = function () {
                 if (this.checked) {
-                    window.fauxmodal_confirm(
+                    $cms.ui.confirm(
                         '{!ARE_YOU_SURE_DELETE;^}',
                         function (result) {
                             if (result) {
@@ -567,7 +614,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-play-self-audio-link', function (e, link) {
             e.preventDefault();
-            play_self_audio_link(link);
+            $cms.playSelfAudioLink(link);
         });
     };
 
@@ -600,11 +647,11 @@
 
             for (var imageName in imageSources) {
                 if (opt.id === imageName) {
-                    return '<span class="vertical_alignment inline_lined_up"><img style="width: 24px;" src="' + imageSources[imageName] + '" \/> ' + escape_html(opt.text) + '</span>';
+                    return '<span class="vertical_alignment inline_lined_up"><img style="width: 24px;" src="' + imageSources[imageName] + '" \/> ' + $cms.filter.html(opt.text) + '</span>';
                 }
             }
 
-            return escape_html(opt.text);
+            return $cms.filter.html(opt.text);
         }
     };
 
@@ -637,7 +684,7 @@
                 form.submit();
             }
 
-            cancel_bubbling(event);
+            event.stopPropagation();
         }
 
         img.onkeypress = click_func;
@@ -646,7 +693,7 @@
 
         label.className = 'js_widget';
 
-        input.onclick = function () {
+        input.onclick = function (event) {
             if (this.disabled) {
                 return;
             }
@@ -656,7 +703,7 @@
             if (window.main_form_very_simple !== undefined) {
                 this.form.submit();
             }
-            cancel_bubbling(event);
+            event.stopPropagation();
         };
 
         function deselect_alt_url(form) {
@@ -672,7 +719,7 @@
             el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
 
         if (el) {
-            set_up_change_monitor(el.parentElement);
+            $cms.form.setUpChangeMonitor(el.parentElement);
         }
 
         manage_scroll_height(textArea);
@@ -688,7 +735,7 @@
         var el = $cms.dom.$('#form_table_field_input__' + params.randomisedId);
 
         if (!params.inlineList && el) {
-            set_up_change_monitor(el.parentElement);
+            $cms.form.setUpChangeMonitor(el.parentElement);
         }
     };
 
@@ -698,7 +745,7 @@
         if (inner) {
             $cms.dom.on(inner, browser_matches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
-                cancel_bubbling(event);
+                event.stopPropagation();
                 event.preventDefault();
                 return false;
             });
@@ -764,12 +811,12 @@
 
         $cms.dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
             var url = maintain_theme_in_link(link.href);
-            window.faux_open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $cms.dom.on(inputRow, 'click', '.js-link-click-open-site-emoticon-chooser-window', function (e, link) {
             var url = maintain_theme_in_link(link.href);
-            window.faux_open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
     };
 
@@ -794,10 +841,10 @@
                     if ((inputs[i].value != '-1') && (inputs[i].value != '')) {
                         if (!done_one) {
                             if (old_comcode.indexOf('attachment_safe') == -1) {
-                                window.fauxmodal_alert('{!javascript:ATTACHMENT_SAVED;^}');
+                                $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             } else {
-                                if (!main_window.is_wysiwyg_field(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
-                                    window.fauxmodal_alert('{!javascript:ATTACHMENT_SAVED;^}');
+                                if (!main_window.$cms.form.isWysiwygField(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
+                                    $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             }
                         }
                         done_one = true;
@@ -831,7 +878,7 @@
             target_window = target_window.frames['iframe_page'];
             element = target_window.document.getElementById(params.fieldName);
         }
-        var is_wysiwyg = target_window.is_wysiwyg_field(element);
+        var is_wysiwyg = target_window.$cms.form.isWysiwygField(element);
 
         var comcode, comcode_semihtml;
         comcode = params.comcode;
@@ -841,18 +888,16 @@
         var loading_space = document.getElementById('loading_space');
 
         function shutdown_overlay() {
-            var win = window;
-
             window.setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
-                if (win.faux_close !== undefined)
-                    win.faux_close();
-                else
-                    win.close();
+                if (window.faux_close !== undefined) {
+                    window.faux_close();
+                } else {
+                    window.close();
+                }
             }, 200);
         }
 
         function dispatch_block_helper() {
-            var win = window;
             if ((typeof params.saveToId === 'string') && (params.saveToId !== '')) {
                 var ob = target_window.wysiwyg_editors[element.id].document.$.getElementById(params.saveToId);
 
@@ -869,18 +914,12 @@
                 shutdown_overlay();
             } else {
                 var message = '';
-                if (comcode.indexOf('[attachment') != -1) {
-                    if (comcode.indexOf('[attachment_safe') != -1) {
-                        if (is_wysiwyg) {
-                            message = '';//'{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^}'; Not really needed
-                        } else {
-                            message = '{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
-                        }
+                if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
+                    if (is_wysiwyg) {
+                        message = '';//'!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^}'; Not really needed
                     } else {
-                        //message='{!ADDED_COMCODE_ONLY_ATTACHMENT;^}';	Kind of states the obvious
+                        message = '!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
                     }
-                } else {
-                    //message='{!ADDED_COMCODE_ONLY;^}';	Kind of states the obvious
                 }
 
                 target_window.insert_comcode_tag = function (rep_from, rep_to, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
@@ -895,8 +934,7 @@
                         return [_comcode_semihtml, _comcode];
                     }
 
-                    if ((element.value.indexOf(comcode_semihtml) == -1) || (comcode.indexOf('[attachment') == -1)) // Don't allow attachments to add twice
-                    {
+                    if ((element.value.indexOf(comcode_semihtml) == -1) || (comcode.indexOf('[attachment') == -1)) { // Don't allow attachments to add twice
                         target_window.insert_textbox(element, _comcode, target_window.document.selection ? target_window.document.selection : null, true, _comcode_semihtml);
                     }
                 };
@@ -907,12 +945,9 @@
                 target_window.insert_comcode_tag();
 
                 if (message != '') {
-                    window.fauxmodal_alert(
-                        message,
-                        function () {
-                            shutdown_overlay();
-                        }
-                    );
+                    $cms.ui.alert(message, function () {
+                        shutdown_overlay();
+                    });
                 } else {
                     shutdown_overlay();
                 }
@@ -936,7 +971,7 @@
                     ob.bind('Error', shutdown_overlay);
 
                     // Keep copying the upload indicator
-                    var progress = target_window.document.getElementById('fsUploadProgress_' + field).innerHTML;
+                    var progress = $cms.dom.html(target_window.document.getElementById('fsUploadProgress_' + field));
                     window.setInterval(function () {
                         if (progress != '') {
                             $cms.dom.html(loading_space, progress);
@@ -983,6 +1018,35 @@
                 input.fakeonchange(e);
             }
         });
+
+
+        function ensure_next_field_upload(this_field) {
+            var mid = this_field.name.lastIndexOf('_'),
+                name_stub = this_field.name.substring(0, mid + 1),
+                this_num = this_field.name.substring(mid + 1, this_field.name.length) - 0,
+                next_num = this_num + 1,
+                next_field = document.getElementById('multi_' + next_num),
+                name = name_stub + next_num,
+                this_id = this_field.id;
+
+            if (!next_field) {
+                next_num = this_num + 1;
+                this_field = document.getElementById(this_id);
+                next_field = document.createElement('input');
+                next_field.className = 'input_upload';
+                next_field.setAttribute('id', 'multi_' + next_num);
+                next_field.addEventListener('change', _ensure_next_field_upload);
+                next_field.setAttribute('type', 'file');
+                next_field.name = name_stub + next_num;
+                this_field.parentNode.appendChild(next_field);
+            }
+
+            function _ensure_next_field_upload(event) {
+                if (!$cms.dom.keyPressed(event, 'Tab')) {
+                    ensure_next_field_upload(this);
+                }
+            }
+        }
     };
 
     $cms.templates.formScreenInputRadioList = function (params) {
@@ -1004,7 +1068,7 @@
                 if (e) {
                     e.onchange = function () {
                         if (this.checked) {
-                            window.fauxmodal_confirm(
+                            $cms.ui.confirm(
                                 '{!ARE_YOU_SURE_DELETE;^}',
                                 function (result) {
                                     var e = document.getElementById('j_' + name + '_0');
@@ -1092,7 +1156,7 @@
     /* Set up a word count for a form field */
     function setup_word_counter(post, count_element) {
         window.setInterval(function () {
-            if (is_wysiwyg_field(post)) {
+            if ($cms.form.isWysiwygField(post)) {
                 try {
                     var text_value = window.CKEDITOR.instances[post.name].getData();
                     var matches = text_value.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
@@ -1143,7 +1207,7 @@
             found.onchange = function () {
                 if (iframe) {
                     if ((iframe.contentDocument) && (iframe.contentDocument.getElementsByTagName('form').length != 0)) {
-                        window.fauxmodal_confirm(
+                        $cms.ui.confirm(
                             '{!Q_SURE_LOSE;^}',
                             function (result) {
                                 if (result) {
@@ -1168,7 +1232,7 @@
     }
 
     function _simplified_form_continue_submit(iframe, form_cat_selector) {
-        if (check_form(form_cat_selector)) {
+        if ($cms.form.checkForm(form_cat_selector)) {
             if (iframe) {
                 animate_frame_load(iframe, 'iframe_under');
             }
@@ -1221,8 +1285,7 @@
                     }
                 });
             });
-        } catch (e) {
-        }
+        } catch (ignore) {}
     }
 
     function joinForm(params) {
@@ -1233,20 +1296,19 @@
                 form.elements['intro_title'].value = '{!cns:INTRO_POST_DEFAULT;^}'.replace(/\{1\}/g, form.elements['username'].value);
         };
 
-        form.old_submit = form.onsubmit;
         form.onsubmit = function () {
             if ((form.elements['confirm'] !== undefined) && (form.elements['confirm'].type == 'checkbox') && (!form.elements['confirm'].checked)) {
-                window.fauxmodal_alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
+                $cms.ui.alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
                 return false;
             }
 
             if ((form.elements['email_address_confirm'] !== undefined) && (form.elements['email_address_confirm'].value != form.elements['email_address'].value)) {
-                window.fauxmodal_alert('{!cns:EMAIL_ADDRESS_MISMATCH;^}');
+                $cms.ui.alert('{!cns:EMAIL_ADDRESS_MISMATCH;^}');
                 return false;
             }
 
             if ((form.elements['password_confirm'] !== undefined) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
-                window.fauxmodal_alert('{!cns:PASSWORD_MISMATCH;^}');
+                $cms.ui.alert('{!cns:PASSWORD_MISMATCH;^}');
                 return false;
             }
 
@@ -1254,14 +1316,14 @@
 
             var url = params.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value);
 
-            if (!do_ajax_field_test(url, 'password=' + encodeURIComponent(form.elements['password'].value))) {
+            if (!$cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value))) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }
 
             if (params.invitesEnabled) {
                 url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value);
-                if (!do_ajax_field_test(url)) {
+                if (!$cms.form.doAjaxFieldTest(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
                 }
@@ -1269,7 +1331,7 @@
 
             if (params.onePerEmailAddress) {
                 url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value);
-                if (!do_ajax_field_test(url)) {
+                if (!$cms.form.doAjaxFieldTest(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
                 }
@@ -1277,19 +1339,13 @@
 
             if (params.useCaptcha) {
                 url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
-                if (!do_ajax_field_test(url)) {
+                if (!$cms.form.doAjaxFieldTest(url)) {
                     document.getElementById('submit_button').disabled = false;
                     return false;
                 }
             }
 
             document.getElementById('submit_button').disabled = false;
-
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-
-            return true;
         };
     }
 
@@ -1345,8 +1401,8 @@
             field_input.style.display = newDisplayState;
 
             if ((newDisplayState2 !== 'none') && (count < 50/*Performance*/)) {
-                clear_transition_and_set_opacity(field_input, 0.0);
-                fade_transition(field_input, 100, 30, 20);
+                $cms.dom.clearTransitionAndSetOpacity(field_input, 0.0);
+                $cms.dom.fadeTransition(field_input, 100, 30, 20);
                 count++;
             }
         }
@@ -1363,7 +1419,7 @@
             }
         }
 
-        trigger_resize();
+        $cms.dom.triggerResize();
     }
 
     function choose_picture(j_id, img_ob, name, event) {
@@ -1427,7 +1483,7 @@
 
         standard_alternate_fields(field_names, something_required);
 
-        // Do dynamic set_locked/set_required such that one of these must be set, but only one may be
+        // Do dynamic $cms.form.setLocked/$cms.form.setRequired such that one of these must be set, but only one may be
         function standard_alternate_fields(field_names, something_required, second_run) {
             second_run = !!second_run;
 
@@ -1494,9 +1550,9 @@
                         var radio_button = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
                         if (!radio_button) radio_button = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
 
-                        set_locked(field, is_locked, chosen_field);
+                        $cms.form.setLocked(field, is_locked, chosen_field);
                         if (something_required) {
-                            set_required(field.name.replace(/\[\]$/, ''), is_chosen);
+                            $cms.form.setRequired(field.name.replace(/\[\]$/, ''), is_chosen);
                         }
                     }
                 }
@@ -1676,33 +1732,5 @@ function ensure_next_field(this_field) {
         next_field.name = (this_field.name.includes('[]') ? this_field.name : (name_stub + next_num));
         next_field_wrap.appendChild(next_field);
         this_field.parentNode.parentNode.insertBefore(next_field_wrap, this_field.parentNode.nextSibling);
-    }
-}
-
-function ensure_next_field_upload(this_field) {
-    var mid = this_field.name.lastIndexOf('_'),
-        name_stub = this_field.name.substring(0, mid + 1),
-        this_num = this_field.name.substring(mid + 1, this_field.name.length) - 0,
-        next_num = this_num + 1,
-        next_field = document.getElementById('multi_' + next_num),
-        name = name_stub + next_num,
-        this_id = this_field.id;
-
-    if (!next_field) {
-        next_num = this_num + 1;
-        this_field = document.getElementById(this_id);
-        var next_field = document.createElement('input');
-        next_field.className = 'input_upload';
-        next_field.setAttribute('id', 'multi_' + next_num);
-        next_field.onchange = _ensure_next_field_upload;
-        next_field.setAttribute('type', 'file');
-        next_field.name = name_stub + next_num;
-        this_field.parentNode.appendChild(next_field);
-    }
-
-    function _ensure_next_field_upload(event) {
-        if (!$cms.dom.keyPressed(event, 'Tab')) {
-            ensure_next_field_upload(this);
-        }
     }
 }

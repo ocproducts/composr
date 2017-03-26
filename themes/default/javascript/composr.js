@@ -1,12 +1,8 @@
-var encodeUC = encodeURIComponent;
-
 (function ($cms, symbols) {
     'use strict';
 
     // Cached references
     var smile = ':)',
-        encodeUC = encodeURIComponent,
-        decodeUC = decodeURIComponent,
         emptyObj = {},
         emptyArr = [],
         docEl = document.documentElement,
@@ -174,7 +170,7 @@ var encodeUC = encodeURIComponent;
             spam_heuristic_pasting: boolVal(symbols.CONFIG_OPTION.spam_heuristic_pasting),
 
             /**@var {string}*/
-            thumb_width: symbols.CONFIG_OPTION.thumb_width,
+            thumb_width: strVal(symbols.CONFIG_OPTION.thumb_width),
             /**@var {string}*/
             js_captcha: symbols.CONFIG_OPTION.js_captcha,
             /**@var {string}*/
@@ -324,8 +320,11 @@ var encodeUC = encodeURIComponent;
         /**@method*/
         parseJson: parseJson,
 
+        /**@method*/
         defineBehaviors: defineBehaviors,
+        /**@method*/
         attachBehaviors: attachBehaviors,
+        /**@method*/
         detachBehaviors: detachBehaviors
     });
 
@@ -357,6 +356,12 @@ var encodeUC = encodeURIComponent;
      */
     $cms.ui || ($cms.ui = {});
 
+    /**
+     * Validation code and other general code relating to forms
+     * @namespace $cms.form
+     */
+    $cms.form || ($cms.form = {});
+
     /** @namespace $cms.settings */
     $cms.settings || ($cms.settings = {});
 
@@ -378,9 +383,10 @@ var encodeUC = encodeURIComponent;
      * */
     $cms.dom || ($cms.dom = {});
 
+
     var domReadyPromise = new Promise(function (resolve) {
         if (document.readyState === 'interactive') {
-            window.setTimeout(resolve);
+            window.setTimeout(resolve, 0);
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
                 document.removeEventListener('DOMContentLoaded', listener);
@@ -404,12 +410,54 @@ var encodeUC = encodeURIComponent;
     domReadyPromise.then(function () {
         $cms._resolveReady();
         delete $cms._resolveReady;
+
+        executeCmsReadyQueue();
     });
+
+    (window.$cmsReady || (window.$cmsReady = []));
+
+    function executeCmsReadyQueue() {
+        var fn;
+
+        while (window.$cmsReady.length) {
+            fn = window.$cmsReady.shift();
+            if (typeof fn === 'function') {
+                fn();
+            }
+        }
+
+        properties(window.$cmsReady, {
+            push: function push(fn) {
+                fn();
+            }
+        });
+    }
 
     Promise.all([$cms.ready, loadWindowPromise]).then(function () {
         $cms._resolveLoad();
         delete $cms._resolveLoad;
+
+        executeCmsLoadQueue();
     });
+
+    (window.$cmsLoad || (window.$cmsLoad = []));
+
+    function executeCmsLoadQueue() {
+        var fn;
+
+        while (window.$cmsLoad.length) {
+            fn = window.$cmsLoad.shift();
+            if (typeof fn === 'function') {
+                fn();
+            }
+        }
+
+        properties(window.$cmsLoad, {
+            push: function push(fn) {
+                fn();
+            }
+        });
+    }
 
     $cms.usp = uspFromUrl(window.location.href);
 
@@ -614,7 +662,7 @@ var encodeUC = encodeURIComponent;
     // Using Math.round() will give you a non-uniform distribution!
     function random(min, max) {
         min = Number.isFinite(+min) ? +min : 0;
-        max = Number.isFinite(+max) ? +max : 1000000000000;
+        max = Number.isFinite(+max) ? +max : 1000000000000; // 1 Trillion
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -1020,6 +1068,7 @@ var encodeUC = encodeURIComponent;
         return strVal(url).replace(rgxHttp, window.location.protocol);
     }
 
+    /* Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click) */
     function navigate(url, target) {
         var el;
 
@@ -1122,13 +1171,13 @@ var encodeUC = encodeURIComponent;
                 _requireJsPromises[script] = new Promise(function (resolve, reject) {
                     var sEl = document.createElement('script');
                     sEl.id = 'javascript-' + script;
-                    sEl.onload = function (e) {
+                    sEl.addEventListener('load', function (e) {
                         resolve(e)
-                    };
-                    sEl.onerror = function (e) {
+                    });
+                    sEl.addEventListener('error', function (e) {
                         $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
                         reject(e);
-                    };
+                    });
                     sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + keep_stub();
                     document.body.appendChild(sEl);
                 });
@@ -1199,6 +1248,7 @@ var encodeUC = encodeURIComponent;
     function CookieMonster() {}
 
     properties(CookieMonster.prototype, /** @lends CookieMonster# */ {
+        /**@method*/
         get: function get(cookieName) {
             cookieName = strVal(cookieName);
             if (cookieName) {
@@ -1206,6 +1256,7 @@ var encodeUC = encodeURIComponent;
             }
         },
 
+        /**@method*/
         getAll: function getAll() {
             // To prevent the for loop in the first place assign an empty array
             // in case there are no cookies at all. Also prevents odd result when
@@ -1227,8 +1278,8 @@ var encodeUC = encodeURIComponent;
                     cookie = cookie.slice(1, -1);
                 }
 
-                var name = parts[0].replace(rdecode, decodeUC);
-                cookie = cookie.replace(rdecode, decodeUC);
+                var name = parts[0].replace(rdecode, decodeURIComponent);
+                cookie = cookie.replace(rdecode, decodeURIComponent);
 
                 if (cookieName == null) {
                     result[name] = cookie;
@@ -1241,6 +1292,7 @@ var encodeUC = encodeURIComponent;
             return result;
         },
 
+        /**@method*/
         set: function set(details, value) {
             var defaults = {
                 value: '',
@@ -1266,11 +1318,11 @@ var encodeUC = encodeURIComponent;
                 details.expires = expires;
             }
 
-            value = encodeUC(strVal(details.value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeUC);
+            value = encodeURIComponent(strVal(details.value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
 
             var cookieName = strVal(details.name);
-            cookieName = encodeUC(cookieName);
-            cookieName = cookieName.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeUC);
+            cookieName = encodeURIComponent(cookieName);
+            cookieName = cookieName.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
             cookieName = cookieName.replace(/[\(\)]/g, escape);
 
             document.cookie = [
@@ -1282,6 +1334,7 @@ var encodeUC = encodeURIComponent;
             ].join('');
         },
 
+        /**@method*/
         remove: function remove(cookieName) {
             var details = {
                 name: cookieName,
@@ -1303,7 +1356,7 @@ var encodeUC = encodeURIComponent;
 
         expires.setDate(expires.getDate() + numDays); // Add days to date
 
-        output = cookieName + '=' + encodeUC(cookieValue) + ';expires=' + expires.toUTCString();
+        output = cookieName + '=' + encodeURIComponent(cookieValue) + ';expires=' + expires.toUTCString();
 
         if ($cms.$COOKIE_PATH) {
             output += ';path=' + $cms.$COOKIE_PATH;
@@ -1318,7 +1371,7 @@ var encodeUC = encodeURIComponent;
         var read = read_cookie(cookieName);
 
         if (read && (read !== cookieValue) && $cms.$DEV_MODE && !alertedCookieConflict) {
-            window.fauxmodal_alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
+            $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
             alertedCookieConflict = true;
         }
     }
@@ -1343,7 +1396,7 @@ var encodeUC = encodeURIComponent;
             endIdx = cookies.length;
         }
 
-        return decodeUC(cookies.substring(startIdx + cookieName.length + 1, endIdx));
+        return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
 
     // If the browser has support for CSS transitions
@@ -1897,6 +1950,8 @@ var encodeUC = encodeURIComponent;
      * @returns {*}
      */
     $cms.dom.offset = function offset(el, coordinates) {
+        el = elArg(el);
+
         if (coordinates === undefined) {
             if (!document.documentElement.contains(el)) {
                 return { top: 0, left: 0 };
@@ -1931,6 +1986,8 @@ var encodeUC = encodeURIComponent;
      * @returns { Element }
      */
     $cms.dom.offsetParent = function offsetParent(el) {
+        el = elArg(el);
+
         var parent = el.offsetParent || el.ownerDocument.body;
         while (parent && (parent.localName !== 'html') && (parent.localName !== 'body') && ($cms.dom.css(parent, 'position') === 'static')) {
             parent = parent.offsetParent;
@@ -1965,6 +2022,7 @@ var encodeUC = encodeURIComponent;
      */
     $cms.dom.matches = function matches(el, selector) {
         el = elArg(el);
+
         return ((selector === '*') || el[_matchesFnName](selector));
     };
 
@@ -2001,7 +2059,7 @@ var encodeUC = encodeURIComponent;
         var parents = [],
             parent;
 
-        while (parent = parent.parentElement) {
+        while (parent = el.parentElement) {
             if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
                 parents.push(parent);
             }
@@ -2021,7 +2079,7 @@ var encodeUC = encodeURIComponent;
 
         var parent;
 
-        while (parent = parent.parentElement) {
+        while (parent = el.parentElement) {
             if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
                 return parent;
             }
@@ -2200,6 +2258,7 @@ var encodeUC = encodeURIComponent;
     }
 
     /**
+     * @memberof $cms.dom
      * @param el { Window|Document|Element }
      * @param event {string|object}
      * @param selector {string|function}
@@ -2257,6 +2316,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
+     * @memberof $cms.dom
      * @param el { Window|Document|Element }
      * @param event {string|object}
      * @param selector {string|function}
@@ -2300,7 +2360,7 @@ var encodeUC = encodeURIComponent;
     var mouseEvents = { click: 1, mousedown: 1, mouseup: 1, mousemove: 1 };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param type
      * @param props
      * @returns { Event }
@@ -2330,7 +2390,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param event
      * @param args
@@ -2374,7 +2434,7 @@ var encodeUC = encodeURIComponent;
     }
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param property
      * @param value
@@ -2419,6 +2479,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
+     * @memberof $cms.dom
      * @param {Element} el
      * @param {string} property
      * @param {string|Array} values
@@ -2432,7 +2493,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @returns {boolean}
      */
@@ -2442,7 +2503,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @returns {boolean}
      */
@@ -2454,11 +2515,14 @@ var encodeUC = encodeURIComponent;
     var _initial = {};
     /**
      * Gets the 'initial' value for an element type's CSS property (only 'display' supported as of now)
+     * @memberof $cms.dom
      * @param el
      * @param property
      * @returns {*}
      */
     $cms.dom.initial = function initial(el, property) {
+        el = elArg(el);
+
         var tag = el.localName, doc;
 
         _initial[tag] || (_initial[tag] = {});
@@ -2484,7 +2548,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.show = function show(el) {
@@ -2509,7 +2573,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param show
      */
@@ -2525,7 +2589,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param show
      */
@@ -2543,7 +2607,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param disabled
      */
@@ -2555,7 +2619,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param checked
      */
@@ -2567,7 +2631,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param duration
      * @param callback
@@ -2613,7 +2677,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param duration
      * @param callback
@@ -2648,7 +2712,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param keyboardEvent
      * @param checkKey
      * @returns {*}
@@ -2683,6 +2747,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Returns the output character produced by a KeyboardEvent, or empty string if none
+     * @memberof $cms.dom
      * @param keyboardEvent
      * @param checkOutput
      * @returns {*}
@@ -2731,7 +2796,7 @@ var encodeUC = encodeURIComponent;
     }
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param name
      * @param value
@@ -2756,7 +2821,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param name
      */
@@ -2769,7 +2834,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param html
      * @returns {string|*}
@@ -2798,7 +2863,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.empty = function empty(el) {
@@ -2808,7 +2873,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.remove = function remove(el) {
@@ -2821,7 +2886,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param html
      */
@@ -2845,7 +2910,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      * @param html
      */
@@ -2870,6 +2935,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Put some new HTML around the given element
+     * @memberof $cms.dom
      * @param el
      * @param html
      * @returns {*}
@@ -2897,6 +2963,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Returns the provided element's width excluding padding and borders
+     * @memberof $cms.dom
      * @param el
      * @returns {number}
      */
@@ -2912,6 +2979,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * Returns the provided element's height excluding padding and border
+     * @memberof $cms.dom
      * @param el
      * @returns {number}
      */
@@ -2927,7 +2995,7 @@ var encodeUC = encodeURIComponent;
 
     var serializeExcludedTypes = { submit: 1, reset: 1, button: 1, file: 1 };
     /**
-     *
+     * @memberof $cms.dom
      * @param form
      * @returns {Array}
      */
@@ -2954,7 +3022,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param form
      * @returns {string}
      */
@@ -2964,7 +3032,7 @@ var encodeUC = encodeURIComponent;
         form = elArg(form);
 
         $cms.dom.serializeArray(form).forEach(function (el) {
-            result.push(encodeUC(el.name) + '=' + encodeUC(el.value))
+            result.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value))
         });
         return result.join('&');
     };
@@ -3311,7 +3379,7 @@ var encodeUC = encodeURIComponent;
      */
     function urlencode(str) {
         return ((str != null) && (str = strVal(str))) ?
-            encodeUC(str)
+            encodeURIComponent(str)
                 .replace(/!/g, '%21')
                 .replace(/'/g, '%27')
                 .replace(/\(/g, '%28')
@@ -3422,10 +3490,237 @@ var encodeUC = encodeURIComponent;
             : '';
     };
 
+    /**
+     * JS port of the escape_comcode()
+     * @memberof $cms.filter
+     * @param {string} str
+     * @returns {string}
+     */
+    $cms.filter.comcode = function comcode(str) {
+        return ((str != null) && (str = strVal(str))) ?
+            str.replace(/\\/g, '\\\\')
+                .replace(/"/g, '\\"')
+            : '';
+    };
 
-    var tempDisabledButtons = {};
+
+    /*
+
+     This code does a lot of stuff relating to overlays...
+
+     It provides callback-based *overlay*-driven substitutions for the standard browser windowing API...
+     - alert
+     - prompt
+     - confirm
+     - open (known as popups)
+     - showModalDialog
+     A term we are using for these kinds of 'overlay' is '(faux) modal window'.
+
+     It provides a generic function to open a link as an overlay.
+
+     It provides a function to open an image link as a 'lightbox' (we use the term lightbox exclusively to refer to images in an overlay).
+
+     */
 
     /**
+     * @memberof $cms.ui
+     */
+    $cms.ui.confirm = function confirm(question, callback, title, unescaped) {
+        title || (title = '{!Q_SURE;^}');
+        unescaped = !!unescaped;
+
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            callback(window.confirm(question));
+            return;
+        }
+
+        var my_confirm = {
+            type: 'confirm',
+            text: unescaped ? question : $cms.filter.html(question).replace(/\n/g, '<br />'),
+            yes_button: '{!YES;^}',
+            no_button: '{!NO;^}',
+            cancel_button: null,
+            title: title,
+            yes: function () {
+                callback(true);
+            },
+            no: function () {
+                callback(false);
+            },
+            width: '450'
+        };
+        $cms.openModalWindow(my_confirm);
+    };
+
+    /**
+     * @memberof $cms.ui
+     */
+    $cms.ui.alert = function alert(notice, callback, title, unescaped) {
+        notice = strVal(notice);
+        callback || (callback = noop);
+        title = strVal(title) || '{!MESSAGE;^}';
+        unescaped = !!unescaped;
+
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            window.alert(notice);
+            callback();
+            return;
+        }
+
+        var myAlert = {
+            type: 'alert',
+            text: unescaped ? notice : $cms.filter.html(notice).replace(/\n/g, '<br />'),
+            yes_button: '{!INPUTSYSTEM_OK;^}',
+            width: '600',
+            yes: callback,
+            title: title,
+            cancel_button: null
+        };
+
+        $cms.openModalWindow(myAlert);
+    };
+
+    /**
+     * @memberof $cms.ui
+     * @param question
+     * @param defaultValue
+     * @param callback
+     * @param title
+     * @param input_type
+     */
+    $cms.ui.prompt = function prompt(question, defaultValue, callback, title, input_type) {
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            callback(window.prompt(question, defaultValue));
+            return;
+        }
+
+        var myPrompt = {
+            type: 'prompt',
+            text: $cms.filter.html(question).replace(/\n/g, '<br />'),
+            yes_button: '{!INPUTSYSTEM_OK;^}',
+            cancel_button: '{!INPUTSYSTEM_CANCEL;^}',
+            defaultValue: (defaultValue === null) ? '' : defaultValue,
+            title: title,
+            yes: function (value) {
+                callback(value);
+            },
+            cancel: function () {
+                callback(null);
+            },
+            width: '450'
+        };
+        if (input_type) {
+            myPrompt.input_type = input_type;
+        }
+        $cms.openModalWindow(myPrompt);
+    };
+
+    /**
+     * @memberof $cms.ui
+     * @param url
+     * @param name
+     * @param options
+     * @param callback
+     * @param target
+     * @param cancel_text
+     */
+    $cms.ui.showModalDialog = function showModalDialog(url, name, options, callback, target, cancel_text) {
+        callback = callback || noop;
+
+        if (!($cms.$CONFIG_OPTION.js_overlays)) {
+            options = options.replace('height=auto', 'height=520');
+
+            var timer = new Date().getTime();
+            try {
+                var result = window.showModalDialog(url, name, options);
+            } catch (ignore) {
+                // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
+            }
+            var timer_now = new Date().getTime();
+            if (timer_now - 100 > timer) {// Not popup blocked
+                if ((result === undefined) || (result === null)) {
+                    callback(null);
+                } else {
+                    callback(result);
+                }
+            }
+            return;
+        }
+
+        var width = null, height = null, scrollbars = null, unadorned = null;
+
+        if (cancel_text === undefined) {
+            cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
+        }
+
+        if (options) {
+            var parts = options.split(/[;,]/g), i;
+            for (i = 0; i < parts.length; i++) {
+                var bits = parts[i].split('=');
+                if (bits[1] !== undefined) {
+                    if ((bits[0] == 'dialogWidth') || (bits[0] == 'width'))
+                        width = bits[1].replace(/px$/, '');
+                    if ((bits[0] == 'dialogHeight') || (bits[0] == 'height')) {
+                        if (bits[1] == '100%') {
+                            height = '' + (get_window_height() - 200);
+                        } else {
+                            height = bits[1].replace(/px$/, '');
+                        }
+                    }
+                    if (((bits[0] == 'resizable') || (bits[0] == 'scrollbars')) && scrollbars !== true)
+                        scrollbars = ((bits[1] == 'yes') || (bits[1] == '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
+                    if (bits[0] == 'unadorned') unadorned = ((bits[1] == 'yes') || (bits[1] == '1'));
+                }
+            }
+        }
+
+        if (url.includes(window.location.host)) {
+            url += (!url.includes('?') ? '?' : '&') + 'overlay=1';
+        }
+
+        var my_frame = {
+            type: 'iframe',
+            finished: function (value) {
+                callback(value);
+            },
+            name: name,
+            width: width,
+            height: height,
+            scrollbars: scrollbars,
+            href: url.replace(/^https?:/, window.location.protocol)
+        };
+        my_frame.cancel_button = (unadorned !== true) ? cancel_text : null;
+        if (target) {
+            my_frame.target = target;
+        }
+        $cms.openModalWindow(my_frame);
+    };
+
+    /**
+     * @memberof $cms.ui
+     * @param url
+     * @param name
+     * @param options
+     * @param target
+     * @param cancel_text
+     */
+    $cms.ui.open = function open(url, name, options, target, cancel_text) {
+        if (cancel_text === undefined) {
+            cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
+        }
+
+        if (!$cms.$CONFIG_OPTION.js_overlays) {
+            options = options.replace('height=auto', 'height=520');
+            window.open(url, name, options);
+            return;
+        }
+
+        $cms.ui.showModalDialog(url, name, options, null, target, cancel_text);
+    };
+
+    var tempDisabledButtons = {};
+    /**
+     * @memberof $cms.ui
      * @param btn
      * @param permanent
      */
@@ -3461,7 +3756,7 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * @memberof $cms.ui
      * @param form
      * @param permanent
      */
@@ -3475,6 +3770,7 @@ var encodeUC = encodeURIComponent;
 
     /**
      * This is kinda dumb, ported from checking.js, originally named as disable_buttons_just_clicked()
+     * @memberof $cms.ui
      * @param permanent
      */
     $cms.ui.disableSubmitAndPreviewButtons = function disableSubmitAndPreviewButtons(permanent) {
@@ -3491,7 +3787,1720 @@ var encodeUC = encodeURIComponent;
     };
 
     /**
-     *
+     * Originally _open_image_into_lightbox
+     * @memberof $cms.ui
+     * @param initial_img_url
+     * @param description
+     * @param x
+     * @param n
+     * @param has_full_button
+     * @param is_video
+     * @returns {$cms.views.ModalWindow}
+     */
+    $cms.ui.openImageIntoLightbox = function openImageIntoLightbox(initial_img_url, description, x, n, has_full_button, is_video) {
+        has_full_button = !!has_full_button;
+        is_video = !!is_video;
+
+        // Set up overlay for Lightbox
+        var lightbox_code = /** @lang HTML */' \
+        <div style="text-align: center"> \
+            <p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p> \
+            <p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
+                <span id="lightbox_description">' + description + '</span> \
+                ' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
+                ' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
+            </p> \
+        </div> \
+    ';
+
+        // Show overlay
+        var my_lightbox = {
+                type: 'lightbox',
+                text: lightbox_code,
+                cancel_button: '{!INPUTSYSTEM_CLOSE;^}',
+                width: '450', // This will be updated with the real image width, when it has loaded
+                height: '300' // "
+            },
+            modal = $cms.openModalWindow(my_lightbox);
+
+        // Load proper image
+        window.setTimeout(function () { // Defer execution until the HTML was parsed
+            if (is_video) {
+                var video = document.createElement('video');
+                video.id = 'lightbox_image';
+                video.className = 'lightbox_image';
+                video.controls = 'controls';
+                video.autoplay = 'autoplay';
+                $cms.dom.html(video, initial_img_url);
+                video.addEventListener('loadedmetadata', function () {
+                    $cms.ui.resizeLightboxDimensionsImg(modal, video, has_full_button, true);
+                });
+            } else {
+                var img = modal.top_window.document.createElement('img');
+                img.className = 'lightbox_image';
+                img.id = 'lightbox_image';
+                img.onload = function () {
+                    $cms.ui.resizeLightboxDimensionsImg(modal, img, has_full_button, false);
+                };
+                img.src = initial_img_url;
+            }
+        }, 0);
+
+        return modal;
+    };
+
+    /**
+     * @memberof $cms.ui
+     * @param modal
+     * @param img
+     * @param has_full_button
+     * @param is_video
+     */
+    $cms.ui.resizeLightboxDimensionsImg = function resizeLightboxDimensionsImg(modal, img, has_full_button, is_video) {
+        if (!modal.boxWrapperEl) {
+            /* Overlay closed already */
+            return;
+        }
+
+        var real_width = is_video ? img.videoWidth : img.width,
+            width = real_width,
+            real_height = is_video ? img.videoHeight : img.height,
+            height = real_height,
+            lightbox_image = modal.top_window.$cms.dom.$id('lightbox_image'),
+            lightbox_meta = modal.top_window.$cms.dom.$id('lightbox_meta'),
+            lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
+            lightbox_position_in_set = modal.top_window.$cms.dom.$id('lightbox_position_in_set'),
+            lightbox_full_link = modal.top_window.$cms.dom.$id('lightbox_full_link');
+
+        var sup = lightbox_image.parentNode;
+        sup.removeChild(lightbox_image);
+        if (sup.firstChild) {
+            sup.insertBefore(img, sup.firstChild);
+        } else {
+            sup.appendChild(img);
+        }
+        sup.className = '';
+        sup.style.textAlign = 'center';
+        sup.style.overflow = 'hidden';
+
+        dims_func();
+        $cms.dom.on(window, 'resize', dims_func);
+
+        function dims_func() {
+            lightbox_description.style.display = (lightbox_description.firstChild) ? 'inline' : 'none';
+            if (lightbox_full_link) {
+                var showLightboxFullLink = !!(!is_video && has_full_button && ((real_width > max_width) || (real_height > max_height)));
+                $cms.dom.toggle(lightbox_full_link, showLightboxFullLink);
+            }
+            var showLightboxMeta = !!((lightbox_description.style.display === 'inline') || (lightbox_position_in_set !== null) || (lightbox_full_link && lightbox_full_link.style.display === 'inline'));
+            $cms.dom.toggle(lightbox_meta, showLightboxMeta);
+
+            // Might need to rescale using some maths, if natural size is too big
+            var max_dims = _get_max_lightbox_img_dims(modal, has_full_button),
+                max_width = max_dims[0],
+                max_height = max_dims[1];
+
+            if (width > max_width) {
+                width = max_width;
+                height = window.parseInt(max_width * real_height / real_width - 1);
+            }
+
+            if (height > max_height) {
+                width = window.parseInt(max_height * real_width / real_height - 1);
+                height = max_height;
+            }
+
+            img.width = width;
+            img.height = height;
+            modal.reset_dimensions('' + width, '' + height, false, true); // Temporarily forced, until real height is known (includes extra text space etc)
+
+            window.setTimeout(function () {
+                modal.reset_dimensions('' + width, '' + height, false);
+            });
+
+            if (img.parentElement) {
+                img.parentElement.parentElement.parentElement.style.width = 'auto';
+                img.parentElement.parentElement.parentElement.style.height = 'auto';
+            }
+
+            function _get_max_lightbox_img_dims(modal, has_full_button) {
+                var max_width = modal.top_window.get_window_width() - 20;
+                var max_height = modal.top_window.get_window_height() - 60;
+                if (has_full_button) {
+                    max_height -= 120;
+                }
+                return [max_width, max_height];
+            }
+        }
+    };
+
+    /**
+     * Enforcing a session using AJAX
+     * @memberof $cms.ui
+     * @param callback
+     */
+    $cms.ui.confirmSession = function confirmSession(callback) {
+        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + keep_stub(true);
+
+        do_ajax_request(url, function (ret) {
+            if (!ret) {
+                return;
+            }
+
+            if (ret.responseText === '') {// Blank means success, no error - so we can call callback
+                callback(true);
+                return;
+            }
+
+            // But non blank tells us the username, and there is an implication that no session is confirmed for this login
+            if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
+                $cms.ui.prompt(
+                    '{!USERNAME;^}',
+                    '',
+                    function (promptt) {
+                        _confirmSession(callback, promptt, url);
+                    },
+                    '{!_LOGIN;^}'
+                );
+                return;
+            }
+
+            _confirmSession(callback, ret.responseText, url);
+        });
+
+        function _confirmSession(callback, username, url) {
+            $cms.ui.prompt(
+                $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
+                '',
+                function (promptt) {
+                    if (promptt !== null) {
+                        do_ajax_request(url, function (ret) {
+                            if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
+                                callback(true);
+                            } else {
+                                _confirmSession(callback, username, url); // Recurse
+                            }
+                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
+                    } else {
+                        callback(false);
+                    }
+                },
+                '{!_LOGIN;^}',
+                'password'
+            );
+        }
+    };
+
+    /**
+     * @memberof $cms.ui
+     * @param id
+     * @param tab
+     * @param from_url
+     * @param automated
+     * @returns {boolean}
+     */
+    $cms.ui.selectTab = function selectTab(id, tab, from_url, automated) {
+        from_url = !!from_url;
+        automated = !!automated;
+
+        if (!from_url) {
+            var tab_marker = $cms.dom.$('#tab__' + tab.toLowerCase());
+            if (tab_marker) {
+                // For URL purposes, we will change URL to point to tab
+                // HOWEVER, we do not want to cause a scroll so we will be careful
+                tab_marker.id = '';
+                window.location.hash = '#tab__' + tab.toLowerCase();
+                tab_marker.id = 'tab__' + tab.toLowerCase();
+            }
+        }
+
+        var tabs = [], i, element;
+
+        element = $cms.dom.$('#t_' + tab);
+        for (i = 0; i < element.parentNode.children.length; i++) {
+            if (element.parentNode.children[i].id && (element.parentNode.children[i].id.substr(0, 2) === 't_')) {
+                tabs.push(element.parentNode.children[i].id.substr(2));
+            }
+        }
+
+        for (i = 0; i < tabs.length; i++) {
+            element = $cms.dom.$('#' + id + '_' + tabs[i]);
+            if (element) {
+                element.style.display = (tabs[i] === tab) ? 'block' : 'none';
+
+                if (tabs[i] === tab) {
+                    if (window['load_tab__' + tab] === undefined) {
+                        $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
+                        $cms.dom.fadeTransition(element, 100, 30, 8);
+                    }
+                }
+            }
+
+            element = $cms.dom.$('#t_' + tabs[i]);
+            if (element) {
+                element.classList.toggle('tab_active', tabs[i] === tab);
+            }
+        }
+
+        if (window['load_tab__' + tab] !== undefined) {
+            // Usually an AJAX loader
+            window['load_tab__' + tab](automated, $cms.dom.$('#' + id + '_' + tab));
+        }
+
+        return false;
+    };
+
+    /**
+     *  Tooltips that can work on any element with rich HTML support
+     *  @memberof $cms.ui
+     * @param el - the element
+     * @param event - the event handler
+     * @param tooltip - the text for the tooltip
+     * @param width - width is in pixels (but you need 'px' on the end), can be null or auto
+     * @param pic - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
+     * @param height - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
+     * @param bottom - set to true if the tooltip should definitely appear upwards; rarely use this parameter
+     * @param no_delay - set to true if the tooltip should appear instantly
+     * @param lights_off - set to true if the image is to be dimmed
+     * @param force_width - set to true if you want width to not be a max width
+     * @param win - window to open in
+     * @param have_links - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
+     */
+    $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
+        event || (event = {});
+        width || (width = 'auto');
+        pic || (pic = '');
+        height || (height = 'auto');
+        bottom = !!bottom;
+        no_delay = !!no_delay;
+        lights_off = !!lights_off;
+        force_width = !!force_width;
+        win || (win = window);
+        have_links = !!have_links;
+
+        if (!window.page_loaded || !tooltip) {
+            return;
+        }
+
+        if (window.is_doing_a_drag) {
+            // Don't want tooltips appearing when doing a drag and drop operation
+            return;
+        }
+
+        if (!have_links && $cms.isTouchEnabled) {
+            return; // Too erratic
+        }
+
+        register_mouse_listener(event);
+
+        $cms.ui.clearOutTooltips(el.tooltip_id);
+
+        // Add in move/leave events if needed
+        if (!have_links) {
+            el.addEventListener('mouseout', function () {
+                win.$cms.ui.deactivateTooltip(el);
+            });
+
+            el.addEventListener('mousemove', function () {
+                win.$cms.ui.repositionTooltip(el, event, false, false, null, false, win);
+            });
+        } else {
+            el.addEventListener('click', function () {
+                win.$cms.ui.deactivateTooltip(el);
+            });
+        }
+
+        if (typeof tooltip === 'function') {
+            tooltip = tooltip();
+        }
+
+        tooltip = strVal(tooltip);
+
+        if (!tooltip) {
+            return;
+        }
+
+        el.is_over = true;
+        el.tooltip_on = false;
+        el.initial_width = width;
+        el.have_links = have_links;
+
+        var children = el.querySelectorAll('img');
+        for (var i = 0; i < children.length; i++) {
+            children[i].setAttribute('title', '');
+        }
+
+        var tooltipEl;
+        if ((el.tooltip_id !== undefined) && ($cms.dom.$id(el.tooltip_id))) {
+            tooltipEl = win.$cms.dom.$('#' + el.tooltip_id);
+            tooltipEl.style.display = 'none';
+            $cms.dom.html(tooltipEl, '');
+            window.setTimeout(function () {
+                $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, force_width);
+            }, 0);
+        } else {
+            tooltipEl = win.document.createElement('div');
+            tooltipEl.role = 'tooltip';
+            tooltipEl.style.display = 'none';
+            var rt_pos = tooltip.indexOf('results_table');
+            tooltipEl.className = 'tooltip ' + ((rt_pos == -1 || rt_pos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (have_links ? ' have_links' : '');
+            if (el.className.substr(0, 3) === 'tt_') {
+                tooltipEl.className += ' ' + el.className;
+            }
+            if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
+                tooltipEl.style.wordWrap = 'normal';
+            }
+
+            if (force_width) {
+                tooltipEl.style.width = width;
+            } else {
+                if (width === 'auto') {
+                    var new_auto_width = get_window_width(win) - 30 - window.mouse_x;
+                    if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+                    tooltipEl.style.maxWidth = new_auto_width + 'px';
+                } else {
+                    tooltipEl.style.maxWidth = width;
+                }
+                tooltipEl.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
+            }
+            if (height && (height !== 'auto')) {
+                tooltipEl.style.maxHeight = height;
+                tooltipEl.style.overflow = 'auto';
+            }
+            tooltipEl.style.position = 'absolute';
+            tooltipEl.id = 't_' + $cms.random();
+            el.tooltip_id = tooltipEl.id;
+            $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, force_width);
+            document.body.appendChild(tooltipEl);
+        }
+        tooltipEl.ac = el;
+
+        if (pic) {
+            var img = win.document.createElement('img');
+            img.src = pic;
+            img.className = 'tooltip_img';
+            if (lights_off) {
+                img.classList.add('faded_tooltip_img');
+            }
+            tooltipEl.appendChild(img);
+            tooltipEl.classList.add('tooltip_with_img');
+        }
+
+        var event_copy = { // Needs to be copied as it will get erased on IE after this function ends
+            'pageX': +event.pageX || 0,
+            'pageY': +event.pageY || 0,
+            'clientX': +event.clientX || 0,
+            'clientY': +event.clientY || 0,
+            'type': event.type || ''
+        };
+
+        // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
+        var bi = $cms.dom.$('#main_website_inner') || document.body;
+        if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
+            bi.onmouseover = function () {
+                return true;
+            };
+        }
+
+        window.setTimeout(function () {
+            if (!el.is_over) {
+                return;
+            }
+
+            if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
+                $cms.dom.appendHtml(tooltipEl, tooltip);
+
+            el.tooltip_on = true;
+            tooltipEl.style.display = 'block';
+            if (tooltipEl.style.width == 'auto')
+                tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+
+            if (!no_delay) {
+                // If delayed we will sub in what the currently known global mouse coordinate is
+                event_copy.pageX = win.mouse_x;
+                event_copy.pageY = win.mouse_y;
+            }
+
+            $cms.ui.repositionTooltip(el, event_copy, bottom, true, tooltipEl, force_width, win);
+        }, no_delay ? 0 : 666);
+    };
+
+    $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
+        bottom = !!bottom;
+        win || (win = window);
+
+        if (!starting) {// Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
+
+            if (el.getAttribute('title')) {
+                el.setAttribute('title', '');
+            }
+
+            if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
+                el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
+            }
+        }
+
+        if (!window.page_loaded) {
+            return;
+        }
+
+        if (!el.tooltip_id) {
+            if (el.onmouseover) {
+                el.onmouseover(event);
+            }
+            return;
+        }  // Should not happen but written as a fail-safe
+
+        tooltip_element || (tooltip_element = $cms.dom.$id(el.tooltip_id));
+
+        if (!tooltip_element) {
+            return;
+        }
+
+        var style__offset_x = 9,
+            style__offset_y = (el.have_links) ? 18 : 9,
+            x, y;
+
+        // Find mouse position
+        x = window.mouse_x;
+        y = window.mouse_y;
+        x += style__offset_x;
+        y += style__offset_y;
+        try {
+            if (event.type) {
+                if (event.type != 'focus') {
+                    el.done_none_focus = true;
+                }
+
+                if ((event.type === 'focus') && (el.done_none_focus)) {
+                    return;
+                }
+
+                x = (event.type === 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
+                y = (event.type === 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
+            }
+        } catch (ignore) {
+        }
+        // Maybe mouse position actually needs to be in parent document?
+        try {
+            if (event.target && (event.target.ownerDocument !== win.document)) {
+                x = win.mouse_x + style__offset_x;
+                y = win.mouse_y + style__offset_y;
+            }
+        } catch (ignore) {
+        }
+
+        // Work out which direction to render in
+        var width = $cms.dom.contentWidth(tooltip_element);
+        if (tooltip_element.style.width === 'auto') {
+            if (width < 200) {
+                // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
+                width = 200;
+            }
+        }
+        var height = tooltip_element.offsetHeight;
+        var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
+        if (x_excess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
+            var x_before = x;
+            x -= x_excess + 20 + style__offset_x;
+            if (x < 100) { // Do not make it impossible to de-focus the tooltip
+                x = (x_before < 100) ? x_before : 100;
+            }
+        }
+        if (x < 0) {
+            x = 0;
+        }
+        if (bottom) {
+            tooltip_element.style.top = (y - height) + 'px';
+        } else {
+            var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
+            if (y_excess > 0) y -= y_excess;
+            var scroll_y = win.pageYOffset;
+            if (y < scroll_y) y = scroll_y;
+            tooltip_element.style.top = y + 'px';
+        }
+        tooltip_element.style.left = x + 'px';
+    };
+
+    $cms.ui.deactivateTooltip = function deactivateTooltip(el, tooltip_element) {
+        el.is_over = false;
+
+        if (el.tooltip_id == null) {
+            return;
+        }
+
+        tooltip_element || (tooltip_element = $cms.dom.$('#' + el.tooltip_id));
+
+        if (tooltip_element) {
+            $cms.dom.hide(tooltip_element);
+        }
+    };
+
+    $cms.ui.clearOutTooltips = function clearOutTooltips(tooltip_being_opened) {
+        // Delete other tooltips, which due to browser bugs can get stuck
+        var selector = '.tooltip';
+        if (tooltip_being_opened) {
+            selector += ':not(#' + tooltip_being_opened + ')';
+        }
+        $cms.dom.$$(selector).forEach(function (el) {
+            $cms.ui.deactivateTooltip(el.ac, el);
+        });
+    };
+
+    window.$cmsReady.push(function () {
+        // Tooltips close on browser resize
+        $cms.dom.on(window, 'resize', function () {
+            $cms.ui.clearOutTooltips();
+        });
+    });
+
+    /**
+     * @memberof $cms.form
+     * @param radios
+     * @returns {*}
+     */
+    $cms.form.radioValue = function radioValue(radios) {
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                return radios[i].value;
+            }
+        }
+        return '';
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param the_element
+     * @param error_msg
+     */
+    $cms.form.setFieldError = function setFieldError(the_element, error_msg) {
+        if (the_element.name !== undefined) {
+            var id = the_element.name;
+            var errormsg_element = get_errormsg_element(id);
+            if ((error_msg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) return; // Do not blank out as day/month/year (which comes first) would have already done it
+            if (errormsg_element) {
+                // Make error message visible, if there's an error
+                errormsg_element.style.display = (error_msg == '') ? 'none' : 'block';
+
+                // Changed error message
+                if ($cms.dom.html(errormsg_element) != $cms.filter.html(error_msg)) {
+                    $cms.dom.html(errormsg_element, '');
+                    if (error_msg != '') // If there actually an error
+                    {
+                        the_element.setAttribute('aria-invalid', 'true');
+
+                        // Need to switch tab?
+                        var p = errormsg_element;
+                        while (p !== null) {
+                            p = p.parentNode;
+                            if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
+                                $cms.ui.selectTab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
+                                break;
+                            }
+                        }
+
+                        // Set error message
+                        var msg_node = document.createTextNode(error_msg);
+                        errormsg_element.appendChild(msg_node);
+                        errormsg_element.setAttribute('role', 'alert');
+
+                        // Fade in
+                        $cms.dom.clearTransitionAndSetOpacity(errormsg_element, 0.0);
+                        $cms.dom.fadeTransition(errormsg_element, 100, 30, 4);
+
+                    } else {
+                        the_element.setAttribute('aria-invalid', 'false');
+                        errormsg_element.setAttribute('role', '');
+                    }
+                }
+            }
+        }
+        if (($cms.form.isWysiwygField !== undefined) && ($cms.form.isWysiwygField(the_element))) {
+            the_element = the_element.parentNode;
+        }
+
+        the_element.classList.remove('input_erroneous');
+
+        if (error_msg != '') {
+            the_element.classList.add('input_erroneous');
+        }
+
+        function get_errormsg_element(id) {
+            var errormsg_element = $cms.dom.$('#error_' + id);
+            if (!errormsg_element) {
+                errormsg_element = $cms.dom.$('#error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+            }
+            return errormsg_element;
+        }
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param form
+     * @param event
+     * @returns {boolean}
+     */
+    $cms.form.doFormSubmit = function doFormSubmit(form, event) {
+        if (!$cms.form.checkForm(form, false)) {
+            return false;
+        }
+
+        if (form.old_action) {
+            form.setAttribute('action', form.old_action);
+        }
+        if (form.old_target) {
+            form.setAttribute('target', form.old_target);
+        }
+        if (!form.getAttribute('target')) {
+            form.setAttribute('target', '_top');
+        }
+
+        /* Remove any stuff that is only in the form for previews if doing a GET request */
+        if (form.method.toLowerCase() === 'get') {
+            var i = 0, name, elements = [];
+            for (i = 0; i < form.elements.length; i++) {
+                elements.push(form.elements[i]);
+            }
+            for (i = 0; i < elements.length; i++) {
+                name = elements[i].name;
+                if (name && ((name.substr(0, 11) == 'label_for__') || (name.substr(0, 14) == 'tick_on_form__') || (name.substr(0, 9) == 'comcode__') || (name.substr(0, 9) == 'require__'))) {
+                    elements[i].parentNode.removeChild(elements[i]);
+                }
+            }
+        }
+        if (form.onsubmit) {
+            var ret = form.onsubmit.call(form, event);
+            if (!ret) {
+                return false;
+            }
+        }
+        if (!window.just_checking_requirements) {
+            form.submit();
+        }
+
+        $cms.ui.disableSubmitAndPreviewButtons();
+
+        if (window.detect_interval !== undefined) {
+            window.clearInterval(window.detect_interval);
+            delete window.detect_interval;
+        }
+
+        return true;
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param event
+     * @param form
+     * @param preview_url
+     * @param has_separate_preview
+     * @returns {boolean}
+     */
+    $cms.form.doFormPreview = function doFormPreview(event, form, preview_url, has_separate_preview) {
+        has_separate_preview = !!has_separate_preview;
+
+        if (!$cms.dom.$id('preview_iframe')) {
+            $cms.ui.alert('{!ADBLOCKER;^}');
+            return false;
+        }
+
+        preview_url += ((window.mobile_version_for_preview === undefined) ? '' : ('&keep_mobile=' + (window.mobile_version_for_preview ? '1' : '0')));
+
+        var old_action = form.getAttribute('action');
+
+        if (!form.old_action) {
+            form.old_action = old_action;
+        }
+        form.setAttribute('action', /*maintain_theme_in_link - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
+        var old_target = form.getAttribute('target');
+        if (!old_target) {
+            old_target = '_top';
+        }
+        /* not _self due to edit screen being a frame itself */
+        if (!form.old_target) {
+            form.old_target = old_target;
+        }
+        form.setAttribute('target', 'preview_iframe');
+
+        if ((window.$cms.form.checkForm) && (!$cms.form.checkForm(form, true))) {
+            return false;
+        }
+
+        if (form.onsubmit) {
+            var test = form.onsubmit.call(form, event, true);
+            if (!test) {
+                return false;
+            }
+        }
+
+        if ((has_separate_preview) || (window.has_separate_preview)) {
+            form.setAttribute('action', form.old_action + ((form.old_action.indexOf('?') == -1) ? '?' : '&') + 'preview=1');
+            return true;
+        }
+
+        $cms.dom.$id('submit_button').style.display = 'inline';
+
+        /* Do our loading-animation */
+        if (!window.just_checking_requirements) {
+            window.setInterval($cms.dom.triggerResize, 500);
+            /* In case its running in an iframe itself */
+            illustrate_frame_load('preview_iframe');
+        }
+
+        $cms.ui.disableSubmitAndPreviewButtons();
+
+        // Turn main post editing back off
+        if (window.wysiwyg_set_readonly !== undefined) {
+            wysiwyg_set_readonly('post', true);
+        }
+
+        return true;
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param the_element
+     * @returns {*|boolean}
+     */
+    $cms.form.isWysiwygField = function isWysiwygField(the_element) {
+        var id = the_element.id;
+        return window.wysiwyg_editors && (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param form
+     * @param element
+     * @returns {*}
+     */
+    $cms.form.cleverFindValue = function cleverFindValue(form, element) {
+        if ((element.length !== undefined) && (element.nodeName === undefined)) {
+            // Radio button
+            element = element[0];
+        }
+
+        var value;
+        switch (element.localName) {
+            case 'textarea':
+                value = (window.get_textbox === undefined) ? element.value : get_textbox(element);
+                break;
+            case 'select':
+                value = '';
+                if (element.selectedIndex >= 0) {
+                    if (element.multiple) {
+                        for (var i = 0; i < element.options.length; i++) {
+                            if (element.options[i].selected) {
+                                if (value != '') value += ',';
+                                value += element.options[i].value;
+                            }
+                        }
+                    } else if (element.selectedIndex >= 0) {
+                        value = element.options[element.selectedIndex].value;
+                        if ((value == '') && (element.getAttribute('size') > 1)) {
+                            value = '-1';  // Fudge, as we have selected something explicitly that is blank
+                        }
+                    }
+                }
+                break;
+            case 'input':
+                switch (element.type) {
+                    case 'checkbox':
+                        value = (element.checked) ? element.value : '';
+                        break;
+
+                    case 'radio':
+                        value = '';
+                        for (var i = 0; i < form.elements.length; i++) {
+                            if ((form.elements[i].name == element.name) && (form.elements[i].checked)) {
+                                value = form.elements[i].value;
+                            }
+                        }
+                        break;
+
+                    case 'hidden':
+                    case 'text':
+                    case 'color':
+                    case 'date':
+                    case 'datetime':
+                    case 'datetime-local':
+                    case 'email':
+                    case 'month':
+                    case 'number':
+                    case 'range':
+                    case 'search':
+                    case 'tel':
+                    case 'time':
+                    case 'url':
+                    case 'week':
+                    case 'password':
+                    default:
+                        value = element.value;
+                        break;
+                }
+        }
+        return value;
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param the_form
+     * @param for_preview
+     * @returns {boolean}
+     */
+    $cms.form.checkForm = function checkForm(the_form, for_preview) {
+        var delete_element = $cms.dom.$('#delete');
+        if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (delete_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
+            return true;
+        }
+
+        var j, the_element, erroneous = false, total_file_size = 0, alerted = false, error_element = null, check_result;
+        for (j = 0; j < the_form.elements.length; j++) {
+            if (!the_form.elements[j]) {
+                continue;
+            }
+
+            the_element = the_form.elements[j];
+
+            check_result = check_field(the_element, the_form, for_preview);
+            if (check_result != null) {
+                erroneous = check_result[0] || erroneous;
+                if (!error_element && erroneous) error_element = the_element;
+                total_file_size += check_result[1];
+                alerted = check_result[2] || alerted;
+
+                if (check_result[0]) {
+                    var auto_reset_error = function (the_element) {
+                        return function (event, no_recurse) {
+                            var check_result = check_field(the_element, the_form, for_preview);
+                            if ((check_result != null) && (!check_result[0])) {
+                                $cms.form.setFieldError(the_element, '');
+                            }
+
+                            if ((!no_recurse) && (the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/))) {
+                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_day'));
+                                if (e != the_element) {
+                                    e.onblur(event, true);
+                                }
+                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_month'));
+                                if (e != the_element) {
+                                    e.onblur(event, true);
+                                }
+                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_year'));
+                                if (e != the_element) {
+                                    e.onblur(event, true);
+                                }
+                            }
+                        };
+                    };
+
+                    if (the_element.getAttribute('type') == 'radio') {
+                        for (var i = 0; i < the_form.elements.length; i++) {
+                            the_form.elements[i].onchange = auto_reset_error(the_form.elements[i]);
+                        }
+                    } else {
+                        the_element.onblur = auto_reset_error(the_element);
+                    }
+                }
+            }
+        }
+
+        if ((total_file_size > 0) && (the_form.elements['MAX_FILE_SIZE'])) {
+            if (total_file_size > the_form.elements['MAX_FILE_SIZE'].value) {
+                if (!erroneous) {
+                    error_element = the_element;
+                    erroneous = true;
+                }
+                if (!alerted) {
+                    $cms.ui.alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(total_file_size / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(the_form.elements['MAX_FILE_SIZE'].value / 1024)));
+                }
+                alerted = true;
+            }
+        }
+
+        if (erroneous) {
+            if (!alerted) $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
+            var posy = find_pos_y(error_element, true);
+            if (posy == 0) {
+                posy = find_pos_y(error_element.parentNode, true);
+            }
+            if (posy != 0)
+                smooth_scroll(posy - 50, null, null, function () {
+                    try {
+                        error_element.focus();
+                    } catch (e) {
+                    }
+                    /* Can have exception giving focus on IE for invisible fields */
+                });
+        }
+
+        // Try and workaround max_input_vars problem if lots of usergroups
+        if (!erroneous) {
+            var delete_e = $cms.dom.$id('delete');
+            var is_delete = delete_e && delete_e.type == 'checkbox' && delete_e.checked;
+            var es = document.getElementsByTagName('select'), e;
+            for (var i = 0; i < es.length; i++) {
+                e = es[i];
+                if ((e.name.match(/^access_\d+_privilege_/)) && ((is_delete) || (e.options[e.selectedIndex].value == '-1'))) {
+                    e.disabled = true;
+                }
+            }
+        }
+
+        return !erroneous;
+
+        function check_field(the_element, the_form) {
+            var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
+
+            // No checking for hidden elements
+            if (((the_element.type === 'hidden') || (((the_element.style.display == 'none') || (the_element.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.parentNode.style.display == 'none')) && (($cms.form.isWysiwygField === undefined) || (!$cms.form.isWysiwygField(the_element))))) && ((!the_element.className) || (the_element.classList.contains('hidden_but_needed')) == null)) {
+                return null;
+            }
+            if (the_element.disabled) {
+                return null;
+            }
+
+            // Test file sizes
+            if ((the_element.type == 'file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
+                total_file_size += the_element.files.item(0).fileSize;
+
+            // Test file types
+            if ((the_element.type == 'file') && (the_element.value) && (the_element.name != 'file_anytype')) {
+                var allowed_types = '{$VALID_FILE_TYPES;^}'.split(/,/);
+                var type_ok = false;
+                var theFileType = the_element.value.indexOf('.') ? the_element.value.substr(the_element.value.lastIndexOf('.') + 1) : '{!NONE;^}';
+                for (var k = 0; k < allowed_types.length; k++) {
+                    if (allowed_types[k].toLowerCase() == theFileType.toLowerCase()) type_ok = true;
+                }
+                if (!type_ok) {
+                    error_msg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
+                    if (!alerted) $cms.ui.alert(error_msg);
+                    alerted = true;
+                }
+            }
+
+            // Fix up bad characters
+            if ((browser_matches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
+                var bad_word_chars = [8216, 8217, 8220, 8221];
+                var fixed_word_chars = ['\'', '\'', '"', '"'];
+                for (i = 0; i < bad_word_chars.length; i++) {
+                    regexp = new RegExp(String.fromCharCode(bad_word_chars[i]), 'gm');
+                    the_element.value = the_element.value.replace(regexp, fixed_word_chars[i]);
+                }
+            }
+
+            // Class name
+            the_class = the_element.classList[0];
+
+            // Find whether field is required and value of it
+            if (the_element.type == 'radio') {
+                required = (the_form.elements['require__' + the_element.name] !== undefined) && (the_form.elements['require__' + the_element.name].value == '1');
+            } else {
+                required = the_element.className.includes('_required');
+            }
+            my_value = $cms.form.cleverFindValue(the_form, the_element);
+
+            // Prepare for custom error messages, stored as HTML5 data on the error message display element
+            var errormsg_element = (the_element.name === undefined) ? null : get_errormsg_element(the_element.name);
+
+            // Blank?
+            if ((required) && (my_value.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
+                error_msg = '{!REQUIRED_NOT_FILLED_IN;^}';
+                if ((errormsg_element) && (errormsg_element.getAttribute('data-errorUnfilled') != null) && (errormsg_element.getAttribute('data-errorUnfilled') != ''))
+                    error_msg = errormsg_element.getAttribute('data-errorUnfilled');
+            } else {
+                // Standard field-type checks
+                if ((the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/)) && (my_value != '')) {
+                    var day = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
+                    var month = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
+                    var year = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
+                    var source_date = new Date(year, month - 1, day);
+                    if (year != source_date.getFullYear()) error_msg = '{!javascript:NOT_A_DATE;^}';
+                    if (month != source_date.getMonth() + 1) error_msg = '{!javascript:NOT_A_DATE;^}';
+                    if (day != source_date.getDate()) error_msg = '{!javascript:NOT_A_DATE;^}';
+                }
+                if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                    error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
+                }
+                if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.$cms.form.doAjaxFieldTest) && (!$cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(my_value)))) {
+                    error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
+                }
+                if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
+                    error_msg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', my_value);
+                }
+                if (((the_class == 'input_integer') || (the_class == 'input_integer_required')) && (my_value != '') && (parseInt(my_value, 10) != my_value - 0)) {
+                    error_msg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', my_value);
+                }
+                if (((the_class == 'input_float') || (the_class == 'input_float_required')) && (my_value != '') && (parseFloat(my_value) != my_value - 0)) {
+                    error_msg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', my_value);
+                }
+
+                // Shim for HTML5 regexp patterns
+                if (the_element.getAttribute('pattern')) {
+                    if ((my_value != '') && (!my_value.match(new RegExp(the_element.getAttribute('pattern'))))) {
+                        error_msg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', my_value);
+                    }
+                }
+
+                // Custom error messages
+                if (error_msg != '' && errormsg_element != null) {
+                    var custom_msg = errormsg_element.getAttribute('data-errorRegexp');
+                    if ((custom_msg != null) && (custom_msg != ''))
+                        error_msg = custom_msg;
+                }
+            }
+
+            // Show error?
+            $cms.form.setFieldError(the_element, error_msg);
+
+            if ((error_msg != '') && (!erroneous)) {
+                erroneous = true;
+            }
+
+            return [erroneous, total_file_size, alerted];
+
+            function get_errormsg_element(id) {
+                var errormsg_element = $cms.dom.$id('error_' + id);
+                if (!errormsg_element) {
+                    errormsg_element = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                }
+                return errormsg_element;
+            }
+        }
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param field
+     * @param is_locked
+     * @param chosen_ob
+     */
+    $cms.form.setLocked = function setLocked(field, is_locked, chosen_ob) {
+        var radio_button = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
+        if (!radio_button) {
+            radio_button = $cms.dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
+        }
+
+        // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: $cms.form.setLocked assumes that the calling code is clever
+        // special input types are coded to observe their master input field readonly status)
+        var button = $cms.dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
+
+        if (is_locked) {
+            var labels = document.getElementsByTagName('label'), label = null;
+            for (var i = 0; i < labels.length; i++) {
+                if (chosen_ob && (labels[i].getAttribute('for') == chosen_ob.id)) {
+                    label = labels[i];
+                    break;
+                }
+            }
+            if (!radio_button) {
+                if (label) {
+                    var label_nice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
+                    if (field.type == 'file') {
+                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\{1\}/, label_nice));
+                    } else {
+                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\{1\}/, label_nice));
+                    }
+                } else {
+                    $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD;^}');
+                }
+            }
+            field.classList.remove('input_erroneous');
+        } else if (!radio_button) {
+            $cms.form.setFieldError(field, '');
+        }
+        field.disabled = is_locked;
+
+        if (button) {
+            button.disabled = is_locked;
+        }
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param fieldName
+     * @param isRequired
+     */
+    $cms.form.setRequired = function setRequired(fieldName, isRequired) {
+        var radio_button = $cms.dom.$('#choose_' + fieldName);
+
+        isRequired = !!isRequired;
+
+        if (radio_button) {
+            if (isRequired) {
+                radio_button.checked = true;
+            }
+        } else {
+            var required_a = $cms.dom.$('#form_table_field_name__' + fieldName),
+                required_b = $cms.dom.$('#required_readable_marker__' + fieldName),
+                required_c = $cms.dom.$('#required_posted__' + fieldName),
+                required_d = $cms.dom.$('#form_table_field_input__' + fieldName);
+
+            if (required_a) {
+                required_a.className = 'form_table_field_name';
+
+                if (isRequired) {
+                    required_a.classList.add('required');
+                }
+            }
+
+            if (required_b) {
+                $cms.dom.toggle(required_b, isRequired);
+            }
+
+            if (required_c) {
+                required_c.value = isRequired ? 1 : 0;
+            }
+
+            if (required_d) {
+                required_d.className = 'form_table_field_input';
+            }
+        }
+
+        var element = $cms.dom.$('#' + fieldName);
+
+        if (element) {
+            element.className = element.className.replace(/(input_[a-z_]+)_required/g, '$1');
+
+            if (isRequired) {
+                element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
+            }
+
+            if (element.plupload_object) {
+                element.plupload_object.settings.required = isRequired;
+            }
+        }
+
+        if (!isRequired) {
+            var error = $cms.dom.$('#error__' + fieldName);
+            if (error) {
+                error.style.display = 'none';
+            }
+        }
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param context
+     */
+    $cms.form.disablePreviewScripts = function disablePreviewScripts(context) {
+        if (context === undefined) {
+            context = document;
+        }
+
+        var elements, i;
+
+        elements = $cms.dom.$$(context, 'button, input[type="button"], input[type="image"]');
+        for (i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('click', alertNotInPreviewMode);
+        }
+
+        // Make sure links in the preview don't break it - put in a new window
+        elements = $cms.dom.$$(context, 'a');
+        for (i = 0; i < elements.length; i++) {
+            if (elements[i].href && elements[i].href.includes('://')) {
+                try {
+                    if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) {// guard due to weird Firefox bug, JS actions still opening new window
+                        elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
+                    }
+                } catch (ignore) {} // IE can have security exceptions
+            }
+        }
+
+        function alertNotInPreviewMode() {
+            $cms.ui.alert('{!NOT_IN_PREVIEW_MODE;^}');
+            return false;
+        }
+    };
+
+    /**
+     * Set it up so a form field is known and can be monitored for changes
+     * @memberof $cms.form
+     * @param container
+     */
+    $cms.form.setUpChangeMonitor = function setUpChangeMonitor(container) {
+        var firstInp = $cms.dom.$(container, 'input, select, textarea');
+
+        if (!firstInp || firstInp.id.includes('choose_')) {
+            return;
+        }
+
+        $cms.dom.on(container, 'blur change', function () {
+            container.classList.toggle('filledin', $cms.form.findIfChildrenSet(container));
+        });
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param container
+     * @returns {boolean}
+     */
+    $cms.form.findIfChildrenSet = function findIfChildrenSet(container) {
+        var value, blank = true, el,
+            elements = $cms.dom.$$(container, 'input, select, textarea');
+
+        for (var i = 0; i < elements.length; i++) {
+            el = elements[i];
+            if (((el.type === 'hidden') || ((el.style.display === 'none') && !$cms.form.isWysiwygField(el))) && !el.classList.contains('hidden_but_needed')) {
+                continue;
+            }
+            value = $cms.form.cleverFindValue(el.form, el);
+            blank = blank && (value == '');
+        }
+        return !blank;
+    };
+
+    /**
+     * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
+     * @memberof $cms.form
+     * @param url
+     * @param post
+     * @returns {boolean}
+     */
+    $cms.form.doAjaxFieldTest = function doAjaxFieldTest(url, post) {
+        var xhr = do_ajax_request(url, null, post);
+        if ((xhr.responseText != '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
+            if (xhr.responseText !== 'false') {
+                if (xhr.responseText.length > 1000) {
+                    $cms.log('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
+                    $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                } else {
+                    $cms.ui.alert(xhr.responseText);
+                }
+            }
+            return false;
+        }
+        return true;
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param target
+     * @param e
+     * @param search_type
+     */
+    $cms.form.updateAjaxSearchList = function updateAjaxSearchList(target, e, search_type) {
+        var special = 'search';
+        search_type = strVal(search_type);
+        if (search_type) {
+            special += '&search_type=' + encodeURIComponent(search_type);
+        }
+        $cms.form.updateAjaxMemberList(target, special, false, e);
+    };
+
+    var currentlyDoingListTimer = 0,
+        currentListForEl = null;
+
+    /**
+     * @memberof $cms.form
+     * @param target
+     * @param special
+     * @param delayed
+     * @param event
+     */
+    $cms.form.updateAjaxMemberList = function updateAjaxMemberList(target, special, delayed, event) {
+        if ((event && $cms.dom.keyPressed(event, 'Enter')) || target.disabled) {
+            return;
+        }
+
+        if (!browser_matches('ios') && !target.onblur) {
+            target.onblur = function () {
+                setTimeout(function () {
+                    close_down_ajax_list();
+                }, 300);
+            }
+        }
+
+        if (!delayed) {// A delay, so as not to throw out too many requests
+            if (currentlyDoingListTimer) {
+                window.clearTimeout(currentlyDoingListTimer);
+            }
+            var e_copy = { 'keyCode': event.keyCode, 'which': event.which };
+
+            currentlyDoingListTimer = window.setTimeout(function () {
+                $cms.form.updateAjaxMemberList(target, special, true, e_copy);
+            }, 400);
+            return;
+        } else {
+            currentlyDoingListTimer = 0;
+        }
+
+        target.special = special;
+
+        var v = target.value;
+
+        currentListForEl = target;
+        var script = '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(v);
+        if (special) {
+            script = script + '&special=' + special;
+        }
+
+        do_ajax_request(script + keep_stub(), updateAjaxNemberListResponse);
+
+        function close_down_ajax_list() {
+            var current = $cms.dom.$('#ajax_list');
+            if (current) {
+                current.parentNode.removeChild(current);
+            }
+        }
+
+        function updateAjaxNemberListResponse(result, list_contents) {
+            if (!list_contents || !currentListForEl) {
+                return;
+            }
+
+            close_down_ajax_list();
+
+            var isDataList = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
+
+            //if (list_contents.childNodes.length==0) return;
+            var list = document.createElement(isDataList ? 'datalist' : 'select');
+            list.className = 'people_list';
+            list.setAttribute('id', 'ajax_list');
+            if (isDataList) {
+                currentListForEl.setAttribute('list', 'ajax_list');
+            } else {
+                if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
+                    list.setAttribute('multiple', 'multiple');
+                } else {
+                    list.setAttribute('size', list_contents.childNodes.length + 1);
+                }
+                list.style.position = 'absolute';
+                list.style.left = (find_pos_x(currentListForEl)) + 'px';
+                list.style.top = (find_pos_y(currentListForEl) + currentListForEl.offsetHeight) + 'px';
+            }
+            setTimeout(function () {
+                list.style.zIndex++;
+            }, 100); // Fixes Opera by causing a refresh
+
+            if (list_contents.children.length === 0) {
+                return;
+            }
+
+            var i, item, displaytext;
+            for (i = 0; i < list_contents.children.length; i++) {
+                item = document.createElement('option');
+                item.value = list_contents.children[i].getAttribute('value');
+                displaytext = item.value;
+                if (list_contents.children[i].getAttribute('displayname') != '')
+                    displaytext = list_contents.children[i].getAttribute('displayname');
+                item.text = displaytext;
+                item.textContent = displaytext;
+                list.appendChild(item);
+            }
+            item = document.createElement('option');
+            item.disabled = true;
+            item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+            item.textContent = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
+            list.appendChild(item);
+            currentListForEl.parentNode.appendChild(list);
+
+            if (isDataList) {
+                return;
+            }
+
+            $cms.dom.clearTransitionAndSetOpacity(list, 0.0);
+            $cms.dom.fadeTransition(list, 100, 30, 8);
+
+            var current_list_for_copy = currentListForEl;
+
+            if (currentListForEl.old_onkeyup === undefined) {
+                currentListForEl.old_onkeyup = currentListForEl.onkeyup;
+            }
+
+            if (currentListForEl.old_onchange === undefined) {
+                currentListForEl.old_onchange = currentListForEl.onchange;
+            }
+
+            currentListForEl.down_once = false;
+
+            currentListForEl.onkeyup = function (event) {
+                var ret = handle_arrow_usage(event);
+                if (ret != null) {
+                    return ret;
+                }
+                return $cms.form.updateAjaxMemberList(current_list_for_copy, current_list_for_copy.special, false, event);
+            };
+            currentListForEl.onchange = function (event) {
+                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
+                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
+                if (current_list_for_copy.onchange) {
+                    current_list_for_copy.onchange(event);
+                }
+            };
+            list.onkeyup = function (event) {
+                var ret = handle_arrow_usage(event);
+                if (ret != null) {
+                    return ret;
+                }
+
+                if ($cms.dom.keyPressed(event, 'Enter')) {// ENTER
+                    make_selection(event);
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 200);
+
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                }
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                }
+                return null;
+            };
+
+            currentListForEl.onkeypress = function (event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                }
+                return null;
+            };
+            list.onkeypress = function (event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, ['Enter', 'ArrowUp', 'ArrowDown'])) {
+                    if (event.cancelable) {
+                        event.preventDefault();
+                    }
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                }
+                return null;
+            };
+
+            list.addEventListener(browser_matches('ios') ? 'change' : 'click', make_selection, false);
+
+            currentListForEl = null;
+
+            function handle_arrow_usage(event) {
+                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 1000);
+
+                    var temp = current_list_for_copy.onblur;
+                    current_list_for_copy.onblur = function () {
+                    };
+                    list.focus();
+                    current_list_for_copy.onblur = temp;
+                    if (!current_list_for_copy.down_once) {
+                        current_list_for_copy.down_once = true;
+                        list.selectedIndex = 0;
+                    } else {
+                        if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
+                    }
+                    list.options[list.selectedIndex].selected = true;
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                }
+
+                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
+                    current_list_for_copy.disabled = true;
+                    window.setTimeout(function () {
+                        current_list_for_copy.disabled = false;
+                    }, 1000);
+
+                    var temp = current_list_for_copy.onblur;
+                    current_list_for_copy.onblur = function () {};
+                    list.focus();
+                    current_list_for_copy.onblur = temp;
+                    if (!current_list_for_copy.down_once) {
+                        current_list_for_copy.down_once = true;
+                        list.selectedIndex = 0;
+                    } else {
+                        if (list.selectedIndex > 0) {
+                            list.selectedIndex--;
+                        }
+                    }
+                    list.options[list.selectedIndex].selected = true;
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                }
+                return null;
+            }
+
+            function make_selection(e) {
+                var el = e.target;
+
+                current_list_for_copy.value = el.value;
+                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
+                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
+                current_list_for_copy.onkeypress = function () {
+                };
+                if (current_list_for_copy.onrealchange) {
+                    current_list_for_copy.onrealchange(e);
+                }
+                if (current_list_for_copy.onchange) {
+                    current_list_for_copy.onchange(e);
+                }
+                var al = $cms.dom.$id('ajax_list');
+                al.parentNode.removeChild(al);
+                window.setTimeout(function () {
+                    current_list_for_copy.focus();
+                }, 300);
+            }
+        }
+    };
+
+    /* Marking things (to avoid illegally nested forms) */
+    $cms.form.addFormMarkedPosts = function addFormMarkedPosts(form, prefix) {
+        prefix = strVal(prefix);
+
+        var get = form.method.toLowerCase() === 'get',
+            i;
+
+        if (get) {
+            for (i = 0; i < form.elements.length; i++) {
+                if ((new RegExp('&' + prefix + '\d+=1$', 'g')).test(form.elements[i].name)) {
+                    form.elements[i].parentNode.removeChild(form.elements[i]);
+                }
+            }
+        } else {
+            // Strip old marks out of the URL
+            form.action = form.action.replace('?', '&')
+                .replace(new RegExp('&' + prefix + '\d+=1$', 'g'), '')
+                .replace('&', '?'); // will just do first due to how JS works
+        }
+
+        var checkboxes = $cms.dom.$$('input[type="checkbox"][name^="' + prefix + '"]:checked'),
+            append = '';
+
+        for (i = 0; i < checkboxes.length; i++) {
+            append += (((append === '') && !form.action.includes('?') && !form.action.includes('/pg/') && !get) ? '?' : '&') + checkboxes[i].name + '=1';
+        }
+
+        if (get) {
+            var bits = append.split('&');
+            for (i = 0; i < bits.length; i++) {
+                if (bits[i] !== '') {
+                    $cms.dom.append(form, $cms.dom.create('input', {
+                        name: bits[i].substr(0, bits[i].indexOf('=1')),
+                        type: 'hidden',
+                        value: '1'
+                    }));
+                }
+            }
+        } else {
+            form.action += append;
+        }
+
+        return append !== '';
+    };
+
+
+    /**
+     * Very simple form control flow
+     * @param field
+     * @returns {boolean}
+     */
+    $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field) {
+        if (!field) {
+            // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
+            return true;
+        }
+
+        var value = field.value,
+            errorEl = $cms.dom.$('#error_' + field.id);
+
+        if ((value.trim() === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
+            if (errorEl !== null) {
+                errorEl.style.display = 'block';
+                $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
+            }
+
+            $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
+            return false;
+        }
+
+        if (errorEl != null) {
+            errorEl.style.display = 'none';
+        }
+
+        return true;
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param form
+     * @returns {boolean}
+     */
+    $cms.form.modsecurityWorkaround = function modsecurityWorkaround(form) {
+        var temp_form = document.createElement('form');
+        temp_form.method = 'post';
+
+        if (form.target) {
+            temp_form.target = form.target;
+        }
+        temp_form.action = form.action;
+
+        var data = $cms.dom.serialize(form);
+        data = _modsecurityWorkaround(data);
+
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_data';
+        input.value = data;
+        temp_form.appendChild(input);
+
+        if (form.elements.csrf_token) {
+            var csrf_input = document.createElement('input');
+            csrf_input.type = 'hidden';
+            csrf_input.name = 'csrf_token';
+            csrf_input.value = form.elements.csrf_token.value;
+            temp_form.appendChild(csrf_input);
+        }
+
+        temp_form.style.display = 'none';
+        document.body.appendChild(temp_form);
+
+        window.setTimeout(function () {
+            temp_form.submit();
+            temp_form.parentNode.removeChild(temp_form);
+        });
+
+        return false;
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param data
+     * @returns {string}
+     */
+    $cms.form.modsecurityWorkaroundAjax = function modsecurityWorkaroundAjax(data) {
+        return '_data=' + encodeURIComponent(_modsecurityWorkaround(data));
+    };
+
+    function _modsecurityWorkaround(data) {
+        data = strVal(data);
+
+        var remapper = {
+                '\\': '<',
+                '/': '>',
+                '<': '\'',
+                '>': '"',
+                '\'': '/',
+                '"': '\\',
+                '%': '&',
+                '&': '%',
+                '@': ':',
+                ':': '@'
+            },
+            out = '',
+            char;
+        for (var i = 0; i < data.length; i++) {
+            char = data[i];
+            if (remapper[char] !== undefined) {
+                out += remapper[char];
+            } else {
+                out += char;
+            }
+        }
+        return out;
+    }
+
+    /**
+     * @memberof $cms
      * @param options
      * @returns { $cms.views.ModalWindow }
      */
@@ -3862,7 +5871,7 @@ var encodeUC = encodeURIComponent;
 
             $cms.dom.on(this.boxWrapperEl.firstElementChild, 'click', function (e) {
                 try {
-                    that.top_window.cancel_bubbling(e);
+                    e && e.target && e.stopPropagation && e.stopPropagation();
                 } catch (e) {}
 
                 if ($cms.$MOBILE && (that.type === 'lightbox')) {// IDEA: Swipe detect would be better, but JS does not have this natively yet
@@ -3901,7 +5910,7 @@ var encodeUC = encodeURIComponent;
                     $cms.dom.on(iframe, 'load', function () {
                         if (($cms.dom.hasIframeAccess(iframe)) && (!iframe.contentWindow.document.querySelector('h1')) && (!iframe.contentWindow.document.querySelector('h2'))) {
                             if (iframe.contentWindow.document.title) {
-                                $cms.dom.html(overlay_header, escape_html(iframe.contentWindow.document.title));
+                                $cms.dom.html(overlay_header, $cms.filter.html(iframe.contentWindow.document.title));
                                 overlay_header.style.display = 'block';
                             }
                         }
@@ -4198,7 +6207,7 @@ var encodeUC = encodeURIComponent;
 
         getPageSize: function () {
             return {
-                'page_width': this.top_window.get_window_scroll_width(this.top_window),
+                'page_width': this.top_window.document.body.scrollWidth,
                 'page_height': this.top_window.get_window_scroll_height(this.top_window),
                 'window_width': this.top_window.get_window_width(this.top_window),
                 'window_height': this.top_window.get_window_height()
@@ -4241,10 +6250,10 @@ var encodeUC = encodeURIComponent;
         // Initial rendering
         var url = $cms.baseUrl(this.ajax_url);
         if (params.root_id) {
-            url += '&id=' + encodeUC(params.root_id);
+            url += '&id=' + encodeURIComponent(params.root_id);
         }
         url += '&options=' + this.options;
-        url += '&default=' + encodeUC($cms.dom.$id(this.name).value);
+        url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
 
         do_ajax_request(url, this);
 
@@ -4303,7 +6312,9 @@ var encodeUC = encodeURIComponent;
                 return;
             }
 
-            ajax_result = careful_import_node(ajax_result);
+            try {
+                ajax_result = document.importNode(ajax_result, true);
+            } catch (e) {}
 
             var i, xml, temp_node, html;
             if (!expanding_id) {// Root
@@ -4343,8 +6354,8 @@ var encodeUC = encodeURIComponent;
 
             element || (element = $cms.dom.$id(this.name));
 
-            clear_transition_and_set_opacity(html, 0.0);
-            fade_transition(html, 100, 30, 4);
+            $cms.dom.clearTransitionAndSetOpacity(html, 0.0);
+            $cms.dom.fadeTransition(html, 100, 30, 4);
 
             html.style.display = xml.firstElementChild ? 'block' : 'none';
 
@@ -4353,7 +6364,7 @@ var encodeUC = encodeURIComponent;
 
                 // Special handling of 'options' nodes, inject new options
                 if (node.localName === 'options') {
-                    that.options = encodeUC($cms.dom.html(node));
+                    that.options = encodeURIComponent($cms.dom.html(node));
                     return;
                 }
 
@@ -4403,16 +6414,16 @@ var encodeUC = encodeURIComponent;
                     // Render self
                     node_self.className = (node.getAttribute('highlighted') == 'true') ? 'tree_list_highlighted' : 'tree_list_nonhighlighted';
                     initially_expanded = (node.getAttribute('has_children') != 'true') || (node.getAttribute('expanded') == 'true');
-                    escaped_title = escape_html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
+                    escaped_title = $cms.filter.html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
                     if (escaped_title == '') escaped_title = '{!NA_EM;^}';
                     var description = '';
                     var description_in_use = '';
                     if (node.getAttribute('description_html')) {
                         description = node.getAttribute('description_html');
-                        description_in_use = escape_html(description);
+                        description_in_use = $cms.filter.html(description);
                     } else {
-                        if (node.getAttribute('description')) description = escape_html('. ' + node.getAttribute('description'));
-                        description_in_use = escaped_title + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + escape_html(node.getAttribute('serverid')) + ')') : '');
+                        if (node.getAttribute('description')) description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        description_in_use = escaped_title + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
                     var img_url = $cms.img('{$IMG;,1x/treefield/category}');
                     var img_url_2 = $cms.img('{$IMG;,2x/treefield/category}');
@@ -4423,8 +6434,8 @@ var encodeUC = encodeURIComponent;
                     $cms.dom.html(node_self, ' \
 				<div> \
 					<input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escaped_title + '" title="' + ((!initially_expanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.url(!initially_expanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $cms.url(!initially_expanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" /> \
-					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" /> \
-					<label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" onmouseover="activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(this.firstElementChild.title),\'auto\');" class="ajax_tree_magic_button ' + colour + '"><input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + description_in_use + '" />' + escaped_title + '</label> \
+					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + $cms.filter.html(img_url) + '" srcset="' + $cms.filter.html(img_url_2) + ' 2x" /> \
+					<label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(description_in_use)) + '\', \'auto\']" class="ajax_tree_magic_button ' + colour + '"><input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + description_in_use + '" />' + escaped_title + '</label> \
 					<span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
 				</div> \
 			');
@@ -4446,29 +6457,30 @@ var encodeUC = encodeURIComponent;
                     var a = node_self.querySelector('label');
                     expand_button.onkeypress = a.onkeypress = a.firstElementChild.onkeypress = function (expand_button) {
                         return function (event) {
-                            if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].indexOf(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode)) != -1)
+                            if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
                                 expand_button.onclick(event);
+                            }
                         }
                     }(expand_button);
                     a.oncontextmenu = returnFalse;
                     a.handleSelection = that.handleSelection;
-                    a.firstElementChild.onfocus = function () {
+                    a.firstElementChild.addEventListener('focus', function () {
                         this.parentNode.style.outline = '1px dotted';
-                    };
-                    a.firstElementChild.onblur = function () {
+                    });
+                    a.firstElementChild.addEventListener('blur', function () {
                         this.parentNode.style.outline = '';
-                    };
-                    a.firstElementChild.onclick = a.handleSelection;
-                    a.onclick = a.handleSelection; // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
+                    });
+                    a.firstElementChild.addEventListener('click', a.handleSelection);
+                    a.addEventListener('click', a.handleSelection); // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
                     a.firstElementChild.object = this;
                     a.object = this;
-                    a.onmousedown = function (event) { // To disable selection of text when holding shift or control
+                    a.addEventListener('mousedown', function (event) { // To disable selection of text when holding shift or control
                         if (event.ctrlKey || event.metaKey || event.shiftKey) {
                             if (event.cancelable) {
                                 event.preventDefault();
                             }
                         }
-                    };
+                    });
                     html.appendChild(node_self_wrap);
 
                     // Do any children
@@ -4500,17 +6512,17 @@ var encodeUC = encodeURIComponent;
                 } else { // Assume entry
                     new_html = null;
 
-                    escaped_title = escape_html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
+                    escaped_title = $cms.filter.html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
                     if (escaped_title == '') escaped_title = '{!NA_EM;^}';
 
                     var description = '';
                     var description_in_use = '';
                     if (node.getAttribute('description_html')) {
                         description = node.getAttribute('description_html');
-                        description_in_use = escape_html(description);
+                        description_in_use = $cms.filter.html(description);
                     } else {
-                        if (node.getAttribute('description')) description = escape_html('. ' + node.getAttribute('description'));
-                        description_in_use = escaped_title + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + escape_html(node.getAttribute('serverid')) + ')') : '');
+                        if (node.getAttribute('description')) description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        description_in_use = escaped_title + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
 
                     // Render self
@@ -4521,26 +6533,28 @@ var encodeUC = encodeURIComponent;
                         img_url = node.getAttribute('img_url');
                         img_url_2 = node.getAttribute('img_url_2');
                     }
-                    $cms.dom.html(node_self, '<div><img alt="{!ENTRY;^}" src="' + escape_html(img_url) + '" srcset="' + escape_html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> <label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" onmouseover="activate_tooltip(this,event,' + (node.getAttribute('description_html') ? '' : 'escape_html') + '(\'' + (description_in_use.replace(/\n/g, '').replace(/'/g, '\\' + '\'')) + '\'),\'800px\');"><input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
+                    $cms.dom.html(node_self, '<div><img alt="{!ENTRY;^}" src="' + $cms.filter.html(img_url) + '" srcset="' + $cms.filter.html(img_url_2) + ' 2x" style="width: 14px; height: 14px" /> ' +
+                        '<label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (description_in_use.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
+                        '<input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escaped_title + '</label>' + extra + '</div>');
                     var a = node_self.querySelector('label');
                     a.handleSelection = that.handleSelection;
-                    a.firstElementChild.onfocus = function () {
+                    a.firstElementChild.addEventListener('focus', function () {
                         this.parentNode.style.outline = '1px dotted';
-                    };
-                    a.firstElementChild.onblur = function () {
+                    });
+                    a.firstElementChild.addEventListener('blur', function () {
                         this.parentNode.style.outline = '';
-                    };
-                    a.firstElementChild.onclick = a.handleSelection;
-                    a.onclick = a.handleSelection; // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
+                    });
+                    a.firstElementChild.addEventListener('click', a.handleSelection);
+                    a.addEventListener('click', a.handleSelection); // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
                     a.firstElementChild.object = that;
                     a.object = that;
-                    a.onmousedown = function (event) { // To disable selection of text when holding shift or control
+                    a.addEventListener('mousedown', function (event) { // To disable selection of text when holding shift or control
                         if (event.ctrlKey || event.metaKey || event.shiftKey) {
                             if (event.cancelable) {
                                 event.preventDefault();
                             }
                         }
-                    };
+                    });
                     html.appendChild(node_self_wrap);
                     var selected = ((that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
                     if ((that.multi_selection) && (!selected)) {
@@ -4555,7 +6569,7 @@ var encodeUC = encodeURIComponent;
                     node_self.cms_draggable = node.getAttribute('draggable');
                     node_self.draggable = true;
                     node_self.ondragstart = function (event) {
-                        clear_out_tooltips();
+                        $cms.ui.clearOutTooltips();
 
                         this.className += ' being_dragged';
 
@@ -4627,7 +6641,7 @@ var encodeUC = encodeURIComponent;
                 }
             });
 
-            trigger_resize();
+            $cms.dom.triggerResize();
 
             return a;
         },
@@ -4656,7 +6670,7 @@ var encodeUC = encodeURIComponent;
                 }
 
                 if ((xml_node.getAttribute('has_children') === 'true') && !xml_node.firstElementChild) {
-                    var url = $cms.baseUrl(this.object.ajax_url + '&id=' + encodeUC(real_clicked_id) + '&options=' + this.object.options + '&default=' + encodeUC(element.value));
+                    var url = $cms.baseUrl(this.object.ajax_url + '&id=' + encodeURIComponent(real_clicked_id) + '&options=' + this.object.options + '&default=' + encodeURIComponent(element.value));
                     var ob = this.object;
                     do_ajax_request(url, function (ajax_result_frame, ajax_result) {
                         $cms.dom.html(html_node, '');
@@ -4672,8 +6686,8 @@ var encodeUC = encodeURIComponent;
                 }
 
                 html_node.style.display = 'block';
-                clear_transition_and_set_opacity(html_node, 0.0);
-                fade_transition(html_node, 100, 30, 4);
+                $cms.dom.clearTransitionAndSetOpacity(html_node, 0.0);
+                $cms.dom.fadeTransition(html_node, 100, 30, 4);
 
                 expand_button.src = $cms.img('{$IMG;,1x/treefield/collapse}');
                 expand_button.srcset = $cms.img('{$IMG;,2x/treefield/collapse}') + ' 2x';
@@ -4692,7 +6706,7 @@ var encodeUC = encodeURIComponent;
 
             fixup_node_positions(this.object.name);
 
-            trigger_resize();
+            $cms.dom.triggerResize();
 
             this.object.busy = false;
 
@@ -4709,7 +6723,7 @@ var encodeUC = encodeURIComponent;
             var i,
                 selected_before = (element.value == '') ? [] : (this.object.multi_selection ? element.value.split(',') : [element.value]);
 
-            cancel_bubbling(event);
+            event.stopPropagation();
             event.preventDefault();
 
             if (!assume_ctrl && event.shiftKey && this.object.multi_selection) {
@@ -4901,14 +6915,14 @@ var encodeUC = encodeURIComponent;
             }
 
             // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-            var url = maintain_theme_in_link('{$FIND_SCRIPT;,question_ui}?message=' + encodeUC(message) + '&image_set=' + encodeUC(image_set.join(',')) + '&button_set=' + encodeUC(button_set.join(',')) + '&window_title=' + encodeUC(window_title) + keep_stub());
+            var url = maintain_theme_in_link('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(image_set.join(',')) + '&button_set=' + encodeURIComponent(button_set.join(',')) + '&window_title=' + encodeURIComponent(window_title) + keep_stub());
             if (dialog_width === undefined) {
                 dialog_width = 440;
             }
             if (dialog_height === undefined) {
                 dialog_height = 180;
             }
-            window.faux_showModalDialog(
+            $cms.ui.showModalDialog(
                 url,
                 null,
                 'dialogWidth=' + dialog_width + ';dialogHeight=' + dialog_height + ';status=no;unadorned=yes',
@@ -4925,7 +6939,7 @@ var encodeUC = encodeURIComponent;
         }
 
         if (button_set.length == 1) {
-            window.fauxmodal_alert(
+            $cms.ui.alert(
                 fallback_message ? fallback_message : message,
                 function () {
                     callback(button_set[0]);
@@ -4933,7 +6947,7 @@ var encodeUC = encodeURIComponent;
                 window_title
             );
         } else if (button_set.length == 2) {
-            window.fauxmodal_confirm(
+            $cms.ui.confirm(
                 fallback_message ? fallback_message : message,
                 function (result) {
                     callback(result ? button_set[1] : button_set[0]);
@@ -4951,7 +6965,7 @@ var encodeUC = encodeURIComponent;
                 message = fallback_message;
             }
 
-            window.fauxmodal_prompt(
+            $cms.ui.prompt(
                 message,
                 '',
                 function (result) {
@@ -5004,7 +7018,7 @@ var encodeUC = encodeURIComponent;
 
         if (typeof post === 'string') {
             if (!post.includes('&csrf_token')) { // For CSRF prevention
-                post += '&csrf_token=' + encodeUC(get_csrf_token());
+                post += '&csrf_token=' + encodeURIComponent(get_csrf_token());
             }
 
             ajaxInstances[index].open('POST', url, async);
@@ -5060,7 +7074,7 @@ var encodeUC = encodeURIComponent;
                     try {
                         if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
                             if (!networkDownAlerted && !window.unloaded) {
-                                window.fauxmodal_alert('{!NETWORK_DOWN;^}');
+                                $cms.ui.alert('{!NETWORK_DOWN;^}');
                                 networkDownAlerted = true;
                             }
                         } else {
@@ -5081,7 +7095,7 @@ var encodeUC = encodeURIComponent;
                 methodEl = ajaxResultFrame.querySelector('method');
 
             if (methodEl || ajaxCallbacks[i]) {
-                method = methodEl ? eval('return ' + merge_text_nodes(methodEl)) : ajaxCallbacks[i];
+                method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallbacks[i];
             }
 
             var messageEl = ajaxResultFrame.querySelector('message');
@@ -5093,11 +7107,11 @@ var encodeUC = encodeURIComponent;
 
                 if (ajaxResultFrame.querySelector('error')) {
                     // It's an error :|
-                    window.fauxmodal_alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.data + ') message was returned by the server: ' + message);
+                    $cms.ui.alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.data + ') message was returned by the server: ' + message);
                     return;
                 }
 
-                window.fauxmodal_alert('An informational message was returned by the server: ' + message);
+                $cms.ui.alert('An informational message was returned by the server: ' + message);
                 return;
             }
 
@@ -5123,7 +7137,7 @@ var encodeUC = encodeURIComponent;
 
             if (xhr.responseText && xhr.responseText.includes('<html')) {
                 $cms.error('do_ajax_request(): ', xhr);
-                fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
 
@@ -5174,7 +7188,7 @@ var encodeUC = encodeURIComponent;
         } else {
             parent_id_field = form.elements['parent_id'];
             if (window.last_reply_to !== undefined) {
-                clear_transition_and_set_opacity(window.last_reply_to, 1.0);
+                $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
             }
         }
         window.last_reply_to = el;
@@ -5214,23 +7228,17 @@ var encodeUC = encodeURIComponent;
         post.scrollTop = post.scrollHeight;
     }
 
-
-
 }(window.$cms, JSON.parse(document.getElementById('composr-symbol-data').content)));
 
 function noop() {}
 
 (function () {
     window.undo_staff_unload_action = undo_staff_unload_action;
-    window.check_field_for_blankness = check_field_for_blankness;
     window.manage_scroll_height = manage_scroll_height;
     window.get_main_cms_window = get_main_cms_window;
     window.magic_keypress = magic_keypress;
-    window.escape_html = escape_html;
-    window.escape_comcode = escape_comcode;
     window.create_rollover = create_rollover;
     window.browser_matches = browser_matches;
-    window.confirm_session = confirm_session;
 
     // Serves as a flag to indicate any new errors are probably due to us transitioning
     window.unloaded = !!window.unloaded;
@@ -5245,36 +7253,9 @@ function noop() {}
         }
         var bi = $cms.dom.$id('main_website_inner');
         if (bi) {
-            clear_transition(bi);
+            $cms.dom.clearTransition(bi);
             bi.classList.remove('site_unloading');
         }
-    }
-
-    /* Very simple form control flow */
-    function check_field_for_blankness(field, event) {
-        if (!field) {
-            // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
-            return true;
-        }
-
-        var value = field.value,
-            errorEl = $cms.dom.$('#error_' + field.id);
-
-        if ((value.trim() === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
-            if (errorEl !== null) {
-                errorEl.style.display = 'block';
-                $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
-            }
-
-            window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
-            return false;
-        }
-
-        if (errorEl != null) {
-            errorEl.style.display = 'none';
-        }
-
-        return true;
     }
 
     /* Making the height of a textarea match its contents */
@@ -5289,7 +7270,7 @@ function noop() {}
                 boxSizing: 'border-box',
                 overflowY: 'hidden'
             });
-            trigger_resize();
+            $cms.dom.triggerResize();
         }
     }
 
@@ -5323,10 +7304,6 @@ function noop() {}
     /* Find if the user performed the Composr "magic keypress" to initiate some action */
     function magic_keypress(event) {
         // Cmd+Shift works on Mac - cannot hold down control or alt in Mac firefox at least
-        if (window.capture_event !== undefined) {
-            event = window.capture_event;
-        }
-
         var count = 0;
         if (event.shiftKey) {
             count++;
@@ -5342,28 +7319,6 @@ function noop() {}
         }
 
         return count >= 2;
-    }
-
-    // Workaround for a dodgy firefox extension
-    window.addEventListener('click', function (e) {
-        window.capture_event = e;
-    }, true);
-
-    /* Data escaping */
-    function escape_html(value) {
-        value = strVal(value);
-        if (!value) {
-            return '';
-        }
-        return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    function escape_comcode(value) {
-        value = strVal(value);
-        if (!value) {
-            return '';
-        }
-        return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
     }
 
     /* Image rollover effects */
@@ -5446,64 +7401,17 @@ function noop() {}
         // Should never get here
         return false;
     }
-
-    /* Enforcing a session using AJAX */
-    function confirm_session(callback) {
-        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + keep_stub(true);
-
-        do_ajax_request(url, function (ret) {
-            if (!ret) {
-                return;
-            }
-
-            if (ret.responseText === '') {// Blank means success, no error - so we can call callback
-                callback(true);
-                return;
-            }
-
-            // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-            if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
-                window.fauxmodal_prompt(
-                    '{!USERNAME;^}',
-                    '',
-                    function (promptt) {
-                        _confirm_session(callback, promptt, url);
-                    },
-                    '{!_LOGIN;^}'
-                );
-                return;
-            }
-
-            _confirm_session(callback, ret.responseText, url);
-        });
-
-        function _confirm_session(callback, username, url) {
-            window.fauxmodal_prompt(
-                $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
-                '',
-                function (promptt) {
-                    if (promptt !== null) {
-                        do_ajax_request(url, function (ret) {
-                            if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
-                                callback(true);
-                            } else {
-                                _confirm_session(callback, username, url); // Recurse
-                            }
-                        }, 'login_username=' + encodeUC(username) + '&password=' + encodeUC(promptt));
-                    } else {
-                        callback(false);
-                    }
-                },
-                '{!_LOGIN;^}',
-                'password'
-            );
-        }
-    }
 }());
 
 
-/* Dynamic inclusion */
-function load_snippet(snippet_hook, post, callback) {
+/**
+ * Dynamic inclusion
+ * @memberof $cms
+ * @param snippet_hook
+ * @param post
+ * @param callback
+ */
+$cms.loadSnippet = function loadSnippet(snippet_hook, post, callback) {
     if (!window.location) { // In middle of page navigation away
         return null;
     }
@@ -5526,7 +7434,7 @@ function load_snippet(snippet_hook, post, callback) {
         return null;
     }
     return html.responseText;
-}
+};
 
 /* Tabs */
 function find_url_tab(hash) {
@@ -5538,64 +7446,14 @@ function find_url_tab(hash) {
         var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
 
         if ($cms.dom.$('#g_' + tab)) {
-            select_tab('g', tab);
+            $cms.ui.selectTab('g', tab);
         }
         else if ((tab.indexOf('__') != -1) && ($cms.dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
             var old = hash;
-            select_tab('g', tab.substr(0, tab.indexOf('__')));
+            $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
             window.location.hash = old;
         }
     }
-}
-function select_tab(id, tab, from_url, automated) {
-    from_url = !!from_url;
-    automated = !!automated;
-
-    if (!from_url) {
-        var tab_marker = $cms.dom.$('#tab__' + tab.toLowerCase());
-        if (tab_marker) {
-            // For URL purposes, we will change URL to point to tab
-            // HOWEVER, we do not want to cause a scroll so we will be careful
-            tab_marker.id = '';
-            window.location.hash = '#tab__' + tab.toLowerCase();
-            tab_marker.id = 'tab__' + tab.toLowerCase();
-        }
-    }
-
-    var tabs = [], i, element;
-
-    element = $cms.dom.$('#t_' + tab);
-    for (i = 0; i < element.parentNode.children.length; i++) {
-        if (element.parentNode.children[i].id && (element.parentNode.children[i].id.substr(0, 2) === 't_')) {
-            tabs.push(element.parentNode.children[i].id.substr(2));
-        }
-    }
-
-    for (i = 0; i < tabs.length; i++) {
-        element = $cms.dom.$('#' + id + '_' + tabs[i]);
-        if (element) {
-            element.style.display = (tabs[i] === tab) ? 'block' : 'none';
-
-            if (tabs[i] === tab) {
-                if (window['load_tab__' + tab] === undefined) {
-                    clear_transition_and_set_opacity(element, 0.0);
-                    fade_transition(element, 100, 30, 8);
-                }
-            }
-        }
-
-        element = $cms.dom.$('#t_' + tabs[i]);
-        if (element) {
-            element.classList.toggle('tab_active', tabs[i] === tab);
-        }
-    }
-
-    if (window['load_tab__' + tab] !== undefined) {
-        // Usually an AJAX loader
-        window['load_tab__' + tab](automated, $cms.dom.$('#' + id + '_' + tab));
-    }
-
-    return false;
 }
 
 function matches_theme_image(src, url) {
@@ -5714,7 +7572,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     if (!$cms.$CONFIG_OPTION.enable_animations) {
         try {
             window.scrollTo(0, dest_y);
-        } catch (e) {}
+        } catch (ignore) {}
         return;
     }
 
@@ -5725,7 +7583,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     if (dest_y < 0) {
         dest_y = 0;
     }
-    if ((expected_scroll_y !== undefined) && (expected_scroll_y != null) && (expected_scroll_y != scroll_y)) {
+    if ((expected_scroll_y != null) && (expected_scroll_y != scroll_y)) {
         // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
         return;
     }
@@ -5785,8 +7643,7 @@ function register_mouse_listener(e) {
             } else if (event.clientX) {
                 return event.clientX + window.pageXOffset;
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
 
         return 0;
     }
@@ -5811,10 +7668,6 @@ function get_window_width(win) {
 
 function get_window_height(win) {
     return (win || window).innerHeight - 18;
-}
-
-function get_window_scroll_width(win) {
-    return (win || window).document.body.scrollWidth;
 }
 
 function get_window_scroll_height(win) {
@@ -5865,386 +7718,13 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     return top;
 }
 
-(function (){
-    window.modsecurity_workaround = modsecurity_workaround;
-    window.modsecurity_workaround_ajax = modsecurity_workaround_ajax;
-
-    function modsecurity_workaround(form) {
-        var temp_form = document.createElement('form');
-        temp_form.method = 'post';
-
-        if (form.target) {
-            temp_form.target = form.target;
-        }
-        temp_form.action = form.action;
-
-        var data = $cms.dom.serialize(form);
-        data = _modsecurity_workaround(data);
-
-        var input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = '_data';
-        input.value = data;
-        temp_form.appendChild(input);
-
-        if (form.elements.csrf_token) {
-            var csrf_input = document.createElement('input');
-            csrf_input.type = 'hidden';
-            csrf_input.name = 'csrf_token';
-            csrf_input.value = form.elements.csrf_token.value;
-            temp_form.appendChild(csrf_input);
-        }
-
-        temp_form.style.display = 'none';
-        document.body.appendChild(temp_form);
-
-        window.setTimeout(function () {
-            temp_form.submit();
-            temp_form.parentNode.removeChild(temp_form);
-        });
-
-        return false;
-    }
-
-    function modsecurity_workaround_ajax(data) {
-        return '_data=' + encodeUC(_modsecurity_workaround(data));
-    }
-
-    function _modsecurity_workaround(data) {
-        data = strVal(data);
-
-        var remapper = {
-                '\\': '<',
-                '/': '>',
-                '<': '\'',
-                '>': '"',
-                '\'': '/',
-                '"': '\\',
-                '%': '&',
-                '&': '%',
-                '@': ':',
-                ':': '@'
-            },
-            out = '',
-            char;
-        for (var i = 0; i < data.length; i++) {
-            char = data[i];
-            if (remapper[char] !== undefined) {
-                out += remapper[char];
-            } else {
-                out += char;
-            }
-        }
-        return out;
-    }
-}());
-
-
-function clear_out_tooltips(tooltip_being_opened) {
-    // Delete other tooltips, which due to browser bugs can get stuck
-    var selector = '.tooltip';
-    if (tooltip_being_opened) {
-        selector += ':not(#' + tooltip_being_opened + ')';
-    }
-    $cms.dom.$$(selector).forEach(function (el) {
-        deactivate_tooltip(el.ac, el);
-    });
-}
-
-$cms.ready.then(function () {
-    // Tooltips close on browser resize
-    $cms.dom.on(window, 'resize', function () {
-        clear_out_tooltips();
-    });
-});
-
-/* Tooltips that can work on any element with rich HTML support */
-//  ac is the object to have the tooltip
-//  event is the event handler
-//  tooltip is the text for the tooltip
-//  width is in pixels (but you need 'px' on the end), can be null or auto
-//  pic is the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
-//  height is the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
-//  bottom is set to true if the tooltip should definitely appear upwards; rarely use this parameter
-//  no_delay is set to true if the tooltip should appear instantly
-//  lights_off is set to true if the image is to be dimmed
-//  force_width is set to true if you want width to not be a max width
-//  win is the window to open in
-//  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
-function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
-    event || (event = {});
-    width || (width = 'auto');
-    pic || (pic = '');
-    height || (height = 'auto');
-    bottom = !!bottom;
-    no_delay = !!no_delay;
-    lights_off = !!lights_off;
-    force_width = !!force_width;
-    win || (win = window);
-    have_links = !!have_links;
-
-    if (!window.page_loaded || !tooltip) {
-        return;
-    }
-
-    if (window.is_doing_a_drag) {
-        // Don't want tooltips appearing when doing a drag and drop operation
-        return;
-    }
-
-    if (!have_links && $cms.isTouchEnabled) {
-        return; // Too erratic
-    }
-
-    register_mouse_listener(event);
-
-    clear_out_tooltips(el.tooltip_id);
-
-    // Add in move/leave events if needed
-    if (!have_links) {
-        if (!el.onmouseout) {
-            el.onmouseout = function () {
-                win.deactivate_tooltip(el);
-            };
-        }
-        if (!el.onmousemove) {
-            el.onmousemove = function (event) {
-                win.reposition_tooltip(el, event, false, false, null, false, win);
-            };
-        }
-    } else {
-        el.old_onclick = el.onclick;
-        el.onclick = function () {
-            win.deactivate_tooltip(el);
-        };
-    }
-
-    if (typeof tooltip === 'function') {
-        tooltip = tooltip();
-    }
-
-    if (!tooltip) {
-        return;
-    }
-
-    el.is_over = true;
-    el.tooltip_on = false;
-    el.initial_width = width;
-    el.have_links = have_links;
-
-    var children = el.querySelectorAll('img');
-    for (var i = 0; i < children.length; i++) {
-        children[i].setAttribute('title', '');
-    }
-
-    var tooltipEl;
-    if ((el.tooltip_id !== undefined) && ($cms.dom.$id(el.tooltip_id))) {
-        tooltipEl = win.$cms.dom.$('#' + el.tooltip_id);
-        tooltipEl.style.display = 'none';
-        $cms.dom.html(tooltipEl, '');
-        window.setTimeout(function () {
-            reposition_tooltip(el, event, bottom, true, tooltipEl, force_width);
-        });
-    } else {
-        tooltipEl = win.document.createElement('div');
-        tooltipEl.role = 'tooltip';
-        tooltipEl.style.display = 'none';
-        var rt_pos = tooltip.indexOf('results_table');
-        tooltipEl.className = 'tooltip ' + ((rt_pos == -1 || rt_pos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (have_links ? ' have_links' : '');
-        if (el.className.substr(0, 3) == 'tt_') {
-            tooltipEl.className += ' ' + el.className;
-        }
-        if (tooltip.length < 50) tooltipEl.style.wordWrap = 'normal'; // Only break words on long tooltips. Otherwise it messes with alignment.
-        if (force_width) {
-            tooltipEl.style.width = width;
-        } else {
-            if (width == 'auto') {
-                var new_auto_width = get_window_width(win) - 30 - window.mouse_x;
-                if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
-                tooltipEl.style.maxWidth = new_auto_width + 'px';
-            } else {
-                tooltipEl.style.maxWidth = width;
-            }
-            tooltipEl.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
-        }
-        if (height && (height !== 'auto')) {
-            tooltipEl.style.maxHeight = height;
-            tooltipEl.style.overflow = 'auto';
-        }
-        tooltipEl.style.position = 'absolute';
-        tooltipEl.id = 't_' + Math.floor(Math.random() * 1000);
-        el.tooltip_id = tooltipEl.id;
-        reposition_tooltip(el, event, bottom, true, tooltipEl, force_width);
-        document.body.appendChild(tooltipEl);
-    }
-    tooltipEl.ac = el;
-
-    if (pic) {
-        var img = win.document.createElement('img');
-        img.src = pic;
-        img.className = 'tooltip_img';
-        if (lights_off) {
-            img.className += ' faded_tooltip_img';
-        }
-        tooltipEl.appendChild(img);
-        tooltipEl.className += ' tooltip_with_img';
-    }
-
-    var event_copy = { // Needs to be copied as it will get erased on IE after this function ends
-        'pageX': +event.pageX || 0,
-        'pageY': +event.pageY || 0,
-        'clientX': +event.clientX || 0,
-        'clientY': +event.clientY || 0,
-        'type': event.type || ''
-    };
-
-    // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
-    var bi = $cms.dom.$('#main_website_inner') || document.body;
-    if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
-        bi.onmouseover = function () {
-            return true;
-        };
-    }
-
-    window.setTimeout(function () {
-        if (!el.is_over) {
-            return;
-        }
-
-        if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
-            $cms.dom.appendHtml(tooltipEl, tooltip);
-
-        el.tooltip_on = true;
-        tooltipEl.style.display = 'block';
-        if (tooltipEl.style.width == 'auto')
-            tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
-
-        if (!no_delay) {
-            // If delayed we will sub in what the currently known global mouse coordinate is
-            event_copy.pageX = win.mouse_x;
-            event_copy.pageY = win.mouse_y;
-        }
-
-        reposition_tooltip(el, event_copy, bottom, true, tooltipEl, force_width, win);
-    }, no_delay ? 0 : 666);
-}
-function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
-    bottom = !!bottom;
-    win || (win = window);
-
-    if (!starting) {// Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
-
-        if (el.getAttribute('title')) {
-            el.setAttribute('title', '');
-        }
-
-        if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
-            el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
-        }
-    }
-
-    if (!window.page_loaded) {
-        return;
-    }
-
-    if (!el.tooltip_id) {
-        if (el.onmouseover) {
-            el.onmouseover(event);
-        }
-        return;
-    }  // Should not happen but written as a fail-safe
-
-    tooltip_element || (tooltip_element = $cms.dom.$id(el.tooltip_id));
-
-    if (!tooltip_element) {
-        return;
-    }
-
-    var style__offset_x = 9,
-        style__offset_y = (el.have_links) ? 18 : 9,
-        x, y;
-
-    // Find mouse position
-    x = window.mouse_x;
-    y = window.mouse_y;
-    x += style__offset_x;
-    y += style__offset_y;
-    try {
-        if (event.type) {
-            if (event.type != 'focus') {
-                el.done_none_focus = true;
-            }
-
-            if ((event.type === 'focus') && (el.done_none_focus)) {
-                return;
-            }
-
-            x = (event.type === 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
-            y = (event.type === 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
-        }
-    } catch (ignore) {
-    }
-    // Maybe mouse position actually needs to be in parent document?
-    try {
-        if (event.target && (event.target.ownerDocument !== win.document)) {
-            x = win.mouse_x + style__offset_x;
-            y = win.mouse_y + style__offset_y;
-        }
-    } catch (ignore) {
-    }
-
-    // Work out which direction to render in
-    var width = $cms.dom.contentWidth(tooltip_element);
-    if (tooltip_element.style.width === 'auto') {
-        if (width < 200) {
-            // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
-            width = 200;
-        }
-    }
-    var height = tooltip_element.offsetHeight;
-    var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
-    if (x_excess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
-        var x_before = x;
-        x -= x_excess + 20 + style__offset_x;
-        if (x < 100) { // Do not make it impossible to de-focus the tooltip
-            x = (x_before < 100) ? x_before : 100;
-        }
-    }
-    if (x < 0) {
-        x = 0;
-    }
-    if (bottom) {
-        tooltip_element.style.top = (y - height) + 'px';
-    } else {
-        var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
-        if (y_excess > 0) y -= y_excess;
-        var scroll_y = win.pageYOffset;
-        if (y < scroll_y) y = scroll_y;
-        tooltip_element.style.top = y + 'px';
-    }
-    tooltip_element.style.left = x + 'px';
-}
-
-function deactivate_tooltip(el, tooltip_element) {
-    el.is_over = false;
-
-    if (el.tooltip_id === undefined) {
-        return;
-    }
-
-    tooltip_element || (tooltip_element = $cms.dom.$('#' + el.tooltip_id));
-
-    if (tooltip_element) {
-        $cms.dom.hide(tooltip_element);
-    }
-
-    if (el.old_onclick !== undefined) {
-        el.onclick = el.old_onclick;
-    }
-}
-
-/* Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes! */
-function resize_frame(name, min_height) {
+/**
+ * Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes!
+ * @memberof $cms.dom
+ * @param name
+ * @param min_height
+ */
+$cms.dom.resizeFrame = function resizeFrame(name, min_height) {
     min_height = +min_height || 0;
 
     var frame_element = $cms.dom.$id(name),
@@ -6267,7 +7747,7 @@ function resize_frame(name, min_height) {
             if (frame_window.parent) {
                 window.setTimeout(function () {
                     if (frame_window.parent) {
-                        frame_window.parent.trigger_resize();
+                        frame_window.parent.$cms.dom.triggerResize();
                     }
                 });
             }
@@ -6278,7 +7758,7 @@ function resize_frame(name, min_height) {
                 frame_element.style.height = ((h >= min_height) ? h : min_height) + 'px';
                 if (frame_window.parent) {
                     window.setTimeout(function () {
-                        if (frame_window.parent) frame_window.parent.trigger_resize();
+                        if (frame_window.parent) frame_window.parent.$cms.dom.triggerResize();
                     });
                 }
                 frame_element.scrolling = 'no';
@@ -6291,28 +7771,29 @@ function resize_frame(name, min_height) {
                     } catch (e) {
                     }
 
-                    return cancel_bubbling(event);
+                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }; // Needed for Opera
             }
         }
     }
 
     frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
-}
-function trigger_resize(and_subframes) {
+};
+
+$cms.dom.triggerResize = function triggerResize(and_subframes) {
+    and_subframes = !!and_subframes;
+
     if (!window.parent || !window.parent.document) {
         return;
     }
     var i, iframes = window.parent.document.querySelectorAll('iframe');
-
-    and_subframes = !!and_subframes;
 
     for (i = 0; i < iframes.length; i++) {
         if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id != '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] == window))) {
             if (iframes[i].style.height === '900px') {
                 iframes[i].style.height = 'auto';
             }
-            window.parent.resize_frame(iframes[i].name);
+            window.parent.$cms.dom.resizeFrame(iframes[i].name);
         }
     }
 
@@ -6320,67 +7801,16 @@ function trigger_resize(and_subframes) {
         iframes = document.querySelectorAll('iframe');
         for (i = 0; i < iframes.length; i++) {
             if ((iframes[i].name != '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
-                resize_frame(iframes[i].name);
+                $cms.dom.resizeFrame(iframes[i].name);
             }
         }
     }
-}
-
-/* Marking things (to avoid illegally nested forms) */
-function add_form_marked_posts(form, prefix) {
-    prefix = strVal(prefix);
-
-    var get = form.method.toLowerCase() === 'get',
-        i;
-
-    if (get) {
-        for (i = 0; i < form.elements.length; i++) {
-            if ((new RegExp('&' + prefix + '\d+=1$', 'g')).test(form.elements[i].name)) {
-                form.elements[i].parentNode.removeChild(form.elements[i]);
-            }
-        }
-    } else {
-        // Strip old marks out of the URL
-        form.action = form.action.replace('?', '&')
-            .replace(new RegExp('&' + prefix + '\d+=1$', 'g'), '')
-            .replace('&', '?'); // will just do first due to how JS works
-    }
-
-    var checkboxes = $cms.dom.$$('input[type="checkbox"][name^="' + prefix + '"]:checked'),
-        append = '';
-
-    for (i = 0; i < checkboxes.length; i++) {
-        append += (((append === '') && !form.action.includes('?') && !form.action.includes('/pg/') && !get) ? '?' : '&') + checkboxes[i].name + '=1';
-    }
-
-    if (get) {
-        var bits = append.split('&');
-        for (i = 0; i < bits.length; i++) {
-            if (bits[i] !== '') {
-                $cms.dom.append(form, $cms.dom.create('input', {
-                    name: bits[i].substr(0, bits[i].indexOf('=1')),
-                    type: 'hidden',
-                    value: '1'
-                }));
-            }
-        }
-    } else {
-        form.action += append;
-    }
-
-    return append !== '';
-}
-
-/* Event listeners */
-
-function cancel_bubbling(event) {
-    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
-}
+};
 
 /* Update a URL to maintain the current theme into it */
 function maintain_theme_in_link(url) {
     var usp = $cms.uspFromUrl(url),
-        theme = encodeUC($cms.$THEME);
+        theme = encodeURIComponent($cms.$THEME);
 
     if (usp.keys().next().done) {
         // `url` doesn't have a query string
@@ -6403,17 +7833,15 @@ function keep_stub(starting) {// `starting` set to true means "Put a '?' for the
     return (starting ? '?' : '&') + keep;
 }
 
-/* Import an XML node into the current document */
-function careful_import_node(node) {
-    try {
-        return document.importNode(node, true);
-    } catch (e) {
-        return node;
-    }
-}
-
-/* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
-function ga_track(el, category, action) {
+/**
+ * Google Analytics tracking for links; particularly useful if you have no server-side stat collection
+ * @memberof $cms
+ * @param el
+ * @param category
+ * @param action
+ * @returns {boolean}
+ */
+$cms.gaTrack = function ga_track(el, category, action) {
     if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
         return;
     }
@@ -6432,78 +7860,20 @@ function ga_track(el, category, action) {
 
     if (el) {
         setTimeout(function () {
-            click_link(el);
+            $cms.navigate(el);
         }, 100);
 
         return false;
     }
-}
+};
 
-/* Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click) */
-function click_link(link) {
-    var old, cancelled;
-
-    if (link && (link.localName !== 'a') && (link.localName !== 'input')) {
-        link = link.querySelector('a, input');
-    }
-
-    if (!link) {
-        return;
-    }
-
-    old = link.onclick;
-    link.onclick = null;
-    cancelled = !$cms.dom.trigger(link, {type: 'click', bubbles: false});
-    link.onclick = old;
-
-    if (!cancelled && link.href) {
-        if (!link.target || (link.target === '_self')) {
-            window.location = link.href;
-        } else {
-            window.open(link.href, link.target);
-        }
-    }
-}
-
-/* Set it up so a form field is known and can be monitored for changes */
-function set_up_change_monitor(container) {
-    var firstInp = $cms.dom.$(container, 'input, select, textarea');
-
-    if (!firstInp || firstInp.id.includes('choose_')) {
-        return;
-    }
-
-    $cms.dom.on(container, 'blur change', function () {
-        container.classList.toggle('filledin', find_if_children_set(container));
-    });
-}
-
-
-function find_if_children_set(container) {
-    var value, blank = true, el;
-    var elements = $cms.dom.$$(container, 'input, select, textarea');
-    for (var i = 0; i < elements.length; i++) {
-        el = elements[i];
-        if (((el.type === 'hidden') || ((el.style.display === 'none') && !is_wysiwyg_field(el))) && !el.classList.contains('hidden_but_needed')) {
-            continue;
-        }
-        value = clever_find_value(el.form, el);
-        blank = blank && (value == '');
-    }
-    return !blank;
-}
-
-
-/* Used by audio CAPTCHA. */
-function play_self_audio_link(ob) {
-    $cms.requireJavascript('sound');
-
-    var timer = window.setInterval(function () {
-        if (window.soundManager === undefined) {
-            return;
-        }
-
-        window.clearInterval(timer);
+/**
+ * Used by audio CAPTCHA.
+ * @memberof $cms
+ * @param ob
+ */
+$cms.playSelfAudioLink = function playSelfAudioLink(ob) {
+    $cms.requireJavascript('sound').then(function () {
         window.soundManager.setup({
             url: $cms.baseUrl('data'),
             debugMode: false,
@@ -6514,19 +7884,14 @@ function play_self_audio_link(ob) {
                 }
             }
         });
-    }, 50);
-}
+    });
+};
 
 ((function () {
-    window.fade_transition = fade_transition;
-    window.has_fade_transition = has_fade_transition;
-    window.clear_transition = clear_transition;
-    window.clear_transition_and_set_opacity = clear_transition_and_set_opacity;
-
     // <{element's uid}, {setTimeout id}>
     var timeouts = {};
 
-    function fade_transition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
+    $cms.dom.fadeTransition = function fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
         if (!$cms.isEl(el)) {
             return;
         }
@@ -6541,7 +7906,7 @@ function play_self_audio_link(ob) {
             return;
         }
 
-        clear_transition(el);
+        $cms.dom.clearTransition(el);
 
         var again, newIncrement;
 
@@ -6578,19 +7943,19 @@ function play_self_audio_link(ob) {
 
         if (again) {
             timeouts[$cms.uid(el)] = window.setTimeout(function () {
-                fade_transition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
+                $cms.dom.fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
             }, periodInMsecs);
         } else if (destroyAfter && el.parentNode) {
-            clear_transition(el);
+            $cms.dom.clearTransition(el);
             el.parentNode.removeChild(el);
         }
-    }
+    };
 
-    function has_fade_transition(el) {
+    $cms.dom.hasFadeTransition = function hasFadeTransition(el) {
         return $cms.isEl(el) && ($cms.uid(el) in timeouts);
-    }
+    };
 
-    function clear_transition(el) {
+    $cms.dom.clearTransition = function clearTransition(el) {
         var uid = $cms.isEl(el) && $cms.uid(el);
 
         if (uid && timeouts[uid]) {
@@ -6599,423 +7964,19 @@ function play_self_audio_link(ob) {
             } catch (ignore) {}
             delete timeouts[uid];
         }
-    }
+    };
 
     /* Set opacity, without interfering with the thumbnail timer */
-    function clear_transition_and_set_opacity(el, fraction) {
-        clear_transition(el);
+    $cms.dom.clearTransitionAndSetOpacity = function clearTransitionAndSetOpacity(el, fraction) {
+        $cms.dom.clearTransition(el);
         el.style.opacity = fraction;
-    }
+    };
 })());
-
-/*
-
- This code does a lot of stuff relating to overlays...
-
- It provides callback-based *overlay*-driven substitutions for the standard browser windowing API...
- - alert
- - prompt
- - confirm
- - open (known as popups)
- - showModalDialog
- A term we are using for these kinds of 'overlay' is '(faux) modal window'.
-
- It provides a generic function to open a link as an overlay.
-
- It provides a function to open an image link as a 'lightbox' (we use the term lightbox exclusively to refer to images in an overlay).
-
- */
-'use strict';
-
-function open_images_into_lightbox(imgs, start) {
-    start = +start || 0;
-
-    var modal = _open_image_into_lightbox(imgs[start][0], imgs[start][1], start + 1, imgs.length, true, imgs[start][2]);
-    modal.positionInSet = start;
-
-    var previousButton = document.createElement('img');
-    previousButton.className = 'previous_button';
-    previousButton.src = $cms.img('{$IMG;,mediaset_previous}');
-    previousButton.onclick = clickPreviousButton;
-    function clickPreviousButton(e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var new_position = modal.positionInSet - 1;
-        if (new_position < 0) {
-            new_position = imgs.length - 1;
-        }
-        modal.positionInSet = new_position;
-        _open_different_image_into_lightbox(modal, new_position, imgs);
-    }
-
-    modal.left = previous;
-    modal.boxWrapperEl.firstElementChild.appendChild(previousButton);
-
-    var next_button = document.createElement('img');
-    next_button.className = 'next_button';
-    next_button.src = $cms.img('{$IMG;,mediaset_next}');
-    next_button.onclick = clickNextButton;
-    function clickNextButton(e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var new_position = modal.positionInSet + 1;
-        if (new_position >= imgs.length) {
-            new_position = 0;
-        }
-        modal.positionInSet = new_position;
-        _open_different_image_into_lightbox(modal, new_position, imgs);
-    }
-
-    modal.right = next;
-    modal.boxWrapperEl.firstElementChild.appendChild(next_button);
-
-    function _open_different_image_into_lightbox(modal, position, imgs) {
-        var is_video = imgs[position][2];
-
-        // Load proper image
-        window.setTimeout(function () { // Defer execution until the HTML was parsed
-            if (is_video) {
-                var video = document.createElement('video');
-                video.id = 'lightbox_image';
-                video.className = 'lightbox_image';
-                video.controls = 'controls';
-                video.autoplay = 'autoplay';
-                $cms.dom.html(video, imgs[position][0]);
-                video.addEventListener('loadedmetadata', function () {
-                    _resize_lightbox_dimensions_img(modal, video, true, true);
-                });
-            } else {
-                var img = modal.top_window.document.createElement('img');
-                img.className = 'lightbox_image';
-                img.id = 'lightbox_image';
-                img.src = '{$IMG_INLINE;,loading}';
-                window.setTimeout(function () { // Defer execution until after loading is set
-                    img.onload = function () {
-                        _resize_lightbox_dimensions_img(modal, img, true, is_video);
-                    };
-                    img.src = imgs[position][0];
-                });
-            }
-
-            var lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
-                lightbox_position_in_set_x = modal.top_window.$cms.dom.$id('lightbox_position_in_set_x');
-
-            if (lightbox_description) {
-                $cms.dom.html(lightbox_description, imgs[position][1]);
-            }
-
-            if (lightbox_position_in_set_x) {
-                $cms.dom.html(lightbox_position_in_set_x, position + 1);
-            }
-        });
-    }
-
-}
-
-function _open_image_into_lightbox(initial_img_url, description, x, n, has_full_button, is_video) {
-    has_full_button = !!has_full_button;
-    is_video = !!is_video;
-
-    // Set up overlay for Lightbox
-    var lightbox_code = /** @lang HTML */' \
-			<div style="text-align: center"> \
-				<p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p> \
-				<p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
-					<span id="lightbox_description">' + description + '</span> \
-					' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
-					' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + escape_html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
-				</p> \
-			</div> \
-		';
-
-    // Show overlay
-    var my_lightbox = {
-            type: 'lightbox',
-            text: lightbox_code,
-            cancel_button: '{!INPUTSYSTEM_CLOSE;^}',
-            width: '450', // This will be updated with the real image width, when it has loaded
-            height: '300' // "
-        },
-        modal = $cms.openModalWindow(my_lightbox);
-
-    // Load proper image
-    window.setTimeout(function () { // Defer execution until the HTML was parsed
-        if (is_video) {
-            var video = document.createElement('video');
-            video.controls = 'controls';
-            video.autoplay = 'autoplay';
-            $cms.dom.html(video, initial_img_url);
-            video.className = 'lightbox_image';
-            video.id = 'lightbox_image';
-            video.addEventListener('loadedmetadata', function () {
-                _resize_lightbox_dimensions_img(modal, video, has_full_button, true);
-            });
-        } else {
-            var img = modal.top_window.document.createElement('img');
-            img.className = 'lightbox_image';
-            img.id = 'lightbox_image';
-            img.onload = function () {
-                _resize_lightbox_dimensions_img(modal, img, has_full_button, false);
-            };
-            img.src = initial_img_url;
-        }
-    });
-
-    return modal;
-}
-
-function _resize_lightbox_dimensions_img(modal, img, has_full_button, is_video) {
-    if (!modal.boxWrapperEl) {
-        /* Overlay closed already */
-        return;
-    }
-
-    var real_width = is_video ? img.videoWidth : img.width,
-        width = real_width,
-        real_height = is_video ? img.videoHeight : img.height,
-        height = real_height,
-        lightbox_image = modal.top_window.$cms.dom.$id('lightbox_image'),
-
-        lightbox_meta = modal.top_window.$cms.dom.$id('lightbox_meta'),
-        lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
-        lightbox_position_in_set = modal.top_window.$cms.dom.$id('lightbox_position_in_set'),
-        lightbox_full_link = modal.top_window.$cms.dom.$id('lightbox_full_link');
-
-    var sup = lightbox_image.parentNode;
-    sup.removeChild(lightbox_image);
-    if (sup.firstChild) {
-        sup.insertBefore(img, sup.firstChild);
-    } else {
-        sup.appendChild(img);
-    }
-    sup.className = '';
-    sup.style.textAlign = 'center';
-    sup.style.overflow = 'hidden';
-
-    dims_func();
-    $cms.dom.on(window, 'resize', dims_func);
-
-    function dims_func() {
-        lightbox_description.style.display = (lightbox_description.firstChild) ? 'inline' : 'none';
-        if (lightbox_full_link) {
-            var showLightboxFullLink = !!(!is_video && has_full_button && ((real_width > max_width) || (real_height > max_height)));
-            $cms.dom.toggle(lightbox_full_link, showLightboxFullLink);
-        }
-        var showLightboxMeta = !!((lightbox_description.style.display === 'inline') || (lightbox_position_in_set !== null) || (lightbox_full_link && lightbox_full_link.style.display === 'inline'));
-        $cms.dom.toggle(lightbox_meta, showLightboxMeta);
-
-        // Might need to rescale using some maths, if natural size is too big
-        var max_dims = _get_max_lightbox_img_dims(modal, has_full_button),
-            max_width = max_dims[0],
-            max_height = max_dims[1];
-
-        if (width > max_width) {
-            width = max_width;
-            height = window.parseInt(max_width * real_height / real_width - 1);
-        }
-
-        if (height > max_height) {
-            width = window.parseInt(max_height * real_width / real_height - 1);
-            height = max_height;
-        }
-
-        img.width = width;
-        img.height = height;
-        modal.reset_dimensions('' + width, '' + height, false, true); // Temporarily forced, until real height is known (includes extra text space etc)
-
-        window.setTimeout(function () {
-            modal.reset_dimensions('' + width, '' + height, false);
-        });
-
-        if (img.parentElement) {
-            img.parentElement.parentElement.parentElement.style.width = 'auto';
-            img.parentElement.parentElement.parentElement.style.height = 'auto';
-        }
-
-        function _get_max_lightbox_img_dims(modal, has_full_button) {
-            var max_width = modal.top_window.get_window_width() - 20;
-            var max_height = modal.top_window.get_window_height() - 60;
-            if (has_full_button) {
-                max_height -= 120;
-            }
-            return [max_width, max_height];
-        }
-    }
-}
-
-
-function fauxmodal_confirm(question, callback, title, unescaped) {
-    title || (title = '{!Q_SURE;^}');
-    unescaped = !!unescaped;
-
-    if (!$cms.$CONFIG_OPTION.js_overlays) {
-        callback(window.confirm(question));
-        return;
-    }
-
-    var my_confirm = {
-        type: 'confirm',
-        text: unescaped ? question : escape_html(question).replace(/\n/g, '<br />'),
-        yes_button: '{!YES;^}',
-        no_button: '{!NO;^}',
-        cancel_button: null,
-        title: title,
-        yes: function () {
-            callback(true);
-        },
-        no: function () {
-            callback(false);
-        },
-        width: '450'
-    };
-    $cms.openModalWindow(my_confirm);
-}
-
-function fauxmodal_alert(notice, callback, title, unescaped) {
-    notice = strVal(notice);
-    callback || (callback = noop);
-    title = strVal(title) || '{!MESSAGE;^}';
-    unescaped = !!unescaped;
-
-    if (!$cms.$CONFIG_OPTION.js_overlays) {
-        window.alert(notice);
-        callback();
-        return;
-    }
-
-    var myAlert = {
-        type: 'alert',
-        text: unescaped ? notice : escape_html(notice).replace(/\n/g, '<br />'),
-        yes_button: '{!INPUTSYSTEM_OK;^}',
-        width: '600',
-        yes: callback,
-        title: title,
-        cancel_button: null
-    };
-
-    $cms.openModalWindow(myAlert);
-}
-
-function fauxmodal_prompt(question, defaultValue, callback, title, input_type) {
-    if (!$cms.$CONFIG_OPTION.js_overlays) {
-        callback(window.prompt(question, defaultValue));
-        return;
-    }
-
-    var myPrompt = {
-        type: 'prompt',
-        text: escape_html(question).replace(/\n/g, '<br />'),
-        yes_button: '{!INPUTSYSTEM_OK;^}',
-        cancel_button: '{!INPUTSYSTEM_CANCEL;^}',
-        defaultValue: (defaultValue === null) ? '' : defaultValue,
-        title: title,
-        yes: function (value) {
-            callback(value);
-        },
-        cancel: function () {
-            callback(null);
-        },
-        width: '450'
-    };
-    if (input_type) {
-        myPrompt.input_type = input_type;
-    }
-    $cms.openModalWindow(myPrompt);
-}
-
-function faux_showModalDialog(url, name, options, callback, target, cancel_text) {
-    callback = callback || noop;
-
-    if (!($cms.$CONFIG_OPTION.js_overlays)) {
-        options = options.replace('height=auto', 'height=520');
-
-        var timer = new Date().getTime();
-        try {
-            var result = window.showModalDialog(url, name, options);
-        } catch (ignore) {
-            // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
-        }
-        var timer_now = new Date().getTime();
-        if (timer_now - 100 > timer) {// Not popup blocked
-            if ((result === undefined) || (result === null)) {
-                callback(null);
-            } else {
-                callback(result);
-            }
-        }
-        return;
-    }
-
-    var width = null, height = null, scrollbars = null, unadorned = null;
-
-    if (cancel_text === undefined) {
-        cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
-    }
-
-    if (options) {
-        var parts = options.split(/[;,]/g), i;
-        for (i = 0; i < parts.length; i++) {
-            var bits = parts[i].split('=');
-            if (bits[1] !== undefined) {
-                if ((bits[0] == 'dialogWidth') || (bits[0] == 'width'))
-                    width = bits[1].replace(/px$/, '');
-                if ((bits[0] == 'dialogHeight') || (bits[0] == 'height')) {
-                    if (bits[1] == '100%') {
-                        height = '' + (get_window_height() - 200);
-                    } else {
-                        height = bits[1].replace(/px$/, '');
-                    }
-                }
-                if (((bits[0] == 'resizable') || (bits[0] == 'scrollbars')) && scrollbars !== true)
-                    scrollbars = ((bits[1] == 'yes') || (bits[1] == '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
-                if (bits[0] == 'unadorned') unadorned = ((bits[1] == 'yes') || (bits[1] == '1'));
-            }
-        }
-    }
-
-    if (url.indexOf(window.location.host) !== -1) {
-        url += ((url.indexOf('?') == -1) ? '?' : '&') + 'overlay=1';
-    }
-
-    var my_frame = {
-        type: 'iframe',
-        finished: function (value) {
-            callback(value);
-        },
-        name: name,
-        width: width,
-        height: height,
-        scrollbars: scrollbars,
-        href: url.replace(/^https?:/, window.location.protocol)
-    };
-    my_frame.cancel_button = (unadorned !== true) ? cancel_text : null;
-    if (target) {
-        my_frame.target = target;
-    }
-    $cms.openModalWindow(my_frame);
-}
-
-function faux_open(url, name, options, target, cancel_text) {
-    if (cancel_text === undefined) {
-        cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
-    }
-
-    if (!$cms.$CONFIG_OPTION.js_overlays) {
-        options = options.replace('height=auto', 'height=520');
-        window.open(url, name, options);
-        return;
-    }
-
-    faux_showModalDialog(url, name, options, null, target, cancel_text);
-}
 
 (function () {
     /*
      Faux frames and faux scrolling
      */
-
     window.infinite_scrolling_block = infinite_scrolling_block;
     window.infinite_scrolling_block_hold = infinite_scrolling_block_hold;
     window.infinite_scrolling_block_unhold = infinite_scrolling_block_unhold;
@@ -7180,7 +8141,7 @@ function faux_open(url, name, options, target, cancel_text) {
                     url_stub += '&raw=1';
                     infinite_scroll_pending = true;
 
-                    return call_block(url_stem + url_stub, '', wrapper_inner, true, function () {
+                    return $cms.callBlock(url_stem + url_stub, '', wrapper_inner, true, function () {
                         infinite_scroll_pending = false;
                         internalise_infinite_scrolling(url_stem, wrapper);
                     });
@@ -7210,14 +8171,18 @@ function faux_open(url, name, options, target, cancel_text) {
         var links = [];
         for (var i = 0; i < _link_wrappers.length; i++) {
             var _links = _link_wrappers[i].getElementsByTagName('a');
+
             for (var j = 0; j < _links.length; j++) {
                 links.push(_links[j]);
             }
+
             if (forms_too) {
                 _links = _link_wrappers[i].getElementsByTagName('form');
+
                 for (var j = 0; j < _links.length; j++) {
                     links.push(_links[j]);
                 }
+
                 if (_link_wrappers[i].localName === 'form') {
                     links.push(_link_wrappers[i]);
                 }
@@ -7230,25 +8195,9 @@ function faux_open(url, name, options, target, cancel_text) {
             }
 
             if (link.localName === 'a') {
-                if (link.onclick) {
-                    link.onclick = function (old_onclick) {
-                        return function (event) {
-                            return (old_onclick.call(this, event) !== false) && submit_func.call(this, event);
-                        }
-                    }(link.onclick);
-                } else {
-                    link.onclick = submit_func;
-                }
+                $cms.dom.on(link, 'click', submit_func);
             } else {
-                if (link.onsubmit) {
-                    link.onsubmit = function (old_onsubmit) {
-                        return function (event) {
-                            return (old_onsubmit.call(this, event) !== false) && submit_func.call(this, event);
-                        }
-                    }(link.onsubmit);
-                } else {
-                    link.onsubmit = submit_func;
-                }
+                $cms.dom.on(link, 'submit', submit_func);
             }
         });
 
@@ -7267,7 +8216,7 @@ function faux_open(url, name, options, target, cancel_text) {
             }
             for (j in extra_params) {
                 url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-                url_stub += j + '=' + encodeUC(extra_params[j]);
+                url_stub += j + '=' + encodeURIComponent(extra_params[j]);
             }
 
             // Any POST parameters?
@@ -7276,7 +8225,7 @@ function faux_open(url, name, options, target, cancel_text) {
                 post_params = '';
                 for (j = 0; j < this.elements.length; j++) {
                     if (this.elements[j].name) {
-                        param = this.elements[j].name + '=' + encodeUC(clever_find_value(this, this.elements[j]));
+                        param = this.elements[j].name + '=' + encodeURIComponent($cms.form.cleverFindValue(this, this.elements[j]));
 
                         if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
                             if (post_params != '') post_params += '&';
@@ -7289,20 +8238,20 @@ function faux_open(url, name, options, target, cancel_text) {
                 }
             }
 
-            if (window.history.pushState) {
+            if (window.history && window.history.pushState) {
                 try {
                     window.has_js_state = true;
                     window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
-                } catch (e) {
+                } catch (ignore) {
                     // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
                     // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
                 }
             }
 
-            clear_out_tooltips();
+            $cms.ui.clearOutTooltips();
 
             // Make AJAX block call
-            return call_block(url_stem + url_stub, '', block_element, append, function () {
+            return $cms.callBlock(url_stem + url_stub, '', block_element, append, function () {
                 if (scroll_to_top) {
                     window.scrollTo(0, block_pos_y);
                 }
@@ -7312,11 +8261,22 @@ function faux_open(url, name, options, target, cancel_text) {
 }());
 
 (function () {
-    window.call_block = call_block;
-
     var _blockDataCache = {};
-    // This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
-    function call_block(url, new_block_params, target_div, append, callback, scroll_to_top_of_wrapper, post_params, inner, show_loading_animation) {
+    /**
+     * This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
+     * @memberof $cms
+     * @param url
+     * @param new_block_params
+     * @param target_div
+     * @param append
+     * @param callback
+     * @param scroll_to_top_of_wrapper
+     * @param post_params
+     * @param inner
+     * @param show_loading_animation
+     * @returns {boolean}
+     */
+    $cms.callBlock = function callBlock(url, new_block_params, target_div, append, callback, scroll_to_top_of_wrapper, post_params, inner, show_loading_animation) {
         scroll_to_top_of_wrapper = !!scroll_to_top_of_wrapper;
         post_params = (post_params !== undefined) ? post_params : null;
         inner = !!inner;
@@ -7327,7 +8287,10 @@ function faux_open(url, name, options, target, cancel_text) {
         }
 
         var ajax_url = url;
-        if (new_block_params != '') ajax_url += '&block_map_sup=' + encodeUC(new_block_params);
+        if (new_block_params != '') {
+            ajax_url += '&block_map_sup=' + encodeURIComponent(new_block_params);
+        }
+
         ajax_url += '&utheme=' + $cms.$THEME;
         if ((_blockDataCache[ajax_url] !== undefined) && post_params == null) {
             // Show results from cache
@@ -7382,980 +8345,52 @@ function faux_open(url, name, options, target, cancel_text) {
         do_ajax_request(
             ajax_url + keep_stub(),
             function (raw_ajax_result) { // Show results when available
-                _call_block_render(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);
+                _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);
             },
             post_params
         );
 
         return false;
-    }
 
-    function _call_block_render(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
-        var new_html = raw_ajax_result.responseText;
-        _blockDataCache[ajax_url] = new_html;
+        function _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
+            var new_html = raw_ajax_result.responseText;
+            _blockDataCache[ajax_url] = new_html;
 
-        // Remove loading animation if there is one
-        var ajax_loading = target_div.querySelector('.ajax_loading_block');
-        if (ajax_loading) {
-            ajax_loading.parentNode.parentNode.removeChild(ajax_loading.parentNode);
-        }
-        window.document.body.style.cursor = '';
-
-        // Put in HTML
-        show_block_html(new_html, target_div, append, inner);
-
-        // Scroll up if required
-        if (scroll_to_top_of_wrapper) {
-            try {
-                window.scrollTo(0, find_pos_y(target_div));
-            } catch (e) {}
-        }
-
-        // Defined callback
-        if (callback) {
-            callback();
-        }
-    }
-
-    function show_block_html(new_html, target_div, append, inner) {
-        var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
-        if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
-        if (append) {
-            $cms.dom.appendHtml(target_div, new_html);
-        } else {
-            if (inner) {
-                $cms.dom.html(target_div, new_html);
-            } else {
-                $cms.dom.outerHtml(target_div, new_html);
+            // Remove loading animation if there is one
+            var ajax_loading = target_div.querySelector('.ajax_loading_block');
+            if (ajax_loading) {
+                ajax_loading.parentNode.parentNode.removeChild(ajax_loading.parentNode);
             }
-        }
-    }
+            window.document.body.style.cursor = '';
 
+            // Put in HTML
+            show_block_html(new_html, target_div, append, inner);
 
-    /*
-     Validation
-     */
-
-    window.do_ajax_field_test = do_ajax_field_test;
-    window.merge_text_nodes = merge_text_nodes;
-    window.update_ajax_search_list = update_ajax_search_list;
-    window.update_ajax_member_list = update_ajax_member_list;
-
-    /* Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message) */
-    function do_ajax_field_test(url, post) {
-        var xhr = do_ajax_request(url, null, post);
-        if ((xhr.responseText != '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
-            if (xhr.responseText !== 'false') {
-                if (xhr.responseText.length > 1000) {
-                    $cms.log('do_ajax_field_test()', 'xhr.responseText:', xhr.responseText);
-                    window.fauxmodal_alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
-                } else {
-                    window.fauxmodal_alert(xhr.responseText);
-                }
-            }
-            return false;
-        }
-        return true;
-    }
-
-    function merge_text_nodes(childNodes) {
-        var i, text = '';
-        for (i = 0; i < childNodes.length; i++) {
-            if (childNodes[i].nodeName === '#text') {
-                text += childNodes[i].data;
-            }
-        }
-        return text;
-    }
-
-    function update_ajax_search_list(target, e, search_type) {
-        var special = 'search';
-        search_type = strVal(search_type);
-        if (search_type) {
-            special += '&search_type=' + encodeURIComponent(search_type);
-        }
-        update_ajax_member_list(target, special, false, e);
-    }
-
-    var currentlyDoingListTimer = 0,
-        currentListForEl = null;
-
-    function update_ajax_member_list(target, special, delayed, event) {
-        if ((event && $cms.dom.keyPressed(event, 'Enter')) || target.disabled) {
-            return;
-        }
-
-        if (!browser_matches('ios') && !target.onblur) {
-            target.onblur = function () {
-                setTimeout(function () {
-                    close_down_ajax_list();
-                }, 300);
-            }
-        }
-
-        if (!delayed) {// A delay, so as not to throw out too many requests
-            if (currentlyDoingListTimer) {
-                window.clearTimeout(currentlyDoingListTimer);
-            }
-            var e_copy = { 'keyCode': event.keyCode, 'which': event.which };
-
-            currentlyDoingListTimer = window.setTimeout(function () {
-                update_ajax_member_list(target, special, true, e_copy);
-            }, 400);
-            return;
-        } else {
-            currentlyDoingListTimer = 0;
-        }
-
-        target.special = special;
-
-        var v = target.value;
-
-        currentListForEl = target;
-        var script = '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(v);
-        if (special) {
-            script = script + '&special=' + special;
-        }
-
-        do_ajax_request(script + keep_stub(), update_ajax_member_list_response);
-
-        function close_down_ajax_list() {
-            var current = $cms.dom.$('#ajax_list');
-            if (current) {
-                current.parentNode.removeChild(current);
-            }
-        }
-
-        function update_ajax_member_list_response(result, list_contents) {
-            if (!list_contents || !currentListForEl) {
-                return;
-            }
-
-            close_down_ajax_list();
-
-            var isDataList = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
-
-            //if (list_contents.childNodes.length==0) return;
-            var list = document.createElement(isDataList ? 'datalist' : 'select');
-            list.className = 'people_list';
-            list.setAttribute('id', 'ajax_list');
-            if (isDataList) {
-                currentListForEl.setAttribute('list', 'ajax_list');
-            } else {
-                if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
-                    list.setAttribute('multiple', 'multiple');
-                } else {
-                    list.setAttribute('size', list_contents.childNodes.length + 1);
-                }
-                list.style.position = 'absolute';
-                list.style.left = (find_pos_x(currentListForEl)) + 'px';
-                list.style.top = (find_pos_y(currentListForEl) + currentListForEl.offsetHeight) + 'px';
-            }
-            setTimeout(function () {
-                list.style.zIndex++;
-            }, 100); // Fixes Opera by causing a refresh
-
-            if (list_contents.children.length === 0) {
-                return;
-            }
-
-            var i, item, displaytext;
-            for (i = 0; i < list_contents.children.length; i++) {
-                item = document.createElement('option');
-                item.value = list_contents.children[i].getAttribute('value');
-                displaytext = item.value;
-                if (list_contents.children[i].getAttribute('displayname') != '')
-                    displaytext = list_contents.children[i].getAttribute('displayname');
-                item.text = displaytext;
-                item.textContent = displaytext;
-                list.appendChild(item);
-            }
-            item = document.createElement('option');
-            item.disabled = true;
-            item.text = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
-            item.textContent = '{!javascript:SUGGESTIONS_ONLY;^}'.toUpperCase();
-            list.appendChild(item);
-            currentListForEl.parentNode.appendChild(list);
-
-            if (isDataList) {
-                return;
-            }
-
-            clear_transition_and_set_opacity(list, 0.0);
-            fade_transition(list, 100, 30, 8);
-
-            var current_list_for_copy = currentListForEl;
-
-            if (currentListForEl.old_onkeyup === undefined) {
-                currentListForEl.old_onkeyup = currentListForEl.onkeyup;
-            }
-
-            if (currentListForEl.old_onchange === undefined) {
-                currentListForEl.old_onchange = currentListForEl.onchange;
-            }
-
-            currentListForEl.down_once = false;
-
-            currentListForEl.onkeyup = function (event) {
-                var ret = handle_arrow_usage(event);
-                if (ret != null) {
-                    return ret;
-                }
-                return update_ajax_member_list(current_list_for_copy, current_list_for_copy.special, false, event);
-            };
-            currentListForEl.onchange = function (event) {
-                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
-                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-                if (current_list_for_copy.onchange) {
-                    current_list_for_copy.onchange(event);
-                }
-            };
-            list.onkeyup = function (event) {
-                var ret = handle_arrow_usage(event);
-                if (ret != null) {
-                    return ret;
-                }
-
-                if ($cms.dom.keyPressed(event, 'Enter')) {// ENTER
-                    make_selection(event);
-                    current_list_for_copy.disabled = true;
-                    window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
-                    }, 200);
-
-                    return cancel_bubbling(event);
-                }
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
-                    if (event.cancelable) {
-                        event.preventDefault();
-                    }
-                    return cancel_bubbling(event);
-                }
-                return null;
-            };
-
-            currentListForEl.onkeypress = function (event) {
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['ArrowUp', 'ArrowDown'])) {
-                    if (event.cancelable) {
-                        event.preventDefault();
-                    }
-                    return cancel_bubbling(event);
-                }
-                return null;
-            };
-            list.onkeypress = function (event) {
-                if (!event.shiftKey && $cms.dom.keyPressed(event, ['Enter', 'ArrowUp', 'ArrowDown'])) {
-                    if (event.cancelable) {
-                        event.preventDefault();
-                    }
-                    return cancel_bubbling(event);
-                }
-                return null;
-            };
-
-            list.addEventListener(browser_matches('ios') ? 'change' : 'click', make_selection, false);
-
-            currentListForEl = null;
-
-            function handle_arrow_usage(event) {
-                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
-                    current_list_for_copy.disabled = true;
-                    window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
-                    }, 1000);
-
-                    var temp = current_list_for_copy.onblur;
-                    current_list_for_copy.onblur = function () {
-                    };
-                    list.focus();
-                    current_list_for_copy.onblur = temp;
-                    if (!current_list_for_copy.down_once) {
-                        current_list_for_copy.down_once = true;
-                        list.selectedIndex = 0;
-                    } else {
-                        if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
-                    }
-                    list.options[list.selectedIndex].selected = true;
-                    return cancel_bubbling(event);
-                }
-
-                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
-                    current_list_for_copy.disabled = true;
-                    window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
-                    }, 1000);
-
-                    var temp = current_list_for_copy.onblur;
-                    current_list_for_copy.onblur = function () {
-                    };
-                    list.focus();
-                    current_list_for_copy.onblur = temp;
-                    if (!current_list_for_copy.down_once) {
-                        current_list_for_copy.down_once = true;
-                        list.selectedIndex = 0;
-                    } else {
-                        if (list.selectedIndex > 0) list.selectedIndex--;
-                    }
-                    list.options[list.selectedIndex].selected = true;
-                    return cancel_bubbling(event);
-                }
-                return null;
-            }
-
-            function make_selection(e) {
-                var el = e.target;
-
-                current_list_for_copy.value = el.value;
-                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
-                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-                current_list_for_copy.onkeypress = function () {
-                };
-                if (current_list_for_copy.onrealchange) {
-                    current_list_for_copy.onrealchange(e);
-                }
-                if (current_list_for_copy.onchange) {
-                    current_list_for_copy.onchange(e);
-                }
-                var al = $cms.dom.$id('ajax_list');
-                al.parentNode.removeChild(al);
-                window.setTimeout(function () {
-                    current_list_for_copy.focus();
-                }, 300);
-            }
-        }
-    }
-}());
-
-
-/* Validation code and other general code relating to forms */
-
-"use strict";
-
-function password_strength(el) {
-    if (el.name.includes('2') || el.name.includes('confirm')) {
-        return;
-    }
-
-    var _ind = $cms.dom.$('#password_strength_' + el.id);
-    if (!_ind) {
-        return;
-    }
-    var ind = _ind.querySelector('div');
-    var post = 'password=' + encodeUC(el.value);
-    if (el.form && (el.form.elements.username !== undefined)) {
-        post += '&username=' + el.form.elements['username'].value;
-    } else {
-        if (el.form && el.form.elements.edit_username !== undefined) {
-            post += '&username=' + el.form.elements['edit_username'].value;
-        }
-    }
-    var strength = load_snippet('password_strength', post);
-    strength *= 2;
-    if (strength > 10) strength = 10; // Normally too harsh!
-    ind.style.width = (strength * 10) + 'px';
-    if (strength >= 6)
-        ind.style.backgroundColor = 'green';
-    else if (strength < 4)
-        ind.style.backgroundColor = 'red';
-    else
-        ind.style.backgroundColor = 'orange';
-    ind.parentNode.style.display = (el.value.length == 0) ? 'none' : 'block';
-}
-
-
-function radio_value(radios) {
-    for (var i = 0; i < radios.length; i++) {
-        if (radios[i].checked) {
-            return radios[i].value;
-        }
-    }
-    return '';
-}
-
-function set_field_error(the_element, error_msg) {
-    if (the_element.name !== undefined) {
-        var id = the_element.name;
-        var errormsg_element = get_errormsg_element(id);
-        if ((error_msg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) return; // Do not blank out as day/month/year (which comes first) would have already done it
-        if (errormsg_element) {
-            // Make error message visible, if there's an error
-            errormsg_element.style.display = (error_msg == '') ? 'none' : 'block';
-
-            // Changed error message
-            if ($cms.dom.html(errormsg_element) != escape_html(error_msg)) {
-                $cms.dom.html(errormsg_element, '');
-                if (error_msg != '') // If there actually an error
-                {
-                    the_element.setAttribute('aria-invalid', 'true');
-
-                    // Need to switch tab?
-                    var p = errormsg_element;
-                    while (p !== null) {
-                        p = p.parentNode;
-                        if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
-                            select_tab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
-                            break;
-                        }
-                    }
-
-                    // Set error message
-                    var msg_node = document.createTextNode(error_msg);
-                    errormsg_element.appendChild(msg_node);
-                    errormsg_element.setAttribute('role', 'alert');
-
-                    // Fade in
-                    clear_transition_and_set_opacity(errormsg_element, 0.0);
-                    fade_transition(errormsg_element, 100, 30, 4);
-
-                } else {
-                    the_element.setAttribute('aria-invalid', 'false');
-                    errormsg_element.setAttribute('role', '');
-                }
-            }
-        }
-    }
-    if ((window.is_wysiwyg_field !== undefined) && (is_wysiwyg_field(the_element))) {
-        the_element = the_element.parentNode;
-    }
-
-    the_element.classList.remove('input_erroneous');
-
-    if (error_msg != '') {
-        the_element.classList.add('input_erroneous');
-    }
-
-    function get_errormsg_element(id) {
-        var errormsg_element = $cms.dom.$('#error_' + id);
-        if (!errormsg_element) {
-            errormsg_element = $cms.dom.$('#error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
-        }
-        return errormsg_element;
-    }
-}
-
-function do_form_submit(form, event) {
-    if (!check_form(form, false)) {
-        return false;
-    }
-
-    if (form.old_action) {
-        form.setAttribute('action', form.old_action);
-    }
-    if (form.old_target) {
-        form.setAttribute('target', form.old_target);
-    }
-    if (!form.getAttribute('target')) {
-        form.setAttribute('target', '_top');
-    }
-
-    /* Remove any stuff that is only in the form for previews if doing a GET request */
-    if (form.method.toLowerCase() === 'get') {
-        var i = 0, name, elements = [];
-        for (i = 0; i < form.elements.length; i++) {
-            elements.push(form.elements[i]);
-        }
-        for (i = 0; i < elements.length; i++) {
-            name = elements[i].name;
-            if (name && ((name.substr(0, 11) == 'label_for__') || (name.substr(0, 14) == 'tick_on_form__') || (name.substr(0, 9) == 'comcode__') || (name.substr(0, 9) == 'require__'))) {
-                elements[i].parentNode.removeChild(elements[i]);
-            }
-        }
-    }
-    if (form.onsubmit) {
-        var ret = form.onsubmit.call(form, event);
-        if (!ret) {
-            return false;
-        }
-    }
-    if (!window.just_checking_requirements) {
-        form.submit();
-    }
-
-    $cms.ui.disableSubmitAndPreviewButtons();
-
-    if (window.detect_interval !== undefined) {
-        window.clearInterval(window.detect_interval);
-        delete window.detect_interval;
-    }
-
-    return true;
-}
-
-function do_form_preview(event, form, preview_url, has_separate_preview) {
-    has_separate_preview = !!has_separate_preview;
-
-    if (!$cms.dom.$id('preview_iframe')) {
-        fauxmodal_alert('{!ADBLOCKER;^}');
-        return false;
-    }
-
-    preview_url += ((window.mobile_version_for_preview === undefined) ? '' : ('&keep_mobile=' + (window.mobile_version_for_preview ? '1' : '0')));
-
-    var old_action = form.getAttribute('action');
-
-    if (!form.old_action) {
-        form.old_action = old_action;
-    }
-    form.setAttribute('action', /*maintain_theme_in_link - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
-    var old_target = form.getAttribute('target');
-    if (!old_target) {
-        old_target = '_top';
-    }
-    /* not _self due to edit screen being a frame itself */
-    if (!form.old_target) {
-        form.old_target = old_target;
-    }
-    form.setAttribute('target', 'preview_iframe');
-
-    if ((window.check_form) && (!check_form(form, true))) {
-        return false;
-    }
-
-    if (form.onsubmit) {
-        var test = form.onsubmit.call(form, event, true);
-        if (!test) {
-            return false;
-        }
-    }
-
-    if ((has_separate_preview) || (window.has_separate_preview)) {
-        form.setAttribute('action', form.old_action + ((form.old_action.indexOf('?') == -1) ? '?' : '&') + 'preview=1');
-        return true;
-    }
-
-    $cms.dom.$id('submit_button').style.display = 'inline';
-
-    /* Do our loading-animation */
-    if (!window.just_checking_requirements) {
-        window.setInterval(window.trigger_resize, 500);
-        /* In case its running in an iframe itself */
-        illustrate_frame_load('preview_iframe');
-    }
-
-    $cms.ui.disableSubmitAndPreviewButtons();
-
-    // Turn main post editing back off
-    if (window.wysiwyg_set_readonly !== undefined) {
-        wysiwyg_set_readonly('post', true);
-    }
-
-    return true;
-}
-
-function is_wysiwyg_field(the_element) {
-    var id = the_element.id;
-    return window.wysiwyg_editors && (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
-}
-
-function clever_find_value(form, element) {
-    if ((element.length !== undefined) && (element.nodeName === undefined)) {
-        // Radio button
-        element = element[0];
-    }
-
-    var value;
-    switch (element.localName) {
-        case 'textarea':
-            value = (window.get_textbox === undefined) ? element.value : get_textbox(element);
-            break;
-        case 'select':
-            value = '';
-            if (element.selectedIndex >= 0) {
-                if (element.multiple) {
-                    for (var i = 0; i < element.options.length; i++) {
-                        if (element.options[i].selected) {
-                            if (value != '') value += ',';
-                            value += element.options[i].value;
-                        }
-                    }
-                } else if (element.selectedIndex >= 0) {
-                    value = element.options[element.selectedIndex].value;
-                    if ((value == '') && (element.getAttribute('size') > 1)) {
-                        value = '-1';  // Fudge, as we have selected something explicitly that is blank
-                    }
-                }
-            }
-            break;
-        case 'input':
-            switch (element.type) {
-                case 'checkbox':
-                    value = (element.checked) ? element.value : '';
-                    break;
-
-                case 'radio':
-                    value = '';
-                    for (var i = 0; i < form.elements.length; i++) {
-                        if ((form.elements[i].name == element.name) && (form.elements[i].checked)) {
-                            value = form.elements[i].value;
-                        }
-                    }
-                    break;
-
-                case 'hidden':
-                case 'text':
-                case 'color':
-                case 'date':
-                case 'datetime':
-                case 'datetime-local':
-                case 'email':
-                case 'month':
-                case 'number':
-                case 'range':
-                case 'search':
-                case 'tel':
-                case 'time':
-                case 'url':
-                case 'week':
-                case 'password':
-                default:
-                    value = element.value;
-                    break;
-            }
-    }
-    return value;
-}
-
-function check_form(the_form, for_preview) {
-    var delete_element = $cms.dom.$('#delete');
-    if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (delete_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
-        return true;
-    }
-
-    var j, the_element, erroneous = false, total_file_size = 0, alerted = false, error_element = null, check_result;
-    for (j = 0; j < the_form.elements.length; j++) {
-        if (!the_form.elements[j]) {
-            continue;
-        }
-
-        the_element = the_form.elements[j];
-
-        check_result = check_field(the_element, the_form, for_preview);
-        if (check_result != null) {
-            erroneous = check_result[0] || erroneous;
-            if (!error_element && erroneous) error_element = the_element;
-            total_file_size += check_result[1];
-            alerted = check_result[2] || alerted;
-
-            if (check_result[0]) {
-                var auto_reset_error = function (the_element) {
-                    return function (event, no_recurse) {
-                        var check_result = check_field(the_element, the_form, for_preview);
-                        if ((check_result != null) && (!check_result[0])) {
-                            set_field_error(the_element, '');
-                        }
-
-                        if ((!no_recurse) && (the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/))) {
-                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_day'));
-                            if (e != the_element) e.onblur(event, true);
-                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_month'));
-                            if (e != the_element) e.onblur(event, true);
-                            var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_year'));
-                            if (e != the_element) e.onblur(event, true);
-                        }
-                    };
-                };
-
-                if (the_element.getAttribute('type') == 'radio') {
-                    for (var i = 0; i < the_form.elements.length; i++) {
-                        the_form.elements[i].onchange = auto_reset_error(the_form.elements[i]);
-                    }
-                } else {
-                    the_element.onblur = auto_reset_error(the_element);
-                }
-            }
-        }
-    }
-
-    if ((total_file_size > 0) && (the_form.elements['MAX_FILE_SIZE'])) {
-        if (total_file_size > the_form.elements['MAX_FILE_SIZE'].value) {
-            if (!erroneous) {
-                error_element = the_element;
-                erroneous = true;
-            }
-            if (!alerted) {
-                window.fauxmodal_alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(total_file_size / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(the_form.elements['MAX_FILE_SIZE'].value / 1024)));
-            }
-            alerted = true;
-        }
-    }
-
-    if (erroneous) {
-        if (!alerted) window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
-        var posy = find_pos_y(error_element, true);
-        if (posy == 0) {
-            posy = find_pos_y(error_element.parentNode, true);
-        }
-        if (posy != 0)
-            smooth_scroll(posy - 50, null, null, function () {
+            // Scroll up if required
+            if (scroll_to_top_of_wrapper) {
                 try {
-                    error_element.focus();
-                } catch (e) {
-                }
-                /* Can have exception giving focus on IE for invisible fields */
-            });
-    }
-
-    // Try and workaround max_input_vars problem if lots of usergroups
-    if (!erroneous) {
-        var delete_e = $cms.dom.$id('delete');
-        var is_delete = delete_e && delete_e.type == 'checkbox' && delete_e.checked;
-        var es = document.getElementsByTagName('select'), e;
-        for (var i = 0; i < es.length; i++) {
-            e = es[i];
-            if ((e.name.match(/^access_\d+_privilege_/)) && ((is_delete) || (e.options[e.selectedIndex].value == '-1'))) {
-                e.disabled = true;
+                    window.scrollTo(0, find_pos_y(target_div));
+                } catch (e) {}
             }
-        }
-    }
 
-    return !erroneous;
-
-    function check_field(the_element, the_form) {
-        var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
-
-        // No checking for hidden elements
-        if (((the_element.type === 'hidden') || (((the_element.style.display == 'none') || (the_element.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.parentNode.style.display == 'none')) && ((window.is_wysiwyg_field === undefined) || (!is_wysiwyg_field(the_element))))) && ((!the_element.className) || (the_element.classList.contains('hidden_but_needed')) == null)) {
-            return null;
-        }
-        if (the_element.disabled) {
-            return null;
-        }
-
-        // Test file sizes
-        if ((the_element.type == 'file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
-            total_file_size += the_element.files.item(0).fileSize;
-
-        // Test file types
-        if ((the_element.type == 'file') && (the_element.value) && (the_element.name != 'file_anytype')) {
-            var allowed_types = '{$VALID_FILE_TYPES;^}'.split(/,/);
-            var type_ok = false;
-            var theFileType = the_element.value.indexOf('.') ? the_element.value.substr(the_element.value.lastIndexOf('.') + 1) : '{!NONE;^}';
-            for (var k = 0; k < allowed_types.length; k++) {
-                if (allowed_types[k].toLowerCase() == theFileType.toLowerCase()) type_ok = true;
-            }
-            if (!type_ok) {
-                error_msg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
-                if (!alerted) window.fauxmodal_alert(error_msg);
-                alerted = true;
+            // Defined callback
+            if (callback) {
+                callback();
             }
         }
 
-        // Fix up bad characters
-        if ((browser_matches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
-            var bad_word_chars = [8216, 8217, 8220, 8221];
-            var fixed_word_chars = ['\'', '\'', '"', '"'];
-            for (i = 0; i < bad_word_chars.length; i++) {
-                regexp = new RegExp(String.fromCharCode(bad_word_chars[i]), 'gm');
-                the_element.value = the_element.value.replace(regexp, fixed_word_chars[i]);
-            }
-        }
-
-        // Class name
-        the_class = the_element.classList[0];
-
-        // Find whether field is required and value of it
-        if (the_element.type == 'radio') {
-            required = (the_form.elements['require__' + the_element.name] !== undefined) && (the_form.elements['require__' + the_element.name].value == '1');
-        } else {
-            required = the_element.className.includes('_required');
-        }
-        my_value = clever_find_value(the_form, the_element);
-
-        // Prepare for custom error messages, stored as HTML5 data on the error message display element
-        var errormsg_element = (the_element.name === undefined) ? null : get_errormsg_element(the_element.name);
-
-        // Blank?
-        if ((required) && (my_value.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
-            error_msg = '{!REQUIRED_NOT_FILLED_IN;^}';
-            if ((errormsg_element) && (errormsg_element.getAttribute('data-errorUnfilled') != null) && (errormsg_element.getAttribute('data-errorUnfilled') != ''))
-                error_msg = errormsg_element.getAttribute('data-errorUnfilled');
-        } else {
-            // Standard field-type checks
-            if ((the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/)) && (my_value != '')) {
-                var day = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
-                var month = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
-                var year = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
-                var source_date = new Date(year, month - 1, day);
-                if (year != source_date.getFullYear()) error_msg = '{!javascript:NOT_A_DATE;^}';
-                if (month != source_date.getMonth() + 1) error_msg = '{!javascript:NOT_A_DATE;^}';
-                if (day != source_date.getDate()) error_msg = '{!javascript:NOT_A_DATE;^}';
-            }
-            if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
-                error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
-            }
-            if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeUC(my_value)))) {
-                error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
-            }
-            if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
-                error_msg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', my_value);
-            }
-            if (((the_class == 'input_integer') || (the_class == 'input_integer_required')) && (my_value != '') && (parseInt(my_value, 10) != my_value - 0)) {
-                error_msg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', my_value);
-            }
-            if (((the_class == 'input_float') || (the_class == 'input_float_required')) && (my_value != '') && (parseFloat(my_value) != my_value - 0)) {
-                error_msg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', my_value);
-            }
-
-            // Shim for HTML5 regexp patterns
-            if (the_element.getAttribute('pattern')) {
-                if ((my_value != '') && (!my_value.match(new RegExp(the_element.getAttribute('pattern'))))) {
-                    error_msg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', my_value);
-                }
-            }
-
-            // Custom error messages
-            if (error_msg != '' && errormsg_element != null) {
-                var custom_msg = errormsg_element.getAttribute('data-errorRegexp');
-                if ((custom_msg != null) && (custom_msg != ''))
-                    error_msg = custom_msg;
-            }
-        }
-
-        // Show error?
-        set_field_error(the_element, error_msg);
-
-        if ((error_msg != '') && (!erroneous)) {
-            erroneous = true;
-        }
-
-        return [erroneous, total_file_size, alerted];
-
-        function get_errormsg_element(id) {
-            var errormsg_element = $cms.dom.$id('error_' + id);
-            if (!errormsg_element) {
-                errormsg_element = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
-            }
-            return errormsg_element;
-        }
-    }
-}
-
-function set_locked(field, is_locked, chosen_ob) {
-    var radio_button = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
-    if (!radio_button) {
-        radio_button = $cms.dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
-    }
-
-    // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: set_locked assumes that the calling code is clever
-    // special input types are coded to observe their master input field readonly status)
-    var button = $cms.dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
-
-    if (is_locked) {
-        var labels = document.getElementsByTagName('label'), label = null;
-        for (var i = 0; i < labels.length; i++) {
-            if ((chosen_ob) && (labels[i].getAttribute('for') == chosen_ob.id)) {
-                label = labels[i];
-                break;
-            }
-        }
-        if (!radio_button) {
-            if (label) {
-                var label_nice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
-                if (field.type == 'file') {
-                    set_field_error(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\\{1\\}/, label_nice));
-                } else {
-                    set_field_error(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\\{1\\}/, label_nice));
-                }
+        function show_block_html(new_html, target_div, append, inner) {
+            var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
+            if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
+            if (append) {
+                $cms.dom.appendHtml(target_div, new_html);
             } else {
-                set_field_error(field, '{!DISABLED_FORM_FIELD;^}');
-            }
-        }
-        field.classList.remove('input_erroneous');
-    } else if (!radio_button) {
-        set_field_error(field, '');
-    }
-    field.disabled = is_locked;
-
-    if (button) {
-        button.disabled = is_locked;
-    }
-}
-
-function set_required(fieldName, isRequired) {
-    var radio_button = $cms.dom.$('#choose_' + fieldName);
-
-    isRequired = !!isRequired;
-
-    if (radio_button) {
-        if (isRequired) {
-            radio_button.checked = true;
-        }
-    } else {
-        var required_a = $cms.dom.$('#form_table_field_name__' + fieldName),
-            required_b = $cms.dom.$('#required_readable_marker__' + fieldName),
-            required_c = $cms.dom.$('#required_posted__' + fieldName),
-            required_d = $cms.dom.$('#form_table_field_input__' + fieldName);
-
-        if (required_a) {
-            required_a.className = 'form_table_field_name';
-
-            if (isRequired) {
-                required_a.classList.add('required');
-            }
-        }
-
-        if (required_b) {
-            $cms.dom.toggle(required_b, isRequired);
-        }
-
-        if (required_c) {
-            required_c.value = isRequired ? 1 : 0;
-        }
-
-        if (required_d) {
-            required_d.className = 'form_table_field_input';
-        }
-    }
-
-    var element = $cms.dom.$('#' + fieldName);
-
-    if (element) {
-        element.className = element.className.replace(/(input_[a-z_]+)_required/g, '$1');
-
-        if (isRequired) {
-            element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
-        }
-
-        if (element.plupload_object) {
-            element.plupload_object.settings.required = isRequired;
-        }
-    }
-
-    if (!isRequired) {
-        var error = $cms.dom.$('#error__' + fieldName);
-        if (error) {
-            error.style.display = 'none';
-        }
-    }
-}
-
-function disable_preview_scripts(context) {
-    if (context === undefined) {
-        context = document;
-    }
-
-    var elements, i;
-
-    elements = $cms.dom.$$(context, 'button, input[type="button"], input[type="image"]');
-    for (i = 0; i < elements.length; i++) {
-        elements[i].onclick = alertNotInPreviewMode;
-    }
-
-    // Make sure links in the preview don't break it - put in a new window
-    elements = $cms.dom.$$(context, 'a');
-    for (i = 0; i < elements.length; i++) {
-        if (elements[i].href && elements[i].href.includes('://')) {
-            try {
-                if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) {// guard due to weird Firefox bug, JS actions still opening new window
-                    elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
+                if (inner) {
+                    $cms.dom.html(target_div, new_html);
+                } else {
+                    $cms.dom.outerHtml(target_div, new_html);
                 }
-            } catch (ignore) {} // IE can have security exceptions
+            }
         }
-    }
-
-    function alertNotInPreviewMode() {
-        window.fauxmodal_alert('{!NOT_IN_PREVIEW_MODE;^}');
-        return false;
-    }
-}
-
+    };
+}());

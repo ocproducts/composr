@@ -13,7 +13,7 @@
         },
 
         submit: function (e, form) {
-            modsecurity_workaround(form);
+            $cms.form.modsecurityWorkaround(form);
             e.preventDefault();
         },
 
@@ -52,7 +52,7 @@
         this.id = params.id;
 
         if (params.preview !== undefined) {
-            disable_preview_scripts($cms.dom.$('#view_' + params.id));
+            $cms.form.disablePreviewScripts($cms.dom.$('#view_' + params.id));
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
@@ -90,7 +90,7 @@
                     if (element) {
                         element.style.display = (tabs[i] === tab) ? 'block' : 'none';
                         if ((tabs[i] == tab) && (tab == 'edit')) {
-                            if (is_wysiwyg_field($cms.dom.$id('edit_' + id + '_textarea'))) {
+                            if ($cms.form.isWysiwygField($cms.dom.$id('edit_' + id + '_textarea'))) {
                                 // Fix for Firefox
                                 if (window.wysiwyg_editors['edit_' + id + '_textarea'].document !== undefined) {
                                     window.wysiwyg_editors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'false';
@@ -99,8 +99,8 @@
                             }
                         }
                         if (tabs[i] === tab) {
-                            clear_transition_and_set_opacity(element, 0.0);
-                            fade_transition(element, 100, 30, 4);
+                            $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
+                            $cms.dom.fadeTransition(element, 100, 30, 4);
 
                             elementh.classList.add('tab_active');
                         } else {
@@ -124,9 +124,9 @@
 
                 var data = '';
                 data += get_textbox(edit_element);
-                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + (is_wysiwyg_field(edit_element) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + keep_stub();
-                var post = (is_wysiwyg_field(edit_element) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
-                post = modsecurity_workaround_ajax(post);
+                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(edit_element) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + keep_stub();
+                var post = ($cms.form.isWysiwygField(edit_element) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
+                post = $cms.form.modsecurityWorkaroundAjax(post);
                 do_ajax_request(url, reloaded_preview, post);
 
                 function reloaded_preview(ajax_result_frame, ajax_result) {
@@ -135,15 +135,15 @@
                     }
 
                     var element = $cms.dom.$id('view_' + loading_preview_of);
-                    $cms.dom.html(element, merge_text_nodes(ajax_result.childNodes).replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
+                    $cms.dom.html(element, ajax_result.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
 
-                    disable_preview_scripts(element);
+                    $cms.form.disablePreviewScripts(element);
                 }
             }
         },
 
         submitComcode: function (e, target) {
-            modsecurity_workaround(target);
+            $cms.form.modsecurityWorkaround(target);
             e.preventDefault();
         },
 
@@ -173,31 +173,26 @@
             zone = document.getElementById('zone');
         }
         if (zone) {
-            zone.onblur = function () {
+            zone.addEventListener('blur', function () {
                 var title = document.getElementById('title');
                 if (title.value == '') {
                     title.value = zone.value.substr(0, 1).toUpperCase() + zone.value.substring(1, zone.value.length).replace(/\_/g, ' ');
                 }
-            }
+            });
         }
     };
 
     $cms.functions.moduleAdminZonesAddZone = function moduleAdminZonesAddZone() {
         var form = document.getElementById('main_form');
-        form.old_submit = form.onsubmit;
-        form.onsubmit = function () {
+        form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_zone&name=' + encodeURIComponent(form.elements['zone'].value);
-            if (!do_ajax_field_test(url)) {
+            if (!$cms.form.doAjaxFieldTest(url)) {
                 document.getElementById('submit_button').disabled = false;
                 return false;
             }
             document.getElementById('submit_button').disabled = false;
-            if (form.old_submit) {
-                return form.old_submit();
-            }
-            return true;
-        };
+        });
     };
 
     function set_edited_panel(id) {
