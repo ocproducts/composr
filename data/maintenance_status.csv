@@ -115,3 +115,5 @@ currency,Currency conversion,ocProducts,ocProducts,Could potentially break due t
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 geocode_internal,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No
 ssl_trust_internal,SSL certificate trust chains (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No
+taxcloud,TaxCloud integration for US sales tax,ocProducts,,Could potentially break due to third-party changes.,No
+eu_digital_tax,Download of EU digital tax rates,ocProducts,,Could potentially break due to third-party changes.,No
