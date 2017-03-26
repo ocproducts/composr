@@ -7423,7 +7423,7 @@ function clear_out_tooltips(tooltip_being_opened) {
     });
 }
 
-$cms.ready.then(function () {
+(window.$cmsReady || (window.$cmsReady = [])).push(function () {
     // Tooltips close on browser resize
     $cms.dom.on(window, 'resize', function () {
         clear_out_tooltips();

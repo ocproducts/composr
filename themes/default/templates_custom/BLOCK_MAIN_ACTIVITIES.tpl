@@ -25,7 +25,7 @@
 		</div>
 
 		<script>//<![CDATA[
-		$cms.ready.then(function() {
+		(window.$cmsReady || (window.$cmsReady = [])).push(function() {
 				window.activities_mode='{MODE;/}';
 				window.activities_member_ids='{MEMBER_IDS;/}';
 

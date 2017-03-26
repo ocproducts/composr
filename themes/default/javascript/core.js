@@ -1,10 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    var encodeUC = encodeURIComponent,
-        decodeUC = decodeURIComponent;
-
-    $cms.ready.then(function () {
+    (window.$cmsReady || (window.$cmsReady = [])).push(function () {
         $cms.attachBehaviors(document);
     });
 
@@ -326,7 +323,7 @@
 
         var view = this;
         /* Tidying up after the page is rendered */
-        $cms.load.then(function () {
+        (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
             // When images etc have loaded
             // Move the help panel if needed
             if ($cms.$CONFIG_OPTION.fixed_width || (get_window_width() > 990)) {

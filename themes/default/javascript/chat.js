@@ -14,7 +14,7 @@
         ChatRoomScreen.base(this, 'constructor', arguments);
         this.chatroomId = strVal(params.chatroomId);
 
-        $cms.load.then(function () {
+        (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
             chat_load(params.chatroomId);
         });
     }
@@ -146,7 +146,7 @@
     $cms.templates.chatLobbyImArea = function chatLobbyImArea(params, container) {
         var chatroomId = strVal(params.chatroomId);
 
-        $cms.load.then(function () {
+        (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
             try {
                 $cms.dom.$('#post_' + chatroomId).focus();
             } catch (e) {
@@ -303,7 +303,7 @@
         window.lobby_link = params.lobbyLink;
         window.participants = '';
 
-        $cms.ready.then(function () {
+        (window.$cmsReady || (window.$cmsReady = [])).push(function () {
             if (!window.load_from_room_id) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
                 begin_im_chatting();
             }

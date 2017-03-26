@@ -12,7 +12,7 @@
 	{$REQUIRE_JAVASCRIPT,tag_cloud}
 
 	<script>// <![CDATA[
-	$cms.ready.then(function() {
+	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
 			load_tag_cloud(document.getElementById('tag_sphere'));
 		});
 	//]]></script>

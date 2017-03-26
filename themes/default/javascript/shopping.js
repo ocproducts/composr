@@ -2,7 +2,7 @@
     'use strict';
 
     /* TODO: fix for v11 */
-    $cms.ready.then(function() {
+    (window.$cmsReady || (window.$cmsReady = [])).push(function() {
         var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
 
         addressFields.forEach(function (field) {

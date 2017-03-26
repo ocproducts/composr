@@ -10,7 +10,7 @@
 </div>
 
 <script>// <![CDATA[
-$cms.ready.then(function() {
+(window.$cmsReady || (window.$cmsReady = [])).push(function() {
     var _el = document.getElementById("flipbox_{$GET%,RAND_FLIP}");
 
     _el.onclick = function () {

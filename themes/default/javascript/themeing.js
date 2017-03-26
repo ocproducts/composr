@@ -810,7 +810,7 @@ function css_equation_helper(file_id, theme) {
 
 window.done_cleanup_template_markers = false;
 if (window.location.href.includes('keep_template_magic_markers=1')) {
-    $cms.ready.then(function () {
+    (window.$cmsReady || (window.$cmsReady = [])).push(function () {
         cleanup_template_markers(window);
     });
 }
