@@ -530,7 +530,7 @@ function find_tags_in_editor(editor, element) {
 
         comcodes[i].orig_title = comcodes[i].title;
         comcodes[i].onmouseout = function () {
-            deactivate_tooltip(this);
+            $cms.ui.deactivateTooltip(this);
         };
         comcodes[i].onmousemove = function (event) {
             if (event === undefined) {
@@ -544,7 +544,7 @@ function find_tags_in_editor(editor, element) {
                 if (event.pageY) eventCopy.pageY = 3000;
                 if (event.clientY) eventCopy.clientY = 3000;
 
-                reposition_tooltip(this, eventCopy);
+                $cms.ui.repositionTooltip(this, eventCopy);
                 this.title = this.orig_title;
             }
         };
@@ -591,7 +591,7 @@ function find_tags_in_editor(editor, element) {
 
             event.stopPropagation();
 
-            if (window.activate_tooltip) {
+            if (window.$cms.ui.activateTooltip) {
                 var tag_text = '';
                 if (this.nodeName.toLowerCase() === 'input') {
                     tag_text = this.orig_title;
@@ -627,13 +627,13 @@ function find_tags_in_editor(editor, element) {
                             }
                             if (self_ob.rendered_tooltip !== undefined) {
                                 if (self_ob.is_over) {
-                                    activate_tooltip(self_ob, eventCopy, self_ob.rendered_tooltip, 'auto', null, null, false, true);
+                                    $cms.ui.activateTooltip(self_ob, eventCopy, self_ob.rendered_tooltip, 'auto', null, null, false, true);
                                     self_ob.title = self_ob.orig_title;
                                 }
                             }
                         }, 'data=' + encodeURIComponent('[semihtml]' + tag_text.replace(/<\/?span[^>]*>/gi, '')).substr(0, 1000).replace(new RegExp(String.fromCharCode(8203), 'g'), '') + '[/semihtml]');
                     } else if (this.rendered_tooltip !== undefined) {
-                        activate_tooltip(self_ob, eventCopy, self_ob.rendered_tooltip, '400px', null, null, false, true);
+                        $cms.ui.activateTooltip(self_ob, eventCopy, self_ob.rendered_tooltip, '400px', null, null, false, true);
                     }
                 }
             }

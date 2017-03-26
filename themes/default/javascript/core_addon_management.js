@@ -33,7 +33,7 @@
         activateTooltip: function (e, el) {
             var text = el.dataset.vwTooltip;
             if (text) {
-                activate_tooltip(el, e, text, '50%');
+                $cms.ui.activateTooltip(el, e, text, '50%');
             }
         }
     });

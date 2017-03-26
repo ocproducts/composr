@@ -344,13 +344,13 @@
             el.cancelled = false;
             $cms.loadSnippet('member_tooltip&member_id=' + params.memberId, null, function (result) {
                 if (!el.cancelled) {
-                    activate_tooltip(el, e, result.responseText, 'auto', null, null, false, true);
+                    $cms.ui.activateTooltip(el, e, result.responseText, 'auto', null, null, false, true);
                 }
             })
         }
 
         $cms.dom.on(container, 'mouseout', '.js-mouseout-comcode-member-link', function (e, el) {
-            deactivate_tooltip(el);
+            $cms.ui.deactivateTooltip(el);
             el.cancelled = true;
         });
     };

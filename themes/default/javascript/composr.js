@@ -4051,6 +4051,310 @@
     };
 
     /**
+     *  Tooltips that can work on any element with rich HTML support
+     *  @memberof $cms.ui
+     * @param el - the element
+     * @param event - the event handler
+     * @param tooltip - the text for the tooltip
+     * @param width - width is in pixels (but you need 'px' on the end), can be null or auto
+     * @param pic - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
+     * @param height - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
+     * @param bottom - set to true if the tooltip should definitely appear upwards; rarely use this parameter
+     * @param no_delay - set to true if the tooltip should appear instantly
+     * @param lights_off - set to true if the image is to be dimmed
+     * @param force_width - set to true if you want width to not be a max width
+     * @param win - window to open in
+     * @param have_links - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
+     */
+    $cms.ui.activateTooltip = function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
+        event || (event = {});
+        width || (width = 'auto');
+        pic || (pic = '');
+        height || (height = 'auto');
+        bottom = !!bottom;
+        no_delay = !!no_delay;
+        lights_off = !!lights_off;
+        force_width = !!force_width;
+        win || (win = window);
+        have_links = !!have_links;
+
+        if (!window.page_loaded || !tooltip) {
+            return;
+        }
+
+        if (window.is_doing_a_drag) {
+            // Don't want tooltips appearing when doing a drag and drop operation
+            return;
+        }
+
+        if (!have_links && $cms.isTouchEnabled) {
+            return; // Too erratic
+        }
+
+        register_mouse_listener(event);
+
+        $cms.ui.clearOutTooltip(el.tooltip_id);
+
+        // Add in move/leave events if needed
+        if (!have_links) {
+            el.addEventListener('mouseout', function () {
+                win.$cms.ui.deactivateTooltip(el);
+            });
+
+            el.addEventListener('mousemove', function () {
+                win.$cms.ui.repositionTooltip(el, event, false, false, null, false, win);
+            });
+        } else {
+            el.addEventListener('click', function () {
+                win.$cms.ui.deactivateTooltip(el);
+            });
+        }
+
+        if (typeof tooltip === 'function') {
+            tooltip = tooltip();
+        }
+
+        tooltip = strVal(tooltip);
+
+        if (!tooltip) {
+            return;
+        }
+
+        el.is_over = true;
+        el.tooltip_on = false;
+        el.initial_width = width;
+        el.have_links = have_links;
+
+        var children = el.querySelectorAll('img');
+        for (var i = 0; i < children.length; i++) {
+            children[i].setAttribute('title', '');
+        }
+
+        var tooltipEl;
+        if ((el.tooltip_id !== undefined) && ($cms.dom.$id(el.tooltip_id))) {
+            tooltipEl = win.$cms.dom.$('#' + el.tooltip_id);
+            tooltipEl.style.display = 'none';
+            $cms.dom.html(tooltipEl, '');
+            window.setTimeout(function () {
+                $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, force_width);
+            }, 0);
+        } else {
+            tooltipEl = win.document.createElement('div');
+            tooltipEl.role = 'tooltip';
+            tooltipEl.style.display = 'none';
+            var rt_pos = tooltip.indexOf('results_table');
+            tooltipEl.className = 'tooltip ' + ((rt_pos == -1 || rt_pos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (have_links ? ' have_links' : '');
+            if (el.className.substr(0, 3) === 'tt_') {
+                tooltipEl.className += ' ' + el.className;
+            }
+            if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
+                tooltipEl.style.wordWrap = 'normal';
+            }
+
+            if (force_width) {
+                tooltipEl.style.width = width;
+            } else {
+                if (width === 'auto') {
+                    var new_auto_width = get_window_width(win) - 30 - window.mouse_x;
+                    if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+                    tooltipEl.style.maxWidth = new_auto_width + 'px';
+                } else {
+                    tooltipEl.style.maxWidth = width;
+                }
+                tooltipEl.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
+            }
+            if (height && (height !== 'auto')) {
+                tooltipEl.style.maxHeight = height;
+                tooltipEl.style.overflow = 'auto';
+            }
+            tooltipEl.style.position = 'absolute';
+            tooltipEl.id = 't_' + $cms.random();
+            el.tooltip_id = tooltipEl.id;
+            $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, force_width);
+            document.body.appendChild(tooltipEl);
+        }
+        tooltipEl.ac = el;
+
+        if (pic) {
+            var img = win.document.createElement('img');
+            img.src = pic;
+            img.className = 'tooltip_img';
+            if (lights_off) {
+                img.classList.add('faded_tooltip_img');
+            }
+            tooltipEl.appendChild(img);
+            tooltipEl.classList.add('tooltip_with_img');
+        }
+
+        var event_copy = { // Needs to be copied as it will get erased on IE after this function ends
+            'pageX': +event.pageX || 0,
+            'pageY': +event.pageY || 0,
+            'clientX': +event.clientX || 0,
+            'clientY': +event.clientY || 0,
+            'type': event.type || ''
+        };
+
+        // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
+        var bi = $cms.dom.$('#main_website_inner') || document.body;
+        if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
+            bi.onmouseover = function () {
+                return true;
+            };
+        }
+
+        window.setTimeout(function () {
+            if (!el.is_over) {
+                return;
+            }
+
+            if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
+                $cms.dom.appendHtml(tooltipEl, tooltip);
+
+            el.tooltip_on = true;
+            tooltipEl.style.display = 'block';
+            if (tooltipEl.style.width == 'auto')
+                tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+
+            if (!no_delay) {
+                // If delayed we will sub in what the currently known global mouse coordinate is
+                event_copy.pageX = win.mouse_x;
+                event_copy.pageY = win.mouse_y;
+            }
+
+            $cms.ui.repositionTooltip(el, event_copy, bottom, true, tooltipEl, force_width, win);
+        }, no_delay ? 0 : 666);
+    };
+
+    $cms.ui.repositionTooltip = function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
+        bottom = !!bottom;
+        win || (win = window);
+
+        if (!starting) {// Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
+
+            if (el.getAttribute('title')) {
+                el.setAttribute('title', '');
+            }
+
+            if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
+                el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
+            }
+        }
+
+        if (!window.page_loaded) {
+            return;
+        }
+
+        if (!el.tooltip_id) {
+            if (el.onmouseover) {
+                el.onmouseover(event);
+            }
+            return;
+        }  // Should not happen but written as a fail-safe
+
+        tooltip_element || (tooltip_element = $cms.dom.$id(el.tooltip_id));
+
+        if (!tooltip_element) {
+            return;
+        }
+
+        var style__offset_x = 9,
+            style__offset_y = (el.have_links) ? 18 : 9,
+            x, y;
+
+        // Find mouse position
+        x = window.mouse_x;
+        y = window.mouse_y;
+        x += style__offset_x;
+        y += style__offset_y;
+        try {
+            if (event.type) {
+                if (event.type != 'focus') {
+                    el.done_none_focus = true;
+                }
+
+                if ((event.type === 'focus') && (el.done_none_focus)) {
+                    return;
+                }
+
+                x = (event.type === 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
+                y = (event.type === 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
+            }
+        } catch (ignore) {
+        }
+        // Maybe mouse position actually needs to be in parent document?
+        try {
+            if (event.target && (event.target.ownerDocument !== win.document)) {
+                x = win.mouse_x + style__offset_x;
+                y = win.mouse_y + style__offset_y;
+            }
+        } catch (ignore) {
+        }
+
+        // Work out which direction to render in
+        var width = $cms.dom.contentWidth(tooltip_element);
+        if (tooltip_element.style.width === 'auto') {
+            if (width < 200) {
+                // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
+                width = 200;
+            }
+        }
+        var height = tooltip_element.offsetHeight;
+        var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
+        if (x_excess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
+            var x_before = x;
+            x -= x_excess + 20 + style__offset_x;
+            if (x < 100) { // Do not make it impossible to de-focus the tooltip
+                x = (x_before < 100) ? x_before : 100;
+            }
+        }
+        if (x < 0) {
+            x = 0;
+        }
+        if (bottom) {
+            tooltip_element.style.top = (y - height) + 'px';
+        } else {
+            var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
+            if (y_excess > 0) y -= y_excess;
+            var scroll_y = win.pageYOffset;
+            if (y < scroll_y) y = scroll_y;
+            tooltip_element.style.top = y + 'px';
+        }
+        tooltip_element.style.left = x + 'px';
+    };
+
+    $cms.ui.deactivateTooltip = function deactivate_tooltip(el, tooltip_element) {
+        el.is_over = false;
+
+        if (el.tooltip_id == null) {
+            return;
+        }
+
+        tooltip_element || (tooltip_element = $cms.dom.$('#' + el.tooltip_id));
+
+        if (tooltip_element) {
+            $cms.dom.hide(tooltip_element);
+        }
+    };
+
+    $cms.ui.clearOutTooltip = function clear_out_tooltips(tooltip_being_opened) {
+        // Delete other tooltips, which due to browser bugs can get stuck
+        var selector = '.tooltip';
+        if (tooltip_being_opened) {
+            selector += ':not(#' + tooltip_being_opened + ')';
+        }
+        $cms.dom.$$(selector).forEach(function (el) {
+            $cms.ui.deactivateTooltip(el.ac, el);
+        });
+    };
+
+    window.$cmsReady.push(function () {
+        // Tooltips close on browser resize
+        $cms.dom.on(window, 'resize', function () {
+            $cms.ui.clearOutTooltip();
+        });
+    });
+
+    /**
      * @memberof $cms.form
      * @param radios
      * @returns {*}
@@ -6265,7 +6569,7 @@
                     node_self.cms_draggable = node.getAttribute('draggable');
                     node_self.draggable = true;
                     node_self.ondragstart = function (event) {
-                        clear_out_tooltips();
+                        $cms.ui.clearOutTooltip();
 
                         this.className += ' being_dragged';
 
@@ -7416,306 +7720,6 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     return top;
 }
 
-function clear_out_tooltips(tooltip_being_opened) {
-    // Delete other tooltips, which due to browser bugs can get stuck
-    var selector = '.tooltip';
-    if (tooltip_being_opened) {
-        selector += ':not(#' + tooltip_being_opened + ')';
-    }
-    $cms.dom.$$(selector).forEach(function (el) {
-        deactivate_tooltip(el.ac, el);
-    });
-}
-
-window.$cmsReady.push(function () {
-    // Tooltips close on browser resize
-    $cms.dom.on(window, 'resize', function () {
-        clear_out_tooltips();
-    });
-});
-
-/* Tooltips that can work on any element with rich HTML support */
-//  ac is the object to have the tooltip
-//  event is the event handler
-//  tooltip is the text for the tooltip
-//  width is in pixels (but you need 'px' on the end), can be null or auto
-//  pic is the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
-//  height is the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
-//  bottom is set to true if the tooltip should definitely appear upwards; rarely use this parameter
-//  no_delay is set to true if the tooltip should appear instantly
-//  lights_off is set to true if the image is to be dimmed
-//  force_width is set to true if you want width to not be a max width
-//  win is the window to open in
-//  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
-function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
-    event || (event = {});
-    width || (width = 'auto');
-    pic || (pic = '');
-    height || (height = 'auto');
-    bottom = !!bottom;
-    no_delay = !!no_delay;
-    lights_off = !!lights_off;
-    force_width = !!force_width;
-    win || (win = window);
-    have_links = !!have_links;
-
-    if (!window.page_loaded || !tooltip) {
-        return;
-    }
-
-    if (window.is_doing_a_drag) {
-        // Don't want tooltips appearing when doing a drag and drop operation
-        return;
-    }
-
-    if (!have_links && $cms.isTouchEnabled) {
-        return; // Too erratic
-    }
-
-    register_mouse_listener(event);
-
-    clear_out_tooltips(el.tooltip_id);
-
-    // Add in move/leave events if needed
-    if (!have_links) {
-        el.addEventListener('mouseout', function () {
-            win.deactivate_tooltip(el);
-        });
-
-        el.addEventListener('mousemove', function () {
-            win.reposition_tooltip(el, event, false, false, null, false, win);
-        });
-    } else {
-        el.addEventListener('click', function () {
-            win.deactivate_tooltip(el);
-        });
-    }
-
-    if (typeof tooltip === 'function') {
-        tooltip = tooltip();
-    }
-
-    tooltip = strVal(tooltip);
-
-    if (!tooltip) {
-        return;
-    }
-
-    el.is_over = true;
-    el.tooltip_on = false;
-    el.initial_width = width;
-    el.have_links = have_links;
-
-    var children = el.querySelectorAll('img');
-    for (var i = 0; i < children.length; i++) {
-        children[i].setAttribute('title', '');
-    }
-
-    var tooltipEl;
-    if ((el.tooltip_id !== undefined) && ($cms.dom.$id(el.tooltip_id))) {
-        tooltipEl = win.$cms.dom.$('#' + el.tooltip_id);
-        tooltipEl.style.display = 'none';
-        $cms.dom.html(tooltipEl, '');
-        window.setTimeout(function () {
-            reposition_tooltip(el, event, bottom, true, tooltipEl, force_width);
-        }, 0);
-    } else {
-        tooltipEl = win.document.createElement('div');
-        tooltipEl.role = 'tooltip';
-        tooltipEl.style.display = 'none';
-        var rt_pos = tooltip.indexOf('results_table');
-        tooltipEl.className = 'tooltip ' + ((rt_pos == -1 || rt_pos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (have_links ? ' have_links' : '');
-        if (el.className.substr(0, 3) === 'tt_') {
-            tooltipEl.className += ' ' + el.className;
-        }
-        if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
-            tooltipEl.style.wordWrap = 'normal';
-        }
-
-        if (force_width) {
-            tooltipEl.style.width = width;
-        } else {
-            if (width === 'auto') {
-                var new_auto_width = get_window_width(win) - 30 - window.mouse_x;
-                if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
-                tooltipEl.style.maxWidth = new_auto_width + 'px';
-            } else {
-                tooltipEl.style.maxWidth = width;
-            }
-            tooltipEl.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
-        }
-        if (height && (height !== 'auto')) {
-            tooltipEl.style.maxHeight = height;
-            tooltipEl.style.overflow = 'auto';
-        }
-        tooltipEl.style.position = 'absolute';
-        tooltipEl.id = 't_' + $cms.random();
-        el.tooltip_id = tooltipEl.id;
-        reposition_tooltip(el, event, bottom, true, tooltipEl, force_width);
-        document.body.appendChild(tooltipEl);
-    }
-    tooltipEl.ac = el;
-
-    if (pic) {
-        var img = win.document.createElement('img');
-        img.src = pic;
-        img.className = 'tooltip_img';
-        if (lights_off) {
-            img.classList.add('faded_tooltip_img');
-        }
-        tooltipEl.appendChild(img);
-        tooltipEl.classList.add('tooltip_with_img');
-    }
-
-    var event_copy = { // Needs to be copied as it will get erased on IE after this function ends
-        'pageX': +event.pageX || 0,
-        'pageY': +event.pageY || 0,
-        'clientX': +event.clientX || 0,
-        'clientY': +event.clientY || 0,
-        'type': event.type || ''
-    };
-
-    // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
-    var bi = $cms.dom.$('#main_website_inner') || document.body;
-    if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
-        bi.onmouseover = function () {
-            return true;
-        };
-    }
-
-    window.setTimeout(function () {
-        if (!el.is_over) {
-            return;
-        }
-
-        if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
-            $cms.dom.appendHtml(tooltipEl, tooltip);
-
-        el.tooltip_on = true;
-        tooltipEl.style.display = 'block';
-        if (tooltipEl.style.width == 'auto')
-            tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
-
-        if (!no_delay) {
-            // If delayed we will sub in what the currently known global mouse coordinate is
-            event_copy.pageX = win.mouse_x;
-            event_copy.pageY = win.mouse_y;
-        }
-
-        reposition_tooltip(el, event_copy, bottom, true, tooltipEl, force_width, win);
-    }, no_delay ? 0 : 666);
-}
-function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
-    bottom = !!bottom;
-    win || (win = window);
-
-    if (!starting) {// Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
-
-        if (el.getAttribute('title')) {
-            el.setAttribute('title', '');
-        }
-
-        if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
-            el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
-        }
-    }
-
-    if (!window.page_loaded) {
-        return;
-    }
-
-    if (!el.tooltip_id) {
-        if (el.onmouseover) {
-            el.onmouseover(event);
-        }
-        return;
-    }  // Should not happen but written as a fail-safe
-
-    tooltip_element || (tooltip_element = $cms.dom.$id(el.tooltip_id));
-
-    if (!tooltip_element) {
-        return;
-    }
-
-    var style__offset_x = 9,
-        style__offset_y = (el.have_links) ? 18 : 9,
-        x, y;
-
-    // Find mouse position
-    x = window.mouse_x;
-    y = window.mouse_y;
-    x += style__offset_x;
-    y += style__offset_y;
-    try {
-        if (event.type) {
-            if (event.type != 'focus') {
-                el.done_none_focus = true;
-            }
-
-            if ((event.type === 'focus') && (el.done_none_focus)) {
-                return;
-            }
-
-            x = (event.type === 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
-            y = (event.type === 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
-        }
-    } catch (ignore) {
-    }
-    // Maybe mouse position actually needs to be in parent document?
-    try {
-        if (event.target && (event.target.ownerDocument !== win.document)) {
-            x = win.mouse_x + style__offset_x;
-            y = win.mouse_y + style__offset_y;
-        }
-    } catch (ignore) {
-    }
-
-    // Work out which direction to render in
-    var width = $cms.dom.contentWidth(tooltip_element);
-    if (tooltip_element.style.width === 'auto') {
-        if (width < 200) {
-            // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
-            width = 200;
-        }
-    }
-    var height = tooltip_element.offsetHeight;
-    var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
-    if (x_excess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
-        var x_before = x;
-        x -= x_excess + 20 + style__offset_x;
-        if (x < 100) { // Do not make it impossible to de-focus the tooltip
-            x = (x_before < 100) ? x_before : 100;
-        }
-    }
-    if (x < 0) {
-        x = 0;
-    }
-    if (bottom) {
-        tooltip_element.style.top = (y - height) + 'px';
-    } else {
-        var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
-        if (y_excess > 0) y -= y_excess;
-        var scroll_y = win.pageYOffset;
-        if (y < scroll_y) y = scroll_y;
-        tooltip_element.style.top = y + 'px';
-    }
-    tooltip_element.style.left = x + 'px';
-}
-
-function deactivate_tooltip(el, tooltip_element) {
-    el.is_over = false;
-
-    if (el.tooltip_id == null) {
-        return;
-    }
-
-    tooltip_element || (tooltip_element = $cms.dom.$('#' + el.tooltip_id));
-
-    if (tooltip_element) {
-        $cms.dom.hide(tooltip_element);
-    }
-}
-
 /* Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes! */
 function resize_frame(name, min_height) {
     min_height = +min_height || 0;
@@ -8246,7 +8250,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
                 }
             }
 
-            clear_out_tooltips();
+            $cms.ui.clearOutTooltip();
 
             // Make AJAX block call
             return $cms.callBlock(url_stem + url_stub, '', block_element, append, function () {

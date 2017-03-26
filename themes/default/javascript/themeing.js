@@ -594,14 +594,14 @@ function set_up_parent_page_highlighting(file, file_id) {
             css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
         }
         li.addEventListener('mouseout', function (event) {
-            deactivate_tooltip(this);
+            $cms.ui.deactivateTooltip(this);
         });
         li.addEventListener('mousemove', function (event) {
-            reposition_tooltip(this, event);
+            $cms.ui.repositionTooltip(this, event);
         });
         li.addEventListener('mouseover', function (css_text) {
             return function (event) {
-                activate_tooltip(this, event, css_text, 'auto');
+                $cms.ui.activateTooltip(this, event, css_text, 'auto');
             }
         }(css_text));
 

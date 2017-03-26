@@ -232,15 +232,15 @@
         }
 
         function preview_generator_mouseover(event) {
-            activate_tooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
+            $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
         }
 
         function preview_generator_mousemove(event) {
-            reposition_tooltip(this, event);
+            $cms.ui.repositionTooltip(this, event);
         }
 
         function preview_generator_mouseout(event) {
-            deactivate_tooltip(this);
+            $cms.ui.deactivateTooltip(this);
         }
 
         for (i = 0; i < files.options.length; i++) {

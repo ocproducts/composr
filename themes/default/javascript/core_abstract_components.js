@@ -9,7 +9,7 @@
         var textLarge = $cms.filter.nl(params.textLarge);
 
         $cms.dom.on(el, 'mouseover', function (e) {
-            activate_tooltip(el, e, textLarge, '40%');
+            $cms.ui.activateTooltip(el, e, textLarge, '40%');
         });
     };
 
@@ -18,7 +18,7 @@
 
         $cms.dom.on(el, 'mouseover', function (e) {
             var window = get_main_cms_window(true);
-            window.activate_tooltip(el, e, textLarge, '40%', null, null, null, false, false, false, window);
+            window.$cms.ui.activateTooltip(el, e, textLarge, '40%', null, null, null, false, false, false, window);
         });
     };
 

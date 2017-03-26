@@ -729,9 +729,9 @@
             args.unshift(el, e);
 
             try {
-                activate_tooltip.apply(undefined, args);
+                $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
+                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -742,15 +742,15 @@
             args.unshift(el, e);
 
             try {
-                activate_tooltip.apply(undefined, args);
+                $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
+                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
         // Implementation for [data-blur-deactivate-tooltip]
         blurDeactivateTooltip: function (e, el) {
-            deactivate_tooltip(el);
+            $cms.ui.deactivateTooltip(el);
         },
 
         activateRichTooltip: function (e, el) {
@@ -761,9 +761,9 @@
             var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, !!el.have_links];
 
             try {
-                activate_tooltip.apply(undefined, args);
+                $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by activate_tooltip()', ex, 'called with args:', args);
+                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -1042,10 +1042,10 @@
 
             function apply_comcode_tooltip(hook, id, link) {
                 link.addEventListener('mouseout', function () {
-                    deactivate_tooltip(link);
+                    $cms.ui.deactivateTooltip(link);
                 });
                 link.addEventListener('mousemove', function (event) {
-                    reposition_tooltip(link, event, false, false, null, true);
+                    $cms.ui.repositionTooltip(link, event, false, false, null, true);
                 });
                 link.addEventListener('mouseover', function (event) {
                     var id_chopped = id[1];
@@ -1062,12 +1062,12 @@
                             }
                             if (link.rendered_tooltip !== undefined) {
                                 if (link.is_over) {
-                                    activate_tooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
+                                    $cms.ui.activateTooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
                                 }
                             }
                         }, 'data=' + encodeURIComponent(comcode));
                     } else {
-                        activate_tooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
+                        $cms.ui.activateTooltip(link, event, link.rendered_tooltip, '400px', null, null, false, false, false, true);
                     }
                 });
             }
@@ -1672,15 +1672,15 @@
         el.cms_tooltip_title = $cms.filter.html(title);
 
         $cms.dom.on(el, 'mouseover', function (event) {
-            global.activate_tooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, global);
+            global.$cms.ui.activateTooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, global);
         });
 
         $cms.dom.on(el, 'mousemove', function (event) {
-            global.reposition_tooltip(el, event, false, false, null, false, global);
+            global.$cms.ui.repositionTooltip(el, event, false, false, null, false, global);
         });
 
         $cms.dom.on(el, 'mouseout', function () {
-            global.deactivate_tooltip(el);
+            global.$cms.ui.deactivateTooltip(el);
         });
     }
 

@@ -144,9 +144,9 @@ In Composr, JavaScript libraries are automatically minified to save on bandwidth
  - [b]Calling up dependencies[/b]: [tt]$cms.loadSnippet[/tt], [tt]$cms.requireJavascript[/tt]
  - [b]Viewport[/b]: [tt]get_window_width[/tt], [tt]get_window_height[/tt], [tt]get_window_scroll_height[/tt], [tt]get_window_scroll_x[/tt], [tt]get_window_scroll_y[/tt]
  - [b]Element positioning[/b]: [tt]find_pos_x[/tt], [tt]find_pos_y[/tt], [tt]find_width[/tt], [tt]find_height[/tt]
- - [b]Tooltips[/b]: [tt]activate_tooltip[/tt]
+ - [b]Tooltips[/b]: [tt]$cms.ui.activateTooltip[/tt]
  - [b]Misc[/b]: [tt]set_opacity[/tt], [tt]$cms.dom.on[/tt], [tt]keep_stub[/tt]
- - [b]HTML manipulation[/b]: [tt]get_inner_html[/tt], [tt]set_inner_html[/tt]
+ - [b]HTML manipulation[/b]: [tt]$cms.dom.html[/tt]
  - [b]AJAX[/b]: ajax.js: [tt]do_ajax_request[/tt]
  - [b]Animation[/b]: [tt]toggleable_tray[/tt], [tt]smooth_scroll[/tt], transitions.js: [tt]fade_transition[/tt]
 
