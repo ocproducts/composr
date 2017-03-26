@@ -136,7 +136,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             var session_test_ret = do_ajax_request(session_test_url + keep_stub(true), null);
 
             if (session_test_ret.responseText) {// If it failed, see if it is due to a non-confirmed session
-                confirm_session(
+                $cms.ui.confirmSession(
                     function (result) {
                         if (result) {
                             save_function();

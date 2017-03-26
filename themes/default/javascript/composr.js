@@ -3535,6 +3535,11 @@
 
     /**
      * @memberof $cms.ui
+     * @param question
+     * @param defaultValue
+     * @param callback
+     * @param title
+     * @param input_type
      */
     $cms.ui.prompt = function prompt(question, defaultValue, callback, title, input_type) {
         if (!$cms.$CONFIG_OPTION.js_overlays) {
@@ -3561,15 +3566,16 @@
             myPrompt.input_type = input_type;
         }
         $cms.openModalWindow(myPrompt);
-
-        if (!$cms.$CONFIG_OPTION.js_overlays) {
-            callback(window.prompt(question, defaultValue));
-            return;
-        }
     };
 
     /**
      * @memberof $cms.ui
+     * @param url
+     * @param name
+     * @param options
+     * @param callback
+     * @param target
+     * @param cancel_text
      */
     $cms.ui.showModalDialog = function showModalDialog(url, name, options, callback, target, cancel_text) {
         callback = callback || noop;
@@ -3645,6 +3651,11 @@
 
     /**
      * @memberof $cms.ui
+     * @param url
+     * @param name
+     * @param options
+     * @param target
+     * @param cancel_text
      */
     $cms.ui.open = function open(url, name, options, target, cancel_text) {
         if (cancel_text === undefined) {
@@ -3873,6 +3884,63 @@
                 }
                 return [max_width, max_height];
             }
+        }
+    };
+
+    /**
+     * Enforcing a session using AJAX
+     * @memberof $cms.ui
+     * @param callback
+     */
+    $cms.ui.confirmSession = function confirmSession(callback) {
+        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + keep_stub(true);
+
+        do_ajax_request(url, function (ret) {
+            if (!ret) {
+                return;
+            }
+
+            if (ret.responseText === '') {// Blank means success, no error - so we can call callback
+                callback(true);
+                return;
+            }
+
+            // But non blank tells us the username, and there is an implication that no session is confirmed for this login
+            if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
+                $cms.ui.prompt(
+                    '{!USERNAME;^}',
+                    '',
+                    function (promptt) {
+                        _confirmSession(callback, promptt, url);
+                    },
+                    '{!_LOGIN;^}'
+                );
+                return;
+            }
+
+            _confirmSession(callback, ret.responseText, url);
+        });
+
+        function _confirmSession(callback, username, url) {
+            $cms.ui.prompt(
+                $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
+                '',
+                function (promptt) {
+                    if (promptt !== null) {
+                        do_ajax_request(url, function (ret) {
+                            if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
+                                callback(true);
+                            } else {
+                                _confirmSession(callback, username, url); // Recurse
+                            }
+                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
+                    } else {
+                        callback(false);
+                    }
+                },
+                '{!_LOGIN;^}',
+                'password'
+            );
         }
     };
 
@@ -6763,7 +6831,6 @@ function noop() {}
     window.magic_keypress = magic_keypress;
     window.create_rollover = create_rollover;
     window.browser_matches = browser_matches;
-    window.confirm_session = confirm_session;
 
     // Serves as a flag to indicate any new errors are probably due to us transitioning
     window.unloaded = !!window.unloaded;
@@ -6925,59 +6992,6 @@ function noop() {}
 
         // Should never get here
         return false;
-    }
-
-    /* Enforcing a session using AJAX */
-    function confirm_session(callback) {
-        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + keep_stub(true);
-
-        do_ajax_request(url, function (ret) {
-            if (!ret) {
-                return;
-            }
-
-            if (ret.responseText === '') {// Blank means success, no error - so we can call callback
-                callback(true);
-                return;
-            }
-
-            // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-            if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
-                $cms.ui.prompt(
-                    '{!USERNAME;^}',
-                    '',
-                    function (promptt) {
-                        _confirm_session(callback, promptt, url);
-                    },
-                    '{!_LOGIN;^}'
-                );
-                return;
-            }
-
-            _confirm_session(callback, ret.responseText, url);
-        });
-
-        function _confirm_session(callback, username, url) {
-            $cms.ui.prompt(
-                $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
-                '',
-                function (promptt) {
-                    if (promptt !== null) {
-                        do_ajax_request(url, function (ret) {
-                            if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
-                                callback(true);
-                            } else {
-                                _confirm_session(callback, username, url); // Recurse
-                            }
-                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
-                    } else {
-                        callback(false);
-                    }
-                },
-                '{!_LOGIN;^}',
-                'password'
-            );
-        }
     }
 }());
 

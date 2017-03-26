@@ -27,7 +27,7 @@ function load_commandr() {
 
     // Loaded
     if ((window.do_ajax_request) && (window.commandr_command_response !== undefined)) {
-        confirm_session(
+        $cms.ui.confirmSession(
             function (result) {
                 // Remove "loading" indicator from button
                 var img = document.getElementById('commandr_img');
