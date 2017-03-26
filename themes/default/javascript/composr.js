@@ -383,13 +383,19 @@
      * */
     $cms.dom || ($cms.dom = {});
 
+
+
     var domReadyPromise = new Promise(function (resolve) {
+        var fn;
+
         if (document.readyState === 'interactive') {
-            window.setTimeout(resolve);
+            window.setTimeout(resolve, 0);
+            window.setTimeout(executeReadyQueue, 0);
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
                 document.removeEventListener('DOMContentLoaded', listener);
                 resolve();
+                executeReadyQueue();
             });
         }
     });
@@ -409,12 +415,54 @@
     domReadyPromise.then(function () {
         $cms._resolveReady();
         delete $cms._resolveReady;
+
+        executeCmsReadyQueue();
     });
+
+    (window.$cmsReady || (window.$cmsReady = []));
+
+    function executeCmsReadyQueue() {
+        var fn;
+
+        while (window.$cmsReady.length) {
+            fn = window.$cmsReady.shift();
+            if (typeof fn === 'function') {
+                fn();
+            }
+        }
+
+        properties(window.$cmsReady, {
+            push: function push(fn) {
+                fn();
+            }
+        });
+    }
 
     Promise.all([$cms.ready, loadWindowPromise]).then(function () {
         $cms._resolveLoad();
         delete $cms._resolveLoad;
+
+        executeCmsLoadQueue();
     });
+
+    (window.$cmsLoad || (window.$cmsLoad = []));
+
+    function executeCmsLoadQueue() {
+        var fn;
+
+        while (window.$cmsLoad.length) {
+            fn = window.$cmsLoad.shift();
+            if (typeof fn === 'function') {
+                fn();
+            }
+        }
+
+        properties(window.$cmsLoad, {
+            push: function push(fn) {
+                fn();
+            }
+        });
+    }
 
     $cms.usp = uspFromUrl(window.location.href);
 
@@ -1205,6 +1253,7 @@
     function CookieMonster() {}
 
     properties(CookieMonster.prototype, /** @lends CookieMonster# */ {
+        /**@method*/
         get: function get(cookieName) {
             cookieName = strVal(cookieName);
             if (cookieName) {
@@ -1212,6 +1261,7 @@
             }
         },
 
+        /**@method*/
         getAll: function getAll() {
             // To prevent the for loop in the first place assign an empty array
             // in case there are no cookies at all. Also prevents odd result when
@@ -1247,6 +1297,7 @@
             return result;
         },
 
+        /**@method*/
         set: function set(details, value) {
             var defaults = {
                 value: '',
@@ -1288,6 +1339,7 @@
             ].join('');
         },
 
+        /**@method*/
         remove: function remove(cookieName) {
             var details = {
                 name: cookieName,
