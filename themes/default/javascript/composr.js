@@ -4093,7 +4093,7 @@
 
         register_mouse_listener(event);
 
-        $cms.ui.clearOutTooltip(el.tooltip_id);
+        $cms.ui.clearOutTooltips(el.tooltip_id);
 
         // Add in move/leave events if needed
         if (!have_links) {
@@ -4336,7 +4336,7 @@
         }
     };
 
-    $cms.ui.clearOutTooltip = function clearOutTooltip(tooltip_being_opened) {
+    $cms.ui.clearOutTooltips = function clearOutTooltips(tooltip_being_opened) {
         // Delete other tooltips, which due to browser bugs can get stuck
         var selector = '.tooltip';
         if (tooltip_being_opened) {
@@ -4350,7 +4350,7 @@
     window.$cmsReady.push(function () {
         // Tooltips close on browser resize
         $cms.dom.on(window, 'resize', function () {
-            $cms.ui.clearOutTooltip();
+            $cms.ui.clearOutTooltips();
         });
     });
 
@@ -6569,7 +6569,7 @@
                     node_self.cms_draggable = node.getAttribute('draggable');
                     node_self.draggable = true;
                     node_self.ondragstart = function (event) {
-                        $cms.ui.clearOutTooltip();
+                        $cms.ui.clearOutTooltips();
 
                         this.className += ' being_dragged';
 
@@ -8250,7 +8250,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
                 }
             }
 
-            $cms.ui.clearOutTooltip();
+            $cms.ui.clearOutTooltips();
 
             // Make AJAX block call
             return $cms.callBlock(url_stem + url_stub, '', block_element, append, function () {
