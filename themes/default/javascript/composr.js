@@ -319,7 +319,10 @@
         setPostDataFlag: setPostDataFlag,
         /**@method*/
         parseJson: parseJson,
-
+        /**@method*/
+        getCsrfToken: getCsrfToken,
+        /**@method*/
+        getSessionId: getSessionId,
         /**@method*/
         defineBehaviors: defineBehaviors,
         /**@method*/
@@ -1228,6 +1231,14 @@
         protoProps.constructor = SubClass;
 
         properties(SubClass.prototype, protoProps);
+    }
+
+    function getCsrfToken() {
+        return $cms.readCookie($cms.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+    }
+
+    function getSessionId() {
+        return $cms.readCookie($cms.$SESSION_COOKIE_NAME);
     }
 
     /**
@@ -7154,14 +7165,6 @@
                 }
             }
         }
-    };
-
-    $cms.getCsrfToken = function getCsrfToken() {
-        return $cms.readCookie($cms.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
-    };
-
-    $cms.getSessionId = function getSessionId() {
-        return $cms.readCookie($cms.$SESSION_COOKIE_NAME);
     };
 
     $cms.topicReply = topicReply;
