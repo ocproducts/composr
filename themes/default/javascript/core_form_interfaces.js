@@ -755,7 +755,7 @@
             el.form.action = el.form.action.replace(/keep_mobile=\d/g, 'keep_mobile=' + (el.checked ? '1' : '0'));
             if (window.parent) {
                 try {
-                    window.parent.scrollTo(0, find_pos_y(window.parent.document.getElementById('preview_iframe')));
+                    window.parent.scrollTo(0, $cms.dom.findPosY(window.parent.document.getElementById('preview_iframe')));
                 } catch (e) {
                 }
                 window.parent.mobile_version_for_preview = !!el.checked;
@@ -1234,7 +1234,7 @@
     function _simplified_form_continue_submit(iframe, form_cat_selector) {
         if ($cms.form.checkForm(form_cat_selector)) {
             if (iframe) {
-                animate_frame_load(iframe, 'iframe_under');
+                $cms.dom.animateFrameLoad(iframe, 'iframe_under');
             }
             form_cat_selector.submit();
         }

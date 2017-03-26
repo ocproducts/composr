@@ -226,7 +226,7 @@
 
         function doubleClick() {
             if (!menuEditorWrapEl.classList.contains('docked')) {
-                smooth_scroll(find_pos_y(document.getElementById('caption_' + window.current_selection)));
+                $cms.dom.smoothScroll($cms.dom.findPosY(document.getElementById('caption_' + window.current_selection)));
             }
         }
 
@@ -319,7 +319,7 @@
 
         $cms.dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
             if (!document.getElementById('menu_editor_wrap').classList.contains('docked')) {
-                smooth_scroll(find_pos_y(document.getElementsByTagName('h2')[2]));
+                $cms.dom.smoothScroll($cms.dom.findPosY(document.getElementsByTagName('h2')[2]));
             }
         });
 
@@ -775,14 +775,14 @@
             l += el.parentNode.offsetWidth;
         }
 
-        var full_height = get_window_scroll_height(); // Has to be got before e is visible, else results skewed
+        var full_height = $cms.dom.getWindowScrollHeight(); // Has to be got before e is visible, else results skewed
         el.style.position = 'absolute';
         el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
         el.style.display = 'block';
         $cms.dom.clearTransitionAndSetOpacity(el, 0.0);
         $cms.dom.fadeTransition(el, 100, 30, 8);
 
-        var full_width = (window.scrollX == 0) ? get_window_width() : window.document.body.scrollWidth;
+        var full_width = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
 
         if ($cms.$CONFIG_OPTION.fixed_width && !outside_fixed_width) {
             var main_website_inner = document.getElementById('main_website_inner');
@@ -802,7 +802,7 @@
                     pos_left += e_parent_width - e_width;
                 }
             } else { // NB: For non-below, we can't assume 'left' is absolute, as it is actually relative to parent node which is itself positioned
-                if (find_pos_x(el.parentNode, true) + e_width + e_parent_width + 10 > full_width) pos_left -= e_width + e_parent_width;
+                if ($cms.dom.findPosX(el.parentNode, true) + e_width + e_parent_width + 10 > full_width) pos_left -= e_width + e_parent_width;
             }
             el.style.left = pos_left + 'px';
         }

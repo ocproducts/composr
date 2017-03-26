@@ -326,7 +326,7 @@
         window.$cmsLoad.push(function () {
             // When images etc have loaded
             // Move the help panel if needed
-            if ($cms.$CONFIG_OPTION.fixed_width || (get_window_width() > 990)) {
+            if ($cms.$CONFIG_OPTION.fixed_width || ($cms.dom.getWindowWidth() > 990)) {
                 return;
             }
 
@@ -467,7 +467,7 @@
                         stuck_nav_height = (stuck_nav.real_height === undefined) ? $cms.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
 
                     stuck_nav.real_height = stuck_nav_height;
-                    var pos_y = find_pos_y(stuck_nav.parentNode, true),
+                    var pos_y = $cms.dom.findPosY(stuck_nav.parentNode, true),
                         footer_height = document.querySelector('footer').offsetHeight,
                         panel_bottom = $cms.dom.$id('panel_bottom');
 
@@ -478,7 +478,7 @@
                     if (panel_bottom) {
                         footer_height += panel_bottom.offsetHeight;
                     }
-                    if (stuck_nav_height < get_window_height() - footer_height) {// If there's space in the window to make it "float" between header/footer
+                    if (stuck_nav_height < $cms.dom.getWindowHeight() - footer_height) {// If there's space in the window to make it "float" between header/footer
                         var extra_height = (window.pageYOffset - pos_y);
                         if (extra_height > 0) {
                             var width = $cms.dom.contentWidth(stuck_nav);
@@ -880,7 +880,7 @@
                         border: '3px solid #AAA',
                         position: 'absolute',
                         zIndex: 2000,
-                        left: (get_window_width() - width) / 2 + 'px',
+                        left: ($cms.dom.getWindowWidth() - width) / 2 + 'px',
                         top: 100 + 'px'
                     },
                     html: html
@@ -888,7 +888,7 @@
 
                 document.body.appendChild(box);
 
-                smooth_scroll(0);
+                $cms.dom.smoothScroll(0);
 
                 img = $cms.dom.$('#software_chat_img');
                 $cms.dom.clearTransitionAndSetOpacity(img, 0.5);
@@ -1019,7 +1019,7 @@
                 var div = document.createElement('div');
                 div.className = 'unload_action';
                 div.style.width = '100%';
-                div.style.top = (get_window_height() / 2 - 160) + 'px';
+                div.style.top = ($cms.dom.getWindowHeight() / 2 - 160) + 'px';
                 div.style.position = 'fixed';
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
@@ -1110,8 +1110,8 @@
                     ml.value = '{!themes:EDIT_THEME_IMAGE;^}';
                     ml.className = 'magic_image_edit_link button_micro';
                     ml.style.position = 'absolute';
-                    ml.style.left = find_pos_x(target) + 'px';
-                    ml.style.top = find_pos_y(target) + 'px';
+                    ml.style.left = $cms.dom.findPosX(target) + 'px';
+                    ml.style.top = $cms.dom.findPosY(target) + 'px';
                     ml.style.zIndex = 3000;
                     ml.style.display = 'none';
                     target.parentNode.insertBefore(ml, target);
@@ -1348,7 +1348,7 @@
 
         var isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
         function set_tray_theme_image(before_theme_img, after_theme_img, before1_url, after1_url, after2_url) {
-            var is_1 = matches_theme_image(pic.src, before1_url);
+            var is_1 = $cms.dom.matchesThemeImage(pic.src, before1_url);
 
             if (is_1) {
                 if (isThemeWizard) {

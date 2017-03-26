@@ -1048,7 +1048,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
     // Start DOM stuff
     var div = document.createElement('div');
     div.className = 'im_event';
-    //div.style.left=(get_window_width()/2-140)+'px';
+    //div.style.left=($cms.dom.getWindowWidth()/2-140)+'px';
     div.style.right = '1em';
     div.style.bottom = ((document.body.querySelectorAll('.im_event').length) * 185 + 20) + 'px';
     var links = document.createElement('ul');

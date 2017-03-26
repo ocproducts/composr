@@ -3662,7 +3662,7 @@
                         width = bits[1].replace(/px$/, '');
                     if ((bits[0] == 'dialogHeight') || (bits[0] == 'height')) {
                         if (bits[1] == '100%') {
-                            height = '' + (get_window_height() - 200);
+                            height = '' + ($cms.dom.getWindowHeight() - 200);
                         } else {
                             height = bits[1].replace(/px$/, '');
                         }
@@ -3924,8 +3924,8 @@
             }
 
             function _get_max_lightbox_img_dims(modal, has_full_button) {
-                var max_width = modal.top_window.get_window_width() - 20;
-                var max_height = modal.top_window.get_window_height() - 60;
+                var max_width = modal.top_window.$cms.dom.getWindowWidth() - 20;
+                var max_height = modal.top_window.$cms.dom.getWindowHeight() - 60;
                 if (has_full_button) {
                     max_height -= 120;
                 }
@@ -4091,7 +4091,7 @@
             return; // Too erratic
         }
 
-        register_mouse_listener(event);
+        $cms.dom.registerMouseListener(event);
 
         $cms.ui.clearOutTooltips(el.tooltip_id);
 
@@ -4155,7 +4155,7 @@
                 tooltipEl.style.width = width;
             } else {
                 if (width === 'auto') {
-                    var new_auto_width = get_window_width(win) - 30 - window.mouse_x;
+                    var new_auto_width = $cms.dom.getWindowWidth(win) - 30 - window.mouse_x;
                     if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
                     tooltipEl.style.maxWidth = new_auto_width + 'px';
                 } else {
@@ -4276,8 +4276,8 @@
                     return;
                 }
 
-                x = (event.type === 'focus') ? (win.pageXOffset + get_window_width(win) / 2) : (window.mouse_x + style__offset_x);
-                y = (event.type === 'focus') ? (win.pageYOffset + get_window_height(win) / 2 - 40) : (window.mouse_y + style__offset_y);
+                x = (event.type === 'focus') ? (win.pageXOffset + $cms.dom.getWindowWidth(win) / 2) : (window.mouse_x + style__offset_x);
+                y = (event.type === 'focus') ? (win.pageYOffset + $cms.dom.getWindowHeight(win) / 2 - 40) : (window.mouse_y + style__offset_y);
             }
         } catch (ignore) {
         }
@@ -4299,7 +4299,7 @@
             }
         }
         var height = tooltip_element.offsetHeight;
-        var x_excess = x - get_window_width(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
+        var x_excess = x - $cms.dom.getWindowWidth(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
         if (x_excess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
             var x_before = x;
             x -= x_excess + 20 + style__offset_x;
@@ -4313,7 +4313,7 @@
         if (bottom) {
             tooltip_element.style.top = (y - height) + 'px';
         } else {
-            var y_excess = y - get_window_height(win) - win.pageYOffset + height + style__offset_y;
+            var y_excess = y - $cms.dom.getWindowHeight(win) - win.pageYOffset + height + style__offset_y;
             if (y_excess > 0) y -= y_excess;
             var scroll_y = win.pageYOffset;
             if (y < scroll_y) y = scroll_y;
@@ -4544,7 +4544,7 @@
         if (!window.just_checking_requirements) {
             window.setInterval($cms.dom.triggerResize, 500);
             /* In case its running in an iframe itself */
-            illustrate_frame_load('preview_iframe');
+            $cms.dom.illustrateFrameLoad('preview_iframe');
         }
 
         $cms.ui.disableSubmitAndPreviewButtons();
@@ -4719,12 +4719,12 @@
 
         if (erroneous) {
             if (!alerted) $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
-            var posy = find_pos_y(error_element, true);
+            var posy = $cms.dom.findPosY(error_element, true);
             if (posy == 0) {
-                posy = find_pos_y(error_element.parentNode, true);
+                posy = $cms.dom.findPosY(error_element.parentNode, true);
             }
             if (posy != 0)
-                smooth_scroll(posy - 50, null, null, function () {
+                $cms.dom.smoothScroll(posy - 50, null, null, function () {
                     try {
                         error_element.focus();
                     } catch (e) {
@@ -5165,8 +5165,8 @@
                     list.setAttribute('size', list_contents.childNodes.length + 1);
                 }
                 list.style.position = 'absolute';
-                list.style.left = (find_pos_x(currentListForEl)) + 'px';
-                list.style.top = (find_pos_y(currentListForEl) + currentListForEl.offsetHeight) + 'px';
+                list.style.left = ($cms.dom.findPosX(currentListForEl)) + 'px';
+                list.style.top = ($cms.dom.findPosY(currentListForEl) + currentListForEl.offsetHeight) + 'px';
             }
             setTimeout(function () {
                 list.style.zIndex++;
@@ -5688,7 +5688,7 @@
                 iframe.style.width = '100%';
                 if (height == 'auto') {
                     if (!init) {
-                        detected_box_height = get_window_scroll_height(iframe.contentWindow);
+                        detected_box_height = $cms.dom.getWindowScrollHeight(iframe.contentWindow);
                         iframe.style.height = detected_box_height + 'px';
                     }
                 } else {
@@ -5901,7 +5901,7 @@
 
                     container.appendChild(iframe);
 
-                    animate_frame_load(iframe, 'overlay_iframe', 50, true);
+                    $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
 
                     window.setTimeout(function () {
                         $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_finished);
@@ -6002,7 +6002,7 @@
                         }
                     };
                     window.setTimeout(function () {
-                        illustrate_frame_load('overlay_iframe');
+                        $cms.dom.illustrateFrameLoad('overlay_iframe');
                         iframe.src = that.href;
                         make_frame_like_popup();
 
@@ -6208,9 +6208,9 @@
         getPageSize: function () {
             return {
                 'page_width': this.top_window.document.body.scrollWidth,
-                'page_height': this.top_window.get_window_scroll_height(this.top_window),
-                'window_width': this.top_window.get_window_width(this.top_window),
-                'window_height': this.top_window.get_window_height()
+                'page_height': this.top_window.$cms.dom.getWindowScrollHeight(this.top_window),
+                'window_width': this.top_window.$cms.dom.getWindowWidth(this.top_window),
+                'window_height': this.top_window.$cms.dom.getWindowHeight()
             };
         }
     });
@@ -6680,7 +6680,7 @@
                     var container = $cms.dom.$id('tree_list__root_' + ob.name);
                     if ((automated) && (container) && (container.style.overflowY == 'auto')) {
                         window.setTimeout(function () {
-                            container.scrollTop = find_pos_y(html_node) - 20;
+                            container.scrollTop = $cms.dom.findPosY(html_node) - 20;
                         }, 0);
                     }
                 }
@@ -6861,8 +6861,8 @@
     }
 
     function fix_up_node_position(node_self) {
-        node_self.style.left = find_pos_x(node_self.parentNode, true) + 'px';
-        node_self.style.top = find_pos_y(node_self.parentNode, true) + 'px';
+        node_self.style.left = $cms.dom.findPosX(node_self.parentNode, true) + 'px';
+        node_self.style.top = $cms.dom.findPosY(node_self.parentNode, true) + 'px';
     }
 
     function find_overlapping_selectable(mouse_y, element, node, name) { // Find drop targets
@@ -6881,7 +6881,7 @@
 
         if (node.getAttribute('droppable') == element.cms_draggable) {
             child_node_element = $cms.dom.$id(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
-            y = find_pos_y(child_node_element.parentNode.parentNode, true);
+            y = $cms.dom.findPosY(child_node_element.parentNode.parentNode, true);
             height = child_node_element.parentNode.parentNode.offsetHeight;
             if ((y < mouse_y) && (y + height > mouse_y)) {
                 return child_node_element;
@@ -7198,7 +7198,7 @@
 
         var post = form.elements.post;
 
-        smooth_scroll(find_pos_y(form, true));
+        $cms.dom.smoothScroll($cms.dom.findPosY(form, true));
 
         var outer = $cms.dom.$('#comments_posting_form_outer');
         if (outer && $cms.dom.notDisplayed(outer)) {
@@ -7282,7 +7282,7 @@ function noop() {}
             return window;
         }
 
-        if (any_large_ok && (get_window_width() > 300)) {
+        if (any_large_ok && ($cms.dom.getWindowWidth() > 300)) {
             return window;
         }
 
@@ -7437,7 +7437,7 @@ $cms.loadSnippet = function loadSnippet(snippet_hook, post, callback) {
 };
 
 /* Tabs */
-function find_url_tab(hash) {
+$cms.dom.findUrlTab = function findUrlTab(hash) {
     if (hash === undefined) {
         hash = window.location.hash;
     }
@@ -7454,14 +7454,14 @@ function find_url_tab(hash) {
             window.location.hash = old;
         }
     }
-}
+};
 
-function matches_theme_image(src, url) {
+$cms.dom.matchesThemeImage = function matchesThemeImage(src, url) {
     return $cms.img(src) === $cms.img(url);
-}
+};
 
 /* Animate the loading of a frame */
-function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
+$cms.dom.animateFrameLoad = function animateFrameLoad(pf, frame, leave_gap_top, leave_height) {
     if (!pf) {
         return;
     }
@@ -7471,23 +7471,23 @@ function animate_frame_load(pf, frame, leave_gap_top, leave_height) {
 
     if (!leave_height) {
         // Enough to stop jumping around
-        pf.style.height = window.top.get_window_height() + 'px';
+        pf.style.height = window.top.$cms.dom.getWindowHeight() + 'px';
     }
 
-    illustrate_frame_load(frame);
+    $cms.dom.illustrateFrameLoad(frame);
 
     var ifuob = window.top.$cms.dom.$('#iframe_under');
-    var extra = ifuob ? ((window != window.top) ? find_pos_y(ifuob) : 0) : 0;
+    var extra = ifuob ? ((window != window.top) ? $cms.dom.findPosY(ifuob) : 0) : 0;
     if (ifuob) {
         ifuob.scrolling = 'no';
     }
 
     if (window === window.top) {
-        window.top.smooth_scroll(find_pos_y(pf) + extra - leave_gap_top);
+        window.top.$cms.dom.smoothScroll($cms.dom.findPosY(pf) + extra - leave_gap_top);
     }
-}
+};
 
-function illustrate_frame_load(iframeId) {
+$cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
     var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
 
     if (!$cms.$CONFIG_OPTION.enable_animations || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
@@ -7534,8 +7534,7 @@ function illustrate_frame_load(iframeId) {
                     }
                 }
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
     }
 
     head += cssText + '<\/style>';
@@ -7565,10 +7564,10 @@ function illustrate_frame_load(iframeId) {
             i_default.parentNode.replaceChild(i_new, i_default);
         }
     }, 0);
-}
+};
 
 /* Smoothly scroll to another position on the page */
-function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
+$cms.dom.smoothScroll = function smoothScroll(dest_y, expected_scroll_y, dir, event_after) {
     if (!$cms.$CONFIG_OPTION.enable_animations) {
         try {
             window.scrollTo(0, dest_y);
@@ -7578,7 +7577,7 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
 
     var scroll_y = window.pageYOffset;
     if (typeof dest_y === 'string') {
-        dest_y = find_pos_y($cms.dom.$id(dest_y), true);
+        dest_y = $cms.dom.findPosY($cms.dom.$id(dest_y), true);
     }
     if (dest_y < 0) {
         dest_y = 0;
@@ -7618,13 +7617,13 @@ function smooth_scroll(dest_y, expected_scroll_y, dir, event_after) {
     }
 
     window.setTimeout(function () {
-        smooth_scroll(dest_y, scroll_y + dist, dir, event_after);
+        $cms.dom.smoothScroll(dest_y, scroll_y + dist, dir, event_after);
     }, 30);
-}
+};
 
 /* Dimension functions */
-function register_mouse_listener(e) {
-    register_mouse_listener = noop; // ensure this function is only executed once
+$cms.dom.registerMouseListener = function registerMouseListener(e) {
+    $cms.dom.registerMouseListener = noop; // ensure this function is only executed once
 
     if (e) {
         window.mouse_x = get_mouse_x(e);
@@ -7660,17 +7659,17 @@ function register_mouse_listener(e) {
 
         return 0;
     }
-}
+};
 
-function get_window_width(win) {
+$cms.dom.getWindowWidth = function getWindowWidth(win) {
     return (win || window).innerWidth - 18;
-}
+};
 
-function get_window_height(win) {
+$cms.dom.getWindowHeight = function getWindowHeight(win) {
     return (win || window).innerHeight - 18;
-}
+};
 
-function get_window_scroll_height(win) {
+$cms.dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
     win || (win = window);
 
     var rect_a = win.document.body.parentElement.getBoundingClientRect(),
@@ -7679,9 +7678,9 @@ function get_window_scroll_height(win) {
         b = (rect_b.bottom - rect_b.top);
 
     return (a > b) ? a : b;
-}
+};
 
-function find_pos_x(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+$cms.dom.findPosX = function findPosX(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
     not_relative = !!not_relative;
 
     var left = el.getBoundingClientRect().left + window.pageXOffset;
@@ -7690,7 +7689,7 @@ function find_pos_x(el, not_relative) {/* if not_relative is true it gets the po
         var position;
         while (el) {
             if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
-                left -= find_pos_x(el, true);
+                left -= $cms.dom.findPosX(el, true);
                 break;
             }
             el = el.parentElement;
@@ -7698,9 +7697,9 @@ function find_pos_x(el, not_relative) {/* if not_relative is true it gets the po
     }
 
     return left;
-}
+};
 
-function find_pos_y(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+$cms.dom.findPosY = function findPosY(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
     not_relative = !!not_relative;
 
     var top = el.getBoundingClientRect().top + window.pageYOffset;
@@ -7709,14 +7708,14 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
         var position;
         while (el) {
             if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
-                top -= find_pos_y(el, true);
+                top -= $cms.dom.findPosY(el, true);
                 break;
             }
             el = el.parentElement;
         }
     }
     return top;
-}
+};
 
 /**
  * Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes!
@@ -7739,7 +7738,7 @@ $cms.dom.resizeFrame = function resizeFrame(name, min_height) {
     }
 
     if ((frame_element) && (frame_window) && (frame_window.document) && (frame_window.document.body)) {
-        var h = get_window_scroll_height(frame_window);
+        var h = $cms.dom.getWindowScrollHeight(frame_window);
 
         if ((h === 0) && (frame_element.parentElement.style.display === 'none')) {
             h = min_height ? min_height : 100;
@@ -8103,11 +8102,11 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
         }
 
         // Used for calculating if we need to scroll down
-        var wrapper_pos_y = find_pos_y(wrapper);
+        var wrapper_pos_y = $cms.dom.findPosY(wrapper);
         var wrapper_height = wrapper.offsetHeight;
         var wrapper_bottom = wrapper_pos_y + wrapper_height;
-        var window_height = get_window_height();
-        var page_height = get_window_scroll_height();
+        var window_height = $cms.dom.getWindowHeight();
+        var page_height = $cms.dom.getWindowScrollHeight();
         var scroll_y = window.pageYOffset;
 
         // Scroll down -- load
@@ -8159,7 +8158,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
         forms_too = !!forms_too;
         scroll_to_top = (scroll_to_top !== undefined) ? !!scroll_to_top : true;
 
-        var block_pos_y = find_pos_y(block_element, true);
+        var block_pos_y = $cms.dom.findPosY(block_element, true);
         if (block_pos_y > window.pageYOffset) {
             scroll_to_top = false;
         }
@@ -8369,7 +8368,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
             // Scroll up if required
             if (scroll_to_top_of_wrapper) {
                 try {
-                    window.scrollTo(0, find_pos_y(target_div));
+                    window.scrollTo(0, $cms.dom.findPosY(target_div));
                 } catch (e) {}
             }
 

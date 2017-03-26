@@ -11,8 +11,8 @@ function decrypt_data() {
     container.style.position = 'absolute';
     container.style.width = '26em';
     container.style.padding = '0.5em';
-    container.style.left = (get_window_width() / 2 - 200).toString() + 'px';
-    container.style.top = (get_window_height() / 2 - 100).toString() + 'px';
+    container.style.left = ($cms.dom.getWindowWidth() / 2 - 200).toString() + 'px';
+    container.style.top = ($cms.dom.getWindowHeight() / 2 - 100).toString() + 'px';
     try {
         window.scrollTo(0, 0);
     } catch (e) {}

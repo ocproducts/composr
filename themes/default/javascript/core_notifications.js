@@ -50,7 +50,7 @@
         });
 
         $cms.dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function (e) {
-            find_url_tab();
+            $cms.dom.findUrlTab();
         });
 
         $cms.dom.on(container, 'click', '.js-click-toggle-pts', function (e) {

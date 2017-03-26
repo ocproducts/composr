@@ -12,8 +12,8 @@ function load_realtime_rain() {
         var tmp_element = document.createElement('img');
         tmp_element.src = $cms.img('{$IMG;,loading}');
         tmp_element.style.position = 'absolute';
-        tmp_element.style.left = (find_pos_x(img) + 2) + 'px';
-        tmp_element.style.top = (find_pos_y(img) + 1) + 'px';
+        tmp_element.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
+        tmp_element.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
         tmp_element.id = 'realtime_rain_img_loader';
         img.parentNode.appendChild(tmp_element);
 

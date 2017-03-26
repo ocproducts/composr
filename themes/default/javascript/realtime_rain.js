@@ -131,8 +131,8 @@ function realtime_rain_button_load_handler() {
     e.style.left = 0;
     e.style.top = 0;
     e.style.width = '100%';
-    e.style.height = (get_window_scroll_height() - 40) + 'px';
-    smooth_scroll(0);
+    e.style.height = ($cms.dom.getWindowScrollHeight() - 40) + 'px';
+    $cms.dom.smoothScroll(0);
 
     start_realtime_rain();
 
@@ -141,11 +141,11 @@ function realtime_rain_button_load_handler() {
 
 // Called to start the animation
 function start_realtime_rain() {
-    register_mouse_listener();
+    $cms.dom.registerMouseListener();
 
     var news_ticker = document.getElementById('news_ticker');
     news_ticker.style.top = '20px';
-    news_ticker.style.left = (get_window_width() / 2 - news_ticker.offsetWidth / 2) + 'px';
+    news_ticker.style.left = ($cms.dom.getWindowWidth() / 2 - news_ticker.offsetWidth / 2) + 'px';
 
     document.getElementById('loading_icon').style.display = 'block';
 
@@ -185,7 +185,7 @@ function received_events(ajax_result_frame, ajax_result) {
     var height_per_second = max_height / 10;
     var frame_delay = (1000 / height_per_second) / 1.1; // 1.1 is a fudge factor to reduce chance of overlap (creates slight inaccuracy in spacing though)
 
-    var window_width = get_window_width(),
+    var window_width = $cms.dom.getWindowWidth(),
         elements = ajax_result.children,
         left_pos = 25;
 
@@ -251,7 +251,7 @@ function received_events(ajax_result_frame, ajax_result) {
                     main_icon = cloned_message.querySelector('.email-icon'),
                     icon_spot = $cms.dom.$('#real_time_surround');
 
-                if (find_pos_y(icon_spot, true) > 0) {
+                if ($cms.dom.findPosY(icon_spot, true) > 0) {
                     icon_spot = icon_spot.parentNode;
                 }
                 for (var x = 0; x < num; x++) {
@@ -260,8 +260,8 @@ function received_events(ajax_result_frame, ajax_result) {
                         next_icon.className = main_icon.className;
                         $cms.dom.html(next_icon, $cms.dom.html(main_icon));
                         next_icon.style.position = 'absolute';
-                        next_icon.style.left = find_pos_x(main_icon, true) + 'px';
-                        next_icon.style.top = find_pos_y(main_icon, true) + 'px';
+                        next_icon.style.left = $cms.dom.findPosX(main_icon, true) + 'px';
+                        next_icon.style.top = $cms.dom.findPosY(main_icon, true) + 'px';
                         next_icon.style.zIndex = 80;
                         next_icon.x_vector = 5 - Math.random() * 10;
                         next_icon.y_vector = -Math.random() * 6;
@@ -327,7 +327,7 @@ function time_now() {
 function timeline_click(prospective) {
     prospective = !!prospective;
 
-    var pos = window.mouse_x - find_pos_x(document.getElementById('time_line_image'), true);
+    var pos = window.mouse_x - $cms.dom.findPosX(document.getElementById('time_line_image'), true);
     var timeline_length = 808;
     var min_time = window.min_time;
     var max_time = time_now();
@@ -405,12 +405,12 @@ function draw_line(group_id, bubble_id) {
         var width = el.offsetWidth;
         var height = el.offsetHeight;
         var line;
-        var x = find_pos_x(el, true);
-        var y = find_pos_y(el, true);
+        var x = $cms.dom.findPosX(el, true);
+        var y = $cms.dom.findPosY(el, true);
         for (var i = 0; i < others.length; i++) {
             el2 = document.getElementById(others[i] + '_main');
             if ((el2) && (el2.parentNode)) {
-                line = create_line(width / 2, height / 2, find_pos_x(el2, true) + width / 2 - x, find_pos_y(el2, true) + height / 2 - y, 88);
+                line = create_line(width / 2, height / 2, $cms.dom.findPosX(el2, true) + width / 2 - x, $cms.dom.findPosY(el2, true) + height / 2 - y, 88);
                 el.appendChild(line);
                 window.total_lines++;
             }

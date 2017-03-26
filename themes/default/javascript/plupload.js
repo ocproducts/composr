@@ -13147,9 +13147,9 @@ function begin_form_uploading(e, ob, recurse) {
         $cms.ui.disableSubmitAndPreviewButtons(true);
 
         ob.start();
-        smooth_scroll(find_pos_y(filename_field, true));
+        $cms.dom.smoothScroll($cms.dom.findPosY(filename_field, true));
 
-        if (btn_submit.form.offsetHeight > get_window_height()) // If possibly cannot see upload progress bars
+        if (btn_submit.form.offsetHeight > $cms.dom.getWindowHeight()) // If possibly cannot see upload progress bars
             $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
     } else {
         if (!ob.original_click_handler) {
@@ -13171,10 +13171,9 @@ function begin_form_uploading(e, ob, recurse) {
     return false;
 }
 
-function submit_form_with_the_upload(btn_submit)
-{
+function submit_form_with_the_upload(btn_submit) {
     if (btn_submit.form.target == 'preview_iframe') {
-        illustrate_frame_load('preview_iframe');
+        $cms.dom.illustrateFrameLoad('preview_iframe');
     }
     btn_submit.form.submit();
 }

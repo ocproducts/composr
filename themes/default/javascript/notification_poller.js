@@ -220,7 +220,7 @@ function _toggle_messaging_box(event, name, hide) {
     var button = document.getElementById(name + '_button');
     button.title = '';
     var set_position = function () {
-        var button_x = find_pos_x(button, true);
+        var button_x = $cms.dom.findPosX(button, true);
         var button_width = button.offsetWidth;
         var x = (button_x + button_width - e.offsetWidth);
         if (x < 0) {
@@ -229,7 +229,7 @@ function _toggle_messaging_box(event, name, hide) {
             x = 0;
         }
         e.style.left = x + 'px';
-        e.style.top = (find_pos_y(button, true) + button.offsetHeight) + 'px';
+        e.style.top = ($cms.dom.findPosY(button, true) + button.offsetHeight) + 'px';
         try {
             e.style.opacity = '1.0';
         }

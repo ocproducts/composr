@@ -21,8 +21,8 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
     if (width < 160) {
         width = 160;
     }
-    var x = find_pos_x(object, true);
-    var y = find_pos_y(object, true) - 8;
+    var x = $cms.dom.findPosX(object, true);
+    var y = $cms.dom.findPosY(object, true) - 8;
 
     // Record old JS events
     object.old_onclick = object.onclick;
@@ -67,7 +67,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
     }
     input.style.position = 'absolute';
     input.style.left = $cms.$MOBILE ? '0px' : (x + 'px');
-    input.style.width = $cms.$MOBILE ? (get_window_width() + 'px') : (width + 'px');
+    input.style.width = $cms.$MOBILE ? ($cms.dom.getWindowWidth() + 'px') : (width + 'px');
     input.style.top = (y + 8) + 'px';
     input.style.margin = 0;
 

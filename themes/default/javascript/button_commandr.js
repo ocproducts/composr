@@ -13,8 +13,8 @@ function load_commandr() {
         var tmp_element = document.createElement('img');
         tmp_element.src = $cms.img('{$IMG;,loading}');
         tmp_element.style.position = 'absolute';
-        tmp_element.style.left = (find_pos_x(img) + 2) + 'px';
-        tmp_element.style.top = (find_pos_y(img) + 1) + 'px';
+        tmp_element.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
+        tmp_element.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
         tmp_element.id = 'commandr_img_loader';
         img.parentNode.appendChild(tmp_element);
 
@@ -43,8 +43,8 @@ function load_commandr() {
                     commandr_box.setAttribute('id', 'commandr_box');
                     commandr_box.style.position = 'absolute';
                     commandr_box.style.zIndex = 2000;
-                    commandr_box.style.left = (get_window_width() - 800) / 2 + 'px';
-                    var top_temp = (get_window_height() - 600) / 2;
+                    commandr_box.style.left = ($cms.dom.getWindowWidth() - 800) / 2 + 'px';
+                    var top_temp = ($cms.dom.getWindowHeight() - 600) / 2;
                     if (top_temp < 100) top_temp = 100;
                     commandr_box.style.top = top_temp + 'px';
                     commandr_box.style.display = 'none';
@@ -65,7 +65,7 @@ function load_commandr() {
                         img.className = '';
                     }
 
-                    smooth_scroll(0, null, null, function () {
+                    $cms.dom.smoothScroll(0, null, null, function () {
                         document.getElementById('commandr_command').focus();
                     });
 

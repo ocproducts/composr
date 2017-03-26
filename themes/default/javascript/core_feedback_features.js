@@ -341,7 +341,7 @@
                         // Scroll back to comment
                         window.setTimeout(function () {
                             var comments_wrapper = $cms.dom.$id(comments_wrapper_id); // outerhtml set will have broken the reference
-                            smooth_scroll(find_pos_y(comments_wrapper, true));
+                            $cms.dom.smoothScroll($cms.dom.findPosY(comments_wrapper, true));
                         }, 0);
 
                         // Force reload on back button, as otherwise comment would be missing

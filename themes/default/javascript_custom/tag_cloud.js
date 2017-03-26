@@ -228,7 +228,7 @@ Sphere.prototype = new DisplayObject3D();
 
 
 function load_tag_cloud(container) {
-    register_mouse_listener();
+    $cms.dom.registerMouseListener();
 
     var width = container.offsetWidth;
     var height = container.offsetHeight;
@@ -271,8 +271,8 @@ function load_tag_cloud(container) {
     var speed = 1000;
 
     var animateIt = function () {
-        var offsetX = find_pos_x(container, true);
-        var offsetY = find_pos_y(container, true);
+        var offsetX = $cms.dom.findPosX(container, true);
+        var offsetY = $cms.dom.findPosY(container, true);
         var width = container.offsetWidth;
         var height = container.offsetHeight;
 

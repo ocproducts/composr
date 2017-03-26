@@ -447,8 +447,8 @@ jQuery(function($) {
 				var sel = cke.getSelection(); // text selection
 				var obj = sel.getStartElement().$; // the element the selected text resides in
 
-				var x = find_pos_x(obj,true) - window.pageXOffset + cke.window.$.pageXOffset + find_pos_x(iframe,true);
-				var y = find_pos_y(obj,true) - window.pageYOffset + cke.window.$.pageYOffset + find_pos_y(iframe,true) + 20;
+				var x = $cms.dom.findPosX(obj,true) - window.pageXOffset + cke.window.$.pageXOffset + $cms.dom.findPosX(iframe,true);
+				var y = $cms.dom.findPosY(obj,true) - window.pageYOffset + cke.window.$.pageYOffset + $cms.dom.findPosY(iframe,true) + 20;
 				// NB: The get_window_scroll_x/get_window_scroll_y is because calculation happened on wrong window object
 
 				var text = _this.getText().substring(0, this.startPos);
@@ -661,7 +661,7 @@ function set_up_comcode_autocomplete(name, wysiwyg) {
 		return;
 	}
 
-	register_mouse_listener();
+	$cms.dom.registerMouseListener();
 
     window.jQuery('#' + name).sew({
         values: [],

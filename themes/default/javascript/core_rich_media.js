@@ -553,7 +553,7 @@
                 window.setTimeout(function() {
                     var element, bi;
 
-                    smooth_scroll(0);
+                    $cms.dom.smoothScroll(0);
 
                     element = document.getElementById(params.randIdOverlay);
                     element.style.display = 'block';
@@ -1118,7 +1118,7 @@
             return;
         }
 
-        register_mouse_listener();
+        $cms.dom.registerMouseListener();
 
         var e, i, s_width, biasx, biasy;
         for (i = 0; i < window.crazy_criters.length; i++) {
