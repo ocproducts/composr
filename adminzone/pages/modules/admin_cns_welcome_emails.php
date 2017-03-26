@@ -47,8 +47,8 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
-        $info['locked'] = true;
         $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 

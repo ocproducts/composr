@@ -36,7 +36,7 @@ class Module_cms_comcode_pages
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
-        $info['locked'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
