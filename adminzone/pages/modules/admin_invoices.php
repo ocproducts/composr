@@ -259,7 +259,7 @@ class Module_admin_invoices
             'i_tax_code' => $tax_code,
             'i_tax_derivation' => json_encode($tax_derivation),
             'i_tax' => $tax,
-            'i_tax_tracking' => $tax_tracking,
+            'i_tax_tracking' => json_encode($tax_tracking),
             'i_currency' => $currency,
             'i_special' => post_param_string('special'),
             'i_time' => time(),

@@ -51,6 +51,6 @@ class Hook_config_topic_pin_tax_code
      */
     public function get_default()
     {
-        return has_no_forum() ? null : '0.0';
+        return has_no_forum() ? null : '0%';
     }
 }

@@ -163,6 +163,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
 
                 'amount' => $sub['s_amount'],
                 'tax' => $sub['s_tax'],
+                'currency' => $sub['s_currency'],
 
                 'state' => $sub['s_state'],
 

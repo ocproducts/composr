@@ -15,7 +15,6 @@
 					<th>{!CLASSIFIEDS_DAYS}</th>
 					<th>{!TITLE}</th>
 					<th>{!PRICE}</th>
-					<th>{$TAX_LABEL}</th>
 				</tr>
 			</thead>
 

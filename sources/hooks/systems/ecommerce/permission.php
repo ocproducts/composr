@@ -41,7 +41,7 @@ class Hook_ecommerce_permission
             if ($hours == 400000) {
                 $hours = null; // LEGACY: Around 100 years, but meaning unlimited
             }
-            $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['p_title']), get_translated_text($row['p_description']), $row['p_enabled'], $row['p_price'], $row['p_price_points'], $hours, $row['p_type'], $row['p_privilege'], $row['p_zone'], $row['p_page'], $row['p_module'], $row['p_category'], get_translated_text($row['p_mail_subject']), get_translated_text($row['p_mail_body'])));
+            $fields->attach($this->_get_fields('_' . strval($i), get_translated_text($row['p_title']), get_translated_text($row['p_description']), $row['p_enabled'], $row['p_price'], $row['p_tax_code'], $row['p_price_points'], $hours, $row['p_type'], $row['p_privilege'], $row['p_zone'], $row['p_page'], $row['p_module'], $row['p_category'], get_translated_text($row['p_mail_subject']), get_translated_text($row['p_mail_body'])));
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4055cbfc1c94723f4ad72a80ede0b554', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_permission_' . strval($i), false));
             $hidden->attach(form_input_hidden('permission_' . strval($i), strval($row['id'])));
@@ -75,7 +75,7 @@ class Hook_ecommerce_permission
      * @param  LONG_TEXT $mail_body Confirmation mail body
      * @return Tempcode The fields
      */
-    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = 0.00, $tax_code = '0.0', $price_points = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
+    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = 0.00, $tax_code = '0%', $price_points = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
     {
         require_lang('points');
 
@@ -84,7 +84,7 @@ class Hook_ecommerce_permission
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'permission_title' . $name_suffix, $title, true));
         $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'permission_description' . $name_suffix, $description, true));
         $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_PRICE'), 'permission_price' . $name_suffix, $price, false));
-        $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_CODE'), 'permission_tax_code' . $name_suffix, $tax_code, true));
+        $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_CODE'), 'permission_tax_code' . $name_suffix, $tax_code, false));
         if (addon_installed('points')) {
             $fields->attach(form_input_integer(do_lang_tempcode('PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_PRICE_POINTS'), 'permission_price_points' . $name_suffix, $price_points, false));
         }
@@ -237,7 +237,7 @@ class Hook_ecommerce_permission
             $enabled = post_param_integer('permission_enabled', 0);
             $_price = post_param_string('permission_price', '');
             $price = ($_price == '') ? null : float_unformat($_price);
-            $tax = post_param_tax_code('permission_tax_code');
+            $tax_code = post_param_tax_code('permission_tax_code');
             if (addon_installed('points')) {
                 $price_points = post_param_integer('permission_price_points', null);
             } else {

@@ -63,7 +63,7 @@ class Hook_ecommerce_custom
      * @param  LONG_TEXT $mail_body Confirmation mail body
      * @return Tempcode The fields
      */
-    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = null, $tax_code = '0.0', $shipping_cost = 0.00, $price_points = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
+    protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = null, $tax_code = '0%', $shipping_cost = 0.00, $price_points = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
     {
         require_lang('points');
 
@@ -72,7 +72,7 @@ class Hook_ecommerce_custom
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'custom_title' . $name_suffix, $title, true));
         $fields->attach(form_input_text(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'custom_description' . $name_suffix, $description, true));
         $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_PRICE'), 'custom_price' . $name_suffix, $price, false));
-        $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_CODE'), 'custom_tax_code' . $name_suffix, $tax_code, true));
+        $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_CODE'), 'custom_tax_code' . $name_suffix, $tax_code, false));
         $fields->attach(form_input_float(do_lang_tempcode('SHIPPING_COST'), do_lang_tempcode('DESCRIPTION_SHIPPING_COST'), 'custom_shipping_cost' . $name_suffix, $shipping_cost, true));
         if (addon_installed('points')) {
             $fields->attach(form_input_integer(do_lang_tempcode('PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_PRICE_POINTS'), 'custom_price_points' . $name_suffix, $price_points, false));
@@ -150,6 +150,9 @@ class Hook_ecommerce_custom
             $enabled = post_param_integer('custom_enabled', 0);
             $_price = post_param_string('custom_price', '');
             $price = ($_price == '') ? null : float_unformat($_price);
+            $tax_code = post_param_tax_code('custom_tax_code');
+            $_shipping_cost = post_param_string('custom_shipping_cost');
+            $shipping_cost = float_unformat($_shipping_cost);
             if (addon_installed('points')) {
                 $price_points = post_param_integer('custom_price_points', null);
             } else {
@@ -206,7 +209,7 @@ class Hook_ecommerce_custom
                 $image_url = '';
             }
 
-            $shipping_cost = $row['shipping_cost'];
+            $shipping_cost = $row['c_shipping_cost'];
 
             $products['CUSTOM_' . strval($row['id'])] = automatic_discount_calculation(array(
                 'item_name' => $row['_title'],

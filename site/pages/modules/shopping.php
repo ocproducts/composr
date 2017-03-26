@@ -162,11 +162,11 @@ class Module_shopping
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'order_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_price', 'REAL', 'p_price');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax_code', 'ID_TEXT', '0.0');
-            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax', 'REAL', 0.0);
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax_code', 'ID_TEXT', '0%');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'order_id', '?AUTO_LINK', 'p_order_id');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_order_details', 'included_tax');
-            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'dispatch_status', 'SHORT_TEXT', 'p_dispatch_status');
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'dispatch_status', 'SHORT_TEXT', 'p_dispatch_status', 'ORDER_STATUS_awaiting_payment');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_id', 'ID_TEXT', 'p_type_code');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_order_details', 'p_type');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_purchase_id', 'ID_TEXT', '');

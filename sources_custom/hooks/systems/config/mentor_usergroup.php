@@ -33,7 +33,6 @@ class Hook_config_mentor_usergroup
             'explanation' => 'CONFIG_OPTION_mentor_usergroup',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'required' => true,
             'order_in_category_group' => 100,
 
             'addon' => 'mentorr',

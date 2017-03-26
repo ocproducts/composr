@@ -39,9 +39,9 @@ class Hook_ecommerce_email
             $hidden->attach(form_input_hidden('dforw_' . strval($i), $domain));
             $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'ndforw_' . strval($i), $domain, false));
             $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i) . '_price', $row['price'], false));
-            $fields->attach(form_input_tax_code(do_lang_tempcode('MAIL_TAX_CODE'), do_lang_tempcode('DESCRIPTION_MAIL_TAX_CODE', escape_html('pop3'), escape_html($domain)), 'forw_' . strval($i) . '_tax_code', $row['tax_code'], true));
+            $fields->attach(form_input_tax_code(do_lang_tempcode('MAIL_TAX_CODE'), do_lang_tempcode('DESCRIPTION_MAIL_TAX_CODE', escape_html('pop3'), escape_html($domain)), 'forw_' . strval($i) . '_tax_code', $row['tax_code'], false));
             if (addon_installed('points')) {
-                $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE_POINTS', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i) . '_price_points', $row['price_points'], true));
+                $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE_POINTS', escape_html('forw'), escape_html($domain)), 'forw_' . strval($i) . '_price_points', $row['price_points'], false));
             }
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '34f5212a96f58fa1b0575a99ca0509e7', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_forw_' . strval($i), false));
@@ -57,9 +57,9 @@ class Hook_ecommerce_email
             $hidden->attach(form_input_hidden('dpop3_' . strval($i), $domain));
             $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'ndpop3_' . strval($i), $domain, false));
             $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_price', $row['price'], false));
-            $fields->attach(form_input_tax_code(do_lang_tempcode('MAIL_TAX_CODE'), do_lang_tempcode('DESCRIPTION_MAIL_TAX_CODE', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_tax_code', $row['tax_code'], true));
+            $fields->attach(form_input_tax_code(do_lang_tempcode('MAIL_TAX_CODE'), do_lang_tempcode('DESCRIPTION_MAIL_TAX_CODE', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_tax_code', $row['tax_code'], false));
             if (addon_installed('points')) {
-                $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE_POINTS', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_price_points', $row['price_points'], true));
+                $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_MAIL_PRICE_POINTS', escape_html('pop3'), escape_html($domain)), 'pop3_' . strval($i) . '_price_points', $row['price_points'], false));
             }
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '9e37f41f134eecae630bfbf32da7b9ec', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete_pop3_' . strval($i), false));
@@ -82,7 +82,7 @@ class Hook_ecommerce_email
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'dforw', '', true));
         $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE'), 'forw_price', null, false));
-        $fields->attach(form_input_tax_code(do_lang_tempcode('MAIL_TAX_CODE'), do_lang_tempcode('_DESCRIPTION_MAIL_TAX_CODE'), 'forw_tax_code', '0.0', true));
+        $fields->attach(form_input_tax_code(do_lang_tempcode('MAIL_TAX_CODE'), do_lang_tempcode('_DESCRIPTION_MAIL_TAX_CODE'), 'forw_tax_code', '0%', false));
         if (addon_installed('points')) {
             $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE_POINTS'), 'forw_price_points', null, false));
         }
@@ -99,7 +99,7 @@ class Hook_ecommerce_email
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('MAIL_DOMAIN'), do_lang_tempcode('DESCRIPTION_MAIL_DOMAIN'), 'dpop3', '', true));
         $fields->attach(form_input_float(do_lang_tempcode('MAIL_PRICE'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE'), 'pop3_price', null, false));
-        $fields->attach(form_input_tax_code(do_lang_tempcode('MAIL_TAX_CODE'), do_lang_tempcode('_DESCRIPTION_MAIL_TAX_CODE'), 'pop3_tax_code', '0.0', true));
+        $fields->attach(form_input_tax_code(do_lang_tempcode('MAIL_TAX_CODE'), do_lang_tempcode('_DESCRIPTION_MAIL_TAX_CODE'), 'pop3_tax_code', '0%', false));
         if (addon_installed('points')) {
             $fields->attach(form_input_integer(do_lang_tempcode('MAIL_PRICE_POINTS'), do_lang_tempcode('_DESCRIPTION_MAIL_PRICE_POINTS'), 'pop3_price_points', null, false));
         }
@@ -134,7 +134,7 @@ class Hook_ecommerce_email
             $price_points = null;
         }
 
-        if (($price !== null) && ($price_points !== null)) {
+        if (($price !== null) || ($price_points !== null)) {
             $dforw = post_param_string('dforw');
 
             $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'forw_' . $dforw, 'price' => $price, 'tax_code' => $tax_code, 'price_points' => $price_points));
@@ -153,7 +153,7 @@ class Hook_ecommerce_email
             $_price = post_param_string('forw_' . strval($i) . '_price', '');
             $price = ($_price == '') ? null : float_unformat($_price);
 
-            $tax_code = post_param_tax_code('forw_tax_code');
+            $tax_code = post_param_tax_code('forw_' . strval($i) . '_tax_code');
 
             if (addon_installed('points')) {
                 $price_points = post_param_integer('forw_' . strval($i) . '_price_points', null);
@@ -190,7 +190,7 @@ class Hook_ecommerce_email
             $price_points = null;
         }
 
-        if (($price !== null) && ($price_points !== null)) {
+        if (($price !== null) || ($price_points !== null)) {
             $dpop3 = post_param_string('dpop3');
 
             $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => 'pop3_' . $dpop3, 'price' => $price, 'tax_code' => $tax_code, 'price_points' => $price_points));
@@ -209,7 +209,7 @@ class Hook_ecommerce_email
             $_price = post_param_string('pop3_' . strval($i) . '_price', '');
             $price = ($_price == '') ? null : float_unformat($_price);
 
-            $tax_code = post_param_tax_code('pop3_tax_code');
+            $tax_code = post_param_tax_code('pop3_' . strval($i) . '_tax_code');
 
             if (addon_installed('points')) {
                 $price_points = post_param_integer('pop3_' . strval($i) . '_price_points', null);

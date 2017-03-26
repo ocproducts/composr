@@ -503,7 +503,7 @@ function do_work()
             'p_tax_code' => '10.0',
             'p_tax' => 1.00,
             'p_order_id' => $order_id,
-            'p_dispatch_status' => '',
+            'p_dispatch_status' => 'ORDER_STATUS_awaiting_payment',
         ));
     }
     echo 'done store stuff' . "\n";

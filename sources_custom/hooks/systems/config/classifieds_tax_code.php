@@ -50,6 +50,6 @@ class Hook_config_classifieds_tax_code
      */
     public function get_default()
     {
-        return '0.0';
+        return '0%';
     }
 }

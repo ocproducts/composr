@@ -48,7 +48,7 @@ function permission_product_form($resource_type, $category_id = null)
     require_code('ecommerce');
 
     $price = null;
-    $tax_code = '0.0';
+    $tax_code = '0%';
     $price_points = null;
     $hours = null;
     $section_hidden = true;

@@ -252,7 +252,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         $shipping_tax_details = get_tax_using_tax_codes($taxcloud_items, $field_name_prefix, $do_shipping_in_tax_cloud ? $total_shipping_cost : 0.00/*don't incorporate as we have our own calculation anyway*/);
 
         foreach ($taxcloud_items as $i => $parts) {
-            list($item, $details, $tax, $tax_derivation, $tax_tracking) = $parts;
+            list($item, $details, $tax_derivation, $tax, $tax_tracking) = $parts;
 
             $shopping_cart_rows_taxes[$i] = array($tax_derivation, $tax, $tax_tracking);
 
@@ -299,7 +299,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         }
 
         // We always calculate shipping manually when doing any non-TaxCloud products, as it's more tuned
-        list($total_shipping_tax_derivation, $total_shipping_tax, $total_shipping_tax_tracking, $total_shipping_tax) = calculate_tax_due(null, '0.0', 0.00, $total_shipping_cost);
+        list($total_shipping_tax_derivation, $total_shipping_tax, $total_shipping_tax_tracking, $total_shipping_tax) = calculate_tax_due(null, '0.00', 0.00, $total_shipping_cost);
         $total_tax += $total_shipping_tax;
     }
 
@@ -385,7 +385,7 @@ function copy_shopping_cart_to_order()
             'p_price' => $details['price'],
             'p_tax_code' => $details['tax_code'],
             'p_tax' => $tax,
-            'p_dispatch_status' => '',
+            'p_dispatch_status' => 'ORDER_STATUS_awaiting_payment',
         );
     }
 
@@ -434,7 +434,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
     $price = $order_row['total_price'];
     $tax_derivation = ($order_row['total_tax_derivation'] == '') ? array() : json_decode($order_row['total_tax_derivation'], true);
     $tax = $order_row['total_tax'];
-    $tax_tracking = ($order_row['i_tax_tracking'] == '') ? array() : json_decode($order_row['i_tax_tracking'], true);
+    $tax_tracking = ($order_row['total_tax_tracking'] == '') ? array() : json_decode($order_row['total_tax_tracking'], true);
     $shipping_cost = $order_row['total_shipping_cost'];
     $shipping_tax = $order_row['total_shipping_tax'];
 
@@ -500,7 +500,7 @@ function send_shopping_order_purchased_staff_mail($order_id)
     $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
-    $order_details_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_details', 'id' => $order_id), get_module_zone('admin_shopping'));
+    $order_details_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_details', 'id' => $order_id), get_module_zone('admin_shopping'), null, false, false, true);
 
     require_code('notifications');
 

@@ -635,7 +635,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
     $orderings = array(
         do_lang_tempcode('FIELD_TYPES__TEXT'), 'short_trans', 'short_trans_multi', 'short_text', 'short_text_multi', 'long_trans', 'long_text', 'posting_field', 'codename', 'password', 'email',
         do_lang_tempcode('FIELD_TYPES__NUMBERS'), 'integer', 'float',
-        do_lang_tempcode('FIELD_TYPES__CHOICES'), 'list', 'list_multi', 'tick',
+        do_lang_tempcode('FIELD_TYPES__CHOICES'), 'list', 'list_multi', 'state', 'country', 'region', 'tick',
         do_lang_tempcode('FIELD_TYPES__UPLOADSANDURLS'), 'upload', 'upload_multi', 'picture', 'picture_multi', 'video', 'video_multi', 'url', 'url_multi', 'page_link', 'theme_image',
         do_lang_tempcode('FIELD_TYPES__MAGIC'), 'guid',
         do_lang_tempcode('FIELD_TYPES__REFERENCES'), 'isbn', 'reference', 'reference_multi', 'content_link', 'content_link_multi', 'member', 'member_multi', 'author',

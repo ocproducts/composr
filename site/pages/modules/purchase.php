@@ -132,9 +132,9 @@ class Module_purchase
             ));
 
             require_code('currency');
-            $cpf = array('currency' => array(3, 'list', '|' . implode('|', array_keys(get_currency_map()))));
+            $cpf = array('currency' => array(3, 'list'));
             foreach ($cpf as $f => $l) {
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, $l[2]);
+                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($f, $l[0], 0, 0, 1, 0, '', $l[1], 0, 'CURRENCY');
             }
 
             $cpf = array(
@@ -271,12 +271,12 @@ class Module_purchase
                 $GLOBALS['SITE_DB']->rename_table('prices', 'ecom_prods_prices');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_prices', 'price', '?INTEGER', 'price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'price', '?REAL', null);
-                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'tax_code', 'ID_TEXT', '0.0');
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_prices', 'tax_code', 'ID_TEXT', '0%');
 
                 $GLOBALS['SITE_DB']->rename_table('pstore_customs', 'ecom_prods_custom');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_custom', 'c_cost', '?INTEGER', 'c_price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_price', '?REAL', null);
-                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_tax_code', 'ID_TEXT', '0.0');
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_tax_code', 'ID_TEXT', '0%');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_custom', 'c_shipping_cost', 'REAL', 0.00);
 
                 $GLOBALS['SITE_DB']->rename_table('pstore_permissions', 'ecom_prods_permissions');

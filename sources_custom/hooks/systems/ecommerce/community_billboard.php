@@ -92,8 +92,7 @@ class Hook_ecommerce_community_billboard
      * @param  integer $req_quantity The number required.
      * @param  boolean $must_be_listed Whether the product must be available for public listing.
      * @return integer The availability code (a ECOMMERCE_PRODUCT_* constant).
-     */include 'classifieds.php';
-     
+     */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
         if (get_option('is_on_community_billboard_buy') == '0') {

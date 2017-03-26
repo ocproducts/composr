@@ -424,6 +424,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
 /**
  * Make a custom profile field from one of the predefined templates (this is often used by importers).
+ * Also see the cpf_install source file.
  *
  * @param  ID_TEXT $type The identifier of the boiler custom profile field.
  * @return AUTO_LINK The ID of the new custom profile field.
@@ -433,13 +434,27 @@ function cns_make_boiler_custom_field($type)
     $_type = 'long_trans';
 
     if (substr($type, 0, 3) == 'im_' || substr($type, 0, 3) == 'sn_') {
-        $_type = 'short_text';
+        switch ($type) {
+            case 'sn_twitter':
+            case 'im_skype':
+                $_type = 'codename';
+                break;
+
+            case 'sn_facebook':
+            case 'sn_google':
+                $_type = 'url';
+                break;
+
+            default:
+                $_type = 'short_text';
+                break;
+        }
     } elseif ($type == 'location') {
         $_type = 'short_text';
     } elseif ($type == 'occupation') {
         $_type = 'short_text';
     } elseif ($type == 'website') {
-        $_type = 'short_trans';
+        $_type = 'url';
     }
 
     $public_view = 1;

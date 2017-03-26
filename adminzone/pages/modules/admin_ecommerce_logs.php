@@ -369,7 +369,7 @@ class Module_admin_ecommerce_logs
         list($details, $product_object) = find_product_details($type_code);
 
         if (method_exists($product_object, 'handle_needed_fields')) {
-            $purchase_id = $product_object->handle_needed_fields($type_code, true);
+            list($purchase_id) = $product_object->handle_needed_fields($type_code, true);
         } else {
             $purchase_id = '';
         }
@@ -432,9 +432,9 @@ class Module_admin_ecommerce_logs
                     's_member_id' => $member_id,
                     's_state' => 'new',
                     's_amount' => $details['price'],
-                    's_tax_code' => $details['tax_code'],
+                    's_tax_code' => $tax_code,
                     's_tax_derivation' => json_encode($tax_derivation),
-                    's_tax' => $tax_code,
+                    's_tax' => $tax,
                     's_tax_tracking' => json_encode($tax_tracking),
                     's_currency' => $currency,
                     's_purchase_id' => $purchase_id,

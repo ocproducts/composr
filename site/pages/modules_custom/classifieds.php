@@ -32,7 +32,7 @@ class Module_classifieds
         $info['hack_version'] = null;
         $info['version'] = 3;
         $info['update_require_upgrade'] = true;
-        $info['locked'] = true;
+        $info['locked'] = false;
         return $info;
     }
 

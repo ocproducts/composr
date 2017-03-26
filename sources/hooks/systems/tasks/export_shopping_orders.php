@@ -33,7 +33,9 @@ class Hook_task_export_shopping_orders
      */
     public function run($start_date, $end_date, $order_status)
     {
-        $filename = 'orders_' . (($order_status == '') ? '' : ($order_status . '__')) . get_timezoned_date($start_date, false, false, false, true) . '-' . get_timezoned_date($end_date, false, false, false, true) . '.csv';
+        $filename = 'orders_' . (($order_status == '') ? '' : ($order_status . '__')) . date('Y-m-d', $start_date) . '--' . date('Y-m-d', $end_date) . '.csv';
+
+        require_code('ecommerce');
 
         $orders = array();
         $data = array();
@@ -102,7 +104,7 @@ class Hook_task_export_shopping_orders
             if ($_order['a_phone'] != '') {
                 $address[] = do_lang('PHONE_NUMBER') . ': ' . $_order['a_phone'];
             }
-            $full_address = implode("\n", $address);
+            $full_address = implode(', ', $address);
             $order[do_lang('SHIPPING_ADDRESS')] = $full_address;
 
             $data[] = $order;

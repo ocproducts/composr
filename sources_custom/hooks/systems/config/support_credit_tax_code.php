@@ -46,6 +46,6 @@ class Hook_config_support_credit_tax_code
      */
     public function get_default()
     {
-        return '0.0';
+        return '0%';
     }
 }

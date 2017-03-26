@@ -23,8 +23,8 @@ class ecommerce_tax_test_set extends cms_test_case
         require_code('ecommerce');
         require_code('config2');
 
-        set_option('taxcloud_api_id', '447BBD0');
         set_option('taxcloud_api_key', '78C9B361-6015-480D-9956-D75F9A8C06EA');
+        set_option('taxcloud_api_id', '447BBD0');
     }
 
     public function testEUTax()
@@ -35,8 +35,8 @@ class ecommerce_tax_test_set extends cms_test_case
         set_option('business_city', 'Hope');
         set_option('business_county', '');
         set_option('business_state', '');
-        set_option('business_country', 'UK');
         set_option('business_post_code', 'HO1 234');
+        set_option('business_country', 'UK');
 
         // This test will break if tax rates change, so correct it if that happens...
 
@@ -44,8 +44,8 @@ class ecommerce_tax_test_set extends cms_test_case
         $_POST['shipping_city'] = 'Hope';
         $_POST['shipping_county'] = '';
         $_POST['shipping_state'] = '';
-        $_POST['shipping_country'] = 'UK';
         $_POST['shipping_post_code'] = 'HO1 234';
+        $_POST['shipping_country'] = 'UK';
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'EU', 100.00);
         $this->assertTrue($tax == 20.0);
 
@@ -62,8 +62,8 @@ class ecommerce_tax_test_set extends cms_test_case
         set_option('business_city', 'Los Angeles');
         set_option('business_county', '');
         set_option('business_state', 'CA');
-        set_option('business_country', 'US');
         set_option('business_post_code', '90021');
+        set_option('business_country', 'US');
 
         // This test will break if tax rates change, so correct it if that happens...
 
@@ -71,8 +71,8 @@ class ecommerce_tax_test_set extends cms_test_case
         $_POST['shipping_city'] = 'Los Angeles';
         $_POST['shipping_county'] = '';
         $_POST['shipping_state'] = 'CA';
-        $_POST['shipping_country'] = 'US';
         $_POST['shipping_post_code'] = '90021';
+        $_POST['shipping_country'] = 'US';
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'TIC:00000', 100.00);
         $this->assertTrue($tax == 8.75);
 
@@ -80,15 +80,15 @@ class ecommerce_tax_test_set extends cms_test_case
         $_POST['shipping_city'] = 'Hope';
         $_POST['shipping_county'] = '';
         $_POST['shipping_state'] = '';
-        $_POST['shipping_country'] = 'UK';
         $_POST['shipping_post_code'] = 'HO1 234';
+        $_POST['shipping_country'] = 'UK';
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, 'TIC:00000', 100.00);
         $this->assertTrue($tax == 0.0);
     }
 
     public function testFlatTax()
     {
-        set_option('tax_country_regexp', '^.*$');
+        set_option('tax_country_regexp', '');
         $_POST['shipping_country'] = 'US';
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due(null, float_to_raw_string(18.0), 100.00);
         $this->assertTrue($tax == 18.0);

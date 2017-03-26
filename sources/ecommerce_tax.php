@@ -212,7 +212,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                 $quantity = $item[$field_name_prefix . 'quantity'];
                 $tax_code = $details['tax_code'];
                 $amount = $details['price'];
-                $sku = isset($details['type_special_details']['sku']) ? $details['type_special_details']['sku'] : strval('item' . strval($i));
+                $sku = empty($details['type_special_details']['sku']) ? strval('item' . strval($i)) : $details['type_special_details']['sku'];
 
                 $cart_items[$i] = array(
                     'Qty' => $quantity,
@@ -238,7 +238,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             $zip_parts = explode('-', $post_code, 2);
             $business_zip_parts = explode('-', get_option('business_post_code'), 2);
             $request = array(
-                'apiLoginId' => get_option('taxcloud_api_id'),
+                'apiLoginID' => get_option('taxcloud_api_id'),
                 'apiKey' => get_option('taxcloud_api_key'),
                 'customerID' => is_guest($member_id) ? ('guest-' . get_session_id()) : ('member-' . strval($member_id)),
                 'deliveredBySeller' => false,
@@ -277,7 +277,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             foreach ($response['CartItemsResponse'] as $cart_item) {
                 $i = $cart_item['CartItemIndex'];
 
-                if (isset($taxcloud_item_details)) {
+                if (isset($taxcloud_item_details[$i])) {
                     $tax = $cart_item['TaxAmount'];
                     $tax_derivation = array('TaxCloud' => $tax);
 
@@ -429,7 +429,8 @@ function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_
 {
     $url = 'https://api.taxcloud.com/1.0/TaxCloud/AuthorizedWithCapture';
 
-    $date = date('Y-m-d', tz_time(time(), get_site_timezone()));
+    //$date = date('Y-m-d', tz_time(time(), get_site_timezone()));
+    $date = date('Y-m-d'); // UTC-based according to TaxCloud support
     $request = array(
         'apiLoginID' => get_option('taxcloud_api_id'),
         'apiKey' => get_option('taxcloud_api_key'),
@@ -771,7 +772,7 @@ function _prepare_tics_list($all_tics, $default, $parent, $pre = '')
  * @param  string $default Default value
  * @return string The value
  */
-function post_param_tax_code($name, $default = '0.0')
+function post_param_tax_code($name, $default = '0%')
 {
     $value = post_param_string($name . '_flat', ''); // Simple flat figure
     if ($value == '') {

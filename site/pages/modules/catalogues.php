@@ -369,7 +369,7 @@ class Module_catalogues
                 array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0),
                 array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0),
                 array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'tick'/*will save as list*/, 0, 1, 0, 0),
-                array('ECOM_CAT_tax_code', 'ECOM_CATD_tax_code', 'tax_code', 0, 1, 0, 0, '0.0'),
+                array('ECOM_CAT_tax_code', 'ECOM_CATD_tax_code', 'tax_code', 0, 1, 0, 0, '0%'),
                 array('ECOM_CAT_image', 'ECOM_CATD_image', 'picture', 0, 0, 1, 1),
                 array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0),
                 array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1)

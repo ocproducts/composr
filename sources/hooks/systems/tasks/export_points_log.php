@@ -105,7 +105,7 @@ class Hook_task_export_points_log
             }
         }
 
-        $filename = 'points_log.csv';
+        $filename = 'points_log_' . date('Y-m-d', $from) . '--' . date('Y-m-d', $to) . '.csv';
 
         $headers = array();
         $headers['Content-type'] = 'text/csv';

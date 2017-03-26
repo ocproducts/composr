@@ -34,7 +34,7 @@ class Hook_task_export_ecom_transactions
      */
     public function run($start_date, $end_date, $transaction_status, $type_code)
     {
-        $filename = 'transactions_' . (($transaction_status == '') ? '' : ($transaction_status . '__')) . (($type_code == '') ? '' : ($type_code . '__')) . get_timezoned_date($start_date, false, false, false, true) . '-' . get_timezoned_date($end_date, false, false, false, true) . '.csv';
+        $filename = 'transactions_' . (($transaction_status == '') ? '' : ($transaction_status . '__')) . (($type_code == '') ? '' : ($type_code . '__')) . date('Y-m-d', $start_date) . '--' . date('Y-m-d', $end_date) . '.csv';
 
         require_code('ecommerce');
 
@@ -58,7 +58,7 @@ class Hook_task_export_ecom_transactions
 
         $tax_categories = array();
         foreach ($rows as $_transaction) {
-            $tax_derivation = ($_transaction['s_tax_derivation'] == '') ? array() : json_decode($_transaction['s_tax_derivation'], true);
+            $tax_derivation = ($_transaction['t_tax_derivation'] == '') ? array() : json_decode($_transaction['t_tax_derivation'], true);
             foreach (array_keys($tax_derivation) as $tax_category) {
                 $tax_categories[$tax_category] = true;
             }
@@ -88,7 +88,7 @@ class Hook_task_export_ecom_transactions
             $transaction[do_lang('AMOUNT')] = float_format($_transaction['t_amount']);
 
             $transaction[do_lang(get_option('tax_system')) . ' (' . do_lang('COUNT_TOTAL') . ')'] = float_format($_transaction['t_tax']);
-            $tax_derivation = ($_transaction['s_tax_derivation'] == '') ? array() : json_decode($_transaction['s_tax_derivation'], true);
+            $tax_derivation = ($_transaction['t_tax_derivation'] == '') ? array() : json_decode($_transaction['t_tax_derivation'], true);
             foreach ($tax_categories as $tax_category) {
                 $transaction[do_lang(get_option('tax_system')) . ' (' . $tax_category . ')'] = float_format(isset($tax_derivation[$tax_category]) ? $tax_derivation[$tax_category] : 0.00);
             }

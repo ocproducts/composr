@@ -247,7 +247,7 @@ function get_needed_fields($type_code, $force_extended = false)
     $javascript = mixed();
 
     if (method_exists($product_object, 'get_needed_fields')) {
-        list($fields, $text, $javascript) = $product_object->get_needed_fields($product_object, $type_code);
+        list($fields, $text, $javascript) = $product_object->get_needed_fields($type_code);
     }
 
     $require_all_details = ($details['needs_shipping_address']) || (get_option('tax_detailed') == '1');
@@ -1948,12 +1948,19 @@ function get_full_business_address()
     foreach ($options as $option) {
         $address_part = get_option($option);
         if ($address_part != '') {
-            if (($option == 'business_post_code') && (get_option('business_state') != '') && (get_option('business_country') == 'USA')) {
-                $address_part = rtrim($address_part); // We want the zip code to show after the state
+            if ($option == 'business_country') {
+                $test = find_country_name_from_iso($address_part);
+                if ($test !== null) {
+                    $address_part = $test;
+                }
             }
 
-            $address_part .= $address_part . "\n";
+            if (($option == 'business_post_code') && (get_option('business_state') != '') && (get_option('business_country') == 'US')) {
+                $address = rtrim($address); // We want the zip code to show after the state
+            }
+
+            $address .= $address_part . "\n";
         }
     }
-    return rtrim($address_part);
+    return rtrim($address);
 }

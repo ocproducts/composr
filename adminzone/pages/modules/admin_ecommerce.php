@@ -218,7 +218,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  ?AUTO_LINK $id ID of existing subscription (null: new)
      * @return array Tuple: The input fields, The hidden fields, The delete fields
      */
-    public function get_form_fields($title = '', $description = '', $price = 9.99, $tax_code = '0.0', $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
+    public function get_form_fields($title = '', $description = '', $price = 9.99, $tax_code = '0%', $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = null, $id = null)
     {
         if (($title == '') && (get_forum_type() == 'cns')) {
             $add_usergroup_url = build_url(array('page' => 'admin_cns_groups', 'type' => 'add'), get_module_zone('admin_cns_groups'));

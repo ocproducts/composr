@@ -232,7 +232,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
         $product = hyperlink($product_info_url, $product_name, false, true, do_lang('VIEW'));
 
         $product_entries->attach(results_entry(array(
-            escape_html($product_row['p_sku']),
+            ($product_row['p_sku'] == '') ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html($product_row['p_sku'])),
             $product,
             escape_html($product_row['p_purchase_id']),
             ecommerce_get_currency_symbol() . escape_html(float_format($product_row['p_price'])),

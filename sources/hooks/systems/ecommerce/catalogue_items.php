@@ -96,9 +96,9 @@ class Hook_ecommerce_catalogue_items
                     $price = floatval($field_rows[SHOPPING_CATALOGUE_price]['effective_value_pure']);
                 }
 
-                $tax_code = '0.0';
+                $tax_code = '0%';
                 if (array_key_exists(SHOPPING_CATALOGUE_tax_code, $field_rows)) {
-                    $tax = $field_rows[SHOPPING_CATALOGUE_tax_code]['effective_value_pure'];
+                    $tax_code = $field_rows[SHOPPING_CATALOGUE_tax_code]['effective_value_pure'];
                 }
 
                 $product_weight = 0.00;
@@ -379,9 +379,9 @@ class Hook_ecommerce_catalogue_items
             'total_price' => $details['price'],
             'total_tax_derivation' => json_encode($tax_derivation),
             'total_tax' => $tax,
-            'total_tax_tracking' => $tax_tracking,
+            'total_tax_tracking' => json_encode($tax_tracking),
             'total_shipping_cost' => $details['shipping_cost'],
-            'total_shipping_tax' => $details['shipping_tax'],
+            'total_shipping_tax' => $shipping_tax,
             'order_currency' => isset($details['currency']) ? $details['currency'] : get_option('currency'),
             'order_status' => 'ORDER_STATUS_awaiting_payment',
             'notes' => '',
@@ -399,7 +399,7 @@ class Hook_ecommerce_catalogue_items
             'p_tax_code' => $details['tax_code'],
             'p_tax' => $tax,
             'p_order_id' => $order_id,
-            'p_dispatch_status' => '',
+            'p_dispatch_status' => 'ORDER_STATUS_awaiting_payment',
         ));
 
         return array(strval($order_id), null);

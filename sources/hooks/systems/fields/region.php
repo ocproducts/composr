@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_fields_state
+class Hook_fields_region
 {
     // ==============
     // Module: search
@@ -84,13 +84,11 @@ class Hook_fields_state
             return '';
         }
 
-        if (get_option('business_country') == 'US') { // TaxCloud needs exact states, and Americans are a bit pampered, so show an explicit list
-            require_code('locations');
+        require_code('locations');
 
-            global $USA_STATE_LIST;
-            if (isset($USA_STATE_LIST[$ev])) {
-                $ev = $USA_STATE_LIST[$ev];
-            }
+        $test = find_country_name_from_iso($ev);
+        if ($test !== null) {
+            $ev = $test;
         }
 
         return escape_html($ev);
@@ -118,16 +116,11 @@ class Hook_fields_state
 
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
 
-        $definitely_usa = (get_option('cpf_enable_country') == '0') && (get_option('business_country') == 'US');
-        if (get_option('business_country') == 'US') { // TaxCloud needs exact states, and Americans are a bit pampered, so show an explicit list
-            require_code('locations');
-            $state_list = new Tempcode();
-            $state_list->attach(form_input_list_entry('', '' == $actual_value, do_lang_tempcode('NA_EM')));
-            $state_list->attach(create_usa_state_selection_list(array($actual_value)));
-            return form_input_list($_cf_name, $_cf_description, $input_name, $state_list, null, false, $field['cf_required'] == 1);
-        }
-
-        return form_input_line($_cf_name, $_cf_description, $input_name, $actual_value, $field['cf_required'] == 1);
+        require_code('locations');
+        $country_list = new Tempcode();
+        $country_list->attach(form_input_list_entry('', '' == $actual_value, do_lang_tempcode('NA_EM')));
+        $country_list->attach(create_region_selection_list(array($actual_value)));
+        return form_input_list($_cf_name, $_cf_description, $input_name, $country_list, null, false, $field['cf_required'] == 1);
     }
 
     /**

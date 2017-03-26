@@ -476,10 +476,10 @@ class Module_admin_config
                         break;
 
                     case 'tax_code':
-						if (addon_installed('ecommerce')) {
-	                        require_code('ecommerce');
-	                        $out .= static_evaluate_tempcode(form_input_tax_code($human_name, $explanation, $name, get_option($name), $required));
-						}
+                    if (addon_installed('ecommerce')) {
+                            require_code('ecommerce');
+                            $out .= static_evaluate_tempcode(form_input_tax_code($human_name, $explanation, $name, get_option($name), $required));
+                        }
                         break;
 
                     case 'line':
@@ -502,9 +502,7 @@ class Module_admin_config
 
                     case 'list':
                         $list = '';
-                        if (!$required) {
-                            $list .= static_evaluate_tempcode(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
-                        }
+                        $list .= static_evaluate_tempcode(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                         $_value = get_option($name);
                         $values = explode('|', $option['list_options']);
                         foreach ($values as $value) {
@@ -517,7 +515,7 @@ class Module_admin_config
                             }
                             $list .= static_evaluate_tempcode(form_input_list_entry($value, $_value == $value, $option_text));
                         }
-                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, make_string_tempcode($list), null, false, false));
+                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, make_string_tempcode($list), null, false, $required));
                         break;
 
                     case 'tick':
@@ -565,11 +563,9 @@ class Module_admin_config
                     case 'country':
                         require_code('locations');
                         $_list = new Tempcode();
-                        if (!$required) {
-                            $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
-                        }
-                        $_list = create_country_selection_list(array(get_option($name)));
-                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
+                        $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
+                        $_list->attach(create_country_selection_list(array(get_option($name))));
+                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list, null, false, $required));
                         break;
 
                     case 'forum_grouping':
@@ -578,11 +574,9 @@ class Module_admin_config
 
                             require_code('cns_forums2');
                             $_list = new Tempcode();
-                            if (!$required) {
-                                $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
-                            }
+                            $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             $_list->attach(cns_create_selection_list_forum_groupings(null, $tmp_value));
-                            $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
+                            $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list, null, false, $required));
                         } else {
                             $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
                         }
@@ -595,11 +589,9 @@ class Module_admin_config
 
                             require_code('cns_groups');
                             $_list = new Tempcode();
-                            if (!$required) {
-                                $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
-                            }
+                            $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             $_list->attach(cns_create_selection_list_usergroups($tmp_value, $option['type'] == 'usergroup'));
-                            $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
+                            $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list, null, false, $required));
                         } else {
                             $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
                         }
@@ -738,19 +730,19 @@ class Module_admin_config
         foreach ($options as $name => $option) {
             // Save
             if ($option['type'] == 'tax_code') {
-				if (addon_installed('ecommerce')) {
-	                require_code('ecommerce');
-	                $value = post_param_tax_code($name);
-				} else {
-	                $value = post_param_string($name);
-				}
+                if (addon_installed('ecommerce')) {
+                    require_code('ecommerce');
+                    $value = post_param_tax_code($name);
+                } else {
+                    $value = post_param_string($name, '0%');
+                }
             } elseif ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif (($option['type'] == 'date') || ($option['type'] == 'datetime')) {
                 $date_value = post_param_date($name);
                 $value = is_null($date_value) ? '' : strval($date_value);
             } elseif ((($option['type'] == 'forum') || ($option['type'] == '?forum')) && (get_forum_type() == 'cns')) {
-                $value = post_param_string($name);
+                $value = post_param_string($name, null);
                 if (is_numeric($value)) {
                     $value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => post_param_integer($name)));
                 }
@@ -758,7 +750,7 @@ class Module_admin_config
                     $value = '';
                 }
             } elseif (($option['type'] == 'forum_grouping') && (get_forum_type() == 'cns')) {
-                $value = post_param_string($name);
+                $value = post_param_string($name, null);
                 if (is_numeric($value)) {
                     $value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'c_title', array('id' => post_param_integer($name)));
                 }
@@ -766,7 +758,12 @@ class Module_admin_config
                     $value = '';
                 }
             } elseif ((($option['type'] == 'usergroup') || ($option['type'] == 'usergroup_not_guest')) && (get_forum_type() == 'cns')) {
-                $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => post_param_integer($name)));
+                $value = post_param_string($name, null);
+                if (is_numeric($value)) {
+                    $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => post_param_integer($name)));
+                } else {
+                    $_value = ($value === null) ? null : $value;
+                }
                 if (is_null($_value)) {
                     $value = '';
                 } else {

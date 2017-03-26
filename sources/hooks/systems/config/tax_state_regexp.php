@@ -51,6 +51,6 @@ class Hook_config_tax_state_regexp
      */
     public function get_default()
     {
-        return (get_option('cpf_enable_state') == '1') ? '^.*$' : null;
+        return (get_option('cpf_enable_state') == '1') ? '' : null;
     }
 }

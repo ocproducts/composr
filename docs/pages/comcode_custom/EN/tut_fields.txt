@@ -321,16 +321,16 @@ NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 | Options to include in the list, delimited by "|" (e.g. "This|That|Other"). You can also do like "a=This|b=That|c=Other" if you need the saved values to be different from the values displayed for selection.
 
 [i]Or:[/i]
-[tt]CURRENCY[/tt] -- input a currency
+[tt]CURRENCY[/tt] -- input a currency (input uses the ISO code, display uses the ISO code)
 
 [i]Or:[/i]
-[tt]REGION[/tt] -- input a region
+[tt]REGION[/tt] -- input a region (input uses the region name, display uses the ISO code; also see the [tt]region[/tt] field type)
 
 [i]Or:[/i]
-[tt]COUNTRY[/tt] -- input a country
+[tt]COUNTRY[/tt] -- input a country (input uses the country name, display uses the ISO code; also see the [tt]country[/tt] field type)
 
 [i]Or:[/i]
-[tt]USA_STATE[/tt] -- input a USA state
+[tt]USA_STATE[/tt] -- input a USA state (input uses the state name, display uses the ISO code; also see the [tt]state[/tt] field type)
 
 [i]Or:[/i]
 A pathname relative to a [tt].csv[/tt] file (relative to base directory), if the non-bundled Nested CPF CSV Lists addon is installed.
@@ -402,6 +402,74 @@ A pathname relative to a [tt].csv[/tt] file (relative to base directory), if the
 [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list_multi__vertical_checkboxes.png[/media]
 [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__list_multi__multilist.png[/media]
 |}
+
+[title="3"]state[/title]
+
+{| 15em wide
+! Title
+| A state within a country
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__state.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__state.png[/media]
+|}
+
+[title="3"]country[/title]
+
+{| 15em wide
+! Title
+| A country
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__country.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__country.png[/media]
+|}
+
+[title="3"]region[/title]
+
+{| 15em wide
+! Title
+| A region
+|-
+! Storage format (for programmer reference)
+| Up to 255 characters of text
+|-
+! Special default values
+| [i]None[/i]
+|-
+! Supported field options
+| [i]None[/i]
+|-
+! Back-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__region.png[/media]
+|-
+! Front-end UI
+| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__region.png[/media]
+|}
+
+By default a 'region' is the same as a 'country', but it may be overridden by addons to represent something more appropriate for a particular kind of website.
 
 [title="3"]tick[/title]
 
@@ -1044,28 +1112,6 @@ NB: There is no special styling by default: this field exists so as to provide a
 |-
 ! Front-end UI
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__year_month.png[/media]
-|}
-
-[title="3"]state[/title]
-
-{| 15em wide
-! Title
-| A state within a country
-|-
-! Storage format (for programmer reference)
-| Up to 255 characters of text
-|-
-! Special default values
-| [i]None[/i]
-|-
-! Supported field options
-| [i]None[/i]
-|-
-! Back-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__state.png[/media]
-|-
-! Front-end UI
-| [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__state.png[/media]
 |}
 
 [title="2"]Blank fields[/title]

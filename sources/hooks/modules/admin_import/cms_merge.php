@@ -586,7 +586,7 @@ class Hook_cms_merge
             }
 
             if (!array_key_exists('i_tax_code', $row)) {
-                $row['i_tax_code'] = '0.0';
+                $row['i_tax_code'] = '0%';
             }
             if (!array_key_exists('i_tax_derivation', $row)) {
                 $row['i_tax_derivation'] = '';
@@ -623,7 +623,7 @@ class Hook_cms_merge
                 }
 
                 if (!array_key_exists('s_tax_code', $row)) {
-                    $row['s_tax_code'] = '0.0';
+                    $row['s_tax_code'] = '0%';
                 }
 
                 $map = array(
@@ -672,7 +672,7 @@ class Hook_cms_merge
             }
 
             if (!array_key_exists('s_tax_code', $row)) {
-                $row['s_tax_code'] = '0.0';
+                $row['s_tax_code'] = '0%';
             }
             if (!array_key_exists('s_tax_derivation', $row)) {
                 $row['s_tax_derivation'] = '';
@@ -717,7 +717,7 @@ class Hook_cms_merge
                 $row['price'] = null;
             }
             if (!array_key_exists('tax_code', $row)) {
-                $row['tax_code'] = '0.0';
+                $row['tax_code'] = '0%';
             }
 
             $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $row['name']), '', 1);
@@ -779,7 +779,7 @@ class Hook_cms_merge
                 $row['c_price'] = null;
             }
             if (!array_key_exists('c_tax_code', $row)) {
-                $row['c_tax_code'] = '0.0';
+                $row['c_tax_code'] = '0%';
             }
             if (!array_key_exists('c_shipping_cost', $row)) {
                 $row['c_shipping_cost'] = 0.00;
@@ -815,7 +815,7 @@ class Hook_cms_merge
                 $row['p_price'] = null;
             }
             if (!array_key_exists('p_tax_code', $row)) {
-                $row['p_tax_code'] = '0.0';
+                $row['p_tax_code'] = '0%';
             }
 
             if (!array_key_exists('p_privilege', $row)) {

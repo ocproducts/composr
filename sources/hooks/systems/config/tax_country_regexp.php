@@ -51,6 +51,6 @@ class Hook_config_tax_country_regexp
      */
     public function get_default()
     {
-        return '^.*$';
+        return '';
     }
 }

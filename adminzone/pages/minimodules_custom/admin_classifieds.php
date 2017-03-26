@@ -30,7 +30,6 @@ if (count($_POST) != 0) {
             $days = post_param_string('days_' . $matches[1] . '_' . $matches[2], '');
             $label = post_param_string('label_' . $matches[1] . '_' . $matches[2], '');
             $price = post_param_string('price_' . $matches[1] . '_' . $matches[2], '');
-            $tax_code = post_param_tax_code('tax_code_' . $matches[1] . '_' . $matches[2], '');
 
             if (($catalogue != '') && ($days != '') && ($label != '') && ($price != '')) {
                 if ($matches[1] == 'existing') {
@@ -82,7 +81,6 @@ foreach ($_prices as $_price) {
         'PRICE_DAYS' => strval($_price['c_days']),
         'PRICE_LABEL' => get_translated_text($_price['c_label']),
         'PRICE_PRICE' => float_format($_price['c_price']),
-        'PRICE_DAYS' => float_format($_price['c_price']),
         'ID' => 'existing_' . strval($_price['id']),
     );
 }
@@ -93,7 +91,6 @@ for ($i = 0; $i < 10; $i++) {
         'PRICE_DAYS' => '',
         'PRICE_LABEL' => '',
         'PRICE_PRICE' => '',
-        'PRICE_DAYS' => '',
         'ID' => 'new_' . strval($i),
     );
 }

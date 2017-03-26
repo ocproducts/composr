@@ -42,14 +42,14 @@ class Hook_cron_stealr
         $stealr_type = get_option('stealr_type', true);
         $stealr_type = (isset($stealr_type) && strlen($stealr_type) > 0) ? $stealr_type : 'Members that are inactive, but has lots points';
 
-        $_stealr_number = get_option('stealr_number', true);
-        $stealr_number = (isset($_stealr_number) && is_numeric($_stealr_number)) ? intval($_stealr_number) : 1;
+        $stealr_number = intval(get_option('stealr_number'));
 
-        $_stealr_points = get_option('stealr_points', true);
-        $stealr_points = (isset($_stealr_points) && is_numeric($_stealr_points)) ? intval($_stealr_points) : 10;
+        $stealr_points = intval(get_option('stealr_points'));
 
-        $stealr_group = get_option('stealr_group', true);
-        $stealr_group = (isset($stealr_group) && strlen($stealr_group) > 0) ? $stealr_group : 'Member';
+        $stealr_group = get_option('stealr_group');
+        if (empty($stealr_group)) {
+            return;
+        }
 
         // start determining the various cases
         if ($stealr_type == 'Members that are inactive, but has lots points') {

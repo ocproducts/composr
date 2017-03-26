@@ -51,6 +51,6 @@ class Hook_config_highlight_name_tax_code
      */
     public function get_default()
     {
-        return (get_forum_type() != 'cns') ? null : '0.0';
+        return (get_forum_type() != 'cns') ? null : '0%';
     }
 }

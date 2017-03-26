@@ -4027,6 +4027,7 @@ function ecv2_TAX_LABEL($lang, $escaped, $param)
     $value = '';
 
     if (addon_installed('ecommerce')) {
+        require_lang('ecommerce');
         $value = do_lang(get_option('tax_system'));
     }
 
@@ -4051,6 +4052,7 @@ function ecv2_TAX_NUMBER_LABEL($lang, $escaped, $param)
     $value = '';
 
     if (addon_installed('ecommerce')) {
+        require_lang('ecommerce');
         $value = do_lang(get_option('tax_system') . '_NUMBER');
     }
 
