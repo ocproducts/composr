@@ -359,7 +359,7 @@
         var name = strVal(params.name);
 
         $cms.dom.on(container, 'click', '.js-link-click-open-emoticon-chooser-window', function (e, link) {
-            var url = maintain_theme_in_link(link.href);
+            var url = $cms.maintainThemeInLink(link.href);
             $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
@@ -384,7 +384,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
             e.preventDefault();
-            $cms.ui.open(maintain_theme_in_link(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
+            $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
         window.rebuild_attachment_button_for_next = rebuild_attachment_button_for_next;

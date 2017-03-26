@@ -1156,7 +1156,7 @@
         var link = document.createElement('link');
         link.id = 'css-' + sheet;
         link.rel = 'stylesheet';
-        link.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheet + keep_stub();
+        link.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheet + $cms.keepStub();
         document.head.appendChild(link);
     }
 
@@ -1178,7 +1178,7 @@
                         $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
                         reject(e);
                     });
-                    sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + keep_stub();
+                    sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
                     document.body.appendChild(sEl);
                 });
             }
@@ -3940,7 +3940,7 @@
      * @param callback
      */
     $cms.ui.confirmSession = function confirmSession(callback) {
-        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + keep_stub(true);
+        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
 
         do_ajax_request(url, function (ret) {
             if (!ret) {
@@ -4511,7 +4511,7 @@
         if (!form.old_action) {
             form.old_action = old_action;
         }
-        form.setAttribute('action', /*maintain_theme_in_link - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
+        form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
         var old_target = form.getAttribute('target');
         if (!old_target) {
             old_target = '_top';
@@ -5134,7 +5134,7 @@
             script = script + '&special=' + special;
         }
 
-        do_ajax_request(script + keep_stub(), updateAjaxNemberListResponse);
+        do_ajax_request(script + $cms.keepStub(), updateAjaxNemberListResponse);
 
         function close_down_ajax_list() {
             var current = $cms.dom.$('#ajax_list');
@@ -6915,7 +6915,7 @@
             }
 
             // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-            var url = maintain_theme_in_link('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(image_set.join(',')) + '&button_set=' + encodeURIComponent(button_set.join(',')) + '&window_title=' + encodeURIComponent(window_title) + keep_stub());
+            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(image_set.join(',')) + '&button_set=' + encodeURIComponent(button_set.join(',')) + '&window_title=' + encodeURIComponent(window_title) + $cms.keepStub());
             if (dialog_width === undefined) {
                 dialog_width = 440;
             }
@@ -7428,8 +7428,8 @@ $cms.loadSnippet = function loadSnippet(snippet_hook, post, callback) {
     if (!url) {
         url = window.location.href;
     }
-    var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + keep_stub(),
-        html = do_ajax_request(maintain_theme_in_link(url2), callback, post);
+    var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
+        html = do_ajax_request($cms.maintainThemeInLink(url2), callback, post);
     if (callback) {
         return null;
     }
@@ -7807,7 +7807,7 @@ $cms.dom.triggerResize = function triggerResize(and_subframes) {
 };
 
 /* Update a URL to maintain the current theme into it */
-function maintain_theme_in_link(url) {
+$cms.maintainThemeInLink = function maintainThemeInLink(url) {
     var usp = $cms.uspFromUrl(url),
         theme = encodeURIComponent($cms.$THEME);
 
@@ -7819,10 +7819,10 @@ function maintain_theme_in_link(url) {
     }
 
     return url;
-}
+};
 
 /* Get URL stub to propagate keep_* parameters */
-function keep_stub(starting) {// `starting` set to true means "Put a '?' for the first parameter"
+$cms.keepStub = function keepStub(starting) {// `starting` set to true means "Put a '?' for the first parameter"
     var keep = $cms.uspKeepSession.toString();
 
     if (!keep) {
@@ -7830,7 +7830,7 @@ function keep_stub(starting) {// `starting` set to true means "Put a '?' for the
     }
 
     return (starting ? '?' : '&') + keep;
-}
+};
 
 /**
  * Google Analytics tracking for links; particularly useful if you have no server-side stat collection
@@ -8342,7 +8342,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
 
         // Make AJAX call
         do_ajax_request(
-            ajax_url + keep_stub(),
+            ajax_url + $cms.keepStub(),
             function (raw_ajax_result) { // Show results when available
                 _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);
             },

@@ -810,12 +810,12 @@
         });
 
         $cms.dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
-            var url = maintain_theme_in_link(link.href);
+            var url = $cms.maintainThemeInLink(link.href);
             $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $cms.dom.on(inputRow, 'click', '.js-link-click-open-site-emoticon-chooser-window', function (e, link) {
-            var url = maintain_theme_in_link(link.href);
+            var url = $cms.maintainThemeInLink(link.href);
             $cms.ui.open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
     };
@@ -1258,7 +1258,7 @@
 
                 var geocode_url = '{$FIND_SCRIPT;,geocode}';
                 geocode_url += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
-                geocode_url += keep_stub();
+                geocode_url += $cms.keepStub();
 
                 do_ajax_request(geocode_url, function (ajax_result) {
                     var parsed = JSON.parse(ajax_result.responseText);

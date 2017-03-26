@@ -172,11 +172,11 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         for (var key in defaults) {
             url += '&default_' + key + '=' + encodeURIComponent(defaults[key]);
         }
-        url += keep_stub();
+        url += $cms.keepStub();
 
         window.setTimeout(function () {
             $cms.ui.showModalDialog(
-                maintain_theme_in_link(url),
+                $cms.maintainThemeInLink(url),
                 '',
                 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes,unadorned=yes',
                 function (comcode_added) {
@@ -319,9 +319,9 @@ function do_input_menu(field_name) {
 }
 
 function do_input_block(field_name) {
-    var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + field_name + keep_stub();
+    var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + field_name + $cms.keepStub();
     url = url + '&block_type=' + (((field_name.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
-    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+    $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
 function do_input_comcode(field_name, tag) {
@@ -388,9 +388,9 @@ function do_input_comcode(field_name, tag) {
     if (save_to_id !== null) {
         url += '&save_to_id=' + encodeURIComponent(save_to_id);
     }
-    url += keep_stub();
+    url += $cms.keepStub();
 
-    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+    $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
 function do_input_list(field_name, add) {
@@ -571,7 +571,7 @@ function do_input_page(field_name) {
 
     if (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
         $cms.ui.showModalDialog(
-            maintain_theme_in_link('{$FIND_SCRIPT;,page_link_chooser}' + keep_stub(true)),
+            $cms.maintainThemeInLink('{$FIND_SCRIPT;,page_link_chooser}' + $cms.keepStub(true)),
             null,
             'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',
             function (result) {
@@ -771,7 +771,7 @@ function init_form_saving(form_id) {
 
         var url = '{$FIND_SCRIPT;,autosave}?type=retrieve';
         url += '&stem=' + encodeURIComponent(get_autosave_url_stem());
-        url += keep_stub();
+        url += $cms.keepStub();
         var callback = function (form) {
             return function (result) {
                 $cms.log('Auto-save AJAX says', result);
@@ -965,7 +965,7 @@ function handle_form_saving_explicit(event, form) {
             // Save remotely
             if (navigator.onLine) {
                 post = $cms.form.modsecurityWorkaroundAjax(post);
-                do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + keep_stub(), function () {
+                do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
                     if (document.body.style.cursor == 'wait') document.body.style.cursor = '';
 
                     var message = found_validated_field ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
@@ -989,7 +989,7 @@ function handle_form_saving(event, element, force) {
             }
 
             post = $cms.form.modsecurityWorkaroundAjax(post);
-            do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + keep_stub(), function () {
+            do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
             }, post);
         }
     }

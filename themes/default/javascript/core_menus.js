@@ -384,7 +384,7 @@
                                                 post += name + '=' + encodeURIComponent(value);
                                             }
                                         }
-                                        do_ajax_request('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + keep_stub(), null, post);
+                                        do_ajax_request('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + $cms.keepStub(), null, post);
                                         delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                                     }
                                 }

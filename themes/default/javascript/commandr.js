@@ -113,7 +113,7 @@ function commandr_form_submission(command, form) {
 
         var post = 'command=' + encodeURIComponent(command);
         post = $cms.form.modsecurityWorkaroundAjax(post);
-        do_ajax_request('{$FIND_SCRIPT;,commandr}' + keep_stub(true), commandr_command_response, post);
+        do_ajax_request('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandr_command_response, post);
 
         window.disable_timeout = window.setTimeout(function () {
             document.getElementById('commandr_command').disabled = false;

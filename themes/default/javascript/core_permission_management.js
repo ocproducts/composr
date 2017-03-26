@@ -177,7 +177,7 @@
                                 row = rows[0];
                                 new_cell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 new_cell.className = 'privilege_header';
-                                $cms.dom.html(new_cell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.column_color + '&amp;text=' + encodeURIComponent(privilege_title) + $cms.filter.html(keep_stub()) + '" title="' + $cms.filter.html(privilege_title) + '" alt="' + $cms.filter.html(privilege_title) + '" />');
+                                $cms.dom.html(new_cell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.column_color + '&amp;text=' + encodeURIComponent(privilege_title) + $cms.filter.html($cms.keepStub()) + '" title="' + $cms.filter.html(privilege_title) + '" alt="' + $cms.filter.html(privilege_title) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 
@@ -357,7 +357,7 @@
 
         // Send AJAX request
         if (set_request != '') {
-            do_ajax_request('{$BASE_URL_NOHTTP;}/data/sitemap.php?set_perms=1' + keep_stub(), function () {
+            do_ajax_request('{$BASE_URL_NOHTTP;}/data/sitemap.php?set_perms=1' + $cms.keepStub(), function () {
                 $cms.ui.alert('{!permissions:PERMISSIONS_TREE_EDITOR_SAVED;^}');
             }, set_request);
             return;

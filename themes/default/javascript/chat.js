@@ -73,7 +73,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            $cms.ui.open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         }
     });
 
@@ -162,7 +162,7 @@
             var openFunc = (window.opener ? window.open : $cms.ui.open),
                 popupUrl = strVal(params.emoticonsPopupUrl);
 
-            openFunc(maintain_theme_in_link(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            openFunc($cms.maintainThemeInLink(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $cms.dom.on(container, 'click', '.js-click-close-chat-conversation', function () {
@@ -597,7 +597,7 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
                 window.top_window.chat_check(false, window.top_window.last_message_id, window.top_window.last_event_id);
             }, window.MESSAGE_CHECK_INTERVAL);
         };
-        var full_url = maintain_theme_in_link(url + window.top_window.keep_stub(false));
+        var full_url = $cms.maintainThemeInLink(url + window.top_window.$cms.keepStub(false));
         var post_data = 'room_id=' + encodeURIComponent(current_room_id) + '&message=' + encodeURIComponent(message_text) + '&font=' + encodeURIComponent(font_name) + '&colour=' + encodeURIComponent(font_colour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id);
         do_ajax_request(full_url, [func, error_func], post_data);
     }
@@ -631,7 +631,7 @@ function chat_check(backlog, message_id, event_id) {
                 url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_room_id) + '&message_id=' + encodeURIComponent(message_id ? message_id : -1) + '&event_id=' + encodeURIComponent(event_id);
             }
             if (window.location.href.indexOf('no_reenter_message=1') != -1) url = url + '&no_reenter_message=1';
-            var full_url = maintain_theme_in_link(url + keep_stub(false));
+            var full_url = $cms.maintainThemeInLink(url + $cms.keepStub(false));
             var func = function (ajax_result_frame, ajax_result) {
                 chat_check_response(ajax_result_frame, ajax_result, backlog/*backlog = skip_incoming_sound*/);
             };
@@ -1178,7 +1178,7 @@ function _start_im(people, may_recycle) {
     div.className = 'loading_overlay';
     $cms.dom.html(div, '{!LOADING;^}');
     document.body.appendChild(div);
-    do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + keep_stub(false)), function (result) {
+    do_ajax_request($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + $cms.keepStub(false)), function (result) {
         var responses = result.getElementsByTagName('result');
         if (responses[0]) {
             window.instant_go = true;
@@ -1194,7 +1194,7 @@ function invite_im(people) {
     if (!room_id) {
         $cms.ui.alert('{!NO_IM_ACTIVE;^}');
     } else {
-        do_ajax_request('{$FIND_SCRIPT;,messages}?action=invite_im' + keep_stub(false), function () {
+        do_ajax_request('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(room_id) + '&people=' + people);
     }
 }
@@ -1282,7 +1282,7 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
 
     window.setTimeout(function () // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
     {
-        window.top_window.do_ajax_request('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.keep_stub(false), function () {
+        window.top_window.do_ajax_request('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.$cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(room_id)); // Has to be on top_window or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
         if (participants)
@@ -1338,7 +1338,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
 
     window.top_window.all_conversations[participants] = room_id;
 
-    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.top_window.last_event_id + window.top_window.keep_stub(false);
+    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.top_window.last_event_id + window.top_window.$cms.keepStub(false);
     var post = 'room_id=' + encodeURIComponent(room_id);
 
     // Add in

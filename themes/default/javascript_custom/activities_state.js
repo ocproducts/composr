@@ -70,7 +70,7 @@
             } else {
                 var view = this;
                 jQuery.ajax({
-                    url: $cms.baseUrl('data_custom/activities_handler.php' + keep_stub(true)),
+                    url: $cms.baseUrl('data_custom/activities_handler.php' + $cms.keepStub(true)),
                     type: 'POST',
                     data: $cms.dom.serialize(form),
                     cache: false,

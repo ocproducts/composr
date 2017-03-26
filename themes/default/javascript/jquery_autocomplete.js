@@ -669,7 +669,7 @@ function set_up_comcode_autocomplete(name, wysiwyg) {
         elementFactory: autoCompleteElementFactory,
         onFilterChanged: function (sew, token, expression) {
             do_ajax_request(
-                '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + keep_stub(),
+                '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keepStub(),
                 function (result, list_contents) {
                     var new_values = [];
                     for (var i = 0; i < list_contents.childNodes.length; i++) {

@@ -291,9 +291,9 @@ function template_insert_parameter(dropdown_name, file_id) {
     var has_editarea = editarea_is_loaded(textbox.name);
 
     if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays)) {
-        var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + keep_stub();
+        var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keepStub();
         $cms.ui.showModalDialog(
-            maintain_theme_in_link(url),
+            $cms.maintainThemeInLink(url),
             null,
             'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
             function () {
@@ -550,7 +550,7 @@ function load_contextual_css_editor(file, file_id) {
                 var new_css = editarea_get_value(textarea_id);
                 if (new_css == last_css) return; // Not changed
 
-                var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + keep_stub());
+                var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keepStub());
                 do_ajax_request(url, function (ajax_result_frame) {
                     receive_compiled_css(ajax_result_frame, file);
                 }, $cms.form.modsecurityWorkaroundAjax('css=' + encodeURIComponent(new_css)));

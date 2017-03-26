@@ -30,7 +30,7 @@ function notifications_mark_all_read(event) {
     }
     url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
     url += '&forced_update=1';
-    url += keep_stub();
+    url += $cms.keepStub();
     do_ajax_request(url, window._poll_for_notifications);
     _toggle_messaging_box(event, 'web_notifications', true);
     return false;
@@ -55,7 +55,7 @@ function poll_for_notifications(forced_update, delay) {
     if (forced_update) {
         url += '&forced_update=1';
     }
-    url += keep_stub();
+    url += $cms.keepStub();
     do_ajax_request(url, window._poll_for_notifications);
 }
 

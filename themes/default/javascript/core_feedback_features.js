@@ -106,7 +106,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            $cms.ui.open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         },
 
         clickBtnSubmit: function (e, button) {
@@ -126,7 +126,7 @@
 
         doFormPreview: function (e) {
             var form = this.form,
-                url = maintain_theme_in_link($cms.$PREVIEW_URL + $cms.$KEEP);
+                url = $cms.maintainThemeInLink($cms.$PREVIEW_URL + $cms.$KEEP);
 
             if ($cms.form.doFormPreview(e, form, url)) {
                 form.submit();
@@ -330,7 +330,7 @@
                     }
                 }
                 post += '&post=' + encodeURIComponent(post_value);
-                do_ajax_request('{$FIND_SCRIPT;,post_comment}' + keep_stub(true), function (ajax_result) {
+                do_ajax_request('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (ajax_result) {
                     if ((ajax_result.responseText != '') && (ajax_result.status != 500)) {
                         // Display
                         var old_action = comments_form.action;

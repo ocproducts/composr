@@ -109,10 +109,10 @@
 
             // All
             if (full_type !== 'root') {
-                action_buildup += actions_tpl_item.replace(/\[1\]/, '{!VIEW;^}').replace(/\[2\]/, $cms.filter.html(('{$BASE_URL;,0}/data/page_link_redirect.php?id=' + encodeURIComponent(page_link) + keep_stub())));
+                action_buildup += actions_tpl_item.replace(/\[1\]/, '{!VIEW;^}').replace(/\[2\]/, $cms.filter.html(('{$BASE_URL;,0}/data/page_link_redirect.php?id=' + encodeURIComponent(page_link) + $cms.keepStub())));
                 info_buildup += info_tpl_item.replace(/\[1\]/, '{!PAGE_LINK;^}').replace(/\[2\]/, '<kbd>' + $cms.filter.html(page_link) + '</kbd>');
                 if (element.selected_editlink) {
-                    action_buildup += actions_tpl_item.replace(/\[1\]/, '{!EDIT;^}').replace(/\[2\]/, $cms.filter.html('{$FIND_SCRIPT_NOHTTP;,page_link_redirect}?id=' + element.selected_editlink + keep_stub()));
+                    action_buildup += actions_tpl_item.replace(/\[1\]/, '{!EDIT;^}').replace(/\[2\]/, $cms.filter.html('{$FIND_SCRIPT_NOHTTP;,page_link_redirect}?id=' + element.selected_editlink + $cms.keepStub()));
                 }
             }
 
