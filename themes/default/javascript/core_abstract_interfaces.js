@@ -180,14 +180,14 @@
     };
 
     $cms.templates.warnScreen = function warnScreen() {
-        if ((window.trigger_resize != null) && (window.top !== window)) {
-            trigger_resize();
+        if ((window.$cms.dom.triggerResize != null) && (window.top !== window)) {
+            $cms.dom.triggerResize();
         }
     };
 
     $cms.templates.fatalScreen = function fatalScreen() {
-        if ((window.trigger_resize != null) && (window.top !== window)) {
-            trigger_resize();
+        if ((window.$cms.dom.triggerResize != null) && (window.top !== window)) {
+            $cms.dom.triggerResize();
         }
     };
 

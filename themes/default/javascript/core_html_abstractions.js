@@ -7,12 +7,12 @@
                 document.body.classList.add('frame');
 
                 try {
-                    trigger_resize();
+                    $cms.dom.triggerResize();
                 } catch (e) {}
 
                 window.setTimeout(function () { // Needed for IE10
                     try {
-                        trigger_resize();
+                        $cms.dom.triggerResize();
                     } catch (e) {}
                 }, 1000);
             });

@@ -1342,7 +1342,7 @@
             }
         }
 
-        trigger_resize(true);
+        $cms.dom.triggerResize(true);
 
         // Execution ends here
 

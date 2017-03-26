@@ -38,7 +38,7 @@
             $cms.form.updateAjaxMemberList(target, 'author', false, e);
         },
         triggerResize: function () {
-            trigger_resize();
+            $cms.dom.triggerResize();
         },
         toggleBooleanOptions: function (e, checkbox) {
             $cms.dom.toggle(this.booleanOptionsEl, checkbox.checked);

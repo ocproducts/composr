@@ -4542,7 +4542,7 @@
 
         /* Do our loading-animation */
         if (!window.just_checking_requirements) {
-            window.setInterval(window.trigger_resize, 500);
+            window.setInterval($cms.dom.triggerResize, 500);
             /* In case its running in an iframe itself */
             illustrate_frame_load('preview_iframe');
         }
@@ -6641,7 +6641,7 @@
                 }
             });
 
-            trigger_resize();
+            $cms.dom.triggerResize();
 
             return a;
         },
@@ -6706,7 +6706,7 @@
 
             fixup_node_positions(this.object.name);
 
-            trigger_resize();
+            $cms.dom.triggerResize();
 
             this.object.busy = false;
 
@@ -7272,7 +7272,7 @@ function noop() {}
                 boxSizing: 'border-box',
                 overflowY: 'hidden'
             });
-            trigger_resize();
+            $cms.dom.triggerResize();
         }
     }
 
@@ -7744,7 +7744,7 @@ function resize_frame(name, min_height) {
             if (frame_window.parent) {
                 window.setTimeout(function () {
                     if (frame_window.parent) {
-                        frame_window.parent.trigger_resize();
+                        frame_window.parent.$cms.dom.triggerResize();
                     }
                 });
             }
@@ -7755,7 +7755,7 @@ function resize_frame(name, min_height) {
                 frame_element.style.height = ((h >= min_height) ? h : min_height) + 'px';
                 if (frame_window.parent) {
                     window.setTimeout(function () {
-                        if (frame_window.parent) frame_window.parent.trigger_resize();
+                        if (frame_window.parent) frame_window.parent.$cms.dom.triggerResize();
                     });
                 }
                 frame_element.scrolling = 'no';
@@ -7777,13 +7777,13 @@ function resize_frame(name, min_height) {
     frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
 }
 
-function trigger_resize(and_subframes) {
+$cms.dom.triggerResize = function triggerResize(and_subframes) {
+    and_subframes = !!and_subframes;
+
     if (!window.parent || !window.parent.document) {
         return;
     }
     var i, iframes = window.parent.document.querySelectorAll('iframe');
-
-    and_subframes = !!and_subframes;
 
     for (i = 0; i < iframes.length; i++) {
         if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id != '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] == window))) {
@@ -7802,7 +7802,7 @@ function trigger_resize(and_subframes) {
             }
         }
     }
-}
+};
 
 /* Update a URL to maintain the current theme into it */
 function maintain_theme_in_link(url) {

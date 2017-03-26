@@ -1419,7 +1419,7 @@
             }
         }
 
-        trigger_resize();
+        $cms.dom.triggerResize();
     }
 
     function choose_picture(j_id, img_ob, name, event) {

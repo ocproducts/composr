@@ -32,7 +32,7 @@ function add_attachment(start_num, posting_field_name) {
         element.setAttribute('unselectable', 'on');
     }
 
-    trigger_resize();
+    $cms.dom.triggerResize();
 }
 
 function attachment_present(post_value, number) {
