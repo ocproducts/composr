@@ -325,7 +325,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                 continue;
             }
 
-            $tax = ($rate / 100.0) * $amount * $quantity;
+            $tax = round(($rate / 100.0) * $amount * $quantity, 2);
             $tax_derivation = array($country => $tax);
         } else {
             // Simple, with some guards...
@@ -361,10 +361,10 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             // Simple rate
             if (substr($tax_code, -1) == '%') {
                 $rate = floatval($tax_code);
-                $tax = ($rate / 100.0) * $amount * $quantity;
+                $tax = round(($rate / 100.0) * $amount * $quantity, 2);
             } else {
                 // Simple flat
-                $tax = floatval($tax_code) * $quantity;
+                $tax = round(floatval($tax_code) * $quantity, 2);
             }
 
             $tax_derivation = array('?' => $tax);
