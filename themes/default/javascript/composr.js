@@ -4030,8 +4030,8 @@
 
                 if (tabs[i] === tab) {
                     if (window['load_tab__' + tab] === undefined) {
-                        clear_transition_and_set_opacity(element, 0.0);
-                        fade_transition(element, 100, 30, 8);
+                        $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
+                        $cms.dom.fadeTransition(element, 100, 30, 8);
                     }
                 }
             }
@@ -4405,8 +4405,8 @@
                         errormsg_element.setAttribute('role', 'alert');
 
                         // Fade in
-                        clear_transition_and_set_opacity(errormsg_element, 0.0);
-                        fade_transition(errormsg_element, 100, 30, 4);
+                        $cms.dom.clearTransitionAndSetOpacity(errormsg_element, 0.0);
+                        $cms.dom.fadeTransition(errormsg_element, 100, 30, 4);
 
                     } else {
                         the_element.setAttribute('aria-invalid', 'false');
@@ -5198,8 +5198,8 @@
                 return;
             }
 
-            clear_transition_and_set_opacity(list, 0.0);
-            fade_transition(list, 100, 30, 8);
+            $cms.dom.clearTransitionAndSetOpacity(list, 0.0);
+            $cms.dom.fadeTransition(list, 100, 30, 8);
 
             var current_list_for_copy = currentListForEl;
 
@@ -6354,8 +6354,8 @@
 
             element || (element = $cms.dom.$id(this.name));
 
-            clear_transition_and_set_opacity(html, 0.0);
-            fade_transition(html, 100, 30, 4);
+            $cms.dom.clearTransitionAndSetOpacity(html, 0.0);
+            $cms.dom.fadeTransition(html, 100, 30, 4);
 
             html.style.display = xml.firstElementChild ? 'block' : 'none';
 
@@ -6686,8 +6686,8 @@
                 }
 
                 html_node.style.display = 'block';
-                clear_transition_and_set_opacity(html_node, 0.0);
-                fade_transition(html_node, 100, 30, 4);
+                $cms.dom.clearTransitionAndSetOpacity(html_node, 0.0);
+                $cms.dom.fadeTransition(html_node, 100, 30, 4);
 
                 expand_button.src = $cms.img('{$IMG;,1x/treefield/collapse}');
                 expand_button.srcset = $cms.img('{$IMG;,2x/treefield/collapse}') + ' 2x';
@@ -7188,7 +7188,7 @@
         } else {
             parent_id_field = form.elements['parent_id'];
             if (window.last_reply_to !== undefined) {
-                clear_transition_and_set_opacity(window.last_reply_to, 1.0);
+                $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
             }
         }
         window.last_reply_to = el;
@@ -7255,7 +7255,7 @@ function noop() {}
         }
         var bi = $cms.dom.$id('main_website_inner');
         if (bi) {
-            clear_transition(bi);
+            $cms.dom.clearTransition(bi);
             bi.classList.remove('site_unloading');
         }
     }
@@ -7776,6 +7776,7 @@ function resize_frame(name, min_height) {
 
     frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
 }
+
 function trigger_resize(and_subframes) {
     if (!window.parent || !window.parent.document) {
         return;
@@ -7884,15 +7885,10 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
 };
 
 ((function () {
-    window.fade_transition = fade_transition;
-    window.has_fade_transition = has_fade_transition;
-    window.clear_transition = clear_transition;
-    window.clear_transition_and_set_opacity = clear_transition_and_set_opacity;
-
     // <{element's uid}, {setTimeout id}>
     var timeouts = {};
 
-    function fade_transition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
+    $cms.dom.fadeTransition = function fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
         if (!$cms.isEl(el)) {
             return;
         }
@@ -7907,7 +7903,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
             return;
         }
 
-        clear_transition(el);
+        $cms.dom.clearTransition(el);
 
         var again, newIncrement;
 
@@ -7944,19 +7940,19 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
 
         if (again) {
             timeouts[$cms.uid(el)] = window.setTimeout(function () {
-                fade_transition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
+                $cms.dom.fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
             }, periodInMsecs);
         } else if (destroyAfter && el.parentNode) {
-            clear_transition(el);
+            $cms.dom.clearTransition(el);
             el.parentNode.removeChild(el);
         }
-    }
+    };
 
-    function has_fade_transition(el) {
+    $cms.dom.hasFadeTransition = function hasFadeTransition(el) {
         return $cms.isEl(el) && ($cms.uid(el) in timeouts);
-    }
+    };
 
-    function clear_transition(el) {
+    $cms.dom.clearTransition = function clearTransition(el) {
         var uid = $cms.isEl(el) && $cms.uid(el);
 
         if (uid && timeouts[uid]) {
@@ -7965,20 +7961,19 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
             } catch (ignore) {}
             delete timeouts[uid];
         }
-    }
+    };
 
     /* Set opacity, without interfering with the thumbnail timer */
-    function clear_transition_and_set_opacity(el, fraction) {
-        clear_transition(el);
+    $cms.dom.clearTransitionAndSetOpacity = function clearTransitionAndSetOpacity(el, fraction) {
+        $cms.dom.clearTransition(el);
         el.style.opacity = fraction;
-    }
+    };
 })());
 
 (function () {
     /*
      Faux frames and faux scrolling
      */
-
     window.infinite_scrolling_block = infinite_scrolling_block;
     window.infinite_scrolling_block_hold = infinite_scrolling_block_hold;
     window.infinite_scrolling_block_unhold = infinite_scrolling_block_unhold;

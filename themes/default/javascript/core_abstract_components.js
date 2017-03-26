@@ -75,8 +75,8 @@
                     for (var i = 0; i < _ids.length; i++) {
                         var element = document.getElementById('post_wrap_' + _ids[i]);
                         if (element) {
-                            clear_transition_and_set_opacity(element, 0);
-                            fade_transition(element, 100, 30, 10);
+                            $cms.dom.clearTransitionAndSetOpacity(element, 0);
+                            $cms.dom.fadeTransition(element, 100, 30, 10);
                         }
                     }
                 }, 0);

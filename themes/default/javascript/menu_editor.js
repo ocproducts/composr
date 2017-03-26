@@ -97,11 +97,11 @@ function copy_fields_into_bottom(i, changed) {
     mfh.style.display = 'block';
 
     if (!changed) {
-        clear_transition_and_set_opacity(mfh, 0.0);
-        fade_transition(mfh, 100, 30, 4);
+        $cms.dom.clearTransitionAndSetOpacity(mfh, 0.0);
+        $cms.dom.fadeTransition(mfh, 100, 30, 4);
     } else {
-        clear_transition_and_set_opacity(form.elements.url, 0.0);
-        fade_transition(form.elements.url, 100, 30, 4);
+        $cms.dom.clearTransitionAndSetOpacity(form.elements.url, 0.0);
+        $cms.dom.fadeTransition(form.elements.url, 100, 30, 4);
     }
 }
 

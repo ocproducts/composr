@@ -85,8 +85,8 @@
                 if ($cms.dom.html(docEl) !== '') {
                     window.orig_helper_text = $cms.dom.html(helpEl);
                     $cms.dom.html(helpEl, $cms.dom.html(docEl));
-                    clear_transition_and_set_opacity(helpEl, 0.0);
-                    fade_transition(helpEl, 100, 30, 4);
+                    $cms.dom.clearTransitionAndSetOpacity(helpEl, 0.0);
+                    $cms.dom.fadeTransition(helpEl, 100, 30, 4);
 
                     helpEl.classList.remove('global_helper_panel_text');
                     helpEl.classList.add('global_helper_panel_text_over');
@@ -96,8 +96,8 @@
             $cms.dom.on(container, 'mouseout', function () {
                 if (window.orig_helper_text !== undefined) {
                     $cms.dom.html(helpEl, window.orig_helper_text);
-                    clear_transition_and_set_opacity(helpEl, 0.0);
-                    fade_transition(helpEl, 100, 30, 4);
+                    $cms.dom.clearTransitionAndSetOpacity(helpEl, 0.0);
+                    $cms.dom.fadeTransition(helpEl, 100, 30, 4);
 
                     helpEl.classList.remove('global_helper_panel_text_over');
                     helpEl.classList.add('global_helper_panel_text');

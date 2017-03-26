@@ -217,8 +217,8 @@
                     }
                 } else {
                     if (!$cms.dom.isDisplayed(checklist_rows[i])) {
-                        clear_transition_and_set_opacity(checklist_rows[i], 0.0);
-                        fade_transition(checklist_rows[i], 100, 30, 4);
+                        $cms.dom.clearTransitionAndSetOpacity(checklist_rows[i], 0.0);
+                        $cms.dom.fadeTransition(checklist_rows[i], 100, 30, 4);
                     }
                     $cms.dom.show(checklist_rows[i]);
                     checklist_rows[i].classList.remove('task_hidden');

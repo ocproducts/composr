@@ -68,10 +68,10 @@
             window.setTimeout(function () {
                 function func() {
                     data.fp_animation_fader.src = data.fp_animation.src;
-                    clear_transition_and_set_opacity(data.fp_animation_fader, 1.0);
-                    fade_transition(data.fp_animation_fader, 0, period_in_msecs, increment * -1);
-                    clear_transition_and_set_opacity(data.fp_animation, 0.0);
-                    fade_transition(data.fp_animation, 100, period_in_msecs, increment);
+                    $cms.dom.clearTransitionAndSetOpacity(data.fp_animation_fader, 1.0);
+                    $cms.dom.fadeTransition(data.fp_animation_fader, 0, period_in_msecs, increment * -1);
+                    $cms.dom.clearTransitionAndSetOpacity(data.fp_animation, 0.0);
+                    $cms.dom.fadeTransition(data.fp_animation, 100, period_in_msecs, increment);
                     data.fp_animation.src = data['url' + k];
                     data.fp_animation_fader.style.left = ((data.fp_animation_fader.parentNode.offsetWidth - data.fp_animation_fader.offsetWidth) / 2) + 'px';
                     data.fp_animation_fader.style.top = ((data.fp_animation_fader.parentNode.offsetHeight - data.fp_animation_fader.offsetHeight) / 2) + 'px';
@@ -392,12 +392,12 @@
                 fade_elements = document.body.querySelectorAll('.scale_down');
                 if ((fade_elements[0] !== undefined) && (fade_elements_old[0] !== undefined)) {
                     var fade_element = fade_elements[0];
-                    clear_transition_and_set_opacity(fade_element, 0);
+                    $cms.dom.clearTransitionAndSetOpacity(fade_element, 0);
                     fade_element.parentNode.insertBefore(fade_element_old, fade_element);
                     fade_element.parentNode.style.position = 'relative';
-                    fade_transition(fade_element, 100.0, 30, 10);
-                    clear_transition_and_set_opacity(fade_element_old, 1.0);
-                    fade_transition(fade_element_old, 0.0, 30, -10, true);
+                    $cms.dom.fadeTransition(fade_element, 100.0, 30, 10);
+                    $cms.dom.clearTransitionAndSetOpacity(fade_element_old, 1.0);
+                    $cms.dom.fadeTransition(fade_element_old, 0.0, 30, -10, true);
                 } // else probably a video
 
                 if (slideshow_from){

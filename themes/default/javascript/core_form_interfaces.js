@@ -1401,8 +1401,8 @@
             field_input.style.display = newDisplayState;
 
             if ((newDisplayState2 !== 'none') && (count < 50/*Performance*/)) {
-                clear_transition_and_set_opacity(field_input, 0.0);
-                fade_transition(field_input, 100, 30, 20);
+                $cms.dom.clearTransitionAndSetOpacity(field_input, 0.0);
+                $cms.dom.fadeTransition(field_input, 100, 30, 20);
                 count++;
             }
         }

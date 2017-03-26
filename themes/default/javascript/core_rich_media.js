@@ -539,7 +539,7 @@
             $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
                 var bi = document.getElementById('main_website_inner');
                 if (bi) {
-                    clear_transition_and_set_opacity(bi, 1.0);
+                    $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
                 }
 
                 document.getElementById(params.randIdOverlay).style.display = 'none';
@@ -563,17 +563,17 @@
                     bi = document.getElementById('main_website_inner');
 
                     if (bi) {
-                        clear_transition_and_set_opacity(bi, 0.4);
+                        $cms.dom.clearTransitionAndSetOpacity(bi, 0.4);
                     }
 
-                    clear_transition_and_set_opacity(element, 0.0);
-                    fade_transition(element, 100, 30, 3);
+                    $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
+                    $cms.dom.fadeTransition(element, 100, 30, 3);
 
 
                     if (params.timeout !== '-1') {
                         window.setTimeout(function () {
                             if (bi) {
-                                clear_transition_and_set_opacity(bi, 1.0);
+                                $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
                             }
 
                             if (element) {
@@ -890,16 +890,16 @@
         var e_left = document.getElementById('comcodeshocker' + id + '_left');
         if (!e_left) return;
         $cms.dom.html(e_left, window.shocker_parts[id][window.shocker_pos[id]][0]);
-        clear_transition_and_set_opacity(e_left, 0.6);
-        clear_transition_and_set_opacity(e_left, 0.0);
-        fade_transition(e_left, 100, time / 40, 5);
+        $cms.dom.clearTransitionAndSetOpacity(e_left, 0.6);
+        $cms.dom.clearTransitionAndSetOpacity(e_left, 0.0);
+        $cms.dom.fadeTransition(e_left, 100, time / 40, 5);
 
         var e_right = document.getElementById('comcodeshocker' + id + '_right');
         if (!e_right) return;
         $cms.dom.html(e_right, window.shocker_parts[id][window.shocker_pos[id]][1]);
-        clear_transition_and_set_opacity(e_right, 0);
-        clear_transition_and_set_opacity(e_right, 0.0);
-        fade_transition(e_right, 100, time / 20, 5);
+        $cms.dom.clearTransitionAndSetOpacity(e_right, 0);
+        $cms.dom.clearTransitionAndSetOpacity(e_right, 0.0);
+        $cms.dom.fadeTransition(e_right, 100, time / 20, 5);
 
         window.shocker_pos[id]++;
 
@@ -982,20 +982,20 @@
             if (x) {
                 if (x.className === 'comcode_big_tab') {
                     if (i == current_pos) {
-                        clear_transition(x);
+                        $cms.dom.clearTransition(x);
                         x.style.width = '';
                         x.style.position = 'static';
                         x.style.zIndex = 10;
-                        clear_transition_and_set_opacity(x, 1.0);
+                        $cms.dom.clearTransitionAndSetOpacity(x, 1.0);
                     } else {
                         if (x.style.position !== 'static') {
-                            clear_transition_and_set_opacity(x, 0.0);
+                            $cms.dom.clearTransitionAndSetOpacity(x, 0.0);
                         } else {
-                            clear_transition_and_set_opacity(x, 1.0);
+                            $cms.dom.clearTransitionAndSetOpacity(x, 1.0);
                         }
 
-                        if (!has_fade_transition(x)) {
-                            fade_transition(x, 0, 30, -5);
+                        if (!$cms.dom.hasFadeTransition(x)) {
+                            $cms.dom.fadeTransition(x, 0, 30, -5);
                         }
                         x.style.width = (x.offsetWidth - 24) + 'px'; // 24=lhs padding+rhs padding+lhs border+rhs border
                         x.style.position = 'absolute';
@@ -1009,8 +1009,8 @@
                     x.style.display = (i == current_pos) ? 'block' : 'none';
 
                     if (i == current_pos) {
-                        clear_transition_and_set_opacity(x, 0.0);
-                        fade_transition(x, 100, 30, 4);
+                        $cms.dom.clearTransitionAndSetOpacity(x, 0.0);
+                        $cms.dom.fadeTransition(x, 100, 30, 4);
                     }
                 }
             }

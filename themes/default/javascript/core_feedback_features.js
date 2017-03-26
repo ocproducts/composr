@@ -357,8 +357,8 @@
                         var known_posts = comments_wrapper.querySelectorAll('.post');
                         for (var i = 0; i < known_posts.length; i++) {
                             if (!known_times.includes(known_posts[i].className.replace(/^post /, ''))) {
-                                clear_transition_and_set_opacity(known_posts[i], 0.0);
-                                fade_transition(known_posts[i], 100, 20, 5);
+                                $cms.dom.clearTransitionAndSetOpacity(known_posts[i], 0.0);
+                                $cms.dom.fadeTransition(known_posts[i], 100, 20, 5);
                             }
                         }
 

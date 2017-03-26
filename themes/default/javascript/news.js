@@ -80,10 +80,10 @@
 
             // Set up fade}
             fp_animation_news.src = fp_animation.src;
-            clear_transition_and_set_opacity(fp_animation_news, 1.0);
-            fade_transition(fp_animation_news, 0, 30, -4);
-            clear_transition_and_set_opacity(fp_animation, 0.0);
-            fade_transition(fp_animation, 100, 30, 4);
+            $cms.dom.clearTransitionAndSetOpacity(fp_animation_news, 1.0);
+            $cms.dom.fadeTransition(fp_animation_news, 0, 30, -4);
+            $cms.dom.clearTransitionAndSetOpacity(fp_animation, 0.0);
+            $cms.dom.fadeTransition(fp_animation, 100, 30, 4);
             fp_animation.src = data[j].image_url;
             window.setTimeout(function () { // Will know dimensions by the time the timeout happens}
                 fp_animation_news.style.left = ((fp_animation_news.parentNode.offsetHeight - fp_animation_news.offsetWidth) / 2) + 'px';

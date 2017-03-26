@@ -70,16 +70,16 @@ function load_commandr() {
                     });
 
                     var cmdLine = document.getElementById('command_line');
-                    clear_transition(cmdLine);
+                    $cms.dom.clearTransition(cmdLine);
                     cmdLine.style.opacity = 0.0;
-                    fade_transition(document.getElementById('command_line'), 90, 30, 5);
+                    $cms.dom.fadeTransition(document.getElementById('command_line'), 90, 30, 5);
 
 
                     var bi = document.getElementById('main_website_inner');
                     if (bi) {
-                        clear_transition(bi);
+                        $cms.dom.clearTransition(bi);
                         bi.style.opacity = 1.0;
-                        fade_transition(bi, 30, 30, -5);
+                        $cms.dom.fadeTransition(bi, 30, 30, -5);
                     }
 
                     document.getElementById('commandr_command').focus();
@@ -91,14 +91,14 @@ function load_commandr() {
                         if (img.srcset !== undefined) {
                             img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_on}') + ' 2x';
                         }
-                        clear_transition(img);
+                        $cms.dom.clearTransition(img);
                         img.style.opacity = 1.0;
                     }
 
                     commandr_box.style.display = 'none';
                     var bi = document.getElementById('main_website_inner');
                     if (bi) {
-                        fade_transition(bi, 100, 30, 5);
+                        $cms.dom.fadeTransition(bi, 100, 30, 5);
                     }
                 }
             }

@@ -274,7 +274,7 @@ function received_events(ajax_result_frame, ajax_result) {
                             next_icon.style.left = left + 'px';
                             var top = ((parseInt(next_icon.style.top) || 0) + next_icon.y_vector);
                             next_icon.style.top = top + 'px';
-                            clear_transition_and_set_opacity(next_icon, next_icon.opacity);
+                            $cms.dom.clearTransitionAndSetOpacity(next_icon, next_icon.opacity);
                             next_icon.opacity *= 0.98;
                             next_icon.y_vector += 0.2;
                             if ((top > max_height) || (next_icon.opacity < 0.05) || (left + 50 > window_width) || (left < 0)) {

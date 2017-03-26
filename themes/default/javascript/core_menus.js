@@ -779,8 +779,8 @@
         el.style.position = 'absolute';
         el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
         el.style.display = 'block';
-        clear_transition_and_set_opacity(el, 0.0);
-        fade_transition(el, 100, 30, 8);
+        $cms.dom.clearTransitionAndSetOpacity(el, 0.0);
+        $cms.dom.fadeTransition(el, 100, 30, 8);
 
         var full_width = (window.scrollX == 0) ? get_window_width() : window.document.body.scrollWidth;
 

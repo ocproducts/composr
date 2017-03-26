@@ -24,8 +24,8 @@
                 panel_right.classList.remove('helper_panel_hidden');
                 helper_panel_contents.setAttribute('aria-expanded', 'true');
                 helper_panel_contents.style.display = 'block';
-                clear_transition_and_set_opacity(helper_panel_contents, 0.0);
-                fade_transition(helper_panel_contents, 100, 30, 4);
+                $cms.dom.clearTransitionAndSetOpacity(helper_panel_contents, 0.0);
+                $cms.dom.fadeTransition(helper_panel_contents, 100, 30, 4);
 
                 if (read_cookie('hide_helper_panel') === '1') {
                     set_cookie('hide_helper_panel', '0', 100);

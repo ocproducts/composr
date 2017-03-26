@@ -864,7 +864,7 @@
                 box.parentNode.removeChild(box);
 
                 img = $cms.dom.$('#software_chat_img');
-                clear_transition_and_set_opacity(img, 1.0);
+                $cms.dom.clearTransitionAndSetOpacity(img, 1.0);
             } else {
                 var width = 950,
                     height = 550;
@@ -891,7 +891,7 @@
                 smooth_scroll(0);
 
                 img = $cms.dom.$('#software_chat_img');
-                clear_transition_and_set_opacity(img, 0.5);
+                $cms.dom.clearTransitionAndSetOpacity(img, 0.5);
             }
         },
 
@@ -1014,7 +1014,7 @@
                 var bi = $cms.dom.$id('main_website_inner');
                 if (bi) {
                     bi.classList.add('site_unloading');
-                    fade_transition(bi, 20, 30, -4);
+                    $cms.dom.fadeTransition(bi, 20, 30, -4);
                 }
                 var div = document.createElement('div');
                 div.className = 'unload_action';
