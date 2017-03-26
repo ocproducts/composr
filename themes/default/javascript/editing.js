@@ -160,7 +160,7 @@ function disable_wysiwyg(forms, so, so2, discard) {
                     var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + keep_stub());
                     if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
                     var post = 'data=' + encodeURIComponent(wysiwyg_data.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
-                    post = modsecurity_workaround_ajax(post);
+                    post = $cms.form.modsecurityWorkaroundAjax(post);
                     var request = do_ajax_request(url, null, post);
                     if ((!request.responseXML) || (!request.responseXML.documentElement.querySelector('result'))) {
                         textarea.value = '[semihtml]' + wysiwyg_data + '[/semihtml]';

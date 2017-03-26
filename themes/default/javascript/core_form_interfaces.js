@@ -20,7 +20,7 @@
 
         workaround: function (e, target) {
             e.preventDefault();
-            modsecurity_workaround(target);
+            $cms.form.modsecurityWorkaround(target);
         },
 
         toggleSubordinateFields: function (e, target) {
@@ -336,7 +336,7 @@
 
         $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
             e.preventDefault();
-            modsecurity_workaround(form);
+            $cms.form.modsecurityWorkaround(form);
         });
     };
 

@@ -4943,6 +4943,85 @@
     };
 
     /**
+     * @memberof $cms.form
+     * @param form
+     * @returns {boolean}
+     */
+    $cms.form.modsecurityWorkaround = function modsecurity_workaround(form) {
+        var temp_form = document.createElement('form');
+        temp_form.method = 'post';
+
+        if (form.target) {
+            temp_form.target = form.target;
+        }
+        temp_form.action = form.action;
+
+        var data = $cms.dom.serialize(form);
+        data = _modsecurity_workaround(data);
+
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_data';
+        input.value = data;
+        temp_form.appendChild(input);
+
+        if (form.elements.csrf_token) {
+            var csrf_input = document.createElement('input');
+            csrf_input.type = 'hidden';
+            csrf_input.name = 'csrf_token';
+            csrf_input.value = form.elements.csrf_token.value;
+            temp_form.appendChild(csrf_input);
+        }
+
+        temp_form.style.display = 'none';
+        document.body.appendChild(temp_form);
+
+        window.setTimeout(function () {
+            temp_form.submit();
+            temp_form.parentNode.removeChild(temp_form);
+        });
+
+        return false;
+    };
+
+    /**
+     * @memberof $cms.form
+     * @param data
+     * @returns {string}
+     */
+    $cms.form.modsecurityWorkaroundAjax = function modsecurity_workaround_ajax(data) {
+        return '_data=' + encodeURIComponent(_modsecurity_workaround(data));
+    };
+
+    function _modsecurity_workaround(data) {
+        data = strVal(data);
+
+        var remapper = {
+                '\\': '<',
+                '/': '>',
+                '<': '\'',
+                '>': '"',
+                '\'': '/',
+                '"': '\\',
+                '%': '&',
+                '&': '%',
+                '@': ':',
+                ':': '@'
+            },
+            out = '',
+            char;
+        for (var i = 0; i < data.length; i++) {
+            char = data[i];
+            if (remapper[char] !== undefined) {
+                out += remapper[char];
+            } else {
+                out += char;
+            }
+        }
+        return out;
+    }
+
+    /**
      * @memberof $cms
      * @param options
      * @returns { $cms.views.ModalWindow }
@@ -7271,11 +7350,6 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
     return top;
 }
 
-(function (){
-    'use strict';
-
-    window.modsecurity_workaround = modsecurity_workaround;
-    window.modsecurity_workaround_ajax = modsecurity_workaround_ajax;
 
     function modsecurity_workaround(form) {
         var temp_form = document.createElement('form');
@@ -7345,7 +7419,7 @@ function find_pos_y(el, not_relative) {/* if not_relative is true it gets the po
         }
         return out;
     }
-}());
+
 
 
 function clear_out_tooltips(tooltip_being_opened) {

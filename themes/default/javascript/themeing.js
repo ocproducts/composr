@@ -553,7 +553,7 @@ function load_contextual_css_editor(file, file_id) {
                 var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + keep_stub());
                 do_ajax_request(url, function (ajax_result_frame) {
                     receive_compiled_css(ajax_result_frame, file);
-                }, modsecurity_workaround_ajax('css=' + encodeURIComponent(new_css)));
+                }, $cms.form.modsecurityWorkaroundAjax('css=' + encodeURIComponent(new_css)));
 
                 last_css = new_css;
             }

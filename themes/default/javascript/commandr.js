@@ -112,7 +112,7 @@ function commandr_form_submission(command, form) {
         document.getElementById('commandr_command').disabled = true;
 
         var post = 'command=' + encodeURIComponent(command);
-        post = modsecurity_workaround_ajax(post);
+        post = $cms.form.modsecurityWorkaroundAjax(post);
         do_ajax_request('{$FIND_SCRIPT;,commandr}' + keep_stub(true), commandr_command_response, post);
 
         window.disable_timeout = window.setTimeout(function () {
@@ -128,7 +128,7 @@ function commandr_form_submission(command, form) {
         return false;
     } else if (form !== undefined) {
         // Let the form be submitted the old-fashioned way.
-        return modsecurity_workaround(form);
+        return $cms.form.modsecurityWorkaround(form);
     }
  }
 

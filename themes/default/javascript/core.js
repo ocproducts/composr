@@ -643,7 +643,7 @@
         // Implementation for form[data-submit-modsecurity-workaround]
         submitModsecurityWorkaround: function (e, form) {
             e.preventDefault();
-            modsecurity_workaround(form);
+            $cms.form.modsecurityWorkaround(form);
         },
 
         // Implementation for input[data-cms-invalid-pattern]

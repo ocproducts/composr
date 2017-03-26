@@ -16,7 +16,7 @@
 
         submit: function (e, form) {
             e.preventDefault();
-            modsecurity_workaround(form);
+            $cms.form.modsecurityWorkaround(form);
         }
     });
 
@@ -35,7 +35,7 @@
 
         submit: function (e, form) {
             e.preventDefault();
-            modsecurity_workaround(form);
+            $cms.form.modsecurityWorkaround(form);
         }
     });
 
