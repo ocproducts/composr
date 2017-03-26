@@ -4066,7 +4066,7 @@
      * @param win - window to open in
      * @param have_links - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
      */
-    $cms.ui.activateTooltip = function activate_tooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
+    $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
         event || (event = {});
         width || (width = 'auto');
         pic || (pic = '');
@@ -4225,7 +4225,7 @@
         }, no_delay ? 0 : 666);
     };
 
-    $cms.ui.repositionTooltip = function reposition_tooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
+    $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
         bottom = !!bottom;
         win || (win = window);
 
@@ -4322,7 +4322,7 @@
         tooltip_element.style.left = x + 'px';
     };
 
-    $cms.ui.deactivateTooltip = function deactivate_tooltip(el, tooltip_element) {
+    $cms.ui.deactivateTooltip = function deactivateTooltip(el, tooltip_element) {
         el.is_over = false;
 
         if (el.tooltip_id == null) {
@@ -4336,7 +4336,7 @@
         }
     };
 
-    $cms.ui.clearOutTooltip = function clear_out_tooltips(tooltip_being_opened) {
+    $cms.ui.clearOutTooltip = function clearOutTooltip(tooltip_being_opened) {
         // Delete other tooltips, which due to browser bugs can get stuck
         var selector = '.tooltip';
         if (tooltip_being_opened) {
