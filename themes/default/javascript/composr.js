@@ -476,7 +476,7 @@
         }
     });
 
-    var sessionId = get_session_id();
+    var sessionId = $cms.getSessionId();
 
     if (sessionId && !$cms.uspKeepSession.has('keep_session')) {
         $cms.uspKeepSession.set('keep_session', sessionId);
@@ -1348,7 +1348,7 @@
     $cms.cookies || ($cms.cookies = new CookieMonster());
 
     var alertedCookieConflict;
-    function set_cookie(cookieName, cookieValue, numDays) {
+    $cms.setCookie = function setCookie(cookieName, cookieValue, numDays) {
         var expires = new Date(),
             output;
 
@@ -1368,7 +1368,7 @@
 
         document.cookie = output;
 
-        var read = read_cookie(cookieName);
+        var read = $cms.readCookie(cookieName);
 
         if (read && (read !== cookieValue) && $cms.$DEV_MODE && !alertedCookieConflict) {
             $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
@@ -1376,7 +1376,7 @@
         }
     }
 
-    function read_cookie(cookieName, defaultValue) {
+    $cms.readCookie = function readCookie(cookieName, defaultValue) {
         cookieName = strVal(cookieName);
         defaultValue = strVal(defaultValue);
 
@@ -1397,7 +1397,7 @@
         }
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
-    }
+    };
 
     // If the browser has support for CSS transitions
     $cms.support.cssTransitions = ('transition' in emptyElStyle) || ('WebkitTransition' in emptyElStyle) || ('msTransition' in emptyElStyle);
@@ -3942,7 +3942,7 @@
     $cms.ui.confirmSession = function confirmSession(callback) {
         var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
 
-        do_ajax_request(url, function (ret) {
+        $cms.doAjaxRequest(url, function (ret) {
             if (!ret) {
                 return;
             }
@@ -3974,7 +3974,7 @@
                 '',
                 function (promptt) {
                     if (promptt !== null) {
-                        do_ajax_request(url, function (ret) {
+                        $cms.doAjaxRequest(url, function (ret) {
                             if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
                                 callback(true);
                             } else {
@@ -5057,7 +5057,7 @@
      * @returns {boolean}
      */
     $cms.form.doAjaxFieldTest = function doAjaxFieldTest(url, post) {
-        var xhr = do_ajax_request(url, null, post);
+        var xhr = $cms.doAjaxRequest(url, null, post);
         if ((xhr.responseText != '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
             if (xhr.responseText !== 'false') {
                 if (xhr.responseText.length > 1000) {
@@ -5134,7 +5134,7 @@
             script = script + '&special=' + special;
         }
 
-        do_ajax_request(script + $cms.keepStub(), updateAjaxNemberListResponse);
+        $cms.doAjaxRequest(script + $cms.keepStub(), updateAjaxNemberListResponse);
 
         function close_down_ajax_list() {
             var current = $cms.dom.$('#ajax_list');
@@ -6255,7 +6255,7 @@
         url += '&options=' + this.options;
         url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
 
-        do_ajax_request(url, this);
+        $cms.doAjaxRequest(url, this);
 
         var that = this;
         $cms.dom.on(document.documentElement, 'mousemove', function (event) {
@@ -6672,7 +6672,7 @@
                 if ((xml_node.getAttribute('has_children') === 'true') && !xml_node.firstElementChild) {
                     var url = $cms.baseUrl(this.object.ajax_url + '&id=' + encodeURIComponent(real_clicked_id) + '&options=' + this.object.options + '&default=' + encodeURIComponent(element.value));
                     var ob = this.object;
-                    do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+                    $cms.doAjaxRequest(url, function (ajax_result_frame, ajax_result) {
                         $cms.dom.html(html_node, '');
                         ob.response(ajax_result_frame, ajax_result, clicked_id);
                     });
@@ -6891,16 +6891,9 @@
         return null;
     }
 
-    window.generate_question_ui = generate_question_ui;
-    window.do_ajax_request = do_ajax_request;
-    window.set_cookie = set_cookie;
-    window.read_cookie = read_cookie;
-    window.get_csrf_token = get_csrf_token;
-    window.get_session_id = get_session_id;
-
     /* Ask a user a question: they must click a button */
     // 'Cancel' should come as index 0 and Ok/default-option should come as index 1. This is so that the fallback works right.
-    function generate_question_ui(message, button_set, window_title, fallback_message, callback, dialog_width, dialog_height) {
+    $cms.ui.generateQuestionUi = function generateQuestionUi(message, button_set, window_title, fallback_message, callback, dialog_width, dialog_height) {
         var image_set = [];
         var new_button_set = [];
         for (var s in button_set) {
@@ -6991,13 +6984,13 @@
                 window_title
             );
         }
-    }
+    };
 
     var ajaxInstances,
         ajaxCallbacks,
         networkDownAlerted = false;
 
-    function do_ajax_request(url, callbackMethod, post) { // Note: 'post' is not an array, it's a string (a=b)
+    $cms.doAjaxRequest = function doAjaxRequest(url, callbackMethod, post) { // Note: 'post' is not an array, it's a string (a=b)
         var async = !!callbackMethod, index, result;
 
         if (!url.includes('://') && url.startsWith('/')) {
@@ -7018,7 +7011,7 @@
 
         if (typeof post === 'string') {
             if (!post.includes('&csrf_token')) { // For CSRF prevention
-                post += '&csrf_token=' + encodeURIComponent(get_csrf_token());
+                post += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken());
             }
 
             ajaxInstances[index].open('POST', url, async);
@@ -7078,10 +7071,10 @@
                                 networkDownAlerted = true;
                             }
                         } else {
-                            $cms.error('do_ajax_request(): {!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.', xhr);
+                            $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.', xhr);
                         }
                     } catch (e) {
-                        $cms.error('do_ajax_request(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
+                        $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
                     }
                 }
             });
@@ -7136,7 +7129,7 @@
             }
 
             if (xhr.responseText && xhr.responseText.includes('<html')) {
-                $cms.error('do_ajax_request(): ', xhr);
+                $cms.error('$cms.doAjaxRequest(): ', xhr);
                 $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
@@ -7161,15 +7154,15 @@
                 }
             }
         }
-    }
+    };
 
-    function get_csrf_token() {
-        return read_cookie($cms.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
-    }
+    $cms.getCsrfToken = function getCsrfToken() {
+        return $cms.readCookie($cms.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+    };
 
-    function get_session_id() {
-        return read_cookie($cms.$SESSION_COOKIE_NAME);
-    }
+    $cms.getSessionId = function getSessionId() {
+        return $cms.readCookie($cms.$SESSION_COOKIE_NAME);
+    };
 
     $cms.topicReply = topicReply;
     /* Reply to a topic using AJAX */
@@ -7429,7 +7422,7 @@ $cms.loadSnippet = function loadSnippet(snippet_hook, post, callback) {
         url = window.location.href;
     }
     var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
-        html = do_ajax_request($cms.maintainThemeInLink(url2), callback, post);
+        html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), callback, post);
     if (callback) {
         return null;
     }
@@ -7983,7 +7976,6 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
     window.internalise_infinite_scrolling_go = internalise_infinite_scrolling_go;
     window.internalise_ajax_block_wrapper_links = internalise_ajax_block_wrapper_links;
 
-
     var infinite_scroll_pending = false, // Blocked due to queued HTTP request
         infinite_scroll_blocked = false, // Blocked due to event tracking active
         infinite_scroll_mouse_held = false;
@@ -8341,7 +8333,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
         }
 
         // Make AJAX call
-        do_ajax_request(
+        $cms.doAjaxRequest(
             ajax_url + $cms.keepStub(),
             function (raw_ajax_result) { // Show results when available
                 _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);

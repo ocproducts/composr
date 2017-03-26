@@ -241,7 +241,7 @@ function generate_background_preview(post) {
         }
     }
     form_post = $cms.form.modsecurityWorkaroundAjax(form_post.substr(1));
-    var preview_ret = do_ajax_request(window.form_preview_url + '&js_only=1&known_utf8=1', null, form_post);
+    var preview_ret = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', null, form_post);
     eval(preview_ret.responseText.replace('<script>', '').replace('</script>', ''));
 }
 
@@ -471,7 +471,7 @@ function do_input_thumb(field_name, va) {
             }
 
             if (va) {
-                generate_question_ui(
+                $cms.ui.generateQuestionUi(
                     '{!javascript:THUMB_OR_IMG_2;^}',
                     {buttons__thumbnail: '{!THUMBNAIL;^}', buttons__fullsize: '{!IMAGE;^}'},
                     '{!comcode:INPUT_COMCODE_img;^}',
@@ -722,7 +722,7 @@ function init_form_saving(form_id) {
     }(form));
 
     // Load via local storage
-    var autosave_value = read_cookie(encodeURIComponent(get_autosave_url_stem()));
+    var autosave_value = $cms.readCookie(encodeURIComponent(get_autosave_url_stem()));
     if ((autosave_value != '') && (autosave_value != '0')) {
         if (window.localStorage !== undefined) {
             var fields_to_do = {}, fields_to_do_counter = 0, biggest_length_data = '';
@@ -778,7 +778,7 @@ function init_form_saving(form_id) {
                 _retrieve_form_autosave(result, form);
             }
         }(form);
-        do_ajax_request(url, callback);
+        $cms.doAjaxRequest(url, callback);
     }
 }
 
@@ -845,7 +845,7 @@ function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
             } else {
                 // Was asked to throw the autosave away...
 
-                set_cookie(encodeURIComponent(get_autosave_url_stem()), '0', 0.167/*4 hours*/); // Mark as not wanting to restore from local storage
+                $cms.setCookie(encodeURIComponent(get_autosave_url_stem()), '0', 0.167/*4 hours*/); // Mark as not wanting to restore from local storage
 
                 if (window.localStorage !== undefined) {
                     for (var key in fields_to_do) {
@@ -965,7 +965,7 @@ function handle_form_saving_explicit(event, form) {
             // Save remotely
             if (navigator.onLine) {
                 post = $cms.form.modsecurityWorkaroundAjax(post);
-                do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
+                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
                     if (document.body.style.cursor == 'wait') document.body.style.cursor = '';
 
                     var message = found_validated_field ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
@@ -989,7 +989,7 @@ function handle_form_saving(event, element, force) {
             }
 
             post = $cms.form.modsecurityWorkaroundAjax(post);
-            do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
             }, post);
         }
     }
@@ -1018,7 +1018,7 @@ function _handle_form_saving(event, element, force) {
     // Mark it as saved, so the server can clear it out when we submit, signally local storage should get deleted too
     var element_name = (element.name === undefined) ? element[0].name : element.name;
     var autosave_name = get_autosave_name(element_name);
-    set_cookie(encodeURIComponent(get_autosave_url_stem()), '1', 0.167/*4 hours*/);
+    $cms.setCookie(encodeURIComponent(get_autosave_url_stem()), '1', 0.167/*4 hours*/);
 
     window.last_autosave = this_date;
 

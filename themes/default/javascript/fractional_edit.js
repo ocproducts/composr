@@ -128,12 +128,12 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
 
     function save_function() {
         // Call AJAX request
-        var response = do_ajax_request(input.form.action, null, input.name + '=' + encodeURIComponent(input.value));
+        var response = $cms.doAjaxRequest(input.form.action, null, input.name + '=' + encodeURIComponent(input.value));
 
         // Some kind of error?
         if (((response.responseText == '') && (input.value != '')) || (response.status != 200)) {
             var session_test_url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
-            var session_test_ret = do_ajax_request(session_test_url + $cms.keepStub(true), null);
+            var session_test_ret = $cms.doAjaxRequest(session_test_url + $cms.keepStub(true), null);
 
             if (session_test_ret.responseText) {// If it failed, see if it is due to a non-confirmed session
                 $cms.ui.confirmSession(

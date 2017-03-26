@@ -42,7 +42,7 @@ function decrypt_data() {
     token.type = 'hidden';
     token.name = 'csrf_token';
     token.id = 'csrf_token';
-    token.value = get_csrf_token();
+    token.value = $cms.getCsrfToken();
     form.appendChild(token);
 
     var input = document.createElement('input');

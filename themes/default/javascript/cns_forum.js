@@ -185,7 +185,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-ignore-notification', function () {
             var el = this;
-            do_ajax_request(ignoreUrl, function () {
+            $cms.doAjaxRequest(ignoreUrl, function () {
                 var o = el.parentNode.parentNode.parentNode.parentNode;
                 o.parentNode.removeChild(o);
 

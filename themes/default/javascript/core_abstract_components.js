@@ -88,10 +88,10 @@
 
     $cms.templates.handleConflictResolution = function (params) {
         if (params.pingUrl) {
-            do_ajax_request(params.pingUrl);
+            $cms.doAjaxRequest(params.pingUrl);
 
             window.setInterval(function () {
-                do_ajax_request(params.pingUrl, function () {
+                $cms.doAjaxRequest(params.pingUrl, function () {
                 });
             }, 12000);
         }

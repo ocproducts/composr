@@ -276,7 +276,7 @@
                 post += '&' + form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(form, form.elements[i]));
             }
         }
-        var request = do_ajax_request($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), null, post);
+        var request = $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), null, post);
 
         if (request.responseText && (request.responseText !== 'false')) {
             var result = request.responseXML.documentElement.querySelector('result');

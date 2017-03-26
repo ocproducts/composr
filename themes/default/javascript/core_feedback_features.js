@@ -330,7 +330,7 @@
                     }
                 }
                 post += '&post=' + encodeURIComponent(post_value);
-                do_ajax_request('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (ajax_result) {
+                $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (ajax_result) {
                     if ((ajax_result.responseText != '') && (ajax_result.status != 500)) {
                         // Display
                         var old_action = comments_form.action;

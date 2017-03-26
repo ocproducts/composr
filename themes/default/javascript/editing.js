@@ -7,7 +7,7 @@
 // ===========
 
 function wysiwyg_on() {
-    var cookie = read_cookie('use_wysiwyg');
+    var cookie = $cms.readCookie('use_wysiwyg');
     return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION.wysiwyg && !$cms.$MOBILE;
 }
 
@@ -19,10 +19,10 @@ function toggle_wysiwyg(name) {
 
     var is_wysiwyg_on = wysiwyg_on();
     if (is_wysiwyg_on) {
-        if (read_cookie('use_wysiwyg') === '-1') {
+        if ($cms.readCookie('use_wysiwyg') === '-1') {
             _toggle_wysiwyg(name);
         } else {
-            generate_question_ui(
+            $cms.ui.generateQuestionUi(
                 '{!comcode:WHETHER_SAVE_WYSIWYG_SELECTION;^}',
                 {
                     buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
@@ -43,12 +43,12 @@ function toggle_wysiwyg(name) {
 
                     if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}'.toLowerCase()) {
                         _toggle_wysiwyg(name);
-                        set_cookie('use_wysiwyg', '-1', 3000);
+                        $cms.setCookie('use_wysiwyg', '-1', 3000);
                     }
 
                     if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'.toLowerCase()) {
                         _toggle_wysiwyg(name);
-                        set_cookie('use_wysiwyg', '0', 3000);
+                        $cms.setCookie('use_wysiwyg', '0', 3000);
                     }
                 },
                 600,
@@ -60,8 +60,8 @@ function toggle_wysiwyg(name) {
 
     _toggle_wysiwyg(name);
 
-    if (read_cookie('use_wysiwyg') != '-1') {
-        set_cookie('use_wysiwyg', '1', 3000);
+    if ($cms.readCookie('use_wysiwyg') != '-1') {
+        $cms.setCookie('use_wysiwyg', '1', 3000);
     }
 
     return false;
@@ -91,7 +91,7 @@ function _toggle_wysiwyg(name) {
         } else if ((window.wysiwyg_original_comcode[id] === undefined) || (window.wysiwyg_original_comcode[id].indexOf('&#8203;') != -1) || (window.wysiwyg_original_comcode[id].indexOf('cms_keep') != -1)) {
             disable_wysiwyg(forms, so, so2, false);
         } else {
-            generate_question_ui(
+            $cms.ui.generateQuestionUi(
                 '{!javascript:DISCARD_WYSIWYG_CHANGES_NICE;^}',
                 {
                     buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
@@ -102,8 +102,8 @@ function _toggle_wysiwyg(name) {
                 '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
                 function (prompt) {
                     if ((!prompt) || (prompt.toLowerCase() == '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase())) {
-                        if (read_cookie('use_wysiwyg') == '0')
-                            set_cookie('use_wysiwyg', '1', 3000);
+                        if ($cms.readCookie('use_wysiwyg') == '0')
+                            $cms.setCookie('use_wysiwyg', '1', 3000);
                         return false;
                     }
                     var discard = (prompt.toLowerCase() == '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
@@ -161,7 +161,7 @@ function disable_wysiwyg(forms, so, so2, discard) {
                     if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
                     var post = 'data=' + encodeURIComponent(wysiwyg_data.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
                     post = $cms.form.modsecurityWorkaroundAjax(post);
-                    var request = do_ajax_request(url, null, post);
+                    var request = $cms.doAjaxRequest(url, null, post);
                     if ((!request.responseXML) || (!request.responseXML.documentElement.querySelector('result'))) {
                         textarea.value = '[semihtml]' + wysiwyg_data + '[/semihtml]';
                     } else {
@@ -285,7 +285,7 @@ function load_html_edit(posting_form, ajax_copy) {
             } else {
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
                 if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
-                var request = do_ajax_request(url, null, 'data=' + encodeURIComponent(posting_form.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
+                var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(posting_form.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
                 if (!request.responseXML) {
                     posting_form.elements[counter].value = '';
                 } else {
@@ -618,7 +618,7 @@ function find_tags_in_editor(editor, element) {
                             url += '&forum_db=1';
                         }
 
-                        do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+                        $cms.doAjaxRequest(url, function (ajax_result_frame, ajax_result) {
                             if (ajax_result) {
                                 var tmp_rendered = ajax_result.textConten;
                                 if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
@@ -742,7 +742,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
         } else {
             var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
             if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
-            var request = do_ajax_request(url, null, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+            var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
             if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
                 var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
                 var result = result_tags[0];
@@ -869,7 +869,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         if (window.location.href.indexOf('topics') != -1) {
             url += '&forum_db=1';
         }
-        var request = do_ajax_request(url, null, 'data=' + encodeURIComponent((before_wrap_tag + selected_html + after_wrap_tag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+        var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent((before_wrap_tag + selected_html + after_wrap_tag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
         if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
             var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
             var result = result_tags[0];

@@ -1260,7 +1260,7 @@
                 geocode_url += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
                 geocode_url += $cms.keepStub();
 
-                do_ajax_request(geocode_url, function (ajax_result) {
+                $cms.doAjaxRequest(geocode_url, function (ajax_result) {
                     var parsed = JSON.parse(ajax_result.responseText);
                     if (parsed === null) return;
                     var labels = document.getElementsByTagName('label'), label, field_name, field;

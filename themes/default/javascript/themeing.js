@@ -551,7 +551,7 @@ function load_contextual_css_editor(file, file_id) {
                 if (new_css == last_css) return; // Not changed
 
                 var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keepStub());
-                do_ajax_request(url, function (ajax_result_frame) {
+                $cms.doAjaxRequest(url, function (ajax_result_frame) {
                     receive_compiled_css(ajax_result_frame, file);
                 }, $cms.form.modsecurityWorkaroundAjax('css=' + encodeURIComponent(new_css)));
 

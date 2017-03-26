@@ -348,7 +348,7 @@
 
             if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) || (ob.form.elements['branch_type_' + id] != 'page')) {
                 var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
-                generate_question_ui(
+                $cms.ui.generateQuestionUi(
                     '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     choices,
                     '{!menus:DELETE_MENU_ITEM;^}',
@@ -361,7 +361,7 @@
                             for (var i = 0; i < window.all_menus.length; i++) {
                                 choices['buttons__choose___' + i] = window.all_menus[i];
                             }
-                            generate_question_ui(
+                            $cms.ui.generateQuestionUi(
                                 '{!menus:CONFIRM_MOVE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                                 choices,
                                 '{!menus:MOVE_MENU_ITEM;^}',
@@ -384,7 +384,7 @@
                                                 post += name + '=' + encodeURIComponent(value);
                                             }
                                         }
-                                        do_ajax_request('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + $cms.keepStub(), null, post);
+                                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + $cms.keepStub(), null, post);
                                         delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                                     }
                                 }

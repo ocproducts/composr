@@ -2,7 +2,7 @@
 
 function load_commandr() {
     // (Still?) loading
-    if ((window.commandr_command_response === undefined) || (window.do_ajax_request === undefined)) {
+    if ((window.commandr_command_response === undefined) || (window.$cms.doAjaxRequest === undefined)) {
         if (document.getElementById('commandr_img_loader')) {
             setTimeout(load_commandr, 200);
             return false;
@@ -26,7 +26,7 @@ function load_commandr() {
     }
 
     // Loaded
-    if ((window.do_ajax_request) && (window.commandr_command_response !== undefined)) {
+    if ((window.$cms.doAjaxRequest) && (window.commandr_command_response !== undefined)) {
         $cms.ui.confirmSession(
             function (result) {
                 // Remove "loading" indicator from button

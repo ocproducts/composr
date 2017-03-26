@@ -285,13 +285,13 @@
 
         // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
         if ($cms.$CONFIG_OPTION.detect_javascript) {
-            set_cookie('js_on', 1, 120);
+            $cms.setCookie('js_on', 1, 120);
         }
 
         if ($cms.$CONFIG_OPTION.is_on_timezone_detection) {
             if (!window.parent || (window.parent === window)) {
-                set_cookie('client_time', (new Date()).toString(), 120);
-                set_cookie('client_time_ref', $cms.$FROM_TIMESTAMP, 120);
+                $cms.setCookie('client_time', (new Date()).toString(), 120);
+                $cms.setCookie('client_time_ref', $cms.$FROM_TIMESTAMP, 120);
             }
         }
 
@@ -795,7 +795,7 @@
             trayCookie = strVal(trayEl.dataset.trayCookie);
 
             if (trayCookie) {
-                set_cookie('tray_' + trayCookie, $cms.dom.isDisplayed(trayEl) ? 'closed' : 'open');
+                $cms.setCookie('tray_' + trayCookie, $cms.dom.isDisplayed(trayEl) ? 'closed' : 'open');
             }
 
             $cms.toggleableTray(trayEl);
@@ -1056,7 +1056,7 @@
                     if (link.rendered_tooltip === undefined) {
                         link.is_over = true;
 
-                        do_ajax_request($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), function (ajax_result_frame) {
+                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), function (ajax_result_frame) {
                             if (ajax_result_frame && ajax_result_frame.responseText) {
                                 link.rendered_tooltip = ajax_result_frame.responseText;
                             }
@@ -1261,7 +1261,7 @@
         /**@method*/
         toggle: function () {
             if (this.trayCookie) {
-                set_cookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
+                $cms.setCookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
             }
 
             $cms.toggleableTray(this.el);
@@ -1291,7 +1291,7 @@
 
         /**@method*/
         handleTrayCookie: function () {
-            var cookieValue = read_cookie('tray_' + this.trayCookie);
+            var cookieValue = $cms.readCookie('tray_' + this.trayCookie);
 
             if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
                 $cms.toggleableTray(this.contentEl, true);

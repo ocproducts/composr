@@ -31,7 +31,7 @@ function notifications_mark_all_read(event) {
     url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
     url += '&forced_update=1';
     url += $cms.keepStub();
-    do_ajax_request(url, window._poll_for_notifications);
+    $cms.doAjaxRequest(url, window._poll_for_notifications);
     _toggle_messaging_box(event, 'web_notifications', true);
     return false;
 }
@@ -56,7 +56,7 @@ function poll_for_notifications(forced_update, delay) {
         url += '&forced_update=1';
     }
     url += $cms.keepStub();
-    do_ajax_request(url, window._poll_for_notifications);
+    $cms.doAjaxRequest(url, window._poll_for_notifications);
 }
 
 function _poll_for_notifications(raw_ajax_result) {
@@ -117,7 +117,7 @@ function display_alert(notification) {
     // Play sound, if requested
     var sound = notification.getAttribute('sound');
     if (!sound) sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
-    if (read_cookie('sound', 'off') === 'off') sound = 'off';
+    if ($cms.readCookie('sound', 'off') === 'off') sound = 'off';
     var notification_code = notification.getAttribute('notification_code');
     if (sound == 'on' && typeof window.detect_change == 'undefined' || notification_code != 'ticket_reply' && notification_code != 'ticket_reply_staff') {
         if (window.soundManager !== undefined) {

@@ -24,7 +24,7 @@ function show_permission_setting(ob, event) {
         }
 
         var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
-        do_ajax_request(url + $cms.keepStub(), function (ret) {
+        $cms.doAjaxRequest(url + $cms.keepStub(), function (ret) {
             if (!ret) return;
             ob.full_setting = ret.responseText;
             ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.full_setting + ']';

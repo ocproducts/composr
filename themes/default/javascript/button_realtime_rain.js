@@ -1,7 +1,7 @@
 "use strict";
 
 function load_realtime_rain() {
-    if ((window.realtime_rain_button_load_handler === undefined) || (window.do_ajax_request === undefined)) {
+    if ((window.realtime_rain_button_load_handler === undefined) || (window.$cms.doAjaxRequest === undefined)) {
         if (document.getElementById('realtime_rain_img_loader')) {
             setTimeout(load_realtime_rain, 200);
             return false;

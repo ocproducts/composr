@@ -60,7 +60,7 @@ class Hook_syndication_facebook
                     fb_input=fb_button.form.elements['facebook_syndicate_to_page'];
                 }
                 fb_button.addEventListener('click', function listener() {
-                    generate_question_ui(
+                    $cms.ui.generateQuestionUi(
                         '" . addslashes(do_lang('HOW_TO_SYNDICATE_DESCRIPTION')) . "',
 
                         ['" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "','" . addslashes(do_lang('FACEBOOK_PAGE')) . "','" . addslashes(do_lang('FACEBOOK_WALL')) . "'],

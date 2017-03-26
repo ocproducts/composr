@@ -72,7 +72,7 @@
 					try
 					{
 						navigator.geolocation.getCurrentPosition(function(position) {
-							do_ajax_request('{SET_COORD_URL;/}'+position.coords.latitude+'_'+position.coords.longitude+$cms.keepStub(),function() {});
+							$cms.doAjaxRequest('{SET_COORD_URL;/}'+position.coords.latitude+'_'+position.coords.longitude+$cms.keepStub(),function() {});
 							var initial_location=new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
 							map.setCenter(initial_location);
 
@@ -125,7 +125,7 @@
 			return function()
 			{
 				{$,Dynamically load a specific members details only when their marker is clicked.}
-				do_ajax_request('{$BASE_URL;/}/data_custom/get_member_tooltip.php?member='+arg_member+$cms.keepStub(),function(reply) {
+				$cms.doAjaxRequest('{$BASE_URL;/}/data_custom/get_member_tooltip.php?member='+arg_member+$cms.keepStub(),function(reply) {
 					var content=reply.querySelector('result').firstChild.nodeValue;
 					if (content!='') {
 						info_window.setContent('<div class="global_middle_faux float_surrounder">'+content+'<\/div>');

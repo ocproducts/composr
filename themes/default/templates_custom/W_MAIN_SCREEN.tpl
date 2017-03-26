@@ -738,7 +738,7 @@
 	<div class="box box___w_main_screen" data-view="ToggleableTray">
 		<h2 class="toggleable_tray_title js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!" onclick="set_cookie('hideMod',(this.querySelector('img').getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1');"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!" onclick="$cms.setCookie('hideMod',(this.querySelector('img').getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1');"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 		</h2>
 
 		<div class="toggleable_tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>

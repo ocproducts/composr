@@ -139,7 +139,7 @@ In Composr, JavaScript libraries are automatically minified to save on bandwidth
 [title="3"]Useful Composr JavaScript functions[/title]
 
  - [b]Escaping[/b]: [tt]$cms.filter.html[/tt], [tt]$cms.filter.comcode[/tt]
- - [b]Cookies[/b]: [tt]set_cookie[/tt], [tt]read_cookie[/tt]
+ - [b]Cookies[/b]: [tt]$cms.setCookie[/tt], [tt]$cms.readCookie[/tt]
  - [b]Introspection[/b]: [tt]get_elements_by_class_name[/tt], [tt]abstract_get_computed_style[/tt], [tt]browser_matches[/tt]
  - [b]Calling up dependencies[/b]: [tt]$cms.loadSnippet[/tt], [tt]$cms.requireJavascript[/tt]
  - [b]Viewport[/b]: [tt]$cms.dom.getWindowWidth[/tt], [tt]$cms.dom.getWindowHeight[/tt], [tt]$cms.dom.getWindowScrollHeight[/tt], [tt]get_window_scroll_x[/tt], [tt]get_window_scroll_y[/tt]
@@ -147,7 +147,7 @@ In Composr, JavaScript libraries are automatically minified to save on bandwidth
  - [b]Tooltips[/b]: [tt]$cms.ui.activateTooltip[/tt]
  - [b]Misc[/b]: [tt]set_opacity[/tt], [tt]$cms.dom.on[/tt], [tt]$cms.keepStub[/tt]
  - [b]HTML manipulation[/b]: [tt]$cms.dom.html[/tt]
- - [b]AJAX[/b]: ajax.js: [tt]do_ajax_request[/tt]
+ - [b]AJAX[/b]: ajax.js: [tt]$cms.doAjaxRequest[/tt]
  - [b]Animation[/b]: [tt]toggleable_tray[/tt], [tt]$cms.dom.smoothScroll[/tt], transitions.js: [tt]$cms.dom.fadeTransition[/tt]
 
 [title="3"]JavaScript event handlers[/title]
@@ -246,7 +246,7 @@ We'll assume you already have some working PHP code that calls a template.
 
 [*] [b]Load Composr JavaScript library from your PHP code[/b]:
 
-For adding AJAX functionality, we can use the functions defined in the [tt]ajax.js[/tt] template (in particular, [tt]do_ajax_request[/tt]). For using those functions, we should include [tt]ajax[/tt] as a JavaScript dependency using this PHP code:
+For adding AJAX functionality, we can use the functions defined in the [tt]ajax.js[/tt] template (in particular, [tt]$cms.doAjaxRequest[/tt]). For using those functions, we should include [tt]ajax[/tt] as a JavaScript dependency using this PHP code:
 [code="PHP"]
 require_javascript('ajax');
 [/code]
@@ -255,7 +255,7 @@ require_javascript('ajax');
 
 We need our own JavaScript template file to implement our AJAX-tied behaviour, because the code is probably going to be too long to include in-line with the HTML. For our purposes we'll decide it is a JavaScript template named [tt]example.js[/tt].
 
-In our JavaScript template file, we typically define basically two functions if we are writing asynchronous AJAX. One function is for initiating the AJAX event (can be any name you like) and another is to handle the response of the AJAX script (has any name, but it must be passed to the Composr [tt]do_ajax_request[/tt] function). If you are writing synchronous AJAX you can pass the null value instead of a function, and the [tt]do_ajax_request[/tt] function will respond with the result.
+In our JavaScript template file, we typically define basically two functions if we are writing asynchronous AJAX. One function is for initiating the AJAX event (can be any name you like) and another is to handle the response of the AJAX script (has any name, but it must be passed to the Composr [tt]$cms.doAjaxRequest[/tt] function). If you are writing synchronous AJAX you can pass the null value instead of a function, and the [tt]$cms.doAjaxRequest[/tt] function will respond with the result.
 
 [*] [b]Load custom JavaScript code[/b]:
 
@@ -310,7 +310,7 @@ The XML frame you should output from PHP should be structured as follows:
 		(Some kind of informational message that will be put in an alert)
 	</message>
 	<method>
-		(JavaScript function name that overrides what was passed to do_ajax_request)
+		(JavaScript function name that overrides what was passed to $cms.doAjaxRequest)
 	</method>
 </request>
 [/code]
@@ -331,7 +331,7 @@ echo '</result></request>';
 [/list]
 
 Once the server has returned a result to the client, it will be processed for handling.
- - For synchronous requests, the result object is returned from [tt]do_ajax_request[/tt] linearly (asynchronous requests will return nothing from [tt]do_ajax_request[/tt]). Code may then use the [tt]responseText[/tt] and [tt]responseXML[/tt] properties of this as required.
+ - For synchronous requests, the result object is returned from [tt]$cms.doAjaxRequest[/tt] linearly (asynchronous requests will return nothing from [tt]$cms.doAjaxRequest[/tt]). Code may then use the [tt]responseText[/tt] and [tt]responseXML[/tt] properties of this as required.
  - For asynchronous requests, the response handler (the [tt]method[/tt]) function is called, with two parameters: [tt]ajax_result_frame[/tt] (the full XML), and [tt]ajax_result[/tt] (the pay-load XML). It is the responsibility for the method function to process the XML in ajax_result (ajax_result_frame is unlikely to be used by the method) -- the code can assume the XML will be valid because HTTP status error handling and XML frame error handling will already have occurred.
 There is an implied format contract between the PHP code we wrote and the JavaScript we wrote. In other words, we are not likely to have incompatibilities between the data of the server (PHP) and client (JavaScript) as you will have designed them together. Therefore you don't need to write any special error handling code to make sure the structure returned is correct, unless you've written in your own extra error handling into the pay-load.
 
@@ -349,7 +349,7 @@ You can open up development tools and inspect the requests and responses of all 
 
 [title="4"]Object-based callbacks (advanced)[/title]
 
-You can either pass a function to the [tt]do_ajax_request[/tt] function as your method, or you can pass an object that has a [tt]response[/tt] function in it. The latter is useful if you want to make your response a neat part of an OOP approach.
+You can either pass a function to the [tt]$cms.doAjaxRequest[/tt] function as your method, or you can pass an object that has a [tt]response[/tt] function in it. The latter is useful if you want to make your response a neat part of an OOP approach.
 
 [title="3"]Boxes[/title]
 

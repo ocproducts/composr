@@ -353,12 +353,12 @@
             }
 
             if (callback !== undefined) {
-                do_ajax_request(url, function (ajax_result_raw) {
+                $cms.doAjaxRequest(url, function (ajax_result_raw) {
                     _slideshow_read_in_slide(ajax_result_raw, slide);
                     callback();
                 });
             } else {
-                do_ajax_request(url, function (ajax_result_raw) {
+                $cms.doAjaxRequest(url, function (ajax_result_raw) {
                     _slideshow_read_in_slide(ajax_result_raw, slide);
                 });
             }

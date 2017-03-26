@@ -151,7 +151,7 @@
                 $cms.dom.$('#post_' + chatroomId).focus();
             } catch (e) {
             }
-            $cms.dom.$('#post_' + chatroomId).value = read_cookie('last_chat_msg_' + chatroomId);
+            $cms.dom.$('#post_' + chatroomId).value = $cms.readCookie('last_chat_msg_' + chatroomId);
         });
 
         $cms.dom.on(container, 'click', '.js-click-chatroom-chat-post', function (e) {
@@ -181,11 +181,11 @@
             }
 
             if ($cms.dom.keyPressed(e, 'Enter')) {
-                set_cookie('last_chat_msg_' + chatroomId, '');
+                $cms.setCookie('last_chat_msg_' + chatroomId, '');
                 chat_post(e, chatroomId, 'post_' + chatroomId, '', '');
                 e.preventDefault();
             } else {
-                set_cookie('last_chat_msg_' + chatroomId, textarea.value);
+                $cms.setCookie('last_chat_msg_' + chatroomId, textarea.value);
             }
         });
     };
@@ -425,7 +425,7 @@ function chat_load(room_id) {
 function begin_chatting(room_id) {
     window.load_from_room_id = room_id;
 
-    if (window.do_ajax_request) {
+    if (window.$cms.doAjaxRequest) {
         chat_check(true, 0);
         play_chat_sound('you_connect');
     } else {
@@ -599,7 +599,7 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
         };
         var full_url = $cms.maintainThemeInLink(url + window.top_window.$cms.keepStub(false));
         var post_data = 'room_id=' + encodeURIComponent(current_room_id) + '&message=' + encodeURIComponent(message_text) + '&font=' + encodeURIComponent(font_name) + '&colour=' + encodeURIComponent(font_colour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id);
-        do_ajax_request(full_url, [func, error_func], post_data);
+        $cms.doAjaxRequest(full_url, [func, error_func], post_data);
     }
 
     return false;
@@ -614,7 +614,7 @@ function chat_check(backlog, message_id, event_id) {
     event_id = +event_id || -1;  // -1 Means, we don't want to look at events, but the server will give us a null event
 
     // Check for new messages on the server the new or old way
-    if (window.do_ajax_request) {
+    if (window.$cms.doAjaxRequest) {
         // AJAX!
         window.setTimeout(function () {
             chat_check_timeout(backlog, message_id, event_id);
@@ -638,7 +638,7 @@ function chat_check(backlog, message_id, event_id) {
             var error_func = function () {
                 chat_check_response(null, null);
             }
-            do_ajax_request(full_url, [func, error_func]);
+            $cms.doAjaxRequest(full_url, [func, error_func]);
             return false;
         }
         return null;
@@ -1058,7 +1058,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
     var close_popup = function () {
         if (div) {
             if (room_id) {
-                generate_question_ui(
+                $cms.ui.generateQuestionUi(
                     '{!HOW_REMOVE_CHAT_NOTIFICATION;^}',
                     {/*buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',*/buttons__proceed: '{!CLOSE;^}', buttons__ignore: '{!HIDE;^}'},
                     '{!REMOVE_CHAT_NOTIFICATION;^}',
@@ -1178,7 +1178,7 @@ function _start_im(people, may_recycle) {
     div.className = 'loading_overlay';
     $cms.dom.html(div, '{!LOADING;^}');
     document.body.appendChild(div);
-    do_ajax_request($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + $cms.keepStub(false)), function (result) {
+    $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + $cms.keepStub(false)), function (result) {
         var responses = result.getElementsByTagName('result');
         if (responses[0]) {
             window.instant_go = true;
@@ -1194,7 +1194,7 @@ function invite_im(people) {
     if (!room_id) {
         $cms.ui.alert('{!NO_IM_ACTIVE;^}');
     } else {
-        do_ajax_request('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), function () {
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(room_id) + '&people=' + people);
     }
 }
@@ -1230,7 +1230,7 @@ function find_im_convo_room_ids() {
 function close_chat_conversation(room_id) {
     var is_popup = (document.body.className.indexOf('sitewide_im_popup_body') != -1);
     /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
-    generate_question_ui(
+    $cms.ui.generateQuestionUi(
         '{!WANT_TO_DOWNLOAD_LOGS*;^}',
         {buttons__cancel: '{!INPUTSYSTEM_CANCEL*;^}', buttons__yes: '{!YES*;^}', buttons__no: '{!NO*;^}'},
         '{!CHAT_DOWNLOAD_LOGS*;^}',
@@ -1282,7 +1282,7 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
 
     window.setTimeout(function () // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
     {
-        window.top_window.do_ajax_request('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.$cms.keepStub(false), function () {
+        window.top_window.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.$cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(room_id)); // Has to be on top_window or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
         if (participants)
@@ -1362,7 +1362,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
         chat_select_tab(new_div);
 
         // Tell server we've joined
-        do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+        $cms.doAjaxRequest(url, function (ajax_result_frame, ajax_result) {
             process_chat_xml_messages(ajax_result, true);
         }, post);
     } else {
@@ -1407,7 +1407,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
                     }
 
                     // Tell server we have joined
-                    do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+                    $cms.doAjaxRequest(url, function (ajax_result_frame, ajax_result) {
                         process_chat_xml_messages(ajax_result, true);
                     }, post);
 

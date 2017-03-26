@@ -258,7 +258,7 @@ class Hook_addon_registry_pointstore
      */
     public function tpl_preview__administrative__pointstore_price_screen()
     {
-        //This is for getting the do_ajax_request() javascript function.
+        //This is for getting the $cms.doAjaxRequest() javascript function.
         require_javascript('ajax');
 
         $warning_details = do_lorem_template('WARNING_BOX', array('WARNING' => lorem_phrase()));

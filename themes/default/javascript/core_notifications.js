@@ -65,18 +65,18 @@
     };
 
     $cms.templates.notificationsManageScreen = function notificationsManageScreen(params, container) {
-        var soundRadioEl = $cms.dom.$('#sound_' + read_cookie('sound', 'off'));
+        var soundRadioEl = $cms.dom.$('#sound_' + $cms.readCookie('sound', 'off'));
 
         if (soundRadioEl) {
             soundRadioEl.checked = true;
         }
 
         $cms.dom.on(container, 'click', '.js-click-set-sound-cookie-on', function () {
-            set_cookie('sound', 'on');
+            $cms.setCookie('sound', 'on');
         });
 
         $cms.dom.on(container, 'click', '.js-click-set-sound-cookie-off', function () {
-            set_cookie('sound', 'off');
+            $cms.setCookie('sound', 'off');
         });
     };
 
