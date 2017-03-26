@@ -309,7 +309,7 @@
 
         // Switch to tab if exists
         if (document.getElementById('t_' + file_id)) {
-            select_tab('g', file_id);
+            $cms.ui.selectTab('g', file_id);
 
             template_editor_show_tab(file_id);
 
@@ -326,7 +326,7 @@
         header.id = 't_' + file_id;
         header.className = 'tab file_nonchanged';
         header.addEventListener('click', function (event) {
-            select_tab('g', file_id);
+            $cms.ui.selectTab('g', file_id);
             template_editor_show_tab(file_id);
             return false;
         });
@@ -415,7 +415,7 @@
         template_editor_clean_tabs();
 
         // Select tab
-        select_tab('g', file_id);
+        $cms.ui.selectTab('g', file_id);
 
         template_editor_show_tab(file_id);
     }

@@ -35,7 +35,7 @@
             var tab = clicked.dataset.tpTab;
 
             if (tab) {
-                select_tab('g', tab);
+                $cms.ui.selectTab('g', tab);
             }
         });
 

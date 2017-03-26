@@ -52,7 +52,7 @@
         onClickSelectTab: function (e, clicked) {
             var tab = clicked.dataset.vwTab;
             if (tab) {
-                select_tab('g', tab);
+                $cms.ui.selectTab('g', tab);
             }
         }
     });
@@ -61,7 +61,7 @@
         $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
             var tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
             if (tabCode) {
-                select_tab('g', 'edit__' + tabCode)
+                $cms.ui.selectTab('g', 'edit__' + tabCode)
             }
         });
     };

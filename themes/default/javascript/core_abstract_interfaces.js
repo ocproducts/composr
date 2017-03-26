@@ -140,7 +140,7 @@
                 detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
                     if ((!document.getElementById('post')) || (document.getElementById('post').value === '')) {
                         var _detectedChange = detectedChange;
-                        call_block(params.url, '', element, false, _detectedChange, true, null, true);
+                        $cms.callBlock(params.url, '', element, false, _detectedChange, true, null, true);
                     }
                 });
             }, params.refreshTime * 1000);

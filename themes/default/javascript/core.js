@@ -1,7 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    (window.$cmsReady || (window.$cmsReady = [])).push(function () {
+    window.$cmsReady.push(function () {
         $cms.attachBehaviors(document);
     });
 
@@ -323,7 +323,7 @@
 
         var view = this;
         /* Tidying up after the page is rendered */
-        (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
+        window.$cmsLoad.push(function () {
             // When images etc have loaded
             // Move the help panel if needed
             if ($cms.$CONFIG_OPTION.fixed_width || (get_window_width() > 990)) {
@@ -1519,7 +1519,7 @@
     };
 
     $cms.templates.jsBlock = function jsBlock(params) {
-        call_block(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, null, false, null, false, false);
+        $cms.callBlock(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, null, false, null, false, false);
     };
 
     $cms.templates.massSelectMarker = function (params) {

@@ -158,7 +158,7 @@ function template_editor_tab_unload_content(file) {
         if (c[0] !== undefined) {
             var next_file_id = c[0].id.substr(2);
 
-            select_tab('g', next_file_id);
+            $cms.ui.selectTab('g', next_file_id);
 
             template_editor_show_tab(next_file_id);
         }

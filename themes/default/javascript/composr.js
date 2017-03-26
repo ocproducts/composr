@@ -384,18 +384,13 @@
     $cms.dom || ($cms.dom = {});
 
 
-
     var domReadyPromise = new Promise(function (resolve) {
-        var fn;
-
         if (document.readyState === 'interactive') {
             window.setTimeout(resolve, 0);
-            window.setTimeout(executeReadyQueue, 0);
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
                 document.removeEventListener('DOMContentLoaded', listener);
                 resolve();
-                executeReadyQueue();
             });
         }
     });
@@ -3997,6 +3992,65 @@
     };
 
     /**
+     * @memberof $cms.ui
+     * @param id
+     * @param tab
+     * @param from_url
+     * @param automated
+     * @returns {boolean}
+     */
+    $cms.ui.selectTab = function selectTab(id, tab, from_url, automated) {
+        from_url = !!from_url;
+        automated = !!automated;
+
+        if (!from_url) {
+            var tab_marker = $cms.dom.$('#tab__' + tab.toLowerCase());
+            if (tab_marker) {
+                // For URL purposes, we will change URL to point to tab
+                // HOWEVER, we do not want to cause a scroll so we will be careful
+                tab_marker.id = '';
+                window.location.hash = '#tab__' + tab.toLowerCase();
+                tab_marker.id = 'tab__' + tab.toLowerCase();
+            }
+        }
+
+        var tabs = [], i, element;
+
+        element = $cms.dom.$('#t_' + tab);
+        for (i = 0; i < element.parentNode.children.length; i++) {
+            if (element.parentNode.children[i].id && (element.parentNode.children[i].id.substr(0, 2) === 't_')) {
+                tabs.push(element.parentNode.children[i].id.substr(2));
+            }
+        }
+
+        for (i = 0; i < tabs.length; i++) {
+            element = $cms.dom.$('#' + id + '_' + tabs[i]);
+            if (element) {
+                element.style.display = (tabs[i] === tab) ? 'block' : 'none';
+
+                if (tabs[i] === tab) {
+                    if (window['load_tab__' + tab] === undefined) {
+                        clear_transition_and_set_opacity(element, 0.0);
+                        fade_transition(element, 100, 30, 8);
+                    }
+                }
+            }
+
+            element = $cms.dom.$('#t_' + tabs[i]);
+            if (element) {
+                element.classList.toggle('tab_active', tabs[i] === tab);
+            }
+        }
+
+        if (window['load_tab__' + tab] !== undefined) {
+            // Usually an AJAX loader
+            window['load_tab__' + tab](automated, $cms.dom.$('#' + id + '_' + tab));
+        }
+
+        return false;
+    };
+
+    /**
      * @memberof $cms.form
      * @param radios
      * @returns {*}
@@ -4036,7 +4090,7 @@
                         while (p !== null) {
                             p = p.parentNode;
                             if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
-                                select_tab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
+                                $cms.ui.selectTab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
                                 break;
                             }
                         }
@@ -4538,9 +4592,9 @@
                 if (label) {
                     var label_nice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
                     if (field.type == 'file') {
-                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\\{1\\}/, label_nice));
+                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\{1\}/, label_nice));
                     } else {
-                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\\{1\\}/, label_nice));
+                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\{1\}/, label_nice));
                     }
                 } else {
                     $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD;^}');
@@ -7090,64 +7144,14 @@ function find_url_tab(hash) {
         var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
 
         if ($cms.dom.$('#g_' + tab)) {
-            select_tab('g', tab);
+            $cms.ui.selectTab('g', tab);
         }
         else if ((tab.indexOf('__') != -1) && ($cms.dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
             var old = hash;
-            select_tab('g', tab.substr(0, tab.indexOf('__')));
+            $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
             window.location.hash = old;
         }
     }
-}
-function select_tab(id, tab, from_url, automated) {
-    from_url = !!from_url;
-    automated = !!automated;
-
-    if (!from_url) {
-        var tab_marker = $cms.dom.$('#tab__' + tab.toLowerCase());
-        if (tab_marker) {
-            // For URL purposes, we will change URL to point to tab
-            // HOWEVER, we do not want to cause a scroll so we will be careful
-            tab_marker.id = '';
-            window.location.hash = '#tab__' + tab.toLowerCase();
-            tab_marker.id = 'tab__' + tab.toLowerCase();
-        }
-    }
-
-    var tabs = [], i, element;
-
-    element = $cms.dom.$('#t_' + tab);
-    for (i = 0; i < element.parentNode.children.length; i++) {
-        if (element.parentNode.children[i].id && (element.parentNode.children[i].id.substr(0, 2) === 't_')) {
-            tabs.push(element.parentNode.children[i].id.substr(2));
-        }
-    }
-
-    for (i = 0; i < tabs.length; i++) {
-        element = $cms.dom.$('#' + id + '_' + tabs[i]);
-        if (element) {
-            element.style.display = (tabs[i] === tab) ? 'block' : 'none';
-
-            if (tabs[i] === tab) {
-                if (window['load_tab__' + tab] === undefined) {
-                    clear_transition_and_set_opacity(element, 0.0);
-                    fade_transition(element, 100, 30, 8);
-                }
-            }
-        }
-
-        element = $cms.dom.$('#t_' + tabs[i]);
-        if (element) {
-            element.classList.toggle('tab_active', tabs[i] === tab);
-        }
-    }
-
-    if (window['load_tab__' + tab] !== undefined) {
-        // Usually an AJAX loader
-        window['load_tab__' + tab](automated, $cms.dom.$('#' + id + '_' + tab));
-    }
-
-    return false;
 }
 
 function matches_theme_image(src, url) {
@@ -7423,7 +7427,7 @@ function clear_out_tooltips(tooltip_being_opened) {
     });
 }
 
-(window.$cmsReady || (window.$cmsReady = [])).push(function () {
+window.$cmsReady.push(function () {
     // Tooltips close on browser resize
     $cms.dom.on(window, 'resize', function () {
         clear_out_tooltips();
@@ -8135,7 +8139,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
                     url_stub += '&raw=1';
                     infinite_scroll_pending = true;
 
-                    return call_block(url_stem + url_stub, '', wrapper_inner, true, function () {
+                    return $cms.callBlock(url_stem + url_stub, '', wrapper_inner, true, function () {
                         infinite_scroll_pending = false;
                         internalise_infinite_scrolling(url_stem, wrapper);
                     });
@@ -8245,7 +8249,7 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
             clear_out_tooltips();
 
             // Make AJAX block call
-            return call_block(url_stem + url_stub, '', block_element, append, function () {
+            return $cms.callBlock(url_stem + url_stub, '', block_element, append, function () {
                 if (scroll_to_top) {
                     window.scrollTo(0, block_pos_y);
                 }
@@ -8255,11 +8259,22 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
 }());
 
 (function () {
-    window.call_block = call_block;
-
     var _blockDataCache = {};
-    // This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
-    function call_block(url, new_block_params, target_div, append, callback, scroll_to_top_of_wrapper, post_params, inner, show_loading_animation) {
+    /**
+     * This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
+     * @memberof $cms
+     * @param url
+     * @param new_block_params
+     * @param target_div
+     * @param append
+     * @param callback
+     * @param scroll_to_top_of_wrapper
+     * @param post_params
+     * @param inner
+     * @param show_loading_animation
+     * @returns {boolean}
+     */
+    $cms.callBlock = function callBlock(url, new_block_params, target_div, append, callback, scroll_to_top_of_wrapper, post_params, inner, show_loading_animation) {
         scroll_to_top_of_wrapper = !!scroll_to_top_of_wrapper;
         post_params = (post_params !== undefined) ? post_params : null;
         inner = !!inner;
@@ -8328,14 +8343,14 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
         do_ajax_request(
             ajax_url + keep_stub(),
             function (raw_ajax_result) { // Show results when available
-                _call_block_render(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);
+                _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);
             },
             post_params
         );
 
         return false;
 
-        function _call_block_render(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
+        function _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
             var new_html = raw_ajax_result.responseText;
             _blockDataCache[ajax_url] = new_html;
 
@@ -8361,19 +8376,19 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
                 callback();
             }
         }
-    }
 
-    function show_block_html(new_html, target_div, append, inner) {
-        var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
-        if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
-        if (append) {
-            $cms.dom.appendHtml(target_div, new_html);
-        } else {
-            if (inner) {
-                $cms.dom.html(target_div, new_html);
+        function show_block_html(new_html, target_div, append, inner) {
+            var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
+            if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
+            if (append) {
+                $cms.dom.appendHtml(target_div, new_html);
             } else {
-                $cms.dom.outerHtml(target_div, new_html);
+                if (inner) {
+                    $cms.dom.html(target_div, new_html);
+                } else {
+                    $cms.dom.outerHtml(target_div, new_html);
+                }
             }
         }
-    }
+    };
 }());

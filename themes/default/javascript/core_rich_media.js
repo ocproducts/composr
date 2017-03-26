@@ -42,7 +42,7 @@
         this.el.style.display = 'block';
 
         var view = this;
-        (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
+        window.$cmsLoad.push(function () {
             view.$('.js-btn-car-move').style.height = view.mainEl.offsetHeight + 'px';
 
             view.createFaders();
@@ -373,7 +373,7 @@
             title = $cms.filter.id(params.title);
 
         $cms.dom.on(container, 'click', function () {
-            select_tab('g', tabSets + '_' + title);
+            $cms.ui.selectTab('g', tabSets + '_' + title);
         });
     };
 
@@ -406,7 +406,7 @@
         if (params.simpleUi) {
             window.num_attachments = 1;
 
-            (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
+            window.$cmsLoad.push(function () {
                 if (document.getElementById('attachment_upload_button')) {
                     window.rebuild_attachment_button_for_next(params.postingFieldName, 'attachment_upload_button');
                 }
@@ -643,7 +643,7 @@
 
             if (params.blockCallUrl) {
                 window['load_tab__' + title] = function () {
-                    call_block(params.blockCallUrl, '', document.getElementById('g_' + title));
+                    $cms.callBlock(params.blockCallUrl, '', document.getElementById('g_' + title));
                 };
             }
         };
@@ -721,7 +721,7 @@
     $cms.templates.mediaRealmedia = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
-        (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
+        window.$cmsLoad.push(function () {
             if (document.getElementById('next_slide')) {
                 stop_slideshow_timer();
                 window.setTimeout(function () {
@@ -739,7 +739,7 @@
     $cms.templates.mediaQuicktime = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
-        (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
+        window.$cmsLoad.push(function () {
             if (document.getElementById('next_slide')) {
                 stop_slideshow_timer();
                 window.setTimeout(function () {
@@ -756,7 +756,7 @@
             // Tie into callback event to see when finished, for our slideshows
             // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
             // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
-            (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
+        window.$cmsLoad.push(function () {
                 if (document.getElementById('next_slide')) {
                     stop_slideshow_timer();
 

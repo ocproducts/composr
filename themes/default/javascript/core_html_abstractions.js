@@ -3,7 +3,7 @@
 
     $cms.templates.standaloneHtmlWrap = function (params) {
         if (window.parent) {
-            (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
+            window.$cmsLoad.push(function () {
                 document.body.classList.add('frame');
 
                 try {

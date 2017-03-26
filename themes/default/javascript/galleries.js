@@ -220,7 +220,7 @@
 
             currentLoadingFromPos += +params.max || 0;
 
-            window.call_block(blockCallUrl, 'raw=1,cache=0', ob, true);
+            $cms.callBlock(blockCallUrl, 'raw=1,cache=0', ob, true);
         });
     };
 
