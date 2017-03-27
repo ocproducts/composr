@@ -7003,6 +7003,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ZONE_OPTIONS
         ZONE_OR_BLOCKS
         ZONE_WRITE
+        PAYMENT_RECEIVED_BODY
+        PAYMENT_RECEIVED_BODY_memo
+        PAYMENT_RECEIVED_BODY_tax_invoice
+        PAYMENT_RECEIVED_BODY_shipping_address
+        PAYMENT_RECEIVED_SUBJECT
         _ADDON_WARNING_MISSING_DEPENDENCIES
         _ADDON_WARNING_PRESENT_DEPENDENCIES
         _BAD_INPUT
@@ -8849,10 +8854,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PASSWORD_TOO_SHORT
         PATTERN_NOT_MATCHED
         PAUSE
-        PAYMENT_RECEIVED_BODY
-        PAYMENT_RECEIVED_SUBJECT
-        PAYMENT_SENT_BODY_manual
+        PAYMENT_SENT_BODY
         PAYMENT_SENT_BODY_automatic
+        PAYMENT_SENT_BODY_manual
+        PAYMENT_SENT_BODY_memo
+        PAYMENT_SENT_BODY_tax_invoice
+        PAYMENT_SENT_BODY_shipping_address
         PAYMENT_SENT_SUBJECT
         PEOPLE_NOW_FRIENDS
         PERCENTAGE

@@ -2025,7 +2025,7 @@ function update_member_username_caching($member_id, $username)
  */
 function cns_delete_boiler_custom_field($field)
 {
-	require_lang('cns_special_cpf');
+    require_lang('cns_special_cpf');
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
     if (!is_null($test)) {

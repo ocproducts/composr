@@ -511,7 +511,7 @@ function make_string_tempcode($string)
 function escape_html_tempcode($data)
 {
     // This is a bit of a hack, but it works. We don't want to have to have a route for altering Tempcode structure (because that has a performance hit, so we piggy-back on recursing through a null language string and add escaping when we do it)
-	return build_closure_tempcode(TC_LANGUAGE_REFERENCE, 'dont_escape_trick', array($data), array(FORCIBLY_ENTITY_ESCAPED));
+    return build_closure_tempcode(TC_LANGUAGE_REFERENCE, 'dont_escape_trick', array($data), array(FORCIBLY_ENTITY_ESCAPED));
 }
 
 /**

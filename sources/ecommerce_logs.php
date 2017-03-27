@@ -193,6 +193,19 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
         require_lang('cns_special_cpf');
 
         $address = $address_rows[0];
+
+        $address_parts = array(
+            'name' => trim($address['a_firstname'] . ' ' . $address['a_lastname']),
+            'street_address' => $address['a_street_address'],
+            'city' => $address['a_city'],
+            'county' => $address['a_county'],
+            'state' => $address['a_state'],
+            'post_code' => $address['a_post_code'],
+            'country' => $address['a_country'],
+            'email' => $address['a_email'],
+            'phone' => $address['a_phone'],
+        );
+
         $shipping_address = do_template('ECOM_SHIPPING_ADDRESS', array(
             '_GUID' => '332bc2e28a75cff64e6856bbeda6102e',
             'FIRSTNAME' => $address['a_firstname'],
@@ -205,6 +218,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
             'COUNTRY' => find_country_name_from_iso($address['a_country']),
             'EMAIL' => $address['a_email'],
             'PHONE' => $address['a_phone'],
+            'FORMATTED_ADDRESS' => get_formatted_address($address_parts),
         ));
     } else {
         $shipping_address = new Tempcode();

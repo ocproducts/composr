@@ -243,7 +243,7 @@ class Module_report_content
         $topic_title = do_lang('REPORTED_CONTENT_TITLE', $content_title);
         $post_id = cns_make_post($topic_id, $content_title, $post, 0, $new_topic, 1, 0, null, null, null, null, null, null, null, false, true, $forum_id, true, $topic_title, 0, null, $anonymous == 1);
 
-		decache('main_staff_checklist');
+        decache('main_staff_checklist');
 
         // Add to reported_content table
         $GLOBALS['SITE_DB']->query_insert('reported_content', array(

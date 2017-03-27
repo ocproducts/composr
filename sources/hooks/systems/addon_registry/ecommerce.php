@@ -305,6 +305,8 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/ecommerce/email.php',
             'sources/hooks/systems/ecommerce/topic_pin.php',
             'themes/default/javascript/ecommerce.js',
+            'themes/default/text/PAYMENT_RECEIVED_MAIL.txt',
+            'themes/default/text/PAYMENT_SENT_MAIL.txt',
 
             'themes/default/templates/ECOM_TRANSACTION_BUTTON_VIA_PAYPAL.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL.tpl',
@@ -390,6 +392,8 @@ class Hook_addon_registry_ecommerce
             'text/ECOM_PRODUCT_FORWARDER_MAIL.txt' => 'ecom_product_forwarder_mail',
             'text/ECOM_PRODUCT_POP3_MAIL.txt' => 'ecom_product_pop3_mail',
             'text/ECOM_PRODUCT_QUOTA_MAIL.txt' => 'ecom_product_quota_mail',
+            'text/PAYMENT_RECEIVED_MAIL.txt' => 'ecom_payment_received_mail',
+            'text/PAYMENT_SENT_MAIL.txt' => 'ecom_payment_sent_mail',
         );
     }
 
@@ -1593,6 +1597,84 @@ class Hook_addon_registry_ecommerce
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
+    public function tpl_preview__ecom_payment_received_mail()
+    {
+        $temp = do_lorem_template('ECOM_PAYMENT_RECEIVED_MAIL', array(
+            'AUTOMATIC_SETUP' => false,
+            'AMOUNT' => placeholder_number(),
+            'CURRENCY' => 'USD',
+            'ITEM_NAME' => lorem_phrase(),
+            'TAX' => placeholder_number(),
+            'CURRENCY_SYMBOL' => '&pound;',
+            'TAX_INVOICE' => lorem_chunk_html(),
+            'MEMO' => lorem_chunk(),
+            'SHIPPED' => true,
+
+            // Shipping
+            'SHIPPING_FIRSTNAME' => lorem_phrase(),
+            'SHIPPING_LASTNAME' => lorem_phrase(),
+            'SHIPPING_STREET_ADDRESS' => lorem_phrase(),
+            'SHIPPING_CITY' => lorem_phrase(),
+            'SHIPPING_COUNTY' => lorem_phrase(),
+            'SHIPPING_STATE' => lorem_phrase(),
+            'SHIPPING_POST_CODE' => lorem_phrase(),
+            'SHIPPING_COUNTRY' => lorem_phrase(),
+            'SHIPPING_EMAIL' => lorem_phrase(),
+            'SHIPPING_PHONE' => lorem_phrase(),
+            'SHIPPING_FORMATTED_ADDRESS' => lorem_phrase(),
+        ), null, false, null, '.txt', 'text');
+
+        return array(
+            $temp
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__ecom_payment_sent_mail()
+    {
+        $temp = do_lorem_template('ECOM_PAYMENT_SENT_MAIL', array(
+            'AUTOMATIC_SETUP' => false,
+            'AMOUNT' => placeholder_number(),
+            'CURRENCY' => 'USD',
+            'ITEM_NAME' => lorem_phrase(),
+            'TAX' => placeholder_number(),
+            'CURRENCY_SYMBOL' => '&pound;',
+            'TAX_INVOICE' => lorem_chunk_html(),
+            'MEMO' => lorem_chunk(),
+            'SHIPPED' => true,
+
+            // Shipping
+            'SHIPPING_FIRSTNAME' => lorem_phrase(),
+            'SHIPPING_LASTNAME' => lorem_phrase(),
+            'SHIPPING_STREET_ADDRESS' => lorem_phrase(),
+            'SHIPPING_CITY' => lorem_phrase(),
+            'SHIPPING_COUNTY' => lorem_phrase(),
+            'SHIPPING_STATE' => lorem_phrase(),
+            'SHIPPING_POST_CODE' => lorem_phrase(),
+            'SHIPPING_COUNTRY' => lorem_phrase(),
+            'SHIPPING_EMAIL' => lorem_phrase(),
+            'SHIPPING_PHONE' => lorem_phrase(),
+            'SHIPPING_FORMATTED_ADDRESS' => lorem_phrase(),
+        ), null, false, null, '.txt', 'text');
+
+        return array(
+            $temp
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
     public function tpl_preview__ecom_tax_invoice_screen()
     {
         $items = array();
@@ -1615,7 +1697,7 @@ class Hook_addon_registry_ecommerce
                 'DATE' => placeholder_date(),
                 'TRANS_ADDRESS' => lorem_phrase() . "\n" . lorem_phrase() . "\n" . lorem_phrase(),
                 'ITEMS' => $items,
-					 'STATUS' => lorem_phrase(),
+                'STATUS' => lorem_phrase(),
                 'CURRENCY' => 'GBP',
                 'TOTAL_PRICE' => placeholder_number(),
                 'TOTAL_TAX' => placeholder_number(),

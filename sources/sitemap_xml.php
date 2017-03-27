@@ -303,7 +303,7 @@ function _sitemap_cache_node($node)
 function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access)
 {
     // Maybe we're still installing
-	if (!$GLOBALS['SITE_DB']->table_exists('sitemap_cache') || running_script('install')) {
+    if (!$GLOBALS['SITE_DB']->table_exists('sitemap_cache') || running_script('install')) {
         return;
     }
 

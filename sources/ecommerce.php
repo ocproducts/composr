@@ -1103,8 +1103,8 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
         warn_exit(do_lang_tempcode('INVALID_STATE_FOR_USA', escape_html($billing_state)));
     }
 
-	 // We make sure a non-USA country does not select a USA state as the mistake is 'easy' to make in the default list
-	 // We only do it if it is a list though, hence the business_country check
+    // We make sure a non-USA country does not select a USA state as the mistake is 'easy' to make in the default list
+    // We only do it if it is a list though, hence the business_country check
     if (($shipping_country != 'US') && (get_option('business_country') == 'US') && ($shipping_state != '') && (array_key_exists($shipping_state, $USA_STATE_LIST))) {
         warn_exit(do_lang_tempcode('INVALID_STATE_FOR_NON_USA', escape_html($shipping_country), escape_html($shipping_state)));
     }
@@ -1647,7 +1647,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
 
     // Notifications
     if ($status == 'Completed') {
-        send_transaction_mails($txn_id, $item_name, $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo);
+        send_transaction_mails($txn_id, $item_name, $found['needs_shipping_address'], $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo);
     }
 
     // Cleanup very old data
@@ -1661,6 +1661,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
  *
  * @param  ID_TEXT $txn_id Transaction ID.
  * @param  string $item_name Item name.
+ * @param  boolean $shipped Whether the item will be shipped.
  * @param  boolean $automatic_setup Whether the product was automatically setup (i.e. is ready now).
  * @param  ?MEMBER $member_id Member ID transaction is for (null: unknown).
  * @param  REAL $amount Transaction amount.
@@ -1669,25 +1670,78 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
  * @param  integer $amount_points Points charge paid.
  * @param  string $memo Customer memo.
  */
-function send_transaction_mails($txn_id, $item_name, $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo = '')
+function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo = '')
 {
     require_code('notifications');
 
     if ($currency == 'points') {
         $_currency = do_lang('POINTS');
         $_amount = integer_format($amount_points);
-        $symbol = '';
+        $currency_symbol = '';
     } else {
         $_currency = $currency;
         $_amount = float_format($amount);
-        $symbol = ecommerce_get_currency_symbol($currency);
+        $currency_symbol = ecommerce_get_currency_symbol($currency);
     }
 
-    $_tax_invoice = generate_tax_invoice($txn_id);
+    $tax_invoice = generate_tax_invoice($txn_id);
+
+    // Prepare for notification
+    $existing = $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_txn_id' => $txn_id), '', 1);
+    if (array_key_exists(0, $existing)) {
+        $address = $existing[0];
+    } else {
+        $address = array(
+            'a_firstname' => '',
+            'a_lastname' => '',
+            'a_street_address' => '',
+            'a_city' => '',
+            'a_county' => '',
+            'a_state' => '',
+            'a_post_code' => '',
+            'a_country' => '',
+            'a_email' => '',
+            'a_phone' => '',
+        );
+    }
+    $address_parts = array(
+        'name' => trim($address['a_firstname'] . ' ' . $address['a_lastname']),
+        'street_address' => $address['a_street_address'],
+        'city' => $address['a_city'],
+        'county' => $address['a_county'],
+        'state' => $address['a_state'],
+        'post_code' => $address['a_post_code'],
+        'country' => $address['a_country'],
+        'email' => $address['a_email'],
+        'phone' => $address['a_phone'],
+    );
+    $parameter_map = array(
+        'AUTOMATIC_SETUP' => $automatic_setup,
+        'AMOUNT' => $_amount,
+        'CURRENCY' => $_currency,
+        'ITEM_NAME' => $item_name,
+        'TAX' => float_format($tax),
+        'CURRENCY_SYMBOL' => $currency_symbol,
+        'TAX_INVOICE' => $tax_invoice,
+        'MEMO' => $memo,
+        'SHIPPED' => $shipped,
+
+        // Shipping
+        'SHIPPING_FIRSTNAME' => $address['a_firstname'],
+        'SHIPPING_LASTNAME' => $address['a_lastname'],
+        'SHIPPING_STREET_ADDRESS' => $address['a_street_address'],
+        'SHIPPING_CITY' => $address['a_city'],
+        'SHIPPING_COUNTY' => $address['a_county'],
+        'SHIPPING_STATE' => $address['a_state'],
+        'SHIPPING_POST_CODE' => $address['a_post_code'],
+        'SHIPPING_COUNTRY' => find_country_name_from_iso($address['a_country']),
+        'SHIPPING_EMAIL' => $address['a_email'],
+        'SHIPPING_PHONE' => $address['a_phone'],
+        'SHIPPING_FORMATTED_ADDRESS' => get_formatted_address($address_parts),
+    );
 
     // Send completed notification to user
     if (($member_id === null) || (is_guest($member_id))) {
-        $existing = $GLOBALS['SITE_DB']->query_select('ecom_trans_addresses', array('*'), array('a_txn_id' => $txn_id), '', 1);
         if (array_key_exists(0, $existing)) {
             $e = $existing[0];
             $email = $e['a_email'];
@@ -1697,65 +1751,31 @@ function send_transaction_mails($txn_id, $item_name, $automatic_setup, $member_i
                     $to_name = null;
                 }
 
-                $tax_invoice = $_tax_invoice->evaluate(get_site_default_lang());
                 $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
-                $body = do_lang(
-                    $automatic_setup ? 'PAYMENT_SENT_BODY_automatic' : 'PAYMENT_SENT_BODY_manual',
-                    $_amount,
-                    $_currency,
-                    array(
-                        get_site_name(),
-                        $item_name,
-                        float_format($tax),
-                        do_lang(get_option('tax_system')),
-                        $symbol,
-                        $tax_invoice,
-                        ($memo == '') ? do_lang('NONE') : $memo
-                    ),
-                    get_site_default_lang()
-                );
+
+                $_body = do_template('PAYMENT_SENT_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
+                $body = static_evaluate_tempcode($_body);
 
                 require_code('mail');
                 mail_wrap($subject, $body, array($email), $to_name);
             }
         }
     } else {
-        $tax_invoice = $_tax_invoice->evaluate(get_lang($member_id));
         $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_lang($member_id));
-        $body = do_notification_lang(
-            $automatic_setup ? 'PAYMENT_SENT_BODY_automatic' : 'PAYMENT_SENT_BODY_manual',
-            $_amount,
-            $_currency,
-            array(
-                get_site_name(),
-                $item_name,
-                float_format($tax),
-                do_lang(get_option('tax_system')),
-                $symbol,
-                $tax_invoice,
-                ($memo == '') ? do_lang('NONE') : $memo
-            ),
-            get_lang($member_id)
-        );
+
+        $_body = do_notification_template('PAYMENT_SENT_MAIL', $parameter_map, get_lang($member_id), false, null, '.txt', 'text');
+        $body = comcode_to_tempcode($_body, null, true);
+
         dispatch_notification('payment_received', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
     }
 
-    // Send completed notification to staff
-    $tax_invoice = $_tax_invoice->evaluate(get_site_default_lang());
+    // Send completed notification to staff...
+
     $subject = do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
-    $body = do_notification_lang(
-        'PAYMENT_RECEIVED_BODY',
-        $_amount,
-        $_currency,
-        array(
-            ($memo == '') ? do_lang('NONE') : $memo,
-            $item_name,
-            float_format($tax),
-            do_lang(get_option('tax_system')),
-            $symbol
-        ),
-        get_site_default_lang()
-    );
+
+    $_body = do_notification_template('PAYMENT_RECEIVED_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
+    $body = comcode_to_tempcode($_body, null, true);
+
     dispatch_notification('payment_received_staff', null, $subject, $body, null, A_FROM_SYSTEM_PRIVILEGED);
 }
 
@@ -1935,27 +1955,43 @@ function get_transaction_status_list()
  */
 function get_full_business_address()
 {
-    $options = array(
-        'business_name',
-        'business_street_address',
-        'business_city',
-        'business_county',
-        'business_state',
-        'business_post_code',
-        'business_country',
+    $_address_parts = array(
+        'name',
+        'street_address',
+        'city',
+        'county',
+        'state',
+        'post_code',
+        'country',
     );
+    $address_parts = array();
+    foreach ($_address_parts as $address_part_codename) {
+        $address_part = get_option('business_' . $address_part_codename);
+        $address_parts[$address_part_codename] = $address_part;
+    }
+    return get_formatted_address($address_parts);
+}
+
+/**
+ * Get a formatted address.
+ *
+ * @param  array $address_parts A map of address parts
+ * @return string Formatted address
+ */
+function get_formatted_address($address_parts)
+{
     $address = '';
-    foreach ($options as $option) {
-        $address_part = get_option($option);
+    foreach ($address_parts as $address_part_codename => $address_part) {
         if ($address_part != '') {
-            if ($option == 'business_country') {
+            if ($address_part_codename == 'country') {
+                // We want the full written country name
                 $test = find_country_name_from_iso($address_part);
                 if ($test !== null) {
                     $address_part = $test;
                 }
             }
 
-            if (($option == 'business_post_code') && (get_option('business_state') != '') && (get_option('business_country') == 'US')) {
+            if (($address_part_codename == 'post_code') && (!empty($address_parts['state'])) && (!empty($address_parts['country'])) && ($address_parts['country'] == 'US')) {
                 $address = rtrim($address); // We want the zip code to show after the state
             }
 

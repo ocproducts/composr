@@ -739,7 +739,7 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__ecom_order_details_screen()
     {
-        require_lang('ecommerce');
+        require_code('ecommerce');
         require_lang('cns_special_cpf');
 
         $order_actions = do_lorem_template('ECOM_ADMIN_ORDER_ACTIONS', array(
@@ -747,6 +747,18 @@ class Hook_addon_registry_shopping
             'ORDER_ACTUALISE_URL' => placeholder_url(),
             'ORDER_STATUS' => lorem_word(),
         ));
+
+        $address_parts = array(
+            'name' => lorem_phrase(),
+            'street_address' => lorem_phrase(),
+            'city' => lorem_phrase(),
+            'county' => lorem_phrase(),
+            'state' => lorem_phrase(),
+            'post_code' => lorem_phrase(),
+            'country' => lorem_phrase(),
+            'email' => lorem_phrase(),
+            'phone' => lorem_phrase(),
+        );
 
         $shipping_address = do_lorem_template('ECOM_SHIPPING_ADDRESS', array(
             'FIRSTNAME' => lorem_phrase(),
@@ -759,6 +771,7 @@ class Hook_addon_registry_shopping
             'COUNTRY' => lorem_phrase(),
             'EMAIL' => lorem_phrase(),
             'PHONE' => lorem_phrase(),
+            'FORMATTED_ADDRESS' => get_formatted_address($address_parts),
         ));
 
         return array(

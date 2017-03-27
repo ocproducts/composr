@@ -127,7 +127,7 @@ function get_keyset_pagination_settings($max_name, $max_default, $start_name, $c
 
     $compound = json_encode(array($max, $start, $sort, $keyset_param));
 
-	return array($max, $altered_start, $sort, $sql_sup, $sql_sup_order_by, $start, $compound, $keyset_field_stripped);
+    return array($max, $altered_start, $sort, $sql_sup, $sql_sup_order_by, $start, $compound, $keyset_field_stripped);
 }
 
 /**
