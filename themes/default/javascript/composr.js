@@ -217,7 +217,6 @@
         /**@var {object}*/
         staffTooltipsUrlPatterns: objVal(symbols.EXTRA.staff_tooltips_url_patterns),
 
-
         /**@var {boolean}*/
         isOpera: isOpera,
         /**@var {boolean}*/
@@ -346,7 +345,7 @@
         /**@method*/
         setCookie: setCookie,
         /**@method*/
-        readCookie: setCookie,
+        readCookie: readCookie,
         /**@method*/
         createRollover: createRollover,
         /**@method*/
@@ -460,6 +459,9 @@
         }
 
         properties(window.$cmsReady, {
+            unshift: function unshift(fn) {
+                fn();
+            },
             push: function push(fn) {
                 fn();
             }
@@ -486,6 +488,9 @@
         }
 
         properties(window.$cmsLoad, {
+            unshift: function unshift(fn) {
+                fn();
+            },
             push: function push(fn) {
                 fn();
             }
@@ -1280,7 +1285,7 @@
     // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
     function CookieMonster() {}
 
-    properties(CookieMonster.prototype, /** @lends CookieMonster# */ {
+    properties(CookieMonster.prototype, /**@lends CookieMonster#*/ {
         /**@method*/
         get: function get(cookieName) {
             cookieName = strVal(cookieName);
@@ -7223,7 +7228,7 @@
         });
     }
 
-    $cms.inherits(TreeList, $cms.View, /** @lends TreeList.prototype */ {
+    $cms.inherits(TreeList, $cms.View, /** @lends TreeList# */ {
         specialKeyPressed: false,
 
         tree_list_data: '',
