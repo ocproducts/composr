@@ -652,7 +652,7 @@ function do_emoticon(field_name, callerEl, isOpener) {
     isOpener = !!isOpener;
 
     if (isOpener) {
-        element = get_main_cms_window().document.getElementById(field_name);
+        element = $cms.getMainCmsWindow().document.getElementById(field_name);
         if (!element) { // If it is really actually cascading popups
             element = opener.document.getElementById(field_name);
         }
@@ -677,13 +677,13 @@ function do_emoticon(field_name, callerEl, isOpener) {
 }
 
 function do_attachment(field_name, id, description) {
-    if (!get_main_cms_window().wysiwyg_editors) {
+    if (!$cms.getMainCmsWindow().wysiwyg_editors) {
         return;
     }
 
     description = strVal(description);
 
-    var element = get_main_cms_window().document.getElementById(field_name);
+    var element = $cms.getMainCmsWindow().document.getElementById(field_name);
 
     var comcode = '\n\n[attachment description="' + $cms.filter.comcode(description) + '"]' + id + '[/attachment]';
 
@@ -821,10 +821,10 @@ function insert_textbox(element, text, sel, plain_insert, html) {
  }
 function insert_textbox_opener(element, text, sel, plain_insert, html) {
     if (!sel) {
-        sel = get_main_cms_window().document.selection || null;
+        sel = $cms.getMainCmsWindow().document.selection || null;
     }
 
-    get_main_cms_window().insert_textbox(element, text, sel, plain_insert, html);
+    $cms.getMainCmsWindow().insert_textbox(element, text, sel, plain_insert, html);
 }
 
 // Get selected HTML from CKEditor

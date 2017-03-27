@@ -46,7 +46,7 @@
         },
         textareaKeyup: function (e, textarea) {
             if (!$cms.$MOBILE) {
-                manage_scroll_height(textarea);
+                $cms.manageScrollHeigh(textarea);
             }
             this.maintainCharCount();
         },

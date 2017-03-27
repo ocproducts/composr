@@ -207,7 +207,7 @@
                 window.faux_close();
             } else {
                 try {
-                    window.get_main_cms_window().focus();
+                    window.$cms.getMainCmsWindow().focus();
                 } catch (ignore) {}
 
                 window.close();

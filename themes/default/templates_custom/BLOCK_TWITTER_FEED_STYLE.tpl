@@ -181,19 +181,19 @@
 {+START,IF,{$GT,{$VERSION},8}}
 	<script>// <![CDATA[
 	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-		create_rollover('{$GET;/,reply_id}','{$IMG;/,twitter_feed/reply_hover}');
+		$cms.createRollover('{$GET;/,reply_id}','{$IMG;/,twitter_feed/reply_hover}');
 	});
 	//]]></script>
 
 	<script>// <![CDATA[
 	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-		create_rollover('{$GET;/,retweet_id}','{$IMG;/,twitter_feed/retweet_hover}');
+		$cms.createRollover('{$GET;/,retweet_id}','{$IMG;/,twitter_feed/retweet_hover}');
 	});
 	//]]></script>
 
 	<script>// <![CDATA[
 	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-		create_rollover('{$GET;/,favorite_id}','{$IMG;/,twitter_feed/favorite_hover}');
+		$cms.createRollover('{$GET;/,favorite_id}','{$IMG;/,twitter_feed/favorite_hover}');
 	});
 	//]]></script>
 {+END}

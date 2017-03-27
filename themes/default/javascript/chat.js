@@ -40,7 +40,7 @@
         fontChange: function (e, selectEl) {
             this.$('#font').value = selectEl.value;
             this.$('#post').style.fontFamily = selectEl.value;
-            manage_scroll_height(this.$('#post'));
+            $cms.manageScrollHeigh(this.$('#post'));
         },
 
         checkChatOptions: function (e, form) {
@@ -177,7 +177,7 @@
 
         $cms.dom.on(container, 'keyup', '.js-keyup-textarea-chat-post', function (e, textarea) {
             if (!$cms.$MOBILE) {
-                manage_scroll_height(textarea);
+                $cms.manageScrollHeigh(textarea);
             }
 
             if ($cms.dom.keyPressed(e, 'Enter')) {
@@ -419,7 +419,7 @@ function chat_load(room_id) {
         window.text_colour.style.color = text_colour.value;
     }
 
-    manage_scroll_height(document.getElementById('post'));
+    $cms.manageScrollHeigh(document.getElementById('post'));
 }
 
 function begin_chatting(room_id) {
@@ -1098,7 +1098,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
     div.appendChild(p_message);
 
     // Open link
-    if (!browser_matches('non_concurrent')) // Can't do on iOS due to not being able to run windows/tabs concurrently - so for iOS we only show a lobby link
+    if (!$cms.browserMatches('non_concurrent')) // Can't do on iOS due to not being able to run windows/tabs concurrently - so for iOS we only show a lobby link
     {
         var a_popup_open = document.createElement('a');
         a_popup_open.onclick = function () {
@@ -1137,7 +1137,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
 }
 
 function start_im(people, just_refocus) {
-    if ((browser_matches('non_concurrent')) && !document.getElementById('chat_lobby_convos_tabs')) {
+    if (($cms.browserMatches('non_concurrent')) && !document.getElementById('chat_lobby_convos_tabs')) {
         // Let it navigate to chat lobby
         return true;
     }
@@ -1492,7 +1492,7 @@ function chat_select_tab(element) {
 function detect_if_chat_window_closed(die_on_lost, become_autonomous_on_lost) {
     var lost_connection = false;
     try {
-        /*if (browser_matches('non_concurrent'))	Pointless as document.write doesn't work on iOS without tabbing back and forth, so initial load is horribly slow in first place
+        /*if ($cms.browserMatches('non_concurrent'))	Pointless as document.write doesn't work on iOS without tabbing back and forth, so initial load is horribly slow in first place
          {
          throw 'No multi-process on iOS';
          }*/

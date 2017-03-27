@@ -669,7 +669,7 @@
                 return;
             }
 
-            manage_scroll_height(textarea);
+            $cms.manageScrollHeigh(textarea);
         },
 
         // Implementation for [data-open-as-overlay]
@@ -995,7 +995,7 @@
 
             /* Screen transition, for staff */
             function staff_unload_action() {
-                undo_staff_unload_action();
+                $cms.undoStaffUnloadAction();
 
                 // If clicking a download link then don't show the animation
                 if (document.activeElement && document.activeElement.href !== undefined && document.activeElement.href != null) {
@@ -1033,7 +1033,7 @@
                 document.body.appendChild(div);
 
                 // Allow unloading of the animation
-                $cms.dom.on(window, 'pageshow keydown click', undo_staff_unload_action)
+                $cms.dom.on(window, 'pageshow keydown click', $cms.undoStaffUnloadAction)
             }
 
             /*
@@ -1160,7 +1160,7 @@
                 ob || (ob = this);
 
                 var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
-                if (src && (force || (magic_keypress(event)))) {
+                if (src && (force || ($cms.magicKeypress(event)))) {
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)
                     event.stopPropagation();
 
@@ -1509,11 +1509,11 @@
 
     $cms.templates.ipBanScreen = function (params, container) {
         var textarea = commandrLs.querySelector('#bans');
-        manage_scroll_height(textarea);
+        $cms.manageScrollHeigh(textarea);
 
         if (!$cms.$MOBILE) {
             $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
-                manage_scroll_height(textarea);
+                $cms.manageScrollHeigh(textarea);
             });
         }
     };
@@ -1667,7 +1667,7 @@
         }
 
         // And now define nice listeners for it all...
-        var global = get_main_cms_window(true);
+        var global = $cms.getMainCmsWindow(true);
 
         el.cms_tooltip_title = $cms.filter.html(title);
 

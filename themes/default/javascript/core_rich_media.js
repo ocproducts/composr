@@ -419,7 +419,7 @@
             refreshTime = +params.refreshTime || 0;
 
         if ((typeof params.rollover === 'string') && (params.rollover !== '')) {
-            create_rollover(img.id, params.rollover);
+            $cms.createRollover(img.id, params.rollover);
         }
 
         if (refreshTime > 0) {
@@ -447,7 +447,7 @@
 
         $cms.dom.on(btn, 'click', function () {
             var mainWindow = btn.ownerDocument.defaultView || btn.ownerDocument.parentWindow;
-            if (!(browser_matches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img')))) {
+            if (!($cms.browserMatches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img')))) {
                 mainWindow['do_input_' + b](fieldName);
             }
         });

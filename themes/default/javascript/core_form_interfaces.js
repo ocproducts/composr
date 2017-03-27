@@ -455,7 +455,7 @@
             $cms.form.setUpChangeMonitor(input.parentElement);
         }
 
-        manage_scroll_height(textarea);
+        $cms.manageScrollHeigh(textarea);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
             set_up_comcode_autocomplete(params.name, params.required && params.required.includes('wysiwyg'));
         });
@@ -722,11 +722,11 @@
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
 
-        manage_scroll_height(textArea);
+        $cms.manageScrollHeigh(textArea);
 
         if (!$cms.$MOBILE) {
             $cms.dom.on(textArea, 'change keyup', function () {
-                manage_scroll_height(textArea);
+                $cms.manageScrollHeigh(textArea);
             });
         }
     };
@@ -743,7 +743,7 @@
         var inner = $cms.dom.$(container, '.js-preview-box-scroll');
 
         if (inner) {
-            $cms.dom.on(inner, browser_matches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
+            $cms.dom.on(inner, $cms.browserMatches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
                 event.stopPropagation();
                 event.preventDefault();
@@ -794,7 +794,7 @@
             }
         }
 
-        manage_scroll_height(postEl);
+        $cms.manageScrollHeigh(postEl);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
             set_up_comcode_autocomplete(name, true);
         });
@@ -821,7 +821,7 @@
     };
 
     $cms.templates.previewScriptCode = function (params) {
-        var main_window = get_main_cms_window();
+        var main_window = $cms.getMainCmsWindow();
 
         var post = main_window.document.getElementById('post');
 
@@ -1145,7 +1145,7 @@
             }
         }
 
-        manage_scroll_height(document.getElementById(params.name));
+        $cms.manageScrollHeigh(document.getElementById(params.name));
     };
 
     $cms.templates.formScreenInputTime = function formScreenInputTime(params) {

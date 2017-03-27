@@ -328,7 +328,37 @@
         /**@method*/
         attachBehaviors: attachBehaviors,
         /**@method*/
-        detachBehaviors: detachBehaviors
+        detachBehaviors: detachBehaviors,
+        /**@method*/
+        callBlock: callBlock,
+        /**@method*/
+        loadSnippet: loadSnippet,
+        /**@method*/
+        maintainThemeInLink: maintainThemeInLink,
+        /**@method*/
+        keepStub: keepStub,
+        /**@method*/
+        gaTrack: gaTrack,
+        /**@method*/
+        playSelfAudioLink: playSelfAudioLink,
+        /**@method*/
+        topicReply: topicReply,
+        /**@method*/
+        setCookie: setCookie,
+        /**@method*/
+        readCookie: setCookie,
+        /**@method*/
+        createRollover: createRollover,
+        /**@method*/
+        browserMatches: browserMatches,
+        /**@method*/
+        undoStaffUnloadAction: undoStaffUnloadAction,
+        /**@method*/
+        getMainCmsWindow: getMainCmsWindow,
+        /**@method*/
+        magicKeypress: magicKeypress,
+        /**@method*/
+        manageScrollHeight: manageScrollHeight
     });
 
     /**
@@ -849,22 +879,14 @@
     }
 
     /**
+     * Port of PHP's empty() function (inversed)
      * @param val
      * @returns { Boolean }
      */
     function boolVal(val) {
         var p;
-        return !!val && (val !== '0') && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length !== 0)));
+        return !!val && (val !== '0') && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
     }
-
-    /**
-     * Port of PHP's empty() function
-     * @returns { Boolean }
-     */
-    //function falsy(val) {
-    //    var p;
-    //    return !val || (val === '0') || ((typeof val === 'object') && ((p = isPlainObj(val)) || isArrayLike(val)) && (p ? !hasEnumerable(val) : (val.length === 0)));
-    //}
 
     /**
      * @returns { Number }
@@ -931,7 +953,7 @@
 
     /**
      * String interpolation
-     * @returns {string}
+     * @returns { string }
      */
     function format(str, values) {
         str = strVal(str);
@@ -1359,7 +1381,7 @@
     $cms.cookies || ($cms.cookies = new CookieMonster());
 
     var alertedCookieConflict;
-    $cms.setCookie = function setCookie(cookieName, cookieValue, numDays) {
+    function setCookie(cookieName, cookieValue, numDays) {
         var expires = new Date(),
             output;
 
@@ -1387,7 +1409,7 @@
         }
     }
 
-    $cms.readCookie = function readCookie(cookieName, defaultValue) {
+    function readCookie(cookieName, defaultValue) {
         cookieName = strVal(cookieName);
         defaultValue = strVal(defaultValue);
 
@@ -1408,7 +1430,7 @@
         }
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
-    };
+    }
 
     // If the browser has support for CSS transitions
     $cms.support.cssTransitions = ('transition' in emptyElStyle) || ('WebkitTransition' in emptyElStyle) || ('msTransition' in emptyElStyle);
@@ -1711,7 +1733,7 @@
     }
     Data.uid = 1;
     properties(Data.prototype, /**@lends Data#*/ {
-        cache: function (owner) {
+        cache: function cache(owner) {
             // Check if the owner object already has a cache
             var value = owner[this.expando];
             // If not, create one
@@ -1728,7 +1750,7 @@
 
             return value;
         },
-        set: function (owner, data, value) {
+        set: function set(owner, data, value) {
             var prop, cache = this.cache(owner);
 
             // Handle: [ owner, key, value ] args
@@ -1744,13 +1766,13 @@
             }
             return cache;
         },
-        get: function (owner, key) {
+        get: function get(owner, key) {
             return key === undefined ?
                 this.cache(owner) :
                 // Always use camelCase key (gh-2257)
                 (owner[this.expando] && owner[this.expando][camelCase(key)]);
         },
-        access: function (owner, key, value) {
+        access: function access(owner, key, value) {
             // In cases where either:
             //
             //   1. No key was specified
@@ -1778,7 +1800,7 @@
             // return the expected data based on which path was taken[*]
             return (value !== undefined) ? value : key;
         },
-        remove: function (owner, key) {
+        remove: function remove(owner, key) {
             var i, cache = owner[this.expando];
 
             if (cache === undefined) {
@@ -1818,7 +1840,7 @@
                 }
             }
         },
-        hasData: function (owner) {
+        hasData: function hasData(owner) {
             var cache = owner[this.expando];
             return (cache !== undefined) && hasEnumerable(cache);
         }
@@ -2341,6 +2363,7 @@
     };
 
     /**
+     * @memberof $cms.dom
      * @param el { Window|Document|Element }
      * @param event {string|object}
      * @param selector {string|function}
@@ -3048,6 +3071,461 @@
         return result.join('&');
     };
 
+
+    /* Tabs */
+    $cms.dom.findUrlTab = function findUrlTab(hash) {
+        if (hash === undefined) {
+            hash = window.location.hash;
+        }
+
+        if (hash.replace(/^#/, '') !== '') {
+            var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
+
+            if ($cms.dom.$('#g_' + tab)) {
+                $cms.ui.selectTab('g', tab);
+            }
+            else if ((tab.indexOf('__') != -1) && ($cms.dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
+                var old = hash;
+                $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
+                window.location.hash = old;
+            }
+        }
+    };
+
+    $cms.dom.matchesThemeImage = function matchesThemeImage(src, url) {
+        return $cms.img(src) === $cms.img(url);
+    };
+
+    /* Animate the loading of a frame */
+    $cms.dom.animateFrameLoad = function animateFrameLoad(pf, frame, leave_gap_top, leave_height) {
+        if (!pf) {
+            return;
+        }
+
+        leave_gap_top = +leave_gap_top || 0;
+        leave_height = !!leave_height;
+
+        if (!leave_height) {
+            // Enough to stop jumping around
+            pf.style.height = window.top.$cms.dom.getWindowHeight() + 'px';
+        }
+
+        $cms.dom.illustrateFrameLoad(frame);
+
+        var ifuob = window.top.$cms.dom.$('#iframe_under');
+        var extra = ifuob ? ((window != window.top) ? $cms.dom.findPosY(ifuob) : 0) : 0;
+        if (ifuob) {
+            ifuob.scrolling = 'no';
+        }
+
+        if (window === window.top) {
+            window.top.$cms.dom.smoothScroll($cms.dom.findPosY(pf) + extra - leave_gap_top);
+        }
+    };
+
+    $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
+        var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
+
+        if (!$cms.$CONFIG_OPTION.enable_animations || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
+            return;
+        }
+
+        iframe.style.height = '80px';
+
+        try {
+            doc = iframe.contentDocument;
+            de = doc.documentElement;
+        }
+        catch (e) {
+            // May be connection interference somehow
+            iframe.scrolling = 'auto';
+            return;
+        }
+
+        head = '<style>';
+
+        for (i = 0; i < document.styleSheets.length; i++) {
+            try {
+                var stylesheet = document.styleSheets[i];
+                if (stylesheet.href && !stylesheet.href.includes('/global') && !stylesheet.href.includes('/merged')) {
+                    continue;
+                }
+
+                if (stylesheet.cssText !== undefined) {
+                    cssText += stylesheet.cssText;
+                } else {
+                    var rules = [];
+                    try {
+                        rules = stylesheet.cssRules ? stylesheet.cssRules : stylesheet.rules;
+                    } catch (ignore) {
+                    }
+
+                    if (rules) {
+                        for (var j = 0; j < rules.length; j++) {
+                            if (rules[j].cssText) {
+                                cssText += rules[j].cssText + '\n\n';
+                            } else {
+                                cssText += rules[j].selectorText + '{ ' + rules[j].style.cssText + '}\n\n';
+                            }
+                        }
+                    }
+                }
+            } catch (ignore) {}
+        }
+
+        head += cssText + '<\/style>';
+
+        doc.body.classList.add('website_body', 'main_website_faux');
+
+        if (!de.querySelector('style')) {// The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
+            $cms.dom.html(doc.head, head);
+        }
+
+        $cms.dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + $cms.img('{$IMG_INLINE*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
+
+        // Stupid workaround for Google Chrome not loading an image on unload even if in cache
+        setTimeout(function () {
+            if (!doc.getElementById('loading_image')) {
+                return;
+            }
+
+            var i_new = doc.createElement('img');
+            i_new.src = doc.getElementById('loading_image').src;
+
+            var i_default = doc.getElementById('loading_image');
+            if (i_default) {
+                i_new.className = i_default.className;
+                i_new.alt = i_default.alt;
+                i_new.id = i_default.id;
+                i_default.parentNode.replaceChild(i_new, i_default);
+            }
+        }, 0);
+    };
+
+    /* Smoothly scroll to another position on the page */
+    $cms.dom.smoothScroll = function smoothScroll(dest_y, expected_scroll_y, dir, event_after) {
+        if (!$cms.$CONFIG_OPTION.enable_animations) {
+            try {
+                window.scrollTo(0, dest_y);
+            } catch (ignore) {}
+            return;
+        }
+
+        var scroll_y = window.pageYOffset;
+        if (typeof dest_y === 'string') {
+            dest_y = $cms.dom.findPosY($cms.dom.$id(dest_y), true);
+        }
+        if (dest_y < 0) {
+            dest_y = 0;
+        }
+        if ((expected_scroll_y != null) && (expected_scroll_y != scroll_y)) {
+            // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
+            return;
+        }
+
+        dir = (dest_y > scroll_y) ? 1 : -1;
+
+        var distance_to_go = (dest_y - scroll_y) * dir;
+        var dist = Math.round(dir * (distance_to_go / 25));
+
+        if (dir == -1 && dist > -25) {
+            dist = -25;
+        }
+        if (dir == 1 && dist < 25) {
+            dist = 25;
+        }
+
+        if (((dir == 1) && (scroll_y + dist >= dest_y)) || ((dir == -1) && (scroll_y + dist <= dest_y)) || (distance_to_go > 2000)) {
+            try {
+                window.scrollTo(0, dest_y);
+            } catch (e) {
+            }
+            if (event_after) {
+                event_after();
+            }
+            return;
+        }
+
+        try {
+            window.scrollBy(0, dist);
+        } catch (e) {
+            return; // May be stopped by popup blocker
+        }
+
+        window.setTimeout(function () {
+            $cms.dom.smoothScroll(dest_y, scroll_y + dist, dir, event_after);
+        }, 30);
+    };
+
+    /* Dimension functions */
+    $cms.dom.registerMouseListener = function registerMouseListener(e) {
+        $cms.dom.registerMouseListener = noop; // ensure this function is only executed once
+
+        if (e) {
+            window.mouse_x = get_mouse_x(e);
+            window.mouse_y = get_mouse_y(e);
+        }
+
+        document.documentElement.addEventListener('mousemove', function (event) {
+            window.mouse_x = get_mouse_x(event);
+            window.mouse_y = get_mouse_y(event);
+        });
+
+        function get_mouse_x(event) {
+            try {
+                if (event.pageX) {
+                    return event.pageX;
+                } else if (event.clientX) {
+                    return event.clientX + window.pageXOffset;
+                }
+            } catch (ignore) {}
+
+            return 0;
+        }
+
+        function get_mouse_y(event) {
+            try {
+                if (event.pageY) {
+                    return event.pageY;
+                } else if (event.clientY) {
+                    return event.clientY + window.pageYOffset
+                }
+            } catch (ignore) {
+            }
+
+            return 0;
+        }
+    };
+
+    $cms.dom.getWindowWidth = function getWindowWidth(win) {
+        return (win || window).innerWidth - 18;
+    };
+
+    $cms.dom.getWindowHeight = function getWindowHeight(win) {
+        return (win || window).innerHeight - 18;
+    };
+
+    $cms.dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
+        win || (win = window);
+
+        var rect_a = win.document.body.parentElement.getBoundingClientRect(),
+            rect_b = win.document.body.getBoundingClientRect(),
+            a = (rect_a.bottom - rect_a.top),
+            b = (rect_b.bottom - rect_b.top);
+
+        return (a > b) ? a : b;
+    };
+
+    $cms.dom.findPosX = function findPosX(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+        not_relative = !!not_relative;
+
+        var left = el.getBoundingClientRect().left + window.pageXOffset;
+
+        if (!not_relative) {
+            var position;
+            while (el) {
+                if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
+                    left -= $cms.dom.findPosX(el, true);
+                    break;
+                }
+                el = el.parentElement;
+            }
+        }
+
+        return left;
+    };
+
+    $cms.dom.findPosY = function findPosY(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+        not_relative = !!not_relative;
+
+        var top = el.getBoundingClientRect().top + window.pageYOffset;
+
+        if (!not_relative) {
+            var position;
+            while (el) {
+                if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
+                    top -= $cms.dom.findPosY(el, true);
+                    break;
+                }
+                el = el.parentElement;
+            }
+        }
+        return top;
+    };
+
+    /**
+     * Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes!
+     * @memberof $cms.dom
+     * @param name
+     * @param min_height
+     */
+    $cms.dom.resizeFrame = function resizeFrame(name, min_height) {
+        min_height = +min_height || 0;
+
+        var frame_element = $cms.dom.$id(name),
+            frame_window;
+
+        if (window.frames[name] !== undefined) {
+            frame_window = window.frames[name];
+        } else if (window.parent && window.parent.frames[name]) {
+            frame_window = window.parent.frames[name];
+        } else {
+            return;
+        }
+
+        if ((frame_element) && (frame_window) && (frame_window.document) && (frame_window.document.body)) {
+            var h = $cms.dom.getWindowScrollHeight(frame_window);
+
+            if ((h === 0) && (frame_element.parentElement.style.display === 'none')) {
+                h = min_height ? min_height : 100;
+
+                if (frame_window.parent) {
+                    window.setTimeout(function () {
+                        if (frame_window.parent) {
+                            frame_window.parent.$cms.dom.triggerResize();
+                        }
+                    });
+                }
+            }
+
+            if (h + 'px' != frame_element.style.height) {
+                if ((frame_element.scrolling !== 'auto' && frame_element.scrolling !== 'yes') || (frame_element.style.height == '0px')) {
+                    frame_element.style.height = ((h >= min_height) ? h : min_height) + 'px';
+                    if (frame_window.parent) {
+                        window.setTimeout(function () {
+                            if (frame_window.parent) frame_window.parent.$cms.dom.triggerResize();
+                        });
+                    }
+                    frame_element.scrolling = 'no';
+                    frame_window.onscroll = function (event) {
+                        if (event == null) {
+                            return false;
+                        }
+                        try {
+                            frame_window.scrollTo(0, 0);
+                        } catch (e) {
+                        }
+
+                        return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
+                    }; // Needed for Opera
+                }
+            }
+        }
+
+        frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
+    };
+
+    $cms.dom.triggerResize = function triggerResize(and_subframes) {
+        and_subframes = !!and_subframes;
+
+        if (!window.parent || !window.parent.document) {
+            return;
+        }
+        var i, iframes = window.parent.document.querySelectorAll('iframe');
+
+        for (i = 0; i < iframes.length; i++) {
+            if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id != '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] == window))) {
+                if (iframes[i].style.height === '900px') {
+                    iframes[i].style.height = 'auto';
+                }
+                window.parent.$cms.dom.resizeFrame(iframes[i].name);
+            }
+        }
+
+        if (and_subframes) {
+            iframes = document.querySelectorAll('iframe');
+            for (i = 0; i < iframes.length; i++) {
+                if ((iframes[i].name != '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
+                    $cms.dom.resizeFrame(iframes[i].name);
+                }
+            }
+        }
+    };
+
+    // <{element's uid}, {setTimeout id}>
+    var timeouts = {};
+
+    $cms.dom.fadeTransition = function fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
+        if (!$cms.isEl(el)) {
+            return;
+        }
+
+        destPercentOpacity = +destPercentOpacity || 0;
+        periodInMsecs = +periodInMsecs || 0;
+        increment = +increment || 0;
+        destroyAfter = !!destroyAfter;
+
+        if (!$cms.$CONFIG_OPTION.enable_animations) {
+            el.style.opacity = destPercentOpacity / 100.0;
+            return;
+        }
+
+        $cms.dom.clearTransition(el);
+
+        var again, newIncrement;
+
+        if (el.style.opacity) {
+            var diff = (destPercentOpacity / 100.0) - el.style.opacity,
+                direction = 1;
+
+            if (increment > 0) {
+                if (el.style.opacity > (destPercentOpacity / 100.0)) {
+                    direction = -1;
+                }
+                newIncrement = Math.min(direction * diff, increment / 100.0);
+            } else {
+                if (el.style.opacity < (destPercentOpacity / 100.0)) {
+                    direction = -1;
+                }
+                newIncrement = Math.max(direction * diff, increment / 100.0);
+            }
+
+            var temp = parseFloat(el.style.opacity) + (direction * newIncrement);
+
+            if (temp < 0.0) {
+                temp = 0.0;
+            } else if (temp > 1.0) {
+                temp = 1.0;
+            }
+
+            el.style.opacity = temp;
+            again = (Math.round(temp * 100) !== Math.round(destPercentOpacity));
+        } else {
+            // Opacity not set yet, need to call back in an event timer
+            again = true;
+        }
+
+        if (again) {
+            timeouts[$cms.uid(el)] = window.setTimeout(function () {
+                $cms.dom.fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
+            }, periodInMsecs);
+        } else if (destroyAfter && el.parentNode) {
+            $cms.dom.clearTransition(el);
+            el.parentNode.removeChild(el);
+        }
+    };
+
+    $cms.dom.hasFadeTransition = function hasFadeTransition(el) {
+        return $cms.isEl(el) && ($cms.uid(el) in timeouts);
+    };
+
+    $cms.dom.clearTransition = function clearTransition(el) {
+        var uid = $cms.isEl(el) && $cms.uid(el);
+
+        if (uid && timeouts[uid]) {
+            try { // Cross-frame issues may cause error
+                window.clearTimeout(timeouts[uid]);
+            } catch (ignore) {}
+            delete timeouts[uid];
+        }
+    };
+
+    /* Set opacity, without interfering with the thumbnail timer */
+    $cms.dom.clearTransitionAndSetOpacity = function clearTransitionAndSetOpacity(el, fraction) {
+        $cms.dom.clearTransition(el);
+        el.style.opacity = fraction;
+    };
+
     function defineBehaviors(behaviors) {
         behaviors = objVal(behaviors);
 
@@ -3155,6 +3633,477 @@
                 }
             }
         }
+    }
+
+    var _blockDataCache = {};
+    /**
+     * This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
+     * @memberof $cms
+     * @param url
+     * @param new_block_params
+     * @param target_div
+     * @param append
+     * @param callback
+     * @param scroll_to_top_of_wrapper
+     * @param post_params
+     * @param inner
+     * @param show_loading_animation
+     * @returns {boolean}
+     */
+    function callBlock(url, new_block_params, target_div, append, callback, scroll_to_top_of_wrapper, post_params, inner, show_loading_animation) {
+        scroll_to_top_of_wrapper = !!scroll_to_top_of_wrapper;
+        post_params = (post_params !== undefined) ? post_params : null;
+        inner = !!inner;
+        show_loading_animation = (show_loading_animation !== undefined) ? !!show_loading_animation : true;
+        if ((_blockDataCache[url] === undefined) && (new_block_params != '')) {
+            // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
+            _blockDataCache[url] = $cms.dom.html(target_div);
+        }
+
+        var ajax_url = url;
+        if (new_block_params != '') {
+            ajax_url += '&block_map_sup=' + encodeURIComponent(new_block_params);
+        }
+
+        ajax_url += '&utheme=' + $cms.$THEME;
+        if ((_blockDataCache[ajax_url] !== undefined) && post_params == null) {
+            // Show results from cache
+            show_block_html(_blockDataCache[ajax_url], target_div, append, inner);
+            if (callback) {
+                callback();
+            }
+            return false;
+        }
+
+        // Show loading animation
+        var loading_wrapper = target_div;
+        if ((loading_wrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loading_wrapper).indexOf('ajax_loading_block') === -1) && (show_loading_animation)) {
+            var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
+
+            if (raw_ajax_grow_spot[0] !== undefined && append) {
+                // If we actually are embedding new results a bit deeper
+                loading_wrapper = raw_ajax_grow_spot[0];
+            }
+
+            var loading_wrapper_inner = document.createElement('div');
+            if (!$cms.dom.isCss(loading_wrapper, 'position', ['relative', 'absolute'])) {
+                if (append) {
+                    loading_wrapper_inner.style.position = 'relative';
+                } else {
+                    loading_wrapper.style.position = 'relative';
+                    loading_wrapper.style.overflow = 'hidden'; // Stops margin collapsing weirdness
+                }
+            }
+
+            var loading_image = $cms.dom.create('img', {
+                class: 'ajax_loading_block',
+                src: $cms.img('{$IMG;,loading}'),
+                css: {
+                    position: 'absolute',
+                    zIndex: 1000,
+                    left: (target_div.offsetWidth / 2 - 10) + 'px'
+                }
+            });
+            if (!append) {
+                loading_image.style.top = (target_div.offsetHeight / 2 - 20) + 'px';
+            } else {
+                loading_image.style.top = 0;
+                loading_wrapper_inner.style.height = '30px';
+            }
+            loading_wrapper_inner.appendChild(loading_image);
+            loading_wrapper.appendChild(loading_wrapper_inner);
+            window.document.body.style.cursor = 'wait';
+        }
+
+        // Make AJAX call
+        $cms.doAjaxRequest(
+            ajax_url + $cms.keepStub(),
+            function (raw_ajax_result) { // Show results when available
+                _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);
+            },
+            post_params
+        );
+
+        return false;
+
+        function _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
+            var new_html = raw_ajax_result.responseText;
+            _blockDataCache[ajax_url] = new_html;
+
+            // Remove loading animation if there is one
+            var ajax_loading = target_div.querySelector('.ajax_loading_block');
+            if (ajax_loading) {
+                ajax_loading.parentNode.parentNode.removeChild(ajax_loading.parentNode);
+            }
+            window.document.body.style.cursor = '';
+
+            // Put in HTML
+            show_block_html(new_html, target_div, append, inner);
+
+            // Scroll up if required
+            if (scroll_to_top_of_wrapper) {
+                try {
+                    window.scrollTo(0, $cms.dom.findPosY(target_div));
+                } catch (e) {}
+            }
+
+            // Defined callback
+            if (callback) {
+                callback();
+            }
+        }
+
+        function show_block_html(new_html, target_div, append, inner) {
+            var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
+            if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
+            if (append) {
+                $cms.dom.appendHtml(target_div, new_html);
+            } else {
+                if (inner) {
+                    $cms.dom.html(target_div, new_html);
+                } else {
+                    $cms.dom.outerHtml(target_div, new_html);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Dynamic inclusion
+     * @memberof $cms
+     * @param snippet_hook
+     * @param post
+     * @param callback
+     */
+    function loadSnippet(snippet_hook, post, callback) {
+        if (!window.location) { // In middle of page navigation away
+            return null;
+        }
+
+        var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
+            metas = document.getElementsByTagName('link'), i,
+            url = window.location.href;
+
+        for (i = 0; i < metas.length; i++) {
+            if (metas[i].getAttribute('rel') === 'canonical') {
+                url = metas[i].getAttribute('href');
+            }
+        }
+        if (!url) {
+            url = window.location.href;
+        }
+        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
+            html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), callback, post);
+        if (callback) {
+            return null;
+        }
+        return html.responseText;
+    }
+
+    /**
+     * Update a URL to maintain the current theme into it
+     * @param url
+     * @returns {string}
+     */
+    function maintainThemeInLink(url) {
+        var usp = $cms.uspFromUrl(url),
+            theme = encodeURIComponent($cms.$THEME);
+
+        if (usp.keys().next().done) {
+            // `url` doesn't have a query string
+            return url + '?utheme=' + theme;
+        } else if (!usp.has('utheme') && !usp.has('keep_theme')) {
+            return url + '&utheme=' + theme;
+        }
+
+        return url;
+    }
+
+    /**
+     * Get URL stub to propagate keep_* parameters
+     * @param starting
+     * @returns {string}
+     */
+    function keepStub(starting) {// `starting` set to true means "Put a '?' for the first parameter"
+        var keep = $cms.uspKeepSession.toString();
+
+        if (!keep) {
+            return '';
+        }
+
+        return (starting ? '?' : '&') + keep;
+    }
+
+    /**
+     * Google Analytics tracking for links; particularly useful if you have no server-side stat collection
+     * @memberof $cms
+     * @param el
+     * @param category
+     * @param action
+     * @returns {boolean}
+     */
+    function gaTrack(el, category, action) {
+        if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
+            return;
+        }
+
+        if (category === undefined) {
+            category = '{!URL;^}';
+        }
+
+        if (action === undefined) {
+            action = el ? el.href : '{!UNKNOWN;^}';
+        }
+
+        try {
+            window.ga('send', 'event', category, action);
+        } catch (ignore) {}
+
+        if (el) {
+            setTimeout(function () {
+                $cms.navigate(el);
+            }, 100);
+
+            return false;
+        }
+    }
+
+    /**
+     * Used by audio CAPTCHA.
+     * @param ob
+     */
+    function playSelfAudioLink(ob) {
+        $cms.requireJavascript('sound').then(function () {
+            window.soundManager.setup({
+                url: $cms.baseUrl('data'),
+                debugMode: false,
+                onready: function () {
+                    var sound_object = window.soundManager.createSound({url: ob.href});
+                    if (sound_object) {
+                        sound_object.play();
+                    }
+                }
+            });
+        });
+    }
+
+    /* Reply to a topic using AJAX */
+    function topicReply(el, isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
+        isThreaded = !!isThreaded;
+        isExplicitQuote = !!isExplicitQuote;
+
+        var form = $cms.dom.$('form#comments_form');
+
+        var parent_id_field;
+        if (form.elements.parent_id === undefined) {
+            parent_id_field = document.createElement('input');
+            parent_id_field.type = 'hidden';
+            parent_id_field.name = 'parent_id';
+            form.appendChild(parent_id_field);
+        } else {
+            parent_id_field = form.elements['parent_id'];
+            if (window.last_reply_to !== undefined) {
+                $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
+            }
+        }
+        window.last_reply_to = el;
+        parent_id_field.value = isThreaded ? id : '';
+
+        el.classList.add('activated_quote_button');
+
+        var post = form.elements.post;
+
+        $cms.dom.smoothScroll($cms.dom.findPosY(form, true));
+
+        var outer = $cms.dom.$('#comments_posting_form_outer');
+        if (outer && $cms.dom.notDisplayed(outer)) {
+            $cms.toggleableTray(outer);
+        }
+
+        if (isThreaded) {
+            post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', replyingToUsername, replyingToPostPlain);
+            post.strip_on_focus = post.value;
+            post.classList.add('field_input_non_filled');
+        } else {
+            if ((post.strip_on_focus !== undefined) && (post.value == post.strip_on_focus)) {
+                post.value = '';
+            } else if (post.value != '') {
+                post.value += '\n\n';
+            }
+
+            post.focus();
+            post.value += '[quote="' + replyingToUsername + '"]\n' + replyingToPost + '\n[snapback]' + id + '[/snapback][/quote]\n\n';
+
+            if (!isExplicitQuote) {
+                post.default_substring_to_strip = post.value;
+            }
+        }
+
+        $cms.manageScrollHeight(post);
+        post.scrollTop = post.scrollHeight;
+    }
+
+    // Serves as a flag to indicate any new errors are probably due to us transitioning
+    window.unloaded = !!window.unloaded;
+    window.addEventListener('beforeunload', function () {
+        window.unloaded = true;
+    });
+
+    function undoStaffUnloadAction() {
+        var pre = document.body.querySelectorAll('.unload_action');
+        for (var i = 0; i < pre.length; i++) {
+            pre[i].parentNode.removeChild(pre[i]);
+        }
+        var bi = $cms.dom.$id('main_website_inner');
+        if (bi) {
+            $cms.dom.clearTransition(bi);
+            bi.classList.remove('site_unloading');
+        }
+    }
+
+    /* Making the height of a textarea match its contents */
+    function manageScrollHeight(textAreaEl) {
+        var scrollHeight = textAreaEl.scrollHeight,
+            offsetHeight = textAreaEl.offsetHeight,
+            currentHeight = parseInt($cms.dom.css(textAreaEl, 'height')) || 0;
+
+        if ((scrollHeight > 5) && (currentHeight < scrollHeight) && (offsetHeight < scrollHeight)) {
+            $cms.dom.css(textAreaEl, {
+                height: scrollHeight + 'px',
+                boxSizing: 'border-box',
+                overflowY: 'hidden'
+            });
+            $cms.dom.triggerResize();
+        }
+    }
+
+    /* Find the main Composr window */
+    function getMainCmsWindow(any_large_ok) {
+        any_large_ok = !!any_large_ok;
+
+        if ($cms.dom.$('#main_website')) {
+            return window;
+        }
+
+        if (any_large_ok && ($cms.dom.getWindowWidth() > 300)) {
+            return window;
+        }
+
+        try {
+            if (window.parent && (window.parent !== window) && (window.parent.$cms.getMainCmsWindow !== undefined)) {
+                return window.parent.$cms.getMainCmsWindow();
+            }
+        } catch (ignore) {}
+
+        try {
+            if (window.opener && (window.opener.$cms.getMainCmsWindow !== undefined)) {
+                return window.opener.$cms.getMainCmsWindow();
+            }
+        } catch (ignore) {}
+
+        return window;
+    }
+
+    /* Find if the user performed the Composr "magic keypress" to initiate some action */
+    function magicKeypress(event) {
+        // Cmd+Shift works on Mac - cannot hold down control or alt in Mac firefox at least
+        var count = 0;
+        if (event.shiftKey) {
+            count++;
+        }
+        if (event.ctrlKey) {
+            count++;
+        }
+        if (event.metaKey) {
+            count++;
+        }
+        if (event.altKey) {
+            count++;
+        }
+
+        return count >= 2;
+    }
+
+    /* Image rollover effects */
+    function createRollover(rand, rollover) {
+        var img = rand && $cms.dom.$id(rand);
+        if (!img) {
+            return;
+        }
+        new Image().src = rollover; // precache
+
+        $cms.dom.on(img, 'mouseover', activate);
+        $cms.dom.on(img, 'click mouseout', deactivate);
+
+        function activate() {
+            img.old_src = img.getAttribute('src');
+            if (img.origsrc !== undefined) {
+                img.old_src = img.origsrc;
+            }
+            img.setAttribute('src', rollover);
+        }
+
+        function deactivate() {
+            img.setAttribute('src', img.old_src);
+        }
+    }
+
+    /* Browser sniffing */
+    /**
+     * @param {string} code
+     * @returns {boolean}
+     */
+    function browserMatches(code) {
+        var browser = navigator.userAgent.toLowerCase(),
+            os = navigator.platform.toLowerCase() + ' ' + browser;
+
+        var is_safari = browser.includes('applewebkit'),
+            is_chrome = browser.includes('chrome/'),
+            is_gecko = browser.includes('gecko') && !is_safari,
+            _is_ie = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/'),
+            is_ie_8 = browser.includes('msie 8') && (_is_ie),
+            is_ie_8_plus = is_ie_8,
+            is_ie_9 = browser.includes('msie 9') && (_is_ie),
+            is_ie_9_plus = is_ie_9 && !is_ie_8;
+
+        switch (code) {
+            case 'simplified_attachments_ui':
+                return !is_ie_8 && !is_ie_9 && $cms.$CONFIG_OPTION.simplified_attachments_ui && $cms.$CONFIG_OPTION.complex_uploader;
+            case 'non_concurrent':
+                return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
+            case 'ios':
+                return browser.includes('iphone') || browser.includes('ipad');
+            case 'android':
+                return browser.includes('android');
+            case 'wysiwyg':
+                return $cms.$CONFIG_OPTION.wysiwyg;
+            case 'windows':
+                return os.includes('windows') || os.includes('win32');
+            case 'mac':
+                return os.includes('mac');
+            case 'linux':
+                return os.includes('linux');
+            case 'ie':
+                return _is_ie;
+            case 'ie8':
+                return is_ie_8;
+            case 'ie8+':
+                return is_ie_8_plus;
+            case 'ie9':
+                return is_ie_9;
+            case 'ie9+':
+                return is_ie_9_plus;
+            case 'chrome':
+                return is_chrome;
+            case 'gecko':
+                return is_gecko;
+            case 'safari':
+                return is_safari;
+        }
+
+        // Should never get here
+        return false;
     }
 
     // List of view options that can be set as properties.
@@ -4790,7 +5739,7 @@
             }
 
             // Fix up bad characters
-            if ((browser_matches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
+            if (($cms.browserMatches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
                 var bad_word_chars = [8216, 8217, 8220, 8221];
                 var fixed_word_chars = ['\'', '\'', '"', '"'];
                 for (i = 0; i < bad_word_chars.length; i++) {
@@ -5113,7 +6062,7 @@
             return;
         }
 
-        if (!browser_matches('ios') && !target.onblur) {
+        if (!$cms.browserMatches('ios') && !target.onblur) {
             target.onblur = function () {
                 setTimeout(function () {
                     close_down_ajax_list();
@@ -5281,7 +6230,7 @@
                 return null;
             };
 
-            list.addEventListener(browser_matches('ios') ? 'change' : 'click', make_selection, false);
+            list.addEventListener($cms.browserMatches('ios') ? 'change' : 'click', make_selection, false);
 
             currentListForEl = null;
 
@@ -7167,806 +8116,10 @@
         }
     };
 
-    $cms.topicReply = topicReply;
-    /* Reply to a topic using AJAX */
-    function topicReply(el, isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
-        isThreaded = !!isThreaded;
-        isExplicitQuote = !!isExplicitQuote;
-
-        var form = $cms.dom.$('form#comments_form');
-
-        var parent_id_field;
-        if (form.elements.parent_id === undefined) {
-            parent_id_field = document.createElement('input');
-            parent_id_field.type = 'hidden';
-            parent_id_field.name = 'parent_id';
-            form.appendChild(parent_id_field);
-        } else {
-            parent_id_field = form.elements['parent_id'];
-            if (window.last_reply_to !== undefined) {
-                $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
-            }
-        }
-        window.last_reply_to = el;
-        parent_id_field.value = isThreaded ? id : '';
-
-        el.classList.add('activated_quote_button');
-
-        var post = form.elements.post;
-
-        $cms.dom.smoothScroll($cms.dom.findPosY(form, true));
-
-        var outer = $cms.dom.$('#comments_posting_form_outer');
-        if (outer && $cms.dom.notDisplayed(outer)) {
-            $cms.toggleableTray(outer);
-        }
-
-        if (isThreaded) {
-            post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', replyingToUsername, replyingToPostPlain);
-            post.strip_on_focus = post.value;
-            post.classList.add('field_input_non_filled');
-        } else {
-            if ((post.strip_on_focus !== undefined) && (post.value == post.strip_on_focus)) {
-                post.value = '';
-            } else if (post.value != '') {
-                post.value += '\n\n';
-            }
-
-            post.focus();
-            post.value += '[quote="' + replyingToUsername + '"]\n' + replyingToPost + '\n[snapback]' + id + '[/snapback][/quote]\n\n';
-
-            if (!isExplicitQuote) {
-                post.default_substring_to_strip = post.value;
-            }
-        }
-
-        manage_scroll_height(post);
-        post.scrollTop = post.scrollHeight;
-    }
 
 }(window.$cms, JSON.parse(document.getElementById('composr-symbol-data').content)));
 
 function noop() {}
-
-(function () {
-    window.undo_staff_unload_action = undo_staff_unload_action;
-    window.manage_scroll_height = manage_scroll_height;
-    window.get_main_cms_window = get_main_cms_window;
-    window.magic_keypress = magic_keypress;
-    window.create_rollover = create_rollover;
-    window.browser_matches = browser_matches;
-
-    // Serves as a flag to indicate any new errors are probably due to us transitioning
-    window.unloaded = !!window.unloaded;
-    window.addEventListener('beforeunload', function () {
-        window.unloaded = true;
-    });
-
-    function undo_staff_unload_action() {
-        var pre = document.body.querySelectorAll('.unload_action');
-        for (var i = 0; i < pre.length; i++) {
-            pre[i].parentNode.removeChild(pre[i]);
-        }
-        var bi = $cms.dom.$id('main_website_inner');
-        if (bi) {
-            $cms.dom.clearTransition(bi);
-            bi.classList.remove('site_unloading');
-        }
-    }
-
-    /* Making the height of a textarea match its contents */
-    function manage_scroll_height(textAreaEl) {
-        var scrollHeight = textAreaEl.scrollHeight,
-            offsetHeight = textAreaEl.offsetHeight,
-            currentHeight = parseInt($cms.dom.css(textAreaEl, 'height')) || 0;
-
-        if ((scrollHeight > 5) && (currentHeight < scrollHeight) && (offsetHeight < scrollHeight)) {
-            $cms.dom.css(textAreaEl, {
-                height: scrollHeight + 'px',
-                boxSizing: 'border-box',
-                overflowY: 'hidden'
-            });
-            $cms.dom.triggerResize();
-        }
-    }
-
-    /* Find the main Composr window */
-    function get_main_cms_window(any_large_ok) {
-        any_large_ok = !!any_large_ok;
-
-        if ($cms.dom.$('#main_website')) {
-            return window;
-        }
-
-        if (any_large_ok && ($cms.dom.getWindowWidth() > 300)) {
-            return window;
-        }
-
-        try {
-            if (window.parent && (window.parent !== window) && (window.parent.get_main_cms_window !== undefined)) {
-                return window.parent.get_main_cms_window();
-            }
-        } catch (ignore) {}
-
-        try {
-            if (window.opener && (window.opener.get_main_cms_window !== undefined)) {
-                return window.opener.get_main_cms_window();
-            }
-        } catch (ignore) {}
-
-        return window;
-    }
-
-    /* Find if the user performed the Composr "magic keypress" to initiate some action */
-    function magic_keypress(event) {
-        // Cmd+Shift works on Mac - cannot hold down control or alt in Mac firefox at least
-        var count = 0;
-        if (event.shiftKey) {
-            count++;
-        }
-        if (event.ctrlKey) {
-            count++;
-        }
-        if (event.metaKey) {
-            count++;
-        }
-        if (event.altKey) {
-            count++;
-        }
-
-        return count >= 2;
-    }
-
-    /* Image rollover effects */
-    function create_rollover(rand, rollover) {
-        var img = rand && $cms.dom.$id(rand);
-        if (!img) {
-            return;
-        }
-        new Image().src = rollover; // precache
-
-        $cms.dom.on(img, 'mouseover', activate);
-        $cms.dom.on(img, 'click mouseout', deactivate);
-
-        function activate() {
-            img.old_src = img.getAttribute('src');
-            if (img.origsrc !== undefined) {
-                img.old_src = img.origsrc;
-            }
-            img.setAttribute('src', rollover);
-        }
-
-        function deactivate() {
-            img.setAttribute('src', img.old_src);
-        }
-    }
-
-    /* Browser sniffing */
-    /**
-     * @param {string} code
-     * @returns {boolean}
-     */
-    function browser_matches(code) {
-        var browser = navigator.userAgent.toLowerCase(),
-            os = navigator.platform.toLowerCase() + ' ' + browser;
-
-        var is_safari = browser.includes('applewebkit'),
-            is_chrome = browser.includes('chrome/'),
-            is_gecko = browser.includes('gecko') && !is_safari,
-            _is_ie = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/'),
-            is_ie_8 = browser.includes('msie 8') && (_is_ie),
-            is_ie_8_plus = is_ie_8,
-            is_ie_9 = browser.includes('msie 9') && (_is_ie),
-            is_ie_9_plus = is_ie_9 && !is_ie_8;
-
-        switch (code) {
-            case 'simplified_attachments_ui':
-                return !is_ie_8 && !is_ie_9 && $cms.$CONFIG_OPTION.simplified_attachments_ui && $cms.$CONFIG_OPTION.complex_uploader;
-            case 'non_concurrent':
-                return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
-            case 'ios':
-                return browser.includes('iphone') || browser.includes('ipad');
-            case 'android':
-                return browser.includes('android');
-            case 'wysiwyg':
-                return $cms.$CONFIG_OPTION.wysiwyg;
-            case 'windows':
-                return os.includes('windows') || os.includes('win32');
-            case 'mac':
-                return os.includes('mac');
-            case 'linux':
-                return os.includes('linux');
-            case 'ie':
-                return _is_ie;
-            case 'ie8':
-                return is_ie_8;
-            case 'ie8+':
-                return is_ie_8_plus;
-            case 'ie9':
-                return is_ie_9;
-            case 'ie9+':
-                return is_ie_9_plus;
-            case 'chrome':
-                return is_chrome;
-            case 'gecko':
-                return is_gecko;
-            case 'safari':
-                return is_safari;
-        }
-
-        // Should never get here
-        return false;
-    }
-}());
-
-
-/**
- * Dynamic inclusion
- * @memberof $cms
- * @param snippet_hook
- * @param post
- * @param callback
- */
-$cms.loadSnippet = function loadSnippet(snippet_hook, post, callback) {
-    if (!window.location) { // In middle of page navigation away
-        return null;
-    }
-
-    var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
-        metas = document.getElementsByTagName('link'), i,
-        url = window.location.href;
-
-    for (i = 0; i < metas.length; i++) {
-        if (metas[i].getAttribute('rel') === 'canonical') {
-            url = metas[i].getAttribute('href');
-        }
-    }
-    if (!url) {
-        url = window.location.href;
-    }
-    var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
-        html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), callback, post);
-    if (callback) {
-        return null;
-    }
-    return html.responseText;
-};
-
-/* Tabs */
-$cms.dom.findUrlTab = function findUrlTab(hash) {
-    if (hash === undefined) {
-        hash = window.location.hash;
-    }
-
-    if (hash.replace(/^#/, '') !== '') {
-        var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
-
-        if ($cms.dom.$('#g_' + tab)) {
-            $cms.ui.selectTab('g', tab);
-        }
-        else if ((tab.indexOf('__') != -1) && ($cms.dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
-            var old = hash;
-            $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
-            window.location.hash = old;
-        }
-    }
-};
-
-$cms.dom.matchesThemeImage = function matchesThemeImage(src, url) {
-    return $cms.img(src) === $cms.img(url);
-};
-
-/* Animate the loading of a frame */
-$cms.dom.animateFrameLoad = function animateFrameLoad(pf, frame, leave_gap_top, leave_height) {
-    if (!pf) {
-        return;
-    }
-
-    leave_gap_top = +leave_gap_top || 0;
-    leave_height = !!leave_height;
-
-    if (!leave_height) {
-        // Enough to stop jumping around
-        pf.style.height = window.top.$cms.dom.getWindowHeight() + 'px';
-    }
-
-    $cms.dom.illustrateFrameLoad(frame);
-
-    var ifuob = window.top.$cms.dom.$('#iframe_under');
-    var extra = ifuob ? ((window != window.top) ? $cms.dom.findPosY(ifuob) : 0) : 0;
-    if (ifuob) {
-        ifuob.scrolling = 'no';
-    }
-
-    if (window === window.top) {
-        window.top.$cms.dom.smoothScroll($cms.dom.findPosY(pf) + extra - leave_gap_top);
-    }
-};
-
-$cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
-    var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
-
-    if (!$cms.$CONFIG_OPTION.enable_animations || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
-        return;
-    }
-
-    iframe.style.height = '80px';
-
-    try {
-        doc = iframe.contentDocument;
-        de = doc.documentElement;
-    }
-    catch (e) {
-        // May be connection interference somehow
-        iframe.scrolling = 'auto';
-        return;
-    }
-
-    head = '<style>';
-
-    for (i = 0; i < document.styleSheets.length; i++) {
-        try {
-            var stylesheet = document.styleSheets[i];
-            if (stylesheet.href && !stylesheet.href.includes('/global') && !stylesheet.href.includes('/merged')) {
-                continue;
-            }
-
-            if (stylesheet.cssText !== undefined) {
-                cssText += stylesheet.cssText;
-            } else {
-                var rules = [];
-                try {
-                    rules = stylesheet.cssRules ? stylesheet.cssRules : stylesheet.rules;
-                } catch (ignore) {
-                }
-
-                if (rules) {
-                    for (var j = 0; j < rules.length; j++) {
-                        if (rules[j].cssText) {
-                            cssText += rules[j].cssText + '\n\n';
-                        } else {
-                            cssText += rules[j].selectorText + '{ ' + rules[j].style.cssText + '}\n\n';
-                        }
-                    }
-                }
-            }
-        } catch (ignore) {}
-    }
-
-    head += cssText + '<\/style>';
-
-    doc.body.classList.add('website_body', 'main_website_faux');
-
-    if (!de.querySelector('style')) {// The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
-        $cms.dom.html(doc.head, head);
-    }
-
-    $cms.dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + $cms.img('{$IMG_INLINE*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
-
-    // Stupid workaround for Google Chrome not loading an image on unload even if in cache
-    setTimeout(function () {
-        if (!doc.getElementById('loading_image')) {
-            return;
-        }
-
-        var i_new = doc.createElement('img');
-        i_new.src = doc.getElementById('loading_image').src;
-
-        var i_default = doc.getElementById('loading_image');
-        if (i_default) {
-            i_new.className = i_default.className;
-            i_new.alt = i_default.alt;
-            i_new.id = i_default.id;
-            i_default.parentNode.replaceChild(i_new, i_default);
-        }
-    }, 0);
-};
-
-/* Smoothly scroll to another position on the page */
-$cms.dom.smoothScroll = function smoothScroll(dest_y, expected_scroll_y, dir, event_after) {
-    if (!$cms.$CONFIG_OPTION.enable_animations) {
-        try {
-            window.scrollTo(0, dest_y);
-        } catch (ignore) {}
-        return;
-    }
-
-    var scroll_y = window.pageYOffset;
-    if (typeof dest_y === 'string') {
-        dest_y = $cms.dom.findPosY($cms.dom.$id(dest_y), true);
-    }
-    if (dest_y < 0) {
-        dest_y = 0;
-    }
-    if ((expected_scroll_y != null) && (expected_scroll_y != scroll_y)) {
-        // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
-        return;
-    }
-
-    dir = (dest_y > scroll_y) ? 1 : -1;
-
-    var distance_to_go = (dest_y - scroll_y) * dir;
-    var dist = Math.round(dir * (distance_to_go / 25));
-
-    if (dir == -1 && dist > -25) {
-        dist = -25;
-    }
-    if (dir == 1 && dist < 25) {
-        dist = 25;
-    }
-
-    if (((dir == 1) && (scroll_y + dist >= dest_y)) || ((dir == -1) && (scroll_y + dist <= dest_y)) || (distance_to_go > 2000)) {
-        try {
-            window.scrollTo(0, dest_y);
-        } catch (e) {
-        }
-        if (event_after) {
-            event_after();
-        }
-        return;
-    }
-
-    try {
-        window.scrollBy(0, dist);
-    } catch (e) {
-        return; // May be stopped by popup blocker
-    }
-
-    window.setTimeout(function () {
-        $cms.dom.smoothScroll(dest_y, scroll_y + dist, dir, event_after);
-    }, 30);
-};
-
-/* Dimension functions */
-$cms.dom.registerMouseListener = function registerMouseListener(e) {
-    $cms.dom.registerMouseListener = noop; // ensure this function is only executed once
-
-    if (e) {
-        window.mouse_x = get_mouse_x(e);
-        window.mouse_y = get_mouse_y(e);
-    }
-
-    document.documentElement.addEventListener('mousemove', function (event) {
-        window.mouse_x = get_mouse_x(event);
-        window.mouse_y = get_mouse_y(event);
-    });
-
-    function get_mouse_x(event) {
-        try {
-            if (event.pageX) {
-                return event.pageX;
-            } else if (event.clientX) {
-                return event.clientX + window.pageXOffset;
-            }
-        } catch (ignore) {}
-
-        return 0;
-    }
-
-    function get_mouse_y(event) {
-        try {
-            if (event.pageY) {
-                return event.pageY;
-            } else if (event.clientY) {
-                return event.clientY + window.pageYOffset
-            }
-        } catch (ignore) {
-        }
-
-        return 0;
-    }
-};
-
-$cms.dom.getWindowWidth = function getWindowWidth(win) {
-    return (win || window).innerWidth - 18;
-};
-
-$cms.dom.getWindowHeight = function getWindowHeight(win) {
-    return (win || window).innerHeight - 18;
-};
-
-$cms.dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
-    win || (win = window);
-
-    var rect_a = win.document.body.parentElement.getBoundingClientRect(),
-        rect_b = win.document.body.getBoundingClientRect(),
-        a = (rect_a.bottom - rect_a.top),
-        b = (rect_b.bottom - rect_b.top);
-
-    return (a > b) ? a : b;
-};
-
-$cms.dom.findPosX = function findPosX(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
-    not_relative = !!not_relative;
-
-    var left = el.getBoundingClientRect().left + window.pageXOffset;
-
-    if (!not_relative) {
-        var position;
-        while (el) {
-            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
-                left -= $cms.dom.findPosX(el, true);
-                break;
-            }
-            el = el.parentElement;
-        }
-    }
-
-    return left;
-};
-
-$cms.dom.findPosY = function findPosY(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
-    not_relative = !!not_relative;
-
-    var top = el.getBoundingClientRect().top + window.pageYOffset;
-
-    if (!not_relative) {
-        var position;
-        while (el) {
-            if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
-                top -= $cms.dom.findPosY(el, true);
-                break;
-            }
-            el = el.parentElement;
-        }
-    }
-    return top;
-};
-
-/**
- * Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes!
- * @memberof $cms.dom
- * @param name
- * @param min_height
- */
-$cms.dom.resizeFrame = function resizeFrame(name, min_height) {
-    min_height = +min_height || 0;
-
-    var frame_element = $cms.dom.$id(name),
-        frame_window;
-
-    if (window.frames[name] !== undefined) {
-        frame_window = window.frames[name];
-    } else if (window.parent && window.parent.frames[name]) {
-        frame_window = window.parent.frames[name];
-    } else {
-        return;
-    }
-
-    if ((frame_element) && (frame_window) && (frame_window.document) && (frame_window.document.body)) {
-        var h = $cms.dom.getWindowScrollHeight(frame_window);
-
-        if ((h === 0) && (frame_element.parentElement.style.display === 'none')) {
-            h = min_height ? min_height : 100;
-
-            if (frame_window.parent) {
-                window.setTimeout(function () {
-                    if (frame_window.parent) {
-                        frame_window.parent.$cms.dom.triggerResize();
-                    }
-                });
-            }
-        }
-
-        if (h + 'px' != frame_element.style.height) {
-            if ((frame_element.scrolling !== 'auto' && frame_element.scrolling !== 'yes') || (frame_element.style.height == '0px')) {
-                frame_element.style.height = ((h >= min_height) ? h : min_height) + 'px';
-                if (frame_window.parent) {
-                    window.setTimeout(function () {
-                        if (frame_window.parent) frame_window.parent.$cms.dom.triggerResize();
-                    });
-                }
-                frame_element.scrolling = 'no';
-                frame_window.onscroll = function (event) {
-                    if (event == null) {
-                        return false;
-                    }
-                    try {
-                        frame_window.scrollTo(0, 0);
-                    } catch (e) {
-                    }
-
-                    return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
-                }; // Needed for Opera
-            }
-        }
-    }
-
-    frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
-};
-
-$cms.dom.triggerResize = function triggerResize(and_subframes) {
-    and_subframes = !!and_subframes;
-
-    if (!window.parent || !window.parent.document) {
-        return;
-    }
-    var i, iframes = window.parent.document.querySelectorAll('iframe');
-
-    for (i = 0; i < iframes.length; i++) {
-        if ((iframes[i].src === window.location.href) || (iframes[i].contentWindow === window) || ((iframes[i].id != '') && (window.parent.frames[iframes[i].id] !== undefined) && (window.parent.frames[iframes[i].id] == window))) {
-            if (iframes[i].style.height === '900px') {
-                iframes[i].style.height = 'auto';
-            }
-            window.parent.$cms.dom.resizeFrame(iframes[i].name);
-        }
-    }
-
-    if (and_subframes) {
-        iframes = document.querySelectorAll('iframe');
-        for (i = 0; i < iframes.length; i++) {
-            if ((iframes[i].name != '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
-                $cms.dom.resizeFrame(iframes[i].name);
-            }
-        }
-    }
-};
-
-/* Update a URL to maintain the current theme into it */
-$cms.maintainThemeInLink = function maintainThemeInLink(url) {
-    var usp = $cms.uspFromUrl(url),
-        theme = encodeURIComponent($cms.$THEME);
-
-    if (usp.keys().next().done) {
-        // `url` doesn't have a query string
-        return url + '?utheme=' + theme;
-    } else if (!usp.has('utheme') && !usp.has('keep_theme')) {
-        return url + '&utheme=' + theme;
-    }
-
-    return url;
-};
-
-/* Get URL stub to propagate keep_* parameters */
-$cms.keepStub = function keepStub(starting) {// `starting` set to true means "Put a '?' for the first parameter"
-    var keep = $cms.uspKeepSession.toString();
-
-    if (!keep) {
-        return '';
-    }
-
-    return (starting ? '?' : '&') + keep;
-};
-
-/**
- * Google Analytics tracking for links; particularly useful if you have no server-side stat collection
- * @memberof $cms
- * @param el
- * @param category
- * @param action
- * @returns {boolean}
- */
-$cms.gaTrack = function ga_track(el, category, action) {
-    if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
-        return;
-    }
-
-    if (category === undefined) {
-        category = '{!URL;^}';
-    }
-
-    if (action === undefined) {
-        action = el ? el.href : '{!UNKNOWN;^}';
-    }
-
-    try {
-        window.ga('send', 'event', category, action);
-    } catch (ignore) {}
-
-    if (el) {
-        setTimeout(function () {
-            $cms.navigate(el);
-        }, 100);
-
-        return false;
-    }
-};
-
-/**
- * Used by audio CAPTCHA.
- * @memberof $cms
- * @param ob
- */
-$cms.playSelfAudioLink = function playSelfAudioLink(ob) {
-    $cms.requireJavascript('sound').then(function () {
-        window.soundManager.setup({
-            url: $cms.baseUrl('data'),
-            debugMode: false,
-            onready: function () {
-                var sound_object = window.soundManager.createSound({url: ob.href});
-                if (sound_object) {
-                    sound_object.play();
-                }
-            }
-        });
-    });
-};
-
-((function () {
-    // <{element's uid}, {setTimeout id}>
-    var timeouts = {};
-
-    $cms.dom.fadeTransition = function fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
-        if (!$cms.isEl(el)) {
-            return;
-        }
-
-        destPercentOpacity = +destPercentOpacity || 0;
-        periodInMsecs = +periodInMsecs || 0;
-        increment = +increment || 0;
-        destroyAfter = !!destroyAfter;
-
-        if (!$cms.$CONFIG_OPTION.enable_animations) {
-            el.style.opacity = destPercentOpacity / 100.0;
-            return;
-        }
-
-        $cms.dom.clearTransition(el);
-
-        var again, newIncrement;
-
-        if (el.style.opacity) {
-            var diff = (destPercentOpacity / 100.0) - el.style.opacity,
-                direction = 1;
-
-            if (increment > 0) {
-                if (el.style.opacity > (destPercentOpacity / 100.0)) {
-                    direction = -1;
-                }
-                newIncrement = Math.min(direction * diff, increment / 100.0);
-            } else {
-                if (el.style.opacity < (destPercentOpacity / 100.0)) {
-                    direction = -1;
-                }
-                newIncrement = Math.max(direction * diff, increment / 100.0);
-            }
-
-            var temp = parseFloat(el.style.opacity) + (direction * newIncrement);
-
-            if (temp < 0.0) {
-                temp = 0.0;
-            } else if (temp > 1.0) {
-                temp = 1.0;
-            }
-
-            el.style.opacity = temp;
-            again = (Math.round(temp * 100) !== Math.round(destPercentOpacity));
-        } else {
-            // Opacity not set yet, need to call back in an event timer
-            again = true;
-        }
-
-        if (again) {
-            timeouts[$cms.uid(el)] = window.setTimeout(function () {
-                $cms.dom.fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
-            }, periodInMsecs);
-        } else if (destroyAfter && el.parentNode) {
-            $cms.dom.clearTransition(el);
-            el.parentNode.removeChild(el);
-        }
-    };
-
-    $cms.dom.hasFadeTransition = function hasFadeTransition(el) {
-        return $cms.isEl(el) && ($cms.uid(el) in timeouts);
-    };
-
-    $cms.dom.clearTransition = function clearTransition(el) {
-        var uid = $cms.isEl(el) && $cms.uid(el);
-
-        if (uid && timeouts[uid]) {
-            try { // Cross-frame issues may cause error
-                window.clearTimeout(timeouts[uid]);
-            } catch (ignore) {}
-            delete timeouts[uid];
-        }
-    };
-
-    /* Set opacity, without interfering with the thumbnail timer */
-    $cms.dom.clearTransitionAndSetOpacity = function clearTransitionAndSetOpacity(el, fraction) {
-        $cms.dom.clearTransition(el);
-        el.style.opacity = fraction;
-    };
-})());
 
 (function () {
     /*
@@ -8252,139 +8405,4 @@ $cms.playSelfAudioLink = function playSelfAudioLink(ob) {
             }, false, post_params);
         }
     }
-}());
-
-(function () {
-    var _blockDataCache = {};
-    /**
-     * This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
-     * @memberof $cms
-     * @param url
-     * @param new_block_params
-     * @param target_div
-     * @param append
-     * @param callback
-     * @param scroll_to_top_of_wrapper
-     * @param post_params
-     * @param inner
-     * @param show_loading_animation
-     * @returns {boolean}
-     */
-    $cms.callBlock = function callBlock(url, new_block_params, target_div, append, callback, scroll_to_top_of_wrapper, post_params, inner, show_loading_animation) {
-        scroll_to_top_of_wrapper = !!scroll_to_top_of_wrapper;
-        post_params = (post_params !== undefined) ? post_params : null;
-        inner = !!inner;
-        show_loading_animation = (show_loading_animation !== undefined) ? !!show_loading_animation : true;
-        if ((_blockDataCache[url] === undefined) && (new_block_params != '')) {
-            // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
-            _blockDataCache[url] = $cms.dom.html(target_div);
-        }
-
-        var ajax_url = url;
-        if (new_block_params != '') {
-            ajax_url += '&block_map_sup=' + encodeURIComponent(new_block_params);
-        }
-
-        ajax_url += '&utheme=' + $cms.$THEME;
-        if ((_blockDataCache[ajax_url] !== undefined) && post_params == null) {
-            // Show results from cache
-            show_block_html(_blockDataCache[ajax_url], target_div, append, inner);
-            if (callback) {
-                callback();
-            }
-            return false;
-        }
-
-        // Show loading animation
-        var loading_wrapper = target_div;
-        if ((loading_wrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loading_wrapper).indexOf('ajax_loading_block') === -1) && (show_loading_animation)) {
-            var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
-
-            if (raw_ajax_grow_spot[0] !== undefined && append) {
-                // If we actually are embedding new results a bit deeper
-                loading_wrapper = raw_ajax_grow_spot[0];
-            }
-
-            var loading_wrapper_inner = document.createElement('div');
-            if (!$cms.dom.isCss(loading_wrapper, 'position', ['relative', 'absolute'])) {
-                if (append) {
-                    loading_wrapper_inner.style.position = 'relative';
-                } else {
-                    loading_wrapper.style.position = 'relative';
-                    loading_wrapper.style.overflow = 'hidden'; // Stops margin collapsing weirdness
-                }
-            }
-
-            var loading_image = $cms.dom.create('img', {
-                class: 'ajax_loading_block',
-                src: $cms.img('{$IMG;,loading}'),
-                css: {
-                    position: 'absolute',
-                    zIndex: 1000,
-                    left: (target_div.offsetWidth / 2 - 10) + 'px'
-                }
-            });
-            if (!append) {
-                loading_image.style.top = (target_div.offsetHeight / 2 - 20) + 'px';
-            } else {
-                loading_image.style.top = 0;
-                loading_wrapper_inner.style.height = '30px';
-            }
-            loading_wrapper_inner.appendChild(loading_image);
-            loading_wrapper.appendChild(loading_wrapper_inner);
-            window.document.body.style.cursor = 'wait';
-        }
-
-        // Make AJAX call
-        $cms.doAjaxRequest(
-            ajax_url + $cms.keepStub(),
-            function (raw_ajax_result) { // Show results when available
-                _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);
-            },
-            post_params
-        );
-
-        return false;
-
-        function _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
-            var new_html = raw_ajax_result.responseText;
-            _blockDataCache[ajax_url] = new_html;
-
-            // Remove loading animation if there is one
-            var ajax_loading = target_div.querySelector('.ajax_loading_block');
-            if (ajax_loading) {
-                ajax_loading.parentNode.parentNode.removeChild(ajax_loading.parentNode);
-            }
-            window.document.body.style.cursor = '';
-
-            // Put in HTML
-            show_block_html(new_html, target_div, append, inner);
-
-            // Scroll up if required
-            if (scroll_to_top_of_wrapper) {
-                try {
-                    window.scrollTo(0, $cms.dom.findPosY(target_div));
-                } catch (e) {}
-            }
-
-            // Defined callback
-            if (callback) {
-                callback();
-            }
-        }
-
-        function show_block_html(new_html, target_div, append, inner) {
-            var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
-            if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
-            if (append) {
-                $cms.dom.appendHtml(target_div, new_html);
-            } else {
-                if (inner) {
-                    $cms.dom.html(target_div, new_html);
-                } else {
-                    $cms.dom.outerHtml(target_div, new_html);
-                }
-            }
-        }
-    };
 }());

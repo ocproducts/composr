@@ -25,7 +25,7 @@ function file_id_to_file(file_id) {
 function template_editor_assign_unload_event() {
     window.addEventListener('beforeunload', function (event) {
         if (document.querySelector('.file_changed')) {
-            undo_staff_unload_action();
+            $cms.undoStaffUnloadAction();
             window.unloaded = false;
 
             var ret = '{!UNSAVED_TEMPLATE_CHANGES;^}';

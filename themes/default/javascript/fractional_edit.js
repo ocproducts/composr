@@ -9,7 +9,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         return null;
     }
 
-    if (!magic_keypress(event) && !was_double_click && (object === event.target)) {
+    if (!$cms.magicKeypress(event) && !was_double_click && (object === event.target)) {
         return null;
     }
 
@@ -167,7 +167,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             event.preventDefault();
         }
 
-        if (magic_keypress(event)) {
+        if ($cms.magicKeypress(event)) {
             cleanup_function();
         }
 
