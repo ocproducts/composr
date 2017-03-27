@@ -1852,7 +1852,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
             $opts = array(
                 'method' => $http_verb,
-                'header' => rtrim(($do_ip_forwarding ? ('Host: ' . $url_parts['host'] . "\r\n") : '') . $headers),
+                'header' => rtrim((($url_parts['host'] != $connect_to) ? ('Host: ' . $url_parts['host'] . "\r\n") : '') . $headers),
                 'user_agent' => $ua,
                 'content' => $raw_payload,
                 'follow_location' => $no_redirect ? 0 : 1,
