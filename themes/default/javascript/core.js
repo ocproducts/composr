@@ -5,7 +5,7 @@
         $cms.attachBehaviors(document);
     });
 
-    $cms.defineBehaviors(/** @lends $cms.behaviors */{
+    $cms.defineBehaviors(/**@lends $cms.behaviors*/{
         // Implementation for [data-require-javascript="[<scripts>...]"]
         initializeRequireJavascript: {
             priority: 10000,

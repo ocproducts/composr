@@ -41,195 +41,195 @@
     /** @namespace $cms */
     $cms = extendDeep($cms, /** @lends $cms */ {
         // Unique for each copy of Composr on the page
-        /**@var {string}*/
+        /**@member {string}*/
         id: 'composr' + ('' + Math.random()).substr(2),
 
         // Load up symbols data
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $IS_GUEST: boolVal(symbols.IS_GUEST),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $IS_STAFF: boolVal(symbols.IS_STAFF),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $IS_ADMIN: boolVal(symbols.IS_ADMIN),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $IS_HTTPAUTH_LOGIN: boolVal(symbols.IS_HTTPAUTH_LOGIN),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $IS_A_COOKIE_LOGIN: boolVal(symbols.IS_A_COOKIE_LOGIN),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $DEV_MODE: boolVal(symbols.DEV_MODE),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $JS_ON: boolVal(symbols.JS_ON),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $MOBILE: boolVal(symbols.MOBILE),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $DESKTOP: !boolVal(symbols.MOBILE),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $FORCE_PREVIEWS: boolVal(symbols.FORCE_PREVIEWS),
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         $VERBOSE: true,
 
-        /**@var {number}*/
+        /**@member {number}*/
         $HTTP_STATUS_CODE: (+symbols.HTTP_STATUS_CODE || 0),
-        /**@var {number}*/
+        /**@member {number}*/
         $GROUP_ID: (+symbols.GROUP_ID || 0),
 
-        /**@var {string}*/
+        /**@member {string}*/
         $VERSION: strVal(symbols.VERSION),
-        /**@var {string}*/
+        /**@member {string}*/
         $PAGE: strVal(symbols.PAGE),
-        /**@var {string}*/
+        /**@member {string}*/
         $PAGE_TITLE: strVal(symbols.PAGE_TITLE),
-        /**@var {string}*/
+        /**@member {string}*/
         $ZONE: strVal(symbols.ZONE),
-        /**@var {string}*/
+        /**@member {string}*/
         $MEMBER: strVal(symbols.MEMBER),
-        /**@var {string}*/
+        /**@member {string}*/
         $USERNAME: strVal(symbols.USERNAME),
-        /**@var {string}*/
+        /**@member {string}*/
         $AVATAR: strVal(symbols.AVATAR),
-        /**@var {string}*/
+        /**@member {string}*/
         $MEMBER_EMAIL: strVal(symbols.MEMBER_EMAIL),
-        /**@var {string}*/
+        /**@member {string}*/
         $PHOTO: strVal(symbols.PHOTO),
-        /**@var {string}*/
+        /**@member {string}*/
         $MEMBER_PROFILE_URL: strVal(symbols.MEMBER_PROFILE_URL),
-        /**@var {string}*/
+        /**@member {string}*/
         $FROM_TIMESTAMP: symbols.FROM_TIMESTAMP,
-        /**@var {string}*/
+        /**@member {string}*/
         $THEME: strVal(symbols.THEME),
-        /**@var {string}*/
+        /**@member {string}*/
         $LANG: strVal(symbols.LANG),
-        /**@var {string}*/
+        /**@member {string}*/
         $BROWSER_UA: strVal(symbols.BROWSER_UA),
-        /**@var {string}*/
+        /**@member {string}*/
         $OS: strVal(symbols.OS),
-        /**@var {string}*/
+        /**@member {string}*/
         $USER_AGENT: strVal(symbols.USER_AGENT),
-        /**@var {string}*/
+        /**@member {string}*/
         $IP_ADDRESS: strVal(symbols.IP_ADDRESS),
-        /**@var {string}*/
+        /**@member {string}*/
         $TIMEZONE: strVal(symbols.TIMEZONE),
-        /**@var {string}*/
+        /**@member {string}*/
         $CHARSET: strVal(symbols.CHARSET),
-        /**@var {string}*/
+        /**@member {string}*/
         $KEEP: strVal(symbols.KEEP),
-        /**@var {string}*/
+        /**@member {string}*/
         $PREVIEW_URL: strVal(symbols.PREVIEW_URL),
-        /**@var {string}*/
+        /**@member {string}*/
         $SITE_NAME: strVal(symbols.SITE_NAME),
-        /**@var {string}*/
+        /**@member {string}*/
         $COPYRIGHT: strVal(symbols.COPYRIGHT),
-        /**@var {string}*/
+        /**@member {string}*/
         $DOMAIN: strVal(symbols.DOMAIN),
-        /**@var {string}*/
+        /**@member {string}*/
         $FORUM_BASE_URL: strVal(symbols.FORUM_BASE_URL),
-        /**@var {string}*/
+        /**@member {string}*/
         $BASE_URL: strVal(symbols.BASE_URL),
-        /**@var {string}*/
+        /**@member {string}*/
         $BASE_URL_S: strVal(symbols.BASE_URL) + '/', // With trailing slash
-        /**@var {string}*/
+        /**@member {string}*/
         $BASE_URL_PRL: toProtocolRelative(symbols.BASE_URL), // Protocol relative
-        /**@var {string}*/
+        /**@member {string}*/
         $CUSTOM_BASE_URL: strVal(symbols.CUSTOM_BASE_URL),
-        /**@var {string}*/
+        /**@member {string}*/
         $BASE_URL_NOHTTP: strVal(symbols.BASE_URL_NOHTTP),
-        /**@var {string}*/
+        /**@member {string}*/
         $BASE_URL_NOHTTP_S: strVal(symbols.BASE_URL_NOHTTP) + '/', // With trailing slash
-        /**@var {string}*/
+        /**@member {string}*/
         $CUSTOM_BASE_URL_NOHTTP: strVal(symbols.CUSTOM_BASE_URL_NOHTTP),
-        /**@var {string}*/
+        /**@member {string}*/
         $BRAND_NAME: strVal(symbols.BRAND_NAME),
-        /**@var {string}*/
+        /**@member {string}*/
         $SESSION_COOKIE_NAME: strVal(symbols.SESSION_COOKIE_NAME),
-        /**@var {string}*/
+        /**@member {string}*/
         $COOKIE_PATH: strVal(symbols.COOKIE_PATH),
-        /**@var {string}*/
+        /**@member {string}*/
         $COOKIE_DOMAIN: strVal(symbols.COOKIE_DOMAIN),
 
-        /**@var {object}*/
+        /**@member {object}*/
         $CONFIG_OPTION: {
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             enable_animations: boolVal(symbols.CONFIG_OPTION.enable_animations),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             detect_javascript: boolVal(symbols.CONFIG_OPTION.detect_javascript),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             is_on_timezone_detection: boolVal(symbols.CONFIG_OPTION.is_on_timezone_detection),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             wysiwyg: boolVal(symbols.CONFIG_OPTION.wysiwyg),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             complex_uploader: boolVal(symbols.CONFIG_OPTION.complex_uploader),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             collapse_user_zones: boolVal(symbols.CONFIG_OPTION.collapse_user_zones),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             sitewide_im: boolVal(symbols.CONFIG_OPTION.sitewide_im),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             simplified_attachments_ui: boolVal(symbols.CONFIG_OPTION.simplified_attachments_ui),
-            /**@var {boolean}*/
+            /**@member {boolean}*/
             spam_heuristic_pasting: boolVal(symbols.CONFIG_OPTION.spam_heuristic_pasting),
 
-            /**@var {string}*/
+            /**@member {string}*/
             thumb_width: strVal(symbols.CONFIG_OPTION.thumb_width),
-            /**@var {string}*/
+            /**@member {string}*/
             js_captcha: symbols.CONFIG_OPTION.js_captcha,
-            /**@var {string}*/
+            /**@member {string}*/
             google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
-            /**@var {string}*/
+            /**@member {string}*/
             long_google_cookies: symbols.CONFIG_OPTION.long_google_cookies,
-            /**@var {string}*/
+            /**@member {string}*/
             editarea: symbols.CONFIG_OPTION.editarea,
-            /**@var {string}*/
+            /**@member {string}*/
             fixed_width: symbols.CONFIG_OPTION.fixed_width,
-            /**@var {string}*/
+            /**@member {string}*/
             infinite_scrolling: symbols.CONFIG_OPTION.infinite_scrolling,
-            /**@var {string}*/
+            /**@member {string}*/
             eager_wysiwyg: symbols.CONFIG_OPTION.eager_wysiwyg,
-            /**@var {string}*/
+            /**@member {string}*/
             show_inline_stats: symbols.CONFIG_OPTION.show_inline_stats,
-            /**@var {string}*/
+            /**@member {string}*/
             notification_desktop_alerts: symbols.CONFIG_OPTION.notification_desktop_alerts,
-            /**@var {string}*/
+            /**@member {string}*/
             enable_theme_img_buttons: symbols.CONFIG_OPTION.enable_theme_img_buttons,
-            /**@var {string}*/
+            /**@member {string}*/
             enable_previews: symbols.CONFIG_OPTION.enable_previews,
-            /**@var {string}*/
+            /**@member {string}*/
             background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation,
-            /**@var {string}*/
+            /**@member {string}*/
             topic_pin_max_days: symbols.CONFIG_OPTION.topic_pin_max_days
         },
-        /**@var {object}*/
+        /**@member {object}*/
         $VALUE_OPTION: {
-            /**@var {string}*/
+            /**@member {string}*/
             js_keep_params: symbols.VALUE_OPTION.js_keep_params,
-            /**@var {string}*/
+            /**@member {string}*/
             commercial_spellchecker: symbols.VALUE_OPTION.commercial_spellchecker
         },
-        /**@var {object}*/
+        /**@member {object}*/
         $HAS_PRIVILEGE: {
-            /**@var {string}*/
+            /**@member {string}*/
             sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
         },
 
         // Just some more useful stuff, (not tempcode symbols)
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         canTryUrlSchemes: boolVal(symbols.EXTRA.can_try_url_schemes),
-        /**@var {object}*/
+        /**@member {object}*/
         staffTooltipsUrlPatterns: objVal(symbols.EXTRA.staff_tooltips_url_patterns),
 
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         isOpera: isOpera,
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         isFirefox: isFirefox,
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         isSafari: isSafari,
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         isIE: isIE,
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         isEdge: isEdge,
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         isChrome: isChrome,
-        /**@var {boolean}*/
+        /**@member {boolean}*/
         isTouchEnabled: ('ontouchstart' in docEl),
 
         // Export useful stuff
@@ -798,7 +798,11 @@
         return target
     }
 
-    // Deep extend, clones any arrays and plain objects found in sources.
+    /**
+     * Deep extend, clones any arrays and plain objects found in sources.
+     * @param target
+     * @returns {object}
+     */
     function extendDeep(target/*, ...sources*/) {
         for (var i = 1, len = arguments.length; i < len; i++) {
             _extend(target, arguments[i], EXTEND_DEEP);
@@ -4120,9 +4124,9 @@
      * @class
      */
     function View(params, viewOptions) {
-        /** @var {string} */
+        /** @member {string} */
         this.tagName = 'div';
-        /** @var { HTMLElement } */
+        /** @member { HTMLElement } */
         this.el = null;
 
         this.initialize.apply(this, arguments);
@@ -4172,8 +4176,8 @@
             return $cms.dom.closest(el, selector, this.el);
         },
 
-        // Remove this view by taking the element out of the DOM.
         /**
+         * Remove this view by taking the element out of the DOM.
          * @method
          */
         remove: function () {
@@ -4181,19 +4185,19 @@
             return this;
         },
 
-        // Remove this view's element from the document and all event listeners
-        // attached to it. Exposed for subclasses using an alternative DOM
-        // manipulation API.
         /**
+         * Remove this view's element from the document and all event listeners
+         * attached to it. Exposed for subclasses using an alternative DOM
+         * manipulation API.
          * @method
          */
         _removeElement: function () {
             this.el && this.el.parentNode && this.el.parentNode.removeChild(this.el);
         },
 
-        // Change the view's element (`this.el` property) and re-delegate the
-        // view's events on the new element.
         /**
+         * Change the view's element (`this.el` property) and re-delegate the
+         * view's events on the new element.
          * @method
          */
         setElement: function (element) {
@@ -4203,11 +4207,12 @@
             return this;
         },
 
-        // Creates the `this.el` reference for this view using the
-        // given `el`. `el` can be a CSS selector or an HTML element.
-        // Subclasses can override this to utilize an
-        // alternative DOM manipulation API and are only required to set the `this.el` property.
+
         /**
+         * Creates the `this.el` reference for this view using the
+         * given `el`. `el` can be a CSS selector or an HTML element.
+         * Subclasses can override this to utilize an
+         * alternative DOM manipulation API and are only required to set the `this.el` property.
          * @method
          */
         _setElement: function (el) {
@@ -4221,13 +4226,12 @@
             return {};
         },
 
-        // Set callbacks, where `this.events` is a hash of
-        // *{"event selector": "callback"}*
-        // pairs. Callbacks will be bound to the view, with `this` set properly.
-        // Uses event delegation for efficiency.
-        // Omitting the selector binds the event to `this.el`.
-
         /**
+         * Set callbacks, where `this.events` is a hash of
+         * *{"event selector": "callback"}*
+         * pairs. Callbacks will be bound to the view, with `this` set properly.
+         * Uses event delegation for efficiency.
+         * Omitting the selector binds the event to `this.el`.
          * @method
          */
         delegateEvents: function (events) {
@@ -4251,8 +4255,8 @@
             return this;
         },
 
-        // Add a single event listener to the view's element (or a child element using `selector`).
         /**
+         * Add a single event listener to the view's element (or a child element using `selector`).
          * @method
          */
         delegate: function (eventName, selector, listener) {
@@ -4260,10 +4264,11 @@
             return this;
         },
 
-        // Clears all callbacks previously bound to the view by `delegateEvents`.
-        // You usually don't need to use this, but may wish to if you have multiple
-        // views attached to the same DOM element.
+
         /**
+         * Clears all callbacks previously bound to the view by `delegateEvents`.
+         * You usually don't need to use this, but may wish to if you have multiple
+         * views attached to the same DOM element.
          * @method
          */
         undelegateEvents: function () {
@@ -4273,8 +4278,8 @@
             return this;
         },
 
-        // A finer-grained `undelegateEvents` for removing a single delegated event. `selector` and `listener` are both optional.
         /**
+         * A finer-grained `undelegateEvents` for removing a single delegated event. `selector` and `listener` are both optional.
          * @method
          */
         undelegate: function (eventName, selector, listener) {
