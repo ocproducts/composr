@@ -224,6 +224,8 @@ Notifications are sent out to Tapatalk users based on various actions within Com
 
 Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows which Composr member IDs are associated with which device IDs. We only relay out notifications for members who have signed into Tapatalk at least once.
 
+
+
 For a demo, see this video tutorial: https://www.youtube.com/watch?v=SAGuj2mgkRo
 ';
     }
