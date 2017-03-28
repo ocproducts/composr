@@ -498,6 +498,7 @@ Known limitations and important considerations:
 
 [title="5"]USA users[/title]
 
+[media width="300" framed="0" float="right"]data_custom/images/docs/tut_ecommerce/taxcloud.png[/media]
 Basically if you are selling products commercially must register with your state for sales tax. Services usually are not liable for sales tax.
 
 USA tax is extremely complex as it may be levied at the federal level, state level, county level, and city level. For most USA states the tax is charged based on where the buyer resides ("destination taxation"), not the seller ("origin taxation"). That is, unless the buyer is in a state where you don't have any operations centre (in which case no sales tax applies at all unless there's a federal tax which is rare &dagger;).
