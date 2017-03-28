@@ -119,9 +119,9 @@
 
 {$,Load classList and ES6 Promise polyfill for Internet Explorer}
 {+START,IF,{$BROWSER_MATCHES,ie}}
-<script defer src="{$BASE_URL*}/data/polyfills/class-list.js"></script>
-<script defer src="{$BASE_URL*}/data/polyfills/promise.js"></script>
-<script defer src="{$BASE_URL*}/data/polyfills/custom-event-constructor.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/class-list.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/promise.js"></script>
+<script src="{$BASE_URL*}/data/polyfills/custom-event-constructor.js"></script>
 {+END}
 
 {$,Polyfills for everyone}
@@ -135,8 +135,6 @@
 {$,Google Analytics account, if one set up}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}
 	<script>
-		var opt = '{$CONFIG_OPTION,long_google_cookies}' === '1' ? 'auto' : { cookieExpires: 0 };
-
 		(function (i, s, o, g, r, a, m) {
 			i['GoogleAnalyticsObject'] = r;
 			i[r] = i[r] || function () {
@@ -150,8 +148,9 @@
 			m.parentNode.insertBefore(a, m)
 		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-		ga('create','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}', opt);
-		ga('send','pageview');
+		var gaOption = (+'{$CONFIG_OPTION,long_google_cookies}') === 1 ? 'auto' : { cookieExpires: 0 };
+		window.ga('create','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}', gaOption);
+		window.ga('send','pageview');
 	</script>
 {+END}{+END}
 
@@ -159,11 +158,11 @@
 {+START,IF,{$AND,{$CONFIG_OPTION,cookie_notice},{$RUNNING_SCRIPT,index}}}
 	<script>
 		window.cookieconsent_options = {
-			'message': '{!COOKIE_NOTICE;,{$SITE_NAME}}',
-			'dismiss': '{!INPUTSYSTEM_OK;}',
-			'learnMore': '{!READ_MORE;}',
-			'link': '{$PAGE_LINK;,:privacy}',
-			'theme': 'dark-top'
+			message: '{!COOKIE_NOTICE;,{$SITE_NAME}}',
+			dismiss: '{!INPUTSYSTEM_OK;}',
+			learnMore: '{!READ_MORE;}',
+			link: '{$PAGE_LINK;,:privacy}',
+			theme: 'dark-top'
 		};
 	</script>
 	<script defer src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
@@ -171,8 +170,6 @@
 
 <script>
 	// Early initialization to allow end-users not using CSP to add inline $cms.ready & $cms.load calls
-	window.$cms || (window.$cms = {});
-
 	(function ($cms){
 		$cms.ready = new Promise(function (resolve) {
 			$cms._resolveReady = resolve;
@@ -180,7 +177,7 @@
 		$cms.load = new Promise(function (resolve) {
 			$cms._resolveLoad = resolve;
 		});
-	}(window.$cms));
+	}(window.$cms || (window.$cms = {})));
 </script>
 
 {$,JavaScript code (usually) from Composr page}

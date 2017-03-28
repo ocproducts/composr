@@ -669,7 +669,7 @@
                 return;
             }
 
-            $cms.manageScrollHeigh(textarea);
+            $cms.manageScrollHeight(textarea);
         },
 
         // Implementation for [data-open-as-overlay]
@@ -1509,11 +1509,11 @@
 
     $cms.templates.ipBanScreen = function (params, container) {
         var textarea = commandrLs.querySelector('#bans');
-        $cms.manageScrollHeigh(textarea);
+        $cms.manageScrollHeight(textarea);
 
         if (!$cms.$MOBILE) {
             $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
-                $cms.manageScrollHeigh(textarea);
+                $cms.manageScrollHeight(textarea);
             });
         }
     };

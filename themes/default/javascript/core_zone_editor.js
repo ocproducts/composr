@@ -7,9 +7,11 @@
     }
 
     $cms.inherits(ZoneEditorScreen, $cms.View, {
-        events: {
-            'submit .js-form-ze-save': 'submit',
-            'click .js-btn-fetch-and-submit': 'fetchAndSubmit'
+        events: function () {
+            return {
+                'submit .js-form-ze-save': 'submit',
+                'click .js-btn-fetch-and-submit': 'fetchAndSubmit'
+            };
         },
 
         submit: function (e, form) {
@@ -63,11 +65,13 @@
     }
 
     $cms.inherits(ZoneEditorPanel, $cms.View, {
-        events: {
-            'click .js-click-select-tab': 'selectTab',
-            'submit .js-form-zone-editor-comcode': 'submitComcode',
-            'click .js-a-toggle-wysiwyg': 'toggleWysiwyg',
-            'change .js-ta-ze-comcode, .js-sel-zones-draw, .js-inp-zones-draw': 'setEditedPanel'
+        events: function () {
+            return {
+                'click .js-click-select-tab': 'selectTab',
+                'submit .js-form-zone-editor-comcode': 'submitComcode',
+                'click .js-a-toggle-wysiwyg': 'toggleWysiwyg',
+                'change .js-ta-ze-comcode, .js-sel-zones-draw, .js-inp-zones-draw': 'setEditedPanel'
+            };
         },
 
         selectTab: function (e, target) {

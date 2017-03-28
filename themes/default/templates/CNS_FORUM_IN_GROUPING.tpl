@@ -1,4 +1,4 @@
-<tr data-tpl="cnsForumInGrouping" data-tpl-params="{+START,PARAMS_JSON,FORUM_RULES_URL,INTRO_QUESTION_URL}{_*}{+END}">
+<tr data-require-javascript="cns_forum" data-tpl="cnsForumInGrouping" data-tpl-params="{+START,PARAMS_JSON,FORUM_RULES_URL,INTRO_QUESTION_URL}{_*}{+END}">
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<td class="cns_forum_new_post_indicator cns_column1">
 			<img width="32" height="32" title="{LANG_NEW_POST_OR_NOT*}" alt="{LANG_NEW_POST_OR_NOT*}" src="{$IMG*,cns_general/{NEW_POST_OR_NOT*}}" />

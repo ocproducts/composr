@@ -364,64 +364,56 @@
         /**@method*/
         manageScrollHeight: manageScrollHeight,
         /**@method*/
-        openModalWindow: openModalWindow
+        openModalWindow: openModalWindow,
+
+        /**
+         * Addons will add template related methods under this object
+         * @namespace $cms.templates
+         */
+        templates: {},
+        /**
+         * Addons can add functions under this object
+         * @namespace $cms.functions
+         */
+        functions: {},
+        /**
+         * Addons will add $cms.View subclasses under this object
+         * @namespace $cms.views
+         */
+        views: {},
+        /**
+         * @namespace $cms.viewInstances
+         */
+        viewInstances: {},
+        /**
+         * @namespace $cms.ui
+         */
+        ui: {},
+        /**
+         * Validation code and other general code relating to forms
+         * @namespace $cms.form
+         */
+        form: {},
+        /**
+         * @namespace $cms.settings
+         */
+        settings: {},
+        /**
+         * Addons will add "behaviors" under this object
+         * @namespace $cms.behaviors
+         */
+        behaviors: {},
+        /**
+         * Browser feature detection
+         * @namespace $cms.support
+         */
+        support: {},
+        /**
+         * DOM helper methods
+         * @namespace $cms.dom
+         */
+        dom: {}
     });
-
-    /**
-     * Addons will add template related methods under this object
-     * @namespace $cms.templates
-     */
-    $cms.templates || ($cms.templates = {});
-
-    /**
-     * Addons can add functions under this object
-     * @namespace $cms.functions
-     */
-    $cms.functions || ($cms.functions = {});
-
-    /**
-     * Addons will add $cms.View subclasses under this object
-     * @namespace $cms.views
-     */
-    $cms.views || ($cms.views = {});
-
-    /**
-     * @namespace $cms.viewInstances
-     */
-    $cms.viewInstances || ($cms.viewInstances = {});
-
-    /**
-     * @namespace $cms.ui
-     */
-    $cms.ui || ($cms.ui = {});
-
-    /**
-     * Validation code and other general code relating to forms
-     * @namespace $cms.form
-     */
-    $cms.form || ($cms.form = {});
-
-    /** @namespace $cms.settings */
-    $cms.settings || ($cms.settings = {});
-
-    /**
-     * Addons will add "behaviors" under this object
-     * @namespace $cms.behaviors
-     */
-    $cms.behaviors || ($cms.behaviors = {});
-
-    /**
-     * Browser feature detection
-     * @namespace $cms.support
-     */
-    $cms.support || ($cms.support = {});
-
-    /**
-     * DOM helper methods
-     * @namespace $cms.dom
-     * */
-    $cms.dom || ($cms.dom = {});
-
 
     var domReadyPromise = new Promise(function (resolve) {
         if (document.readyState === 'interactive') {
@@ -803,9 +795,8 @@
         return (obj != null) && (internalName(obj) === 'Date');
     }
 
-    // Inspired by jQuery.isNumeric
     /**
-     *
+     * Inspired by jQuery.isNumeric
      * @param val
      * @returns {boolean}
      */
@@ -834,10 +825,9 @@
             && ((len === 0) || ((0 in obj) && ((len - 1) in obj)));
     }
 
-    // Returns a random integer between min (inclusive) and max (inclusive)
-    // Using Math.round() will give you a non-uniform distribution!
     /**
-     *
+     * Returns a random integer between min (inclusive) and max (inclusive)
+     * Using Math.round() will give you a non-uniform distribution!
      * @param min
      * @param max
      * @returns {*}
@@ -1289,7 +1279,7 @@
     /**
      *
      * @param iterable
-     * @returns {Array}
+     * @returns { Array }
      */
     function arrayFromIterable(iterable) {
         var item, array = [];
@@ -1728,13 +1718,21 @@
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
 
-    // If the browser has support for CSS transitions
+    /**
+     * If the browser has support for CSS transitions
+     * @memberof $cms.support
+     * @type {boolean}
+     */
     $cms.support.cssTransitions = ('transition' in emptyElStyle) || ('WebkitTransition' in emptyElStyle) || ('msTransition' in emptyElStyle);
 
-    // If the browser has support for an <input [type=???]>
+    /**
+     * If the browser has support for an input[type=???]
+     * @memberof $cms.support
+     * @type {{search: boolean, tel: boolean, url: boolean, email: boolean, datetime: boolean, date: boolean, month: boolean, week: boolean, time: boolean, datetime-local: boolean, number: boolean, range: boolean, color: boolean}}
+     */
     $cms.support.inputTypes = {
-        search: 0, tel: 0, url: 0, email: 0, datetime: 0, date: 0, month: 0,
-        week: 0, time: 0, 'datetime-local': 0, number: 0, range: 0, color: 0
+        search: false, tel: false, url: false, email: false, datetime: false, date: false, month: false,
+        week: false, time: false, 'datetime-local': false, number: false, range: false, color: false
     };
 
     (function () {
@@ -1856,8 +1854,8 @@
         return (property !== undefined) ? cs.getPropertyValue(property) : cs;
     }
 
-    // Returns a single matching child element, defaults to 'document' as parent
     /**
+     * Returns a single matching child element, defaults to 'document' as parent
      * @memberof $cms.dom
      * @param context
      * @param id
@@ -1875,9 +1873,9 @@
         return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
     };
 
-    // Returns a single matching child element, `context` defaults to 'document'
     var rgxIdSelector = /^\#[\w\-]+$/;
     /**
+     * Returns a single matching child element, `context` defaults to 'document'
      * @memberof $cms.dom
      * @param context
      * @param selector
@@ -1895,9 +1893,9 @@
         return (rgxIdSelector.test(selector) && ('getElementById' in context)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
     };
 
-    /* `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.*/
     var rgxSimpleSelector = /^[\#\.]?[\w\-]+$/;
     /**
+     * `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
      * @memberof $cms.dom
      * @param context
      * @param selector
@@ -2683,7 +2681,7 @@
      * @memberof $cms.dom
      * @param el { Window|Document|Element }
      * @param event {string|object}
-     * @param selector {string|function}
+     * @param [selector] {string|function}
      * @param [callback] {function}
      */
     $cms.dom.off = function off(el, event, selector, callback) {
@@ -2708,7 +2706,7 @@
         removeEvent(el, event, callback, selector)
     };
 
-    var mouseEvents = { click: 1, mousedown: 1, mouseup: 1, mousemove: 1 };
+    var mouseEvents = { click: true, mousedown: true, mouseup: true, mousemove: true };
 
     /**
      * @memberof $cms.dom
@@ -2744,7 +2742,7 @@
      * @memberof $cms.dom
      * @param el
      * @param event
-     * @param args
+     * @param [args]
      * @returns {*}
      */
     $cms.dom.trigger = function trigger(el, event, args) {
@@ -2789,7 +2787,7 @@
             .toLowerCase();
     }
 
-    var cssNumericProps = {'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1};
+    var cssNumericProps = {'column-count': true, 'columns': true, 'font-weight': true, 'line-height': true, 'opacity': true, 'z-index': true, 'zoom': true};
 
     /**
      *
@@ -3405,8 +3403,11 @@
         return result.join('&');
     };
 
-
-    /* Tabs */
+    /**
+     * Tabs
+     * @memberof $cms.dom
+     * @param hash
+     */
     $cms.dom.findUrlTab = function findUrlTab(hash) {
         if (hash === undefined) {
             hash = window.location.hash;
@@ -3426,11 +3427,24 @@
         }
     };
 
+    /**
+     * @memberof $cms.dom
+     * @param src
+     * @param url
+     * @returns {boolean}
+     */
     $cms.dom.matchesThemeImage = function matchesThemeImage(src, url) {
         return $cms.img(src) === $cms.img(url);
     };
 
-    /* Animate the loading of a frame */
+    /**
+     * Animate the loading of an iframe
+     * @memberof $cms.dom
+     * @param pf
+     * @param frame
+     * @param leave_gap_top
+     * @param leave_height
+     */
     $cms.dom.animateFrameLoad = function animateFrameLoad(pf, frame, leave_gap_top, leave_height) {
         if (!pf) {
             return;
@@ -3457,6 +3471,10 @@
         }
     };
 
+    /**
+     * @memberof $cms.dom
+     * @param iframeId
+     */
     $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
         var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
 
@@ -3536,7 +3554,14 @@
         }, 0);
     };
 
-    /* Smoothly scroll to another position on the page */
+    /**
+     * Smoothly scroll to another position on the page
+     * @memberof $cms.dom
+     * @param dest_y
+     * @param expected_scroll_y
+     * @param dir
+     * @param event_after
+     */
     $cms.dom.smoothScroll = function smoothScroll(dest_y, expected_scroll_y, dir, event_after) {
         if (!$cms.$CONFIG_OPTION.enable_animations) {
             try {
@@ -3591,7 +3616,11 @@
         }, 30);
     };
 
-    /* Dimension functions */
+    /**
+     * Dimension functions
+     * @memberof $cms.dom
+     * @param e
+     */
     $cms.dom.registerMouseListener = function registerMouseListener(e) {
         $cms.dom.registerMouseListener = noop; // ensure this function is only executed once
 
@@ -3631,14 +3660,29 @@
         }
     };
 
+    /**
+     * @memberof $cms.dom
+     * @param win
+     * @returns {number}
+     */
     $cms.dom.getWindowWidth = function getWindowWidth(win) {
         return (win || window).innerWidth - 18;
     };
 
+    /**
+     * @memberof $cms.dom
+     * @param win
+     * @returns {number}
+     */
     $cms.dom.getWindowHeight = function getWindowHeight(win) {
         return (win || window).innerHeight - 18;
     };
 
+    /**
+     * @memberof $cms.dom
+     * @param win
+     * @returns {number}
+     */
     $cms.dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
         win || (win = window);
 
@@ -3650,6 +3694,13 @@
         return (a > b) ? a : b;
     };
 
+    /**
+     * @memberof $cms.dom
+     * @deprecated
+     * @param el
+     * @param not_relative
+     * @returns {number}
+     */
     $cms.dom.findPosX = function findPosX(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
         not_relative = !!not_relative;
 
@@ -3669,7 +3720,15 @@
         return left;
     };
 
+    /**
+     * @memberof $cms.dom
+     * @deprecated
+     * @param el
+     * @param not_relative
+     * @returns {number}
+     */
     $cms.dom.findPosY = function findPosY(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+        el = elArg(el);
         not_relative = !!not_relative;
 
         var top = el.getBoundingClientRect().top + window.pageYOffset;
@@ -3690,6 +3749,7 @@
     /**
      * Automatic resizing to make frames seamless. Composr calls this automatically. Make sure id&name attributes are defined on your iframes!
      * @memberof $cms.dom
+     * @deprecated
      * @param name
      * @param min_height
      */
@@ -3749,7 +3809,8 @@
     };
 
     /**
-     *
+     * @memberof $cms.dom
+     * @deprecated
      * @param and_subframes
      */
     $cms.dom.triggerResize = function triggerResize(and_subframes) {
@@ -3783,7 +3844,8 @@
     var timeouts = {};
 
     /**
-     *
+     * @memberof $cms.dom
+     * @deprecated
      * @param el
      * @param destPercentOpacity
      * @param periodInMsecs
@@ -3851,7 +3913,8 @@
     };
 
     /**
-     *
+     * @memberof $cms.dom
+     * @deprecated
      * @param el
      * @returns {*|boolean}
      */
@@ -3860,7 +3923,7 @@
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.clearTransition = function clearTransition(el) {
@@ -3876,6 +3939,8 @@
 
     /**
      * Set opacity, without interfering with the thumbnail timer
+     * @memberof $cms.dom
+     * @deprecated
      * @param el
      * @param fraction
      */
@@ -3999,7 +4064,6 @@
     var _blockDataCache = {};
     /**
      * This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
-     * @memberof $cms
      * @param url
      * @param new_block_params
      * @param target_div
@@ -4621,8 +4685,8 @@
          */
         delegateEvents: function (events) {
             var key, method, match;
-            events || (events = result(this, 'events'));
-            if (!events) {
+            events || (events = this.events);
+            if (typeof events !== 'function') {
                 return this;
             }
             this.undelegateEvents();
@@ -5065,7 +5129,7 @@
      * @param name
      * @param options
      * @param target
-     * @param cancel_text
+     * @param [cancel_text]
      */
     $cms.ui.open = function open(url, name, options, target, cancel_text) {
         if (cancel_text === undefined) {
@@ -5085,7 +5149,7 @@
     /**
      * @memberof $cms.ui
      * @param btn
-     * @param permanent
+     * @param [permanent]
      */
     $cms.ui.disableButton = function disableButton(btn, permanent) {
         permanent = !!permanent;
@@ -5158,7 +5222,7 @@
      * @param n
      * @param has_full_button
      * @param is_video
-     * @returns {$cms.views.ModalWindow}
+     * @returns { $cms.views.ModalWindow }
      */
     $cms.ui.openImageIntoLightbox = function openImageIntoLightbox(initial_img_url, description, x, n, has_full_button, is_video) {
         has_full_button = !!has_full_button;

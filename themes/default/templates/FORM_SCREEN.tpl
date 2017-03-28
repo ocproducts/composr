@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,checking}
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 <div data-tpl="formScreen" data-tpl-params="{+START,PARAMS_JSON,URL,IFRAME_URL,SKIPPABLE}{_*}{+END}">
 
@@ -16,7 +17,6 @@
 	{+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 {+END}
 
-{$REQUIRE_JAVASCRIPT,checking}
 {+START,IF_NON_PASSED,IFRAME_URL}
 <form title="{!PRIMARY_PAGE_FORM}" id="main_form"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post" action="{URL*}"{+START,IF,{$IN_STR,{FIELDS},"file"}} enctype="multipart/form-data"{+END}{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get" action="{$URL_FOR_GET_FORM*,{URL}}"{+END}{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}{+START,IF_NON_PASSED,TARGET} target="_top"{+END} autocomplete="off"{+START,IF_PASSED_AND_TRUE,MODSECURITY_WORKAROUND} data-submit-modsecurity-workaround="1" {+END}>
 	{+START,IF_NON_PASSED_OR_FALSE,GET}{$INSERT_SPAMMER_BLACKHOLE}{+END}
@@ -65,7 +65,7 @@
 	<a id="edit_space"></a>
 
 	<div class="arrow_ruler">
-		<form action="#" method="post" autocomplete="off">
+		<form action="#!" method="post" autocomplete="off">
 			<div class="associated_link">
 				<input type="checkbox" name="will_open_new" id="will_open_new" class="js-checkbox-will-open-new" />
 				<label for="will_open_new">{!CHOOSE_OPEN_NEW_WINDOW}</label>

@@ -16,15 +16,17 @@
     }
 
     $cms.inherits(BlockMainActivitiesState, $cms.View, {
-        events: {
-            'focus textarea.js-textarea-activity-status': 'textareaFocus',
-            'blur textarea.js-textarea-activity-status': 'textareaBlur',
-            'keyup textarea.js-textarea-activity-status': 'textareaKeyup',
-            'keypress textarea.js-textarea-activity-status': 'textareaKeypress',
+        events: function () {
+            return {
+                'focus textarea.js-textarea-activity-status': 'textareaFocus',
+                'blur textarea.js-textarea-activity-status': 'textareaBlur',
+                'keyup textarea.js-textarea-activity-status': 'textareaKeyup',
+                'keypress textarea.js-textarea-activity-status': 'textareaKeypress',
 
-            'keyup .js-textarea-keyup-manage-scroll-height': 'manageScrollHeight',
+                'keyup .js-textarea-keyup-manage-scroll-height': 'manageScrollHeight',
 
-            'submit form.js-form-status-updates': 'submitForm'
+                'submit form.js-form-status-updates': 'submitForm'
+            };
         },
 
         textareaFocus: function (e, textarea) {
@@ -46,7 +48,7 @@
         },
         textareaKeyup: function (e, textarea) {
             if (!$cms.$MOBILE) {
-                $cms.manageScrollHeigh(textarea);
+                $cms.manageScrollHeight(textarea);
             }
             this.maintainCharCount();
         },

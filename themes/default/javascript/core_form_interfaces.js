@@ -94,8 +94,7 @@
                 document.getElementById('copy_button_' + window.permission_copying).style.textDecoration = 'none';
                 window.permission_copying = null;
                 for (var i = 0; i < trs.length; i++) {
-                    trs[i].onclick = function () {
-                    };
+                    trs[i].onclick = function () {};
                 }
             }
 
@@ -103,9 +102,9 @@
                 button.style.textDecoration = 'blink';
                 window.permission_copying = name;
                 $cms.ui.alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
-                for (var i = 0; i < trs.length; i++) {
-                    if (trs[i] !== tr) {
-                        trs[i].onclick = copy_permissions_function(trs[i], tr);
+                for (var j = 0; j < trs.length; j++) {
+                    if (trs[j] !== tr) {
+                        trs[j].onclick = copy_permissions_function(trs[j], tr);
                     }
                 }
             }
@@ -455,7 +454,7 @@
             $cms.form.setUpChangeMonitor(input.parentElement);
         }
 
-        $cms.manageScrollHeigh(textarea);
+        $cms.manageScrollHeight(textarea);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
             set_up_comcode_autocomplete(params.name, params.required && params.required.includes('wysiwyg'));
         });
@@ -722,11 +721,11 @@
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
 
-        $cms.manageScrollHeigh(textArea);
+        $cms.manageScrollHeight(textArea);
 
         if (!$cms.$MOBILE) {
             $cms.dom.on(textArea, 'change keyup', function () {
-                $cms.manageScrollHeigh(textArea);
+                $cms.manageScrollHeight(textArea);
             });
         }
     };
@@ -794,7 +793,7 @@
             }
         }
 
-        $cms.manageScrollHeigh(postEl);
+        $cms.manageScrollHeight(postEl);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
             set_up_comcode_autocomplete(name, true);
         });
@@ -1145,7 +1144,7 @@
             }
         }
 
-        $cms.manageScrollHeigh(document.getElementById(params.name));
+        $cms.manageScrollHeight(document.getElementById(params.name));
     };
 
     $cms.templates.formScreenInputTime = function formScreenInputTime(params) {

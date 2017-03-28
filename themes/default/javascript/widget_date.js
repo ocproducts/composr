@@ -201,7 +201,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
           prevText: '{!PREVIOUS;^}',
           nextText: '{!NEXT;^}',
           currentText: '{!TODAY;^}',
-          firstDay: {$?,{$CONFIG_OPTION,ssw},0,1},
+          firstDay: +'{$?,{$CONFIG_OPTION,ssw},0,1}',
           dateFormat: 'MM dd, yy',
           changeMonth: true,
           changeYear: true,
@@ -374,7 +374,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         if (time_obj === null) return '';
 
         var t_arr;
-        t_arr = new Array();
+        t_arr = [];
         if (time_obj.getHours() < 10) {
           t_arr.push('0');
         }
@@ -407,7 +407,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         if (time_obj === null) return '';
 
         var ampm, time_arr;
-        time_arr = new Array();
+        time_arr = [];
         if (time_obj.getHours() === 0) {
           time_arr.push('12');
           ampm = 'AM';

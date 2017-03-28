@@ -130,9 +130,7 @@
         }
     };
 
-    $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params) {
-        var element = this;
-
+    $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params, element) {
         internalise_ajax_block_wrapper_links(params.url, element, ['.*'], {}, false, true);
 
         if (params.changeDetectionUrl && (Number(params.refreshTime) > 0)) {

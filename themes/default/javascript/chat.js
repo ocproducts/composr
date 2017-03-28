@@ -40,7 +40,7 @@
         fontChange: function (e, selectEl) {
             this.$('#font').value = selectEl.value;
             this.$('#post').style.fontFamily = selectEl.value;
-            $cms.manageScrollHeigh(this.$('#post'));
+            $cms.manageScrollHeight(this.$('#post'));
         },
 
         checkChatOptions: function (e, form) {
@@ -177,7 +177,7 @@
 
         $cms.dom.on(container, 'keyup', '.js-keyup-textarea-chat-post', function (e, textarea) {
             if (!$cms.$MOBILE) {
-                $cms.manageScrollHeigh(textarea);
+                $cms.manageScrollHeight(textarea);
             }
 
             if ($cms.dom.keyPressed(e, 'Enter')) {
@@ -419,7 +419,7 @@ function chat_load(room_id) {
         window.text_colour.style.color = text_colour.value;
     }
 
-    $cms.manageScrollHeigh(document.getElementById('post'));
+    $cms.manageScrollHeight(document.getElementById('post'));
 }
 
 function begin_chatting(room_id) {

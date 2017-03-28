@@ -9,8 +9,10 @@
 
     $cms.inherits(PurchaseWizardScreen, $cms.View, {
         formEl: null,
-        events: {
-            'click .js-click-do-form-submit': 'doFormSubmit'
+        events: function () {
+            return {
+                'click .js-click-do-form-submit': 'doFormSubmit'
+            };
         },
         doFormSubmit: function (e) {
             if (!$cms.form.doFormSubmit(this.formEl, e)) {

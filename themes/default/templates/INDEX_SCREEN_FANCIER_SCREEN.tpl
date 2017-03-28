@@ -2,9 +2,7 @@
 
 {$,TODO: Fix in v11}
 {+START,IF_PASSED,JAVASCRIPT}
-	<script>// <![CDATA[
-		{JAVASCRIPT/}
-	//]]></script>
+	<script>{JAVASCRIPT/}</script>
 {+END}
 
 {+START,IF_NON_EMPTY,{PRE}}

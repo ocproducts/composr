@@ -44,7 +44,7 @@
 
             if (!target.timer) {
                 target.timer = window.setTimeout(function () {
-                    pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+                    popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
                 }, 200);
             }
         },
@@ -60,14 +60,14 @@
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+            popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
         },
 
         popUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            pop_up_menu(menu + '_dexpand_' + rand, null, menu + '_d');
+            popUpMenu(menu + '_dexpand_' + rand, null, menu + '_d');
         },
 
         setActiveMenu: function (e, target) {
@@ -75,7 +75,7 @@
                 var menu = $cms.filter.id(this.menu);
 
                 if (window.active_menu == null) {
-                    set_active_menu(target.id, menu + '_d');
+                    setActiveMenu(target.id, menu + '_d');
                 }
             }
         },
@@ -127,11 +127,11 @@
             };
         },
         popUpMenu: function () {
-            pop_up_menu(this.popup, null, this.menu + '_p');
+            popUpMenu(this.popup, null, this.menu + '_p');
         },
         setActiveMenu: function () {
             if (!window.active_menu) {
-                set_active_menu(this.popup, this.menu + '_p');
+                setActiveMenu(this.popup, this.menu + '_p');
             }
         }
     });
@@ -142,8 +142,10 @@
     }
 
     $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu.prototype*/{
-        events: {
-            'click [data-menu-tree-toggle]': 'toggleMenu'
+        events: function () {
+            return {
+                'click [data-menu-tree-toggle]': 'toggleMenu'
+            };
         },
 
         toggleMenu: function (e, target) {
@@ -686,7 +688,7 @@
     var clean_menus_timeout,
         last_active_menu;
 
-    function set_active_menu(id, menu) {
+    function setActiveMenu(id, menu) {
         window.active_menu = id;
         if (menu != null) {
             last_active_menu = menu;
@@ -728,11 +730,15 @@
         }
     }
 
-    function pop_up_menu(id, place, menu, outside_fixed_width) {
+    function popUpMenu(id, place, menu, outside_fixed_width) {
         place || (place = 'right');
         outside_fixed_width = !!outside_fixed_width;
 
         var el = $cms.dom.$('#' + id);
+
+        if (!el) {
+            return;
+        }
 
         if (clean_menus_timeout) {
             window.clearTimeout(clean_menus_timeout);
@@ -825,6 +831,6 @@
         return false;
     }
 
-    window.set_active_menu = set_active_menu;
-    window.pop_up_menu = pop_up_menu;
+    window.set_active_menu = setActiveMenu;
+    window.pop_up_menu = popUpMenu;
 }(window.$cms));

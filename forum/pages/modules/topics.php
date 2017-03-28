@@ -2846,8 +2846,7 @@ END;
             $fields->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('COPY_EXISTING_POLL'), 'existing', $list, null, false, false));
 
             require_javascript('cns_forum');
-            $javascript = /**@lang JavaScript */
-                '$cms.functions.moduleTopicsAddPoll();';
+            $javascript = /**@lang JavaScript */'$cms.functions.moduleTopicsAddPoll();';
         }
 
         $title = get_screen_title('ADD_TOPIC_POLL');

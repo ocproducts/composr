@@ -10,8 +10,10 @@
     }
 
     $cms.inherits(CatalogueAddingScreen, $cms.View, {
-        events: {
-            'submit .js-form-catalogue-add': 'submit'
+        events: function () {
+            return {
+                'submit .js-form-catalogue-add': 'submit'
+            };
         },
 
         submit: function (e, form) {
