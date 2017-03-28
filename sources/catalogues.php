@@ -1351,7 +1351,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
             }
         }
     }
-    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' DESC';
+    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' ASC';
     $rows = $GLOBALS['SITE_DB']->query($query, intval(get_option('general_safety_listing_limit'))/*reasonable limit*/, null, false, false, array('c_title' => 'SHORT_TRANS'));
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');

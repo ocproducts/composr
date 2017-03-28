@@ -394,7 +394,7 @@ iframe {
 /*{+END}*/
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
-::selection {
+.website_body ::selection {
 	background: {$GET,yellow_highlight_background};
 }
 comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {

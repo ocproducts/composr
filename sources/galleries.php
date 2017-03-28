@@ -1018,7 +1018,7 @@ function get_gallery_content_tree($table, $submitter = null, $gallery = null, $b
     $compound_list = $gallery . ',';
 
     // Children of this category
-    $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('name', 'fullname'), array('parent_id' => $gallery), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('fullname') . ' DESC', intval(get_option('general_safety_listing_limit')));
+    $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('name', 'fullname'), array('parent_id' => $gallery), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('fullname') . ' ASC', intval(get_option('general_safety_listing_limit')));
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('name', 'fullname'), array('parent_id' => $gallery), 'ORDER BY add_date DESC', intval(get_option('general_safety_listing_limit')));
     }
@@ -1026,7 +1026,7 @@ function get_gallery_content_tree($table, $submitter = null, $gallery = null, $b
     if (!is_null($submitter)) {
         $where['submitter'] = $submitter;
     }
-    $erows = $GLOBALS['SITE_DB']->query_select($table, array('id', 'url', 'submitter', 'title', 'thumb_url'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('title') . ' DESC', intval(get_option('general_safety_listing_limit')));
+    $erows = $GLOBALS['SITE_DB']->query_select($table, array('id', 'url', 'submitter', 'title', 'thumb_url'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('title') . ' ASC', intval(get_option('general_safety_listing_limit')));
     if (count($erows) == intval(get_option('general_safety_listing_limit'))) {
         $erows = $GLOBALS['SITE_DB']->query_select($table, array('id', 'url', 'submitter', 'title', 'thumb_url'), $where, 'ORDER BY add_date DESC', intval(get_option('general_safety_listing_limit')));
     }
