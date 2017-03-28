@@ -30,6 +30,22 @@ function init__downloads()
 }
 
 /**
+ * See if a member may access a download category
+ *
+ * @param  MEMBER $member_id The member
+ * @param  AUTO_LINK $category_id The category
+ * @return boolean Whether they can
+ */
+function may_enter_download_category($member_id, $category_id)
+{
+    if (get_option('download_cat_access_late') == '1') {
+        return true;
+    }
+
+    return has_category_access($member_id, 'downloads', strval($category_id));
+}
+
+/**
  * Show a download licence for display
  */
 function download_licence_script()
@@ -302,7 +318,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
         $category_id = db_get_first_id();
     }
 
-    if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
+    if (!may_enter_download_category(get_member(), $category_id)) {
         return array();
     }
 
@@ -445,7 +461,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
         $breadcrumbs = '';
     }
 
-    if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
+    if (!may_enter_download_category(get_member(), $category_id)) {
         return $use_compound_list ? array(array(), '') : array();
     }
 

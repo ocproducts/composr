@@ -307,6 +307,8 @@ class Hook_addon_registry_ecommerce
             'themes/default/javascript/ecommerce.js',
             'themes/default/text/PAYMENT_RECEIVED_MAIL.txt',
             'themes/default/text/PAYMENT_SENT_MAIL.txt',
+            'sources/hooks/systems/config/download_cat_buy_max_emailed_size.php',
+            'sources/hooks/systems/config/download_cat_buy_max_emailed_count.php',
 
             'themes/default/templates/ECOM_TRANSACTION_BUTTON_VIA_PAYPAL.tpl',
             'themes/default/templates/ECOM_SUBSCRIPTION_CANCEL_BUTTON_VIA_PAYPAL.tpl',

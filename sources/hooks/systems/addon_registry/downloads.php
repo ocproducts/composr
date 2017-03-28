@@ -179,8 +179,7 @@ class Hook_addon_registry_downloads
             'sources/hooks/systems/tasks/index_download.php',
             'site/download_gateway.php',
             'themes/default/templates/DOWNLOAD_GATEWAY_SCREEN.tpl',
-            'sources/hooks/systems/config/download_cat_buy_max_emailed_size.php',
-            'sources/hooks/systems/config/download_cat_buy_max_emailed_count.php',
+            'sources/hooks/systems/config/download_cat_access_late.php',
         );
     }
 

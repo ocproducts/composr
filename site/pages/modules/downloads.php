@@ -256,7 +256,7 @@ class Module_downloads
             $category = $rows[0];
 
             // Check access
-            if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
+            if (!may_enter_download_category(get_member(), $category_id)) {
                 access_denied('CATEGORY_ACCESS');
             }
 
@@ -310,7 +310,7 @@ class Module_downloads
             set_feed_url('?mode=downloads&select=' . strval($myrow['category_id']));
 
             // Permissions
-            if (!has_category_access(get_member(), 'downloads', strval($myrow['category_id']))) {
+            if (!may_enter_download_category(get_member(), $myrow['category_id'])) {
                 access_denied('CATEGORY_ACCESS');
             }
 
@@ -561,7 +561,7 @@ class Module_downloads
             $download_name = get_translated_text($row['name']);
             $letter = strtoupper(substr($download_name, 0, 1));
 
-            if (!has_category_access(get_member(), 'downloads', strval($row['category_id']))) {
+            if (!may_enter_download_category(get_member(), $row['category_id'])) {
                 continue;
             }
 

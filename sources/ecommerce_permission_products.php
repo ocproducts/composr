@@ -186,7 +186,7 @@ function permission_product_save($resource_type, $old_category_id, $new_category
             $mail_subject = do_lang('AUTOMATIC_CATEGORY_ACCESS_SUBJECT', $content_title, $content_type_label, $url_safe);
             $mail_body = do_lang('AUTOMATIC_CATEGORY_ACCESS_BODY', $content_title, $content_type_label, $url_safe);
 
-            if ($resource_type == 'download_category') {
+            if ($resource_type == 'downloads') {
                 $mail_body = '{AUTOMATIC}';
             }
 
