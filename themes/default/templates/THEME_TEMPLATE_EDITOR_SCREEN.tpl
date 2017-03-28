@@ -7,8 +7,8 @@
 {TITLE}
 
 {+START,IF,{$CONFIG_OPTION,editarea}}
-	<script src="{$BASE_URL*}/data/ace/ace.js"></script>
-	<script src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
+	<script defer src="{$BASE_URL*}/data/ace/ace.js"></script>
+	<script defer src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
 {+END}
 
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}

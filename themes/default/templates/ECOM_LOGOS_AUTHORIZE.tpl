@@ -3,5 +3,5 @@
 	<script>// <![CDATA[
 		var ANS_customer_id="{CUSTOMER_ID*/}";
 	//]]></script>
-	<script type="text/javascript" src="//verify.authorize.net/anetseal/seal.js"></script>
+	<script defer type="text/javascript" src="//verify.authorize.net/anetseal/seal.js"></script>
 </div>

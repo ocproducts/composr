@@ -119,18 +119,18 @@
 
 {$,Load classList and ES6 Promise polyfill for Internet Explorer}
 {+START,IF,{$BROWSER_MATCHES,ie}}
-<script src="{$BASE_URL*}/data/polyfills/class-list.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/promise.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/custom-event-constructor.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/class-list.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/promise.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/custom-event-constructor.js"></script>
 {+END}
 
 {$,Polyfills for everyone}
-<script src="{$BASE_URL*}/data/polyfills/general.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/url-search-params.max.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/keyboardevent-key-polyfill.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/fetch.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/web-animations.min.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/json5.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/general.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/url-search-params.max.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/keyboardevent-key-polyfill.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/fetch.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/web-animations.min.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/json5.js"></script>
 
 {$,Google Analytics account, if one set up}
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}
@@ -140,9 +140,10 @@
 		(function (i, s, o, g, r, a, m) {
 			i['GoogleAnalyticsObject'] = r;
 			i[r] = i[r] || function () {
-						(i[r].q = i[r].q || []).push(arguments)
-					}, i[r].l = 1 * new Date();
-			a = s.createElement(o),
+				(i[r].q = i[r].q || []).push(arguments)
+			};
+			i[r].l = 1 * new Date();
+			a = s.createElement(o);
 			m = s.querySelector(o);
 			a.async = 1;
 			a.src = g;
@@ -165,7 +166,7 @@
 			'theme': 'dark-top'
 		};
 	</script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+	<script defer src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
 {+END}
 
 <script>
