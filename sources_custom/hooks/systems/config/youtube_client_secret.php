@@ -33,6 +33,7 @@ class Hook_config_youtube_client_secret
             'explanation' => 'CONFIG_OPTION_youtube_client_secret',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'gallery_syndication',
         );

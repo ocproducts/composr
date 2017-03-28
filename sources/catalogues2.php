@@ -691,7 +691,7 @@ function calculate_category_child_count_cache($cat_id, $recursive_updates = true
 
     $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => $cat_id));
 
-    $num_rec_children = $GLOBALS['SITE_DB']->query_select_value('catalogue_cat_treecache', 'COUNT(*)', array('cc_ancestor_id' => $cat_id)) - 1;
+    $num_rec_children = max(0, $GLOBALS['SITE_DB']->query_select_value('catalogue_cat_treecache', 'COUNT(*)', array('cc_ancestor_id' => $cat_id)) - 1);
     $num_rec_entries = $GLOBALS['SITE_DB']->query_select_value('catalogue_cat_treecache t JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.cc_id=t.cc_id', 'COUNT(*)', array('ce_validated' => 1, 't.cc_ancestor_id' => $cat_id, 'c_name' => $catalogue_name/*important, else custom field cats could be included*/));
 
     $GLOBALS['SITE_DB']->query_insert('catalogue_childcountcache', array(

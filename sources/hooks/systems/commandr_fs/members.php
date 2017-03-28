@@ -132,12 +132,23 @@ class Hook_commandr_fs_members
                 }
 
                 $i = intval(substr($_i, strlen('field_')));
+
+                $_cpf_name = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'cf_name', array('id' => $i));
+                if ($_cpf_name === null) {
+                    continue; // Corrupt data
+                }
+
+                $cpf_name = get_translated_text($_cpf_name);
+                if (preg_match('#^[\w\s]*$#', $cpf_name) == 0) {
+                    $cpf_name = $_i;
+                }
+
                 $cpf_value = $member_custom_fields['field_' . strval($i)];
-                $cpf_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('f_custom_fields', 'cf_name', array('id' => $i)));
+
                 $listing[] = array(
                     $cpf_name,
                     COMMANDR_FS_FILE,
-                    strlen($cpf_value),
+                    @strlen(strval($cpf_value)),
                     $member_data['m_join_time'],
                 );
             }
@@ -243,13 +254,12 @@ class Hook_commandr_fs_members
 
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if (is_null($field_id)) { // Should never happen, but sometimes on upgrades/corruption...
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
-                $field_id = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            }
 
-            cns_delete_custom_field($field_id);
+            $field_id = $this->get_field_id_for($file_name);
+
+            return false; // This is too dangerous, probably not what the user wants!
+
+            //cns_delete_custom_field($field_id);
         } elseif (count($meta_dir) == 2) {
             if ($meta_dir[1] != 'groups') {
                 return false;
@@ -298,11 +308,8 @@ class Hook_commandr_fs_members
 
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if (is_null($field_id)) { // Should never happen, but sometimes on upgrades/corruption...
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
-                $field_id = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            }
+
+            $field_id = $this->get_field_id_for($file_name);
 
             if (array_key_exists($field_id, $fields)) {
                 return $fields[$field_id];
@@ -343,17 +350,15 @@ class Hook_commandr_fs_members
                 $GLOBALS['FORUM_DB']->query_update('f_members', array($this->field_mapping[$file_name] => $contents), array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])), '', 1);
                 return true;
             }
+
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if (is_null($field_id)) { // Should never happen, but sometimes on upgrades/corruption...
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
-                $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            }
 
+            $field_id = $this->get_field_id_for($file_name, true);
             if (is_null($field_id)) {
                 $field_id = cns_make_custom_field($file_name);
             }
+
             cns_set_custom_field($GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0]), $field_id, $contents);
         } elseif (count($meta_dir) == 2) {
             if ($meta_dir[1] != 'groups') {
@@ -375,5 +380,29 @@ class Hook_commandr_fs_members
         }
 
         return true;
+    }
+
+    /**
+     * Get the field ID of a CPF from a filename.
+     *
+     * @param  string $file_name Filename
+     * @return AUTO_LINK CPF ID
+     */
+    protected function get_field_id_for($file_name, $missing_ok = false)
+    {
+        $matches = array();
+        if (preg_match('#^field_(\d+)#', $file_name, $matches) != 0) {
+            return intval($matches[1]);
+        }
+
+        $where = array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name);
+
+        if ($missing_ok) {
+            $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', $where);
+        } else {
+            $field_id = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'id', $where);
+        }
+
+        return $field_id;
     }
 }

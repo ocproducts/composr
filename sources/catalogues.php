@@ -262,7 +262,7 @@ function count_catalogue_category_children($category_id)
 
     $rec_record = $GLOBALS['SITE_DB']->query_select('catalogue_childcountcache', array('c_num_rec_children', 'c_num_rec_entries'), array('cc_id' => $category_id), '', 1);
     if (!array_key_exists(0, $rec_record)) {
-        $rec_record[0] = array('c_num_rec_children' => 0, 'c_num_rec_entries' => 0);
+        $rec_record[0] = array('c_num_rec_children' => $out['num_children'], 'c_num_rec_entries' => $out['num_entries']);
     }
 
     $out['num_children_children'] = $rec_record[0]['c_num_rec_children'];
@@ -1351,7 +1351,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
             }
         }
     }
-    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' DESC';
+    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' ASC';
     $rows = $GLOBALS['SITE_DB']->query($query, intval(get_option('general_safety_listing_limit'))/*reasonable limit*/, null, false, false, array('c_title' => 'SHORT_TRANS'));
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');

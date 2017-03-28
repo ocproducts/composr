@@ -37,13 +37,13 @@
 
   <parameter
     name="Automatic Local Application URL"
-    defaultValue="$SITE_INFO['base_url']='{Local Application URL}';"
+    defaultValue="$SITE_INFO['base_url'] = '{Local Application URL}';"
     tags="Hidden"
     >
       <parameterEntry
         type="TextFile"
-        scope="composr/_config.php"
-        match="\$SITE_INFO\s*\['base_url'\]='([^']*)';"
+        scope="composr\\_config.php"
+        match="\$SITE_INFO\s*\['base_url'\]\s*=\s*'([^']*)';"
         />
   </parameter>
 
@@ -57,13 +57,13 @@
 
   <parameter
     name="Automatic Domain name"
-    defaultValue="$SITE_INFO['domain']='{Domain name}';"
+    defaultValue="$SITE_INFO['domain'] = '{Domain name}';"
     tags="Hidden"
     >
       <parameterEntry
         type="TextFile"
-        scope="composr/_config.php"
-        match="\$SITE_INFO\s*\['domain'\]='([^']*)';"
+        scope="composr\\_config.php"
+        match="\$SITE_INFO\s*\['domain'\]\s*=\s*'([^']*)';"
         />
   </parameter>
 
@@ -81,18 +81,18 @@
 
   <parameter
     name="Automatic DB Server"
-    defaultValue="$SITE_INFO['db_site_host']='{dbServer}';"
+    defaultValue="$SITE_INFO['db_site_host'] = '{dbServer}';"
     tags="Hidden"
     >
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['db_site_host'\]='([^']*)';"
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['db_site_host'\]\s*=\s*'([^']*)';"
       />
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['db_forums_host'\]='([^']*)';"
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['db_forums_host'\]\s*=\s*'([^']*)';"
       />
   </parameter>
 
@@ -120,18 +120,18 @@
 
   <parameter
     name="Automatic DB name"
-    defaultValue="$SITE_INFO['db_site']='{dbName}';"
+    defaultValue="$SITE_INFO['db_site'] = '{dbName}';"
     tags="Hidden"
     >
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['db_site'\]='([^']*)';"
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['db_site'\]\s*=\s*'([^']*)';"
       />
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['db_forums'\]='([^']*)';"
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['db_forums'\]\s*=\s*'([^']*)';"
       />
   </parameter>
 
@@ -161,18 +161,18 @@
 
   <parameter
     name="Automatic DB username"
-    defaultValue="$SITE_INFO['db_site_user']='{dbUsername}';"
+    defaultValue="$SITE_INFO['db_site_user'] = '{dbUsername}';"
     tags="Hidden"
     >
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['db_site_user'\]='([^']*)';"
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['db_site_user'\]\s*=\s*'([^']*)';"
       />
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['db_forums_user'\]='([^']*)';"
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['db_forums_user'\]\s*=\s*'([^']*)';"
       />
   </parameter>
 
@@ -193,18 +193,18 @@
 
   <parameter
     name="Automatic DB password"
-    defaultValue="$SITE_INFO['db_site_password']='{dbUserPassword}';"
+    defaultValue="$SITE_INFO['db_site_password'] = '{dbUserPassword}';"
     tags="Hidden"
     >
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['db_site_password'\]='([^']*)';"
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['db_site_password'\]\s*=\s*'([^']*)';"
       />
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['db_forums_password'\]='([^']*)';"
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['db_forums_password'\]\s*=\s*'([^']*)';"
       />
   </parameter>
 
@@ -246,13 +246,13 @@
 
   <parameter
     name="Automatic Master password"
-    defaultValue="$SITE_INFO['master_password']='{Master password}';"
+    defaultValue="$SITE_INFO['master_password'] = '{Master password}';"
     tags="Hidden"
     >
     <parameterEntry
       type="TextFile"
-      scope="composr/_config.php"
-      match="\$SITE_INFO\s*\['master_password'\]='([^']*)';" />
+      scope="composr\\_config.php"
+      match="\$SITE_INFO\s*\['master_password'\]\s*=\s*'([^']*)';" />
   </parameter>
 
   <parameter

@@ -408,7 +408,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                     }
 
                     // Recreate static files right away because of parallelism...
-                    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
+                    if ((!$GLOBALS['IN_MINIKERNEL_VERSION']) && (get_page_name() != 'admin_setupwizard'/*Too intensive in there*/)) {
                         if ((!$preserve_some) && (!isset($rebuilt[$file_template_name]))) {
                             if (/*filter what we'll do due to memory limitation*/in_array($file_template_name, array('global.css', 'cns.css', 'forms.css', 'menu__dropdown.css', 'ajax.js', 'custom_globals.js', 'editing.js', 'global.js', 'modalwindow.js', 'posting.js', 'staff.js'))) {
                                 if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {

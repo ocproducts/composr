@@ -59,6 +59,10 @@ As web standards are evolving and we often need to make use of ones that are not
 
 The developers do not officially get involved in the translation of Composr. Please check the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] for more information on specific languages and if you would like to get involved with translation (please do!). We provide an [page="_SEARCH:tut_intl"]Internationalisation tutorial[/page], and tools, to translate Composr, and Composr has excellent internationalisation support.
 
+[title="3"]What's with your funky domain name?[/title]
+
+We like that [tt]compo.sr[/tt] is short and catch, and we don't own any of the obvious [tt].com[/tt] variants. If you prefer you can access the site via [tt]composr.org[/tt].
+
 [title="2"]Licensing and costs[/title]
 
 [html]<div></div><a id="oss"></a>[/html][title="3"]How much does Composr cost?[/title]

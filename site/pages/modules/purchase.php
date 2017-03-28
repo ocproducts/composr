@@ -63,8 +63,8 @@ class Module_purchase
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 7;
-        $info['locked'] = false;
         $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 

@@ -1061,14 +1061,14 @@ class Module_catalogues
         } else {
             $cc_sort = 'title';
         }
-        $subcategories = do_block('main_multi_content', array('param' => 'catalogue_category', 'select' => strval($id) . '>', 'efficient' => '0', 'zone' => '_SELF', 'sort' => $cc_sort, 'max' => get_option('catalogue_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'render_if_empty' => '0', 'guid' => 'module'));
+        $subcategories = do_block('main_multi_content', array('param' => 'catalogue_category', 'select' => strval($id) . '>', 'efficient' => '0', 'zone' => get_zone_name(), 'sort' => $cc_sort, 'max' => get_option('catalogue_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'render_if_empty' => '0', 'guid' => 'module'));
         if (get_option('catalogues_subcat_narrowin') == '1') {
             $cat_select = strval($id) . '*';
         } else {
             $cat_select = strval($id) . '#';
         }
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_cc_embed', array('param' => $cat_select, 'zone' => '_SELF', 'max' => get_option('catalogue_entries_per_page'), 'pagination' => '1', 'sorting' => '1', 'filter' => $filter, 'block_id' => 'module'));
+        $entries = do_block('main_cc_embed', array('param' => $cat_select, 'zone' => get_zone_name(), 'max' => get_option('catalogue_entries_per_page'), 'pagination' => '1', 'sorting' => '1', 'filter' => $filter, 'block_id' => 'module'));
 
         // Render
         return do_template('CATALOGUE_' . $tpl_set . '_CATEGORY_SCREEN', array(

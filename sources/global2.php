@@ -575,7 +575,9 @@ function disable_php_memory_limit()
 {
     $shl = @ini_get('suhosin.memory_limit');
     if (($shl === false) || ($shl == '') || ($shl == '0')) {
+        // Progressively relax more and more (some PHP installs may block at some point)
         safe_ini_set('memory_limit', '128M');
+        safe_ini_set('memory_limit', '256M');
         safe_ini_set('memory_limit', '-1');
     } else {
         if (is_numeric($shl)) {

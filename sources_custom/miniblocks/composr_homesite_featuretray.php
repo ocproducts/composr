@@ -483,7 +483,7 @@ $feature_tree = array(
             'Rich media <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Comcode" href="http://shareddemo.composr.info/index.php?page=rich"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Comcode', 'Powerful but simple content-enrichment language'),
-                array('Media embedding', 'Easily integrate/attach all common video and image formats, as well as embeds for common sites such as Youtube and Google Maps (just by pasting in the URL)'),
+                array('Media embedding', 'Easily integrate/attach all common video and image formats, as well as embeds for common sites such as YouTube and Google Maps (just by pasting in the URL)'),
                 array('Easily create cool effects', 'Create scrolling, rolling, randomisation, and hiding effects. Put content in boxes, split content across subpages. Create <abbr title="eXtensible HyperText Markup Language 5">XHTML5</abbr> overlays. Place tooltips'),
                 array('Customise your content for different usergroups'),
                 array('Create count-downs and hit counters'),

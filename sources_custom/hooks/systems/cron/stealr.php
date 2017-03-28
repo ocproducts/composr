@@ -82,7 +82,12 @@ class Hook_cron_stealr
                 $total_points = $member['points'];
                 $stealr_points = ($stealr_points < $total_points) ? $stealr_points : $total_points;
 
-                $give_to_member = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE  id <> ' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id <> ' . strval($member['id']) . ' ORDER BY RAND( ) ', 1, null, true);
+                $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id<>' . strval($member['id']) . ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+                if (addon_installed('unvalidated')) {
+                    $sql .= ' AND m_validated=1';
+                }
+                $sql .= ' ORDER BY RAND()';
+                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
@@ -136,7 +141,12 @@ class Hook_cron_stealr
                 $total_points = $av_points;
                 $stealr_points = ($stealr_points < $total_points) ? $stealr_points : $total_points;
 
-                $give_to_member = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE  id <> ' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id <> ' . strval($member_id) . ' ORDER BY RAND( ) ', 1, null, true);
+                $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id<>' . strval($member_id) . ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+                if (addon_installed('unvalidated')) {
+                    $sql .= ' AND m_validated=1';
+                }
+                $sql .= ' ORDER BY RAND()';
+                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
@@ -159,7 +169,12 @@ class Hook_cron_stealr
                 }
             }
         } elseif ($stealr_type == 'Members that are random') {
-            $random_members = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE  id <> ' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' ORDER BY RAND( ) ', $stealr_number, null, true);
+            $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+            if (addon_installed('unvalidated')) {
+                $sql .= ' AND m_validated=1';
+            }
+            $sql .= ' ORDER BY RAND()';
+            $random_members = $GLOBALS['FORUM_DB']->query($sql, $stealr_number, null, true);
 
             $stealr_number = (count($random_members) > $stealr_number) ? $stealr_number : count($random_members);
 
@@ -171,7 +186,12 @@ class Hook_cron_stealr
                 $total_points = available_points($member['id']);
                 $stealr_points = ($stealr_points < $total_points) ? $stealr_points : $total_points;
 
-                $give_to_member = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE  id <> ' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id <> ' . strval($member['id']) . ' ORDER BY RAND( ) ', 1, null, true);
+                $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id<>' . strval($member['id']) . ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+                if (addon_installed('unvalidated')) {
+                    $sql .= ' AND m_validated=1';
+                }
+                $sql .= ' ORDER BY RAND()';
+                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
@@ -223,7 +243,12 @@ class Hook_cron_stealr
                 $total_points = available_points($members[$member_rand_key]);
                 $stealr_points = ($stealr_points < $total_points) ? $stealr_points : $total_points;
 
-                $give_to_member = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE  id <> ' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id <> ' . strval($members[$member_rand_key]) . ' ORDER BY RAND( ) ', 1, null, true);
+                $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id<>' . strval($members[$member_rand_key]) . ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+                if (addon_installed('unvalidated')) {
+                    $sql .= ' AND m_validated=1';
+                }
+                $sql .= ' ORDER BY RAND()';
+                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 

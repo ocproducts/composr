@@ -36,7 +36,7 @@ There are many ways to gain points for use in Buildr:
 
 In any room you visit, there will always be information to help you figure out where you are.
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.0.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.0.png[/img]
 
 'Deck 10: Hydroponics' is the name of the realm you're currently in.
 'Corridor' is the name of the room you're currently in.
@@ -57,27 +57,27 @@ The co-ordinate information is valuable if you request help from a member of the
 
 [title="3"]How to use the Map[/title]
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.1.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.1.png[/img]
 
 If you scroll down, you will see a link called 'map'. Click on it and a map will open in another window. Switch to the map so you can see it. It should look something like...
 
-[url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.2.png"][img="Example image" width="548" height="619"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.2.png[/img][/url]
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.2.png"][img="Sample screenshot" width="548" height="619"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.2.png[/img][/url]
  - The Green lined square represents your current location on the realm.
  - The question marks '?' represent a room that you haven't visited yet.
  - The name you see above the co-ordinates is the name of the owner of the room,the name that appears the most times on the map is the owner of and generally, the realm.
  - The Red lines represent a locked direction, meaning you can't create a room at that location until someone unlocks it (if they ever want too...). Example: If to the right is locked, you can't make a room to the right. To completely lock a direction off, you must lock the direction in every surrounding room there are any surrounding rooms. This will prevent people on the if outside from being trapped inside the room... This is why you shouldn't lock off all of the directions.
 
 [html]<div style="margin-left: 30px">[/html]If you take a look at...
-[url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.0.png"][img="Example image" width="544" height="433"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.0.png[/img][/url]
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.0.png"][img="Sample screenshot" width="544" height="433"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.0.png[/img][/url]
 you will see the room is the only one locked on all sides.
 This means that people can come in but not come out. This is 'bad'.
 
 If you look at...
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.1.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.1.png[/img]
 you will see that the surrounding rooms have locked the way into your room. Meaning no one can get in but anyone can get out. This is most likely a bad thing as no one can get into the room...
 
 Now, take a look at...
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.2.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.2.png[/img]
 this is a room locked on all sides [b]and[/b] the surrounding rooms locked on the side where your room could've been accessed.[html]</div>[/html]
 
 [title="3"]The Realm List[/title]
@@ -132,7 +132,7 @@ If you click on the 'realms' link, you will be brought to a page that displays t
 
 [title="3"]The main interface: Navigation[/title]
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.4.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.4.png[/img]
 
 You can only move in 4 directions at any time, if the direction isn't locked. Up, down, left and right. Simply click on the link in the direction you wish to go.
 
@@ -146,7 +146,7 @@ If you made the room you are currently in, or made the realm you are currently o
 
 As with any other RPG based game, interaction is key to the game. You can chat with anyone currently in in the same room as you by typing a message shown in...
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.5.0.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.5.0.png[/img]
 
 then clicking on chat.
 
@@ -244,19 +244,19 @@ When you're health is down to 0, you die. You lose all your items and you start 
 
 [title="3"]Room Information[/title]
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.1.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.1.png[/img]
 
 [b]Room Name[/b]: This is what your room will be called. It will appear in the navigation menu when someone is close enough, and when someone is inside the room.
 
 [b]Room Text[/b]: The Room text is displayed inside the room, it can't be viewed anywhere else.
 
-[html]<div style="margin-left: 30px">[/html][img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.2.png[/img][html]</div>[/html]
+[html]<div style="margin-left: 30px">[/html][img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.2.png[/img][html]</div>[/html]
 
-[html]<div style="margin-left: 30px">[/html][url="{$BASE_URL}/data_custom/modules/buildr/docs/room1.3.png"][img="Example image" width="554" height="176"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.3.png[/img][/url][html]</div>[/html]
+[html]<div style="margin-left: 30px">[/html][url="{$BASE_URL}/data_custom/modules/buildr/docs/room1.3.png"][img="Sample screenshot" width="554" height="176"]{$BASE_URL}/data_custom/modules/buildr/docs/room1.3.png[/img][/url][html]</div>[/html]
 
 Entrance Question: If you wish to have privacy, or make this room 'special', you can specify a password. This field is for the Question.
 
-[html]<div style="margin-left: 30px">[/html][img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/roompw1.0.png[/img][html]</div>[/html]
+[html]<div style="margin-left: 30px">[/html][img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/roompw1.0.png[/img][html]</div>[/html]
 
 Questions can be anything from "What is the first digit of PI?" ('special room') or "Enter authorisation code" (general question for those who wish this room be private.)
 
@@ -267,7 +267,7 @@ The answer to the question above has multiple responses.
 Example; 3:three[html]</div>[/html]
 
 [b]Entrance Fail Message[/b]: This will appear in the 'status' bar at the top of the room you were in.
-[html]<div style="margin-left: 30px">[/html][img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/roompw1.1.png[/img][html]</div>[/html]
+[html]<div style="margin-left: 30px">[/html][img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/roompw1.1.png[/img][html]</div>[/html]
 
 [b]Required Item[/b]:
 [html]<div style="margin-left: 30px">[/html]The specified item will be required before entering the room. Even if you put a password, the item is still required even if you submitted the right password. If the item is "BRIBE" then any bribe-item is required to enter.[html]</div>[/html]
@@ -358,13 +358,13 @@ Now, let's get cracking!
 
 Click on 'Add Realm' at the bottom of the page (under the actions bar)
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.1.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.1.png[/img]
 
 Just to let you know, all these options can be changed at any time by either you or a moderator.
 
 We'll deal with the first set of boxes.
 
-[url="{$BASE_URL}/data_custom/modules/buildr/docs/realm1.2.png"][img="Example image" width="675" height="416"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.2.png[/img][/url]
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/realm1.2.png"][img="Sample screenshot" width="675" height="416"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.2.png[/img][/url]
 
 [b]Realm Name[/b]:
 [html]<div style="margin-left: 30px">[/html]This will be the name of the realm you wish to create. It will also appear in the first part of the location details. You should try to keep this short.
@@ -376,7 +376,7 @@ Example: 'Deck 08 - Primary Computer Core' is my realm name.[html]</div>[/html]
 [b]Jail Name[/b]:
 [html]<div style="margin-left: 30px">[/html]A Jail is where a player will be sent if they failed to pick pocket someone. They will remain there until someone gets them out. But we'll cover this later, in another tutorial.
 Example:
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.3.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.3.png[/img]
 'Defender's Quarters' is the Jail name, it appears in the corridors as one of the links. (like 'corridor')[html]</div>[/html]
 
 [b]Jail Text[/b]:
@@ -441,7 +441,7 @@ Click on 'Submit' , another page loads.
 
 In the 'status' section on top of the room picture and navigation, your realm number appears. Write this down as you need it to get to work. You will need to make a portal to the following co-ordinates: #:0:0 Where # is your realm number.
 
-[url="{$BASE_URL}/data_custom/modules/buildr/docs/realm1.4.png"][img="Example image" width="524" height="37"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.4.png[/img][/url]
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/realm1.4.png"][img="Sample screenshot" width="524" height="37"]{$BASE_URL}/data_custom/modules/buildr/docs/realm1.4.png[/img][/url]
 
 [title="3"]Reaching your realm[/title]
 
@@ -519,13 +519,13 @@ Now, let's get cracking!
 
 First, click on the map link at the bottom of the screen and look for a square with 'portal spot' written inside. This means that that location can have a portal to and from that room. The Green lined square is your current position.
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.0.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.0.png[/img]
 
 Use the navigation system to reach the room, once there you can click on the 'add portal' link.
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.1.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.1.png[/img]
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.2.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.2.png[/img]
 
 When creating a room, you can choose to allow or deny people from making a portal by checking or unchecking (respectively) the box next to 'Allow Portal'.
 
@@ -540,7 +540,7 @@ Example: "Deck 08 - Primary Computer Core"
 Example 2: Your portal name is "Bajoran Wormhole", the portal text could be something like "You entered Quadrant-D safely".[html]</div>[/html]
 
 [b]Destination Realm[/b]: Usually, this is a 2 digit number. You can find the realm by going to it and looking at the first number in the co-ordinates...
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.3.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.3.png[/img]
 
 You can also find a realm number from the realm list.
 
@@ -548,7 +548,7 @@ Be sure to check the 'status' message for any errors.
 
 [title="3"]Editing your portal[/title]
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.4.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.4.png[/img]
 
 If you wish to edit any of the fields above, you can do so at any time your in the room where your portal is. When you enter the room, you'll notice a 'Edit' next to your portal. Only a moderator or the portal's creator can modify the portal's settings.
 
@@ -556,7 +556,7 @@ Click on edit and consult the fields from Step 3 for more details.
 
 [title="3"]Deleting your portal[/title]
 
-[img="Example image"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.5.png[/img]
+[img="Sample screenshot"]{$BASE_URL}/data_custom/modules/buildr/docs/port0.5.png[/img]
 
 If you wish, you could also Delete a portal, but you must understand that if this is the only portal out of this realm, that you should make sure that there are no other players on your realm. They will be trapped and need assistance from a moderator to get out.
 

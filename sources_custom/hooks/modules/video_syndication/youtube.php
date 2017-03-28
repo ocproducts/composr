@@ -69,7 +69,7 @@ class Hook_video_syndication_youtube
         $videos = array();
 
         if (!is_null($local_id)) {
-            // This code is a bit annoying. Ideally we'd do a remote tag search, but Youtube's API is lagged here, and only works for listed videos. We'll therefore look at our local mappings.
+            // This code is a bit annoying. Ideally we'd do a remote tag search, but YouTube's API is lagged here, and only works for listed videos. We'll therefore look at our local mappings.
             $transcoding_id = $GLOBALS['SITE_DB']->query_value_if_there('SELECT t_id FROM ' . get_table_prefix() . 'video_transcoding WHERE t_local_id=' . strval($local_id) . ' AND t_id LIKE \'' . db_encode_like('youtube\_%') . '\'');
             if (is_null($transcoding_id)) {
                 return array(); // Not uploaded yet
@@ -85,7 +85,7 @@ class Hook_video_syndication_youtube
                 $query_params['category'] = 'sync' . strval($local_id); // Covers {http://gdata.youtube.com/schemas/2007/developertags.cat} and {http://gdata.youtube.com/schemas/2007/keywords.cat}
                 $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
 
-                if (!isset($parsed->entry)) // Annoying! Youtube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
+                if (!isset($parsed->entry)) // Annoying! YouTube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
                 {
                     unset($query_params['category']);
                     $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
@@ -318,7 +318,7 @@ class Hook_video_syndication_youtube
 
     public function unbind_remote_video($video)
     {
-        // No-op for youtube, can't be done via Youtube Data API. Fortunately we don't really need this method.
+        // No-op for youtube, can't be done via YouTube Data API. Fortunately we don't really need this method.
         return false;
     }
 

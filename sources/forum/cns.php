@@ -904,7 +904,12 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_previous_member($member)
     {
-        $tempid = $this->connection->query_value_if_there('SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id<' . strval($member) . ' AND id>0 ORDER BY id DESC');
+        $sql = 'SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id<' . strval($member) . ' AND id>0 AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+        if (addon_installed('unvalidated')) {
+            $sql .= ' AND m_validated=1';
+        }
+        $sql .= ' ORDER BY id DESC';
+        $tempid = $this->connection->query_value_if_there($sql);
         if ($tempid == $this->get_guest_id()) {
             return null;
         }
@@ -920,7 +925,12 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_next_member($member)
     {
-        $tempid = $this->connection->query_value_if_there('SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id>' . strval($member) . ' ORDER BY id');
+        $sql = 'SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id>' . strval($member) . ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+        if (addon_installed('unvalidated')) {
+            $sql .= ' AND m_validated=1';
+        }
+        $sql .= ' ORDER BY id';
+        $tempid = $this->connection->query_value_if_there($sql);
         return $tempid;
     }
 

@@ -971,7 +971,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             $connect_to = $config_ip_forwarding;
         }
-    } elseif (php_function_allowed('gethostbyname')) {
+    } elseif ((php_function_allowed('gethostbyname')) && ($url_parts['scheme'] == 'http')) {
         $connect_to = @gethostbyname($connect_to); // for DNS caching
     }
     if (!array_key_exists('scheme', $url_parts)) {
@@ -1037,7 +1037,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $use_curl = false;
     }
 
-    $raw_payload = '';
+    $raw_payload = ''; // Note that this will contain HTTP headers (it is appended directly after headers with no \r\n between -- so it contains \r\n\r\n itself when the content body is going to start)
+    $raw_payload_curl = '';
     $sent_http_post_content = false;
     $put = mixed();
     $put_path = mixed();
@@ -1061,21 +1062,18 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         }
 
         if (is_null($files)) { // If no files, use simple application/x-www-form-urlencoded
-            if (!$use_curl) {
-                if ($raw_post) {
-                    if (!isset($extra_headers['Content-Type'])) {
-                        $raw_payload .= 'Content-Type: ' . $raw_content_type . "\r\n";
-                    }
-                } else {
-                    $raw_payload .= 'Content-Type: application/x-www-form-urlencoded; charset=' . get_charset() . "\r\n";
+            if ($raw_post) {
+                if (!isset($extra_headers['Content-Type'])) {
+                    $raw_payload .= 'Content-Type: ' . $raw_content_type . "\r\n";
                 }
-                $raw_payload .= 'Content-Length: ' . strval(strlen($_postdetails_params)) . "\r\n";
-                $raw_payload .= "\r\n";
-            } // curl sets the above itself
-            $raw_payload .= $_postdetails_params;
-            if (!$use_curl) {
-                $raw_payload .= "\r\n\r\n";
+            } else {
+                $raw_payload .= 'Content-Type: application/x-www-form-urlencoded; charset=' . get_charset() . "\r\n";
             }
+            $raw_payload .= 'Content-Length: ' . strval(strlen($_postdetails_params)) . "\r\n";
+            $raw_payload .= "\r\n";
+
+            $raw_payload .= $_postdetails_params;
+            $raw_payload_curl = $_postdetails_params; // Other settings will be passed via cURL itself
             $sent_http_post_content = true;
         } else { // If files, use more complex multipart/form-data
             if (strtolower($http_verb) == 'put') {
@@ -1163,9 +1161,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $raw_payload .= 'Content-Length: ' . strval(strlen($raw_payload2)) . "\r\n";
             }
             $raw_payload .= "\r\n" . $raw_payload2;
-            if ($use_curl) {
-                $raw_payload = $raw_payload2; // Other settings will be passed via cURL itself
-            }
+
+            $raw_payload_curl = $raw_payload2; // Other settings will be passed via cURL itself
         }
     }
 
@@ -1273,7 +1270,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     curl_setopt($ch, CURLOPT_INFILESIZE, filesize($put_path));
                                                 } else {
                                                     curl_setopt($ch, CURLOPT_POST, true);
-                                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload);
+                                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload_curl);
                                                     if (!is_null($files)) {
                                                         $curl_headers[] = 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
                                                     }
@@ -1850,18 +1847,26 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $raw_payload .= file_get_contents($put_path);
             }
             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
+            $last_headers = stripos($raw_payload, "\r\n\r\n");
+            if ($last_headers !== false) {
+                $headers .= substr($raw_payload, 0, $last_headers + 2);
+                $raw_payload = substr($raw_payload, $last_headers + 4);
+            }
             $opts = array(
-                'method' => $http_verb,
-                'header' => rtrim(($do_ip_forwarding ? ('Host: ' . $url_parts['host'] . "\r\n") : '') . $headers),
-                'user_agent' => $ua,
-                'content' => $raw_payload,
-                'follow_location' => $no_redirect ? 0 : 1,
+                'http' => array(
+                    'method' => $http_verb,
+                    'header' => rtrim((($url_parts['host'] != $connect_to) ? ('Host: ' . $url_parts['host'] . "\r\n") : '') . $headers),
+                    'user_agent' => $ua,
+                    'content' => $raw_payload,
+                    'follow_location' => $no_redirect ? 0 : 1,
+                    //'ignore_errors' => true, // Useful when debugging
+                ),
                 'ssl' => array(
                     'verify_peer' => !$do_ip_forwarding,
                     'cafile' => $crt_path,
                     'SNI_enabled' => true,
                     'ciphers' => 'TLSv1',
-                )
+                ),
             );
             $proxy = function_exists('get_option') ? get_option('proxy') : '';
             if ($proxy != '') {
@@ -1869,17 +1874,33 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $proxy_user = get_option('proxy_user');
                 if ($proxy_user != '') {
                     $proxy_password = get_option('proxy_password');
-                    $opts['proxy'] = 'tcp://' . $proxy_user . ':' . $proxy_password . '@' . $proxy . ':' . $port;
+                    $opts['http']['proxy'] = 'tcp://' . $proxy_user . ':' . $proxy_password . '@' . $proxy . ':' . $port;
                 } else {
-                    $opts['proxy'] = 'tcp://' . $proxy . ':' . $port;
+                    $opts['http']['proxy'] = 'tcp://' . $proxy . ':' . $port;
                 }
             }
-            $context = stream_context_create(array('http' => $opts));
+            $context = stream_context_create($opts);
             $php_errormsg = mixed();
             if (($byte_limit === null) && (is_null($write_to_file))) {
-                $read_file = @file_get_contents($_url, false, $context);
+                if ($trigger_error) {
+                    global $SUPPRESS_ERROR_DEATH;
+                    $bak = $SUPPRESS_ERROR_DEATH;
+                    $SUPPRESS_ERROR_DEATH = true; // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.
+                    $read_file = file_get_contents($_url, false, $context);
+                    $SUPPRESS_ERROR_DEATH = $bak;
+                } else {
+                    $read_file = @file_get_contents($_url, false, $context);
+                }
             } else {
-                $_read_file = @fopen($_url, 'rb', false, $context);
+                if ($trigger_error) {
+                    global $SUPPRESS_ERROR_DEATH;
+                    $bak = $SUPPRESS_ERROR_DEATH;
+                    $SUPPRESS_ERROR_DEATH = true; // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.
+                    $_read_file = fopen($_url, 'rb', false, $context);
+                    $SUPPRESS_ERROR_DEATH = $bak;
+                } else {
+                    $_read_file = @fopen($_url, 'rb', false, $context);
+                }
                 if ($_read_file !== false) {
                     $read_file = '';
                     while ((!feof($_read_file)) && (($byte_limit === null) || (strlen($read_file) < $byte_limit))) {
