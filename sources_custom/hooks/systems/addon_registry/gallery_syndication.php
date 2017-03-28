@@ -88,7 +88,9 @@ class Hook_addon_registry_gallery_syndication
      */
     public function get_description()
     {
-        return 'Automatically syndicate out videos to YouTube or Vimeo, keeping them in sync, with the option to actually host the videos on these services via an embedded player (giving you free video transcoding and hosting).';
+        return 'Automatically syndicate out videos to YouTube or Vimeo, keeping them in sync, with the option to actually host the videos on these services via an embedded player (giving you free video transcoding and hosting).
+
+Unfortunately YouTube support is currently not functional (https://compo.sr/tracker/view.php?id=3166).';
     }
 
     /**
