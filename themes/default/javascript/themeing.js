@@ -68,8 +68,8 @@ function template_editor_show_tab(file_id) {
             resize: function (event, ui) {
                 var editor = window.ace_editors['e_' + file_id];
                 if (editor !== undefined) {
-                    $('#e_' + file_id.replace(/\./g, '\\.') + '__ace')[0].style.height = '100%';
-                    $('#e_' + file_id.replace(/\./g, '\\.') + '__ace')[0].parentNode.style.height = '100%';
+                    $cms.dom.$('#e_' + file_id.replace(/\./g, '\\.') + '__ace').style.height = '100%';
+                    $cms.dom.$('#e_' + file_id.replace(/\./g, '\\.') + '__ace').parentNode.style.height = '100%';
                     editor.resize();
                 }
             },

@@ -1,4 +1,4 @@
-(function ($cms, symbols) {
+(function ($cms, /**@suppress {newCheckTypes|undefinedNames|undefinedVars|missingProperties}*/symbols) {
     'use strict';
 
     // Cached references
@@ -16,27 +16,14 @@
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
         // Clever helper for merging arrays using `[].push`
-        pushArray = Function.bind.call(Function.apply, emptyArr.push),
-
-    // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
-    // Opera 8.0+
-        isOpera = (!!window.opr && !!window.opr.addons) || !!window.opera || (navigator.userAgent.includes(' OPR/')),
-    // Firefox 1.0+
-        isFirefox = (window.InstallTrigger !== undefined),
-    // At least Safari 3+: HTMLElement's constructor's name is HTMLElementConstructor
-        isSafari = internalName(window.HTMLElement) === 'HTMLElementConstructor',
-    // Internet Explorer 6-11
-        isIE = (/*@cc_on!@*/0 || (typeof document.documentMode === 'number')),
-    // Edge 20+
-        isEdge = !isIE && !!window.StyleMedia,
-    // Chrome 1+
-        isChrome = !!window.chrome && !!window.chrome.webstore;
+        pushArray = Function.bind.call(Function.apply, emptyArr.push);
 
     // Too useful to not have globally!
-    window.intVal = intVal;
-    window.strVal = strVal;
-    window.arrVal = arrVal;
-    window.objVal = objVal;
+    window.intVal   = intVal;
+    window.floatVal = floatVal;
+    window.strVal   = strVal;
+    window.arrVal   = arrVal;
+    window.objVal   = objVal;
 
     /** @namespace $cms */
     $cms = extendDeep($cms, /** @lends $cms */ {
@@ -146,7 +133,10 @@
         /**@member {string}*/
         $COOKIE_DOMAIN: strVal(symbols.COOKIE_DOMAIN),
 
-        /**@member {object}*/
+        /**
+         * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
+         * @member {object}
+         * */
         $CONFIG_OPTION: {
             /**@member {boolean}*/
             js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
@@ -198,14 +188,20 @@
             /**@member {string}*/
             topic_pin_max_days: symbols.CONFIG_OPTION.topic_pin_max_days
         },
-        /**@member {object}*/
+        /**
+         * WARNING: This is a very limited subset of the $VALUE_OPTION tempcode symbol
+         * @member {object}
+         * */
         $VALUE_OPTION: {
             /**@member {string}*/
             js_keep_params: symbols.VALUE_OPTION.js_keep_params,
             /**@member {string}*/
             commercial_spellchecker: symbols.VALUE_OPTION.commercial_spellchecker
         },
-        /**@member {object}*/
+        /**
+         * WARNING: This is a very limited subset of the $HAS_PRIVILEGE tempcode symbol
+         * @member {object}
+         * */
         $HAS_PRIVILEGE: {
             /**@member {string}*/
             sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
@@ -217,18 +213,27 @@
         /**@member {object}*/
         staffTooltipsUrlPatterns: objVal(symbols.EXTRA.staff_tooltips_url_patterns),
 
+        // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
+        // Opera 8.0+
+
+            // Opera 8.0+
         /**@member {boolean}*/
-        isOpera: isOpera,
+        isOpera: (!!window.opr && !!window.opr.addons) || !!window.opera || (navigator.userAgent.includes(' OPR/')),
+        // Firefox 1.0+
         /**@member {boolean}*/
-        isFirefox: isFirefox,
+        isFirefox: (window.InstallTrigger !== undefined),
+        // At least Safari 3+: HTMLElement's constructor's name is HTMLElementConstructor
         /**@member {boolean}*/
-        isSafari: isSafari,
+        isSafari: internalName(window.HTMLElement) === 'HTMLElementConstructor',
+        // Internet Explorer 6-11
         /**@member {boolean}*/
-        isIE: isIE,
+        isIE: (/*@cc_on!@*/0 || (typeof document.documentMode === 'number')),
+        // Edge 20+
         /**@member {boolean}*/
-        isEdge: isEdge,
+        isEdge: !(/*@cc_on!@*/0 || (typeof document.documentMode === 'number')) && !!window.StyleMedia,
+        // Chrome 1+
         /**@member {boolean}*/
-        isChrome: isChrome,
+        isChrome: !!window.chrome && !!window.chrome.webstore,
         /**@member {boolean}*/
         isTouchEnabled: ('ontouchstart' in docEl),
 
@@ -357,7 +362,9 @@
         /**@method*/
         magicKeypress: magicKeypress,
         /**@method*/
-        manageScrollHeight: manageScrollHeight
+        manageScrollHeight: manageScrollHeight,
+        /**@method*/
+        openModalWindow: openModalWindow
     });
 
     /**
@@ -547,22 +554,45 @@
         return id;
     }
 
+    /**
+     *
+     * @returns {boolean}
+     */
     function returnTrue() {
         return true;
     }
 
+    /**
+     *
+     * @returns {boolean}
+     */
     function returnFalse() {
         return false;
     }
 
+    /**
+     *
+     * @param first
+     * @returns {*}
+     */
     function returnFirst(first) {
         return first;
     }
 
+    /**
+     *
+     * @param val
+     * @returns {boolean}
+     */
     function isObj(val) {
         return (val != null) && (typeof val === 'object');
     }
 
+    /**
+     *
+     * @param val
+     * @returns {boolean}
+     */
     function hasEnumerable(val) {
         if (val != null) {
             for (var key in val) {
@@ -572,6 +602,11 @@
         return false;
     }
 
+    /**
+     *
+     * @param val
+     * @returns {boolean}
+     */
     function hasOwnEnumerable(val) {
         if (val != null) {
             for (var key in val) {
@@ -583,19 +618,39 @@
         return false;
     }
 
+    /**
+     * @param obj
+     * @returns {*|boolean}
+     */
     function isPlainObj(obj) {
         var proto;
         return isObj(obj) && (internalName(obj) === 'Object') && (((proto = Object.getPrototypeOf(obj)) === Object.prototype) || (proto === null));
     }
 
+    /**
+     *
+     * @param val
+     * @returns {boolean|*|boolean}
+     */
     function isArrayOrPlainObj(val) {
         return (val != null) && (Array.isArray(val) || isPlainObj(val));
     }
 
+    /**
+     *
+     * @param val
+     * @returns {boolean}
+     */
     function isScalar(val) {
         return (val != null) && ((typeof val === 'boolean') || (typeof val === 'number') || (typeof val === 'string'));
     }
 
+    /**
+     *
+     * @param obj
+     * @param keys
+     * @returns {boolean}
+     */
     function hasMatchingKey(obj, keys) {
         keys = arrVal(keys);
 
@@ -608,6 +663,12 @@
         return false;
     }
 
+    /**
+     *
+     * @param prototype
+     * @param data
+     * @returns {prototype}
+     */
     function withProto(prototype, data) {
         var obj = Object.create(prototype);
         if (data != null) {
@@ -616,24 +677,50 @@
         return obj;
     }
 
+    /**
+     *
+     * @param data
+     * @returns {prototype}
+     */
     function pureObj(data) {
         return withProto(null, data);
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     * @returns {{}}
+     */
     function keyValue(key, value) {
         var obj = {};
         obj[key] = value;
         return obj;
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isPromise(obj) {
         return (obj != null) && (typeof obj === 'object') && (typeof obj.then === 'function');
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isWindow(obj) {
         return isObj(obj) && (obj === obj.window) && (obj === obj.self) && (internalName(obj) === 'Window');
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean|*}
+     */
     function nodeType(obj) {
         return isObj(obj) && (typeof obj.nodeName === 'string') && (typeof obj.nodeType === 'number') && obj.nodeType;
     }
@@ -642,41 +729,86 @@
         DOCUMENT_NODE = 9,
         DOCUMENT_FRAGMENT_NODE = 11;
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isNode(obj) {
         return nodeType(obj) !== false;
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isEl(obj) {
         return nodeType(obj) === ELEMENT_NODE;
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isDoc(obj) {
         return nodeType(obj) === DOCUMENT_NODE;
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isDocFrag(obj) {
         return nodeType(obj) === DOCUMENT_FRAGMENT_NODE;
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isDocOrEl(obj) {
         var t = nodeType(obj);
         return (t === ELEMENT_NODE) || (t === DOCUMENT_NODE);
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isDocOrFragOrEl(obj) {
         var t = nodeType(obj);
         return (t === ELEMENT_NODE) || (t === DOCUMENT_NODE) || (t === DOCUMENT_FRAGMENT_NODE);
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isRegExp(obj) {
         return (obj != null) && (internalName(obj) === 'RegExp');
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {boolean}
+     */
     function isDate(obj) {
         return (obj != null) && (internalName(obj) === 'Date');
     }
 
     // Inspired by jQuery.isNumeric
+    /**
+     *
+     * @param val
+     * @returns {boolean}
+     */
     function isNumeric(val) {
         // parseFloat NaNs numeric-cast false positives ("")
         // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
@@ -684,6 +816,12 @@
         return Number.isFinite(val);
     }
 
+    /**
+     *
+     * @param obj
+     * @param minLength
+     * @returns {boolean}
+     */
     function isArrayLike(obj, minLength) {
         var len;
         minLength = Number.isFinite(+minLength) ? +minLength : 0;
@@ -698,6 +836,12 @@
 
     // Returns a random integer between min (inclusive) and max (inclusive)
     // Using Math.round() will give you a non-uniform distribution!
+    /**
+     *
+     * @param min
+     * @param max
+     * @returns {*}
+     */
     function random(min, max) {
         min = Number.isFinite(+min) ? +min : 0;
         max = Number.isFinite(+max) ? +max : 1000000000000; // 1 Trillion
@@ -705,10 +849,15 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Bind a number of an object's methods to that object. Remaining arguments
-    // are the method names to be bound. Useful for ensuring that all callbacks
-    // defined on an object belong to it.
-    function bindAll(obj/*, ...methodNames*/) {
+    /**
+     * Bind a number of an object's methods to that object. Remaining arguments
+     * are the method names to be bound. Useful for ensuring that all callbacks
+     * defined on an object belong to it.
+     * @param obj
+     * @param methodNames
+     * @returns {*}
+     */
+    function bindAll(obj, /*...*/methodNames) {
         var i, len = arguments.length, methodName;
         for (i = 1; i < len; i++) {
             methodName = arguments[i];
@@ -717,6 +866,12 @@
         return obj;
     }
 
+    /**
+     *
+     * @param obj
+     * @param callback
+     * @returns {*}
+     */
     function each(obj, callback) {
         if (obj == null) {
             return obj;
@@ -731,6 +886,12 @@
         return obj;
     }
 
+    /**
+     *
+     * @param iterable
+     * @param callback
+     * @returns {*}
+     */
     function eachIter(iterable, callback) {
         var item, i = 0;
 
@@ -782,16 +943,26 @@
         }
     }
 
-    // Copy all but undefined properties from one or more objects to the `target` object.
-    function extend(target/*, ...sources*/) {
+    /**
+     * Copy all except undefined properties from one or more objects to the `target` object.
+     * @param target
+     * @param {...object} sources - Source objects
+     * @returns {*}
+     */
+    function extend(target, /*...*/sources) {
         for (var i = 1, len = arguments.length; i < len; i++) {
             _extend(target, arguments[i]);
         }
         return target
     }
 
-    // Extends `target` with source own-properties only.
-    function extendOwn(target/*, ...sources*/) {
+    /**
+     * Extends `target` with source own-properties only.
+     * @param target
+     * @param {...object} sources - Source objects
+     * @returns {*}
+     */
+    function extendOwn(target, /*...*/sources) {
         for (var i = 1, len = arguments.length; i < len; i++) {
             _extend(target, arguments[i], EXTEND_SRC_OWN_ONLY);
         }
@@ -801,16 +972,21 @@
     /**
      * Deep extend, clones any arrays and plain objects found in sources.
      * @param target
+     * @param {...object} sources - Source objects
      * @returns {object}
      */
-    function extendDeep(target/*, ...sources*/) {
+    function extendDeep(target, /*...*/sources) {
         for (var i = 1, len = arguments.length; i < len; i++) {
             _extend(target, arguments[i], EXTEND_DEEP);
         }
         return target
     }
 
-    // Returns a function that always returns a deep-clone of `obj`
+    /**
+     * Returns a function that always returns a deep-clone of `obj`
+     * @param obj
+     * @returns {function}
+     */
     function cloner(obj) {
         obj = objVal(obj);
         return function cloned() {
@@ -818,16 +994,27 @@
         };
     }
 
-    // Apply `options` to the `defaults` object. Only copies over properties with keys already defined in the `defaults` object.
-    function defaults(defaults/*, ...options*/) {
+    /**
+     * Apply `options` to the `defaults` object. Only copies over properties with keys already defined in the `defaults` object.
+     * @param defaults
+     * @param {...object} options - Options
+     * @returns {*}
+     */
+    function defaults(defaults, /*...*/options) {
         for (var i = 1, len = arguments.length; i < len; i++) {
             _extend(defaults, arguments[i], EXTEND_TGT_OWN_ONLY);
         }
         return defaults
     }
 
-    // If the value of the named `property` is a function then invoke it with the
-    // `object` as context; otherwise, return it.
+    /**
+     * If the value of the named `property` is a function then invoke it with the
+     * `object` as context; otherwise, return it.
+     * @param object
+     * @param property
+     * @param fallback
+     * @returns {*}
+     */
     function result(object, property, fallback) {
         var value = ((object != null) && (object[property] !== undefined)) ? object[property] : fallback;
         return (typeof value === 'function') ? value.call(object) : value;
@@ -871,17 +1058,31 @@
         return Object.defineProperties(obj, descriptors);
     }
 
-    // Gets the internal type/constructor name of the provided `val`
+    /**
+     * Gets the internal type/constructor name of the provided `val`
+     * @param val
+     * @returns {string}
+     */
     function internalName(val) {
         return emptyObj.toString.call(val).slice(8, -1); // slice off the surrounding '[object ' and ']'
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {*}
+     */
     function constructorName(obj) {
         if ((obj != null) && (typeof obj.constructor === 'function') && (typeof obj.constructor.name === 'string')) {
             return obj.constructor.name;
         }
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {*}
+     */
     function typeName(obj) {
         var name = constructorName(obj);
         return (name !== undefined) ? name : internalName(obj);
@@ -898,10 +1099,19 @@
     }
 
     /**
+     * @param val
      * @returns { Number }
      */
     function intVal(val) {
         return ((val != null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    }
+
+    /**
+     * @param val
+     * @returns { Number }
+     */
+    function floatVal(val) {
+        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     function numberFormat(num) {
@@ -910,6 +1120,7 @@
     }
 
     /**
+     * @param val
      * @returns { Array|* } array or array-like object
      */
     function arrVal(val, clone) {
@@ -929,6 +1140,7 @@
     }
 
     /**
+     * @param val
      * @returns { Object }
      */
     function objVal(val, defaultPropertyName) {
@@ -941,6 +1153,7 @@
 
     /**
      * Sensible PHP-like string coercion
+     * @param val
      * @returns { string }
      */
     function strVal(val) {
@@ -962,6 +1175,8 @@
 
     /**
      * String interpolation
+     * @param str
+     * @param values
      * @returns { string }
      */
     function format(str, values) {
@@ -986,15 +1201,27 @@
         });
     }
 
+    /**
+     * @param str
+     * @returns {string}
+     */
     function ucFirst(str) {
         return ((str != null) && (str = strVal(str))) ? str.charAt(0).toUpperCase() + str.substr(1) : '';
     }
 
+    /**
+     * @param str
+     * @returns {string}
+     */
     function lcFirst(str) {
         return ((str != null) && (str = strVal(str))) ? str.charAt(0).toLowerCase() + str.substr(1) : '';
     }
 
-    // Credit: http://stackoverflow.com/a/32604073/362006
+    /**
+     * Credit: http://stackoverflow.com/a/32604073/362006
+     * @param str
+     * @returns {string}
+     */
     function camelCase(str) {
         // Lower cases the string
         return ((str != null) && (str = strVal(str))) ?
@@ -1059,6 +1286,11 @@
         return params;
     }
 
+    /**
+     *
+     * @param iterable
+     * @returns {Array}
+     */
     function arrayFromIterable(iterable) {
         var item, array = [];
 
@@ -1078,10 +1310,20 @@
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
         rgxHttp = /^https?:(?=\/\/)/i;
 
+    /**
+     *
+     * @param absoluteUrl
+     * @returns {string}
+     */
     function toProtocolRelative(absoluteUrl) {
         return strVal(absoluteUrl).replace(rgxProtocol, '');
     }
 
+    /**
+     *
+     * @param relativeUrl
+     * @returns {string}
+     */
     function baseUrl(relativeUrl) {
         if (!relativeUrl && (relativeUrl !== 0)) {
             return $cms.$BASE_URL_S;
@@ -1097,12 +1339,20 @@
         return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
     }
 
-    // Dynamically fixes the protocol for image URLs
+    /**
+     * Dynamically fixes the protocol for image URLs
+     * @param url
+     * @returns {string}
+     */
     function img(url) {
         return strVal(url).replace(rgxHttp, window.location.protocol);
     }
 
-    /* Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click) */
+    /**
+     * Force a link to be clicked without user clicking it directly (useful if there's a confirmation dialog inbetween their click)
+     * @param url
+     * @param target
+     */
     function navigate(url, target) {
         var el;
 
@@ -1134,6 +1384,11 @@
         }
     }
 
+    /**
+     *
+     * @param source
+     * @returns {*}
+     */
     function parseJson(source) {
         return window.JSON5.parse(strVal(source));
     }
@@ -1183,6 +1438,10 @@
         }
     }
 
+    /**
+     *
+     * @param sheet
+     */
     function requireCss(sheet) {
         if ($cms.dom.$('link#css-' + sheet)) {
             return;
@@ -1221,12 +1480,21 @@
         return _requireJsPromises[script];
     }
 
+    /**
+     *
+     * @param scripts
+     * @returns { Promise }
+     */
     function requireJavascript(scripts) {
         scripts = arrVal(scripts);
 
         return Promise.all(scripts.map(_requireJavascript));
     }
 
+    /**
+     *
+     * @param flag
+     */
     function setPostDataFlag(flag) {
         flag = strVal(flag);
 
@@ -1250,6 +1518,12 @@
     }
 
     // Inspired by goog.inherits and Babel's generated output for ES6 classes
+    /**
+     *
+     * @param SubClass
+     * @param SuperClass
+     * @param protoProps
+     */
     function inherits(SubClass, SuperClass, protoProps) {
         Object.setPrototypeOf(SubClass, SuperClass);
 
@@ -1390,6 +1664,13 @@
     $cms.cookies || ($cms.cookies = new CookieMonster());
 
     var alertedCookieConflict;
+
+    /**
+     *
+     * @param cookieName
+     * @param cookieValue
+     * @param numDays
+     */
     function setCookie(cookieName, cookieValue, numDays) {
         var expires = new Date(),
             output;
@@ -1418,6 +1699,12 @@
         }
     }
 
+    /**
+     *
+     * @param cookieName
+     * @param defaultValue
+     * @returns {*}
+     */
     function readCookie(cookieName, defaultValue) {
         cookieName = strVal(cookieName);
         defaultValue = strVal(defaultValue);
@@ -1477,6 +1764,11 @@
         }
     }());
 
+    /**
+     *
+     * @param windowOrNodeOrSelector
+     * @returns {*}
+     */
     function domArg(windowOrNodeOrSelector) {
         var el;
 
@@ -1499,6 +1791,11 @@
         throw new TypeError('domArg(): Argument 1 must be a {' + 'Window|Node|string}, "' + typeName(windowOrNodeOrSelector) + '" provided.');
     }
 
+    /**
+     *
+     * @param nodeOrSelector
+     * @returns {*}
+     */
     function nodeArg(nodeOrSelector) {
         var el;
 
@@ -1521,6 +1818,11 @@
         throw new TypeError('nodeArg(): Argument 1 must be a {' + 'Node|string}, "' + typeName(nodeOrSelector) + '" provided.');
     }
 
+    /**
+     *
+     * @param elementOrSelector
+     * @returns {*}
+     */
     function elArg(elementOrSelector) {
         var el;
 
@@ -1543,6 +1845,12 @@
         throw new TypeError('elArg(): Argument 1 must be a {' + 'Element|string}, "' + typeName(elementOrSelector) + '" provided.');
     }
 
+    /**
+     *
+     * @param el
+     * @param property
+     * @returns {*}
+     */
     function computedStyle(el, property) {
         var cs = el.ownerDocument.defaultView.getComputedStyle(el);
         return (property !== undefined) ? cs.getPropertyValue(property) : cs;
@@ -2457,12 +2765,22 @@
         }
     };
 
+    /**
+     *
+     * @param str
+     * @returns {string}
+     */
     function camelize(str) {
         return strVal(str).replace(/-+(.)?/g, function (match, chr) {
             return chr ? chr.toUpperCase() : '';
         });
     }
 
+    /**
+     *
+     * @param str
+     * @returns {string}
+     */
     function dasherize(str) {
         return strVal(str).replace(/::/g, '/')
             .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
@@ -2472,6 +2790,13 @@
     }
 
     var cssNumericProps = {'column-count': 1, 'columns': 1, 'font-weight': 1, 'line-height': 1, 'opacity': 1, 'z-index': 1, 'zoom': 1};
+
+    /**
+     *
+     * @param name
+     * @param value
+     * @returns {*}
+     */
     function maybeAddPx(name, value) {
         return ((typeof value === 'number') && !(name in cssNumericProps)) ? (value + 'px') : value;
     }
@@ -3393,7 +3718,7 @@
                         if (frame_window.parent) {
                             frame_window.parent.$cms.dom.triggerResize();
                         }
-                    });
+                    }, 0);
                 }
             }
 
@@ -3412,8 +3737,7 @@
                         }
                         try {
                             frame_window.scrollTo(0, 0);
-                        } catch (e) {
-                        }
+                        } catch (ignore) {}
 
                         return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                     }; // Needed for Opera
@@ -3424,6 +3748,10 @@
         frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
     };
 
+    /**
+     *
+     * @param and_subframes
+     */
     $cms.dom.triggerResize = function triggerResize(and_subframes) {
         and_subframes = !!and_subframes;
 
@@ -3454,6 +3782,14 @@
     // <{element's uid}, {setTimeout id}>
     var timeouts = {};
 
+    /**
+     *
+     * @param el
+     * @param destPercentOpacity
+     * @param periodInMsecs
+     * @param increment
+     * @param destroyAfter
+     */
     $cms.dom.fadeTransition = function fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
         if (!$cms.isEl(el)) {
             return;
@@ -3514,10 +3850,19 @@
         }
     };
 
+    /**
+     *
+     * @param el
+     * @returns {*|boolean}
+     */
     $cms.dom.hasFadeTransition = function hasFadeTransition(el) {
         return $cms.isEl(el) && ($cms.uid(el) in timeouts);
     };
 
+    /**
+     *
+     * @param el
+     */
     $cms.dom.clearTransition = function clearTransition(el) {
         var uid = $cms.isEl(el) && $cms.uid(el);
 
@@ -3529,12 +3874,19 @@
         }
     };
 
-    /* Set opacity, without interfering with the thumbnail timer */
+    /**
+     * Set opacity, without interfering with the thumbnail timer
+     * @param el
+     * @param fraction
+     */
     $cms.dom.clearTransitionAndSetOpacity = function clearTransitionAndSetOpacity(el, fraction) {
         $cms.dom.clearTransition(el);
         el.style.opacity = fraction;
     };
 
+    /**
+     * @param behaviors
+     */
     function defineBehaviors(behaviors) {
         behaviors = objVal(behaviors);
 
@@ -3897,7 +4249,16 @@
         });
     }
 
-    /* Reply to a topic using AJAX */
+    /**
+     * Reply to a topic using AJAX
+     * @param el
+     * @param isThreaded
+     * @param id
+     * @param replyingToUsername
+     * @param replyingToPost
+     * @param replyingToPostPlain
+     * @param isExplicitQuote
+     */
     function topicReply(el, isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
         isThreaded = !!isThreaded;
         isExplicitQuote = !!isExplicitQuote;
@@ -3971,7 +4332,10 @@
         }
     }
 
-    /* Making the height of a textarea match its contents */
+    /**
+     * Making the height of a textarea match its contents
+     * @param textAreaEl
+     */
     function manageScrollHeight(textAreaEl) {
         var scrollHeight = textAreaEl.scrollHeight,
             offsetHeight = textAreaEl.offsetHeight,
@@ -3987,7 +4351,20 @@
         }
     }
 
-    /* Find the main Composr window */
+
+    /**
+     * @param options
+     * @returns { $cms.views.ModalWindow }
+     */
+    function openModalWindow(options) {
+        return new $cms.views.ModalWindow(options);
+    }
+
+    /**
+     * Find the main Composr window
+     * @param any_large_ok
+     * @returns {*}
+     */
     function getMainCmsWindow(any_large_ok) {
         any_large_ok = !!any_large_ok;
 
@@ -4014,7 +4391,11 @@
         return window;
     }
 
-    /* Find if the user performed the Composr "magic keypress" to initiate some action */
+    /**
+     * Find if the user performed the Composr "magic keypress" to initiate some action
+     * @param event
+     * @returns {boolean}
+     */
     function magicKeypress(event) {
         // Cmd+Shift works on Mac - cannot hold down control or alt in Mac firefox at least
         var count = 0;
@@ -4034,7 +4415,11 @@
         return count >= 2;
     }
 
-    /* Image rollover effects */
+    /**
+     * Image rollover effects
+     * @param rand
+     * @param rollover
+     */
     function createRollover(rand, rollover) {
         var img = rand && $cms.dom.$id(rand);
         if (!img) {
@@ -4058,8 +4443,8 @@
         }
     }
 
-    /* Browser sniffing */
     /**
+     * Browser sniffing
      * @param {string} code
      * @returns {boolean}
      */
@@ -4494,6 +4879,10 @@
 
     /**
      * @memberof $cms.ui
+     * @param question
+     * @param callback
+     * @param title
+     * @param unescaped
      */
     $cms.ui.confirm = function confirm(question, callback, title, unescaped) {
         title || (title = '{!Q_SURE;^}');
@@ -4524,6 +4913,10 @@
 
     /**
      * @memberof $cms.ui
+     * @param notice
+     * @param callback
+     * @param title
+     * @param unescaped
      */
     $cms.ui.alert = function alert(notice, callback, title, unescaped) {
         notice = strVal(notice);
@@ -5022,7 +5415,7 @@
 
     /**
      *  Tooltips that can work on any element with rich HTML support
-     *  @memberof $cms.ui
+     * @memberof $cms.ui
      * @param el - the element
      * @param event - the event handler
      * @param tooltip - the text for the tooltip
@@ -5195,6 +5588,16 @@
         }, no_delay ? 0 : 666);
     };
 
+    /**
+     *
+     * @param el
+     * @param event
+     * @param bottom
+     * @param starting
+     * @param tooltip_element
+     * @param force_width
+     * @param win
+     */
     $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
         bottom = !!bottom;
         win || (win = window);
@@ -5292,6 +5695,11 @@
         tooltip_element.style.left = x + 'px';
     };
 
+    /**
+     *
+     * @param el
+     * @param tooltip_element
+     */
     $cms.ui.deactivateTooltip = function deactivateTooltip(el, tooltip_element) {
         el.is_over = false;
 
@@ -5306,6 +5714,10 @@
         }
     };
 
+    /**
+     *
+     * @param tooltip_being_opened
+     */
     $cms.ui.clearOutTooltips = function clearOutTooltips(tooltip_being_opened) {
         // Delete other tooltips, which due to browser bugs can get stuck
         var selector = '.tooltip';
@@ -6313,7 +6725,12 @@
         }
     };
 
-    /* Marking things (to avoid illegally nested forms) */
+    /**
+     * Marking things (to avoid illegally nested forms
+     * @param form
+     * @param prefix
+     * @returns {boolean}
+     */
     $cms.form.addFormMarkedPosts = function addFormMarkedPosts(form, prefix) {
         prefix = strVal(prefix);
 
@@ -6469,15 +6886,6 @@
         return out;
     }
 
-    /**
-     * @memberof $cms
-     * @param options
-     * @returns { $cms.views.ModalWindow }
-     */
-    $cms.openModalWindow = function openModalWindow(options) {
-        return new $cms.views.ModalWindow(options);
-    };
-
     /*
      Originally...
 
@@ -6556,7 +6964,7 @@
         this.init_box();
     }
 
-    $cms.inherits(ModalWindow, $cms.View, /** @lends $cms.views.ModalWindow# */ {
+    $cms.inherits(ModalWindow, $cms.View, /**@lends $cms.views.ModalWindow#*/ {
         // Methods...
         close: function (win) {
             if (this.boxWrapperEl) {
@@ -7185,6 +7593,18 @@
         }
     });
 
+    /**
+     *
+     * @param name
+     * @param ajax_url
+     * @param root_id
+     * @param opts
+     * @param multi_selection
+     * @param tabindex
+     * @param all_nodes_selectable
+     * @param use_server_id
+     * @returns {TreeList|*}
+     */
     $cms.createTreeList = function (name, ajax_url, root_id, opts, multi_selection, tabindex, all_nodes_selectable, use_server_id) {
         var options = {
                 name: name,
@@ -7863,6 +8283,16 @@
 
     /* Ask a user a question: they must click a button */
     // 'Cancel' should come as index 0 and Ok/default-option should come as index 1. This is so that the fallback works right.
+    /**
+     *
+     * @param message
+     * @param button_set
+     * @param window_title
+     * @param fallback_message
+     * @param callback
+     * @param dialog_width
+     * @param dialog_height
+     */
     $cms.ui.generateQuestionUi = function generateQuestionUi(message, button_set, window_title, fallback_message, callback, dialog_width, dialog_height) {
         var image_set = [];
         var new_button_set = [];
@@ -7960,6 +8390,13 @@
         ajaxCallbacks,
         networkDownAlerted = false;
 
+    /**
+     *
+     * @param url
+     * @param callbackMethod
+     * @param post
+     * @returns {*}
+     */
     $cms.doAjaxRequest = function doAjaxRequest(url, callbackMethod, post) { // Note: 'post' is not an array, it's a string (a=b)
         var async = !!callbackMethod, index, result;
 
@@ -8127,7 +8564,7 @@
     };
 
 
-}(window.$cms, JSON.parse(document.getElementById('composr-symbol-data').content)));
+}(window.$cms || (window.$cms = {}), JSON.parse(document.getElementById('composr-symbol-data').content)));
 
 function noop() {}
 
@@ -8146,6 +8583,10 @@ function noop() {}
         infinite_scroll_blocked = false, // Blocked due to event tracking active
         infinite_scroll_mouse_held = false;
 
+    /**
+     *
+     * @param event
+     */
     function infinite_scrolling_block(event) {
         if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
             infinite_scroll_blocked = true;
@@ -8161,6 +8602,11 @@ function noop() {}
             infinite_scroll_mouse_held = true;
         }
     }
+
+    /**
+     *
+     * @param infinite_scrolling
+     */
     function infinite_scrolling_block_unhold(infinite_scrolling) {
         if (infinite_scroll_mouse_held) {
             infinite_scroll_blocked = false;
@@ -8168,6 +8614,13 @@ function noop() {}
             infinite_scrolling();
         }
     }
+
+    /**
+     *
+     * @param url_stem
+     * @param wrapper
+     * @returns {*}
+     */
     function internalise_infinite_scrolling(url_stem, wrapper) {
         if (infinite_scroll_blocked || infinite_scroll_pending) {
             // Already waiting for a result
@@ -8276,6 +8729,13 @@ function noop() {}
         return false;
     }
 
+    /**
+     *
+     * @param url_stem
+     * @param wrapper
+     * @param more_links
+     * @returns {boolean}
+     */
     function internalise_infinite_scrolling_go(url_stem, wrapper, more_links) {
         if (infinite_scroll_pending) {
             return false;
@@ -8309,6 +8769,16 @@ function noop() {}
         return false;
     }
 
+    /**
+     *
+     * @param url_stem
+     * @param block_element
+     * @param look_for
+     * @param extra_params
+     * @param append
+     * @param forms_too
+     * @param scroll_to_top
+     */
     function internalise_ajax_block_wrapper_links(url_stem, block_element, look_for, extra_params, append, forms_too, scroll_to_top) {
         look_for || (look_for = []);
         extra_params || (extra_params = []);
@@ -8336,8 +8806,8 @@ function noop() {}
             if (forms_too) {
                 _links = _link_wrappers[i].getElementsByTagName('form');
 
-                for (var j = 0; j < _links.length; j++) {
-                    links.push(_links[j]);
+                for (var k = 0; k < _links.length; k++) {
+                    links.push(_links[k]);
                 }
 
                 if (_link_wrappers[i].localName === 'form') {
