@@ -7,6 +7,7 @@ This tutorial will give basic instructions for installation of the various piece
 
 [title="2"]Software mass-packaging[/title]
 
+[media float="right" framed="0" width="300"]data_custom/images/docs/tut_windows/bitnami.png[/media]
 It is well worth pointing out that there are a number of 'all in one' packages that may be used to install AMP ([concept]Apache[/concept], [concept]MySQL[/concept] and [concept]PHP[/concept]) without any special configuration for them to appropriately bind to each other. This may be preferable and we will cover it first. However, by doing so you inevitably will not know as much about the environment that was created for you.
 
 [title="3"]Bitnami[/title]

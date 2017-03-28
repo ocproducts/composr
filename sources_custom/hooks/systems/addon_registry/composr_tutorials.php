@@ -1133,6 +1133,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_wiki/wiki_page.png',
             'data_custom/images/docs/tut_wiki/wiki_post.png',
             'data_custom/images/docs/tut_wiki/wiki_tree_edit.png',
+            'data_custom/images/docs/tut_windows/bitnami.png',
             'data_custom/images/docs/tut_windows/apache.png',
             'data_custom/images/docs/tut_windows/mysql.png',
             'data_custom/images/docs/tut_windows/php.png',
