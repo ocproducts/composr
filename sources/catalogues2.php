@@ -415,6 +415,11 @@ function actual_delete_catalogue($name)
 
     require_code('sitemap_xml');
     notify_sitemap_node_delete('SEARCH:catalogues:index:' . $name);
+
+    if (addon_installed('ecommerce')) {
+        require_code('ecommerce_cleanup');
+        delete_prod_permission('catalogue', $name);
+    }
 }
 
 /**
@@ -898,6 +903,11 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
 
     require_code('sitemap_xml');
     notify_sitemap_node_delete('SEARCH:catalogues:category:' . strval($id));
+
+    if (addon_installed('ecommerce')) {
+        require_code('ecommerce_cleanup');
+        delete_prod_permission('catalogue_category', strval($id));
+    }
 }
 
 /**

@@ -465,6 +465,8 @@ function delete_download_category($category_id)
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($category_id)));
     $GLOBALS['SITE_DB']->query_delete('group_privileges', array('module_the_name' => 'downloads', 'category_name' => strval($category_id)));
 
+    $GLOBALS['SITE_DB']->query_delete('ecom_prods_permissions', array('p_module' => 'downloads', 'p_category' => strval($category_id)));
+
     log_it('DELETE_DOWNLOAD_CATEGORY', strval($category_id), get_translated_text($category));
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -474,6 +476,11 @@ function delete_download_category($category_id)
 
     require_code('sitemap_xml');
     notify_sitemap_node_delete('SEARCH:downloads:browse:' . strval($category_id));
+
+    if (addon_installed('ecommerce')) {
+        require_code('ecommerce_permission_products');
+        delete_prod_permission('download_category', strval($category_id));
+    }
 }
 
 /**

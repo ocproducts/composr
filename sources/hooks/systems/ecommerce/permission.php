@@ -444,16 +444,57 @@ class Hook_ecommerce_permission
         // Actuate
         $map = $this->_get_map($row, $member_id);
         $map['active_until'] = ($row['p_hours'] === null) ? null : (time() + $row['p_hours'] * 60 * 60);
+        $GLOBALS['SITE_DB']->query_delete(filter_naughty_harsh($row['p_type']), $map);
         $GLOBALS['SITE_DB']->query_insert(filter_naughty_harsh($row['p_type']), $map);
 
-        // E-mail member (we don't do a notification as we want to know for sure it will be received; plus avoid bloat in the notification UI)
+        // E-mail member (we don't do a notification as we want to know for sure it will be received; plus avoid bloat in the notification UI; plus we may have attachments)
         require_code('mail');
         $subject_line = get_translated_text($row['p_mail_subject']);
         if ($subject_line != '') {
             $message_raw = get_translated_text($row['p_mail_body']);
             $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
             $to_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-            mail_wrap($subject_line, $message_raw, array($email), $to_name, '', '', 3, null, false, null, true);
+
+            $attachments = array();
+
+            if (($row['p_type'] == 'member_category_access') && ($row['p_module'] == 'download_category')) {
+                $all_attached = true;
+
+                $_download_category = $GLOBALS['SITE_DB']->query_select('download_categories', array('*'), array('id' => intval($row['p_category'])), '', 1);
+                if (!array_key_exists(0, $_download_category)) {
+                    warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                }
+                $download_category = $_download_category[0];
+
+                require_code('content');
+                list($content_title, , $cma_info, , , $url_safe) = content_get_details('download_category', $row['p_category']);
+                $content_type_label = do_lang($cma_info['content_type_label']);
+
+                $cnt = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)', array('category_id' => intval($row['p_category'])));
+                if ($cnt <= intval(get_option('download_cat_buy_max_emailed_count'))) {
+                    $downloads = $GLOBALS['SITE_DB']->query_select('download_downloads', array('url', 'file_size', 'original_filename'), array('category_id' => intval($row['p_category'])), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('name'));
+                    foreach ($downloads as $download) {
+                        if ((url_is_local($download['url'])) && ($download['file_size'] <= intval(get_option('download_cat_buy_max_emailed_size')) * 1024)) {
+                            $file_path = get_custom_file_base() . '/' . $download['url'];
+                            $attachments[$file_path] = $download['original_filename'];
+                        } else {
+                            $all_attached = false;
+                        }
+                    }
+                }
+
+                if (count($attachments) == 0) {
+                    $message_sub = do_lang('AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY', $content_title, $content_type_label, array($url_safe, strval(count($attachments))));
+                } elseif ($all_attached) {
+                    $message_sub = do_lang('AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY_ATTACHED', $content_title, $content_type_label, array($url_safe, strval(count($attachments))));
+                } else {
+                    $message_sub = do_lang('AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY_SOME_ATTACHED', $content_title, $content_type_label, array($url_safe, strval(count($attachments))));
+                }
+
+                $message_raw = str_replace('{AUTOMATIC}', $message_sub, $message_raw);
+            }
+
+            mail_wrap($subject_line, $message_raw, array($email), $to_name, '', '', 3, $attachments, false, null, true);
         }
 
         // Cleanup

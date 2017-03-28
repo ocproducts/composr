@@ -159,14 +159,36 @@ function permission_product_save($resource_type, $old_category_id, $new_category
             if ($hours === null) {
                 $title = do_lang('PERMISSION_PRODUCT_PERMANENT_AUTOMATIC_TITLE', $content_title, $content_type_label);
                 $description = do_lang('PERMISSION_PRODUCT_PERMANENT_AUTOMATIC_DESCRIPTION', $content_title, $content_type_label);
+
+                $test = do_lang('PERMISSION_PRODUCT_PERMANENT_AUTOMATIC_TITLE_' . $resource_type, $content_title, $content_type_label, null, null, false);
+                if ($test !== null) {
+                    $title = $test;
+                }
+                $test = do_lang('PERMISSION_PRODUCT_PERMANENT_AUTOMATIC_DESCRIPTION_' . $resource_type, $content_title, $content_type_label, null, null, false);
+                if ($test !== null) {
+                    $description = $test;
+                }
             } else {
                 $time_period = display_time_period(60 * 60 * $hours);
                 $title = do_lang('PERMISSION_PRODUCT_TEMPORARY_AUTOMATIC_TITLE', $content_title, $content_type_label, $time_period);
                 $description = do_lang('PERMISSION_PRODUCT_TEMPORARY_AUTOMATIC_DESCRIPTION', $content_title, $content_type_label, $time_period);
+
+                $test = do_lang('PERMISSION_PRODUCT_TEMPORARY_AUTOMATIC_TITLE_' . $resource_type, $content_title, $content_type_label, $time_period, null, false);
+                if ($test !== null) {
+                    $title = $test;
+                }
+                $test = do_lang('PERMISSION_PRODUCT_TEMPORARY_AUTOMATIC_DESCRIPTION_' . $resource_type, $content_title, $content_type_label, $time_period, null, false);
+                if ($test !== null) {
+                    $description = $test;
+                }
             }
 
             $mail_subject = do_lang('AUTOMATIC_CATEGORY_ACCESS_SUBJECT', $content_title, $content_type_label, $url_safe);
             $mail_body = do_lang('AUTOMATIC_CATEGORY_ACCESS_BODY', $content_title, $content_type_label, $url_safe);
+
+            if ($resource_type == 'download_category') {
+                $mail_body = '{AUTOMATIC}';
+            }
 
             break;
     }
@@ -208,4 +230,29 @@ function permission_product_save($resource_type, $old_category_id, $new_category
             $GLOBALS['SITE_DB']->query_delete('ecom_prods_permissions', array('id' => $id), '', 1);
             break;
     }
+}
+
+/**
+ * Delete a product permission attached to a particular module and category combination.
+ *
+ * @param  ID_TEXT $module The module
+ * @param  ID_TEXT $category_id The category ID
+ */
+function delete_prod_permission($module, $category_id)
+{
+    $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('p_module' => $module, 'p_category' => $category_id));
+
+    foreach ($rows as $row) {
+        $_title = $row['p_title'];
+        $_description = $row['p_description'];
+        $_mail_subject = $row['p_mail_subject'];
+        $_mail_body = $row['p_mail_body'];
+
+        delete_lang($_title);
+        delete_lang($_description);
+        delete_lang($_mail_subject);
+        delete_lang($_mail_body);
+    }
+
+    $GLOBALS['SITE_DB']->query_delete('ecom_prods_permissions', array('p_module' => $module, 'p_category' => $category_id));
 }

@@ -352,6 +352,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_NEWS_CATEGORY
         ADD_NEW_CUSTOM_PRODUCT
         ADD_NEW_FORWARDING_DOMAIN
+        PERMISSION_PRODUCT_DOWNLOAD_CATEGORY
+        DOWNLOAD_CAT_BUY_MAX_EMAILED_SIZE
+        CONFIG_OPTION_download_cat_buy_max_emailed_size
+        DOWNLOAD_CAT_BUY_MAX_EMAILED_COUNT
+        CONFIG_OPTION_download_cat_buy_max_emailed_count
         ADD_NEW_PERMISSION_PRODUCT
         ADD_NEW_POP3_DOMAIN
         ADD_NOTE
@@ -7164,6 +7169,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_TYPE_payment_received
         NOTIFICATION_TYPE_payment_received_staff
         AUTOMATIC_CATEGORY_ACCESS_BODY
+        AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY
+        AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY_ATTACHED
+        AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY_SOME_ATTACHED
         AUTOMATIC_CATEGORY_ACCESS_SUBJECT
         BANNERS_INTRO
         BANNER_ACTIVATE

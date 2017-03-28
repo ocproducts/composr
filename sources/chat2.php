@@ -433,6 +433,11 @@ function delete_chatroom($id)
 
     require_code('sitemap_xml');
     notify_sitemap_node_delete('SEARCH:chat:room:' . strval($id));
+
+    if (addon_installed('ecommerce')) {
+        require_code('ecommerce_cleanup');
+        delete_prod_permission('chat', strval($id));
+    }
 }
 
 /**

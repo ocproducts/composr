@@ -314,6 +314,13 @@ This said, when you add or edit a category you can automatically set up the perm
 
 Categories that a user does not have permission to will not be linked. So to promote sale of access to those categories you may want to either direct users directly into the Purchasing module, or link to the sale pages from the description of the parent download category.
 
+[title="5"]Download categories[/title]
+
+Download category access is implemented as a special case. The contents of the download category will be e-mailed out directly upon purchase.
+This is great for selling things like eBooks and audio files.
+You can configure the maximum file size for sent files. Files above this size will be omitted.
+Externally hosted files will also be omitted.
+
 [title="3"]Custom products[/title]
 
 [media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_custom.png[/media]
