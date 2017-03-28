@@ -1,6 +1,6 @@
 {$SET,player_id,player_{$RAND}}
 
-<div id="{$GET*,player_id}"></div>
+<div class="youtube_player"><div id="{$GET*,player_id}"></div></div>
 
 {+START,IF_NON_EMPTY,{DESCRIPTION}}
 	<figcaption class="associated_details">
