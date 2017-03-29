@@ -475,7 +475,7 @@ function delete_calendar_event($id)
     notify_sitemap_node_delete('SEARCH:calendar:view:' . strval($id));
 
     if (addon_installed('ecommerce')) {
-        require_code('ecommerce_cleanup');
+        require_code('ecommerce_permission_products');
         delete_prod_permission('calendar_type', strval($id));
     }
 }

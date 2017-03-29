@@ -247,7 +247,7 @@ function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0
     notify_sitemap_node_delete('SEARCH:forumview:id=' . strval($forum_id));
 
     if (addon_installed('ecommerce')) {
-        require_code('ecommerce_cleanup');
+        require_code('ecommerce_permission_products');
         delete_prod_permission('forum', strval($forum_id));
     }
 }

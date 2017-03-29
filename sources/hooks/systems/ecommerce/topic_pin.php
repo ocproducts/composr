@@ -63,7 +63,7 @@ class Hook_ecommerce_topic_pin
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('topic_pin_price') == '') ? null : (float_unformat(get_option('topic_pin_price')) * $days),
+                'price' => (get_option('topic_pin_price') == '') ? null : (floatval(get_option('topic_pin_price')) * $days),
                 'currency' => get_option('currency'),
                 'price_points' => empty($price_points) ? null : (intval($price_points) * $days),
                 'discount_points__num_points' => null,

@@ -408,13 +408,16 @@ This catalogue has some hard-coded fields:
  - [b]Stock level warning point[/b] -- the point at which you should be e-mailed if the stock level reaches
  - [b]Whether stock is being maintained[/b] -- whether you want stock control (as above)
  - [b]Tax code[/b] -- the tax code
- - [b]Weight[/b] -- the item's weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight ("Shipping cost factor")
+ - [b]Weight[/b] -- the item's weight, in the configured units
+ - [b]Length[/b] -- the item's length, in the configured units
+ - [b]Width[/b] -- the item's width, in the configured units
+ - [b]Height[/b] -- the item's height, in the configured units
  - [b]Description[/b] -- a description for the item
 
 By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
-You may add additional fields, such as extra product images or specifications. However do [b]not[/b] re-order the original fields (or delete, or change the field type), as the system uses the order of these fields internally to know what they refer to. If you wish to change how they are shown do it via template editing.
+You may add additional fields, such as extra product images or specifications. However do [b]not[/b] delete any of the default fields. The fields are semantically tied into the system via the [tt]ecommerce_tag[/tt] field option.
 
 [title="4"]Product options[/title]
 
@@ -576,16 +579,19 @@ Known limitations at this time which could be worked around with custom code...
 
 [title="3"]Handling shipping costs[/title]
 
+[media width="300" framed="0" float="right"]data_custom/images/docs/tut_ecommerce/shippo.png[/media]
 You should not enable automatic shipping cost calculation on your payment gateway as Composr handles it for you. If shipping cost calculation was enabled then customers would be double-charged for shipping.
 
-Shipping cost calculation has been kept very simple because it's impossible to create configurability to cover every scenario people will want globally. There are too many different special cases to cover.
-We have architected the calculations to go through 2 simple common functions that a programmer can override to add in additional behaviour if needed, [tt]recalculate_shipping_cost[/tt] and [tt]recalculate_shipping_cost_combo[/tt].
+You have 3 possible approaches for calculating shipping costs:[list="1"]
+[*] Use the inbuilt configuration options for calculating shipping cost based on weight and dimensions. This may work reasonably if shipping costs are not going to vary by distance.
+[*] Fill in the Shippo configuration to calculate based on weight, dimensions, and presumably distance. Shippo will provide an exact shipping cost by actual communication with your choice of shipping company. This is likely your best option as Shippo is free (you pay when you print shipping labels), although it may not work for businesses in every country.
+[*] The shipping cost calculation in '1' has been kept very simple because it's impossible to create configurability to cover every scenario people will want globally. There are too many different special cases to cover. We have therefore architected the calculations to go through two simple common functions that a programmer can override to add in additional behaviour if needed, [tt]recalculate_shipping_cost[/tt] and [tt]recalculate_shipping_cost_combo[/tt].
+[/list]
 
 Known limitations at this time which could be worked around with custom code...
  - There's no way to give a product a flat rate for shipping (https://compo.sr/tracker/view.php?id=1520)
  - Free shipping above a certain payment amount is not supported (https://compo.sr/tracker/view.php?id=3064)
  - Customer-selectable shipping options are not supported (https://compo.sr/tracker/view.php?id=3065)
- - Product catalogue shipping may be calculated by weight, physical dimensions and travel distance are not considered (https://compo.sr/tracker/view.php?id=3066)
 
 [title="3"]Shipping addresses[/title]
 

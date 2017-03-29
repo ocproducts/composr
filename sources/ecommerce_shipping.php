@@ -21,6 +21,75 @@
 // DON'T include this file directly. Include 'ecommerce' instead.
 
 /**
+ * Calculate shipping cost of product.
+ *
+ * @param  ?float $product_weight Weight of product (null: unknown).
+ * @param  ?float $product_length Length of product (null: unknown).
+ * @param  ?float $product_width Width of product (null: unknown).
+ * @param  ?float $product_height Height of product (null: unknown).
+ * @return float Calculated shipping cost for the product.
+ */
+function calculate_shipping_cost_based_on_properties(&$product_weight, &$product_length, &$product_width, &$product_height)
+{
+    // Normalise things, sometimes things will not be set but we can derive it...
+
+    // Get dimensions from each other
+    if (($product_length !== null) || ($product_width !== null) || ($product_height !== null)) {
+        if ($product_length === null) {
+            $product_length = ($product_width !== null) ? $product_width : $product_height;
+        }
+        if ($product_width === null) {
+            $product_width = ($product_length !== null) ? $product_length : $product_height;
+        }
+        if ($product_height === null) {
+            $product_height = ($product_length !== null) ? $product_length : $product_width;
+        }
+    }
+
+    // Get weight from dimensions
+    if ($product_weight === null) {
+        if (($product_length !== null) && ($product_width !== null) && ($product_height !== null)) {
+            $product_volume = $product_length * $product_width * $product_height;
+
+            $product_weight = $product_volume / floatval(get_option('shipping_density'));
+        }
+    }
+
+    // Get dimensions from weight
+    if ($product_length === null) {
+        if ($product_weight !== null) {
+            $product_volume = $product_weight * floatval(get_option('shipping_density'));
+
+            $product_length = pow($product_volume, 1.0 / 3.0);
+            $product_width = $product_length;
+            $product_height = $product_length;
+        }
+    }
+
+    // Set to zero if we still failed
+    if ($product_weight === null) {
+        $product_weight = 0.0;
+    }
+    if ($product_length === null) {
+        $product_length = 0.0;
+    }
+    if ($product_width === null) {
+        $product_width = 0.0;
+    }
+    if ($product_height === null) {
+        $product_height = 0.0;
+    }
+
+    // ---
+
+    $base = get_base_shipping_cost();
+    $factor = floatval(get_option('shipping_cost_factor'));
+    $shipping_cost = $base + $product_weight * $factor;
+
+    return round($shipping_cost, 2);
+}
+
+/**
  * Get the base shipping cost for the shopping cart.
  *
  * @return float Base shipping cost.

@@ -237,7 +237,7 @@ function actual_delete_zone_lite($zone)
     }
 
     if (addon_installed('ecommerce')) {
-        require_code('ecommerce_cleanup');
+        require_code('ecommerce_permission_products');
         delete_prod_permission('zone', $zone);
     }
 }

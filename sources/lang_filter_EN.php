@@ -267,6 +267,15 @@ class LangFilter_EN extends LangFilter
             $remapping = $the_sun_never_sets_on_the_british_empire;
         }
 
+        // Better labelling for eCommerce config
+        if ((addon_installed('ecommerce')) && (function_exists('get_option')) && (strpos($key, 'ECOM_CAT') === false/*gets saved into database*/)) {
+            $remapping = array();
+            $remapping['the configured weight units'] = 'the configured weight units (currently ' . get_option('shipping_weight_units') . ')';
+            $remapping['the configured length units'] = 'the configured length units (currently ' . get_option('shipping_length_units') . ')';
+            $remapping['for each unit weight of product'] = 'for each unit weight of product (currently ' . get_option('shipping_weight_units') . ')';
+            $remapping['your configured currency'] = 'your configured currency (currently ' . get_option('currency') . ')';
+        }
+
         foreach ($remapping as $authentic => $perverted) {
             if (stripos($value, $authentic) !== false) {
                 $value = preg_replace(

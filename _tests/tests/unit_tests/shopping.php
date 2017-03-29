@@ -33,10 +33,12 @@ class shopping_test_set extends cms_test_case
         require_lang('shopping');
         require_code('lang3');
 
+        $catalogue_name = 'storetesting' . strval(get_member());
+
         // Cleanup if needed...
 
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'storetesting' . strval(get_member()))) !== null) {
-            actual_delete_catalogue('storetesting' . strval(get_member()));
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => $catalogue_name)) !== null) {
+            actual_delete_catalogue($catalogue_name);
         }
 
         $GLOBALS['SITE_DB']->query_delete('shopping_orders');
@@ -48,87 +50,68 @@ class shopping_test_set extends cms_test_case
         require_code('cms/pages/modules/cms_catalogues.php');
         $cms_module = new Module_cms_catalogues();
 
-        // Create an eCommerce catalogue...
-
-        $c_name = 'storetesting' . strval(get_member());
-        actual_add_catalogue($c_name, insert_lang('c_title', do_lang('DEFAULT_CATALOGUE_PRODUCTS_TITLE'), 2), '', 0, 1, '', 0, 1);
-        $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $c_name));
-
-        $fields = array(
-            //     Name  Description  Type  Defines order  Required  Visible  Searchable
-            array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1),
-            array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 1, 1, 1, 'RANDOM'),
-            array('ECOM_CAT_price', 'ECOM_CATD_price', 'float', 0, 1, 1, 1, 'decimal_points_behaviour=price'),
-            array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0),
-            array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0),
-            array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'tick'/*will save as list*/, 0, 1, 0, 0),
-            array('ECOM_CAT_tax_code', 'ECOM_CATD_tax_code', 'tax_code', 0, 1, 0, 0),
-            array('ECOM_CAT_image', 'ECOM_CATD_image', 'picture', 0, 0, 1, 1),
-            array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0),
-            array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1)
-        );
-
-        foreach ($fields as $i => $field) {
-            actual_add_catalogue_field('storetesting' . strval(get_member()), // $c_name
-                lang_code_to_default_content('cf_name', $field[0], false, 3), // $name
-                lang_code_to_default_content('cf_description', $field[1], false, 3), // $description
-                ($field[2] == 'tick') ? 'list' : $field[2], // $type
-                $i, // $order
-                $field[3], // $defines_order
-                $field[5], // $visible
-                $field[6], // $searchable
-                array_key_exists(7, $field) ? $field[7] : '', // $default
-                $field[4], // $required
-                array_key_exists(5, $field) ? $field[5] : 0, // $put_in_category
-                array_key_exists(5, $field) ? $field[5] : 0 // $put_in_search
-            );
-        }
-
-        $catalogue_name = 'storetesting' . strval(get_member());
+        $category_id = create_ecommerce_catalogue($catalogue_name);
 
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY id');
 
-        foreach ($fields as $i => $field) {
-            $id = $field['id'];
+        $fields_map = find_shopping_catalogue_fields($catalogue_name);
+        foreach ($fields_map as $key => $i) {
+            if (!isset($fields[$i])) {
+                continue;
+            }
 
-            switch ($i) {
-                case SHOPPING_CATALOGUE_product_title:
+            $id = $fields[$i]['id'];
+
+            switch ($key) {
+                case 'product_title':
                     $_POST['field_' . strval($id)] = lorem_phrase();
                     break;
 
-                case SHOPPING_CATALOGUE_sku:
+                case 'sku':
                     $_POST['field_' . strval($id)] = lorem_phrase();
                     break;
 
-                case SHOPPING_CATALOGUE_price:
+                case 'price':
                     $_POST['field_' . strval($id)] = float_format(60.00);
                     break;
 
-                case SHOPPING_CATALOGUE_stock_level:
+                case 'stock_level':
                     $_POST['field_' . strval($id)] = '500';
                     break;
 
-                case SHOPPING_CATALOGUE_stock_level_warn_at:
+                case 'stock_level_warn_at':
                     $_POST['field_' . strval($id)] = '0';
                     break;
 
-                case SHOPPING_CATALOGUE_stock_level_maintain:
+                case 'stock_level_maintain':
                     $_POST['field_' . strval($id)] = '1';
                     break;
 
-                case SHOPPING_CATALOGUE_tax_code:
+                case 'tax_code':
                     $_POST['field_' . strval($id)] = '5.0';
                     break;
 
-                case SHOPPING_CATALOGUE_image:
+                case 'image':
                     $_POST['field_' . strval($id)] = '';
                     break;
 
-                case SHOPPING_CATALOGUE_weight:
+                case 'weight':
                     $_POST['field_' . strval($id)] = float_format(2.0);
                     break;
 
-                case SHOPPING_CATALOGUE_description:
+                case 'length':
+                    $_POST['field_' . strval($id)] = float_format(10.0);
+                    break;
+
+                case 'width':
+                    $_POST['field_' . strval($id)] = float_format(10.0);
+                    break;
+
+                case 'height':
+                    $_POST['field_' . strval($id)] = float_format(10.0);
+                    break;
+
+                case 'description':
                     $_POST['field_' . strval($id)] = lorem_paragraph();
                     break;
             }
@@ -178,7 +161,8 @@ class shopping_test_set extends cms_test_case
 
     public function tearDown()
     {
-        actual_delete_catalogue('storetesting' . strval(get_member()));
+        $catalogue_name = 'storetesting' . strval(get_member());
+        actual_delete_catalogue($catalogue_name);
         parent::tearDown();
     }
 }

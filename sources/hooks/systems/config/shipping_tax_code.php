@@ -31,14 +31,14 @@ class Hook_config_shipping_tax_code
     public function get_details()
     {
         return array(
-            'human_name' => 'SHIPPING_COST_TAX_CODE',
+            'human_name' => 'SHIPPING_TAX_CODE',
             'type' => 'tax_code',
             'category' => 'ECOMMERCE',
             'group' => 'SHIPPING',
             'explanation' => 'CONFIG_OPTION_shipping_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 7,
 
             'addon' => 'ecommerce',
         );

@@ -30,6 +30,59 @@ function init__catalogues2()
 }
 
 /**
+ * Create an eCommerce catalogue.
+ *
+ * @param  ID_TEXT $catalogue_name Catalogue name
+ * @return AUTO_LINK The category ID
+ */
+function create_ecommerce_catalogue($catalogue_name)
+{
+    actual_add_catalogue($catalogue_name, lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PRODUCTS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_PRODUCTS_DESCRIPTION', true, 2), C_DT_GRID, 1, '', 0, 1);
+    $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $catalogue_name));
+
+    $fields = array(
+        //     Name     Description     Type        Defines order   Required    Visible/Categorised/Searchable  Default     Field options
+        array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1, '', 'ecommerce_tag=product_title'),
+        array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 1, 1, 1, 'RANDOM', 'ecommerce_tag=sku'),
+        array('ECOM_CAT_price', 'ECOM_CATD_price', 'float', 0, 1, 1, 1, '', 'ecommerce_tag=price,decimal_points_behaviour=price'),
+        array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0, '', 'ecommerce_tag=stock_level'),
+        array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0, '', 'ecommerce_tag=stock_level_warn_at'),
+        array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'list', 0, 1, 0, 0, do_lang('NO') . '|' . do_lang('YES'), 'ecommerce_tag=stock_level_maintain'),
+        array('ECOM_CAT_tax_code', 'ECOM_CATD_tax_code', 'tax_code', 0, 1, 0, 0, '', 'ecommerce_tag=tax_code'),
+        array('ECOM_CAT_image', 'ECOM_CATD_image', 'picture', 0, 0, 1, 1, '', 'ecommerce_tag=image'),
+        array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0, '', 'ecommerce_tag=weight'),
+        array('ECOM_CAT_length', 'ECOM_CATD_length', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=length'),
+        array('ECOM_CAT_width', 'ECOM_CATD_width', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=width'),
+        array('ECOM_CAT_height', 'ECOM_CATD_height', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=height'),
+        array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1, '', 'ecommerce_tag=description')
+    );
+
+    foreach ($fields as $i => $field) {
+        actual_add_catalogue_field(
+            $catalogue_name, // $catalogue_name
+            lang_code_to_default_content('cf_name', $field[0], false, 3), // $name
+            lang_code_to_default_content('cf_description', $field[1], false, 3), // $description
+            $field[2], // $type
+            $i, // $order
+            $field[3], // $defines_order
+            $field[5], // $visible
+            $field[6], // $searchable
+            array_key_exists(7, $field) ? $field[7] : '', // $default
+            $field[4], // $required
+            array_key_exists(5, $field) ? $field[5] : 0, // $put_in_category
+            array_key_exists(5, $field) ? $field[5] : 0, // $put_in_search
+            array_key_exists(8, $field) ? $field[8] : '' // $field_options
+        );
+    }
+
+    require_code('permissions2');
+    set_global_category_access('catalogues_catalogue', $catalogue_name);
+    set_global_category_access('catalogues_category', $category_id);
+
+    return $category_id;
+}
+
+/**
  * Converts a non-tree catalogue to a tree catalogue.
  *
  * @param  ID_TEXT $catalogue_name Catalogue name
@@ -417,7 +470,7 @@ function actual_delete_catalogue($name)
     notify_sitemap_node_delete('SEARCH:catalogues:index:' . $name);
 
     if (addon_installed('ecommerce')) {
-        require_code('ecommerce_cleanup');
+        require_code('ecommerce_permission_products');
         delete_prod_permission('catalogue', $name);
     }
 }
@@ -905,7 +958,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     notify_sitemap_node_delete('SEARCH:catalogues:category:' . strval($id));
 
     if (addon_installed('ecommerce')) {
-        require_code('ecommerce_cleanup');
+        require_code('ecommerce_permission_products');
         delete_prod_permission('catalogue_category', strval($id));
     }
 }

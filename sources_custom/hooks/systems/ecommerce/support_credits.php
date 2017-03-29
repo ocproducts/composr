@@ -66,7 +66,7 @@ class Hook_ecommerce_support_credits
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => null,
 
-                'price' => $bundle * float_unformat(get_option('support_credit_price')),
+                'price' => $bundle * floatval(get_option('support_credit_price')),
                 'currency' => get_option('currency'),
                 'price_points' => null,
                 'discount_points__num_points' => null,

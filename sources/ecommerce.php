@@ -339,10 +339,10 @@ function get_transaction_fee($amount, $payment_gateway)
     if (get_option('transaction_flat_fee') . get_option('transaction_percentage_fee') != '') {
         $fee = 0.00;
         if (get_option('transaction_flat_fee') != '') {
-            $fee += float_unformat(get_option('transaction_flat_fee'));
+            $fee += floatval(get_option('transaction_flat_fee'));
         }
         if (get_option('transaction_percentage_fee') != '') {
-            $fee += float_unformat(get_option('transaction_percentage_fee')) / 100.0 * $amount;
+            $fee += floatval(get_option('transaction_percentage_fee')) / 100.0 * $amount;
         }
         return round($fee, 2);
     }

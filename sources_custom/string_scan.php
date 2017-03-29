@@ -4048,6 +4048,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_CATD_stock_level_warn_at
         ECOM_CATD_tax_code
         ECOM_CATD_weight
+        ECOM_CATD_length
+        ECOM_CATD_width
+        ECOM_CATD_height
         ECOM_CAT_description
         ECOM_CAT_image
         ECOM_CAT_price
@@ -4060,6 +4063,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_CAT_stock_level_warn_at
         ECOM_CAT_tax_code
         ECOM_CAT_weight
+        ECOM_CAT_length
+        ECOM_CAT_width
+        ECOM_CAT_height
         ECOM_ORDER
         EDITAREA
         EDITING
@@ -6007,7 +6013,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_payment_memos
         ECOM_PRICE_HONOUR_TIME
         CONFIG_OPTION_ecom_price_honour_time
-        SHIPPING_COST_TAX_CODE
+        SHIPPING_SHIPPO
+        CONFIG_OPTION_shipping_shippo
+        SHIPPING_WEIGHT_UNITS
+        CONFIG_OPTION_shipping_weight_units
+        SHIPPING_LENGTH_UNITS
+        CONFIG_OPTION_shipping_length_units
+        SHIPPING_DENSITY
+        CONFIG_OPTION_shipping_density
+        SHIPPING_TAX_CODE
         CONFIG_OPTION_shipping_tax_code
         TAXCLOUD_API_ID
         TAXCLOUD_API_KEY

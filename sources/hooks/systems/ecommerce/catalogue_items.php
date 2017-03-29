@@ -80,35 +80,62 @@ class Hook_ecommerce_catalogue_items
 
         $start = 0;
         do {
-            $items = $GLOBALS['SITE_DB']->query_select('catalogue_entries t1 LEFT JOIN ' . get_table_prefix() . 'catalogues t2 ON t1.c_name=t2.c_name', array('t1.id', 't1.c_name'), $where, '', 500, $start);
-            foreach ($items as $item) {
-                $field_rows = get_catalogue_entry_field_values($item['c_name'], $item['id'], null, null, true);
+            $entry_rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries t1 LEFT JOIN ' . get_table_prefix() . 'catalogues t2 ON t1.c_name=t2.c_name', array('t1.id', 't1.c_name'), $where, '', 500, $start);
+            foreach ($entry_rows as $entry_row) {
+                $fields_map = find_shopping_catalogue_fields($entry_row['c_name']);
+                $shopping_catalogue__product_title = $fields_map['product_title'];
+                $shopping_catalogue__sku = $fields_map['sku'];
+                $shopping_catalogue__price = $fields_map['price'];
+                $shopping_catalogue__stock_level = $fields_map['stock_level'];
+                $shopping_catalogue__stock_level_warn_at = $fields_map['stock_level_warn_at'];
+                $shopping_catalogue__stock_level_maintain = $fields_map['stock_level_maintain'];
+                $shopping_catalogue__tax_code = $fields_map['tax_code'];
+                $shopping_catalogue__image = $fields_map['image'];
+                $shopping_catalogue__weight = $fields_map['weight'];
+                $shopping_catalogue__length = $fields_map['length'];
+                $shopping_catalogue__width = $fields_map['width'];
+                $shopping_catalogue__height = $fields_map['height'];
+                $shopping_catalogue__description = $fields_map['description'];
 
-                $product_title = $field_rows[SHOPPING_CATALOGUE_product_title]['effective_value_pure'];
+                $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
-                $sku = $field_rows[SHOPPING_CATALOGUE_sku]['effective_value_pure'];
-                if (array_key_exists(SHOPPING_CATALOGUE_sku, $field_rows)) {
+                $product_title = $field_rows[$shopping_catalogue__product_title]['effective_value_pure'];
+
+                $sku = $field_rows[$shopping_catalogue__sku]['effective_value_pure'];
+                if (array_key_exists($shopping_catalogue__sku, $field_rows)) {
                     $sku = '';
                 }
 
                 $price = 0.00;
-                if (array_key_exists(SHOPPING_CATALOGUE_price, $field_rows)) {
-                    $price = floatval($field_rows[SHOPPING_CATALOGUE_price]['effective_value_pure']);
+                if (array_key_exists($shopping_catalogue__price, $field_rows)) {
+                    $price = floatval($field_rows[$shopping_catalogue__price]['effective_value_pure']);
                 }
 
                 $tax_code = '0%';
-                if (array_key_exists(SHOPPING_CATALOGUE_tax_code, $field_rows)) {
-                    $tax_code = $field_rows[SHOPPING_CATALOGUE_tax_code]['effective_value_pure'];
+                if (array_key_exists($shopping_catalogue__tax_code, $field_rows)) {
+                    $tax_code = $field_rows[$shopping_catalogue__tax_code]['effective_value_pure'];
                 }
 
-                $product_weight = 0.00;
-                if (array_key_exists(SHOPPING_CATALOGUE_weight, $field_rows)) {
-                    $product_weight = floatval($field_rows[SHOPPING_CATALOGUE_weight]['effective_value_pure']);
+                $product_weight = null;
+                if (array_key_exists($shopping_catalogue__weight, $field_rows)) {
+                    $product_weight = floatval($field_rows[$shopping_catalogue__weight]['effective_value_pure']);
                 }
-                $shipping_cost = $this->_calculate_shipping_cost($product_weight);
+                $product_length = null;
+                if (array_key_exists($shopping_catalogue__length, $field_rows)) {
+                    $product_length = floatval($field_rows[$shopping_catalogue__length]['effective_value_pure']);
+                }
+                $product_width = null;
+                if (array_key_exists($shopping_catalogue__width, $field_rows)) {
+                    $product_width = floatval($field_rows[$shopping_catalogue__width]['effective_value_pure']);
+                }
+                $product_height = null;
+                if (array_key_exists($shopping_catalogue__height, $field_rows)) {
+                    $product_height = floatval($field_rows[$shopping_catalogue__height]['effective_value_pure']);
+                }
+                $shipping_cost = calculate_shipping_cost_based_on_properties($product_weight, $product_length, $product_width, $product_height);
 
-                if (array_key_exists(SHOPPING_CATALOGUE_image, $field_rows)) {
-                    $image_url = is_object($field_rows[SHOPPING_CATALOGUE_image]['effective_value']) ? $field_rows[SHOPPING_CATALOGUE_image]['effective_value']->evaluate() : $field_rows[SHOPPING_CATALOGUE_image]['effective_value'];
+                if (array_key_exists($shopping_catalogue__image, $field_rows)) {
+                    $image_url = is_object($field_rows[$shopping_catalogue__image]['effective_value']) ? $field_rows[$shopping_catalogue__image]['effective_value']->evaluate() : $field_rows[$shopping_catalogue__image]['effective_value'];
                 } else {
                     $image_url = '';
                 }
@@ -121,9 +148,9 @@ class Hook_ecommerce_catalogue_items
                 }
 
                 /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
-                $products[strval($item['id'])/*We use numeric indices for shopping catalogue items*/] = array(
+                $products[strval($entry_row['id'])/*We use numeric indices for shopping catalogue items*/] = array(
                     'item_name' => $product_title,
-                    'item_description' => empty($field_rows[SHOPPING_CATALOGUE_description]['effective_value']) ? $field_rows[SHOPPING_CATALOGUE_description]['effective_value'] : '',
+                    'item_description' => empty($field_rows[$shopping_catalogue__description]['effective_value']) ? $field_rows[$shopping_catalogue__description]['effective_value'] : '',
                     'item_image_url' => $image_url,
 
                     'type' => PRODUCT_CATALOGUE,
@@ -141,24 +168,9 @@ class Hook_ecommerce_catalogue_items
                 );
             }
             $start += 500;
-        } while (count($items) == 500);
+        } while (count($entry_rows) == 500);
 
         return $products;
-    }
-
-    /**
-     * Calculate shipping cost of product.
-     *
-     * @param  float $item_weight Weight of product.
-     * @return float Calculated shipping cost for the product.
-     */
-    protected function _calculate_shipping_cost($item_weight)
-    {
-        $base = get_base_shipping_cost();
-        $factor = float_unformat(get_option('shipping_cost_factor'));
-        $shipping_cost = $base + $item_weight * $factor;
-
-        return round($base, 2);
     }
 
     /**
@@ -187,16 +199,31 @@ class Hook_ecommerce_catalogue_items
 
         $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
-        if (array_key_exists(SHOPPING_CATALOGUE_stock_level_maintain, $field_rows)) { // Check maintenance status
-            if ((empty($field_rows[SHOPPING_CATALOGUE_stock_level_maintain]['effective_value_pure'])) || ($field_rows[SHOPPING_CATALOGUE_stock_level_maintain]['effective_value_pure'] == do_lang('YES'))) {
+        $fields_map = find_shopping_catalogue_fields($entry_row['c_name']);
+        $shopping_catalogue__product_title = $fields_map['product_title'];
+        $shopping_catalogue__sku = $fields_map['sku'];
+        $shopping_catalogue__price = $fields_map['price'];
+        $shopping_catalogue__stock_level = $fields_map['stock_level'];
+        $shopping_catalogue__stock_level_warn_at = $fields_map['stock_level_warn_at'];
+        $shopping_catalogue__stock_level_maintain = $fields_map['stock_level_maintain'];
+        $shopping_catalogue__tax_code = $fields_map['tax_code'];
+        $shopping_catalogue__image = $fields_map['image'];
+        $shopping_catalogue__weight = $fields_map['weight'];
+        $shopping_catalogue__length = $fields_map['length'];
+        $shopping_catalogue__width = $fields_map['width'];
+        $shopping_catalogue__height = $fields_map['height'];
+        $shopping_catalogue__description = $fields_map['description'];
+
+        if (array_key_exists($shopping_catalogue__stock_level_maintain, $field_rows)) { // Check maintenance status
+            if ((empty($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'])) || ($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'] == do_lang('YES'))) {
                 return ECOMMERCE_PRODUCT_AVAILABLE;
             }
         }
 
-        if (!array_key_exists(SHOPPING_CATALOGUE_stock_level, $field_rows)) {
+        if (!array_key_exists($shopping_catalogue__stock_level, $field_rows)) {
             return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
         }
-        if (($field_rows[SHOPPING_CATALOGUE_stock_level]['effective_value_pure'] != '') && ($field_rows[SHOPPING_CATALOGUE_stock_level]['effective_value_pure'] != do_lang('NA'))) { // Check stock
+        if (($field_rows[$shopping_catalogue__stock_level]['effective_value_pure'] != '') && ($field_rows[$shopping_catalogue__stock_level]['effective_value_pure'] != do_lang('NA'))) { // Check stock
             $available_stock = $this->get_available_quantity($type_code, true, $member_id);
 
             return ($available_stock >= $req_quantity) ? ECOMMERCE_PRODUCT_AVAILABLE : ECOMMERCE_PRODUCT_OUT_OF_STOCK;
@@ -230,16 +257,31 @@ class Hook_ecommerce_catalogue_items
 
         $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
-        if (!array_key_exists(SHOPPING_CATALOGUE_stock_level_maintain, $field_rows)) {
+        $fields_map = find_shopping_catalogue_fields($entry_row['c_name']);
+        $shopping_catalogue__product_title = $fields_map['product_title'];
+        $shopping_catalogue__sku = $fields_map['sku'];
+        $shopping_catalogue__price = $fields_map['price'];
+        $shopping_catalogue__stock_level = $fields_map['stock_level'];
+        $shopping_catalogue__stock_level_warn_at = $fields_map['stock_level_warn_at'];
+        $shopping_catalogue__stock_level_maintain = $fields_map['stock_level_maintain'];
+        $shopping_catalogue__tax_code = $fields_map['tax_code'];
+        $shopping_catalogue__image = $fields_map['image'];
+        $shopping_catalogue__weight = $fields_map['weight'];
+        $shopping_catalogue__length = $fields_map['length'];
+        $shopping_catalogue__width = $fields_map['width'];
+        $shopping_catalogue__height = $fields_map['height'];
+        $shopping_catalogue__description = $fields_map['description'];
+
+        if (!array_key_exists($shopping_catalogue__stock_level_maintain, $field_rows)) {
             return null;
         }
-        $stock_maintained = ($field_rows[SHOPPING_CATALOGUE_stock_level_maintain]['effective_value_pure'] == do_lang('YES'));
+        $stock_maintained = ($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'] == do_lang('YES'));
         if ($stock_maintained) {
             return null;
         }
 
-        if (($field_rows[SHOPPING_CATALOGUE_stock_level]['effective_value_pure'] != '') && ($field_rows[SHOPPING_CATALOGUE_stock_level]['effective_value_pure'] != do_lang('NA'))) {
-            $available_quantity = intval($field_rows[SHOPPING_CATALOGUE_stock_level]['effective_value_pure']);
+        if (($field_rows[$shopping_catalogue__stock_level]['effective_value_pure'] != '') && ($field_rows[$shopping_catalogue__stock_level]['effective_value_pure'] != do_lang('NA'))) {
+            $available_quantity = intval($field_rows[$shopping_catalogue__stock_level]['effective_value_pure']);
 
             // Locked order check
             $query = 'SELECT SUM(t2.p_quantity) FROM ' . get_table_prefix() . 'shopping_orders t1 JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.p_order_id WHERE add_date>' . strval(time() - 60 * 60 * intval(get_option('cart_hold_hours'))) . ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_awaiting_payment') . ' AND ' . db_string_equal_to('t2.p_type_code', $type_code);
@@ -464,44 +506,59 @@ class Hook_ecommerce_catalogue_items
     {
         require_code('catalogues');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('c_name', 'cc_id'), array('id' => $entry_id), '', 1);
-        if (!array_key_exists(0, $rows)) {
+        $res = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('c_name', 'cc_id'), array('id' => $entry_id), '', 1);
+        if (!array_key_exists(0, $res)) {
             return;
         }
-        $row = $rows[0];
+        $entry_row = $res[0];
 
-        $catalogue_name = $row['c_name'];
+        $catalogue_name = $entry_row['c_name'];
 
         $field_rows = get_catalogue_entry_field_values($catalogue_name, $entry_id, null, null, true);
 
-        $product_title = $field_rows[SHOPPING_CATALOGUE_product_title]['effective_value_pure'];
+        $fields_map = find_shopping_catalogue_fields($entry_row['c_name']);
+        $shopping_catalogue__product_title = $fields_map['product_title'];
+        $shopping_catalogue__sku = $fields_map['sku'];
+        $shopping_catalogue__price = $fields_map['price'];
+        $shopping_catalogue__stock_level = $fields_map['stock_level'];
+        $shopping_catalogue__stock_level_warn_at = $fields_map['stock_level_warn_at'];
+        $shopping_catalogue__stock_level_maintain = $fields_map['stock_level_maintain'];
+        $shopping_catalogue__tax_code = $fields_map['tax_code'];
+        $shopping_catalogue__image = $fields_map['image'];
+        $shopping_catalogue__weight = $fields_map['weight'];
+        $shopping_catalogue__length = $fields_map['length'];
+        $shopping_catalogue__width = $fields_map['width'];
+        $shopping_catalogue__height = $fields_map['height'];
+        $shopping_catalogue__description = $fields_map['description'];
+
+        $product_title = $field_rows[$shopping_catalogue__product_title]['effective_value_pure'];
 
         $available_quantity = 0;
-        if (array_key_exists(SHOPPING_CATALOGUE_stock_level, $field_rows)) {
-            if (($field_rows[SHOPPING_CATALOGUE_stock_level]['effective_value_pure'] == '') || ($field_rows[SHOPPING_CATALOGUE_stock_level]['effective_value_pure'] == do_lang('NA'))) {
+        if (array_key_exists($shopping_catalogue__stock_level, $field_rows)) {
+            if (($field_rows[$shopping_catalogue__stock_level]['effective_value_pure'] == '') || ($field_rows[$shopping_catalogue__stock_level]['effective_value_pure'] == do_lang('NA'))) {
                 return;
             }
 
-            $stock_field_id = $field_rows[SHOPPING_CATALOGUE_stock_level]['id'];
-            $available_quantity = intval($field_rows[SHOPPING_CATALOGUE_stock_level]['effective_value_pure']);
+            $stock_field_id = $field_rows[$shopping_catalogue__stock_level]['id'];
+            $available_quantity = intval($field_rows[$shopping_catalogue__stock_level]['effective_value_pure']);
         }
 
         $stock_maintained = false;
-        if (array_key_exists(SHOPPING_CATALOGUE_stock_level_maintain, $field_rows)) {
-            if ((empty($field_rows[SHOPPING_CATALOGUE_stock_level_maintain]['effective_value_pure'])) || ($field_rows[SHOPPING_CATALOGUE_stock_level_maintain]['effective_value_pure'] === do_lang('NA'))) {
+        if (array_key_exists($shopping_catalogue__stock_level_maintain, $field_rows)) {
+            if ((empty($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'])) || ($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'] === do_lang('NA'))) {
                 return;
             }
 
-            $stock_maintained = ($field_rows[SHOPPING_CATALOGUE_stock_level_maintain]['effective_value_pure'] == do_lang('YES'));
+            $stock_maintained = ($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'] == do_lang('YES'));
         }
 
         $stock_level_warn_threshold = 0;
-        if (array_key_exists(SHOPPING_CATALOGUE_stock_level_warn_at, $field_rows)) {
-            if ((empty($field_rows[SHOPPING_CATALOGUE_stock_level_warn_at]['effective_value_pure'])) || ($field_rows[SHOPPING_CATALOGUE_stock_level_warn_at]['effective_value_pure'] === do_lang('NA'))) {
+        if (array_key_exists($shopping_catalogue__stock_level_warn_at, $field_rows)) {
+            if ((empty($field_rows[$shopping_catalogue__stock_level_warn_at]['effective_value_pure'])) || ($field_rows[$shopping_catalogue__stock_level_warn_at]['effective_value_pure'] === do_lang('NA'))) {
                 return;
             }
 
-            $stock_level_warn_threshold = intval($field_rows[SHOPPING_CATALOGUE_stock_level_warn_at]['effective_value_pure']);
+            $stock_level_warn_threshold = intval($field_rows[$shopping_catalogue__stock_level_warn_at]['effective_value_pure']);
         }
 
         if ($available_quantity < $quantity && !$stock_maintained) {
@@ -515,7 +572,7 @@ class Hook_ecommerce_catalogue_items
             $this->_send_stock_maintain_warn_mail($product_title, $entry_id);
         }
 
-        if (array_key_exists(SHOPPING_CATALOGUE_stock_level, $field_rows)) {
+        if (array_key_exists($shopping_catalogue__stock_level, $field_rows)) {
             $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field_id, 'ce_id' => $entry_id));
         }
     }

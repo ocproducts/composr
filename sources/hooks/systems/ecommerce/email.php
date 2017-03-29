@@ -281,7 +281,7 @@ class Hook_ecommerce_email
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('quota_price') == '') ? null : (float_unformat(get_option('quota_price')) * $amount),
+                'price' => (get_option('quota_price') == '') ? null : (floatval(get_option('quota_price')) * $amount),
                 'currency' => get_option('currency'),
                 'price_points' => empty($price_points) ? null : (intval($price_points) * $amount),
                 'discount_points__num_points' => null,

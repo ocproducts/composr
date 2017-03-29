@@ -68,7 +68,7 @@ class Hook_ecommerce_banners
             'type' => PRODUCT_PURCHASE,
             'type_special_details' => array(),
 
-            'price' => (get_option('banner_setup_price') == '') ? null : (float_unformat(get_option('banner_setup_price'))),
+            'price' => (get_option('banner_setup_price') == '') ? null : (floatval(get_option('banner_setup_price'))),
             'currency' => get_option('currency'),
             'price_points' => (get_option('banner_setup_price_points') == '') ? null : (intval(get_option('banner_setup_price_points'))),
             'discount_points__num_points' => null,
@@ -109,7 +109,7 @@ class Hook_ecommerce_banners
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('banner_hit_price') == '') ? null : (float_unformat(get_option('banner_hit_price')) * $hits),
+                'price' => (get_option('banner_hit_price') == '') ? null : (floatval(get_option('banner_hit_price')) * $hits),
                 'currency' => get_option('currency'),
                 'price_points' => empty($price_points) ? null : (intval($price_points) * $hits),
                 'discount_points__num_points' => null,
@@ -133,7 +133,7 @@ class Hook_ecommerce_banners
                 'type' => PRODUCT_PURCHASE,
                 'type_special_details' => array(),
 
-                'price' => (get_option('banner_imp_price') == '') ? null : (float_unformat(get_option('banner_imp_price')) * $importance),
+                'price' => (get_option('banner_imp_price') == '') ? null : (floatval(get_option('banner_imp_price')) * $importance),
                 'currency' => get_option('currency'),
                 'price_points' => empty($price_points) ? null : (intval($price_points) * $importance),
                 'discount_points__num_points' => null,

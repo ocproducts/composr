@@ -386,7 +386,8 @@ class Hook_commandr_fs_members
      * Get the field ID of a CPF from a filename.
      *
      * @param  string $file_name Filename
-     * @return AUTO_LINK CPF ID
+     * @param  boolean $missing_ok If the field may be missing
+     * @return ?AUTO_LINK CPF ID (null: none)
      */
     protected function get_field_id_for($file_name, $missing_ok = false)
     {

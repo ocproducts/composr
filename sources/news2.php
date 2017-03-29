@@ -204,7 +204,7 @@ function delete_news_category($id)
     notify_sitemap_node_delete('SEARCH:news:browse:' . strval($id));
 
     if (addon_installed('ecommerce')) {
-        require_code('ecommerce_cleanup');
+        require_code('ecommerce_permission_products');
         delete_prod_permission('news', strval($id));
     }
 }

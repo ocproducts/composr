@@ -23,20 +23,139 @@
  *
  * @ignore
  */
-function init__shopping()
+
+/**
+ * Find products in cart.
+ *
+ * @param ID_TEXT $catalogue_name Catalogue name.
+ * @return array Shopping catalogue fields.
+ */
+function find_shopping_catalogue_fields($catalogue_name = 'products')
 {
-    if (!defined('SHOPPING_CATALOGUE_product_title')) {
-        define('SHOPPING_CATALOGUE_product_title', 0);
-        define('SHOPPING_CATALOGUE_sku', 1);
-        define('SHOPPING_CATALOGUE_price', 2);
-        define('SHOPPING_CATALOGUE_stock_level', 3);
-        define('SHOPPING_CATALOGUE_stock_level_warn_at', 4);
-        define('SHOPPING_CATALOGUE_stock_level_maintain', 5);
-        define('SHOPPING_CATALOGUE_tax_code', 6);
-        define('SHOPPING_CATALOGUE_image', 7);
-        define('SHOPPING_CATALOGUE_weight', 8);
-        define('SHOPPING_CATALOGUE_description', 9);
+    static $fields_maps = array();
+    if (isset($fields_maps[$catalogue_name])) {
+        return $fields_maps[$catalogue_name];
     }
+
+    $fields_maps[$catalogue_name] = array( // Defaults
+        'product_title' => null,
+        'sku' => null,
+        'price' => null,
+        'stock_level' => null,
+        'stock_level_warn_at' => null,
+        'stock_level_maintain' => null,
+        'tax_code' => null,
+        'image' => null,
+        'weight' => null,
+        'length' => null,
+        'width' => null,
+        'height' => null,
+        'description' => null,
+    );
+
+    $fields_map = &$fields_maps[$catalogue_name];
+
+    require_code('fields');
+
+    // By tagging
+    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_type', 'cf_options'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
+    foreach ($fields as $i => $field) {
+        $options = parse_field_options($field['cf_options']);
+
+        foreach (array_keys($fields_map) as $key) {
+            if ((isset($options['ecommerce_tag'])) && ($options['ecommerce_tag'] == $key)) {
+                $fields_map[$key] = $i;
+            }
+        }
+    }
+
+    // Fallback: By field type
+    foreach (array_keys($fields_map) as $j => $key) {
+        if ($fields_map[$key] === null) {
+            foreach ($fields as $i => $field) {
+                switch ($key) {
+                    case 'product_title':
+                        if ($fields['cf_type'] == 'short_trans') {
+                            $fields_map[$key] = $i;
+                            continue 2;
+                        }
+                        break;
+
+                    case 'sku':
+                        if ($fields['cf_type'] == 'codename') {
+                            $fields_map[$key] = $i;
+                            continue 2;
+                        }
+                        break;
+
+                    case 'price':
+                        if (($fields['cf_type'] == 'float') && (strpos($fields['cf_options'], 'price') !== false)) {
+                            $fields_map[$key] = $i;
+                            continue 2;
+                        }
+                        break;
+
+                    case 'stock_level':
+                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
+                        continue 2;
+
+                    case 'stock_level_warn_at':
+                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
+                        break;
+
+                    case 'stock_level_maintain':
+                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
+                        break;
+
+                    case 'tax_code':
+                        if ($fields['cf_type'] == 'tax_code') {
+                            $fields_map[$key] = $i;
+                            continue 2;
+                        }
+                        break;
+
+                    case 'image':
+                        if ($fields['cf_type'] == 'picture') {
+                            $fields_map[$key] = $i;
+                            continue 2;
+                        }
+                        break;
+
+                    case 'weight':
+                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
+                        break;
+
+                    case 'length':
+                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
+                        break;
+
+                    case 'width':
+                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
+                        break;
+
+                    case 'height':
+                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
+                        break;
+
+                    case 'description':
+                        if (in_array($fields['cf_type'], array('long_trans', 'long_text', 'posting_field'))) {
+                            $fields_map[$key] = $i;
+                            continue 2;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    // Fallback: Absolute defaults
+    foreach (array_keys($fields_map) as $j => $key) {
+        if ($fields_map[$key] === null) {
+            $fields_map[$key] = $j;
+        }
+    }
+
+    return $fields_map;
 }
 
 /*
