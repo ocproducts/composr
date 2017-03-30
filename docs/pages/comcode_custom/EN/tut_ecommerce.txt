@@ -225,55 +225,6 @@ On [concept]Conversr[/concept] sites, members can purchase to have a particular 
 
 Members can gamble points. On average, members lose out on points when they try and gamble them though.
 
-[title="3"]E-mail accounts (advanced)[/title]
-
-[media width="150" description="Configuring pop3 accounts via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_pop3.png[/media]
-[media width="150" description="Configuring e-mail forwarders via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_forwarding.png[/media]
-By selling e-mail accounts you are essentially selling a prestige address to your members. Members might love having an address like [tt]sam@yourawesomesite.com[/tt].
-
-What may be purchased:
- - POP3 e-mail accounts, and upgrades
-  - staff define which e-mail domains members may purchase addresses on
-  - staff must set up the e-mail accounts manually after they are purchased/upgrades
- - e-mail Forwarding accounts, and updates
-  - staff define which e-mail domains members may purchase addresses on
-  - staff must set up the e-mail accounts manually after they are purchased/upgrades
-
-These may be configured via the inventory management screen at:
-Admin Zone > Setup > eCommerce inventory management
-
-If e-mail accounts are sold Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the eCommerce configuration defines 3 URLs that can be set according to your server.
-
-Example URLs follow for different webhosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
-
-[title="4"]For Plesk users[/title]
-
-The mail add address (POP3 and forwarding) is:
-[indent][tt]https://{DOMAIN}:8443/domains/mail/mail_name_preferences.php?mn_id=0&previous_page=mail_names[/tt][/indent]
-Forwarders are added through adding a mail address, and then specifying a forwarder for it.
-
-We're not sure if it is currently possible to manage POP3 quota with Plesk.
-
-[title="4"]For Ensim users[/title]
-
-The POP3 add address is:
-[indent][tt]http://{DOMAIN}/Site/email_users_add.htm[/tt][/indent]
-
-The forwarding add address is:
-[indent][tt]http://{DOMAIN}/Site/emal_forward.htm[/tt][/indent]
-We're not sure if it is currently possible to manage POP3 quota with Ensim.
-
-[title="4"]For cPanel users[/title]
-
-The POP3 add address is:
-[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addpop2.html[/tt][/indent]
-
-The forwarding add address is:
-[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addfwd.html[/tt][/indent]
-
-The POP3 quota change address is:
-[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/pops.html[/tt][/indent]
-
 [title="3"]Name highlighting[/title]
 
 On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. This means the purchasers name gets special highlighting within forum topics.
@@ -327,6 +278,55 @@ Externally hosted files will also be omitted.
 Staff set up custom products by description and price, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
 This is done via the inventory management screen at:
 Admin Zone > Setup > eCommerce inventory management
+
+[title="3"]E-mail accounts (advanced)[/title]
+
+[media width="150" description="Configuring pop3 accounts via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_pop3.png[/media]
+[media width="150" description="Configuring e-mail forwarders via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_forwarding.png[/media]
+By selling e-mail accounts you are essentially selling a prestige address to your members. Members might love having an address like [tt]sam@yourawesomesite.com[/tt].
+
+What may be purchased:
+ - POP3 e-mail accounts, and upgrades
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
+ - e-mail Forwarding accounts, and updates
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
+
+These may be configured via the inventory management screen at:
+Admin Zone > Setup > eCommerce inventory management
+
+If e-mail accounts are sold Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the eCommerce configuration defines 3 URLs that can be set according to your server.
+
+Example URLs follow for different webhosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
+
+[title="4"]For Plesk users[/title]
+
+The mail add address (POP3 and forwarding) is:
+[indent][tt]https://{DOMAIN}:8443/domains/mail/mail_name_preferences.php?mn_id=0&previous_page=mail_names[/tt][/indent]
+Forwarders are added through adding a mail address, and then specifying a forwarder for it.
+
+We're not sure if it is currently possible to manage POP3 quota with Plesk.
+
+[title="4"]For Ensim users[/title]
+
+The POP3 add address is:
+[indent][tt]http://{DOMAIN}/Site/email_users_add.htm[/tt][/indent]
+
+The forwarding add address is:
+[indent][tt]http://{DOMAIN}/Site/emal_forward.htm[/tt][/indent]
+We're not sure if it is currently possible to manage POP3 quota with Ensim.
+
+[title="4"]For cPanel users[/title]
+
+The POP3 add address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addpop2.html[/tt][/indent]
+
+The forwarding add address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addfwd.html[/tt][/indent]
+
+The POP3 quota change address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/pops.html[/tt][/indent]
 
 [title="3"]Community billboard (non-bundled)[/title]
 
@@ -392,9 +392,18 @@ Admin Zone > Audit > eCommerce > Invoices
 
 [title="2"]Shopping catalogue items[/title]
 
-The Composr shopping catalogue works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]). You can access this catalogue for modifications, and adding products to, from Content Management > Products.
+The Composr shopping catalogue works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]), although you can have multiple.
 
-The Composr shopping catalogue has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of people's needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in its own way but lacking the features needed for a wider website.
+Shopping catalogues provide the following special functionality:
+ - special templating for tidy product display
+ - easy adding to the shopping cart
+ - tax calculation
+ - shipping cost calculation
+ - stock counting
+
+The Composr shopping catalogue has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of peoples' needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in its own way but lacking the features needed for a wider website.
+
+You can access the default products catalogue for modifications, and adding products to, from Content Management > Products.
 
 [title="3"]Product fields[/title]
 
@@ -418,10 +427,14 @@ This catalogue has some hard-coded fields:
   - [b]Product width[/b] -- the item's width, in the configured units
   - [b]Product height[/b] -- the item's height, in the configured units
 
-By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
+The fields are semantically tied into the system via the [tt]ecommerce_tag[/tt] field option. If [tt]ecommerce_tag[/tt] is not set then it will still try and match the fields using either the field types or the field names.
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
-You may add additional fields, such as extra product images or specifications. However do [b]not[/b] delete any of the default fields. The fields are semantically tied into the system via the [tt]ecommerce_tag[/tt] field option.
+You may add additional fields, such as extra product images or specifications. However do [b]not[/b] delete any of the default fields. If an eCommerce catalogue is not correctly configured errors will occur.
+
+[title="4"]Multiple shopping catalogues (advanced)[/title]
+
+If you want another shopping catalogue then add a new catalogue with the Advanced "eCommerce catalogue" option set, and all the same tagged fields.
 
 [title="4"]Product options[/title]
 
@@ -433,6 +446,10 @@ There are, however, three workarounds:
 3) Just ask the user what they want by e-mail after they order.
 
 If you need more flexibility than this (perhaps many different product options for different kinds of product, or options that affect the price), you should consider either sponsoring extended Composr development, or using a dedicated third-party eCommerce system.
+
+[title="3"]Product reviews[/title]
+
+By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
 
 [title="3"]Categories and entries (i.e. the contents of your product catalogue)[/title]
 
@@ -452,7 +469,7 @@ You may customise the appearance of the shopping catalogue in the usual way of e
 
 [title="4"]Guests[/title]
 
-Guests may make purchases, if they have the right Composr permissions (to the [tt]catalogues[/tt] module, the [tt]products[/tt] catalogue, and the [tt]shopping[/tt] module).
+Guests may make purchases, if they have the necessary Composr permissions (to the [tt]catalogues[/tt] module, the [tt]products[/tt] catalogue, and the [tt]shopping[/tt] module).
 
 Guest users have no member ID, so Composr will store the order against their 'session ID' instead. Session IDs work using cookies, secured against the user's IP address. The session can be lost in many circumstances:
  - if the user has their browser set to empty cookies when closed
@@ -473,7 +490,7 @@ Orders may be reviewed by the purchaser from their [tt]orders[/tt] module (linke
 Order status can be changed (e.g. marked as dispatched) from:
 Audit > eCommerce > Shopping orders
 
-[title="3"]Handling tax[/title]
+[title="2"]Handling tax[/title]
 
 Tax calculation has been kept as simple as reasonably possible because it's impossible to create configurability to cover every scenario people will need globally. Tax rules have too many special cases.
 
@@ -501,9 +518,9 @@ Known limitations and important considerations:
  - Avoid taking and holding multiple currencies (e.g. on PayPal) unless you have a very good reason to -- it will make your accounting particularly complicated. It is better to just force the payer's credit card to charge in your own currency.
  - You should strongly consider setting the site timezone to that where you collect tax so that if tax rates change you can more easily tell what dates the transactions happened on.
 
-[title="4"]Regional considerations[/title]
+[title="3"]Regional considerations[/title]
 
-[title="5"]USA users[/title]
+[title="4"]USA users[/title]
 
 [media width="300" framed="0" float="right"]data_custom/images/docs/tut_ecommerce/taxcloud.png[/media]
 Basically if you are selling products commercially must register with your state for sales tax. Services usually are not liable for sales tax.
@@ -533,7 +550,7 @@ Known limitations at this time which could be worked around with custom code...
 
 &dagger; Instead of sales tax charged at point of sale, most sites have something called 'use tax'. 'Use tax' should be paid by the customer themselves when they file their taxes. Very few people do, make of that what you will.
 
-[title="5"]EU users[/title]
+[title="4"]EU users[/title]
 
 Sales tax in the EU is known as "VAT". It is technically different from a normal sales tax, but we don't need to get into that in this tutorial. There is a configuration option to make sure that the term "VAT" is used instead of the term "Sales tax".
 
@@ -548,11 +565,16 @@ It only applies to certain digital sales, not shipped products. To use digital p
 1) You may ignore the "Tax countries" and "Tax states" configuration options unless you sell other products that have other tax codes
 2) Configure tax configuration options, and shopping catalogue items, to use the "EU digital goods tax" tax code
 
-[title="4"]Tax invoices[/title]
+[title="4"]Other users[/title]
+
+Known limitations at this time which could be worked around with custom code...
+ - No special consideration has been given for tax rules in any other particular jurisdiction -- instead we have tried to make it configurable
+
+[title="3"]Tax invoices[/title]
 
 Tax invoices are automatically created and delivered to customers. They are also available from the Admin Zone.
 
-[title="5"]Line items[/title]
+[title="4"]Line items[/title]
 
 Local laws may require tax invoices that show individual line items, each with their own tax rate. For example, shipping costs may be zero-rated, services may be given a service rate, and food may be given a food rate.
 
@@ -568,7 +590,7 @@ The same limitation applies to subscriptions, although this is not likely to be 
 
 If you are setting up custom products it is possible these represent aggregate purchases and may suffer from this problem. However you likely could make a convincing case that it was all one "atomic" purchase also.
 
-[title="4"]Tax derivation[/title]
+[title="3"]Tax derivation[/title]
 
 The tax derivations will be needed for tax remittance if you are subject to EU digital goods tax, or to USA destination taxation.
 
@@ -576,10 +598,7 @@ We generally track these and they are available when you do a CSV download of tr
 
 However, TaxCloud doesn't actually provide us broken-down data of the taxes. So if you are a USA user using TaxCloud you'll find this data on TaxCloud itself.
 
-[title="5"]Other users[/title]
-
-Known limitations at this time which could be worked around with custom code...
- - No special consideration has been given for tax rules in any other particular jurisdiction -- instead we have tried to make it configurable
+[title="2"]Shipping[/title]
 
 [title="3"]Handling shipping costs[/title]
 

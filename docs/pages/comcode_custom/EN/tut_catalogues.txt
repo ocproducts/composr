@@ -327,33 +327,6 @@ CATALOGUE_classifieds_ADD_TEXT=Your advertisement is now live on our site.
 CATALOGUE_classifieds_EDIT_TEXT=Your advertisement has been edited. The changes can be seen immediately.
 [/code]
 
-[title="3"]eCommerce catalogues[/title]
-
-Composr can have special eCommerce catalogues, which integrate with the Composr shopping cart. These catalogues provide the following special functionality:
- - special templating for tidy product display
- - easy adding to the shopping cart
- - tax calculation
- - discounting
- - stock counting
- - view tracking
-
-An eCommerce catalogue always assumes it has a number of special eCommerce fields as the first fields in the catalogue. The default [tt]product[/tt] catalogue is configured like this and thus can be used as a reference for creating more product catalogues, if desired (few users will, however, require more than one product catalogue).
-
-If an eCommerce catalogue is not correctly configured errors will occur.
-
-The special eCommerce fields are:
- - title
- - code
- - price
- - reduction_start
- - reduction_end
- - stock_level [allows blank, meaning 'not stock counted']
- - stock_level_warn_at [allows blank, meaning 'not stock counted']
- - stock_level_maintain
- - tax_code
- - weight
- - description
-
 [title="2"]Classified ads[/title]
 
 Catalogues are ideal for setting up a classified ads system. In fact, there is special support for this as you can program a catalogue to move entries to an archival category after a specified period of time passes. There is also a permission ('Have a longer expiry-time for catalogue entries') that allows you to grant usergroups a longer period of advert display.

@@ -69,76 +69,63 @@ function find_shopping_catalogue_fields($catalogue_name = 'products')
         }
     }
 
+    require_lang('catalogues');
+
     // Fallback: By field type
     foreach (array_keys($fields_map) as $j => $key) {
         if ($fields_map[$key] === null) {
             foreach ($fields as $i => $field) {
                 switch ($key) {
                     case 'product_title':
-                        if ($fields['cf_type'] == 'short_trans') {
+                        if (($fields['cf_type'] == 'short_trans') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'sku':
-                        if ($fields['cf_type'] == 'codename') {
+                        if (($fields['cf_type'] == 'codename') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'price':
-                        if (($fields['cf_type'] == 'float') && (strpos($fields['cf_options'], 'price') !== false)) {
+                        if ((($fields['cf_type'] == 'float') && (strpos($fields['cf_options'], 'price') !== false)) || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'stock_level':
-                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
-                        continue 2;
-
                     case 'stock_level_warn_at':
-                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
-                        break;
-
                     case 'stock_level_maintain':
-                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
+                    case 'weight':
+                    case 'length':
+                    case 'width':
+                    case 'height':
+                        if (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key)) {
+                            $fields_map[$key] = $i;
+                            continue 2;
+                        }
                         break;
 
                     case 'tax_code':
-                        if ($fields['cf_type'] == 'tax_code') {
+                        if (($fields['cf_type'] == 'tax_code') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
                     case 'image':
-                        if ($fields['cf_type'] == 'picture') {
+                        if (($fields['cf_type'] == 'picture') || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }
                         break;
 
-                    case 'weight':
-                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
-                        break;
-
-                    case 'length':
-                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
-                        break;
-
-                    case 'width':
-                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
-                        break;
-
-                    case 'height':
-                        $fields_map[$key] = -1; // We can't detect it reasonably, but not needed
-                        break;
-
                     case 'description':
-                        if (in_array($fields['cf_type'], array('long_trans', 'long_text', 'posting_field'))) {
+                        if ((in_array($fields['cf_type'], array('long_trans', 'long_text', 'posting_field'))) || (get_translated_text($fields['cf_name']) == do_lang('ECOM_CAT_' . $key))) {
                             $fields_map[$key] = $i;
                             continue 2;
                         }

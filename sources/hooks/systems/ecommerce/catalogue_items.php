@@ -215,7 +215,7 @@ class Hook_ecommerce_catalogue_items
         $shopping_catalogue__description = $fields_map['description'];
 
         if (array_key_exists($shopping_catalogue__stock_level_maintain, $field_rows)) { // Check maintenance status
-            if ((empty($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'])) || ($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'] == do_lang('YES'))) {
+            if ((empty($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'])) || ($field_rows[$shopping_catalogue__stock_level_maintain]['effective_value_pure'] == do_lang('YES')/*means more will always be purchased if out of stock*/)) {
                 return ECOMMERCE_PRODUCT_AVAILABLE;
             }
         }
