@@ -692,23 +692,25 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
     if ($has_tic) {
         $default_set = 'tic';
     }
-    list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=json'));
-    $_tics = json_decode($__tics, true); // TODO: Fix in v11
-    $tics = new Tempcode();
-    $tics->attach(_prepare_tics_list($_tics['tic_list'], $has_tic ? substr($default, 4) : '', 'root'));
-    $tics->attach(_prepare_tics_list($_tics['tic_list'], $has_tic ? substr($default, 4) : '', ''));
-    require_css('widget_select2');
-    require_javascript('jquery');
-    require_javascript('select2');
-    $input = do_template('FORM_SCREEN_INPUT_LIST', array(
-        'TABINDEX' => strval($tabindex),
-        'REQUIRED' => $_required,
-        'NAME' => $set_name . '_tic',
-        'CONTENT' => $tics,
-        'INLINE_LIST' => false,
-        'SIZE' => strval(5),
-    ));
-    $field_set->attach(_form_input($set_name . '_tic', do_lang_tempcode('TAX_TIC'), do_lang_tempcode('DESCRIPTION_TAX_TIC'), $input, $required, false, $tabindex));
+    list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=json', null, false));
+    $_tics = @json_decode($__tics, true); // TODO: Fix in v11
+    if (($_tics !== false) && ($_tics !== null)) {
+        $tics = new Tempcode();
+        $tics->attach(_prepare_tics_list($_tics['tic_list'], $has_tic ? substr($default, 4) : '', 'root'));
+        $tics->attach(_prepare_tics_list($_tics['tic_list'], $has_tic ? substr($default, 4) : '', ''));
+        require_css('widget_select2');
+        require_javascript('jquery');
+        require_javascript('select2');
+        $input = do_template('FORM_SCREEN_INPUT_LIST', array(
+            'TABINDEX' => strval($tabindex),
+            'REQUIRED' => $_required,
+            'NAME' => $set_name . '_tic',
+            'CONTENT' => $tics,
+            'INLINE_LIST' => false,
+            'SIZE' => strval(5),
+        ));
+        $field_set->attach(_form_input($set_name . '_tic', do_lang_tempcode('TAX_TIC'), do_lang_tempcode('DESCRIPTION_TAX_TIC'), $input, $required, false, $tabindex));
+    }
 
     // EU rate input...
 

@@ -78,7 +78,7 @@ function init__files2()
  *
  * @param string $func Function to call
  * @param array $args Arguments to call with
- * @param ?integer $timeout Timeout in minutes (null: no timeout)
+ * @param ?integer $timeout Caching timeout in minutes (null: no timeout)
  * @return mixed The function result OR for http_download_file calls a tuple of result details
  */
 function cache_and_carry($func, $args, $timeout = null)

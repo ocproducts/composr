@@ -509,7 +509,10 @@ class Module_cms_catalogues extends Standard_crud_module
                 $field_groups[$field_cat] = new Tempcode();
             }
 
-            $_cf_description = escape_html(get_translated_text($field['cf_description']));
+            $__cf_description = get_translated_text($field['cf_description']);
+            global $LANG_FILTER_OB;
+            $__cf_description = $LANG_FILTER_OB->compile_time(null, $__cf_description); // So that eCommerce catalogue fields referencing config options look better
+            $_cf_description = escape_html($__cf_description);
 
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
             $result = $ob->get_field_inputter($_cf_name, $_cf_description, $field, $default, is_null($id), !array_key_exists($field_num + 1, $special_fields));

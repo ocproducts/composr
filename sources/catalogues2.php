@@ -43,18 +43,18 @@ function create_ecommerce_catalogue($catalogue_name)
     $fields = array(
         //     Name     Description     Type        Defines order   Required    Visible/Categorised/Searchable  Default     Field options
         array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1, '', 'ecommerce_tag=product_title'),
-        array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 1, 1, 1, 'RANDOM', 'ecommerce_tag=sku'),
+        array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 0, 1, 1, 'RANDOM', 'ecommerce_tag=sku'),
         array('ECOM_CAT_price', 'ECOM_CATD_price', 'float', 0, 1, 1, 1, '', 'ecommerce_tag=price,decimal_points_behaviour=price'),
         array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0, '', 'ecommerce_tag=stock_level'),
         array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0, '', 'ecommerce_tag=stock_level_warn_at'),
-        array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'list', 0, 1, 0, 0, do_lang('NO') . '|' . do_lang('YES'), 'ecommerce_tag=stock_level_maintain'),
+        array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'list', 0, 1, 0, 0, do_lang('YES') . '|' . do_lang('NO'), 'ecommerce_tag=stock_level_maintain'),
         array('ECOM_CAT_tax_code', 'ECOM_CATD_tax_code', 'tax_code', 0, 1, 0, 0, '', 'ecommerce_tag=tax_code'),
         array('ECOM_CAT_image', 'ECOM_CATD_image', 'picture', 0, 0, 1, 1, '', 'ecommerce_tag=image'),
         array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0, '', 'ecommerce_tag=weight'),
         array('ECOM_CAT_length', 'ECOM_CATD_length', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=length'),
         array('ECOM_CAT_width', 'ECOM_CATD_width', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=width'),
         array('ECOM_CAT_height', 'ECOM_CATD_height', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=height'),
-        array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1, '', 'ecommerce_tag=description')
+        array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 0, 1, 1, '', 'ecommerce_tag=description')
     );
 
     foreach ($fields as $i => $field) {

@@ -390,7 +390,7 @@ Staff may quickly locate unpaid invoices and invoices for which the work has not
 Admin Zone > Audit > eCommerce > Invoices
 [/surround]
 
-[title="2"]Shopping catalogue products[/title]
+[title="2"]Shopping catalogue items[/title]
 
 The Composr shopping catalogue works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]). You can access this catalogue for modifications, and adding products to, from Content Management > Products.
 
@@ -401,18 +401,22 @@ The Composr shopping catalogue has intentionally been kept lightweight. We're no
 [media width="150" description="Viewing a shopping catalogue item" float="right"]data_custom/images/docs/tut_ecommerce/product_view.png[/media]
 [media width="150" description="Adding a shopping catalogue item" float="right"]data_custom/images/docs/tut_ecommerce/product_add.png[/media]
 This catalogue has some hard-coded fields:
- - [b]Product title[/b] -- the product title / name
- - [b]Item code[/b] -- a code of your choice for the item, probably taken from your internal labelling system
- - [b]Price[/b] -- the item's price (pre-tax)
- - [b]Stock level[/b] -- the number in stock
- - [b]Stock level warning point[/b] -- the point at which you should be e-mailed if the stock level reaches
- - [b]Whether stock is being maintained[/b] -- whether you want stock control (as above)
- - [b]Tax code[/b] -- the tax code
- - [b]Weight[/b] -- the item's weight, in the configured units
- - [b]Length[/b] -- the item's length, in the configured units
- - [b]Width[/b] -- the item's width, in the configured units
- - [b]Height[/b] -- the item's height, in the configured units
- - [b]Description[/b] -- a description for the item
+ - [b]Product name[/b] -- the item's name
+ - [b]Product code[/b] -- a code of your choice for the item (a SKU, stock keeping code); by default this is hidden and randomly generated (you can edit the catalogue and remove [tt]RANDOM[/tt] from the default field value if you want to enter it manually)
+ - [b]Product image[/b] -- a picture of the item
+ - [b]Product description[/b] -- a description of the item
+ - Pricing:
+  - [b]Price[/b] -- the item's price (pre-tax)
+  - [b]Tax code[/b] -- the tax code, selected using a Composr tax code selector (e.g. you can enter a percentage tax)
+ - Stock:
+  - [b]Stock level[/b] -- the number in stock
+  - [b]Stock level warn-threshold[/b] -- send out a notification to the staff if the stock goes below this level
+  - [b]Stock maintained[/b] -- whether stock will be maintained; if the stock is not maintained then users will not be able to purchase it if the stock runs out
+ - Shipping:
+  - [b]Product weight[/b] -- the item's weight, in the configured units
+  - [b]Product length[/b] -- the item's length, in the configured units
+  - [b]Product width[/b] -- the item's width, in the configured units
+  - [b]Product height[/b] -- the item's height, in the configured units
 
 By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
 
@@ -521,7 +525,7 @@ To use the TaxCloud system:
 9) Set the Business state configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper-case, not the full written state name)
 10) You may ignore the "Tax countries" and "Tax states" Composr configuration options
 11) Set the Currency configuration option on your Composr site to USD
-12) Configure tax configuration options, and shopping catalogue products, to use the appropriate TIC code(s)
+12) Configure tax configuration options, and shopping catalogue items, to use the appropriate TIC code(s)
 Note that TaxCloud will automatically debit the tax from you and do tax forms for you in many cases -- and in any case will keep records of all the itemised sales taxes due.
 
 Known limitations at this time which could be worked around with custom code...
@@ -542,7 +546,7 @@ Known limitations at this time which could be worked around with custom code...
 The EU system for calculating digital product taxes charges the tax rate of the buyer's country, not yours, and is then paid to the government in the buyer's country.
 It only applies to certain digital sales, not shipped products. To use digital product tax:
 1) You may ignore the "Tax countries" and "Tax states" configuration options unless you sell other products that have other tax codes
-2) Configure tax configuration options, and shopping catalogue products, to use the "EU digital goods tax" tax code
+2) Configure tax configuration options, and shopping catalogue items, to use the "EU digital goods tax" tax code
 
 [title="4"]Tax invoices[/title]
 

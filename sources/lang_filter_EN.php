@@ -268,7 +268,7 @@ class LangFilter_EN extends LangFilter
         }
 
         // Better labelling for eCommerce config
-        if ((addon_installed('ecommerce')) && (function_exists('get_option')) && (strpos($key, 'ECOM_CAT') === false/*gets saved into database*/)) {
+        if ((addon_installed('ecommerce')) && (function_exists('get_option')) && (($key === null) || (strpos($key, 'ECOM_CAT') === false/*gets saved into database*/))) {
             $remapping = array();
             $remapping['the configured weight units'] = 'the configured weight units (currently ' . get_option('shipping_weight_units') . ')';
             $remapping['the configured length units'] = 'the configured length units (currently ' . get_option('shipping_length_units') . ')';

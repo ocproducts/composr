@@ -4040,8 +4040,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_ADDED_SUBSCRIP
         ECOM_CATD_image
         ECOM_CATD_price
-        ECOM_CATD_reduction_end
-        ECOM_CATD_reduction_start
+        ECOM_CATD_product_title
         ECOM_CATD_sku
         ECOM_CATD_stock_level
         ECOM_CATD_stock_level_maintain
