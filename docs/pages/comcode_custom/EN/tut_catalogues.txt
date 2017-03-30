@@ -164,7 +164,7 @@ You can delete a catalogue from the bottom of its edit form.
 Add or edit categories from:
 Content Management > [tt]<Catalogue name>[/tt].
 
-You can delete a category from the bottom of its edit form.
+You can delete a category from the bottom of its edit form. A root catalogue category cannot be deleted, however.
 
 [title="2"]Adding/editing/deleting entries[/title]
 
