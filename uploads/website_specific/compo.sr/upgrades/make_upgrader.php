@@ -147,9 +147,10 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
     // Work out files for upgrader
     make_upgrader_do_dir($wip_path, $new_base_path, $old_base_path, $addons_in_upgrader);
     if ($addons_in_upgrader !== null) {
-        @mkdir($wip_path . '/imports', 0777);
-        @mkdir($wip_path . '/imports/addons', 0777);
+        @mkdir($wip_path . '/exports', 0777);
+        @mkdir($wip_path . '/exports/addons', 0777);
 
+        // Build all addon TARs
         global $CACHE_FROM_ADDONS;
         foreach ($CACHE_FROM_ADDONS as $addon => $addon_files) {
             $addon_info = read_addon_info($addon, true, null, null, $new_base_path . '/sources/hooks/systems/addon_registry/' . $addon . '.php');

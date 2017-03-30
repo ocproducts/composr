@@ -73,7 +73,11 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         $zone = get_module_zone('downloads');
     }
 
-    $just_download_row = db_map_restrict($row, array('id', 'description'));
+    if (array_key_exists('id', $row)) {
+        $just_download_row = db_map_restrict($row, array('id', 'description'));
+    } else {
+        $just_download_row = db_map_restrict($row, array('description'));
+    }
 
     // Details
     $file_size = $row['file_size'];

@@ -32,7 +32,7 @@ function get_latest_version_dotted()
     static $version = null;
     static $fetched_version = false;
     if (!$fetched_version) {
-        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'), 'ORDER BY add_date DESC');
+        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), 'ORDER BY add_date DESC');
         if ($version !== null) {
             require_code('version2');
             $_version = preg_replace('# \(.*#', '', get_translated_text($version));
