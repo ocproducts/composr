@@ -180,12 +180,14 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 
             $url = 'https://api.taxcloud.com/1.0/TaxCloud/VerifyAddress';
 
+            list($street_address_1, $street_address_2) = split_street_address($street_address, 2);
+
             $zip_parts = explode('-', $post_code, 2);
             $request = array(
                 'apiLoginID' => get_option('taxcloud_api_id'),
                 'apiKey' => get_option('taxcloud_api_key'),
-                'Address1' => $street_address,
-                'Address2' => '',
+                'Address1' => $street_address_1,
+                'Address2' => $street_address_2,
                 'City' => $city,
                 'State' => $state,
                 'Zip5' => $zip_parts[0],
@@ -197,7 +199,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             $response = json_decode($_response, true);
 
             if ($response['ErrNumber'] == 0) {
-                $street_address = $response['Address1'];
+                $street_address = trim($response['Address1'] . (isset($response['Address2']) ? ("\n" . $response['Address2']) : ''));
                 $city = $response['City'];
                 $state = $response['State'];
                 $post_code = $response['Zip5'] . (($response['Zip4'] == '') ? '' : ('-' . $response['Zip4']));
@@ -235,8 +237,12 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 
             $url = 'https://api.taxcloud.com/1.0/TaxCloud/Lookup';
 
+            list($street_address_1, $street_address_2) = split_street_address($street_address, 2);
+            list($business_street_address_1, $business_street_address_2) = split_street_address(get_option('business_street_address'), 2);
+
             $zip_parts = explode('-', $post_code, 2);
             $business_zip_parts = explode('-', get_option('business_post_code'), 2);
+
             $request = array(
                 'apiLoginID' => get_option('taxcloud_api_id'),
                 'apiKey' => get_option('taxcloud_api_key'),
@@ -244,14 +250,16 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
                 'deliveredBySeller' => false,
                 'cartID' => '',
                 'destination' => array(
-                    'Address1' => $street_address,
+                    'Address1' => $street_address_1,
+                    'Address2' => $street_address_2,
                     'City' => $city,
                     'State' => $state,
                     'Zip5' => $zip_parts[0],
                     'Zip4' => array_key_exists(1, $zip_parts) ? $zip_parts[1] : '',
                 ),
                 'origin' => array(
-                    'Address1' => get_option('business_street_address'),
+                    'Address1' => $business_street_address_1,
+                    'Address2' => $business_street_address_2,
                     'City' => get_option('business_city'),
                     'State' => get_option('business_state'),
                     'Zip5' => $business_zip_parts[0],
@@ -579,7 +587,7 @@ function generate_tax_invoice($txn_id)
         $address_row = $address_rows[0];
 
         $lines = array(
-            $address_row['a_firstname'] . ' ' . $address_row['a_lastname'],
+            trim($address_row['a_firstname'] . ' ' . $address_row['a_lastname']),
             $address_row['a_street_address'],
             $address_row['a_city'],
             $address_row['a_county'],

@@ -6014,8 +6014,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_payment_memos
         ECOM_PRICE_HONOUR_TIME
         CONFIG_OPTION_ecom_price_honour_time
-        SHIPPING_SHIPPO
-        CONFIG_OPTION_shipping_shippo
+        SHIPPING_SHIPPO_API_TEST
+        CONFIG_OPTION_shipping_shippo_api_test
+        SHIPPING_SHIPPO_API_LIVE
+        CONFIG_OPTION_shipping_shippo_api_live
         SHIPPING_WEIGHT_UNITS
         CONFIG_OPTION_shipping_weight_units
         SHIPPING_DISTANCE_UNITS

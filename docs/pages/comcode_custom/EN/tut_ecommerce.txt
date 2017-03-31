@@ -629,6 +629,8 @@ Shippo is free because they make money helping you print shipping labels. We don
 2) Log into your Dashboard
 3) Go to the API section
 4) Copy the Live Token and Test Token into your eCommerce configuration (Admin Zone > Setup > Configuration > eCommerce options > Shipping).
+5) Go to the Carriers section
+6) Disable all but one carrier account (as Composr does not currently support shipping option choices); make sure the carrier account you leave supports international shipping (DHL Express does not, for example)
 
 [title="3"]Shipping addresses[/title]
 

@@ -94,9 +94,11 @@ function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$p
 
     // Do calculation if we don't have Shippo...
 
+    $shippo_token = get_option(ecommerce_test_mode() ? 'shipping_shippo_api_test' : 'shipping_shippo_api_live');
+
     $base = get_base_shipping_cost();
 
-    if (get_option('shipping_shippo') == '') {
+    if ($shippo_token == '') {
         $factor = floatval(get_option('shipping_cost_factor'));
         $shipping_cost = $base + $product_weight * $factor;
 
@@ -151,28 +153,34 @@ function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$p
     }
     $country = _make_country_for_shippo($country);
 
+    list($company, $street_address_1, $street_address_2) = split_street_address($street_address, 3, true);
+    list($business_street_address_1, $business_street_address_2) = split_street_address(get_option('business_street_address'), 2);
+
     $request = array(
         'object_purpose' => 'QUOTE',
-        'address_from' => array(
-            'name' => get_option('business_name'),
-            'street1' => get_option('business_street_address'),
-            'city' => get_option('business_city'),
-            'state' => get_option('business_state'),
-            'zip' => get_option('business_post_code'),
-            'country' => _make_country_for_shippo(get_option('business_country')),
-            'phone' => get_option('pd_number'),
-            'email' => get_option('pd_email'),
-            'object_purpose' => 'QUOTE',
-        ),
         'address_to' => array(
             'name' => trim($shipping_firstname . ' ' . $shipping_lastname),
-            'street1' => $street_address,
+            'company' => $company,
+            'street1' => $street_address_1,
+            'street2' => $street_address_2,
             'city' => $city,
             'state' => $state,
             'zip' => $post_code,
             'country' => $country,
             'phone' => $shipping_phone,
             'email' => $shipping_email,
+            'object_purpose' => 'QUOTE',
+        ),
+        'address_from' => array(
+            'name' => get_option('business_name'), // This would be company name, so no need for separate company field
+            'street1' => $business_street_address_1,
+            'street2' => $business_street_address_2,
+            'city' => get_option('business_city'),
+            'state' => get_option('business_state'),
+            'zip' => get_option('business_post_code'),
+            'country' => _make_country_for_shippo(get_option('business_country')),
+            'phone' => get_option('pd_number'),
+            'email' => get_option('pd_email'),
             'object_purpose' => 'QUOTE',
         ),
         'parcel' => array(
@@ -187,8 +195,7 @@ function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$p
     );
     $post_params = array(json_encode($request));
     $url = 'https://api.goshippo.com/shipments/';
-    $token = get_option('shipping_shippo');
-    $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, array('Authorization' => 'ShippoToken ' . $token), null, 'application/json', true); // TODO: Fix in v11
+    $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, array('Authorization' => 'ShippoToken ' . $shippo_token), null, 'application/json', true); // TODO: Fix in v11
     $response = json_decode($_response, true);
 
     // Error handling
@@ -221,7 +228,7 @@ function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$p
 /**
  * Make an ISO country code shippo-compatible.
  *
- * @param string ISO country code.
+ * @param string $country ISO country code.
  * @return string Shippo-compatible code.
  */
 function _make_country_for_shippo($country)

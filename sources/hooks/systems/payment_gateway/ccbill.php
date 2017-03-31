@@ -221,18 +221,62 @@ class Hook_payment_gateway_ccbill
      */
     protected function _build_member_address()
     {
-        $member_address = array();
-        if (!is_guest()) {
-            $member_address['customer_fname'] = get_cms_cpf('firstname');
-            $member_address['customer_lname'] = get_cms_cpf('lastname');
-            $member_address['address1'] = get_cms_cpf('street_address');
-            $member_address['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
-            $member_address['city'] = get_cms_cpf('city');
-            $member_address['state'] = get_cms_cpf('state');
-            $member_address['zipcode'] = get_cms_cpf('post_code');
-            $member_address['country'] = get_cms_cpf('country');
-            $member_address['username'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        $shipping_email = '';
+        $shipping_phone = '';
+        $shipping_firstname = '';
+        $shipping_lastname = '';
+        $shipping_street_address = '';
+        $shipping_city = '';
+        $shipping_county = '';
+        $shipping_state = '';
+        $shipping_post_code = '';
+        $shipping_country = '';
+        $shipping_email = '';
+        $shipping_phone = '';
+        $cardholder_name = '';
+        $card_type = '';
+        $card_number = null;
+        $card_start_date_year = null;
+        $card_start_date_month = null;
+        $card_expiry_date_year = null;
+        $card_expiry_date_month = null;
+        $card_issue_number = null;
+        $card_cv2 = null;
+        $billing_street_address = '';
+        $billing_city = '';
+        $billing_county = '';
+        $billing_state = '';
+        $billing_post_code = '';
+        $billing_country = '';
+        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, true);
+
+        if ($shipping_street_address == '') {
+            $street_address = $billing_street_address;
+            $city = $billing_city;
+            $county = $billing_county;
+            $state = $billing_state;
+            $post_code = $billing_post_code;
+            $country = $billing_country;
+        } else {
+            $street_address = $shipping_street_address;
+            $city = $shipping_city;
+            $county = $shipping_county;
+            $state = $shipping_state;
+            $post_code = $shipping_post_code;
+            $country = $shipping_country;
         }
+
+        $member_address = array();
+        $member_address['customer_fname'] = $shipping_firstname;
+        $member_address['customer_lname'] = $shipping_lastname;
+        $member_address['address1'] = $street_address;
+        $member_address['city'] = $city;
+        $member_address['state'] = $state;
+        $member_address['zipcode'] = $post_code;
+        $member_address['country'] = $country;
+        $member_address['email'] = $shipping_email;
+        $member_address['username'] = is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+
         return $member_address;
     }
 

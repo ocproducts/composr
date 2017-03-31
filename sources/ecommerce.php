@@ -1751,7 +1751,7 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
                 $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
 
                 $_body = do_template('PAYMENT_SENT_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
-                $body = static_evaluate_tempcode($_body);
+                $body = $_body->evaluate(get_site_default_lang());
 
                 require_code('mail');
                 mail_wrap($subject, $body, array($email), $to_name);
@@ -1761,7 +1761,7 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
         $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_lang($member_id));
 
         $_body = do_notification_template('PAYMENT_SENT_MAIL', $parameter_map, get_lang($member_id), false, null, '.txt', 'text');
-        $body = comcode_to_tempcode($_body, null, true);
+        $body = $_body->evaluate(get_lang($member_id));
 
         dispatch_notification('payment_received', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
     }
@@ -1771,7 +1771,7 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
     $subject = do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
 
     $_body = do_notification_template('PAYMENT_RECEIVED_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
-    $body = comcode_to_tempcode($_body, null, true);
+    $body = $_body->evaluate(get_site_default_lang());
 
     dispatch_notification('payment_received_staff', null, $subject, $body, null, A_FROM_SYSTEM_PRIVILEGED);
 }
@@ -1996,4 +1996,35 @@ function get_formatted_address($address_parts)
         }
     }
     return rtrim($address);
+}
+
+/**
+ * Split a linebreak-separated street address into individual parts.
+ *
+ * @param  string $compound_street_address Linebreak-separated street address
+ * @param  integer $num_parts Number of parts to split into (the last will have comma-separated parts of whatever is remaining)
+ * @param  boolean $find_company_name The first part will be for a company name, which we'll try and detect intelligently but will be blank if we're not sure
+ * @return array Parts
+ */
+function split_street_address($compound_street_address, $num_parts, $find_company_name = false)
+{
+    $parts = explode("\n", trim($compound_street_address), $num_parts);
+    $parts[count($parts) - 1] = str_replace("\n", ", ", $parts[count($parts) - 1]);
+
+    if ($find_company_name) {
+        if ((preg_match('#\d#', $parts[0]) != 0) && (preg_match('# (GmbH|Ent|ENT|Enterprises|ENTERPRISES|Llp|LLP|Partners|PARTNERS|Co|CO|Corp|CORP|Corporation|Inc|INC|Ltd|LTD|Plc|PLC|Pty|PTY|Llc|LLC)\.?$#', $parts[0]) == 0)) {
+            // First part looks more like a street address than a company name, so we'll make the company name blank
+            $parts = explode("\n", trim($compound_street_address), $num_parts - 1);
+            $parts[count($parts) - 1] = str_replace("\n", ", ", $parts[count($parts) - 1]);
+            $parts = array_merge(array(''), $parts);
+        }
+    }
+
+    for ($i = 0; $i < $num_parts; $i++) {
+        if (!array_key_exists($i, $parts)) {
+            $parts[$i] = '';
+        }
+    }
+
+    return $parts;
 }
