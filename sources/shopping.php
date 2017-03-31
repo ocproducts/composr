@@ -313,18 +313,28 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
     $total_product_length = 0.0;
     $total_product_width = 0.0;
     $total_product_height = 0.0;
+    $total_product_volume = 0.0;
+    $total_quantity = 0;
     foreach ($shopping_cart_rows as $i => $item) {
         $quantity = $item[$field_name_prefix . 'quantity'];
+        $total_quantity += $quantity;
 
         $type_code = $item[$field_name_prefix . 'type_code'];
         list($details) = find_product_details($type_code);
 
         $total_product_weight += $details['product_weight'] * $quantity;
-        $total_product_length += $details['product_length'];
-        $total_product_width += $details['product_width'];
-        $total_product_height += $details['product_height'];
+        $total_product_length += $details['product_length'] * $quantity;
+        $total_product_width += $details['product_width'] * $quantity;
+        $total_product_height += $details['product_height'] * $quantity;
+        $total_product_volume += $details['product_length'] * $details['product_width'] * $details['product_height'] * $quantity;
 
         $shipped_products[] = array($item, $quantity);
+    }
+    if ($total_quantity > 1) {
+        // We obviously can't actually tallery length/width/height, so we'll have to work out using volume
+        $total_product_length = pow($total_product_weight, 1.0 / 3.0);
+        $total_product_width = $total_product_length;
+        $total_product_height = $total_product_length;
     }
     $total_shipping_cost = recalculate_shipping_cost_combo($shipped_products);
 
