@@ -402,15 +402,17 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 function check_taxcloud_configured_correctly()
 {
     // Check for configuration errors
-    if (get_option('business_country') != 'US') {
+    if (get_option('business_country') != 'US') { // TODO: This line may change see #3173
         warn_exit(do_lang_tempcode('TIC__BUSINESS_COUNTRY_NOT_USA')); // TODO: Error mail to site in v11
     }
-    if (get_option('currency') != 'USD') {
-        warn_exit(do_lang_tempcode('TIC__CURRENCY_NOT_USD')); // TODO: Error mail to site in v11
-    }
-    global $USA_STATE_LIST;
-    if (!array_key_exists(get_option('business_state'), $USA_STATE_LIST)) {
-        warn_exit(do_lang_tempcode('TIC__USA_STATE_INVALID')); // TODO: Error mail to site in v11
+    if (get_option('business_country') == 'US') {
+        if (get_option('currency') != 'USD') {
+            warn_exit(do_lang_tempcode('TIC__CURRENCY_NOT_USD')); // TODO: Error mail to site in v11
+        }
+        global $USA_STATE_LIST;
+        if (!array_key_exists(get_option('business_state'), $USA_STATE_LIST)) {
+            warn_exit(do_lang_tempcode('TIC__USA_STATE_INVALID')); // TODO: Error mail to site in v11
+        }
     }
     if ((get_option('taxcloud_api_key') == '') || (get_option('taxcloud_api_id') == '')) {
         warn_exit(do_lang_tempcode('TIC__TAXCLOUD_NOT_CONFIGURED')); // TODO: Error mail to site in v11

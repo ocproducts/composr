@@ -613,13 +613,22 @@ You should not enable automatic shipping cost calculation on your payment gatewa
 You have 3 possible approaches for calculating shipping costs:[list="1"]
 [*] Use the inbuilt configuration options for calculating shipping cost based on weight and dimensions. This may work reasonably if shipping costs are not going to vary by distance.
 [*] Fill in the Shippo configuration to calculate based on weight, dimensions, and presumably distance. Shippo will provide an exact shipping cost by actual communication with your choice of shipping company. This is likely your best option as Shippo is free (you pay when you print shipping labels), although it may not work for businesses in every country.
-[*] The shipping cost calculation in '1' has been kept very simple because it's impossible to create configurability to cover every scenario people will want globally. There are too many different special cases to cover. We have therefore architected the calculations to go through a simple common function that a programmer can override to add in additional behaviour if needed, [tt]calculate_shipping_cost[/tt].
+[*] Customise the code. The shipping cost calculation in '1' has been kept very simple because it's impossible to create configurability to cover every scenario people will want globally. There are too many different special cases to cover. We have therefore architected the calculations to go through a simple common function that a programmer can override to add in additional behaviour if needed, [tt]calculate_shipping_cost[/tt].
 [/list]
 
 Known limitations at this time which could be worked around with custom code...
  - There's no way to give a product a flat rate for shipping (https://compo.sr/tracker/view.php?id=1520)
  - Free shipping above a certain payment amount is not supported (https://compo.sr/tracker/view.php?id=3064)
  - Customer-selectable shipping options are not supported (https://compo.sr/tracker/view.php?id=3065)
+
+[title="4"]Shippo[/title]
+
+Shippo is free because they make money helping you print shipping labels. We don't currently provide any special integration with that feature though.
+
+1) Sign up to [url="Shippo"]https://goshippo.com/[/url]
+2) Log into your Dashboard
+3) Go to the API section
+4) Copy the Live Token and Test Token into your eCommerce configuration (Admin Zone > Setup > Configuration > eCommerce options > Shipping).
 
 [title="3"]Shipping addresses[/title]
 
