@@ -53,6 +53,10 @@ class Hook_ecommerce_highlight_name
 
                 'tax_code' => get_option('highlight_name_tax_code'),
                 'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
                 'needs_shipping_address' => false,
             )),
         );

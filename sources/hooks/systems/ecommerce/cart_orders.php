@@ -78,6 +78,10 @@ class Hook_ecommerce_cart_orders
                 'tax_tracking' => json_decode($order['total_tax_tracking'], true),
 
                 'shipping_cost' => $order['total_shipping_cost'],
+                'product_weight' => $order['total_product_weight'],
+                'product_length' => $order['total_product_length'],
+                'product_width' => $order['total_product_width'],
+                'product_height' => $order['total_product_height'],
                 'needs_shipping_address' => true,
             );
         }

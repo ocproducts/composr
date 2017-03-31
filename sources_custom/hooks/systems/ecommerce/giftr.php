@@ -88,6 +88,10 @@ class Hook_ecommerce_giftr
 
                 'tax_code' => '0.0',
                 'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
                 'needs_shipping_address' => false,
             );
         }

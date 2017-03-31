@@ -1067,9 +1067,9 @@ class Module_purchase
             $shipping_tax = 0.00;
         } else {
             if ($discounted_price === null) {
-                list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $details['tax_code'], $price, $details['shipping_cost']);
+                list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $details['tax_code'], $price, $shipping_cost);
             } else {
-                list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $discounted_tax_code, $discounted_price, $details['shipping_cost']);
+                list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $discounted_tax_code, $discounted_price, $shipping_cost);
             }
         }
 

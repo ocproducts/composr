@@ -125,7 +125,7 @@ cvv	cid	csc	cvc2	cvd	cvv2	cv2
 cash	money	currency
 price	cost	amount	quantity	gross	fee
 tax	vat	duty	tariff
-coupon	voucher	discount	credit
+coupon	voucher	discount	credit	reduce	reduction
 cache	decache	cleanup
 ssl	https
 seed	theme wizard

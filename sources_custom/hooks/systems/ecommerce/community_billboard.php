@@ -77,6 +77,10 @@ class Hook_ecommerce_community_billboard
 
                 'tax_code' => tax_multiplier(get_option('community_billboard_tax_code'), $days),
                 'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
                 'needs_shipping_address' => false,
             ));
         }

@@ -94,6 +94,10 @@ class Hook_ecommerce_usergroup
 
                 'tax_code' => $sub['s_tax_code'],
                 'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
                 'needs_shipping_address' => false,
             );
         }

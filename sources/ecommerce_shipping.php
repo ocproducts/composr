@@ -123,7 +123,7 @@ function recalculate_shipping_cost_combo($products_in_cart, $member_id = null)
 
         list($details) = find_product_details($product['type_code']);
 
-        recalculate_shipping_cost($product, $details['shipping_cost'] - get_base_shipping_cost(), $member_id, $quantity);
+        $shipping_cost += ($details['shipping_cost'] - get_base_shipping_cost());
     }
 
     return $shipping_cost;
@@ -135,14 +135,13 @@ function recalculate_shipping_cost_combo($products_in_cart, $member_id = null)
  * @param  ?array $details Map of product details (null: it's for base shipping cost only).
  * @param  REAL $shipping_cost The default shipping cost.
  * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @param  integer $quantity The quantity of items.
  * @return REAL The shipping cost.
  */
-function recalculate_shipping_cost($details, $shipping_cost, $member_id = null, $quantity = 1)
+function recalculate_shipping_cost($details, $shipping_cost, $member_id = null)
 {
     // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
 
-    return $shipping_cost * $quantity;
+    return $shipping_cost;
 }
 
 /**

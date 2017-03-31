@@ -91,6 +91,10 @@ class Module_shopping
                 'total_tax_tracking' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
                 'total_shipping_cost' => 'REAL',
                 'total_shipping_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
+                'total_product_weight' => 'REAL',
+                'total_product_length' => 'REAL',
+                'total_product_width' => 'REAL',
+                'total_product_height' => 'REAL',
                 'order_currency' => 'ID_TEXT',
                 'order_status' => 'ID_TEXT', // ORDER_STATUS_[awaiting_payment|payment_received|onhold|dispatched|cancelled|returned]
                 'notes' => 'LONG_TEXT',
@@ -157,6 +161,10 @@ class Module_shopping
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_tax_tracking', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_cost', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_shipping_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_product_weight', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_product_length', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_product_width', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'total_product_height', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'c_member', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_orders', 'tax_opted_out');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'order_currency', 'ID_TEXT', get_option('currency'));
@@ -359,7 +367,7 @@ class Module_shopping
                 do_lang_tempcode('REMOVE')
             ), null);
 
-            list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax) = derive_cart_amounts($shopping_cart_rows);
+            list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax, , , , ) = derive_cart_amounts($shopping_cart_rows);
 
             foreach ($shopping_cart_rows as $i => $item) {
                 list($details, $product_object) = find_product_details($item['type_code']);

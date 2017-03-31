@@ -282,8 +282,10 @@ class Module_admin_ecommerce_logs
                 $label .= ' (' . escape_html($type_code);
 
                 if ($details['price'] !== null) {
+                    $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+
                     $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
-                    $label .= ', ' . currency_convert($details['price'] + $details['shipping_cost'], $currency, $currency, CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST);
+                    $label .= ', ' . currency_convert($details['price'] + $shipping_cost, $currency, $currency, CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST);
                 }
 
                 $label .= ')';
@@ -385,11 +387,12 @@ class Module_admin_ecommerce_logs
             $invoice_details = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('id' => intval($purchase_id)), '', 1);
         }
 
+        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+
         if ($amount === null) {
             if ($details['type'] == PRODUCT_INVOICE) {
                 $amount = $invoice_details[0]['i_amount'];
             } else {
-                $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
                 $amount = $details['price'] + $shipping_cost;
             }
         }
@@ -403,7 +406,6 @@ class Module_admin_ecommerce_logs
             $shipping_cost = 0.00;
             $shipping_tax = 0.00;
         } else {
-            $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
             $tax_code = $details['tax_code'];
             list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $tax_code, $amount, $shipping_cost);
         }

@@ -76,6 +76,10 @@ class Hook_ecommerce_banners
 
             'tax_code' => get_option('banner_setup_tax_code'),
             'shipping_cost' => 0.00,
+            'product_weight' => null,
+            'product_length' => null,
+            'product_width' => null,
+            'product_height' => null,
             'needs_shipping_address' => false,
         ));
 
@@ -117,6 +121,10 @@ class Hook_ecommerce_banners
 
                 'tax_code' => tax_multiplier(get_option('banner_hit_tax_code'), $hits),
                 'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
                 'needs_shipping_address' => false,
             ));
         }
@@ -141,6 +149,10 @@ class Hook_ecommerce_banners
 
                 'tax_code' => tax_multiplier(get_option('banner_imp_tax_code'), $importance),
                 'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
                 'needs_shipping_address' => false,
             ));
         }

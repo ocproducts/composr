@@ -227,6 +227,10 @@ class Hook_ecommerce_custom
 
                 'tax_code' => $row['c_tax_code'],
                 'shipping_cost' => $shipping_cost,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
                 'needs_shipping_address' => ($shipping_cost != 0.00),
             ));
         }

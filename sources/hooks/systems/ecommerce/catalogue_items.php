@@ -164,6 +164,10 @@ class Hook_ecommerce_catalogue_items
 
                     'tax_code' => $tax_code,
                     'shipping_cost' => $shipping_cost,
+                    'product_weight' => $product_weight,
+                    'product_length' => $product_length,
+                    'product_width' => $product_width,
+                    'product_height' => $product_height,
                     'needs_shipping_address' => true,
                 );
             }
@@ -412,7 +416,9 @@ class Hook_ecommerce_catalogue_items
     {
         list($details) = find_product_details($type_code);
 
-        list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $details['tax_code'], $details['price'], $details['shipping_cost']);
+        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+
+        list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $details['tax_code'], $details['price'], $shipping_cost);
 
         $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_orders', array(
             'member_id' => get_member(),
@@ -422,8 +428,12 @@ class Hook_ecommerce_catalogue_items
             'total_tax_derivation' => json_encode($tax_derivation),
             'total_tax' => $tax,
             'total_tax_tracking' => json_encode($tax_tracking),
-            'total_shipping_cost' => $details['shipping_cost'],
+            'total_shipping_cost' => $shipping_cost,
             'total_shipping_tax' => $shipping_tax,
+            'total_product_weight' => $details['product_weight'],
+            'total_product_length' => $details['product_length'],
+            'total_product_width' => $details['product_width'],
+            'total_product_height' => $details['product_height'],
             'order_currency' => isset($details['currency']) ? $details['currency'] : get_option('currency'),
             'order_status' => 'ORDER_STATUS_awaiting_payment',
             'notes' => '',

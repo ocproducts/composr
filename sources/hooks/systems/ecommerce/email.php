@@ -289,6 +289,10 @@ class Hook_ecommerce_email
 
                 'tax_code' => tax_multiplier(get_option('quota_tax_code'), $amount),
                 'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
                 'needs_shipping_address' => false,
             ));
         }
@@ -327,6 +331,10 @@ class Hook_ecommerce_email
 
                     'tax_code' => $row['tax_code'],
                     'shipping_cost' => 0.00,
+                    'product_weight' => null,
+                    'product_length' => null,
+                    'product_width' => null,
+                    'product_height' => null,
                     'needs_shipping_address' => false,
                 ));
             }

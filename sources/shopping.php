@@ -287,7 +287,7 @@ FOR MAKING PURCHASE
  *
  * @param  array $shopping_cart_rows List of cart/order items.
  * @param  string $field_name_prefix Field name prefix. Pass as blank for cart items or 'p_' for order items.
- * @return array A tuple: total price, total tax derivation, total tax, total tax tracking ID, total shipping cost, total shipping tax.
+ * @return array A tuple: total price, total tax derivation, total tax, total tax tracking ID, total shipping cost, total shipping tax, total shipping weight, total shipping length, total shipping width, total shipping height.
  */
 function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
 {
@@ -307,10 +307,23 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         }
     }
 
-    // Work out shipping cost
+    // Work out shipping cost etc
     $shipped_products = array();
+    $total_product_weight = 0.0;
+    $total_product_length = 0.0;
+    $total_product_width = 0.0;
+    $total_product_height = 0.0;
     foreach ($shopping_cart_rows as $i => $item) {
         $quantity = $item[$field_name_prefix . 'quantity'];
+
+        $type_code = $item[$field_name_prefix . 'type_code'];
+        list($details) = find_product_details($type_code);
+
+        $total_product_weight += $details['product_weight'] * $quantity;
+        $total_product_length += $details['product_length'];
+        $total_product_width += $details['product_width'];
+        $total_product_height += $details['product_height'];
+
         $shipped_products[] = array($item, $quantity);
     }
     $total_shipping_cost = recalculate_shipping_cost_combo($shipped_products);
@@ -418,7 +431,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
     }
 
     // Return
-    return array($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax);
+    return array($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax, $total_product_weight, $total_product_length, $total_product_width, $total_product_height);
 }
 
 /**
@@ -436,7 +449,7 @@ function copy_shopping_cart_to_order()
         warn_exit(do_lang_tempcode('CART_EMPTY'));
     }
 
-    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax) = derive_cart_amounts($shopping_cart_rows);
+    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax, $total_product_weight, $total_product_length, $total_product_width, $total_product_height) = derive_cart_amounts($shopping_cart_rows);
 
     $shopping_order = array(
         'member_id' => get_member(),
@@ -447,6 +460,10 @@ function copy_shopping_cart_to_order()
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
         'total_shipping_tax' => $total_shipping_tax,
+        'total_product_weight' => $total_product_weight,
+        'total_product_length' => $total_product_length,
+        'total_product_width' => $total_product_width,
+        'total_product_height' => $total_product_height,
         'order_currency' => get_option('currency'),
         'order_status' => 'ORDER_STATUS_awaiting_payment',
         'notes' => '',
@@ -663,7 +680,7 @@ function recalculate_order_costs($order_id)
 {
     $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
 
-    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax) = derive_cart_amounts($product_rows, 'p_');
+    list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax, $total_product_weight, $total_product_length, $total_product_width, $total_product_height) = derive_cart_amounts($product_rows, 'p_');
 
     $GLOBALS['SITE_DB']->query_update('shopping_orders', array(
         'total_price' => $total_price,
@@ -672,6 +689,10 @@ function recalculate_order_costs($order_id)
         'total_tax_tracking' => $total_tax_tracking,
         'total_shipping_cost' => $total_shipping_cost,
         'total_shipping_tax' => $total_shipping_tax,
+        'total_product_weight' => $total_product_weight,
+        'total_product_length' => $total_product_length,
+        'total_product_width' => $total_product_width,
+        'total_product_height' => $total_product_height,
     ), array('id' => $order_id, 'order_status' => 'ORDER_STATUS_awaiting_payment'), '', 1);
 }
 
