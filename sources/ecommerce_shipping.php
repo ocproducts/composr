@@ -179,7 +179,7 @@ function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$p
             'length' => float_to_raw_string($product_length),
             'width' => float_to_raw_string($product_width),
             'height' => float_to_raw_string($product_height),
-            'distance_unit' => strtolower(get_option('shipping_length_units')),
+            'distance_unit' => strtolower(get_option('shipping_distance_units')),
             'weight' => float_to_raw_string($product_weight),
             'mass_unit' => strtolower(get_option('shipping_weight_units')),
         ),

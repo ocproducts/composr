@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_shipping_length_units
+class Hook_config_shipping_distance_units
 {
     /**
      * Gets the details relating to the config option.
@@ -31,11 +31,11 @@ class Hook_config_shipping_length_units
     public function get_details()
     {
         return array(
-            'human_name' => 'SHIPPING_LENGTH_UNITS',
+            'human_name' => 'SHIPPING_DISTANCE_UNITS',
             'type' => 'float',
             'category' => 'ECOMMERCE',
             'group' => 'SHIPPING',
-            'explanation' => 'CONFIG_OPTION_shipping_length_units',
+            'explanation' => 'CONFIG_OPTION_shipping_distance_units',
             'shared_hosting_restricted' => '0',
             'list_options' => 'Cm|In',
             'order_in_category_group' => 5,

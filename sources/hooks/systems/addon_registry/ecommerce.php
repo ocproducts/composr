@@ -221,7 +221,7 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/shipping_density.php',
             'sources/hooks/systems/config/shipping_shippo.php',
             'sources/hooks/systems/config/shipping_weight_units.php',
-            'sources/hooks/systems/config/shipping_length_units.php',
+            'sources/hooks/systems/config/shipping_distance_units.php',
             'site/pages/modules/purchase.php',
             'site/pages/modules/subscriptions.php',
             'site/pages/modules/invoices.php',

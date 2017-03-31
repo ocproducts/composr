@@ -25,7 +25,7 @@ class ecommerce_shipping_test_set extends cms_test_case
 
         set_option('shipping_density', '5000.0');
         set_option('shipping_weight_units', 'Kg');
-        set_option('shipping_length_units', 'Cm');
+        set_option('shipping_distance_units', 'Cm');
         set_option('shipping_tax_code', '0%');
         set_option('shipping_cost_base', '10.00');
         set_option('shipping_cost_factor', '1.20');

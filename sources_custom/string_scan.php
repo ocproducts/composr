@@ -6018,8 +6018,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_shipping_shippo
         SHIPPING_WEIGHT_UNITS
         CONFIG_OPTION_shipping_weight_units
-        SHIPPING_LENGTH_UNITS
-        CONFIG_OPTION_shipping_length_units
+        SHIPPING_DISTANCE_UNITS
+        CONFIG_OPTION_shipping_distance_units
         SHIPPING_DENSITY
         CONFIG_OPTION_shipping_density
         SHIPPING_TAX_CODE
