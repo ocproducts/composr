@@ -1055,7 +1055,7 @@ class Module_purchase
             $price = $discounted_price;
         }
 
-        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+        $shipping_cost = calculate_shipping_cost($details, $details['shipping_cost'], $details['product_weight'], $details['product_length'], $details['product_width'], $details['product_height']);
 
         if ($details['type'] == PRODUCT_INVOICE) {
             // Tax details are locked in in advance for an invoice

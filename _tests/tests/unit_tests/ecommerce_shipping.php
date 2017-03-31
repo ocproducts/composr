@@ -26,20 +26,26 @@ class ecommerce_shipping_test_set extends cms_test_case
         set_option('shipping_density', '5000.0');
         set_option('shipping_weight_units', 'Kg');
         set_option('shipping_length_units', 'Cm');
-        set_option('shipping_shippo', '');
         set_option('shipping_tax_code', '0%');
         set_option('shipping_cost_base', '10.00');
         set_option('shipping_cost_factor', '1.20');
+
+        set_option('business_street_address', '1234 Scope');
+        set_option('business_city', 'Hope');
+        set_option('business_county', '');
+        set_option('business_state', '');
+        set_option('business_post_code', 'HO1 234');
+        set_option('business_country', 'GB');
     }
 
-    public function testShippingCalculations()
+    public function testShippingNormalisation()
     {
         // Make sure dimensions calculate properly if weight known
         $product_weight = 10.0;
         $product_length = null;
         $product_width = null;
         $product_height = null;
-        calculate_shipping_cost_based_on_properties($product_weight, $product_length, $product_width, $product_height);
+        calculate_shipping_cost(null, null, $product_weight, $product_length, $product_width, $product_height);
         //$expected_product_volume = $product_weight * intval(get_option('shipping_density')) = 10.0 * 5000.0 = 50000.0 cm3;
         //$product_length = $product_width = $product_height = pow(50000.0, 1.0 / 3.0) = 36.84 cm;
         $this->assertTrue(round($product_length, 2) == 36.84);
@@ -51,15 +57,33 @@ class ecommerce_shipping_test_set extends cms_test_case
         $product_length = 36.84;
         $product_width = null;
         $product_height = null;
-        calculate_shipping_cost_based_on_properties($product_weight, $product_length, $product_width, $product_height);
+        calculate_shipping_cost(null, null, $product_weight, $product_length, $product_width, $product_height);
         $this->assertTrue(round($product_weight, 2) == 10.00);
+    }
+
+    public function testShippingCalculationsInternal()
+    {
+        set_option('shipping_shippo', '');
 
         // Test actual shipping cost
         $product_weight = 10.0;
         $product_length = 36.84;
         $product_width = 36.84;
         $product_height = 36.84;
-        $cost = calculate_shipping_cost_based_on_properties($product_weight, $product_length, $product_width, $product_height);
+        $cost = calculate_shipping_cost(null, null, $product_weight, $product_length, $product_width, $product_height);
         $this->assertTrue($cost == 10.00 + (10.0 * 1.20));
+    }
+
+    public function testShippingCalculationsShippo()
+    {
+        set_option('shipping_shippo', 'shippo_test_c438b6a10c4b0abaa3c5610193fc93dc8b4404f9');
+
+        // Test actual shipping cost
+        $product_weight = 10.0;
+        $product_length = 36.84;
+        $product_width = 36.84;
+        $product_height = 36.84;
+        $cost = calculate_shipping_cost(null, null, $product_weight, $product_length, $product_width, $product_height);
+        $this->assertTrue(($cost > 10.00) && ($cost < 50.00));
     }
 }

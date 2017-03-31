@@ -268,13 +268,14 @@ function cms_file_get_contents_safe($path)
  * @param  ?array $extra_headers Extra headers to send (null: none)
  * @param  ?string $http_verb HTTP verb (null: auto-decide based on other parameters)
  * @param  string $raw_content_type The content type to use if a raw HTTP post
+ * @param  boolean $ignore_http_status Return a result regardless of HTTP status
  * @return ?string The data downloaded (null: error)
  */
-function http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml')
+function http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml', $ignore_http_status = false)
 {
     require_code('files2');
     cms_profile_start_for('http_download_file');
-    $ret = _http_download_file($url, $byte_limit, $trigger_error, $no_redirect, $ua, $post_params, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+    $ret = _http_download_file($url, $byte_limit, $trigger_error, $no_redirect, $ua, $post_params, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type, $ignore_http_status);
     cms_profile_end_for('http_download_file', $url);
     return $ret;
 }

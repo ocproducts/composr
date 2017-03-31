@@ -336,7 +336,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
         $total_product_width = $total_product_length;
         $total_product_height = $total_product_length;
     }
-    $total_shipping_cost = recalculate_shipping_cost_combo($shipped_products);
+    $total_shipping_cost = calculate_shipping_cost(null, null, $total_product_weight, $total_product_length, $total_product_width, $total_product_height);
 
     // Work out total price
     $total_price = 0.00;

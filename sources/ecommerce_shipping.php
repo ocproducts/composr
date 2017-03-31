@@ -21,16 +21,22 @@
 // DON'T include this file directly. Include 'ecommerce' instead.
 
 /**
- * Calculate shipping cost of product.
+ * Recalculate shipping cost based on customer context.
+ * Does not handle multiple quantities or items, this is complex in itself (due to dimension merging) and handled in derive_cart_amounts.
  *
+ * @param  ?array $details Map of product details (null: not for a final sold product, some kind of intermediate stage or peripheral check).
+ * @param  ?REAL $shipping_cost The default shipping cost (null: unknown).
  * @param  ?float $product_weight Weight of product (null: unknown).
  * @param  ?float $product_length Length of product (null: unknown).
  * @param  ?float $product_width Width of product (null: unknown).
  * @param  ?float $product_height Height of product (null: unknown).
- * @return float Calculated shipping cost for the product.
+ * @param  ?MEMBER $member_id The member this is for (null: current member).
+ * @return REAL The shipping cost.
  */
-function calculate_shipping_cost_based_on_properties(&$product_weight, &$product_length, &$product_width, &$product_height)
+function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$product_length, &$product_width, &$product_height, $member_id = null)
 {
+    // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
+
     // Normalise things, sometimes things will not be set but we can derive it...
 
     // Get dimensions from each other
@@ -66,6 +72,12 @@ function calculate_shipping_cost_based_on_properties(&$product_weight, &$product
         }
     }
 
+    // Are we okay to do calculations?
+    $got_what_we_need = (($product_weight !== null) && ($product_length !== null) && ($product_width !== null) && ($product_height !== null));
+    if ((!$got_what_we_need) && ($shipping_cost !== null)) {
+        return $shipping_cost; // This is better than estimating something from zero; a flat shipping cost that carries through
+    }
+
     // Set to zero if we still failed
     if ($product_weight === null) {
         $product_weight = 0.0;
@@ -80,13 +92,144 @@ function calculate_shipping_cost_based_on_properties(&$product_weight, &$product
         $product_height = 0.0;
     }
 
-    // ---
+    // Do calculation if we don't have Shippo...
 
     $base = get_base_shipping_cost();
-    $factor = floatval(get_option('shipping_cost_factor'));
-    $shipping_cost = $base + $product_weight * $factor;
 
-    return round($shipping_cost, 2);
+    if (get_option('shipping_shippo') == '') {
+        $factor = floatval(get_option('shipping_cost_factor'));
+        $shipping_cost = $base + $product_weight * $factor;
+
+        return round($shipping_cost, 2);
+    }
+
+    // Do Shippo call...
+
+    $shipping_email = '';
+    $shipping_phone = '';
+    $shipping_firstname = '';
+    $shipping_lastname = '';
+    $shipping_street_address = '';
+    $shipping_city = '';
+    $shipping_county = '';
+    $shipping_state = '';
+    $shipping_post_code = '';
+    $shipping_country = '';
+    $shipping_email = '';
+    $shipping_phone = '';
+    $cardholder_name = '';
+    $card_type = '';
+    $card_number = null;
+    $card_start_date_year = null;
+    $card_start_date_month = null;
+    $card_expiry_date_year = null;
+    $card_expiry_date_month = null;
+    $card_issue_number = null;
+    $card_cv2 = null;
+    $billing_street_address = '';
+    $billing_city = '';
+    $billing_county = '';
+    $billing_state = '';
+    $billing_post_code = '';
+    $billing_country = '';
+    get_default_ecommerce_fields($member_id, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, true);
+
+    if ($shipping_street_address == '') {
+        $street_address = $billing_street_address;
+        $city = $billing_city;
+        $county = $billing_county;
+        $state = $billing_state;
+        $post_code = $billing_post_code;
+        $country = $billing_country;
+    } else {
+        $street_address = $shipping_street_address;
+        $city = $shipping_city;
+        $county = $shipping_county;
+        $state = $shipping_state;
+        $post_code = $shipping_post_code;
+        $country = $shipping_country;
+    }
+    $country = _make_country_for_shippo($country);
+
+    $request = array(
+        'object_purpose' => 'QUOTE',
+        'address_from' => array(
+            'name' => get_option('business_name'),
+            'street1' => get_option('business_street_address'),
+            'city' => get_option('business_city'),
+            'state' => get_option('business_state'),
+            'zip' => get_option('business_post_code'),
+            'country' => _make_country_for_shippo(get_option('business_country')),
+            'phone' => get_option('pd_number'),
+            'email' => get_option('pd_email'),
+            'object_purpose' => 'QUOTE',
+        ),
+        'address_to' => array(
+            'name' => trim($shipping_firstname . ' ' . $shipping_lastname),
+            'street1' => $street_address,
+            'city' => $city,
+            'state' => $state,
+            'zip' => $post_code,
+            'country' => $country,
+            'phone' => $shipping_phone,
+            'email' => $shipping_email,
+            'object_purpose' => 'QUOTE',
+        ),
+        'parcel' => array(
+            'length' => float_to_raw_string($product_length),
+            'width' => float_to_raw_string($product_width),
+            'height' => float_to_raw_string($product_height),
+            'distance_unit' => strtolower(get_option('shipping_length_units')),
+            'weight' => float_to_raw_string($product_weight),
+            'mass_unit' => strtolower(get_option('shipping_weight_units')),
+        ),
+        'async' => false,
+    );
+    $post_params = array(json_encode($request));
+    $url = 'https://api.goshippo.com/shipments/';
+    $token = get_option('shipping_shippo');
+    $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, array('Authorization' => 'ShippoToken ' . $token), null, 'application/json', true); // TODO: Fix in v11
+    $response = json_decode($_response, true);
+
+    // Error handling
+    $error_message = '';
+    foreach ($response['messages'] as $error_struct) {
+        if ($error_message != '') {
+            $error_message = '';
+        }
+        $error_message .= $error_struct['text'];
+    }
+    if ($response['object_status'] == 'ERROR') {
+        fatal_exit(do_lang_tempcode('SHIPPING_ERROR', escape_html($error_message)));
+    }
+    if (!isset($response['rates_list'][0])) {
+        if ($error_message != '') {
+            fatal_exit(do_lang_tempcode('SHIPPING_ERROR', escape_html($error_message)));
+        }
+
+        fatal_exit(do_lang_tempcode('NO_SHIPPING_RESULT'));
+    }
+
+    require_code('currency');
+    $price = floatval($response['rates_list'][0]['amount']);
+    $price = currency_convert($price, $response['rates_list'][0]['currency'], null, CURRENCY_DISPLAY_RAW);
+
+    $shipping_cost = round($base + $price, 2);
+    return $shipping_cost;
+}
+
+/**
+ * Make an ISO country code shippo-compatible.
+ *
+ * @param string ISO country code.
+ * @return string Shippo-compatible code.
+ */
+function _make_country_for_shippo($country)
+{
+    if ($country == 'UK') {
+        $country = 'GB'; // A quirk of ISO. Actually 'UK' should not be in the system
+    }
+    return $country;
 }
 
 /**
@@ -104,44 +247,6 @@ function get_base_shipping_cost()
     }
 
     return $ret;
-}
-
-/**
- * Recalculate shipping cost based on customer context.
- *
- * @param  array $products_in_cart List of product specifiers.
- * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @return REAL The shipping cost.
- */
-function recalculate_shipping_cost_combo($products_in_cart, $member_id = null)
-{
-    // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
-
-    $shipping_cost = get_base_shipping_cost();
-    foreach ($products_in_cart as $_product) {
-        list($product, $quantity) = $_product;
-
-        list($details) = find_product_details($product['type_code']);
-
-        $shipping_cost += ($details['shipping_cost'] - get_base_shipping_cost());
-    }
-
-    return $shipping_cost;
-}
-
-/**
- * Recalculate shipping cost based on customer context.
- *
- * @param  ?array $details Map of product details (null: it's for base shipping cost only).
- * @param  REAL $shipping_cost The default shipping cost.
- * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @return REAL The shipping cost.
- */
-function recalculate_shipping_cost($details, $shipping_cost, $member_id = null)
-{
-    // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
-
-    return $shipping_cost;
 }
 
 /**

@@ -186,7 +186,7 @@ header('Content-disposition: attachment; filename="example.csv"');
 // Some arbitrary data to output
 $example_data = array(
 	array(
-		'country' => 'UK',
+		'country' => 'GB',
 		'capital' => 'London',
 	),
 	array(

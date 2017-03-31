@@ -32,7 +32,7 @@ class Hook_config_business_street_address
     {
         return array(
             'human_name' => 'BUSINESS_STREET_ADDRESS',
-            'type' => 'line',
+            'type' => 'text',
             'category' => 'ECOMMERCE',
             'group' => 'ADDRESS',
             'explanation' => 'CONFIG_OPTION_business_street_address',

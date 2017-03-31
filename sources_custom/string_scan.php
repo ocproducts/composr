@@ -2947,6 +2947,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_threaded_buttons
         CONFIG_OPTION_threaded_comments
         INCORRECT_PASSWORD_RESET_CODE
+        SHIPPING_ERROR
+        NO_SHIPPING_RESULT
         CONFIG_OPTION_threaded_topics_default
         CONFIG_OPTION_thumb_width
         CONFIG_OPTION_ticket_auto_assign

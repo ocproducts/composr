@@ -1068,12 +1068,9 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
             if ($shipping_post_code == '') {
                 $shipping_post_code = get_option('business_post_code');
             }
-            if ($shipping_country == '') {
-                $shipping_country = get_option('business_country');
-            }
-            if ($shipping_country == '') {
-                $shipping_country = get_option('business_country');
-            }
+        }
+        if ($shipping_country == '') {
+            $shipping_country = get_option('business_country');
         }
     }
 
@@ -1489,7 +1486,7 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
             $expected_price_points = $found['price_points'];
         } else {
             // Will be paying with money (or possibly money & points)
-            $shipping_cost = recalculate_shipping_cost($found, $found['shipping_cost'], $member_id_paying);
+            $shipping_cost = calculate_shipping_cost($found, $found['shipping_cost'], $found['product_weight'], $found['product_length'], $found['product_width'], $found['product_height'], $member_id_paying);
             $expected_amount = $found['price'] + $shipping_cost;
             list($expected_tax_derivation, $expected_tax, $expected_tax_tracking, $expected_shipping_tax) = calculate_tax_due($found, $found['tax_code'], $found['price'], $shipping_cost, $member_id_paying);
             $expected_price_points = 0;

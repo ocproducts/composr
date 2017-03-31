@@ -248,7 +248,7 @@ class Module_admin_invoices
             }
         }
 
-        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+        $shipping_cost = calculate_shipping_cost($details, $details['shipping_cost'], $details['product_weight'], $details['product_length'], $details['product_width'], $details['product_height']);
 
         $tax_code = post_param_tax_code('tax_code', $details['tax_code']);
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $tax_code, $amount, $shipping_cost, $member_id);

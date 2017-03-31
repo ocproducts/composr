@@ -282,7 +282,7 @@ class Module_admin_ecommerce_logs
                 $label .= ' (' . escape_html($type_code);
 
                 if ($details['price'] !== null) {
-                    $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+                    $shipping_cost = calculate_shipping_cost($details, $details['shipping_cost'], $details['product_weight'], $details['product_length'], $details['product_width'], $details['product_height']);
 
                     $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
                     $label .= ', ' . currency_convert($details['price'] + $shipping_cost, $currency, $currency, CURRENCY_DISPLAY_WITH_CURRENCY_SIMPLEST);
@@ -387,7 +387,7 @@ class Module_admin_ecommerce_logs
             $invoice_details = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('id' => intval($purchase_id)), '', 1);
         }
 
-        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+        $shipping_cost = calculate_shipping_cost($details, $details['shipping_cost'], $details['product_weight'], $details['product_length'], $details['product_width'], $details['product_height']);
 
         if ($amount === null) {
             if ($details['type'] == PRODUCT_INVOICE) {

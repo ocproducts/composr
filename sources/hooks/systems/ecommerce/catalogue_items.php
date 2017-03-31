@@ -132,7 +132,7 @@ class Hook_ecommerce_catalogue_items
                 if (array_key_exists($shopping_catalogue__height, $field_rows)) {
                     $product_height = floatval($field_rows[$shopping_catalogue__height]['effective_value_pure']);
                 }
-                $shipping_cost = calculate_shipping_cost_based_on_properties($product_weight, $product_length, $product_width, $product_height);
+                $shipping_cost = calculate_shipping_cost(null, null, $product_weight, $product_length, $product_width, $product_height);
 
                 if (array_key_exists($shopping_catalogue__image, $field_rows)) {
                     $image_url = is_object($field_rows[$shopping_catalogue__image]['effective_value']) ? $field_rows[$shopping_catalogue__image]['effective_value']->evaluate() : $field_rows[$shopping_catalogue__image]['effective_value'];
@@ -416,7 +416,7 @@ class Hook_ecommerce_catalogue_items
     {
         list($details) = find_product_details($type_code);
 
-        $shipping_cost = recalculate_shipping_cost($details, $details['shipping_cost']);
+        $shipping_cost = calculate_shipping_cost($details, $details['shipping_cost'], $details['product_weight'], $details['product_length'], $details['product_width'], $details['product_height']);
 
         list($tax_derivation, $tax, $tax_tracking, $shipping_tax) = calculate_tax_due($details, $details['tax_code'], $details['price'], $shipping_cost);
 

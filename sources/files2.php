@@ -886,10 +886,11 @@ function check_shared_space_usage($extra)
  * @param  ?array $extra_headers Extra headers to send (null: none)
  * @param  ?string $http_verb HTTP verb (null: auto-decide based on other parameters)
  * @param  string $raw_content_type The content type to use if a raw HTTP post
+ * @param  boolean $ignore_http_status Return a result regardless of HTTP status
  * @return ?string The data downloaded (null: error)
  * @ignore
  */
-function _http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml')
+function _http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml', $ignore_http_status = false)
 {
     // Normalise the URL
     require_code('urls');
@@ -1391,6 +1392,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                 }
 
+                                                if (($HTTP_MESSAGE != '200') && (!$ignore_http_status)) {
+                                                    $text = '';
+                                                }
+
                                                 $DOWNLOAD_LEVEL--;
                                                 if ($put !== null) {
                                                     fclose($put);
@@ -1689,6 +1694,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 break;
                             case '401':
                             case '403':
+                                if ($ignore_http_status) {
+                                    break;
+                                }
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));
                                 } else {
@@ -1705,6 +1713,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 }
                                 return null;
                             case '404':
+                                if ($ignore_http_status) {
+                                    break;
+                                }
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)));
                                 } else {
@@ -1721,6 +1732,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 return null;
                             case '400':
                             case '500':
+                                if ($ignore_http_status) {
+                                    break;
+                                }
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
                                 } else {
@@ -1859,7 +1873,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     'user_agent' => $ua,
                     'content' => $raw_payload,
                     'follow_location' => $no_redirect ? 0 : 1,
-                    //'ignore_errors' => true, // Useful when debugging
+                    'ignore_errors' => $ignore_http_status,
                 ),
                 'ssl' => array(
                     'verify_peer' => !$do_ip_forwarding,

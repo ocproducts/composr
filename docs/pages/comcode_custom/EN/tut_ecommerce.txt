@@ -198,7 +198,7 @@ Product kinds fit into the following general categories:
 While the abstraction of this may be confusing, it is very beneficial as all kinds of automatically handled products may be programmed to integrate with Composr functionality.
 For example, a programmer could create the following with relative ease:
  - a product that increases the number of available hits on banners
- - a product that sends out an e-mail to a dispatch warehouse instructing them to mail out a copy of a bands latest album to the address specified in the member profile of the purchaser.
+ - a product that sends out an e-mail to a dispatch warehouse instructing them to mail out a copy of a bands latest album to the address specified in the member profile of the buyer.
 Most useful kinds of purchase can, however, be achieved with the default usergroup product: a usergroup for which membership can be purchased could be given additional permissions that reflect access to features or areas of the website that would not otherwise be available. This is how most websites will use the eCommerce system because it is simple, effective, works well with PayPal, and does not require programmers to implement.
 
 [title="2"]Purchasing module products[/title]
@@ -227,7 +227,7 @@ Members can gamble points. On average, members lose out on points when they try 
 
 [title="3"]Name highlighting[/title]
 
-On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. This means the purchasers name gets special highlighting within forum topics.
+On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. This means the buyer's name gets special highlighting within forum topics.
 
 [title="3"]Permission products[/title]
 
@@ -483,12 +483,17 @@ If you think users may be making delayed purchases as guests, you may want to co
 
 [title="3"]Handling orders[/title]
 
-When orders are purchased, an e-mail is sent out to the staff so they can fulfil the order, and the stock level is adjusted.
+When orders are purchased:
+1) a notification is sent out to the staff so they can manage the order
+2) the stock level is adjusted.
 
-Orders may be reviewed by the purchaser from their [tt]orders[/tt] module (linked from their member profile)
+The staff can follow a link in the notification to manage the order, or go manually to Audit > eCommerce > Shopping orders.
 
-Order status can be changed (e.g. marked as dispatched) from:
-Audit > eCommerce > Shopping orders
+Options for managing the order include:
+ - Changing the order status (e.g. mark as dispatched)
+ - Adding a note to be sent to the buyer (e.g. providing a tracking URL)
+
+Orders may be reviewed by the [i]buyer[/i] from their [tt]shopping[/tt] module (linked from their member profile)
 
 [title="2"]Handling tax[/title]
 
@@ -506,16 +511,16 @@ When defining tax codes ('tax code' is the term we use) you can select with eith
 a) a USA tax code (a TIC)
 b) EU digital goods (which auto-selects the appropriate tax based on the buyer's country)
 c) your own custom percentage rate.
-Tax codes are carried through the system until it is time to turn into an actual tax figure, which is then stored in the database along with a 'derivation' of what exact tax fees were levied. To convert a tax code to an actual tax figure we need to know the shipping/invoicing address of the customer, as this has an enormous impact on what exact tax is charged.
+Tax codes are carried through the system until it is time to turn into an actual tax figure, which is then stored in the database along with a 'derivation' of what exact tax fees were levied. To convert a tax code to an actual tax figure we need to know the shipping/invoicing address of the buyer, as this has an enormous impact on what exact tax is charged.
 
 Known limitations and important considerations:
  - You should not enable automatic tax deduction on your payment gateway as Composr handles it for you. If tax deduction was enabled then transactions would fail to go through due to mismatches in pricing.
  - We cannot verify that a user has given their correct address when they pay, and hence know the correct tax to charge. However we believe tax authorities would generally recognise that such fraud is the fault of users rather than your own liability (this is standard practice), plus the address is also used for shipping which creates a reasonable barrier to fraud.
- - Before a customer's address is known taxation is calculated as if the customer was buying from the business's own address. This is so we can provide a "best estimate" of tax as early as possible.
+ - Before a buyer's address is known taxation is calculated as if the buyer was buying from the business's own address. This is so we can provide a "best estimate" of tax as early as possible.
  - We do not mention import duty in the software, which would often be due if shipping internationally. The buyer pays this to the shipping company before they will deliver the import. This is standard practice, and it is standard to not refer to it in eCommerce tax systems as it is outside the scope, but I thought it was worth mentioning.
  - We have designed the tax system to be legally compliant with at least EU and USA rules, although we cannot guarantee this -- you must take your own responsibility for your legal compliance.
  - Sales tax rates may be changed, but they would be changed at the start of a new tax accounting period. Unless you are a USA seller using TaxCloud for all the taxes then you must be aware of this, ready to switch in new rates at midnight when the new ones apply.
- - Avoid taking and holding multiple currencies (e.g. on PayPal) unless you have a very good reason to -- it will make your accounting particularly complicated. It is better to just force the payer's credit card to charge in your own currency.
+ - Avoid taking and holding multiple currencies (e.g. on PayPal) unless you have a very good reason to -- it will make your accounting particularly complicated. It is better to just force the buyer's credit card to charge in your own currency.
  - You should strongly consider setting the site timezone to that where you collect tax so that if tax rates change you can more easily tell what dates the transactions happened on.
 
 [title="3"]Regional considerations[/title]
@@ -546,19 +551,19 @@ To use the TaxCloud system:
 Note that TaxCloud will automatically debit the tax from you and do tax forms for you in many cases -- and in any case will keep records of all the itemised sales taxes due.
 
 Known limitations at this time which could be worked around with custom code...
- - We don't support exemption certificates for customers not needing to pay tax (e.g. some farmers in some cases)
+ - We don't support exemption certificates for buyers not needing to pay tax (e.g. some farmers in some cases)
 
-&dagger; Instead of sales tax charged at point of sale, most sites have something called 'use tax'. 'Use tax' should be paid by the customer themselves when they file their taxes. Very few people do, make of that what you will.
+&dagger; Instead of sales tax charged at point of sale, most sites have something called 'use tax'. 'Use tax' should be paid by the buyer themselves when they file their taxes. Very few people do, make of that what you will.
 
 [title="4"]EU users[/title]
 
 Sales tax in the EU is known as "VAT". It is technically different from a normal sales tax, but we don't need to get into that in this tutorial. There is a configuration option to make sure that the term "VAT" is used instead of the term "Sales tax".
 
 Basically if you are selling products or services commercially must register with your government's tax office for VAT.
-In the UK and some other countries there is an income threshold after which you need to register. If you don't you can't get rebate on purchases you make, but you also benefit competitively by being able to charge customers less money. If you are selling digital goods then there is no threshold, you must collect VAT and remit it (e.g. via the "MOSS" if you are based in UK).
+In the UK and some other countries there is an income threshold after which you need to register. If you don't you can't get rebate on purchases you make, but you also benefit competitively by being able to charge buyers less money. If you are selling digital goods then there is no threshold, you must collect VAT and remit it (e.g. via the "MOSS" if you are based in UK).
 
 Known limitations at this time which could be worked around with custom code...
- - EU VAT-registered customers may not input a VAT number to disable VAT charging -- they must use the government rebate process when they file tax returns (https://compo.sr/tracker/view.php?id=3062)
+ - EU VAT-registered buyers may not input a VAT number to disable VAT charging -- they must use the government rebate process when they file tax returns (https://compo.sr/tracker/view.php?id=3062)
 
 The EU system for calculating digital product taxes charges the tax rate of the buyer's country, not yours, and is then paid to the government in the buyer's country.
 It only applies to certain digital sales, not shipped products. To use digital product tax:
@@ -572,7 +577,7 @@ Known limitations at this time which could be worked around with custom code...
 
 [title="3"]Tax invoices[/title]
 
-Tax invoices are automatically created and delivered to customers. They are also available from the Admin Zone.
+Tax invoices are automatically created and delivered to buyers. They are also available from the Admin Zone.
 
 [title="4"]Line items[/title]
 
@@ -603,12 +608,12 @@ However, TaxCloud doesn't actually provide us broken-down data of the taxes. So 
 [title="3"]Handling shipping costs[/title]
 
 [media width="300" framed="0" float="right"]data_custom/images/docs/tut_ecommerce/shippo.png[/media]
-You should not enable automatic shipping cost calculation on your payment gateway as Composr handles it for you. If shipping cost calculation was enabled then customers would be double-charged for shipping.
+You should not enable automatic shipping cost calculation on your payment gateway as Composr handles it for you. If shipping cost calculation was enabled then buyers would be double-charged for shipping.
 
 You have 3 possible approaches for calculating shipping costs:[list="1"]
 [*] Use the inbuilt configuration options for calculating shipping cost based on weight and dimensions. This may work reasonably if shipping costs are not going to vary by distance.
 [*] Fill in the Shippo configuration to calculate based on weight, dimensions, and presumably distance. Shippo will provide an exact shipping cost by actual communication with your choice of shipping company. This is likely your best option as Shippo is free (you pay when you print shipping labels), although it may not work for businesses in every country.
-[*] The shipping cost calculation in '1' has been kept very simple because it's impossible to create configurability to cover every scenario people will want globally. There are too many different special cases to cover. We have therefore architected the calculations to go through two simple common functions that a programmer can override to add in additional behaviour if needed, [tt]recalculate_shipping_cost[/tt] and [tt]recalculate_shipping_cost_combo[/tt].
+[*] The shipping cost calculation in '1' has been kept very simple because it's impossible to create configurability to cover every scenario people will want globally. There are too many different special cases to cover. We have therefore architected the calculations to go through a simple common function that a programmer can override to add in additional behaviour if needed, [tt]calculate_shipping_cost[/tt].
 [/list]
 
 Known limitations at this time which could be worked around with custom code...
@@ -633,12 +638,12 @@ The configuration options also impact what shipping/billing address fields show,
   - If the State field is disabled then State input will not be available, unless the Business country is US (as it is required for tax calculation)
   - If the Business country is US then State input will be a drop-down list, otherwise it will be a free-text input
   - If the Country field is enabled or the Business country is not US then an 'N/A' option will be included on the list (to signify a non-USA state)
-  - If a customer's state selection is not appropriate for the country selection then an error message will be shown
+  - If a buyer's state selection is not appropriate for the country selection then an error message will be shown
  - Postcode/Zip input:
   - If the Postcode/Zip field is disabled then Postcode/Zip input will not be enabled, unless the Business country is US (as required for tax calculation)
-  - If a customer's Postcode/Zip selection is not appropriate for the country selection then an error message will be shown
+  - If a buyer's Postcode/Zip selection is not appropriate for the country selection then an error message will be shown
  - Country input:
-  - If the Country field is disabled the Business country will be used automatically for the customer's shipping/billing address
+  - If the Country field is disabled the Business country will be used automatically for the buyer's shipping/billing address
 
 [title="2"]Auditing[/title]
 
@@ -859,7 +864,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
  17_key="Origin taxation"              17_value="USA taxation where taxes are levied based on where the seller (you) resides"
  18_key="Destination taxation"         18_value="USA taxation where taxes are levied based on where the buyer resides"
  19_key="Sales tax"                    19_value="The system for charging tax on sales, used in the USA and other countries"
- 20_key="Use tax"                      20_value="The system for paying tax on purchases, used in the USA; customers are meant to report purchases from other states they paid no tax on and pay those taxes"
+ 20_key="Use tax"                      20_value="The system for paying tax on purchases, used in the USA; buyers are meant to report purchases from other states they paid no tax on and pay those taxes"
  21_key="VAT"                          21_value="Alternative to a sales tax system, used in the EU and some other countries around the world"
  22_key="Tax code"                     22_value="The Composr term for identifying a particular kind of taxation to apply to a product"
  23_key="Tax derivation"               23_value="The Composr term for tracking what exact taxes are levied for a transaction"

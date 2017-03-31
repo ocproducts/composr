@@ -144,5 +144,5 @@ shipping	postage	freight
 chance	probability	likelihood
 empty	blank
 merchant retailer seller	business	company	firm	enterprise	corporation	store	shop
-customer	payer buyer
+customer	payer	buyer	purchaser
 empty	blank	purge	flush
