@@ -44,8 +44,13 @@ class Hook_rss_catalogues
             return null;
         }
 
-        $filters_1 = selectcode_to_sqlfragment($_filters, 'id', 'catalogue_categories', 'cc_parent_id', 'id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-        $filters = selectcode_to_sqlfragment($_filters, 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        if (preg_match('#^[\d\!\-\+\*\#\~\>\,]*$#', $_filters) != 0) {
+            $filters_1 = selectcode_to_sqlfragment($_filters, 'id', 'catalogue_categories', 'cc_parent_id', 'id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+            $filters = selectcode_to_sqlfragment($_filters, 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        } else {
+            $filters_1 = db_string_equal_to('c_name', $_filters);
+            $filters = db_string_equal_to('c_name', $_filters);
+        }
 
         require_code('catalogues');
 

@@ -48,6 +48,11 @@ function init__failure()
 
     global $RUNNING_TASK;
     $RUNNING_TASK = false;
+
+    global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+    if (!isset($BLOCK_OCPRODUCTS_ERROR_EMAILS)) {
+        $BLOCK_OCPRODUCTS_ERROR_EMAILS = false;
+    }
 }
 
 /**
@@ -1032,6 +1037,8 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 
     $error_url = get_self_url_easy(true);
 
+    global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+
     require_code('notifications');
     require_code('comcode');
     $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), $text, $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
@@ -1039,6 +1046,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     if (
         ($ocproducts) &&
         (get_option('send_error_emails_ocproducts') == '1') &&
+        (!$BLOCK_OCPRODUCTS_ERROR_EMAILS) &&
         (!running_script('cron_bridge')) &&
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&
