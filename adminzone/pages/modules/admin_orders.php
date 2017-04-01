@@ -100,7 +100,7 @@ class Module_admin_orders
         $action = either_param_string('action', '');
 
         if ($type == 'order_det' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
-            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')), array('_SELF:_SELF:show_orders', do_lang_tempcode('ORDERS'))));
+            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')), array('_SELF:_SELF:show_orders', do_lang_tempcode('SHOW_ORDERS'))));
         }
 
         if ($action == 'order_act') {

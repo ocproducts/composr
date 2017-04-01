@@ -1450,7 +1450,6 @@ function _multi_sort($a, $b)
             $av = $a[$key];
             $bv = $b[$key];
 
-            // If calling, must put an "@" around the uasort call because of a PHP bug
             if (is_object($av)) {
                 $av = $av->evaluate();
             }

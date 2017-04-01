@@ -69,11 +69,13 @@
 
 				{$TRUNCATE_LEFT,{$PREG_REPLACE,<img [^>]*>,,{BODY}},600,0,1,1,0.1}
 
-				<div class="pagination">
-					<nav class="float_surrounder">
-						<a onclick="return window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(-1);" rel="prev" accesskey="j" href="#" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light">&laquo;&nbsp;{!PREVIOUS}</a><a id="pause_button_{$GET,RAND_FADER_NEWS}" onclick="return window.main_image_fader_news_pause_{$GET,RAND_FADER_NEWS}();" href="#" title="{!PAUSE}" class="light">{!PAUSE}</a><a onclick="return window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}( 1);" rel="next" accesskey="k" href="#" title="&laquo;&nbsp;{!NEXT}: {!NEWS}" class="light">{!NEXT}&nbsp;&raquo;</a>
-					</nav>
-				</div>
+				{+START,IF,{$NEQ,{NEWS},1}}
+					<div class="pagination">
+						<nav class="float_surrounder">
+							<a onclick="return window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(-1);" rel="prev" accesskey="j" href="#" title="&laquo;&nbsp;{!PREVIOUS}: {!NEWS}" class="light">&laquo;&nbsp;{!PREVIOUS}</a><a id="pause_button_{$GET,RAND_FADER_NEWS}" onclick="return window.main_image_fader_news_pause_{$GET,RAND_FADER_NEWS}();" href="#" title="{!PAUSE}" class="light">{!PAUSE}</a><a onclick="return window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}( 1);" rel="next" accesskey="k" href="#" title="{!NEXT}&nbsp;&raquo;: {!NEWS}" class="light">{!NEXT}&nbsp;&raquo;</a>
+						</nav>
+					</div>
+				{+END}
 			{+END}
 
 			data.push(
@@ -133,12 +135,14 @@
 			},0);
 
 			{$,Set up timer for next time}
-			if (window.main_image_fader_news_cycle_timer_{$GET,RAND_FADER_NEWS})
-				window.clearTimeout(window.main_image_fader_news_cycle_timer_{$GET,RAND_FADER_NEWS});
-			document.getElementById('pause_button_{$GET,RAND_FADER_NEWS}').className='light';
-			window.main_image_fader_news_cycle_timer_{$GET,RAND_FADER_NEWS}=window.setTimeout(function() {
-				window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(1);
-			},{MILL%});
+			{+START,IF,{$NEQ,{NEWS},1}}
+				if (window.main_image_fader_news_cycle_timer_{$GET,RAND_FADER_NEWS})
+					window.clearTimeout(window.main_image_fader_news_cycle_timer_{$GET,RAND_FADER_NEWS});
+				document.getElementById('pause_button_{$GET,RAND_FADER_NEWS}').className='light';
+				window.main_image_fader_news_cycle_timer_{$GET,RAND_FADER_NEWS}=window.setTimeout(function() {
+					window.main_image_fader_news_cycle_{$GET,RAND_FADER_NEWS}(1);
+				},{MILL%});
+			{+END}
 
 			return false;
 		};

@@ -1248,17 +1248,22 @@ class Hook_Notification
             $clause_3 .= ')';
         }
 
+        $clause_4 = db_string_equal_to('m_validated_email_confirm_code', '');
+        if (addon_installed('unvalidated')) {
+            $clause_4 .= ' AND m_validated=1';
+        }
+
         $db = (substr($only_if_enabled_on__notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notification_lockdown', 'l_setting', array(
             'l_notification_code' => substr($only_if_enabled_on__notification_code, 0, 80),
         ));
         if ((!is_null($test)) && (get_forum_type() == 'cns')) {
-            $query_stub = 'SELECT m.id AS l_member_id,' . strval($test) . ' AS l_setting FROM ' . $db->get_table_prefix() . 'f_members m WHERE ' . str_replace('l_member_id', 'id', $clause_3);
+            $query_stub = 'SELECT m.id AS l_member_id,' . strval($test) . ' AS l_setting FROM ' . $db->get_table_prefix() . 'f_members m WHERE ' . str_replace('l_member_id', 'id', $clause_3) . ' AND ' . $clause_4;
             $query_stem = '';
         } else {
             if (($has_by_default) && (get_forum_type() == 'cns') && (db_has_subqueries($db->connection_read))) { // Can only enumerate and join on a local Conversr forum
-                $query_stub = 'SELECT m.id AS l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'f_members m LEFT JOIN ' . $db->get_table_prefix() . 'notifications_enabled l ON ' . $clause_1 . ' AND ' . $clause_2 . ' AND ' . $clause_3 . ' AND m.id=l.l_member_id WHERE ' . str_replace('l_member_id', 'm.id', $clause_3) . ' AND ';
+                $query_stub = 'SELECT m.id AS l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'f_members m LEFT JOIN ' . $db->get_table_prefix() . 'notifications_enabled l ON ' . $clause_1 . ' AND ' . $clause_2 . ' AND ' . $clause_3 . ' AND ' . $clause_4 . ' AND m.id=l.l_member_id WHERE ' . str_replace('l_member_id', 'm.id', $clause_3) . ' AND ';
                 $query_stem = 'NOT EXISTS(SELECT * FROM ' . $db->get_table_prefix() . 'notifications_enabled l WHERE m.id=l.l_member_id AND ' . $clause_1 . ' AND ' . $clause_2 . ' AND ' . $clause_3 . ' AND l_setting=' . strval(A_NA) . ')';
             } else {
                 $query_stub = 'SELECT l_member_id,l_setting FROM ' . $db->get_table_prefix() . 'notifications_enabled WHERE ';

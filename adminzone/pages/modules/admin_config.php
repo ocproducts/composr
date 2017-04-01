@@ -36,7 +36,7 @@ class Module_admin_config
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 15;
-        $info['locked'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -716,7 +716,10 @@ class Module_admin_config
         // Go through all options on the page, saving
         foreach ($options as $name => $option) {
             // Save
-            if ($option['type'] == 'tick') {
+            if ($option['type'] == 'float') {
+                $_value = post_param_string($name, '');
+                $value = ($_value == '') ? '' : float_unformat($_value);
+            } elseif ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif ($option['type'] == 'date') {
                 $date_value = post_param_date($name);

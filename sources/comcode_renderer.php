@@ -524,7 +524,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
             if ($HTTP_MESSAGE != 'could not connect to host'/*don't show for random connectivity issue*/) {
                 $temp_tpl = do_template('WARNING_BOX', array(
                     '_GUID' => '7bcea67226f89840394614d88020e3ac',
-                    'FOR_GUESTS' => false,
+                    'RESTRICT_VISIBILITY' => strval($source_member),
                     //'INLINE' => true, Looks awful
                     'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full)),
                 ));
@@ -603,7 +603,11 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         if ($semiparse_mode) { // Can't load through error for this, so just show it as a tag
             return make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK, $html_errors));
         }
-        return do_template('WARNING_BOX', array('_GUID' => 'faea04a9d6f1e409d99b8485d28b2225', 'WARNING' => do_lang_tempcode('comcode:NO_ACCESS_FOR_TAG', escape_html($tag), escape_html($username))));
+        return do_template('WARNING_BOX', array(
+            '_GUID' => 'faea04a9d6f1e409d99b8485d28b2225',
+            'RESTRICT_VISIBILITY' => strval($source_member),
+            'WARNING' => do_lang_tempcode('comcode:NO_ACCESS_FOR_TAG', escape_html($tag), escape_html($username)),
+        ));
     } // These are just for convenience.. we will remap to more formalised Comcode
     elseif ($tag == 'codebox') {
         $attributes['scroll'] = '1';
@@ -2027,6 +2031,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                         $temp_tpl = do_template('WARNING_BOX', array(
                             '_GUID' => '89b7982164ccf8d98f3d0596ad425f78',
+                            'RESTRICT_VISIBILITY' => strval($source_member),
                             'WARNING' => do_lang_tempcode($over_quota_str,
                                 escape_html(integer_format($daily_quota)),
                                 escape_html(float_format($size_uploaded_today)),
@@ -2153,7 +2158,11 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     if (is_null($username)) {
                         $username = do_lang('DELETED');
                     }
-                    $temp_tpl = do_template('WARNING_BOX', array('_GUID' => 'af61f96b5cc6819979ce681d6f49b384', 'WARNING' => do_lang_tempcode('permissions:ACCESS_DENIED__REUSE_ATTACHMENT', $username)));
+                    $temp_tpl = do_template('WARNING_BOX', array(
+                        '_GUID' => 'af61f96b5cc6819979ce681d6f49b384',
+                        'RESTRICT_VISIBILITY' => strval($source_member),
+                        'WARNING' => do_lang_tempcode('permissions:ACCESS_DENIED__REUSE_ATTACHMENT', $username),
+                    ));
                     break;
                 }
             }

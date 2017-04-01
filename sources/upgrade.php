@@ -97,10 +97,11 @@ function upgrade_script()
                     $l_release_notes = do_lang('FU_RELEASE_NOTES');
                     $l_refer_release_notes = do_lang('FU_REFER_RELEASE_NOTES');
                     $news_id = post_param_integer('news_id', null);
+                    $from_version = post_param_string('from_version', strval(cms_version()) . '.' . cms_version_minor());
                     $tar_url = '';
                     if (!is_null($news_id)) {
                         require_code('files');
-                        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?news_id=' . strval($news_id) . '&from_version=' . urlencode(strval(cms_version()) . '.' . cms_version_minor());
+                        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?news_id=' . strval($news_id) . '&from_version=' . urlencode($from_version);
                         $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
 
                         secure_serialized_data($news);
@@ -447,6 +448,7 @@ function upgrade_script()
                     }
 
                     unset($_POST['news_id']);
+                    unset($_POST['from_version']);
 
                     break;
 
@@ -663,6 +665,7 @@ function up_do_login($message = null)
         echo '<p><strong>' . $message . '</strong></p>';
     }
     $news_id = get_param_integer('news_id', null);
+    $from_version = get_param_string('from_version', null);
     $url = "upgrader.php?type=" . escape_html($type);
     if (get_param_integer('keep_safe_mode', 0) == 1) {
         $url .= '&keep_safe_mode=1';
@@ -674,6 +677,7 @@ function up_do_login($message = null)
     <p>{$l_login_info}</p>
     <form title=\"{$l_login}\" action=\"" . escape_html($url) . "\" method=\"post\">
     " . (is_null($news_id) ? '' : ('<input type="hidden" name="news_id" value="' . strval($news_id) . '" />')) . "
+    " . (is_null($from_version) ? '' : ('<input type="hidden" name="from_version" value="' . escape_html($from_version) . '" />')) . "
     <p>
         {$l_password}: <input type=\"password\" name=\"given_password\" value=\"" . escape_html(post_param_string('password', '')) . "\" />
     </p>
