@@ -43,7 +43,7 @@ function member_get_csv_headings_extended()
     $headings = member_get_csv_headings();
     foreach ($cpfs as $i => $c) { // CPFs take precedence over normal fields of the same name
         $cpfs[$i]['_cf_name'] = get_translated_text($c['cf_name'], $GLOBALS['FORUM_DB']);
-        $cpfs[$i]['_cf_name'] = str_replace(',', (get_charset() == 'utf-8') ? (hexdec('ef') . hexdec('b9') . hexdec('90')) : '', $cpfs[$i]['_cf_name']); // Normal commas break sort_maps_by
+        $cpfs[$i]['_cf_name'] = str_replace(',', (get_charset() == 'utf-8') ? (chr(hexdec('ef')) . chr(hexdec('b9')) . chr(hexdec('90'))) : '', $cpfs[$i]['_cf_name']); // Normal commas break sort_maps_by
         $headings[$cpfs[$i]['_cf_name']] = $i;
     }
 

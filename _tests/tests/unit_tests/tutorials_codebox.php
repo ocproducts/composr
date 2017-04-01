@@ -60,6 +60,7 @@ class tutorials_codebox_test_set extends cms_test_case
             'Page-link',
             'URL',
             'objc',
+            'nginx',
 
             // Use this if nothing else (or [font="Courier"]...[/font])
             'Text',

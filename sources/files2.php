@@ -2169,7 +2169,7 @@ function _http_download_file_curl_headers($ch, $header)
  * Callback for receiving a part of the cURL body.
  *
  * @param  resource $ch cURL resource handle
- * @param  string $header Body part
+ * @param  string $str Body part
  * @return integer Length of body part
  *
  * @ignore
