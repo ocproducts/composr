@@ -13728,6 +13728,9 @@ function FileProgress(file,targetID)
 		this.fileProgressElement.completed=false;
 	} else {
 		this.fileProgressElement=this.fileProgressWrapper.firstChild;
+
+		this.appear();
+
 		if (file && typeof file.name!='undefined')
 			set_inner_html(this.fileProgressElement.childNodes[1],file.name);
 	}
@@ -13759,7 +13762,7 @@ FileProgress.prototype.setError=function () {
 	this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
 	var oSelf=this;
-	setTimeout(function () {
+	this.fileProgressElement.fader = setTimeout(function () {
 		oSelf.disappear();
 	},5000);
 };
@@ -13771,7 +13774,7 @@ FileProgress.prototype.setCancelled=function () {
 	this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
 	var oSelf=this;
-	setTimeout(function () {
+	this.fileProgressElement.fader = setTimeout(function () {
 		oSelf.disappear();
 	},2000);
 };
@@ -13783,6 +13786,10 @@ FileProgress.prototype.setStatus=function (status) {
 FileProgress.prototype.appear=function () {
 	this.fileProgressWrapper.style.opacity=1;
 
+	if ((typeof this.fileProgressElement.fader != 'undefined') && (this.fileProgressElement.fader)) {
+		window.clearTimeout(this.fileProgressElement.fader);
+		this.fileProgressElement.fader = null;
+	}
 	this.fileProgressWrapper.style.height='';
 	this.height=this.fileProgressWrapper.offsetHeight;
 	this.opacity=100;
@@ -13816,7 +13823,7 @@ FileProgress.prototype.disappear=function () {
 
 	if (this.height>0 || this.opacity>0) {
 		var oSelf=this;
-		setTimeout(function () {
+		this.fileProgressElement.fader = setTimeout(function () {
 			oSelf.disappear();
 		},rate);
 	} else {
