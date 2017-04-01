@@ -184,7 +184,7 @@ function display_version_upgrade_path($higher_version)
     // Output upgrader link
     $upgrade_script = 'upgrader.php';
     if (isset($higher_version['news_id'])) {
-        $upgrade_script .= '?news_id=' . strval($higher_version['news_id']);
+        $upgrade_script .= '?news_id=' . strval($higher_version['news_id']) . '&from_version=' . urlencode($version_dotted);
     }
     echo "
         <span class=\"version_button\" id=\"link_pos_" . strval($i) . "\"></span>

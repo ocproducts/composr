@@ -327,6 +327,9 @@ class Block_main_multi_content
 
         // Filtercode support
         if ($filter != '') {
+            global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+            $BLOCK_OCPRODUCTS_ERROR_EMAILS = true;
+
             // Convert the filters to SQL
             require_code('filtercode');
             list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($info['connection'], parse_filtercode($filter), $content_type);

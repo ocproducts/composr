@@ -47,7 +47,7 @@ function download_licence_script()
 }
 
 /**
- * Get Tempcode for a download 'feature box' for the sgiven row
+ * Get Tempcode for a download 'feature box' for the given row
  *
  * @param  array $row The database field row of this download
  * @param  boolean $pic Whether to show a picture
@@ -73,7 +73,11 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         $zone = get_module_zone('downloads');
     }
 
-    $just_download_row = db_map_restrict($row, array('id', 'description'));
+    if (array_key_exists('id', $row)) {
+        $just_download_row = db_map_restrict($row, array('id', 'description'));
+    } else {
+        $just_download_row = db_map_restrict($row, array('description'));
+    }
 
     // Details
     $file_size = $row['file_size'];
@@ -334,7 +338,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
     if (!is_null($submitter)) {
         $where['submitter'] = $submitter;
     }
-    $erows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id', 'name', 'submitter', 'original_filename'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
+    $erows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id', 'name', 'submitter', 'original_filename'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' ASC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     if (count($erows) == intval(get_option('general_safety_listing_limit'))) {
         $erows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id', 'name', 'submitter', 'original_filename'), $where, 'ORDER BY add_date DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     }

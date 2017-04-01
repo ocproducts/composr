@@ -23,7 +23,7 @@ Galleries may have 'representative images' (rep-images). When a user views a gal
 You will find icons to add/edit galleries/images/videos at:
 Content Management > Galleries
 
-You can delete a gallery/image/video from the bottom of its edit form.
+You can delete a gallery/image/video from the bottom of its edit form. The root gallery cannot be deleted, however.
 [/surround]
 
 [title="2"]Viewing galleries[/title]

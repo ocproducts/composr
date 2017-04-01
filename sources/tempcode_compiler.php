@@ -933,7 +933,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
         $_path2 = $path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp';
 
         require_code('files');
-        $data_to_write = '<' . '?php' . "\n" . $result->to_assembly($lang) . "\n" . '?' . '>';
+        $data_to_write = '<' . '?php' . "\n" . $result->to_assembly($lang) . "\n";
         cms_file_put_contents_safe($_path2, $data_to_write, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
     }
 

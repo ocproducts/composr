@@ -5,6 +5,10 @@
 
 /* Field map display */
 
+.catalogue_fieldmap_entry_wrap {
+	margin: 1em 0;
+}
+
 .catalogue_fieldmap_field_name_column {
 	width: 13em;
 }

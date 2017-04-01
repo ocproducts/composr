@@ -223,6 +223,10 @@ At the time of writing Tapatalk cannot produce web-links to Composr posts/topics
 Notifications are sent out to Tapatalk users based on various actions within Composr. Quotes, mentions, new private topics, and private topic replies, result in notifications to the members involved. New topics result in Tapatalk notifications for any members who have set any kind of Composr notification on the associated forum. Topic replies are the same, but recognise when Composr notifications were set on the associated topic too.
 
 Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows which Composr member IDs are associated with which device IDs. We only relay out notifications for members who have signed into Tapatalk at least once.
+
+
+
+For a demo, see this video tutorial: https://www.youtube.com/watch?v=SAGuj2mgkRo
 ';
     }
 

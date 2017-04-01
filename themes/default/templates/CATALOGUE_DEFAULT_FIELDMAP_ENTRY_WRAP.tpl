@@ -4,7 +4,7 @@
 <div class="box"><div class="box_inner">
 {+END}
 {+START,IF,{$NOT,{GIVE_CONTEXT}}}
-<div class="catalogue_fieldmap_entry_wrap force_normal_margin">
+<div class="catalogue_fieldmap_entry_wrap">
 {+END}
 	{+START,IF,{GIVE_CONTEXT}}
 		<h3>{!CATALOGUE_GENERIC,{CATALOGUE_TITLE*}}</h3>

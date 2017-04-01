@@ -45,10 +45,10 @@ $news_rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('valida
 if ((array_key_exists(0, $news_rows)) && (has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', $news_rows[0]['news_category']))) {
     $_news_html = get_translated_tempcode('news', $news_rows[0], 'news_article'); // To force it to evaluate, so we can know the TAR URL
     $news_html = $_news_html->evaluate();
-    $news = get_translated_text($news_rows[0]['news_article']);
+    $news = static_evaluate_tempcode(comcode_to_tempcode(get_translated_text($news_rows[0]['news_article']), null, true));
 
     $matches = array();
-    preg_match('#"(http://compo.sr/upgrades/[^"]*.cms)"#', $news_html, $matches);
+    preg_match('#"(https?://compo.sr/upgrades/[^"]*\.cms)"#', $news_html, $matches);
     $tar_url = array_key_exists(1, $matches) ? $matches[1] : '';
     $changes = '';
     if (preg_match('#<br />([^>]*the following.*:<br /><ul>)#U', $news_html, $matches) != 0) {

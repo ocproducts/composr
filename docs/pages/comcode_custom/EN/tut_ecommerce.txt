@@ -329,7 +329,7 @@ If you think users may be making delayed purchases as guests, you may want to co
 
 When orders are purchased, an e-mail is sent out to the staff so they can fulfil the order, and the stock level is adjusted.
 
-Orders may be reviewed by the purchaser from their [tt]orders[/tt] module (linked from their member profile)
+Orders may be reviewed by the purchaser from their [tt]shopping[/tt] module (linked from their member profile)
 
 Order status can be changed (e.g. marked as dispatched) from:
 Audit > eCommerce > eCommerce orders

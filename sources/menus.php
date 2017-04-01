@@ -399,7 +399,10 @@ function _find_child_page_links($branches, &$page_links)
 {
     foreach ($branches as $branch) {
         $page_links[$branch['page_link']] = true;
-        _find_child_page_links($branch['children'], $page_links);
+
+        if ($branch['children'] !== null) {
+            _find_child_page_links($branch['children'], $page_links);
+        }
     }
 }
 
