@@ -47,10 +47,25 @@ function get_latest_version_pretty()
 {
     $version_dotted = get_latest_version_dotted();
     if ($version_dotted === null) {
-        return $version_dotted;
+        return null;
     }
-    list(, , , , $version) = get_version_components__from_dotted($version_dotted);
-    return float_format($version, 2, true);
+    return get_version_pretty__from_dotted($version_dotted);
+}
+
+function get_latest_version_basis_number()
+{
+    require_code('version2');
+    $latest_pretty = get_latest_version_pretty();
+    if ($latest_pretty === null && $GLOBALS['DEV_MODE']) { // Not uploaded any releases to dev site?
+        $latest_pretty = float_to_raw_string(cms_version_number(), 2, true);
+    }
+    if ($latest_pretty === null) {
+        return null;
+    }
+
+    $latest_dotted = get_version_dotted__from_anything($latest_pretty);
+    list($_latest_number) = get_version_components__from_dotted($latest_dotted);
+    return floatval($_latest_number);
 }
 
 function get_release_tree()
@@ -75,7 +90,7 @@ function get_release_tree()
 
     $_versions = array();
     foreach ($versions as $long_dotted_number_with_qualifier => $download_row) {
-        $_versions[str_replace('.0', '', $long_dotted_number_with_qualifier)] = $download_row;
+        $_versions[preg_replace('#\.0$#', '', $long_dotted_number_with_qualifier)] = $download_row;
     }
 
     return $_versions;

@@ -29,7 +29,9 @@ class Hook_startup_composr_homesite__for_outdated_version
         if (preg_match('#^docs(\d+)$#', $zone_name, $matches) != 0) {
             $docs_viewed_for_number = intval($matches[1]);
 
-            $latest_number = intval($this->get_latest_number());
+            require_code('composr_homesite');
+
+            $latest_number = intval(get_latest_version_basis_number());
             if (($latest_number !== null) && ($latest_number > $docs_viewed_for_number) && (file_exists(get_custom_file_base() . '/docs' . strval($latest_number)))) {
                 $message = 'The latest version of Composr CMS is ' . strval($latest_number) . ', but you are viewing archived documentation <em>text</em> for version ' . strval($docs_viewed_for_number) . '.';
                 $message .= '<br />Be aware that old documentation is not fully maintained. Screenshots may be wrong/missing, links may become broken, etc.';
@@ -50,8 +52,10 @@ class Hook_startup_composr_homesite__for_outdated_version
                 $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'category_id', array('id' => $id));
             }
             if ($cat_id !== null) {
+                require_code('composr_homesite');
+
                 $in_bad_cat = false;
-                $latest_number = $this->get_latest_number();
+                $latest_number = get_latest_version_basis_number();
                 $addons_viewed_for_number = mixed();
 
                 while ($cat_id !== null && $latest_number !== null) {
@@ -92,22 +96,5 @@ class Hook_startup_composr_homesite__for_outdated_version
                 }
             }
         }
-    }
-
-    private function get_latest_number()
-    {
-        require_code('composr_homesite');
-        require_code('version2');
-        $latest_pretty = get_latest_version_pretty();
-        if ($latest_pretty === null && $GLOBALS['DEV_MODE']) { // Not uploaded any releases to dev site?
-            $latest_pretty = float_to_raw_string(cms_version_number(), 2, true);
-        }
-        if ($latest_pretty === null) {
-            return null;
-        }
-
-        $latest_dotted = get_version_dotted__from_anything($latest_pretty);
-        list($_latest_number) = get_version_components__from_dotted($latest_dotted);
-        return floatval($_latest_number);
     }
 }
