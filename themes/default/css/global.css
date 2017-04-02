@@ -4678,6 +4678,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 .overlay {
 	overflow: visible;
 	border: 0;
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 }
 
 .overlay_close_button {
