@@ -4452,10 +4452,16 @@ a[rel="lightbox"] {
 	height: auto;
 }
 
+/* Wrap video code with <div class="responsive_video">...</div> if you want it responsive; jwplayer is doing this by default using its own JS though */
+.responsive_video video {
+	max-width: 100%;
+	height: auto;
+}
+
+/* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
 /*{+START,IF,{$MOBILE}}*/
 	.youtube_player {
-		float: none;
-		clear: both;
+		overflow: hidden;
 		width: 100%;
 		position: relative;
 		padding-bottom: 56.25%;
