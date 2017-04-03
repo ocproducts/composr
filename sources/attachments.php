@@ -80,6 +80,11 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         } else {
             $attributes['num_downloads'] = symbol_tempcode('ATTACHMENT_DOWNLOADS', array(strval($attachment_row['id']), '0'));
         }
+
+        if ($is_dat) {
+            $url_safe = $url->evaluate(); // We can't show file-path to a .dat, can't be downloaded and looks ugly
+        }
+
         $keep = symbol_tempcode('KEEP');
         $url->attach($keep);
         if (get_option('anti_leech') == '1') {

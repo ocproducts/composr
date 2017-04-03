@@ -1,0 +1,267 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Professional upgrading[/title]
+
+This tutorial provides a professional process for updating customer website(s).
+
+[staff_note]Remove LEGACY parts about ocPortal[/staff_note]It is only intended for programmers who are experienced in the use of Composr.
+
+The tutorial is currently written for updating ocPortal sites to Composr v10 sites.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Getting organised[/title]
+
+If you are updating multiple websites then create a spreadsheet with the following columns:
+ - Website URL
+ - Prospective upgrade date
+ - Cost quote
+ - Website owner name
+ - Website owner e-mail
+ - Support ticket / CRM URL
+ - Contacted owner?
+ - Have access to website?
+ - Cost agreed with owner?
+ - Any concerns
+
+This will keep you organised and prevent you from losing your sanity trying to remember all these details.
+
+[title="2"]Process[/title]
+
+This is the process repeated for each website being upgraded. The steps are not set in stone, but rather designed to be interpreted as guidelines by an experienced developer.
+We assume you are running your own local AMP-style stack, have git installed, and have a Composr git checkout under [tt]<webroot>/Composr[/tt]
+[tt]<webroot>[/tt] refers to your webroot, wherever it is. On my machine it is [tt]~/www[/tt].
+
+{|
+! Step
+! Description
+! Extra code / notes
+|-
+! 1
+| Transfer these instructions to a separate TODO list so you can work through them
+|
+|-
+! 2
+| Download all the website files to your local machine, under [tt]<webroot>/<name>[/tt]
+| It's much more efficient to work locally. Leave this running in the background while you work on other steps / tasks
+|-
+! 3
+| Check the remote server meets the Composr minimum requirements
+| If the requirements are not met you'll need to circle back to the website owner; they may have intentionally held back software on their hosting and have the capability to update it, or they may need to do a server upgrade or host switch
+|-
+! 4
+| Confirm the remote site is running a version of ocPortal/Composr that you can upgrade from
+| If not you'll need to circle back and inform them of the cost of jumping through other intermediate ocPortal/Composr version(s)
+|-
+! 5
+| Download the website database to your local machine, put it in [tt]<webroot>/<name>/_temp[/tt]
+| If you can't access phpMyAdmin, then use a script:
+[code="PHP"]
+$filename = 'sql-backup-' . date('Y-m-d') . '.sql';
+
+$h = 'Content-Disposition: attachment; filename="' . $filename . '"';
+header($h);
+
+$db_site = 'TODO';
+$db_site_host = 'localhost';
+$db_site_user = 'TODO';
+$db_site_password = 'TODO';
+
+$str = 'mysqldump -u"' . $db_site_user . '"';
+$str .= ' -p"' . $db_site_password . '"';
+$str .= ' -h"' . $db_site_host . '"';
+$str .= ' "' . $db_site . '"';
+$str .= ' 2>&1 > ' . $filename;
+shell_exec($str);
+
+$file_size = filesize($filename);
+$myfile = fopen($filename, 'rb');
+$i = 0;
+while ($i < $file_size) {
+    $content = fread($myfile, min($file_size - $i, 1048576));
+    echo $content;
+    $len = strlen($content);
+    if ($len == 0) {
+        break;
+    }
+    $i += $len;
+}
+fclose($myfile);
+[/code]
+|-
+! 6
+| Replace [tt]data/upgrader2.php[/tt] from the latest patch release of the version being upgraded from
+| We've had some legacy bugs in this crucial upgrade file
+|-
+! 7
+| Set recursive world write permissions
+| [code="Bash"]
+cd <webroot>/<name>
+sudo chmod -R 777 .
+[/code]
+|-
+! 8
+| Replace [tt]DEFAULT CHARSET=latin1[/tt] with [tt]DEFAULT CHARSET=utf8mb4[/tt] in SQL dump
+| If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis
+|-
+! 9
+| Search and replace the old table prefix in the SQL dump if you're upgrading an ocPortal site
+| Usually ocPortal sites used [tt]ocp_[/tt] or [tt]ocf_[/tt], and we want to use [tt]cms_[/tt] so that ocPortal legacy doesn't need to be remembered in the future
+|-
+! 10
+| Import the SQL dump into your local MySQL installation, in a database named [tt]client_<name>[/tt], using the command line [tt]mysql[/tt] client
+| [code="Bash"]
+mysql client_<name> < _temp/*.sql
+[/code]
+|-
+! 11
+| Reconfigure [tt]_config.php[/tt]/[tt]info.php[/tt] to have local details by putting local ones at the end of the file
+| [code="PHP"]
+$SITE_INFO['db_site'] = 'client_<name>';
+$SITE_INFO['db_site_host'] = 'localhost';
+$SITE_INFO['db_site_user'] = 'root';
+$SITE_INFO['db_site_password'] = '';
+$SITE_INFO['debug_mode'] = '0';
+[/code]
+|-
+! 12
+| Add $SITE_INFO['self_learning_cache'] = '1'; to [tt]_config.php[/tt]/[tt]info.php[/tt]
+|
+|-
+! 13
+| Set up a local git repository to reduce the chance of losing work
+| [code="Bash"]
+cd <webroot>/<name>
+git init
+cp <webroot>/composr/.gitignore .
+[/code]
+edit [tt].gitignore[/tt] to remove the second half of the file
+[code="Bash"]
+git add .
+git commit -a -m "Initial commit"
+[/code]
+|-
+! 14
+| Log into the website's upgrader on your local machine
+|
+|-
+! 15
+| Empty the cache
+|
+|-
+! 16
+| Do the file transfer using the omni-upgrader package if upgrading from ocPortal, or a custom upgrader build otherwise
+| https://compo.sr/news/view/announcements/upgrading-from-ocportal.htm
+|-
+! 17
+| Do the alien file scan and delete files from the prior version
+|
+|-
+! 18
+| Do the database upgrade
+|
+|-
+! 19
+| Save a new SQL dump into the [tt]_temp[/tt] folder and do a git commit
+|
+|-
+! 20
+| Delete old page revisions, [tt].editfrom[/tt] files, old config files, old backups, etc
+|
+|-
+! 21
+| Do a git commit
+|
+|-
+! 22
+| Update any overridden code and rebuild theme(s), generally make everything work again
+|
+|-
+! 23
+| Do a git commit
+|
+|-
+! 24
+| If upgrading from ocPortal switch to non-multi-lang-content using Commandr (unless the user really does want multi-lang-content)
+| [code="Commandr"]
+:
+require_code('database_multi_lang_conv');
+disable_content_translation();
+[/code]
+|-
+! 25
+| Do final local testing, particular some URL embeds may need reconfiguring if upgrading from ocPortal
+|
+|-
+! 26
+| Put a copy of [tt]bigdump.php[/tt] into the [tt]_temp[/tt] folder and configure it for the live database
+| [url="http://www.ozerov.de/bigdump/"]http://www.ozerov.de/bigdump/[/url]
+|-
+! 27
+| Upload a zip of the files into a [tt]_new[/tt] folder, being careful to not include the [tt].git[/tt] folder in the zip
+| If some upload directories are too big, omit them and resolve this by moving back the old ones from the live server
+|-
+! 28
+| Extract the zip live on the server (control panel file managers can do this, or a simple custom PHP script)
+| [code="PHP"]
+$zip = new ZipArchive();
+$res = $zip->open('TODO.zip');
+$zip->extractTo('.');
+$zip->close();
+[/code]
+|-
+! 29
+| Run bigdump
+|
+|-
+! 30
+| Delete the [tt]_temp[/tt] folder and the zip file
+|
+|-
+! 31
+| Amend [tt]_config.php[/tt] live to remove your temporary details, and possibly also add a [tt]backdoor_ip[/tt] line
+| [code="PHP"]
+$SITE_INFO['backdoor_ip'] = 'TODO';
+[/code]
+|-
+! 32
+| Set file permissions on live if necessary
+|
+|-
+! 33
+| Move the old files on server into an [tt]_old[/tt] folder
+|
+|-
+! 34
+| Move files down from [tt]_new[/tt] folder
+|
+|-
+! 35
+| Live testing
+|
+|-
+!
+| 36
+| User's may be used to some different configuration if upgrading from ocPortal, maybe set [tt]simplified_attachments_ui[/tt] to [tt]0[/tt]
+|
+|-
+! 37
+| Contact the website owner with whatever you need to say, including detais about old files and database tables
+| [quote]
+Your site has now been updated, the changes are live.
+
+I have left a copy of your old site files under the ""_old"" folder.
+Additionally, your old database tables are still in the database using the ""ocp_"" table prefix. The new database tables use the ""cms_"" table prefix.
+
+I have granted my IP address administrative access so I can quickly run administrative tasks should I need to. Please let me know if you would like this to be removed.
+[/quote]
+|-
+! 38
+| Charge the website owner for the work
+|
+|}
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_upgrade"]Performing an upgrade[/page]
+ - [page="_SEARCH:sup_site_cloning"]Cloning your site[/page]
+
+{$SET,tutorial_tags,Upgrading,core_upgrader,Maintenance,novice}{$SET,tutorial_add_date,Apr 2017}{$SET,tutorial_summary,A professional process for updating a customer website.}[block]main_tutorial_rating[/block]

@@ -123,5 +123,6 @@ Obviously you should be careful deleting files, as there may be legitimate reaso
  - [page="_SEARCH:tut_backup"]Backing up your site[/page]
  - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
  - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]
+ - [page="_SEARCH:sup_professional_upgrading"]Professional upgrading[/page]
 
 {$SET,tutorial_tags,Upgrading,core_upgrader,Maintenance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Important background information that will help you keep your website up-to-date with the latest Composr.}[block]main_tutorial_rating[/block]
