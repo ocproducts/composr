@@ -1723,6 +1723,8 @@ function version_specific()
 
 /**
  * Move files from one folder to another.
+ * Doesn't move .htaccess and index.html.
+ * Deletes the folder afterward.
  *
  * @param  PATH $from Source path
  * @param  PATH $to Destination path
@@ -1732,9 +1734,14 @@ function move_folder_contents($from, $to)
     $dh = @opendir(get_custom_file_base() . '/' . $from);
     if ($dh !== false) {
         while (($f = readdir($dh)) !== false) {
-            rename(get_custom_file_base() . '/' . $from . '/' . $f, $to . '/' . $f);
+            if (($f == 'index.html') || ($f == '.htaccess')) {
+                continue;
+            }
+
+            @rename(get_custom_file_base() . '/' . $from . '/' . $f, $to . '/' . $f);
         }
         closedir($dh);
+        @rmdir(get_custom_file_base() . '/' . $from);
     }
 }
 

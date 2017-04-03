@@ -294,7 +294,7 @@ function install_cns($upgrade_from = null)
             $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET ' . $field . '=REPLACE(' . $field . ',\'ocf_\',\'cns_\') WHERE ' . $field . ' LIKE \'%ocf\_%\'');
             move_folder_contents($dir, str_replace('ocf_', 'cns_', $dir));
         }
-        move_folder_contents('ocf_cpf_upload', 'cns_cpf_upload');
+        move_folder_contents('uploads/ocf_cpf_upload', 'uploads/cns_cpf_upload');
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons SET e_theme_img_code=REPLACE(e_theme_img_code,\'ocf_\',\'cns_\') WHERE e_theme_img_code LIKE \'%ocf\_%\'');
 
