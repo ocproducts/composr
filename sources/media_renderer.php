@@ -99,6 +99,12 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
         $as_admin = true;
     }
 
+    if ($limit_to !== null) {
+        if ((!is_file(get_file_base() . '/sources/hooks/systems/media_rendering/' . $limit_to . '.php')) && (!is_file(get_file_base() . '/sources_custom/hooks/systems/media_rendering/' . $limit_to . '.php'))) {
+            $limit_to = null;
+        }
+    }
+
     $hooks = is_null($limit_to) ? array_keys(find_all_hooks('systems', 'media_rendering')) : array($limit_to);
     $obs = array();
     foreach ($hooks as $hook) {

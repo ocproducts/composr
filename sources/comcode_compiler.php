@@ -1566,7 +1566,29 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 $b = strrpos($until_now, '>');
                                 $in_html_tag = ($a !== false) && (($b === false) || ($a > $b));
                             }
-                            if ((($textual_area) || ($in_semihtml) && ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just HTML, so not an unsafe Comcode context*/)) && ((!$in_semihtml) || ((!$in_html_tag))) && (!$in_code_tag) && ($not_white_space) && (!$differented) && ($next === 'h') && ((substr($comcode, $pos - 1, strlen('http://')) === 'http://') || (substr($comcode, $pos - 1, strlen('https://')) === 'https://') || (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://'))) {
+                            if (
+                                (
+                                    ($textual_area) ||
+                                    (
+                                        ($in_semihtml) &&
+                                        ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just entered semihtml, we're not inside an unsafe nested Comcode context*/) &&
+                                        (strpos($comcode, '<a') === false/*If links are explicit we don't want to detect links*/)
+                                    )
+                                ) &&
+                                (
+                                    (!$in_semihtml) ||
+                                    (!$in_html_tag)
+                                ) &&
+                                (!$in_code_tag) &&
+                                ($not_white_space) &&
+                                (!$differented) &&
+                                ($next === 'h') &&
+                                (
+                                    (substr($comcode, $pos - 1, strlen('http://')) === 'http://') ||
+                                    (substr($comcode, $pos - 1, strlen('https://')) === 'https://') ||
+                                    (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://')
+                                )
+                            ) {
                                 // Find the full link portion in the upcoming Comcode
                                 $link_end_pos = strlen($comcode);
                                 foreach ($link_terminator_strs as $link_terminator_str) {

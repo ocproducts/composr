@@ -26,6 +26,8 @@ class DatabaseRepair
 {
     private $sql_fixup = array();
 
+    private $deleting_tables = array();
+
     /**
      * Look for database issues.
      *
@@ -690,6 +692,8 @@ class DatabaseRepair
             $this->add_fixup_query($query);
         }
 
+        $this->deleting_tables[] = $table_name;
+
         $this->add_fixup_query('DROP TABLE IF EXISTS ' . get_table_prefix() . $table_name);
     }
 
@@ -771,12 +775,14 @@ class DatabaseRepair
     private function delete_index_alien_in_db($index_name, $index, $include_meta)
     {
         if ($include_meta) {
-            $query = 'DELETE FROM ' . get_table_prefix() . 'db_meta_indices WHERE i_table=\'' . db_escape_string($index['table']) . '\' AND i_name=\'' . db_escape_string($index_name) . '\'';
+            $query = 'DELETE FROM ' . get_table_prefix() . 'db_meta_indices WHERE i_table=\'' . db_escape_string($index['table']) . '\' AND i_name=\'' . db_escape_string((($index['is_full_text']) ? '#' : '') . $index_name) . '\'';
             $this->add_fixup_query($query);
         }
 
-        $query = 'DROP INDEX ' . $index_name . ' ON ' . get_table_prefix() . $index['table'];
-        $this->add_fixup_query($query);
+        if (!in_array($index['table'], $this->deleting_tables)) {
+            $query = 'DROP INDEX ' . $index_name . ' ON ' . get_table_prefix() . $index['table'];
+            $this->add_fixup_query($query);
+        }
     }
 
     /**

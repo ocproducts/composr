@@ -65,6 +65,7 @@ function upgrade_script()
             $show_more_link = true;
 
             switch ($type) {
+                case 'misc': // LEGACY
                 case 'browse':
                     clear_caches_1();
 
@@ -1667,12 +1668,12 @@ function version_specific()
 
             // This seems to be a legacy problem on some sites, but would crash on v10 if no-multi-lang was enabled. Generally things would corrupt.
             require_code('cns_members');
-            $fields = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_custom_fields WHERE cf_type IN (\'long_trans\',\'short_trans\')');
+            $fields = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . get_table_prefix() . 'f_custom_fields WHERE cf_type IN (\'long_trans\',\'short_trans\')');
             $member_mappings = cns_get_custom_field_mappings(get_member());
             foreach ($fields as $field) {
                 $db_field = 'field_' . strval($field['id']);
                 if (is_string($member_mappings[$db_field])) {
-                    $GLOBALS['FORUM_DB']->promote_text_field_to_comcode('f_member_custom_fields', $db_field, 'mf_member_id');
+                    $GLOBALS['SITE_DB']->promote_text_field_to_comcode('f_member_custom_fields', $db_field, 'mf_member_id');
                 }
             }
 
@@ -1681,6 +1682,12 @@ function version_specific()
                 $GLOBALS['SITE_DB']->alter_table_field('bank', 'divident', 'INTEGER', 'dividend');
                 rename_config_option('bank_divident', 'bank_dividend');
             }
+
+            // Delete old files
+            @unlink(get_file_base() . '/pages/html_custom/EN/cedi_tree_made.htm');
+            @unlink(get_file_base() . '/site/pages/html_custom/EN/cedi_tree_made.htm');
+            @unlink(get_file_base() . '/pages/html_custom/EN/download_tree_made.htm');
+            @unlink(get_file_base() . '/site/pages/html_custom/EN/download_tree_made.htm');
 
             // File replacements
             $reps = array(
@@ -1712,6 +1719,23 @@ function version_specific()
     }
 
     return false;
+}
+
+/**
+ * Move files from one folder to another.
+ *
+ * @param  PATH $from Source path
+ * @param  PATH $to Destination path
+ */
+function move_folder_contents($from, $to)
+{
+    $dh = @opendir(get_custom_file_base() . '/' . $from);
+    if ($dh !== false) {
+        while (($f = readdir($dh)) !== false) {
+            rename(get_custom_file_base() . '/' . $from . '/' . $f, $to . '/' . $f);
+        }
+        closedir($dh);
+    }
 }
 
 /**

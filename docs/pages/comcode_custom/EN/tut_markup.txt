@@ -238,11 +238,11 @@ Composr itself provides the following protocols and languages...
 		</tr>
 		<tr>
 			<td>[page="_SELF:tut_filtercode"]Filtercode[/page]</td>
-			<td>For filtering results, simpler than SQL.</td>
+			<td>For filtering results via property querying, simpler than SQL.</td>
 		</tr>
 		<tr>
 			<td>[page="_SELF:tut_selectcode"]Selectcode[/page]</td>
-			<td>For selecting particular results based on ID/category/tree-position.</td>
+			<td>For selecting particular results via ID, ID range, category, or tree-position.</td>
 		</tr>
 		<tr>
 			<td>Language packs</td>

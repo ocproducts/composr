@@ -1,6 +1,8 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Filtering using Filtercode syntax[/title]
 
-Composr contains a filtering system for selecting content based upon defined filters. Filtercode is the language for defining filter strings, and is an advanced feature of Composr. It is not to be confused with Selectcode, which is the language for determining what categories to return results from.
+Composr contains a filtering system for selecting content based upon defined filters. Filtercode is the language for defining filter strings, and is an advanced feature of Composr. 
+
+Filtercode is not to be confused with Selectcode, which is the language for determining what results to return via ID, ID range, category, or tree-position.
 
 [contents]decimal,lower-alpha[/contents]
 

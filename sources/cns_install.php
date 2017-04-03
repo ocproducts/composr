@@ -283,7 +283,18 @@ function install_cns($upgrade_from = null)
 
         rename_config_option('post_history_days', 'post_read_history_days');
 
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf\_%\'');
+        // Directory moving
+        require_code('upgrade');
+        $fields = array(
+            'm_photo_url' => 'uploads/ocf_photos',
+            'm_photo_thumb_url' => 'uploads/ocf_photos_thumbs',
+            'm_avatar_url' => 'uploads/ocf_avatars',
+        );
+        foreach ($fields as $field => $dir) {
+            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET ' . $field . '=REPLACE(' . $field . ',\'ocf_\',\'cns_\') WHERE ' . $field . ' LIKE \'%ocf\_%\'');
+            move_folder_contents($dir, str_replace('ocf_', 'cns_', $dir));
+        }
+        move_folder_contents('ocf_cpf_upload', 'cns_cpf_upload');
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons SET e_theme_img_code=REPLACE(e_theme_img_code,\'ocf_\',\'cns_\') WHERE e_theme_img_code LIKE \'%ocf\_%\'');
 
