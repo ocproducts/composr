@@ -159,7 +159,7 @@ class DatabaseRepair
 
         $needs_changes = false;
         $needs_changes = $this->search_for_meta_table_issues($existent_tables, $meta_tables, $expected_tables) || $needs_changes;
-        $needs_changes = $this->search_for_meta_index_issues($existent_indices, $meta_indices) || $needs_changes;
+        $needs_changes = $this->search_for_meta_index_issues($existent_indices, $meta_indices, $meta_tables) || $needs_changes;
         $phase = $needs_changes ? 1 : 2;
         if (!$needs_changes) {
             $needs_changes = $this->search_for_table_issues($existent_tables, $expected_tables, $meta_indices) || $needs_changes;
@@ -193,7 +193,16 @@ class DatabaseRepair
                 // Fields missing from DB?
                 $meta_key_fields = array();
                 $existent_key_fields = array();
-                foreach ($meta_tables[$table_name] as $field_name => $field_type) {
+                $needed = $meta_tables[$table_name];
+                if (!multi_lang_content()) {
+                    foreach ($needed as $field_name => $field_type) {
+                        if (strpos($field_type, '_TRANS__COMCODE') !== false) {
+                            $needed[$field_name . '__text_parsed'] = 'LONG_TEXT';
+                            $needed[$field_name . '__source_user'] = 'MEMBER';
+                        }
+                    }
+                }
+                foreach ($needed as $field_name => $field_type) {
                     if (!isset($existent_tables[$table_name][$field_name])) {
                         $this->fix_table_inconsistent_in_db__create_field($table_name, $field_name, $field_type, false);
                         $needs_changes = true;
@@ -233,12 +242,45 @@ class DatabaseRepair
 
                 // Fields alien in DB?
                 foreach ($existent_tables[$table_name] as $field_name => $field) {
-                    if (!isset($meta_tables[$table_name][$field_name]) && strpos($field_name, '__text_parsed') === false && strpos($field_name, '__source_user') === false) {
+                    $matches = array();
+                    if (
+                        (!isset($meta_tables[$table_name][$field_name])) &&
+                        (
+                            (multi_lang_content()) ||
+                            (preg_match('#^(.*)__(text_parsed|source_user)$#', $field_name, $matches) == 0) ||
+                            (
+                                (
+                                    (!isset($expected_tables[$table_name][$matches[1]])) ||
+                                    (strpos($expected_tables[$table_name][$matches[1]], '_TRANS__COMCODE') === false)
+                                )
+                                &&
+                                (($table_name != 'f_member_custom_fields') || (preg_match('#^field_\d+#', $field_name) == 0))
+                            )
+                        )
+                    ) {
                         if (isset($expected_tables[$table_name]['fields'][$field_name])) {
                             $field_type = $expected_tables[$table_name]['fields'][$field_name];
                         } else {
                             $field_type_raw = $field['type'];
                             $field_type = $this->db_type_to_composr_type($field_name, $field_type_raw, $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                        }
+
+                        if (preg_match('#^(.*)__(text_parsed|source_user)$#', $field_name, $matches) != 0) {
+                            if (multi_lang_content()) {
+                                // Should not be here with multi-lang-content
+                                $this->fix_table_inconsistent_in_db__delete_field($table_name, $field_name, $field_type_raw, false);
+                            } else {
+                                // It's not actually a translatable field in meta-DB, but it should be
+                                if (strpos($expected_tables[$table_name][$matches[1]], '_TRANS') !== false) {
+                                    $expected_type = $expected_tables[$table_name][$matches[1]] . '__COMCODE';
+                                } else {
+                                    $expected_type = 'SHORT_TRANS__COMCODE'; // Assumption, might be LONG_TRANS
+                                }
+                                $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=\'' . db_escape_string($expected_type) . '\' WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($matches[1]) . '\'';
+                                $this->add_fixup_query($query);
+                            }
+
+                            continue;
                         }
 
                         $this->fix_table_missing_in_meta__create_field($table_name, $field_name, $field_type);
@@ -280,9 +322,10 @@ class DatabaseRepair
      *
      * @param  array $existent_indices Existent indices
      * @param  array $meta_indices Meta indices
+     * @param  array $meta_tables Meta tables
      * @return boolean Whether there have been issues found
      */
-    private function search_for_meta_index_issues($existent_indices, $meta_indices)
+    private function search_for_meta_index_issues($existent_indices, $meta_indices, $meta_tables)
     {
         $needs_changes = false;
 
@@ -301,7 +344,7 @@ class DatabaseRepair
                     $needs_changes = true;
                 }
             } else {
-                $this->create_index_missing_from_db($meta_index_name, $index, false);
+                $this->create_index_missing_from_db($meta_index_name, $index, false, $meta_tables);
                 $needs_changes = true;
             }
         }
@@ -348,9 +391,18 @@ class DatabaseRepair
                 // Fields missing from DB?
                 $expected_key_fields = array();
                 $existent_key_fields = array();
-                foreach ($expected_tables[$table_name] as $field_name => $field_type) {
+                $needed = $expected_tables[$table_name];
+                if (!multi_lang_content()) {
+                    foreach ($needed as $field_name => $field_type) {
+                        if (strpos($field_type, '_TRANS__COMCODE') !== false) {
+                            $needed[$field_name . '__text_parsed'] = 'LONG_TEXT';
+                            $needed[$field_name . '__source_user'] = 'MEMBER';
+                        }
+                    }
+                }
+                foreach ($needed as $field_name => $field_type) {
                     if (!isset($existent_tables[$table_name][$field_name])) {
-                        $this->fix_table_inconsistent_in_db__create_field($table_name, $field_name, $field_type, isset($meta_tables[$table_name][$field_name]));
+                        $this->fix_table_inconsistent_in_db__create_field($table_name, $field_name, $field_type, (preg_match('#__(text_parsed|source_user)$#', $field_name) == 0) && (isset($meta_tables[$table_name][$field_name])));
                         $needs_changes = true;
                     } else {
                         $existent_details = $existent_tables[$table_name][$field_name];
@@ -361,11 +413,11 @@ class DatabaseRepair
                         $expected_is_primary = (strpos($field_type, '*') !== false);
                         $expected_null_ok = (strpos($field_type, '?') !== false) && (multi_lang_content() || strpos($field_type, '_TRANS') === false);
                         $expected_is_auto_increment = ($field_type_trimmed == 'AUTO');
-                        $bad_type = ($expected_field_type_raw != $existent_details['type']);
+                        $bad_type = ($expected_field_type_raw != $existent_details['type']) && (($table_name != 'f_member_custom_fields') || (preg_match('#^field_\d+#', $field_name) == 0));
                         $bad_null_ok = ($expected_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($expected_is_auto_increment != $existent_details['is_auto_increment']);
                         if (/*$bad_type || MySQL may report in different ways so cannot compare*/$bad_null_ok || $bad_is_auto_increment) {
-                            $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, isset($meta_tables[$table_name][$field_name]));
+                            $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, (preg_match('#__(text_parsed|source_user)$#', $field_name) != 0) || (isset($meta_tables[$table_name][$field_name])));
                             $needs_changes = true;
                         }
                         if ($expected_is_primary) {
@@ -387,7 +439,22 @@ class DatabaseRepair
 
                 // Fields alien in DB?
                 foreach ($existent_tables[$table_name] as $field_name => $existent_details) {
-                    if (!isset($expected_tables[$table_name][$field_name]) && strpos($field_name, '__text_parsed') === false && strpos($field_name, '__source_user') === false) {
+                    $matches = array();
+                    if (
+                        (!isset($expected_tables[$table_name][$field_name])) &&
+                        (
+                            (multi_lang_content()) ||
+                            (preg_match('#^(.*)__(text_parsed|source_user)$#', $field_name, $matches) == 0) ||
+                            (
+                                (
+                                    (!isset($expected_tables[$table_name][$matches[1]])) ||
+                                    (strpos($expected_tables[$table_name][$matches[1]], '_TRANS__COMCODE') === false)
+                                )
+                                &&
+                                (($table_name != 'f_member_custom_fields') || (preg_match('#^field_\d+$#', $field_name) == 0))
+                            )
+                        )
+                    ) {
                         $this->fix_table_inconsistent_in_db__delete_field($table_name, $field_name, $existent_details['type'], isset($meta_tables[$table_name][$field_name]));
                         $needs_changes = true;
                     }
@@ -440,14 +507,14 @@ class DatabaseRepair
                 sort($existent_fields);
                 sort($expected_fields);
                 if ($existent_fields != $expected_fields || $existent_is_full_text != $expected_is_full_text) {
-                    $this->fix_index_inconsistent_in_db($expected_index_name, $index, true);
+                    $this->fix_index_inconsistent_in_db($expected_index_name, $index, true, $meta_tables);
                     $needs_changes = true;
                 }
             } else {
                 if ((multi_lang_content()) && (((strpos($expected_index_name, '__combined') !== false) && ($expected_is_full_text) && ($index['table'] != 'translate')) || (count($expected_fields) == 1) && (isset($meta_tables[$index['table']][$expected_fields[0]])) && (strpos($meta_tables[$index['table']][$expected_fields[0]], '_TRANS') !== false))) {
                     // Ignore, as it only existed to index a string column in non-multi-lang content mode
                 } else {
-                    $this->create_index_missing_from_db($expected_index_name, $index, true);
+                    $this->create_index_missing_from_db($expected_index_name, $index, true, $meta_tables);
                     $needs_changes = true;
                 }
             }
@@ -461,12 +528,17 @@ class DatabaseRepair
                 continue; // Can't check this, table is dynamic
             }
 
-            if ($table_name == 'db_meta' || $table_name == 'db_meta_indices' || table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+            if (($table_name == 'db_meta') || ($table_name == 'db_meta_indices') || (table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED))) {
                 continue;
             }
 
             if (!isset($expected_indices[$universal_index_key])) {
                 $index_name = $index['name'];
+
+                if ((!multi_lang_content()) && (count($index['fields']) == 1) && (strpos($meta_tables[$table_name][$index['fields'][0]], '_TRANS') !== false) && ($index_name == $index['fields'][0])) {
+                    continue;
+                }
+
                 $this->delete_index_alien_in_db($index_name, $index, isset($meta_indices[$universal_index_key]));
                 $needs_changes = true;
             }
@@ -644,7 +716,7 @@ class DatabaseRepair
     private function fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, $include_meta)
     {
         if ($include_meta) {
-            $query = 'UPDATE ' . get_table_prefix() . 'db_meta WHERE SET m_type=\'' . db_escape_string($field_type) . '\' WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($field_name) . '\'';
+            $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=\'' . db_escape_string($field_type) . '\' WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($field_name) . '\'';
             $this->add_fixup_query($query);
         }
 
@@ -662,11 +734,11 @@ class DatabaseRepair
     private function fix_table_inconsistent_in_db__bad_primary_key($table_name, $key_fields, $include_meta)
     {
         if ($include_meta) {
-            $query = 'UPDATE ' . get_table_prefix() . 'db_meta WHERE SET m_type=REPLACE(m_type,\'*\',\'\') WHERE m_table=\'' . db_escape_string($table_name) . '\'';
+            $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE m_table=\'' . db_escape_string($table_name) . '\'';
             $this->add_fixup_query($query);
 
             foreach ($key_fields as $key_field) {
-                $query = 'UPDATE ' . get_table_prefix() . 'db_meta WHERE SET m_type=CONCAT(\'*\',m_type) WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($key_field) . '\'';
+                $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=CONCAT(\'*\',m_type) WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($key_field) . '\'';
                 $this->add_fixup_query($query);
             }
         }
@@ -732,16 +804,33 @@ class DatabaseRepair
      * @param  string $index_name Index name
      * @param  array $index Index details
      * @param  boolean $include_meta Make meta changes too
+     * @param  array $meta_tables Meta tables
      */
-    private function create_index_missing_from_db($index_name, $index, $include_meta)
+    private function create_index_missing_from_db($index_name, $index, $include_meta, $meta_tables)
     {
         if ($include_meta) {
             $this->create_index_missing_in_meta($index_name, $index);
         }
 
         $table_name = $index['table'];
+
         $_index_name = ($index['is_full_text'] ? '#' : '') . $index_name;
-        $_fields = implode(',', $index['fields']);
+
+        $_fields = '';
+        foreach ($index['fields'] as $field_name) {
+            if ($_fields != '') {
+                $_fields .= ',';
+            }
+            $_fields .= $field_name;
+
+            $db_type = isset($meta_tables[$table_name][$field_name]) ? $meta_tables[$table_name][$field_name] : null;
+            if ((!$index['is_full_text']) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
+                if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
+                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
+                }
+            }
+        }
+
         $query = $GLOBALS['SITE_DB']->static_ob->db_create_index_sql(get_table_prefix() . $table_name, $_index_name, $_fields);
         if (!is_null($query)) {
             $this->add_fixup_query($query);
@@ -754,14 +843,15 @@ class DatabaseRepair
      * @param  string $index_name Index name
      * @param  array $index Index details
      * @param  boolean $include_meta Make meta changes too
+     * @param  array $meta_tables Meta tables
      */
-    private function fix_index_inconsistent_in_db($index_name, $index, $include_meta)
+    private function fix_index_inconsistent_in_db($index_name, $index, $include_meta, $meta_tables)
     {
         if ($include_meta) {
             $this->fix_index_inconsistent_in_meta($index_name, $index);
         }
 
-        $this->create_index_missing_from_db($index_name, $index, false);
+        $this->create_index_missing_from_db($index_name, $index, false, $meta_tables);
         $this->delete_index_alien_in_db($index_name, $index, false);
     }
 
@@ -914,7 +1004,7 @@ class DatabaseRepair
      */
     private function add_fixup_query($query)
     {
-        $this->sql_fixup[] = $query . ';';
+        $this->sql_fixup[md5($query)/*De-duplicates*/] = $query . ';';
 
         if (get_param_integer('keep_fatalistic', 0) == 1) {
             fatal_exit($query);
