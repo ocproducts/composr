@@ -1747,6 +1747,7 @@ class Hook_addon_registry_cns_forum
             'MAY_CHANGE_MAX' => lorem_word(),
             'LAST_POSTER' => placeholder_random_id(),
             'FORUM_ID' => placeholder_id(),
+            'TICKET_FORUM' => false,
         ));
 
         return array(

@@ -9,10 +9,12 @@
 		<div class="non_accessibility_redundancy">
 			<div class="float_surrounder">
 				<div class="buttons_group cns_buttons_screen">
-					{+START,INCLUDE,NOTIFICATION_BUTTONS}
-						NOTIFICATIONS_TYPE=cns_topic
-						NOTIFICATIONS_ID={ID}
-						NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+					{+START,IF,{$NOT,{TICKET_FORUM}}}
+						{+START,INCLUDE,NOTIFICATION_BUTTONS}
+							NOTIFICATIONS_TYPE=cns_topic
+							NOTIFICATIONS_ID={ID}
+							NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+						{+END}
 					{+END}
 					{BUTTON_SCREENS}
 				</div>
@@ -148,10 +150,12 @@
 		<div class="float_surrounder">
 			{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
 				<div class="buttons_group cns_buttons_screen">
-					{+START,INCLUDE,NOTIFICATION_BUTTONS}
-						NOTIFICATIONS_TYPE=cns_topic
-						NOTIFICATIONS_ID={ID}
-						NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+					{+START,IF,{$NOT,{TICKET_FORUM}}}
+						{+START,INCLUDE,NOTIFICATION_BUTTONS}
+							NOTIFICATIONS_TYPE=cns_topic
+							NOTIFICATIONS_ID={ID}
+							NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+						{+END}
 					{+END}
 					{BUTTON_SCREENS}
 				</div>

@@ -1000,6 +1000,7 @@ class Module_topicview
             'THREADED' => $threaded,
             'FORUM_ID' => is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']),
             'IS_ALREADY_READ' => cns_has_read_topic($id),
+            'TICKET_FORUM' => is_ticket_forum($topic_info['forum_id']),
         ));
 
         require_code('templates_internalise_screen');
