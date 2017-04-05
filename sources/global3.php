@@ -3385,7 +3385,10 @@ function send_http_output_ping()
 {
     global $DOING_OUTPUT_PINGS;
     $DOING_OUTPUT_PINGS = true;
-    echo ' ';
+
+    if (running_script('index')) {
+        echo ' ';
+    }
 }
 
 /**
