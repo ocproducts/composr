@@ -264,4 +264,4 @@ I have granted my IP address administrative access so I can quickly run administ
  - [page="_SEARCH:tut_upgrade"]Performing an upgrade[/page]
  - [page="_SEARCH:sup_site_cloning"]Cloning your site[/page]
 
-{$SET,tutorial_tags,Upgrading,core_upgrader,Maintenance,novice}{$SET,tutorial_add_date,Apr 2017}{$SET,tutorial_summary,A professional process for updating a customer website.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Upgrading,core_upgrader,Maintenance,expert}{$SET,tutorial_add_date,Apr 2017}{$SET,tutorial_summary,A professional process for updating a customer website.}[block]main_tutorial_rating[/block]

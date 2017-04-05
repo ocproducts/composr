@@ -2016,9 +2016,9 @@ function log_stats($string, $pg_time)
         'post' => $post,
         'milliseconds' => intval($pg_time * 1000)
     ), false, true);
-    if (mt_rand(0, 1000) == 1) {
+    if (mt_rand(0, 100) == 1) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('stats')) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'stats WHERE date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('stats_store_time'))));
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'stats WHERE date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('stats_store_time'))), 500/*to reduce lock times*/);
         }
     }
 

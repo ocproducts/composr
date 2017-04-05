@@ -2104,7 +2104,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $urls[0] = handle_upload_syndication('file' . $_id, '', array_key_exists('description', $attributes) ? $attributes['description'] : '', $urls[0], $original_filename, true);
 
                     // Special code to re-orientate JPEG images if required (browsers cannot do this)
-                    if ((is_saveable_image($urls[0])) && (url_is_local($urls[0])) && (($attributes['type'] == '') || ($attributes['image_websafe'] == ''))) {
+                    if ((is_saveable_image($urls[0])) && (url_is_local($urls[0])) && ((empty($attributes['type'])) || ($attributes['image_websafe'] == ''))) {
                         require_code('images');
                         $attachment_path = get_custom_file_base() . '/' . rawurldecode($urls[0]);
                         convert_image($attachment_path, $attachment_path, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);

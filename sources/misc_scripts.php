@@ -207,7 +207,7 @@ function simple_tracker_script()
         'c_date_and_time' => time(),
         'c_member_id' => get_member(),
         'c_ip_address' => get_ip_address(),
-        'c_url' => $url,
+        'c_url' => cms_mb_substr($url, 0, 255),
     ));
 
     header('Location: ' . escape_header($url));

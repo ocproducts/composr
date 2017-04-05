@@ -2666,6 +2666,9 @@ function get_bot_type()
                 'sqworm' => 'Aol.com',
                 'baidu' => 'Baidu',
                 'facebookexternalhit' => 'Facebook',
+                'yandex'=> 'Yandex',
+                'daum' => 'Daum',
+                'ahrefsbot' => 'AhrefsBot',
             );
         }
     }

@@ -278,7 +278,11 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         $db_types = collapse_2d_complexity('m_name', 'm_type', $this_ref->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table_name)));
 
         $fields_full = array();
+        $sized = false;
         foreach ($fields as $field) {
+            if (strpos($field, '(') !== false) {
+                $sized = true;
+            }
             $_field = preg_replace('#\(.*\)$#', '', $field);
 
             $db_type = isset($db_types[$_field]) ? $db_types[$_field] : null;
@@ -293,7 +297,9 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             }
             $fields_full[$field] = $db_type;
         }
-        _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
+        if (!$sized) {
+            _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
+        }
     }
     //}
 

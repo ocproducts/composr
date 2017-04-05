@@ -2114,6 +2114,9 @@ function get_webpage_meta_details($url)
 
         if ($meta_details['t_image_url'] != '') {
             $meta_details['t_image_url'] = qualify_url($meta_details['t_image_url'], $url);
+            if (strlen($meta_details['t_image_url']) > 255) {
+                $meta_details['t_image_url'] = ''; // We can't deal with really long URLs here
+            }
         }
 
         if (($result[1] == 'application/octet-stream') || ($result[1] == '')) {
@@ -2133,9 +2136,15 @@ function get_webpage_meta_details($url)
             if ((preg_match('#\srel=["\']?alternate["\']?#i', $line) != 0) && (preg_match('#\shref=["\']?([^"\']+)["\']?#i', $line, $matches2) != 0)) {
                 if (preg_match('#\stype=["\']?application/json\+oembed["\']?#i', $line) != 0) {
                     $meta_details['t_json_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES, get_charset());
+                    if (strlen($meta_details['t_json_discovery']) > 255) {
+                        $meta_details['t_json_discovery'] = ''; // We can't deal with really long URLs here
+                    }
                 }
                 if (preg_match('#\stype=["\']?text/xml\+oembed["\']?#i', $line) != 0) {
                     $meta_details['t_xml_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES, get_charset());
+                    if (strlen($meta_details['t_xml_discovery']) > 255) {
+                        $meta_details['t_xml_discovery'] = ''; // We can't deal with really long URLs here
+                    }
                 }
             }
         }

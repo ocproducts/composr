@@ -2010,6 +2010,8 @@ function step_5_core()
         'a_last_downloaded_time' => '?INTEGER',
         'a_add_time' => 'INTEGER'
     ));
+    $GLOBALS['SITE_DB']->create_index('attachments', 'ownedattachments', array('a_member_id'));
+    $GLOBALS['SITE_DB']->create_index('attachments', 'attachmentlimitcheck', array('a_add_time'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('attachment_refs');
     $GLOBALS['SITE_DB']->create_table('attachment_refs', array(
@@ -2018,8 +2020,6 @@ function step_5_core()
         'r_referer_id' => 'ID_TEXT',
         'a_id' => 'AUTO_LINK'
     ));
-    $GLOBALS['SITE_DB']->create_index('attachments', 'ownedattachments', array('a_member_id'));
-    $GLOBALS['SITE_DB']->create_index('attachments', 'attachmentlimitcheck', array('a_add_time'));
 
     return do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c6b6d92c670b7f1b223798ace54102f9', 'SOMETHING' => do_lang_tempcode('PRIMARY_CORE_INSTALLED')));
 }
