@@ -339,7 +339,7 @@ class DatabaseRepair
                 $meta_is_full_text = $index['is_full_text'];
                 sort($existent_fields);
                 sort($meta_fields);
-                if ($existent_fields != $meta_fields || $existent_is_full_text != $meta_is_full_text) {
+                if (($existent_fields != $meta_fields) || ($existent_is_full_text != $meta_is_full_text)) {
                     $this->fix_index_inconsistent_in_meta($meta_index_name, $existent_indices[$universal_index_key]);
                     $needs_changes = true;
                 }
@@ -778,7 +778,7 @@ class DatabaseRepair
      */
     private function fix_index_inconsistent_in_meta($index_name, $index)
     {
-        $query = 'UPDATE ' . get_table_prefix() . 'db_meta_indices SET i_fields=\'' . db_escape_string(implode(',', $index['fields'])) . '\',i_name=\'' . db_escape_string($index['name']) . '\' WHERE i_table=\'' . db_escape_string($index['table']) . '\' AND i_name=\'' . db_escape_string($index_name) . '\'';
+        $query = 'UPDATE ' . get_table_prefix() . 'db_meta_indices SET i_fields=\'' . db_escape_string(implode(',', $index['fields'])) . '\',i_name=\'' . db_escape_string((($index['is_full_text']) ? '#' : '') . $index['name']) . '\' WHERE i_table=\'' . db_escape_string($index['table']) . '\' AND i_name=\'' . db_escape_string((($index['is_full_text']) ? '#' : '') . $index_name) . '\'';
         $this->add_fixup_query($query);
     }
 
@@ -851,8 +851,8 @@ class DatabaseRepair
             $this->fix_index_inconsistent_in_meta($index_name, $index);
         }
 
-        $this->create_index_missing_from_db($index_name, $index, false, $meta_tables);
         $this->delete_index_alien_in_db($index_name, $index, false);
+        $this->create_index_missing_from_db($index_name, $index, false, $meta_tables);
     }
 
     /**

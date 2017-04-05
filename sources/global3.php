@@ -2390,7 +2390,7 @@ function escape_html($string)
 
     global $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
 
-    $ret = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
+    $ret = @htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
 
     if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
         $ESCAPE_HTML_OUTPUT[$ret] = true;

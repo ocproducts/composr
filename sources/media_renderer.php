@@ -195,9 +195,10 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
  * @param  integer $acceptable_media Bitmask of media that we will support
  * @param  ?ID_TEXT $limit_to Limit to a media rendering hook (null: no limit)
  * @param  ?URLPATH $url_to_scan_against The URL to do media detection against (null: use $url)
+ * @param  ?string $original_filename Originally filename to display as a link caption where appropriate (null: use $url_safe)
  * @return ?Tempcode The rendered version (null: cannot render)
  */
-function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null)
+function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null, $original_filename = null)
 {
     $hooks = find_media_renderers(
         is_null($url_to_scan_against) ? (is_object($url) ? $url->evaluate() : $url) : $url_to_scan_against,
@@ -211,6 +212,10 @@ function render_media_url($url, $url_safe, $attributes, $as_admin = false, $sour
         return null;
     }
     $hook = reset($hooks);
+
+    if ((empty($attributes['filename'])) && ($original_filename !== null)) {
+        $attributes['filename'] = $original_filename;
+    }
 
     $ob = object_factory('Hook_media_rendering_' . $hook);
     $ret = $ob->render($url, $url_safe, $attributes, $as_admin, $source_member, $url_to_scan_against);
