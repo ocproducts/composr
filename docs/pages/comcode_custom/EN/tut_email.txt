@@ -104,6 +104,16 @@ All (&dagger;) e-mails are logged for 14 days in the same system, regardless of 
  5_key="MX"     5_value="A type of DNS record for identifying mail servers for a domain name"
 ]Concepts[/concepts]
 
+[title="2"]Testing a server's mail support[/title]
+
+If you want to test a server can directly send e-mail using PHP use this simple test script:
+[code="PHP"]
+<?php
+
+mail('you@example.com','Test','Test');
+[/code]
+(of course substitute in your own e-mail address)
+
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_how_internet_works"]How the Internet works[/page]

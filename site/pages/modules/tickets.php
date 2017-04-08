@@ -501,6 +501,7 @@ class Module_tickets
                 }
 
                 $_comments = array();
+                $_comments_all = array();
             } else {
                 $ticket_type_id = $GLOBALS['SITE_DB']->query_select_value_if_there('tickets', 'ticket_type', array('ticket_id' => $id));
                 $ticket_type_details = get_ticket_type($ticket_type_id);

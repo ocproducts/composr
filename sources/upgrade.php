@@ -1524,6 +1524,9 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
  */
 function _integrity_scan()
 {
+    require_code('input_filter_2');
+    rescue_shortened_post_request();
+
     foreach (array_keys($_POST) as $key) {
         $val = post_param_string($key);
         if (strpos($val, ':') !== false) {
@@ -1575,7 +1578,15 @@ function version_specific()
             @rename(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
             sync_file_move(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
 
-            $modules_renamed = array(
+            $remap = array(
+                'ocf_post' => 'cns_post',
+                'ocf_signature' => 'cns_signature',
+            );
+            foreach ($remap as $from => $to) {
+                $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_type' => $to), array('r_referer_type' => $from));
+            }
+
+            $remap = array(
                 'cedi' => 'wiki',
                 'contactmember' => 'contact_member',
                 'admin_occle' => 'admin_commandr',
@@ -1597,11 +1608,49 @@ function version_specific()
                 'cms_cedi' => 'cms_wiki',
                 'cms_ocf_groups' => 'cms_cns_groups',
             );
-            foreach ($modules_renamed as $from => $to) {
+            foreach ($remap as $from => $to) {
+                $GLOBALS['SITE_DB']->query_delete('modules', array('module_the_name' => $to));
                 $GLOBALS['SITE_DB']->query_update('modules', array('module_the_name' => $to), array('module_the_name' => $from), '', 1);
                 $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'menu_items SET i_url=REPLACE(i_url,\'' . $from . '\',\'' . $to . '\')');
             }
+            $deleted_modules = array(
+            );
+            foreach ($deleted_modules as $module_name) {
+                $GLOBALS['SITE_DB']->query_delete('modules', array('module_the_name' => $module_name));
+            }
             persistent_cache_delete('MODULES');
+
+            $remap = array(
+                'side_ocf_personal_topics' => 'side_cns_private_topics',
+                'side_stored_menu' => 'menu',
+                'side_root_galleries' => 'side_galleries',
+            );
+            foreach ($remap as $from => $to) {
+                $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $to));
+                $GLOBALS['SITE_DB']->query_update('blocks', array('block_name' => $to), array('block_name' => $from), '', 1);
+            }
+            $deleted_blocks = array(
+                'main_feedback',
+                'main_sitemap',
+                'main_as_zone_access',
+                'main_recent_galleries',
+                'main_top_galleries',
+                'main_recent_cc_entries',
+                'main_recent_downloads',
+                'main_top_downloads',
+                'main_download_tease',
+                'main_gallery_tease',
+            );
+            foreach ($deleted_blocks as $block_name) {
+                $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $block_name));
+            }
+
+            rename_config_option('ocf_show_profile_link', 'cns_show_profile_link');
+
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'menu_items SET i_url=REPLACE(i_url,\'ocf_\',\'cns_\')');
+
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('%cns_%') . '\'');
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_name=REPLACE(the_name,\'ocf_\',\'cns_\')');
 
             $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_resource_type' => 'browse'), array('m_resource_type' => 'misc'), '', 1);
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=\'ocp_street_address\' WHERE text_original=\'ocp_building_name_or_number\'');

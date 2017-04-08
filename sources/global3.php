@@ -2668,7 +2668,9 @@ function get_bot_type()
                 'facebookexternalhit' => 'Facebook',
                 'yandex'=> 'Yandex',
                 'daum' => 'Daum',
-                'ahrefsbot' => 'AhrefsBot',
+                'ahrefsbot' => 'Ahrefs',
+                'mj12bot' => 'Majestic-12',
+                'blexbot' => 'webmeup',
             );
         }
     }

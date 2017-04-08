@@ -194,8 +194,8 @@ Note how the example includes the [tt]html[/tt] tag, etc -- it is not a snippet,
 
 You have the following template variables available to you (beyond all the default capabilities of Comcode):
  - [b]title[/b], The subject line of the e-mail (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL.tpl[/tt] template)
- - [b]forename[/b], The forename of the subscriber (may be blank if it is not known)
- - [b]surname[/b], The surname of the subscriber (may be blank if it is not known)
+ - [b]forename[/b], The forename (first name) of the subscriber (may be blank if it is not known)
+ - [b]surname[/b], The surname (last name) of the subscriber (may be blank if it is not known)
  - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER_DEFAULT_NAME[/tt] language string -- depending on what data is available on the reader)
  - [b]member_id[/b], The member ID of the subscriber, or blank if there is no discerned member ID
  - [b]email_address[/b], The e-mail address of the subscriber

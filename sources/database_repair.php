@@ -162,7 +162,7 @@ class DatabaseRepair
         $needs_changes = $this->search_for_meta_index_issues($existent_indices, $meta_indices, $meta_tables) || $needs_changes;
         $phase = $needs_changes ? 1 : 2;
         if (!$needs_changes) {
-            $needs_changes = $this->search_for_table_issues($existent_tables, $expected_tables, $meta_indices) || $needs_changes;
+            $needs_changes = $this->search_for_table_issues($existent_tables, $expected_tables, $meta_tables) || $needs_changes;
             $needs_changes = $this->search_for_index_issues($existent_indices, $expected_indices, $meta_indices, $meta_tables) || $needs_changes;
             $needs_changes = $this->search_for_privilege_issues($existent_privileges, $expected_privileges) || $needs_changes;
         }
@@ -389,6 +389,7 @@ class DatabaseRepair
 
             if (isset($existent_tables[$table_name])) {
                 // Fields missing from DB?
+                $fields_added = 0;
                 $expected_key_fields = array();
                 $existent_key_fields = array();
                 $needed = $expected_tables[$table_name];
@@ -402,8 +403,12 @@ class DatabaseRepair
                 }
                 foreach ($needed as $field_name => $field_type) {
                     if (!isset($existent_tables[$table_name][$field_name])) {
-                        $this->fix_table_inconsistent_in_db__create_field($table_name, $field_name, $field_type, (preg_match('#__(text_parsed|source_user)$#', $field_name) == 0) && (isset($meta_tables[$table_name][$field_name])));
+                        $this->fix_table_inconsistent_in_db__create_field($table_name, $field_name, $field_type, (preg_match('#__(text_parsed|source_user)$#', $field_name) == 0) && (!isset($meta_tables[$table_name][$field_name])));
                         $needs_changes = true;
+                        if (substr($field_type, 0, 1) == '*') {
+                            $expected_key_fields[] = $field_name;
+                        }
+                        $fields_added++;
                     } else {
                         $existent_details = $existent_tables[$table_name][$field_name];
 
@@ -417,7 +422,7 @@ class DatabaseRepair
                         $bad_null_ok = ($expected_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($expected_is_auto_increment != $existent_details['is_auto_increment']);
                         if (/*$bad_type || MySQL may report in different ways so cannot compare*/$bad_null_ok || $bad_is_auto_increment) {
-                            $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, (preg_match('#__(text_parsed|source_user)$#', $field_name) != 0) || (isset($meta_tables[$table_name][$field_name])));
+                            $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, (preg_match('#__(text_parsed|source_user)$#', $field_name) == 0) && (isset($meta_tables[$table_name][$field_name])));
                             $needs_changes = true;
                         }
                         if ($expected_is_primary) {
@@ -433,7 +438,15 @@ class DatabaseRepair
                 sort($expected_key_fields);
                 sort($existent_key_fields);
                 if ($expected_key_fields != $existent_key_fields) {
-                    $this->fix_table_inconsistent_in_db__bad_primary_key($table_name, $expected_key_fields, isset($meta_tables[$table_name][$field_name]));
+                    list($drop_key_query, $create_key_query) = $this->fix_table_inconsistent_in_db__bad_primary_key($table_name, $expected_key_fields, isset($meta_tables[$table_name][$field_name]), true);
+                    $this->sql_fixup = array_merge(
+                        array_slice($this->sql_fixup, 0, count($this->sql_fixup) - $fields_added),
+                        array($drop_key_query . ';'),
+                        array_slice($this->sql_fixup, count($this->sql_fixup) - $fields_added)
+                    );
+                    if ((count($expected_key_fields) != 0) || ($existent_tables[$table_name][$expected_key_fields[0]] != '*AUTO')) {
+                        $this->sql_fixup[] = $create_key_query . ';';
+                    }
                     $needs_changes = true;
                 }
 
@@ -702,6 +715,9 @@ class DatabaseRepair
         foreach ($cols_to_delete as $_field_name) {
             $query = 'ALTER TABLE ' . get_table_prefix() . $table_name . ' DROP COLUMN ' . $_field_name;
             $this->add_fixup_query($query);
+
+            $query = 'DELETE FROM ' . get_table_prefix() . 'db_meta WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $field_name);
+            $this->add_fixup_query($query);
         }
     }
 
@@ -730,8 +746,10 @@ class DatabaseRepair
      * @param  string $table_name Table name
      * @param  array $key_fields List of key fields
      * @param  boolean $include_meta Make meta changes too
+     * @param  boolean $return_queries Whether to return the main queries instead of inserting them
+     * @param  ?array Special queries (null: $return_queries not set)
      */
-    private function fix_table_inconsistent_in_db__bad_primary_key($table_name, $key_fields, $include_meta)
+    private function fix_table_inconsistent_in_db__bad_primary_key($table_name, $key_fields, $include_meta, $return_queries = false)
     {
         if ($include_meta) {
             $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE m_table=\'' . db_escape_string($table_name) . '\'';
@@ -743,9 +761,21 @@ class DatabaseRepair
             }
         }
 
-        $this->add_fixup_query('ALTER TABLE ' . get_table_prefix() . $table_name . ' DROP PRIMARY KEY');
+        $drop_key_query = 'ALTER TABLE ' . get_table_prefix() . $table_name . ' DROP PRIMARY KEY';
+        if (!$return_queries) {
+            $this->add_fixup_query($drop_key_query);
+        }
+
         $_key_fields = implode(', ', $key_fields);
-        $this->add_fixup_query('ALTER TABLE ' . get_table_prefix() . $table_name . ' ADD PRIMARY KEY (' . $_key_fields . ')');
+        $create_key_query = 'ALTER TABLE ' . get_table_prefix() . $table_name . ' ADD PRIMARY KEY (' . $_key_fields . ')';
+        if (!$return_queries) {
+            $this->add_fixup_query($create_key_query);
+        }
+
+        if ($return_queries) {
+            return array($drop_key_query, $create_key_query);
+        }
+        return null;
     }
 
     /**
@@ -766,7 +796,14 @@ class DatabaseRepair
 
         $this->deleting_tables[] = $table_name;
 
-        $this->add_fixup_query('DROP TABLE IF EXISTS ' . get_table_prefix() . $table_name);
+        $query = 'DROP TABLE IF EXISTS ' . get_table_prefix() . $table_name;
+        $this->add_fixup_query($query);
+
+        $query = 'DELETE FROM ' . get_table_prefix() . 'db_meta WHERE ' . db_string_equal_to('m_table', $table_name);
+        $this->add_fixup_query($query);
+
+        $query = 'DELETE FROM ' . get_table_prefix() . 'db_meta_indices WHERE ' . db_string_equal_to('i_table', $table_name);
+        $this->add_fixup_query($query);
     }
 
     /**
@@ -794,7 +831,7 @@ class DatabaseRepair
         $table_name = $index['table'];
         $fields = implode(',', $index['fields']);
 
-        $query = 'INSERT INTO ' . get_table_prefix() . 'db_meta_indices (i_table,i_name,i_fields) VALUES (\'' . db_escape_string($table_name) . '\',\'' . db_escape_string($index_name) . '\',\'' . db_escape_string($fields) . '\')';
+        $query = 'INSERT INTO ' . get_table_prefix() . 'db_meta_indices (i_table,i_name,i_fields) VALUES (\'' . db_escape_string($table_name) . '\',\'' . db_escape_string((($index['is_full_text']) ? '#' : '') . $index_name) . '\',\'' . db_escape_string($fields) . '\')';
         $this->add_fixup_query($query);
     }
 
@@ -871,6 +908,9 @@ class DatabaseRepair
 
         if (!in_array($index['table'], $this->deleting_tables)) {
             $query = 'DROP INDEX ' . $index_name . ' ON ' . get_table_prefix() . $index['table'];
+            $this->add_fixup_query($query);
+
+            $query = 'DELETE FROM ' . get_table_prefix() . 'db_meta_indices WHERE ' . db_string_equal_to('i_table', $index['table']);
             $this->add_fixup_query($query);
         }
     }
