@@ -747,7 +747,7 @@ class DatabaseRepair
      * @param  array $key_fields List of key fields
      * @param  boolean $include_meta Make meta changes too
      * @param  boolean $return_queries Whether to return the main queries instead of inserting them
-     * @param  ?array Special queries (null: $return_queries not set)
+     * @return ?array Special queries (null: $return_queries not set)
      */
     private function fix_table_inconsistent_in_db__bad_primary_key($table_name, $key_fields, $include_meta, $return_queries = false)
     {

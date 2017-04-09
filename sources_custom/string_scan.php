@@ -133,6 +133,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TICKETS_STAFF
         NO_CNS
         DOCS
+        EXPLANATION_WITH_DEFAULT
         PROJECT_SPONSORS
         PROJECT_SPONSORS_LABEL
         CONFIG_OPTION_complex_lists

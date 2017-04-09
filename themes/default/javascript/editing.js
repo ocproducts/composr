@@ -438,12 +438,18 @@ function wysiwyg_editor_init_for(element,id)
 	window.lang_NO_IMAGE_PASTE_SAFARI='{!javascript:NO_IMAGE_PASTE_SAFARI;^}';
 
 	// Mainly used by autosaving, but also sometimes CKEditor seems to not refresh the textarea (e.g. for one user's site when pressing delete key on an image)
-	editor.on('change',function (event) {
+	var sync=function (event) {
 		if (typeof element.externalOnKeyPress!='undefined')
 		{
 			element.value=editor.getData();
 			element.externalOnKeyPress(event,element);
 		}
+	};
+	editor.on('change',sync);
+	editor.on('mode',function() {
+		var ta=editor.container.$.getElementsByTagName('textarea');
+		if (typeof ta[0]!='undefined')
+			ta[0].onchange=sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
 	});
 
 	editor.on('instanceReady', function (event) {
