@@ -18,6 +18,31 @@
  */
 class tutorial_title_structure_test_set extends cms_test_case
 {
+    public function testDuplicateTitles()
+    {
+        $titles = array();
+
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $f);
+
+                $last_level = 1;
+
+                $matches = array();
+                $num_matches = preg_match_all('#\[title sub="[^"]*"\](Composr (Supplementary|Tutorial): )?(.*)(?![/title])\[/title\]#', $c, $matches);
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $title = $matches[3][$i];
+
+                    $this->assertTrue(!isset($titles[$title]), 'Duplicated title: ' . $title);
+
+                    $titles[$title] = true;
+                }
+            }
+        }
+    }
+
     public function testTitlesAscendence()
     {
         $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';

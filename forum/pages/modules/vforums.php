@@ -189,9 +189,6 @@ class Module_vforums
         // NB: "t_cache_num_posts<5" above is an optimisation, to do accurate detection of "only poster" only if there are a handful of posts (scanning huge topics can be slow considering this is just to make a subquery pass). We assume that a topic is not consisting of a single user posting more than 5 times (and if so we can consider them a spammer so rule it out)
 
         $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
-        if (strpos(get_db_type(), 'mysql') !== false) {
-            $initial_table .= ' FORCE INDEX (unread_forums)';
-        }
 
         return $this->_vforum($title, $condition, 'last_post', true, null, $initial_table);
     }

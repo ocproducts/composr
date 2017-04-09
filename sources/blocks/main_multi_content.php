@@ -299,7 +299,7 @@ class Block_main_multi_content
 
         if ($days !== null && $info['date_field'] !== null) {
             $where .= ' AND ';
-            $where .= $info['date_field'] . '>=' . strval(time() - 60 * 60 * 24 * $days);
+            $where .= 'r.' . $info['date_field'] . '>=' . strval(time() - 60 * 60 * 24 * $days);
         }
 
         if (is_array($info['id_field'])) {

@@ -1,4 +1,4 @@
-[title sub="Written by temp1024 and Chris Graham (ocProducts)"]Composr Supplementary: Advanced site structure and flow[/title]
+[title sub="Written by temp1024 and Chris Graham (ocProducts)"]Composr Supplementary: ModSecurity[/title]
 
 ModSecurity is an "application firewall" which is often installed by Linux-based webhosts.
 
