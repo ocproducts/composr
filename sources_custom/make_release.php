@@ -85,7 +85,7 @@ function make_installers($skip_file_grab = false)
     $manual_zip = $builds_path . '/builds/' . $version_dotted . '/composr_manualextraction_installer-' . $version_dotted . '.zip';
     $mszip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '-webpi.zip'; // Aka msappgallery, related to webmatrix
     $aps_zip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '.app.zip'; // APS package
-    $uni_upgrader = $builds_path . '/builds/' . $version_dotted . '/composr_upgrader-' . $version_dotted . '.cms';
+    $omni_upgrader = $builds_path . '/builds/' . $version_dotted . '/composr_upgrader-' . $version_dotted . '.cms';
 
     // Flags
     $make_quick = (get_param_integer('skip_quick', 0) == 0);
@@ -93,7 +93,7 @@ function make_installers($skip_file_grab = false)
     $make_bundled = (get_param_integer('skip_bundled', 0) == 0);
     $make_mszip = (get_param_integer('skip_mszip', 0) == 0);
     $make_aps = (get_param_integer('skip_aps', 0) == 0);
-    $make_uni_upgrader = (post_param_integer('make_uni_upgrader', 0) == 1);
+    $make_omni_upgrader = (post_param_integer('make_omni_upgrader', 0) == 1);
 
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);
@@ -433,19 +433,19 @@ function make_installers($skip_file_grab = false)
         chdir(get_file_base());
     }
 
-    // Build uni-upgrader
-    if ($make_uni_upgrader) {
-        @unlink($uni_upgrader);
+    // Build omni-upgrader
+    if ($make_omni_upgrader) {
+        @unlink($omni_upgrader);
 
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($uni_upgrader) . ' *';
+        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($omni_upgrader) . ' *';
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
-        $out .= do_build_archive_output($uni_upgrader, $output2);
+        $out .= do_build_archive_output($omni_upgrader, $output2);
 
         chdir(get_file_base());
     }
@@ -469,8 +469,8 @@ function make_installers($skip_file_grab = false)
     if ($make_aps) {
         $details .= '<li>' . $aps_zip . ' file size: ' . clean_file_size(filesize($aps_zip)) . '</li>';
     }
-    if ($make_uni_upgrader) {
-        $details .= '<li>' . $uni_upgrader . ' file size: ' . clean_file_size(filesize($uni_upgrader)) . '</li>';
+    if ($make_omni_upgrader) {
+        $details .= '<li>' . $omni_upgrader . ' file size: ' . clean_file_size(filesize($omni_upgrader)) . '</li>';
     }
 
     $out .= '
@@ -909,9 +909,10 @@ function make_install_sql()
     // Build SQL dump
     require_code('database_toolkit');
     global $HAS_MULTI_LANG_CONTENT;
+    $bak = $HAS_MULTI_LANG_CONTENT;
     $HAS_MULTI_LANG_CONTENT = false;
     $st = get_sql_dump(true, false, null, null, null, false, $conn);
-    $HAS_MULTI_LANG_CONTENT = true;
+    $HAS_MULTI_LANG_CONTENT = $bak;
     $sql_contents = '';
     foreach ($st as $s) {
         $sql_contents .= $s;

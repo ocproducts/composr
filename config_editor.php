@@ -165,7 +165,7 @@ function do_access($given_password)
         'master_password' => 'If you wish the password to be changed, enter a new password here. Otherwise leave blank.',
 
         'base_url' => 'A critical option, that defines the URL of the site (no trailing slash). You can blank this out for auto-detection, but only do this during development -- if you do it live and somehow multiple domains can get to your site, random errors will occur due to caching problems.',
-        'domain' => 'The domain that e-mail addresses are registered on. This applies only to the Point Store and may be ignored by most.',
+        'domain' => 'The domain that e-mail addresses are registered on, and possibly other things. This is only used by some very select parts of the system. It may be different from the domain in the base-URL due to not having "www." on for example.',
         'default_lang' => 'The default language used on the site (language codename form, of subdirectory under lang/).',
         'block_url_schemes' => 'Whether to block the URL Scheme (mod_rewrite) option. Set this to 1 if you turned on URL Schemes and find your site no longer works.',
         'on_msn' => 'Whether this is a site on an Conversr multi-site-network (enable for to trigger URLs to avatars and photos to be absolute).',

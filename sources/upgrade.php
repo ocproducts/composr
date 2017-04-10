@@ -1645,8 +1645,6 @@ function version_specific()
                 $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $block_name));
             }
 
-            rename_config_option('ocf_show_profile_link', 'cns_show_profile_link');
-
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'menu_items SET i_url=REPLACE(i_url,\'ocf_\',\'cns_\')');
 
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('%cns_%') . '\'');
@@ -1657,7 +1655,9 @@ function version_specific()
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=REPLACE(text_original,\'ocp_\',\'cms_\') WHERE text_original LIKE \'ocp\_%\'');
             $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', '*ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', '*ID_TEXT', 'privilege');
-            $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
+            if (addon_installed('pointstore')) {
+                $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
+            }
             $GLOBALS['SITE_DB']->rename_table('msp', 'member_privileges');
             $GLOBALS['SITE_DB']->rename_table('gsp', 'group_privileges');
             $GLOBALS['SITE_DB']->rename_table('sp_list', 'privilege_list');
@@ -1695,6 +1695,11 @@ function version_specific()
             $GLOBALS['SITE_DB']->query_update('zones', array('zone_theme' => 'admin'), array('zone_name' => 'cms'), '', 1);
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'SHORT_TEXT'), array('m_type' => 'MD5'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*SHORT_TEXT'), array('m_type' => '*MD5'));
+            rename_config_option('ocf_show_profile_link', 'cns_show_profile_link');
+            if ((strpos(get_db_type(), 'mysql') !== false) && (get_charset() == 'utf-8')) {
+                $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'import_parts_done CONVERT TO CHARACTER SET utf8mb4');
+                $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'wordfilter CONVERT TO CHARACTER SET utf8mb4');
+            }
 
             set_value('version', float_to_raw_string($version_files, 10, true));
             delete_value('last_implicit_sync');

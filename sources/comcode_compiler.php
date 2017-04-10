@@ -939,7 +939,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             // Variable lookahead
                             if ((!$in_code_tag) && (($next === '{') && (isset($comcode[$pos])) && (($comcode[$pos] === '$') || ($comcode[$pos] === '+') || ($comcode[$pos] === '!')))) {
                                 if ($comcode_dangerous) {
-                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
+                                    if ((!$in_code_tag) && ((!$semiparse_mode) || (substr($comcode, $pos, 4) == '$IMG') || (substr($comcode, $pos, 9) == '$BASE_URL') || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
                                         if ($GLOBALS['XSS_DETECT']) {
                                             ocp_mark_as_escaped($continuation);
                                         }

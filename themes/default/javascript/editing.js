@@ -519,7 +519,7 @@ function find_tags_in_editor(editor,element)
 					if (event.pageY) eventCopy.pageY=3000;
 					if (event.clientY) eventCopy.clientY=3000;
 
-					if (typeof window.activate_tooltip!='undefined')
+					if (typeof window.activate_tooltip!='undefined' && this.orig_title!='undefined')
 					{
 						reposition_tooltip(this,eventCopy);
 						this.title=this.orig_title;

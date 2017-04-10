@@ -60,8 +60,16 @@ function copytext(text) {
 	document.execCommand('copy');
 	textField.remove();
 }
+
+function personalise_paths(table) {
+	var codename = window.prompt('What is the project codename?', 'an_example');
+	var webroot = window.prompt('What is the webroot?', (navigator.platform == 'MacIntel') ? '/Library/WebServer/Documents' : '/var/www');
+	table.innerHTML = table.innerHTML.replace(/(&lt;|&lt;<\/span>)codename(&gt;|<span style="color: #000000; font-weight: bold;">&gt;)/g, codename).replace(/(&lt;|&lt;<\/span>)webroot(&gt;|<span style="color: #000000; font-weight: bold;">&gt;)/g, webroot);
+}
 //]]></script>
 <a href="#" onclick="copy_to_clipboard(this.parentNode.parentNode.parentNode); return false;">Copy to clipboard</a>
+&middot;
+<a href="#" onclick="personalise_paths(this.parentNode.parentNode.parentNode.parentNode); return false;">Personalise paths</a>
 [/html]
 |-
 !
@@ -73,7 +81,7 @@ function copytext(text) {
 | Customers need to be aware of costs, if you don't protect yourself you could have a customer expecting you to include days of free training for what you're only invoicing as a few hours of work.
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Download all the website files to your local machine, under [tt]<webroot>/<name>[/tt]
+| Download all the website files to your local machine, under [tt]<webroot>/<codename>[/tt]
 | It's much more efficient to work locally. Leave this running in the background while you work on other steps / tasks.
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -85,13 +93,14 @@ Composr's minimum requirements provide a lot of info, if you can't access that i
 
 phpinfo();
 [/code]
+Additionally you can upload and run the first two steps of Composr's installer and see if it complains about anything.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Confirm the remote site is running a version of ocPortal/Composr that you can upgrade from
 | If not you'll need to circle back and inform them of the cost of jumping through other intermediate ocPortal/Composr version(s).
 |-
-! {$INC,step_num}{$GET,step_num}
-| Download the website database to your local machine, put it in [tt]<webroot>/<name>/_temp[/tt]
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Download the website database to your local machine, put it in [tt]<webroot>/<codename>/_temp[/tt]
 | If you can't access phpMyAdmin, then use a script:
 [codebox="PHP"]
 <?php
@@ -159,46 +168,68 @@ if (!empty($_GET['self_destruct']) {
 ! {$INC,step_num}{$GET,step_num}
 | Set recursive world write permissions
 | [code="Bash"]
-cd <webroot>/<name>
+cd <webroot>/<codename>
 sudo chmod -R 777 .
 [/code]
 |-
-! {$INC,step_num}{$GET,step_num}
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Search and replace the old table prefix in the SQL dump if you're upgrading an ocPortal site
+| Usually ocPortal sites used [tt]ocp_[/tt] or [tt]ocf_[/tt], and we want to use [tt]cms_[/tt] so that ocPortal legacy doesn't need to be remembered in the future.
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
 | If you're updating from ocPortal then replace [tt]DEFAULT CHARSET=latin1[/tt] with [tt]DEFAULT CHARSET=utf8mb4[/tt] in the SQL dump
+| If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis.
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| (Following directly from the above) Change [tt]utf8mb4[/tt] to [tt]utf8[/tt] for just the following tables: [tt]cms_addons[/tt], [tt]cms_f_saved_warnings[/tt], [tt]cms_gsp[/tt], [tt]cms_import_parts_done[/tt], [tt]cms_msp[/tt], [tt]cms_newsletter_subscribe[/tt], [tt]cms_theme_images[/tt], [tt]cms_tickets[/tt], and [tt]cms_wordfilter[/tt]
 | If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | If you're updating from ocPortal then find all non-default files containing this regexp [tt][^\x00-\x7F][/tt] and re-save them as utf-8
 | The regexp finds non-ASCII files, so you don't have to re-save every single file
 |-
-! {$INC,step_num}{$GET,step_num}
-| Search and replace the old table prefix in the SQL dump if you're upgrading an ocPortal site
-| Usually ocPortal sites used [tt]ocp_[/tt] or [tt]ocf_[/tt], and we want to use [tt]cms_[/tt] so that ocPortal legacy doesn't need to be remembered in the future.
-|-
-! {$INC,step_num}{$GET,step_num}
-| Import the SQL dump into your local MySQL installation, in a database named [tt]client_<name>[/tt], using the command line [tt]mysql[/tt] client
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Import the SQL dump into your local MySQL installation, in a database named [tt]client_<codename>[/tt], using the command line [tt]mysql[/tt] client
 | [code="Bash"]
-mysql client_<name> < _temp/*.sql
+cd <webroot>/<codename>
+mysql client_<codename> < _temp/*.sql
 [/code]
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Reconfigure [tt]_config.php[/tt]/[tt]info.php[/tt] to have local details by putting local ones at the end of the file
 | [code="PHP"]
-$SITE_INFO['db_site'] = 'client_<name>';
+$SITE_INFO['base_url'] = 'http://localhost/client_<codename>';
+$SITE_INFO['db_site'] = 'client_<codename>';
 $SITE_INFO['db_site_host'] = 'localhost';
 $SITE_INFO['db_site_user'] = 'root';
 $SITE_INFO['db_site_password'] = '';
 $SITE_INFO['debug_mode'] = '0';
+$SITE_INFO['dev_mode'] = '0';
+
+// These must not persist onto a live site, they allow temporary unauthenticated local admin access to make upgrading easier a third-party developer
+$SITE_INFO['admin_password'] = '';
+$SITE_INFO['backdoor_ip'] = '127.0.0.1';
 [/code]
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Add $SITE_INFO['self_learning_cache'] = '1'; to [tt]_config.php[/tt]/[tt]info.php[/tt]
+| Add [tt]$SITE_INFO['self_learning_cache'] = '1';[/tt] to [tt]_config.php[/tt]/[tt]info.php[/tt]
 |
+|-
+! {$INC,step_num}{$GET,step_num}
+| Change [tt]mysql[/tt] to [tt]mysqli[/tt] in [tt]_config.php[/tt]/[tt]info.php[/tt] if upgrading a really old site
+|
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Save a new SQL dump into the [tt]_temp[/tt] folder
+| [code="Bash"]
+cd <webroot>/<codename>
+mysqldump client_<codename> > _temp/stage1.sql
+[/code]
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Set up a local git repository to reduce the chance of losing work
 | [code="Bash"]
-cd <webroot>/<name>
+cd <webroot>/<codename>
 git init
 cp <webroot>/composr/.gitignore .
 [/code]
@@ -212,11 +243,11 @@ git commit -a -m "Initial commit"
 ! [left][i]Main upgrade[/i][/left]
 !
 |-
-! {$INC,step_num}{$GET,step_num}
+! &dagger; {$INC,step_num}{$GET,step_num}
 | Log into the website's upgrader on your local machine
 |
 |-
-! {$INC,step_num}{$GET,step_num}
+! &dagger; {$INC,step_num}{$GET,step_num}
 | Empty the caches
 |
 |-
@@ -228,8 +259,12 @@ git commit -a -m "Initial commit"
 | Do the alien file scan and delete files from the prior version
 |
 |-
-! {$INC,step_num}{$GET,step_num}
+! &dagger; {$INC,step_num}{$GET,step_num}
 | Do the database upgrade
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| If upgrading from ocPortal delete the [tt]info.php[/tt] file
 |
 |-
 !
@@ -238,7 +273,10 @@ git commit -a -m "Initial commit"
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Save a new SQL dump into the [tt]_temp[/tt] folder
-|
+| [code="Bash"]
+cd <webroot>/<codename>
+mysqldump client_<codename> > _temp/stage2.sql
+[/code]
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Delete old page revisions, old config files, old backups, etc
@@ -248,7 +286,7 @@ git commit -a -m "Initial commit"
 | Temporarily move any custom code and themes into a parallel directory structure under [tt]_old_code[/tt]
 |
 |-
-! {$INC,step_num}{$GET,step_num}
+! &dagger; {$INC,step_num}{$GET,step_num}
 | If upgrading from ocPortal switch to non-multi-lang-content using Commandr (unless the user really does want multi-lang-content)
 | [code="Commandr"]
 :
@@ -256,13 +294,17 @@ require_code('database_multi_lang_conv');
 disable_content_translation();
 [/code]
 |-
-! {$INC,step_num}{$GET,step_num}
+! &dagger; {$INC,step_num}{$GET,step_num}
 | If jumping across versions run through the "Correct MySQL schema issues (advanced)" cleanup tool (Admin Zone > Tools > Website Cleanup Tools) to find and resolve any unexpected issues that might have developed
 | Don't just trust the SQL given, check it really is correct to repair the problems found.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Do a git commit
-|
+| [code="Bash"]
+cd <webroot>/<codename>
+git add .
+git commit -a -m "Finished cleanup and quarantine"
+[/code]
 |-
 !
 ! [left][i]Rebuild custom code and design[/i][/left]
@@ -290,7 +332,11 @@ disable_content_translation();
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Do a git commit
-|
+| [code="Bash"]
+cd <webroot>/<codename>
+git add .
+git commit -a -m "Finished code rebuild"
+[/code]
 |-
 !
 ! [left][i]Get back in sync[/i][/left]
@@ -304,7 +350,7 @@ disable_content_translation();
 | Do one of 3 things to get the database back in sync
 | 1) Identify that nothing needs synching. If you are using MyISAM then Commandr can tell when tables were recently changed with [tt]ls /database[/tt].
 2) Take a new database backup and use a diff against your very first database backup, then manually copy those changes through. This is only a good idea if you expect a tiny number of simple changes. Of course in most cases you can ignore changes to logging tables.
-3) Take a new database backup, repeat appropriate steps from this tutorial to re-upgrade that database. It should not take so long given the file upgrading you've already done will still apply. You'll need to re-open the site of course, given you closed the live site just before backing it up.
+3) Take a new database backup, repeat steps from this tutorial marked &dagger; to re-upgrade that database. It should not take so long given the file upgrading you've already done will still apply. You'll need to re-open the site of course, given you closed the live site just before backing it up.
 The last option is the one you will most likely want to use.
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -424,7 +470,8 @@ function do_dir($dir)
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Upload a zip of the files into a [tt]_new[/tt] folder, being careful to not include the [tt].git[/tt] folder in the zip
-| If some upload directories are too big, omit them and resolve this by moving back the old ones from the live server
+| If some upload directories are too big, omit them and resolve this by moving back the old ones from the live server.
+For a further level of professionalism you may choose to deploy using your git repository rather than a zip file, if so push git up to a shared repository (e.g. github or bitbucket) and do a pull from the server, rather than uploading and extracting a zip.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Extract the zip live on the server (control panel file managers can do this, or a simple custom PHP script)

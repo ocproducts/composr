@@ -189,6 +189,8 @@
 
 	{$REVIEW_STATUS,topic,{ID}}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
+	{+START,IF_NON_EMPTY,{FORUM_ID}}
+		{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
+	{+END}
 </div>
 

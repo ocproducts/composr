@@ -85,7 +85,7 @@ ksort($addons);
 
 list($tar_path, $err) = make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons);
 if ($tar_path === null) {
-    warn_exit($err);
+    warn_exit(protect_from_escaping($err));
 }
 
 header('Content-Type: application/octet-stream; authoritative=true;');
