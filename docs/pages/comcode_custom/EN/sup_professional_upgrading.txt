@@ -69,6 +69,10 @@ function copytext(text) {
 !
 |-
 ! {$INC,step_num}{$GET,step_num}
+| Make sure the website owner is aware that an upgrade cost doesn't include training for functionality changes
+| Customers need to be aware of costs, if you don't protect yourself you could have a customer expecting you to include days of free training for what you're only invoicing as a few hours of work.
+|-
+! {$INC,step_num}{$GET,step_num}
 | Download all the website files to your local machine, under [tt]<webroot>/<name>[/tt]
 | It's much more efficient to work locally. Leave this running in the background while you work on other steps / tasks.
 |-

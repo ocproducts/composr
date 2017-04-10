@@ -1720,6 +1720,9 @@ function get_page_name()
         $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
     }
     $page = fix_page_name_dashing(get_zone_name(), $page);
+    if (!$GETTING_PAGE_NAME) { // It's been changed by process_url_monikers, which was called indirectly by fix_page_name_dashing
+        return $PAGE_NAME_CACHE;
+    }
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
     }
@@ -1736,6 +1739,10 @@ function get_page_name()
  */
 function fix_page_name_dashing($zone, $page)
 {
+    if (strpos($page, '/') !== false) {
+        return $page; // It's a moniker that hasn't been processed yet
+    }
+
     // Fix page-name dashes if needed
     if (strpos($page, '-') !== false) {
         require_code('site');
