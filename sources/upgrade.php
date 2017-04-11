@@ -1765,6 +1765,8 @@ function version_specific()
                 '#side_root_galleries#' => 'side_galleries',
                 '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
                 '#\[attachment[^\[\]]*\]url__([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media]$1[/media]',
+                '#\{\$OCF#' => '{$CNS',
+                '#\[attachment([^\[]*)\]url_([^\[]*)\[/attachment\]#' => '[media$1]$2[/media]',
             );
             perform_search_replace($reps);
         }
@@ -2032,7 +2034,7 @@ function fix_mysql_database_charset()
 {
     global $SITE_INFO;
     if (empty($SITE_INFO['database_charset'])) {
-        $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8' : 'latin1';
+        $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8' : 'latin1'; // LEGACY: Too many assumptions, maybe we should just remove fix_mysql_database_charset and change_mysql_database_charset
     }
     change_mysql_database_charset($SITE_INFO['database_charset'], $GLOBALS['SITE_DB']);
 }

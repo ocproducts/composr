@@ -55,7 +55,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
     $attributes['wysiwyg_editable'] = ($tag == 'attachment_safe') ? '1' : '0';
     $attributes['filename'] = $attachment_row['a_original_filename'];
     if ((!array_key_exists('mime_type', $attributes)) || ($attributes['mime_type'] == '')) {
-        $attributes['mime_type'] = get_mime_type(get_file_extension($attachment_row['a_original_filename']), $as_admin || has_privilege($source_member, 'comcode_dangerous'));
+        $attributes['mime_type'] = get_mime_type(get_file_extension($attachment_row['a_original_filename']), true);
     }
 
     // Work out description
