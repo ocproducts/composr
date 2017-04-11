@@ -187,7 +187,7 @@ class Hook_search_cns_members extends FieldsSearchHook
 
         require_lang('cns');
 
-        $indexes = collapse_2d_complexity('i_fields', 'i_name', $GLOBALS['FORUM_DB']->query_select('db_meta_indices', array('i_fields', 'i_name'), array('i_table' => 'f_member_custom_fields')));
+        $indexes = collapse_2d_complexity('i_fields', 'i_name', $GLOBALS['FORUM_DB']->query_select('db_meta_indices', array('i_fields', 'i_name'), array('i_table' => 'f_member_custom_fields'), 'ORDER BY i_name'));
 
         // Calculate our where clause (search)
         if ($author != '') {

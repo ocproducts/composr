@@ -13,7 +13,7 @@
  * @package    collaboration_zone
  */
 
-// This is the standard zone bootstrap file. Zone: collaboration.
+// This is the standard zone bootstrap file.
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;

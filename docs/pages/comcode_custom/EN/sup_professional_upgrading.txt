@@ -100,6 +100,13 @@ Additionally you can upload and run the first two steps of Composr's installer a
 | If not you'll need to circle back and inform them of the cost of jumping through other intermediate ocPortal/Composr version(s).
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
+| Create [tt]<webroot>/<codename>/_temp[/tt] and put a [tt].htaccess[/tt] file in it
+| [code="htaccess"]
+order deny,allow
+deny from all
+[/code]
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
 | Download the website database to your local machine, put it in [tt]<webroot>/<codename>/_temp[/tt]
 | If you can't access phpMyAdmin, then use a script:
 [codebox="PHP"]
@@ -206,7 +213,10 @@ $SITE_INFO['db_site_password'] = '';
 $SITE_INFO['debug_mode'] = '0';
 $SITE_INFO['dev_mode'] = '0';
 
-// These must not persist onto a live site, they allow temporary unauthenticated local admin access to make upgrading easier a third-party developer
+// These must not persist onto a live site,
+// they allow temporary unauthenticated
+// local admin access to make upgrading
+// easier a third-party developer
 $SITE_INFO['admin_password'] = '';
 $SITE_INFO['backdoor_ip'] = '127.0.0.1';
 [/code]
@@ -279,7 +289,7 @@ mysqldump client_<codename> > _temp/stage2.sql
 [/code]
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Delete old page revisions, old config files, old backups, etc
+| Delete old page revisions, old config files, old backups, old [tt].latest_in_ocp_edit[/tt] files, etc
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -306,6 +316,10 @@ git add .
 git commit -a -m "Finished cleanup and quarantine"
 [/code]
 |-
+! {$INC,step_num}{$GET,step_num}
+| Consider replacing all the tar files in [tt]addons/imports[/tt] so you're sure they're fresh
+| If you download a [url="custom upgrade package"]http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=10.0.0[/url] you can find all the TAR files in it (the [i]from[/i] version number in the URL is irrelevant)
+|-
 !
 ! [left][i]Rebuild custom code and design[/i][/left]
 !
@@ -323,11 +337,11 @@ git commit -a -m "Finished cleanup and quarantine"
 | You'll need to compare overrides against the originals from the version you are upgrading from. Custom code and overridden code will need to be assessed to make sure it still is valid. By the time you're done you should be able to erase the [tt]_old_code[/tt] directory.
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Users may be used to some different configuration if upgrading from ocPortal, maybe set [tt]simplified_attachments_ui[/tt] to [tt]0[/tt]
+| Users may be used to some different configuration if upgrading from ocPortal, maybe set [tt]simplified_attachments_ui[/tt] to [tt]0[/tt]. US users may also like [tt]yeehaw[/tt] to be set to [tt]1[/tt].
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Do final local testing, particular some URL embeds may need reconfiguring if upgrading from ocPortal
+| Do final local testing, particular some embedded links may need reconfiguring if upgrading from ocPortal, as the Composr display defaults are different
 |
 |-
 ! {$INC,step_num}{$GET,step_num}

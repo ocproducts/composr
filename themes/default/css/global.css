@@ -1329,6 +1329,7 @@ div.red_alert, p.red_alert, .inline_wip_message {
 div.red_alert, p.red_alert {
 	border: 1px solid {$GET,light_error_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	overflow: hidden;
 }
 .inline_wip_message {
 	border: 1px solid {$GET,dark_border};
@@ -3295,6 +3296,9 @@ ul.buttons_group, ul.associated_links_block_group {
 .fields_set_contents .constrain_field, .fields_set_contents input .wide_field {
 	display: inline;
 }
+.constrain_field + .constrain_field {
+	margin: 0.25em 0;
+}
 
 /*
 =========================
@@ -3399,6 +3403,9 @@ body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.
 
 .proceed_button {
 	text-align: center;
+}
+.proceed_button:last-child {
+	margin-bottom: 0;
 }
 div.proceed_button_left {
 	text-align: {!en_left};

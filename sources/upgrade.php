@@ -1776,6 +1776,23 @@ function version_specific()
 }
 
 /**
+ * Zone index.php files could go stale, rebuild them.
+ */
+function rebuild_zone_files()
+{
+    $zones = find_all_zones();
+    foreach ($zones as $zone) {
+        if (!in_array($zone, array('', 'cms', 'adminzone', 'site', 'forum', 'collaboration'/*LEGACY*/))) {
+            if (strpos(file_get_contents(get_custom_file_base() . '/' . $zone . '/index.php'), 'core') !== false) {
+                @file_put_contents(get_custom_file_base() . '/' . $zone . '/index.php', file_get_contents(get_custom_file_base() . '/site/index.php'));
+                fix_permissions(get_custom_file_base() . '/' . $zone . '/index.php');
+                sync_file(get_custom_file_base() . '/' . $zone . '/index.php');
+            }
+        }
+    }
+}
+
+/**
  * Move files from one folder to another.
  * Doesn't move .htaccess and index.html.
  * Deletes the folder afterward.
@@ -2558,6 +2575,7 @@ function automate_upgrade__safe()
     clear_caches_2();
     version_specific();
     upgrade_modules();
+    rebuild_zone_files();
 
     // Conversr
     cns_upgrade();

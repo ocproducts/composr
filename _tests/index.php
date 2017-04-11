@@ -13,7 +13,7 @@
  * @package    testing_platform
  */
 
-// This is the standard zone bootstrap file. Zone: site.
+// This is the standard zone bootstrap file.
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
