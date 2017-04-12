@@ -1023,7 +1023,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         if ($num == 51) {
             return; // We've sent too many error mails today
         }
-        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
+        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
         persistent_cache_delete('VALUES');
         set_value('num_error_mails_' . date('Y-m-d'), strval($num), true);
     }

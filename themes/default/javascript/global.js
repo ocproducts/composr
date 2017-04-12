@@ -3064,7 +3064,10 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 					}
 				} else
 				{
-					this_node[a_name]=eval('var x=function(event) { '+a_value+' }; x;');
+					try {
+						this_node[a_name]=eval('var x=function(event) { '+a_value+' }; x;');
+					}
+					catch (e) {};
 				}
 			}
 

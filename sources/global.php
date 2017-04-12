@@ -627,7 +627,7 @@ if (count($SITE_INFO) == 0) {
         @copy($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
         if (is_file($FILE_BASE . '/_config.php')) {
             $new_config_file = file_get_contents($FILE_BASE . '/_config.php');
-            $new_config_file = str_replace(array('ocf_table_prefix', 'use_mem_cache', 'ocp_member_id', 'ocp_member_hash'), array('cns_table_prefix', 'use_persistent_cache', 'cms_member_id', 'cms_member_hash'), $new_config_file);
+            $new_config_file = str_replace(array('ocf_table_prefix', 'use_mem_cache', 'ocp_member_id', 'ocp_member_hash', 'ocf'), array('cns_table_prefix', 'use_persistent_cache', 'cms_member_id', 'cms_member_hash', 'cns'), $new_config_file);
             $new_config_file = str_replace(']=\'', '] = \'', $new_config_file); // Clean up formatting to new convention
             file_put_contents($FILE_BASE . '/_config.php', $new_config_file, LOCK_EX);
         } else {

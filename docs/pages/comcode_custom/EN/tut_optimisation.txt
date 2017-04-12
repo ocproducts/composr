@@ -206,7 +206,7 @@ You may have some kind of script that does database backups. Follows is some adv
  - [tt]digestives_tin[/tt]
 (put the table prefix in front of these names of course)
 
-2) Call a [tt]mysqldump[/tt] with the [tt]--skip-lock-tables[/tt] parameter.
+2) Call a [tt]mysqldump[/tt] with the [tt]--skip-lock-tables --quick --lock-tables=false[/tt] parameters.
 
 3) Run the backup at a time when nobody is accessing the site.
 
