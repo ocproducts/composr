@@ -71,6 +71,11 @@ function init__files2()
      * @global ?ID_TEXT $HTTP_CHARSET
      */
     $HTTP_CHARSET = null;
+    /** Any HTTP headers collected.
+     *
+     * @global array $HTTP_HEADERS
+     */
+    $HTTP_HEADERS = array();
 
     global $CURL_HEADERS, $CURL_BODY, $CURL_WRITE_TO_FILE;
     $CURL_HEADERS = array();
@@ -920,6 +925,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $HTTP_NEW_COOKIES = array();
     }
     $HTTP_FILENAME = null;
+    $HTTP_HEADERS = array();
 
     static $has_ctype_xdigit = null;
     if ($has_ctype_xdigit === null) {
@@ -1428,7 +1434,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     if (!is_null($extra_headers)) {
         foreach ($extra_headers as $key => $val) {
-            $headers .= $key . ': ' . rawurlencode($val) . "\r\n";
+            $headers .= $key . ': ' . $val . "\r\n";
         }
     }
     if (!is_null($accept)) {
@@ -1490,7 +1496,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $out .= 'Proxy-Authorization: Basic ' . base64_encode($proxy_user . ':' . $proxy_password) . "\r\n";
             }
         } else {
-            $out = ((is_null($post_params)) ? (($byte_limit === 0) ? 'HEAD ' : 'GET ') : 'POST ') . escape_header($url2) . " HTTP/1.1\r\n";
+            $out = $http_verb . ' ' . escape_header($url2) . " HTTP/1.1\r\n";
         }
         $out .= 'Host: ' . $url_parts['host'] . "\r\n";
         $out .= $headers;
@@ -1961,7 +1967,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 }
 
 /**
- * Read in any HTTP headers from an HTTP line, that we probe for.
+ * Read in any HTTP headers that we probe for, from an HTTP line.
  *
  * @param  string $line The line
  *
@@ -1969,7 +1975,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
  */
 function _read_in_headers($line)
 {
-    global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME;
+    global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME, $HTTP_HEADERS;
 
     $matches = array();
     if (preg_match("#Content-Disposition: [^\r\n]*filename=\"([^;\r\n]*)\"\r\n#i", $line, $matches) != 0) {
@@ -2016,6 +2022,8 @@ function _read_in_headers($line)
             }
         }
     }
+
+    $HTTP_HEADERS[] = $line;
 }
 
 /**

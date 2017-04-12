@@ -30,14 +30,14 @@ function cor_prepare()
     require_code('input_filter');
     $allowed_partners = get_allowed_partner_sites();
     if (in_array(preg_replace('#^.*://([^:/]*).*$#', '${1}', $_SERVER['HTTP_ORIGIN']), $allowed_partners)) {
-        header('Access-Control-Allow-Origin: ' . escape_header($_SERVER['HTTP_ORIGIN']));
+        header('Access-Control-Allow-Origin: ' . /*escape_header  function not needed and may not be loaded yet*/($_SERVER['HTTP_ORIGIN']));
 
         if ((isset($_SERVER['REQUEST_METHOD'])) && ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')) {
             header('Access-Control-Allow-Credentials: true');
 
             // Send pre-flight response
             if (isset($_SERVER['ACCESS_CONTROL_REQUEST_HEADERS'])) {
-                header('Access-Control-Allow-Headers: ' . escape_header($_SERVER['ACCESS_CONTROL_REQUEST_HEADERS']));
+                header('Access-Control-Allow-Headers: ' . /*escape_header  function not needed and may not be loaded yet*/($_SERVER['ACCESS_CONTROL_REQUEST_HEADERS']));
             }
             $methods = 'GET,POST,PUT,HEAD,OPTIONS';
             if (isset($_SERVER['ACCESS_CONTROL_REQUEST_HEADERS'])) {
