@@ -1705,12 +1705,9 @@ function get_page_name()
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     if (($page == '') && ($ZONE !== null)) {
-        $page = cms_srv('QUERY_STRING');
-        if ((strpos($page, '=') !== false) || ($page == '')) {
-            $page = $ZONE['zone_default_page'];
-            if ($page === null) {
-                $page = '';
-            }
+        $page = $ZONE['zone_default_page'];
+        if ($page === null) {
+            $page = '';
         }
     }
     if (strpos($page, '..') !== false) {

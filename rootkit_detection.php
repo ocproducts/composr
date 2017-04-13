@@ -15,6 +15,11 @@
 
 /*EXTRA FUNCTIONS: mysqli\_.+*/
 
+// Fixup SCRIPT_FILENAME potentially being missing
+if ((empty($_SERVER['SCRIPT_FILENAME'])) && (empty($_ENV['SCRIPT_FILENAME']))) {
+    $_SERVER['SCRIPT_FILENAME'] = __FILE__;
+}
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);

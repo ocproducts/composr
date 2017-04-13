@@ -573,7 +573,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         $username = function_exists('do_lang') ? do_lang('UNKNOWN') : 'Unknown';
     }
 
-    $url = cms_srv('SCRIPT_NAME') . '?' . cms_srv('QUERY_STRING');
+    $url = cms_srv('REQUEST_URI');
     $post = '';
     foreach ($_POST as $key => $val) {
         if (!is_string($val)) {
