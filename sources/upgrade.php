@@ -1412,10 +1412,10 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
     if ($dh !== false) {
         if ($rela == '') {
             $old_addons_now_gone = array(
-                'sources/hooks/systems/addon_registry/core_installation_uninstallation.php',
+                'sources/hooks/systems/addon_registry/core_installation_uninstallation.php', // LEGACY
             );
             $modules_moved_intentionally = array(
-                'collaboration/pages/modules/filedump.php',
+                'collaboration/pages/modules/filedump.php', // LEGACY
             );
             foreach (array_merge($old_addons_now_gone, $modules_moved_intentionally) as $x) {
                 if (file_exists(get_file_base() . '/' . $x)) {
@@ -1433,7 +1433,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
         sort($dir_files);
         foreach ($dir_files as $file) {
-            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE)) {
+            if (should_ignore_file($rela . $file, IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE)) {
                 continue;
             }
 
@@ -1764,9 +1764,8 @@ function version_specific()
                 '# type=&quot;curved&quot;#' => '',
                 '#side_root_galleries#' => 'side_galleries',
                 '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
-                '#\[attachment[^\[\]]*\]url__([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media]$1[/media]',
+                '#\[attachment([^\[\]]*)\]url_([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media$1]$2[/media]',
                 '#\{\$OCF#' => '{$CNS',
-                '#\[attachment([^\[]*)\]url_([^\[]*)\[/attachment\]#' => '[media$1]$2[/media]',
             );
             perform_search_replace($reps);
         }

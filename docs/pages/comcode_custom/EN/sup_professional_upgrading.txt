@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Professional upgrading[/title]
 
-This tutorial provides a professional process for updating customer website(s).
+This tutorial provides a professional process for updating customer website(s). Steps here may also be useful for professional website "tune ups".
 
 [staff_note]Remove LEGACY parts about ocPortal[/staff_note]It is only intended for programmers who are experienced in the use of Composr.
 
@@ -195,6 +195,10 @@ sudo chmod -R 777 .
 | If you're updating from ocPortal then find all non-default files containing this regexp [tt][^\x00-\x7F][/tt] and re-save them as utf-8
 | The regexp finds non-ASCII files, so you don't have to re-save every single file
 |-
+! {$INC,step_num}{$GET,step_num}
+| If you're updating from ocPortal then do this regexp replace in the the [tt].sql[/tt] file: [tt]\[attachment([^\[\]]*)\]url_([^\[\]]*)\[/attachment[^\[\]]*\][/tt] --> [tt][media$1]$2[/media][/tt]
+| The regexp changes old URL attachments (which are now 100% non-supported in Composr) to new media tags
+|-
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | Import the SQL dump into your local MySQL installation, in a database named [tt]client_<codename>[/tt], using the command line [tt]mysql[/tt] client
 | [code="Bash"]
@@ -305,8 +309,23 @@ disable_content_translation();
 [/code]
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
-| If jumping across versions run through the "Correct MySQL schema issues (advanced)" cleanup tool (Admin Zone > Tools > Website Cleanup Tools) to find and resolve any unexpected issues that might have developed
+| If jumping across versions run through the "Correct MySQL schema issues (advanced)" cleanup tool (Admin Zone > Tools > Website cleanup tools) to find and resolve any unexpected issues that might have developed
 | Don't just trust the SQL given, check it really is correct to repair the problems found.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Run some cleanup tools
+| Go to Admin Zone > Tools > Website cleanup tools, run "Sync for lost disk content"; if you're really enthusiastic also "Find orphaned uploads" and "Broken URLs"
+|-
+! {$INC,step_num}{$GET,step_num}
+| Delete some empty directories that may have been left over (Composr only tracks alien files, not directories)
+| This will find empty directories, only delete with care:
+[code="Bash"]
+find . -type d -empty
+[/code]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Consider replacing all the tar files in [tt]addons/imports[/tt] so you're sure they're fresh
+| If you download a [url="custom upgrade package"]http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=10.0.0[/url] you can find all the TAR files in it (the [i]from[/i] version number in the URL is irrelevant)
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Do a git commit
@@ -315,10 +334,6 @@ cd <webroot>/<codename>
 git add .
 git commit -a -m "Finished cleanup and quarantine"
 [/code]
-|-
-! {$INC,step_num}{$GET,step_num}
-| Consider replacing all the tar files in [tt]addons/imports[/tt] so you're sure they're fresh
-| If you download a [url="custom upgrade package"]http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=10.0.0[/url] you can find all the TAR files in it (the [i]from[/i] version number in the URL is irrelevant)
 |-
 !
 ! [left][i]Rebuild custom code and design[/i][/left]
@@ -342,7 +357,7 @@ git commit -a -m "Finished cleanup and quarantine"
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Do final local testing, particular some embedded links may need reconfiguring if upgrading from ocPortal, as the Composr display defaults are different
-|
+| Go through testing page by page, and also at least get a feel for content (such as news articles) working well
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Do a git commit

@@ -1328,6 +1328,8 @@ class Hook_addon_registry_core
             'sources/incoming_uploads.php',
             'themes/default/images/uploader/cancelbutton.gif',
             'themes/default/images/uploader/index.html',
+            'uploads/repimages/index.html',
+            'uploads/repimages/.htaccess',
             'uploads/incoming/index.html',
             'uploads/incoming/.htaccess',
             'uploads/.htaccess',

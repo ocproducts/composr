@@ -89,7 +89,7 @@ function sitemap_script_loading()
 
     $max_recurse_depth = get_param_integer('max_recurse_depth', $requesting_root ? 1 : 2/*need children of requested level*/) + 1 /*So we know whether to show expansion option*/;
     $node = retrieve_sitemap_node(
-        $page_link,
+        ($page_link === null) ? '' : $page_link,
         /*$callback=*/null,
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,

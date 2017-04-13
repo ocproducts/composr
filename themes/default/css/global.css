@@ -645,10 +645,10 @@ header h1 {
 	padding: 7px 0 7px 0;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
-			text-align: {!en_right};
+			text-align: {!en_right}; /* Goes on own line in fixed width mode, due to lack of space */
 		/*{+END}*/
 		/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
-			float: {!en_right};
+			float: {!en_right}; /* Sits beside title on non-fixed width */
 		/*{+END}*/
 		margin-left: 0.5em;
 	/*{+END}*/
