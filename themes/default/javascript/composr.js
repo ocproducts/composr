@@ -8101,7 +8101,8 @@
         },
 
         handleTreeClick: function (event, automated) {// Not called as a method
-            var element = $cms.dom.$id(this.object.name);
+            var element = $cms.dom.$id(this.object.name),
+                xml_node;
             if (element.disabled || this.object.busy) {
                 return false;
             }
@@ -8116,7 +8117,7 @@
             var expanding = (html_node.style.display != 'block');
 
             if (expanding) {
-                var xml_node = this.object.getElementByIdHack(clicked_id, 'c');
+                xml_node = this.object.getElementByIdHack(clicked_id, 'c');
                 xml_node.setAttribute('expanded', 'true');
                 var real_clicked_id = xml_node.getAttribute('serverid');
                 if (typeof real_clicked_id !== 'string') {
@@ -8148,7 +8149,7 @@
                 expand_button.title = expand_button.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
                 expand_button.alt = expand_button.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
             } else {
-                var xml_node = this.object.getElementByIdHack(clicked_id, 'c');
+                xml_node = this.object.getElementByIdHack(clicked_id, 'c');
                 xml_node.setAttribute('expanded', 'false');
                 html_node.style.display = 'none';
 
@@ -8199,8 +8200,12 @@
                 var that_selected_id, that_xml_node, that_type;
                 for (i = 0; i < all_a.length; i++) {
                     that_type = this.getAttribute('id').charAt(5 + this.object.name.length);
-                    if (that_type == 'r') that_type = 'c';
-                    if (that_type == 's') that_type = 'e';
+                    if (that_type == 'r') {
+                        that_type = 'c';
+                    }
+                    if (that_type == 's') {
+                        that_type = 'e';
+                    }
 
                     if (all_a[i].getAttribute('id').substr(5 + this.object.name.length, that_type.length) == that_type) {
                         that_selected_id = (this.object.use_server_id) ? all_a[i].getAttribute('serverid') : all_a[i].getAttribute('id').substr(7 + this.object.name.length);

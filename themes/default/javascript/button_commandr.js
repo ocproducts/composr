@@ -26,15 +26,19 @@ function load_commandr() {
     }
 
     // Loaded
-    if ((window.$cms.doAjaxRequest) && (window.commandr_command_response !== undefined)) {
+    if (window.$cms.doAjaxRequest && (window.commandr_command_response !== undefined)) {
         $cms.ui.confirmSession(
             function (result) {
                 // Remove "loading" indicator from button
                 var img = document.getElementById('commandr_img');
                 var tmp_element = document.getElementById('commandr_img_loader');
-                if (tmp_element) tmp_element.parentNode.removeChild(tmp_element);
+                if (tmp_element) {
+                    tmp_element.parentNode.removeChild(tmp_element);
+                }
 
-                if (!result) return;
+                if (!result) {
+                    return;
+                }
 
                 // Set up Commandr window
                 var commandr_box = document.getElementById('commandr_box');
@@ -54,8 +58,7 @@ function load_commandr() {
                     $cms.dom.html(commandr_box, $cms.loadSnippet('commandr'));
                 }
 
-                if (commandr_box.style.display == 'none') // Showing Commandr again
-                {
+                if (commandr_box.style.display == 'none')  {// Showing Commandr again
                     commandr_box.style.display = 'block';
 
                     if (img) {
@@ -83,9 +86,7 @@ function load_commandr() {
                     }
 
                     document.getElementById('commandr_command').focus();
-                }
-                else // Hiding Commandr
-                {
+                } else {// Hiding Commandr
                     if (img) {
                         img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
                         if (img.srcset !== undefined) {
