@@ -77,8 +77,12 @@ function personalise_paths(table) {
 !
 |-
 ! {$INC,step_num}{$GET,step_num}
+| Check for any special circumstances
+| If a multi-site-network or a third-party forum is involved, or other third-party integrations, extra consideration for compatibility will be needed
+|-
+! {$INC,step_num}{$GET,step_num}
 | Make sure the website owner is aware that an upgrade cost doesn't include training for functionality changes
-| Customers need to be aware of costs, if you don't protect yourself you could have a customer expecting you to include days of free training for what you're only invoicing as a few hours of work.
+| Customers need to be aware of costs, if you don't protect yourself you could have a customer expecting you to include days of free training for what you're only invoicing as a few hours of work. Customers also need to be aware that things may change, including features being removed (link them to any announcement about this)
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Download all the website files to your local machine, under [tt]<webroot>/<codename>[/tt]
@@ -270,7 +274,7 @@ git commit -a -m "Initial commit"
 | https://compo.sr/news/view/announcements/upgrading-from-ocportal.htm
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Do the alien file scan and delete files from the prior version
+| Do the integrity checker scan and delete files from the prior version
 |
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
@@ -322,6 +326,8 @@ disable_content_translation();
 [code="Bash"]
 find . -type d -empty
 [/code]
+On a Mac it is more tricky, as [tt].DS_Store[/tt] files may be littered around. You can use http://www.tempel.org/FindEmptyFolders.
+(The upgrader does delete empty directories caused by alien file removal.)
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Consider replacing all the tar files in [tt]addons/imports[/tt] so you're sure they're fresh
@@ -346,6 +352,7 @@ git commit -a -m "Finished cleanup and quarantine"
 ! {$INC,step_num}{$GET,step_num}
 | Use a diff tool to find all the changes made in the old theme (you put them in [tt]_old_code[/tt]).
 | You can usually diff-compare against the [tt].editfrom[/tt] files, otherwise you'll need to go back and compare with the originals from the version you are upgrading from.
+There is a [tt]themechanges.sh[/tt] script which may be useful, but realistically you probably just want to do it yourself on a file-by-file basis.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Use a diff tool to find all the changes made in code files you put in [tt]_old_code[/tt].

@@ -18,6 +18,10 @@
  * @package    core
  */
 
+/*
+REMEMBER to keep db_export.sh updated too
+*/
+
 /**
  * Standard code module initialisation function.
  *

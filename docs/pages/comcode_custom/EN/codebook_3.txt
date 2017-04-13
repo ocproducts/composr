@@ -979,7 +979,7 @@ This section is not designed as primary documentation for the tools. Those tools
 ! Call method
 |-
 | [tt]delete_alien_files.php[/tt]
-| Provide pastable commands for deleting non-bundled addons, and alien files not related to installed addons.
+| Provide pastable commands for deleting non-bundled addons, and alien files not related to installed addons. To be honest you probably are better off using the integrity checker from the upgrader, copy & pasting and changing into terminal commands via a regexp. Never-the-less this script may be useful for some people, especially ones wanting to take it as a starting point for something more custom.
 | [tt]meta_toolkit[/tt]
 | Command-line via PHP interpretor
 |-

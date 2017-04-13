@@ -70,7 +70,7 @@ Steps:
  - removing any files from previous versions of Composr that are no longer required
  - removing any files relating to bundled addons that you have previously uninstalled
 [*] upgrading your database; this is the most key step, which upgrades all modules and blocks, as well as doing some cross-system updates, and updating Conversr -- if any errors happen they'll be displayed and you should note them down and report them, but Composr will generally try and continue anyway if there are minor errors happening
-[*] performing an automatic theme upgrade (if available for the version jump you're doing)
+[*] performing an automatic theme upgrade (if available for the version jump you're doing -- we usually have this disabled because it is not something we can support well currently)
 [*] clearing caches
 [*] re-opening your website
 [/list]
@@ -98,9 +98,18 @@ You must provide the master password to access the Composr upgrade tool.
 The integrity checker is placed in the "Step 4" of the table under the "Upgrade steps" section in upgrader tools page.
 
 The integrity checker will display the following kinds of file (if any):
- - Files that are actually missing and need uploading
- - Newer or modified files
- - Alien files (unrecognised files)
+ - Files that are actually missing and need uploading:
+  - Missing the original, no override ("These files are actually missing and need uploading")
+  - Missing the original, has an override ("The following original files to these overridden files are actually missing")
+ - Overrides blocking original files ("The following files have been superseded by new versions")
+ - Modified files:
+  - Newer than the original ("These files do not match the ones bundled with your version, but claim to be newer")
+  - Older than the original ("These files are outdated")
+  - Older than the original, [i]and[/i] with an override blocking the original ("The following non-overridden files are outdated")
+ - Files that maybe shouldn't be there:
+  - Alien files (unrecognised files)
+  - Files from non-installed addons
+  - Files that have since been moved
 
 If you want to prove to yourself how it works, create a random php file named [tt]testfile.php[/tt] in the [tt]sources[/tt] directory of Composr and run the integrity checker again. Now it will list the new [tt]testfile.php[/tt] file in the results.
 
@@ -110,6 +119,23 @@ The integrity checker has the ability to get rid of the alien files. Check (tick
 
 Obviously you should be careful deleting files, as there may be legitimate reasons you have put alien files there. The upgrader is smart enough to recognise files from old versions and automatically tick (check) those, leaving the ones totally unrecognised unticked (unchecked).
 
+[title="2"]Upgrade packages[/title]
+
+Generally you upgrade using the package generated from the news announcement of the new version. A custom package for the version you are upgrading from will be generated. It is not safe to extract these packages manually because they contain the files for all non-bundled addons, regardless of what you still have installed or not. You do not want to get files from non-installed addons back into your system, it can cause many issues. When you install the package from within the upgrader it is smart enough to know what to extract, verses what to package into the non-bundled addon TARs that were archived to disk when you uninstalled those addons.
+
+In the file transfer step of the upgrader you can see there is also a link to generate a custom upgrader specifically for your site. This link is more customised than the above because the package is generated with knowledge of what bundled addons you have installed, and thus it is possible to manually extract it safely. The package also contains a full set of non-bundled addon TARs so that you know anything you re-install will be for the version you are currently running, not an older version.
+
+We may very rarely provide something called an "omni-upgrader", which can be used to upgrade from any version. We did this when we switched from ocPortal to Composr, as our entire infrastructure got cycled over, breaking the normal upgrade workflow.
+
+[title="2"]Auxiliary features[/title]
+
+There are some extra features in the upgrader that aren't a part of the normal flow:
+ - Checking/fixing necessary file permissions
+ - Checking/fixing excessive file permissions
+ - Delete all files from a specific addon
+ - Opening up the site in Safe Mode
+ - Clearing caches (okay, this is a part of the normal flow, but it is very useful even if not doing an upgrade because you don't need a working Admin Zone to do it)
+
 [concepts
  1_key="upgrader.php"        1_value="The script that manages the upgrading process"
  2_key="Integrity checker"   2_value="Tool to find unexpected files in the Composr installation"
@@ -117,12 +143,12 @@ Obviously you should be careful deleting files, as there may be legitimate reaso
 
 [title="2"]See also[/title]
 
+ - [page="_SEARCH:sup_professional_upgrading"]Professional upgrading[/page]
  - [page="_SEARCH:sup_site_cloning"]Cloning your site[/page]
  - [page="_SEARCH:tut_install"]Basic Installation[/page]
  - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_backup"]Backing up your site[/page]
  - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
  - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]
- - [page="_SEARCH:sup_professional_upgrading"]Professional upgrading[/page]
 
 {$SET,tutorial_tags,Upgrading,core_upgrader,Maintenance,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Important background information that will help you keep your website up-to-date with the latest Composr.}[block]main_tutorial_rating[/block]

@@ -1531,13 +1531,36 @@ function _integrity_scan()
         $val = post_param_string($key);
         if (strpos($val, ':') !== false) {
             $bits = explode(':', $val);
+
             if ($bits[0] == 'delete') {
                 afm_delete_file($bits[1]);
             } elseif ($bits[0] == 'move') {
                 afm_delete_file($bits[2]);
                 afm_move($bits[1], $bits[2]);
             }
+
+            // Now delete empty directories
+            $_subdirs = explode('/', dirname($bits[1]));
+            $subdirs = array();
+            $buildup = '';
+            foreach ($_subdirs as $subdir) {
+                if ($buildup != '') {
+                    $buildup .= '/';
+                }
+                $buildup .= $subdir;
+
+                $subdirs[] = $buildup;
+            }
+            foreach (array_reverse($subdirs) as $subdir) {
+                $files = @scandir(get_file_base() . '/' . $subdir);
+                if (($files !== false) && (count(array_diff($files, array('..', '.', '.DS_Store'))) == 0)) {
+                    @unlink(get_file_base() . '/' . $subdir . '/.DS_Store');
+                    @rmdir(get_file_base() . '/' . $subdir);
+                }
+            }
         }
+
+        unset($_POST[$key]); // We don't want it propagating with buttons, annoying and confusing
     }
 }
 
