@@ -437,8 +437,17 @@ If you are using a reverse proxy then it's important PHP sees the correct IP add
 A solution is to set PHP's [tt]auto_prepend_file[/tt] option to a script like the following:
 [code="PHP"]
 <?php
-$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-$_SERVER['HTTP_X_FORWARDED_FOR'] = '';
+
+if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	$_SERVER['HTTP_X_FORWARDED_FOR'] = '';
+}
+[/code]
+This assumes that the server is only accessible from your reverse proxy. If not, you need to white-list the [tt]$_SERVER['REMOTE_ADDR'][/tt] values that may trust the [tt]$_SERVER['HTTP_X_FORWARDED_FOR'][/tt] setting.
+
+Some web server configurations don't appear to support [tt]auto_prepend_file[/tt], in which case you can include by referencing it in [tt]_config.php[/tt]:
+[code="PHP"]
+require(__DIR__ . '/_reverse_proxy_fix.php');
 [/code]
 
 [title="3"]Geographic distribution of servers[/title]

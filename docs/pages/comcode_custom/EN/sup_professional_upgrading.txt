@@ -211,6 +211,13 @@ mysql client_<codename> < _temp/*.sql
 [/code]
 |-
 ! {$INC,step_num}{$GET,step_num}
+| If you're updating from ocPortal then add some settings to [tt]_config.php[/tt]/[tt]info.php[/tt]:
+| [code="PHP"]
+$SITE_INFO['self_learning_cache'] = '1';
+$SITE_INFO['session_cookie'] = 'cms_session__<something_random>';
+[/code]
+|-
+! {$INC,step_num}{$GET,step_num}
 | Reconfigure [tt]_config.php[/tt]/[tt]info.php[/tt] to have local details by putting local ones at the end of the file
 | [code="PHP"]
 $SITE_INFO['base_url'] = 'http://localhost/client_<codename>';
@@ -228,10 +235,6 @@ $SITE_INFO['dev_mode'] = '0';
 $SITE_INFO['admin_password'] = '';
 $SITE_INFO['backdoor_ip'] = '127.0.0.1';
 [/code]
-|-
-! {$INC,step_num}{$GET,step_num}
-| Add [tt]$SITE_INFO['self_learning_cache'] = '1';[/tt] to [tt]_config.php[/tt]/[tt]info.php[/tt]
-|
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Change [tt]mysql[/tt] to [tt]mysqli[/tt] in [tt]_config.php[/tt]/[tt]info.php[/tt] if upgrading a really old site
