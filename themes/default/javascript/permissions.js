@@ -38,7 +38,9 @@ function show_permission_setting(ob, event) {
 function cleanup_permission_list(name) {
     // We always try and cleanup the 'custom' option if we're choosing something else (because it's confusing for it to stay there)
     var custom_option = document.getElementById(name + '_custom_option');
-    if (custom_option) custom_option.parentNode.removeChild(custom_option);
+    if (custom_option) {
+        custom_option.parentNode.removeChild(custom_option);
+    }
 }
 
 function copy_permission_presets(name, value, just_track) {

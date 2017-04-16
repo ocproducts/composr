@@ -112,12 +112,19 @@ function _poll_for_notifications(raw_ajax_result) {
 function display_alert(notification) {
     var id = notification.getAttribute('id');
 
-    if (window.notifications_already_presented[id] !== undefined) return; // Already handled this one
+    if (window.notifications_already_presented[id] !== undefined) {
+        // Already handled this one
+        return;
+    }
 
     // Play sound, if requested
     var sound = notification.getAttribute('sound');
-    if (!sound) sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
-    if ($cms.readCookie('sound', 'off') === 'off') sound = 'off';
+    if (!sound) {
+        sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
+    }
+    if ($cms.readCookie('sound', 'off') === 'off') {
+        sound = 'off';
+    }
     var notification_code = notification.getAttribute('notification_code');
     if (sound == 'on' && typeof window.detect_change == 'undefined' || notification_code != 'ticket_reply' && notification_code != 'ticket_reply_staff') {
         if (window.soundManager !== undefined) {
@@ -144,7 +151,7 @@ function display_alert(notification) {
         title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
         var body = '';//notification.getAttribute('rendered'); Looks ugly
         if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
-            var notification_wrapper = window.notify.createNotification(title, {'icon': icon, 'body': body, 'tag': $cms.$SITE_NAME + '__' + id});
+            var notification_wrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.$SITE_NAME + '__' + id });
             if (notification_wrapper) {
                 window.addEventListener('focus', function () {
                     notification_wrapper.close();

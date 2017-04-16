@@ -34,6 +34,7 @@
                     try {
                         view = new $cms.views[el.dataset.view](params, viewOptions);
                         $cms.viewInstances[$cms.uid(view)] = view;
+                        //$cms.log('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '"', view);
                     } catch (ex) {
                         $cms.error('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
                     }
@@ -63,7 +64,7 @@
                     hasBaseEl = !!document.querySelector('base');
 
                 anchors.forEach(function (anchor) {
-                    var href = anchor.getAttribute('href') || '';
+                    var href = strVal(anchor.getAttribute('href'));
                     // So we can change base tag especially when on debug mode
                     if (hasBaseEl && href.startsWith('#') && (href !== '#!')) {
                         anchor.setAttribute('href', window.location.href.replace(/#.*$/, '') + href);

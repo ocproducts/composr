@@ -666,6 +666,10 @@ function set_up_comcode_autocomplete(name, wysiwyg) {
 		return;
 	}
 
+	if (!window.jQuery || !window.jQuery.fn.sew) {
+		$cms.error('set_up_comcode_autocomplete(): jQuery.fn.sew plugin is not loaded');
+	}
+
 	$cms.dom.registerMouseListener();
 
     window.jQuery('#' + name).sew({

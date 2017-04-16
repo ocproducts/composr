@@ -80,9 +80,7 @@
         });
     };
 
-    $cms.templates.notificationsTree = function notificationsTree() {
-        var tableRow = this;
-
+    $cms.templates.notificationsTree = function notificationsTree(params, tableRow) {
         $cms.dom.on(tableRow, 'click', '.js-click-copy-advanced-notifications', function () {
             advanced_notifications_copy_under(tableRow);
         });
@@ -115,17 +113,13 @@
         }
     };
 
-    $cms.templates.notificationWeb = function notificationWeb() {
-        var container = this;
-
+    $cms.templates.notificationWeb = function notificationWeb(params, container) {
         $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
             poll_for_notifications(true, true);
         });
     };
 
-    $cms.templates.notificationTypes_item = function notificationTypes_item() {
-        var container = this;
-
+    $cms.templates.notificationTypes_item = function notificationTypes_item(params, container) {
         $cms.dom.on(container, 'click', '.js-click-handle-ntype-tick', function (e, checkbox) {
             var raw = +checkbox.dataset.tpRaw || 0,
                 parentRow = $cms.dom.closest(checkbox, 'tr'),

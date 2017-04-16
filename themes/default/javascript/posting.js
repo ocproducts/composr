@@ -81,7 +81,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         var tag = 'attachment';
 
         var show_overlay, defaults = {};
-        if (filepath.indexOf('fakepath') == -1) // iPhone gives c:\fakepath\image.jpg, so don't use that
+        if (filepath.indexOf('fakepath') === -1) // iPhone gives c:\fakepath\image.jpg, so don't use that
             defaults.description = filepath; // Default caption to local file path
 
         /*== START ATTACHMENT_UI_DEFAULTS.js ==*/
@@ -303,7 +303,9 @@ function do_input_menu(field_name) {
                     '{!javascript:ENTER_MENU_CAPTION;^}',
                     '',
                     function (vb) {
-                        if (!vb) vb = '';
+                        if (!vb) {
+                            vb = '';
+                        }
 
                         var add;
                         var element = document.getElementById(field_name);
@@ -452,9 +454,11 @@ function do_input_hide(field_name) {
 }
 
 function do_input_thumb(field_name, va) {
-    if (window.insert_textbox === undefined) return;
+    if (window.insert_textbox === undefined) {
+        return;
+    }
 
-    if (window.start_simplified_upload !== undefined && document.getElementById(field_name).name != 'message') {
+    if ((window.start_simplified_upload !== undefined) && (document.getElementById(field_name).name != 'message')) {
         var test = start_simplified_upload(field_name);
         if (test) return;
     }
@@ -525,15 +529,18 @@ function do_input_attachment(field_name) {
         var c;
         for (var i = 0; i < val.length; i++) {
             c = val.charAt(i);
-            if ((c != '0') && (c != '1') && (c != '2') && (c != '3') && (c != '4') && (c != '5') && (c != '6') && (c != '7') && (c != '8') && (c != '9'))
+            if ((c != '0') && (c != '1') && (c != '2') && (c != '3') && (c != '4') && (c != '5') && (c != '6') && (c != '7') && (c != '8') && (c != '9')) {
                 return false;
+            }
         }
         return true;
     }
 }
 
 function do_input_url(field_name, va) {
-    if (window.insert_textbox === undefined) return;
+    if (window.insert_textbox === undefined) {
+        return;
+    }
 
     $cms.ui.prompt(
         '{!javascript:ENTER_URL;^}',
@@ -829,7 +836,10 @@ function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
 
     // If we've found something to restore then invite user to restore it
     biggest_length_data = biggest_length_data.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').replace(/&nbsp;/g, ' '); // Strip HTML and new lines
-    if (biggest_length_data.length > 100) biggest_length_data = biggest_length_data.substr(0, 100) + '...'; // Trim down if needed
+    if (biggest_length_data.length > 100) { // Trim down if needed
+        biggest_length_data = biggest_length_data.substr(0, 100) + '...';
+    }
+
     $cms.ui.confirm(
         '{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggest_length_data,
         function (result) {

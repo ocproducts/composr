@@ -4014,6 +4014,7 @@
             if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
                 try {
                     ret = $cms.behaviors[name].attach(context, settings);
+                    //$cms.log('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
                 } catch (e) {
                     $cms.error('$cms.attachBehaviors(): Error while attaching behavior \'' + name + '\' to', context, '\n', e);
                 }
@@ -4685,10 +4686,17 @@
          */
         delegateEvents: function (events) {
             var key, method, match;
-            events || (events = this.events);
-            if (typeof events !== 'function') {
+
+            if (typeof events === 'function') {
+                events = events.call(this);
+            } else if ((events == null) && (typeof this.events === 'function')) {
+                events = this.events();
+            }
+
+            if (typeof events !== 'object') {
                 return this;
             }
+
             this.undelegateEvents();
             for (key in events) {
                 method = events[key];
@@ -4709,6 +4717,7 @@
          * @method
          */
         delegate: function (eventName, selector, listener) {
+            //$cms.log('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
             $cms.dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },

@@ -1,8 +1,6 @@
 (function ($cms) {
     'use strict';
 
-    var encodeUC = encodeURIComponent;
-
     $cms.templates.buttonScreenItem = function buttonScreenItem() {};
 
     $cms.templates.cropTextMouseOver = function (params, el) {
@@ -59,7 +57,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            $cms.loadSnippet('comments&id=' + encodeUC(id) + '&ids=' + encodeUC(ids) + '&serialized_options=' + encodeUC(window.comments_serialized_options) + '&hash=' + encodeUC(window.comments_hash), null, function (ajax_result) {
+            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.comments_serialized_options) + '&hash=' + encodeURIComponent(window.comments_hash), null, function (ajax_result) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $cms.dom.$('#post_children_' + id);
