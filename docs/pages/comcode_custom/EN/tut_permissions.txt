@@ -28,7 +28,7 @@ You cannot set:
 
 [surround]
 [media width="150" description="Making mass changes in the Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/permissions_mass_checkbox_change.gif[/media]
-[media width="150" description="The Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/permissions_tree_editor.png[/media]
+[media width="150" description="The Permissions Tree Editor (with \"Single public zone\" off)" float="right"]data_custom/images/docs/tut_permissions/permissions_tree_editor.png[/media]
 To edit permissions in Composr you can either use:
  - The Permissions Tree Editor
  - Disparate configuration (described in sections below)
@@ -40,7 +40,9 @@ Admin Zone > Security > Permissions Tree Editor
 
 Another feature of the Permissions Tree Editor is the ability to make batch selections and apply permissions to everything selected. You can do this in the conventional way using the Ctrl/Shift keys (Option/Shift keys on a mac).
 
-Note that the Sitemap shown in the Permission Tree Editor depends on the "Single public zone" configuration option. If this option is on then the default content pages will be under the Welcome zone, and no Site zone will be shown.
+Note that the Sitemap shown in the Permission Tree Editor depends on the "Single public zone" configuration option.
+If this option is on then the default content pages will be under the Welcome zone, and no Site zone will be shown. The Sitemap will start from Root.
+If this option is off then the default content pages will be under the Site zone. Because the Welcome zone is almost empty the Sitemap will start from the Welcome zone. 
 
 The remainder details the separate permission setting interfaces in different parts of Composr. The concepts from below are relevant to using the Permissions Tree Editor, as they detail what controls are embedded at different points within the tree. We do recommend using the Permissions Tree Editor directly though, unless you happen to be working directly with the zone/category/page at the time of setting permissions for it.
 [/surround]

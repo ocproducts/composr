@@ -1558,9 +1558,9 @@ function _integrity_scan()
                     @rmdir(get_file_base() . '/' . $subdir);
                 }
             }
-        }
 
-        unset($_POST[$key]); // We don't want it propagating with buttons, annoying and confusing
+            unset($_POST[$key]); // We don't want it propagating with buttons, annoying and confusing
+        }
     }
 }
 
@@ -1789,6 +1789,8 @@ function version_specific()
                 '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
                 '#\[attachment([^\[\]]*)\]url_([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media$1]$2[/media]',
                 '#\{\$OCF#' => '{$CNS',
+                ':misc' => ':browse',
+                'type=misc' => 'type=browse',
             );
             perform_search_replace($reps);
         }

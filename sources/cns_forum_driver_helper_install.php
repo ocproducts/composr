@@ -44,7 +44,7 @@ function _helper_install_create_custom_field($this_ref, $name, $length, $locked 
     require_code('cns_members_action');
 
     $name = 'cms_' . $name;
-    $id = $this_ref->connection->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => $name));
+    $id = $this_ref->connection->query_select_value_if_there('f_custom_fields', 'id', array($this_ref->connection->translate_field_ref('cf_name') => $name));
     if (is_null($id)) {
         if (is_null($default)) {
             $default = (strpos($name, 'points') !== false) ? '0' : '';

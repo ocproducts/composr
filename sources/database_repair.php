@@ -418,10 +418,15 @@ class DatabaseRepair
                         $expected_is_primary = (strpos($field_type, '*') !== false);
                         $expected_null_ok = (strpos($field_type, '?') !== false) && (multi_lang_content() || strpos($field_type, '_TRANS') === false);
                         $expected_is_auto_increment = ($field_type_trimmed == 'AUTO');
-                        $bad_type = ($expected_field_type_raw != $existent_details['type']) && (($table_name != 'f_member_custom_fields') || (preg_match('#^field_\d+#', $field_name) == 0));
+                        $_expected = $this->cleanup_mysql_field_type($expected_field_type_raw);
+                        $_existent = $this->cleanup_mysql_field_type($existent_details['type']);
+                        $bad_type =
+                            ($_expected != $_existent) &&
+                            (($_expected != 'int') || ($_existent != 'longtext') || (strpos($field_type_trimmed, '_TRANS') === false))/*multi-lang-content difference*/ &&
+                            (($table_name != 'f_member_custom_fields') || (preg_match('#^field_\d+#', $field_name) == 0));
                         $bad_null_ok = ($expected_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($expected_is_auto_increment != $existent_details['is_auto_increment']);
-                        if (/*$bad_type || MySQL may report in different ways so cannot compare*/$bad_null_ok || $bad_is_auto_increment) {
+                        if ($bad_type || $bad_null_ok || $bad_is_auto_increment) {
                             $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, (preg_match('#__(text_parsed|source_user)$#', $field_name) == 0) && (isset($meta_tables[$table_name][$field_name])));
                             $needs_changes = true;
                         }
@@ -490,6 +495,23 @@ class DatabaseRepair
         }
 
         return $needs_changes;
+    }
+
+    /**
+     * Convert a MySQL field type to something we can compare against.
+     *
+     * @param  ID_TEXT $raw_type Field type
+     * @return ID_TEXT Field tpye
+     */
+    function cleanup_mysql_field_type($raw_type)
+    {
+        $raw_type = strtolower($raw_type);
+        $raw_type = preg_replace('#\(.*#', '', $raw_type);
+        $raw_type = preg_replace('# .*#', '', $raw_type);
+        $raw_type = str_replace('integer', 'int', $raw_type);
+        $raw_type = str_replace('tinyint', 'int', $raw_type);
+        $raw_type = str_replace('real', 'double', $raw_type);
+        return $raw_type;
     }
 
     /**

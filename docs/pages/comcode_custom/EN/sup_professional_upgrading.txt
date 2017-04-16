@@ -73,7 +73,7 @@ function personalise_paths(table) {
 [/html]
 |-
 !
-! [left][i]Downloading and assessment[/i][/left]
+! [left][i]Downloading, assessing, re-configuring[/i][/left]
 !
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -329,7 +329,10 @@ disable_content_translation();
 [code="Bash"]
 find . -type d -empty
 [/code]
-On a Mac it is more tricky, as [tt].DS_Store[/tt] files may be littered around. You can use http://www.tempel.org/FindEmptyFolders.
+On a Mac it is more tricky, as [tt].DS_Store[/tt] files may be littered around. You can use http://www.tempel.org/FindEmptyFolders or run this command first:
+[code="Bash"]
+find . -name .DS_Store -exec rm {} \;
+[/code]
 (The upgrader does delete empty directories caused by alien file removal.)
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -362,6 +365,10 @@ There is a [tt]themechanges.sh[/tt] script which may be useful, but realisticall
 | You'll need to compare overrides against the originals from the version you are upgrading from. Custom code and overridden code will need to be assessed to make sure it still is valid. By the time you're done you should be able to erase the [tt]_old_code[/tt] directory.
 |-
 ! {$INC,step_num}{$GET,step_num}
+| Run CQC.
+| Run the Code Quality Checker on any custom code. Do this by copying [tt]data_custom/functions.dat[/tt] from a Composr github pull, and then run the CQC out of that github pull while reconfiguring the scan folder to the [tt]<webroot>/<codename>[/tt] directory.
+|-
+! {$INC,step_num}{$GET,step_num}
 | Users may be used to some different configuration if upgrading from ocPortal, maybe set [tt]simplified_attachments_ui[/tt] to [tt]0[/tt]. US users may also like [tt]yeehaw[/tt] to be set to [tt]1[/tt].
 |
 |-
@@ -386,11 +393,17 @@ git commit -a -m "Finished code rebuild"
 | If the site being upgraded has database content changing regularly (perhaps member activity), you need to update your local database so you have those changes. Skip this and the next step if you do not.
 |-
 ! {$INC,step_num}{$GET,step_num}
-| Do one of 3 things to get the database back in sync
-| 1) Identify that nothing needs synching. If you are using MyISAM then Commandr can tell when tables were recently changed with [tt]ls /database[/tt].
-2) Take a new database backup and use a diff against your very first database backup, then manually copy those changes through. This is only a good idea if you expect a tiny number of simple changes. Of course in most cases you can ignore changes to logging tables.
-3) Take a new database backup, repeat steps from this tutorial marked &dagger; to re-upgrade that database. It should not take so long given the file upgrading you've already done will still apply. You'll need to re-open the site of course, given you closed the live site just before backing it up.
-The last option is the one you will most likely want to use.
+| Do one of 3 things to get the database back in sync:[list="1"]
+| [*] Identify that nothing needs synching. If you are using MyISAM then Commandr can tell when tables were recently changed with [tt]ls /database[/tt].
+[*] Take a new database backup and use a diff against your very first database backup, then manually copy those changes through. This is only a good idea if you expect a tiny number of simple changes. Of course in most cases you can ignore changes to logging tables.
+[*] Install MySQL utilities and Connector/Python, put your [tt]_temp/stage1.sql[/tt] file into [tt]client_<codename>_old[/tt] then run something like:
+[code="Bash"]
+mysqldbcompare --server1=remote_user@remote_host --server2=root@localhost remote_database:client_<codename>_old --run-all-tests --difftype sql --disable-binary-logging
+[/code]
+...to get SQL to do an update. Then carefully filter it to what you really want, then run it.
+[*] Take a new database backup, repeat steps from this tutorial marked &dagger; to re-upgrade that database. It should not take so long given the file upgrading you've already done will still apply. You'll need to re-open the site of course, given you closed the live site just before backing it up.
+[/list]
+Options 3 or 4 are the most likely you will want to use.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | If the site being upgraded has files changing regularly (perhaps edited Comcode pages), download those changed files and extract locally
@@ -594,6 +607,14 @@ if ($res === true) {
 | [code="PHP"]
 $SITE_INFO['backdoor_ip'] = 'TODO';
 [/code]
+[box="Smarter configuration management"]
+If you want to have the exact same configuration file running across multiple machines, you can code in varying details using a [tt]switch[/tt] statement...
+[code="PHP"]
+switch (gethostname()) {
+	...
+}
+[/code]
+[/box]
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Set file permissions on live if necessary
