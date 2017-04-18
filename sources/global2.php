@@ -27,20 +27,7 @@
  */
 function init__global2()
 {
-    // Fixup some inconsistencies in parameterisation on different PHP platforms. See phpstub.php for info on what environmental data we can rely on.
-    if ((!isset($_SERVER['SCRIPT_NAME'])) && (!isset($_ENV['SCRIPT_NAME']))) { // May be missing on GAE
-        if (strpos($_SERVER['PHP_SELF'], '.php') !== false) {
-            $_SERVER['SCRIPT_NAME'] = preg_replace('#\.php/.*#', '.php', $_SERVER['PHP_SELF']); // Same as PHP_SELF except without path info on the end
-        } else {
-            $_SERVER['SCRIPT_NAME'] = '/' . $_SERVER['SCRIPT_FILENAME']; // In GAE SCRIPT_FILENAME is actually relative to the app root
-        }
-    }
-    if ((!isset($_SERVER['REQUEST_URI'])) && (!isset($_ENV['REQUEST_URI']))) { // May be missing on IIS
-        $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-        if (count($_GET) > 0) {
-            $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
-        }
-    }
+    fixup_bad_php_env_vars();
 
     safe_ini_set('log_errors', '1');
     if ((GOOGLE_APPENGINE) && (!appengine_is_live())) {
@@ -67,7 +54,7 @@ function init__global2()
 
     // Closed site message
     if ((is_file('closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
-        if ((strpos($_SERVER['PHP_SELF'], 'upgrader.php') === false) && (strpos($_SERVER['PHP_SELF'], 'execute_temp.php') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
+        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
                 header('HTTP/1.0 503 Service Temporarily Unavailable');
             }
@@ -506,6 +493,50 @@ function init__global2()
     // For performance testing
     if (get_value('monitor_slow_urls', '0') !== '0') {
         register_shutdown_function('monitor_slow_urls');
+    }
+}
+
+/**
+ * PHP's environment can be a real mess across servers. Cleanup the best we can.
+ * See phpstub.php for info on what environmental data we can rely on.
+ * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also
+ */
+function fixup_bad_php_env_vars()
+{
+    // We can trust these to be there
+    $php_self = empty($_SERVER['PHP_SELF']) ? $_ENV['PHP_SELF'] : $_SERVER['PHP_SELF'];
+    $script_filename = empty($_SERVER['SCRIPT_FILENAME']) ? $_ENV['SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME']; // If was not here, was added by our front-end controller script
+
+    // Now derive missing ones...
+
+    if ((empty($_SERVER['SCRIPT_NAME'])) && (empty($_ENV['SCRIPT_NAME']))) {
+        if (strpos($php_self, '.php') !== false) {
+            $_SERVER['SCRIPT_NAME'] = preg_replace('#\.php/.*#', '.php', $php_self); // Same as PHP_SELF except without path-info on the end
+        } else { // Special case for GAE
+            $_SERVER['SCRIPT_NAME'] = '/' . $script_filename; // In GAE SCRIPT_FILENAME is actually relative to the app root
+        }
+    }
+
+    if ((empty($_SERVER['REQUEST_URI'])) && (empty($_ENV['REQUEST_URI']))) {
+        if (isset($_SERVER['REDIRECT_URL'])) {
+            $_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
+            if (count($_GET) != 0) {
+                $_SERVER['REQUEST_URI'] .= ((strpos($_SERVER['REQUEST_URI'], '?') === false) ? '?' : '&') . http_build_query($_GET);
+            }
+        } else {
+            if (strpos($php_self, '.php') !== false) {
+                $_SERVER['REQUEST_URI'] = $php_self;
+            } else { // Special case for GAE
+                $_SERVER['SCRIPT_NAME'] = '/' . $script_filename; // In GAE SCRIPT_FILENAME is actually relative to the app root
+            }
+            if (count($_GET) != 0) {
+                $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
+            }
+        }
+    }
+
+    if ((empty($_SERVER['QUERY_STRING'])) && (empty($_ENV['QUERY_STRING']))) {
+        $_SERVER['REQUEST_URI'] = http_build_query($_GET);
     }
 }
 
@@ -1272,17 +1303,16 @@ function get_base_url($https = null, $zone_for = null)
     global $SITE_INFO;
     if ((!isset($SITE_INFO)) || (empty($SITE_INFO['base_url']))) { // Try and autodetect the base URL if it's not configured
         $domain = get_domain();
-        $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
-        $php_self = dirname(cms_srv('PHP_SELF'));
-        if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
-            $php_self = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $php_self);
+        $script_name_path = dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : ''));
+        if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($script_name_path, $GLOBALS['RELATIVE_PATH']) !== false)) {
+            $script_name_path = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $script_name_path);
         } else {
             $cnt = substr_count($GLOBALS['RELATIVE_PATH'], '/');
             for ($i = 0; $i <= $cnt; $i++) {
-                $php_self = dirname($php_self);
+                $script_name_path = dirname($script_name_path);
             }
         }
-        $SITE_INFO['base_url'] = (tacit_https() ? 'https://' : 'http://') . $domain . str_replace('%2F', '/', rawurlencode($php_self));
+        $SITE_INFO['base_url'] = (tacit_https() ? 'https://' : 'http://') . $domain . str_replace('%2F', '/', rawurlencode($script_name_path));
     }
 
     // Lookup

@@ -60,7 +60,7 @@ class Hook_cron_cns_welcome_emails
             } // By usergroup
             elseif ((!is_null($mail['w_usergroup'])) && (get_forum_type() == 'cns')) {
                 $where = ' WHERE join_time>' . strval($last_cron_time - $send_seconds_after_joining) . ' AND join_time<=' . strval($time_now - $send_seconds_after_joining) . ' AND um.usergroup_id=' . strval($mail['w_usergroup']);
-                $query = 'SELECT m.id as id, m.m_email_address AS m_email_address,m.m_username AS m_username,um.join_time AS m_join_time FROM ' . get_table_prefix() . 'f_group_join_log as um JOIN ' . get_table_prefix() . 'f_members as m ON m.id=um.member_id ' . $where;
+                $query = 'SELECT m.id as id, m.m_email_address AS m_email_address,m.m_username AS m_username,um.join_time AS m_join_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_join_log as um JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members as m ON m.id=um.member_id ' . $where;
                 $_members = $GLOBALS['FORUM_DB']->query($query);
                 foreach ($_members as $member) {
                     $ok = false;
@@ -90,7 +90,7 @@ class Hook_cron_cns_welcome_emails
                 if (addon_installed('unvalidated')) {
                     $where .= ' AND m_validated=1';
                 }
-                $query = 'SELECT m_email_address,m_username,id,m_join_time FROM ' . get_table_prefix() . 'f_members' . $where;
+                $query = 'SELECT m_email_address,m_username,id,m_join_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members' . $where;
                 $members = array_merge($members, $GLOBALS['FORUM_DB']->query($query));
             }
 

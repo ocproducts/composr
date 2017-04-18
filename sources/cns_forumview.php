@@ -602,7 +602,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {
-    if ((array_key_exists('last_post_id', $topic)) && (!is_null($topic['last_post_id']))) {
+    if ((array_key_exists('last_post_id', $topic)) && (!is_null($topic['last_post_id'])) && (get_bot_type() === null)) {
         $last_post_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['last_post_id']), get_module_zone('topicview'));
         $last_post_url->attach('#post_' . strval($topic['last_post_id']));
         if (!is_null($topic['last_member_id'])) {

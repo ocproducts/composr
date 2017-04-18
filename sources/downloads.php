@@ -144,7 +144,11 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
 
     $may_download = has_privilege(get_member(), 'download', 'downloads', array(strval($row['category_id'])));
 
-    $download_url = generate_dload_url($row['id'], $row['url_redirect'] != '');
+    if (array_key_exists('id', $row)) {
+        $download_url = generate_dload_url($row['id'], $row['url_redirect'] != '');
+    } else {
+        $download_url = '';
+    }
     
     // Final template
     if (($full_img_url != '') && (url_is_local($full_img_url))) {
@@ -330,7 +334,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
     $children[0]['breadcrumbs'] = $breadcrumbs;
 
     // Children of this category
-    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('id', 'category'), array('parent_id' => $category_id), '', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
+    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('id', 'category'), array('parent_id' => $category_id), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('category') . ' ASC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         $rows = array();
     }

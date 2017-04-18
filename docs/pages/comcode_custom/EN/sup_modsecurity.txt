@@ -1,4 +1,4 @@
-[title sub="Written by temp1024 and Chris Graham (ocProducts)"]Composr Supplementary: Advanced site structure and flow[/title]
+[title sub="Written by temp1024 and Chris Graham (ocProducts)"]Composr Supplementary: ModSecurity[/title]
 
 ModSecurity is an "application firewall" which is often installed by Linux-based webhosts.
 
@@ -19,11 +19,12 @@ It is not usually easy to know if ModSecurity is blocking you. You will usually 
 
 ModSecurity works by a rule set, and rules are typically given a unique identifying number. There are various rule sets out there. An official one is maintained, but also some organisations maintain their own rule sets for 'value add' within their own firewall products based around ModSecurity. What follows is an explanation of common false-positives that Composr can trigger...
 
-[title="2"]300018 -- URLs inside URLs[/title]
+[title="2"]300018 / 340165 -- URLs inside URLs[/title]
 
 This rule blocks URLs being passed as parameters within URLs. Composr regularly does this when you need to be redirected back to where you were at when performing an action. For example, if you are logging in, it encodes where to redirect you back to via a URL parameter. The recommend page facility also uses it.
 
-This only occurs if not running a URL Scheme, because the rule works by detecting [tt].php[/tt], and it won't do this with URL Schemes.
+300018 only occurs if not running a URL Scheme, because the rule works by detecting [tt].php[/tt], and it won't do this with URL Schemes.
+340165 may apply more broadly.
 
 We could probably work around this problem in Composr by encoding the parameter so that it no longer looks like a URL, but this would be messy and have to work across both JavaScript and PHP within Composr, so the complexity cost is too high.
 
@@ -35,9 +36,13 @@ To workaround you could manually remove the code from the editor's source view, 
 
 It is likely that there are rules out there that block the WYSIWYG editor completely, but IDs for these aren't known at this time.
 
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
+
 [title="2"]340014 / 390904 -- Commandr[/title]
 
 Commandr has a virtual unix filesystem, and stores the current directory in a cookie. If you enter the "/etc" directory, this rule will think you are trying to hack into the server's real filesystem.
+
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
 
 [title="2"]300076 / 340007 / 340011 / 340014 / 340016 / 340017 / 340021 / 340027 / 340029 / 340095 / 340118 / 340128 / 340131 / 340133 / 340144 / 340147 / 340148 / 340157 / 340164 / 350147 / 350148 / 380006 / 380018 / 380019 / 380020 / 380021 / 390709 / 390715 / 390801 / 390810 / 393449 -- Code Editor[/title]
 
@@ -46,14 +51,20 @@ This occurs when using the code editor to edit php code. If you try and save cod
 [title="2"]340016 / 340149 / 350147 / 350148 / 390707 -- Translate/re-phrase Composr[/title]
 Using the [b]Translate/re-phrase Composr[/b] feature.
 
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
+
 [title="2"]340095 -- XML Import[/title]
 Importing XML data via [b]Admin Zone > Tools > XML data management > XML Import[/b].
+
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
 
 [title="2"]380800 -- PHP Info[/title]
 Using the [b]Tools > PHP Info[/b] feature.
 
 [title="2"]340009 -- Site options[/title]
 Saving changes on [b]Admin Zone > Configuration > Site options[/b] page.
+
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
 
 ----
 

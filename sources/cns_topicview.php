@@ -187,7 +187,7 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         $post['poster_highlighted_name'] = $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_highlighted_name');
 
         // Signature
-        if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option') == '0')) && ($_postdetails['p_skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
+        if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option', true) === '0')) && ($_postdetails['p_skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
             global $SIGNATURES_CACHE;
             if (array_key_exists($_postdetails['p_poster'], $SIGNATURES_CACHE)) {
                 $sig = $SIGNATURES_CACHE[$_postdetails['p_poster']];
@@ -333,7 +333,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
         // Some general info
         require_code('seo2');
-        list(, $meta_description) = _seo_meta_find_data(array(), get_translated_text($topic_info['p_post']));
+        list(, $meta_description) = _seo_meta_find_data(array(), get_translated_text($topic_info['p_post'], $GLOBALS['FORUM_DB']));
         $out = array(
             'num_views' => $topic_info['t_num_views'],
             'num_posts' => $topic_info['t_cache_num_posts'],

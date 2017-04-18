@@ -210,9 +210,11 @@ SET GLOBAL MAX_STATEMENT_TIME=10000;
 [/code]
 (this is for 10 seconds, i.e. 10,000 milliseconds)
 
-[title="3"]Workaround 4: Auto-kill slow searches[/title]
+We actually automatically set this on a session level when you do a search, so there's no need to do anything if you're running MySQL 5.7+.
 
-Another possible workaround might be to switch to InnoDB tables in MySQL 5.6+/MariaDB. However this is untested, and won't stop slow queries (it'll just stop them locking the whole table and slowing other users down).
+[title="3"]Workaround 4: Use InnoDB[/title]
+
+Another workaround is to switch to InnoDB tables in MySQL 5.6+/MariaDB. It won't stop slow queries, it'll just stop them locking the whole table and slowing other users down; your server will still suffer the load, but so long as your server is not overloaded that is likely not an issue.
 
 [concepts
  1_key="Boolean search"   1_value="A search carried out by testing for exact word or phrasal matches to a number of criteria"

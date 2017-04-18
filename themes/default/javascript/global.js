@@ -3049,13 +3049,25 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 				var a_name=xml_doc.attributes[a].name,a_value=xml_doc.attributes[a].value,evt=(a_name.substr(0,2)=='on');
 				if (!evt) {
 					switch (a_name) {
-						case 'class': this_node.className=a_value; break;
-						case 'for': this_node.htmlFor=a_value; break;
-						default: this_node.setAttribute(a_name,a_value);
+						case 'class':
+							this_node.className=a_value;
+							break;
+						case 'for':
+							this_node.htmlFor=a_value;
+							break;
+						default:
+							try {
+								this_node.setAttribute(a_name,a_value);
+							}
+							catch (e) {};
+							break;
 					}
 				} else
 				{
-					this_node[a_name]=eval('var x=function(event) { '+a_value+' }; x;');
+					try {
+						this_node[a_name]=eval('var x=function(event) { '+a_value+' }; x;');
+					}
+					catch (e) {};
 				}
 			}
 

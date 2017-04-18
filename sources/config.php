@@ -263,7 +263,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Translated...
-    $value = is_string($option['c_value_trans']) ? /*LEGACY*/$option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
+    $value = is_string($option['c_value_trans']) ? /*LEGACY*/get_translated_text(multi_lang_content() ? intval($option['c_value_trans']) : $option['c_value_trans']) : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
     $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {

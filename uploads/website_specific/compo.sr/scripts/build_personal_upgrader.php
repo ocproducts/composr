@@ -14,6 +14,11 @@
  * @package    composr_homesite
  */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+if ((empty($_SERVER['SCRIPT_FILENAME'])) && (empty($_ENV['SCRIPT_FILENAME']))) {
+    $_SERVER['SCRIPT_FILENAME'] = __FILE__;
+}
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = realpath(__FILE__);
@@ -85,7 +90,7 @@ ksort($addons);
 
 list($tar_path, $err) = make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons);
 if ($tar_path === null) {
-    warn_exit($err);
+    warn_exit(protect_from_escaping($err));
 }
 
 header('Content-Type: application/octet-stream; authoritative=true;');

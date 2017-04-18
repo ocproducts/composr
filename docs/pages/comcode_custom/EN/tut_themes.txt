@@ -293,6 +293,10 @@ You can delete a theme from the bottom of its edit form.
 
 Many more tips and points of guidance are included in the [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design tutorial[/page].
 
+[title="2"]Copying themes[/title]
+
+You may copy themes between sites, or duplicate them, but make sure you empty the template cache before using a copied theme. The cache files hard-code file paths, URL paths, and the theme name.
+
 [concepts
  1_key="Theme"      1_value="Your theme is the sum of your CSS, images, and templates, which work together to create the style and layout for your site."
  2_key="CSS"        2_value="Your CSS is the element of your theme that specifically controls the colours and styles on your site, and has limited layout functionality"

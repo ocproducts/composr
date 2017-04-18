@@ -577,6 +577,10 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
 
     $was_already_installed = addon_installed($addon, true);
 
+    require_code('developer_tools');
+    destrictify();
+    set_mass_import_mode();
+
     // Extract files
     $directory = tar_get_directory($tar);
     if ($do_files) {
@@ -743,6 +747,10 @@ function uninstall_addon($addon, $clear_caches = true)
     require_code('zones2');
     require_code('zones3');
     require_code('abstract_file_manager');
+
+    require_code('developer_tools');
+    destrictify();
+    set_mass_import_mode();
 
     // Remove addon info from database, modules, blocks, and files
     uninstall_addon_soft($addon);

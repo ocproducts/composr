@@ -973,6 +973,13 @@ class Module_topicview
         require_code('cns_general');
         cns_set_context_forum($topic_info['forum_id']);
 
+        if (addon_installed('tickets')) {
+            require_code('tickets');
+            $is_ticket_forum = is_ticket_forum($topic_info['forum_id']);
+        } else {
+            $is_ticket_forum = false;
+        }
+
         $topic_tpl = do_template('CNS_TOPIC_SCREEN', array(
             '_GUID' => 'bb201d5d59559e5e2bd60e7cf2e6f7e9',
             'TITLE' => $this->title,
@@ -1000,6 +1007,7 @@ class Module_topicview
             'THREADED' => $threaded,
             'FORUM_ID' => is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']),
             'IS_ALREADY_READ' => cns_has_read_topic($id),
+            'TICKET_FORUM' => $is_ticket_forum,
         ));
 
         require_code('templates_internalise_screen');

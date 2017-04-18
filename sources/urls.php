@@ -101,22 +101,7 @@ function get_self_url_easy($script_name_if_cli = false)
 
     $protocol = tacit_https() ? 'https' : 'http';
     $self_url = $protocol . '://' . cms_srv('HTTP_HOST');
-    $ruri = cms_srv('REQUEST_URI');
-    if ($ruri != '') {
-        if (substr($ruri, 0, 1) != '/') {
-            $self_url .= '/';
-        }
-        $self_url .= $ruri;
-    } else {
-        $s = cms_srv('PHP_SELF');
-        if (substr($s, 0, 1) != '/') {
-            $self_url .= '/';
-        }
-        $self_url .= $s;
-        if ((array_key_exists('QUERY_STRING', $_SERVER)) && ($_SERVER['QUERY_STRING'] != '')) {
-            $self_url .= '?' . $_SERVER['QUERY_STRING'];
-        }
-    }
+    $self_url .= cms_srv('REQUEST_URI');
     return $self_url;
 }
 

@@ -34,7 +34,7 @@ function init__menus()
  * Take a menu identifier, and return a menu created from it.
  *
  * @param  ID_TEXT $type The type of the menu (determines which templates to use)
- * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a stored menu, or syntax to load from the Sitemap)
+ * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a editable menu, or syntax to load from the Sitemap)
  * @param  boolean $silent_failure Whether to silently return blank if the menu does not exist
  * @param  boolean $apply_highlighting Whether to apply current-screen highlighting
  * @return array A pair: The generated Tempcode of the menu, the menu nodes
@@ -103,9 +103,9 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 }
 
 /**
- * Take a menu identifier, and return the stored menu.
+ * Take a menu identifier, and return the editable menu.
  *
- * @param  SHORT_TEXT $menu The menu identifier to use (the name of a stored menu)
+ * @param  SHORT_TEXT $menu The menu identifier to use (the name of a editable menu)
  * @return array The menu branch structure
  *
  * @ignore

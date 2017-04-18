@@ -9,10 +9,12 @@
 		<div class="non_accessibility_redundancy">
 			<div class="float_surrounder">
 				<div class="buttons_group cns_buttons_screen">
-					{+START,INCLUDE,NOTIFICATION_BUTTONS}
-						NOTIFICATIONS_TYPE=cns_topic
-						NOTIFICATIONS_ID={ID}
-						NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+					{+START,IF,{$NOT,{TICKET_FORUM}}}
+						{+START,INCLUDE,NOTIFICATION_BUTTONS}
+							NOTIFICATIONS_TYPE=cns_topic
+							NOTIFICATIONS_ID={ID}
+							NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+						{+END}
 					{+END}
 					{BUTTON_SCREENS}
 				</div>
@@ -148,10 +150,12 @@
 		<div class="float_surrounder">
 			{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
 				<div class="buttons_group cns_buttons_screen">
-					{+START,INCLUDE,NOTIFICATION_BUTTONS}
-						NOTIFICATIONS_TYPE=cns_topic
-						NOTIFICATIONS_ID={ID}
-						NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+					{+START,IF,{$NOT,{TICKET_FORUM}}}
+						{+START,INCLUDE,NOTIFICATION_BUTTONS}
+							NOTIFICATIONS_TYPE=cns_topic
+							NOTIFICATIONS_ID={ID}
+							NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+						{+END}
 					{+END}
 					{BUTTON_SCREENS}
 				</div>
@@ -185,6 +189,8 @@
 
 	{$REVIEW_STATUS,topic,{ID}}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
+	{+START,IF_NON_EMPTY,{FORUM_ID}}
+		{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
+	{+END}
 </div>
 

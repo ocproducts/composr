@@ -83,7 +83,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 }
                 $usergroup_subscription_row = $usergroup_subscription_rows[$usergroup_subscription_id];
                 $usergroup_subscription_title = get_translated_text($usergroup_subscription_row['s_title']);
-                $usergroup_subscription_description = get_translated_tempcode('f_usergroup_subs', $usergroup_subscription_row, 's_description');
+                $usergroup_subscription_description = get_translated_tempcode('f_usergroup_subs', $usergroup_subscription_row, 's_description', $GLOBALS['FORUM_DB']);
 
                 $usergroup_id = $usergroup_subscription_row['s_group_id'];
                 $usergroup_rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), array('id' => $usergroup_id), '', 1);
