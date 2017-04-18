@@ -481,7 +481,7 @@ class Module_admin_config
                     case 'line':
                     case 'transline':
                         $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(escape_html($default)));
-                        $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation_with_default, $name, get_option($name), $required));
+                        $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation_with_default, $name, get_option($name), $required, null, 100000));
                         break;
 
                     case 'text':
@@ -524,7 +524,7 @@ class Module_admin_config
                         break;
 
                     case 'tick':
-                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, escape_html($default ? do_lang('YES') : do_lang('NO')));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, escape_html(($default == '1') ? do_lang('YES') : do_lang('NO')));
                         $out .= static_evaluate_tempcode(form_input_tick($human_name, $explanation_with_default, $name, get_option($name) == '1'));
                         break;
 

@@ -503,7 +503,7 @@ class DatabaseRepair
      * @param  ID_TEXT $raw_type Field type
      * @return ID_TEXT Field tpye
      */
-    function cleanup_mysql_field_type($raw_type)
+    private function cleanup_mysql_field_type($raw_type)
     {
         $raw_type = strtolower($raw_type);
         $raw_type = preg_replace('#\(.*#', '', $raw_type);

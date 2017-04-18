@@ -2,7 +2,7 @@
 
 <div class="box box___standardbox_accordion accordion_trayitem{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}
-		<h3 class="toggleable_tray_title" onclick="this.getElementsByTagName('a')[0].onclick(event);">
+		<h3 class="toggleable_tray_title" onclick="/*Access-note: checked*/this.getElementsByTagName('a')[0].onclick(event);">
 			{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open}
 				{+START,IF,{$JS_ON}}<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: {$STRIP_TAGS,{TITLE}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a> {+END}
 			{+END}
