@@ -49,7 +49,7 @@ function _helper_install_create_custom_field($this_ref, $name, $length, $locked 
         if (is_null($default)) {
             $default = (strpos($name, 'points') !== false) ? '0' : '';
         }
-        $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required);
+        $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required, 0, 0, null, '', 0, '', true);
     }
     return !is_null($id);
 }

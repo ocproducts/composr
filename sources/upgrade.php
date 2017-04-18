@@ -1791,6 +1791,10 @@ function version_specific()
                 '#\{\$OCF#' => '{$CNS',
                 ':misc' => ':browse',
                 'type=misc' => 'type=browse',
+                ':product=' => ':type_code=',
+                '&product=' => '&type_code=',
+                '&amp;product=' => '&amp;type_code=',
+                'solidborder' => 'results_table',
             );
             perform_search_replace($reps);
         }

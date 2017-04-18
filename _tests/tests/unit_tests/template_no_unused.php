@@ -143,7 +143,6 @@ class template_no_unused_test_set extends cms_test_case
             'RESULTS_cart_TABLE',
             'RESULTS_products_TABLE',
             'RESULTS_TABLE',
-            'RESULTS_TABLE_cart_ENTRY',
             'RESULTS_TABLE_cart_FIELD',
             'RESULTS_TABLE_ENTRY',
             'RESULTS_TABLE_FIELD',

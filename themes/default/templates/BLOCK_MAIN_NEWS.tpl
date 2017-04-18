@@ -14,7 +14,9 @@
 				{CONTENT}
 
 				{+START,IF_NON_EMPTY,{BRIEF}}
-					<h3>{$?,{BLOG},{!BLOG_OLDER_NEWS},{!OLDER_NEWS}}</h3>
+					{+START,IF_NON_EMPTY,{CONTENT}}
+						<h3>{$?,{BLOG},{!BLOG_OLDER_NEWS},{!OLDER_NEWS}}</h3>
+					{+END}
 
 					{BRIEF}
 				{+END}

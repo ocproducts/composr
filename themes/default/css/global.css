@@ -2347,6 +2347,9 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
+.compacted_subbox_stream>.raw_ajax_grow_spot>h3 {
+	margin: 1em 5px;
+}
 .compacted_subbox_stream .box {
 	border-top: 1px dotted {$GET,standard_border} !important;
 	border-left: 0;

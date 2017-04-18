@@ -189,7 +189,7 @@ sudo chmod -R 777 .
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | If you're updating from ocPortal then replace [tt]DEFAULT CHARSET=latin1[/tt] with [tt]DEFAULT CHARSET=utf8mb4[/tt] in the SQL dump
-| If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis.
+| If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis or install any new addons (as that will try and use [tt]utf8mb4[/tt] for new tables).
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
 | (Following directly from the above) Change [tt]utf8mb4[/tt] to [tt]utf8[/tt] for just the following tables: [tt]cms_addons[/tt], [tt]cms_f_saved_warnings[/tt], [tt]cms_gsp[/tt], [tt]cms_import_parts_done[/tt], [tt]cms_msp[/tt], [tt]cms_newsletter_subscribe[/tt], [tt]cms_theme_images[/tt], [tt]cms_tickets[/tt], and [tt]cms_wordfilter[/tt]
@@ -227,6 +227,7 @@ $SITE_INFO['db_site_user'] = 'root';
 $SITE_INFO['db_site_password'] = '';
 $SITE_INFO['debug_mode'] = '0';
 $SITE_INFO['dev_mode'] = '0';
+$SITE_INFO['no_email_output'] = '1';
 
 // These must not persist onto a live site,
 // they allow temporary unauthenticated
@@ -359,6 +360,10 @@ git commit -a -m "Finished cleanup and quarantine"
 | Use a diff tool to find all the changes made in the old theme (you put them in [tt]_old_code[/tt]).
 | You can usually diff-compare against the [tt].editfrom[/tt] files, otherwise you'll need to go back and compare with the originals from the version you are upgrading from.
 There is a [tt]themechanges.sh[/tt] script which may be useful, but realistically you probably just want to do it yourself on a file-by-file basis.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Fix for specific known theme changes.
+| Buttons and CSS classes have changed significantly since old versions of ocPortal, these may need reworking if the icons are directly used anywhere.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Use a diff tool to find all the changes made in code files you put in [tt]_old_code[/tt].

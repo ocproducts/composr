@@ -380,9 +380,18 @@ You can set HTTPS for a whole site via changing the base URL. In this situation 
 If you are on Apache then you can add this to your [tt].htaccess[/tt] file:
 [code="htaccess"]
 RewriteEngine on
+
 RewriteCond %{HTTPS} off
 RewriteCond %{REQUEST_METHOD} !POST
-RewriteRule ^(.*\.php.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+RewriteRule ^$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteRule ^.*\.(php|htm).*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteRule ^.*/pg/.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
 [/code]
 
 [title="3"]Secured zones[/title]

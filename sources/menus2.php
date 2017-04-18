@@ -100,7 +100,7 @@ function import_menu_csv($file_path = null)
     }
     fclose($myfile);
 
-    decache('side_stored_menu');
+    decache('menu');
 }
 
 /**
