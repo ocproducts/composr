@@ -900,11 +900,13 @@ function make_install_sql()
     // Remove caching
     require_code('database_relations');
     $table_purposes = get_table_purpose_flags();
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
     foreach ($table_purposes as $table => $purpose) {
         if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($conn->table_exists($table))) {
             $conn->query_delete($table);
         }
     }
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 
     // Build SQL dump
     require_code('database_toolkit');
