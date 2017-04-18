@@ -123,8 +123,13 @@ class Block_main_comcode_page_children
 
             $child['TITLE'] = $title;
             $child['PAGE'] = $child['the_page'];
-            $child['ZONE'] = get_comcode_zone($child['the_page']);
+            $child['ZONE'] = get_comcode_zone($child['the_page'], false);
             $child['ORDER'] = $child['p_order'];
+
+            if ($child['ZONE'] === null) {
+                unset($children[$i]);
+                continue;
+            }
 
             $children[$i] = $child;
         }

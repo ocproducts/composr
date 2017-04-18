@@ -614,9 +614,9 @@ class Module_galleries
         $sorting = do_template('PAGINATION_SORT', array('_GUID' => '148c9f69ea1640fb2a6d1f6ca2e201f2', 'SORT' => 'sort', 'URL' => $sort_url, 'SELECTORS' => $selectors));
 
         if ($myrow['flow_mode_interface'] == 1) {
-            return $this->do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $rep_image, $start, $max, $fullname, $sorting);
+            return $this->do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $rep_image, $start, $max, $fullname, $sorting, $myrow);
         } else {
-            return $this->do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $fullname, $sorting);
+            return $this->do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $fullname, $sorting, $myrow);
         }
     }
 
@@ -640,9 +640,10 @@ class Module_galleries
      * @param  integer $max The maximum number of child galleries we can display per page
      * @param  string $fullname The gallery title
      * @param  Tempcode $sorting Sorting UI
+     * @param  array $gallery_row The gallery row
      * @return Tempcode The UI
      */
-    public function do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $rep_image, $start, $max, $fullname, $sorting)
+    public function do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $rep_image, $start, $max, $fullname, $sorting, $gallery_row)
     {
         list($sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos) = $this->get_sort_order();
 
@@ -1001,6 +1002,10 @@ class Module_galleries
             'VIDEO_URL' => $submit_video_url,
             'MAY_DOWNLOAD' => $may_download,
             'CAT' => $cat,
+            'ACCEPT_IMAGES' => ($gallery_row['accept_images'] == 1),
+            'ACCEPT_VIDEOS' => ($gallery_row['accept_videos'] == 1),
+            'VIEWS' => strval($gallery_row['gallery_views']),
+            'OWNER' => ($gallery_row['g_owner'] === null) ? null : strval($gallery_row['g_owner']),
         ));
     }
 
@@ -1021,9 +1026,10 @@ class Module_galleries
      * @param  Tempcode $title The title of the page (our of get_screen_title)
      * @param  string $fullname The gallery title
      * @param  Tempcode $sorting Sorting UI
+     * @param  array $gallery_row The gallery row
      * @return Tempcode The UI
      */
-    public function do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $fullname, $sorting)
+    public function do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $fullname, $sorting, $gallery_row)
     {
         // Entries
         if (get_option('galleries_subcat_narrowin') == '1') {
@@ -1036,7 +1042,7 @@ class Module_galleries
         $video_select = get_param_string('video_select', '*');
         $sort = get_param_string('sort', get_option('galleries_default_sort_order'));
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_gallery_embed', array('param' => $cat_select, 'zone' => get_zone_name(), 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_regular_per_page'), 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module'));
+        $entries = do_block('main_gallery_embed', array('param' => $cat_select, 'zone' => get_zone_name(), 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_regular_per_page'), 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module', 'render_if_empty' => '1'));
 
         // Member gallery?
         $member_id = get_member_id_from_gallery_name($cat, null, true);
@@ -1066,6 +1072,10 @@ class Module_galleries
             'VIDEO_URL' => $submit_video_url,
             'MAY_DOWNLOAD' => $may_download,
             'ENTRIES' => $entries,
+            'ACCEPT_IMAGES' => ($gallery_row['accept_images'] == 1),
+            'ACCEPT_VIDEOS' => ($gallery_row['accept_videos'] == 1),
+            'VIEWS' => strval($gallery_row['gallery_views']),
+            'OWNER' => ($gallery_row['g_owner'] === null) ? null : strval($gallery_row['g_owner']),
         ));
     }
 

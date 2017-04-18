@@ -645,10 +645,10 @@ header h1 {
 	padding: 7px 0 7px 0;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
-			text-align: {!en_right};
+			text-align: {!en_right}; /* Goes on own line in fixed width mode, due to lack of space */
 		/*{+END}*/
 		/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
-			float: {!en_right};
+			float: {!en_right}; /* Sits beside title on non-fixed width */
 		/*{+END}*/
 		margin-left: 0.5em;
 	/*{+END}*/
@@ -1329,6 +1329,7 @@ div.red_alert, p.red_alert, .inline_wip_message {
 div.red_alert, p.red_alert {
 	border: 1px solid {$GET,light_error_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	overflow: hidden;
 }
 .inline_wip_message {
 	border: 1px solid {$GET,dark_border};
@@ -2142,6 +2143,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	z-index: 10000;
 	{$BETA_CSS_PROPERTY,opacity: 0.9;}
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	min-width: 6em;
 }
 .tooltip_ownlayout {
 	padding: 0.5em;
@@ -2150,7 +2152,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
 }
-.tooltip_ownlayout, .tooltip_nolayout td {
+.tooltip_ownlayout, .tooltip_nolayout th.de_th, .tooltip_nolayout td {
 	background-color: {$GET,area_faded_background};
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 }
@@ -2345,6 +2347,9 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .compacted_subbox_stream.box_inner {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
+}
+.compacted_subbox_stream>.raw_ajax_grow_spot>h3 {
+	margin: 1em 5px;
 }
 .compacted_subbox_stream .box {
 	border-top: 1px dotted {$GET,standard_border} !important;
@@ -3295,6 +3300,9 @@ ul.buttons_group, ul.associated_links_block_group {
 .fields_set_contents .constrain_field, .fields_set_contents input .wide_field {
 	display: inline;
 }
+.constrain_field + .constrain_field {
+	margin: 0.25em 0;
+}
 
 /*
 =========================
@@ -3399,6 +3407,9 @@ body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.
 
 .proceed_button {
 	text-align: center;
+}
+.proceed_button:last-child {
+	margin-bottom: 0;
 }
 div.proceed_button_left {
 	text-align: {!en_left};
@@ -4452,10 +4463,16 @@ a[rel="lightbox"] {
 	height: auto;
 }
 
+/* Wrap video code with <div class="responsive_video">...</div> if you want it responsive; jwplayer is doing this by default using its own JS though */
+.responsive_video video {
+	max-width: 100%;
+	height: auto;
+}
+
+/* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
 /*{+START,IF,{$MOBILE}}*/
 	.youtube_player {
-		float: none;
-		clear: both;
+		overflow: hidden;
 		width: 100%;
 		position: relative;
 		padding-bottom: 56.25%;
@@ -4672,6 +4689,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 .overlay {
 	overflow: visible;
 	border: 0;
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 }
 
 .overlay_close_button {

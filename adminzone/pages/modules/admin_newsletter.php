@@ -520,7 +520,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $GLOBALS['SITE_DB']->query($query);
 
         if (get_forum_type() == 'cns') {
-            $query = 'UPDATE ' . get_table_prefix() . 'f_members SET m_allow_emails_from_staff=0 WHERE ' . $delete_sql_members;
+            $query = 'UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_allow_emails_from_staff=0 WHERE ' . $delete_sql_members;
             $GLOBALS['FORUM_DB']->query($query);
         }
 

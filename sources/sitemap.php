@@ -527,7 +527,7 @@ abstract class Hook_sitemap_base
                 }
             }
 
-            if ($row === null) { // Get from stored menus?
+            if ($row === null) { // Get from editable menus?
                 $test = $GLOBALS['SITE_DB']->query_select('menu_items', array('*'), array('i_url' => $zone . ':' . $page), '', 1);
                 if (array_key_exists(0, $test)) {
                     $title = get_translated_tempcode('menu_items', $test[0], 'i_caption');

@@ -1615,10 +1615,12 @@ abstract class Standard_crud_module
             }
             */
 
-            if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
-                $url = make_string_tempcode(str_replace('__ID__', $id, get_param_string('redirect')));
-
-                return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
+            if (get_param_string('redirect', null) !== null) {
+                $_url = get_param_string('redirect');
+                if (strpos(str_replace(array(get_base_url(true), get_base_url(false)), array('', ''), $_url), 'view') === false) {
+                    $url = make_string_tempcode(str_replace('__ID__', $id, $_url));
+                    return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
+                }
             }
 
             $description = is_null($this->do_next_description) ? do_lang_tempcode($this->success_message_str) : $this->do_next_description;

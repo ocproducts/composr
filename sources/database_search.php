@@ -988,6 +988,10 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
     $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
 
+    if (strpos(get_db_type(), 'mysql') !== false) {
+        $db->query('SET SESSION MAX_EXECUTION_TIME=30000', null, null, true); // Only works in MySQL 5.7+
+    }
+
     // This is so for example catalogue_entries.php can use brackets in it's table specifier while avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
     $table_clause = $db->get_table_prefix() . (($table[0] == '(') ? (substr($table, 1)) : $table);
     if ($table[0] == '(') {

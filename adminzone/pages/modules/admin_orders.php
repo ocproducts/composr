@@ -249,7 +249,7 @@ class Module_admin_orders
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
             $cond .= ' AND (t1.id=' . strval(intval($search)) . ' OR t2.m_username LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\')';
-            $extra_join = ' JOIN ' . get_table_prefix() . 'f_members t2 ON t2.id=t1.c_member';
+            $extra_join = ' JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members t2 ON t2.id=t1.c_member';
         }
 
         $start = get_param_integer('start', 0);

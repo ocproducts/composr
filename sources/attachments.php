@@ -55,7 +55,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
     $attributes['wysiwyg_editable'] = ($tag == 'attachment_safe') ? '1' : '0';
     $attributes['filename'] = $attachment_row['a_original_filename'];
     if ((!array_key_exists('mime_type', $attributes)) || ($attributes['mime_type'] == '')) {
-        $attributes['mime_type'] = get_mime_type(get_file_extension($attachment_row['a_original_filename']), $as_admin || has_privilege($source_member, 'comcode_dangerous'));
+        $attributes['mime_type'] = get_mime_type(get_file_extension($attachment_row['a_original_filename']), true);
     }
 
     // Work out description
@@ -80,6 +80,11 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         } else {
             $attributes['num_downloads'] = symbol_tempcode('ATTACHMENT_DOWNLOADS', array(strval($attachment_row['id']), '0'));
         }
+
+        if ($is_dat) {
+            $url_safe = $url->evaluate(); // We can't show file-path to a .dat, can't be downloaded and looks ugly
+        }
+
         $keep = symbol_tempcode('KEEP');
         $url->attach($keep);
         if (get_option('anti_leech') == '1') {
@@ -109,7 +114,8 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         $source_member,
         MEDIA_TYPE_ALL,
         ((array_key_exists('type', $attributes)) && ($attributes['type'] != '')) ? $attributes['type'] : null,
-        $attachment_row['a_url']
+        $attachment_row['a_url'],
+        $attachment_row['a_original_filename']
     );
     if (is_null($ret)) {
         $ret = do_template('WARNING_BOX', array('_GUID' => '1e8a6c605fb61b9b5067a9d627506654', 'WARNING' => do_lang_tempcode('comcode:INVALID_ATTACHMENT')));

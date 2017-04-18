@@ -278,7 +278,11 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         $db_types = collapse_2d_complexity('m_name', 'm_type', $this_ref->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table_name)));
 
         $fields_full = array();
+        $sized = false;
         foreach ($fields as $field) {
+            if (strpos($field, '(') !== false) {
+                $sized = true;
+            }
             $_field = preg_replace('#\(.*\)$#', '', $field);
 
             $db_type = isset($db_types[$_field]) ? $db_types[$_field] : null;
@@ -293,7 +297,9 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             }
             $fields_full[$field] = $db_type;
         }
-        _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
+        if (!$sized) {
+            _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
+        }
     }
     //}
 
@@ -321,7 +327,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
         if (strpos($field, '(') === false) {
             $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
-            if ((substr($index_name, 0, 1) != '#') && (!is_null($db_type)) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
+            if ((substr($index_name, 0, 1) != '#') && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
                 if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
                     $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
                 }
@@ -625,11 +631,11 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
     }
     $final_type = str_replace(array('*', '?'), array('', ''), $_final_type);
     $extra = '';
-    if (($final_type != 'LONG_TEXT') || (strpos(get_db_type(), 'mysql') === false)) {
+    if ((($final_type != 'LONG_TEXT') || (strpos(get_db_type(), 'mysql') === false)) && (($_final_type[0] != '?') || ($default !== null))) {
         $extra = is_null($default) ? 'DEFAULT NULL' : ('DEFAULT ' . (is_string($default) ? ('\'' . db_escape_string($default) . '\'') : strval($default)));
     }
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
-    $query .= ' ADD ' . $name . ' ' . $type_remap[$final_type] . ' ' . $extra . ' ' . $tag;
+    $query .= ' ADD ' . $name . ' ' . str_replace(' auto_increment', ' PRIMARY KEY auto_increment', $type_remap[$final_type]) . ' ' . $extra . ' ' . $tag;
 
     return array($query, $default_st);
 }

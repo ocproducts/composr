@@ -115,6 +115,7 @@ class Hook_addon_registry_core_cleanup_tools
             'lang/EN/cleanup.ini',
             'sources/hooks/systems/cleanup/.htaccess',
             'sources_custom/hooks/systems/cleanup/.htaccess',
+            'sources/hooks/systems/cleanup/lost_disk_content.php',
             'sources/hooks/systems/cleanup/admin_theme_images.php',
             'sources/hooks/systems/cleanup/blocks.php',
             'sources/hooks/systems/cleanup/broken_urls.php',

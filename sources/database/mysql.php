@@ -98,7 +98,7 @@ class Database_Static_mysql extends Database_super_mysql
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysql_set_charset')) {
-            mysql_set_charset($SITE_INFO['database_charset'], $db);
+            @mysql_set_charset($SITE_INFO['database_charset'], $db);
         } else {
             @mysql_query('SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"', $db);
         }

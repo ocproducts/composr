@@ -563,7 +563,15 @@ class Module_cms_calendar extends Standard_crud_module
         $fields2 = new Tempcode();
 
         // Member calendar
-        $member_calendar = get_param_integer('member_id', $member_calendar);
+        if ($member_calendar === null) {
+            if ((has_privilege(get_member(), 'add_public_events'))/*Doesn't need it prepopulated*/ || (is_guest())) {
+                $_member_calendar = '';
+            } else {
+                $_member_calendar = $GLOBALS['FORUM_DRIVER']->get_username(get_member()); // Has to be filled, so prepopulate
+            }
+        } else {
+            $_member_calendar = $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
+        }
         if (has_privilege(get_member(), 'calendar_add_to_others') || $member_calendar == get_member()) {
             $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c40661dec7b2e3a59114d1dd846890ff', 'SECTION_HIDDEN' => $member_calendar === null, 'TITLE' => do_lang_tempcode('ADVANCED'))));
 

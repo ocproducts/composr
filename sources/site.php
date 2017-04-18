@@ -693,7 +693,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
         if (($page_place === false) || ((substr($page_place[0], 0, 7) == 'COMCODE') && ($type !== null/*looking deeper than a normal Comcode page*/))) {
             // Reassemble source URL moniker from incorrectly-derived URL components
             $url_moniker = '';
-            $url_moniker .= $page;
+            $url_moniker .= get_param_string('page', '', true); /* Has to be unadulterated, $page has /s/-/_ */
             if ($type !== null) {
                 $url_moniker .= '/' . $type;
             }
@@ -707,8 +707,9 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
             if (array_key_exists(0, $test)) {
                 if (_request_page($test[0]['m_resource_page'], $zone) !== false) { // ... if operable within the zone we're in
                     // Bind to correct new values
-                    global $PAGE_NAME_CACHE;
-                    $PAGE_NAME_CACHE = null;
+                    global $PAGE_NAME_CACHE, $GETTING_PAGE_NAME;
+                    $PAGE_NAME_CACHE = $test[0]['m_resource_page'];
+                    $GETTING_PAGE_NAME = false;
                     if ($test[0]['m_resource_type'] == '') {
                         $_GET['page'] = $test[0]['m_resource_page'];
                         unset($_GET['type']);
@@ -2016,9 +2017,9 @@ function log_stats($string, $pg_time)
         'post' => $post,
         'milliseconds' => intval($pg_time * 1000)
     ), false, true);
-    if (mt_rand(0, 1000) == 1) {
+    if (mt_rand(0, 100) == 1) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('stats')) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'stats WHERE date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('stats_store_time'))));
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'stats WHERE date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('stats_store_time'))), 500/*to reduce lock times*/);
         }
     }
 

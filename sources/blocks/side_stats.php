@@ -50,7 +50,7 @@ class Block_side_stats
     {
         $info = array();
         $info['cache_on'] = '';
-        $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 15;
+        $info['ttl'] = 15;
         return $info;
     }
 
@@ -108,21 +108,21 @@ class Block_side_stats
             $title = do_lang_tempcode('ACTIVITY');
         }
         if (addon_installed('stats')) {
-            if (get_option('activity_show_stats_count_page_views_today') == '1') {
+            if (get_option('activity_show_stats_count_page_views_today') === '1') {
                 $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array(
                     '_GUID' => 'fc9760b2ed9e985e96b53c91c511e84e',
                     'KEY' => do_lang_tempcode('PAGE_VIEWS_TODAY'),
                     'VALUE' => integer_format($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'stats WHERE date_and_time>' . strval(time() - 60 * 60 * 24))),
                 )));
             }
-            if (get_option('activity_show_stats_count_page_views_this_week') == '1') {
+            if (get_option('activity_show_stats_count_page_views_this_week') === '1') {
                 $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array(
                     '_GUID' => 'gc9760b2ed9e985e96b53c91c511e84e',
                     'KEY' => do_lang_tempcode('PAGE_VIEWS_THIS_WEEK'),
                     'VALUE' => integer_format($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'stats WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * 7))),
                 )));
             }
-            if (get_option('activity_show_stats_count_page_views_this_month') == '1') {
+            if (get_option('activity_show_stats_count_page_views_this_month') === '1') {
                 $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array(
                     '_GUID' => 'hc9760b2ed9e985e96b53c91c511e84e',
                     'KEY' => do_lang_tempcode('PAGE_VIEWS_THIS_MONTH'),

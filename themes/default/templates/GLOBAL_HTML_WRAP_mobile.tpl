@@ -33,14 +33,12 @@
 			<h2>{!FEATURES}</h2>
 		</div>
 
-		{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,left}{$LOAD_PANEL,right}}}
-			<div class="float_surrounder">
-				<div class="global_side_panel panel_solo" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
-					{$LOAD_PANEL,panel_left}
-					{$LOAD_PANEL,panel_right}
-				</div>
+		<div class="float_surrounder">
+			<div class="global_side_panel panel_solo" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+				{$LOAD_PANEL,panel_left}
+				{$LOAD_PANEL,panel_right}
 			</div>
-		{+END}
+		</div>
 	{+END}
 
 	{+START,IF_NON_EMPTY,{$TRIM,{$LOAD_PANEL,bottom}}}
