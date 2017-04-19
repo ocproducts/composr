@@ -187,6 +187,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_points_RECOMMEND_SITE
         SUBSCRIPTION_CANCELLED_BODY
         SUBSCRIPTION_CANCELLED_SUBJECT
+        NO_ISSUES_FOUND
         ADBLOCKER
         VIEW_THUMBNAILS
         USER_ONLINE_TRACKING
