@@ -181,9 +181,9 @@ foreach ($all_downloads_to_add as $i => $d) {
 // Edit past download
 
 if ((!$is_bleeding_edge) && (!$is_old_tree) && (isset($all_downloads_to_add[0]['download_id']))) {
-    $last_version_str = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'additional_details', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), ' AND d.id<>' . strval($all_downloads_to_add[0]['download_id']));
+    $last_version_str = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'additional_details', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), ' AND main.id<>' . strval($all_downloads_to_add[0]['download_id']));
     if (!is_null($last_version_str)) {
-        $last_version_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), ' AND d.id<>' . strval($all_downloads_to_add[0]['download_id']));
+        $last_version_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), ' AND main.id<>' . strval($all_downloads_to_add[0]['download_id']));
         if ($last_version_id != $all_downloads_to_add[0]['download_id']) {
             $description = "A new version, {$version_pretty} is available. Upgrading to {$version_pretty} is considered {$needed} by ocProducts{$justification}. There may have been other upgrades since {$version_pretty} - see [url=\"the ocProducts news archive\" target=\"_blank\"]http://compo.sr/site/news.htm[/url].";
             $GLOBALS['SITE_DB']->query_update('downloads', lang_remap_comcode($last_version_str, 'description', $description), array('id' => $last_version_id), '', 1);
