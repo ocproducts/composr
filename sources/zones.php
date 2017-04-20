@@ -1659,7 +1659,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
             }
             if ($class_name === null) {
                 $new_classes = HHVM ? array() : array_values(array_diff($classes_after, $classes_before));
-                if (count($new_classes) === 0) { // Ah, HHVM's AllVolatile is probably not enabled
+                if (count($new_classes) === 0) { // Ah, HHVM's AllVolatile is probably not enabled *OR* maybe this module already had require_code run for it
                     $matches = array();
                     if ((running_script('install')) && (file_exists(preg_replace('#(sources|modules|minimodules)_custom#', '${1}', $path)))) {
                         $path = preg_replace('#(sources|modules|minimodules)_custom#', '${1}', $path);
@@ -1700,9 +1700,12 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
         }
         return $ret;
     }
+
     $file = unixify_line_format(file_get_contents($path), null, false, true);
     if ((strpos($path, '/modules_custom/') !== false) && (is_file(str_replace('/modules_custom/', '/modules/', $path))) && (strpos($file, "\nclass ") === false)) {
-        $file = unixify_line_format(file_get_contents(str_replace('/modules_custom/', '/modules/', $path)), null, false, true);
+        // Customised file is not a full class, so go to default file
+        $path = str_replace('/modules_custom/', '/modules/', $path);
+        $file = unixify_line_format(file_get_contents($path), null, false, true);
     }
 
     if (strpos($file, 'class Mx_') !== false) {

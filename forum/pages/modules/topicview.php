@@ -697,7 +697,7 @@ class Module_topicview
                     } else {
                         $width = 0;
                     }
-                    $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array('_GUID' => 'b32f4c526e147abf20ca0d668e40d515', 'ID' => strval($_poll['id']), 'NUM_VOTES' => integer_format($num_votes), 'WIDTH' => strval($width), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
+                    $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array('_GUID' => 'b32f4c526e147abf20ca0d668e40d515', 'ID' => strval($_poll['id']), 'NUM_VOTES' => integer_format($num_votes), 'TOTAL_VOTES' => integer_format($total_votes), 'WIDTH' => strval($width), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
                 } else {
                     $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER' . ($_poll['maximum_selections'] == 1 ? '_RADIO' : ''), array('REAL_BUTTON' => $real_button, 'ID' => strval($_poll['id']), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
                 }

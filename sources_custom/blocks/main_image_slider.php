@@ -70,6 +70,7 @@ class Block_main_image_slider
         require_javascript('skitter');
 
         require_code('galleries');
+        require_lang('galleries');
 
         $cat = empty($map['param']) ? 'root' : $map['param'];
         $mill = array_key_exists('time', $map) ? intval($map['time']) : 8000; // milliseconds between animations

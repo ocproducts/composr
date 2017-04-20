@@ -190,7 +190,11 @@ cPanel users will find a resource usage graph is made available. Note that the 1
 
 You may have some kind of script that does database backups. Follows is some advice for that script...
 
-1) Do not backup the contents of any of the following tables volatile/large/non-important:
+[list="1"]
+[*] Call [tt]mysqldump[/tt] with the [tt]--skip-lock-tables --quick --lock-tables=false[/tt] parameters. In MySQL 5.7+ there is a [tt]mysqlpump[/tt] command, which is an alternative to [tt]mysqldump[/tt]. It is more efficient and doesn't need tuning as much.
+
+[*] Do not backup the contents of certain volatile/large/non-important tables. For [tt]mysqldump[/tt] use multiple [tt]--ignore-table=database.table[/tt] parameters (you cannot ommit the database name in this syntax). For [tt]mysqlpump[/tt] use a single [tt]--exclude-tables=table1,table2,table3[/tt] style parameter.
+The tables:
  - [tt]cache[/tt]
  - [tt]cached_comcode_pages[/tt]
  - [tt]captchas[/tt]
@@ -206,13 +210,12 @@ You may have some kind of script that does database backups. Follows is some adv
  - [tt]digestives_tin[/tt]
 (put the table prefix in front of these names of course)
 
-2) Call a [tt]mysqldump[/tt] with the [tt]--skip-lock-tables --quick --lock-tables=false[/tt] parameters.
+[*] Run the backup at a time when nobody is accessing the site.
 
-3) Run the backup at a time when nobody is accessing the site.
+[*] Avoid backing up test databases, there's no need to stress your machine load to back up what does not need to be backed up.
 
-4) Avoid backing up test databases, there's no need to stress your machine load to back up what does not need to be backed up.
-
-5) Consider a professional backup solution. If you have a large site, any amount of load peaking and row locking could cause major issues, so consider investing in a MySQL/disk backup solution that is smarter.
+[*] Consider a professional backup solution. If you have a large site, any amount of load peaking and row locking could cause major issues, so consider investing in a MySQL/disk backup solution that is smarter.
+[/list]
 
 [title="2"]PHP time limit[/title]
 
