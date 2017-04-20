@@ -74,10 +74,17 @@ class Block_main_image_slider
 
         $cat = empty($map['param']) ? 'root' : $map['param'];
         $mill = array_key_exists('time', $map) ? intval($map['time']) : 8000; // milliseconds between animations
-        $width = empty($map['width']) ? 750 : intval($map['width']);
-        $height = empty($map['height']) ? 300 : intval($map['height']);
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
         $order = array_key_exists('order', $map) ? $map['order'] : '';
+
+        $width = empty($map['width']) ? '750px' : $map['width'];
+        if (is_numeric($width)) {
+            $width .= 'px';
+        }
+        $height = empty($map['height']) ? '300px' : $map['height'];
+        if (is_numeric($height)) {
+            $height .= 'px';
+        }
 
         $_transitions = array_key_exists('transitions', $map) ? $map['transitions'] : 'cube|cubeRandom|block|cubeStop|cubeHide|cubeSize|horizontal|showBars|showBarsRandom|tube|fade|fadeFour|paralell|blind|blindHeight|blindWidth|directionTop|directionBottom|directionRight|directionLeft|cubeStopRandom|cubeSpread|cubeJelly|glassCube|glassBlock|circles|circlesInside|circlesRotate|cubeShow|upBars|downBars|hideBars|swapBars|swapBarsBack|swapBlocks|cut|random|randomSmart';
         $transitions = ($_transitions == '') ? array() : explode('|', $_transitions);
@@ -201,8 +208,8 @@ class Block_main_image_slider
             'GALLERY_URL' => $gallery_url,
             'IMAGES' => $images,
             'MILL' => strval($mill),
-            'WIDTH' => strval($width),
-            'HEIGHT' => strval($height),
+            'WIDTH' => $width,
+            'HEIGHT' => $height,
         ));
     }
 }
