@@ -413,23 +413,23 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $row_cf_order = 0;
         $table = get_table_prefix() . 'f_custom_fields';
         if ($start_order > $end_order) {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($end_order) . ' AND ' . strval($start_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, false, array('cf_name' => 'SHORT_TRANS'));
+            $rows = $GLOBALS['FORUM_DB']->query('SELECT *,r.id AS r_id FROM ' . $table . ' r WHERE cf_order BETWEEN ' . strval($end_order) . ' AND ' . strval($start_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, false, array('cf_name' => 'SHORT_TRANS'));
             foreach ($rows as $row) {
                 $row_cf_order = $row['cf_order'];
                 if ($row_cf_order == $end_order) {
-                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $start_order), array('id' => $row['id']), '', 1);
+                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $start_order), array('id' => $row['r_id']), '', 1);
                 } else {
-                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $row_cf_order - 1), array('id' => $row['id']), '', 1);
+                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $row_cf_order - 1), array('id' => $row['r_id']), '', 1);
                 }
             }
         } else {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($start_order) . ' AND ' . strval($end_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, false, array('cf_name' => 'SHORT_TRANS'));
+            $rows = $GLOBALS['FORUM_DB']->query('SELECT *,r.id AS r_id FROM ' . $table . ' r WHERE cf_order BETWEEN ' . strval($start_order) . ' AND ' . strval($end_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, false, array('cf_name' => 'SHORT_TRANS'));
             foreach ($rows as $row) {
                 $row_cf_order = $row['cf_order'];
                 if ($row_cf_order == $end_order) {
-                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $start_order), array('id' => $row['id']), '', 1);
+                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $start_order), array('id' => $row['r_id']), '', 1);
                 } else {
-                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $row_cf_order + 1), array('id' => $row['id']), '', 1);
+                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $row_cf_order + 1), array('id' => $row['r_id']), '', 1);
                 }
             }
         }

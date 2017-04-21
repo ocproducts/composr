@@ -873,8 +873,8 @@ class Module_galleries
             $where .= ' AND add_date>' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
         }
         $max_entries = intval(get_option('gallery_entries_flow_per_page'));
-        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
-        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
 
         // See if there is a numbering system to sort by
         $all_are = null;
@@ -897,19 +897,19 @@ class Module_galleries
         foreach ($query_rows as $row) {
             $type = array_key_exists('video_length', $row) ? 'video' : 'image';
 
-            if (($type == $probe_type) && ($row['id'] == $probe_id)) {
+            if (($type == $probe_type) && ($row['r_id'] == $probe_id)) {
                 continue;
             }
 
-            $just_row = db_map_restrict($row, array('id', 'description'));
+            $just_row = db_map_restrict($row, array('description')) + array('id' => $row['r_id']);
 
             $entry_title = get_translated_text($row['title']);
             $entry_description = get_translated_tempcode($type . 's', $just_row, 'description');
 
-            $probe_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'flow_mode_interface' => get_param_integer('flow_mode_interface', null), 'probe_type' => $type, 'probe_id' => $row['id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
-            $view_url_2 = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $row['id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
+            $probe_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'flow_mode_interface' => get_param_integer('flow_mode_interface', null), 'probe_type' => $type, 'probe_id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
+            $view_url_2 = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
             if (array_key_exists('url', $row)) {
-                $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['id']);
+                $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['r_id']);
             } else {
                 $thumb_url = $row['thumb_url'];
                 if ($thumb_url == '') {
@@ -922,17 +922,17 @@ class Module_galleries
 
             $_edit_url = new Tempcode();
             if (has_delete_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('gallery', $row['cat']))) {
-                $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => ($type == 'image') ? '__edit' : '__edit_other', 'id' => $row['id'], 'redirect' => get_self_url(true)), get_module_zone('cms_galleries'));
+                $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => ($type == 'image') ? '__edit' : '__edit_other', 'id' => $row['r_id'], 'redirect' => get_self_url(true)), get_module_zone('cms_galleries'));
             }
 
-            $class = (($type == $probe_type) && ($row['id'] == $probe_id)) ? 'currentimage' : '';
+            $class = (($type == $probe_type) && ($row['r_id'] == $probe_id)) ? 'currentimage' : '';
             $thumb = do_image_thumb($thumb_url, $entry_title);
             $entries->attach(do_template('GALLERY_FLOW_ENTRY', array(
                 '_GUID' => 'ff75c904ba7fe857484874483ed65f5a',
                 'DESCRIPTION' => $entry_description,
                 '_TITLE' => $entry_title,
                 'TYPE' => $type,
-                'ID' => strval($row['id']),
+                'ID' => strval($row['r_id']),
                 'VIEWS' => strval($row[$type . '_views']),
                 'ADD_DATE_RAW' => strval($row['add_date']),
                 'EDIT_DATE_RAW' => is_null($row['edit_date']) ? '' : strval($row['edit_date']),
