@@ -1129,9 +1129,9 @@ class Module_galleries
             $myrow['add_date']
         );
 
-        // Comments
-        $just_gallery_row = db_map_restrict($myrow, array('name', 'description'));
-        $description = get_translated_tempcode('galleries', $just_gallery_row, 'description');
+        // Description
+        $just_row = db_map_restrict($myrow, array('cat', 'description'));
+        $description = get_translated_tempcode('galleries', $just_row, 'description');
 
         // Validation
         if (($myrow['validated'] == 0) && (addon_installed('unvalidated'))) {
@@ -1261,9 +1261,9 @@ class Module_galleries
             $warning_details = new Tempcode();
         }
 
-        // Comments
-        $just_gallery_row = db_map_restrict($myrow, array('name', 'description'));
-        $description = get_translated_tempcode('galleries', $just_gallery_row, 'description');
+        // Description
+        $just_row = db_map_restrict($myrow, array('cat', 'description'));
+        $description = get_translated_tempcode('galleries', $just_row, 'description');
 
         if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat)))) {
             $edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit_other', 'id' => $id), get_module_zone('cms_galleries'));
