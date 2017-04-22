@@ -3450,7 +3450,7 @@ function click_link(link)
 	if ((!cancelled) && (link.href))
 	{
 		if (link.getAttribute('target')) window.open(link.href,link.getAttribute('target'));
-		window.location=link.href;
+		else window.location=link.href;
 	}
 }
 

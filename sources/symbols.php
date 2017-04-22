@@ -2302,7 +2302,7 @@ function ecv_BANNER($lang, $escaped, $param)
                 $region = isset($param[3]) ? $param[3] : null;
                 $name = isset($param[4]) ? $param[4] : null;
                 $_value = banners_script(true, '', $name, $b_type, '', $width, $height, $region);
-                $value = $_value->evaluate();
+                $value = trim($_value->evaluate());
             } else { // Been told to behave statically
                 $value = 'Banner goes here';
             }
