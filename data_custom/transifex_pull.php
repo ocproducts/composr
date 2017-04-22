@@ -31,9 +31,7 @@ To save the username/password credentials...
 */
 
 // Fixup SCRIPT_FILENAME potentially being missing
-if ((empty($_SERVER['SCRIPT_FILENAME'])) && (empty($_ENV['SCRIPT_FILENAME']))) {
-    $_SERVER['SCRIPT_FILENAME'] = __FILE__;
-}
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
