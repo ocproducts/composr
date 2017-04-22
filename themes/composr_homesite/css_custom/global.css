@@ -3953,8 +3953,15 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 
 /* .comcode_quote is used where the [quote] tag is parsed. */
 /* .comcode_code is used where the [code] tag is parsed. */
+.email_body .comcode_quote, .email_body .comcode_code {
+	margin: 1em 0;
+}
 .comcode_quote, .comcode_code {
 	margin: 1em;
+
+	/* Takes off default from email clients */
+	border: 0 !important;
+	padding: 0 !important;
 
 	/* To prevent horizontal overlapping with floats */
 	outline: 0;
@@ -4566,6 +4573,17 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	content: "\00b7" !important;
 	padding-right: 0.5em;
 	vertical-align: middle;
+}
+
+/*
+=========================
+======E-mail rules=======
+=========================
+*/
+
+.email_logo img {
+	max-width: 100%;
+	height: auto;
 }
 
 /*

@@ -6,11 +6,11 @@
 {CSS}
 </head>
 
-<body style="background:#f1f6fa; margin:20px; font-family:'Trebuchet MS', Arial, Helvetica, sans-serif; font-size:13px;" class="email_body">
-<div style="margin:0 auto; background:#fff;" class="email_body">
-	<div style="padding:15px; background:#fff;"><a href="{$BASE_URL*}"><img alt="Composr logo" src="{$IMG*,logo/standalone_logo}" /></a></div>
+<body style="margin:0; font-family:'Trebuchet MS', Arial, Helvetica, sans-serif; font-size:13px;" class="email_body">
+<div style="background:#fff;" class="email_body">
+	<div style="padding:5px; background:#fff;" class="email_logo"><a href="{$BASE_URL*}"><img alt="Composr logo" src="{$IMG*,logo/standalone_logo}" /></a></div>
 
-	<div style="padding:15px; background:#fff;">
+	<div style="padding:5px; background:#fff;">
 		<h2 style="color:#f9a339; font-size:20px; margin:0; padding-bottom:15px; border-bottom:#ccc solid 1px;">{TITLE*}</h2>
 
 		<div style="line-height:22px; color:#666; font-size:14px; padding-bottom:20px; border-bottom:#f9a339 solid 7px; margin-top:10px; margin-bottom:2px;">
