@@ -907,7 +907,7 @@ function step_4()
     $webdir_stub = $dr_parts[count($dr_parts) - 1];
 
     // If we have a host where the FTP is two+ levels down (often when we have one FTP covering multiple virtual hosts), then this "last component" rule would be insufficient; do a search through for critical strings to try and make a better guess
-    $special_root_dirs = array('public_html', 'www', 'webroot', 'httpdocs', 'wwwroot', 'Documents');
+    $special_root_dirs = array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents');
     $webdir_stub = $dr_parts[count($dr_parts) - 1];
     foreach ($dr_parts as $i => $part) {
         if (in_array($part, $special_root_dirs)) {

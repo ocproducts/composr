@@ -182,6 +182,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_D
         PGE_R
         PGE_HASH
+        PHP_UPLOAD_SETTING_VERY_LOW
+        ADDING_THEME_IMAGE
         NO_SSL_SETUP
         ADD_NOTE_TITLE
         CONFIG_OPTION_points_RECOMMEND_SITE
@@ -270,7 +272,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACTIVITY_VALIDATE_VIDEO
         ADDING_CONTENT_IN_LANGUAGE
         ADDING_CONTENT_IN_LANGUAGE_STAFF
-        ADDING_THEME_IMAGE
         ADDITIONAL_ACCESS
         TICKET_ACTIVITY_BODY
         GUEST_TICKET_REPLY_LINK

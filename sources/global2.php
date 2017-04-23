@@ -514,7 +514,7 @@ function fixup_bad_php_env_vars()
         $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
         foreach ($path_components as $i => $path_component) {
             $document_root .= $path_component . DIRECTORY_SEPARATOR;
-            if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'wwwroot', 'Documents'))) {
+            if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents'))) {
                 break;
             }
         }
