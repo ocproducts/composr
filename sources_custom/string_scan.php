@@ -184,6 +184,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_HASH
         PHP_UPLOAD_SETTING_VERY_LOW
         ADDING_THEME_IMAGE
+        DESCRIPTION_ADDING_THEME_IMAGE
         NO_SSL_SETUP
         ADD_NOTE_TITLE
         CONFIG_OPTION_points_RECOMMEND_SITE

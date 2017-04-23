@@ -56,7 +56,7 @@ class Hook_cron_cns_welcome_emails
 
                 // Think of it like this, m_join_time (members join time) must between $last_cron_time and $time_now, but offset back by $send_seconds_after_joining
                 $where = ' WHERE join_time>' . strval($last_cron_time - $send_seconds_after_joining) . ' AND join_time<=' . strval($time_now - $send_seconds_after_joining) . ' AND (the_level=3 OR the_level=4) AND newsletter_id=' . strval($mail['w_newsletter']);
-                $members = array_merge($members, $GLOBALS['SITE_DB']->query('SELECT s.email AS m_email_address,the_password,n_forename,n_surname,n.id,join_time AS m_join_time FROM ' . get_table_prefix() . 'newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter n ON n.email=s.email ' . $where . ' GROUP BY s.email'));
+                $members = array_merge($members, $GLOBALS['SITE_DB']->query('SELECT s.email AS m_email_address,the_password,n_forename,n_surname,n.id,join_time AS m_join_time FROM ' . get_table_prefix() . 'newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers n ON n.email=s.email ' . $where . ' GROUP BY s.email'));
             } // By usergroup
             elseif ((!is_null($mail['w_usergroup'])) && (get_forum_type() == 'cns')) {
                 $where = ' WHERE join_time>' . strval($last_cron_time - $send_seconds_after_joining) . ' AND join_time<=' . strval($time_now - $send_seconds_after_joining) . ' AND um.usergroup_id=' . strval($mail['w_usergroup']);

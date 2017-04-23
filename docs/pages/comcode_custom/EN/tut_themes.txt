@@ -142,6 +142,18 @@ When the CSS file is compiled, it works as a simple variable system. The second 
 
 You can if you wish just bypass the Theme Wizard equations system and directly enter your own CSS colour codes in place or in addition to what the Theme Wizard is doing. You are in no way tied into the mechanism of the Theme Wizard once you begin editing your own theme. That said, it can be useful to help you keep your colour palette consistent.
 
+[title="4"]CSS prefixing[/title]
+
+Some browsers experiment with new CSS properties using prefixes. More details are explained here: https://www.thoughtco.com/css-vendor-prefixes-3466867.
+
+In Composr we use [tt]{$BETA_CSS_PROPERTY,property: value;}[/tt] to automatically adding prefixing to a property, or make other changes to make a property work across different web browsers.
+
+Of course doing this risks relying on browser CSS behaviour that may be buggy or subject to change. By passing it through [tt]BETA_CSS_PROPERTY[/tt] in a consistent way we can actually change the output across Composr patch releases, if browsers change their syntax -- so it's a nice little solution we have here.
+
+[title="4"]Other notes about CSS conventions[/title]
+
+Some additional comments are made available at the top of [tt]global.css[/tt]. Mainly, our support for rtl languages and our use of em units.
+
 [title="3"]Revision history[/title]
 
 If you have made any edits to your file's CSS, they will show up in a list underneath the CSS. You'll see the dates they were made, who edited them, and a link to restore it if you choose.
