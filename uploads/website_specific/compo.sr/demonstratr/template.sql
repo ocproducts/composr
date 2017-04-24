@@ -13731,7 +13731,6 @@ insert into `cms_staff_checklist_cus_tasks` values('1','Set up website configura
  ('7','[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl\"]Customise your \'MAIL\' template[/page]','1332808931','0','',null),
  ('8','[url=\"P3P Wizard (set up privacy policy)\"]http://www.p3pwiz.com/[/url]','1332808931','0','',null),
  ('9','[url=\"Submit to Google\"]http://www.google.com/addurl/[/url]','1332808931','0','',null),
- ('10','[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]','1332808931','0','',null),
  ('11','[url=\"Submit to Bing\"]http://www.bing.com/webmaster/SubmitSitePage.aspx[/url]','1332808931','0','',null);
 
 DROP TABLE IF EXISTS `cms_staff_links`;

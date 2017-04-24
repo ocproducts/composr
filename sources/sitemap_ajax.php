@@ -453,8 +453,7 @@ function _get_overridable_privileges_for_privilege_page($privilege_page)
         );
     }
 
-    require_code('zones2');
-    $_overridables = extract_module_functions_page(get_module_zone($privilege_page), $privilege_page, array('get_privilege_overrides'));
+    $_overridables = extract_module_functions_page(get_module_zone($privilege_page, 'modules', null, 'php', true, false), $privilege_page, array('get_privilege_overrides'));
     $overridable_privileges = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
     if (!is_array($overridable_privileges)) {
         $overridable_privileges = array();

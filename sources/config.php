@@ -404,9 +404,15 @@ function set_value($name, $value, $elective_or_lengthy = false)
  * Delete a situational value.
  *
  * @param  ID_TEXT $name The name of the value
+ * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
  */
-function delete_value($name)
+function delete_value($name, $elective_or_lengthy = false)
 {
+    if ($elective_or_lengthy) {
+        $GLOBALS['SITE_DB']->query_delete('values_elective', array('the_name' => $name), '', 1);
+        return;
+    }
+
     $GLOBALS['SITE_DB']->query_delete('values', array('the_name' => $name), '', 1);
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('VALUES');
