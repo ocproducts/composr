@@ -67,6 +67,15 @@ class Hook_paypal
             $user_details['state'] = get_cms_cpf('state');
             $user_details['zip'] = get_cms_cpf('post_code');
             $user_details['country'] = get_cms_cpf('country');
+
+            require_code('locations');
+            if (find_country_name_from_iso($user_details['country'])  === null) {
+                $user_details['country'] = ''; // PayPal only allows valid countries
+            }
+
+            if (($user_details['country'] != '') && (($user_details['address1'] == '') || ($user_details['city'] == '') || ($user_details['zip'] == ''))) {
+                $user_details['country'] = ''; // Causes error on PayPal due to it crashing when trying to validate the address
+            }
         }
 
         return do_template('ECOM_BUTTON_VIA_PAYPAL', array(
@@ -416,6 +425,15 @@ class Hook_paypal
             $user_details['state'] = get_cms_cpf('state');
             $user_details['zip'] = get_cms_cpf('post_code');
             $user_details['country'] = get_cms_cpf('country');
+
+            require_code('locations');
+            if (find_country_name_from_iso($user_details['country'])  === null) {
+                $user_details['country'] = ''; // PayPal only allows valid countries
+            }
+
+            if (($user_details['country'] != '') && (($user_details['address1'] == '') || ($user_details['city'] == '') || ($user_details['zip'] == ''))) {
+                $user_details['country'] = ''; // Causes error on PayPal due to it crashing when trying to validate the address
+            }
         }
 
         return do_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(

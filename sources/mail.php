@@ -636,7 +636,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         }
 
         $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
-        if (!is_null($attachments)) {
+        if (!empty($attachments)) {
             foreach (array_keys($attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
                     $through_queue = false;
@@ -837,7 +837,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $_css = $css->evaluate($lang);
             if (!GOOGLE_APPENGINE) {
                 if (get_option('allow_ext_images') != '1') {
-                    $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+                    $_css = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
                 }
             }
             $html_evaluated = $message_html->evaluate($lang);
@@ -917,14 +917,14 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $headers .= 'Require-Recipient-Valid-Since: ' . $to_email[0] . '; ' . $_require_recipient_valid_since . $line_term;
     }
     $headers .= 'MIME-Version: 1.0' . $line_term;
-    if ((!is_null($attachments)) || (!$simplify_when_can)) {
+    if ((!empty($attachments)) || (!$simplify_when_can)) {
         $headers .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"';
     } else {
         $headers .= 'Content-Type: multipart/alternative; boundary="' . $boundary2 . '"';
     }
     $sending_message = '';
     $sending_message .= 'This is a multi-part message in MIME format.' . $line_term . $line_term;
-    if ((!is_null($attachments)) || (!$simplify_when_can)) {
+    if ((!empty($attachments)) || (!$simplify_when_can)) {
         $sending_message .= '--' . $boundary . $line_term;
         $sending_message .= 'Content-Type: multipart/alternative; boundary="' . $boundary2 . '"' . $line_term . $line_term . $line_term;
     }
@@ -993,18 +993,18 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // HTML version
     $sending_message .= '--' . $boundary2 . $line_term;
-    $sending_message .= 'Content-Type: multipart/related; type="text/html"; boundary="' . $boundary3 . '"' . $line_term . $line_term . $line_term;
+    $sending_message .= 'Content-Type: multipart/related; boundary="' . $boundary3 . '"' . $line_term . $line_term . $line_term;
     $sending_message .= '--' . $boundary3 . $line_term;
     $sending_message .= 'Content-Type: text/html; charset=' . ((preg_match($regexp, $html_evaluated) == 0) ? do_lang('charset', null, null, null, $lang) : 'us-ascii') . $line_term; // .'; name="message.html"'. Outlook doesn't like: makes it think it's an attachment
     if (get_option('allow_ext_images') != '1') {
         $cid_before = array_keys($CID_IMG_ATTACHMENT);
-        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
+        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(https?://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
         $cid_just_html = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_before);
         $matches = array();
         foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
             $num_matches = preg_match_all($over, $html_evaluated, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
-                $altered_inner = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
+                $altered_inner = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
                 if ($matches[2][$i] != $altered_inner) {
                     $altered_outer = str_replace($matches[2][$i], $altered_inner, $matches[0][$i]);
                     $html_evaluated = str_replace($matches[0][$i], $altered_outer, $html_evaluated);
@@ -1017,6 +1017,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         foreach ($cid_just_css as $cid) {
             $html_evaluated .= '<img width="0" height="0" src="cid:' . $cid . '" />';
         }
+    }
+    foreach ($CID_IMG_ATTACHMENT as $id => $img) { // Make sure all inline images are referenced with img tags, otherwise some e-mail software may show it as an attachment
+        $html_evaluated .= '<!-- <img src="cid:' . $id . '" /> -->';
     }
 
     if ($base64_encode) {
@@ -1035,20 +1038,20 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         list($mime_type, $filename, $file_contents) = $test;
 
         $sending_message .= '--' . $boundary3 . $line_term;
-        $sending_message .= 'Content-Type: ' . escape_header($mime_type) . $line_term;
+        $sending_message .= 'Content-Type: ' . escape_header($mime_type) . '; name="' . escape_header($filename) . '"' . $line_term;
+        $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term;
         $sending_message .= 'Content-ID: <' . $id . '>' . $line_term;
-        $sending_message .= 'Content-Disposition: inline; filename="' . escape_header($filename) . '"' . $line_term;
-        $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term . $line_term;
+        $sending_message .= 'Content-Disposition: inline; filename="' . escape_header($filename) . '"' . $line_term . $line_term;
         if (is_string($file_contents)) {
             $sending_message .= chunk_split(base64_encode($file_contents), 76, $line_term);
         }
     }
-    $sending_message .= $line_term . '--' . $boundary3 . '--' . $line_term . $line_term;
+    $sending_message .= $line_term . '--' . $boundary3 . '--' . $line_term;
 
-    $sending_message .= $line_term . '--' . $boundary2 . '--' . $line_term . $line_term;
+    $sending_message .= $line_term . '--' . $boundary2 . '--' . $line_term;
 
     // Attachments
-    if (!is_null($attachments)) {
+    if (!empty($attachments)) {
         foreach ($attachments as $path => $filename) {
             $sending_message .= '--' . $boundary . $line_term;
             $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // . '; name="' . escape_header($filename).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
