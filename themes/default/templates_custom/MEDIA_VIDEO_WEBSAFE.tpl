@@ -14,7 +14,8 @@
 		{+END}
 	{+END}
 
-	<video width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}">
+	<video width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}"
+		data-require-javascript="['mediaelement-and-player','mediaelement']" data-tpl="mediaVideoWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,URL}{_*}{+END}">
 		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 		<object width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
 			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
@@ -26,33 +27,6 @@
 
 	<div class="webstandards_checker_off"></div>
 
-	<script>// <![CDATA[
-	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-			var player=new MediaElementPlayer('#{$GET%,player_id}',{
-				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
-				{+START,IF_NON_EMPTY,{WIDTH}}
-					videoWidth: {$MIN%,950,{WIDTH}},
-				{+END}
-				{+START,IF_NON_EMPTY,{HEIGHT}}
-					videoHeight: {$MIN%,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}},
-				{+END}
-
-				enableKeyboard: true,
-
-				success: function(media) {
-					{+START,IF,{$NOT,{$INLINE_STATS}}}
-						media.addEventListener('play',function() { $cms.gaTrack(null,'{!VIDEO;/}','{URL;/}'); });
-					{+END}
-					if (document.getElementById('next_slide'))
-					{
-						media.addEventListener('canplay',function() { stop_slideshow_timer(); player.play(); });
-						media.addEventListener('ended',function() { player_stopped(); });
-					}
-				}
-			});
-		});
-	//]]></script>
-
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<figcaption class="associated_details">
 			{$PARAGRAPH,{DESCRIPTION}}
@@ -62,7 +36,7 @@
 	{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 {+END}
 {+START,IF,{$GET,raw_video}}
-	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls">
+	<video {+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls">
 		<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
 		<span>{DESCRIPTION}</span>
 	</video>

@@ -205,14 +205,14 @@ class Module_admin_backup
             }
         }
 
-        $javascript = '';
+        $function = '';
 
         if (addon_installed('calendar') && cron_installed()) {
             require_javascript('backup');
-            $javascript = /**@lang JavaScript*/'$cms.functions.adminBackupInterfaceCalendar()';
+            $function = 'adminBackupInterfaceCalendar';
         }
 
-        $form = do_template('FORM', array('_GUID' => '64ae569b2cce398e89d1b4167f116193', 'HIDDEN' => '', 'JAVASCRIPT' => $javascript, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('BACKUP'), 'URL' => $url));
+        $form = do_template('FORM', array('_GUID' => '64ae569b2cce398e89d1b4167f116193', 'HIDDEN' => '', 'FUNCTIONS' => $function, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('BACKUP'), 'URL' => $url));
 
         $results = $this->get_results();
 

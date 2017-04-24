@@ -3356,6 +3356,9 @@ function get_dynamic_file_parameter($file)
  */
 function set_high_security_csp($enable_more_open_html_for = null)
 {
+    // FIXME
+    // @TODO: Combine this into send_csp_header() ?
+    /*
     require_code('input_filter');
     $_partners = get_allowed_partner_sites();
     if ($_partners == array()) {
@@ -3381,7 +3384,7 @@ function set_high_security_csp($enable_more_open_html_for = null)
         global $PRIVILEGE_CACHE;
         has_privilege($enable_more_open_html_for, 'allow_html'); // Force loading, so we can amend the cached value cleanly
         $PRIVILEGE_CACHE[$enable_more_open_html_for]['allow_html'][''][''][''] = 1;
-    }
+    }*/
 }
 
 /**
@@ -3389,6 +3392,9 @@ function set_high_security_csp($enable_more_open_html_for = null)
  */
 function set_no_clickjacking_csp()
 {
+    // FIXME
+    // @TODO: Combine this into send_csp_header() ?
+/*
     require_code('input_filter');
     $_partners = get_allowed_partner_sites();
     if ($_partners == array()) {
@@ -3402,7 +3408,7 @@ function set_no_clickjacking_csp()
     $value = "";
     $value .= "frame-ancestors 'self'{$partners}; ";
 
-    @header('Content-Security-Policy:' . trim($value));
+    @header('Content-Security-Policy:' . trim($value));*/
 }
 
 /**

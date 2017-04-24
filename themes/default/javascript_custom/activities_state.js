@@ -16,15 +16,17 @@
     }
 
     $cms.inherits(BlockMainActivitiesState, $cms.View, {
-        events: {
-            'focus textarea.js-textarea-activity-status': 'textareaFocus',
-            'blur textarea.js-textarea-activity-status': 'textareaBlur',
-            'keyup textarea.js-textarea-activity-status': 'textareaKeyup',
-            'keypress textarea.js-textarea-activity-status': 'textareaKeypress',
+        events: function () {
+            return {
+                'focus textarea.js-textarea-activity-status': 'textareaFocus',
+                'blur textarea.js-textarea-activity-status': 'textareaBlur',
+                'keyup textarea.js-textarea-activity-status': 'textareaKeyup',
+                'keypress textarea.js-textarea-activity-status': 'textareaKeypress',
 
-            'keyup .js-textarea-keyup-manage-scroll-height': 'manageScrollHeight',
+                'keyup .js-textarea-keyup-manage-scroll-height': 'manageScrollHeight',
 
-            'submit form.js-form-status-updates': 'submitForm'
+                'submit form.js-form-status-updates': 'submitForm'
+            };
         },
 
         textareaFocus: function (e, textarea) {
@@ -46,7 +48,7 @@
         },
         textareaKeyup: function (e, textarea) {
             if (!$cms.$MOBILE) {
-                manage_scroll_height(textarea);
+                $cms.manageScrollHeight(textarea);
             }
             this.maintainCharCount();
         },
@@ -70,7 +72,7 @@
             } else {
                 var view = this;
                 jQuery.ajax({
-                    url: $cms.baseUrl('data_custom/activities_handler.php' + keep_stub(true)),
+                    url: $cms.baseUrl('data_custom/activities_handler.php' + $cms.keepStub(true)),
                     type: 'POST',
                     data: $cms.dom.serialize(form),
                     cache: false,

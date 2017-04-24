@@ -94,8 +94,7 @@
                 document.getElementById('copy_button_' + window.permission_copying).style.textDecoration = 'none';
                 window.permission_copying = null;
                 for (var i = 0; i < trs.length; i++) {
-                    trs[i].onclick = function () {
-                    };
+                    trs[i].onclick = function () {};
                 }
             }
 
@@ -103,9 +102,9 @@
                 button.style.textDecoration = 'blink';
                 window.permission_copying = name;
                 $cms.ui.alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
-                for (var i = 0; i < trs.length; i++) {
-                    if (trs[i] !== tr) {
-                        trs[i].onclick = copy_permissions_function(trs[i], tr);
+                for (var j = 0; j < trs.length; j++) {
+                    if (trs[j] !== tr) {
+                        trs[j].onclick = copy_permissions_function(trs[j], tr);
                     }
                 }
             }
@@ -196,6 +195,15 @@
 
         if (params.javascript) {
             eval.call(window, params.javascript);
+        }
+
+        if (params.functions) {
+            var functions = strVal(params.functions).split(',');
+            functions.forEach(function(functionName) {
+                if (functionName) {
+                    $cms.functions[functionName]();
+                }
+            });
         }
 
         if (!params.secondaryForm) {
@@ -455,7 +463,7 @@
             $cms.form.setUpChangeMonitor(input.parentElement);
         }
 
-        manage_scroll_height(textarea);
+        $cms.manageScrollHeight(textarea);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
             set_up_comcode_autocomplete(params.name, params.required && params.required.includes('wysiwyg'));
         });
@@ -722,11 +730,11 @@
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
 
-        manage_scroll_height(textArea);
+        $cms.manageScrollHeight(textArea);
 
         if (!$cms.$MOBILE) {
             $cms.dom.on(textArea, 'change keyup', function () {
-                manage_scroll_height(textArea);
+                $cms.manageScrollHeight(textArea);
             });
         }
     };
@@ -743,7 +751,7 @@
         var inner = $cms.dom.$(container, '.js-preview-box-scroll');
 
         if (inner) {
-            $cms.dom.on(inner, browser_matches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
+            $cms.dom.on(inner, $cms.browserMatches('gecko') ? 'DOMMouseScroll' : 'mousewheel', function (event) {
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
                 event.stopPropagation();
                 event.preventDefault();
@@ -755,7 +763,7 @@
             el.form.action = el.form.action.replace(/keep_mobile=\d/g, 'keep_mobile=' + (el.checked ? '1' : '0'));
             if (window.parent) {
                 try {
-                    window.parent.scrollTo(0, find_pos_y(window.parent.document.getElementById('preview_iframe')));
+                    window.parent.scrollTo(0, $cms.dom.findPosY(window.parent.document.getElementById('preview_iframe')));
                 } catch (e) {
                 }
                 window.parent.mobile_version_for_preview = !!el.checked;
@@ -794,7 +802,7 @@
             }
         }
 
-        manage_scroll_height(postEl);
+        $cms.manageScrollHeight(postEl);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
             set_up_comcode_autocomplete(name, true);
         });
@@ -810,18 +818,18 @@
         });
 
         $cms.dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
-            var url = maintain_theme_in_link(link.href);
+            var url = $cms.maintainThemeInLink(link.href);
             $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $cms.dom.on(inputRow, 'click', '.js-link-click-open-site-emoticon-chooser-window', function (e, link) {
-            var url = maintain_theme_in_link(link.href);
+            var url = $cms.maintainThemeInLink(link.href);
             $cms.ui.open(url, 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
     };
 
     $cms.templates.previewScriptCode = function (params) {
-        var main_window = get_main_cms_window();
+        var main_window = $cms.getMainCmsWindow();
 
         var post = main_window.document.getElementById('post');
 
@@ -1145,7 +1153,7 @@
             }
         }
 
-        manage_scroll_height(document.getElementById(params.name));
+        $cms.manageScrollHeight(document.getElementById(params.name));
     };
 
     $cms.templates.formScreenInputTime = function formScreenInputTime(params) {
@@ -1234,7 +1242,7 @@
     function _simplified_form_continue_submit(iframe, form_cat_selector) {
         if ($cms.form.checkForm(form_cat_selector)) {
             if (iframe) {
-                animate_frame_load(iframe, 'iframe_under');
+                $cms.dom.animateFrameLoad(iframe, 'iframe_under');
             }
             form_cat_selector.submit();
         }
@@ -1258,9 +1266,9 @@
 
                 var geocode_url = '{$FIND_SCRIPT;,geocode}';
                 geocode_url += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
-                geocode_url += keep_stub();
+                geocode_url += $cms.keepStub();
 
-                do_ajax_request(geocode_url, function (ajax_result) {
+                $cms.doAjaxRequest(geocode_url, function (ajax_result) {
                     var parsed = JSON.parse(ajax_result.responseText);
                     if (parsed === null) return;
                     var labels = document.getElementsByTagName('label'), label, field_name, field;

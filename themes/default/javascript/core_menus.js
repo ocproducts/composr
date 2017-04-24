@@ -44,7 +44,7 @@
 
             if (!target.timer) {
                 target.timer = window.setTimeout(function () {
-                    pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+                    popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
                 }, 200);
             }
         },
@@ -60,14 +60,14 @@
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+            popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
         },
 
         popUpMenu: function (e, target) {
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            pop_up_menu(menu + '_dexpand_' + rand, null, menu + '_d');
+            popUpMenu(menu + '_dexpand_' + rand, null, menu + '_d');
         },
 
         setActiveMenu: function (e, target) {
@@ -75,7 +75,7 @@
                 var menu = $cms.filter.id(this.menu);
 
                 if (window.active_menu == null) {
-                    set_active_menu(target.id, menu + '_d');
+                    setActiveMenu(target.id, menu + '_d');
                 }
             }
         },
@@ -127,11 +127,11 @@
             };
         },
         popUpMenu: function () {
-            pop_up_menu(this.popup, null, this.menu + '_p');
+            popUpMenu(this.popup, null, this.menu + '_p');
         },
         setActiveMenu: function () {
             if (!window.active_menu) {
-                set_active_menu(this.popup, this.menu + '_p');
+                setActiveMenu(this.popup, this.menu + '_p');
             }
         }
     });
@@ -142,8 +142,10 @@
     }
 
     $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu.prototype*/{
-        events: {
-            'click [data-menu-tree-toggle]': 'toggleMenu'
+        events: function () {
+            return {
+                'click [data-menu-tree-toggle]': 'toggleMenu'
+            };
         },
 
         toggleMenu: function (e, target) {
@@ -226,7 +228,7 @@
 
         function doubleClick() {
             if (!menuEditorWrapEl.classList.contains('docked')) {
-                smooth_scroll(find_pos_y(document.getElementById('caption_' + window.current_selection)));
+                $cms.dom.smoothScroll($cms.dom.findPosY(document.getElementById('caption_' + window.current_selection)));
             }
         }
 
@@ -319,7 +321,7 @@
 
         $cms.dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
             if (!document.getElementById('menu_editor_wrap').classList.contains('docked')) {
-                smooth_scroll(find_pos_y(document.getElementsByTagName('h2')[2]));
+                $cms.dom.smoothScroll($cms.dom.findPosY(document.getElementsByTagName('h2')[2]));
             }
         });
 
@@ -348,7 +350,7 @@
 
             if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) || (ob.form.elements['branch_type_' + id] != 'page')) {
                 var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
-                generate_question_ui(
+                $cms.ui.generateQuestionUi(
                     '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     choices,
                     '{!menus:DELETE_MENU_ITEM;^}',
@@ -361,7 +363,7 @@
                             for (var i = 0; i < window.all_menus.length; i++) {
                                 choices['buttons__choose___' + i] = window.all_menus[i];
                             }
-                            generate_question_ui(
+                            $cms.ui.generateQuestionUi(
                                 '{!menus:CONFIRM_MOVE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                                 choices,
                                 '{!menus:MOVE_MENU_ITEM;^}',
@@ -384,7 +386,7 @@
                                                 post += name + '=' + encodeURIComponent(value);
                                             }
                                         }
-                                        do_ajax_request('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + keep_stub(), null, post);
+                                        $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + $cms.keepStub(), null, post);
                                         delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                                     }
                                 }
@@ -686,7 +688,7 @@
     var clean_menus_timeout,
         last_active_menu;
 
-    function set_active_menu(id, menu) {
+    function setActiveMenu(id, menu) {
         window.active_menu = id;
         if (menu != null) {
             last_active_menu = menu;
@@ -728,11 +730,15 @@
         }
     }
 
-    function pop_up_menu(id, place, menu, outside_fixed_width) {
+    function popUpMenu(id, place, menu, outside_fixed_width) {
         place || (place = 'right');
         outside_fixed_width = !!outside_fixed_width;
 
         var el = $cms.dom.$('#' + id);
+
+        if (!el) {
+            return;
+        }
 
         if (clean_menus_timeout) {
             window.clearTimeout(clean_menus_timeout);
@@ -775,14 +781,14 @@
             l += el.parentNode.offsetWidth;
         }
 
-        var full_height = get_window_scroll_height(); // Has to be got before e is visible, else results skewed
+        var full_height = $cms.dom.getWindowScrollHeight(); // Has to be got before e is visible, else results skewed
         el.style.position = 'absolute';
         el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
         el.style.display = 'block';
         $cms.dom.clearTransitionAndSetOpacity(el, 0.0);
         $cms.dom.fadeTransition(el, 100, 30, 8);
 
-        var full_width = (window.scrollX == 0) ? get_window_width() : window.document.body.scrollWidth;
+        var full_width = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
 
         if ($cms.$CONFIG_OPTION.fixed_width && !outside_fixed_width) {
             var main_website_inner = document.getElementById('main_website_inner');
@@ -802,7 +808,7 @@
                     pos_left += e_parent_width - e_width;
                 }
             } else { // NB: For non-below, we can't assume 'left' is absolute, as it is actually relative to parent node which is itself positioned
-                if (find_pos_x(el.parentNode, true) + e_width + e_parent_width + 10 > full_width) pos_left -= e_width + e_parent_width;
+                if ($cms.dom.findPosX(el.parentNode, true) + e_width + e_parent_width + 10 > full_width) pos_left -= e_width + e_parent_width;
             }
             el.style.left = pos_left + 'px';
         }
@@ -825,6 +831,6 @@
         return false;
     }
 
-    window.set_active_menu = set_active_menu;
-    window.pop_up_menu = pop_up_menu;
+    window.set_active_menu = setActiveMenu;
+    window.pop_up_menu = popUpMenu;
 }(window.$cms));

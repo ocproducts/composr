@@ -28,7 +28,7 @@
 
                     $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, function (result) {
                         $cms.dom.html($cms.dom.$('#g_' + tabCode), result.responseText);
-                        find_url_tab();
+                        $cms.dom.findUrlTab();
                     });
                 }).bind(this);
             }
@@ -38,7 +38,7 @@
             // we do not want it to scroll down
             var oldHash = window.location.hash;
             window.location.hash = '#';
-            find_url_tab(oldHash);
+            $cms.dom.findUrlTab(oldHash);
         }
     }
 

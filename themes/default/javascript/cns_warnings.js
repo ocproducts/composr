@@ -12,7 +12,7 @@
         var id = $cms.filter.id(params.title);
 
         document.getElementById('saved_use__' + id).addEventListener('submit', function () {
-            var win = get_main_cms_window();
+            var win = $cms.getMainCmsWindow();
 
             var explanation = win.document.getElementById('explanation');
             explanation.value = params.explanation;

@@ -68,7 +68,7 @@ class Hook_main_custom_gfx_rollover_button
 
         $ret = '<img id="' . php_addslashes($comb_id) . '" class="gfx_text_overlay" alt="' . str_replace("\n", ' ', escape_html($map['data'])) . '" src="' . escape_html($url_1) . '" />';
         $ret .= '<script>';
-        $ret .= /**@lang JavaScript*/'create_rollover("' . php_addslashes($comb_id) . '","' . php_addslashes($url_2) . '");';
+        $ret .= /**@lang JavaScript*/'$cms.createRollover("' . php_addslashes($comb_id) . '","' . php_addslashes($url_2) . '");';
         $ret .= '</script>';
 
         if (function_exists('ocp_mark_as_escaped')) {

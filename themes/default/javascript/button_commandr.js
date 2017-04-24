@@ -2,7 +2,7 @@
 
 function load_commandr() {
     // (Still?) loading
-    if ((window.commandr_command_response === undefined) || (window.do_ajax_request === undefined)) {
+    if ((window.commandr_command_response === undefined) || (window.$cms.doAjaxRequest === undefined)) {
         if (document.getElementById('commandr_img_loader')) {
             setTimeout(load_commandr, 200);
             return false;
@@ -13,8 +13,8 @@ function load_commandr() {
         var tmp_element = document.createElement('img');
         tmp_element.src = $cms.img('{$IMG;,loading}');
         tmp_element.style.position = 'absolute';
-        tmp_element.style.left = (find_pos_x(img) + 2) + 'px';
-        tmp_element.style.top = (find_pos_y(img) + 1) + 'px';
+        tmp_element.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
+        tmp_element.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
         tmp_element.id = 'commandr_img_loader';
         img.parentNode.appendChild(tmp_element);
 
@@ -26,15 +26,19 @@ function load_commandr() {
     }
 
     // Loaded
-    if ((window.do_ajax_request) && (window.commandr_command_response !== undefined)) {
+    if (window.$cms.doAjaxRequest && (window.commandr_command_response !== undefined)) {
         $cms.ui.confirmSession(
             function (result) {
                 // Remove "loading" indicator from button
                 var img = document.getElementById('commandr_img');
                 var tmp_element = document.getElementById('commandr_img_loader');
-                if (tmp_element) tmp_element.parentNode.removeChild(tmp_element);
+                if (tmp_element) {
+                    tmp_element.parentNode.removeChild(tmp_element);
+                }
 
-                if (!result) return;
+                if (!result) {
+                    return;
+                }
 
                 // Set up Commandr window
                 var commandr_box = document.getElementById('commandr_box');
@@ -43,8 +47,8 @@ function load_commandr() {
                     commandr_box.setAttribute('id', 'commandr_box');
                     commandr_box.style.position = 'absolute';
                     commandr_box.style.zIndex = 2000;
-                    commandr_box.style.left = (get_window_width() - 800) / 2 + 'px';
-                    var top_temp = (get_window_height() - 600) / 2;
+                    commandr_box.style.left = ($cms.dom.getWindowWidth() - 800) / 2 + 'px';
+                    var top_temp = ($cms.dom.getWindowHeight() - 600) / 2;
                     if (top_temp < 100) top_temp = 100;
                     commandr_box.style.top = top_temp + 'px';
                     commandr_box.style.display = 'none';
@@ -54,8 +58,7 @@ function load_commandr() {
                     $cms.dom.html(commandr_box, $cms.loadSnippet('commandr'));
                 }
 
-                if (commandr_box.style.display == 'none') // Showing Commandr again
-                {
+                if (commandr_box.style.display == 'none')  {// Showing Commandr again
                     commandr_box.style.display = 'block';
 
                     if (img) {
@@ -65,7 +68,7 @@ function load_commandr() {
                         img.className = '';
                     }
 
-                    smooth_scroll(0, null, null, function () {
+                    $cms.dom.smoothScroll(0, null, null, function () {
                         document.getElementById('commandr_command').focus();
                     });
 
@@ -83,9 +86,7 @@ function load_commandr() {
                     }
 
                     document.getElementById('commandr_command').focus();
-                }
-                else // Hiding Commandr
-                {
+                } else {// Hiding Commandr
                     if (img) {
                         img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
                         if (img.srcset !== undefined) {

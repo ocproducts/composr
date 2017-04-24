@@ -125,62 +125,12 @@
 {+END}
 
 {$,Polyfills for everyone}
-<script src="{$BASE_URL*}/data/polyfills/general.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/url-search-params.max.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/keyboardevent-key-polyfill.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/fetch.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/web-animations.min.js"></script>
-<script src="{$BASE_URL*}/data/polyfills/json5.js"></script>
-
-{$,Google Analytics account, if one set up}
-{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}
-	<script>
-		var opt = '{$CONFIG_OPTION,long_google_cookies}' === '1' ? 'auto' : { cookieExpires: 0 };
-
-		(function (i, s, o, g, r, a, m) {
-			i['GoogleAnalyticsObject'] = r;
-			i[r] = i[r] || function () {
-						(i[r].q = i[r].q || []).push(arguments)
-					}, i[r].l = 1 * new Date();
-			a = s.createElement(o),
-			m = s.querySelector(o);
-			a.async = 1;
-			a.src = g;
-			m.parentNode.insertBefore(a, m)
-		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-		ga('create','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}', opt);
-		ga('send','pageview');
-	</script>
-{+END}{+END}
-
-{$,Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent}
-{+START,IF,{$AND,{$CONFIG_OPTION,cookie_notice},{$RUNNING_SCRIPT,index}}}
-	<script>
-		window.cookieconsent_options = {
-			'message': '{!COOKIE_NOTICE;,{$SITE_NAME}}',
-			'dismiss': '{!INPUTSYSTEM_OK;}',
-			'learnMore': '{!READ_MORE;}',
-			'link': '{$PAGE_LINK;,:privacy}',
-			'theme': 'dark-top'
-		};
-	</script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
-{+END}
-
-<script>
-	// Early initialization to allow end-users not using CSP to add inline $cms.ready & $cms.load calls
-	window.$cms || (window.$cms = {});
-
-	(function ($cms){
-		$cms.ready = new Promise(function (resolve) {
-			$cms._resolveReady = resolve;
-		});
-		$cms.load = new Promise(function (resolve) {
-			$cms._resolveLoad = resolve;
-		});
-	}(window.$cms));
-</script>
+<script defer src="{$BASE_URL*}/data/polyfills/general.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/url-search-params.max.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/keyboardevent-key-polyfill.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/fetch.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/web-animations.min.js"></script>
+<script defer src="{$BASE_URL*}/data/polyfills/json5.js"></script>
 
 {$,JavaScript code (usually) from Composr page}
 {$EXTRA_HEAD}

@@ -90,11 +90,11 @@
             introQuestionUrl = params.introQuestionUrl;
 
         $cms.dom.on(container, 'click', '.js-click-open-forum-rules-popup', function () {
-            $cms.ui.open(maintain_theme_in_link(forumRulesUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
+            $cms.ui.open($cms.maintainThemeInLink(forumRulesUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
 
         $cms.dom.on(container, 'click', '.js-click-open-intro-question-popup', function () {
-            $cms.ui.open(maintain_theme_in_link(introQuestionUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
+            $cms.ui.open($cms.maintainThemeInLink(introQuestionUrl), '', 'width=600,height=auto,status=yes,resizable=yes,scrollbars=yes');
         });
     };
 
@@ -185,7 +185,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-ignore-notification', function () {
             var el = this;
-            do_ajax_request(ignoreUrl, function () {
+            $cms.doAjaxRequest(ignoreUrl, function () {
                 var o = el.parentNode.parentNode.parentNode.parentNode;
                 o.parentNode.removeChild(o);
 

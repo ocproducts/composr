@@ -1,8 +1,7 @@
 (function ($cms) {
 
-    $cms.templates.quizScreen = function quizScreen(params) {
-        var container = this,
-            form = $cms.dom.$(container, '.js-quiz-form'),
+    $cms.templates.quizScreen = function quizScreen(params, container) {
+        var form = $cms.dom.$(container, '.js-quiz-form'),
             timeout = +params.timeout || 0;
 
         $cms.dom.on(container, 'submit', '.js-submit-check-form', function (e, form) {

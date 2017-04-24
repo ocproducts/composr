@@ -16,14 +16,12 @@
         });
     };
 
-    $cms.templates.filedumpScreen = function filedumpScreen(params) {
-        var container = this;
-
+    $cms.templates.filedumpScreen = function filedumpScreen(params, container) {
         if(params.fileLink) {
             $cms.ui.open(params.fileLink, null, 'width=950;height=700', '_top');
         }
 
-        find_url_tab();
+        $cms.dom.findUrlTab();
 
         $cms.dom.on(container, 'click', '.js-submit-check-filedump-selections', function (e, form) {
             if (check_filedump_selections(form) === false) {

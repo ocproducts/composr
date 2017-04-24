@@ -964,7 +964,7 @@ var SortableTable = (function(){
             { \
               try \
               { \
-                window.scrollTo(0,find_pos_y(document.getElementById('"+t.id+"'))); \
+                window.scrollTo(0,$cms.dom.findPosY(document.getElementById('"+t.id+"'))); \
               } \
               catch (e) {}; \
             } \

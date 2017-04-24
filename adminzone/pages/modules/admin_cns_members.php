@@ -611,7 +611,7 @@ class Module_admin_cns_members
         $hidden = new Tempcode();
         $fields = new Tempcode();
 
-        $javascript = '';
+        $function = '';
 
         // Contents (preset / detailed specification)...
 
@@ -627,7 +627,7 @@ class Module_admin_cns_members
             $fields->attach(form_input_radio(do_lang_tempcode('PRESET'), '', 'preset', $preset_radios, false));
 
             require_javascript('core_cns');
-            $javascript = /**@lang JavaScript*/'$cms.functions.adminCnsMembersDownloadCsv()';
+            $function = 'adminCnsMembersDownloadCsv';
         }
 
         // Option to filter by whether members allow e-mails
@@ -684,7 +684,7 @@ class Module_admin_cns_members
         $post_url = build_url(array('page' => '_SELF', 'type' => '_download_csv'), '_SELF');
         $text = '';
 
-        return do_template('FORM_SCREEN', array('_GUID' => '24cae29bc329a307a94c8b3f1e087708', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'TARGET' => '_blank', 'JAVASCRIPT' => $javascript));
+        return do_template('FORM_SCREEN', array('_GUID' => '24cae29bc329a307a94c8b3f1e087708', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'TARGET' => '_blank', 'FUNCTIONS' => $function));
     }
 
     /**

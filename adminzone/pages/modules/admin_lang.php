@@ -236,7 +236,6 @@ class Module_admin_lang
             'FIELDS' => $fields,
             'URL' => $post_url,
             'TEXT' => $text,
-            'JAVASCRIPT' => '',
         ));
     }
 

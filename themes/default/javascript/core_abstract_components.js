@@ -1,8 +1,6 @@
 (function ($cms) {
     'use strict';
 
-    var encodeUC = encodeURIComponent;
-
     $cms.templates.buttonScreenItem = function buttonScreenItem() {};
 
     $cms.templates.cropTextMouseOver = function (params, el) {
@@ -17,7 +15,7 @@
         var textLarge = $cms.filter.nl(params.textLarge);
 
         $cms.dom.on(el, 'mouseover', function (e) {
-            var window = get_main_cms_window(true);
+            var window = $cms.getMainCmsWindow(true);
             window.$cms.ui.activateTooltip(el, e, textLarge, '40%', null, null, null, false, false, false, window);
         });
     };
@@ -59,7 +57,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            $cms.loadSnippet('comments&id=' + encodeUC(id) + '&ids=' + encodeUC(ids) + '&serialized_options=' + encodeUC(window.comments_serialized_options) + '&hash=' + encodeUC(window.comments_hash), null, function (ajax_result) {
+            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.comments_serialized_options) + '&hash=' + encodeURIComponent(window.comments_hash), null, function (ajax_result) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $cms.dom.$('#post_children_' + id);
@@ -88,12 +86,16 @@
 
     $cms.templates.handleConflictResolution = function (params) {
         if (params.pingUrl) {
-            do_ajax_request(params.pingUrl);
+            $cms.doAjaxRequest(params.pingUrl);
 
             window.setInterval(function () {
-                do_ajax_request(params.pingUrl, function () {
+                $cms.doAjaxRequest(params.pingUrl, function () {
                 });
             }, 12000);
         }
+    };
+
+    $cms.templates.indexScreenFancierScreen = function indexScreenFancierScreen(params) {
+        document.getElementById('search_content').value = strVal(params.rawSearchString);
     };
 }(window.$cms));

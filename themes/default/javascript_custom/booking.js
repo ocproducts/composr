@@ -19,7 +19,7 @@ function recalculate_price(form) {
         }
         post += form.elements[i].name + '=' + encodeURIComponent(value) + '&';
     }
-    do_ajax_request('{$FIND_SCRIPT;,booking_price_ajax}' + keep_stub(true), function (result) {
+    $cms.doAjaxRequest('{$FIND_SCRIPT;,booking_price_ajax}' + $cms.keepStub(true), function (result) {
         $cms.dom.html(document.getElementById('price'), $cms.filter.html(result.responseText));
     }, post);
 }

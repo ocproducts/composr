@@ -1148,9 +1148,6 @@ class Module_admin
             return $this->search();
         }
 
-        $json_raw_search_string = json_encode(strval($raw_search_string));
-        $javascript = /**@lang JavaScript*/ "document.getElementById('search_content').value = {$json_raw_search_string};"; // TODO: Fix in v11
-
         return do_template('INDEX_SCREEN_FANCIER_SCREEN', array(
             '_GUID' => 'b34d4765744c359a25a0b71449eafed1',
             'TITLE' => $this->title,
@@ -1159,7 +1156,7 @@ class Module_admin
             'CONTENT' => $found_some ? $content : array(),
             'PRE' => $pre,
             'POST' => $post,
-            'JAVASCRIPT' => $javascript,
+            'RAW_SEARCH_STRING' => $raw_search_string
         ));
     }
 }

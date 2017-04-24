@@ -9,8 +9,10 @@
 
     $cms.inherits(PurchaseWizardScreen, $cms.View, {
         formEl: null,
-        events: {
-            'click .js-click-do-form-submit': 'doFormSubmit'
+        events: function () {
+            return {
+                'click .js-click-do-form-submit': 'doFormSubmit'
+            };
         },
         doFormSubmit: function (e) {
             if (!$cms.form.doFormSubmit(this.formEl, e)) {
@@ -52,5 +54,14 @@
                 window.location = btn.dataset.tpLocation
             }
         });
+    };
+
+    $cms.templates.ecomLogosAuthorize = function ecomLogosAuthorize(params, container) {
+        window.ANS_customer_id = strVal(params.customerId);
+
+        document.body.appendChild($cms.dom.create('script', null, {
+            src: 'https://verify.authorize.net/anetseal/seal.js',
+            defer: true
+        }));
     };
 }(window.$cms));

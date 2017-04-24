@@ -1855,7 +1855,6 @@ class Hook_addon_registry_core_form_interfaces
         return array(
             lorem_globalise(do_lorem_template('POSTING_FORM', array(
                 'TABINDEX_PF' => placeholder_number(),
-                'JAVASCRIPT' => '',
                 'PREVIEW' => lorem_phrase(),
                 'COMCODE_EDITOR' => $comcode,
                 'COMCODE_EDITOR_SMALL' => lorem_phrase(),

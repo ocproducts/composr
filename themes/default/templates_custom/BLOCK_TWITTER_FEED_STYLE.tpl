@@ -1,8 +1,10 @@
 {$SET,reply_id,{$RAND}}
 {$SET,retweet_id,{$RAND}}
 {$SET,favorite_id,{$RAND}}
+
 {+START,IF,{$EQ,{STYLE},1}}
-	 <div class="box" style="margin:0;">
+	 <div class="box" style="margin:0;" data-require-javascript="twitter_feed_integration_block"
+          data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}">
 		<table width="100%" border="0" cellpadding="0" cellspacing="4">
 			<tr>
 				<td>
@@ -30,7 +32,8 @@
 {+END}
 
 {+START,IF,{$EQ,{STYLE},2}}
-	<table width="100%" border="0" cellpadding="0" cellspacing="4">
+	<table width="100%" border="0" cellpadding="0" cellspacing="4" data-require-javascript="twitter_feed_integration_block"
+           data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}">
 		<tr>
 			<td>
 				<table width="100%">
@@ -100,7 +103,8 @@
 {+END}
 
 {+START,IF,{$EQ,{STYLE},3}}
-	<table width="100%" border="0" cellpadding="0" cellspacing="4">
+	<table width="100%" border="0" cellpadding="0" cellspacing="4" data-require-javascript="twitter_feed_integration_block"
+           data-tpl="blockTwitterFeedStyle" data-tpl-params="{+START,PARAMS_JSON,reply_id,retweet_id,favorite_id}{_*}{+END}">
 		<tr>
 			{+START,IF,{SHOW_PROFILE_IMAGE}}
 				<td style="vertical-align: middle; text-align: center; width: 56px">
@@ -178,22 +182,4 @@
 	</table>
 	<br /><hr style="height:1px;" /><br />
 {+END}
-{+START,IF,{$GT,{$VERSION},8}}
-	<script>// <![CDATA[
-	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-		create_rollover('{$GET;/,reply_id}','{$IMG;/,twitter_feed/reply_hover}');
-	});
-	//]]></script>
 
-	<script>// <![CDATA[
-	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-		create_rollover('{$GET;/,retweet_id}','{$IMG;/,twitter_feed/retweet_hover}');
-	});
-	//]]></script>
-
-	<script>// <![CDATA[
-	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-		create_rollover('{$GET;/,favorite_id}','{$IMG;/,twitter_feed/favorite_hover}');
-	});
-	//]]></script>
-{+END}

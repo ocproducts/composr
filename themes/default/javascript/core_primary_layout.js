@@ -27,8 +27,8 @@
                 $cms.dom.clearTransitionAndSetOpacity(helper_panel_contents, 0.0);
                 $cms.dom.fadeTransition(helper_panel_contents, 100, 30, 4);
 
-                if (read_cookie('hide_helper_panel') === '1') {
-                    set_cookie('hide_helper_panel', '0', 100);
+                if ($cms.readCookie('hide_helper_panel') === '1') {
+                    $cms.setCookie('hide_helper_panel', '0', 100);
                 }
 
                 helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
@@ -37,7 +37,7 @@
                     helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
                 }
             } else {
-                if (read_cookie('hide_helper_panel') == '') {
+                if ($cms.readCookie('hide_helper_panel') == '') {
                     $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
                         if (answer) {
                             _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
@@ -53,7 +53,7 @@
                 panel_right.classList.add('helper_panel_hidden');
                 helper_panel_contents.setAttribute('aria-expanded', 'false');
                 helper_panel_contents.style.display = 'none';
-                set_cookie('hide_helper_panel', '1', 100);
+                $cms.setCookie('hide_helper_panel', '1', 100);
                 helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_show}');
 
                 if (helper_panel_toggle.firstElementChild.srcset !== undefined) {

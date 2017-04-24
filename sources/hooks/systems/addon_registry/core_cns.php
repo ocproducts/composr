@@ -684,7 +684,6 @@ class Hook_addon_registry_core_cns
 
         return array(
             lorem_globalise(do_lorem_template('CNS_JOIN_STEP2_SCREEN', array(
-                'JAVASCRIPT' => '',
                 'TITLE' => lorem_title(),
                 'FORM' => $form,
             )), null, '', true)

@@ -31,6 +31,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
      */
     public function run($param)
     {
+        require_code('global2');
         require_code('symbols');
         require_code('symbols2');
 
@@ -84,6 +85,8 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'IS_A_COOKIE_LOGIN'   => ecv2_IS_A_COOKIE_LOGIN($lang, [], []),
             'SESSION_COOKIE_NAME' => ecv2_SESSION_COOKIE_NAME($lang, [], []),
             'GROUP_ID'            => ecv2_GROUP_ID($lang, [], []),
+            'INLINE_STATS'        => ecv2_INLINE_STATS($lang, [], []),
+            'RUNNING_SCRIPT'      => current_script()
         );
 
         require_code('config');
@@ -111,6 +114,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'collapse_user_zones' => get_option('collapse_user_zones'),
             'sitewide_im' => get_option('sitewide_im'),
             'topic_pin_max_days' => get_option('topic_pin_max_days'),
+            'cookie_notice' => get_option('cookie_notice'),
         ];
 
         $value['VALUE_OPTION'] = [

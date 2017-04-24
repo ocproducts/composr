@@ -50,7 +50,7 @@
         });
 
         $cms.dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function (e) {
-            find_url_tab();
+            $cms.dom.findUrlTab();
         });
 
         $cms.dom.on(container, 'click', '.js-click-toggle-pts', function (e) {
@@ -65,24 +65,22 @@
     };
 
     $cms.templates.notificationsManageScreen = function notificationsManageScreen(params, container) {
-        var soundRadioEl = $cms.dom.$('#sound_' + read_cookie('sound', 'off'));
+        var soundRadioEl = $cms.dom.$('#sound_' + $cms.readCookie('sound', 'off'));
 
         if (soundRadioEl) {
             soundRadioEl.checked = true;
         }
 
         $cms.dom.on(container, 'click', '.js-click-set-sound-cookie-on', function () {
-            set_cookie('sound', 'on');
+            $cms.setCookie('sound', 'on');
         });
 
         $cms.dom.on(container, 'click', '.js-click-set-sound-cookie-off', function () {
-            set_cookie('sound', 'off');
+            $cms.setCookie('sound', 'off');
         });
     };
 
-    $cms.templates.notificationsTree = function notificationsTree() {
-        var tableRow = this;
-
+    $cms.templates.notificationsTree = function notificationsTree(params, tableRow) {
         $cms.dom.on(tableRow, 'click', '.js-click-copy-advanced-notifications', function () {
             advanced_notifications_copy_under(tableRow);
         });
@@ -115,17 +113,13 @@
         }
     };
 
-    $cms.templates.notificationWeb = function notificationWeb() {
-        var container = this;
-
+    $cms.templates.notificationWeb = function notificationWeb(params, container) {
         $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
             poll_for_notifications(true, true);
         });
     };
 
-    $cms.templates.notificationTypes_item = function notificationTypes_item() {
-        var container = this;
-
+    $cms.templates.notificationTypes_item = function notificationTypes_item(params, container) {
         $cms.dom.on(container, 'click', '.js-click-handle-ntype-tick', function (e, checkbox) {
             var raw = +checkbox.dataset.tpRaw || 0,
                 parentRow = $cms.dom.closest(checkbox, 'tr'),

@@ -12,10 +12,12 @@ function show_permission_setting(ob, event) {
     if (!ob.full_setting) {
         var serverid;
 
-        if (window.sitemap !== undefined) {
+        if (window.sitemap != null) {
             var value = document.getElementById('tree_list').value;
 
-            if (value.indexOf(',') != -1) return; // Can't find any single value, as multiple resources are selected
+            if (value.indexOf(',') != -1) { // Can't find any single value, as multiple resources are selected
+                return;
+            }
 
             var node = window.sitemap.getElementByIdHack(value);
             serverid = node.getAttribute('serverid');
@@ -24,8 +26,10 @@ function show_permission_setting(ob, event) {
         }
 
         var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
-        do_ajax_request(url + keep_stub(), function (ret) {
-            if (!ret) return;
+        $cms.doAjaxRequest(url + $cms.keepStub(), function (ret) {
+            if (!ret) {
+                return;
+            }
             ob.full_setting = ret.responseText;
             ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.full_setting + ']';
         });
@@ -38,7 +42,9 @@ function show_permission_setting(ob, event) {
 function cleanup_permission_list(name) {
     // We always try and cleanup the 'custom' option if we're choosing something else (because it's confusing for it to stay there)
     var custom_option = document.getElementById(name + '_custom_option');
-    if (custom_option) custom_option.parentNode.removeChild(custom_option);
+    if (custom_option) {
+        custom_option.parentNode.removeChild(custom_option);
+    }
 }
 
 function copy_permission_presets(name, value, just_track) {

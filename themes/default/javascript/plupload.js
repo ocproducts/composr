@@ -13147,9 +13147,9 @@ function begin_form_uploading(e, ob, recurse) {
         $cms.ui.disableSubmitAndPreviewButtons(true);
 
         ob.start();
-        smooth_scroll(find_pos_y(filename_field, true));
+        $cms.dom.smoothScroll($cms.dom.findPosY(filename_field, true));
 
-        if (btn_submit.form.offsetHeight > get_window_height()) // If possibly cannot see upload progress bars
+        if (btn_submit.form.offsetHeight > $cms.dom.getWindowHeight()) // If possibly cannot see upload progress bars
             $cms.ui.alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;^}');
     } else {
         if (!ob.original_click_handler) {
@@ -13171,10 +13171,9 @@ function begin_form_uploading(e, ob, recurse) {
     return false;
 }
 
-function submit_form_with_the_upload(btn_submit)
-{
+function submit_form_with_the_upload(btn_submit) {
     if (btn_submit.form.target == 'preview_iframe') {
-        illustrate_frame_load('preview_iframe');
+        $cms.dom.illustrateFrameLoad('preview_iframe');
     }
     btn_submit.form.submit();
 }
@@ -13644,7 +13643,7 @@ function get_uploader_settings(name, page_type, _btn_submit_id, posting_field_na
 
         // General settings
         runtimes: 'html5,silverlight,flash',
-        url: '{$FIND_SCRIPT;,incoming_uploads}' + keep_stub(true),
+        url: '{$FIND_SCRIPT;,incoming_uploads}' + $cms.keepStub(true),
         max_file_size: ( window.mfs == undefined) ? '2000mb' : (((window.mfs[0] != undefined) ? window.mfs[0].value : window.mfs.value) + 'b'),
 
         // Specify what files to browse for
@@ -13924,7 +13923,7 @@ function html5_upload(event, field_name, files) {
         request.onreadystatechange = build_html5_upload_handler(request, file_upload.file_progress, window.extra_attachment_base, field_name);
 
         // Send
-        request.open('POST', '{$FIND_SCRIPT;,incoming_uploads}' + keep_stub(true));
+        request.open('POST', '{$FIND_SCRIPT;,incoming_uploads}' + $cms.keepStub(true));
         var form_data = new FormData();
         form_data.append('file', file);
         request.send(form_data);

@@ -105,8 +105,8 @@ function get_afm_form()
     $hidden->attach(form_input_hidden('got_ftp_details', '1'));
 
     require_javascript('core');
-    $javascript = /**@lang JavaScript*/'$cms.functions.abstractFileManagerGetAfmForm()';
-    $middle = do_template('FORM_SCREEN', array('_GUID' => 'c47a31fca47a7b22eeef3a6269cc2407', 'JAVASCRIPT' => $javascript, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => paragraph(do_lang_tempcode('TEXT_ABSTRACT_FILE_MANAGEMENT'))));
+    $function = 'abstractFileManagerGetAfmForm';
+    $middle = do_template('FORM_SCREEN', array('_GUID' => 'c47a31fca47a7b22eeef3a6269cc2407', 'FUNCTIONS' => $function, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => paragraph(do_lang_tempcode('TEXT_ABSTRACT_FILE_MANAGEMENT'))));
     $echo = globalise($middle, null, '', true);
     $echo->evaluate_echo();
     exit();

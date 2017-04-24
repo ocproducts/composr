@@ -1,6 +1,8 @@
-{+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
+{$SET,is_block_raw,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
+
+{+START,IF,{$NOT,{$GET,is_block_raw}}}
 	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-	<div id="{$GET*,wrapper_id}">
+	<div id="{$GET*,wrapper_id}" data-require-javascript="['activities', 'activity_feed']" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}">
 		<div class="float_surrounder">
 			<div id="activities_feed">
 				<div id="activities_general_notify"></div>
@@ -24,35 +26,13 @@
 			{+END}
 		</div>
 
-		<script>//<![CDATA[
-		(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-				window.activities_mode='{MODE;/}';
-				window.activities_member_ids='{MEMBER_IDS;/}';
-
-				{+START,IF,{$EQ,{START},0}}
-					// "Grow" means we should keep stacking new content on top of old. If not
-					// then we should allow old content to "fall off" the bottom of the feed.
-					{+START,IF,{GROW}}
-						window.activities_feed_grow=true;
-					{+END}
-					{+START,IF,{$NOT,{GROW}}}
-						window.activities_feed_grow=false;
-					{+END}
-					window.activities_feed_max={MAX%};
-					if ($('#activities_feed').length!=0) {
-						window.setInterval(s_update_get_data,{REFRESH_TIME%}*1000);
-					}
-				{+END}
-			});
-		//]]></script>
-
 		{+START,IF_NON_EMPTY,{PAGINATION}}
 			{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}
 		{+END}
 	</div>
 {+END}
 
-{+START,IF,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
+{+START,IF,{$GET,is_block_raw}}
 	{+START,LOOP,CONTENT}
 		<li id="{LIID*}" class="activities_box box">
 			{+START,INCLUDE,ACTIVITY}{+END}

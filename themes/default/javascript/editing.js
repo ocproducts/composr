@@ -7,7 +7,7 @@
 // ===========
 
 function wysiwyg_on() {
-    var cookie = read_cookie('use_wysiwyg');
+    var cookie = $cms.readCookie('use_wysiwyg');
     return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION.wysiwyg && !$cms.$MOBILE;
 }
 
@@ -19,10 +19,10 @@ function toggle_wysiwyg(name) {
 
     var is_wysiwyg_on = wysiwyg_on();
     if (is_wysiwyg_on) {
-        if (read_cookie('use_wysiwyg') === '-1') {
+        if ($cms.readCookie('use_wysiwyg') === '-1') {
             _toggle_wysiwyg(name);
         } else {
-            generate_question_ui(
+            $cms.ui.generateQuestionUi(
                 '{!comcode:WHETHER_SAVE_WYSIWYG_SELECTION;^}',
                 {
                     buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
@@ -43,12 +43,12 @@ function toggle_wysiwyg(name) {
 
                     if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}'.toLowerCase()) {
                         _toggle_wysiwyg(name);
-                        set_cookie('use_wysiwyg', '-1', 3000);
+                        $cms.setCookie('use_wysiwyg', '-1', 3000);
                     }
 
                     if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'.toLowerCase()) {
                         _toggle_wysiwyg(name);
-                        set_cookie('use_wysiwyg', '0', 3000);
+                        $cms.setCookie('use_wysiwyg', '0', 3000);
                     }
                 },
                 600,
@@ -60,8 +60,8 @@ function toggle_wysiwyg(name) {
 
     _toggle_wysiwyg(name);
 
-    if (read_cookie('use_wysiwyg') != '-1') {
-        set_cookie('use_wysiwyg', '1', 3000);
+    if ($cms.readCookie('use_wysiwyg') != '-1') {
+        $cms.setCookie('use_wysiwyg', '1', 3000);
     }
 
     return false;
@@ -91,7 +91,7 @@ function _toggle_wysiwyg(name) {
         } else if ((window.wysiwyg_original_comcode[id] === undefined) || (window.wysiwyg_original_comcode[id].indexOf('&#8203;') != -1) || (window.wysiwyg_original_comcode[id].indexOf('cms_keep') != -1)) {
             disable_wysiwyg(forms, so, so2, false);
         } else {
-            generate_question_ui(
+            $cms.ui.generateQuestionUi(
                 '{!javascript:DISCARD_WYSIWYG_CHANGES_NICE;^}',
                 {
                     buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
@@ -102,8 +102,8 @@ function _toggle_wysiwyg(name) {
                 '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
                 function (prompt) {
                     if ((!prompt) || (prompt.toLowerCase() == '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase())) {
-                        if (read_cookie('use_wysiwyg') == '0')
-                            set_cookie('use_wysiwyg', '1', 3000);
+                        if ($cms.readCookie('use_wysiwyg') == '0')
+                            $cms.setCookie('use_wysiwyg', '1', 3000);
                         return false;
                     }
                     var discard = (prompt.toLowerCase() == '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
@@ -157,11 +157,11 @@ function disable_wysiwyg(forms, so, so2, discard) {
                 if ((discard) && (window.wysiwyg_original_comcode[id])) {
                     textarea.value = window.wysiwyg_original_comcode[id];
                 } else {
-                    var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + keep_stub());
+                    var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
                     if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
                     var post = 'data=' + encodeURIComponent(wysiwyg_data.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
                     post = $cms.form.modsecurityWorkaroundAjax(post);
-                    var request = do_ajax_request(url, null, post);
+                    var request = $cms.doAjaxRequest(url, null, post);
                     if ((!request.responseXML) || (!request.responseXML.documentElement.querySelector('result'))) {
                         textarea.value = '[semihtml]' + wysiwyg_data + '[/semihtml]';
                     } else {
@@ -283,9 +283,9 @@ function load_html_edit(posting_form, ajax_copy) {
                 if ((posting_form.elements[id + '_parsed'] !== undefined) && (posting_form.elements[id + '_parsed'].value != '') && ((e.defaultValue == ''/*IE bug*/) || (e.defaultValue == e.value))) // The extra conditionals are for if back button used
                     e.value = posting_form.elements[id + '_parsed'].value;
             } else {
-                var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + keep_stub());
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
                 if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
-                var request = do_ajax_request(url, null, 'data=' + encodeURIComponent(posting_form.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
+                var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(posting_form.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
                 if (!request.responseXML) {
                     posting_form.elements[counter].value = '';
                 } else {
@@ -574,12 +574,12 @@ function find_tags_in_editor(editor, element) {
                 var tag_type = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
                 if (tag_type == 'block') {
                     var block_name = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
-                    var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(block_name) + '&field_name=' + field_name + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + keep_stub();
+                    var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(block_name) + '&field_name=' + field_name + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
                     url = url + '&block_type=' + (((field_name.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
-                    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+                    $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 } else {
-                    var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tag_type) + '&field_name=' + field_name + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + keep_stub();
-                    $cms.ui.open(maintain_theme_in_link(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
+                    var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tag_type) + '&field_name=' + field_name + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
+                    $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 }
                 return false;
             }
@@ -613,12 +613,12 @@ function find_tags_in_editor(editor, element) {
                         self_ob.tag_text = tag_text;
                         self_ob.is_over = true;
 
-                        var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + keep_stub());
+                        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keepStub());
                         if (window.location.href.indexOf('topics') != -1) {
                             url += '&forum_db=1';
                         }
 
-                        do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+                        $cms.doAjaxRequest(url, function (ajax_result_frame, ajax_result) {
                             if (ajax_result) {
                                 var tmp_rendered = ajax_result.textConten;
                                 if (tmp_rendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
@@ -652,7 +652,7 @@ function do_emoticon(field_name, callerEl, isOpener) {
     isOpener = !!isOpener;
 
     if (isOpener) {
-        element = get_main_cms_window().document.getElementById(field_name);
+        element = $cms.getMainCmsWindow().document.getElementById(field_name);
         if (!element) { // If it is really actually cascading popups
             element = opener.document.getElementById(field_name);
         }
@@ -677,13 +677,13 @@ function do_emoticon(field_name, callerEl, isOpener) {
 }
 
 function do_attachment(field_name, id, description) {
-    if (!get_main_cms_window().wysiwyg_editors) {
+    if (!$cms.getMainCmsWindow().wysiwyg_editors) {
         return;
     }
 
     description = strVal(description);
 
-    var element = get_main_cms_window().document.getElementById(field_name);
+    var element = $cms.getMainCmsWindow().document.getElementById(field_name);
 
     var comcode = '\n\n[attachment description="' + $cms.filter.comcode(description) + '"]' + id + '[/attachment]';
 
@@ -740,9 +740,9 @@ function insert_textbox(element, text, sel, plain_insert, html) {
         if (plain_insert) {
             insert = get_selected_html(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
         } else {
-            var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + keep_stub());
+            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
             if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
-            var request = do_ajax_request(url, null, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+            var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
             if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
                 var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
                 var result = result_tags[0];
@@ -821,10 +821,10 @@ function insert_textbox(element, text, sel, plain_insert, html) {
  }
 function insert_textbox_opener(element, text, sel, plain_insert, html) {
     if (!sel) {
-        sel = get_main_cms_window().document.selection || null;
+        sel = $cms.getMainCmsWindow().document.selection || null;
     }
 
-    get_main_cms_window().insert_textbox(element, text, sel, plain_insert, html);
+    $cms.getMainCmsWindow().insert_textbox(element, text, sel, plain_insert, html);
 }
 
 // Get selected HTML from CKEditor
@@ -865,11 +865,11 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
 
         var new_html = '';
 
-        var url = maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + keep_stub());
+        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
         if (window.location.href.indexOf('topics') != -1) {
             url += '&forum_db=1';
         }
-        var request = do_ajax_request(url, null, 'data=' + encodeURIComponent((before_wrap_tag + selected_html + after_wrap_tag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+        var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent((before_wrap_tag + selected_html + after_wrap_tag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
         if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
             var result_tags = request.responseXML.documentElement.getElementsByTagName('result');
             var result = result_tags[0];
@@ -966,7 +966,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
                 var el = document.getElementById(id);
                 if (el.checked && !authorised) {
                     //e.checked=false;	Better to assume success, not all oAuth support callback
-                    var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + keep_stub();
+                    var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.keepStub();
 
                     if ($cms.$MOBILE) {
                         window.open(url);

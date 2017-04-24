@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,shopping}
 
-<div data-tpl="\" data-tpl-params="{+START,PARAMS_JSON,PRODUCT_IDS,EMPTY_CART_URL}{_*}{+END}">
+<div data-tpl="ecomShoppingCartScreen" data-tpl-params="{+START,PARAMS_JSON,PRODUCT_IDS,EMPTY_CART_URL}{_*}{+END}">
     {TITLE}
 
     <form title="{!PRIMARY_PAGE_FORM}" action="{UPDATE_CART_URL*}" method="post" itemscope="itemscope" itemtype="http://schema.org/CheckoutPage" autocomplete="off">

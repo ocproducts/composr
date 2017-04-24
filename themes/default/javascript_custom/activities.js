@@ -22,7 +22,7 @@ function s_update_get_data() {
                     window.latest_activity = window.parseInt(data);
 
                     // Now grab whatever updates are available
-                    var url = $cms.baseUrl('data_custom/activities_updater.php' + keep_stub(true)),
+                    var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keepStub(true)),
                         list_elements = $('li', '#activities_feed'),
                         last_id = ((typeof list_elements.attr('id') == 'undefined') ? '-1' : list_elements.attr('id').replace(/^activity_/, '')),
                         post_val = 'last_id=' + last_id + '&mode=' + window.activities_mode;
@@ -31,7 +31,7 @@ function s_update_get_data() {
                         post_val = post_val + '&member_ids=' + window.activities_member_ids;
                     }
 
-                    post_val += '&csrf_token=' + encodeURIComponent(get_csrf_token()); // For CSRF prevention
+                    post_val += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention
 
                     jQuery.ajax({
                         url: url,
@@ -116,10 +116,10 @@ function s_update_remove(event, id) {
         '{!activities:DELETE_CONFIRM;^}',
         function (result) {
             if (result) {
-                var url = $cms.baseUrl('data_custom/activities_removal.php' + keep_stub(true));
+                var url = $cms.baseUrl('data_custom/activities_removal.php' + $cms.keepStub(true));
 
                 var post_val = 'removal_id=' + id;
-                post_val += '&csrf_token=' + encodeURIComponent(get_csrf_token()); // For CSRF prevention
+                post_val += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention
 
                 jQuery.ajax({
                     url: url,

@@ -169,21 +169,11 @@ class Hook_pointstore_pop3
         $fields->attach(form_input_password(do_lang_tempcode('PASSWORD'), '', 'pass1', true));
         $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'pass2', true));
 
-        $javascript =  /** @lang JavaScript */ "
-            var form = document.getElementById('pass1').form;
-            form.addEventListener('submit', function() {
-                if ((form.elements['pass1'].value!=form.elements['pass2'].value)) {
-                    $cms.ui.alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
-                    return false;
-                }
-            });
-        ";
-
         // Return template
         $newpop_url = build_url(array('page' => '_SELF', 'type' => '_newpop3', 'id' => 'pop3'), '_SELF');
         return do_template('FORM_SCREEN', array(
             '_GUID' => 'addf1563770845ba5fe4aaf2e60ca6fc',
-            'JAVASCRIPT' => $javascript,
+            'FUNCTIONS' => 'hookPointstorePop3',
             'HIDDEN' => '',
             'TITLE' => $title,
             'TEXT' => paragraph(do_lang_tempcode('ADDRESSES_ABOUT')),

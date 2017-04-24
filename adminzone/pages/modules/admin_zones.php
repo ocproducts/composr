@@ -681,10 +681,7 @@ class Module_admin_zones
         $text = paragraph(do_lang_tempcode('ZONE_ADD_TEXT'));
 
         require_javascript('core_zone_editor');
-        $script = find_script('snippet');
-        $javascript .= /** @lang JavaScript */'$cms.functions.moduleAdminZonesAddZone();';
-
-        return do_template('FORM_SCREEN', array('_GUID' => 'd8f08884cc370672c2e5604aefe78c6c', 'JAVASCRIPT' => $javascript, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array('_GUID' => 'd8f08884cc370672c2e5604aefe78c6c', 'JAVASCRIPT' => $javascript, 'FUNCTIONS' => 'moduleAdminZonesAddZone', 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUPPORT_AUTOSAVE' => true));
     }
 
     /**

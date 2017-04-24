@@ -1,1 +1,1 @@
-<script src="{$BASE_URL*}/{$CKEDITOR_PATH*}/ckeditor.js"></script>
+<script defer src="{$BASE_URL*}/{$CKEDITOR_PATH*}/ckeditor.js"></script>

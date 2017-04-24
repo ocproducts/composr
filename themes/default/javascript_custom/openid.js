@@ -1,3 +1,15 @@
+(function ($cms) {
+	'use strict';
+
+	$cms.templates.loginScreen = function loginScreen() {
+        window.$cmsLoad.push(function () {
+            if ((document.activeElement == null) || (document.activeElement !== document.getElementById('password'))){
+                document.getElementById('login_username').focus();
+            }
+        });
+	};
+}(window.$cms));
+
 /*
 OpenID Plugin
 http://code.google.com/p/openid-realselector/

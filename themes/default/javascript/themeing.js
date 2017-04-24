@@ -25,7 +25,7 @@ function file_id_to_file(file_id) {
 function template_editor_assign_unload_event() {
     window.addEventListener('beforeunload', function (event) {
         if (document.querySelector('.file_changed')) {
-            undo_staff_unload_action();
+            $cms.undoStaffUnloadAction();
             window.unloaded = false;
 
             var ret = '{!UNSAVED_TEMPLATE_CHANGES;^}';
@@ -68,8 +68,8 @@ function template_editor_show_tab(file_id) {
             resize: function (event, ui) {
                 var editor = window.ace_editors['e_' + file_id];
                 if (editor !== undefined) {
-                    $('#e_' + file_id.replace(/\./g, '\\.') + '__ace')[0].style.height = '100%';
-                    $('#e_' + file_id.replace(/\./g, '\\.') + '__ace')[0].parentNode.style.height = '100%';
+                    $cms.dom.$('#e_' + file_id.replace(/\./g, '\\.') + '__ace').style.height = '100%';
+                    $cms.dom.$('#e_' + file_id.replace(/\./g, '\\.') + '__ace').parentNode.style.height = '100%';
                     editor.resize();
                 }
             },
@@ -291,9 +291,9 @@ function template_insert_parameter(dropdown_name, file_id) {
     var has_editarea = editarea_is_loaded(textbox.name);
 
     if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays)) {
-        var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + keep_stub();
+        var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keepStub();
         $cms.ui.showModalDialog(
-            maintain_theme_in_link(url),
+            $cms.maintainThemeInLink(url),
             null,
             'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
             function () {
@@ -550,8 +550,8 @@ function load_contextual_css_editor(file, file_id) {
                 var new_css = editarea_get_value(textarea_id);
                 if (new_css == last_css) return; // Not changed
 
-                var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + keep_stub());
-                do_ajax_request(url, function (ajax_result_frame) {
+                var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keepStub());
+                $cms.doAjaxRequest(url, function (ajax_result_frame) {
                     receive_compiled_css(ajax_result_frame, file);
                 }, $cms.form.modsecurityWorkaroundAjax('css=' + encodeURIComponent(new_css)));
 

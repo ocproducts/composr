@@ -844,7 +844,6 @@ class Hook_addon_registry_ecommerce
         return array(
             lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_GUEST', array(
                 'TEXT' => lorem_sentence_html(),
-                'JAVASCRIPT' => '',
                 'FORM' => placeholder_form(),
                 'HIDDEN' => '',
             )), null, '', true)

@@ -191,7 +191,6 @@ class Hook_addon_registry_cns_signatures
 
         $posting_form = do_lorem_template('POSTING_FORM', array(
             'TABINDEX_PF' => placeholder_number() /*not called TABINDEX due to conflict with FORM_STANDARD_END*/,
-            'JAVASCRIPT' => '',
             'PREVIEW' => true,
             'COMCODE_EDITOR' => $comcode_editor,
             'COMCODE_EDITOR_SMALL' => $comcode_editor,

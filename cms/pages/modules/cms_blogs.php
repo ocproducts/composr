@@ -697,7 +697,7 @@ class Module_cms_blogs extends Standard_crud_module
 
         $db_post_url = build_url(array('page' => '_SELF', 'type' => '_import_wordpress', 'method' => 'db'), '_SELF');
 
-        $db_import_form = do_template('FORM', array('_GUID' => 'df2b4285f538bf94055c75fb8b61be6e', 'TABINDEX' => strval(get_form_field_tabindex()), 'TEXT' => '', 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $db_post_url, 'JAVASCRIPT' => ''));
+        $db_import_form = do_template('FORM', array('_GUID' => 'df2b4285f538bf94055c75fb8b61be6e', 'TABINDEX' => strval(get_form_field_tabindex()), 'TEXT' => '', 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $db_post_url));
 
         /* Render */
 

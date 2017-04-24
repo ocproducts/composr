@@ -53,7 +53,7 @@ function editarea_do_search(textarea_id, regexp) {
     });
 
     try {
-        window.scrollTo(0, find_pos_y(document.getElementById(textarea_id).parentNode, true));
+        window.scrollTo(0, $cms.dom.findPosY(document.getElementById(textarea_id).parentNode, true));
     } catch (e) {}
 }
 

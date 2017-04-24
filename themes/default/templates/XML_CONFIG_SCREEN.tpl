@@ -14,5 +14,5 @@
 	</p>
 </form>
 </div>
-<script src="{$BASE_URL*}/data/ace/ace.js"></script>
-<script src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
+<script defer src="{$BASE_URL*}/data/ace/ace.js"></script>
+<script defer src="{$BASE_URL*}/data/ace/ace_composr.js"></script>

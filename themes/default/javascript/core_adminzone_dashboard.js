@@ -76,9 +76,11 @@
     }
 
     $cms.inherits(BlockMainStaffLinks, $cms.View, {
-        events: {
-            'click .js-click-staff-block-flip': 'staffBlockFlip',
-            'click .js-click-form-submit-headless': 'formSubmitHeadless'
+        events: function () {
+            return {
+                'click .js-click-staff-block-flip': 'staffBlockFlip',
+                'click .js-click-form-submit-headless': 'formSubmitHeadless'
+            };
         },
         staffBlockFlip: function () {
             var rand = this.params.randStaffLinks,
@@ -108,10 +110,12 @@
     }
 
     $cms.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, {
-        events: ({
-            'click .js-click-staff-block-flip': 'staffBlockFlip',
-            'click .js-click-headless-submit': 'headlessSubmit'
-        }),
+        events: function () {
+            return {
+                'click .js-click-staff-block-flip': 'staffBlockFlip',
+                'click .js-click-headless-submit': 'headlessSubmit'
+            };
+        },
 
         staffBlockFlip: function () {
             var isTableDisplayed = $cms.dom.isDisplayed(this.tableEl);
@@ -175,9 +179,8 @@
     $cms.views.BlockMainStaffWebsiteMonitoring = BlockMainStaffWebsiteMonitoring;
     $cms.views.BlockMainNotes = BlockMainNotes;
 
-    $cms.templates.blockMainStaffChecklist = function () {
-        var container = this,
-            showAllLink = document.getElementById('checklist_show_all_link'),
+    $cms.templates.blockMainStaffChecklist = function (params, container) {
+        var showAllLink = document.getElementById('checklist_show_all_link'),
             hideDoneLink = document.getElementById('checklist_hide_done_link');
 
         set_task_hiding(true);
@@ -276,7 +279,7 @@
                 post += '&' + form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(form, form.elements[i]));
             }
         }
-        var request = do_ajax_request(maintain_theme_in_link($SCRIPT_comcode_convert + keep_stub(true)), null, post);
+        var request = $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), null, post);
 
         if (request.responseText && (request.responseText !== 'false')) {
             var result = request.responseXML.documentElement.querySelector('result');

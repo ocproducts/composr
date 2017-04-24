@@ -1,10 +1,11 @@
 window.sb_cc_timer = null;
 window.sb_last_message_id = null;
 
-function sb_chat_check(last_message_id, last_event_id) {
+function sb_chat_check(room_id, last_message_id, last_event_id) {
+    window.sb_room_id = room_id;
     window.sb_last_message_id = last_message_id;
-    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + window.sb_room_id + "&message_id=" + last_message_id + "&event_id=" + last_event_id;
-    do_ajax_request(url + keep_stub(false), sb_chat_check_response);
+    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + room_id + "&message_id=" + last_message_id + "&event_id=" + last_event_id;
+    $cms.doAjaxRequest(url + $cms.keepStub(false), sb_chat_check_response);
 }
 
 function sb_chat_check_response(ajax_result_frame, ajax_result) {
@@ -20,7 +21,7 @@ function sb_chat_check_response(ajax_result_frame, ajax_result) {
     window.sb_cc_timer = window.setTimeout(function () {
         var messageId = window.sb_last_message_id;
         return function () {
-            sb_chat_check(messageId, -1)
+            sb_chat_check(window.sb_room_id, messageId, -1)
         }
     }(), 10000);
 }

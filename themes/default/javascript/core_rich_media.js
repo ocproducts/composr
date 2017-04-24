@@ -359,7 +359,7 @@
         var name = strVal(params.name);
 
         $cms.dom.on(container, 'click', '.js-link-click-open-emoticon-chooser-window', function (e, link) {
-            var url = maintain_theme_in_link(link.href);
+            var url = $cms.maintainThemeInLink(link.href);
             $cms.ui.open(url, 'field_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
@@ -384,7 +384,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-open-attachment-popup', function (e, link) {
             e.preventDefault();
-            $cms.ui.open(maintain_theme_in_link(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
+            $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
         window.rebuild_attachment_button_for_next = rebuild_attachment_button_for_next;
@@ -419,7 +419,7 @@
             refreshTime = +params.refreshTime || 0;
 
         if ((typeof params.rollover === 'string') && (params.rollover !== '')) {
-            create_rollover(img.id, params.rollover);
+            $cms.createRollover(img.id, params.rollover);
         }
 
         if (refreshTime > 0) {
@@ -447,7 +447,7 @@
 
         $cms.dom.on(btn, 'click', function () {
             var mainWindow = btn.ownerDocument.defaultView || btn.ownerDocument.parentWindow;
-            if (!(browser_matches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img')))) {
+            if (!($cms.browserMatches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img')))) {
                 mainWindow['do_input_' + b](fieldName);
             }
         });
@@ -545,15 +545,15 @@
                 document.getElementById(params.randIdOverlay).style.display = 'none';
 
                 if (id) {
-                    set_cookie('og_' + id, '1', 365);
+                    $cms.setCookie('og_' + id, '1', 365);
                 }
             });
 
-            if (!id || (read_cookie('og_' + id) !== '1')) {
+            if (!id || ($cms.readCookie('og_' + id) !== '1')) {
                 window.setTimeout(function() {
                     var element, bi;
 
-                    smooth_scroll(0);
+                    $cms.dom.smoothScroll(0);
 
                     element = document.getElementById(params.randIdOverlay);
                     element.style.display = 'block';
@@ -1118,7 +1118,7 @@
             return;
         }
 
-        register_mouse_listener();
+        $cms.dom.registerMouseListener();
 
         var e, i, s_width, biasx, biasy;
         for (i = 0; i < window.crazy_criters.length; i++) {

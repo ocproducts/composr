@@ -5,7 +5,7 @@
         $cms.attachBehaviors(document);
     });
 
-    $cms.defineBehaviors(/** @lends $cms.behaviors */{
+    $cms.defineBehaviors(/**@lends $cms.behaviors*/{
         // Implementation for [data-require-javascript="[<scripts>...]"]
         initializeRequireJavascript: {
             priority: 10000,
@@ -34,6 +34,7 @@
                     try {
                         view = new $cms.views[el.dataset.view](params, viewOptions);
                         $cms.viewInstances[$cms.uid(view)] = view;
+                        //$cms.log('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '"', view);
                     } catch (ex) {
                         $cms.error('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
                     }
@@ -63,7 +64,7 @@
                     hasBaseEl = !!document.querySelector('base');
 
                 anchors.forEach(function (anchor) {
-                    var href = anchor.getAttribute('href') || '';
+                    var href = strVal(anchor.getAttribute('href'));
                     // So we can change base tag especially when on debug mode
                     if (hasBaseEl && href.startsWith('#') && (href !== '#!')) {
                         anchor.setAttribute('href', window.location.href.replace(/#.*$/, '') + href);
@@ -240,9 +241,49 @@
     $cms.views.Global = function Global() {
         Global.base(this, 'constructor', arguments);
 
+        /*START JS from HTML_HEAD.tpl*/
+        // Google Analytics account, if one set up
+        if ($cms.$CONFIG_OPTION.google_analytics.trim() && !$cms.$IS_STAFF && !$cms.$IS_ADMIN) {
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    };
+                i[r].l = 1 * new Date();
+                a = s.createElement(o);
+                m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            if ($cms.$CONFIG_OPTION.long_google_cookies) {
+                window.ga('create', $cms.$CONFIG_OPTION.google_analytics.trim(), 'auto');
+            } else {
+                window.ga('create', $cms.$CONFIG_OPTION.google_analytics.trim(), { cookieExpires: 0 });
+            }
+            window.ga('send','pageview');
+        }
+
+        // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
+        if ($cms.$CONFIG_OPTION.cookie_notice && ($cms.$RUNNING_SCRIPT === 'index')) {
+            window.cookieconsent_options = {
+                'message': $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME),
+                'dismiss': '{!INPUTSYSTEM_OK;}',
+                'learnMore': '{!READ_MORE;}',
+                'link': '{$PAGE_LINK;,:privacy}',
+                'theme': 'dark-top'
+            };
+            document.body.appendChild($cms.dom.create('script', null, {
+                src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js',
+                defer: true
+            }));
+        }
+
         if ($cms.$CONFIG_OPTION.detect_javascript) {
             this.detectJavascript();
         }
+        /*END JS from HTML_HEAD.tpl*/
 
         if ($cms.dom.$('#global_messages_2')) {
             var m1 = $cms.dom.$('#global_messages');
@@ -285,13 +326,13 @@
 
         // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
         if ($cms.$CONFIG_OPTION.detect_javascript) {
-            set_cookie('js_on', 1, 120);
+            $cms.setCookie('js_on', 1, 120);
         }
 
         if ($cms.$CONFIG_OPTION.is_on_timezone_detection) {
             if (!window.parent || (window.parent === window)) {
-                set_cookie('client_time', (new Date()).toString(), 120);
-                set_cookie('client_time_ref', $cms.$FROM_TIMESTAMP, 120);
+                $cms.setCookie('client_time', (new Date()).toString(), 120);
+                $cms.setCookie('client_time_ref', $cms.$FROM_TIMESTAMP, 120);
             }
         }
 
@@ -326,7 +367,7 @@
         window.$cmsLoad.push(function () {
             // When images etc have loaded
             // Move the help panel if needed
-            if ($cms.$CONFIG_OPTION.fixed_width || (get_window_width() > 990)) {
+            if ($cms.$CONFIG_OPTION.fixed_width || ($cms.dom.getWindowWidth() > 990)) {
                 return;
             }
 
@@ -467,7 +508,7 @@
                         stuck_nav_height = (stuck_nav.real_height === undefined) ? $cms.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
 
                     stuck_nav.real_height = stuck_nav_height;
-                    var pos_y = find_pos_y(stuck_nav.parentNode, true),
+                    var pos_y = $cms.dom.findPosY(stuck_nav.parentNode, true),
                         footer_height = document.querySelector('footer').offsetHeight,
                         panel_bottom = $cms.dom.$id('panel_bottom');
 
@@ -478,7 +519,7 @@
                     if (panel_bottom) {
                         footer_height += panel_bottom.offsetHeight;
                     }
-                    if (stuck_nav_height < get_window_height() - footer_height) {// If there's space in the window to make it "float" between header/footer
+                    if (stuck_nav_height < $cms.dom.getWindowHeight() - footer_height) {// If there's space in the window to make it "float" between header/footer
                         var extra_height = (window.pageYOffset - pos_y);
                         if (extra_height > 0) {
                             var width = $cms.dom.contentWidth(stuck_nav);
@@ -669,7 +710,7 @@
                 return;
             }
 
-            manage_scroll_height(textarea);
+            $cms.manageScrollHeight(textarea);
         },
 
         // Implementation for [data-open-as-overlay]
@@ -795,7 +836,7 @@
             trayCookie = strVal(trayEl.dataset.trayCookie);
 
             if (trayCookie) {
-                set_cookie('tray_' + trayCookie, $cms.dom.isDisplayed(trayEl) ? 'closed' : 'open');
+                $cms.setCookie('tray_' + trayCookie, $cms.dom.isDisplayed(trayEl) ? 'closed' : 'open');
             }
 
             $cms.toggleableTray(trayEl);
@@ -880,7 +921,7 @@
                         border: '3px solid #AAA',
                         position: 'absolute',
                         zIndex: 2000,
-                        left: (get_window_width() - width) / 2 + 'px',
+                        left: ($cms.dom.getWindowWidth() - width) / 2 + 'px',
                         top: 100 + 'px'
                     },
                     html: html
@@ -888,7 +929,7 @@
 
                 document.body.appendChild(box);
 
-                smooth_scroll(0);
+                $cms.dom.smoothScroll(0);
 
                 img = $cms.dom.$('#software_chat_img');
                 $cms.dom.clearTransitionAndSetOpacity(img, 0.5);
@@ -995,7 +1036,7 @@
 
             /* Screen transition, for staff */
             function staff_unload_action() {
-                undo_staff_unload_action();
+                $cms.undoStaffUnloadAction();
 
                 // If clicking a download link then don't show the animation
                 if (document.activeElement && document.activeElement.href !== undefined && document.activeElement.href != null) {
@@ -1019,7 +1060,7 @@
                 var div = document.createElement('div');
                 div.className = 'unload_action';
                 div.style.width = '100%';
-                div.style.top = (get_window_height() / 2 - 160) + 'px';
+                div.style.top = ($cms.dom.getWindowHeight() / 2 - 160) + 'px';
                 div.style.position = 'fixed';
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
@@ -1033,7 +1074,7 @@
                 document.body.appendChild(div);
 
                 // Allow unloading of the animation
-                $cms.dom.on(window, 'pageshow keydown click', undo_staff_unload_action)
+                $cms.dom.on(window, 'pageshow keydown click', $cms.undoStaffUnloadAction)
             }
 
             /*
@@ -1056,7 +1097,7 @@
                     if (link.rendered_tooltip === undefined) {
                         link.is_over = true;
 
-                        do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + keep_stub()), function (ajax_result_frame) {
+                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), function (ajax_result_frame) {
                             if (ajax_result_frame && ajax_result_frame.responseText) {
                                 link.rendered_tooltip = ajax_result_frame.responseText;
                             }
@@ -1110,8 +1151,8 @@
                     ml.value = '{!themes:EDIT_THEME_IMAGE;^}';
                     ml.className = 'magic_image_edit_link button_micro';
                     ml.style.position = 'absolute';
-                    ml.style.left = find_pos_x(target) + 'px';
-                    ml.style.top = find_pos_y(target) + 'px';
+                    ml.style.left = $cms.dom.findPosX(target) + 'px';
+                    ml.style.top = $cms.dom.findPosY(target) + 'px';
                     ml.style.zIndex = 3000;
                     ml.style.display = 'none';
                     target.parentNode.insertBefore(ml, target);
@@ -1160,14 +1201,14 @@
                 ob || (ob = this);
 
                 var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
-                if (src && (force || (magic_keypress(event)))) {
+                if (src && (force || ($cms.magicKeypress(event)))) {
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)
                     event.stopPropagation();
 
                     if (event.preventDefault !== undefined) event.preventDefault();
 
                     if (src.includes('{$BASE_URL_NOHTTP;^}/themes/')) {
-                        ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG) + '&theme=' + encodeURIComponent($cms.$THEME) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + keep_stub(), 'edit_theme_image_' + ob.id);
+                        ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG) + '&theme=' + encodeURIComponent($cms.$THEME) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
                     }
@@ -1261,7 +1302,7 @@
         /**@method*/
         toggle: function () {
             if (this.trayCookie) {
-                set_cookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
+                $cms.setCookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
             }
 
             $cms.toggleableTray(this.el);
@@ -1291,7 +1332,7 @@
 
         /**@method*/
         handleTrayCookie: function () {
-            var cookieValue = read_cookie('tray_' + this.trayCookie);
+            var cookieValue = $cms.readCookie('tray_' + this.trayCookie);
 
             if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
                 $cms.toggleableTray(this.contentEl, true);
@@ -1348,7 +1389,7 @@
 
         var isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
         function set_tray_theme_image(before_theme_img, after_theme_img, before1_url, after1_url, after2_url) {
-            var is_1 = matches_theme_image(pic.src, before1_url);
+            var is_1 = $cms.dom.matchesThemeImage(pic.src, before1_url);
 
             if (is_1) {
                 if (isThemeWizard) {
@@ -1509,11 +1550,11 @@
 
     $cms.templates.ipBanScreen = function (params, container) {
         var textarea = commandrLs.querySelector('#bans');
-        manage_scroll_height(textarea);
+        $cms.manageScrollHeight(textarea);
 
         if (!$cms.$MOBILE) {
             $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
-                manage_scroll_height(textarea);
+                $cms.manageScrollHeight(textarea);
             });
         }
     };
@@ -1667,7 +1708,7 @@
         }
 
         // And now define nice listeners for it all...
-        var global = get_main_cms_window(true);
+        var global = $cms.getMainCmsWindow(true);
 
         el.cms_tooltip_title = $cms.filter.html(title);
 

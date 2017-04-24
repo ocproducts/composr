@@ -45,8 +45,11 @@ function copy_fields_into_bottom(i, changed) {
     });
 
     var s;
-    for (s = 0; s < form.elements['theme_img_code'].options.length; s++)
-        if (document.getElementById('theme_img_code_' + i).value == form.elements['theme_img_code'].options[s].value) break;
+    for (s = 0; s < form.elements['theme_img_code'].options.length; s++) {
+        if (document.getElementById('theme_img_code_' + i).value == form.elements['theme_img_code'].options[s].value) {
+            break;
+        }
+    }
     if (s == form.elements['theme_img_code'].options.length) {
         s = 0;
         $cms.ui.alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.dom.$id('theme_img_code_' + i).value));

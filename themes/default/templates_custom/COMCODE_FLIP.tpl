@@ -5,31 +5,7 @@
 
 {$SET,RAND_FLIP,{$RAND}}
 
-<div class="flipbox" id="flipbox_{$GET%,RAND_FLIP}">
+<div class="flipbox" id="flipbox_{$GET%,RAND_FLIP}" data-require-javascript="['jquery','jquery_ui','jquery_flip','comcode_flip_tag']"
+     data-tpl="comcodeFlip" data-tpl-params="{+START,PARAMS_JSON,RAND_FLIP,FINAL_COLOR,SPEED,CONTENT}{_*}{+END}">
 	{$COMCODE,{PARAM}}
 </div>
-
-<script>// <![CDATA[
-(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-    var _el = document.getElementById("flipbox_{$GET%,RAND_FLIP}");
-
-    _el.onclick = function () {
-        var el = $("#flipbox_{$GET%,RAND_FLIP}");
-
-        if (_el.flipped === undefined) {
-            _el.flipped = false;
-        }
-        if (_el.flipped) {
-            el.revertFlip();
-        } else {
-            el.flip({
-                color: '{+START,IF,{$NOT,{$IN_STR,{FINAL_COLOR},#}}}#{+END}{FINAL_COLOR;^/}',
-                speed: +'{SPEED%}',
-                direction: 'tb',
-                content: '{CONTENT;^/}'
-            })
-        }
-        _el.flipped = !_el.flipped;
-    }
-});
-//]]></script>

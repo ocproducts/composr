@@ -9,7 +9,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         return null;
     }
 
-    if (!magic_keypress(event) && !was_double_click && (object === event.target)) {
+    if (!$cms.magicKeypress(event) && !was_double_click && (object === event.target)) {
         return null;
     }
 
@@ -21,8 +21,8 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
     if (width < 160) {
         width = 160;
     }
-    var x = find_pos_x(object, true);
-    var y = find_pos_y(object, true) - 8;
+    var x = $cms.dom.findPosX(object, true);
+    var y = $cms.dom.findPosY(object, true) - 8;
 
     // Record old JS events
     object.old_onclick = object.onclick;
@@ -67,7 +67,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
     }
     input.style.position = 'absolute';
     input.style.left = $cms.$MOBILE ? '0px' : (x + 'px');
-    input.style.width = $cms.$MOBILE ? (get_window_width() + 'px') : (width + 'px');
+    input.style.width = $cms.$MOBILE ? ($cms.dom.getWindowWidth() + 'px') : (width + 'px');
     input.style.top = (y + 8) + 'px';
     input.style.margin = 0;
 
@@ -128,12 +128,12 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
 
     function save_function() {
         // Call AJAX request
-        var response = do_ajax_request(input.form.action, null, input.name + '=' + encodeURIComponent(input.value));
+        var response = $cms.doAjaxRequest(input.form.action, null, input.name + '=' + encodeURIComponent(input.value));
 
         // Some kind of error?
         if (((response.responseText == '') && (input.value != '')) || (response.status != 200)) {
             var session_test_url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
-            var session_test_ret = do_ajax_request(session_test_url + keep_stub(true), null);
+            var session_test_ret = $cms.doAjaxRequest(session_test_url + $cms.keepStub(true), null);
 
             if (session_test_ret.responseText) {// If it failed, see if it is due to a non-confirmed session
                 $cms.ui.confirmSession(
@@ -167,7 +167,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             event.preventDefault();
         }
 
-        if (magic_keypress(event)) {
+        if ($cms.magicKeypress(event)) {
             cleanup_function();
         }
 

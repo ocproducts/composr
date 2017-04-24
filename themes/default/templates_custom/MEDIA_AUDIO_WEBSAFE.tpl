@@ -13,7 +13,8 @@
 		{+END}
 	{+END}
 
-	<audio controls="controls" preload="none" id="{$GET%,player_id}">
+	<audio controls="controls" preload="none" id="{$GET%,player_id}"
+		   data-require-javascript="['mediaelement-and-player', 'mediaelement']" data-tpl="mediaAudioWebsafe">
 		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 		<object width="{WIDTH*}" height="{HEIGHT*}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
 			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
@@ -22,33 +23,6 @@
 			<img src="{THUMB_URL*}" width="{WIDTH*}" height="{HEIGHT*}" alt="No audio playback capabilities" title="No audio playback capabilities" />
 		</object>
 	</audio>
-
-	<script>// <![CDATA[
-	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-			var player=new MediaElementPlayer('#{$GET%,player_id}',{
-				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
-				{+START,IF_NON_EMPTY,{WIDTH}}
-					audioWidth: {$MIN%,950,{WIDTH}},
-				{+END}
-				{+START,IF_NON_EMPTY,{HEIGHT}}
-					audioHeight: {$MIN%,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}},
-				{+END}
-
-				enableKeyboard: true,
-
-				success: function(media) {
-					{+START,IF,{$NOT,{$INLINE_STATS}}}
-						media.addEventListener('play',function() { $cms.gaTrack(null,'{!AUDIO;/}','{URL;/}'); });
-					{+END}
-					if (document.getElementById('next_slide'))
-					{
-						media.addEventListener('canplay',function() { stop_slideshow_timer(); player.play(); });
-						media.addEventListener('ended',function() { player_stopped(); });
-					}
-				}
-			});
-		});
-	//]]></script>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}
 		<figcaption class="associated_details">

@@ -1,14 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.views.BlockSideShoutbox = BlockSideShoutbox;
     $cms.views.ChatRoomScreen = ChatRoomScreen;
-
-    function BlockSideShoutbox() {
-        BlockSideShoutbox.base(this, 'constructor', arguments);
-    }
-
-    $cms.inherits(BlockSideShoutbox, $cms.View);
 
     function ChatRoomScreen(params) {
         ChatRoomScreen.base(this, 'constructor', arguments);
@@ -40,7 +33,7 @@
         fontChange: function (e, selectEl) {
             this.$('#font').value = selectEl.value;
             this.$('#post').style.fontFamily = selectEl.value;
-            manage_scroll_height(this.$('#post'));
+            $cms.manageScrollHeight(this.$('#post'));
         },
 
         checkChatOptions: function (e, form) {
@@ -73,7 +66,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            $cms.ui.open(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         }
     });
 
@@ -151,7 +144,7 @@
                 $cms.dom.$('#post_' + chatroomId).focus();
             } catch (e) {
             }
-            $cms.dom.$('#post_' + chatroomId).value = read_cookie('last_chat_msg_' + chatroomId);
+            $cms.dom.$('#post_' + chatroomId).value = $cms.readCookie('last_chat_msg_' + chatroomId);
         });
 
         $cms.dom.on(container, 'click', '.js-click-chatroom-chat-post', function (e) {
@@ -162,7 +155,7 @@
             var openFunc = (window.opener ? window.open : $cms.ui.open),
                 popupUrl = strVal(params.emoticonsPopupUrl);
 
-            openFunc(maintain_theme_in_link(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            openFunc($cms.maintainThemeInLink(popupUrl), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         });
 
         $cms.dom.on(container, 'click', '.js-click-close-chat-conversation', function () {
@@ -177,15 +170,15 @@
 
         $cms.dom.on(container, 'keyup', '.js-keyup-textarea-chat-post', function (e, textarea) {
             if (!$cms.$MOBILE) {
-                manage_scroll_height(textarea);
+                $cms.manageScrollHeight(textarea);
             }
 
             if ($cms.dom.keyPressed(e, 'Enter')) {
-                set_cookie('last_chat_msg_' + chatroomId, '');
+                $cms.setCookie('last_chat_msg_' + chatroomId, '');
                 chat_post(e, chatroomId, 'post_' + chatroomId, '', '');
                 e.preventDefault();
             } else {
-                set_cookie('last_chat_msg_' + chatroomId, textarea.value);
+                $cms.setCookie('last_chat_msg_' + chatroomId, textarea.value);
             }
         });
     };
@@ -419,13 +412,13 @@ function chat_load(room_id) {
         window.text_colour.style.color = text_colour.value;
     }
 
-    manage_scroll_height(document.getElementById('post'));
+    $cms.manageScrollHeight(document.getElementById('post'));
 }
 
 function begin_chatting(room_id) {
     window.load_from_room_id = room_id;
 
-    if (window.do_ajax_request) {
+    if (window.$cms.doAjaxRequest) {
         chat_check(true, 0);
         play_chat_sound('you_connect');
     } else {
@@ -597,9 +590,9 @@ function chat_post(event, current_room_id, field_name, font_name, font_colour) {
                 window.top_window.chat_check(false, window.top_window.last_message_id, window.top_window.last_event_id);
             }, window.MESSAGE_CHECK_INTERVAL);
         };
-        var full_url = maintain_theme_in_link(url + window.top_window.keep_stub(false));
+        var full_url = $cms.maintainThemeInLink(url + window.top_window.$cms.keepStub(false));
         var post_data = 'room_id=' + encodeURIComponent(current_room_id) + '&message=' + encodeURIComponent(message_text) + '&font=' + encodeURIComponent(font_name) + '&colour=' + encodeURIComponent(font_colour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id);
-        do_ajax_request(full_url, [func, error_func], post_data);
+        $cms.doAjaxRequest(full_url, [func, error_func], post_data);
     }
 
     return false;
@@ -614,7 +607,7 @@ function chat_check(backlog, message_id, event_id) {
     event_id = +event_id || -1;  // -1 Means, we don't want to look at events, but the server will give us a null event
 
     // Check for new messages on the server the new or old way
-    if (window.do_ajax_request) {
+    if (window.$cms.doAjaxRequest) {
         // AJAX!
         window.setTimeout(function () {
             chat_check_timeout(backlog, message_id, event_id);
@@ -631,14 +624,14 @@ function chat_check(backlog, message_id, event_id) {
                 url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_room_id) + '&message_id=' + encodeURIComponent(message_id ? message_id : -1) + '&event_id=' + encodeURIComponent(event_id);
             }
             if (window.location.href.indexOf('no_reenter_message=1') != -1) url = url + '&no_reenter_message=1';
-            var full_url = maintain_theme_in_link(url + keep_stub(false));
+            var full_url = $cms.maintainThemeInLink(url + $cms.keepStub(false));
             var func = function (ajax_result_frame, ajax_result) {
                 chat_check_response(ajax_result_frame, ajax_result, backlog/*backlog = skip_incoming_sound*/);
             };
             var error_func = function () {
                 chat_check_response(null, null);
             }
-            do_ajax_request(full_url, [func, error_func]);
+            $cms.doAjaxRequest(full_url, [func, error_func]);
             return false;
         }
         return null;
@@ -1048,7 +1041,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
     // Start DOM stuff
     var div = document.createElement('div');
     div.className = 'im_event';
-    //div.style.left=(get_window_width()/2-140)+'px';
+    //div.style.left=($cms.dom.getWindowWidth()/2-140)+'px';
     div.style.right = '1em';
     div.style.bottom = ((document.body.querySelectorAll('.im_event').length) * 185 + 20) + 'px';
     var links = document.createElement('ul');
@@ -1058,7 +1051,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
     var close_popup = function () {
         if (div) {
             if (room_id) {
-                generate_question_ui(
+                $cms.ui.generateQuestionUi(
                     '{!HOW_REMOVE_CHAT_NOTIFICATION;^}',
                     {/*buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',*/buttons__proceed: '{!CLOSE;^}', buttons__ignore: '{!HIDE;^}'},
                     '{!REMOVE_CHAT_NOTIFICATION;^}',
@@ -1098,7 +1091,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
     div.appendChild(p_message);
 
     // Open link
-    if (!browser_matches('non_concurrent')) // Can't do on iOS due to not being able to run windows/tabs concurrently - so for iOS we only show a lobby link
+    if (!$cms.browserMatches('non_concurrent')) // Can't do on iOS due to not being able to run windows/tabs concurrently - so for iOS we only show a lobby link
     {
         var a_popup_open = document.createElement('a');
         a_popup_open.onclick = function () {
@@ -1137,7 +1130,7 @@ function create_overlay_event(skip_incoming_sound, member_id, message, click_eve
 }
 
 function start_im(people, just_refocus) {
-    if ((browser_matches('non_concurrent')) && !document.getElementById('chat_lobby_convos_tabs')) {
+    if (($cms.browserMatches('non_concurrent')) && !document.getElementById('chat_lobby_convos_tabs')) {
         // Let it navigate to chat lobby
         return true;
     }
@@ -1178,7 +1171,7 @@ function _start_im(people, may_recycle) {
     div.className = 'loading_overlay';
     $cms.dom.html(div, '{!LOADING;^}');
     document.body.appendChild(div);
-    do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + keep_stub(false)), function (result) {
+    $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + $cms.keepStub(false)), function (result) {
         var responses = result.getElementsByTagName('result');
         if (responses[0]) {
             window.instant_go = true;
@@ -1194,7 +1187,7 @@ function invite_im(people) {
     if (!room_id) {
         $cms.ui.alert('{!NO_IM_ACTIVE;^}');
     } else {
-        do_ajax_request('{$FIND_SCRIPT;,messages}?action=invite_im' + keep_stub(false), function () {
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(room_id) + '&people=' + people);
     }
 }
@@ -1230,7 +1223,7 @@ function find_im_convo_room_ids() {
 function close_chat_conversation(room_id) {
     var is_popup = (document.body.className.indexOf('sitewide_im_popup_body') != -1);
     /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
-    generate_question_ui(
+    $cms.ui.generateQuestionUi(
         '{!WANT_TO_DOWNLOAD_LOGS*;^}',
         {buttons__cancel: '{!INPUTSYSTEM_CANCEL*;^}', buttons__yes: '{!YES*;^}', buttons__no: '{!NO*;^}'},
         '{!CHAT_DOWNLOAD_LOGS*;^}',
@@ -1282,7 +1275,7 @@ function deinvolve_im(room_id, logs, is_popup) // is_popup means that we show a 
 
     window.setTimeout(function () // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
     {
-        window.top_window.do_ajax_request('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.keep_stub(false), function () {
+        window.top_window.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.$cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(room_id)); // Has to be on top_window or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
         if (participants)
@@ -1338,7 +1331,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
 
     window.top_window.all_conversations[participants] = room_id;
 
-    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.top_window.last_event_id + window.top_window.keep_stub(false);
+    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=join_im&event_id=' + window.top_window.last_event_id + window.top_window.$cms.keepStub(false);
     var post = 'room_id=' + encodeURIComponent(room_id);
 
     // Add in
@@ -1362,7 +1355,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
         chat_select_tab(new_div);
 
         // Tell server we've joined
-        do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+        $cms.doAjaxRequest(url, function (ajax_result_frame, ajax_result) {
             process_chat_xml_messages(ajax_result, true);
         }, post);
     } else {
@@ -1407,7 +1400,7 @@ function detected_conversation(room_id, room_name, participants) // Assumes conv
                     }
 
                     // Tell server we have joined
-                    do_ajax_request(url, function (ajax_result_frame, ajax_result) {
+                    $cms.doAjaxRequest(url, function (ajax_result_frame, ajax_result) {
                         process_chat_xml_messages(ajax_result, true);
                     }, post);
 
@@ -1492,7 +1485,7 @@ function chat_select_tab(element) {
 function detect_if_chat_window_closed(die_on_lost, become_autonomous_on_lost) {
     var lost_connection = false;
     try {
-        /*if (browser_matches('non_concurrent'))	Pointless as document.write doesn't work on iOS without tabbing back and forth, so initial load is horribly slow in first place
+        /*if ($cms.browserMatches('non_concurrent'))	Pointless as document.write doesn't work on iOS without tabbing back and forth, so initial load is horribly slow in first place
          {
          throw 'No multi-process on iOS';
          }*/

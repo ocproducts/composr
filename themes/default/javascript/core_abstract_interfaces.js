@@ -130,9 +130,7 @@
         }
     };
 
-    $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params) {
-        var element = this;
-
+    $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params, element) {
         internalise_ajax_block_wrapper_links(params.url, element, ['.*'], {}, false, true);
 
         if (params.changeDetectionUrl && (Number(params.refreshTime) > 0)) {
@@ -207,7 +205,7 @@
                 window.faux_close();
             } else {
                 try {
-                    window.get_main_cms_window().focus();
+                    window.$cms.getMainCmsWindow().focus();
                 } catch (ignore) {}
 
                 window.close();
@@ -216,7 +214,7 @@
     };
 
     function detectChange(change_detection_url, refresh_if_changed, callback) {
-        do_ajax_request(change_detection_url, function (result) {
+        $cms.doAjaxRequest(change_detection_url, function (result) {
             var response = result.responseText;
             if (response == '1') {
                 window.clearInterval(window.detect_interval);

@@ -1,23 +1,7 @@
 {$SET,rand,{$RAND}}
 
-<script>
-	$(document).ready(function() {
-		$('#skitter_{$GET;/,rand}').skitter({
-			auto_play: true,
-			controls: true,
-			dots: true,
-			enable_navigation_keys: true,
-			interval: {MILL%},
-			numbers_align: 'center',
-			preview: true,
-			progressbar: false,
-			theme: 'clean',
-			thumbs: false
-		});
-	});
-</script>
-
-<div class="box_skitter" style="width: {WIDTH*}px; height: {HEIGHT*}px;" id="skitter_{$GET*,rand}">
+<div class="box_skitter" style="width: {WIDTH*}px; height: {HEIGHT*}px;" id="skitter_{$GET*,rand}"
+	 data-require-javascript="image_slider" data-tpl="blockMainImageSlider" data-tpl-params="{+START,PARAMS_JSON,rand,MILL}{_*}{+END}">
 	<ul>
 		{+START,LOOP,IMAGES}
 			<li>
