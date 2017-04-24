@@ -25,6 +25,10 @@
     window.arrVal   = arrVal;
     window.objVal   = objVal;
 
+    (window.$cmsInit  || (window.$cmsInit = []));
+    (window.$cmsReady || (window.$cmsReady = []));
+    (window.$cmsLoad  || (window.$cmsLoad = []));
+
     /** @namespace $cms */
     $cms = extendDeep($cms, /** @lends $cms */ {
         // Unique for each copy of Composr on the page
@@ -52,6 +56,8 @@
         $DESKTOP: !boolVal(symbols.MOBILE),
         /**@member {boolean}*/
         $FORCE_PREVIEWS: boolVal(symbols.FORCE_PREVIEWS),
+        /**@member {boolean}*/
+        $INLINE_STATS: boolVal(symbols.INLINE_STATS),
         /**@member {boolean}*/
         $VERBOSE: true,
 
@@ -132,6 +138,8 @@
         $COOKIE_PATH: strVal(symbols.COOKIE_PATH),
         /**@member {string}*/
         $COOKIE_DOMAIN: strVal(symbols.COOKIE_DOMAIN),
+        /**@member {string}*/
+        $RUNNING_SCRIPT: strVal(symbols.RUNNING_SCRIPT),
 
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
@@ -158,35 +166,36 @@
             simplified_attachments_ui: boolVal(symbols.CONFIG_OPTION.simplified_attachments_ui),
             /**@member {boolean}*/
             spam_heuristic_pasting: boolVal(symbols.CONFIG_OPTION.spam_heuristic_pasting),
+            /**@member {boolean}*/
+            long_google_cookies: boolVal(symbols.CONFIG_OPTION.long_google_cookies),
+            /**@member {boolean}*/
+            enable_theme_img_buttons: boolVal(symbols.CONFIG_OPTION.enable_theme_img_buttons),
+            /**@member {boolean}*/
+            enable_previews: boolVal(symbols.CONFIG_OPTION.enable_previews),
+            /**@member {boolean}*/
+            show_inline_stats: boolVal(symbols.CONFIG_OPTION.show_inline_stats),
+            /**@member {boolean}*/
+            background_template_compilation: boolVal(symbols.CONFIG_OPTION.background_template_compilation),
+            /**@member {boolean}*/
+            notification_desktop_alerts: boolVal(symbols.CONFIG_OPTION.notification_desktop_alerts),
+            /**@member {boolean}*/
+            eager_wysiwyg: boolVal(symbols.CONFIG_OPTION.eager_wysiwyg),
+            /**@member {boolean}*/
+            fixed_width: boolVal(symbols.CONFIG_OPTION.fixed_width),
+            /**@member {boolean}*/
+            infinite_scrolling: boolVal(symbols.CONFIG_OPTION.infinite_scrolling),
+            /**@member {boolean}*/
+            js_captcha: boolVal(symbols.CONFIG_OPTION.js_captcha),
+            /**@member {boolean}*/
+            editarea: boolVal(symbols.CONFIG_OPTION.editarea),
+
+            /**@member {number}*/
+            thumb_width: intVal(symbols.CONFIG_OPTION.thumb_width),
+            /**@member {number}*/
+            topic_pin_max_days: intVal(symbols.CONFIG_OPTION.topic_pin_max_days),
 
             /**@member {string}*/
-            thumb_width: strVal(symbols.CONFIG_OPTION.thumb_width),
-            /**@member {string}*/
-            js_captcha: symbols.CONFIG_OPTION.js_captcha,
-            /**@member {string}*/
-            google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
-            /**@member {string}*/
-            long_google_cookies: symbols.CONFIG_OPTION.long_google_cookies,
-            /**@member {string}*/
-            editarea: symbols.CONFIG_OPTION.editarea,
-            /**@member {string}*/
-            fixed_width: symbols.CONFIG_OPTION.fixed_width,
-            /**@member {string}*/
-            infinite_scrolling: symbols.CONFIG_OPTION.infinite_scrolling,
-            /**@member {string}*/
-            eager_wysiwyg: symbols.CONFIG_OPTION.eager_wysiwyg,
-            /**@member {string}*/
-            show_inline_stats: symbols.CONFIG_OPTION.show_inline_stats,
-            /**@member {string}*/
-            notification_desktop_alerts: symbols.CONFIG_OPTION.notification_desktop_alerts,
-            /**@member {string}*/
-            enable_theme_img_buttons: symbols.CONFIG_OPTION.enable_theme_img_buttons,
-            /**@member {string}*/
-            enable_previews: symbols.CONFIG_OPTION.enable_previews,
-            /**@member {string}*/
-            background_template_compilation: symbols.CONFIG_OPTION.background_template_compilation,
-            /**@member {string}*/
-            topic_pin_max_days: symbols.CONFIG_OPTION.topic_pin_max_days
+            google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics)
         },
         /**
          * WARNING: This is a very limited subset of the $VALUE_OPTION tempcode symbol
@@ -415,37 +424,47 @@
         dom: {}
     });
 
-    var domReadyPromise = new Promise(function (resolve) {
-        if (document.readyState === 'interactive') {
-            window.setTimeout(resolve, 0);
+    setTimeout(function () {
+        executeCmsInitQueue();
+
+        if ((document.readyState === 'interactive') || (document.readyState === 'complete')) {
+            executeCmsReadyQueue();
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
                 document.removeEventListener('DOMContentLoaded', listener);
-                resolve();
+                executeCmsReadyQueue();
             });
         }
-    });
 
-    var loadWindowPromise = new Promise(function (resolve) {
         if (document.readyState === 'complete') {
-            window.setTimeout(resolve);
+            executeCmsLoadQueue();
         } else {
             window.addEventListener('load', function listener() {
                 window.removeEventListener('load', listener);
-                resolve();
+                executeCmsLoadQueue();
             });
         }
-    });
+    }, 0);
 
-    /* Fulfill and resolve promises! */
-    domReadyPromise.then(function () {
-        $cms._resolveReady();
-        delete $cms._resolveReady;
+    function executeCmsInitQueue() {
+        var fn;
 
-        executeCmsReadyQueue();
-    });
+        while (window.$cmsInit.length) {
+            fn = window.$cmsInit.shift();
+            if (typeof fn === 'function') {
+                fn();
+            }
+        }
 
-    (window.$cmsReady || (window.$cmsReady = []));
+        properties(window.$cmsInit, {
+            unshift: function unshift(fn) {
+                fn();
+            },
+            push: function push(fn) {
+                fn();
+            }
+        });
+    }
 
     function executeCmsReadyQueue() {
         var fn;
@@ -466,15 +485,6 @@
             }
         });
     }
-
-    Promise.all([$cms.ready, loadWindowPromise]).then(function () {
-        $cms._resolveLoad();
-        delete $cms._resolveLoad;
-
-        executeCmsLoadQueue();
-    });
-
-    (window.$cmsLoad || (window.$cmsLoad = []));
 
     function executeCmsLoadQueue() {
         var fn;
@@ -828,8 +838,8 @@
     /**
      * Returns a random integer between min (inclusive) and max (inclusive)
      * Using Math.round() will give you a non-uniform distribution!
-     * @param min
-     * @param max
+     * @param {number}
+     * @param {number}
      * @returns {*}
      */
     function random(min, max) {
@@ -1329,6 +1339,11 @@
         return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
     }
 
+    function isAbsoluteHttp(url) {
+        url = strVal(url);
+        return rgxHttp.test(url);
+    }
+
     /**
      * Dynamically fixes the protocol for image URLs
      * @param url
@@ -1448,12 +1463,12 @@
         script = strVal(script);
 
         if (_requireJsPromises[script] == null) {
-            if ($cms.dom.$('script#javascript-' + script)) {
+            if ($cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified') || $cms.dom.$('script[src='+ script + ']')) {
                 _requireJsPromises[script] = Promise.resolve();
             } else {
                 _requireJsPromises[script] = new Promise(function (resolve, reject) {
                     var sEl = document.createElement('script');
-                    sEl.id = 'javascript-' + script;
+
                     sEl.addEventListener('load', function (e) {
                         resolve(e)
                     });
@@ -1461,7 +1476,14 @@
                         $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
                         reject(e);
                     });
-                    sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
+
+                    if (isAbsoluteHttp(script)) {
+                      sEl.src = script;
+                    } else {
+                        sEl.id = 'javascript-' + script;
+                        sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
+                    }
+
                     document.body.appendChild(sEl);
                 });
             }
@@ -1938,7 +1960,7 @@
      * @param selector
      * @returns { Element }
      */
-    $cms.dom.last = function last(context, selector) {
+    $cms.dom.$last = function last(context, selector) {
         return $cms.dom.$$(context, selector).pop();
     };
 
@@ -2224,7 +2246,7 @@
             try {
                 data = dataAttr(el, key);
             } catch (e) {
-                $cms.warn('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
+                $cms.error('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
             }
 
             if (data !== undefined) {

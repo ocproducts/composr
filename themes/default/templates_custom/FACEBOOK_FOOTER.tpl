@@ -1,6 +1,13 @@
+{+START,IF_EMPTY,{$CONFIG_OPTION,facebook_appid}}
 <div id="fb-root"></div>
+{+END}
+
 {+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
-	<script>// <![CDATA[
-		facebook_init('{$CONFIG_OPTION;/,facebook_appid}','{$BASE_URL;/}/facebook_connect.php',{$?,{$OR,{$FB_CONNECT_FINISHING_PROFILE},{$FB_CONNECT_LOGGED_OUT}},true,false},{$?,{$IS_EMPTY,{$FB_CONNECT_UID}},null,{$FB_CONNECT_UID}},'{$PAGE_LINK;/,:}','{$PAGE_LINK;/,:login:logout}');
-	//]]></script>
+    {$SET,facebook_appid,{$CONFIG_OPTION,facebook_appid}}
+    {$SET,fb_connect_finishing_profile,{$FB_CONNECT_FINISHING_PROFILE}}
+    {$SET,fb_connect_logged_out,{$FB_CONNECT_LOGGED_OUT}}
+    {$SET,fb_connect_uid,{$FB_CONNECT_UID}}
+
+    <div id="fb-root" data-require-javascript="['facebook', 'facebook_support']" data-tpl="facebookFooter"
+         data-tpl-params="{+START,PARAMS_JSON,facebook_appid,fb_connect_finishing_profile,fb_connect_logged_out,fb_connect_uid}{_*}{+END}"></div>
 {+END}

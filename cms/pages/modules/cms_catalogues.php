@@ -1000,7 +1000,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $fields->attach(form_input_radio(do_lang_tempcode('CATALOGUE_CSV_UPDATE_HANDLING'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_UPDATE_HANDLING'), 'update_handling', $update_handling_options));
 
         require_javascript('catalogues');
-        $javascript = /**@lang JavaScript*/'$cms.functions.cmsCataloguesImportCatalogue()';
+        $function = 'cmsCataloguesImportCatalogue';
 
         $fields->attach(form_input_codename(do_lang_tempcode('CATALOGUE_CSV_IMPORT_META_KEYWORDS_FIELD'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_IMPORT_META_KEYWORDS_FIELD'), 'meta_keywords_field', '', false));
         $fields->attach(form_input_codename(do_lang_tempcode('CATALOGUE_CSV_IMPORT_META_DESCRIPTION_FIELD'), do_lang_tempcode('DESCRIPTION_CATALOGUE_CSV_IMPORT_META_DESCRIPTION_FIELD'), 'meta_description_field', '', false));
@@ -1010,7 +1010,7 @@ class Module_cms_catalogues extends Standard_crud_module
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically(1, 1, 1);
         $fields->attach(feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, '', $allow_comments == 2, false, false));
 
-        return do_template('FORM_SCREEN', array('_GUID' => '0ad5a822bccb3de8e53fcc47594eb404', 'TITLE' => $this->title, 'JAVASCRIPT' => $javascript, 'TEXT' => do_lang_tempcode('CATALOGUE_IMPORT_TEXT'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array('_GUID' => '0ad5a822bccb3de8e53fcc47594eb404', 'TITLE' => $this->title, 'FUNCTIONS' => $function, 'TEXT' => do_lang_tempcode('CATALOGUE_IMPORT_TEXT'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
     }
 
     /**

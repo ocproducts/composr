@@ -1335,6 +1335,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
 function __request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {
     if ($lang === null) {
+        require_code('lang');
         $lang = user_lang();
     }
 

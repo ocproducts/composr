@@ -12,10 +12,12 @@ function show_permission_setting(ob, event) {
     if (!ob.full_setting) {
         var serverid;
 
-        if (window.sitemap !== undefined) {
+        if (window.sitemap != null) {
             var value = document.getElementById('tree_list').value;
 
-            if (value.indexOf(',') != -1) return; // Can't find any single value, as multiple resources are selected
+            if (value.indexOf(',') != -1) { // Can't find any single value, as multiple resources are selected
+                return;
+            }
 
             var node = window.sitemap.getElementByIdHack(value);
             serverid = node.getAttribute('serverid');
@@ -25,7 +27,9 @@ function show_permission_setting(ob, event) {
 
         var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
         $cms.doAjaxRequest(url + $cms.keepStub(), function (ret) {
-            if (!ret) return;
+            if (!ret) {
+                return;
+            }
             ob.full_setting = ret.responseText;
             ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.full_setting + ']';
         });

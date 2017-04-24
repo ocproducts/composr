@@ -342,11 +342,9 @@ class Module_recommend
 
         $hidden->attach(form_input_hidden('comcode__message', '1'));
 
-        $javascript = (function_exists('captcha_ajax_check') ? captcha_ajax_check() : '');
-
         return do_template('FORM_SCREEN', array(
             '_GUID' => '08a538ca8d78597b0417f464758a59fd',
-            'JAVASCRIPT' => $javascript,
+            'FUNCTIONS' => function_exists('captcha_ajax_check_function') ? captcha_ajax_check_function() : '',
             'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $this->title,
             'PREVIEW' => true,

@@ -1,12 +1,12 @@
 {$SET,purchase_url,{$PAGE_LINK,_SEARCH:purchase:terms:member_id={$MEMBER}}}
-<form action="{$URL_FOR_GET_FORM*,{$GET,purchase_url}}" method="get" style="margin-bottom: 0" autocomplete="off">
+<form action="{$URL_FOR_GET_FORM*,{$GET,purchase_url}}" method="get" style="margin-bottom: 0" autocomplete="off" data-require-javascript="['composr_homesite_support_credits']" data-tpl="blockCreditExpsInner">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{$HIDDENS_FOR_GET_FORM,{$GET,purchase_url}}
 
 	<div class="selCdt">
 		<label for="type_code">{!SUPPORT_CREDITS_BUY}</label>
-		<select name="type_code" id="type_code" onchange="update_product_info_display();">
+		<select name="type_code" id="type_code" class="js-change-update-product-info-display">
 			{+START,LOOP,CREDIT_KINDS}
 				<option {+START,IF,{$EQ,{NUM_CREDITS},50}} selected="selected"{+END} value="{NUM_CREDITS*}_CREDITS">{$NUMBER_FORMAT*,{NUM_CREDITS}} credits</option>
 			{+END}
@@ -51,20 +51,6 @@
 			</table>
 		</div>
 	{+END}
-
-	<script>// <![CDATA[
-		function update_product_info_display()
-		{
-			var type_code=document.getElementById('type_code');
-			var value=type_code.options[type_code.selectedIndex].value;
-			var creditsInfo = document.body.querySelectorAll('.creditsInfo');
-			for (var i=0;i<creditsInfo.length;i++)
-			{
-				creditsInfo[i].style.display=(creditsInfo[i].id=='info_'+value)?'block':'none';
-			}
-		}
-		update_product_info_display();
-	//]]></script>
 
 	<div class="purchaseBtn">
 		<input type="submit" value="Purchase" />

@@ -2,8 +2,6 @@
     'use strict';
 
     $cms.views.CatalogueAddingScreen = CatalogueAddingScreen;
-    $cms.views.CatalogueEditingScreen = CatalogueEditingScreen;
-
     function CatalogueAddingScreen() {
         CatalogueAddingScreen.base(this, 'constructor', arguments);
         catalogue_field_change_watching();
@@ -22,6 +20,7 @@
         }
     });
 
+    $cms.views.CatalogueEditingScreen = CatalogueEditingScreen;
     function CatalogueEditingScreen() {
         CatalogueEditingScreen.base(this, 'constructor', arguments);
 

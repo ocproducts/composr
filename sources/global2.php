@@ -81,6 +81,7 @@ function init__global2()
     @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
     @header('Cache-Control: no-cache, max-age=0');
     @header('Pragma: no-cache'); // for proxies, and also IE
+
     if (php_function_allowed('session_cache_limiter')) {
         @session_cache_limiter('');
     }
@@ -390,6 +391,11 @@ function init__global2()
     // Register Internationalisation settings
     @header('Content-type: text/html; charset=' . get_charset());
     setlocale(LC_ALL, explode(',', do_lang('locale')));
+
+    // Send CSP header if enabled
+    if (get_option('csp_enabled') === '1') {
+        send_csp_header();
+    }
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
@@ -1822,4 +1828,145 @@ function convert_data_encodings($known_utf8 = false)
 
     require_code('character_sets');
     _convert_data_encodings($known_utf8);
+}
+
+/**
+ * Work in progress
+ */
+function send_csp_header() {
+    // The default policy for loading content such as JavaScript, Images, CSS, Font's, AJAX requests, Frames, HTML5 Media.
+    $default_src = '';
+    // Defines valid sources of JavaScript.
+    $script_src = '';
+    // Defines valid sources of CSS.
+    $style_src = '';
+    // Defines valid sources of images.
+    $img_src = '';
+    // Applies to XMLHttpRequest (AJAX), WebSocket or EventSource. If not allowed the browser emulates a 400 HTTP status code.
+    $connect_src = '';
+    // Defines valid sources of fonts.
+    $font_src = '';
+    // Defines valid sources of plugins, eg <object>, <embed> or <applet>.
+    $object_src = '';
+    // Defines valid sources of audio and video, eg HTML5 <audio>, <video> elements.
+    $media_src = '';
+    // Defines valid sources for web workers and nested browsing contexts loaded using elements such as <frame> and <iframe>
+    $child_src = '';
+    // Defines valid sources that can be used as a HTML <form> action.
+    $form_action = '';
+    // Defines who is allowed to embed our resources using <frame>, <iframe>, <object>, <embed>, or <applet>.
+    // Setting this directive to 'none' should be roughly equivalent to X-Frame-Options: DENY
+    $frame_ancestors = '';
+
+    // Defines valid MIME types for plugins invoked via <object> and <embed>. To load an <applet> you must specify application/x-java-applet.
+    $plugin_types = '';
+
+    $report_only = false;
+    // Instructs the browser to POST a reports of policy failures to this URI.
+    // You can also append -Report-Only to the HTTP header name to instruct the browser to only send reports (does not block anything).
+    $report_uri = '';
+
+    $script_allow_insecure = true;
+    $script_allow_inline = false;
+    $script_allow_eval = true;
+
+    if ($script_allow_insecure) {
+        $script_src .= '* ';
+    } else {
+        $script_src .= 'https: ';
+    }
+
+    if ($script_allow_inline) {
+        $script_src .= "'unsafe-inline' ";
+    }
+
+    if ($script_allow_eval) {
+        $script_src .= "'unsafe-eval' ";
+    }
+
+    $style_allow_insecure = true;
+    $style_allow_inline = true;
+
+    if ($style_allow_insecure) {
+        $style_src .= '* ';
+    } else {
+        $style_src .= 'https: ';
+    }
+
+    if ($style_allow_inline) {
+        $style_src .= "'unsafe-inline' ";
+    }
+
+    $img_allow_insecure = true;
+    $img_allow_data = true;
+
+    if ($img_allow_insecure) {
+        $img_src .= '* ';
+    } else {
+        $img_src .= 'https: ';
+    }
+
+    if ($img_allow_data) {
+        $img_src .= 'data: ';
+    }
+
+    $header = '';
+
+    if ($default_src !== '') {
+        $header .= "default-src {$default_src}; ";
+    }
+
+    if ($script_src !== '') {
+        $header .= "script-src {$script_src}; ";
+    }
+
+    if ($style_src !== '') {
+        $header .= "style-src {$style_src}; ";
+    }
+
+    if ($img_src !== '') {
+        $header .= "img-src {$img_src}; ";
+    }
+
+    if ($connect_src !== '') {
+        $header .= "connect-src {$connect_src}; ";
+    }
+
+    if ($font_src !== '') {
+        $header .= "font-src {$font_src}; ";
+    }
+
+    if ($object_src !== '') {
+        $header .= "object-src {$object_src}; ";
+    }
+
+    if ($media_src !== '') {
+        $header .= "media-src {$media_src}; ";
+    }
+
+    if ($child_src !== '') {
+        $header .= "child-src {$child_src}; ";
+    }
+
+    if ($form_action !== '') {
+        $header .= "form-action {$form_action}; ";
+    }
+
+    if ($frame_ancestors !== '') {
+        $header .= "frame-ancestors {$frame_ancestors}; ";
+    }
+
+    if ($plugin_types !== '') {
+        $header .= "plugin-types {$plugin_types}; ";
+    }
+
+    if ($report_uri !== '') {
+        $header .= "report-uri {$report_uri}; ";
+    }
+
+    if ($report_only) {
+        @header('Content-Security-Policy-Report-Only: ' . $header);
+    } else {
+        @header('Content-Security-Policy: ' . $header);
+    }
 }

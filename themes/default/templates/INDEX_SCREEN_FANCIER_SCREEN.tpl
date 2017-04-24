@@ -1,9 +1,5 @@
+<div data-require-javascript="core_abstract_interfaces" data-tpl="indexScreenFancierScreen" data-tpl-params="{+START,PARAMS_JSON,RAW_SEARCH_STRING}{_*}{+END}">
 {TITLE}
-
-{$,TODO: Fix in v11}
-{+START,IF_PASSED,JAVASCRIPT}
-	<script>{JAVASCRIPT/}</script>
-{+END}
 
 {+START,IF_NON_EMPTY,{PRE}}
 	<div class="index_screen_fancier_screen_pre" itemprop="description">
@@ -75,3 +71,4 @@
 		1_ICON=menu/_generic_admin/add_one
 	{+END}
 {+END}
+</div>

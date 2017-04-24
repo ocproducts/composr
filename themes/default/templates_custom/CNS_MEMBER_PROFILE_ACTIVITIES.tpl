@@ -35,9 +35,7 @@
 
 	{+START,LOOP,SYNDICATIONS}
 		{+START,IF_NON_EMPTY,{SYNDICATION_JAVASCRIPT}}
-			<script>// <![CDATA[
-				{SYNDICATION_JAVASCRIPT/}
-			//]]></script>
+			<script>{SYNDICATION_JAVASCRIPT/}</script>
 		{+END}
 	{+END}
 {+END}

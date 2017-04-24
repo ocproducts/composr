@@ -1,14 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.views.BlockSideShoutbox = BlockSideShoutbox;
     $cms.views.ChatRoomScreen = ChatRoomScreen;
-
-    function BlockSideShoutbox() {
-        BlockSideShoutbox.base(this, 'constructor', arguments);
-    }
-
-    $cms.inherits(BlockSideShoutbox, $cms.View);
 
     function ChatRoomScreen(params) {
         ChatRoomScreen.base(this, 'constructor', arguments);

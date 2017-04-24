@@ -1,3 +1,4 @@
+<div data-require-javascript="openid" data-tpl="loginScreen">
 {TITLE}
 
 {$SET,login_screen,1}
@@ -102,11 +103,4 @@
 		</div>
 	{+END}
 </div>
-
-<script>// <![CDATA[
-	window.addEventListener('load', function () {
-		if ((document.activeElement === undefined) || (document.activeElement!=document.getElementById('password'))){
-			document.getElementById('login_username').focus();
-		}
-	});
-//]]></script>
+</div>

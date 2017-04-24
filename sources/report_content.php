@@ -104,7 +104,7 @@ function report_content_form($title, $content_type, $content_id)
     return do_template('POSTING_SCREEN', array(
         '_GUID' => '92a0a35a7c07edd0d3f8a960710de608',
         'TITLE' => $title,
-        'JAVASCRIPT' => function_exists('captcha_ajax_check') ? captcha_ajax_check() : '',
+        'FUNCTIONS' => function_exists('captcha_ajax_check_function') ? captcha_ajax_check_function() : '',
         'TEXT' => $text,
         'POSTING_FORM' => $posting_form,
     ));
@@ -170,7 +170,8 @@ function report_post_form($title, $post_id, $javascript, &$topic_info = null, &$
     return do_template('POSTING_SCREEN', array(
         '_GUID' => 'eee64757e66fed702f74fecf8d595260',
         'TITLE' => $title,
-        'JAVASCRIPT' => $javascript . (function_exists('captcha_ajax_check') ? captcha_ajax_check() : ''),
+        'JAVASCRIPT' => $javascript,
+        'FUNCTIONS' => function_exists('captcha_ajax_check_function') ? captcha_ajax_check_function() : '',
         'TEXT' => $text,
         'POSTING_FORM' => $posting_form,
     ));

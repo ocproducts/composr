@@ -55,4 +55,13 @@
             }
         });
     };
+
+    $cms.templates.ecomLogosAuthorize = function ecomLogosAuthorize(params, container) {
+        window.ANS_customer_id = strVal(params.customerId);
+
+        document.body.appendChild($cms.dom.create('script', null, {
+            src: 'https://verify.authorize.net/anetseal/seal.js',
+            defer: true
+        }));
+    };
 }(window.$cms));

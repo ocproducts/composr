@@ -391,7 +391,6 @@ function comcode_helper_script_replace()
     return do_template('FORM_SCREEN', array(
         '_GUID' => '370058349d048a8be6570bba97c81fa2',
         'TITLE' => $title,
-        'JAVASCRIPT' => '',
         'TARGET' => '_self',
         'SKIP_WEBSTANDARDS' => true,
         'FIELDS' => $fields,

@@ -41,6 +41,14 @@ window.previous_commands || (window.previous_commands = []);
         });
     };
 
+    $cms.templates.commandrCommand = function commandrCommand(params) {
+        var stdcommand = strVal(params.stdcommand);
+
+        if (stdcommand) {
+            eval.call(window, stdcommand);
+        }
+    };
+
     $cms.templates.commandrCommands = function commandrCommands(params, container) {
         $cms.dom.on(container, 'click', '.js-click-enter-command', function (e, target) {
             var commandInput = $cms.dom.$('#commandr_command'),

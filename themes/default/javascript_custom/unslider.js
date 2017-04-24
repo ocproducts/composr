@@ -1,3 +1,22 @@
+(function ($cms) {
+	'use strict';
+
+	$cms.templates.blockMainUnslider = function blockMainUnslider(params) {
+        var options = {
+            fluid: !!params.fluid,
+            dots: !!params.buttons,
+            delay: (params.delay === '') ? false : params.delay,
+            speed: params.speed
+        };
+
+        if (params.height !== '') {
+            options.balanceheight = false;
+        }
+
+        window.jQuery('#' + params.sliderId).unslider(options);
+	};
+}(window.$cms));
+
 // jquery.event.move
 //
 // 1.3.1

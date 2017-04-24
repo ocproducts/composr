@@ -11,5 +11,15 @@
             }
         });
     };
+
+    $cms.functions.hookPointstorePop3 = function hookPointStoreTopicPin() {
+        var form = document.getElementById('pass1').form;
+        form.addEventListener('submit', function(e) {
+            if ((form.elements['pass1'].value!=form.elements['pass2'].value)) {
+                $cms.ui.alert('{!PASSWORD_MISMATCH;}');
+                e.preventDefault();
+            }
+        });
+    };
 }(window.$cms));
 

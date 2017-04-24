@@ -241,9 +241,49 @@
     $cms.views.Global = function Global() {
         Global.base(this, 'constructor', arguments);
 
+        /*START JS from HTML_HEAD.tpl*/
+        // Google Analytics account, if one set up
+        if ($cms.$CONFIG_OPTION.google_analytics.trim() && !$cms.$IS_STAFF && !$cms.$IS_ADMIN) {
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    };
+                i[r].l = 1 * new Date();
+                a = s.createElement(o);
+                m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            if ($cms.$CONFIG_OPTION.long_google_cookies) {
+                window.ga('create', $cms.$CONFIG_OPTION.google_analytics.trim(), 'auto');
+            } else {
+                window.ga('create', $cms.$CONFIG_OPTION.google_analytics.trim(), { cookieExpires: 0 });
+            }
+            window.ga('send','pageview');
+        }
+
+        // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
+        if ($cms.$CONFIG_OPTION.cookie_notice && ($cms.$RUNNING_SCRIPT === 'index')) {
+            window.cookieconsent_options = {
+                'message': $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME),
+                'dismiss': '{!INPUTSYSTEM_OK;}',
+                'learnMore': '{!READ_MORE;}',
+                'link': '{$PAGE_LINK;,:privacy}',
+                'theme': 'dark-top'
+            };
+            document.body.appendChild($cms.dom.create('script', null, {
+                src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js',
+                defer: true
+            }));
+        }
+
         if ($cms.$CONFIG_OPTION.detect_javascript) {
             this.detectJavascript();
         }
+        /*END JS from HTML_HEAD.tpl*/
 
         if ($cms.dom.$('#global_messages_2')) {
             var m1 = $cms.dom.$('#global_messages');

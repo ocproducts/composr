@@ -585,7 +585,6 @@ class Hook_addon_registry_core_rich_media
         return array(
             lorem_globalise(do_lorem_template('POSTING_FORM', array(
                 'TABINDEX_PF' => placeholder_number(),
-                'JAVASCRIPT' => '',
                 'PREVIEW' => lorem_phrase(),
                 'COMCODE_EDITOR' => lorem_phrase(),
                 'COMCODE_EDITOR_SMALL' => lorem_phrase(),

@@ -93,7 +93,6 @@ class Hook_pointstore_topic_pin
         $post_url = build_url(array('page' => '_SELF', 'type' => '__topic_pin', 'id' => 'topic_pin'), '_SELF');
 
         require_javascript('pointstore');
-        $javascript = /**@lang JavaScript*/'$cms.functions.hookPointStoreTopicPin();';
         return do_template('FORM_SCREEN', array(
             '_GUID' => '318a1f335fd0d2d9380024eb5438d2d8',
             'HIDDEN' => '',
@@ -104,7 +103,7 @@ class Hook_pointstore_topic_pin
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PURCHASE'),
             'FIELDS' => $fields,
-            'JAVASCRIPT' => $javascript,
+            'FUNCTIONS' => 'hookPointStoreTopicPin',
         ));
     }
 

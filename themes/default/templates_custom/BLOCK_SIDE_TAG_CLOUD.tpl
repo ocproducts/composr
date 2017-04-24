@@ -1,4 +1,4 @@
-<section class="box box___block_side_tag_cloud"><div class="box_inner">
+<section class="box box___block_side_tag_cloud" data-require-javascript="tag_cloud" data-tpl="blockSideTagCloud"><div class="box_inner">
 	<h3>{TITLE*}</h3>
 
 	<nav id="tag_sphere" style="height: 150px; position:relative; overflow: hidden;">
@@ -10,10 +10,4 @@
 	</nav>
 
 	{$REQUIRE_JAVASCRIPT,tag_cloud}
-
-	<script>// <![CDATA[
-	(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-			load_tag_cloud(document.getElementById('tag_sphere'));
-		});
-	//]]></script>
 </div></section>

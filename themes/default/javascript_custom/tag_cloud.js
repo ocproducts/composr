@@ -1,6 +1,12 @@
+(function ($cms) {
+    'use strict';
+
+    $cms.templates.blockSideTagCloud = function blockSideTagCloud() {
+        load_tag_cloud(document.getElementById('tag_sphere'));
+    };
+}(window.$cms));
+
 /* Derived from code at http://www.devirtuoso.com/2009/09/3d-sphere-using-jquery/ */
-
-
 
 /*
  * DisplayObject3D ----------------------------------------------

@@ -197,6 +197,15 @@
             eval.call(window, params.javascript);
         }
 
+        if (params.functions) {
+            var functions = strVal(params.functions).split(',');
+            functions.forEach(function(functionName) {
+                if (functionName) {
+                    $cms.functions[functionName]();
+                }
+            });
+        }
+
         if (!params.secondaryForm) {
             this.fixFormEnterKey();
         }

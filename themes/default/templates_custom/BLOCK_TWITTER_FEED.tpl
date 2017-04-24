@@ -1,4 +1,4 @@
-<section class="box box___block_main_quotes"><div class="box_inner">
+<section class="box box___block_main_quotes" data-require-javascript="twitter_feed_integration_block" data-tpl="blockTwitterFeed"><div class="box_inner">
 	{+START,IF_NON_EMPTY,{TWITTER_TITLE}}<h3>{TWITTER_TITLE*}</h3>{+END}
 	{+START,IF_EMPTY,{TWITTER_ERROR}}
 		{+START,IF,{$EQ,{STYLE},1}}
@@ -72,6 +72,4 @@
 			{+END}
 		</div>
 	{+END}
-
-	<script>!function(d,s,id){var js,fjs=d.querySelector(s);if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 </div></section>

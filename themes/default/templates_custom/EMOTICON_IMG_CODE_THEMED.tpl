@@ -1,3 +1,5 @@
+{$SET,is_in_group,{$IS_IN_GROUP,{$CONFIG_OPTION,jestr_emoticon_magnet_shown_for}}}
+{$SET,img_src,{$IMG*,{SRC},1}}
 {$SET,rndx,{$RAND}}
 
 {+START,IF,{$NOT,{$IS_IN_GROUP,{$CONFIG_OPTION,jestr_emoticon_magnet_shown_for}}}}
@@ -5,18 +7,7 @@
 {+END}
 {+START,IF,{$IS_IN_GROUP,{$CONFIG_OPTION,jestr_emoticon_magnet_shown_for}}}
 	{$REQUIRE_JAVASCRIPT,core_rich_media}
-	<div id="emoticoncrazy{$GET%,rndx}"></div>
-	<script>// <![CDATA[
-		(window.$cmsReady || (window.$cmsReady = [])).push(function() {
-			if (typeof window.crazy_criters=='undefined')
-			{
-				window.crazy_criters=[];
-				window.setInterval(crazy_tick,300);
-			}
-
-			var my_id=parseInt(Math.random()*10000),emoticoncrazy=document.getElementById('emoticoncrazy{$GET%,rndx}');
-			$cms.dom.html(emoticoncrazy,'<img id="'+my_id+'" style="position: relative" alt="{!EMOTICON;}" src="{$IMG*,{SRC},1}" />');
-			crazy_criters.push(my_id);
-		});
-	//]]></script>
+	{$REQUIRE_JAVASCRIPT,jestr}
+	<div id="emoticoncrazy{$GET%,rndx}" data-require-javascript="['core_rich_media', 'jestr']"
+		 data-tpl="emoticonImgCodeThemedJestr" data-tpl-params="{+START,PARAMS_JSON,is_in_group,img_src,rndx}{_*}{+END}"></div>
 {+END}

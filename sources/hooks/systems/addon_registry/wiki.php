@@ -328,7 +328,6 @@ class Hook_addon_registry_wiki
 
         $posting_form = do_lorem_template('POSTING_FORM', array(
             'TABINDEX_PF' => placeholder_number(),
-            'JAVASCRIPT' => '',
             'PREVIEW' => lorem_phrase(),
             'COMCODE_EDITOR' => lorem_phrase(),
             'COMCODE_EDITOR_SMALL' => lorem_phrase(),

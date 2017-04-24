@@ -67,7 +67,9 @@ abstract class Standard_crud_module
     public $posting_form_text_parsed = null;
     public $posting_form_tabindex = null;
     public $javascript = null;
+    public $functions = null;
     public $javascript_for_choose = null;
+    public $functions_for_choose = null;
     public $form_id = 'selection_table';
     public $type_code = '';
     public $catalogue = false;
@@ -949,6 +951,7 @@ abstract class Standard_crud_module
                 'SUBMIT_ICON' => 'menu__cms__catalogues__add_one_catalogue',
                 'SUBMIT_NAME' => $submit_name,
                 'JAVASCRIPT' => $this->javascript,
+                'FUNCTIONS' => $this->functions,
             ) + $extra_tpl_params);
         } elseif ($this->posting_form_title !== null) {
             $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description);
@@ -960,25 +963,27 @@ abstract class Standard_crud_module
                 'TEXT' => $this->add_text,
                 'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
                 'JAVASCRIPT' => $this->javascript,
+                'FUNCTIONS' => $this->functions,
                 'SUPPORT_AUTOSAVE' => true,
             ) + $extra_tpl_params);
         } else {
             $fields->attach($fields2);
             return do_template('FORM_SCREEN', array(
-                '_GUID' => '1df73fdfccb387640340f15d5d6dae54' . get_class($this),
-                'PREVIEW' => $this->do_preview,
-                'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                'HIDDEN' => $hidden,
-                'TITLE' => $this->title,
-                'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
-                'TEXT' => $this->add_text,
-                'URL' => $post_url,
-                'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                'SUBMIT_ICON' => $submit_icon,
-                'SUBMIT_NAME' => $submit_name,
-                'JAVASCRIPT' => $this->javascript,
-                'SUPPORT_AUTOSAVE' => true,
-            ) + $extra_tpl_params);
+                    '_GUID' => '1df73fdfccb387640340f15d5d6dae54' . get_class($this),
+                    'PREVIEW' => $this->do_preview,
+                    'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                    'HIDDEN' => $hidden,
+                    'TITLE' => $this->title,
+                    'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
+                    'TEXT' => $this->add_text,
+                    'URL' => $post_url,
+                    'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                    'SUBMIT_ICON' => $submit_icon,
+                    'SUBMIT_NAME' => $submit_name,
+                    'JAVASCRIPT' => $this->javascript,
+                    'FUNCTIONS' => $this->functions,
+                    'SUPPORT_AUTOSAVE' => true,
+                ) + $extra_tpl_params);
         }
     }
 
@@ -1506,6 +1511,7 @@ abstract class Standard_crud_module
                 'SUBMIT_ICON' => 'menu__cms__catalogues__edit_this_catalogue',
                 'SUBMIT_NAME' => $submit_name,
                 'JAVASCRIPT' => $this->javascript,
+                    'FUNCTIONS' => $this->functions,
             ) + $extra_tpl_params);
         }
 
@@ -1525,6 +1531,7 @@ abstract class Standard_crud_module
                 'TEXT' => $this->add_text,
                 'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
                 'JAVASCRIPT' => $this->javascript,
+                    'FUNCTIONS' => $this->functions,
                 'SUPPORT_AUTOSAVE' => true,
             ) + $extra_tpl_params);
         } else {
@@ -1544,6 +1551,7 @@ abstract class Standard_crud_module
                 'SUBMIT_ICON' => $submit_icon,
                 'SUBMIT_NAME' => $submit_name,
                 'JAVASCRIPT' => $this->javascript,
+                    'FUNCTIONS' => $this->functions,
                 'SUPPORT_AUTOSAVE' => true,
             ) + $extra_tpl_params);
         }

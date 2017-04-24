@@ -65,7 +65,6 @@ function comcode_convert_script()
         $fields->attach(form_input_tick('Do intensive conversion', '', 'force', false));
 
         require_javascript('core_rich_media');
-        $javascript = /**@lang JavaScript*/'$cms.functions.comcodeToolsComcodeConvertScript()';
 
         $out2 = globalise(do_template('FORM_SCREEN', array(
             '_GUID' => 'dd82970fa1196132e07049871c51aab7',
@@ -76,7 +75,7 @@ function comcode_convert_script()
             'HIDDEN' => $hidden,
             'URL' => find_script('comcode_convert', true),
             'FIELDS' => $fields,
-            'JAVASCRIPT' => $javascript,
+            'FUNCTIONS' => 'comcodeToolsComcodeConvertScript',
         )), null, '', true, true);
 
         $out2->evaluate_echo();

@@ -94,4 +94,8 @@
             }, 12000);
         }
     };
+
+    $cms.templates.indexScreenFancierScreen = function indexScreenFancierScreen(params) {
+        document.getElementById('search_content').value = strVal(params.rawSearchString);
+    };
 }(window.$cms));
