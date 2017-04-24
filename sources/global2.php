@@ -511,14 +511,27 @@ function fixup_bad_php_env_vars()
     $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? (empty($_ENV['DOCUMENT_ROOT']) ? '' : $_ENV['DOCUMENT_ROOT']) : $_SERVER['DOCUMENT_ROOT'];
     if (empty($document_root)) {
         $document_root = '';
-        $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
-        foreach ($path_components as $i => $path_component) {
-            $document_root .= $path_component . DIRECTORY_SEPARATOR;
-            if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents'))) {
-                break;
+
+        global $SITE_INFO;
+        if (isset($SITE_INFO['base_url'])) {
+            // Algorithm: backwards from URL-path in base URL
+            $base_url_path = str_replace('/', DIRECTORY_SEPARATOR, parse_url($SITE_INFO['base_url'], PHP_URL_PATH));
+            if (substr(get_file_base(), -strlen($base_url_path)) == $base_url_path) {
+                $document_root = substr(get_file_base(), 0, strlen(get_file_base()) - strlen($base_url_path));
             }
         }
-        $document_root = substr($document_root, 0, strlen($document_root) - strlen(DIRECTORY_SEPARATOR));
+        if ($document_root == '') {
+            // Algorithm: up until a known document-root directory
+            $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
+            foreach ($path_components as $i => $path_component) {
+                $document_root .= $path_component . DIRECTORY_SEPARATOR;
+                if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents'))) {
+                    break;
+                }
+            }
+            $document_root = substr($document_root, 0, strlen($document_root) - strlen(DIRECTORY_SEPARATOR));
+        }
+
         $_SERVER['DOCUMENT_ROOT'] = $document_root;
     }
 
