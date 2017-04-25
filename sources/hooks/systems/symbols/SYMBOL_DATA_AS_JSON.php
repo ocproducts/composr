@@ -86,7 +86,8 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'SESSION_COOKIE_NAME' => ecv2_SESSION_COOKIE_NAME($lang, [], []),
             'GROUP_ID'            => ecv2_GROUP_ID($lang, [], []),
             'INLINE_STATS'        => ecv2_INLINE_STATS($lang, [], []),
-            'RUNNING_SCRIPT'      => current_script()
+            'RUNNING_SCRIPT'      => current_script(),
+            'CSP_NONCE'           => ecv2_CSP_NONCE($lang, [], []),
         );
 
         require_code('config');

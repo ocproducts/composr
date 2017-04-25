@@ -6,7 +6,9 @@ function recalculate_price(form) {
         if (!form.elements[i].name) continue;
         value = '';
         type = form.elements[i].localName;
-        if (type == 'input') type = form.elements[i].type;
+        if (type == 'input') {
+            type = form.elements[i].type;
+        }
         switch (type) {
             case 'hidden':
             case 'text':

@@ -14,5 +14,5 @@
 	</p>
 </form>
 </div>
-<script defer src="{$BASE_URL*}/data/ace/ace.js"></script>
-<script defer src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
+<script {$CSP_NONCE_HTML} defer src="{$BASE_URL*}/data/ace/ace.js"></script>
+<script {$CSP_NONCE_HTML} defer src="{$BASE_URL*}/data/ace/ace_composr.js"></script>

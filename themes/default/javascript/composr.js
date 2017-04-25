@@ -1,4 +1,4 @@
-(function ($cms, /**@suppress {newCheckTypes|undefinedNames|undefinedVars|missingProperties}*/symbols) {
+(function ($cms, symbols) {
     'use strict';
 
     // Cached references
@@ -30,7 +30,7 @@
     (window.$cmsLoad  || (window.$cmsLoad = []));
 
     /** @namespace $cms */
-    $cms = extendDeep($cms, /** @lends $cms */ {
+    $cms = extendDeep($cms, /**@lends $cms*/ {
         // Unique for each copy of Composr on the page
         /**@member {string}*/
         id: 'composr' + ('' + Math.random()).substr(2),
@@ -52,8 +52,6 @@
         $JS_ON: boolVal(symbols.JS_ON),
         /**@member {boolean}*/
         $MOBILE: boolVal(symbols.MOBILE),
-        /**@member {boolean}*/
-        $DESKTOP: !boolVal(symbols.MOBILE),
         /**@member {boolean}*/
         $FORCE_PREVIEWS: boolVal(symbols.FORCE_PREVIEWS),
         /**@member {boolean}*/
@@ -138,8 +136,16 @@
         $COOKIE_PATH: strVal(symbols.COOKIE_PATH),
         /**@member {string}*/
         $COOKIE_DOMAIN: strVal(symbols.COOKIE_DOMAIN),
-        /**@member {string}*/
-        $RUNNING_SCRIPT: strVal(symbols.RUNNING_SCRIPT),
+        /**
+         * @method
+         * @returns {string}
+         * */
+        $RUNNING_SCRIPT: function () { return strVal(symbols.RUNNING_SCRIPT); },
+        /**
+         * @method
+         * @returns {string}
+         * */
+        $CSP_NONCE: function () { return strVal(symbols.CSP_NONCE); },
 
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
@@ -1468,7 +1474,7 @@
             } else {
                 _requireJsPromises[script] = new Promise(function (resolve, reject) {
                     var sEl = document.createElement('script');
-
+                    sEl.defer = true;
                     sEl.addEventListener('load', function (e) {
                         resolve(e)
                     });
@@ -1484,7 +1490,11 @@
                         sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
                     }
 
-                    document.body.appendChild(sEl);
+                    if (document.body) {
+                        document.body.appendChild(sEl);
+                    } else {
+                        document.head.appendChild(sEl);
+                    }
                 });
             }
         }

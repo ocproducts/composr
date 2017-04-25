@@ -9,15 +9,11 @@
             longitude = strVal(params.longitude),
             longitudeInput = container.querySelector('#' + name + '_longitude');
 
-        document.body.appendChild($cms.dom.create('script', null, {
-            onload: function () {
-                window.setTimeout(function() {
-                    window.google.load('maps', '3', { callback: google_map_users_initialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
-                },0);
-            },
-            defer: true,
-            src: 'https://www.google.com/jsapi'
-        }));
+        $cms.requireJavascript('https://www.google.com/jsapi').then(function () {
+            window.setTimeout(function() {
+                window.google.load('maps', '3', { callback: google_map_users_initialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
+            },0);
+        });
 
         $cms.dom.on(container, 'change', '.js-change-set-place-marker', function () {
             place_marker(latitudeInput.value, longitudeInput.value);

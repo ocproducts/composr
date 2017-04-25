@@ -225,6 +225,7 @@ function init__global2()
      * @global boolean $XSS_DETECT
      */
     $XSS_DETECT = function_exists('ocp_mark_as_escaped');
+
     /** Whether Composr is running in development mode
      *
      * @global boolean $DEV_MODE
@@ -392,9 +393,17 @@ function init__global2()
     @header('Content-type: text/html; charset=' . get_charset());
     setlocale(LC_ALL, explode(',', do_lang('locale')));
 
+    // TODO: CSP Chris: Relocate this and the CSP functions to somewhere more appropriate?
+    /**
+     * CSP Nonce
+     * @global boolean $CSP_NONCE
+     */
+    global $CSP_NONCE;
+    $CSP_NONCE = csp_generate_nonce();
+
     // Send CSP header if enabled
     if (get_option('csp_enabled') === '1') {
-        send_csp_header();
+        csp_send_header();
     }
 
     // Check RBLs
@@ -1833,7 +1842,10 @@ function convert_data_encodings($known_utf8 = false)
 /**
  * Work in progress
  */
-function send_csp_header() {
+function csp_send_header() {
+    global $CSP_NONCE;
+
+    /* CSP directives */
     // The default policy for loading content such as JavaScript, Images, CSS, Font's, AJAX requests, Frames, HTML5 Media.
     $default_src = '';
     // Defines valid sources of JavaScript.
@@ -1866,12 +1878,23 @@ function send_csp_header() {
     // You can also append -Report-Only to the HTTP header name to instruct the browser to only send reports (does not block anything).
     $report_uri = '';
 
+    /* Default */
+    $default_allow_insecure = true;
+
+    if ($default_allow_insecure) {
+        $default_src .= 'http: https: ';
+    } else {
+        $default_src .= 'https: ';
+    }
+
+    /* JavaScript */
     $script_allow_insecure = true;
     $script_allow_inline = false;
     $script_allow_eval = true;
+    $script_require_nonce = true;
 
     if ($script_allow_insecure) {
-        $script_src .= '* ';
+        $script_src .= 'http: https: ';
     } else {
         $script_src .= 'https: ';
     }
@@ -1884,11 +1907,17 @@ function send_csp_header() {
         $script_src .= "'unsafe-eval' ";
     }
 
+    if ($script_require_nonce && is_string($CSP_NONCE) && ($CSP_NONCE !== '')) {
+        $script_src .=  "'strict-dynamic' 'nonce-{$CSP_NONCE}' ";
+    }
+
+    /* CSS */
     $style_allow_insecure = true;
     $style_allow_inline = true;
+    $style_require_nonce = false;
 
     if ($style_allow_insecure) {
-        $style_src .= '* ';
+        $style_src .= 'http: https: ';
     } else {
         $style_src .= 'https: ';
     }
@@ -1897,19 +1926,25 @@ function send_csp_header() {
         $style_src .= "'unsafe-inline' ";
     }
 
+    if ($style_require_nonce && is_string($CSP_NONCE) && ($CSP_NONCE !== '')) {
+        $style_src .= "'strict-dynamic' 'nonce-{$CSP_NONCE}' ";
+    }
+
+    /* Images */
     $img_allow_insecure = true;
-    $img_allow_data = true;
+    $img_allow_data_uri = true;
 
     if ($img_allow_insecure) {
-        $img_src .= '* ';
+        $img_src .= 'http: https: ';
     } else {
         $img_src .= 'https: ';
     }
 
-    if ($img_allow_data) {
+    if ($img_allow_data_uri) {
         $img_src .= 'data: ';
     }
 
+    /* Prepare the header */
     $header = '';
 
     if ($default_src !== '') {
@@ -1969,4 +2004,9 @@ function send_csp_header() {
     } else {
         @header('Content-Security-Policy: ' . $header);
     }
+}
+
+function csp_generate_nonce() {
+    $nonce = uniqid('', true);
+    return substr(base64_encode($nonce), 0, 10);
 }

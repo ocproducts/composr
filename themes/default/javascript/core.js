@@ -266,7 +266,7 @@
         }
 
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
-        if ($cms.$CONFIG_OPTION.cookie_notice && ($cms.$RUNNING_SCRIPT === 'index')) {
+        if ($cms.$CONFIG_OPTION.cookie_notice && ($cms.$RUNNING_SCRIPT() === 'index')) {
             window.cookieconsent_options = {
                 'message': $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME),
                 'dismiss': '{!INPUTSYSTEM_OK;}',
