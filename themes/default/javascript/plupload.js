@@ -12076,9 +12076,14 @@ plupload.Uploader = function(options) {
 			} else {
 				file.loaded = offset; // reset all progress
 
+				var contentType = xhr.getResponseHeader('content-type');
+				if ((typeof contentType != 'undefined') && (contentType != null)) {
+					contentType = contentType.replace(/;.*$/, '').replace(/^.*:\s*/, '');
+				}
+
 				up.trigger('Error', {
 					code : plupload.HTTP_ERROR,
-					message : plupload.translate('HTTP Error.'),
+					message : (contentType == 'text/plain') ? xhr.responseText : plupload.translate('HTTP Error.'),
 					file : file,
 					response : xhr.responseText,
 					status : xhr.status,

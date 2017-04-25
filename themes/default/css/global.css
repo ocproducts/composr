@@ -23,7 +23,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 */
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
-{$THEME_WIZARD_COLOR,#94979d,seed,100% 426aa9}
+{$THEME_WIZARD_COLOR,#426aa9,seed,100% 426aa9}
 {$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEME_WIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 426aa9*/
@@ -4106,8 +4106,15 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 
 /* .comcode_quote is used where the [quote] tag is parsed. */
 /* .comcode_code is used where the [code] tag is parsed. */
+.email_body .comcode_quote, .email_body .comcode_code {
+	margin: 1em 0;
+}
 .comcode_quote, .comcode_code {
 	margin: 1em;
+
+	/* Takes off default from email clients */
+	border: 0 !important;
+	padding: 0 !important;
 
 	/* To prevent horizontal overlapping with floats */
 	outline: 0;
@@ -4743,6 +4750,17 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	content: "\00b7" !important;
 	padding-right: 0.5em;
 	vertical-align: middle;
+}
+
+/*
+=========================
+======E-mail rules=======
+=========================
+*/
+
+.email_logo img {
+	max-width: 100%;
+	height: auto;
 }
 
 /*

@@ -18,9 +18,7 @@
 //  http://localhost/composr/uploads/website_specific/compo.sr/scripts/version.php?version=13.0.0&test_mode=1&html=1
 
 // Fixup SCRIPT_FILENAME potentially being missing
-if ((empty($_SERVER['SCRIPT_FILENAME'])) && (empty($_ENV['SCRIPT_FILENAME']))) {
-    $_SERVER['SCRIPT_FILENAME'] = __FILE__;
-}
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;

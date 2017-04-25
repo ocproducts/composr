@@ -463,6 +463,9 @@ function wysiwygify_media_set($semihtml)
  */
 function semihtml_to_comcode($semihtml, $force = false, $quick = false)
 {
+    // Links should be kept from being base-URL-specific
+    $semihtml = str_replace(escape_html(get_base_url() . '/'), '{$BASE_URL*}/', $semihtml);
+
     // Optimisations
     $matches = array();
     if (preg_match('#^\[semihtml\]([^\[\]<>]*)\[\/semihtml\]$#', $semihtml, $matches) != 0) {

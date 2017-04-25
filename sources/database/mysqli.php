@@ -65,7 +65,12 @@ class Database_Static_mysqli extends Database_super_mysql
 
             return array($this->cache_db[$x], $db_name);
         }
-        $db = @mysqli_connect(($persistent ? 'p:' : '') . $db_host, $db_user, $db_password);
+        $db_port = 3306;
+        if (strpos($db_host, ':') !== false) {
+            list($db_host, $_db_port) = explode(':', $db_host);
+            $db_port = intval($_db_port);
+        }
+        $db = @mysqli_connect(($persistent ? 'p:' : '') . $db_host, $db_user, $db_password, '', $db_port);
 
         if ($db === false) {
             $error = 'Could not connect to database-server (when authenticating) (' . mysqli_connect_error() . ')';

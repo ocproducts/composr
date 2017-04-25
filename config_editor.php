@@ -14,9 +14,7 @@
  */
 
 // Fixup SCRIPT_FILENAME potentially being missing
-if ((empty($_SERVER['SCRIPT_FILENAME'])) && (empty($_ENV['SCRIPT_FILENAME']))) {
-    $_SERVER['SCRIPT_FILENAME'] = __FILE__;
-}
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
@@ -181,12 +179,12 @@ function do_access($given_password)
         'db_type' => '<em>Database:</em> The database driver to use (code of PHP file in sources[_custom]/database/). Only MySQL supported officially.',
         'table_prefix' => '<em>Database:</em> The table prefix for Composr\'s database tables.',
         'db_site' => '<em>Database:</em> The database name of the Composr database.',
-        'db_site_host' => '<em>Database:</em> The database hosting computer name (usually localhost) for the Composr database.',
+        'db_site_host' => '<em>Database:</em> The database hosting computer name (usually localhost) for the Composr database. You can also include a port name here if you\'re on a non-default port (<kbd>host:port</kbd>), but if doing so you must not use <kbd>localhost</kbd> as the host unless the local socket/pipe connects to the correct MySQL server.',
         'db_site_user' => '<em>Database:</em> The database username for Composr to connect to the Composr database with.',
         'db_site_password' => '<em>Database:</em> The password for the Composr database username.',
         'cns_table_prefix' => '<em>Database:</em> The table prefix for Conversr, if Conversr is being used.',
         'db_forums' => '<em>Database:</em> The database name for the forum driver to tie in to.',
-        'db_forums_host' => '<em>Database:</em> The database hosting computer name (usually localhost) for the forum driver to tie in to.',
+        'db_forums_host' => '<em>Database:</em> The database hosting computer name for the forum driver to tie in to. See <kbd>db_site_host</kbd>.',
         'db_forums_user' => '<em>Database:</em> The database username for the forum driver to connect to the forum database with.',
         'db_forums_password' => '<em>Database:</em> The password for the forum database username.',
         'use_persistent' => '<em>Database:</em> Whether to use persistent database connections (most shared webhosts do not like these to be used).',

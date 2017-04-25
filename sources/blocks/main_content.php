@@ -222,7 +222,7 @@ class Block_main_content
                 $x1 = $this->build_select($select, $info, 'r.' . $category_field_access, is_array($info['category_is_string']) ? $info['category_is_string'][0] : $info['category_is_string']);
                 $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : null;
                 if (($parent_spec__table_name !== null) && ($parent_spec__table_name != $info['table'])) {
-                    $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . $parent_spec__table_name . ' parent ON parent.' . $info['parent_spec__field_name'] . '=r.' . $info['id_field'];
+                    $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . $parent_spec__table_name . ' parent ON parent.' . $info['parent_spec__field_name'] . '=r.' . (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']);
                 }
             }
             if (($select_b != '') && ($category_field_select !== null)) {
@@ -256,7 +256,7 @@ class Block_main_content
                 ));
             }
 
-            $rows = $info['connection']->query('SELECT *,r.' . $info['id_field'] . ' ' . $query, 1, mt_rand(0, $cnt - 1), false, false, $lang_fields);
+            $rows = $info['connection']->query('SELECT *,r.' . (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']) . ' ' . $query, 1, mt_rand(0, $cnt - 1), false, false, $lang_fields);
             $award_content_row = $rows[0];
 
             // Get content ID
