@@ -213,10 +213,10 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
                     }
 
                     if (substr($page_contents, 0, 9) == '[semihtml') {
-                        $_title = strip_html($_title);
+                        $_title = make_string_tempcode(escape_html(strip_html($_title)));
                     } else {
                         require_code('comcode');
-                        $_title = static_evaluate_tempcode(comcode_to_tempcode($_title, null, true));
+                        $_title = comcode_to_tempcode($_title, null, true);
                     }
                     if ($_title != '') {
                         $struct['title'] = $_title;
