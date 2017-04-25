@@ -154,6 +154,9 @@ function init__global3()
 
     global $DOING_OUTPUT_PINGS;
     $DOING_OUTPUT_PINGS = false;
+
+    global $DISABLE_SMART_DECACHING_TEMPORARILY;
+    $DISABLE_SMART_DECACHING_TEMPORARILY = false;
 }
 
 /**
@@ -3465,10 +3468,18 @@ function disable_browser_xss_detection()
 /**
  * Whether smart decaching is enabled. It is slightly inefficient but makes site development easier for people.
  *
+ * @param  boolean $support_temporary_disable Support it being temporarily disabled
  * @return boolean If smart decaching is enabled
  */
-function support_smart_decaching()
+function support_smart_decaching($support_temporary_disable = false)
 {
+    if ($support_temporary_disable) {
+        global $DISABLE_SMART_DECACHING_TEMPORARILY;
+        if ($DISABLE_SMART_DECACHING_TEMPORARILY) {
+            return false;
+        }
+    }
+
     static $has_in_url = null;
     if ($has_in_url === null) {
         $has_in_url = (get_param_integer('keep_smart_decaching', 0) == 1);
@@ -3502,12 +3513,12 @@ function support_smart_decaching()
 }
 
 /**
- * For performance reasons disable smart decaching (it does a lot of file system checks).
+ * For performance reasons disable smart decaching for cases that allow it to be disabled temporarily (it does a lot of file system checks).
  */
 function disable_smart_decaching_temporarily()
 {
-    global $SITE_INFO;
-    $SITE_INFO['disable_smart_decaching'] = '1';
+    global $DISABLE_SMART_DECACHING_TEMPORARILY;
+    $DISABLE_SMART_DECACHING_TEMPORARILY = true;
 }
 
 /**
