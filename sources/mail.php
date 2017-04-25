@@ -1536,6 +1536,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
             'f_size',
             'x',
             'y',
+            'stub',
             'name',
             'subject',
             'email',
@@ -1598,7 +1599,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
         foreach ($fields as $field_name => $field_title) {
             $field_val = post_param_string($field_name, null);
             if (!is_null($field_val)) {
-                _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val);
+                _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val, count($fields));
 
                 if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field_name, '') == 'email')) {
                     $from_email = $field_val;
@@ -1608,7 +1609,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     } else {
         foreach ($fields as $field_title => $field_val) {
             if (!is_null($field_val)) {
-                _append_form_to_email($message_raw, false, $field_title, $field_val);
+                _append_form_to_email($message_raw, false, $field_title, $field_val, count($fields));
             }
         }
     }
@@ -1648,17 +1649,20 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
  * @param  boolean $is_tick Whether it is a tick field.
  * @param  string $field_title Field title.
  * @param  string $field_val Field value.
+ * @param  integer $num_fields Number of fields for e-mail.
  *
  * @ignore
  */
-function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val)
+function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val, $num_fields)
 {
     $prefix = '';
-    $prefix .= '[b]' . $field_title . '[/b]:';
-    if (strpos($prefix, "\n") !== false || strpos($field_title, ' (') !== false) {
-        $prefix .= "\n";
-    } else {
-        $prefix .= " ";
+    if ($num_fields != 1) {
+        $prefix .= '[b]' . $field_title . '[/b]:';
+        if (strpos($prefix, "\n") !== false || strpos($field_title, ' (') !== false) {
+            $prefix .= "\n";
+        } else {
+            $prefix .= " ";
+        }
     }
 
     if ($is_tick && in_array($field_val, array('', '0', '1'))) {

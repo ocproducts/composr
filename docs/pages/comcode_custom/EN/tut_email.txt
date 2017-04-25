@@ -112,6 +112,7 @@ Positive advice:[list="1"]
 [*] [url="DMARC Generator"]https://elasticemail.com/dmarc/[/url]
 [*] [url="DMARC Wizard"]https://dmarcian.com/dmarc-inspector/[/url] and [url="DMARC Inspector"]https://dmarcian.com/dmarc-inspector/[/url]
 [/list]
+[*] [b]Ask users to mark e-mails non-spam[/b] if they go into their spam boxes. That should have an effect on learning algorithms.
 [*] If you're really stuck with your e-mail server being blocked, you could [b]use a third-party e-mailing service[/b] like [url="Mandrill"]https://www.mandrill.com/[/url]. Mandrill may require the "Enable Blind CC (BCC)" option to be turned off, as we have had a report of it not working on Mandrill, but that they provide an account setting to make CC behave like BCC.
 [*] If you have a lot of cash then you can [b]get your server onto a [url="whitelist"]https://returnpath.com/[/url][/b].
 [/list]
