@@ -167,6 +167,7 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
     } else {
         $mime_type = $meta_details['t_mime_type'];
         if (($mime_type == 'application/octet-stream') || ($mime_type == '')) {
+            require_code('mime_types');
             $mime_type = get_mime_type(get_file_extension(($original_filename === null) ? $url : $original_filename), true);
         }
     }
@@ -309,6 +310,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         $meta_details = get_webpage_meta_details($_url);
         $mime_type = $meta_details['t_mime_type'];
         if (($mime_type == 'application/octet-stream') || ($mime_type == '')) {
+            require_code('mime_types');
             $mime_type = get_mime_type(get_file_extension(isset($attributes['filename']) ? $attributes['filename'] : $url), true);
         }
         $attributes['mime_type'] = $mime_type;

@@ -3074,6 +3074,9 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 			// append node
 			if ((node_upper=='SCRIPT') || (node_upper=='LINK')/* || (node_upper=='STYLE') Causes weird IE bug*/)
 			{
+				if ((node_upper=='SCRIPT') && (document.querySelector('script[src="'+this_node.src+'"]'))) return;
+				if ((node_upper=='LINK') && (document.querySelector('link[href="'+this_node.href+'"]'))) return;
+
 				if (node_upper=='SCRIPT')
 				{
 					script_tag_dependencies['to_load'].push(this_node);
@@ -3450,7 +3453,7 @@ function click_link(link)
 	if ((!cancelled) && (link.href))
 	{
 		if (link.getAttribute('target')) window.open(link.href,link.getAttribute('target'));
-		window.location=link.href;
+		else window.location=link.href;
 	}
 }
 

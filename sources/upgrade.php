@@ -665,8 +665,8 @@ function up_do_login($message = null)
     if (!is_null($message)) {
         echo '<p><strong>' . $message . '</strong></p>';
     }
-    $news_id = get_param_integer('news_id', null);
-    $from_version = get_param_string('from_version', null);
+    $news_id = either_param_integer('news_id', null); // Comes in via GET, but carries through via POST
+    $from_version = either_param_string('from_version', null);
     $url = "upgrader.php?type=" . escape_html($type);
     if (get_param_integer('keep_safe_mode', 0) == 1) {
         $url .= '&keep_safe_mode=1';
@@ -1059,6 +1059,7 @@ function check_excess_perms($array, $rel = '')
 function run_integrity_check($basic = false, $allow_merging = true, $unix_help = false)
 {
     $ret_str = '';
+    $found_something = false;
 
     require_code('files');
 
@@ -1106,6 +1107,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         list($moved, $not_missing) = move_modules();
         if ($moved != '') {
             $ret_str .= do_lang('WARNING_MOVED_MODULES', $moved);
+            $found_something = true;
         }
     }
 
@@ -1192,6 +1194,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_OUTDATED', $outdated__possibly_outdated_override);
         }
+        $found_something = true;
     }
     if ($outdated__outdated_original_and_override != '') {
         if ($basic) {
@@ -1199,6 +1202,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_OUTDATED_ORIGINAL_AND_OVERRIDE', $outdated__outdated_original_and_override);
         }
+        $found_something = true;
     }
     if ($outdated__missing_original_but_has_override != '') {
         if ($basic) {
@@ -1206,6 +1210,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_MISSING_ORIGINAL_BUT_HAS_OVERRIDE', $outdated__missing_original_but_has_override);
         }
+        $found_something = true;
     }
     if (($outdated__uninstalled_addon_but_has_override != '') && (!$basic)) {
         $ret_str .= do_lang('WARNING_FILE_FROM_UNINSTALLED_ADDON', $outdated__uninstalled_addon_but_has_override);
@@ -1216,6 +1221,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_MISSING_FILE_ENTIRELY', $outdated__missing_file_entirely);
         }
+        $found_something = true;
     }
     if ($outdated__outdated_original != '') {
         if ($basic) {
@@ -1223,6 +1229,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_OUTDATED_ORIGINAL', $outdated__outdated_original);
         }
+        $found_something = true;
     }
     if ($outdated__future_files != '') {
         if ($basic) {
@@ -1230,6 +1237,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_FUTURE_FILES', $outdated__future_files);
         }
+        $found_something = true;
     }
 
     // And some special help for unix geeks
@@ -1241,7 +1249,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             if ($dirname == '.') {
                 $dirname = '';
             }
-            $directories_to_make[$dirname] = 1;
+            $directories_to_make[$dirname] = true;
         }
         foreach (array_keys($directories_to_make) as $directory) {
             $unix_out .= 'mkdir -p ' . escapeshellcmd($directory) . ';' . "\n";
@@ -1255,13 +1263,14 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         }
         require_lang('upgrade');
         $ret_str .= do_lang('SH_COMMAND', nl2br(escape_html($unix_out)));
+        $found_something = true;
     }
 
     // Alien files
     if (!$basic) {
         $master_data = array();
         foreach ($files_to_check as $file) {
-            $master_data[$file] = 1;
+            $master_data[$file] = true;
         }
 
         $addon_files = collapse_2d_complexity('filename', 'addon_name', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename', 'addon_name')));
@@ -1277,8 +1286,14 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             $ret_str .= '<p class="associated_details"><a href="#" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
             $ret_str .= '<input class="buttons__proceed button_screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
             $ret_str .= '</div>';
+
+            $found_something = true;
         }
         $ret_str .= '</form>';
+    }
+
+    if (!$found_something) {
+        $ret_str = do_lang('NO_ISSUES_FOUND');
     }
 
     return $ret_str;

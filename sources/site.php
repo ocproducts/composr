@@ -1239,8 +1239,12 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
                 $bits = array($redirect['r_to_zone'], array('page' => $redirect['r_to_page']));
             }
             // Transparent redirection?
-            if ($redirect['r_is_transparent'] == 1) {
+            if (($redirect['r_is_transparent'] == 1) || ($being_included)) {
                 if (($being_included) && (!has_page_access(get_member(), $redirect['r_to_page'], $redirect['r_to_zone'], true))) {
+                    if ($being_included) {
+                        return new Tempcode();
+                    }
+
                     access_denied('PAGE_ACCESS');
                 }
 
@@ -1250,7 +1254,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
                     }
                 }
                 if (($redirect['r_to_page'] != $codename) || ($redirect['r_to_zone'] != $zone)) {
-                    $ret = request_page($redirect['r_to_page'], $required, $redirect['r_to_zone'], null, $being_included, $redirect['r_is_transparent'] == 1, $out);
+                    $ret = request_page($redirect['r_to_page'], $required, $redirect['r_to_zone'], null, $being_included, true/*Don't want redirect loops*/, $out);
                     $REQUEST_PAGE_NEST_LEVEL--;
                     return $ret;
                 }

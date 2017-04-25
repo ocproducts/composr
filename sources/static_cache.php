@@ -25,9 +25,7 @@ This allows static cache to run even when Composr is itself not booting at all.
 
 if (!isset($GLOBALS['FILE_BASE'])) {
     // Fixup SCRIPT_FILENAME potentially being missing
-if ((empty($_SERVER['SCRIPT_FILENAME'])) && (empty($_ENV['SCRIPT_FILENAME']))) {
-    $_SERVER['SCRIPT_FILENAME'] = __FILE__;
-}
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
 // Find Composr base directory, and chdir into it
     global $FILE_BASE;

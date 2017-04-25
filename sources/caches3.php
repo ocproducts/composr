@@ -155,6 +155,8 @@ function erase_comcode_cache()
 
     cms_profile_start_for('erase_comcode_cache');
 
+    reload_lang_fields(true);
+
     if (multi_lang_content()) {
         $sql = 'UPDATE ' . get_table_prefix() . 'translate';
         if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => 'translate', 'i_name' => 'decache')/*LEGACY*/)))) {

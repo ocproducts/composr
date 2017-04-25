@@ -77,7 +77,7 @@ intl	internationalisation	regionalisation	i18n	l10n	localisation	translation
 permission	privilege	authorisation	authorization	right	access	grant	restrict	prohibite	credentials
 access	view
 overlay	popup	dialog	window
-option	setting	value	parameter
+option	setting	value	parameter	preference
 configure	configuration	setup	install	core_configuration
 emoticon	smiley	smile	face	emoji
 forum	board	bbs	cns_forum	message board

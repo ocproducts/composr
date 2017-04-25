@@ -60,13 +60,16 @@
 		{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM}
 			if (typeof window.fix_form_enter_key!='undefined') fix_form_enter_key(document.getElementById('submit_button').form);
 		{+END}
-
-		{+START,IF_PASSED_AND_TRUE,SUPPORT_AUTOSAVE}{+START,IF_PASSED,FORM_NAME}
-			{$REQUIRE_JAVASCRIPT,posting}
-
-			if (typeof init_form_saving!='undefined') init_form_saving('{FORM_NAME;/}');
-		{+END}{+END}
 	});
+	{+START,IF_PASSED_AND_TRUE,SUPPORT_AUTOSAVE}{+START,IF_PASSED,FORM_NAME}
+		{$REQUIRE_JAVASCRIPT,posting}
+
+		add_event_listener_abstract(window,'real_load',function() {
+			window.setTimeout(function() {
+				if (typeof init_form_saving!='undefined') init_form_saving('{FORM_NAME;/}');
+			}, 3000/*Let CKEditor load*/);
+		});
+	{+END}{+END}
 //]]></script>
 
 {+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
