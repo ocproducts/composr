@@ -141,26 +141,25 @@ a) The PHP [tt]openssl[/tt] extension is required.
 b) It only works with the PHP mailer, not the SMTP mailer (for overhead control the SMTP mailer will send e-mails going to multiple users within a single packet, which prevents use of DKIM).
 c) It is not recommended on Windows due to severe performance problems with openssl on Windows.
 d) Composr will only apply DKIM on your mail e-mail domain (as defined in your [tt]_config.php[/tt] file). It is incompatible with the "Use true 'from' address" option (which is off by default).
-e) qmail is not supported (an incompatibility between DKIM's and qmail's new-line standards).
 
 Your DKIM public key is to be stored in DNS as per standard DKIM set up.
 
 You can use an online tool to generate your keys, including the specific DNS records you need to add.
- - https://www.unlocktheinbox.com/dkimwizard/
- - https://luxsci.com/extranet/dkim.html
+ - [url="DKIM Wizard"]https://www.unlocktheinbox.com/dkimwizard/[/url]
+ - [url="DKIM Generator"]https://luxsci.com/extranet/dkim.html[/url]
 
 Tools for testing DKIM:
- - Check a TXT record (1): http://dkimcore.org/tools/
- - Check a TXT record (2): https://protodave.com/tools/dkim-key-checker/
- - E-mail scanner and tips: http://www.appmaildev.com/en/dkim/
- - E-mail scanner: https://www.port25.com/authentication-checker/
+ - [url="Check a TXT record (1)"]http://dkimcore.org/tools/[/url]
+ - [url="Check a TXT record (2)"]https://protodave.com/tools/dkim-key-checker/[/url]
+ - [url="E-mail scanner and tips"]http://www.appmaildev.com/en/dkim/[/url]
+ - [url="E-mail scanner"]https://www.port25.com/authentication-checker/[/url]
 
 Technical references for debugging:
- - Using opendkim to test: https://isc.sans.edu/forums/diary/How+to+Debug+DKIM/17528/
- - Common problems: https://blogs.cisco.com/security/common_errors_causing_dkim_verification_failures
- - Domainkeys technical summary: https://www.unlocktheinbox.com/resources/domainkeys/
- - DKIM technical summary: https://www.unlocktheinbox.com/resources/dkim/
- - Full specification: http://www.dkim.org/specs/rfc4871-dkimbase.html
+ - [url="Using opendkim to test"]https://isc.sans.edu/forums/diary/How+to+Debug+DKIM/17528/[/url]
+ - [url="Common problems"]https://blogs.cisco.com/security/common_errors_causing_dkim_verification_failures[/url]
+ - [url="Domainkeys technical summary"]https://www.unlocktheinbox.com/resources/domainkeys/[/url]
+ - [url="DKIM technical summary"]https://www.unlocktheinbox.com/resources/dkim/[/url]
+ - [url="Full specification"]http://www.dkim.org/specs/rfc4871-dkimbase.html[/url]
 
 [title="2"]Queues and debugging[/title]
 
