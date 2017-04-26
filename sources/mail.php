@@ -921,6 +921,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $brand_name = 'Composr';
     }
     $headers .= 'X-Mailer: ' . $brand_name . $line_term;
+    $list_unsubscribe_target = get_value('list_unsubscribe_target');
+    if (!empty($list_unsubscribe_target)) {
+        $headers .= 'List-Unsubscribe: <' . $list_unsubscribe_target . '>' . $line_term;
+    }
     if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
         $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
         $headers .= 'Require-Recipient-Valid-Since: ' . $to_email[0] . '; ' . $_require_recipient_valid_since . $line_term;
