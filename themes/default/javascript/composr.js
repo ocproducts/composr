@@ -1147,6 +1147,7 @@
 
     /**
      * @param val
+     * @param defaultPropertyName
      * @returns { Object }
      */
     function objVal(val, defaultPropertyName) {
@@ -1311,7 +1312,9 @@
 
     /* Generate url */
 
-    $cms.url = function () {};
+    $cms.url = function () {
+        return baseUrl.apply(undefined, arguments);
+    };
 
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
         rgxHttp = /^https?:(?=\/\/)/i;

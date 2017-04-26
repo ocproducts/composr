@@ -1846,158 +1846,229 @@ function csp_send_header() {
     global $CSP_NONCE;
 
     /* CSP directives */
-    // The default policy for loading content such as JavaScript, Images, CSS, Font's, AJAX requests, Frames, HTML5 Media.
-    $default_src = '';
-    // Defines valid sources of JavaScript.
-    $script_src = '';
-    // Defines valid sources of CSS.
-    $style_src = '';
-    // Defines valid sources of images.
-    $img_src = '';
-    // Applies to XMLHttpRequest (AJAX), WebSocket or EventSource. If not allowed the browser emulates a 400 HTTP status code.
-    $connect_src = '';
-    // Defines valid sources of fonts.
-    $font_src = '';
-    // Defines valid sources of plugins, eg <object>, <embed> or <applet>.
-    $object_src = '';
-    // Defines valid sources of audio and video, eg HTML5 <audio>, <video> elements.
-    $media_src = '';
-    // Defines valid sources for web workers and nested browsing contexts loaded using elements such as <frame> and <iframe>
-    $child_src = '';
-    // Defines valid sources that can be used as a HTML <form> action.
-    $form_action = '';
-    // Defines who is allowed to embed our resources using <frame>, <iframe>, <object>, <embed>, or <applet>.
-    // Setting this directive to 'none' should be roughly equivalent to X-Frame-Options: DENY
-    $frame_ancestors = '';
-
-    // Defines valid MIME types for plugins invoked via <object> and <embed>. To load an <applet> you must specify application/x-java-applet.
-    $plugin_types = '';
-
-    $report_only = false;
-    // Instructs the browser to POST a reports of policy failures to this URI.
-    // You can also append -Report-Only to the HTTP header name to instruct the browser to only send reports (does not block anything).
-    $report_uri = '';
+    $header = '';
 
     /* Default */
+    // The default policy for loading content such as JavaScript, Images, CSS, Font's, AJAX requests, Frames, HTML5 Media.
+    $default_src = csp_extract_source_list('');
     $default_allow_insecure = true;
+    $default_allow_inline = true;
 
-    if ($default_allow_insecure) {
-        $default_src .= 'http: https: ';
-    } else {
-        $default_src .= 'https: ';
+    if ($default_src === null) {
+        $default_src = [];
+        if ($default_allow_insecure) {
+            $default_src[] = 'http: https:';
+        } else {
+            $default_src[] = 'https:';
+        }
+    }
+
+    if ($default_allow_inline) {
+        $default_src[] = "'unsafe-inline'";
+    }
+
+    if (count($default_src) > 0) {
+        $default_src_str = join(' ', $default_src);
+        $header .= "default-src {$default_src_str}; ";
     }
 
     /* JavaScript */
-    $script_allow_insecure = true;
+    // Defines valid sources of JavaScript.
+    $script_src = csp_extract_source_list('');
+    $script_allow_insecure = $default_allow_insecure;
     $script_allow_inline = false;
     $script_allow_eval = true;
     $script_require_nonce = true;
 
-    if ($script_allow_insecure) {
-        $script_src .= 'http: https: ';
-    } else {
-        $script_src .= 'https: ';
+    if ($script_src === null) {
+        $script_src = [];
+        if ($script_allow_insecure) {
+            $script_src[] = 'http: https:';
+        } else {
+            $script_src[] = 'https:';
+        }
     }
 
     if ($script_allow_inline) {
-        $script_src .= "'unsafe-inline' ";
+        $script_src[] = "'unsafe-inline'";
     }
 
     if ($script_allow_eval) {
-        $script_src .= "'unsafe-eval' ";
+        $script_src[] = "'unsafe-eval'";
     }
 
-    if ($script_require_nonce && is_string($CSP_NONCE) && ($CSP_NONCE !== '')) {
-        $script_src .=  "'strict-dynamic' 'nonce-{$CSP_NONCE}' ";
+    if ($script_require_nonce) {
+        $script_src[] =  "'strict-dynamic' 'nonce-{$CSP_NONCE}'";
+    }
+
+    if ($script_src !== null) {
+        if (count($script_src) > 0) {
+            $script_src_str = join(' ', $script_src);
+            $header .= "script-src 'self' {$script_src_str}; ";
+        } else {
+            $header .= "script-src 'self'; ";
+        }
     }
 
     /* CSS */
-    $style_allow_insecure = true;
-    $style_allow_inline = true;
+    // Defines valid sources of CSS.
+    $style_src = csp_extract_source_list('');
+    $style_allow_insecure = $default_allow_insecure;
+    $style_allow_inline = $default_allow_inline;
     $style_require_nonce = false;
 
-    if ($style_allow_insecure) {
-        $style_src .= 'http: https: ';
-    } else {
-        $style_src .= 'https: ';
+    if ($style_src === null) {
+        $style_src = [];
+        if ($style_allow_insecure) {
+            $style_src[] = 'http: https:';
+        } else {
+            $style_src[] = 'https:';
+        }
     }
 
     if ($style_allow_inline) {
-        $style_src .= "'unsafe-inline' ";
+        $style_src[] = "'unsafe-inline'";
     }
 
-    if ($style_require_nonce && is_string($CSP_NONCE) && ($CSP_NONCE !== '')) {
-        $style_src .= "'strict-dynamic' 'nonce-{$CSP_NONCE}' ";
+    if ($style_require_nonce) {
+        $style_src[] = "'strict-dynamic' 'nonce-{$CSP_NONCE}'";
+    }
+
+    if ($style_src !== null) {
+        if (count($style_src) > 0) {
+            $style_src_str = join(' ', $style_src);
+            $header .= "style-src 'self' {$style_src_str}; ";
+        } else {
+            $header .= "style-src 'self'; ";
+        }
     }
 
     /* Images */
-    $img_allow_insecure = true;
+    // Defines valid sources of images.
+    $img_src = csp_extract_source_list('');
+    $img_allow_insecure = $default_allow_insecure;
     $img_allow_data_uri = true;
 
-    if ($img_allow_insecure) {
-        $img_src .= 'http: https: ';
-    } else {
-        $img_src .= 'https: ';
+    if ($img_src === null) {
+        $img_src = [];
+        if ($img_allow_insecure) {
+            $img_src[] = 'http: https:';
+        } else {
+            $img_src[] = 'https:';
+        }
     }
 
     if ($img_allow_data_uri) {
-        $img_src .= 'data: ';
+        $img_src[] = 'data:';
     }
 
-    /* Prepare the header */
-    $header = '';
-
-    if ($default_src !== '') {
-        $header .= "default-src {$default_src}; ";
+    if ($img_src !== null) {
+        if (count($img_src) > 0) {
+            $img_src_str = join(' ', $img_src);
+            $header .= "img-src 'self' {$img_src_str}; ";
+        } else {
+            $header .= "img-src 'self'; ";
+        }
     }
 
-    if ($script_src !== '') {
-        $header .= "script-src {$script_src}; ";
+    // Applies to XMLHttpRequest (AJAX), WebSocket or EventSource. If not allowed the browser emulates a 400 HTTP status code.
+    $connect_src = csp_extract_source_list('');
+    if ($connect_src !== null) {
+        if (count($connect_src) > 0) {
+            $connect_src_str = join(' ', $connect_src);
+            $header .= "connect-src 'self' {$connect_src_str}; ";
+        } else {
+            $header .= "connect-src 'self'; ";
+        }
     }
 
-    if ($style_src !== '') {
-        $header .= "style-src {$style_src}; ";
+    // Defines valid sources of fonts.
+    $font_src = csp_extract_source_list('');
+    if ($font_src !== null) {
+        if (count($font_src) > 0) {
+            $font_src_str = join(' ', $font_src);
+            $header .= "font-src 'self' {$font_src_str}; ";
+        } else {
+            $header .= "font-src 'self'; ";
+        }
     }
 
-    if ($img_src !== '') {
-        $header .= "img-src {$img_src}; ";
+    // Defines valid MIME types for plugins invoked via <object> and <embed>. To load an <applet> you must specify application/x-java-applet.
+    $plugin_types = csp_extract_source_list('none');
+    if ($plugin_types !== null) {
+        if (count($plugin_types) > 0) {
+            $plugin_types_str = join(' ', $plugin_types);
+            $header .= "plugin-types {$plugin_types_str}; ";
+        }
     }
-
-    if ($connect_src !== '') {
-        $header .= "connect-src {$connect_src}; ";
-    }
-
-    if ($font_src !== '') {
-        $header .= "font-src {$font_src}; ";
-    }
-
-    if ($object_src !== '') {
+    // Defines valid sources of plugins, eg <object>, <embed> or <applet>.
+    $object_src = csp_extract_source_list('');
+    if ($object_src !== null) {
         $header .= "object-src {$object_src}; ";
+        if (($plugin_types !== null) && (count($plugin_types) === 0)) {
+            $header .= "object-src none; ";
+        } else if (count($object_src) > 0) {
+            $object_src_str = join(' ', $object_src);
+            $header .= "object-src 'self' {$object_src_str}; ";
+        } else {
+            $header .= "object-src 'self'; ";
+        }
     }
 
-    if ($media_src !== '') {
-        $header .= "media-src {$media_src}; ";
+    // Defines valid sources of audio and video, eg HTML5 <audio>, <video> elements.
+    $media_src = csp_extract_source_list('');
+    if ($media_src !== null) {
+        if (count($media_src) > 0) {
+            $media_src_str = join(' ', $media_src);
+            $header .= "media-src 'self' {$media_src_str}; ";
+        } else {
+            $header .= "media-src 'self'; ";
+        }
     }
 
-    if ($child_src !== '') {
+    // Defines valid sources for web workers and nested browsing contexts loaded using elements such as <frame> and <iframe>
+    $child_src = csp_extract_source_list('');
+    if ($child_src !== null) {
         $header .= "child-src {$child_src}; ";
+        if (count($child_src) > 0) {
+            $child_src_str = join(' ', $child_src);
+            $header .= "child-src 'self' {$child_src_str}; ";
+        } else {
+            $header .= "child-src 'self'; ";
+        }
     }
 
-    if ($form_action !== '') {
-        $header .= "form-action {$form_action}; ";
+    // Defines valid sources that can be used as a HTML <form> action.
+    $form_action = csp_extract_source_list('none');
+    if ($form_action !== null) {
+        if (count($form_action) > 0) {
+            $form_action_str = join(' ', $form_action);
+            $header .= "form-action 'self' {$form_action_str}; ";
+        } else {
+            $header .= "form-action 'self'; ";
+        }
     }
 
-    if ($frame_ancestors !== '') {
-        $header .= "frame-ancestors {$frame_ancestors}; ";
+    // Defines who is allowed to embed our resources using <frame>, <iframe>, <object>, <embed>, or <applet>.
+    // Setting this directive to 'none' (empty array here) should be roughly equivalent to X-Frame-Options: DENY
+    $frame_ancestors = csp_extract_source_list('none');
+    if ($frame_ancestors !== null) {
+        if (count($frame_ancestors) > 0) {
+            $frame_ancestors_str = join(' ', $frame_ancestors);
+            $header .= "frame-ancestors 'self' {$frame_ancestors_str}; ";
+        } else {
+            $header .= "frame-ancestors 'self'; ";
+        }
     }
 
-    if ($plugin_types !== '') {
-        $header .= "plugin-types {$plugin_types}; ";
-    }
-
-    if ($report_uri !== '') {
+    // Instructs the browser to POST a reports of policy failures to this URI.
+    // You can also append -Report-Only to the HTTP header name to instruct the browser to only send reports (does not block anything).
+    $report_uri = null;
+    if ($report_uri !== null) {
         $header .= "report-uri {$report_uri}; ";
     }
+
+    $report_only = false;
 
     if ($report_only) {
         @header('Content-Security-Policy-Report-Only: ' . $header);
@@ -2009,4 +2080,60 @@ function csp_send_header() {
 function csp_generate_nonce() {
     $nonce = uniqid('', true);
     return substr(base64_encode($nonce), 0, 10);
+}
+
+// return null means allow all, empty array means disallow all (except local)
+function csp_extract_source_list($sources_csv) {
+    $sources_csv = trim(strval($sources_csv));
+
+    if ($sources_csv === '') {
+        return null;
+    } else if ($sources_csv === 'none') {
+        return [];
+    }
+
+    $sources = preg_split('/\s*\,\s*/', $sources_csv);
+    $source_list = [];
+
+    foreach ($sources as $val) {
+        $parts = parse_url(trim($val));
+
+        // parse_url returns false when the uri is seriously malformed
+        if (!is_array($parts)) {
+            continue;
+        }
+
+        if (!$parts['host']) {
+            // No domain specified
+            continue;
+        }
+
+        if ($parts['scheme'] && ($parts['scheme'] !== 'http') && ($parts['scheme'] !== 'https')) {
+            // Invalid scheme
+            continue;
+        }
+
+        $source = '';
+        if ($parts['scheme']) {
+            $source .= $parts['scheme'] . '://';
+        }
+
+        $source .= $parts['host'];
+
+        if ($parts['port']) {
+            $source .= ':' . $parts['port'];
+        }
+
+        if ($parts['path']) {
+            $source .= $parts['path'];
+        }
+
+        if ($parts['query']) {
+            $source .= '?' . $parts['query'];
+        }
+
+        $source_list[] = $source;
+    }
+
+    return $source_list;
 }

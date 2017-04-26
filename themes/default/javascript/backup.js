@@ -1,7 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.functions.adminBackupInterfaceCalendar = function () {
+    $cms.functions.adminBackupInterfaceCalendar = function adminBackupInterfaceCalendar() {
         var d_ob = [
             $cms.dom.$('#schedule_day'),
             $cms.dom.$('#schedule_month'),

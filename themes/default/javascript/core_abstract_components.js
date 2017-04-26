@@ -86,11 +86,10 @@
 
     $cms.templates.handleConflictResolution = function (params) {
         if (params.pingUrl) {
-            $cms.doAjaxRequest(params.pingUrl);
+            $cms.doAjaxRequest(params.pingUrl, /*async*/function () {});
 
             window.setInterval(function () {
-                $cms.doAjaxRequest(params.pingUrl, function () {
-                });
+                $cms.doAjaxRequest(params.pingUrl, /*async*/function () {});
             }, 12000);
         }
     };
