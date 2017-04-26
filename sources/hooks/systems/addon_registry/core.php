@@ -649,6 +649,7 @@ class Hook_addon_registry_core
             'sources/selectcode.php',
             'sources/filtercode.php',
             'lang/EN/filtercode.ini',
+            'sources/mail_dkim.php',
             'sources/blocks/main_content_filtering.php',
             'sources/lang_stemmer_EN.php',
             'sources/lang_filter_EN.php',

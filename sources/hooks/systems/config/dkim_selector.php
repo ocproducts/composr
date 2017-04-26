@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_cc_address
+class Hook_config_dkim_selector
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_cc_address
     public function get_details()
     {
         return array(
-            'human_name' => 'CC_ADDRESS',
+            'human_name' => 'DKIM_SELECTOR',
             'type' => 'line',
             'category' => 'SITE',
             'group' => '_EMAIL',
-            'explanation' => 'CONFIG_OPTION_cc_address',
+            'explanation' => 'CONFIG_OPTION_dkim_selector',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 13,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );
@@ -51,6 +52,9 @@ class Hook_config_cc_address
      */
     public function get_default()
     {
-        return '';
+        if (!function_exists('openssl_get_privatekey')) {
+            return null;
+        }
+        return 'dkim';
     }
 }

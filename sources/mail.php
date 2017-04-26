@@ -18,6 +18,8 @@
  * @package    core
  */
 
+/*EXTRA FUNCTIONS: DKIMSignature*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -1191,6 +1193,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             }
         }
     } else {
+        // DKIM prep
+        $dkim_private_key = get_option('dkim_private_key');
+        $signed_headers = ''; // Will be filled later, potentially
+        if (trim($dkim_private_key) != '') {
+            require_code('mail_dkim');
+        }
+
         $worked = false;
         foreach ($to_email as $i => $to) {
             //exit($headers."\n".$sending_message);
@@ -1208,16 +1217,23 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             } else {
                 $to_line = '"' . $_to_name . '" <' . $to . '>';
             }
+
+            // DKIM
+            if (trim($dkim_private_key) != '') {
+                $signature = new DKIMSignature(trim($dkim_private_key, " \t\r\n\"'"), '', get_domain(), get_option('dkim_selector'));
+                $signed_headers = $signature->get_signed_headers($to_line, $tightened_subject, $sending_message, $headers);
+            }
+
             //if (function_exists('mb_language')) mb_language('en'); Stop overridden mbstring mail function from messing and base64'ing stuff. Actually we don't need this as we make sure to pass through as headers with blank message, bypassing any filtering.
             $php_errormsg = mixed();
             if (get_value('manualproc_mail') === '1') {
                 require_code('mail2');
-                $worked = manualproc_mail($to_line, $tightened_subject, $sending_message, $headers, $additional);
+                $worked = manualproc_mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers, $additional);
             } else {
                 if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ($additional == '')) {
-                    $worked = mail($to_line, $tightened_subject, $sending_message, $headers);
+                    $worked = mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers);
                 } else {
-                    $worked = mail($to_line, $tightened_subject, $sending_message, $headers, $additional);
+                    $worked = mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers, $additional);
                 }
             }
             if ((!$worked) && (isset($php_errormsg))) {

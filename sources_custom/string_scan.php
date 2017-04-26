@@ -182,6 +182,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_D
         PGE_R
         PGE_HASH
+        DKIM_PRIVATE_KEY
+        CONFIG_OPTION_dkim_private_key
+        DKIM_SELECTOR
+        CONFIG_OPTION_dkim_selector
+        _EMAIL
         PHP_UPLOAD_SETTING_VERY_LOW
         ADDING_THEME_IMAGE
         DESCRIPTION_ADDING_THEME_IMAGE
