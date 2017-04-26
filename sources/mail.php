@@ -742,10 +742,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // ... So get theme of welcome zone
     }
 
-    // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail/postfix-masquerading-as-sendmail not supporting the correct \r\n
+    // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail not supporting the correct \r\n
     /*
     $sendmail_path = ini_get('sendmail_path');
-    if ((strpos($sendmail_path, 'qmail') !== false) || (strpos($sendmail_path, 'sendmail') !== false)) {
+    if (strpos($sendmail_path, 'qmail') !== false) {
         $line_term = "\n";
     } else {
         $line_term = "\r\n";
@@ -758,6 +758,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $line_term = "\r";*/
     } else {
         $line_term = "\n";
+    }
+
+    // DKIM prep
+    $dkim_private_key = get_option('dkim_private_key');
+    $signed_headers = ''; // Will be filled later, potentially
+    if (trim($dkim_private_key) != '') {
+        require_code('mail_dkim');
     }
 
     // We use the boundary to seperate message parts
@@ -1193,13 +1200,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             }
         }
     } else {
-        // DKIM prep
-        $dkim_private_key = get_option('dkim_private_key');
-        $signed_headers = ''; // Will be filled later, potentially
-        if (trim($dkim_private_key) != '') {
-            require_code('mail_dkim');
-        }
-
         $worked = false;
         foreach ($to_email as $i => $to) {
             //exit($headers."\n".$sending_message);
@@ -1221,7 +1221,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             // DKIM
             if (trim($dkim_private_key) != '') {
                 $signature = new DKIMSignature(trim($dkim_private_key, " \t\r\n\"'"), '', get_domain(), get_option('dkim_selector'));
-                $signed_headers = $signature->get_signed_headers($to_line, $tightened_subject, $sending_message, $headers);
+                $signed_headers = str_replace("\r\n", $line_term, $signature->get_signed_headers($to_line, $tightened_subject, str_replace($line_term, "\r\n", $sending_message), str_replace($line_term, "\r\n", $headers)));
             }
 
             //if (function_exists('mb_language')) mb_language('en'); Stop overridden mbstring mail function from messing and base64'ing stuff. Actually we don't need this as we make sure to pass through as headers with blank message, bypassing any filtering.

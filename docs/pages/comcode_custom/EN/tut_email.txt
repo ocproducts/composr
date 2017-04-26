@@ -130,21 +130,37 @@ More extreme advice:[list="1"]
 
 [title="3"]Implementing DKIM (advanced)[/title]
 
-DKIM is an e-mail digital signature system which reduces the chance of people faking e-mails from you,s and therefore your e-mails being flagged as spam.
+DKIM is an e-mail digital signature system which reduces the chance of people faking e-mails from you, and therefore your e-mails being flagged as spam.
 
 There are 2 ways you can implement DKIM:
-1) At the server-level. This is recommended, but may not be available on some shared webhosts.
+1) At the server-level. This is recommended, but may not be available on some shared webhosts. It is recommended because this way all e-mails from your domain may be signed, not just ones sent from Composr.
 2) Within Composr (there's a config option to enter the DKIM private key). [version 10.0.5+][staff_note]LEGACY[/staff_note]
 
 There are a few caveats with Composr's implementation:
-a) The PHP openssl extension is required.
+a) The PHP [tt]openssl[/tt] extension is required.
 b) It only works with the PHP mailer, not the SMTP mailer (for overhead control the SMTP mailer will send e-mails going to multiple users within a single packet, which prevents use of DKIM).
 c) It is not recommended on Windows due to severe performance problems with openssl on Windows.
 d) Composr will only apply DKIM on your mail e-mail domain (as defined in your [tt]_config.php[/tt] file). It is incompatible with the "Use true 'from' address" option (which is off by default).
+e) qmail is not supported (an incompatibility between DKIM's and qmail's new-line standards).
 
 Your DKIM public key is to be stored in DNS as per standard DKIM set up.
 
-You can use an [url="online tool"]https://luxsci.com/extranet/dkim.html[/url] to generate your keys, including the specific DNS records you need to add.
+You can use an online tool to generate your keys, including the specific DNS records you need to add.
+ - https://www.unlocktheinbox.com/dkimwizard/
+ - https://luxsci.com/extranet/dkim.html
+
+Tools for testing DKIM:
+ - Check a TXT record (1): http://dkimcore.org/tools/
+ - Check a TXT record (2): https://protodave.com/tools/dkim-key-checker/
+ - E-mail scanner and tips: http://www.appmaildev.com/en/dkim/
+ - E-mail scanner: https://www.port25.com/authentication-checker/
+
+Technical references for debugging:
+ - Using opendkim to test: https://isc.sans.edu/forums/diary/How+to+Debug+DKIM/17528/
+ - Common problems: https://blogs.cisco.com/security/common_errors_causing_dkim_verification_failures
+ - Domainkeys technical summary: https://www.unlocktheinbox.com/resources/domainkeys/
+ - DKIM technical summary: https://www.unlocktheinbox.com/resources/dkim/
+ - Full specification: http://www.dkim.org/specs/rfc4871-dkimbase.html
 
 [title="2"]Queues and debugging[/title]
 
