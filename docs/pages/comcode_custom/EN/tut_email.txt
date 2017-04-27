@@ -113,7 +113,7 @@ Some specific things to look out for when writing your content:[list="a"]
 Positive advice:[list="1"]
 [*] Generally it is advisable to [b][url="set up SPF"]http://www.spfwizard.net/[/url][/b], as it provides a positive signal that your server is not a spammer. Set both [tt]SPF[/tt] and [tt]TXT[/tt] record types for maximum compatibility (set them to the same values).
 [*] [b]Ask your visitors to add your website e-mail address to their contacts list[/b]. Spam checkers usually will not block mail sent from someone on their contacts list. If their e-mail provider has a "Safe senders" list, that's even better -- Microsoft's e-mail services have this. Microsoft's e-mail services do over-block unknown e-mail servers or if users aren't reading your e-mails for long. If you're blocked, your message may not even go into the user's spam folder.
-[*] [b]Ask users to mark e-mails non-spam[/b] if they go into their spam boxes. That should have an effect on learning algorithms.
+[*] [b]Ask users to mark e-mails non-spam[/b] if they go into their spam boxes, or move them from their spam/promotion folders to their inbox, or even sometimes reply to them. That should have an effect on learning algorithms.
 [*] [b]Configure DKIM[/b] for your server and domain name (see next section).
 [*] [b]Configure DMARC[/b] for your domain name. Here are some good tool choices to help you:[list="a"]
 [*] [url="DMARC Generator"]https://elasticemail.com/dmarc/[/url]
