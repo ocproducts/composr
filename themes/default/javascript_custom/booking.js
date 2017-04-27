@@ -1,4 +1,13 @@
-"use strict";
+(function ($cms) {
+    'use strict';
+
+    $cms.templates.bookingFleshOutScreen = function bookingFleshOutScreen(params, container) {
+        $cms.dom.on(container, 'change', 'js-change-recalculate-booking-price', function (e, el) {
+            recalculate_price(el.form);
+        });
+
+    };
+}(window.$cms));
 
 function recalculate_price(form) {
     var post = '', value, type;

@@ -20,7 +20,7 @@
 		{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
 	</div></div>
 
-	<form title="{!_LOGIN}" onsubmit="if ($cms.form.checkFieldForBlankness(this.elements['login_username'])) { $cms.ui.disableFormButtons(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
+	<form title="{!_LOGIN}" class="js-submit-check-username-for-blankness" action="{LOGIN_URL*}" method="post" autocomplete="on">
 		<div>
 			{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -64,7 +64,7 @@
 					<div class="login_page_options">
 						<p>
 							<label for="remember">
-							  <input id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) { t.checked=false; } }); }"{+END} />
+							  <input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} />
 							  <span class="field_name">{!REMEMBER_ME}</span>
 							</label>
 							<span class="associated_details">{!REMEMBER_ME_TEXT}</span>

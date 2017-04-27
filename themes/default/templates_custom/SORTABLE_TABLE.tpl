@@ -1,4 +1,4 @@
-<div class="wide_table_wrap">
+<div data-require-javascript="sortable_tables" data-tpl="sortableTable" class="wide_table_wrap">
 	<table id="sortable_table_{ID*}" summary="{!COLUMNED_TABLE}" class="results_table wide_table columned_table autosized_table sortable_table table-autosort:{DEFAULT_SORT_COLUMN*} table-autofilter table-autopage:{MAX*}">
 		<thead>
 			<tr>
@@ -7,7 +7,7 @@
 						<span>{LABEL*}</span>
 						{$,	If you want the template to define sorting, uncomment this and remove table-filterable -- but it will not be sorted consistently
 							{+START,IF_NON_EMPTY,{FILTERABLE}}
-								<select onchange="SortableTable.filter(this,this)">
+								<select class="js-change-sortable-table-filter">
 									<option value="">All</option>
 									{+START,LOOP,FILTERABLE}
 										<option>{_loop_var*}</option>

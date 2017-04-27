@@ -1,6 +1,13 @@
 (function ($cms) {
     'use strict';
 
+    $cms.templates.mantisTracker = function mantisTracker(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-add-voted-class', function (e, el) {
+            el.classList.remove('tracker_issue_not_voted');
+            el.classList.add('tracker_issue_voted');
+        });
+    };
+
     $cms.templates.blockCreditExpsInner = function blockCreditExpsInner(params, container) {
         update_product_info_display();
 

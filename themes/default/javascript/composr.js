@@ -3688,8 +3688,7 @@
                 } else if (event.clientY) {
                     return event.clientY + window.pageYOffset
                 }
-            } catch (ignore) {
-            }
+            } catch (ignore) {}
 
             return 0;
         }
@@ -5562,22 +5561,20 @@
             return; // Too erratic
         }
 
-        $cms.dom.registerMouseListener(event);
-
         $cms.ui.clearOutTooltips(el.tooltip_id);
 
         // Add in move/leave events if needed
         if (!have_links) {
-            el.addEventListener('mouseout', function () {
-                win.$cms.ui.deactivateTooltip(el);
+            $cms.dom.on(el, 'mouseout.cmsTooltip', function () {
+                $cms.ui.deactivateTooltip(el);
             });
 
-            el.addEventListener('mousemove', function () {
-                win.$cms.ui.repositionTooltip(el, event, false, false, null, false, win);
+            $cms.dom.on(el, 'mousemove.cmsTooltip', function () {
+                $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
             });
         } else {
-            el.addEventListener('click', function () {
-                win.$cms.ui.deactivateTooltip(el);
+            $cms.dom.on(el, 'click.cmsTooltip', function () {
+                $cms.ui.deactivateTooltip(el);
             });
         }
 
@@ -5602,15 +5599,15 @@
         }
 
         var tooltipEl;
-        if ((el.tooltip_id !== undefined) && ($cms.dom.$id(el.tooltip_id))) {
-            tooltipEl = win.$cms.dom.$('#' + el.tooltip_id);
+        if ((el.tooltip_id != null) && ($cms.dom.$id(el.tooltip_id))) {
+            tooltipEl = $cms.dom.$('#' + el.tooltip_id);
             tooltipEl.style.display = 'none';
             $cms.dom.html(tooltipEl, '');
             window.setTimeout(function () {
                 $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, force_width);
             }, 0);
         } else {
-            tooltipEl = win.document.createElement('div');
+            tooltipEl = document.createElement('div');
             tooltipEl.role = 'tooltip';
             tooltipEl.style.display = 'none';
             var rt_pos = tooltip.indexOf('results_table');
@@ -5657,7 +5654,7 @@
             tooltipEl.classList.add('tooltip_with_img');
         }
 
-        var event_copy = { // Needs to be copied as it will get erased on IE after this function ends
+        var eventCopy = { // Needs to be copied as it will get erased on IE after this function ends
             'pageX': +event.pageX || 0,
             'pageY': +event.pageY || 0,
             'clientX': +event.clientX || 0,
@@ -5678,8 +5675,9 @@
                 return;
             }
 
-            if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
+            if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) {// Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
                 $cms.dom.appendHtml(tooltipEl, tooltip);
+            }
 
             el.tooltip_on = true;
             tooltipEl.style.display = 'block';
@@ -5688,11 +5686,11 @@
 
             if (!no_delay) {
                 // If delayed we will sub in what the currently known global mouse coordinate is
-                event_copy.pageX = win.mouse_x;
-                event_copy.pageY = win.mouse_y;
+                eventCopy.pageX = win.mouse_x;
+                eventCopy.pageY = win.mouse_y;
             }
 
-            $cms.ui.repositionTooltip(el, event_copy, bottom, true, tooltipEl, force_width, win);
+            $cms.ui.repositionTooltip(el, eventCopy, bottom, true, tooltipEl, force_width, win);
         }, no_delay ? 0 : 666);
     };
 
@@ -5818,6 +5816,9 @@
         tooltip_element || (tooltip_element = $cms.dom.$('#' + el.tooltip_id));
 
         if (tooltip_element) {
+            $cms.dom.off(tooltip_element, 'mouseout.cmsTooltip');
+            $cms.dom.off(tooltip_element, 'mousemove.cmsTooltip');
+            $cms.dom.off(tooltip_element, 'click.cmsTooltip');
             $cms.dom.hide(tooltip_element);
         }
     };

@@ -141,8 +141,6 @@ function realtime_rain_button_load_handler() {
 
 // Called to start the animation
 function start_realtime_rain() {
-    $cms.dom.registerMouseListener();
-
     var news_ticker = document.getElementById('news_ticker');
     news_ticker.style.top = '20px';
     news_ticker.style.left = ($cms.dom.getWindowWidth() / 2 - news_ticker.offsetWidth / 2) + 'px';

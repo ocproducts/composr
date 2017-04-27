@@ -5,7 +5,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{ISSUES}}
-	<div class="tracker_issues">
+	<div class="tracker_issues" data-require-javascript="composr_homesite_support_credits" data-tpl="mantisTracker">
 		{+START,LOOP,ISSUES}
 			<div class="box"><div class="box_inner">
 				<h3>{CATEGORY*}: {SUMMARY*}</h3>
@@ -16,7 +16,7 @@
 					</p>
 
 					{+START,IF,{VOTED}}
-						<p class="tracker_issue_voting_status tracker_issue_not_voted" onclick="this.className='tracker_issue_voting_status tracker_issue_voted';">
+						<p class="js-click-add-voted-class tracker_issue_voting_status tracker_issue_not_voted">
 							<a target="_blank" href="{UNVOTE_URL*}"><img src="{$IMG*,tracker/minus}" /> <span>{!FEATURES_UNVOTE}</span></a>
 						</p>
 					{+END}

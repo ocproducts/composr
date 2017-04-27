@@ -1,5 +1,16 @@
 /*{$,Parser hint: .innerHTML okay}*/
 
+(function ($cms) {
+    'use strict';
+
+    $cms.templates.sortableTable = function sortableTable(params, container) {
+        $cms.dom.on(container, 'change', '.js-change-sortable-table-filter', function (e, select) {
+            SortableTable.filter(select, select);
+        });
+    };
+}(window.$cms));
+
+
 /**
  * Table.js
  * Functions for interactive Tables

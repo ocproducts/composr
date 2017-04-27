@@ -1111,14 +1111,12 @@
 
     window.crazy_tick = crazy_tick;
     function crazy_tick() {
-        if (window.mouse_x === undefined) {
+        if (window.mouse_x == null) {
             return;
         }
-        if (window.mouse_y === undefined) {
+        if (window.mouse_y == null) {
             return;
         }
-
-        $cms.dom.registerMouseListener();
 
         var e, i, s_width, biasx, biasy;
         for (i = 0; i < window.crazy_criters.length; i++) {

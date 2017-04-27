@@ -1,4 +1,5 @@
-<div class="box box___iotd_box"><div class="box_inner">
+<div class="box box___iotd_box" data-require-javascript="iotds" data-tpl="iotdBox">
+<div class="box_inner">
 	{+START,IF,{GIVE_CONTEXT}}
 		{+START,SET,content_box_title}
 			{+START,IF_NON_EMPTY,{I_TITLE}}{!CONTENT_IS_OF_TYPE,{!IOTD},{I_TITLE}}{+END}
@@ -33,8 +34,11 @@
 		<div style="margin-right: {$CONFIG_OPTION,thumb_width}px" class="buttons_group">
 			{+START,IF,{$NOT,{IS_CURRENT}}}<form title="{!CHOOSE} {!IOTD} #{ID*}" class="inline" action="{CHOOSE_URL*}" method="post" autocomplete="off"><input type="hidden" name="id" value="{ID*}" /><input class="button_screen_item buttons__choose" type="submit" value="{!CHOOSE}" title="{!CHOOSE} {!IOTD} #{ID*}" /></form>{+END}
 			<a class="button_screen_item buttons__edit" rel="edit" href="{EDIT_URL*}"><span>{!EDIT}: {!IOTD} #{ID*}</span></a>
-			<form title="{!DELETE} {!IOTD} #{ID*}" onsubmit="var t=this; $cms.ui.confirm('{!ARE_YOU_SURE_DELETE=;}',function(answer) { if (answer) t.submit(); }); return false;" class="inline" action="{DELETE_URL*}" method="post" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="id" value="{ID*}" /><input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" title="{!DELETE} {!IOTD} #{ID*}" /></form>
+			<form class="inline js-submit-confirm-iotd-deletion"  title="{!DELETE} {!IOTD} #{ID*}" action="{DELETE_URL*}" method="post" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="id" value="{ID*}" />
+				<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" title="{!DELETE} {!IOTD} #{ID*}" />
+			</form>
 		</div>
 	{+END}{+END}{+END}
-</div></div>
+</div>
+</div>
 

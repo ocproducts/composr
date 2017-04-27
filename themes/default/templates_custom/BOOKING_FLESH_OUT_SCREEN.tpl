@@ -1,3 +1,4 @@
+<div data-require-javascript="booking" data-tpl="bookingFleshOutScreen">
 {TITLE}
 
 {+START,SET,fleshed}
@@ -18,10 +19,10 @@
 							{+START,IF,{SUPPLEMENT_SUPPORTS_QUANTITY}}
 								{!QUANTITY}:
 
-								<select onchange="recalculate_price(this.form);" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity">
+								<select class="js-change-recalculate-booking-price" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity">
 									{$SET,quantity,0}
 									{+START,WHILE,{$LT,{$GET,quantity},51}}
-										<option{+START,IF,{$EQ,{SUPPLEMENT_QUANTITY},{$GET,quantity}}} selected="selected"{+END} value="{$GET*,quantity}">{$NUMBER_FORMAT*,{$GET,quantity}}</option>
+										<option {+START,IF,{$EQ,{SUPPLEMENT_QUANTITY},{$GET,quantity}}} selected="selected"{+END} value="{$GET*,quantity}">{$NUMBER_FORMAT*,{$GET,quantity}}</option>
 										{$INC,quantity}
 									{+END}
 								</select>
@@ -30,7 +31,7 @@
 							{+START,IF,{$NOT,{SUPPLEMENT_SUPPORTS_QUANTITY}}}
 								{!I_WANT_THIS}
 
-								<input {+START,IF,{$GT,{SUPPLEMENT_QUANTITY},0}} checked="checked"{+END} onchange="recalculate_price(this.form);" type="checkbox" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" value="1" />
+								<input class="js-change-recalculate-booking-price" {+START,IF,{$GT,{SUPPLEMENT_QUANTITY},0}} checked="checked"{+END} type="checkbox" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" value="1" />
 							{+END}
 						</label>
 					</p>
@@ -80,3 +81,4 @@
 		<input type="image" title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" / /></p>
 	</div>
 </form>
+</div>

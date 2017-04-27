@@ -1,3 +1,4 @@
+<div data-require-javascript="idolisr" data-tpl="pointsGive">
 {+START,SET,roles}
 	<option value="">(Please select)</option>
 	<option value="Helpful soul">Helpful soul</option>
@@ -19,13 +20,13 @@
 		{+END}
 	</p>
 
-	<form title="{!GIVE_POINTS}" method="post" onsubmit="return $cms.form.checkForm(this);" action="{GIVE_URL*}#tab__points" autocomplete="off">
+	<form title="{!GIVE_POINTS}" method="post" class="js-submit-check-form" action="{GIVE_URL*}#tab__points" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p>
 			<label for="give_reason_pre">
 				Their role
-				<select id="give_reason_pre" name="reason_pre" onclick="this.onchange(event);" onchange="var reason=document.getElementById('give_reason'); if ((reason.value.substr(reason.value.indexOf(': ')).length&lt;=3) &amp;&amp; (this.selectedIndex!=0)) reason.value=this.options[this.selectedIndex].value+': ';">
+				<select id="give_reason_pre" class="js-click-check-reason js-change-check-reason" name="reason_pre">
 					{$GET,roles}
 				</select>
 			</label>:
@@ -57,14 +58,14 @@
 		{+END}
 	</p>
 
-	<form title="{!GIVE_POINTS}" method="post" onsubmit="return $cms.form.checkForm(this);" action="{GIVE_URL*}#tab__points" autocomplete="off">
+	<form title="{!GIVE_POINTS}" method="post" class="js-submit-check-form" action="{GIVE_URL*}#tab__points" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>
 			<div class="points_give_shared_options" style="margin-top: 0">
 				<label for="give_reason_pre">
 					Their role
-					<select id="give_reason_pre" name="reason_pre" onclick="this.onchange(event);" onchange="var reason=document.getElementById('give_reason'); if ((reason.value.substr(reason.value.indexOf(': ')).length&lt;=3) &amp;&amp; (this.selectedIndex!=0)) reason.value=this.options[this.selectedIndex].value+': ';">
+					<select id="give_reason_pre" class="js-click-check-reason js-change-check-reason" name="reason_pre">
 						{$GET,roles}
 					</select>
 				</label>:
@@ -97,3 +98,4 @@
 		</div>
 	</form>
 {+END}
+</div>

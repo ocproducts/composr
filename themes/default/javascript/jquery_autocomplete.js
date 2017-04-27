@@ -670,8 +670,6 @@ function set_up_comcode_autocomplete(name, wysiwyg) {
 		$cms.error('set_up_comcode_autocomplete(): jQuery.fn.sew plugin is not loaded');
 	}
 
-	$cms.dom.registerMouseListener();
-
     window.jQuery('#' + name).sew({
         values: [],
         token: '@',

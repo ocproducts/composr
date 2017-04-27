@@ -1,6 +1,14 @@
 (function ($cms) {
     'use strict';
 
+    $cms.templates.activity = function activity (params, container) {
+        var liid = strVal(params.liid);
+
+        $cms.dom.on(container, 'click', '.js-submit-confirm-update-remove', function (e) {
+            s_update_remove(e, liid);
+        });
+    };
+
     $cms.templates.blockMainActivities = function blockMainActivities(params) {
         if (!params.isBlockRaw) {
             window.activities_mode = strVal(params.mode);

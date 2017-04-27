@@ -1,6 +1,6 @@
 {$SET,early_description,1}
 
-<div data-view="ToggleableTray" data-require-javascript="workflows" data-tpl="formScreenInputVariousTicks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_ACCEPT_MULTIPLE,CUSTOM_NAME}{_*}{+END}">
+<div data-require-javascript="workflows" data-tpl="formScreenInputVariousTicks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_ACCEPT_MULTIPLE,CUSTOM_NAME}{_*}{+END}" data-view="ToggleableTray">
 	{+START,IF_PASSED,EXPANDED}
 		<h4 class="comcode_quote_h4 js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">
@@ -42,7 +42,7 @@
 						{+START,IF,{$EQ,{_loop_key},0}}
 							<label for="{CUSTOM_NAME*}_value_{_loop_key*}">{!OTHER}</label>&hellip;<br />
 						{+END}
-						<input id="{CUSTOM_NAME*}_value_{_loop_key*}" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" value="" onkeypress="_ensure_next_field(event,this);" />
+						<input id="{CUSTOM_NAME*}_value_{_loop_key*}" class="js-keypress-ensure-next-field" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" value="" />
 					</div></div>
 				{+END}
 			{+END}

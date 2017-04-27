@@ -285,6 +285,8 @@
         }
         /*END JS from HTML_HEAD.tpl*/
 
+        $cms.dom.registerMouseListener();
+
         if ($cms.dom.$('#global_messages_2')) {
             var m1 = $cms.dom.$('#global_messages');
             if (!m1) {

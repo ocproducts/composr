@@ -234,8 +234,6 @@ Sphere.prototype = new DisplayObject3D();
 
 
 function load_tag_cloud(container) {
-    $cms.dom.registerMouseListener();
-
     var width = container.offsetWidth;
     var height = container.offsetHeight;
 

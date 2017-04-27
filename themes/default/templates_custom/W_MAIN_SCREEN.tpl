@@ -1,3 +1,4 @@
+<div data-require-javascript="buildr" data-tpl="wMainScreen">
 {TITLE}
 
 <section class="box"><div class="box_inner">
@@ -738,7 +739,7 @@
 	<div class="box box___w_main_screen" data-view="ToggleableTray">
 		<h2 class="toggleable_tray_title js-tray-header">
 			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!W_ENVIRONMENT_MODIFICATIONS}</a>
-			<a class="toggleable_tray_button js-btn-tray-toggle" href="#!" onclick="$cms.setCookie('hideMod',(this.querySelector('img').getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1');"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+			<a class="js-click-set-hidemod-cookie toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 		</h2>
 
 		<div class="toggleable_tray js-tray-content" style="{HIDE_MODIFICATIONS*}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
@@ -746,7 +747,9 @@
 				<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" /> <input class="button_screen_item buttons__edit" type="submit" value="{!W_EDIT_ITEM}" onclick="form.elements['type']='edititem';" /> <input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!W_DELETE_ITEM}" onclick="form.elements['type']='confirm';" />
+					<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" />
+                    <input class="js-click-set-type-edititem button_screen_item buttons__edit" type="submit" value="{!W_EDIT_ITEM}" />
+                    <input class="js-click-set-type-confirm button_screen_item menu___generic_admin__delete" type="submit" value="{!W_DELETE_ITEM}" />
 				</div></form>
 
 				{+START,IF,{IS_STAFF}}
@@ -781,4 +784,5 @@
 			{+END}
 		</div>
 	</div>
+</div>
 </div>

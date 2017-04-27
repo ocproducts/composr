@@ -2,6 +2,10 @@
     'use strict';
 
     $cms.templates.formScreenInputVariousTicks = function formScreenInputVariousTicks(params, container) {
+        $cms.dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, el) {
+            _ensure_next_field(e, el);
+        });
+
         if (!params.customAcceptMultiple) {
             var customName = strVal(params.customName),
                 valueCheckbox = container.querySelector('#' + customName),

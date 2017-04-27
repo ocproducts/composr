@@ -383,7 +383,7 @@
                 img.ttitle = img.title;
             }
             img.title = '';
-            img.have_links = true;
+            //img.have_links = true;
             img.setAttribute('data-cms-rich-tooltip', '1');
         });
     };
