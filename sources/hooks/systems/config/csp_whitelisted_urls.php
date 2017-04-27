@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_csp_exceptions
+class Hook_config_csp_whitelisted_urls
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_csp_exceptions
     public function get_details()
     {
         return array(
-            'human_name' => 'CSP_EXCEPTIONS',
+            'human_name' => 'CSP_WHITELISTED_URLS',
             'type' => 'line',
             'category' => 'SECURITY',
             'group' => 'CSP',
-            'explanation' => 'CONFIG_OPTION_csp_exceptions',
+            'explanation' => 'CONFIG_OPTION_csp_whitelisted_urls',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 4,
 
             'addon' => 'core_configuration',
         );

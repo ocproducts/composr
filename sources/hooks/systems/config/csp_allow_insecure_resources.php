@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_csp_exceptions
+class Hook_config_csp_allow_insecure_resources
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_csp_exceptions
     public function get_details()
     {
         return array(
-            'human_name' => 'CSP_EXCEPTIONS',
-            'type' => 'line',
+            'human_name' => 'CSP_ALLOW_INSECURE_RESOURCES',
+            'type' => 'tick',
             'category' => 'SECURITY',
             'group' => 'CSP',
-            'explanation' => 'CONFIG_OPTION_csp_exceptions',
+            'explanation' => 'CONFIG_OPTION_csp_allow_insecure_resources',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 2,
 
             'addon' => 'core_configuration',
         );
@@ -51,6 +51,6 @@ class Hook_config_csp_exceptions
      */
     public function get_default()
     {
-        return '';
+        return '1';
     }
 }

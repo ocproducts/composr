@@ -1840,7 +1840,7 @@ function convert_data_encodings($known_utf8 = false)
 }
 
 /**
- * Work in progress
+ * Compiles and sends the CSP header
  */
 function csp_send_header() {
     global $CSP_NONCE;
@@ -1848,9 +1848,8 @@ function csp_send_header() {
     /* CSP directives */
     $header = '';
 
-    /* Default */
     // The default policy for loading content such as JavaScript, Images, CSS, Font's, AJAX requests, Frames, HTML5 Media.
-    $default_src = csp_extract_source_list('');
+    $default_src = csp_extract_source_list(get_option('csp_whitelisted_urls'));
     $default_allow_insecure = true;
     $default_allow_inline = true;
 
@@ -1872,13 +1871,12 @@ function csp_send_header() {
         $header .= "default-src {$default_src_str}; ";
     }
 
-    /* JavaScript */
     // Defines valid sources of JavaScript.
-    $script_src = csp_extract_source_list('');
+    $script_src = csp_extract_source_list(get_option('csp_whitelisted_urls'));
     $script_allow_insecure = $default_allow_insecure;
-    $script_allow_inline = false;
-    $script_allow_eval = true;
-    $script_require_nonce = true;
+    $script_allow_inline = boolval(get_option('csp_allow_inline_js'));
+    $script_allow_eval = boolval(get_option('csp_allow_eval_js'));
+    $script_require_nonce = boolval(get_option('csp_require_nonce'));
 
     if ($script_src === null) {
         $script_src = [];
@@ -1910,7 +1908,6 @@ function csp_send_header() {
         }
     }
 
-    /* CSS */
     // Defines valid sources of CSS.
     $style_src = csp_extract_source_list('');
     $style_allow_insecure = $default_allow_insecure;
@@ -1943,7 +1940,6 @@ function csp_send_header() {
         }
     }
 
-    /* Images */
     // Defines valid sources of images.
     $img_src = csp_extract_source_list('');
     $img_allow_insecure = $default_allow_insecure;
@@ -1994,7 +1990,7 @@ function csp_send_header() {
     }
 
     // Defines valid MIME types for plugins invoked via <object> and <embed>. To load an <applet> you must specify application/x-java-applet.
-    $plugin_types = csp_extract_source_list('none');
+    $plugin_types = csp_extract_source_list(get_option('csp_whitelisted_plugins'));
     if ($plugin_types !== null) {
         if (count($plugin_types) > 0) {
             $plugin_types_str = join(' ', $plugin_types);
@@ -2003,11 +1999,10 @@ function csp_send_header() {
     }
     // Defines valid sources of plugins, eg <object>, <embed> or <applet>.
     $object_src = csp_extract_source_list('');
-    if ($object_src !== null) {
-        $header .= "object-src {$object_src}; ";
-        if (($plugin_types !== null) && (count($plugin_types) === 0)) {
-            $header .= "object-src none; ";
-        } else if (count($object_src) > 0) {
+    if (($plugin_types !== null) && (count($plugin_types) === 0)) {
+        $header .= "object-src none; ";
+    } else if ($object_src !== null) {
+        if (count($object_src) > 0) {
             $object_src_str = join(' ', $object_src);
             $header .= "object-src 'self' {$object_src_str}; ";
         } else {
@@ -2029,7 +2024,6 @@ function csp_send_header() {
     // Defines valid sources for web workers and nested browsing contexts loaded using elements such as <frame> and <iframe>
     $child_src = csp_extract_source_list('');
     if ($child_src !== null) {
-        $header .= "child-src {$child_src}; ";
         if (count($child_src) > 0) {
             $child_src_str = join(' ', $child_src);
             $header .= "child-src 'self' {$child_src_str}; ";
@@ -2039,7 +2033,7 @@ function csp_send_header() {
     }
 
     // Defines valid sources that can be used as a HTML <form> action.
-    $form_action = csp_extract_source_list('none');
+    $form_action = csp_extract_source_list(get_option('csp_allowed_form_destinations'));
     if ($form_action !== null) {
         if (count($form_action) > 0) {
             $form_action_str = join(' ', $form_action);
@@ -2051,7 +2045,7 @@ function csp_send_header() {
 
     // Defines who is allowed to embed our resources using <frame>, <iframe>, <object>, <embed>, or <applet>.
     // Setting this directive to 'none' (empty array here) should be roughly equivalent to X-Frame-Options: DENY
-    $frame_ancestors = csp_extract_source_list('none');
+    $frame_ancestors = csp_extract_source_list(get_option('csp_allowed_iframe_ancestors'));
     if ($frame_ancestors !== null) {
         if (count($frame_ancestors) > 0) {
             $frame_ancestors_str = join(' ', $frame_ancestors);
@@ -2082,7 +2076,12 @@ function csp_generate_nonce() {
     return substr(base64_encode($nonce), 0, 10);
 }
 
-// return null means allow all, empty array means disallow all (except local)
+/**
+ * Extracts CSP sources from the given string
+ * return null means allow all, empty array means disallow all except local
+ * @param $sources_csv
+ * @return array|null
+ */
 function csp_extract_source_list($sources_csv) {
     $sources_csv = trim(strval($sources_csv));
 

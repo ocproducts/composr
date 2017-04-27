@@ -464,7 +464,6 @@
 
                 'mouseover [data-mouseover-activate-tooltip]': 'mouseoverActivateTooltip',
                 'focus [data-focus-activate-tooltip]': 'focusActivateTooltip',
-
                 'blur [data-blur-deactivate-tooltip]': 'blurDeactivateTooltip',
 
                 // "Rich semantic tooltips"
@@ -770,6 +769,7 @@
             args.unshift(el, e);
 
             try {
+                //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
                 $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
@@ -783,6 +783,7 @@
             args.unshift(el, e);
 
             try {
+                //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
                 $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
@@ -799,6 +800,7 @@
                 el.ttitle = el.title;
             }
 
+            //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
             var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, !!el.have_links];
 
             try {

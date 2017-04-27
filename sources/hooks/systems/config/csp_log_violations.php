@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_csp_exceptions
+class Hook_config_csp_log_violations
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_csp_exceptions
     public function get_details()
     {
         return array(
-            'human_name' => 'CSP_EXCEPTIONS',
-            'type' => 'line',
+            'human_name' => 'CSP_LOG_VIOLATIONS',
+            'type' => 'tick',
             'category' => 'SECURITY',
             'group' => 'CSP',
-            'explanation' => 'CONFIG_OPTION_csp_exceptions',
+            'explanation' => 'CONFIG_OPTION_csp_log_violations',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 11,
 
             'addon' => 'core_configuration',
         );
@@ -51,6 +51,6 @@ class Hook_config_csp_exceptions
      */
     public function get_default()
     {
-        return '';
+        return '0';
     }
 }
