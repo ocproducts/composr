@@ -24,11 +24,12 @@
 		{+START,IF_NON_EMPTY,{ASSIGNED}}
 			{+START,LOOP,ASSIGNED}
 				<li>
+					<span>{_loop_var*}</span>
+
 					{+START,IF,{$HAS_PRIVILEGE,support_operator}}
 						<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical_alignment" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
-							<span>{_loop_var*}</span>
 							<input class="button_micro menu___generic_admin__delete" type="submit" value="{!REMOVE}" />
 						</form>
 					{+END}

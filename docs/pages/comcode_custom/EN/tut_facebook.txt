@@ -19,29 +19,25 @@ Integration is done via configuring an app on Facebook; no actual app code needs
 [list="1"]
 [*] Go to [url="set up your app on Facebook"]https://developers.facebook.com/apps/[/url]
 [*] Click on right upper corner "Add a New App" button
-[*] Select "Website"
 [*] Type your site name
-[*] Click "Create New Facebook App ID"
-[*] Choose a Category
-[*] Click the button
-[*] Enter the "Site URL". It's crucial that you give Facebook the correct base URL to your site. It absolutely will not allow things to integrate if it does not match exactly. Make sure you have the same case (i.e. all lower case) and the same use or non-use of 'www.' in the domain name.
-[*] Scroll back up and click "Skip quickstart"
-[*] Note down your App ID and your App Secret
-[*] You will now also need to enter the following:
- - Settings
-  - your app domain name
-  - a contact email
- - App Details
-  - a short description
-  - a publisher name
-  - a category
-  - a privacy policy URL
-  - a 16x16 app icon
-  - a 1024x1024 app icon
-  - a user support email
+[*] Go into the setup of the new app
+[*] Go to the "Settings" section
+[*] Enter your domain name into the "Main App Domain" field
+[*] Enter your privacy page URL into the "Privacy policy URL" field (link to your website's privacy page)
+[*] Change the "Contact Email" field if no e-mail address is currently there, or if it is wrong
+[*] Click "Add Platform"
+[*] Choose "Website"
+[*] Enter your base URL into the "Site URL" field. It's crucial that you give Facebook the correct base URL to your site. It absolutely will not allow things to integrate if it does not match exactly. Make sure you have the same case (i.e. all lower case) and the same use or non-use of 'www.' in the domain name and same use of 'https' or 'http'.
+[*] Click "Save Changes"
+[*] Click "Add Product" in the left pane
+[*] Select "Facebook Login" (click "Get Started" next to it)
+[*] Enter your base URL into the "Valid OAuth redirect URIs" field. As with "Site URL" it is crucial that you get this right.
+[*] Click "Save Changes"
+[*] Go to the Dashboard section
+[*] Note down your "App ID" and your "App Secret"
 [/list]
 
-If you want to allow admin publishing to a Facebook page, go to App Review and enable (with explanations of why):
+If you want to allow admin publishing to a Facebook page, go to App Review and enable via "Add Items" (with explanations of why):
  - [tt]publish_pages[/tt]
  - [tt]manage_pages[/tt]
 Facebook will likely make you record a screencast of how exactly the system works, which is likely to take you around half a day of work once everything's said and done. Unfortunately it's not easy anymore.

@@ -249,6 +249,15 @@ class Hook_payment_gateway_paypal
         $member_address['zip'] = $post_code;
         $member_address['country'] = $country;
 
+        require_code('locations');
+        if (find_country_name_from_iso($member_address['country'])  === null) {
+            $member_address['country'] = ''; // PayPal only allows valid countries
+        }
+
+        if (($member_address['country'] != '') && (($member_address['address1'] == '') || ($member_address['city'] == '') || ($member_address['zip'] == ''))) {
+            $member_address['country'] = ''; // Causes error on PayPal due to it crashing when trying to validate the address
+        }
+
         return $member_address;
     }
 

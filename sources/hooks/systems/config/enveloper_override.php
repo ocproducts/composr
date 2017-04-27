@@ -34,7 +34,7 @@ class Hook_config_enveloper_override
             'human_name' => 'ENVELOPER_OVERRIDE',
             'type' => 'tick',
             'category' => 'SITE',
-            'group' => 'EMAIL',
+            'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_enveloper_override',
             'shared_hosting_restricted' => '1',
             'list_options' => '',

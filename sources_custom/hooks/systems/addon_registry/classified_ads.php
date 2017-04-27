@@ -88,15 +88,27 @@ class Hook_addon_registry_classified_ads
      */
     public function get_description()
     {
-        return 'Set up price scales for placing entries (\'adverts\') in catalogues.
+        return 'Set up price scales for placing entries (\'classified adverts\') in catalogues.
 
 The scales allow you to define discounts to customers buying longer listing periods. You can set up a free period if you wish to.
 
 Customers are given a control panel (the classifieds module) that shows their listings and allows renewal.
 
-E-mails are sent the day before an ad expires.
+Notifications are sent the day before an advert expires.
 
-Fully integrated with catalogues, eCommerce, and Conversr member accounts.';
+Fully integrated with catalogues, eCommerce, and Conversr member accounts.
+
+The basic process for setting up this addon is:
+1) Create a catalogue for the adverts (Content Management > Catalogues > Add Catalogue)
+2) Set the fields for the catalogue as appropriate
+3) Set the permissions to "Add/Post/Submit entries" (i.e. not unvetted, not bypassing validation)
+4) Add whatever categories you want to your catalogue
+5) Go to Admin Zone > Setup > Classifieds pricing
+6) Set prices up against your catalogue
+7) Make sure your catalogue is on your menus
+
+Users will find add links when browsing the catalogue. Their entries will be added as non-validated. From their classifieds module they may then pay for their classified advert to go live (this uses the eCommerce module, validating the entry upon payment).
+';
     }
 
     /**

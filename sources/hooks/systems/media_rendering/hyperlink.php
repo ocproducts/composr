@@ -143,7 +143,11 @@ class Hook_media_rendering_hyperlink
 
         $link_captions_title = $meta_details['t_title'];
         if ($link_captions_title == '') {
-            $link_captions_title = $_url_safe;
+            if (!empty($attributes['filename'])) {
+                $link_captions_title = $attributes['filename'];
+            } else {
+                $link_captions_title = $_url_safe;
+            }
         }
 
         require_code('comcode_renderer');

@@ -1564,6 +1564,7 @@ class Hook_addon_registry_cns_forum
                 $answers->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
                     'ID' => placeholder_random_id(),
                     'NUM_VOTES' => '10',
+                    'TOTAL_VOTES' => '45',
                     'WIDTH' => '30',
                     'ANSWER' => lorem_phrase(),
                     'I' => '0',
@@ -1571,6 +1572,7 @@ class Hook_addon_registry_cns_forum
                 $answers->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
                     'ID' => placeholder_random_id(),
                     'NUM_VOTES' => '15',
+                    'TOTAL_VOTES' => '45',
                     'WIDTH' => '45',
                     'ANSWER' => lorem_phrase(),
                     'I' => '1',
@@ -1578,6 +1580,7 @@ class Hook_addon_registry_cns_forum
                 $answers->attach(do_lorem_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
                     'ID' => placeholder_random_id(),
                     'NUM_VOTES' => '20',
+                    'TOTAL_VOTES' => '45',
                     'WIDTH' => '60',
                     'ANSWER' => lorem_phrase(),
                     'I' => '2',
@@ -1747,6 +1750,7 @@ class Hook_addon_registry_cns_forum
             'MAY_CHANGE_MAX' => lorem_word(),
             'LAST_POSTER' => placeholder_random_id(),
             'FORUM_ID' => placeholder_id(),
+            'TICKET_FORUM' => false,
         ));
 
         return array(

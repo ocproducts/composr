@@ -521,6 +521,7 @@ function do_search_block($map)
     $extrax = array();
     if (array_key_exists('limit_to', $map)) {
         $limit_to = array();
+        $map['limit_to'] = str_replace('|', ',', $map['limit_to']); // "|" looks cleaner in templates
         foreach (explode(',', $map['limit_to']) as $key) {
             $limit_to[] = 'search_' . $key;
             if (strpos($map['limit_to'], ',') !== false) {

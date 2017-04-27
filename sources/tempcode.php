@@ -532,10 +532,10 @@ function apply_tempcode_escaping($escaped, &$value)
     foreach ($escaped as $escape) {
         if ($escape === ENTITY_ESCAPED) {
             if ((!isset($ESCAPE_HTML_OUTPUT[$value])/*not already auto-escaped once*/) || (!function_exists('has_solemnly_declared')) || (has_solemnly_declared(I_UNDERSTAND_XSS)/*no auto-escape*/)) {
-                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+                $value = @htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
             }
         } elseif ($escape === FORCIBLY_ENTITY_ESCAPED) {
-            $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+            $value = @htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
         } elseif ($escape === SQ_ESCAPED) {
             $value = str_replace('&#039;', '\&#039;', str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value)));
         } elseif ($escape === DQ_ESCAPED) {
@@ -585,10 +585,10 @@ function apply_tempcode_escaping_inline($escaped, $value)
     foreach ($escaped as $escape) {
         if ($escape === ENTITY_ESCAPED) {
             if ((!isset($ESCAPE_HTML_OUTPUT[$value])/*not already auto-escaped once*/) || (!function_exists('has_solemnly_declared')) || (has_solemnly_declared(I_UNDERSTAND_XSS)/*no auto-escape*/)) {
-                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+                $value = @htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
             }
         } elseif ($escape === FORCIBLY_ENTITY_ESCAPED) {
-            $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+            $value = @htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
         } elseif ($escape === SQ_ESCAPED) {
             $value = str_replace('&#039;', '\&#039;', str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value)));
         } elseif ($escape === DQ_ESCAPED) {

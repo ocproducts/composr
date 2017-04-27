@@ -109,6 +109,7 @@ class Hook_addon_registry_core
     public function get_file_list()
     {
         return array(
+            'adminzone/pages/comcode/EN/_modsecurity.txt',
             'themes/default/images/icons/24x24/menu/_generic_admin/merge.png',
             'themes/default/images/icons/48x48/menu/_generic_admin/merge.png',
             'themes/default/images/icons/24x24/menu/rich_content.png',
@@ -647,6 +648,7 @@ class Hook_addon_registry_core
             'sources/selectcode.php',
             'sources/filtercode.php',
             'lang/EN/filtercode.ini',
+            'sources/mail_dkim.php',
             'sources/blocks/main_content_filtering.php',
             'sources/lang_stemmer_EN.php',
             'sources/lang_filter_EN.php',
@@ -1326,6 +1328,12 @@ class Hook_addon_registry_core
             'sources/incoming_uploads.php',
             'themes/default/images/uploader/cancelbutton.gif',
             'themes/default/images/uploader/index.html',
+            'themes/default/images/icons/24x24/links/facebook.png',
+            'themes/default/images/icons/24x24/links/twitter.png',
+            'themes/default/images/icons/48x48/links/facebook.png',
+            'themes/default/images/icons/48x48/links/twitter.png',
+            'uploads/repimages/index.html',
+            'uploads/repimages/.htaccess',
             'uploads/incoming/index.html',
             'uploads/incoming/.htaccess',
             'uploads/.htaccess',

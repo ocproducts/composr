@@ -130,7 +130,7 @@ For all changes, see the [url="git history"]http://github.com/ocproducts/composr
             <input type="checkbox" name="skip" id="skip" value="1" ' . $skip_check . ' /><label for="skip">Installer already compiled</label>
             <input type="checkbox" name="bleeding_edge" ' . (((strpos($release_description, 'patch release') === false) && (strpos($release_description, 'gold') === false)) ? 'checked="checked" ' : '') . 'id="bleeding_edge" value="1" /><label for="bleeding_edge">Bleeding-edge release</label>
             <input type="checkbox" name="old_tree" id="old_tree" value="1" /><label for="old_tree">Older-tree maintenance release</label>
-            <input type="checkbox" name="make_uni_upgrader" id="make_uni_upgrader" value="1" /><label for="make_uni_upgrader">Make uni-upgrader archive (for easy upgrader testing)</label>
+            <input type="checkbox" name="make_omni_upgrader" id="make_omni_upgrader" value="1" /><label for="make_omni_upgrader">Make omni-upgrader archive (for easy upgrader testing)</label>
             <p><input type="submit" class="buttons__proceed button_screen" value="Shake it baby" /></p>
         </fieldset>
     </form>
@@ -291,8 +291,10 @@ function phase_2()
 
         echo '
             <li><strong>Installatron</strong>: Go into <a target="_blank" href="http://installatron.com/editor">Installatron</a>, login with the privileged management account, and setup a new release with the new version number (Main tab), update the URL (Version Info tab, use "Installatron installer (direct download)") and scroll down and click "Save all changes", and Publish (Publisher tab).</li>
-            <li><strong>Microsoft Web Platform</strong>: <a target="_blank" href="https://webgallery.microsoft.com/portal">Submit the new MS Web App Gallery file to Microsoft</a> using the privileged management account (chris@compo.sr). Change the \'Version\', the \'Package Location URL\' (use "Microsoft installer (direct download)"), and set the shasum to <kbd>' . escape_html($ms_sha1) . '</kbd>. <strong>Wait a few days for this (note down the task); approval takes time and we want to make sure we are past any teething problems first</strong></li>
+            <li><strong>Microsoft Web Platform</strong>: <a target="_blank" href="https://webgallery.microsoft.com/portal">Submit the new MS Web App Gallery file to Microsoft</a> using the privileged management account (chris@compo.sr). Change the \'Version\', the \'Releae Date\', the \'Package Location URL\' (use "Microsoft installer (direct download)"), and set the shasum to <kbd>' . escape_html($ms_sha1) . '</kbd>. <strong>Wait a few days for this (note down the task); approval takes time and we want to make sure we are past any teething problems first</strong></li>
             <li><strong>Other integrations</strong>: E-mail <a href="mailto:?bcc=punit@softaculous.com,brijesh@softaculous.com&amp;subject=New Composr release&amp;body=Hi, this is an automated notification that a new release of Composr has been released - regards, the Composr team.">integration partners</a></li>
+            <li>Update <a target="_blank" href="http://www.hotscripts.com/profile/listings/edit/32832/">listing on Hotscripts</a></li>
+            <li>Update <a target="_blank" href="https://en.wikipedia.org/w/index.php?title=Composr_CMS&action=edit">listing on Wikipedia</a> ("latest release version" and "latest release date")</li>
         ';
     }
 
@@ -385,11 +387,12 @@ function phase_2()
                 <li>Add <a target="_blank" href="http://cmsreport.com/submit-story">news on CMS Report</a></li>
                 <li>Add <a target="_blank" href="http://cmscritic.com/">news on CMS Critic</a> (may mean emailing the story in)</li>
                 <li>Update <a target="_blank" href="http://www.cmsmatrix.org/">listing on CMS Matrix</a></li>
-                <li>Update <a target="_blank" href="http://www.hotscripts.com/listing/composr/">listing on Hotscripts</a></li>
                 <li>Add news on the <a target="_blank" href="http://members.opensourcecms.com/login.php">Open Source CMS site</a></li>
             </ul></li>
 
             <li>Newsletter (<em>Optional</em>): Send <a target="_blank" href="http://compo.sr/adminzone/admin-newsletter.htm">newsletter</a></li>
+
+            <li><a target="_blank" href="https://compo.sr/docs/sup-professional-upgrading.htm">Upgrade users</a></li>
         ';
     }
 

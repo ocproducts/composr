@@ -527,7 +527,7 @@ abstract class Hook_sitemap_base
                 }
             }
 
-            if ($row === null) { // Get from stored menus?
+            if ($row === null) { // Get from editable menus?
                 $test = $GLOBALS['SITE_DB']->query_select('menu_items', array('*'), array('i_url' => $zone . ':' . $page), '', 1);
                 if (array_key_exists(0, $test)) {
                     $title = get_translated_tempcode('menu_items', $test[0], 'i_caption');
@@ -1122,9 +1122,17 @@ function get_root_comcode_pages($zone, $include_zone = false)
 
     static $rows = array();
     if (!isset($rows[$zone])) {
-        $rows[$zone] = $GLOBALS['SITE_DB']->query('SELECT the_page,p_validated FROM ' . get_table_prefix() . 'comcode_pages WHERE ' . db_string_equal_to('the_zone', $zone) . ' AND ' . db_string_not_equal_to('p_parent_page', ''));
+        $rows[$zone] = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page', 'p_validated', 'p_parent_page'), array('the_zone' => $zone));
     }
-    $non_root = collapse_2d_complexity('the_page', 'p_validated', $rows[$zone]);
+    $non_root = array();
+    $root = array();
+    foreach ($rows[$zone] as $row) {
+        if ($row['p_parent_page'] == '') {
+            $root[$row['the_page']] = $row['p_validated'];
+        } else {
+            $non_root[$row['the_page']] = $row['p_validated'];
+        }
+    }
 
     $pages = find_all_pages_wrap($zone, false, /*$consider_redirects = */true, /*$show_method = */0, /*$page_type = */'comcode');
     foreach ($pages as $page => $page_type) {
@@ -1133,19 +1141,21 @@ function get_root_comcode_pages($zone, $include_zone = false)
         }
     }
 
-    if ($include_zone) {
-        $page_links = array();
-        foreach ($pages as $page => $page_type) {
-            if (is_integer($page)) {
-                $page = strval($page);
-            }
-
-            $page_links[$zone . ':' . $page] = $page_type;
+    $page_links = array();
+    foreach ($pages as $page => $page_type) {
+        if (is_integer($page)) {
+            $page = strval($page);
         }
-        return $page_links;
-    }
 
-    return $pages;
+        if ($include_zone) {
+            $key = $zone . ':' . $page;
+        } else {
+            $key = $page;
+        }
+
+        $page_links[$key] = isset($root[$page]) ? $root[$page] : 1;
+    }
+    return $page_links;
 }
 
 /**

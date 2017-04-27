@@ -53,7 +53,8 @@ class Hook_media_rendering_quicktime extends Media_renderer_with_fallback
     public function recognises_mime_type($mime_type)
     {
         if ($mime_type == 'video/quicktime') {
-            return MEDIA_RECOG_PRECEDENCE_HIGH;
+            //return MEDIA_RECOG_PRECEDENCE_HIGH;   Chrome and Firefox have dropped NPAPI support
+            return MEDIA_RECOG_PRECEDENCE_TRIVIAL;
         }
         return MEDIA_RECOG_PRECEDENCE_NONE;
     }

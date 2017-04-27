@@ -155,7 +155,6 @@ class Hook_addon_registry_shopping
             'themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl',
             'themes/default/templates/RESULTS_cart_TABLE.tpl',
-            'themes/default/templates/RESULTS_TABLE_cart_ENTRY.tpl',
             'themes/default/templates/RESULTS_TABLE_cart_FIELD.tpl',
             'sources/hooks/systems/symbols/STOCK_CHECK.php',
             'sources/hooks/systems/symbols/CART_LINK.php',
@@ -180,7 +179,6 @@ class Hook_addon_registry_shopping
             'templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl' => 'ecom_cart_button_via_paypal',
             'templates/ECOM_SHOPPING_CART_SCREEN.tpl' => 'shopping_cart_screen',
             'templates/RESULTS_cart_TABLE.tpl' => 'shopping_cart_screen',
-            'templates/RESULTS_TABLE_cart_ENTRY.tpl' => 'shopping_cart_screen',
             'templates/RESULTS_TABLE_cart_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_CART_LINK.tpl' => 'ecom_cart_link_screen',
             'templates/CATALOGUE_products_CATEGORY_EMBED.tpl' => 'grid_category_screen__products',
@@ -623,7 +621,7 @@ class Hook_addon_registry_shopping
                     'CLASS' => '',
                 )));
             }
-            $shopping_cart->attach(do_lorem_template('RESULTS_TABLE_cart_ENTRY', array(
+            $shopping_cart->attach(do_lorem_template('RESULTS_TABLE_ENTRY', array(
                 'VALUES' => $cells,
             )));
         }

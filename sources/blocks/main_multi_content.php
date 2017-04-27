@@ -225,7 +225,7 @@ class Block_main_multi_content
 
         // Actually for categories we check access on category ID
         if ($info['is_category'] && $category_type_access !== null) {
-            $category_field_access = $info['id_field'];
+            $category_field_access = $first_id_field;
         }
 
         $where = '1=1';
@@ -299,7 +299,7 @@ class Block_main_multi_content
 
         if ($days !== null && $info['date_field'] !== null) {
             $where .= ' AND ';
-            $where .= $info['date_field'] . '>=' . strval(time() - 60 * 60 * 24 * $days);
+            $where .= 'r.' . $info['date_field'] . '>=' . strval(time() - 60 * 60 * 24 * $days);
         }
 
         if (is_array($info['id_field'])) {
@@ -307,7 +307,7 @@ class Block_main_multi_content
         }
         if ($lifetime !== null) {
             $block_cache_id = md5(serialize($map));
-            $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . 'feature_lifetime_monitor m ON m.content_id=r.' . $info['id_field'] . ' AND ' . db_string_equal_to('m.block_cache_id', $block_cache_id);
+            $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . 'feature_lifetime_monitor m ON m.content_id=r.' . $first_id_field . ' AND ' . db_string_equal_to('m.block_cache_id', $block_cache_id);
             $where .= ' AND ';
             $where .= '(m.run_period IS NULL OR m.run_period<' . strval($lifetime * 60 * 60 * 24) . ')';
         }
@@ -327,6 +327,9 @@ class Block_main_multi_content
 
         // Filtercode support
         if ($filter != '') {
+            global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+            $BLOCK_OCPRODUCTS_ERROR_EMAILS = true;
+
             // Convert the filters to SQL
             require_code('filtercode');
             list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($info['connection'], parse_filtercode($filter), $content_type);
@@ -723,7 +726,7 @@ class Block_main_multi_content
     public function build_select($select, $info, $category_field_select)
     {
         $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : $info['table'];
-        $parent_field_name = $info['is_category'] ? $info['id_field'] : $category_field_select;
+        $parent_field_name = $info['is_category'] ? (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']) : $category_field_select;
         if ($parent_field_name === null) {
             $parent_spec__table_name = null;
         }
@@ -734,7 +737,7 @@ class Block_main_multi_content
 
         require_code('selectcode');
 
-        $sql = selectcode_to_sqlfragment($select, 'r.' . $info['id_field'], $parent_spec__table_name, $parent_spec__parent_name, 'r.' . $parent_field_name, $parent_spec__field_name, $id_field_numeric, !$category_is_string);
+        $sql = selectcode_to_sqlfragment($select, 'r.' . (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']), $parent_spec__table_name, $parent_spec__parent_name, 'r.' . $parent_field_name, $parent_spec__field_name, $id_field_numeric, !$category_is_string);
         return $sql;
     }
 }

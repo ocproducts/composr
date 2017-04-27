@@ -605,13 +605,15 @@ function generate_filtercode_join_key_from_string($str)
  */
 function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
+    $first_id_field = (is_array($info['id_field']) ? implode(',', $info['id_field']) : $info['id_field']);
+
     // Special case for ratings
     $matches = array('', $info['feedback_type_code']);
     if (($filter_key == 'compound_rating') || (preg_match('#^compound_rating\_\_(.+)#', $filter_key, $matches) != 0)) {
         if ($filter_key == 'compound_rating') {
             $matches[1] .= '__' . $catalogue_name;
         }
-        $clause = '(SELECT SUM(rating-1) FROM ' . $db->get_table_prefix() . 'rating rat WHERE ' . db_string_equal_to('rat.rating_for_type', $matches[1]) . ' AND rat.rating_for_id=' . $table_join_code . '.id)';
+        $clause = '(SELECT SUM(rating-1) FROM ' . $db->get_table_prefix() . 'rating rat WHERE ' . db_string_equal_to('rat.rating_for_type', $matches[1]) . ' AND rat.rating_for_id=' . $table_join_code . '.' . $first_id_field . ')';
         $extra_select[$filter_key] = ', ' . $clause . ' AS compound_rating_' . fix_id($matches[1]);
         return array($clause, '', $filter_val);
     }
@@ -620,7 +622,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         if ($filter_key == 'average_rating') {
             $matches[1] .= '__' . $catalogue_name;
         }
-        $clause = '(SELECT AVG(rating)/2 FROM ' . $db->get_table_prefix() . 'rating rat WHERE ' . db_string_equal_to('rat.rating_for_type', $matches[1]) . ' AND rat.rating_for_id=' . $table_join_code . '.id)';
+        $clause = '(SELECT AVG(rating)/2 FROM ' . $db->get_table_prefix() . 'rating rat WHERE ' . db_string_equal_to('rat.rating_for_type', $matches[1]) . ' AND rat.rating_for_id=' . $table_join_code . '.' . $first_id_field . ')';
         $extra_select[$filter_key] = ', ' . $clause . ' AS average_rating_' . fix_id($matches[1]);
         return array($clause, '', $filter_val);
     }
@@ -631,7 +633,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         if ($filter_key == 'fixed_random') {
             $matches[1] .= '__' . $catalogue_name;
         }
-        $clause = '(MOD(CAST(r.' . $info['id_field'] . ' AS SIGNED),' . date('d') . '))';
+        $clause = '(MOD(CAST(r.' . $first_id_field . ' AS SIGNED),' . date('d') . '))';
         $extra_select[$filter_key] = ', ' . $clause . ' AS fixed_random_' . fix_id($matches[1]);
         return array($clause, '', $filter_val);
     }
@@ -639,7 +641,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
     // Special case for SEO fields
     if ($filter_key == 'meta_description') {
         $seo_type_code = isset($info['seo_type_code']) ? $info['seo_type_code'] : '!!!ERROR!!!';
-        $join = ' LEFT JOIN ' . $db->get_table_prefix() . 'seo_meta sm ON sm.meta_for_id=' . $table_join_code . '.id AND ' . db_string_equal_to('sm.meta_for_type', $seo_type_code);
+        $join = ' LEFT JOIN ' . $db->get_table_prefix() . 'seo_meta sm ON sm.meta_for_id=' . $table_join_code . '.' . $first_id_field . ' AND ' . db_string_equal_to('sm.meta_for_type', $seo_type_code);
         if (!in_array($join, $extra_join)) {
             $extra_join[$filter_key] = $join;
         }
@@ -648,9 +650,9 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
     if ($filter_key == 'meta_keywords') {
         $seo_type_code = isset($info['seo_type_code']) ? $info['seo_type_code'] : '!!!ERROR!!!';
         if (multi_lang_content()) {
-            $clause = '(SELECT GROUP_CONCAT(text_original) FROM ' . $db->get_table_prefix() . 'seo_meta_keywords kw JOIN ' . $db->get_table_prefix() . 'translate kwt ON kwt.id=kw.meta_keyword WHERE kw.meta_for_id=' . $table_join_code . '.id AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code) . ')';
+            $clause = '(SELECT GROUP_CONCAT(text_original) FROM ' . $db->get_table_prefix() . 'seo_meta_keywords kw JOIN ' . $db->get_table_prefix() . 'translate kwt ON kwt.id=kw.meta_keyword WHERE kw.meta_for_id=' . $table_join_code . '.' . $first_id_field . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code) . ')';
         } else {
-            $clause = '(SELECT GROUP_CONCAT(meta_keyword) FROM ' . $db->get_table_prefix() . 'seo_meta_keywords kw WHERE kw.meta_for_id=' . $table_join_code . '.id AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code) . ')';
+            $clause = '(SELECT GROUP_CONCAT(meta_keyword) FROM ' . $db->get_table_prefix() . 'seo_meta_keywords kw WHERE kw.meta_for_id=' . $table_join_code . '.' . $first_id_field . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code) . ')';
         }
         $extra_select[$filter_key] = ', ' . $clause . ' AS meta_keyword_' . fix_id($seo_type_code);
         return array($clause, '', $filter_val);

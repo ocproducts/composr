@@ -89,6 +89,10 @@ function rebuild_sitemap_set($set_number, $last_time)
             continue;
         }
 
+        if (substr($attributes['page'], 0, 1) == '_') {
+            continue;
+        }
+
         $add_date = $node['add_date'];
         $edit_date = $node['edit_date'];
         $priority = $node['priority'];

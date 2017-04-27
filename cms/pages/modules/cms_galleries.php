@@ -2225,8 +2225,8 @@ class Module_cms_galleries_cat extends Standard_crud_module
             $hidden->attach(form_input_hidden('accept_videos', '1'));
         }
         $gallery_mode_is = get_option('gallery_mode_is');
-        if (($name != '') && ($flow_mode_interface != (($gallery_mode_is == 'flow') ? 1 : 0))) {
-            $gallery_mode_is = 'choice'; // Continue current
+        if (($name != '') && ($gallery_mode_is != 'choice') && ($flow_mode_interface != (($gallery_mode_is == 'flow') ? 1 : 0))) {
+            $gallery_mode_is = 'choice'; // Continue current but allow a choice to change
         }
         if ($gallery_mode_is != 'choice') {
             $hidden->attach(form_input_hidden('flow_mode_interface', ($gallery_mode_is == 'flow') ? '1' : '0'));

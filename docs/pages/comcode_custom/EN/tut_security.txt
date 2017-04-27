@@ -367,7 +367,7 @@ Assuming you have already installed the SSL certificate on the server, you can s
 Go to the Admin Zone > Security > SSL/TLS (HTTPS) configuration, and tick (check) the boxes for the following pages... [tt]:join[/tt], [tt]:login[/tt], [tt]site:purchase[/tt], [tt]site:shopping[/tt], [tt]site:members[/tt]. (These are the pages that purchases or passwords happen on -- but you can enable for other pages too if you like)
 (this assumes that you have the [tt]ssl[/tt] addon installed)
 
-If you are not able to use SSL, don't think that your site is very insecure: it probably is possible for a hacker to gather the password during transit, but it would not be easy. Sometimes when we consider computer security we lose sight of the insecurities we face every day: it is possible a death cult could take over your office for a week while fighting off the military with heavy rocket propelled grenades: likelihoods need to be kept within proportion. This said, if you have very sensitive information, or run an e-commerce site, SSL is essential, as the stakes are high enough for criminal interest to be stimulated. There may also be concerns with government surveillance.
+If you are not able to use SSL, don't think that your site is very insecure: it probably is possible for a hacker to gather the password during transit, but it would not be easy. Sometimes when we consider computer security we lose sight of the insecurities we face every day: it is possible a death cult could take over your office for a week while fighting off the military with heavy rocket propelled grenades: likelihoods need to be kept within proportion. This said, if you have very sensitive information, or run an eCommerce site, SSL is essential, as the stakes are high enough for criminal interest to be stimulated. There may also be concerns with government surveillance.
 
 Note that a page viewed under HTTPS must use HTTPS for all images and other embedded files. The banner will be disabled on any page set to use HTTPS via the [tt]ssl[/tt] addon to make sure this requirement is enforced (if your whole base URL is https then banners will display and it is up to the webmaster to make sure they are HTTPS-compliant). The reason for this is that users should not get mixed environment messages that warn them about potential security problems, or in some browsers lock out the whole page. Template makers and coders should be careful to use the proper Composr mechanisms for referencing resources.
 
@@ -380,9 +380,18 @@ You can set HTTPS for a whole site via changing the base URL. In this situation 
 If you are on Apache then you can add this to your [tt].htaccess[/tt] file:
 [code="htaccess"]
 RewriteEngine on
+
 RewriteCond %{HTTPS} off
 RewriteCond %{REQUEST_METHOD} !POST
-RewriteRule ^(.*\.php.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+RewriteRule ^$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteRule ^.*\.(php|htm).*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteRule ^.*/pg/.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
 [/code]
 
 [title="3"]Secured zones[/title]

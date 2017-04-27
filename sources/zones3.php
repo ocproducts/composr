@@ -608,6 +608,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
  * @param  ID_TEXT $zone The zone
  * @param  ID_TEXT $page The page
  * @param  ?ID_TEXT $type The page type (null: Comcode page in Composr's fallback language) [NB: page is deleted in all languages regardless of which is given]
+ * @set modules modules_custom minimodules minimodules_custom comcode comcode_custom html html_custom
  * @param  boolean $use_afm Whether to use the AFM
  */
 function delete_cms_page($zone, $page, $type = null, $use_afm = false)

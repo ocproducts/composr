@@ -67,7 +67,7 @@ entry	item	content	resource	submission	sku
 category	node	section	repository	collection
 directory	folder
 catalogue	database	classified	catalog	directory	schema	field
-speed	slow	fast	optimisation	performance	efficiency
+speed	slow	fast	optimisation	performance	efficiency	latency
 panel	sidebar	frame	bar	column
 usergroup	group	promote	rank	badge
 member	user	contact	person
@@ -77,7 +77,7 @@ intl	internationalisation	regionalisation	i18n	l10n	localisation	translation
 permission	privilege	authorisation	authorization	right	access	grant	restrict	prohibite	credentials
 access	view
 overlay	popup	dialog	window
-option	setting	value	parameter	property	attribute
+option	setting	value	parameter	property	attribute	preference
 configure	configuration	setup	install	core_configuration
 emoticon	smiley	smile	face	emoji
 forum	board	bbs	cns_forum	message board

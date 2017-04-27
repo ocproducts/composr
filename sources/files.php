@@ -92,7 +92,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
     if (php_function_allowed('disk_free_space')) {
         $num_bytes_to_write = $num_bytes_to_save;
         if (is_file($path)) {
-            $num_bytes_to_write -= filesize($path);
+            $num_bytes_to_write -= @filesize($path); /* @ is for race condition */
         }
         static $disk_space = null;
         if ($disk_space === null) {

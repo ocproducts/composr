@@ -55,7 +55,7 @@ class Module_admin_disastr extends Standard_crud_module
         $GLOBALS['SITE_DB']->drop_table_if_exists('members_diseases');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base() . '/uploads/diseases_addon', true);
+        //deldir_contents(get_custom_file_base() . '/uploads/disastr_addon', true);
     }
 
     /**
@@ -323,7 +323,7 @@ class Module_admin_disastr extends Standard_crud_module
         $enabled = post_param_integer('enabled', 0);
 
         require_code('themes2');
-        $url = post_param_image('image', 'uploads/diseases_addon', null, true);
+        $url = post_param_image('image', 'uploads/disastr_addon', null, true);
 
         $id = $GLOBALS['SITE_DB']->query_insert('diseases', array('name' => $name, 'image' => $url, 'cure' => $cure, 'cure_price' => $cure_price, 'immunisation' => $immunisation, 'immunisation_price' => $immunisation_price, 'spread_rate' => $spread_rate, 'points_per_spread' => $points_per_spread, 'last_spread_time' => 0, 'enabled' => $enabled), true);
 
@@ -349,10 +349,10 @@ class Module_admin_disastr extends Standard_crud_module
         $enabled = post_param_integer('enabled', 0);
 
         require_code('themes2');
-        $url = post_param_image('image', 'uploads/diseases_addon', null, true, true);
+        $url = post_param_image('image', 'uploads/disastr_addon', null, true, true);
 
         require_code('files2');
-        delete_upload('uploads/diseases_addon', 'diseases', 'image', 'id', $id, $url);
+        delete_upload('uploads/disastr_addon', 'diseases', 'image', 'id', $id, $url);
 
         $map = array('name' => $name, 'cure' => $cure, 'cure_price' => $cure_price, 'immunisation' => $immunisation, 'immunisation_price' => $immunisation_price, 'spread_rate' => $spread_rate, 'points_per_spread' => $points_per_spread, 'enabled' => $enabled);
         if ($url !== null) {
@@ -373,7 +373,7 @@ class Module_admin_disastr extends Standard_crud_module
         $id = intval($_id);
 
         require_code('files2');
-        delete_upload('uploads/diseases_addon', 'diseases', 'image', 'id', $id);
+        delete_upload('uploads/disastr_addon', 'diseases', 'image', 'id', $id);
 
         $GLOBALS['SITE_DB']->query_delete('diseases', array('id' => $id), '', 1);
     }

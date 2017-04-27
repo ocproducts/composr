@@ -18,6 +18,10 @@
  * @package    core
  */
 
+/*
+REMEMBER to keep db_export.sh updated too
+*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -111,7 +115,7 @@ function get_table_purpose_flags()
         'db_meta' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
         'db_meta_indices' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
         'digestives_consumed' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
-        'digestives_tin' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
+        'digestives_tin' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
         'download_categories' => TABLE_PURPOSE__NORMAL,
         'download_downloads' => TABLE_PURPOSE__NORMAL,
         'download_licences' => TABLE_PURPOSE__NORMAL,

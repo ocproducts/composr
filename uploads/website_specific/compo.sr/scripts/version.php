@@ -17,6 +17,9 @@
 // Example test URL:
 //  http://localhost/composr/uploads/website_specific/compo.sr/scripts/version.php?version=13.0.0&test_mode=1&html=1
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = realpath(__FILE__);
@@ -184,7 +187,7 @@ function display_version_upgrade_path($higher_version)
     // Output upgrader link
     $upgrade_script = 'upgrader.php';
     if (isset($higher_version['news_id'])) {
-        $upgrade_script .= '?news_id=' . strval($higher_version['news_id']);
+        $upgrade_script .= '?news_id=' . strval($higher_version['news_id']) . '&from_version=' . urlencode($version_dotted);
     }
     echo "
         <span class=\"version_button\" id=\"link_pos_" . strval($i) . "\"></span>

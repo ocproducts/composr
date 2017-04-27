@@ -68,7 +68,7 @@ If you scroll down, you will see a link called 'map'. Click on it and a map will
  - The Red lines represent a locked direction, meaning you can't create a room at that location until someone unlocks it (if they ever want too...). Example: If to the right is locked, you can't make a room to the right. To completely lock a direction off, you must lock the direction in every surrounding room there are any surrounding rooms. This will prevent people on the if outside from being trapped inside the room... This is why you shouldn't lock off all of the directions.
 
 [html]<div style="margin-left: 30px">[/html]If you take a look at...
-[url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.png"][img="Example image" width="544" height="433"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.png[/img][/url]
+[url="{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.0.png"][img="Example image" width="544" height="433"]{$BASE_URL}/data_custom/modules/buildr/docs/basics2.3.0.png[/img][/url]
 you will see the room is the only one locked on all sides.
 This means that people can come in but not come out. This is 'bad'.
 

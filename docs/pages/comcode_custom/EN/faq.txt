@@ -365,6 +365,13 @@ This can be very difficult to debug, but is unlikely to be the fault of Composr.
 
 If your sessions timeout in less than the time configured in the "Session expiry-time" option then a faulty MySQL installation could be the cause. A workaround is to manually edit the [tt]cms_sessions[/tt] table to have a table type of [tt]MyISAM[/tt]. The default is type [tt]MEMORY[/tt] (for performance reasons), but if MySQL keeps resetting itself this won't hold properly.
 
+[title="3"]Why do large uploads fail on IIS?[/title]
+
+If you are using PHP as FastCGI check out these settings...
+IIS Manage > Host Computer > FastCGI Settings > php-cgi.exe > Edit > Activity Timeout
+IIS Manage > Host Computer > FastCGI Settings > php-cgi.exe > Edit > Request Timeout
+IIS Manage > Host Computer > FastCGI Settings > php-cgi.exe>  Edit > Idle Timeout
+
 [title="2"]Common usage queries[/title]
 
 [title="3"]What are catalogues?[/title]

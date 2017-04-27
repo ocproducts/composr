@@ -112,6 +112,48 @@ If you find the CSS totally "corrupts", it is likely you have made a typo somewh
 You can't effectively check the Composr CSS because it has lots of Tempcode in it. Additionally, the normal outputted CSS is minified, so hard to read and relate to.
 Fortunately there is a solution. If you go to [tt]http://yourbaseurl/index.php?keep_no_minify=1[/tt] then the CSS will not be minified. You may then look at your HTML source, locate the URL to your CSS, and then pass this onto a regular [url="http://jigsaw.w3.org/css-validator/"]CSS validator[/url].
 
+[title="4"]Equations[/title]
+
+Some CSS files have [tt]{$THEME_WIZARD_COLOR,#RRGGBB,name,equation}[/tt] lines near the top.
+
+When the Theme Wizard runs the first parameter (the colour) of the [tt]THEME_WIZARD_COLOR[/tt] line is regenerated from the third parameter (the equation) by running through the calculation logic of the Theme Wizard.
+
+For example,
+[code="Tempcode"]
+{$THEME_WIZARD_COLOR,#426aa9,box_title_background,100% seed}
+[/code]
+... may become:
+[code="Tempcode"]
+{$THEME_WIZARD_COLOR,#ff0000,box_title_background,100% seed}
+[/code]
+(this would happen if the seed colour used in the Theme Wizard was [tt]#ff0000[/tt])
+
+This is all happening only when the Theme Wizard is run.
+
+There is a special case for these particular equations in [tt]global.css[/tt] only:
+[code="Tempcode"]
+{$THEME_WIZARD_COLOR,#94979d,seed,100% 426aa9}
+{$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}
+{$THEME_WIZARD_COLOR,#000000,BW,100% 000000}
+[/code]
+The Theme Wizard actually totally replaces these equations based on the seed, and whether light or dark was specified for the theme. It is these equations that sit at the root of the Theme Wizard calculation (because they don't depend on any other equations, they are defined directly by colour). The Theme Wizard is essentially an algebra solver using colour theory (a branch of applied mathematics). It keeps working at solving the equations, using the ones from [tt]global.css[/tt] as a base, until it concludes.
+
+When the CSS file is compiled, it works as a simple variable system. The second parameter serves as the variable name, which can then be referenced in the CSS as [tt]{$GET,name}[/tt]. It's a very straight-forward substitution system.
+
+You can if you wish just bypass the Theme Wizard equations system and directly enter your own CSS colour codes in place or in addition to what the Theme Wizard is doing. You are in no way tied into the mechanism of the Theme Wizard once you begin editing your own theme. That said, it can be useful to help you keep your colour palette consistent.
+
+[title="4"]CSS prefixing[/title]
+
+Some browsers experiment with new CSS properties using prefixes. More details are explained here: https://www.thoughtco.com/css-vendor-prefixes-3466867.
+
+In Composr we use [tt]{$BETA_CSS_PROPERTY,property: value;}[/tt] to automatically adding prefixing to a property, or make other changes to make a property work across different web browsers.
+
+Of course doing this risks relying on browser CSS behaviour that may be buggy or subject to change. By passing it through [tt]BETA_CSS_PROPERTY[/tt] in a consistent way we can actually change the output across Composr patch releases, if browsers change their syntax -- so it's a nice little solution we have here.
+
+[title="4"]Other notes about CSS conventions[/title]
+
+Some additional comments are made available at the top of [tt]global.css[/tt]. Mainly, our support for rtl languages and our use of em units.
+
 [title="3"]Revision history[/title]
 
 If you have made any edits to your file's CSS, they will show up in a list underneath the CSS. You'll see the dates they were made, who edited them, and a link to restore it if you choose.
@@ -292,6 +334,10 @@ You can delete a theme from the bottom of its edit form.
 14) If you get stuck or make a mistake, don't feel bad -- this happens to the best developers too
 
 Many more tips and points of guidance are included in the [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design tutorial[/page].
+
+[title="2"]Copying themes[/title]
+
+You may copy themes between sites, or duplicate them, but make sure you empty the template cache before using a copied theme. The cache files hard-code file paths, URL paths, and the theme name.
 
 [concepts
  1_key="Theme"      1_value="Your theme is the sum of your CSS, images, and templates, which work together to create the style and layout for your site."

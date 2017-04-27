@@ -273,7 +273,9 @@ class Module_admin_stats
      */
     public function run()
     {
-        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'stats WHERE date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('stats_store_time'))));
+        if (!$GLOBALS['SITE_DB']->table_is_locked('stats')) {
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'stats WHERE date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('stats_store_time'))), 500/*to reduce lock times*/);
+        }
 
         require_code('svg');
         require_css('stats');

@@ -254,7 +254,7 @@ The Sitemap generally reflects the actual structure of your website, and works r
 
 Zones are the first level and operate as different top-level security contexts, and potentially have different panels, a different theme, and different navigations.
 
-Page groups are hard-coded with what we consider a sensible way to organisation for the different pages on the site. We do expect advanced users will not use the Sitemap directly in menus, so the hard-coding should not be a problem, just a tidy structure to start from. When you want to take full control of menus you can choose to copy the defaults into a new stored menu, and start manipulating it.
+Page groups are hard-coded with what we consider a sensible way to organisation for the different pages on the site. We do expect advanced users will not use the Sitemap directly in menus, so the hard-coding should not be a problem, just a tidy structure to start from. When you want to take full control of menus you can choose to copy the defaults into a new editable menu, and start manipulating it.
 
 Composr supports 'redirects' which let you have pages within multiple zones. This will reflect on the Sitemap.
 

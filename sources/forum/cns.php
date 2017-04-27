@@ -145,7 +145,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     protected function _install_delete_custom_field($name)
     {
-        $id = $this->connection->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $name));
+        $id = $this->connection->query_select_value_if_there('f_custom_fields', 'id', array($this->connection->translate_field_ref('cf_name') => 'cms_' . $name));
         if (!is_null($id)) {
             require_code('cns_members_action2');
             cns_delete_custom_field($id);
@@ -419,10 +419,10 @@ class Forum_driver_cns extends Forum_driver_base
         require_code('cns_members_action');
         require_code('cns_members_action2');
 
-        $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $field));
+        $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($this->connection->translate_field_ref('cf_name') => 'cms_' . $field));
         if (!array_key_exists(0, $field_bits)) { // Should never happen, but sometimes on upgrades/corruption...
             $this->install_create_custom_field($field, 10);
-            $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $field));
+            $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($this->connection->translate_field_ref('cf_name') => 'cms_' . $field));
             if (!array_key_exists(0, $field_bits)) {
                 return; // Possible on an MSN, and there's an inconsistency (e.g. no points addon)
             }

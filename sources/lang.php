@@ -486,7 +486,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
     }
 
     if ($PAGE_CACHE_LAZY_LOAD) {
-        $support_smart_decaching = support_smart_decaching();
+        $support_smart_decaching = support_smart_decaching(true);
         if ($support_smart_decaching) {
             $cache_path = $cfb . '/caches/lang/' . $lang . '/' . $codename . '.lcd';
             $lang_file_default = $fb . '/lang/' . $lang . '/' . $codename . '.ini';
@@ -611,7 +611,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
  */
 function require_all_lang($lang = null, $only_if_for_lang = false)
 {
-    $support_smart_decaching = support_smart_decaching();
+    $support_smart_decaching = support_smart_decaching(true);
 
     if (is_null($lang)) {
         $lang = user_lang();

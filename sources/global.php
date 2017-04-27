@@ -626,7 +626,10 @@ if (count($SITE_INFO) == 0) {
     if ((!is_file($FILE_BASE . '/_config.php')) && (is_file($FILE_BASE . '/info.php'))) {
         @copy($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
         if (is_file($FILE_BASE . '/_config.php')) {
-            file_put_contents($FILE_BASE . '/_config.php', str_replace(array('ocf_table_prefix', 'use_mem_cache'), array('cns_table_prefix', 'use_persistent_cache'), file_get_contents($FILE_BASE . '/_config.php')), LOCK_EX);
+            $new_config_file = file_get_contents($FILE_BASE . '/_config.php');
+            $new_config_file = str_replace(array('ocf_table_prefix', 'use_mem_cache', 'ocp_member_id', 'ocp_member_hash', 'ocf', 'admin_password'), array('cns_table_prefix', 'use_persistent_cache', 'cms_member_id', 'cms_member_hash', 'cns', 'master_password'), $new_config_file);
+            $new_config_file = str_replace(']=\'', '] = \'', $new_config_file); // Clean up formatting to new convention
+            file_put_contents($FILE_BASE . '/_config.php', $new_config_file, LOCK_EX);
         } else {
             exit('Error, cannot rename info.php to _config.php: check the Composr upgrade instructions');
         }

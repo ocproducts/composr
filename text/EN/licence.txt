@@ -136,6 +136,7 @@ This product includes:
   - jsmin (MIT licence)
   - cssmin (MIT licence)
   - JSON decoder (BSD licence)
+  - php-mail-signature (LGPL licence)
  - Frontend code used under licence:
   - jQuery (MIT licence)
   - jQuery-UI (MIT licence)

@@ -193,11 +193,13 @@ function get_allowed_partner_sites()
             $allowed_partners[] = $_val[0];
         }
     }
-    if (function_exists('get_option')) { // If bootstrapping has gone far enough
-        $allowed_partners[] = parse_url(get_base_url(), PHP_URL_HOST);
-        if (get_custom_base_url() != get_base_url()) {
-            $allowed_partners[] = parse_url(get_custom_base_url(), PHP_URL_HOST);
-        }
+    $allowed_partners[] = parse_url(get_base_url(false), PHP_URL_HOST);
+    if (get_custom_base_url(false) != get_base_url(false)) {
+        $allowed_partners[] = parse_url(get_custom_base_url(false), PHP_URL_HOST);
+    }
+    $allowed_partners[] = parse_url(get_base_url(true), PHP_URL_HOST);
+    if (get_custom_base_url(true) != get_base_url(true)) {
+        $allowed_partners[] = parse_url(get_custom_base_url(true), PHP_URL_HOST);
     }
     return $allowed_partners;
 }

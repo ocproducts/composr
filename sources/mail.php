@@ -18,6 +18,8 @@
  * @package    core
  */
 
+/*EXTRA FUNCTIONS: DKIMSignature*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -632,11 +634,11 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     if (!$coming_out_of_queue) {
         if ((mt_rand(0, 100) == 1) && (!$GLOBALS['SITE_DB']->table_is_locked('logged_mail_messages'))) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0'); // Log it all for 2 weeks, then delete
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0', 500/*to reduce lock times*/); // Log it all for 2 weeks, then delete
         }
 
         $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
-        if (!is_null($attachments)) {
+        if (!empty($attachments)) {
             foreach (array_keys($attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
                     $through_queue = false;
@@ -740,10 +742,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // ... So get theme of welcome zone
     }
 
-    // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail/postfix-masquerading-as-sendmail not supporting the correct \r\n
+    // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail not supporting the correct \r\n
     /*
     $sendmail_path = ini_get('sendmail_path');
-    if ((strpos($sendmail_path, 'qmail') !== false) || (strpos($sendmail_path, 'sendmail') !== false)) {
+    if (strpos($sendmail_path, 'qmail') !== false) {
         $line_term = "\n";
     } else {
         $line_term = "\r\n";
@@ -756,6 +758,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $line_term = "\r";*/
     } else {
         $line_term = "\n";
+    }
+
+    // DKIM prep
+    $dkim_private_key = get_option('dkim_private_key');
+    $signed_headers = ''; // Will be filled later, potentially
+    if (trim($dkim_private_key) != '') {
+        require_code('mail_dkim');
     }
 
     // We use the boundary to seperate message parts
@@ -837,7 +846,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $_css = $css->evaluate($lang);
             if (!GOOGLE_APPENGINE) {
                 if (get_option('allow_ext_images') != '1') {
-                    $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+                    $_css = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
                 }
             }
             $html_evaluated = $message_html->evaluate($lang);
@@ -912,19 +921,23 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $brand_name = 'Composr';
     }
     $headers .= 'X-Mailer: ' . $brand_name . $line_term;
+    $list_unsubscribe_target = get_value('list_unsubscribe_target');
+    if (!empty($list_unsubscribe_target)) {
+        $headers .= 'List-Unsubscribe: <' . $list_unsubscribe_target . '>' . $line_term;
+    }
     if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
         $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
         $headers .= 'Require-Recipient-Valid-Since: ' . $to_email[0] . '; ' . $_require_recipient_valid_since . $line_term;
     }
     $headers .= 'MIME-Version: 1.0' . $line_term;
-    if ((!is_null($attachments)) || (!$simplify_when_can)) {
+    if ((!empty($attachments)) || (!$simplify_when_can)) {
         $headers .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"';
     } else {
         $headers .= 'Content-Type: multipart/alternative; boundary="' . $boundary2 . '"';
     }
     $sending_message = '';
     $sending_message .= 'This is a multi-part message in MIME format.' . $line_term . $line_term;
-    if ((!is_null($attachments)) || (!$simplify_when_can)) {
+    if ((!empty($attachments)) || (!$simplify_when_can)) {
         $sending_message .= '--' . $boundary . $line_term;
         $sending_message .= 'Content-Type: multipart/alternative; boundary="' . $boundary2 . '"' . $line_term . $line_term . $line_term;
     }
@@ -993,18 +1006,18 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // HTML version
     $sending_message .= '--' . $boundary2 . $line_term;
-    $sending_message .= 'Content-Type: multipart/related; type="text/html"; boundary="' . $boundary3 . '"' . $line_term . $line_term . $line_term;
+    $sending_message .= 'Content-Type: multipart/related; boundary="' . $boundary3 . '"' . $line_term . $line_term . $line_term;
     $sending_message .= '--' . $boundary3 . $line_term;
     $sending_message .= 'Content-Type: text/html; charset=' . ((preg_match($regexp, $html_evaluated) == 0) ? do_lang('charset', null, null, null, $lang) : 'us-ascii') . $line_term; // .'; name="message.html"'. Outlook doesn't like: makes it think it's an attachment
     if (get_option('allow_ext_images') != '1') {
         $cid_before = array_keys($CID_IMG_ATTACHMENT);
-        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
+        $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(https?://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
         $cid_just_html = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_before);
         $matches = array();
         foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
             $num_matches = preg_match_all($over, $html_evaluated, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
-                $altered_inner = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
+                $altered_inner = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $matches[2][$i]);
                 if ($matches[2][$i] != $altered_inner) {
                     $altered_outer = str_replace($matches[2][$i], $altered_inner, $matches[0][$i]);
                     $html_evaluated = str_replace($matches[0][$i], $altered_outer, $html_evaluated);
@@ -1017,6 +1030,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         foreach ($cid_just_css as $cid) {
             $html_evaluated .= '<img width="0" height="0" src="cid:' . $cid . '" />';
         }
+    }
+    foreach ($CID_IMG_ATTACHMENT as $id => $img) { // Make sure all inline images are referenced with img tags, otherwise some e-mail software may show it as an attachment
+        $html_evaluated .= '<!-- <img src="cid:' . $id . '" /> -->';
     }
 
     if ($base64_encode) {
@@ -1035,20 +1051,20 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         list($mime_type, $filename, $file_contents) = $test;
 
         $sending_message .= '--' . $boundary3 . $line_term;
-        $sending_message .= 'Content-Type: ' . escape_header($mime_type) . $line_term;
+        $sending_message .= 'Content-Type: ' . escape_header($mime_type) . '; name="' . escape_header($filename) . '"' . $line_term;
+        $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term;
         $sending_message .= 'Content-ID: <' . $id . '>' . $line_term;
-        $sending_message .= 'Content-Disposition: inline; filename="' . escape_header($filename) . '"' . $line_term;
-        $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term . $line_term;
+        $sending_message .= 'Content-Disposition: inline; filename="' . escape_header($filename) . '"' . $line_term . $line_term;
         if (is_string($file_contents)) {
             $sending_message .= chunk_split(base64_encode($file_contents), 76, $line_term);
         }
     }
-    $sending_message .= $line_term . '--' . $boundary3 . '--' . $line_term . $line_term;
+    $sending_message .= $line_term . '--' . $boundary3 . '--' . $line_term;
 
-    $sending_message .= $line_term . '--' . $boundary2 . '--' . $line_term . $line_term;
+    $sending_message .= $line_term . '--' . $boundary2 . '--' . $line_term;
 
     // Attachments
-    if (!is_null($attachments)) {
+    if (!empty($attachments)) {
         foreach ($attachments as $path => $filename) {
             $sending_message .= '--' . $boundary . $line_term;
             $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // . '; name="' . escape_header($filename).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
@@ -1205,16 +1221,23 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             } else {
                 $to_line = '"' . $_to_name . '" <' . $to . '>';
             }
+
+            // DKIM
+            if (trim($dkim_private_key) != '') {
+                $signature = new DKIMSignature(trim($dkim_private_key, " \t\r\n\"'"), '', get_domain(), get_option('dkim_selector'));
+                $signed_headers = str_replace("\r\n", $line_term, $signature->get_signed_headers($to_line, $tightened_subject, str_replace($line_term, "\r\n", $sending_message), str_replace($line_term, "\r\n", $headers)));
+            }
+
             //if (function_exists('mb_language')) mb_language('en'); Stop overridden mbstring mail function from messing and base64'ing stuff. Actually we don't need this as we make sure to pass through as headers with blank message, bypassing any filtering.
             $php_errormsg = mixed();
             if (get_value('manualproc_mail') === '1') {
                 require_code('mail2');
-                $worked = manualproc_mail($to_line, $tightened_subject, $sending_message, $headers, $additional);
+                $worked = manualproc_mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers, $additional);
             } else {
                 if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ($additional == '')) {
-                    $worked = mail($to_line, $tightened_subject, $sending_message, $headers);
+                    $worked = mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers);
                 } else {
-                    $worked = mail($to_line, $tightened_subject, $sending_message, $headers, $additional);
+                    $worked = mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers, $additional);
                 }
             }
             if ((!$worked) && (isset($php_errormsg))) {
@@ -1533,6 +1556,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
             'f_size',
             'x',
             'y',
+            'stub',
             'name',
             'subject',
             'email',
@@ -1595,7 +1619,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
         foreach ($fields as $field_name => $field_title) {
             $field_val = post_param_string($field_name, null);
             if (!is_null($field_val)) {
-                _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val);
+                _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val, count($fields));
 
                 if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field_name, '') == 'email')) {
                     $from_email = $field_val;
@@ -1605,7 +1629,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     } else {
         foreach ($fields as $field_title => $field_val) {
             if (!is_null($field_val)) {
-                _append_form_to_email($message_raw, false, $field_title, $field_val);
+                _append_form_to_email($message_raw, false, $field_title, $field_val, count($fields));
             }
         }
     }
@@ -1645,17 +1669,20 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
  * @param  boolean $is_tick Whether it is a tick field.
  * @param  string $field_title Field title.
  * @param  string $field_val Field value.
+ * @param  integer $num_fields Number of fields for e-mail.
  *
  * @ignore
  */
-function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val)
+function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val, $num_fields)
 {
     $prefix = '';
-    $prefix .= '[b]' . $field_title . '[/b]:';
-    if (strpos($prefix, "\n") !== false || strpos($field_title, ' (') !== false) {
-        $prefix .= "\n";
-    } else {
-        $prefix .= " ";
+    if ($num_fields != 1) {
+        $prefix .= '[b]' . $field_title . '[/b]:';
+        if (strpos($prefix, "\n") !== false || strpos($field_title, ' (') !== false) {
+            $prefix .= "\n";
+        } else {
+            $prefix .= " ";
+        }
     }
 
     if ($is_tick && in_array($field_val, array('', '0', '1'))) {
