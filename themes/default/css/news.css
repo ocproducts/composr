@@ -29,6 +29,7 @@
 
 .compacted_subbox_stream .box.box___news_brief {
 	border-top: 0 !important;
+	margin: 0;
 }
 
 .global_middle .boxless_space .box .box.box___news_brief + .box.box___news_brief:before {

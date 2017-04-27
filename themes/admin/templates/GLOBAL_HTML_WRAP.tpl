@@ -6,13 +6,16 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 (admin theme)
 -->
 
-{$,We deploy as HTML5 but code and validate strictly to XHTML5}
+{$REQUIRE_CSS,adminzone}
+{$REQUIRE_CSS,menu__dropdown}
+{$REQUIRE_JAVASCRIPT,menu_popup}
+{$REQUIRE_CSS,helper_panel}
+
+{$,We deploy as HTML5 but code and conform strictly to XHTML5}
 <html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
 <head>
 	{+START,INCLUDE,HTML_HEAD}{+END}
 </head>
-
-{$REQUIRE_CSS,adminzone}
 
 {$,You can use main_website_inner to help you create fixed width designs; never put fixed-width stuff directly on ".website_body" or "body" because it will affects things like the preview or banner frames or popups/overlays}
 <body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
@@ -59,11 +62,11 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 		{$,The main panels and content; float_surrounder contains the layout into a rendering box so that the footer etc can sit underneath}
 		<div class="global_middle_outer float_surrounder">
-			<article class="global_middle">
+			<article class="global_middle" role="main">
 				{$,Breadcrumbs}
 				{+START,IF,{$IN_STR,{$BREADCRUMBS},<a}}{+START,IF,{$SHOW_HEADER}}
 					<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global_breadcrumbs">
-						<img class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
+						<img width="20" height="20" class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
 						{$BREADCRUMBS}
 					</nav>
 				{+END}{+END}
@@ -110,7 +113,9 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			</div>
 		{+END}
 
-		{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
+		{+START,IF,{$SHOW_FOOTER}}
+			{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
+		{+END}
 
 		{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
 		{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}

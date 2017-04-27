@@ -321,6 +321,8 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
             } else {
                 $add_time = INTEGER_MAGIC_NULL;
             }
+        } else {
+            $add_time = min($add_time, 4294967295); // TODO #3046
         }
     }
 
@@ -334,6 +336,8 @@ function actual_metadata_get_fields($content_type, $content_id, $fields_to_skip 
             } else {
                 $edit_time = null; // Edit time explicitly wiped out
             }
+        } else {
+            $edit_time = min($edit_time, 4294967295); // TODO #3046
         }
     }
 

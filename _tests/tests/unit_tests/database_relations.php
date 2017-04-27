@@ -78,12 +78,26 @@ class database_relations_test_set extends cms_test_case
         foreach ($links as $from => $to) {
             if ($from !== null) {
                 list($from_table, $from_field) = explode('.', $from, 2);
-                $GLOBALS['SITE_DB']->query_select_value_if_there($from_table, $from_field);
+
+                if (substr($from_table, 0, 2) =='f_') {
+                    $db = $GLOBALS['FORUM_DB'];
+                } else {
+                    $db = $GLOBALS['SITE_DB'];
+                }
+
+                $db->query_select_value_if_there($from_table, $from_field);
             }
 
             if ($to !== null) {
                 list($to_table, $to_field) = explode('.', $to, 2);
-                $GLOBALS['SITE_DB']->query_select_value_if_there($to_table, $to_field);
+
+                if (substr($to_table, 0, 2) =='f_') {
+                    $db = $GLOBALS['FORUM_DB'];
+                } else {
+                    $db = $GLOBALS['SITE_DB'];
+                }
+
+                $db->query_select_value_if_there($to_table, $to_field);
             }
         }
     }

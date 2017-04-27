@@ -4,6 +4,8 @@ Selectcode is a special Composr syntax (language) for writing down what you woul
 
 Various areas of Composr support the Selectcode syntax, including the [tt]main_multi_content[/tt] block, and the [tt]if_in_group[/tt] Comcode tag. The blocks and Comcode tags supporting Selectcode usually explicitly say so within the assistants to add them.
 
+Selectcode is not to be confused with Filtercode, which is the language for determining what results to return via property querying.
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]The syntax[/title]

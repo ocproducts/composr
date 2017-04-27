@@ -31,9 +31,18 @@ class Hook_check_file_uploads
     public function run()
     {
         $warning = array();
+
         if (ini_get('file_uploads') == '0') {
             $warning[] = do_lang_tempcode('NO_UPLOAD');
         }
+
+        foreach (array('post_max_size', 'upload_max_filesize') as $setting) {
+            $bytes = php_return_bytes(ini_get($setting));
+            if ($bytes < 8000000) {
+                $warning[] = do_lang_tempcode('PHP_UPLOAD_SETTING_VERY_LOW', escape_html($setting), escape_html(ini_get($setting)), escape_html(integer_format($bytes)));
+            }
+        }
+
         return $warning;
     }
 }

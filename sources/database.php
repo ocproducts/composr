@@ -1205,11 +1205,7 @@ class DatabaseConnector
             }
             @print('Query: ' . $query . "\n");*/
         }
-        static $fb = null;
-        if ($fb === null) {
-            $fb = function_exists('fb');
-        }
-        if (($fb) && (!headers_sent()) && (get_param_integer('keep_firephp_queries', 0) === 1) && (function_exists('fb'))) {
+        if ((!headers_sent()) && (function_exists('fb')) && (get_param_integer('keep_firephp_queries', 0) === 1)) {
             fb('Query: ' . $query);
         }
 

@@ -32,7 +32,7 @@ function get_latest_version_dotted()
     static $version = null;
     static $fetched_version = false;
     if (!$fetched_version) {
-        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'), 'ORDER BY add_date DESC');
+        $version = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'name', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), 'ORDER BY add_date DESC');
         if ($version !== null) {
             require_code('version2');
             $_version = preg_replace('# \(.*#', '', get_translated_text($version));
@@ -47,10 +47,25 @@ function get_latest_version_pretty()
 {
     $version_dotted = get_latest_version_dotted();
     if ($version_dotted === null) {
-        return $version_dotted;
+        return null;
     }
-    list(, , , , $version) = get_version_components__from_dotted($version_dotted);
-    return float_format($version, 2, true);
+    return get_version_pretty__from_dotted($version_dotted);
+}
+
+function get_latest_version_basis_number()
+{
+    require_code('version2');
+    $latest_pretty = get_latest_version_pretty();
+    if ($latest_pretty === null && $GLOBALS['DEV_MODE']) { // Not uploaded any releases to dev site?
+        $latest_pretty = float_to_raw_string(cms_version_number(), 2, true);
+    }
+    if ($latest_pretty === null) {
+        return null;
+    }
+
+    $latest_dotted = get_version_dotted__from_anything($latest_pretty);
+    list($_latest_number) = get_version_components__from_dotted($latest_dotted);
+    return floatval($_latest_number);
 }
 
 function get_release_tree()
@@ -75,7 +90,7 @@ function get_release_tree()
 
     $_versions = array();
     foreach ($versions as $long_dotted_number_with_qualifier => $download_row) {
-        $_versions[str_replace('.0', '', $long_dotted_number_with_qualifier)] = $download_row;
+        $_versions[preg_replace('#\.0$#', '', $long_dotted_number_with_qualifier)] = $download_row;
     }
 
     return $_versions;
@@ -398,7 +413,9 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     $pass = md5($password);
     $salt = '';
     $compat = 'md5';
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
     $db_conn->query_update('f_members', array('m_email_address' => $email_address, 'm_pass_hash_salted' => $pass, 'm_pass_salt' => $salt, 'm_password_compat_scheme' => $compat), array('m_username' => 'admin'), '', 1);
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 
     // Create default file structure
     $path = special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($codename);

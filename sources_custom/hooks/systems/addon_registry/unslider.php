@@ -97,7 +97,7 @@ Here is an example of the block Comcode:
 
 The [tt]pages[/tt] parameter refers to suffixes on a standard naming scheme. [tt]slide1[/tt] is the page [tt]_unslider_slide1[/tt].
 
-These six example slides/pages are bundled with the addon. 1-4 use background images and simple Comcode, 5 uses a Youtube video (but any video code should work), 6 uses an image. You will see that the image and video are auto-sized to fit the slider perfectly (taking precedence over the normal size of the video).
+These six example slides/pages are bundled with the addon. 1-4 use background images and simple Comcode, 5 uses a YouTube video (but any video code should work), 6 uses an image. You will see that the image and video are auto-sized to fit the slider perfectly (taking precedence over the normal size of the video).
 
 If the [tt]delay[/tt] is set to blank or 0, it will disable automatic (timed) transition between slides. You may wish to do this if you include a video slide, although if the user hovers the mouse over the slider it will block automatic transitions also.';
     }

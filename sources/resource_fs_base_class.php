@@ -1381,7 +1381,7 @@ abstract class Resource_fs_base
 
         $page = $cma_info['cms_page'];
         require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+        $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
         if (is_null($_overridables[0])) {
             $overridables = array();
         } else {
@@ -1510,7 +1510,7 @@ abstract class Resource_fs_base
 
         $page = $cma_info['cms_page'];
         require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+        $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
         if (is_null($_overridables[0])) {
             $overridables = array();
         } else {

@@ -154,6 +154,9 @@ function init__global3()
 
     global $DOING_OUTPUT_PINGS;
     $DOING_OUTPUT_PINGS = false;
+
+    global $DISABLE_SMART_DECACHING_TEMPORARILY;
+    $DISABLE_SMART_DECACHING_TEMPORARILY = false;
 }
 
 /**
@@ -1444,7 +1447,6 @@ function _multi_sort($a, $b)
             $av = $a[$key];
             $bv = $b[$key];
 
-            // If calling, must put an "@" around the uasort call because of a PHP bug
             if (is_object($av)) {
                 $av = $av->evaluate();
             }
@@ -1700,12 +1702,9 @@ function get_page_name()
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     if (($page == '') && ($ZONE !== null)) {
-        $page = cms_srv('QUERY_STRING');
-        if ((strpos($page, '=') !== false) || ($page == '')) {
-            $page = $ZONE['zone_default_page'];
-            if ($page === null) {
-                $page = '';
-            }
+        $page = $ZONE['zone_default_page'];
+        if ($page === null) {
+            $page = '';
         }
     }
     if (strpos($page, '..') !== false) {
@@ -1715,6 +1714,9 @@ function get_page_name()
         $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
     }
     $page = fix_page_name_dashing(get_zone_name(), $page);
+    if (!$GETTING_PAGE_NAME) { // It's been changed by process_url_monikers, which was called indirectly by fix_page_name_dashing
+        return $PAGE_NAME_CACHE;
+    }
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
     }
@@ -1731,6 +1733,10 @@ function get_page_name()
  */
 function fix_page_name_dashing($zone, $page)
 {
+    if (strpos($page, '/') !== false) {
+        return $page; // It's a moniker that hasn't been processed yet
+    }
+
     // Fix page-name dashes if needed
     if (strpos($page, '-') !== false) {
         require_code('site');
@@ -2385,7 +2391,7 @@ function escape_html($string)
 
     global $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
 
-    $ret = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
+    $ret = @htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
 
     if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
         $ESCAPE_HTML_OUTPUT[$ret] = true;
@@ -2657,6 +2663,11 @@ function get_bot_type()
                 'sqworm' => 'Aol.com',
                 'baidu' => 'Baidu',
                 'facebookexternalhit' => 'Facebook',
+                'yandex'=> 'Yandex',
+                'daum' => 'Daum',
+                'ahrefsbot' => 'Ahrefs',
+                'mj12bot' => 'Majestic-12',
+                'blexbot' => 'webmeup',
             );
         }
     }
@@ -3373,7 +3384,10 @@ function send_http_output_ping()
 {
     global $DOING_OUTPUT_PINGS;
     $DOING_OUTPUT_PINGS = true;
-    echo ' ';
+
+    if (running_script('index')) {
+        echo ' ';
+    }
 }
 
 /**
@@ -3444,10 +3458,18 @@ function disable_browser_xss_detection()
 /**
  * Whether smart decaching is enabled. It is slightly inefficient but makes site development easier for people.
  *
+ * @param  boolean $support_temporary_disable Support it being temporarily disabled
  * @return boolean If smart decaching is enabled
  */
-function support_smart_decaching()
+function support_smart_decaching($support_temporary_disable = false)
 {
+    if ($support_temporary_disable) {
+        global $DISABLE_SMART_DECACHING_TEMPORARILY;
+        if ($DISABLE_SMART_DECACHING_TEMPORARILY) {
+            return false;
+        }
+    }
+
     static $has_in_url = null;
     if ($has_in_url === null) {
         $has_in_url = (get_param_integer('keep_smart_decaching', 0) == 1);
@@ -3481,12 +3503,12 @@ function support_smart_decaching()
 }
 
 /**
- * For performance reasons disable smart decaching (it does a lot of file system checks).
+ * For performance reasons disable smart decaching for cases that allow it to be disabled temporarily (it does a lot of file system checks).
  */
 function disable_smart_decaching_temporarily()
 {
-    global $SITE_INFO;
-    $SITE_INFO['disable_smart_decaching'] = '1';
+    global $DISABLE_SMART_DECACHING_TEMPORARILY;
+    $DISABLE_SMART_DECACHING_TEMPORARILY = true;
 }
 
 /**

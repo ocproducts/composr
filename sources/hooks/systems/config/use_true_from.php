@@ -34,7 +34,7 @@ class Hook_config_use_true_from
             'human_name' => 'USE_TRUE_FROM',
             'type' => 'tick',
             'category' => 'SITE',
-            'group' => 'EMAIL',
+            'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_use_true_from',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

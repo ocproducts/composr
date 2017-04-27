@@ -27,20 +27,7 @@
  */
 function init__global2()
 {
-    // Fixup some inconsistencies in parameterisation on different PHP platforms. See phpstub.php for info on what environmental data we can rely on.
-    if ((!isset($_SERVER['SCRIPT_NAME'])) && (!isset($_ENV['SCRIPT_NAME']))) { // May be missing on GAE
-        if (strpos($_SERVER['PHP_SELF'], '.php') !== false) {
-            $_SERVER['SCRIPT_NAME'] = preg_replace('#\.php/.*#', '.php', $_SERVER['PHP_SELF']); // Same as PHP_SELF except without path info on the end
-        } else {
-            $_SERVER['SCRIPT_NAME'] = '/' . $_SERVER['SCRIPT_FILENAME']; // In GAE SCRIPT_FILENAME is actually relative to the app root
-        }
-    }
-    if ((!isset($_SERVER['REQUEST_URI'])) && (!isset($_ENV['REQUEST_URI']))) { // May be missing on IIS
-        $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-        if (count($_GET) > 0) {
-            $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
-        }
-    }
+    fixup_bad_php_env_vars();
 
     safe_ini_set('log_errors', '1');
     if ((GOOGLE_APPENGINE) && (!appengine_is_live())) {
@@ -67,7 +54,7 @@ function init__global2()
 
     // Closed site message
     if ((is_file('closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
-        if ((strpos($_SERVER['PHP_SELF'], 'upgrader.php') === false) && (strpos($_SERVER['PHP_SELF'], 'execute_temp.php') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
+        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
                 header('HTTP/1.0 503 Service Temporarily Unavailable');
             }
@@ -510,6 +497,83 @@ function init__global2()
 }
 
 /**
+ * PHP's environment can be a real mess across servers. Cleanup the best we can.
+ * See phpstub.php for info on what environmental data we can rely on.
+ * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also
+ */
+function fixup_bad_php_env_vars()
+{
+    // We can trust these to be there
+    $script_filename = empty($_SERVER['SCRIPT_FILENAME']) ? $_ENV['SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME']; // If was not here, was added by our front-end controller script
+
+    // Now derive missing ones...
+
+    $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? (empty($_ENV['DOCUMENT_ROOT']) ? '' : $_ENV['DOCUMENT_ROOT']) : $_SERVER['DOCUMENT_ROOT'];
+    if (empty($document_root)) {
+        $document_root = '';
+
+        global $SITE_INFO;
+        if (isset($SITE_INFO['base_url'])) {
+            // Algorithm: backwards from URL-path in base URL
+            $base_url_path = str_replace('/', DIRECTORY_SEPARATOR, parse_url($SITE_INFO['base_url'], PHP_URL_PATH));
+            if (substr(get_file_base(), -strlen($base_url_path)) == $base_url_path) {
+                $document_root = substr(get_file_base(), 0, strlen(get_file_base()) - strlen($base_url_path));
+            }
+        }
+        if ($document_root == '') {
+            // Algorithm: up until a known document-root directory
+            $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
+            foreach ($path_components as $i => $path_component) {
+                $document_root .= $path_component . DIRECTORY_SEPARATOR;
+                if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents'))) {
+                    break;
+                }
+            }
+            $document_root = substr($document_root, 0, strlen($document_root) - strlen(DIRECTORY_SEPARATOR));
+        }
+
+        $_SERVER['DOCUMENT_ROOT'] = $document_root;
+    }
+
+    $php_self = empty($_SERVER['PHP_SELF']) ? (empty($_ENV['PHP_SELF']) ? '' : $_ENV['PHP_SELF']) : $_SERVER['PHP_SELF'];
+    if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
+        // We're really desparate if we have to derive this, but here we go
+        $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
+        $path_info = empty($_SERVER['PATH_INFO']) ? (empty($_ENV['PATH_INFO']) ? '' : $_ENV['PATH_INFO']) : $_SERVER['PATH_INFO'];
+        if (!empty($path_info)) { // Add in path-info if we have it
+            $_SERVER['PHP_SELF'] .= $path_info;
+        }
+        $php_self = $_SERVER['PHP_SELF'];
+    }
+
+    if ((empty($_SERVER['SCRIPT_NAME'])) && (empty($_ENV['SCRIPT_NAME']))) {
+        $_SERVER['SCRIPT_NAME'] = preg_replace('#\.php/.*#', '.php', $php_self); // Same as PHP_SELF except without path-info on the end
+    }
+
+    if ((empty($_SERVER['REQUEST_URI'])) && (empty($_ENV['REQUEST_URI']))) {
+        if (isset($_SERVER['REDIRECT_URL'])) {
+            $_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
+            if (strpos($_SERVER['REQUEST_URI'], '?') === false) {
+                if (count($_GET) != 0) {
+                    $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET); // Messy as rewrite URL-embedded parameters will be doubled, but if you've got a broken server don't push it to do rewrites
+                }
+            }
+        } else {
+            $_SERVER['REQUEST_URI'] = $php_self; // Same as PHP_SELF, but...
+            if (count($_GET) != 0) { // add in query string data if we have it
+                $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
+            }
+
+            // ^ NB: May be slight deviation. Default directory index files not considered, i.e. index.php may have been omitted in URL
+        }
+    }
+
+    if ((empty($_SERVER['QUERY_STRING'])) && (empty($_ENV['QUERY_STRING']))) {
+        $_SERVER['QUERY_STRING'] = http_build_query($_GET);
+    }
+}
+
+/**
  * Use with register_shutdown_function to log slow URLs.
  */
 function monitor_slow_urls()
@@ -575,7 +639,9 @@ function disable_php_memory_limit()
 {
     $shl = @ini_get('suhosin.memory_limit');
     if (($shl === false) || ($shl == '') || ($shl == '0')) {
+        // Progressively relax more and more (some PHP installs may block at some point)
         safe_ini_set('memory_limit', '128M');
+        safe_ini_set('memory_limit', '256M');
         safe_ini_set('memory_limit', '-1');
     } else {
         if (is_numeric($shl)) {
@@ -1270,17 +1336,16 @@ function get_base_url($https = null, $zone_for = null)
     global $SITE_INFO;
     if ((!isset($SITE_INFO)) || (empty($SITE_INFO['base_url']))) { // Try and autodetect the base URL if it's not configured
         $domain = get_domain();
-        $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
-        $php_self = dirname(cms_srv('PHP_SELF'));
-        if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
-            $php_self = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $php_self);
+        $script_name_path = dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : ''));
+        if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($script_name_path, $GLOBALS['RELATIVE_PATH']) !== false)) {
+            $script_name_path = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $script_name_path);
         } else {
             $cnt = substr_count($GLOBALS['RELATIVE_PATH'], '/');
             for ($i = 0; $i <= $cnt; $i++) {
-                $php_self = dirname($php_self);
+                $script_name_path = dirname($script_name_path);
             }
         }
-        $SITE_INFO['base_url'] = (tacit_https() ? 'https://' : 'http://') . $domain . str_replace('%2F', '/', rawurlencode($php_self));
+        $SITE_INFO['base_url'] = (tacit_https() ? 'https://' : 'http://') . $domain . str_replace('%2F', '/', rawurlencode($script_name_path));
     }
 
     // Lookup

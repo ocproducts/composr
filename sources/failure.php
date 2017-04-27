@@ -48,6 +48,11 @@ function init__failure()
 
     global $RUNNING_TASK;
     $RUNNING_TASK = false;
+
+    global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+    if (!isset($BLOCK_OCPRODUCTS_ERROR_EMAILS)) {
+        $BLOCK_OCPRODUCTS_ERROR_EMAILS = false;
+    }
 }
 
 /**
@@ -568,13 +573,13 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         $username = function_exists('do_lang') ? do_lang('UNKNOWN') : 'Unknown';
     }
 
-    $url = cms_srv('SCRIPT_NAME') . '?' . cms_srv('QUERY_STRING');
+    $url = cms_srv('REQUEST_URI');
     $post = '';
     foreach ($_POST as $key => $val) {
         if (!is_string($val)) {
             continue;
         }
-        $post .= $key . '=>' . $val . "\n\n";
+        $post .= $key . ' => ' . $val . "\n\n";
     }
 
     $count = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', array('ip' => $ip));
@@ -1018,7 +1023,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         if ($num == 51) {
             return; // We've sent too many error mails today
         }
-        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
+        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
         persistent_cache_delete('VALUES');
         set_value('num_error_mails_' . date('Y-m-d'), strval($num), true);
     }
@@ -1032,6 +1037,8 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 
     $error_url = get_self_url_easy(true);
 
+    global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+
     require_code('notifications');
     require_code('comcode');
     $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), $text, $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
@@ -1039,6 +1046,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     if (
         ($ocproducts) &&
         (get_option('send_error_emails_ocproducts') == '1') &&
+        (!$BLOCK_OCPRODUCTS_ERROR_EMAILS) &&
         (!running_script('cron_bridge')) &&
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&

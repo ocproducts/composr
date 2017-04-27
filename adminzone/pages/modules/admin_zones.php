@@ -396,7 +396,25 @@ class Module_admin_zones
                 $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '1acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
             }
 
-            $preview = (substr($page_info[0], 0, 6) == 'MODULE') ? null : request_page($for, false, $id, null, true);
+            if (substr($page_info[0], 0, 6) == 'MODULE') {
+                $preview = null;
+            } else {
+                require_code('urls2');
+                list($old_get, $old_zone, $old_current_script) = set_execution_context(
+                    array('page' => $for),
+                    $id
+                );
+
+                $preview = request_page($for, false, $id, null, true);
+
+                // Get things back to prior state
+                set_execution_context(
+                    $old_get,
+                    $old_zone,
+                    $old_current_script,
+                    false
+                );
+            }
             if (!is_null($preview)) {
                 $_preview = $preview->evaluate();
                 if ((!$is_comcode) || (strpos($comcode, '<') !== false)) { // Save RAM by only doing this if needed
@@ -420,8 +438,12 @@ class Module_admin_zones
 
             $is_panel = (substr($for, 0, 6) == 'panel_');
 
-            require_code('zones3');
-            $zone_list = ($for == $current_for) ? create_selection_list_zones($redirecting_to, array($id)) : new Tempcode(); // not simple so leave field out
+            if (($redirecting_to !== null) && ($redirecting_to != $id)) {
+                $zone_list = null;
+            } else {
+                require_code('zones3');
+                $zone_list = ($for == $current_for) ? create_selection_list_zones($redirecting_to, array($id)) : new Tempcode(); // not simple so leave field out
+            }
 
             $editor[$for] = static_evaluate_tempcode(do_template('ZONE_EDITOR_PANEL', array(
                 '_GUID' => 'f32ac84fe18b90497acd4afa27698bf0',

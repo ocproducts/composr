@@ -85,11 +85,11 @@ function disable_content_translation()
         foreach ($to_add as $sub_name => $sub_type) {
             $sub_name = $field['m_name'] . '__' . $sub_name;
             $query = 'ALTER TABLE ' . $db->table_prefix . $field['m_table'] . ' ADD ' . $sub_name . ' ' . $type_remap[$sub_type];
-            if ($sub_name == 'text_parsed') {
-                $query .= ' DEFAULT \'\'';
-            } elseif ($sub_name == 'new') {
+            if ($sub_name == $field['m_name'] . '__' . 'text_parsed') {
+                //$query .= ' DEFAULT \'\''; Gives "BLOB, TEXT, GEOMETRY or JSON column 'xxx__text_parsed' can't have a default value"
+            } elseif ($sub_name == $field['m_name'] . '__' . 'new') {
                 $query .= ' DEFAULT \'\''; // Has a default of '' for now, will be removed further down
-            } elseif ($sub_name == 'source_user') {
+            } elseif ($sub_name == $field['m_name'] . '__' . 'source_user') {
                 $query .= ' DEFAULT ' . strval(db_get_first_id());
             }
             $query .= ' NOT NULL';

@@ -1991,6 +1991,9 @@ class Module_admin_themes
         $submit_name = do_lang_tempcode('ADD_THEME_IMAGE');
 
         $text = new Tempcode();
+
+        $text->attach(paragraph(do_lang_tempcode('DESCRIPTION_ADDING_THEME_IMAGE')));
+
         require_code('images');
         $max = floatval(get_max_image_size()) / floatval(1024 * 1024);
         if ($max < 3.0) {
@@ -2227,7 +2230,9 @@ class Module_admin_themes
 
             $target_dir = 'themes/' . $theme . '/images_custom';
             if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) != '1') {
-                $target_dir .= '/' . dirname($id);
+                if (strpos($id, '/') !== false) {
+                    $target_dir .= '/' . dirname($id);
+                }
             }
             $path = get_url('path', 'file', $target_dir);
 

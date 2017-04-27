@@ -58,10 +58,10 @@ class Hook_rss_tickets
                 if (!has_category_access(get_member(), 'tickets', strval($ticket_type_id))) {
                     continue;
                 }
-                $rows = array_merge($rows, get_tickets(get_member(), $ticket_type_id, false, false, true));
+                $rows = array_merge($rows, get_tickets(get_member(), $ticket_type_id, false, false, true, true));
             }
         } else {
-            $rows = get_tickets(get_member(), null, false, false, true);
+            $rows = get_tickets(get_member(), null, false, false, true, true);
         }
 
         require_code('feedback');

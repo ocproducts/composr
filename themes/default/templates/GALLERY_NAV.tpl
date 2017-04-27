@@ -26,7 +26,7 @@
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
-						<a class="button_screen buttons__slideshow inline_desktop" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button_screen buttons__slideshow inline_desktop" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					{+END}{+END}
 				{+END}
 			{+END}
@@ -75,7 +75,7 @@
 		{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
 			<div class="float_surrounder block_mobile">
 				<div class="right block_mobile">
-					<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+					<a class="button_screen buttons__slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 				</div>
 			</div>
 		{+END}{+END}

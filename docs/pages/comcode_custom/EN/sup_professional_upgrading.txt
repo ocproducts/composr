@@ -1,0 +1,669 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Professional upgrading[/title]
+
+This tutorial provides a professional process for updating customer website(s). Steps here may also be useful for professional website "tune ups".
+
+[staff_note]Remove LEGACY parts about ocPortal[/staff_note]It is only intended for programmers who are experienced in the use of Composr.
+
+The tutorial is currently written for updating ocPortal sites to Composr v10 sites.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Getting organised[/title]
+
+If you are updating multiple websites then create a spreadsheet with the following columns:
+ - Website URL
+ - Prospective upgrade date
+ - Cost quote
+ - Website owner name
+ - Website owner e-mail
+ - Support ticket / CRM URL
+ - Contacted owner?
+ - Have access to website?
+ - Cost agreed with owner?
+ - Any concerns
+
+This will keep you organised and prevent you from losing your sanity trying to remember all these details.
+
+[title="2"]Process[/title]
+
+This is the process repeated for each website being upgraded. The steps are not set in stone, but rather designed to be interpreted as guidelines by an experienced developer.
+We assume you are running your own local AMP-style stack, have git installed, and have a Composr git checkout under [tt]<webroot>/Composr[/tt]
+[tt]<webroot>[/tt] refers to your webroot, wherever it is. On my machine it is [tt]~/www[/tt].
+{$SET,step_num,0}
+{|
+! Step
+! Description
+! Extra code / notes
+|-
+! {$INC,step_num}{$GET,step_num}
+| Transfer these instructions to a separate TODO list so you can work through them
+| [html]
+<script>// <![CDATA[
+function copy_to_clipboard(tbody) {
+	var data = 'Upgrade tasks ' + window.location.href + '\n';
+	for (var i = 1; i < tbody.rows.length; i++) {
+		if (tbody.rows[i].cells[1].nodeName.toLowerCase() == 'th') {
+			data += ' ' + tbody.rows[i].cells[1].innerText.replace(/^\s*/,'').replace(/\s*$/,'') + '\n';
+		} else {
+			data += '  ' + tbody.rows[i].cells[1].innerText.replace(/^\s*/,'').replace(/\s*$/,'') + '\n';
+		}
+	}
+	copytext(data);
+	window.alert('Copied');
+}
+
+function copytext(text) {
+	var textField = document.createElement('textarea');
+	textField.value = text;
+	document.body.appendChild(textField);
+	textField.select();
+	document.execCommand('copy');
+	textField.remove();
+}
+
+function personalise_paths(table) {
+	var codename = window.prompt('What is the project codename?', 'an_example');
+	var webroot = window.prompt('What is the webroot?', (navigator.platform == 'MacIntel') ? '/Library/WebServer/Documents' : '/var/www');
+	table.innerHTML = table.innerHTML.replace(/(&lt;|&lt;<\/span>)codename(&gt;|<span style="color: #000000; font-weight: bold;">&gt;)/g, codename).replace(/(&lt;|&lt;<\/span>)webroot(&gt;|<span style="color: #000000; font-weight: bold;">&gt;)/g, webroot);
+}
+//]]></script>
+<a href="#" onclick="copy_to_clipboard(this.parentNode.parentNode.parentNode); return false;">Copy to clipboard</a>
+&middot;
+<a href="#" onclick="personalise_paths(this.parentNode.parentNode.parentNode.parentNode); return false;">Personalise paths</a>
+[/html]
+|-
+!
+! [left][i]Downloading, assessing, re-configuring[/i][/left]
+!
+|-
+! {$INC,step_num}{$GET,step_num}
+| Check for any special circumstances
+| If a multi-site-network or a third-party forum is involved, or other third-party integrations, extra consideration for compatibility will be needed
+|-
+! {$INC,step_num}{$GET,step_num}
+| Make sure the website owner is aware that an upgrade cost doesn't include training for functionality changes
+| Customers need to be aware of costs, if you don't protect yourself you could have a customer expecting you to include days of free training for what you're only invoicing as a few hours of work. Customers also need to be aware that things may change, including features being removed (link them to any announcement about this)
+|-
+! {$INC,step_num}{$GET,step_num}
+| Download all the website files to your local machine, under [tt]<webroot>/<codename>[/tt]
+| It's much more efficient to work locally. Leave this running in the background while you work on other steps / tasks.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Check the remote server meets the Composr minimum requirements
+| If the requirements are not met you'll need to circle back to the website owner; they may have intentionally held back software on their hosting and have the capability to update it, or they may need to do a server upgrade or host switch.
+Composr's minimum requirements provide a lot of info, if you can't access that it's very easy to just get PHP's standard phpinfo:
+[code="PHP"]
+<?php
+
+phpinfo();
+[/code]
+Additionally you can upload and run the first two steps of Composr's installer and see if it complains about anything.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Confirm the remote site is running a version of ocPortal/Composr that you can upgrade from
+| If not you'll need to circle back and inform them of the cost of jumping through other intermediate ocPortal/Composr version(s).
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Create [tt]<webroot>/<codename>/_temp[/tt] and put a [tt].htaccess[/tt] file in it
+| [code="htaccess"]
+order deny,allow
+deny from all
+[/code]
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Download the website database to your local machine, put it in [tt]<webroot>/<codename>/_temp[/tt]
+| If you can't access phpMyAdmin, then use a script:
+[codebox="PHP"]
+<?php
+$filename = 'sql-backup-' . date('Y-m-d') . '.sql';
+
+$h = 'Content-Disposition: attachment;
+    filename="' . $filename . '"';
+header($h);
+
+$db_site = 'TODO';
+$db_site_host = 'localhost';
+$db_site_user = 'TODO';
+$db_site_password = 'TODO';
+
+if ($db_site == 'TODO') {
+    if (is_file('info.php')) { // LEGACY
+        require('info.php');
+        $db_site = $SITE_INFO['db_site'];
+        $db_site_host = $SITE_INFO['db_site_host'];
+        $db_site_user = $SITE_INFO['db_site_user'];
+        $db_site_password = $SITE_INFO['db_site_password'];
+    }
+    if (is_file('_config.php')) {
+        require('_config.php');
+        $db_site = $SITE_INFO['db_site'];
+        $db_site_host = $SITE_INFO['db_site_host'];
+        $db_site_user = $SITE_INFO['db_site_user'];
+        $db_site_password = $SITE_INFO['db_site_password'];
+    }
+}
+
+$sql_cmd = 'mysqldump';
+$sql_cmd .= ' -u"' . $db_site_user . '"';
+$sql_cmd .= ' -p"' . $db_site_password . '"';
+$sql_cmd .= ' -h"' . $db_site_host . '"';
+$sql_cmd .= ' ' . $db_site;
+$sql_cmd .= ' 2>&1 > ' . $filename;
+shell_exec($sql_cmd);
+
+$file_size = filesize($filename);
+$myfile = fopen($filename, 'rb');
+$i = 0;
+while ($i < $file_size) {
+    $content = fread($myfile, min($file_size - $i, 1048576));
+    echo $content;
+    $len = strlen($content);
+    if ($len == 0) {
+        break;
+    }
+    $i += $len;
+}
+fclose($myfile);
+
+unlink($filename);
+
+if (!empty($_GET['self_destruct']) {
+    unlink('sqldump.php');
+}
+[/codebox]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Replace [tt]data/upgrader2.php[/tt] from the latest patch release of the version being upgraded from
+| We've had some legacy bugs in this crucial upgrade file.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Set recursive world write permissions
+| [code="Bash"]
+cd <webroot>/<codename>
+sudo chmod -R 777 .
+[/code]
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Search and replace the old table prefix in the SQL dump if you're upgrading an ocPortal site
+| Usually ocPortal sites used [tt]ocp_[/tt] or [tt]ocf_[/tt], and we want to use [tt]cms_[/tt] so that ocPortal legacy doesn't need to be remembered in the future.
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| If you're updating from ocPortal then replace [tt]DEFAULT CHARSET=latin1[/tt] with [tt]DEFAULT CHARSET=utf8mb4[/tt] in the SQL dump
+| If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis or install any new addons (as that will try and use [tt]utf8mb4[/tt] for new tables).
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| (Following directly from the above) Change [tt]utf8mb4[/tt] to [tt]utf8[/tt] for just the following tables: [tt]cms_addons[/tt], [tt]cms_f_saved_warnings[/tt], [tt]cms_gsp[/tt], [tt]cms_import_parts_done[/tt], [tt]cms_msp[/tt], [tt]cms_newsletter_subscribe[/tt], [tt]cms_theme_images[/tt], [tt]cms_tickets[/tt], and [tt]cms_wordfilter[/tt]
+| If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis.
+|-
+! {$INC,step_num}{$GET,step_num}
+| If you're updating from ocPortal then find all non-default files containing this regexp [tt][^\x00-\x7F][/tt] and re-save them as utf-8
+| The regexp finds non-ASCII files, so you don't have to re-save every single file
+|-
+! {$INC,step_num}{$GET,step_num}
+| If you're updating from ocPortal then do this regexp replace in the the [tt].sql[/tt] file: [tt]\[attachment([^\[\]]*)\]url_([^\[\]]*)\[/attachment[^\[\]]*\][/tt] --> [tt][media$1]$2[/media][/tt]
+| The regexp changes old URL attachments (which are now 100% non-supported in Composr) to new media tags
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Import the SQL dump into your local MySQL installation, in a database named [tt]client_<codename>[/tt], using the command line [tt]mysql[/tt] client
+| [code="Bash"]
+cd <webroot>/<codename>
+mysql client_<codename> < _temp/*.sql
+[/code]
+|-
+! {$INC,step_num}{$GET,step_num}
+| If you're updating from ocPortal then add some settings to [tt]_config.php[/tt]/[tt]info.php[/tt]:
+| [code="PHP"]
+$SITE_INFO['self_learning_cache'] = '1';
+$SITE_INFO['session_cookie'] = 'cms_session__<something_random>';
+[/code]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Reconfigure [tt]_config.php[/tt]/[tt]info.php[/tt] to have local details by putting local ones at the end of the file
+| [code="PHP"]
+$SITE_INFO['base_url'] = 'http://localhost/client_<codename>';
+$SITE_INFO['db_site'] = 'client_<codename>';
+$SITE_INFO['db_site_host'] = 'localhost';
+$SITE_INFO['db_site_user'] = 'root';
+$SITE_INFO['db_site_password'] = '';
+$SITE_INFO['debug_mode'] = '0';
+$SITE_INFO['dev_mode'] = '0';
+$SITE_INFO['no_email_output'] = '1';
+
+// These must not persist onto a live site,
+// they allow temporary unauthenticated
+// local admin access to make upgrading
+// easier a third-party developer
+$SITE_INFO['admin_password'] = '';
+$SITE_INFO['backdoor_ip'] = '127.0.0.1';
+[/code]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Change [tt]mysql[/tt] to [tt]mysqli[/tt] in [tt]_config.php[/tt]/[tt]info.php[/tt] if upgrading a really old site
+|
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Save a new SQL dump into the [tt]_temp[/tt] folder
+| [code="Bash"]
+cd <webroot>/<codename>
+mysqldump client_<codename> > _temp/stage1.sql
+[/code]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Set up a local git repository to reduce the chance of losing work
+| [code="Bash"]
+cd <webroot>/<codename>
+git init
+cp <webroot>/composr/.gitignore .
+[/code]
+edit [tt].gitignore[/tt] to remove the second half of the file
+[code="Bash"]
+git add .
+git commit -a -m "Initial commit"
+[/code]
+|-
+!
+! [left][i]Main upgrade[/i][/left]
+!
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Log into the website's upgrader on your local machine
+|
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Empty the caches
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Do the file transfer using the omni-upgrader package if upgrading from ocPortal, or a custom upgrader build otherwise
+| https://compo.sr/news/view/announcements/upgrading-from-ocportal.htm
+|-
+! {$INC,step_num}{$GET,step_num}
+| Do the integrity checker scan and delete files from the prior version
+|
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| Do the database upgrade
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| If upgrading from ocPortal delete the [tt]info.php[/tt] file
+|
+|-
+!
+! [left][i]Cleanup and quarantine[/i][/left]
+!
+|-
+! {$INC,step_num}{$GET,step_num}
+| Save a new SQL dump into the [tt]_temp[/tt] folder
+| [code="Bash"]
+cd <webroot>/<codename>
+mysqldump client_<codename> > _temp/stage2.sql
+[/code]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Delete old page revisions, old config files, old backups, old [tt].latest_in_ocp_edit[/tt] files, etc
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Temporarily move any custom code and themes into a parallel directory structure under [tt]_old_code[/tt]
+|
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| If upgrading from ocPortal switch to non-multi-lang-content using Commandr (unless the user really does want multi-lang-content)
+| [code="Commandr"]
+:
+require_code('database_multi_lang_conv');
+disable_content_translation();
+[/code]
+|-
+! &dagger; {$INC,step_num}{$GET,step_num}
+| If jumping across versions run through the "Correct MySQL schema issues (advanced)" cleanup tool (Admin Zone > Tools > Website cleanup tools) to find and resolve any unexpected issues that might have developed
+| Don't just trust the SQL given, check it really is correct to repair the problems found.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Run some cleanup tools
+| Go to Admin Zone > Tools > Website cleanup tools, run "Sync for lost disk content"; if you're really enthusiastic also "Find orphaned uploads" and "Broken URLs"
+|-
+! {$INC,step_num}{$GET,step_num}
+| Delete some empty directories that may have been left over (Composr only tracks alien files, not directories)
+| This will find empty directories, only delete with care:
+[code="Bash"]
+find . -type d -empty
+[/code]
+On a Mac it is more tricky, as [tt].DS_Store[/tt] files may be littered around. You can use http://www.tempel.org/FindEmptyFolders or run this command first:
+[code="Bash"]
+find . -name .DS_Store -exec rm {} \;
+[/code]
+(The upgrader does delete empty directories caused by alien file removal.)
+|-
+! {$INC,step_num}{$GET,step_num}
+| Consider replacing all the tar files in [tt]addons/imports[/tt] so you're sure they're fresh
+| If you download a [url="custom upgrade package"]http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=10.0.0[/url] you can find all the TAR files in it (the [i]from[/i] version number in the URL is irrelevant)
+|-
+! {$INC,step_num}{$GET,step_num}
+| Do a git commit
+| [code="Bash"]
+cd <webroot>/<codename>
+git add .
+git commit -a -m "Finished cleanup and quarantine"
+[/code]
+|-
+!
+! [left][i]Rebuild custom code and design[/i][/left]
+!
+|-
+! {$INC,step_num}{$GET,step_num}
+| Build a new theme with the correct seed.
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Use a diff tool to find all the changes made in the old theme (you put them in [tt]_old_code[/tt]).
+| You can usually diff-compare against the [tt].editfrom[/tt] files, otherwise you'll need to go back and compare with the originals from the version you are upgrading from.
+There is a [tt]themechanges.sh[/tt] script which may be useful, but realistically you probably just want to do it yourself on a file-by-file basis.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Fix for specific known theme changes.
+| Buttons and CSS classes have changed significantly since old versions of ocPortal, these may need reworking if the icons are directly used anywhere.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Use a diff tool to find all the changes made in code files you put in [tt]_old_code[/tt].
+| You'll need to compare overrides against the originals from the version you are upgrading from. Custom code and overridden code will need to be assessed to make sure it still is valid. By the time you're done you should be able to erase the [tt]_old_code[/tt] directory.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Run CQC.
+| Run the Code Quality Checker on any custom code. Do this by copying [tt]data_custom/functions.dat[/tt] from a Composr github pull, and then run the CQC out of that github pull while reconfiguring the scan folder to the [tt]<webroot>/<codename>[/tt] directory.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Users may be used to some different configuration if upgrading from ocPortal, maybe set [tt]simplified_attachments_ui[/tt] to [tt]0[/tt]. US users may also like [tt]yeehaw[/tt] to be set to [tt]1[/tt].
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Do final local testing, particular some embedded links may need reconfiguring if upgrading from ocPortal, as the Composr display defaults are different
+| Go through testing page by page, and also at least get a feel for content (such as news articles) working well
+|-
+! {$INC,step_num}{$GET,step_num}
+| Do a git commit
+| [code="Bash"]
+cd <webroot>/<codename>
+git add .
+git commit -a -m "Finished code rebuild"
+[/code]
+|-
+!
+! [left][i]Get back in sync[/i][/left]
+! Defer this section if you are going to provide a client demo before the final upgrade
+|-
+! {$INC,step_num}{$GET,step_num}
+| Close the remote site.
+| If the site being upgraded has database content changing regularly (perhaps member activity), you need to update your local database so you have those changes. Skip this and the next step if you do not.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Do one of 3 things to get the database back in sync:[list="1"]
+| [*] Identify that nothing needs synching. If you are using MyISAM then Commandr can tell when tables were recently changed with [tt]ls /database[/tt].
+[*] Take a new database backup and use a diff against your very first database backup, then manually copy those changes through. This is only a good idea if you expect a tiny number of simple changes. Of course in most cases you can ignore changes to logging tables.
+[*] Install MySQL utilities and Connector/Python, put your [tt]_temp/stage1.sql[/tt] file into [tt]client_<codename>_old[/tt] then run something like:
+[code="Bash"]
+mysqldbcompare --server1=remote_user@remote_host --server2=root@localhost remote_database:client_<codename>_old --run-all-tests --difftype sql --disable-binary-logging
+[/code]
+...to get SQL to do an update. Then carefully filter it to what you really want, then run it.
+[*] Take a new database backup, repeat steps from this tutorial marked &dagger; to re-upgrade that database. It should not take so long given the file upgrading you've already done will still apply. You'll need to re-open the site of course, given you closed the live site just before backing it up.
+[/list]
+Options 3 or 4 are the most likely you will want to use.
+|-
+! {$INC,step_num}{$GET,step_num}
+| If the site being upgraded has files changing regularly (perhaps edited Comcode pages), download those changed files and extract locally
+| This is a script to identify changed remote files and zip them:
+[codebox="PHP"]
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2017
+
+ See text/EN/licence.txt for full licencing information.
+
+ Meta Script:
+   Find files modified within the last days days
+*/
+
+header('Content-type: text/plain');
+
+if (!isset($_GET['days'])) {
+    exit('Must give a days parameter');
+}
+
+$days = intval($_GET['days']);
+$cutoff = time() - 60 * 60 * 24 * $days;
+
+if (isset($_GET['path'])) {
+    chdir($_GET['path']);
+}
+
+$files = array();
+
+$out = do_dir('.');
+sort($out);
+foreach ($out as $file) {
+    if (filemtime($file) > $cutoff) {
+        $files[] = $file;
+    }
+}
+
+if (!empty($_GET['zip'])) {
+    if (count($files) == 0) {
+        exit('No files');
+    }
+
+    header('Content-type: application/octet-stream');
+    $h = 'Content-Disposition: attachment;
+        filename="new_files.zip"';
+    header($h);
+
+    $cmd = 'zip new_files.zip';
+    foreach ($files as $file) {
+        $cmd .= ' ' . escapeshellarg($file);
+    }
+    shell_exec($cmd);
+
+    $file_size = filesize('new_files.zip');
+    $myfile = fopen('new_files.zip', 'rb');
+    $i = 0;
+    while ($i < $file_size) {
+        $content = fread($myfile, min($file_size - $i, 1048576));
+        echo $content;
+        $len = strlen($content);
+        if ($len == 0) {
+            break;
+        }
+        $i += $len;
+    }
+    fclose($myfile);
+
+    unlink('new_files.zip');
+
+    exit();
+}
+
+foreach ($files as $file) {
+    echo $file . chr(10);
+}
+
+echo 'Done; set &zip=1 to download a zip file';
+
+if (!empty($_GET['self_destruct']) {
+    unlink('find_new_files.php');
+}
+
+function do_dir($dir)
+{
+    $out = array();
+    $_dir = ($dir == '') ? '.' : $dir;
+    $dh = opendir($_dir);
+    if ($dh) {
+        while (($file = readdir($dh)) !== false) {
+            if ($file{0} != '.') {
+                if (is_file($_dir . '/' . $file)) {
+                    $out[] = $_dir . '/' . $file;
+                } elseif (is_dir($_dir . '/' . $file)) {
+                    $_under = $dir .
+                        (($dir != '') ? '/' : '') .
+                        $file;
+                    $_out = do_dir($_under);
+                    $out = array_merge($out, $_out);
+                }
+            }
+        }
+    }
+    return $out;
+}
+[/codebox]
+|-
+!
+! [left][i]Uploading[/i][/left]
+!
+|-
+! {$INC,step_num}{$GET,step_num}
+| Put a copy of [tt]bigdump.php[/tt] into the [tt]_temp[/tt] folder and configure it for the live database
+| [url="http://www.ozerov.de/bigdump/"]http://www.ozerov.de/bigdump/[/url]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Upload a zip of the files into a [tt]_new[/tt] folder, being careful to not include the [tt].git[/tt] folder in the zip
+| If some upload directories are too big, omit them and resolve this by moving back the old ones from the live server.
+For a further level of professionalism you may choose to deploy using your git repository rather than a zip file, if so push git up to a shared repository (e.g. github or bitbucket) and do a pull from the server, rather than uploading and extracting a zip.
+|-
+! {$INC,step_num}{$GET,step_num}
+| Extract the zip live on the server (control panel file managers can do this, or a simple custom PHP script)
+| [codebox="PHP"]
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2017
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+if (!isset($_GET['file'])) {
+    exit('Need \'file\' parameter (filename of the file to unzip)');
+}
+
+$filename = $_GET['file'];
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
+$zip = new ZipArchive;
+$res = $zip->open(dirname(__FILE__) . '/' . $filename);
+if ($res === true) {
+    $zip->extractTo('.');
+    $zip->close();
+    echo 'done';
+} else {
+    echo 'failed ';
+    switch ($res) {
+        case ZIPARCHIVE::ER_EXISTS:
+            echo 'ER_EXISTS';
+            break;
+
+        case ZIPARCHIVE::ER_INCONS:
+            echo 'ER_INCONS';
+            break;
+
+        case ZIPARCHIVE::ER_INVAL:
+            echo 'ER_INVAL';
+            break;
+
+        case ZIPARCHIVE::ER_MEMORY:
+            echo 'ER_MEMORY';
+            break;
+
+        case ZIPARCHIVE::ER_NOENT:
+            echo 'ER_NOENT';
+            break;
+
+        case ZIPARCHIVE::ER_NOZIP:
+            echo 'ER_NOZIP';
+            break;
+
+        case ZIPARCHIVE::ER_OPEN:
+            echo 'ER_OPEN';
+            break;
+
+        case ZIPARCHIVE::ER_READ:
+            echo 'ER_READ';
+            break;
+
+        case ZIPARCHIVE::ER_SEEK:
+            echo 'ER_SEEK';
+            break;
+    }
+}
+[/codebox]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Run bigdump
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Delete the [tt]_temp[/tt] folder and the zip file
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Amend [tt]_config.php[/tt] live to remove your temporary details, and possibly also add a [tt]backdoor_ip[/tt] line
+| [code="PHP"]
+$SITE_INFO['backdoor_ip'] = 'TODO';
+[/code]
+[box="Smarter configuration management"]
+If you want to have the exact same configuration file running across multiple machines, you can code in varying details using a [tt]switch[/tt] statement...
+[code="PHP"]
+switch (gethostname()) {
+	...
+}
+[/code]
+[/box]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Set file permissions on live if necessary
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Get the client to test out of the [tt]_new[/tt] folder, if appropriate (in which case you'll need to temporarily set the [tt]base_url[/tt] setting in [tt]_config.php[/tt])
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Move the old files on server into an [tt]_old[/tt] folder
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Move files down from [tt]_new[/tt] folder, changing [tt]base_url[/tt] setting in [tt]_config.php[/tt] back to normal if we changed it in step {$SUBTRACT,{$GET,step_num},2}
+|
+|-
+! {$INC,step_num}{$GET,step_num}
+| Final live testing
+|
+|-
+!
+! [left][i]Customer interfacing[/i][/left]
+!
+|-
+! {$INC,step_num}{$GET,step_num}
+| Contact the website owner with whatever you need to say, including details about old files and database tables
+| [quote]
+Your site has now been updated, the changes are live.
+
+I have left a copy of your old site files under the ""_old"" folder.
+Additionally, your old database tables are still in the database using the ""ocp_"" table prefix. The new database tables use the ""cms_"" table prefix.
+
+I have granted my IP address administrative access so I can quickly run administrative tasks should I need to. Please let me know if you would like this to be removed.
+[/quote]
+|-
+! {$INC,step_num}{$GET,step_num}
+| Charge the website owner for the work
+|
+|}
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_upgrade"]Performing an upgrade[/page]
+ - [page="_SEARCH:sup_site_cloning"]Cloning your site[/page]
+
+{$SET,tutorial_tags,Upgrading,core_upgrader,Maintenance,expert}{$SET,tutorial_add_date,Apr 2017}{$SET,tutorial_summary,A professional process for updating a customer website.}[block]main_tutorial_rating[/block]

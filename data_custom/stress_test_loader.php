@@ -15,6 +15,9 @@
 
 /*EXTRA FUNCTIONS: gc_enable*/
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -79,7 +82,7 @@ function do_work()
     require_code('cns_members_action');
     require_code('notifications');
     for ($i = $GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        $member_id = cns_make_member(uniqid(''), uniqid('', true), uniqid('', true) . '@example.com', array(), intval(date('d')), intval(date('m')), intval(date('Y')), array(), null, null, 1, null, null, '', null, '', 0, 0, 1, '', '', '', 1, 1, null, 1, 1, null, '', false);
+        $member_id = cns_make_member(uniqid('', false), uniqid('', true), uniqid('', true) . '@example.com', array(), intval(date('d')), intval(date('m')), intval(date('Y')), array(), null, null, 1, null, null, '', null, '', 0, 0, 1, '', '', '', 1, 1, null, 1, 1, null, '', false);
         add_author(random_line(), '', $member_id, random_text(), random_text());
 
         enable_notifications('cns_topic', 'forum:' . strval(db_get_first_id()), $member_id);
@@ -118,7 +121,7 @@ function do_work()
     require_code('banners');
     require_code('banners2');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        add_banner(uniqid(''), get_logo_url(), random_line(), random_text(), '', 100, get_base_url(), 3, '', BANNER_PERMANENT, null, db_get_first_id() + 1, 1);
+        add_banner(uniqid('', false), get_logo_url(), random_line(), random_text(), '', 100, get_base_url(), 3, '', BANNER_PERMANENT, null, db_get_first_id() + 1, 1);
     }
     echo 'done banner stuff' . "\n";
 
@@ -130,7 +133,7 @@ function do_work()
     require_code('files');
     require_code('files2');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        $file = uniqid('');
+        $file = uniqid('', false);
         /*$path = get_custom_file_base() . '/site/pages/comcode_custom/' . fallback_lang() . '/' . $file . '.txt';
         cms_file_put_contents_safe($path, random_text(), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);*/
         $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
@@ -155,7 +158,7 @@ function do_work()
     require_code('zones2');
     require_code('abstract_file_manager');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)'); $i < min($num_wanted, 1000/* lets be somewhat reasonable! */); $i++) {
-        actual_add_zone(uniqid(''), random_line(), 'start', random_line(), 'default', 0);
+        actual_add_zone(uniqid('', false), random_line(), 'start', random_line(), 'default', 0);
     }
     echo 'done zone stuff' . "\n";
 
@@ -287,10 +290,10 @@ function do_work()
 
     // galleries under a subcategory
     require_code('galleries2');
-    $xsubcat_id = uniqid('');
+    $xsubcat_id = uniqid('', false);
     add_gallery($xsubcat_id, random_line(), random_text(), '', 'root');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        add_gallery(uniqid(''), random_line(), random_text(), '', $xsubcat_id);
+        add_gallery(uniqid('', false), random_line(), random_text(), '', $xsubcat_id);
     }
     // images
     require_code('galleries2');
@@ -424,7 +427,7 @@ function do_work()
     require_code('catalogues2');
     $root_id = db_get_first_id();
     for ($i = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        $catalogue_name = uniqid('');
+        $catalogue_name = uniqid('', false);
         actual_add_catalogue($catalogue_name, random_line(), random_text(), mt_rand(0, 3), 1, '', 30);
     }
     $catalogue_name = 'products';

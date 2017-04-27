@@ -187,6 +187,8 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/bottom_show_privacy_link.php',
             'sources/hooks/systems/config/bottom_show_sitemap_button.php',
             'sources/hooks/systems/config/bottom_show_top_button.php',
+            'sources/hooks/systems/config/dkim_private_key.php',
+            'sources/hooks/systems/config/dkim_selector.php',
             'sources/hooks/systems/config/crypt_ratchet.php',
             'sources/hooks/systems/config/cc_address.php',
             'sources/hooks/systems/config/security_token_exceptions.php',

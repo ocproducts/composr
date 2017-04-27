@@ -191,6 +191,9 @@ class Module_awards
         foreach ($award_types as $award_type_row) {
             require_code('content');
             $ob = get_content_object($award_type_row['a_content_type']);
+            if ($ob === null) {
+                continue;
+            }
             $info = $ob->info();
             if (is_null($info)) {
                 continue;

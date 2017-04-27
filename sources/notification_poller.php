@@ -414,7 +414,7 @@ function pt_to_xml($row)
     $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
 
     $just_post_row = db_map_restrict($row, array('id', 'p_post'));
-    $_message = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['SITE_DB']);
+    $_message = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
 
     $rendered = do_template('NOTIFICATION_PT_DESKTOP', array(
         '_GUID' => '624df70cf0cbb796c5d5ce1d18ae39f7',

@@ -32,6 +32,10 @@ The add icon brings up the add screen, which is a standard form in Composr. It c
 
 After being validated by the staff, your news post will be visible on the front page unless you choose to schedule for it to be only made visible on a certain date and time. If you chose for it to be in the 'personal category of myname', then it will also be available by clicking the 'Blog' link in your profile.
 
+[title="3"]Headers[/title]
+
+Don't create a primary header in the article content because the title of the news record will carry through for that automatically. If you do you'll find you have two headers.
+
 [title="2"]Editing and deleting news[/title]
 
 You can easily edit a news post from Content Management > News > Edit news.

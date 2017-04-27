@@ -13,6 +13,9 @@
  * @package    webdav
  */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -38,7 +41,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 // Workaround for MacOS slow-downs
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'PROPFIND') {
-    $filename = basename($_SERVER['SCRIPT_NAME']);
+    $filename = basename($_SERVER['REQUEST_URI']);
     $bad_files = array(
         '.ds_store',
         '.hidden',
@@ -60,9 +63,9 @@ if ($method == 'PROPFIND') {
     }
 }
 if ($method == 'GET' || $method == 'PROPFIND') {
-    $filename = basename($_SERVER['SCRIPT_NAME']);
+    $filename = basename($_SERVER['REQUEST_URI']);
     $bad_files = array(
-        '.DS_Store',
+        '.ds_store',
     );
     if (in_array(strtolower($filename), $bad_files)) {
         return;

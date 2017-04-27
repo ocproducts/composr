@@ -904,6 +904,8 @@ class Module_admin_setupwizard
         }
         send_http_output_ping();
 
+        disable_php_memory_limit();
+
         // Clear some caching (we do it early AND at the end, in case we fail part way through and the user comes back to an inconsistent state)
         $this->clear_caching();
 

@@ -155,6 +155,8 @@ function erase_comcode_cache()
 
     cms_profile_start_for('erase_comcode_cache');
 
+    reload_lang_fields(true);
+
     if (multi_lang_content()) {
         $sql = 'UPDATE ' . get_table_prefix() . 'translate';
         if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => 'translate', 'i_name' => 'decache')/*LEGACY*/)))) {
@@ -165,8 +167,8 @@ function erase_comcode_cache()
     } else {
         global $TABLE_LANG_FIELDS_CACHE;
         foreach ($TABLE_LANG_FIELDS_CACHE as $table => $fields) {
-            foreach (array_keys($fields) as $field) {
-                if (strpos($field, '__COMCODE') !== false) {
+            foreach ($fields as $field => $field_type) {
+                if (strpos($field_type, '__COMCODE') !== false) {
                     $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
                 }
             }
@@ -266,8 +268,9 @@ function erase_cached_language()
  * @param  boolean $preserve_some Whether to preserve CSS and JS files that might be linked to between requests
  * @param  ?array $only_templates Only erase specific templates with the following filename, excluding suffix(es) (null: erase all)
  * @param  ?string $raw_file_regexp The original template must contain a match for this regular expression (null: no restriction)
+ * @param  boolean $rebuild_some_deleted_files Whether to rebuild some files that are deleted (be very careful about this, it is high-intensity, and may break due to in-memory caches still existing)
  */
-function erase_cached_templates($preserve_some = false, $only_templates = null, $raw_file_regexp = null)
+function erase_cached_templates($preserve_some = false, $only_templates = null, $raw_file_regexp = null, $rebuild_some_deleted_files = false)
 {
     if ($only_templates === array()) {
         return; // Optimisation
@@ -408,7 +411,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                     }
 
                     // Recreate static files right away because of parallelism...
-                    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
+                    if ((!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($rebuild_some_deleted_files)) {
                         if ((!$preserve_some) && (!isset($rebuilt[$file_template_name]))) {
                             if (/*filter what we'll do due to memory limitation*/in_array($file_template_name, array('global.css', 'cns.css', 'forms.css', 'menu__dropdown.css', 'ajax.js', 'custom_globals.js', 'editing.js', 'global.js', 'modalwindow.js', 'posting.js', 'staff.js'))) {
                                 if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {

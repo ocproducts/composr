@@ -35,6 +35,9 @@ if ((!array_key_exists('type', $_GET)) && (file_exists('install_locked'))) {
 global $IN_MINIKERNEL_VERSION;
 $IN_MINIKERNEL_VERSION = true;
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -429,6 +432,11 @@ function step_1()
         if ((!file_exists(get_file_base() . '/themes/default/templates/ANCHOR.tpl')) && (file_exists(get_file_base() . '/themes/default/templates/anchor.tpl'))) {
             warn_exit(do_lang_tempcode('CORRUPT_FILES_LOWERCASE'));
         }
+    }
+
+    // Github downloads should not be used directly
+    if (file_exists(get_file_base() . '/_tests')) {
+        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => 'You appear to be installing via the official github repository. This is not intended for end-users and will lead to a bloated insecure site. You should use an official package from the Composr download page.')));
     }
 
     // Language selection...
@@ -899,7 +907,7 @@ function step_4()
     $webdir_stub = $dr_parts[count($dr_parts) - 1];
 
     // If we have a host where the FTP is two+ levels down (often when we have one FTP covering multiple virtual hosts), then this "last component" rule would be insufficient; do a search through for critical strings to try and make a better guess
-    $special_root_dirs = array('public_html', 'www', 'webroot', 'httpdocs', 'wwwroot');
+    $special_root_dirs = array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents');
     $webdir_stub = $dr_parts[count($dr_parts) - 1];
     foreach ($dr_parts as $i => $part) {
         if (in_array($part, $special_root_dirs)) {
@@ -2005,6 +2013,8 @@ function step_5_core()
         'a_last_downloaded_time' => '?INTEGER',
         'a_add_time' => 'INTEGER'
     ));
+    $GLOBALS['SITE_DB']->create_index('attachments', 'ownedattachments', array('a_member_id'));
+    $GLOBALS['SITE_DB']->create_index('attachments', 'attachmentlimitcheck', array('a_add_time'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('attachment_refs');
     $GLOBALS['SITE_DB']->create_table('attachment_refs', array(
@@ -2013,8 +2023,6 @@ function step_5_core()
         'r_referer_id' => 'ID_TEXT',
         'a_id' => 'AUTO_LINK'
     ));
-    $GLOBALS['SITE_DB']->create_index('attachments', 'ownedattachments', array('a_member_id'));
-    $GLOBALS['SITE_DB']->create_index('attachments', 'attachmentlimitcheck', array('a_add_time'));
 
     return do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c6b6d92c670b7f1b223798ace54102f9', 'SOMETHING' => do_lang_tempcode('PRIMARY_CORE_INSTALLED')));
 }

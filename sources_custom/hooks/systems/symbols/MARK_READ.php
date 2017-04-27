@@ -37,7 +37,9 @@ class Hook_symbol_MARK_READ
         // Cleanup stale data
         $cleanup_days = isset($param[2]) ? intval($param[2]) : 0;
         if (($cleanup_days != 0) && (mt_rand(0, 100) == 1/*Only do 1% of the time, for performance reasons*/)) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'content_read WHERE r_time<' . strval(time() - 60 * 60 * 24 * $cleanup_days));
+            if (!$GLOBALS['SITE_DB']->table_is_locked('content_read')) {
+                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'content_read WHERE r_time<' . strval(time() - 60 * 60 * 24 * $cleanup_days), 500/*to reduce lock times*/);
+            }
         }
 
         return ''; // Not output for this symbol ever

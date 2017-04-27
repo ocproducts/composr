@@ -157,9 +157,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
+        LOST_DISK_CONTENT
+        DESCRIPTION_LOST_DISK_CONTENT
         TICKETS_STAFF
         NO_CNS
         DOCS
+        EXPLANATION_WITH_DEFAULT
         PROJECT_SPONSORS
         PROJECT_SPONSORS_LABEL
         CONFIG_OPTION_complex_lists
@@ -206,11 +209,20 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_D
         PGE_R
         PGE_HASH
+        DKIM_PRIVATE_KEY
+        CONFIG_OPTION_dkim_private_key
+        DKIM_SELECTOR
+        CONFIG_OPTION_dkim_selector
+        _EMAIL
+        PHP_UPLOAD_SETTING_VERY_LOW
+        ADDING_THEME_IMAGE
+        DESCRIPTION_ADDING_THEME_IMAGE
         NO_SSL_SETUP
         ADD_NOTE_TITLE
         CONFIG_OPTION_points_RECOMMEND_SITE
         SUBSCRIPTION_CANCELLED_BODY
         SUBSCRIPTION_CANCELLED_SUBJECT
+        NO_ISSUES_FOUND
         ADBLOCKER
         VIEW_THUMBNAILS
         USER_ONLINE_TRACKING
@@ -293,7 +305,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACTIVITY_VALIDATE_VIDEO
         ADDING_CONTENT_IN_LANGUAGE
         ADDING_CONTENT_IN_LANGUAGE_STAFF
-        ADDING_THEME_IMAGE
         ADDITIONAL_ACCESS
         TICKET_ACTIVITY_BODY
         GUEST_TICKET_REPLY_LINK
@@ -1670,7 +1681,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHAT_TRANSITORY_ALERT_TIME
         CHAT_UNBAN
         CHECKLIST_INITIAL_TASK_CONTENT
-        CHECKLIST_INITIAL_TASK_DMOZ
         CHECKLIST_INITIAL_TASK_FAVICON
         CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS
         CHECKLIST_INITIAL_TASK_MAIL

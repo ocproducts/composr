@@ -89,7 +89,7 @@ function sitemap_script_loading()
 
     $max_recurse_depth = get_param_integer('max_recurse_depth', $requesting_root ? 1 : 2/*need children of requested level*/) + 1 /*So we know whether to show expansion option*/;
     $node = retrieve_sitemap_node(
-        $page_link,
+        ($page_link === null) ? '' : $page_link,
         /*$callback=*/null,
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,
@@ -110,8 +110,10 @@ function sitemap_script_loading()
     }
 
     // Mark parent nodes for pre-expansion (we guess a bit about what there may be, it doesn't matter if we guess some wrong ones)
-    echo "\n" . '<expand></expand>';
-    echo "\n" . '<expand>:</expand>';
+    if ($requesting_root) {
+        echo "\n" . '<expand></expand>';
+        echo "\n" . '<expand>:</expand>';
+    }
     if ((!is_null($default)) && ($default != '') && (strpos($default, ':') !== false)) {
         $parts = explode(':', $default);
         $buildup = '';
@@ -451,8 +453,7 @@ function _get_overridable_privileges_for_privilege_page($privilege_page)
         );
     }
 
-    require_code('zones2');
-    $_overridables = extract_module_functions_page(get_module_zone($privilege_page), $privilege_page, array('get_privilege_overrides'));
+    $_overridables = extract_module_functions_page(get_module_zone($privilege_page, 'modules', null, 'php', true, false), $privilege_page, array('get_privilege_overrides'));
     $overridable_privileges = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
     if (!is_array($overridable_privileges)) {
         $overridable_privileges = array();

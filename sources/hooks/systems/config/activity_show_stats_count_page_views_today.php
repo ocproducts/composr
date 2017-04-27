@@ -50,6 +50,10 @@ class Hook_config_activity_show_stats_count_page_views_today
      */
     public function get_default()
     {
+        if (intval(get_option('stats_store_time')) < 24) {
+            return null;
+        }
+
         return '0';
     }
 }

@@ -85,7 +85,11 @@ class Block_main_cns_involved_topics
         */
         $rows = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT p_topic_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_poster=' . strval($member_id_of) . $where_more . ' ORDER BY p_time DESC', $max, $start, false, true);
         if (count($rows) != 0) {
-            $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT p_topic_id) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_poster=' . strval($member_id_of) . $where_more, false, true);
+            if (get_bot_type() === null) {
+                $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT p_topic_id) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_poster=' . strval($member_id_of) . $where_more, false, true);
+            } else {
+                $max_rows = count($rows); // We don't want bots hogging resources on somewhere they don't need to dig into
+            }
 
             $moderator_actions = '';
             $has_topic_marking = has_delete_permission('mid', get_member(), $member_id_of, 'topics');

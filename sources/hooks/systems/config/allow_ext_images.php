@@ -34,7 +34,7 @@ class Hook_config_allow_ext_images
             'human_name' => 'ALLOW_EXT_IMAGES',
             'type' => 'tick',
             'category' => 'SITE',
-            'group' => 'EMAIL',
+            'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_allow_ext_images',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

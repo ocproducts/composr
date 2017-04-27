@@ -31,8 +31,8 @@ class Module_admin_cmsusers
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 2;
-        $info['locked'] = true;
         $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 

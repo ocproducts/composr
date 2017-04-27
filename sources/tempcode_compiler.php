@@ -479,7 +479,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $s_escaped .= strval($esc);
                                 }
                                 if (($s_escaped === strval(ENTITY_ESCAPED)) && (!$GLOBALS['XSS_DETECT'])) {
-                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?htmlspecialchars(' . $temp . ',ENT_QUOTES | ENT_SUBSTITUTE,get_charset()):' . $temp . ')';
+                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?@htmlspecialchars(' . $temp . ',ENT_QUOTES | ENT_SUBSTITUTE,get_charset()):' . $temp . ')';
                                 } else {
                                     if ($s_escaped === strval(ENTITY_ESCAPED)) {
                                         $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?apply_tempcode_escaping_inline(array(' . $s_escaped . '),' . $temp . '):' . $temp . ')';
@@ -933,7 +933,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
         $_path2 = $path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp';
 
         require_code('files');
-        $data_to_write = '<' . '?php' . "\n" . $result->to_assembly($lang) . "\n" . '?' . '>';
+        $data_to_write = '<' . '?php' . "\n" . $result->to_assembly($lang) . "\n";
         cms_file_put_contents_safe($_path2, $data_to_write, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
     }
 

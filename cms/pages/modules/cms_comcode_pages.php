@@ -36,7 +36,7 @@ class Module_cms_comcode_pages
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
-        $info['locked'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -1110,9 +1110,18 @@ class Module_cms_comcode_pages
 
             $no_validation_support = !addon_installed('unvalidated');
 
+            $zone_start_pages = collapse_2d_complexity('zone_name', 'zone_default_page', $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page')));
+
             $menu_branches = $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_menu', 'i_parent', 'i_caption', 'i_url'), null, 'ORDER BY i_menu');
             $menu_branches_by_url = array();
             foreach ($menu_branches as $menu_branch) {
+                $matches = array();
+                if (preg_match('#^(\w*):$#', $menu_branch['i_url'], $matches) != 0) {
+                    if (isset($zone_start_pages[$matches[1]])) {
+                        $menu_branch['i_url'] .= $zone_start_pages[$matches[1]];
+                    }
+                }
+
                 if (!isset($menu_branches_by_url[$menu_branch['i_url']])) {
                     $menu_branches_by_url[$menu_branch['i_url']] = array();
                 }

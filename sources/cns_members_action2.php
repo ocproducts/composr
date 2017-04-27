@@ -43,6 +43,7 @@ function member_get_csv_headings_extended()
     $headings = member_get_csv_headings();
     foreach ($cpfs as $i => $c) { // CPFs take precedence over normal fields of the same name
         $cpfs[$i]['_cf_name'] = get_translated_text($c['cf_name'], $GLOBALS['FORUM_DB']);
+        $cpfs[$i]['_cf_name'] = str_replace(',', (get_charset() == 'utf-8') ? (chr(hexdec('ef')) . chr(hexdec('b9')) . chr(hexdec('90'))) : '', $cpfs[$i]['_cf_name']); // Normal commas break sort_maps_by
         $headings[$cpfs[$i]['_cf_name']] = $i;
     }
 
@@ -53,7 +54,7 @@ function member_get_csv_headings_extended()
 
         $usergroup_subscription_rows = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('id', 's_title'));
         foreach ($usergroup_subscription_rows as $usergroup_subscription_row) {
-            $item_name = get_translated_text($usergroup_subscription_row['s_title']);
+            $item_name = get_translated_text($usergroup_subscription_row['s_title'], $GLOBALS['FORUM_DB']);
             $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_START_TIME') . ')'] = null;
             $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_TERM_START_TIME') . ')'] = null;
             $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_TERM_END_TIME') . ')'] = null;
@@ -1105,6 +1106,10 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         $update['m_validated_email_confirm_code'] = '';
         if (addon_installed('unvalidated')) {
             $update['m_validated'] = $validated;
+
+            if (($validated == 1) && ($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_validated') == 0)) {
+                $update['m_join_time'] = time(); // So welcome mails go out correctly
+            }
         }
     }
     if (!is_null($highlighted_name)) {

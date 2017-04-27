@@ -36,7 +36,7 @@ class Module_admin_menus
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 2;
-        $info['locked'] = true;
+        $info['locked'] = false;
         return $info;
     }
 

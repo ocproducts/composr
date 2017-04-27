@@ -506,15 +506,16 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
         }
 
         // If it's a theme, make a addon_install_code.php for the theme to restore images_custom mappings
-        if ((substr($val, 0, 7) == 'themes/') && (substr($val, 0, 15) == 'themes/default/') && (substr($val, 0, 12) == 'themes/admin/') && (substr($val, -10) == '/theme.ini')) {
+        if ((substr($val, 0, 7) == 'themes/') && (substr($val, 0, 15) != 'themes/default/') && (substr($val, 0, 12) != 'themes/admin/') && (substr($val, -10) == '/theme.ini')) {
             $theme = substr($val, 7, strpos($val, '/theme.ini') - 7);
 
             $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => $theme));
             $data = '<' . '?php' . "\n";
             foreach ($images as $image) {
-                $data .= '$GLOBALS[\'SITE_DB\']->query_insert(\'theme_images\',array(\'id\'=>\'' . db_escape_string($image['id']) . '\',\'theme\'=>\'' . db_escape_string($image['theme']) . '\',\'path\'=>\'' . db_escape_string($image['path']) . '\',\'lang\'=>\'' . db_escape_string($image['lang']) . '\'),false,true);' . "\n";
+                if (($image['path'] != '') && ($image['path'] != find_theme_image($image['id'], true, true, 'default'))) {
+                    $data .= '$GLOBALS[\'SITE_DB\']->query_insert(\'theme_images\', array(\'id\' => \'' . db_escape_string($image['id']) . '\', \'theme\' => \'' . db_escape_string($image['theme']) . '\', \'path\' => \'' . db_escape_string($image['path']) . '\', \'lang\' => \'' . db_escape_string($image['lang']) . '\'), false, true);' . "\n";
+                }
             }
-            $data .= "?" . ">\n";
             tar_add_file($tar, 'addon_install_code.php', $data, 0444, time());
         }
     }
@@ -575,6 +576,10 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
     $addon = $info['name'];
 
     $was_already_installed = addon_installed($addon, true);
+
+    require_code('developer_tools');
+    destrictify();
+    set_mass_import_mode();
 
     // Extract files
     $directory = tar_get_directory($tar);
@@ -742,6 +747,10 @@ function uninstall_addon($addon, $clear_caches = true)
     require_code('zones2');
     require_code('zones3');
     require_code('abstract_file_manager');
+
+    require_code('developer_tools');
+    destrictify();
+    set_mass_import_mode();
 
     // Remove addon info from database, modules, blocks, and files
     uninstall_addon_soft($addon);

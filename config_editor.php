@@ -13,6 +13,9 @@
  * @package    core
  */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -165,7 +168,7 @@ function do_access($given_password)
         'master_password' => 'If you wish the password to be changed, enter a new password here. Otherwise leave blank.',
 
         'base_url' => 'A critical option, that defines the URL of the site (no trailing slash). You can blank this out for auto-detection, but only do this during development -- if you do it live and somehow multiple domains can get to your site, random errors will occur due to caching problems.',
-        'domain' => 'The domain that e-mail addresses are registered on. This applies only to the Point Store and may be ignored by most.',
+        'domain' => 'The domain that e-mail addresses are registered on, and possibly other things. This is only used by some very select parts of the system. It may be different from the domain in the base-URL due to not having "www." on for example.',
         'default_lang' => 'The default language used on the site (language codename form, of subdirectory under lang/).',
         'block_url_schemes' => 'Whether to block the URL Scheme (mod_rewrite) option. Set this to 1 if you turned on URL Schemes and find your site no longer works.',
         'on_msn' => 'Whether this is a site on an Conversr multi-site-network (enable for to trigger URLs to avatars and photos to be absolute).',
@@ -176,12 +179,12 @@ function do_access($given_password)
         'db_type' => '<em>Database:</em> The database driver to use (code of PHP file in sources[_custom]/database/). Only MySQL supported officially.',
         'table_prefix' => '<em>Database:</em> The table prefix for Composr\'s database tables.',
         'db_site' => '<em>Database:</em> The database name of the Composr database.',
-        'db_site_host' => '<em>Database:</em> The database hosting computer name (usually localhost) for the Composr database.',
+        'db_site_host' => '<em>Database:</em> The database hosting computer name (usually localhost) for the Composr database. You can also include a port name here if you\'re on a non-default port (<kbd>host:port</kbd>), but if doing so you must not use <kbd>localhost</kbd> as the host unless the local socket/pipe connects to the correct MySQL server.',
         'db_site_user' => '<em>Database:</em> The database username for Composr to connect to the Composr database with.',
         'db_site_password' => '<em>Database:</em> The password for the Composr database username.',
         'cns_table_prefix' => '<em>Database:</em> The table prefix for Conversr, if Conversr is being used.',
         'db_forums' => '<em>Database:</em> The database name for the forum driver to tie in to.',
-        'db_forums_host' => '<em>Database:</em> The database hosting computer name (usually localhost) for the forum driver to tie in to.',
+        'db_forums_host' => '<em>Database:</em> The database hosting computer name for the forum driver to tie in to. See <kbd>db_site_host</kbd>.',
         'db_forums_user' => '<em>Database:</em> The database username for the forum driver to connect to the forum database with.',
         'db_forums_password' => '<em>Database:</em> The password for the forum database username.',
         'use_persistent' => '<em>Database:</em> Whether to use persistent database connections (most shared webhosts do not like these to be used).',

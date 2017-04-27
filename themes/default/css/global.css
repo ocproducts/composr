@@ -53,7 +53,7 @@ In mobile mode:
 */
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
-{$THEMEWIZARD_COLOR,#94979d,seed,100% 426aa9}
+{$THEMEWIZARD_COLOR,#426aa9,seed,100% 426aa9}
 {$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 426aa9*/
@@ -502,7 +502,7 @@ iframe {
 /*{+END}*/
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
-::selection {
+.website_body ::selection {
 	background: {$GET,yellow_highlight_background};
 }
 comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
@@ -776,10 +776,10 @@ header h1 {
 /*{+START,CSS_MODE,desktop}*/
 	.global_breadcrumbs {
 		/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
-			text-align: {!en_right};
+			text-align: {!en_right}; /* Goes on own line in fixed width mode, due to lack of space */
 		/*{+END}*/
 		/*{+START,IF,{$NOT,{$THEME_OPTION,fixed_width}}}*/
-			float: {!en_right};
+			float: {!en_right}; /* Sits beside title on non-fixed width */
 		/*{+END}*/
 		margin-left: 0.5em;
 	}
@@ -1503,6 +1503,7 @@ div.red_alert, p.red_alert, .inline_wip_message {
 div.red_alert, p.red_alert {
 	border: 1px solid {$GET,light_error_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	overflow: hidden;
 }
 .inline_wip_message {
 	border: 1px solid {$GET,dark_border};
@@ -2418,6 +2419,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	z-index: 10000;
 	{$BETA_CSS_PROPERTY,opacity: 0.9;}
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	min-width: 6em;
 }
 .tooltip_ownlayout {
 	padding: 0.5em;
@@ -2426,7 +2428,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
 }
-.tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
+.tooltip_ownlayout, .tooltip_nolayout th.de_th, .tooltip_nolayout td {
 	background-color: {$GET,area_faded_background};
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 }
@@ -2645,6 +2647,9 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
+.compacted_subbox_stream>.raw_ajax_grow_spot>h3 {
+	margin: 1em 5px;
+}
 .compacted_subbox_stream .box {
 	border-top: 1px dotted {$GET,standard_border} !important;
 	border-left: 0;
@@ -2856,10 +2861,12 @@ div.ajax_loading, p.ajax_loading {
 /*{+START,CSS_MODE,mobile}*/
 	.lined_up_boxes .right {
 		width: 100%;
+		float: none;
 	}
 
 	.lined_up_boxes .left {
 		width: 100%;
+		float: none;
 	}
 /*{+END}*/
 
@@ -3717,6 +3724,16 @@ ul.buttons_group, ul.associated_links_block_group {
 	margin-right: 0 !important;
 }
 
+.fields_set_contents .constrain_field, .fields_set_contents .wide_field {
+	max-width: 500px;
+}
+.fields_set_contents .constrain_field, .fields_set_contents input .wide_field {
+	display: inline;
+}
+.constrain_field + .constrain_field {
+	margin: 0.25em 0;
+}
+
 /*
 =========================
 =========Buttons=========
@@ -3824,6 +3841,9 @@ body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.
 
 .proceed_button {
 	text-align: center;
+}
+.proceed_button:last-child {
+	margin-bottom: 0;
 }
 div.proceed_button_left {
 	text-align: {!en_left};
@@ -4527,8 +4547,15 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 
 /* .comcode_quote is used where the [quote] tag is parsed. */
 /* .comcode_code is used where the [code] tag is parsed. */
+.email_body .comcode_quote, .email_body .comcode_code {
+	margin: 1em 0;
+}
 .comcode_quote, .comcode_code {
 	margin: 1em;
+
+	/* Takes off default from email clients */
+	border: 0 !important;
+	padding: 0 !important;
 
 	/* To prevent horizontal overlapping with floats */
 	outline: 0;
@@ -4901,6 +4928,31 @@ a[rel="lightbox"] {
 	}
 /*{+END}*/
 
+/* Wrap video code with <div class="responsive_video">...</div> if you want it responsive; jwplayer is doing this by default using its own JS though */
+.responsive_video video {
+	max-width: 100%;
+	height: auto;
+}
+
+/* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
+/*{+START,CSS_MODE,mobile}*/
+	.youtube_player {
+		overflow: hidden;
+		width: 100%;
+		position: relative;
+		padding-bottom: 56.25%;
+		padding-top: 25px;
+		height: 0;
+	}
+	.youtube_player iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+/*{+END}*/
+
 /*
 =========================
 ====Link type display====
@@ -5102,6 +5154,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 .overlay {
 	overflow: visible;
 	border: 0;
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 }
 
 .overlay_close_button {
@@ -5159,6 +5212,17 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	content: "\00b7" !important;
 	padding-right: 0.5em;
 	vertical-align: middle;
+}
+
+/*
+=========================
+======E-mail rules=======
+=========================
+*/
+
+.email_logo img {
+	max-width: 100%;
+	height: auto;
 }
 
 /*
