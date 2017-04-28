@@ -263,7 +263,9 @@
         $cms.dom.$('#page_only').addEventListener('dblclick', doubleClick);
 
         window.current_selection = '';
-        window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.$KEEP() + '&start_links=1', null, '', false, null, false, true);
+        $cms.requireJavascript('tree_list').then(function () {
+            window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.$KEEP() + '&start_links=1', null, '', false, null, false, true);
+        });
 
         function doubleClick() {
             if (!menuEditorWrapEl.classList.contains('docked')) {
@@ -602,7 +604,9 @@
             ajaxUrl += '&page_type=' + params.pageType;
         }
 
-        $cms.createTreeList(params.name, ajaxUrl, '', '', false, null, false, true);
+        $cms.requireJavascript('tree_list').then(function () {
+            $cms.ui.createTreeList(params.name, ajaxUrl, '', '', false, null, false, true);
+        });
 
         $cms.dom.on(container, 'change', '.js-input-page-link-chooser', function (e, input) {
             if (!params.asField) {

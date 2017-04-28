@@ -100,7 +100,6 @@ function init__global2()
     // Initialise some globals
     $JAVASCRIPTS_DEFAULT = array(
         'global' => true,
-        'core' => true,
         'modalwindow' => true,
         'custom_globals' => true
     );

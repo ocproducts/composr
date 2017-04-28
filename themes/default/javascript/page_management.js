@@ -14,7 +14,9 @@
             delete_url = params.deleteUrl,
             stats_url = params.statusUrl;
 
-        window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=0&label_content_types=1&keep_full_structure=1' + $cms.$KEEP(), null, '', false, null, true);
+        $cms.requireJavascript('tree_list').then(function () {
+            window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=0&label_content_types=1&keep_full_structure=1' + $cms.$KEEP(), null, '', false, null, true);
+        });
 
         $cms.dom.on(container, 'change', '.js-change-update-details-box', function (e, changed) {
             update_details_box(changed);

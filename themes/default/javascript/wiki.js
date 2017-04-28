@@ -3,7 +3,9 @@
 
     $cms.templates.wikiManageTreeScreen = function wikiManageTreeScreen(params, container) {
         if ($cms.dom.$('#tree_list__root_mtp_tree')) {
-            $cms.createTreeList('mtp_tree', 'data/ajax_tree.php?hook=choose_wiki_page' + $cms.$KEEP(), '', '');
+            $cms.requireJavascript('tree_list').then(function () {
+                $cms.ui.createTreeList('mtp_tree', 'data/ajax_tree.php?hook=choose_wiki_page' + $cms.$KEEP(), '', '');
+            });
         }
 
         $cms.dom.on(container, 'change', '.js-change-input-tree-update-children-value', function (e, input) {

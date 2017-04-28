@@ -196,7 +196,9 @@
 
         template_editor_clean_tabs();
 
-        window.sitemap = $cms.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + params.theme + $cms.$KEEP(), null, '', false, null, false, true);
+        $cms.requireJavascript('tree_list').then(function () {
+            window.sitemap = $cms.ui.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + params.theme + $cms.$KEEP(), null, '', false, null, false, true);
+        });
 
         window.setTimeout(function () {
             for (var i = 0, len = params.filesToLoad.length; i < len; i++) {

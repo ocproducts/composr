@@ -489,7 +489,9 @@
             opts = $cms.filter.url(params.options),
             multiSelect = !!params.multiSelect && (params.multiSelect !== '0');
 
-        $cms.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP(), rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
+        $cms.requireJavascript('tree_list').then(function () {
+            $cms.ui.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP(), rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
+        });
 
         $cms.dom.on(container, 'change', '.js-input-change-update-mirror', function (e, input) {
             var mirror = document.getElementById(name + '_mirror');
