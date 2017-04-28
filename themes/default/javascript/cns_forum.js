@@ -288,17 +288,5 @@
             row.classList.toggle('cns_off', !checkbox.checked);
         });
     };
-
-    // TODO: test if the new implementation in CnsForumTopicWrapper works and remove this
-    function mark_all_topics(event) {
-        var e = document.getElementsByTagName('input');
-        var i;
-        for (i = 0; i < e.length; i++) {
-            if ((e[i].type == 'checkbox') && (e[i].name.substr(0, 5) == 'mark_')) {
-                e[i].checked = !e[i].checked;
-                e[i].onclick(event);
-            }
-        }
-    }
 }(window.$cms));
 
