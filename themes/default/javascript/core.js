@@ -314,7 +314,7 @@
         }
 
         // Are we dealing with a touch device?
-        if ($cms.isTouchEnabled) {
+        if ($cms.isTouchEnabled()) {
             document.body.classList.add('touch_enabled');
         }
 
@@ -1675,7 +1675,7 @@
     function convert_tooltip(el) {
         var title = el.title;
 
-        if (!title || $cms.isTouchEnabled || el.classList.contains('leave_native_tooltip')) {
+        if (!title || $cms.isTouchEnabled() || el.classList.contains('leave_native_tooltip')) {
             return;
         }
 

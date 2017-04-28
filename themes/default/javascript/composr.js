@@ -375,27 +375,46 @@
 
         // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
         // Opera 8.0+
-
-            // Opera 8.0+
-        /**@member {boolean}*/
-        isOpera: (!!window.opr && !!window.opr.addons) || !!window.opera || (navigator.userAgent.includes(' OPR/')),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        isOpera: constant((!!window.opr && !!window.opr.addons) || !!window.opera || (navigator.userAgent.includes(' OPR/'))),
         // Firefox 1.0+
-        /**@member {boolean}*/
-        isFirefox: (window.InstallTrigger !== undefined),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        isFirefox: constant(window.InstallTrigger !== undefined),
         // At least Safari 3+: HTMLElement's constructor's name is HTMLElementConstructor
-        /**@member {boolean}*/
-        isSafari: internalName(window.HTMLElement) === 'HTMLElementConstructor',
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        isSafari: constant(internalName(window.HTMLElement) === 'HTMLElementConstructor'),
         // Internet Explorer 6-11
-        /**@member {boolean}*/
-        isIE: (/*@cc_on!@*/0 || (typeof document.documentMode === 'number')),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        isIE: constant(/*@cc_on!@*/0 || (typeof document.documentMode === 'number')),
         // Edge 20+
-        /**@member {boolean}*/
-        isEdge: !(/*@cc_on!@*/0 || (typeof document.documentMode === 'number')) && !!window.StyleMedia,
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        isEdge: constant(!(/*@cc_on!@*/0 || (typeof document.documentMode === 'number')) && !!window.StyleMedia),
         // Chrome 1+
-        /**@member {boolean}*/
-        isChrome: !!window.chrome && !!window.chrome.webstore,
-        /**@member {boolean}*/
-        isTouchEnabled: ('ontouchstart' in docEl),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        isChrome: constant(!!window.chrome && !!window.chrome.webstore),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        isTouchEnabled: constant('ontouchstart' in docEl),
 
         // Export useful stuff
         /**@method*/
@@ -5713,7 +5732,7 @@
             return;
         }
 
-        if (!have_links && $cms.isTouchEnabled) {
+        if (!have_links && $cms.isTouchEnabled()) {
             return; // Too erratic
         }
 
