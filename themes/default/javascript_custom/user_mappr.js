@@ -136,7 +136,7 @@
             google.maps.event.addListener(marker, 'click', (function (arg_marker, arg_member) {
                 return function () {
                     //{$,Dynamically load a specific members details only when their marker is clicked.}
-                    $cms.doAjaxRequest($cms.$BASE_URL + '/data_custom/get_member_tooltip.php?member=' + arg_member + $cms.keepStub(), function (reply) {
+                    $cms.doAjaxRequest($cms.$BASE_URL() + '/data_custom/get_member_tooltip.php?member=' + arg_member + $cms.keepStub(), function (reply) {
                         var content = reply.querySelector('result').firstChild.nodeValue;
                         if (content != '') {
                             info_window.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');

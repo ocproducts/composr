@@ -758,7 +758,7 @@ function receive_compiled_css(ajax_result_frame, file, win) {
                 var links = win.document.getElementsByTagName('link');
                 for (var i = 0; i < links.length; i++) {
                     e = links[i];
-                    if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.$LANG + '/' + doing_css_for) != -1)) {
+                    if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.$LANG() + '/' + doing_css_for) != -1)) {
                         e.parentNode.removeChild(e);
                     }
                 }

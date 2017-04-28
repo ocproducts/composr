@@ -8,7 +8,7 @@
 
 function wysiwyg_on() {
     var cookie = $cms.readCookie('use_wysiwyg');
-    return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION.wysiwyg && !$cms.$MOBILE;
+    return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION.wysiwyg && !$cms.$MOBILE();
 }
 
 function toggle_wysiwyg(name) {
@@ -349,7 +349,7 @@ function wysiwyg_editor_init_for(element, id) {
     /*== START WYSIWYG_SETTINGS.js ==*/
     // Carefully work out toolbar
     // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
-    var precision_editing = $cms.$IS_STAFF || (document.body.querySelectorAll('.comcode_button_box').length > 1);
+    var precision_editing = $cms.$IS_STAFF() || (document.body.querySelectorAll('.comcode_button_box').length > 1);
     var toolbar = [];
     if (precision_editing) {
         toolbar.push(['Source', '-']);
@@ -388,7 +388,7 @@ function wysiwyg_editor_init_for(element, id) {
         skin: 'kama',
         enterMode: window.CKEDITOR.ENTER_BR,
         uiColor: wysiwyg_color,
-        ocpTheme: $cms.$THEME,
+        ocpTheme: $cms.$THEME(),
         fontSize_sizes: '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
         removePlugins: '',
         extraPlugins: 'showcomcodeblocks,imagepaste,spellchecktoggle' + (use_composr_toolbar ? ',composr' : ''),
@@ -405,7 +405,7 @@ function wysiwyg_editor_init_for(element, id) {
         contentsCss: page_stylesheets,
         cssStatic: css,
         startupOutlineBlocks: true,
-        language: $cms.$LANG ? $cms.$LANG.toLowerCase() : 'en',
+        language: $cms.$LANG() ? $cms.$LANG().toLowerCase() : 'en',
         emailProtection: false,
         resize_enabled: true,
         width: (element.offsetWidth - 15),
@@ -968,7 +968,7 @@ function show_upload_syndication_options(name, syndication_json, no_quota) {
                     //e.checked=false;	Better to assume success, not all oAuth support callback
                     var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.keepStub();
 
-                    if ($cms.$MOBILE) {
+                    if ($cms.$MOBILE()) {
                         window.open(url);
                     } else {
                         $cms.ui.open(url, null, 'width=960;height=500', '_top');

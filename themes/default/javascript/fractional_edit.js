@@ -66,8 +66,8 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             break;
     }
     input.style.position = 'absolute';
-    input.style.left = $cms.$MOBILE ? '0px' : (x + 'px');
-    input.style.width = $cms.$MOBILE ? ($cms.dom.getWindowWidth() + 'px') : (width + 'px');
+    input.style.left = $cms.$MOBILE() ? '0px' : (x + 'px');
+    input.style.width = $cms.$MOBILE() ? ($cms.dom.getWindowWidth() + 'px') : (width + 'px');
     input.style.top = (y + 8) + 'px';
     input.style.margin = 0;
 

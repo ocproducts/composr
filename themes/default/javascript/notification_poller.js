@@ -151,7 +151,7 @@ function display_alert(notification) {
         title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
         var body = '';//notification.getAttribute('rendered'); Looks ugly
         if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
-            var notification_wrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.$SITE_NAME + '__' + id });
+            var notification_wrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.$SITE_NAME() + '__' + id });
             if (notification_wrapper) {
                 window.addEventListener('focus', function () {
                     notification_wrapper.close();

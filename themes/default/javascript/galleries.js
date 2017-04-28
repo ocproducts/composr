@@ -232,7 +232,7 @@
         }
 
         function preview_generator_mouseover(event) {
-            $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
+            $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL()) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
         }
 
         function preview_generator_mousemove(event) {

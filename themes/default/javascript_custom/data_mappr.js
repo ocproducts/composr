@@ -208,7 +208,7 @@
                  var categoryIcon='{$BASE_URL;/}/themes/default/images_custom/map_icons/catalogue_category_'+data[i][3]+'.png';
                  marker_options.icon=categoryIcon;}*/
                 if (data[i][6]==1) {
-                    var starIcon= $cms.$BASE_URL + '/themes/default/images_custom/star_highlight.png';
+                    var starIcon= $cms.$BASE_URL() + '/themes/default/images_custom/star_highlight.png';
                     marker_options.icon = starIcon;
                 }
 

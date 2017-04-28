@@ -47,7 +47,7 @@
             textarea.classList.add('fade_input');
         },
         textareaKeyup: function (e, textarea) {
-            if (!$cms.$MOBILE) {
+            if (!$cms.$MOBILE()) {
                 $cms.manageScrollHeight(textarea);
             }
             this.maintainCharCount();

@@ -66,7 +66,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP()), 'emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         }
     });
 
@@ -169,7 +169,7 @@
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-textarea-chat-post', function (e, textarea) {
-            if (!$cms.$MOBILE) {
+            if (!$cms.$MOBILE()) {
                 $cms.manageScrollHeight(textarea);
             }
 
@@ -184,7 +184,7 @@
     };
 
     $cms.templates.chatLobbyScreen = function chatLobbyScreen(params, container) {
-        if ($cms.$IS_GUEST) {
+        if ($cms.$IS_GUEST()) {
             return;
         }
 
@@ -316,7 +316,7 @@
         var key = strVal(params.key),
             memberId = strVal(params.memberId);
 
-        if (!$cms.$IS_HTTPAUTH_LOGIN) {
+        if (!$cms.$IS_HTTPAUTH_LOGIN()) {
             var btnSubmitId = 'upload_' + params.key;
 
             if (memberId) {

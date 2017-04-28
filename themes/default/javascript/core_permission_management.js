@@ -8,7 +8,7 @@
 
         window.column_color = params.color;
         window.usergroup_titles = params.usergroups;
-        window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.$KEEP, null, '', true);
+        window.sitemap = $cms.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.$KEEP(), null, '', true);
     }
 
     $cms.inherits(PermissionsTreeEditorScreen, $cms.View, {

@@ -994,7 +994,7 @@ function handle_form_saving(event, element, force) {
         // Save remotely
         if (navigator.onLine) {
 
-            if ($cms.$DEV_MODE) {
+            if ($cms.$DEV_MODE()) {
                 console.log('Doing AJAX auto-save');
             }
 
@@ -1034,13 +1034,13 @@ function _handle_form_saving(event, element, force) {
 
     // Save locally
     if (window.localStorage !== undefined) {
-        if ($cms.$DEV_MODE) {
+        if ($cms.$DEV_MODE()) {
             console.log('Doing local storage auto-save for ' + element_name + ' (' + autosave_name + ')');
         }
 
         try {
             localStorage.setItem(autosave_name, value);
-        } catch (e) {}; // Could have NS_ERROR_DOM_QUOTA_REACHED
+        } catch (e) {} // Could have NS_ERROR_DOM_QUOTA_REACHED
     }
 
     return [autosave_name, value];

@@ -13,7 +13,7 @@
             set_up_comcode_autocomplete('post', !!params.wysiwyg);
         });
 
-        if ($cms.$CONFIG_OPTION.enable_previews && $cms.$FORCE_PREVIEWS) {
+        if ($cms.$CONFIG_OPTION.enable_previews && $cms.$FORCE_PREVIEWS()) {
             this.btnSubmit.style.display = 'none';
         }
 
@@ -106,7 +106,7 @@
         },
 
         openEmoticonChooserWindow: function () {
-            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
+            $cms.ui.open($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,emoticons}?field_name=post' + $cms.$KEEP()), 'site_emoticon_chooser', 'width=300,height=320,status=no,resizable=yes,scrollbars=no');
         },
 
         clickBtnSubmit: function (e, button) {
@@ -126,7 +126,7 @@
 
         doFormPreview: function (e) {
             var form = this.form,
-                url = $cms.maintainThemeInLink($cms.$PREVIEW_URL + $cms.$KEEP);
+                url = $cms.maintainThemeInLink($cms.$PREVIEW_URL() + $cms.$KEEP());
 
             if ($cms.form.doFormPreview(e, form, url)) {
                 form.submit();

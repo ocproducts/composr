@@ -84,7 +84,7 @@
 
                     if ($cms.$VALUE_OPTION.js_keep_params) {
                         // Keep parameters need propagating
-                        if (anchor.href && anchor.href.startsWith($cms.$BASE_URL_S)) {
+                        if (anchor.href && anchor.href.startsWith($cms.$BASE_URL_S())) {
                             anchor.href += keep_stub_with_context(anchor.href);
                         }
                     }
@@ -126,7 +126,7 @@
 
                     if ($cms.$VALUE_OPTION.js_keep_params) {
                         /* Keep parameters need propagating */
-                        if (form.action && form.action.startsWith($cms.$BASE_URL_S)) {
+                        if (form.action && form.action.startsWith($cms.$BASE_URL_S())) {
                             form.action += keep_stub_with_context(form.action);
                         }
                     }
@@ -243,7 +243,7 @@
 
         /*START JS from HTML_HEAD.tpl*/
         // Google Analytics account, if one set up
-        if ($cms.$CONFIG_OPTION.google_analytics.trim() && !$cms.$IS_STAFF && !$cms.$IS_ADMIN) {
+        if ($cms.$CONFIG_OPTION.google_analytics.trim() && !$cms.$IS_STAFF() && !$cms.$IS_ADMIN()) {
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function () {
@@ -268,7 +268,7 @@
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
         if ($cms.$CONFIG_OPTION.cookie_notice && ($cms.$RUNNING_SCRIPT() === 'index')) {
             window.cookieconsent_options = {
-                'message': $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME),
+                'message': $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME()),
                 'dismiss': '{!INPUTSYSTEM_OK;}',
                 'learnMore': '{!READ_MORE;}',
                 'link': '{$PAGE_LINK;,:privacy}',
@@ -303,8 +303,8 @@
             } catch (ignore) {}
         }
 
-        if (($cms.$ZONE === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
-            var page = $cms.filter.url($cms.$PAGE);
+        if (($cms.$ZONE() === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
+            var page = $cms.filter.url($cms.$PAGE());
             $cms.loadSnippet('background_template_compilation&page=' + page, '', function () {
             });
         }
@@ -334,7 +334,7 @@
         if ($cms.$CONFIG_OPTION.is_on_timezone_detection) {
             if (!window.parent || (window.parent === window)) {
                 $cms.setCookie('client_time', (new Date()).toString(), 120);
-                $cms.setCookie('client_time_ref', $cms.$FROM_TIMESTAMP, 120);
+                $cms.setCookie('client_time_ref', $cms.$FROM_TIMESTAMP(), 120);
             }
         }
 
@@ -400,7 +400,7 @@
             helperPanel.style.minHeight = '0';
         });
 
-        if ($cms.$IS_STAFF) {
+        if ($cms.$IS_STAFF()) {
             this.loadStuffStaff()
         }
     };
@@ -707,7 +707,7 @@
 
         // Implementation for textarea[data-textarea-auto-height]
         textareaAutoHeight: function (e, textarea) {
-            if ($cms.$MOBILE) {
+            if ($cms.$MOBILE()) {
                 return;
             }
 
@@ -856,7 +856,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.$JS_ON || $cms.usp.get('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
+            if ($cms.$JS_ON() || $cms.usp.get('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
                 return;
             }
 
@@ -874,7 +874,7 @@
 
             append += 'keep_has_js=1';
 
-            if ($cms.$DEV_MODE) {
+            if ($cms.$DEV_MODE()) {
                 append += '&keep_devtest=1';
             }
 
@@ -885,14 +885,14 @@
         /* SOFTWARE CHAT */
         loadSoftwareChat: function () {
             var url = 'https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
-            if ($cms.$USERNAME !== 'admin') {
-                url += encodeURIComponent($cms.$USERNAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+            if ($cms.$USERNAME() !== 'admin') {
+                url += encodeURIComponent($cms.$USERNAME().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
             } else {
-                url += encodeURIComponent($cms.$SITE_NAME.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
+                url += encodeURIComponent($cms.$SITE_NAME().replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g, ''));
             }
             url += '#composrcms';
 
-            var SOFTWARE_CHAT_EXTRA = '{!SOFTWARE_CHAT_EXTRA;^}'.replace(/\{1\}/, $cms.filter.html(window.location.href.replace($cms.$BASE_URL, 'http://baseurl')));
+            var SOFTWARE_CHAT_EXTRA = '{!SOFTWARE_CHAT_EXTRA;^}'.replace(/\{1\}/, $cms.filter.html(window.location.href.replace($cms.$BASE_URL(), 'http://baseurl')));
             var html = '\
     <div class="software_chat">\
         <h2>{!CMS_COMMUNITY_HELP}</h2>\
@@ -1018,7 +1018,7 @@
             }
 
             /* Thumbnail tooltips */
-            if ($cms.$DEV_MODE || loc.replace($cms.$BASE_URL_NOHTTP, '').includes('/cms/')) {
+            if ($cms.$DEV_MODE() || loc.replace($cms.$BASE_URL_NOHTTP(), '').includes('/cms/')) {
                 var urlPatterns = $cms.staffTooltipsUrlPatterns,
                     links, pattern, hook, patternRgx;
 
@@ -1212,7 +1212,7 @@
                     if (event.preventDefault !== undefined) event.preventDefault();
 
                     if (src.includes('{$BASE_URL_NOHTTP;^}/themes/')) {
-                        ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG) + '&theme=' + encodeURIComponent($cms.$THEME) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
+                        ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
                     }
@@ -1556,7 +1556,7 @@
         var textarea = commandrLs.querySelector('#bans');
         $cms.manageScrollHeight(textarea);
 
-        if (!$cms.$MOBILE) {
+        if (!$cms.$MOBILE()) {
             $cms.dom.on(container, 'keyup', '#bans', function (e, textarea) {
                 $cms.manageScrollHeight(textarea);
             });

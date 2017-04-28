@@ -32,7 +32,7 @@
     function FromScreenInputUpload(params) {
         FromScreenInputUpload.base(this, 'constructor', arguments);
 
-        if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
+        if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN()) {
             $cms.requireJavascript('plupload').then(function () {
                 preinit_file_input('upload', params.name, null, null, params.filter);
             });
@@ -489,7 +489,7 @@
             opts = $cms.filter.url(params.options),
             multiSelect = !!params.multiSelect && (params.multiSelect !== '0');
 
-        $cms.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP, rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
+        $cms.createTreeList(params.name, 'data/ajax_tree.php?hook=' + hook + $cms.$KEEP(), rootId, opts, multiSelect, params.tabIndex, false, !!params.useServerId);
 
         $cms.dom.on(container, 'change', '.js-input-change-update-mirror', function (e, input) {
             var mirror = document.getElementById(name + '_mirror');
@@ -732,7 +732,7 @@
 
         $cms.manageScrollHeight(textArea);
 
-        if (!$cms.$MOBILE) {
+        if (!$cms.$MOBILE()) {
             $cms.dom.on(textArea, 'change keyup', function () {
                 $cms.manageScrollHeight(textArea);
             });
@@ -1009,7 +1009,7 @@
             });
         }
 
-        if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN) {
+        if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN()) {
             preinit_file_input('upload_multi', nameStub + '_' + index, null, null, params.filter);
         }
 

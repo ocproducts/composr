@@ -36,121 +36,266 @@
         id: 'composr' + ('' + Math.random()).substr(2),
 
         // Load up symbols data
-        /**@member {boolean}*/
-        $IS_GUEST: boolVal(symbols.IS_GUEST),
-        /**@member {boolean}*/
-        $IS_STAFF: boolVal(symbols.IS_STAFF),
-        /**@member {boolean}*/
-        $IS_ADMIN: boolVal(symbols.IS_ADMIN),
-        /**@member {boolean}*/
-        $IS_HTTPAUTH_LOGIN: boolVal(symbols.IS_HTTPAUTH_LOGIN),
-        /**@member {boolean}*/
-        $IS_A_COOKIE_LOGIN: boolVal(symbols.IS_A_COOKIE_LOGIN),
-        /**@member {boolean}*/
-        $DEV_MODE: boolVal(symbols.DEV_MODE),
-        /**@member {boolean}*/
-        $JS_ON: boolVal(symbols.JS_ON),
-        /**@member {boolean}*/
-        $MOBILE: boolVal(symbols.MOBILE),
-        /**@member {boolean}*/
-        $FORCE_PREVIEWS: boolVal(symbols.FORCE_PREVIEWS),
-        /**@member {boolean}*/
-        $INLINE_STATS: boolVal(symbols.INLINE_STATS),
-        /**@member {boolean}*/
-        $VERBOSE: true,
-
-        /**@member {number}*/
-        $HTTP_STATUS_CODE: (+symbols.HTTP_STATUS_CODE || 0),
-        /**@member {number}*/
-        $GROUP_ID: (+symbols.GROUP_ID || 0),
-
-        /**@member {string}*/
-        $VERSION: strVal(symbols.VERSION),
-        /**@member {string}*/
-        $PAGE: strVal(symbols.PAGE),
-        /**@member {string}*/
-        $PAGE_TITLE: strVal(symbols.PAGE_TITLE),
-        /**@member {string}*/
-        $ZONE: strVal(symbols.ZONE),
-        /**@member {string}*/
-        $MEMBER: strVal(symbols.MEMBER),
-        /**@member {string}*/
-        $USERNAME: strVal(symbols.USERNAME),
-        /**@member {string}*/
-        $AVATAR: strVal(symbols.AVATAR),
-        /**@member {string}*/
-        $MEMBER_EMAIL: strVal(symbols.MEMBER_EMAIL),
-        /**@member {string}*/
-        $PHOTO: strVal(symbols.PHOTO),
-        /**@member {string}*/
-        $MEMBER_PROFILE_URL: strVal(symbols.MEMBER_PROFILE_URL),
-        /**@member {string}*/
-        $FROM_TIMESTAMP: symbols.FROM_TIMESTAMP,
-        /**@member {string}*/
-        $THEME: strVal(symbols.THEME),
-        /**@member {string}*/
-        $LANG: strVal(symbols.LANG),
-        /**@member {string}*/
-        $BROWSER_UA: strVal(symbols.BROWSER_UA),
-        /**@member {string}*/
-        $OS: strVal(symbols.OS),
-        /**@member {string}*/
-        $USER_AGENT: strVal(symbols.USER_AGENT),
-        /**@member {string}*/
-        $IP_ADDRESS: strVal(symbols.IP_ADDRESS),
-        /**@member {string}*/
-        $TIMEZONE: strVal(symbols.TIMEZONE),
-        /**@member {string}*/
-        $CHARSET: strVal(symbols.CHARSET),
-        /**@member {string}*/
-        $KEEP: strVal(symbols.KEEP),
-        /**@member {string}*/
-        $PREVIEW_URL: strVal(symbols.PREVIEW_URL),
-        /**@member {string}*/
-        $SITE_NAME: strVal(symbols.SITE_NAME),
-        /**@member {string}*/
-        $COPYRIGHT: strVal(symbols.COPYRIGHT),
-        /**@member {string}*/
-        $DOMAIN: strVal(symbols.DOMAIN),
-        /**@member {string}*/
-        $FORUM_BASE_URL: strVal(symbols.FORUM_BASE_URL),
-        /**@member {string}*/
-        $BASE_URL: strVal(symbols.BASE_URL),
-        /**@member {string}*/
-        $BASE_URL_S: strVal(symbols.BASE_URL) + '/', // With trailing slash
-        /**@member {string}*/
-        $BASE_URL_PRL: toProtocolRelative(symbols.BASE_URL), // Protocol relative
-        /**@member {string}*/
-        $CUSTOM_BASE_URL: strVal(symbols.CUSTOM_BASE_URL),
-        /**@member {string}*/
-        $BASE_URL_NOHTTP: strVal(symbols.BASE_URL_NOHTTP),
-        /**@member {string}*/
-        $BASE_URL_NOHTTP_S: strVal(symbols.BASE_URL_NOHTTP) + '/', // With trailing slash
-        /**@member {string}*/
-        $CUSTOM_BASE_URL_NOHTTP: strVal(symbols.CUSTOM_BASE_URL_NOHTTP),
-        /**@member {string}*/
-        $BRAND_NAME: strVal(symbols.BRAND_NAME),
-        /**@member {string}*/
-        $SESSION_COOKIE_NAME: strVal(symbols.SESSION_COOKIE_NAME),
-        /**@member {string}*/
-        $COOKIE_PATH: strVal(symbols.COOKIE_PATH),
-        /**@member {string}*/
-        $COOKIE_DOMAIN: strVal(symbols.COOKIE_DOMAIN),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $IS_GUEST: constant(boolVal(symbols.IS_GUEST)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $IS_STAFF: constant(boolVal(symbols.IS_STAFF)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $IS_ADMIN: constant(boolVal(symbols.IS_ADMIN)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $IS_HTTPAUTH_LOGIN: constant(boolVal(symbols.IS_HTTPAUTH_LOGIN)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $IS_A_COOKIE_LOGIN: constant(boolVal(symbols.IS_A_COOKIE_LOGIN)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $DEV_MODE: constant(boolVal(symbols.DEV_MODE)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $JS_ON: constant(boolVal(symbols.JS_ON)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $MOBILE: constant(boolVal(symbols.MOBILE)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $FORCE_PREVIEWS: constant(boolVal(symbols.FORCE_PREVIEWS)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $INLINE_STATS: constant(boolVal(symbols.INLINE_STATS)),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        $VERBOSE: constant(true),
+        /**
+         * @method
+         * @returns {number}
+         */
+        $HTTP_STATUS_CODE: constant(+symbols.HTTP_STATUS_CODE || 0),
+        /**
+         * @method
+         * @returns {number}
+         */
+        $GROUP_ID: constant(+symbols.GROUP_ID || 0),
         /**
          * @method
          * @returns {string}
-         * */
+         */
+        $VERSION: constant(strVal(symbols.VERSION)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $PAGE: constant(strVal(symbols.PAGE)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $PAGE_TITLE: constant(strVal(symbols.PAGE_TITLE)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $ZONE: constant(strVal(symbols.ZONE)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $MEMBER: constant(strVal(symbols.MEMBER)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $USERNAME: constant(strVal(symbols.USERNAME)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $AVATAR: constant(strVal(symbols.AVATAR)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $MEMBER_EMAIL: constant(strVal(symbols.MEMBER_EMAIL)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $PHOTO: constant(strVal(symbols.PHOTO)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $MEMBER_PROFILE_URL: constant(strVal(symbols.MEMBER_PROFILE_URL)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $FROM_TIMESTAMP: constant(symbols.FROM_TIMESTAMP),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $THEME: constant(strVal(symbols.THEME)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $LANG: constant(strVal(symbols.LANG)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $BROWSER_UA: constant(strVal(symbols.BROWSER_UA)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $OS: constant(strVal(symbols.OS)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $USER_AGENT: constant(strVal(symbols.USER_AGENT)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $IP_ADDRESS: constant(strVal(symbols.IP_ADDRESS)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $TIMEZONE: constant(strVal(symbols.TIMEZONE)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $CHARSET: constant(strVal(symbols.CHARSET)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $KEEP: constant(strVal(symbols.KEEP)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $PREVIEW_URL: constant(strVal(symbols.PREVIEW_URL)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $SITE_NAME: constant(strVal(symbols.SITE_NAME)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $COPYRIGHT: constant(strVal(symbols.COPYRIGHT)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $DOMAIN: constant(strVal(symbols.DOMAIN)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $BASE_URL: constant(strVal(symbols.BASE_URL)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $BASE_URL_S: constant(strVal(symbols.BASE_URL) + '/'), // With trailing slash
+        /**
+         * @method
+         * @returns {string}
+         */
+        $BASE_URL_PRL: constant(toProtocolRelative(symbols.BASE_URL)), // Protocol relative
+        /**
+         * @method
+         * @returns {string}
+         */
+        $BASE_URL_NOHTTP: constant(strVal(symbols.BASE_URL_NOHTTP)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $BASE_URL_NOHTTP_S: constant(strVal(symbols.BASE_URL_NOHTTP) + '/'), // With trailing slash
+        /**
+         * @method
+         * @returns {string}
+         */
+        $CUSTOM_BASE_URL: constant(strVal(symbols.CUSTOM_BASE_URL)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $CUSTOM_BASE_URL_NOHTTP: constant(strVal(symbols.CUSTOM_BASE_URL_NOHTTP)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $FORUM_BASE_URL: constant(strVal(symbols.FORUM_BASE_URL)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $BRAND_NAME: constant(strVal(symbols.BRAND_NAME)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $SESSION_COOKIE_NAME: constant(strVal(symbols.SESSION_COOKIE_NAME)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $COOKIE_PATH: constant(strVal(symbols.COOKIE_PATH)),
+        /**
+         * @method
+         * @returns {string}
+         */
+        $COOKIE_DOMAIN: constant(strVal(symbols.COOKIE_DOMAIN)),
+        /**
+         * @method
+         * @returns {string}
+         */
         $RUNNING_SCRIPT: constant(strVal(symbols.RUNNING_SCRIPT)),
         /**
          * @method
          * @returns {string}
-         * */
+         */
         $CSP_NONCE: constant(strVal(symbols.CSP_NONCE)),
 
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
          * @member {object}
-         * */
+         */
         $CONFIG_OPTION: {
             /**@member {boolean}*/
             js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
@@ -206,7 +351,7 @@
         /**
          * WARNING: This is a very limited subset of the $VALUE_OPTION tempcode symbol
          * @member {object}
-         * */
+         */
         $VALUE_OPTION: {
             /**@member {string}*/
             js_keep_params: symbols.VALUE_OPTION.js_keep_params,
@@ -216,7 +361,7 @@
         /**
          * WARNING: This is a very limited subset of the $HAS_PRIVILEGE tempcode symbol
          * @member {object}
-         * */
+         */
         $HAS_PRIVILEGE: {
             /**@member {string}*/
             sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
@@ -1346,7 +1491,7 @@
      */
     function baseUrl(relativeUrl) {
         if (!relativeUrl && (relativeUrl !== 0)) {
-            return $cms.$BASE_URL_S;
+            return $cms.$BASE_URL_S();
         }
 
         relativeUrl = strVal(relativeUrl);
@@ -1356,7 +1501,7 @@
             return relativeUrl.replace(rgxHttp, window.location.protocol);
         }
 
-        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL : $cms.$BASE_URL_S) + relativeUrl;
+        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : $cms.$BASE_URL_S()) + relativeUrl;
     }
 
     function isAbsoluteHttp(url) {
@@ -1419,43 +1564,43 @@
     }
 
     function log() {
-        if ($cms.$DEV_MODE && $cms.$VERBOSE) {
+        if ($cms.$DEV_MODE() && $cms.$VERBOSE()) {
             return console.log.apply(undefined, arguments);
         }
     }
 
     function info() {
-        if ($cms.$DEV_MODE) {
+        if ($cms.$DEV_MODE()) {
             return console.info.apply(undefined, arguments);
         }
     }
 
     function warn() {
-        if ($cms.$DEV_MODE) {
+        if ($cms.$DEV_MODE()) {
             return console.warn.apply(undefined, arguments);
         }
     }
 
     function dir() {
-        if ($cms.$DEV_MODE) {
+        if ($cms.$DEV_MODE()) {
             return console.dir.apply(undefined, arguments);
         }
     }
 
     function assert() {
-        if ($cms.$DEV_MODE) {
+        if ($cms.$DEV_MODE()) {
             return console.assert.apply(undefined, arguments);
         }
     }
 
     function error() {
-        if ($cms.$DEV_MODE) {
+        if ($cms.$DEV_MODE()) {
             return console.error.apply(undefined, arguments);
         }
     }
 
     function exception(ex) {
-        if ($cms.$DEV_MODE) {
+        if ($cms.$DEV_MODE()) {
             if (typeof ex === 'string') {
                 throw new Error(ex);
             }
@@ -1575,11 +1720,11 @@
     }
 
     function getCsrfToken() {
-        return $cms.readCookie($cms.$SESSION_COOKIE_NAME); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+        return $cms.readCookie($cms.$SESSION_COOKIE_NAME()); // Session also works as a CSRF-token, as client-side knows it (AJAX)
     }
 
     function getSessionId() {
-        return $cms.readCookie($cms.$SESSION_COOKIE_NAME);
+        return $cms.readCookie($cms.$SESSION_COOKIE_NAME());
     }
 
     /**
@@ -1649,8 +1794,8 @@
             var defaults = {
                 value: '',
                 expires: 1, // 1 day
-                path: $cms.$COOKIE_PATH,
-                domain: $cms.$COOKIE_DOMAIN,
+                path: $cms.$COOKIE_PATH(),
+                domain: $cms.$COOKIE_DOMAIN(),
                 secure: false
             };
 
@@ -1717,19 +1862,19 @@
 
         output = cookieName + '=' + encodeURIComponent(cookieValue) + ';expires=' + expires.toUTCString();
 
-        if ($cms.$COOKIE_PATH) {
-            output += ';path=' + $cms.$COOKIE_PATH;
+        if ($cms.$COOKIE_PATH()) {
+            output += ';path=' + $cms.$COOKIE_PATH();
         }
 
-        if ($cms.$COOKIE_DOMAIN) {
-            output += ';domain=' + $cms.$COOKIE_DOMAIN;
+        if ($cms.$COOKIE_DOMAIN()) {
+            output += ';domain=' + $cms.$COOKIE_DOMAIN();
         }
 
         document.cookie = output;
 
         var read = $cms.readCookie(cookieName);
 
-        if (read && (read !== cookieValue) && $cms.$DEV_MODE && !alertedCookieConflict) {
+        if (read && (read !== cookieValue) && $cms.$DEV_MODE() && !alertedCookieConflict) {
             $cms.ui.alert('{!COOKIE_CONFLICT_DELETE_COOKIES;^}' + '... ' + document.cookie + ' (' + output + ')', null, '{!ERROR_OCCURRED;^}');
             alertedCookieConflict = true;
         }
@@ -4136,7 +4281,7 @@
             ajax_url += '&block_map_sup=' + encodeURIComponent(new_block_params);
         }
 
-        ajax_url += '&utheme=' + $cms.$THEME;
+        ajax_url += '&utheme=' + $cms.$THEME();
         if ((_blockDataCache[ajax_url] !== undefined) && post_params == null) {
             // Show results from cache
             show_block_html(_blockDataCache[ajax_url], target_div, append, inner);
@@ -4279,7 +4424,7 @@
      */
     function maintainThemeInLink(url) {
         var usp = $cms.uspFromUrl(url),
-            theme = encodeURIComponent($cms.$THEME);
+            theme = encodeURIComponent($cms.$THEME());
 
         if (usp.keys().next().done) {
             // `url` doesn't have a query string
@@ -4315,7 +4460,7 @@
      * @returns {boolean}
      */
     function gaTrack(el, category, action) {
-        if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF || $cms.$IS_ADMIN) {
+        if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF() || $cms.$IS_ADMIN()) {
             return;
         }
 
@@ -7035,7 +7180,7 @@
         ModalWindow.base(this, 'constructor', arguments);
 
         // Constants
-        this.WINDOW_SIDE_GAP = $cms.$MOBILE ? 5 : 25;
+        this.WINDOW_SIDE_GAP = $cms.$MOBILE() ? 5 : 25;
         this.WINDOW_TOP_GAP = 25; // Will also be used for bottom gap for percentage heights
         this.BOX_EAST_PERIPHERARY = 4;
         this.BOX_WEST_PERIPHERARY = 4;
@@ -7220,14 +7365,14 @@
             var do_scroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE || (detected_box_height > dim.window_height) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
+            if ($cms.$MOBILE() || (detected_box_height > dim.window_height) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
                 var was_fixed = (this.boxWrapperEl.style.position == 'fixed');
 
                 this.boxWrapperEl.style.position = 'absolute';
                 this.boxWrapperEl.style.height = ((dim.page_height > (detected_box_height + bottom_gap + _box_pos_left)) ? dim.page_height : (detected_box_height + bottom_gap + _box_pos_left)) + 'px';
                 this.top_window.document.body.style.overflow = '';
 
-                if (!$cms.$MOBILE) {
+                if (!$cms.$MOBILE()) {
                     this.boxWrapperEl.firstElementChild.style.position = 'absolute';
                     box_pos_top = this.WINDOW_TOP_GAP + 'px';
                     this.boxWrapperEl.firstElementChild.style.top = box_pos_top;
@@ -7263,7 +7408,7 @@
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.top_window.overlay_zIndex++,
                     'overflow': 'hidden',
-                    'position': $cms.$MOBILE ? 'absolute' : 'fixed',
+                    'position': $cms.$MOBILE() ? 'absolute' : 'fixed',
                     'left': '0',
                     'top': '0',
                     'width': '100%',
@@ -7276,7 +7421,7 @@
                 'role': 'dialog',
                 'styles': {
                     // This will be updated immediately in reset_dimensions
-                    'position': $cms.$MOBILE ? 'static' : 'fixed',
+                    'position': $cms.$MOBILE() ? 'static' : 'fixed',
                     'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
                 }
             }));
@@ -7372,7 +7517,7 @@
                     e && e.target && e.stopPropagation && e.stopPropagation();
                 } catch (e) {}
 
-                if ($cms.$MOBILE && (that.type === 'lightbox')) {// IDEA: Swipe detect would be better, but JS does not have this natively yet
+                if ($cms.$MOBILE() && (that.type === 'lightbox')) {// IDEA: Swipe detect would be better, but JS does not have this natively yet
                     that.option('right');
                 }
             });

@@ -7,7 +7,7 @@
             options = {
                 enableKeyboard: true,
                 success: function (media) {
-                    if (!$cms.$INLINE_STATS) {
+                    if (!$cms.$INLINE_STATS()) {
                         media.addEventListener('play', function () {
                             $cms.gaTrack(null, '{!VIDEO;}', url);
                         });
@@ -44,7 +44,7 @@
             options = {
                 enableKeyboard: true,
                 success: function (media) {
-                    if (!$cms.$INLINE_STATS) {
+                    if (!$cms.$INLINE_STATS()) {
                         media.addEventListener('play', function () {
                             $cms.gaTrack(null, '{!VIDEO;}', url);
                         });
