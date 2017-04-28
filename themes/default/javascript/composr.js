@@ -140,12 +140,12 @@
          * @method
          * @returns {string}
          * */
-        $RUNNING_SCRIPT: function () { return strVal(symbols.RUNNING_SCRIPT); },
+        $RUNNING_SCRIPT: constant(strVal(symbols.RUNNING_SCRIPT)),
         /**
          * @method
          * @returns {string}
          * */
-        $CSP_NONCE: function () { return strVal(symbols.CSP_NONCE); },
+        $CSP_NONCE: constant(strVal(symbols.CSP_NONCE)),
 
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
@@ -588,11 +588,11 @@
     }
 
     /**
-     *
+     * Creates a function that returns the same value that is passed as the first argument
      * @param value
-     * @returns {*}
+     * @returns { function }
      */
-    function returner(value) {
+    function constant(value) {
         return function () {
             return value;
         };
@@ -7401,9 +7401,11 @@
 
                     $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
 
-                    window.setTimeout(function () {
-                        $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_finished);
-                    }, 1000);
+                    if (that.boxWrapperEl) {
+                        window.setTimeout(function () {
+                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_finished);
+                        }, 1000);
+                    }
 
                     $cms.dom.on(iframe, 'load', function () {
                         if (($cms.dom.hasIframeAccess(iframe)) && (!iframe.contentWindow.document.querySelector('h1')) && (!iframe.contentWindow.document.querySelector('h2'))) {
@@ -7519,14 +7521,20 @@
                         $cms.dom.on(button, 'click', function () {
                             that.option('yes');
                         });
-                        window.setTimeout(function () {
-                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_yes);
-                        }, 1000);
+
+                        if (that.boxWrapperEl) {
+                            window.setTimeout(function () {
+                                $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_yes);
+                            }, 1000);
+                        }
+
                         this.button_container.appendChild(button);
                     } else {
-                        window.setTimeout(function () {
-                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
-                        }, 1000);
+                        if (that.boxWrapperEl) {
+                            window.setTimeout(function () {
+                                $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
+                            }, 1000);
+                        }
                     }
                     break;
 
@@ -7576,9 +7584,11 @@
                         });
                         this.button_container.appendChild(button);
                     }
-                    window.setTimeout(function () {
-                        $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
-                    }, 1000);
+                    if (that.boxWrapperEl) {
+                        window.setTimeout(function () {
+                            $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
+                        }, 1000);
+                    }
                     break;
             }
 
@@ -7637,9 +7647,7 @@
                 var has_loaded = false;
                 try {
                     has_loaded = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host != '');
-                }
-                catch (e) {
-                }
+                } catch (ignore) {}
                 return has_loaded;
             }
 
@@ -7647,9 +7655,7 @@
                 var has_ownership = false;
                 try {
                     has_ownership = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
-                }
-                catch (e) {
-                }
+                } catch (ignore) {}
                 return has_ownership;
             }
         },

@@ -12,10 +12,13 @@ function do_shake() {
             divs[i].style.position = 'relative';
         }
     }
-    for (var times = 0; times < 10; times++)
+    for (var times = 0; times < 10; times++) {
         window.setTimeout(shake_animate_func(times, divs, amount), 100 * times * seconds);
-    for (var times = 8; times >= 0; times--)
+    }
+
+    for (var times = 8; times >= 0; times--) {
         window.setTimeout(shake_animate_func(times, divs, amount), 1000 * seconds + 100 * (8 - times) * seconds);
+    }
 
     window.setTimeout(function () {
         for (var i = 0; i < divs.length; i++) {

@@ -59,6 +59,7 @@
             // Ignore floods of "Unsafe JavaScript attempt to access frame with URL" errors in Chrome they are benign
 
             /*{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}*/
+
             // Calling this effectively waits until the login is active on the client side, which we must do before we can do anything (including calling a log out)
             window.FB.getLoginStatus(function (response) {
                 if ((response.status == 'connected') && (response.authResponse)) {
@@ -72,8 +73,7 @@
 
                     // Facebook has automatically rebuilt its expired fbsr cookie, auth.login not triggered as already technically logged in
                     else {
-                        if (serverside_fbuid === null) // Definitive mismatch between server-side and client-side, so we must refresh
-                        {
+                        if (serverside_fbuid === null)  {// Definitive mismatch between server-side and client-side, so we must refresh
                             facebook_trigger_refresh(home_page_url);
                         }
                     }
