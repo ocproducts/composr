@@ -688,7 +688,7 @@ function load_module_page($string, $codename, &$out = null)
         $PAGE_STRING = $string;
     }
 
-    if (strpos($string, '_custom/') !== false) {
+    if ((strpos($string, '_custom/') !== false) && (!is_file(str_replace('_custom/', '/', $string)))) {
         _solemnly_enter();
     }
 
@@ -761,7 +761,7 @@ function load_module_page($string, $codename, &$out = null)
     if (method_exists($object, 'pre_run')) {
         $exceptional_output = $object->pre_run();
         if ($exceptional_output !== null) {
-            if (strpos($string, '_custom/') !== false) {
+            if ((strpos($string, '_custom/') !== false) && (!is_file(str_replace('_custom/', '/', $string)))) {
                 $_exceptional_output = $exceptional_output->evaluate();
                 _solemnly_leave($_exceptional_output);
                 if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
@@ -774,7 +774,7 @@ function load_module_page($string, $codename, &$out = null)
 
         if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null)) {
             /* Breaks output streaming
-            if (strpos($string, '_custom/') !== false) {
+            if ((strpos($string, '_custom/') !== false) && (!is_file(str_replace('_custom/', '/', $string)))) {
                 $_out = $out->evaluate();
                 _solemnly_leave($_out);
                 if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
@@ -790,7 +790,7 @@ function load_module_page($string, $codename, &$out = null)
 
     $ret = $object->run();
 
-    if (strpos($string, '_custom/') !== false) {
+    if ((strpos($string, '_custom/') !== false) && (!is_file(str_replace('_custom/', '/', $string)))) {
         $_ret = $ret->evaluate();
         _solemnly_leave($_ret);
         if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
@@ -1408,7 +1408,9 @@ function do_block_hunt_file($codename, $map = null)
             }
         }
 
-        $new_security_scope = true;
+        if (!is_file($file_base . '/sources/blocks/' . $codename . '.php')) {
+            $new_security_scope = true;
+        }
     } elseif (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] === 'sources/blocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources/blocks/' . $codename . '.php')))) {
         if (!isset($REQUIRED_CODE['blocks/' . $codename])) {
             require_once($file_base . '/sources/blocks/' . $codename . '.php');
