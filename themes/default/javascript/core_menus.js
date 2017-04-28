@@ -34,7 +34,10 @@
                 'mousemove .js-mousemove-pop-up-menu': 'popUpMenu',
                 'mouseover .js-mouseover-set-active-menu': 'setActiveMenu',
                 'click .js-click-unset-active-menu': 'unsetActiveMenu',
-                'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu'
+                'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu',
+                // For admin/templates/MENU_dropdown.tpl:
+                'mousemove .js-mousemove-admin-timer-pop-up-menu': 'adminTimerPopUpMenu',
+                'mouseout .js-mouseout-admin-clear-pop-up-timer': 'adminClearPopUpTimer'
             };
         },
 
@@ -60,7 +63,7 @@
             var menu = $cms.filter.id(this.menu),
                 rand = strVal(target.dataset.vwRand);
 
-            popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+            popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
         },
 
         popUpMenu: function (e, target) {
@@ -84,6 +87,29 @@
             if (!target.contains(e.relatedTarget)) {
                 window.active_menu = null;
                 recreate_clean_timeout();
+            }
+        },
+
+        /* For admin/templates/MENU_dropdown.tpl */
+        adminTimerPopUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu),
+                rand = strVal(target.dataset.vwRand);
+
+            window.menu_hold_time = 3000;
+            if (!target.dataset.timer) {
+                target.dataset.timer = window.setTimeout(function () {
+                    var ret = pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
+                    try {
+                        document.getElementById('search_content').focus();
+                    } catch (ignore) {}
+                    return ret;
+                }, 200);
+            }
+        },
+        adminClearPopUpTimer: function (e, target) {
+            if (target.dataset.timer) {
+                window.clearTimeout(target.dataset.timer);
+                target.dataset.timer = null;
             }
         }
     });
@@ -194,6 +220,19 @@
             e.preventDefault();
         }
     });
+
+    // For admin/templates/MENU_mobile.tp
+    $cms.templates.menuMobile = function menuMobile(params) {
+        var menuId = strVal(params.menuId);
+        $cms.dom.on(document.body, 'click', 'click .js-click-toggle-' + menuId + '-content', function (e) {
+            var branch = document.getElementById(menuId);
+
+            if (branch) {
+                $cms.dom.toggle(branch.parentElement);
+                e.preventDefault();
+            }
+        });
+    };
 
     $cms.views.SelectMenu = SelectMenu;
     function SelectMenu() {

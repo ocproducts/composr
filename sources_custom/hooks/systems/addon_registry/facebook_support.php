@@ -177,7 +177,7 @@ The documentation for this addon is covered in a dedicated tutorial (' . get_bra
             'themes/default/templates_custom/LOGIN_SCREEN.tpl',
             'themes/default/templates_custom/CNS_GUEST_BAR.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_SCREEN_ACTIONS.tpl',
-            'themes/default/javascript_custom/facebook.js',
+            'themes/default/javascript_custom/facebook_support.js',
             'themes/default/templates_custom/BLOCK_TOP_LOGIN.tpl',
             'sources_custom/users_active_actions.php',
             'sources_custom/hooks/systems/syndication/facebook.php',

@@ -8,17 +8,17 @@
             }
         });
 
-        $cms.dom.on(container, 'click', '.js-click-check-reason', function () {
+        $cms.dom.on(container, 'click', '.js-click-check-reason', function (e, el) {
             var reason = document.getElementById('give_reason');
-            if ((reason.value.substr(reason.value.indexOf(': ')).length <= 3) && (this.selectedIndex != 0)) {
-                reason.value = this.options[this.selectedIndex].value + ': ';
+            if ((reason.value.substr(reason.value.indexOf(': ')).length <= 3) && (el.selectedIndex != 0)) {
+                reason.value = el.options[el.selectedIndex].value + ': ';
             }
         });
 
-        $cms.dom.on(container, 'change', '.js-change-check-reason', function () {
+        $cms.dom.on(container, 'change', '.js-change-check-reason', function (e, el) {
             var reason = document.getElementById('give_reason');
-            if ((reason.value.substr(reason.value.indexOf(': ')).length <= 3) && (this.selectedIndex != 0)) {
-                reason.value = this.options[this.selectedIndex].value + ': ';
+            if ((reason.value.substr(reason.value.indexOf(': ')).length <= 3) && (el.selectedIndex != 0)) {
+                reason.value = el.options[el.selectedIndex].value + ': ';
             }
         });
     };

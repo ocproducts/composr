@@ -589,6 +589,17 @@
 
     /**
      *
+     * @param value
+     * @returns {*}
+     */
+    function returner(value) {
+        return function () {
+            return value;
+        };
+    }
+
+    /**
+     *
      * @param val
      * @returns {boolean}
      */
