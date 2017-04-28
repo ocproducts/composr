@@ -290,7 +290,7 @@ function template_insert_parameter(dropdown_name, file_id) {
 
     var has_editarea = editarea_is_loaded(textbox.name);
 
-    if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays)) {
+    if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays'))) {
         var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keepStub();
         $cms.ui.showModalDialog(
             $cms.maintainThemeInLink(url),

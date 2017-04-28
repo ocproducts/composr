@@ -22,7 +22,7 @@
 
         var options = {
             callback: google_map_users_initialize,
-            other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION.googleMapKey : ''
+            other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION('googleMapKey') : ''
         };
 
         if (region !== '') {

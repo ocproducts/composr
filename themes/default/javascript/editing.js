@@ -8,11 +8,11 @@
 
 function wysiwyg_on() {
     var cookie = $cms.readCookie('use_wysiwyg');
-    return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION.wysiwyg && !$cms.$MOBILE();
+    return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION('wysiwyg') && !$cms.$MOBILE();
 }
 
 function toggle_wysiwyg(name) {
-    if (!$cms.$CONFIG_OPTION.wysiwyg) {
+    if (!$cms.$CONFIG_OPTION('wysiwyg')) {
         $cms.ui.alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
         return false;
     }
@@ -237,7 +237,7 @@ function load_html_edit(posting_form, ajax_copy) {
         posting_form.appendChild(http_referer);
     }
 
-    if (!window.CKEDITOR || !$cms.$CONFIG_OPTION.wysiwyg || !wysiwyg_on()) {
+    if (!window.CKEDITOR || !$cms.$CONFIG_OPTION('wysiwyg') || !wysiwyg_on()) {
         return;
     }
 
@@ -355,7 +355,7 @@ function wysiwyg_editor_init_for(element, id) {
         toolbar.push(['Source', '-']);
     }
     var toolbar_edit_actions = ['Cut', 'Copy', 'Paste', precision_editing ? 'PasteText' : null, precision_editing ? 'PasteFromWord' : null, precision_editing ? 'PasteCode' : null];
-    if ($cms.$VALUE_OPTION.commercial_spellchecker) {
+    if ($cms.$VALUE_OPTION('commercial_spellchecker')) {
         toolbar_edit_actions.push('-', 'SpellChecker', 'Scayt');
     }
     toolbar.push(toolbar_edit_actions);
@@ -397,10 +397,10 @@ function wysiwyg_editor_init_for(element, id) {
         /*{+END}*/
         bodyId: 'wysiwyg_editor',
         baseHref: $cms.baseUrl(),
-        linkShowAdvancedTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
-        imageShowAdvancedTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
-        imageShowLinkTab: !$cms.$CONFIG_OPTION.eager_wysiwyg,
-        imageShowSizing: !$cms.$CONFIG_OPTION.eager_wysiwyg,
+        linkShowAdvancedTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
+        imageShowAdvancedTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
+        imageShowLinkTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
+        imageShowSizing: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
         autoUpdateElement: true,
         contentsCss: page_stylesheets,
         cssStatic: css,
@@ -497,7 +497,7 @@ function wysiwyg_editor_init_for(element, id) {
 
     // Monitor pasting, for anti-spam reasons
     editor.on('paste', function (event) {
-        if (event.data.html && event.data.html.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
+        if (event.data.html && event.data.html.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
             $cms.setPostDataFlag('paste');
         }
     });

@@ -277,7 +277,7 @@
             var form = $cms.dom.$id('edit_form');
 
             $cms.ui.prompt(
-                $cms.$CONFIG_OPTION.collapse_user_zones ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}',
+                $cms.$CONFIG_OPTION('collapse_user_zones') ? '{!javascript:ENTER_ZONE_SPZ;^}' : '{!javascript:ENTER_ZONE;^}',
                 '',
                 function (zone) {
                     if (zone !== null) {
@@ -389,7 +389,7 @@
         function delete_menu_branch(ob) {
             var id = ob.id.substring(4, ob.id.length);
 
-            if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) || (ob.form.elements['branch_type_' + id] != 'page')) {
+            if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) || (ob.form.elements['branch_type_' + id] != 'page')) {
                 var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
                 $cms.ui.generateQuestionUi(
                     '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
@@ -833,7 +833,7 @@
 
         var full_width = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
 
-        if ($cms.$CONFIG_OPTION.fixed_width && !outside_fixed_width) {
+        if ($cms.$CONFIG_OPTION('fixed_width') && !outside_fixed_width) {
             var main_website_inner = document.getElementById('main_website_inner');
             if (main_website_inner) {
                 full_width = main_website_inner.offsetWidth;

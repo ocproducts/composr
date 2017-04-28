@@ -97,11 +97,11 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
          */
 
         // Add any defaults into URL
-        defaults.thumb = ($cms.$CONFIG_OPTION.simplified_attachments_ui && is_image && !multi) ? '0' : '1';
+        defaults.thumb = ($cms.$CONFIG_OPTION('simplified_attachments_ui') && is_image && !multi) ? '0' : '1';
         defaults.type = ''; // =autodetect rendering type
 
         // Shall we show the options overlay?
-        show_overlay = !(multi || (is_image && $cms.$CONFIG_OPTION.simplified_attachments_ui) || is_archive);
+        show_overlay = !(multi || (is_image && $cms.$CONFIG_OPTION('simplified_attachments_ui')) || is_archive);
 
         if (is_image) {
             tag = 'attachment_safe';
@@ -576,7 +576,7 @@ function do_input_page(field_name) {
 
     var result;
 
-    if (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
+    if (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
         $cms.ui.showModalDialog(
             $cms.maintainThemeInLink('{$FIND_SCRIPT;,page_link_chooser}' + $cms.keepStub(true)),
             null,

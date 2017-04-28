@@ -21,7 +21,7 @@
             }, 2000);
         }
 
-        if ($cms.$CONFIG_OPTION.editarea) {
+        if ($cms.$CONFIG_OPTION('editarea')) {
             ace_composr_loader('e_' + params.fileId, params.highlighterType, false);
         }
 

@@ -130,7 +130,7 @@
     function ComcodeMediaSet(params) {
         ComcodeMediaSet.base(this, 'constructor', arguments);
 
-        if ($cms.$CONFIG_OPTION.js_overlays) {
+        if ($cms.$CONFIG_OPTION('js_overlays')) {
             this.setup(params);
         }
     }
@@ -143,7 +143,7 @@
                 mediaSet = $cms.dom.$id('media_set_' + params.rand),
                 as = window.as = mediaSet.querySelectorAll('a, video'),
                 containsVideo = false,
-                thumbWidthConfig = $cms.$CONFIG_OPTION.thumb_width + 'x' + $cms.$CONFIG_OPTION.thumb_width,
+                thumbWidthConfig = $cms.$CONFIG_OPTION('thumb_width') + 'x' + $cms.$CONFIG_OPTION('thumb_width'),
                 i, x;
 
             if ((thumbWidthConfig !== 'x') && ((params.width + 'x' + params.height) !== 'x')) {
@@ -830,7 +830,7 @@
             playerOptions.duration = params.duration;
         }
 
-        if (!($cms.$CONFIG_OPTION.show_inline_stats)) {
+        if (!($cms.$CONFIG_OPTION('show_inline_stats'))) {
             playerOptions.events.onPlay = function () {
                 $cms.gaTrack(null, '{!AUDIO;^}', params.url);
             };
@@ -873,7 +873,7 @@
             playerOptions.height = params.playerHeight;
         }
 
-        if (!$cms.$CONFIG_OPTION.show_inline_stats) {
+        if (!$cms.$CONFIG_OPTION('show_inline_stats')) {
             playerOptions.events.onPlay = function () {
                 $cms.gaTrack(null, '{!VIDEO;^}', params.url);
             };

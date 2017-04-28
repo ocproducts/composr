@@ -144,7 +144,7 @@ function display_alert(notification) {
     }
 
     // Show desktop notification
-    if ($cms.$CONFIG_OPTION.notification_desktop_alerts && window.notify.isSupported) {
+    if ($cms.$CONFIG_OPTION('notification_desktop_alerts') && window.notify.isSupported) {
         var icon = $cms.img('{$IMG;,favicon}');
         var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;^}';
         title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
@@ -174,7 +174,7 @@ function display_alert(notification) {
 
 // We attach to an onclick handler, to enable desktop notifications later on; we need this as we cannot call requestPermission out of the blue
 function explicit_notifications_enable_request() {
-    if ($cms.$CONFIG_OPTION.notification_desktop_alerts) {
+    if ($cms.$CONFIG_OPTION('notification_desktop_alerts')) {
         window.notify.requestPermission();
     }
 }
@@ -279,7 +279,7 @@ function _toggle_messaging_box(event, name, hide) {
  * Author: Tsvetan Tsvetkov (tsekach@gmail.com)
  */
 (function () {
-    if (!$cms.$CONFIG_OPTION.notification_desktop_alerts) {
+    if (!$cms.$CONFIG_OPTION('notification_desktop_alerts')) {
         return;
     }
 

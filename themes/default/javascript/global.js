@@ -296,83 +296,109 @@
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
          * @member {object}
          */
-        $CONFIG_OPTION: {
-            /**@member {boolean}*/
-            js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
-            /**@member {boolean}*/
-            enable_animations: boolVal(symbols.CONFIG_OPTION.enable_animations),
-            /**@member {boolean}*/
-            detect_javascript: boolVal(symbols.CONFIG_OPTION.detect_javascript),
-            /**@member {boolean}*/
-            is_on_timezone_detection: boolVal(symbols.CONFIG_OPTION.is_on_timezone_detection),
-            /**@member {boolean}*/
-            wysiwyg: boolVal(symbols.CONFIG_OPTION.wysiwyg),
-            /**@member {boolean}*/
-            complex_uploader: boolVal(symbols.CONFIG_OPTION.complex_uploader),
-            /**@member {boolean}*/
-            collapse_user_zones: boolVal(symbols.CONFIG_OPTION.collapse_user_zones),
-            /**@member {boolean}*/
-            sitewide_im: boolVal(symbols.CONFIG_OPTION.sitewide_im),
-            /**@member {boolean}*/
-            simplified_attachments_ui: boolVal(symbols.CONFIG_OPTION.simplified_attachments_ui),
-            /**@member {boolean}*/
-            spam_heuristic_pasting: boolVal(symbols.CONFIG_OPTION.spam_heuristic_pasting),
-            /**@member {boolean}*/
-            long_google_cookies: boolVal(symbols.CONFIG_OPTION.long_google_cookies),
-            /**@member {boolean}*/
-            enable_theme_img_buttons: boolVal(symbols.CONFIG_OPTION.enable_theme_img_buttons),
-            /**@member {boolean}*/
-            enable_previews: boolVal(symbols.CONFIG_OPTION.enable_previews),
-            /**@member {boolean}*/
-            show_inline_stats: boolVal(symbols.CONFIG_OPTION.show_inline_stats),
-            /**@member {boolean}*/
-            background_template_compilation: boolVal(symbols.CONFIG_OPTION.background_template_compilation),
-            /**@member {boolean}*/
-            notification_desktop_alerts: boolVal(symbols.CONFIG_OPTION.notification_desktop_alerts),
-            /**@member {boolean}*/
-            eager_wysiwyg: boolVal(symbols.CONFIG_OPTION.eager_wysiwyg),
-            /**@member {boolean}*/
-            fixed_width: boolVal(symbols.CONFIG_OPTION.fixed_width),
-            /**@member {boolean}*/
-            infinite_scrolling: boolVal(symbols.CONFIG_OPTION.infinite_scrolling),
-            /**@member {boolean}*/
-            js_captcha: boolVal(symbols.CONFIG_OPTION.js_captcha),
-            /**@member {boolean}*/
-            editarea: boolVal(symbols.CONFIG_OPTION.editarea),
+        $CONFIG_OPTION: function (optionName) {
+           var options =  {
+                /**@member {boolean}*/
+                js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
+                /**@member {boolean}*/
+                enable_animations: boolVal(symbols.CONFIG_OPTION.enable_animations),
+                /**@member {boolean}*/
+                detect_javascript: boolVal(symbols.CONFIG_OPTION.detect_javascript),
+                /**@member {boolean}*/
+                is_on_timezone_detection: boolVal(symbols.CONFIG_OPTION.is_on_timezone_detection),
+                /**@member {boolean}*/
+                wysiwyg: boolVal(symbols.CONFIG_OPTION.wysiwyg),
+                /**@member {boolean}*/
+                complex_uploader: boolVal(symbols.CONFIG_OPTION.complex_uploader),
+                /**@member {boolean}*/
+                collapse_user_zones: boolVal(symbols.CONFIG_OPTION.collapse_user_zones),
+                /**@member {boolean}*/
+                sitewide_im: boolVal(symbols.CONFIG_OPTION.sitewide_im),
+                /**@member {boolean}*/
+                simplified_attachments_ui: boolVal(symbols.CONFIG_OPTION.simplified_attachments_ui),
+                /**@member {boolean}*/
+                spam_heuristic_pasting: boolVal(symbols.CONFIG_OPTION.spam_heuristic_pasting),
+                /**@member {boolean}*/
+                long_google_cookies: boolVal(symbols.CONFIG_OPTION.long_google_cookies),
+                /**@member {boolean}*/
+                enable_theme_img_buttons: boolVal(symbols.CONFIG_OPTION.enable_theme_img_buttons),
+                /**@member {boolean}*/
+                enable_previews: boolVal(symbols.CONFIG_OPTION.enable_previews),
+                /**@member {boolean}*/
+                show_inline_stats: boolVal(symbols.CONFIG_OPTION.show_inline_stats),
+                /**@member {boolean}*/
+                background_template_compilation: boolVal(symbols.CONFIG_OPTION.background_template_compilation),
+                /**@member {boolean}*/
+                notification_desktop_alerts: boolVal(symbols.CONFIG_OPTION.notification_desktop_alerts),
+                /**@member {boolean}*/
+                eager_wysiwyg: boolVal(symbols.CONFIG_OPTION.eager_wysiwyg),
+                /**@member {boolean}*/
+                fixed_width: boolVal(symbols.CONFIG_OPTION.fixed_width),
+                /**@member {boolean}*/
+                infinite_scrolling: boolVal(symbols.CONFIG_OPTION.infinite_scrolling),
+                /**@member {boolean}*/
+                js_captcha: boolVal(symbols.CONFIG_OPTION.js_captcha),
+                /**@member {boolean}*/
+                editarea: boolVal(symbols.CONFIG_OPTION.editarea),
 
-            /**@member {number}*/
-            thumb_width: intVal(symbols.CONFIG_OPTION.thumb_width),
-            /**@member {number}*/
-            topic_pin_max_days: intVal(symbols.CONFIG_OPTION.topic_pin_max_days),
+                /**@member {number}*/
+                thumb_width: intVal(symbols.CONFIG_OPTION.thumb_width),
+                /**@member {number}*/
+                topic_pin_max_days: intVal(symbols.CONFIG_OPTION.topic_pin_max_days),
 
-            /**@member {string}*/
-            google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics)
+                /**@member {string}*/
+                google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics)
+            };
+
+            if (hasOwn(options, optionName)) {
+                return options[optionName];
+            }
+
+            $cms.error('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
         },
         /**
          * WARNING: This is a very limited subset of the $VALUE_OPTION tempcode symbol
          * @member {object}
          */
-        $VALUE_OPTION: {
-            /**@member {string}*/
-            js_keep_params: symbols.VALUE_OPTION.js_keep_params,
-            /**@member {string}*/
-            commercial_spellchecker: symbols.VALUE_OPTION.commercial_spellchecker
+        $VALUE_OPTION: function (optionName) {
+            var options = {
+                /**@member {string}*/
+                js_keep_params: symbols.VALUE_OPTION.js_keep_params,
+                /**@member {string}*/
+                commercial_spellchecker: symbols.VALUE_OPTION.commercial_spellchecker
+            };
+
+            if (hasOwn(options, optionName)) {
+                return options[optionName];
+            }
+
+            $cms.error('$cms.$VALUE_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
         },
         /**
          * WARNING: This is a very limited subset of the $HAS_PRIVILEGE tempcode symbol
          * @member {object}
          */
-        $HAS_PRIVILEGE: {
-            /**@member {string}*/
-            sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
+        $HAS_PRIVILEGE: function (optionName) {
+            var options = {
+                /**@member {string}*/
+                sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
+            };
+
+            if (hasOwn(options, optionName)) {
+                return options[optionName];
+            }
+
+            $cms.error('$cms.$HAS_PRIVILEGE(): Privilege "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
         },
 
         // Just some more useful stuff, (not tempcode symbols)
         /**@member {boolean}*/
         canTryUrlSchemes: boolVal(symbols.EXTRA.can_try_url_schemes),
         /**@member {object}*/
-        staffTooltipsUrlPatterns: objVal(symbols.EXTRA.staff_tooltips_url_patterns),
+        staffTooltipsUrlPatterns: objVal(symbols.EXTRA.staff_tooltips_url_patterns)
+    });
 
+    extendDeep($cms, /**@lends $cms*/{
         // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
         // Opera 8.0+
         /**
@@ -743,7 +769,6 @@
     }
 
     /**
-     *
      * @param first
      * @returns {*}
      */
@@ -3688,7 +3713,7 @@
     $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
         var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
 
-        if (!$cms.$CONFIG_OPTION.enable_animations || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
+        if (!$cms.$CONFIG_OPTION('enable_animations') || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
             return;
         }
 
@@ -3773,7 +3798,7 @@
      * @param event_after
      */
     $cms.dom.smoothScroll = function smoothScroll(dest_y, expected_scroll_y, dir, event_after) {
-        if (!$cms.$CONFIG_OPTION.enable_animations) {
+        if (!$cms.$CONFIG_OPTION('enable_animations')) {
             try {
                 window.scrollTo(0, dest_y);
             } catch (ignore) {}
@@ -4071,7 +4096,7 @@
         increment = +increment || 0;
         destroyAfter = !!destroyAfter;
 
-        if (!$cms.$CONFIG_OPTION.enable_animations) {
+        if (!$cms.$CONFIG_OPTION('enable_animations')) {
             el.style.opacity = destPercentOpacity / 100.0;
             return;
         }
@@ -4479,7 +4504,7 @@
      * @returns {boolean}
      */
     function gaTrack(el, category, action) {
-        if (!$cms.$CONFIG_OPTION.google_analytics || $cms.$IS_STAFF() || $cms.$IS_ADMIN()) {
+        if (!$cms.$CONFIG_OPTION('google_analytics') || $cms.$IS_STAFF() || $cms.$IS_ADMIN()) {
             return;
         }
 
@@ -4672,7 +4697,7 @@
 
         switch (code) {
             case 'simplified_attachments_ui':
-                return !is_ie_8 && !is_ie_9 && $cms.$CONFIG_OPTION.simplified_attachments_ui && $cms.$CONFIG_OPTION.complex_uploader;
+                return !is_ie_8 && !is_ie_9 && $cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader');
             case 'non_concurrent':
                 return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
             case 'ios':
@@ -4680,7 +4705,7 @@
             case 'android':
                 return browser.includes('android');
             case 'wysiwyg':
-                return $cms.$CONFIG_OPTION.wysiwyg;
+                return $cms.$CONFIG_OPTION('wysiwyg');
             case 'windows':
                 return os.includes('windows') || os.includes('win32');
             case 'mac':
@@ -5057,7 +5082,7 @@
             str.replace(/&/g, '&amp;')
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&apos;')
-                .replace(/</g, '&lt;')
+                .replace(new RegExp('/<' + '/', 'g'), '&lt;')
                 .replace(/>/g, '&gt;')
             : '';
     };
@@ -5105,7 +5130,7 @@
         title || (title = '{!Q_SURE;^}');
         unescaped = !!unescaped;
 
-        if (!$cms.$CONFIG_OPTION.js_overlays) {
+        if (!$cms.$CONFIG_OPTION('js_overlays')) {
             callback(window.confirm(question));
             return;
         }
@@ -5141,7 +5166,7 @@
         title = strVal(title) || '{!MESSAGE;^}';
         unescaped = !!unescaped;
 
-        if (!$cms.$CONFIG_OPTION.js_overlays) {
+        if (!$cms.$CONFIG_OPTION('js_overlays')) {
             window.alert(notice);
             callback();
             return;
@@ -5169,7 +5194,7 @@
      * @param input_type
      */
     $cms.ui.prompt = function prompt(question, defaultValue, callback, title, input_type) {
-        if (!$cms.$CONFIG_OPTION.js_overlays) {
+        if (!$cms.$CONFIG_OPTION('js_overlays')) {
             callback(window.prompt(question, defaultValue));
             return;
         }
@@ -5207,7 +5232,7 @@
     $cms.ui.showModalDialog = function showModalDialog(url, name, options, callback, target, cancel_text) {
         callback = callback || noop;
 
-        if (!($cms.$CONFIG_OPTION.js_overlays)) {
+        if (!$cms.$CONFIG_OPTION('js_overlays')) {
             options = options.replace('height=auto', 'height=520');
 
             var timer = new Date().getTime();
@@ -5289,7 +5314,7 @@
             cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
         }
 
-        if (!$cms.$CONFIG_OPTION.js_overlays) {
+        if (!$cms.$CONFIG_OPTION('js_overlays')) {
             options = options.replace('height=auto', 'height=520');
             window.open(url, name, options);
             return;
@@ -5550,7 +5575,7 @@
 
         function _confirmSession(callback, username, url) {
             $cms.ui.prompt(
-                $cms.$CONFIG_OPTION.js_overlays ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
+                $cms.$CONFIG_OPTION('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
                 '',
                 function (promptt) {
                     if (promptt !== null) {
@@ -6144,20 +6169,26 @@
             }
 
             // Work out box position
-            if (!detected_box_height) detected_box_height = this.boxWrapperEl.firstElementChild.offsetHeight;
+            if (!detected_box_height) {
+                detected_box_height = this.boxWrapperEl.firstElementChild.offsetHeight;
+            }
             var _box_pos_top, _box_pos_left, box_pos_top, box_pos_left;
-            if (box_height == 'auto') {
+            if (box_height === 'auto') {
                 if (init) {
                     _box_pos_top = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
                 } else {
                     _box_pos_top = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detected_box_height / 2) + this.WINDOW_TOP_GAP;
                 }
 
-                if (iframe) _box_pos_top = this.WINDOW_TOP_GAP; // Actually, for frames we'll put at top so things don't bounce about during loading and if the frame size changes
+                if (iframe) { // Actually, for frames we'll put at top so things don't bounce about during loading and if the frame size changes
+                    _box_pos_top = this.WINDOW_TOP_GAP;
+                }
             } else {
                 _box_pos_top = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(box_height) / 2) + this.WINDOW_TOP_GAP;
             }
-            if (_box_pos_top < this.WINDOW_TOP_GAP) _box_pos_top = this.WINDOW_TOP_GAP;
+            if (_box_pos_top < this.WINDOW_TOP_GAP) {
+                _box_pos_top = this.WINDOW_TOP_GAP;
+            }
             _box_pos_left = ((dim.window_width / 2) - (parseInt(box_width) / 2));
             box_pos_top = _box_pos_top + 'px';
             box_pos_left = _box_pos_left + 'px';
@@ -6668,10 +6699,9 @@
         }
     });
 
-    /* Ask a user a question: they must click a button */
-    // 'Cancel' should come as index 0 and Ok/default-option should come as index 1. This is so that the fallback works right.
     /**
-     *
+     * Ask a user a question: they must click a button
+     * 'Cancel' should come as index 0 and Ok/default-option should come as index 1. This is so that the fallback works right.
      * @param message
      * @param button_set
      * @param window_title
@@ -6689,7 +6719,7 @@
         }
         button_set = new_button_set;
 
-        if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION.js_overlays) {
+        if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
             if (button_set.length > 4) {
                 dialog_height += 5 * (button_set.length - 4);
             }
@@ -6951,7 +6981,7 @@
     };
 
 
-}(window.$cms || (window.$cms = {}), JSON.parse(document.getElementById('composr-symbol-data').content)));
+}(window.$cms || (window.$cms = {}), document.getElementById('composr-symbol-data') ? JSON.parse(document.getElementById('composr-symbol-data').content) : {}));
 
 function noop() {}
 
@@ -7347,7 +7377,7 @@ function noop() {}
                         anchor.setAttribute('href', window.location.href.replace(/#.*$/, '') + href);
                     }
 
-                    if ($cms.$CONFIG_OPTION.js_overlays) {
+                    if ($cms.$CONFIG_OPTION('js_overlays')) {
                         // Lightboxes
                         if (anchor.rel && anchor.rel.includes('lightbox')) {
                             anchor.title = anchor.title.replace('{!LINK_NEW_WINDOW;^}', '').trim();
@@ -7359,7 +7389,7 @@ function noop() {}
                         }
                     }
 
-                    if ($cms.$VALUE_OPTION.js_keep_params) {
+                    if ($cms.$VALUE_OPTION('js_keep_params')) {
                         // Keep parameters need propagating
                         if (anchor.href && anchor.href.startsWith($cms.$BASE_URL_S())) {
                             anchor.href += keep_stub_with_context(anchor.href);
@@ -7383,7 +7413,7 @@ function noop() {}
                     form.title = '';
 
                     // Convert form element title attributes into composr tooltips
-                    if ($cms.$CONFIG_OPTION.js_overlays) {
+                    if ($cms.$CONFIG_OPTION('js_overlays')) {
                         // Convert title attributes into composr tooltips
                         var elements = form.elements, j;
 
@@ -7401,7 +7431,7 @@ function noop() {}
                         }
                     }
 
-                    if ($cms.$VALUE_OPTION.js_keep_params) {
+                    if ($cms.$VALUE_OPTION('js_keep_params')) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.startsWith($cms.$BASE_URL_S())) {
                             form.action += keep_stub_with_context(form.action);
@@ -7438,7 +7468,7 @@ function noop() {}
         // Convert img title attributes into composr tooltips
         imageTooltips: {
             attach: function (context) {
-                if (!$cms.$CONFIG_OPTION.js_overlays) {
+                if (!$cms.$CONFIG_OPTION('js_overlays')) {
                     return;
                 }
 
@@ -7520,7 +7550,7 @@ function noop() {}
 
         /*START JS from HTML_HEAD.tpl*/
         // Google Analytics account, if one set up
-        if ($cms.$CONFIG_OPTION.google_analytics.trim() && !$cms.$IS_STAFF() && !$cms.$IS_ADMIN()) {
+        if ($cms.$CONFIG_OPTION('google_analytics').trim() && !$cms.$IS_STAFF() && !$cms.$IS_ADMIN()) {
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function () {
@@ -7534,16 +7564,16 @@ function noop() {}
                 m.parentNode.insertBefore(a, m)
             })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-            if ($cms.$CONFIG_OPTION.long_google_cookies) {
-                window.ga('create', $cms.$CONFIG_OPTION.google_analytics.trim(), 'auto');
+            if ($cms.$CONFIG_OPTION('long_google_cookies')) {
+                window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), 'auto');
             } else {
-                window.ga('create', $cms.$CONFIG_OPTION.google_analytics.trim(), { cookieExpires: 0 });
+                window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), { cookieExpires: 0 });
             }
             window.ga('send','pageview');
         }
 
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent
-        if ($cms.$CONFIG_OPTION.cookie_notice && ($cms.$RUNNING_SCRIPT() === 'index')) {
+        if ($cms.$CONFIG_OPTION('cookie_notice') && ($cms.$RUNNING_SCRIPT() === 'index')) {
             window.cookieconsent_options = {
                 'message': $cms.format('{!COOKIE_NOTICE;}', $cms.$SITE_NAME()),
                 'dismiss': '{!INPUTSYSTEM_OK;}',
@@ -7557,7 +7587,7 @@ function noop() {}
             }));
         }
 
-        if ($cms.$CONFIG_OPTION.detect_javascript) {
+        if ($cms.$CONFIG_OPTION('detect_javascript')) {
             this.detectJavascript();
         }
         /*END JS from HTML_HEAD.tpl*/
@@ -7580,7 +7610,7 @@ function noop() {}
             } catch (ignore) {}
         }
 
-        if (($cms.$ZONE() === 'adminzone') && $cms.$CONFIG_OPTION.background_template_compilation) {
+        if (($cms.$ZONE() === 'adminzone') && $cms.$CONFIG_OPTION('background_template_compilation')) {
             var page = $cms.filter.url($cms.$PAGE());
             $cms.loadSnippet('background_template_compilation&page=' + page, '', function () {
             });
@@ -7595,7 +7625,7 @@ function noop() {}
             document.body.classList.add('touch_enabled');
         }
 
-        if ($cms.$HAS_PRIVILEGE.sees_javascript_error_alerts) {
+        if ($cms.$HAS_PRIVILEGE('sees_javascript_error_alerts')) {
             this.initialiseErrorMechanism();
         }
 
@@ -7604,11 +7634,11 @@ function noop() {}
         preloader.src = $cms.img('{$IMG;,loading}');
 
         // Tell the server we have JavaScript, so do not degrade things for reasons of compatibility - plus also set other things the server would like to know
-        if ($cms.$CONFIG_OPTION.detect_javascript) {
+        if ($cms.$CONFIG_OPTION('detect_javascript')) {
             $cms.setCookie('js_on', 1, 120);
         }
 
-        if ($cms.$CONFIG_OPTION.is_on_timezone_detection) {
+        if ($cms.$CONFIG_OPTION('is_on_timezone_detection')) {
             if (!window.parent || (window.parent === window)) {
                 $cms.setCookie('client_time', (new Date()).toString(), 120);
                 $cms.setCookie('client_time_ref', $cms.$FROM_TIMESTAMP(), 120);
@@ -7634,7 +7664,7 @@ function noop() {}
         window.addEventListener('paste', function (event) {
             var clipboard_data = event.clipboardData || window.clipboardData;
             var pasted_data = clipboard_data.getData('Text');
-            if (pasted_data && pasted_data.length > $cms.$CONFIG_OPTION.spam_heuristic_pasting) {
+            if (pasted_data && pasted_data.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
                 $cms.setPostDataFlag('paste');
             }
         });
@@ -7646,7 +7676,7 @@ function noop() {}
         window.$cmsLoad.push(function () {
             // When images etc have loaded
             // Move the help panel if needed
-            if ($cms.$CONFIG_OPTION.fixed_width || ($cms.dom.getWindowWidth() > 990)) {
+            if ($cms.$CONFIG_OPTION('fixed_width') || ($cms.dom.getWindowWidth() > 990)) {
                 return;
             }
 
@@ -7995,7 +8025,7 @@ function noop() {}
         openOverlay: function (e, el) {
             var options, url = (el.href === undefined) ? el.action : el.href;
 
-            if (!($cms.$CONFIG_OPTION.js_overlays)) {
+            if (!($cms.$CONFIG_OPTION('js_overlays'))) {
                 return;
             }
 
@@ -8019,7 +8049,7 @@ function noop() {}
 
         // Implementation for `click a[rel*="lightbox"]`
         lightBoxes: function (e, el) {
-            if (!($cms.$CONFIG_OPTION.js_overlays)) {
+            if (!($cms.$CONFIG_OPTION('js_overlays'))) {
                 return;
             }
 
@@ -8271,7 +8301,7 @@ function noop() {}
             var loc = window.location.href;
 
             // Navigation loading screen
-            if ($cms.$CONFIG_OPTION.enable_animations) {
+            if ($cms.$CONFIG_OPTION('enable_animations')) {
                 if ((window.parent === window) && !loc.includes('js_cache=1') && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
                     window.addEventListener('beforeunload', function () {
                         staff_unload_action();
@@ -8415,7 +8445,7 @@ function noop() {}
                     return;
                 }
 
-                if ($cms.$CONFIG_OPTION.enable_theme_img_buttons) {
+                if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
                     // Remove other edit links
                     var old = document.querySelectorAll('.magic_image_edit_link');
                     for (var i = old.length - 1; i >= 0; i--) {
@@ -8452,7 +8482,7 @@ function noop() {}
             function handle_image_mouse_out(event) {
                 var target = event.target;
 
-                if ($cms.$CONFIG_OPTION.enable_theme_img_buttons) {
+                if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
                     if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
                         if ((target.mo_link !== undefined) && (target.mo_link)) // Clear timed display of new edit button
                         {
@@ -8634,7 +8664,7 @@ function noop() {}
         }
 
         //@TODO: Implement slide-up/down animation which is triggered by this boolean
-        //noAnimateHeight = $cms.$CONFIG_OPTION.enable_animations ? !!noAnimateHeight : true;
+        //noAnimateHeight = $cms.$CONFIG_OPTION('enable_animations') ? !!noAnimateHeight : true;
 
         if (!el.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
             el = $cms.dom.$(el, '.toggleable_tray') || el;
@@ -8844,18 +8874,14 @@ function noop() {}
         $cms.callBlock(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, null, false, null, false, false);
     };
 
-    $cms.templates.massSelectMarker = function (params) {
-        var container = this;
-
+    $cms.templates.massSelectMarker = function (params, container) {
         $cms.dom.on(container, 'click', '.js-chb-prepare-mass-select', function (e, checkbox) {
             prepareMassSelectMarker(params.supportMassSelect, params.type, params.id, checkbox.checked);
         });
     };
 
 
-    $cms.templates.blockTopPersonalStats = function () {
-        var container = this;
-
+    $cms.templates.blockTopPersonalStats = function (params, container) {
         $cms.dom.on(container, 'click', '.js-click-toggle-top-personal-stats', function (e) {
             if (toggle_top_personal_stats(e) === false) {
                 e.preventDefault();
@@ -8993,15 +9019,15 @@ function noop() {}
 
         el.cms_tooltip_title = $cms.filter.html(title);
 
-        $cms.dom.on(el, 'mouseover', function (event) {
+        $cms.dom.on(el, 'mouseover.convertTooltip', function (event) {
             global.$cms.ui.activateTooltip(el, event, el.cms_tooltip_title, 'auto', '', null, false, false, false, false, global);
         });
 
-        $cms.dom.on(el, 'mousemove', function (event) {
+        $cms.dom.on(el, 'mousemove.convertTooltip', function (event) {
             global.$cms.ui.repositionTooltip(el, event, false, false, null, false, global);
         });
 
-        $cms.dom.on(el, 'mouseout', function () {
+        $cms.dom.on(el, 'mouseout.convertTooltip', function () {
             global.$cms.ui.deactivateTooltip(el);
         });
     }

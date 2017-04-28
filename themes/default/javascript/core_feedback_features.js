@@ -13,7 +13,7 @@
             set_up_comcode_autocomplete('post', !!params.wysiwyg);
         });
 
-        if ($cms.$CONFIG_OPTION.enable_previews && $cms.$FORCE_PREVIEWS()) {
+        if ($cms.$CONFIG_OPTION('enable_previews') && $cms.$FORCE_PREVIEWS()) {
             this.btnSubmit.style.display = 'none';
         }
 

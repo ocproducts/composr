@@ -614,7 +614,7 @@
     };
 
     $cms.templates.formScreenInputCaptcha = function formScreenInputCaptcha(params, container) {
-        if ($cms.$CONFIG_OPTION.js_captcha) {
+        if ($cms.$CONFIG_OPTION('js_captcha')) {
             $cms.dom.html($cms.dom.$('#captcha_spot'), params.captcha);
         } else {
             window.addEventListener('pageshow', function () {

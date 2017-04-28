@@ -5,8 +5,8 @@
         var form = document.getElementById('days').form;
         form.addEventListener('submit', function () {
             var days = form.elements['days'].value;
-            if (days > $cms.$CONFIG_OPTION.topic_pin_max_days) {
-                $cms.ui.alert($cms.format('{!TOPIC_PINNED_MAX_DAYS;^}', $cms.numberFormat($cms.$CONFIG_OPTION.topic_pin_max_days)));
+            if (days > $cms.$CONFIG_OPTION('topic_pin_max_days')) {
+                $cms.ui.alert($cms.format('{!TOPIC_PINNED_MAX_DAYS;^}', $cms.numberFormat($cms.$CONFIG_OPTION('topic_pin_max_days'))));
                 return false;
             }
         });

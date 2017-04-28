@@ -13408,7 +13408,7 @@ function upload_queue_changed(ob) {
 }
 
 function preinit_file_input(page_type, name, _btn_submit_id, posting_field_name, filter, button_type) {
-    if (!$cms.$CONFIG_OPTION.complex_uploader) {
+    if (!$cms.$CONFIG_OPTION('complex_uploader')) {
         return;
     }
 
@@ -13429,7 +13429,7 @@ function preinit_file_input(page_type, name, _btn_submit_id, posting_field_name,
 }
 
 function replace_file_input(page_type, name, _btn_submit_id, posting_field_name, filter, button_type) {
-    if (!$cms.$CONFIG_OPTION.complex_uploader) {
+    if (!$cms.$CONFIG_OPTION('complex_uploader')) {
         return;
     }
 
