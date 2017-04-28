@@ -99,7 +99,7 @@ function init__global2()
 
     // Initialise some globals
     $JAVASCRIPTS_DEFAULT = array(
-        'composr' => true,
+        'global' => true,
         'core' => true,
         'modalwindow' => true,
         'custom_globals' => true
