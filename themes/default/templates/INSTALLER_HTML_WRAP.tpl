@@ -16,6 +16,8 @@
 		<meta name="robots" content="noindex, nofollow" />
 
 		<script>
+			window.IN_MINIKERNEL_VERSION = true;
+
 			function install_stage_load() {
 				//set_cookie('js_on',1,120);
 

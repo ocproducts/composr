@@ -1,11 +1,5 @@
-<div>
+<div data-require-javascript="setupwizard" data-tpl="setupwizard7">
     {FORM}
-    <script>
-    document.getElementById('rules').onclick = function () {
-        $cms.dom.smoothScroll($cms.dom.findPosY('#rules_set'));
-    };
-    </script>
-
     <div class="box box___setupwizard_7_screen">
         <div class="box_inner">
             <h2>{!PREVIEW}</h2>

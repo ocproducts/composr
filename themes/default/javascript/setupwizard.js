@@ -1,6 +1,12 @@
 (function ($cms) {
     'use strict';
 
+    $cms.templates.setupwizard7 = function setupwizard7(params, container) {
+        $cms.dom.on('#rules', 'click', function () {
+            $cms.dom.smoothScroll($cms.dom.findPosY('#rules_set'));
+        });
+    };
+
     $cms.functions.adminSetupwizardStep5 = function () {
         var cuz = document.getElementById('collapse_user_zones');
         cuz.addEventListener('change', cuz_func);

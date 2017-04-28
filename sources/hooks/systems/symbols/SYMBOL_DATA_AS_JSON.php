@@ -128,10 +128,8 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         ];
 
         require_code('urls');
-        $value['EXTRA'] = [
-            'can_try_url_schemes' => can_try_url_schemes(),
-            'staff_tooltips_url_patterns' => $this->staff_tooltips_url_patterns($value['IS_STAFF'] === '1')
-        ];
+        $value['can_try_url_schemes'] = can_try_url_schemes();
+        $value['staff_tooltips_url_patterns'] = $this->staff_tooltips_url_patterns($value['IS_STAFF'] === '1');
 
         return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
     }

@@ -65,7 +65,7 @@
          * @method
          * @returns {boolean}
          */
-        $DEV_MODE: constant(boolVal(symbols.DEV_MODE)),
+        $DEV_MODE: constant(window.IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE)),
         /**
          * @method
          * @returns {boolean}
@@ -297,7 +297,12 @@
          * @member {object}
          */
         $CONFIG_OPTION: function (optionName) {
-           var options =  {
+            // Installer, likely executing global.js
+            if (window.IN_MINIKERNEL_VERSION) {
+                return '';
+            }
+
+            var options =  {
                 /**@member {boolean}*/
                 js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
                 /**@member {boolean}*/
@@ -347,7 +352,9 @@
                 topic_pin_max_days: intVal(symbols.CONFIG_OPTION.topic_pin_max_days),
 
                 /**@member {string}*/
-                google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics)
+                google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
+                /**@member {string}*/
+                cookie_notice: strVal(symbols.CONFIG_OPTION.cookie_notice)
             };
 
             if (hasOwn(options, optionName)) {
@@ -361,6 +368,11 @@
          * @member {object}
          */
         $VALUE_OPTION: function (optionName) {
+            // Installer, likely executing global.js
+            if (window.IN_MINIKERNEL_VERSION) {
+                return '';
+            }
+
             var options = {
                 /**@member {string}*/
                 js_keep_params: symbols.VALUE_OPTION.js_keep_params,
@@ -379,6 +391,11 @@
          * @member {object}
          */
         $HAS_PRIVILEGE: function (optionName) {
+            // Installer, likely executing global.js
+            if (window.IN_MINIKERNEL_VERSION) {
+                return false;
+            }
+
             var options = {
                 /**@member {string}*/
                 sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
@@ -393,9 +410,9 @@
 
         // Just some more useful stuff, (not tempcode symbols)
         /**@member {boolean}*/
-        canTryUrlSchemes: boolVal(symbols.EXTRA.can_try_url_schemes),
+        canTryUrlSchemes: boolVal(symbols['can_try_url_schemes']),
         /**@member {object}*/
-        staffTooltipsUrlPatterns: objVal(symbols.EXTRA.staff_tooltips_url_patterns)
+        staffTooltipsUrlPatterns: objVal(symbols['staff_tooltips_url_patterns'])
     });
 
     extendDeep($cms, /**@lends $cms*/{
@@ -550,8 +567,6 @@
         gaTrack: gaTrack,
         /**@method*/
         playSelfAudioLink: playSelfAudioLink,
-        /**@method*/
-        topicReply: topicReply,
         /**@method*/
         setCookie: setCookie,
         /**@method*/
@@ -2842,7 +2857,7 @@
 
     /**
      * @memberof $cms.dom
-     * @param el { Window|Document|Element }
+     * @param el { Window|Document|Element|string }
      * @param event {string|object}
      * @param selector {string|function}
      * @param [data] {object|function}
@@ -6981,7 +6996,7 @@
     };
 
 
-}(window.$cms || (window.$cms = {}), document.getElementById('composr-symbol-data') ? JSON.parse(document.getElementById('composr-symbol-data').content) : {}));
+}(window.$cms || (window.$cms = {}), !window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {}));
 
 function noop() {}
 
