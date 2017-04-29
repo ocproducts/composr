@@ -62,12 +62,12 @@ function auto_decache($changed_base_url)
 }
 
 /**
- * Rebuild the specified caches.
+ * Rebuild the specified cleanup tools.
  *
- * @param  ?array $caches The caches to rebuild (null: all)
+ * @param  ?array $cleanup_tools The cleanup tools to rebuild (null: all)
  * @return Tempcode Any messages returned
  */
-function composr_cleanup($caches = null)
+function composr_cleanup($cleanup_tools = null)
 {
     require_lang('cleanup');
 
@@ -87,17 +87,19 @@ function composr_cleanup($caches = null)
         $hooks['cns'] = $temp;
     }
 
-    if (!is_null($caches)) {
-        foreach ($caches as $cache) {
-            if (array_key_exists($cache, $hooks)) {
-                require_code('hooks/systems/cleanup/' . filter_naughty_harsh($cache));
-                $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($cache), true);
+    if (!is_null($cleanup_tools)) {
+        foreach ($cleanup_tools as $hook) {
+            if (array_key_exists($hook, $hooks)) {
+                require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
+                $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
                 if (is_null($object)) {
                     continue;
                 }
                 $messages->attach($object->run());
+
+                log_it('CLEANUP_TOOLS', $hook);
             } else {
-                $messages->attach(paragraph(do_lang_tempcode('_MISSING_RESOURCE', escape_html($cache))));
+                $messages->attach(paragraph(do_lang_tempcode('_MISSING_RESOURCE', escape_html($hook))));
             }
         }
     } else {
@@ -110,11 +112,12 @@ function composr_cleanup($caches = null)
             $info = $object->info();
             if ($info['type'] == 'cache') {
                 $messages->attach($object->run());
+
+                log_it('CLEANUP_TOOLS', $hook);
             }
         }
     }
 
-    log_it('CLEANUP_TOOLS');
     return $messages;
 }
 
