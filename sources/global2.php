@@ -2070,6 +2070,10 @@ function csp_send_header() {
     }
 }
 
+/**
+ * Generate a CSP nonce
+ * @return string
+ */
 function csp_generate_nonce() {
     $nonce = uniqid('', true);
     return substr(base64_encode($nonce), 0, 10);

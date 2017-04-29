@@ -324,9 +324,11 @@ function get_attachments($posting_field_name)
  * @param  boolean $support_autosave Whether to support auto-save
  * @param  boolean $specialisation2_hidden Whether to support auto-save
  * @param  mixed $description A description for this input field
+ * @param  mixed $js_functions JavaScript function names to execute
  * @return Tempcode The posting form
  */
-function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '', $js_functions)
+function
+get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '', $js_functions)
 {
     require_javascript('posting');
     require_javascript('ajax');

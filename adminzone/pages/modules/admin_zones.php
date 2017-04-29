@@ -557,7 +557,7 @@ class Module_admin_zones
         require_lang('permissions');
         require_javascript('core_zone_editor');
 
-        $functions = ''; // To be implemented for all the useages of ->get_form_fields()
+        $functions = ''; // To be first implemented for all the useages of ->get_form_fields()
         $javascript = /**@lang JavaScript*/'$cms.functions.moduleAdminZonesGetFormFields()';
 
         $fields = '';
