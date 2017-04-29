@@ -150,6 +150,7 @@ class Hook_addon_registry_captcha
             'sources/hooks/systems/config/captcha_on_feedback.php',
             'sources/hooks/systems/config/audio_captcha.php',
             'sources/hooks/systems/config/js_captcha.php',
+            'themes/default/javascript/captcha.js',
         );
     }
 

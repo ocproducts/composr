@@ -150,6 +150,7 @@ class Hook_addon_registry_search
             'sources/hooks/systems/config/minimum_autocomplete_past_search.php',
             'sources/hooks/systems/commandr_fs_extended_member/searches_saved.php',
             'sources/hooks/systems/config/block_top_search.php',
+            'themes/default/javascript/search.js',
         );
     }
 

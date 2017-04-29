@@ -1,3 +1,4 @@
+<div>
 {TITLE}
 
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
@@ -30,4 +31,4 @@
 		</p>
 	</div>
 </form>
-
+</div>

@@ -150,6 +150,7 @@ class Hook_addon_registry_banners
             'data/images/donate.png',
             'data/images/placeholder_leaderboard.jpg',
             'sources/hooks/systems/block_ui_renderers/banners.php',
+            'themes/default/javascript/banners.js',
         );
     }
 

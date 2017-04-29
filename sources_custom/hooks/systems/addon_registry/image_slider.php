@@ -149,6 +149,7 @@ class Hook_addon_registry_image_slider
             'themes/default/templates_custom/BLOCK_MAIN_IMAGE_SLIDER.tpl',
             'themes/default/javascript_custom/skitter.js',
             'lang_custom/EN/image_slider.ini',
+            'themes/default/javascript_custom/image_slider.js',
         );
     }
 }

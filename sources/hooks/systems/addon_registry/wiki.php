@@ -154,6 +154,7 @@ class Hook_addon_registry_wiki
             'sources/hooks/systems/notifications/wiki.php',
             'sources/hooks/systems/config/search_wiki_pages.php',
             'sources/hooks/systems/config/search_wiki_posts.php',
+            'themes/default/javascript/wiki.js',
         );
     }
 

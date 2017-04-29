@@ -128,6 +128,7 @@ class Hook_addon_registry_core_language_editing
             'themes/default/images/icons/28x28/translate.png',
             'sources/hooks/systems/config/google_translate_api_key.php',
             'sources/database_multi_lang_conv.php',
+            'themes/default/javascript/core_language_editing.js',
         );
     }
 

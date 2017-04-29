@@ -165,6 +165,7 @@ class Hook_addon_registry_core_feedback_features
             'themes/default/templates/RATINGS_SHOW.tpl',
             'sources/blocks/main_contact_simple.php',
             'data/form_to_email.php',
+            'themes/default/javascript/core_feedback_features.js',
         );
     }
 

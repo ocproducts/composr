@@ -165,6 +165,7 @@ First set up an app on Twitter, then use Comcode like:
             'themes/default/images_custom/twitter_feed/retweet_on.png',
             'sources_custom/hooks/systems/config/twitterfeed_update_time.php',
             'sources_custom/hooks/systems/config/twitterfeed_use_twitter_support_config.php',
+            'themes/default/javascript_custom/twitter_feed_integration_block.js',
         );
     }
 }

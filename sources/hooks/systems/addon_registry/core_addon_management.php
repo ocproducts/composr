@@ -134,6 +134,7 @@ class Hook_addon_registry_core_addon_management
             'themes/default/images/icons/28x28/install.png',
             'themes/default/images/icons/28x28/reinstall.png',
             'themes/default/images/icons/28x28/upgrade.png',
+            'themes/default/javascript/core_addon_management.js',
         );
     }
 

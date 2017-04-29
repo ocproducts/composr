@@ -156,6 +156,7 @@ Parameters:
             'data_custom/set_coordinates.php',
             'sources_custom/hooks/systems/cns_cpf_filter/latitude.php',
             'data_custom/get_member_tooltip.php',
+            'themes/default/javascript_custom/user_mappr.js',
         );
     }
 }

@@ -145,6 +145,7 @@ class Hook_addon_registry_core_adminzone_dashboard
             'sources/hooks/systems/commandr_fs_extended_config/checklist_tasks.php',
             'sources/hooks/systems/commandr_fs_extended_config/staff_links.php',
             'sources/hooks/systems/commandr_fs_extended_config/staff_monitoring_sites.php',
+            'themes/default/javascript/core_adminzone_dashboard.js',
         );
     }
 

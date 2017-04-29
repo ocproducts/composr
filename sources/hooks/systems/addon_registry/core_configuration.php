@@ -316,6 +316,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/index.html',
             'sources_custom/hooks/systems/config/index.html',
             'themes/default/templates/XML_CONFIG_SCREEN.tpl',
+            'themes/default/javascript/core_configuration.js',
         );
     }
 

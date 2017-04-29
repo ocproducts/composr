@@ -168,6 +168,7 @@ When you add the block you see various block parameters to be filled in includin
             'themes/default/images_custom/star_highlight.png',
             'sources_custom/catalogues2.php',
             'sources_custom/hooks/systems/upon_query/google_maps.php',
+            'themes/default/javascript_custom/data_mappr.js',
         );
     }
 }

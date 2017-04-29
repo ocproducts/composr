@@ -110,6 +110,7 @@ class Hook_addon_registry_page_management
             'adminzone/pages/modules/admin_sitemap.php',
             'themes/default/javascript/sitemap_editor.js',
             'themes/default/templates/SITEMAP_EDITOR_SCREEN.tpl',
+            'themes/default/javascript/page_management.js',
         );
     }
 

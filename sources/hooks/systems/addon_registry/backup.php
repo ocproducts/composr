@@ -125,6 +125,7 @@ class Hook_addon_registry_backup
             'sources/hooks/systems/snippets/backup_size.php',
             'exports/backups/.htaccess',
             'sources/hooks/systems/tasks/make_backup.php',
+            'themes/default/javascript/backup.js',
         );
     }
 

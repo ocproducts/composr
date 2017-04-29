@@ -133,6 +133,7 @@ class Hook_addon_registry_polls
             'sources/polls.php',
             'sources/blocks/main_poll.php',
             'sources/hooks/systems/config/search_polls.php',
+            'themes/default/javascript/polls.js',
         );
     }
 

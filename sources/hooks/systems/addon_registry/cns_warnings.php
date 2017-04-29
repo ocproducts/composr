@@ -114,6 +114,7 @@ class Hook_addon_registry_cns_warnings
             'sources/hooks/systems/profiles_tabs/warnings.php',
             'themes/default/templates/CNS_MEMBER_PROFILE_WARNINGS.tpl',
             'sources/hooks/systems/commandr_fs_extended_member/warnings.php',
+            'themes/default/javascript/cns_warnings.js',
         );
     }
 

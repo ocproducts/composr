@@ -168,6 +168,7 @@ class Hook_addon_registry_iotds
             'uploads/iotds_addon/index.html',
             'uploads/iotds_addon_thumbs/index.html',
             'sources_custom/hooks/systems/config/search_iotds.php',
+            'themes/default/javascript_custom/iotds.js',
         );
     }
 

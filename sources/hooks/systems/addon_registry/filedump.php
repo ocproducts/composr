@@ -123,6 +123,7 @@ class Hook_addon_registry_filedump
             'sources/filedump.php',
             'sources/hooks/systems/commandr_fs/filedump.php',
             'sources/hooks/systems/config/search_filedump.php',
+            'themes/default/javascript/filedump.js',
         );
     }
 

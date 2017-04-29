@@ -116,6 +116,7 @@ class Hook_addon_registry_core_html_abstractions
             'themes/default/templates/HTML_HEAD.tpl',
             'themes/default/templates/POOR_XHTML_WRAPPER.tpl',
             'themes/default/templates/WITH_WHITESPACE.tpl',
+            'themes/default/javascript/core_html_abstractions.js',
         );
     }
 

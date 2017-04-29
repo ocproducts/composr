@@ -119,7 +119,6 @@ class Hook_addon_registry_core_form_interfaces
             'themes/default/javascript/posting.js',
             'themes/default/javascript/editing.js',
             'themes/default/javascript/WYSIWYG_SETTINGS.js',
-            'themes/default/javascript/ATTACHMENT_UI_DEFAULTS.js',
             'themes/default/javascript/multi.js',
             'themes/default/javascript/checking.js',
             'themes/default/templates/FORM_FIELD_SET_GROUPER.tpl',
@@ -558,6 +557,7 @@ class Hook_addon_registry_core_form_interfaces
             'sources/form_templates.php',
             'data/namelike.php',
             'data/username_exists.php',
+            'themes/default/javascript/core_form_interfaces.js',
         );
     }
 

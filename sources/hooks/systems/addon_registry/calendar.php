@@ -190,6 +190,7 @@ class Hook_addon_registry_calendar
             'sources/hooks/systems/notifications/member_calendar_changes.php',
             'sources/hooks/systems/commandr_fs_extended_member/calendar_interests.php',
             'sources/hooks/systems/config/search_calendar.php',
+            'themes/default/javascript/calendar.js',
         );
     }
 

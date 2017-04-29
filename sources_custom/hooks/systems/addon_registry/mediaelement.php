@@ -148,6 +148,7 @@ class Hook_addon_registry_mediaelement
             'themes/default/javascript_custom/mediaelement-and-player.js',
             'themes/default/templates_custom/MEDIA_AUDIO_WEBSAFE.tpl',
             'themes/default/templates_custom/MEDIA_VIDEO_WEBSAFE.tpl',
+            'themes/default/javascript_custom/mediaelement.js',
         );
     }
 }

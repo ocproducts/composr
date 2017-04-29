@@ -175,6 +175,7 @@ class Hook_addon_registry_pointstore
             'sources/hooks/systems/commandr_fs_extended_config/pstore_customs.php',
             'sources/hooks/systems/commandr_fs_extended_config/pstore_permissions.php',
             'sources/hooks/systems/commandr_fs_extended_config/pstore_prices.php',
+            'themes/default/javascript/pointstore.js',
         );
     }
 

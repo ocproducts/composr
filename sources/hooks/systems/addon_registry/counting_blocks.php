@@ -105,6 +105,7 @@ class Hook_addon_registry_counting_blocks
             'themes/default/css/counting_blocks.css',
             'themes/default/templates/BLOCK_MAIN_COUNTDOWN.tpl',
             'themes/default/templates/BLOCK_MAIN_COUNT.tpl',
+            'themes/default/javascript/counting_blocks.js',
         );
     }
 

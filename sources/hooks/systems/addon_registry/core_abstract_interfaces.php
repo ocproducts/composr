@@ -173,7 +173,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/templates/INTERNALISED_AJAX_SCREEN.tpl',
             'themes/default/templates/MEMBER_TOOLTIP.tpl',
             'themes/default/templates/SIMPLE_PREVIEW_BOX.tpl',
-            'themes/default/javascript/internalised_ajax_screen.js',
             'themes/default/templates/RESULTS_TABLE_SCREEN.tpl',
             'sources/templates_interfaces.php',
             'sources/templates_redirect_screen.php',
@@ -189,6 +188,7 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/images/progress_indicator/stage_future.png',
             'themes/default/images/progress_indicator/stage_past.png',
             'themes/default/images/progress_indicator/stage_present.png',
+            'themes/default/javascript/core_abstract_interfaces.js',
         );
     }
 

@@ -1262,6 +1262,7 @@ class Hook_addon_registry_composr_homesite_support_credits
             'tracker/library/phpmailer/index.html',
             'tracker/library/phpmailer/language/.htaccess',
             'tracker/library/phpmailer/language/index.html',
+            'themes/default/javascript_custom/composr_homesite_support_credits.js',
         );
     }
 }

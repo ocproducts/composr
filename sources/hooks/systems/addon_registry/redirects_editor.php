@@ -110,6 +110,7 @@ class Hook_addon_registry_redirects_editor
             'adminzone/pages/modules/admin_redirects.php',
             'lang/EN/redirects.ini',
             'themes/default/css/redirects_editor.css',
+            'themes/default/javascript/redirects_editor.js',
         );
     }
 

@@ -156,6 +156,7 @@ The jokes you can play are:
             'sources_custom/hooks/systems/config/jestr_piglatin_shown_for.php',
             'sources_custom/hooks/systems/config/jestr_string_changes.php',
             'sources_custom/hooks/systems/config/jestr_string_changes_shown_for.php',
+            'themes/default/javascript_custom/jestr.js',
         );
     }
 }

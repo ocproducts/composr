@@ -178,6 +178,7 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'sources_custom/hooks/systems/profiles_tabs/posts.php',
             'sources_custom/hooks/systems/config/syndicate_site_activity_default.php',
             'sources_custom/activities.php',
+            'themes/default/javascript_custom/activity_feed.js',
         );
     }
 }

@@ -141,6 +141,7 @@ This addon consists of two blocks: a side block with the google search form and 
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_SEARCH_RESULTS.tpl',
             'themes/default/css_custom/google_search.css',
             'pages/comcode_custom/EN/_google_search.txt',
+            'themes/default/javascript_custom/google_search.js',
         );
     }
 }

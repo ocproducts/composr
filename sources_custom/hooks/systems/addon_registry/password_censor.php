@@ -145,6 +145,7 @@ This is a scheduler script that regularly censors anything looking like a passwo
             'sources_custom/hooks/systems/symbols/DECRYPT.php',
             'themes/default/templates_custom/COMCODE_ENCRYPT.tpl',
             'themes/default/templates_custom/COMCODE_SELF_DESTRUCT.tpl',
+            'themes/default/javascript_custom/password_censor.js',
         );
     }
 }

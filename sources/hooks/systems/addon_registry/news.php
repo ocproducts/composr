@@ -178,6 +178,7 @@ class Hook_addon_registry_news
             'sources/hooks/systems/tasks/import_rss.php',
             'sources/hooks/systems/tasks/import_wordpress.php',
             'sources/hooks/systems/config/search_news.php',
+            'themes/default/javascript/news.js',
         );
     }
 

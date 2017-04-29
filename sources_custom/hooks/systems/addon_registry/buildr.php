@@ -259,6 +259,7 @@ Buildr is a full zone addon for Composr.';
             'data_custom/modules/buildr/docs/room1.3.png',
             'data_custom/modules/buildr/docs/roompw1.0.png',
             'data_custom/modules/buildr/docs/roompw1.1.png',
+            'themes/default/javascript_custom/buildr.js',
         );
     }
 }

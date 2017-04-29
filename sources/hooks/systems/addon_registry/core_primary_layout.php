@@ -115,6 +115,7 @@ class Hook_addon_registry_core_primary_layout
             'themes/default/templates/BREADCRUMB_LONE_WRAP.tpl',
             'themes/default/templates/BREADCRUMB_LINK_WRAP.tpl',
             'themes/default/templates/CSS_NEED_FULL.tpl',
+            'themes/default/javascript/core_primary_layout.js',
         );
     }
 

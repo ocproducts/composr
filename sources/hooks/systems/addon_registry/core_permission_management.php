@@ -111,6 +111,7 @@ class Hook_addon_registry_core_permission_management
             'sources/hooks/systems/sitemap/privilege_category.php',
             'themes/default/templates/PERMISSION_KEYS_PERMISSIONS_SCREEN.tpl',
             'themes/default/templates/PERMISSION_KEYS_PERMISSION_ROW.tpl',
+            'themes/default/templates/PERMISSION_SCREEN_PERMISSIONS_SCREEN.tpl',
             'themes/default/templates/PERMISSION_PRIVILEGES_SECTION.tpl',
             'themes/default/templates/PERMISSION_PRIVILEGES_SCREEN.tpl',
             'themes/default/templates/PERMISSION_CELL.tpl',
@@ -127,6 +128,7 @@ class Hook_addon_registry_core_permission_management
             'themes/default/images/permlevels/index.html',
             'themes/default/images/permlevels/inherit.png',
             'themes/default/images/pte_view_help.png',
+            'themes/default/javascript/core_permission_management.js',
         );
     }
 

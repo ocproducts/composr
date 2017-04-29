@@ -181,6 +181,7 @@ class Hook_addon_registry_downloads
             'themes/default/templates/DOWNLOAD_GATEWAY_SCREEN.tpl',
             'sources/hooks/systems/config/search_download_categories.php',
             'sources/hooks/systems/config/search_downloads.php',
+            'themes/default/javascript/downloads.js',
         );
     }
 
