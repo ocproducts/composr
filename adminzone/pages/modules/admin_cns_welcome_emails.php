@@ -159,7 +159,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
 
         if (get_forum_type() == 'cns') {
             require_javascript('welcome_emails');
-            $this->javascript = /**@lang JavaScript*/'$cms.functions.moduleAdminCnsWelcomeEmailsRunStart();';
+            $this->functions = 'moduleAdminCnsWelcomeEmailsRunStart';
         }
 
         $this->add_one_label = do_lang_tempcode('ADD_WELCOME_EMAIL');

@@ -153,7 +153,7 @@ class Module_cms_calendar extends Standard_crud_module
     public function run_start($type)
     {
         require_javascript('calendar');
-        $this->javascript = /**@lang JavaScript*/'$cms.functions.cmsCalendarRunStart()';
+        $this->functions = 'functions.cmsCalendarRunStart';
 
         $this->posting_form_title = do_lang_tempcode('EVENT_TEXT');
         $this->posting_form_description = do_lang_tempcode('DESCRIPTION_EVENT_TEXT');

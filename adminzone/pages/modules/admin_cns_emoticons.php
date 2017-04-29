@@ -116,7 +116,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
 
         if ($type == 'add') {
             require_javascript('core_cns');
-            $this->javascript = /**@lang JavaScript*/'$cms.functions.moduleAdminCnsEmoticons();';
+            $this->functions = 'moduleAdminCnsEmoticons';
         }
 
         if ($type == 'browse') {

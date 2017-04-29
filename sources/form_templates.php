@@ -326,7 +326,7 @@ function get_attachments($posting_field_name)
  * @param  mixed $description A description for this input field
  * @return Tempcode The posting form
  */
-function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
+function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '', $js_functions)
 {
     require_javascript('posting');
     require_javascript('ajax');
@@ -384,6 +384,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
         'REQUIRED' => $required,
         'TABINDEX_PF' => strval($tabindex)/*not called TABINDEX due to conflict with FORM_STANDARD_END*/,
         'JAVASCRIPT' => $javascript,
+        'FUNCTIONS' => $js_functions,
         'PREVIEW' => $has_preview,
         'COMCODE_EDITOR' => $comcode_editor,
         'COMCODE_EDITOR_SMALL' => $comcode_editor_small,

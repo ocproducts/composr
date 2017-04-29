@@ -28,7 +28,7 @@ class Module_admin_cns_groups extends Standard_crud_module
 {
     public $lang_type = 'GROUP';
     public $select_name = 'NAME';
-    public $javascript = /** @lang JavaScript */ '$cms.functions.moduleAdminCnsGroups()';
+    public $functions = 'moduleAdminCnsGroups';
     public $content_type = 'group';
     public $possibly_some_kind_of_upload = true;
     public $output_of_action_is_confirmation = true;
@@ -111,7 +111,7 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         if ($type == 'add') {
             require_javascript('core_cns');
-            $this->javascript .= /**@lang JavaScript*/'$cms.functions.moduleAdminCnsGroupsRunStart()';
+            $this->functions = $this->functions ? ($this->functions . ',moduleAdminCnsGroupsRunStart') : 'moduleAdminCnsGroupsRunStart';
         }
 
         $this->add_one_label = do_lang_tempcode('ADD_GROUP');

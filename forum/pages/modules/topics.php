@@ -2053,8 +2053,7 @@ class Module_topics
         if (is_object($post)) {
             $post = $post->evaluate();
         }
-        $posting_form = get_posting_form(do_lang('REPLY'), 'buttons__new_reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null,
-            $this->_post_javascript());
+        $posting_form = get_posting_form(do_lang('REPLY'), 'buttons__new_reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $this->_post_javascript());
 
         if ($parent_id === null) {
             if ($forum_id !== null && get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1) {
@@ -3113,8 +3112,7 @@ END;
         $javascript = '';
 
         if (get_option('force_guest_names') == '1') {
-            $javascript .= /** @lang JavaScript */
-                '
+            $javascript .= /** @lang JavaScript */'
                 var poster_name_if_guest=document.getElementById("poster_name_if_guest");
                 if (poster_name_if_guest) {
                     var crf = function() {

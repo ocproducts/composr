@@ -36,7 +36,7 @@ class Module_cms_quiz extends Standard_crud_module
     public $content_type = 'quiz';
     public $view_entry_point = '_SEARCH:quiz:do:_ID';
     public $archive_entry_point = '_SEARCH:quiz:browse';
-    public $javascript = /** @lang JavaScript */'$cms.functions.moduleCmsQuiz();';
+    public $functions = 'moduleCmsQuiz';
 
     public $menu_label = 'QUIZZES';
     public $table = 'quizzes';

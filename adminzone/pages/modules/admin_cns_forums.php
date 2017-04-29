@@ -36,7 +36,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     public $privilege_page = 'topics';
     public $permission_module = 'forums';
     public $content_type = 'forum';
-    public $javascript = /** @lang JavaScript */ '$cms.functions.moduleAdminCnsForums();';
+    public $functions = 'moduleAdminCnsForums';
     public $menu_label = 'SECTION_FORUMS';
     public $do_preview = null;
     public $donext_entry_content_type = 'forum';

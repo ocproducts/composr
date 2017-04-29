@@ -209,9 +209,8 @@ class Module_cms_catalogues extends Standard_crud_module
         require_code('catalogues');
 
         if ($type == 'add_catalogue') {
-            require_javascript('ajax');
-            $script = find_script('snippet');
-            $this->alt_crud_module->javascript .= /**@lang JavaScript*/'$cms.functions.moduleCmsCataloguesRunStartAddCatalogue();';
+            require_javascript('catalogues');
+            $this->alt_crud_module->functions = $this->alt_crud_module->functions ? ($this->alt_crud_module->functions . ',moduleCmsCataloguesRunStartAddCatalogue') : 'moduleCmsCataloguesRunStartAddCatalogue';
         }
 
         // Decide what to do
@@ -1115,7 +1114,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     public $catalogue = true;
     public $content_type = 'catalogue_category';
     public $upload = 'image';
-    public $javascript = /**@lang JavaScript*/'$cms.functions.moduleCmsCataloguesCat();';
+    public $functions = 'moduleCmsCataloguesCat';
     public $menu_label = 'CATALOGUES';
     public $table = 'catalogue_categories';
     public $title_is_multi_lang = false;
@@ -1514,7 +1513,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     public $is_tree_catalogue = false; // Set for usage by do-next-manager
     public $menu_label = 'CATALOGUES';
     public $table = 'catalogues';
-    public $javascript = /**@lang JavaScript*/'$cms.functions.moduleCmsCataloguesAlt();';
+    public $functions = 'moduleCmsCataloguesAlt';
     public $is_chained_with_parent_browse = true;
 
     /**

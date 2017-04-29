@@ -211,9 +211,8 @@ class Module_cms_galleries extends Standard_crud_module
         }
 
         if ($type == 'add_category') {
-            require_javascript('ajax');
-            $script = find_script('snippet');
-            $this->cat_crud_module->javascript .= /**@lang JavaScript*/'$cms.functions.moduleCmsGalleriesRunStartAddCategory();';
+            require_javascript('galleries');
+            $this->cat_crud_module->functions = $this->cat_crud_module->functions ? ($this->cat_crud_module->functions . ',moduleCmsGalleriesRunStartAddCategory') : 'moduleCmsGalleriesRunStartAddCategory';
         }
 
         // Decide what to do
@@ -1908,7 +1907,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
     public $content_type = 'gallery';
     public $menu_label = 'GALLERIES';
     public $table = 'galleries';
-    public $javascript = /** @lang JavaScript */ '$cms.functions.moduleCmsGalleriesCat();';
+    public $functions = 'moduleCmsGalleriesCat';
     public $is_chained_with_parent_browse = true;
 
     /**

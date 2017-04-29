@@ -294,7 +294,8 @@
 
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
-         * @member {object}
+         * @method
+         * @returns {string|boolean|number}
          */
         $CONFIG_OPTION: function (optionName) {
             // Installer, likely executing global.js
@@ -365,7 +366,8 @@
         },
         /**
          * WARNING: This is a very limited subset of the $VALUE_OPTION tempcode symbol
-         * @member {object}
+         * @method
+         * @returns {string|boolean|number}
          */
         $VALUE_OPTION: function (optionName) {
             // Installer, likely executing global.js
@@ -388,7 +390,8 @@
         },
         /**
          * WARNING: This is a very limited subset of the $HAS_PRIVILEGE tempcode symbol
-         * @member {object}
+         * @method
+         * @returns {boolean}
          */
         $HAS_PRIVILEGE: function (optionName) {
             // Installer, likely executing global.js
@@ -507,10 +510,6 @@
         defaults: defaults,
         /**@method*/
         properties: properties,
-        /**@method*/
-        intVal: intVal,
-        /**@method*/
-        strVal: strVal,
         /**@method*/
         format: format,
         /**@method*/
@@ -1549,11 +1548,11 @@
      * @returns {string}
      */
     function baseUrl(relativeUrl) {
-        if (!relativeUrl && (relativeUrl !== 0)) {
+        relativeUrl = strVal(relativeUrl);
+
+        if (relativeUrl === '') {
             return $cms.$BASE_URL_S();
         }
-
-        relativeUrl = strVal(relativeUrl);
 
         if (rgxHttp.test(relativeUrl)) {
             // Already an absolute url, just ensure matching protocol as the current page.
@@ -6997,8 +6996,6 @@
 
 
 }(window.$cms || (window.$cms = {}), !window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {}));
-
-function noop() {}
 
 (function () {
     /*

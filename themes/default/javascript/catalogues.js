@@ -2,8 +2,18 @@
     'use strict';
 
     $cms.views.CatalogueAddingScreen = CatalogueAddingScreen;
-    function CatalogueAddingScreen() {
+    function CatalogueAddingScreen(params) {
         CatalogueAddingScreen.base(this, 'constructor', arguments);
+
+        if (params.functions) {
+            var functions = strVal(params.functions).split(',');
+            functions.forEach(function(functionName) {
+                if (functionName) {
+                    $cms.functions[functionName]();
+                }
+            });
+        }
+
         catalogue_field_change_watching();
     }
 

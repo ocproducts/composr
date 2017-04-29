@@ -45,43 +45,9 @@ class Hook_syndication_facebook
         }
 
         require_lang('facebook');
+        require_javascript('facebook_support');
 
-        return /**@lang JavaScript*/"
-            var fb_button=document.getElementById('syndicate_start__facebook');
-            if (fb_button) {
-                var fb_input;
-                if (typeof fb_button.form.elements['facebook_syndicate_to_page']=='undefined') {
-                    fb_input=document.createElement('input');
-                    fb_input.type='hidden';
-                    fb_input.name='facebook_syndicate_to_page';
-                    fb_input.value='0';
-                    fb_button.form.appendChild(fb_input);
-                } else {
-                    fb_input=fb_button.form.elements['facebook_syndicate_to_page'];
-                }
-                fb_button.addEventListener('click', function listener() {
-                    $cms.ui.generateQuestionUi(
-                        '" . addslashes(do_lang('HOW_TO_SYNDICATE_DESCRIPTION')) . "',
-
-                        ['" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "','" . addslashes(do_lang('FACEBOOK_PAGE')) . "','" . addslashes(do_lang('FACEBOOK_WALL')) . "'],
-
-                        '" . addslashes(do_lang('HOW_TO_SYNDICATE')) . "',
-
-                        '" . addslashes(do_lang('SYNDICATE_TO_OWN_WALL', get_site_name())) . "',
-
-                        function(val) {
-                            if (val!='" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "') {
-                                fb_input.value=(val=='" . addslashes(do_lang('FACEBOOK_PAGE')) . "')?'1':'0';
-                                fb_button.removeEventListener(listener);
-                                fb_button.click();
-                            }
-                        }
-                    );
-
-                    return false;
-                });
-            }
-        ";
+        return /**@lang JavaScript*/'$cms.functions.hookSyndicationFacebook_syndicationJavascript();';
     }
 
     public function auth_is_set($member_id)

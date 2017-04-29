@@ -126,18 +126,18 @@ class Module_cms_banners extends Standard_crud_module
         }
 
         require_javascript('banners');
-        $this->javascript = /** @lang JavaScript */'$cms.functions.moduleCmsBannersRunStart();';
+        $this->functions = 'moduleCmsBannersRunStart';
 
         if ($type == 'add') {
             require_javascript('ajax');
             $script = find_script('snippet');
-            $this->javascript .= /** @lang JavaScript */'$cms.functions.moduleCmsBannersRunStartAdd();';
+            $this->functions .= ',moduleCmsBannersRunStartAdd';
         }
 
         if ($type == 'add_category') {
             require_javascript('ajax');
             $script = find_script('snippet');
-            $this->cat_crud_module->javascript = /** @lang JavaScript */'$cms.functions.moduleCmsBannersRunStartAddCategory();';
+            $this->cat_crud_module->functions = 'moduleCmsBannersRunStartAddCategory';
         }
 
         return new Tempcode();
@@ -308,8 +308,8 @@ class Module_cms_banners extends Standard_crud_module
             $b_type = get_param_string('b_type', '');
         }
 
-        list($fields, $_javascript) = get_banner_form_fields(false, $name, $image_url, $site_url, $caption, $direct_code, $notes, $importancemodulus, $campaignremaining, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $title_text);
-        $this->javascript .= $_javascript;
+        list($fields, $_javascript, $jsFunctions) = get_banner_form_fields(false, $name, $image_url, $site_url, $caption, $direct_code, $notes, $importancemodulus, $campaignremaining, $the_type, $expiry_date, $submitter, $validated, $b_type, $b_types, $regions, $title_text);
+        $this->functions = $this->functions ? ($this->functions .= ", {$jsFunctions}") : $jsFunctions;
 
         $fields->attach(metadata_get_fields('banner', $name));
 

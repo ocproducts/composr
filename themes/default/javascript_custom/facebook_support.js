@@ -46,6 +46,39 @@
         }
     };
 
+    $cms.functions.hookSyndicationFacebook_syndicationJavascript = function () {
+        var fb_button = document.getElementById('syndicate_start__facebook');
+        if (fb_button) {
+            var fb_input;
+            if (typeof fb_button.form.elements['facebook_syndicate_to_page'] == 'undefined') {
+                fb_input = document.createElement('input');
+                fb_input.type = 'hidden';
+                fb_input.name = 'facebook_syndicate_to_page';
+                fb_input.value = '0';
+                fb_button.form.appendChild(fb_input);
+            } else {
+                fb_input = fb_button.form.elements['facebook_syndicate_to_page'];
+            }
+            fb_button.addEventListener('click', function listener() {
+                $cms.ui.generateQuestionUi(
+                    '{!HOW_TO_SYNDICATE_DESCRIPTION;^}',
+                    ['{!INPUTSYSTEM_CANCEL;^}', '{!FACEBOOK_PAGE;^}', '{!FACEBOOK_WALL;^}'],
+                    '{!HOW_TO_SYNDICATE;^}',
+                    $cms.format('{!SYNDICATE_TO_OWN_WALL;^}', $cms.$SITE_NAME()),
+                    function (val) {
+                        if (val != '{!INPUTSYSTEM_CANCEL;^}') {
+                            fb_input.value = (val == '{!FACEBOOK_PAGE;^}') ? '1' : '0';
+                            fb_button.removeEventListener('click', listener);
+                            fb_button.click();
+                        }
+                    }
+                );
+
+                return false;
+            });
+        }
+    };
+
     function facebook_init(app_id, channel_url, just_logged_out, serverside_fbuid, home_page_url, logout_page_url) {
         window.fbAsyncInit = function fbAsyncInit() {
             window.FB.init({

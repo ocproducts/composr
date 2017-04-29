@@ -219,6 +219,7 @@ class DecisionTree
 
         require_javascript('core');
         $javascript = '';
+        $functions = '';
 
         // Screen messages
         foreach (array('inform', 'notice', 'warn') as $notice_type) {
@@ -351,6 +352,7 @@ class DecisionTree
             'SUPPORT_AUTOSAVE' => false,
             'TARGET' => '_self',
             'JAVASCRIPT' => $javascript,
+            'FUNCTIONS' => $functions,
         ));
     }
 

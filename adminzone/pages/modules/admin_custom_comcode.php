@@ -32,7 +32,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
     public $select_name = 'TITLE';
     public $non_integer_id = true;
     public $menu_label = 'CUSTOM_COMCODE';
-    public $javascript = /** @lang JavaScript */'$cms.functions.moduleAdminCustomComcode();';
+    public $functions = 'moduleAdminCustomComcode';
     public $orderer = 'tag_title';
     public $title_is_multi_lang = true;
     public $donext_entry_content_type = 'custom_comcode_tag';
@@ -138,7 +138,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
 
         if ($type == 'add') {
             require_javascript('custom_comcode');
-            $this->javascript .= /**@lang JavaScript*/'$cms.functions.moduleAdminCustomComcodeRunStart();';
+            $this->functions = $this->functions ? ($this->functions . ',moduleAdminCustomComcodeRunStart') : 'moduleAdminCustomComcodeRunStart';
         }
 
         if ($type == 'browse') {

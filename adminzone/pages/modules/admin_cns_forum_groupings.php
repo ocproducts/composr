@@ -34,7 +34,7 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     public $extra_donext_whatever_title = '';
     public $do_next_editing_categories = true;
     public $menu_label = 'SECTION_FORUMS';
-    public $javascript = /** @lang JavaScript */ '$cms.functions.moduleAdminCnsForumGroupings();';
+    public $functions = 'moduleAdminCnsForumGroupings';
     public $orderer = 'c_title';
     public $title_is_multi_lang = false;
     public $donext_entry_content_type = 'forum_grouping';
