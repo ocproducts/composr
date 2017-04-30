@@ -8,6 +8,6 @@
     {$SET,fb_connect_logged_out,{$FB_CONNECT_LOGGED_OUT}}
     {$SET,fb_connect_uid,{$FB_CONNECT_UID}}
 
-    <div id="fb-root" data-require-javascript="['facebook', 'facebook_support']" data-tpl="facebookFooter"
+    <div id="fb-root" data-require-javascript="facebook_support" data-tpl="facebookFooter"
          data-tpl-params="{+START,PARAMS_JSON,facebook_appid,fb_connect_finishing_profile,fb_connect_logged_out,fb_connect_uid}{_*}{+END}"></div>
 {+END}

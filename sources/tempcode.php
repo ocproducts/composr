@@ -1246,7 +1246,6 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
             if (in_array('defer=1', $param)) {
                 // Nothing has to be done here, except preparing for AJAX
-                require_javascript('ajax');
             } else {
                 global $REQUEST_BLOCK_NEST_LEVEL;
 
@@ -1324,7 +1323,6 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'FACILITATE_AJAX_BLOCK_CALL':
-            require_javascript('ajax');
             return;
 
         case 'CSS_INHERIT':
@@ -1522,7 +1520,6 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'FRACTIONAL_EDITABLE':
-            require_javascript('ajax');
             require_javascript('fractional_edit');
             return;
     }

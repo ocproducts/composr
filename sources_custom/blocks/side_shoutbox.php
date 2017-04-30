@@ -57,7 +57,6 @@ class Block_side_shoutbox
         require_javascript('text_ghosts');
         require_javascript('shake');
         require_javascript('shoutbox');
-        require_javascript('ajax');
 
         $block_id = get_block_id($map);
 

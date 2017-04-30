@@ -446,7 +446,6 @@ function page_link_chooser_script()
 
     require_lang('menus');
 
-    require_javascript('ajax');
     require_javascript('tree_list');
 
     require_code('site');

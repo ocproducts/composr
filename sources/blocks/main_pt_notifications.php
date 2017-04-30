@@ -62,9 +62,6 @@ class Block_main_pt_notifications
         if (!is_guest()) {
             require_code('cns_notifications');
             list($notifications, $num_unread_pps) = generate_notifications(get_member());
-            if (!$notifications->is_empty()) {
-                require_javascript('ajax');
-            }
         } else {
             $notifications = new Tempcode();
             $num_unread_pps = 0;

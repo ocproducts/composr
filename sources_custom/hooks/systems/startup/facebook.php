@@ -21,7 +21,7 @@ class Hook_startup_facebook
     public function run($MICRO_BOOTUP, $MICRO_AJAX_BOOTUP)
     {
         if (running_script('index')) {
-            require_javascript('facebook');
+            require_javascript('facebook_support');
             require_code('site');
 
             $tpl = do_template('FACEBOOK_FOOTER', null, null, true, null, '.tpl', 'templates', 'default');

@@ -1,5 +1,4 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
-{$REQUIRE_JAVASCRIPT,ajax}
 
 <div data-tpl="comcodeMemberLink" data-tpl-params="{+START,PARAMS_JSON,MEMBER_ID}{_*}{+END}">
 	{+START,IF,{$NOT,{$TAPATALK}}}

@@ -1,7 +1,6 @@
 <div data-tpl="groupMemberTimeoutManageScreen">
 	{TITLE}
 
-	{$REQUIRE_JAVASCRIPT,ajax}
 	{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 
 	{+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}

@@ -1,7 +1,6 @@
 {$, Template uses auto-complete}
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,jquery_autocomplete}
-{$REQUIRE_JAVASCRIPT,ajax}
 {$REQUIRE_CSS,autocomplete}
 
 {$SET,id,{$RAND}}

@@ -50,7 +50,6 @@
 				</div>
 			</form>
 
-			{$REQUIRE_JAVASCRIPT,ajax}
 			{$REQUIRE_JAVASCRIPT,checking}
 			{$REQUIRE_JAVASCRIPT,staff}
 		</div>

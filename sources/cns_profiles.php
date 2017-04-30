@@ -71,7 +71,6 @@ function render_profile_tabset($title, $member_id_of, $member_id_viewing = null,
     }
 
     require_javascript('profile');
-    require_javascript('ajax');
 
     $_tabs = array();
     $i = 0;

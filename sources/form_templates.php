@@ -331,7 +331,6 @@ function
 get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '', $js_functions)
 {
     require_javascript('posting');
-    require_javascript('ajax');
     require_javascript('plupload');
     require_css('widget_plupload');
 
@@ -682,7 +681,6 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
     $default = filter_form_field_default($name, $default);
     $required = filter_form_field_required($name, $required);
 
-    require_javascript('ajax');
     require_javascript('ajax_people_lists');
 
     $tabindex = get_form_field_tabindex($tabindex);
@@ -716,7 +714,6 @@ function form_input_author($pretty_name, $description, $name, $default, $require
     $default = filter_form_field_default($name, $default);
     $required = filter_form_field_required($name, $required);
 
-    require_javascript('ajax');
     require_javascript('ajax_people_lists');
 
     $tabindex = get_form_field_tabindex($tabindex);
@@ -809,7 +806,6 @@ function form_input_page_link($pretty_name, $description, $name, $default, $requ
 {
     require_lang('menus');
 
-    require_javascript('ajax');
     require_javascript('tree_list');
 
     // Display
@@ -978,7 +974,6 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
     }
 
     require_javascript('multi');
-    require_javascript('ajax');
     require_javascript('ajax_people_lists');
 
     $tabindex = get_form_field_tabindex($tabindex);
@@ -1079,8 +1074,6 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
 
     require_lang('comcode');
 
-    require_javascript('ajax');
-
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '_required' : '';
@@ -1141,8 +1134,6 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
 function form_input_huge_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $rows = 20, $description_side = '', $default_parsed = null, $scrolls = false, $force_non_wysiwyg = false)
 {
     require_lang('comcode');
-
-    require_javascript('ajax');
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -1730,8 +1721,6 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
     }
 
     $tabindex = get_form_field_tabindex($tabindex);
-
-    require_javascript('ajax');
 
     if ($nice_label === null) {
         $nice_label = $default;
@@ -2480,7 +2469,6 @@ function handle_conflict_resolution($id = null, $only_staff = false)
         }
     }
 
-    require_javascript('ajax');
     $last_edit_screen_time = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE ' . db_string_equal_to('the_page', cms_mb_substr(get_page_name(), 0, 80)) . ' AND ' . db_string_equal_to('the_type', cms_mb_substr(get_param_string('type', 'browse'), 0, 80)) . ' AND ' . db_string_equal_to('the_id', cms_mb_substr($id, 0, 80)) . ' AND the_member<>' . strval(get_member()) . ' ORDER BY the_time DESC', 1);
     if ((array_key_exists(0, $last_edit_screen_time)) && ($last_edit_screen_time[0]['the_time'] > time() - 20)) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($last_edit_screen_time[0]['the_member']);

@@ -37,7 +37,6 @@
 		<p><label for="mtp_tree">{!BROWSE_ID_INSERT}</label></p>
 
 		<div>
-			{$REQUIRE_JAVASCRIPT,ajax}
 			{$REQUIRE_JAVASCRIPT,tree_list}
 			{$REQUIRE_JAVASCRIPT,wiki}
 

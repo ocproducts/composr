@@ -30,7 +30,6 @@ function enter_chat_lobby()
     require_css('chat');
     require_lang('chat');
     require_code('chat');
-    require_javascript('ajax');
     require_javascript('chat');
     require_javascript('sound');
 

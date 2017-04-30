@@ -379,7 +379,6 @@ class Module_chat
      */
     public function run()
     {
-        require_javascript('ajax');
         require_javascript('chat');
         require_javascript('sound');
         require_javascript('editing');

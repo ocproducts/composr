@@ -217,7 +217,6 @@ class DecisionTree
 
         $text = comcode_to_tempcode(isset($details['text']) ? $details['text'] : '', null, true);
 
-        require_javascript('core');
         $javascript = '';
         $functions = '';
 

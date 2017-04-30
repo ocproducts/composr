@@ -129,13 +129,11 @@ class Module_cms_banners extends Standard_crud_module
         $this->functions = 'moduleCmsBannersRunStart';
 
         if ($type == 'add') {
-            require_javascript('ajax');
             $script = find_script('snippet');
             $this->functions .= ',moduleCmsBannersRunStartAdd';
         }
 
         if ($type == 'add_category') {
-            require_javascript('ajax');
             $script = find_script('snippet');
             $this->cat_crud_module->functions = 'moduleCmsBannersRunStartAddCategory';
         }

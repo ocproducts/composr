@@ -107,7 +107,6 @@ class Module_admin_menus
         rescue_shortened_post_request();
 
         require_javascript('menu_editor');
-        require_javascript('ajax');
 
         require_code('menus');
         require_code('menus2');
@@ -316,7 +315,6 @@ class Module_admin_menus
         $list->attach(form_input_list_entry('2', false, do_lang_tempcode('INCLUDE_SITEMAP_UNDER')));
         $fields_template->attach(form_input_list(do_lang_tempcode('INCLUDE_SITEMAP'), new Tempcode(), 'include_sitemap', $list, null, false, false));
 
-        require_javascript('ajax');
         require_javascript('tree_list');
 
         list($warning_details, $ping_url) = handle_conflict_resolution();

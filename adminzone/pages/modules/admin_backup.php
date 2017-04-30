@@ -163,8 +163,6 @@ class Module_admin_backup
      */
     public function backup_interface()
     {
-        require_javascript('ajax');
-
         $last_backup = intval(get_value('last_backup'));
         if ($last_backup == 0) {
             $text = do_lang_tempcode('NO_LAST_BACKUP');

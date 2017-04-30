@@ -35,9 +35,6 @@ function internalise_own_screen($screen_content, $refresh_time = null, $refresh_
         return $screen_content;
     }
 
-    require_javascript('ajax');
-    require_javascript('internalised_ajax_screen');
-
     $params = '';
     foreach ($_GET as $key => $param) {
         if (!is_string($param)) {

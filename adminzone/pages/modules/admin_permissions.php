@@ -401,7 +401,6 @@ class Module_admin_permissions
      */
     public function tree_editor()
     {
-        require_javascript('ajax');
         require_javascript('tree_list');
         require_code('form_templates');
 

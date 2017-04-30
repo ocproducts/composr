@@ -119,7 +119,6 @@ class Block_main_staff_checklist
      */
     public function run($map)
     {
-        require_javascript('ajax');
         require_lang('staff_checklist');
         require_css('adminzone_dashboard');
         require_lang('dates');

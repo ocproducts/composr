@@ -5,7 +5,6 @@
 		</div></div>
 	{+END}
 
-	{$REQUIRE_JAVASCRIPT,ajax}
 	{$REQUIRE_JAVASCRIPT,ajax_people_lists}
 
 	{+START,IF_NON_EMPTY,{FILTERS_ROW_A}{FILTERS_ROW_B}}

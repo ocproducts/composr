@@ -1,5 +1,4 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
-{$REQUIRE_JAVASCRIPT,ajax}
 
 <div class="box cns_notification" data-tpl="cnsNotification" data-tpl-params="{+START,PARAMS_JSON,IGNORE_URL_2}{_*}{+END}">
 <div class="box_inner" data-view="ToggleableTray">

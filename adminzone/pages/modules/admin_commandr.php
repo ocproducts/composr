@@ -121,7 +121,6 @@ class Module_admin_commandr
     public function run()
     {
         require_code('commandr');
-        require_javascript('ajax');
         require_javascript('commandr');
         require_css('commandr');
 

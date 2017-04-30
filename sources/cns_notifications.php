@@ -227,7 +227,6 @@ function generate_notifications($member_id)
             $redirect = get_self_url(true, true);
             $ignore_url = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'timestamp' => time(), 'redirect' => $redirect), get_module_zone('topics'));
             $ignore_url_2 = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'timestamp' => time(), 'redirect' => $redirect, 'ajax' => 1), get_module_zone('topics'));
-            require_javascript('ajax');
             $notifications->attach(do_template('CNS_NOTIFICATION', array(
                 '_GUID' => '3b224ea3f4da2f8f869a505b9756970a',
                 'ADDITIONAL_POSTS' => integer_format($additional_posts),

@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,ajax}
 {$REQUIRE_JAVASCRIPT,checking}
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}}
 <section id="tray_{!MODULE_TRANS_NAME_admin_actionlog|}" data-view="ToggleableTray" data-tray-cookie="{!MODULE_TRANS_NAME_admin_actionlog|}" data-tpl="blockMainStaffActions" data-tpl-params="{+START,PARAMS_JSON,wrapper_id,block_call_url}{_*}{+END}" class="box box___block_main_staff_actions">

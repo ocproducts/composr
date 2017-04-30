@@ -209,7 +209,6 @@ class Module_search
             }
         }
 
-        require_javascript('ajax');
         require_javascript('ajax_people_lists');
         require_javascript('tree_list');
 

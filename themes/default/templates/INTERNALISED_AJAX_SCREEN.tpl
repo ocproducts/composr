@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,ajax}
 {$REQUIRE_JAVASCRIPT,checking}
 {$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
 {$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}

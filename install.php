@@ -687,8 +687,6 @@ function step_4()
 
     $js = new Tempcode();
     $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
-    $js->attach("\n");
-    $js->attach(do_template('ajax', null, null, false, null, '.js', 'javascript'));
 
     require_code('database');
     require_code('database/' . post_param_string('db_type'));

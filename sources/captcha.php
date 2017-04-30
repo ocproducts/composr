@@ -246,8 +246,6 @@ function generate_captcha()
 
     // Store code
     $GLOBALS['SITE_DB']->query_insert('captchas', array('si_session_id' => $session, 'si_time' => time(), 'si_code' => $si_code), false, true);
-
-    require_javascript('ajax');
 }
 
 /**

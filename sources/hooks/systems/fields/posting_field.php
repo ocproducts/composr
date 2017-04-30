@@ -128,7 +128,6 @@ class Hook_fields_posting_field
 
         require_javascript('posting');
         require_javascript('editing');
-        require_javascript('ajax');
         require_javascript('plupload');
         require_css('widget_plupload');
 

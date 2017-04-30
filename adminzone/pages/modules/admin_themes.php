@@ -722,7 +722,6 @@ class Module_admin_themes
         require_javascript('tree_list');
         require_javascript('editing');
         require_javascript('posting');
-        require_javascript('ajax');
 
         require_code('form_templates');
         require_code('lorem');
@@ -1221,8 +1220,6 @@ class Module_admin_themes
      */
     public function tempcode_tester()
     {
-        require_javascript('ajax');
-
         if (get_option('editarea') == '1') {
             attach_to_screen_header(make_string_tempcode('
                 <script src="' . get_base_url() . '/data/ace/ace.js"></script>

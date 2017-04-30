@@ -82,7 +82,6 @@ class Module_admin_realtime_rain
     public function run()
     {
         require_javascript('realtime_rain');
-        require_javascript('ajax');
         require_css('realtime_rain');
 
         $min_time = $GLOBALS['SITE_DB']->query_select_value('stats', 'MIN(date_and_time)');

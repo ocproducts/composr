@@ -2,8 +2,6 @@
 {$,If may rate}
 {+START,IF_EMPTY,{ERROR}}
 <div data-tpl="ratingForm" data-tpl-params="{+START,PARAMS_JSON,ERROR,ALL_RATING_CRITERIA}{_*}{+END}">
-	{$REQUIRE_JAVASCRIPT,ajax}
-
 	{+START,LOOP,ALL_RATING_CRITERIA}
 		{$SET,identifier,{CONTENT_TYPE*}__{TYPE*}__{ID*}}
 

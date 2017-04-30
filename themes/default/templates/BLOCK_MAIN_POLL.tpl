@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,ajax}
 {$REQUIRE_JAVASCRIPT,checking}
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
 {$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}

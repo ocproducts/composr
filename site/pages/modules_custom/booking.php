@@ -512,7 +512,6 @@ class Module_booking
             warn_exit(do_lang_tempcode('BOOK_QUANTITY_NOTHING_CHOSEN'));
         }
 
-        require_javascript('ajax');
         require_javascript('checking');
 
         return do_template('BOOKING_FLESH_OUT_SCREEN', array(

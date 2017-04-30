@@ -152,7 +152,6 @@ class Module_admin_sitemap
             attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(50))), 'warn');
         }
 
-        require_javascript('ajax');
         require_javascript('tree_list');
         require_javascript('sitemap_editor');
 

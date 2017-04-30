@@ -269,7 +269,6 @@ class Module_admin_zones
         }
 
         require_javascript('core_zone_editor');
-        require_javascript('ajax');
         require_javascript('posting');
         require_javascript('editing');
         require_javascript('checking');

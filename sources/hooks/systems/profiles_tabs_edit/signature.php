@@ -81,7 +81,6 @@ class Hook_profiles_tabs_edit_signature
 
         require_javascript('posting');
         require_javascript('editing');
-        require_javascript('ajax');
         require_javascript('plupload');
         require_css('widget_plupload');
 

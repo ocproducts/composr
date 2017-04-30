@@ -164,7 +164,6 @@ class Hook_addon_registry_core_permission_management
     {
         require_css('sitemap_editor');
 
-        require_javascript('ajax');
         require_javascript('tree_list');
         require_lang('permissions');
 
