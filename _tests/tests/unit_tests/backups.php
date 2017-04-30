@@ -56,13 +56,15 @@ class backups_test_set extends cms_test_case
             return;
         }
 
+        global $SITE_INFO;
         $config_path = get_custom_file_base() . '/' . $temp_test_dir . '/_config.php';
         $config_php = file_get_contents($config_path);
-        $config_php .= '
+        $config_php .= rtrim('
 unset($SITE_INFO[\'base_url\']); // Let it auto-detect
 unset($SITE_INFO[\'cns_table_prefix\']);
 $SITE_INFO[\'table_prefix\'] = \'bt_\';
-        ';
+$SITE_INFO[\'multi_lang_content\'] = \'' . addslashes($SITE_INFO['multi_lang_content']) . '\';
+        ');
         cms_file_put_contents_safe($config_path, $config_php);
 
         for ($i = 0; $i < 2; $i++) {
