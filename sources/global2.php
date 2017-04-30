@@ -1847,6 +1847,16 @@ function csp_send_header() {
     /* CSP directives */
     $header = '';
 
+    // Check if the current page is excluded from CSP
+    $excluded_pages = get_option('csp_exceptions');
+    if (is_string($excluded_pages) && ($excluded_pages !== '')) {
+        require_code('global3');
+        $current_page_name = get_page_name();
+        if (preg_match('/' . $excluded_pages . '/', $current_page_name, $matches)) {
+            return;
+        }
+    }
+
     // The default policy for loading content such as JavaScript, Images, CSS, Font's, AJAX requests, Frames, HTML5 Media.
     $default_src = csp_extract_source_list(get_option('csp_whitelisted_urls'));
     $default_allow_insecure = true;
