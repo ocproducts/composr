@@ -228,6 +228,13 @@ class Block_main_multi_content
             $category_field_access = $first_id_field;
         }
 
+        if (($content_type == 'download') && (get_option('download_cat_access_late') == '1')) {
+            $category_type_access = null;
+            $category_type_select = null;
+            $category_field_access = null;
+            $category_field_select = null;
+        }
+
         $where = '1=1';
         $query = 'FROM ' . get_table_prefix() . $info['table'] . ' r';
         if ($info['table'] == 'catalogue_entries') {
