@@ -983,7 +983,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
         $this->set_permissions(strval($category_id));
         if (addon_installed('ecommerce')) {
             require_code('ecommerce_permission_products');
-            permission_product_save('downloads', strval($category_id));
+            permission_product_save('download', strval($category_id));
         }
 
         if (addon_installed('content_reviews')) {
@@ -1024,7 +1024,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
             $this->set_permissions(strval($category_id));
             if (addon_installed('ecommerce')) {
                 require_code('ecommerce_permission_products');
-                permission_product_save('downloads', strval($category_id));
+                permission_product_save('download', strval($category_id));
             }
         }
 

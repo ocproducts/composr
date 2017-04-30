@@ -262,7 +262,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
             return array($content_title, $submitter_id, $cma_info, $content_row, $content_url, $content_url_email_safe);
         }
 
-        return array(null, null, null, null, null, null);
+        return array(null, null, $cma_info, null, null, null);
     }
 
     $title_field = $cma_info['title_field'];
