@@ -95,6 +95,7 @@ function dload_script()
     }
 
     require_lang('downloads');
+    require_code('downloads');
 
     $id = get_param_integer('id', 0);
 
@@ -107,6 +108,12 @@ function dload_script()
 
     // Permission
     if (!has_category_access(get_member(), 'downloads', strval($myrow['category_id']))) {
+        $redirect_url = get_download_category_purchase_url($myrow['category_id']);
+        if ($redirect_url !== null) {
+            header('Location:' . $redirect_url->evaluate());
+            return;
+        }
+
         access_denied('CATEGORY_ACCESS');
     }
     $may_download = has_privilege(get_member(), 'download', 'downloads', array(strval($myrow['category_id'])));

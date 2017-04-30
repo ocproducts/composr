@@ -295,6 +295,7 @@ class Hook_addon_registry_downloads
             lorem_globalise(do_lorem_template('DOWNLOAD_CATEGORY_SCREEN', array(
                 'TAGS' => lorem_word_html(),
                 'TITLE' => lorem_title(),
+                'WARNING_DETAILS' => '',
                 'SUBMIT_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
                 'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),

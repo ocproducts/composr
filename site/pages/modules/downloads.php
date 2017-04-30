@@ -514,12 +514,25 @@ class Module_downloads
             $edit_cat_url = new Tempcode();
         }
 
+        // Warning details
+        $warning_details = new Tempcode();
+        if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
+            $purchase_url = get_download_category_purchase_url($category_id);
+            if ($purchase_url !== null) {
+                $warning_details->attach(do_template('WARNING_BOX', array(
+                    '_GUID' => '8da781b8fbb1ef9b8f47693afcff02b9',
+                    'WARNING' => do_lang_tempcode('CAN_PURCHASE_DOWNLOAD_CATEGORY_ACCESS', escape_html($purchase_url->evaluate())),
+                )));
+            }
+        }
+
         // Render
         return do_template('DOWNLOAD_CATEGORY_SCREEN', array(
             '_GUID' => 'ebb3c8708695f6a30dbd4a03f8632047',
             'ID' => strval($category_id),
             'TAGS' => get_loaded_tags('download_categories'),
             'TITLE' => $this->title,
+            'WARNING_DETAILS' => $warning_details,
             'SUBMIT_URL' => $submit_url,
             'ADD_CAT_URL' => $add_cat_url,
             'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),

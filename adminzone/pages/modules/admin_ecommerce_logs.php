@@ -331,16 +331,20 @@ class Module_admin_ecommerce_logs
             }
         }
 
+        $hidden = new Tempcode();
+
         // Remaining fields, customised for product chosen
         $default_purchase_id = get_param_string('id', null);
         if ($default_purchase_id === null) {
             if (method_exists($product_object, 'handle_needed_fields')) {
                 list($default_purchase_id) = $product_object->handle_needed_fields($type_code, true);
+                $hidden->attach(form_input_hidden('purchase_id', $default_purchase_id));
             } else {
-                $default_purchase_id = strval(get_member());
+                $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), do_lang('DESCRIPTION_MANUAL_PURCHASE_USERNAME'), 'purchase_id_username', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), false));
             }
+        } else {
+            $fields->attach(form_input_codename(do_lang_tempcode('PURCHASE_ID'), do_lang('DESCRIPTION_MANUAL_PURCHASE_ID'), 'purchase_id', $default_purchase_id, false));
         }
-        $fields->attach(form_input_codename(do_lang_tempcode('PURCHASE_ID'), do_lang('DESCRIPTION_MANUAL_PURCHASE_ID'), 'purchase_id', $default_purchase_id, false));
 
         list($details) = find_product_details($type_code);
         if ($details['type'] == PRODUCT_SUBSCRIPTION) {
@@ -350,7 +354,6 @@ class Module_admin_ecommerce_logs
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f4e52dff9353fb767afbe0be9808591c', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
         $fields->attach(form_input_float(do_lang_tempcode('AMOUNT'), do_lang_tempcode('DESCRIPTION_MONEY_AMOUNT', $currency, ecommerce_get_currency_symbol()), 'amount', null, false));
 
-        $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('type_code', $type_code));
         $hidden->attach(build_keep_post_fields());
 
@@ -370,10 +373,19 @@ class Module_admin_ecommerce_logs
 
         list($details, $product_object) = find_product_details($type_code);
 
-        if (method_exists($product_object, 'handle_needed_fields')) {
-            list($purchase_id) = $product_object->handle_needed_fields($type_code, true);
-        } else {
-            $purchase_id = '';
+        $purchase_id = post_param_string('purchase_id', null);
+        if ($purchase_id === null) {
+            $_purchase_id = post_param_string('purchase_id_username', null);
+            if ($_purchase_id !== null) {
+                $purchase_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_purchase_id);
+            }
+        }
+        if ($purchase_id === null) {
+            if (method_exists($product_object, 'handle_needed_fields')) {
+                list($purchase_id) = $product_object->handle_needed_fields($type_code, true);
+            } else {
+                $purchase_id = strval(get_member());
+            }
         }
 
         $memo = post_param_string('memo', '');

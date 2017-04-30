@@ -5103,6 +5103,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MANUAL_SUBSCRIPTION_NOTIFICATION_MAIL_SUBJECT
         MANUAL_TRANSACTION
         DESCRIPTION_MANUAL_PURCHASE_ID
+        DESCRIPTION_MANUAL_PURCHASE_USERNAME
         MANUAL_TRANSACTION_TEXT
         MANUAL_WCAG_ANIMATION
         MANUAL_WCAG_SCRIPT
@@ -7276,6 +7277,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COUNT_POSTSTODAY
         COUNT_TOPICSCOUNT
         CONTENTS
+        CAN_PURCHASE_DOWNLOAD_CATEGORY_ACCESS
         FILE
         NEWSLETTER_SUBSCRIBER_DEFAULT_NAME
         ABOUT

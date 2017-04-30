@@ -34,7 +34,7 @@ get_message                                 (optional but advisable)
 get_catalogue_template_parameters           (only for catalogue items)
 get_terms                                   (optional)
 get_needed_fields                           (optional)
-get_purchase_id_manual_field_inputter        (optional)
+get_purchase_id_manual_field_inputter       (optional)
 handle_needed_fields                        (optional)
 actualiser                                  (required if automatic actualisation will be a feature)
 reduce_stock                                (optional and only for cart items)
@@ -165,6 +165,10 @@ function get_next_purchase_step($product_object, $type_code, $step_before)
 
             return $steps[$i + 1][1];
         }
+    }
+
+    if ($step_before != 'browse') { // Maybe the step requested isn't even in the cycle, so find the first non-browse step
+        return get_next_purchase_step($product_object, $type_code, 'browse');
     }
 
     return null;
