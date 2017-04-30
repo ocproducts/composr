@@ -6380,6 +6380,18 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_error_handling_warnings_VALUE_FATAL
         CONFIG_OPTION_error_handling_warnings_VALUE_LOG
         CONFIG_OPTION_error_handling_warnings_VALUE_SKIP
+        CONFIG_OPTION_error_handling_warnings_VALUE_SKIP
+        CONFIG_OPTION_csp_allow_eval_js
+        CONFIG_OPTION_csp_allow_inline_js
+        CONFIG_OPTION_csp_allow_insecure_resources
+        CONFIG_OPTION_csp_allowed_form_destinations
+        CONFIG_OPTION_csp_allowed_iframe_ancestors
+        CONFIG_OPTION_csp_enabled
+        CONFIG_OPTION_csp_exceptions
+        CONFIG_OPTION_csp_log_violations
+        CONFIG_OPTION_csp_require_nonce
+        CONFIG_OPTION_csp_whitelisted_plugins
+        CONFIG_OPTION_csp_whitelisted_urls
         CONFIG_OPTION_grow_template_meta_tree
         CONFIG_OPTION_newsletter_auto_pause
         CONFIG_OPTION_newsletter_paused
@@ -6444,6 +6456,20 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ERROR_HANDLING_ERRORS
         ERROR_HANDLING_NOTICES
         ERROR_HANDLING_WARNINGS
+        CSP
+        CSP_ALLOWED_FORM_DESTINATIONS
+        CSP_ALLOWED_IFRAME_ANCESTORS
+        CSP_ALLOW_EVAL_JS
+        CSP_ALLOW_INLINE_JS
+        CSP_ALLOW_INSECURE_RESOURCES
+        CSP_ENABLED
+        CSP_EVENT_HANDLER
+        CSP_EXCEPTIONS
+        CSP_LOG_VIOLATIONS
+        CSP_REQUIRE_NONCE
+        CSP_SCRIPT_TAG
+        CSP_WHITELISTED_PLUGINS
+        CSP_WHITELISTED_URLS
         FORMATTING_SYMBOL__IN_STR
         FORMATTING_SYMBOL__STRIP_TAGS
         FORMATTING_SYMBOL__TRIM
