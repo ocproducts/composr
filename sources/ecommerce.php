@@ -1764,7 +1764,7 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
 
                 $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
 
-                $_body = do_template('PAYMENT_SENT_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
+                $_body = do_template('ECOM_PAYMENT_SENT_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
                 $body = $_body->evaluate(get_site_default_lang());
 
                 require_code('mail');
@@ -1774,7 +1774,7 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
     } else {
         $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_lang($member_id));
 
-        $_body = do_notification_template('PAYMENT_SENT_MAIL', $parameter_map, get_lang($member_id), false, null, '.txt', 'text');
+        $_body = do_notification_template('ECOM_PAYMENT_SENT_MAIL', $parameter_map, get_lang($member_id), false, null, '.txt', 'text');
         $body = $_body->evaluate(get_lang($member_id));
 
         dispatch_notification('payment_received', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
@@ -1784,7 +1784,7 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
 
     $subject = do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
 
-    $_body = do_notification_template('PAYMENT_RECEIVED_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
+    $_body = do_notification_template('ECOM_PAYMENT_RECEIVED_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
     $body = $_body->evaluate(get_site_default_lang());
 
     dispatch_notification('payment_received_staff', null, $subject, $body, null, A_FROM_SYSTEM_PRIVILEGED);

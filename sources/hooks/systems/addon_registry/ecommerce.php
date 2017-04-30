@@ -399,8 +399,8 @@ class Hook_addon_registry_ecommerce
             'text/ECOM_PRODUCT_FORWARDER_MAIL.txt' => 'ecom_product_forwarder_mail',
             'text/ECOM_PRODUCT_POP3_MAIL.txt' => 'ecom_product_pop3_mail',
             'text/ECOM_PRODUCT_QUOTA_MAIL.txt' => 'ecom_product_quota_mail',
-            'text/PAYMENT_RECEIVED_MAIL.txt' => 'ecom_payment_received_mail',
-            'text/PAYMENT_SENT_MAIL.txt' => 'ecom_payment_sent_mail',
+            'text/ECOM_PAYMENT_RECEIVED_MAIL.txt' => 'ecom_payment_received_mail',
+            'text/ECOM_PAYMENT_SENT_MAIL.txt' => 'ecom_payment_sent_mail',
         );
     }
 

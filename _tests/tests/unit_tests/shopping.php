@@ -25,6 +25,28 @@ class shopping_test_set extends cms_test_case
         parent::setUp();
 
         require_code('ecommerce');
+        require_code('config2');
+
+        set_option('ecommerce_test_mode', '1');
+
+        set_option('shipping_density', '5000.0');
+        set_option('shipping_weight_units', 'Kg');
+        set_option('shipping_distance_units', 'Cm');
+        set_option('shipping_tax_code', '0%');
+        set_option('shipping_cost_base', '10.00');
+        set_option('shipping_cost_factor', '1.20');
+
+        set_option('shipping_shippo_api_test', '');
+        set_option('shipping_shippo_api_live', '');
+
+        set_option('business_street_address', '1234 Scope');
+        set_option('business_city', 'Hope');
+        set_option('business_county', '');
+        set_option('business_state', '');
+        set_option('business_post_code', 'HO1 234');
+        set_option('business_country', 'GB');
+
+        require_code('ecommerce');
         require_code('catalogues');
         require_code('catalogues2');
         require_code('shopping');
@@ -147,7 +169,7 @@ class shopping_test_set extends cms_test_case
         $reason = '';
         $pending_reason = 'bar';
         $memo = 'foo';
-        $amount = 65.00;
+        $amount = 65.00 + 2.40 /* shipping */;
         $tax = 5.00;
         $currency = get_option('currency');
         $txn_id = '0';

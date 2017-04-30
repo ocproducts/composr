@@ -4066,8 +4066,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_CAT_image
         ECOM_CAT_price
         ECOM_CAT_product_title
-        ECOM_CAT_reduction_end
-        ECOM_CAT_reduction_start
         ECOM_CAT_sku
         ECOM_CAT_stock_level
         ECOM_CAT_stock_level_maintain
@@ -4362,6 +4360,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FIELD_TYPES__REFERENCES
         FIELD_TYPES__TEXT
         FIELD_TYPES__UPLOADSANDURLS
+        FIELD_TYPE_country
+        FIELD_TYPE_region
+        FIELD_TYPE_state
+        FIELD_TYPE_tax_code
+        FIELD_TYPE_year_month
         FIELD_TYPE_author
         FIELD_TYPE_codename
         FIELD_TYPE_color
@@ -8002,6 +8005,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOMMERCE_PRODUCT_OUT_OF_STOCK
         ECOMMERCE_PRODUCT_PROHIBITED
         EDIT
+        CONFIG_OPTION_download_cat_access_late
+        DOWNLOAD_CAT_ACCESS_LATE
         EDITED
         EDITING_FIRST_TOPIC_POST
         EDITING_TOPIC_NOT_POST

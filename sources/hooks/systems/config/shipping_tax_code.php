@@ -38,7 +38,7 @@ class Hook_config_shipping_tax_code
             'explanation' => 'CONFIG_OPTION_shipping_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 8,
 
             'addon' => 'ecommerce',
         );

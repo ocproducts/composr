@@ -1398,10 +1398,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                 }
 
-                                                if (($HTTP_MESSAGE != '200') && (!$ignore_http_status)) {
-                                                    $text = '';
-                                                }
-
                                                 // Cleanup
                                                 $DOWNLOAD_LEVEL--;
                                                 if ($put !== null) {
@@ -1412,7 +1408,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
 
                                                 // Receive body
-                                                if ($HTTP_MESSAGE != '200') {
+                                                if ((!in_array($HTTP_MESSAGE, array('200', '201'))) && (!$ignore_http_status)) {
                                                     $CURL_BODY = '';
                                                 }
                                                 return _detect_character_encoding($CURL_BODY);
@@ -1697,6 +1693,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 // We'll expect a location header
                                 break;
                             case '200':
+                            case '201':
                                 // Good
                                 break;
                             case '401':

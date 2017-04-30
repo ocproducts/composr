@@ -32,6 +32,9 @@ class ecommerce_shipping_test_set extends cms_test_case
         set_option('shipping_cost_base', '10.00');
         set_option('shipping_cost_factor', '1.20');
 
+        set_option('shipping_shippo_api_test', '');
+        set_option('shipping_shippo_api_live', '');
+
         set_option('business_street_address', '1234 Scope');
         set_option('business_city', 'Hope');
         set_option('business_county', '');

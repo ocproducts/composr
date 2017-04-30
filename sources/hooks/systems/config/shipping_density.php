@@ -38,7 +38,7 @@ class Hook_config_shipping_density
             'explanation' => 'CONFIG_OPTION_shipping_density',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 7,
 
             'addon' => 'ecommerce',
         );

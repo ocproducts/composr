@@ -38,7 +38,7 @@ class Hook_config_shipping_weight_units
             'explanation' => 'CONFIG_OPTION_shipping_weight_units',
             'shared_hosting_restricted' => '0',
             'list_options' => 'Kg|Lb',
-            'order_in_category_group' => 4,
+            'order_in_category_group' => 6,
 
             'addon' => 'ecommerce',
         );
