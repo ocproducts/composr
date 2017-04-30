@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,core}
 <div data-tpl="groupMemberTimeoutManageScreen">
 	{TITLE}
 

@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,core}
 <div data-tpl="blockTopPersonalStats">
 <div class="global_button_ref_point" id="top_personal_stats_rel" style="display: none">
 	<div class="box box_arrow box__block_top_personal_stats"><span></span><div class="box_inner"><div>

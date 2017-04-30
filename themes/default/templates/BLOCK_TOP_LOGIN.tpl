@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,core}
 {+START,IF,{$NOR,{$GET,login_screen},{$MATCH_KEY_MATCH,_WILD:login}}}
 <div data-tpl="blockTopLogin" class="inline">
     <form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="inline top_login js-form-top-login" autocomplete="on">

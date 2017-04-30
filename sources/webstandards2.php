@@ -63,7 +63,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
     // CSP violation
     if ($WEBSTANDARDS_CSP) {
-        if ($tag == 'script') {
+        if (($tag === 'script') && !empty($attributes['src']) && (empty($attributes['type']) || ($attributes['type'] === 'text/javascript') || ($attributes['type'] === 'application/javascript'))) {
             $errors[] = array('CSP_SCRIPT_TAG');
         }
 
