@@ -1866,7 +1866,7 @@ function csp_send_header() {
     }
 
     if (count($default_src) > 0) {
-        $default_src_str = join(' ', $default_src);
+        $default_src_str = implode(' ', $default_src);
         $header .= "default-src {$default_src_str}; ";
     }
 
@@ -1900,7 +1900,7 @@ function csp_send_header() {
 
     if ($script_src !== null) {
         if (count($script_src) > 0) {
-            $script_src_str = join(' ', $script_src);
+            $script_src_str = implode(' ', $script_src);
             $header .= "script-src 'self' {$script_src_str}; ";
         } else {
             $header .= "script-src 'self'; ";
@@ -1932,7 +1932,7 @@ function csp_send_header() {
 
     if ($style_src !== null) {
         if (count($style_src) > 0) {
-            $style_src_str = join(' ', $style_src);
+            $style_src_str = implode(' ', $style_src);
             $header .= "style-src 'self' {$style_src_str}; ";
         } else {
             $header .= "style-src 'self'; ";
@@ -1959,7 +1959,7 @@ function csp_send_header() {
 
     if ($img_src !== null) {
         if (count($img_src) > 0) {
-            $img_src_str = join(' ', $img_src);
+            $img_src_str = implode(' ', $img_src);
             $header .= "img-src 'self' {$img_src_str}; ";
         } else {
             $header .= "img-src 'self'; ";
@@ -1970,7 +1970,7 @@ function csp_send_header() {
     $connect_src = csp_extract_source_list('');
     if ($connect_src !== null) {
         if (count($connect_src) > 0) {
-            $connect_src_str = join(' ', $connect_src);
+            $connect_src_str = implode(' ', $connect_src);
             $header .= "connect-src 'self' {$connect_src_str}; ";
         } else {
             $header .= "connect-src 'self'; ";
@@ -1981,7 +1981,7 @@ function csp_send_header() {
     $font_src = csp_extract_source_list('');
     if ($font_src !== null) {
         if (count($font_src) > 0) {
-            $font_src_str = join(' ', $font_src);
+            $font_src_str = implode(' ', $font_src);
             $header .= "font-src 'self' {$font_src_str}; ";
         } else {
             $header .= "font-src 'self'; ";
@@ -1992,7 +1992,7 @@ function csp_send_header() {
     $plugin_types = csp_extract_source_list(get_option('csp_whitelisted_plugins'));
     if ($plugin_types !== null) {
         if (count($plugin_types) > 0) {
-            $plugin_types_str = join(' ', $plugin_types);
+            $plugin_types_str = implode(' ', $plugin_types);
             $header .= "plugin-types {$plugin_types_str}; ";
         }
     }
@@ -2000,9 +2000,9 @@ function csp_send_header() {
     $object_src = csp_extract_source_list('');
     if (($plugin_types !== null) && (count($plugin_types) === 0)) {
         $header .= "object-src none; ";
-    } else if ($object_src !== null) {
+    } elseif ($object_src !== null) {
         if (count($object_src) > 0) {
-            $object_src_str = join(' ', $object_src);
+            $object_src_str = implode(' ', $object_src);
             $header .= "object-src 'self' {$object_src_str}; ";
         } else {
             $header .= "object-src 'self'; ";
@@ -2013,7 +2013,7 @@ function csp_send_header() {
     $media_src = csp_extract_source_list('');
     if ($media_src !== null) {
         if (count($media_src) > 0) {
-            $media_src_str = join(' ', $media_src);
+            $media_src_str = implode(' ', $media_src);
             $header .= "media-src 'self' {$media_src_str}; ";
         } else {
             $header .= "media-src 'self'; ";
@@ -2024,7 +2024,7 @@ function csp_send_header() {
     $child_src = csp_extract_source_list('');
     if ($child_src !== null) {
         if (count($child_src) > 0) {
-            $child_src_str = join(' ', $child_src);
+            $child_src_str = implode(' ', $child_src);
             $header .= "child-src 'self' {$child_src_str}; ";
         } else {
             $header .= "child-src 'self'; ";
@@ -2035,7 +2035,7 @@ function csp_send_header() {
     $form_action = csp_extract_source_list(get_option('csp_allowed_form_destinations'));
     if ($form_action !== null) {
         if (count($form_action) > 0) {
-            $form_action_str = join(' ', $form_action);
+            $form_action_str = implode(' ', $form_action);
             $header .= "form-action 'self' {$form_action_str}; ";
         } else {
             $header .= "form-action 'self'; ";
@@ -2047,7 +2047,7 @@ function csp_send_header() {
     $frame_ancestors = csp_extract_source_list(get_option('csp_allowed_iframe_ancestors'));
     if ($frame_ancestors !== null) {
         if (count($frame_ancestors) > 0) {
-            $frame_ancestors_str = join(' ', $frame_ancestors);
+            $frame_ancestors_str = implode(' ', $frame_ancestors);
             $header .= "frame-ancestors 'self' {$frame_ancestors_str}; ";
         } else {
             $header .= "frame-ancestors 'self'; ";
@@ -2090,7 +2090,7 @@ function csp_extract_source_list($sources_csv) {
 
     if ($sources_csv === '') {
         return null;
-    } else if ($sources_csv === 'none') {
+    } elseif ($sources_csv === 'none') {
         return [];
     }
 

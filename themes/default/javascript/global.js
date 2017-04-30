@@ -297,7 +297,7 @@
          * @method
          * @returns {string|boolean|number}
          */
-        $CONFIG_OPTION: function (optionName) {
+        $CONFIG_OPTION: function $CONFIG_OPTION(optionName) {
             // Installer, likely executing global.js
             if (window.IN_MINIKERNEL_VERSION) {
                 return '';
@@ -369,7 +369,7 @@
          * @method
          * @returns {string|boolean|number}
          */
-        $VALUE_OPTION: function (optionName) {
+        $VALUE_OPTION: function $VALUE_OPTION(optionName) {
             // Installer, likely executing global.js
             if (window.IN_MINIKERNEL_VERSION) {
                 return '';
@@ -393,7 +393,7 @@
          * @method
          * @returns {boolean}
          */
-        $HAS_PRIVILEGE: function (optionName) {
+        $HAS_PRIVILEGE: function $HAS_PRIVILEGE(optionName) {
             // Installer, likely executing global.js
             if (window.IN_MINIKERNEL_VERSION) {
                 return false;
@@ -791,7 +791,7 @@
     }
 
     /**
-     * Creates a function that returns the same value that is passed as the first argument
+     * Creates a function that always returns the same value that is passed as the first argument here
      * @param value
      * @returns { function }
      */
@@ -852,7 +852,7 @@
     /**
      *
      * @param val
-     * @returns {boolean|*|boolean}
+     * @returns { boolean }
      */
     function isArrayOrPlainObj(val) {
         return (val != null) && (Array.isArray(val) || isPlainObj(val));

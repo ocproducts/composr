@@ -267,9 +267,9 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
     }
 
     require_javascript('banners');
-    $jsCalls = 'getBannerFormFields';
+    $js_functions = 'getBannerFormFields';
 
-    return array($fields, '', $jsCalls);
+    return array($fields, '', $js_functions);
 }
 
 /**
