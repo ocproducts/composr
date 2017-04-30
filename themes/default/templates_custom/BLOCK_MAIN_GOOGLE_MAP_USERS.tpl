@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,user_mappr}
+
 {+START,IF_NON_EMPTY,{TITLE}}
 <section class="box box___block_main_google_map_users inline_block"><div class="box_inner">
 	<h3>{TITLE*}</h3>

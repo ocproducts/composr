@@ -649,8 +649,6 @@ function step_3()
 
     $js = new Tempcode();
     $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
-    $js->attach("\n");
-    $js->attach(do_template('ajax', null, null, false, null, '.js', 'javascript'));
 
     $url = 'install.php?step=4';
     if (in_safe_mode()) {

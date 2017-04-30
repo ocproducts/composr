@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,google_search}
 {$SET,search,{$_POST,search}}
 {$SET,spammer_blackhole,{$INSERT_SPAMMER_BLACKHOLE}}
 

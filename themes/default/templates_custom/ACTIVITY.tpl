@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,activity_feed}
 <div data-require-javascript="activity_feed" data-tpl="activity" data-tpl-params="{+START,PARAMS_JSON,LIID}{_*}{+END}">
     {+START,IF,{ALLOW_REMOVE}}
         <form id="feed_remove_{LIID*}" class="activities_remove js-submit-confirm-update-remove" action="{$PAGE_LINK*,:}" method="post" autocomplete="off">

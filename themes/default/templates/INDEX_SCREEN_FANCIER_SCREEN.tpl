@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
 <div data-require-javascript="core_abstract_interfaces" data-tpl="indexScreenFancierScreen" data-tpl-params="{+START,PARAMS_JSON,RAW_SEARCH_STRING}{_*}{+END}">
 {TITLE}
 

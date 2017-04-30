@@ -3,6 +3,7 @@
 
 	{$REQUIRE_JAVASCRIPT,jquery}
 	{$REQUIRE_JAVASCRIPT,mediaelement-and-player}
+	{$REQUIRE_JAVASCRIPT,mediaelement}
 	{$REQUIRE_CSS,mediaelementplayer}
 
 	{+START,IF_NON_PASSED_OR_FALSE,WYSIWYG_EDITABLE}

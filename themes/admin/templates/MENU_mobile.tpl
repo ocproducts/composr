@@ -1,4 +1,5 @@
 {$REQUIRE_CSS,menu__mobile}
+{$REQUIRE_JAVASCRIPT,core_menus}
 {$REQUIRE_JAVASCRIPT,menu_mobile}
 {$SET,menu_id,r_{MENU|}_d}
 

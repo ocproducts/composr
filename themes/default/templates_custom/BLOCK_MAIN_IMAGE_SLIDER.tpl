@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,image_slider}
 {$SET,rand,{$RAND}}
 
 <div class="box_skitter" style="width: {WIDTH*}px; height: {HEIGHT*}px;" id="skitter_{$GET*,rand}"

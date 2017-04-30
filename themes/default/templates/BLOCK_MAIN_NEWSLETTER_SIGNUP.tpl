@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,newsletter}
+
 {+START,IF_PASSED,MSG}
 	<p>{MSG}</p>
 {+END}

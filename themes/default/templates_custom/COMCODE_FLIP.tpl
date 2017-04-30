@@ -1,6 +1,7 @@
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,jquery_ui}
 {$REQUIRE_JAVASCRIPT,jquery_flip}
+{$REQUIRE_JAVASCRIPT,comcode_flip_tag}
 {$REQUIRE_CSS,flip}
 
 {$SET,RAND_FLIP,{$RAND}}

@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,buildr}
 <div data-require-javascript="buildr" data-tpl="wMainScreen">
 {TITLE}
 

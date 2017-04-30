@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,workflows}
 {$SET,early_description,1}
 
 <div data-require-javascript="workflows" data-tpl="formScreenInputVariousTicks" data-tpl-params="{+START,PARAMS_JSON,CUSTOM_ACCEPT_MULTIPLE,CUSTOM_NAME}{_*}{+END}" data-view="ToggleableTray">

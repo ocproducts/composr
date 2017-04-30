@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,commandr}
 <div class="command float_surrounder" data-require-javascript="commandr" data-tpl="commandrCommand" data-tpl-params="{+START,PARAMS_JSON,STDCOMMAND}{_*}{+END}">
 	<p class="past_command_prompt">{METHOD*} &rarr;</p>
 	<div class="past_command">

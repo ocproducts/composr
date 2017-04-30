@@ -118,7 +118,7 @@
                 form.setAttribute('action', form.old_action);
             }
 
-            if (form.onsubmit.call(form, e)) {
+            if (form.onsubmit && form.onsubmit.call(form, e)) {
                 $cms.ui.disableButton(button);
                 form.submit();
             }

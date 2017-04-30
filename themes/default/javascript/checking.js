@@ -25,7 +25,9 @@
         if (the_element.name !== undefined) {
             var id = the_element.name;
             var errormsg_element = get_errormsg_element(id);
-            if ((error_msg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) return; // Do not blank out as day/month/year (which comes first) would have already done it
+            if ((error_msg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) { // Do not blank out as day/month/year (which comes first) would have already done it
+                return;
+            }
             if (errormsg_element) {
                 // Make error message visible, if there's an error
                 errormsg_element.style.display = (error_msg == '') ? 'none' : 'block';
@@ -74,9 +76,10 @@
         }
 
         function get_errormsg_element(id) {
-            var errormsg_element = $cms.dom.$('#error_' + id);
+            var errormsg_element = document.getElementById('error_' + id);
+
             if (!errormsg_element) {
-                errormsg_element = $cms.dom.$('#error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                errormsg_element = document.getElementById('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
             }
             return errormsg_element;
         }

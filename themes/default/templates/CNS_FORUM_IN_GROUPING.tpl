@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,cns_forum}
 <tr data-require-javascript="cns_forum" data-tpl="cnsForumInGrouping" data-tpl-params="{+START,PARAMS_JSON,FORUM_RULES_URL,INTRO_QUESTION_URL}{_*}{+END}">
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<td class="cns_forum_new_post_indicator cns_column1">

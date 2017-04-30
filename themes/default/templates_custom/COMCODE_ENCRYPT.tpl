@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,password_censor}
 {$REQUIRE_JAVASCRIPT,profile}
 {$REQUIRE_JAVASCRIPT,editing}
 {$REQUIRE_CSS,cns}

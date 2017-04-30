@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,composr_homesite_support_credits}
+
 {+START,IF_EMPTY,{ISSUES}}
 	<p class="nothing_here">
 		{!FEATURES_NOTHING_YET}
