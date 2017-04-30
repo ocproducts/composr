@@ -2082,8 +2082,8 @@ function csp_generate_nonce() {
 /**
  * Extracts CSP sources from the given string
  * return null means allow all, empty array means disallow all except local
- * @param $sources_csv
- * @return array|null
+ * @param string $sources_csv Comma separated list of valid CSP 'sources'
+ * @return array
  */
 function csp_extract_source_list($sources_csv) {
     $sources_csv = trim(strval($sources_csv));

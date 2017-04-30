@@ -134,6 +134,10 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
     }
 
+    /**
+     * @param boolean $is_staff If the current user is a staff member
+     * @return array
+     */
     private function staff_tooltips_url_patterns($is_staff) {
         $url_patterns = [];
         if (!$is_staff) {
@@ -169,6 +173,10 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         return $url_patterns;
     }
 
+    /**
+     * @param string $pattern Pattern
+     * @return string
+     */
     public function _escape_url_pattern_for_js_regex($pattern) {
         $pattern = str_replace('/', '\\/', $pattern);
         $pattern = str_replace('?', '\\?', $pattern);

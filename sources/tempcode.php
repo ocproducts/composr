@@ -535,7 +535,11 @@ function closure_params_json($param, $args, $main_function)
     return $value;
 }
 
-function evaluate_tempcode_elements(array $arr) {
+/**
+ * @param array $arr
+ * @return array
+ */
+function evaluate_tempcode_elements($arr) {
     foreach ($arr as $k => $v) {
         if (is_array($v)) {
             $arr[$k] = evaluate_tempcode_elements($v);
@@ -550,7 +554,11 @@ function evaluate_tempcode_elements(array $arr) {
     return $arr;
 }
 
-function camel_case_array_keys(array $arr) {
+/**
+ * @param array $arr
+ * @return array
+ */
+function camel_case_array_keys($arr) {
     $new_arr = [];
 
     foreach ($arr as $k => $v) {
