@@ -1,4 +1,4 @@
-{REQUIRE_JAVASCRIPT,chat}
+{$REQUIRE_JAVASCRIPT,chat}
 <div class="chat_lobby_im_participant" data-tpl="chatLobbyImParticipant">
 	<div class="float_surrounder">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}

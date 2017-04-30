@@ -1,5 +1,5 @@
-{$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
-<div data-require-javascript="core_abstract_interfaces" data-tpl="indexScreenFancierScreen" data-tpl-params="{+START,PARAMS_JSON,RAW_SEARCH_STRING}{_*}{+END}">
+{$REQUIRE_JAVASCRIPT,core_abstract_components}
+<div data-require-javascript="core_abstract_components" data-tpl="indexScreenFancierScreen" data-tpl-params="{+START,PARAMS_JSON,RAW_SEARCH_STRING}{_*}{+END}">
 {TITLE}
 
 {+START,IF_NON_EMPTY,{PRE}}
