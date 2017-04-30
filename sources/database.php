@@ -1051,9 +1051,13 @@ class DatabaseConnector
 
                     foreach ($lang_fields_provisional as $lang_field => $field_type) {
                         if (
+                            (isset($select_inv[$field_prefix . '*'])) ||
+
                             (isset($select_inv[$field_prefix . $lang_field])) ||
+
+                            (isset($select_inv['t_' . $lang_field . '.text_original'])) ||
                             ((!is_null($where_map)) && (isset($where_map['t_' . $lang_field . '.text_original']))) ||
-                            (isset($select_inv[$field_prefix . '*']))
+                            (strpos($end, 't_' . $lang_field . '.text_original') !== false)
                         ) {
                             $lang_fields[$lang_field] = $field_type;
                         }

@@ -343,7 +343,7 @@ class Module_quiz
         $start = get_param_integer('quizzes_start', 0);
         $max = get_param_integer('quizzes_max', 20);
 
-        $sql = 'SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'quizzes WHERE 1=1';
+        $sql = 'SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'quizzes q WHERE 1=1';
         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
             $sql .= ' AND q_validated=1';
         }
@@ -353,7 +353,7 @@ class Module_quiz
         }
         $sql .= ' AND q_open_time<' . strval(time());
         $sql .= ' AND (q_close_time IS NULL OR q_close_time>' . strval(time()) . ')';
-        $sql .= ' ORDER BY q_type ASC,id DESC';
+        $sql .= ' ORDER BY q_type ASC,q.id DESC';
         $rows = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('q_name' => 'SHORT_TRANS'));
 
         $content_tests = new Tempcode();
