@@ -27,7 +27,7 @@
         var fp_animation_news = document.createElement('img');
 
         fp_animation_news.style.position = 'absolute';
-        fp_animation_news.src = '{$IMG;,blank}';
+        fp_animation_news.src = $cms.img('{$IMG;,blank}');
         fp_animation.parentElement.insertBefore(fp_animation_news, fp_animation);
         fp_animation.parentElement.style.position = 'relative';
         fp_animation.parentElement.style.display = 'block';
