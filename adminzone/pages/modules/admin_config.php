@@ -479,7 +479,7 @@ class Module_admin_config
                         break;
 
                     case 'tax_code':
-                    if (addon_installed('ecommerce')) {
+                        if (addon_installed('ecommerce')) {
                             require_code('ecommerce');
                             $out .= static_evaluate_tempcode(form_input_tax_code($human_name, $explanation, $name, get_option($name), $required));
                         }

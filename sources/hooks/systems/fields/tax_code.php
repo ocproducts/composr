@@ -93,7 +93,7 @@ class Hook_fields_tax_code
         // Render as money...
 
         if ($in_money) {
-            list(, $tax, , ) = calculate_tax_due(null, $tax_code, 100.00/*So we get a percentage*/); // TODO: Make sure correct for current user's region
+            list(, $tax, , ) = calculate_tax_due(null, $tax_code, 100.00/*So we get a percentage*/);
 
             require_code('currency');
             return currency_convert_wrap($tax, null, CURRENCY_DISPLAY_TEMPLATED);

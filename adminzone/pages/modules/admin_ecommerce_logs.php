@@ -377,7 +377,10 @@ class Module_admin_ecommerce_logs
         if ($purchase_id === null) {
             $_purchase_id = post_param_string('purchase_id_username', null);
             if ($_purchase_id !== null) {
-                $purchase_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_purchase_id);
+                $__purchase_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_purchase_id);
+                if ($__purchase_id !== null) {
+                    $purchase_id = strval($__purchase_id);
+                }
             }
         }
         if ($purchase_id === null) {

@@ -1028,6 +1028,16 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
         $billing_state = get_cms_cpf('billing_state');
         $billing_post_code = get_cms_cpf('billing_post_code');
         $billing_country = get_cms_cpf('billing_country');
+
+        if (is_guest()) {
+            if (addon_installed('stats')) {
+                $country = geolocate_ip();
+                if ($country !== null) {
+                    $shipping_country = $country;
+                    $billing_country = $country;
+                }
+            }
+        }
     }
 
     $shipping_email = post_param_string('shipping_email', $shipping_email);

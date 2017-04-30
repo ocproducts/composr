@@ -186,9 +186,6 @@ class Hook_fields_year_month
         if (is_null($month)) {
             return $editing ? STRING_MAGIC_NULL : '';
         }
-        if (($year == '') || ($month == '')) {
-            return '';
-        }
 
         return str_pad(strval($year), 4, '0', STR_PAD_LEFT) . '/' . str_pad(strval($month), 2, '0', STR_PAD_LEFT);
     }
