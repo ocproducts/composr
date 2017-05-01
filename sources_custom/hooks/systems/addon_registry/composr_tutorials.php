@@ -703,6 +703,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_emoticons/emoticons_add.png',
             'data_custom/images/docs/tut_facebook/facebook.png',
             'data_custom/images/docs/tut_facebook/twitter.png',
+            'data_custom/images/docs/tut_facebook/facebook_headers.png',
             'data_custom/images/docs/tut_facebook/facebook_addon_a.png',
             'data_custom/images/docs/tut_facebook/facebook_addon_b.png',
             'data_custom/images/docs/tut_facebook/facebook_config.png',
