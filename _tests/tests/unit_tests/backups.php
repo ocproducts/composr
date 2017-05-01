@@ -62,7 +62,9 @@ class backups_test_set extends cms_test_case
         $config_php .= rtrim('
 unset($SITE_INFO[\'base_url\']); // Let it auto-detect
 unset($SITE_INFO[\'cns_table_prefix\']);
-$SITE_INFO[\'table_prefix\'] = \'bt_\';
+$SITE_INFO[\'db_site\'] = \'test\';
+$SITE_INFO[\'db_forums\'] = \'test\';
+$SITE_INFO[\'table_prefix\'] = \'cms_backup_test_\';
 $SITE_INFO[\'multi_lang_content\'] = \'' . addslashes($SITE_INFO['multi_lang_content']) . '\';
         ');
         cms_file_put_contents_safe($config_path, $config_php);
@@ -76,7 +78,7 @@ $SITE_INFO[\'multi_lang_content\'] = \'' . addslashes($SITE_INFO['multi_lang_con
             }
         }
 
-        $db = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), 'bt_');
+        $db = new DatabaseConnector('test', get_db_site_host(), get_db_site_user(), get_db_site_password(), 'cms_backup_test_');
         $count = $db->query_select_value('zones', 'COUNT(*)');
         $this->assertTrue($count > 0, 'Failed to restore database');
 

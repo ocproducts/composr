@@ -70,7 +70,7 @@ class _installer_test_set extends cms_test_case
     private function doHeadlessInstall($safe_mode)
     {
         $database = 'test';
-        $table_prefix = 'cms_unit_test_';
+        $table_prefix = 'cms_installer_test_';
 
         // Cleanup old install
         $tables = $GLOBALS['SITE_DB']->query('SHOW TABLES FROM ' . $database, null, null, true);

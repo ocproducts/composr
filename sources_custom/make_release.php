@@ -882,7 +882,7 @@ function make_install_sql()
     global $SITE_INFO;
 
     // Where to build database to
-    $database = 'cms_make_release_tmp';
+    $database = 'test';
     $username = 'root';
     $password = isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '';
     $table_prefix = 'cms_';
