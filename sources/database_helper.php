@@ -667,6 +667,23 @@ function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_n
     }
     $this_ref->query_update('db_meta', $update_map, array('m_table' => $table_name, 'm_name' => $name));
 
+    if ($new_name !== null) {
+        $indices = $this_ref->query_select('db_meta_indices', array('*'), array('i_table' => $table_name));
+        foreach ($indices as $index) {
+            $changed_index = false;
+            $fields = explode(',', $index['i_fields']);
+            foreach ($fields as &$field) {
+                if ($field == $name) {
+                    $field = $new_name;
+                    $changed_index = true;
+                }
+            }
+            if ($changed_index) {
+                $this_ref->query_update('db_meta_indices', array('i_fields' => implode(',', $fields)), array('i_table' =>$table_name, 'i_name' => $index['i_name']));
+            }
+        }
+    }
+
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
     }
