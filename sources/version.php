@@ -29,7 +29,7 @@ The version numbers here are not for interchange. sources/version2.php provides 
  */
 function cms_version_minor()
 {
-    return '0.4';
+    return 'beta1';
 }
 
 /**
@@ -39,7 +39,7 @@ function cms_version_minor()
  */
 function cms_version_number()
 {
-    return 10.0;
+    return 10.1;
 }
 
 /**
