@@ -117,6 +117,9 @@
 	{+START,IF_NON_EMPTY,{$METADATA,opensearch_itemsperpage}}<meta name="itemsPerPage" content="{$METADATA*,opensearch_itemsperpage}" />{+END}
 {+END}{+END}
 
+{$,Required for $cms.requireJavascript() to work properly as DOM does not currently provide any flags to check if a script has been already loaded}
+<script {$CSP_NONCE_HTML} defer src="{$BASE_URL*}/data/polyfills/log-loaded-scripts.js"></script>
+
 {$,Load classList and ES6 Promise polyfill for Internet Explorer}
 {+START,IF,{$BROWSER_MATCHES,ie}}
 <script {$CSP_NONCE_HTML} src="{$BASE_URL*}/data/polyfills/class-list.js"></script>

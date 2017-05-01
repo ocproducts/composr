@@ -101,6 +101,53 @@
         post.scrollTop = post.scrollHeight;
     };
 
+    $cms.functions.moduleTopicsPostJavascript = function moduleTopicsPostJavascript(size, stub) {
+        var form = document.getElementById('post').form;
+        form.addEventListener('submit', function () {
+            var post = form.elements['post'],
+                text_value;
+
+            if ($cms.form.isWysiwygField(post)) {
+                try {
+
+                    text_value = window.CKEDITOR.instances['post'].getData();
+                } catch (ignore) { }
+            } else {
+                if (!post.value && post[1]) {
+                    post = post[1];
+                }
+                text_value = post.value;
+            }
+
+            if (text_value.length > size) {
+                $cms.ui.alert('{!POST_TOO_LONG;}');
+                return false;
+            }
+
+            if (stub != '') {
+                var df = stub;
+                var pv = post.value;
+                if (post && (pv.substring(0, df.length) == df)) {
+                    pv = pv.substring(df.length, pv.length);
+                }
+                post.value = pv;
+            }
+        })
+    };
+
+    $cms.functions.moduleTopicsPostJavascriptForceGuestNames = function moduleTopicsPostJavascriptForceGuestNames() {
+        var poster_name_if_guest = document.getElementById("poster_name_if_guest");
+        if (poster_name_if_guest) {
+            var crf = function () {
+                if (poster_name_if_guest.value == "{!GUEST;}") {
+                    poster_name_if_guest.value = "";
+                }
+            };
+            crf();
+            poster_name_if_guest.addEventListener("blur", crf);
+        }
+    };
+
     $cms.functions.moduleTopicsAddPoll = function moduleTopicsAddPoll() {
         var existing = document.getElementById('existing'),
             form = existing.form;

@@ -324,11 +324,11 @@ function get_attachments($posting_field_name)
  * @param  boolean $support_autosave Whether to support auto-save
  * @param  boolean $specialisation2_hidden Whether to support auto-save
  * @param  mixed $description A description for this input field
- * @param  mixed $js_functions JavaScript function names to execute
+ * @param  mixed $js_function_calls JavaScript functions to execute
  * @return Tempcode The posting form
  */
 function
-get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '', $js_functions)
+get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
 {
     require_javascript('posting');
     require_javascript('plupload');
@@ -384,8 +384,7 @@ get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $
         '_GUID' => '41259424ca13c437d5bc523ce18980fe',
         'REQUIRED' => $required,
         'TABINDEX_PF' => strval($tabindex)/*not called TABINDEX due to conflict with FORM_STANDARD_END*/,
-        'JAVASCRIPT' => $javascript,
-        'FUNCTIONS' => $js_functions,
+        'JS_FUNCTION_CALLS' => $js_function_calls,
         'PREVIEW' => $has_preview,
         'COMCODE_EDITOR' => $comcode_editor,
         'COMCODE_EDITOR_SMALL' => $comcode_editor_small,

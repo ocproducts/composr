@@ -485,7 +485,7 @@ function comcode_helper_script_step2()
     $fields_advanced = new Tempcode();
     $done_tag_contents = false;
     $hidden = new Tempcode();
-    $javascript = '';
+    $js_function_calls = [];
 
     $preview = true; // Whether we can preview the tag
 
@@ -514,7 +514,7 @@ function comcode_helper_script_step2()
     if (array_key_exists($tag, $tag_list)) { // Normal Comcode tag
         $params = $tag_list[$tag];
 
-        if (!_try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, $fields, $fields_advanced, $hidden, $done_tag_contents, $defaults, $params, $javascript, $preview)) {
+        if (!_try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, $fields, $fields_advanced, $hidden, $done_tag_contents, $defaults, $params, $js_function_calls, $preview)) {
             if (count($params) > 0) {
                 require_code('form_templates');
                 foreach ($params as $param) {
@@ -606,7 +606,7 @@ function comcode_helper_script_step2()
         $tag_description->attach(paragraph(escape_html(is_integer($_params['tag_example']) ? get_translated_text($_params['tag_example']) : $_params['tag_example'])));
     }
 
-    if (!_try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, $fields, $fields_advanced, $hidden, $default_embed, $javascript, $preview)) {
+    if (!_try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, $fields, $fields_advanced, $hidden, $default_embed, $js_function_calls, $preview)) {
         if (!$done_tag_contents) {
             $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED', null, null, null, null, false);
             if ($descriptiont === null) {
@@ -690,7 +690,7 @@ function comcode_helper_script_step2()
     return do_template('FORM_SCREEN', array(
         '_GUID' => '270058349d048a8be6570bba97c81fa2',
         'TITLE' => $title,
-        'JAVASCRIPT' => $javascript,
+        'JS_FUNCTION_CALLS' => $js_function_calls,
         'TARGET' => '_self',
         'SKIP_WEBSTANDARDS' => true,
         'FIELDS' => $fields,
@@ -980,13 +980,13 @@ function _try_for_special_comcode_tag_extra_param_ui($tag, $actual_tag, &$fields
  * @param  Tempcode $fields_advanced Advanced UI fields.
  * @param  Tempcode $hidden Hidden fields.
  * @param  string $default_embed Default embed contents.
- * @param  string $javascript JavaScript to deploy.
+ * @param  string $js_function_calls JavaScript to deploy.
  * @param  boolean $preview Whether previewing will be allowed.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
  *
  * @ignore
  */
-function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, $default_embed, &$javascript, &$preview)
+function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, $default_embed, &$js_function_calls, &$preview)
 {
     global $TEXTUAL_TAGS;
 
@@ -1007,7 +1007,11 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
     } elseif ($tag == 'attachment') {
         if (get_option('eager_wysiwyg') == '0') {
             if ((!isset($_COOKIE['use_wysiwyg'])) || ($_COOKIE['use_wysiwyg'] != '0')) {
-                $javascript .= /** @lang JavaScript */ "document.getElementById('framed').addEventListener('change', function() { if (this.checked && document.getElementById('_safe')) { document.getElementById('_safe').checked=false; } });";
+                require_javascript('core_rich_media');
+                if (!is_array($js_function_calls)) {
+                    $js_function_calls = [];
+                }
+                $js_function_calls[] = 'comcodeAddTryForSpecialComcodeTag';
             }
         }
 

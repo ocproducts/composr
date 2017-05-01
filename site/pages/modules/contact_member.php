@@ -213,7 +213,7 @@ class Module_contact_member
             '_GUID' => 'e06557e6eceacf1f46ee930c99ac5bb5',
             'TITLE' => $this->title,
             'HIDDEN' => $hidden,
-            'FUNCTIONS' => function_exists('captcha_ajax_check_function') ? captcha_ajax_check_function() : '',
+            'JS_FUNCTION_CALLS' => function_exists('captcha_ajax_check_function') && captcha_ajax_check_function() ? [captcha_ajax_check_function()] : [],
             'FIELDS' => $fields,
             'TEXT' => $text,
             'SUBMIT_ICON' => 'buttons__send',

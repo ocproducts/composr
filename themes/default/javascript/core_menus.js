@@ -1,4 +1,5 @@
 (function ($cms) {
+    'use strict';
 
     $cms.views.Menu = Menu;
     function Menu(params) {

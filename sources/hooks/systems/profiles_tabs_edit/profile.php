@@ -94,10 +94,8 @@ class Hook_profiles_tabs_edit_profile
 
         $hidden->attach(form_input_hidden('submitting_profile_tab', '1'));
 
-        $javascript = '';
-
         $text = '';
 
-        return array($title, $fields, $text, $javascript, $order, $hidden, 'tabs/member_account/edit/profile');
+        return array($title, $fields, $text, '', $order, $hidden, 'tabs/member_account/edit/profile');
     }
 }

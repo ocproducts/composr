@@ -217,8 +217,7 @@ class DecisionTree
 
         $text = comcode_to_tempcode(isset($details['text']) ? $details['text'] : '', null, true);
 
-        $javascript = '';
-        $functions = '';
+        $js_function_calls = [];
 
         // Screen messages
         foreach (array('inform', 'notice', 'warn') as $notice_type) {
@@ -235,25 +234,7 @@ class DecisionTree
 
                         $notice_title = do_lang('DYNAMIC_NOTICE_' . $notice_type);
 
-                        $javascript .= /** @lang JavaScript */'
-                            var e=document.getElementById(\'main_form\').elements[\'' . addslashes($parameter) . '\'];
-                            if (e.length === undefined) {
-                                e=[e];
-                            }
-                            for (var i=0;i<e.length;i++) {
-                                e[i].addEventListener(\'click\',function(_e) { return function() {
-                                    var selected=false;
-                                    if (_e.type!=\'undefined\' && _e.type==\'checkbox\') {
-                                        selected=(_e.checked && _e.value==\'' . addslashes($value) . '\') || (!_e.checked && \'\'==\'' . addslashes($value) . '\');
-                                    } else {
-                                        selected=(_e.value==\'' . addslashes($value) . '\');
-                                    }
-                                    if (selected) {
-                                        $cms.ui.alert(\'' . addslashes($_notice->evaluate()) . '\',null,\'' . addslashes($notice_title) . '\',true);
-                                    }
-                                }}(e[i]));
-                            }
-                        ';
+                        $js_function_calls[] = ['decisionTreeRender', $parameter, $value, $_notice->evaluate(), $notice_title];
                     } else { // Flat
                         $notice = $notice_details;
                         attach_message($notice, $notice_type);
@@ -350,8 +331,7 @@ class DecisionTree
             'BACK_URL' => $back_url,
             'SUPPORT_AUTOSAVE' => false,
             'TARGET' => '_self',
-            'JAVASCRIPT' => $javascript,
-            'FUNCTIONS' => $functions,
+            'JS_FUNCTION_CALLS' => $js_function_calls,
         ));
     }
 

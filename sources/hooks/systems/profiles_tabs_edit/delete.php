@@ -99,8 +99,8 @@ class Hook_profiles_tabs_edit_delete
         $fields->attach(form_input_tick(do_lang_tempcode(($member_id_of != $member_id_viewing) ? 'DELETE_WITHOUT_MERGING' : 'DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
 
         require_javascript('core_cns');
-        $javascript = /**@lang JavaScript*/'$cms.functions.hookProfilesTabsEditDeleteRenderTab();';
+        $js_function_calls = ['hookProfilesTabsEditDeleteRenderTab'];
 
-        return array($title, $fields, $text, $javascript, $order, null, 'tabs/member_account/edit/delete');
+        return array($title, $fields, $text, $js_function_calls, $order, null, 'tabs/member_account/edit/delete');
     }
 }

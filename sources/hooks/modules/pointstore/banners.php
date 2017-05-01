@@ -118,13 +118,13 @@ class Hook_pointstore_banners
         $initial_hits = intval(get_option('initial_banner_hits'));
         $banner_price = intval(get_option('banner_setup'));
         $text = paragraph(do_lang_tempcode('BANNERS_DESCRIPTION', escape_html(integer_format($initial_hits)), escape_html(integer_format($banner_price))));
-        list($fields, $javascript, $jsFunctions) = get_banner_form_fields(true);
+        list($fields, $js_function_calls) = get_banner_form_fields(true);
         $post_url = build_url(array('page' => '_SELF', 'type' => '_newbanner', 'id' => 'banners', 'uploading' => 1), '_SELF');
 
         $hidden = new Tempcode();
         handle_max_file_size($hidden, 'image');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '45b8878d92712e07c4eb5497f1a33e33', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('ADD_BANNER'), 'FUNCTIONS' => $jsFunctions));
+        return do_template('FORM_SCREEN', array('_GUID' => '45b8878d92712e07c4eb5497f1a33e33', 'HIDDEN' => $hidden, 'TITLE' => $title, 'TEXT' => $text, 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('ADD_BANNER'), 'JS_FUNCTION_CALLS' => $js_function_calls));
     }
 
     /**

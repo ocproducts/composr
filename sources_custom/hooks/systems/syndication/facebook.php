@@ -38,7 +38,7 @@ class Hook_syndication_facebook
         return true;
     }
 
-    public function syndication_javascript()
+    public function syndication_javascript_function_calls()
     {
         if (get_option('facebook_member_syndicate_to_page') == '0') {
             return '';
@@ -47,7 +47,7 @@ class Hook_syndication_facebook
         require_lang('facebook');
         require_javascript('facebook_support');
 
-        return /**@lang JavaScript*/'$cms.functions.hookSyndicationFacebook_syndicationJavascript();';
+        return ['hookSyndicationFacebook_syndicationJavascript'];
     }
 
     public function auth_is_set($member_id)

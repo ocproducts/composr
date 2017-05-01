@@ -325,21 +325,6 @@ function _cleanout_captcha()
 /**
  * Get code to do an AJAX check of the CAPTCHA.
  *
- * @return string JavaScript code.
- */
-function captcha_ajax_check()
-{
-    if (!use_captcha()) {
-        return '';
-    }
-
-    require_javascript('captcha');
-    return /**@lang JavaScript*/'$cms.functions.captchaCaptchaAjaxCheck()';
-}
-
-/**
- * Get code to do an AJAX check of the CAPTCHA.
- *
  * @return string Function name.
  */
 function captcha_ajax_check_function()

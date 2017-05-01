@@ -1,4 +1,4 @@
-<div data-tpl="columnedTableScreen" data-tpl-params="{+START,PARAMS_JSON,JAVASCRIPT}{_*}{+END}">
+<div data-tpl="columnedTableScreen" data-tpl-params="{+START,PARAMS_JSON,JS_FUNCTION_CALLS}{_*}{+END}">
 
 {TITLE}
 

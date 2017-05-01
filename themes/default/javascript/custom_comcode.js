@@ -1,6 +1,10 @@
 (function ($cms) {
     'use strict';
 
+    $cms.functions.gfxRolloverButton  = function gfxRolloverButton(combId, url) {
+        $cms.createRollover(combId, url);
+    };
+
     $cms.functions.moduleAdminCustomComcode = function moduleAdminCustomComcode() {
         var update_func = function () {
             var e = document.getElementById('example');

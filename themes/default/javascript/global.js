@@ -479,6 +479,14 @@
         /**@method*/
         uid: uid,
         /**@method*/
+        isObj: isObj,
+        /**@method*/
+        hasEnumerable: hasEnumerable,
+        /**@method*/
+        hasOwnEnumerable: hasOwnEnumerable,
+        /**@method*/
+        isPlainObj: isPlainObj,
+        /**@method*/
         nodeType: nodeType,
         /**@method*/
         isEl: isEl,
@@ -488,6 +496,8 @@
         isDocOrEl: isDocOrEl,
         /**@method*/
         isArrayLike: isArrayLike,
+        /**@method*/
+        isEmpty: boolVal,
         /**@method*/
         noop: noop,
         /**@method*/
@@ -584,7 +594,8 @@
         manageScrollHeight: manageScrollHeight,
         /**@method*/
         openModalWindow: openModalWindow,
-
+        /**@method*/
+        executeJsFunctionCalls: executeJsFunctionCalls,
         /**
          * Addons will add template related methods under this object
          * @namespace $cms.templates
@@ -804,10 +815,11 @@
     /**
      *
      * @param val
+     * @param withEnumerable (boolean)
      * @returns {boolean}
      */
-    function isObj(val) {
-        return (val != null) && (typeof val === 'object');
+    function isObj(val, withEnumerable) {
+        return (val != null) && (typeof val === 'object') && (!withEnumerable || hasEnumerable(val));
     }
 
     /**
@@ -1058,8 +1070,8 @@
     /**
      * Returns a random integer between min (inclusive) and max (inclusive)
      * Using Math.round() will give you a non-uniform distribution!
-     * @param {number}
-     * @param {number}
+     * @param min {number}
+     * @param max {number}
      * @returns {*}
      */
     function random(min, max) {
@@ -1309,11 +1321,21 @@
     }
 
     /**
-     * Port of PHP's empty() function (inversed)
+     * Port of PHP's boolval() function
      * @param val
      * @returns { Boolean }
      */
     function boolVal(val) {
+        var p;
+        return !!val && (val !== '0') && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
+    }
+
+    /**
+     * Port of PHP's empty() function
+     * @param val
+     * @returns { Boolean }
+     */
+    function isEmpty(val) {
         var p;
         return !!val && (val !== '0') && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
     }
@@ -1341,7 +1363,7 @@
 
     /**
      * @param val
-     * @returns { Array|* } array or array-like object
+     * @returns { Array|null } array or array-like object
      */
     function arrVal(val, clone) {
         var isArr;
@@ -1681,15 +1703,30 @@
         document.head.appendChild(link);
     }
 
-    var _requireJsPromises = Object.create(null);
+    var requireJavascriptPromises = Object.create(null);
     function _requireJavascript(script) {
         script = strVal(script);
 
-        if (_requireJsPromises[script] == null) {
-            if ($cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified') || $cms.dom.$('script[src='+ script + ']')) {
-                _requireJsPromises[script] = Promise.resolve();
+        if (requireJavascriptPromises[script] == null) {
+            var scriptEl = $cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified') || $cms.dom.$('script[src='+ script + ']');
+
+            if (scriptEl) {
+                if (Array.isArray($cms.loadedScripts) && $cms.loadedScripts.includes(scriptEl)) {
+                    requireJavascriptPromises[script] = Promise.resolve({ target: scriptEl });
+                } else {
+                    requireJavascriptPromises[script] = new Promise(function (resolve, reject) {
+                        scriptEl.addEventListener('load', function (e) {
+                            resolve(e)
+                        });
+                        scriptEl.addEventListener('error', function (e) {
+                            $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
+                            reject(e);
+                        });
+                    });
+                }
+
             } else {
-                _requireJsPromises[script] = new Promise(function (resolve, reject) {
+                requireJavascriptPromises[script] = new Promise(function (resolve, reject) {
                     var sEl = document.createElement('script');
                     sEl.defer = true;
                     sEl.addEventListener('load', function (e) {
@@ -1716,7 +1753,7 @@
             }
         }
 
-        return _requireJsPromises[script];
+        return requireJavascriptPromises[script];
     }
 
     /**
@@ -3662,10 +3699,10 @@
             hash = window.location.hash;
         }
 
-        if (hash.replace(/^#/, '') !== '') {
+        if (hash.replace(/^#\!?/, '') !== '') {
             var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
 
-            if ($cms.dom.$('#g_' + tab)) {
+            if ($cms.dom.$id('g_' + tab)) {
                 $cms.ui.selectTab('g', tab);
             }
             else if ((tab.indexOf('__') != -1) && ($cms.dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
@@ -4606,6 +4643,38 @@
      */
     function openModalWindow(options) {
         return new $cms.views.ModalWindow(options);
+    }
+
+    /**
+     * @param functionCallsArray
+     */
+    function executeJsFunctionCalls(functionCallsArray) {
+        if (!Array.isArray(functionCallsArray)) {
+            $cms.error('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
+            return;
+        }
+
+        functionCallsArray.forEach(function (func) {
+            var funcName, args;
+
+            if (typeof func === 'string') {
+                func = [func];
+            }
+
+            if (!Array.isArray(func) || (func.length < 1)) {
+                $cms.error('$cms.executeJsFunctionCalls(): Invalid function call format', func);
+                return;
+            }
+
+            funcName = strVal(func[0]);
+            args = func.slice(1);
+
+            if (typeof $cms.functions[funcName] === 'function') {
+                $cms.functions[funcName].apply(undefined, args);
+            } else {
+                $cms.error('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
+            }
+        });
     }
 
     /**
@@ -5623,7 +5692,7 @@
         automated = !!automated;
 
         if (!from_url) {
-            var tab_marker = $cms.dom.$('#tab__' + tab.toLowerCase());
+            var tab_marker = $cms.dom.$id('tab__' + tab.toLowerCase());
             if (tab_marker) {
                 // For URL purposes, we will change URL to point to tab
                 // HOWEVER, we do not want to cause a scroll so we will be careful
@@ -5635,17 +5704,17 @@
 
         var tabs = [], i, element;
 
-        element = $cms.dom.$('#t_' + tab);
-        for (i = 0; i < element.parentNode.children.length; i++) {
-            if (element.parentNode.children[i].id && (element.parentNode.children[i].id.substr(0, 2) === 't_')) {
-                tabs.push(element.parentNode.children[i].id.substr(2));
+        element = $cms.dom.$id('t_' + tab);
+        for (i = 0; i < element.parentElement.children.length; i++) {
+            if (element.parentElement.children[i].id && (element.parentElement.children[i].id.substr(0, 2) === 't_')) {
+                tabs.push(element.parentElement.children[i].id.substr(2));
             }
         }
 
         for (i = 0; i < tabs.length; i++) {
-            element = $cms.dom.$('#' + id + '_' + tabs[i]);
+            element = $cms.dom.$id(id + '_' + tabs[i]);
             if (element) {
-                element.style.display = (tabs[i] === tab) ? 'block' : 'none';
+                $cms.dom.toggle(element, (tabs[i] === tab));
 
                 if (tabs[i] === tab) {
                     if (window['load_tab__' + tab] === undefined) {
@@ -5655,7 +5724,7 @@
                 }
             }
 
-            element = $cms.dom.$('#t_' + tabs[i]);
+            element = $cms.dom.$id('t_' + tabs[i]);
             if (element) {
                 element.classList.toggle('tab_active', tabs[i] === tab);
             }
@@ -5663,7 +5732,7 @@
 
         if (window['load_tab__' + tab] !== undefined) {
             // Usually an AJAX loader
-            window['load_tab__' + tab](automated, $cms.dom.$('#' + id + '_' + tab));
+            window['load_tab__' + tab](automated, $cms.dom.$id(id + '_' + tab));
         }
 
         return false;
@@ -7490,6 +7559,26 @@
             }
         },
 
+        // Implementation for [data-js-function-calls]
+        jsFunctionCalls: {
+            attach: function (context) {
+                var els = $cms.dom.$$$(context, '[data-js-function-calls]');
+
+                els.forEach(function (el) {
+                    var jsFunctionCalls = $cms.dom.data(el, 'jsFunctionCalls');
+
+                    if (typeof jsFunctionCalls === 'string') {
+                        jsFunctionCalls = [jsFunctionCalls];
+                    }
+
+                    if (jsFunctionCalls != null) {
+                        $cms.executeJsFunctionCalls(jsFunctionCalls);
+                    }
+                });
+            }
+        },
+
+
         // Implementation for [data-cms-select2]
         select2Plugin: {
             attach: function (context) {
@@ -8919,6 +9008,26 @@
                 });
             }
         });
+    };
+
+    $cms.functions.decisionTreeRender = function decisionTreeRender(parameter, value, notice, noticeTitle) {
+        var e=document.getElementById('main_form').elements[parameter];
+        if (e.length === undefined) {
+            e=[e];
+        }
+        for (var i=0;i<e.length;i++) {
+            e[i].addEventListener('click',function(_e) { return function() {
+                var selected=false;
+                if (_e.type!='undefined' && _e.type=='checkbox') {
+                    selected=(_e.checked && _e.value==value) || (!_e.checked && ''==value);
+                } else {
+                    selected=(_e.value== value);
+                }
+                if (selected) {
+                    $cms.ui.alert(notice, null, noticeTitle, true);
+                }
+            }}(e[i]));
+        }
     };
 
     function gdImageTransform(el) {

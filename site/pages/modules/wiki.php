@@ -1077,9 +1077,9 @@ class Module_wiki
 
         $hidden_fields->attach(form_input_hidden('post_id', ($post_id === null) ? '' : strval($post_id)));
 
-        $javascript = (function_exists('captcha_ajax_check') ? captcha_ajax_check() : '');
+        $js_function_calls = function_exists('captcha_ajax_check_function') && captcha_ajax_check_function() ? [captcha_ajax_check_function()] : [];
 
-        $posting_form = get_posting_form($submit_name, ($mode == 'edit') ? 'menu___generic_admin__edit_this' : 'menu___generic_admin__add_one', $message, $post_url, $hidden_fields, new Tempcode(), null, '', $specialisation, $parsed, $javascript);
+        $posting_form = get_posting_form($submit_name, ($mode == 'edit') ? 'menu___generic_admin__edit_this' : 'menu___generic_admin__add_one', $message, $post_url, $hidden_fields, new Tempcode(), null, '', $specialisation, $parsed, $js_function_calls);
 
         if ($mode == 'post') {
             url_default_parameters__disable();

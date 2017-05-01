@@ -1,4 +1,5 @@
-<div>
+{$REQUIRE_JAVASCRIPT,activity_feed}
+<div data-require-javascript="activity_feed" data-tpl="cnsMemberProfileActivities" data-tpl-params="{+START,PARAMS_JSON,SYNDICATIONS}{_*}{+END}">
     <div class="float_surrounder">
         {+START,IF,{$EQ,{MEMBER_ID},{$MEMBER}}}
             {$BLOCK,block=main_activities_state,member={MEMBER_ID},mode=some_members,param=}
@@ -16,28 +17,22 @@
         </div>
     </div>
 
-{+START,IF_NON_EMPTY,{SYNDICATIONS}}
-	<p>{!CREATE_SYNDICATION_LINK}</p>
+    {+START,IF_NON_EMPTY,{SYNDICATIONS}}
+        <p>{!CREATE_SYNDICATION_LINK}</p>
 
-	<form action="{$PAGE_LINK*,_SEARCH:members:view:{MEMBER_ID}}#tab__activities" method="post" autocomplete="off">
-		{$INSERT_SPAMMER_BLACKHOLE}
+        <form action="{$PAGE_LINK*,_SEARCH:members:view:{MEMBER_ID}}#tab__activities" method="post" autocomplete="off">
+            {$INSERT_SPAMMER_BLACKHOLE}
 
-		<p>
-			{+START,LOOP,SYNDICATIONS}
-				{+START,IF,{SYNDICATION_IS_SET}}
-					<input class="button_screen_item buttons__cancel" data-disable-on-click="1" type="submit" id="syndicate_stop__{_loop_key*}" name="syndicate_stop__{_loop_key*}" value="{!STOP_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}" />
-				{+END}
-				{+START,IF,{$NOT,{SYNDICATION_IS_SET}}}
-					<input class="button_screen_item buttons__proceed" data-disable-on-click="1" type="submit" id="syndicate_start__{_loop_key*}" name="syndicate_start__{_loop_key*}" value="{!START_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}" />
-				{+END}
-			{+END}
-		</p>
-	</form>
-
-	{+START,LOOP,SYNDICATIONS}
-		{+START,IF_NON_EMPTY,{SYNDICATION_JAVASCRIPT}}
-			<script {$CSP_NONCE_HTML}>{SYNDICATION_JAVASCRIPT/}</script>
-		{+END}
-	{+END}
-{+END}
+            <p>
+                {+START,LOOP,SYNDICATIONS}
+                    {+START,IF,{SYNDICATION_IS_SET}}
+                        <input class="button_screen_item buttons__cancel" data-disable-on-click="1" type="submit" id="syndicate_stop__{_loop_key*}" name="syndicate_stop__{_loop_key*}" value="{!STOP_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}" />
+                    {+END}
+                    {+START,IF,{$NOT,{SYNDICATION_IS_SET}}}
+                        <input class="button_screen_item buttons__proceed" data-disable-on-click="1" type="submit" id="syndicate_start__{_loop_key*}" name="syndicate_start__{_loop_key*}" value="{!START_SYNDICATING_TO,{SYNDICATION_SERVICE_NAME*}}" />
+                    {+END}
+                {+END}
+            </p>
+        </form>
+    {+END}
 </div>

@@ -124,8 +124,6 @@ class Hook_profiles_tabs_edit_photo
             'PHOTO' => $GLOBALS['FORUM_DRIVER']->get_member_photo_url($member_id_of),
         ));
 
-        $javascript = '';
-
-        return array($title, $fields, $text, $javascript, $order, $hidden, 'tabs/member_account/edit/photo', function_exists('imagetypes'));
+        return array($title, $fields, $text, null, $order, $hidden, 'tabs/member_account/edit/photo', function_exists('imagetypes'));
     }
 }

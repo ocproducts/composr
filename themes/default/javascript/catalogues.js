@@ -5,17 +5,14 @@
     function CatalogueAddingScreen(params) {
         CatalogueAddingScreen.base(this, 'constructor', arguments);
 
-        if (params.functions) {
-            var functions = strVal(params.functions).split(',');
-            functions.forEach(function(functionName) {
-                if (functionName) {
-                    $cms.functions[functionName]();
-                }
-            });
+        if (params.jsFunctionCalls != null) {
+            $cms.executeJsFunctionCalls(params.jsFunctionCalls);
         }
 
         catalogue_field_change_watching();
     }
+
+
 
     $cms.inherits(CatalogueAddingScreen, $cms.View, {
         events: function () {

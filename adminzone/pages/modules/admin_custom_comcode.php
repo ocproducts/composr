@@ -138,7 +138,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
 
         if ($type == 'add') {
             require_javascript('custom_comcode');
-            $this->functions = $this->functions ? ($this->functions . ',moduleAdminCustomComcodeRunStart') : 'moduleAdminCustomComcodeRunStart';
+            $this->js_function_calls[] = 'moduleAdminCustomComcodeRunStart';
         }
 
         if ($type == 'browse') {

@@ -73,8 +73,6 @@ class Hook_profiles_tabs_edit_notifications
             return null;
         }
 
-        $javascript = '';
-
-        return array($title, new Tempcode(), $text, $javascript, $order, null, 'tool_buttons/notifications2');
+        return array($title, new Tempcode(), $text, null, $order, null, 'tool_buttons/notifications2');
     }
 }

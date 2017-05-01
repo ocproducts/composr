@@ -1720,9 +1720,14 @@ class Module_topics
             $specialisation2->attach(get_award_fields(array('topic', 'post')));
         }
 
+        $js_function_calls = $this->_post_javascript();
+        if (function_exists('captcha_ajax_check_function') && captcha_ajax_check_function()) {
+            $js_function_calls[] = captcha_ajax_check_function();
+        }
+
         // Render form
         $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons__new_topic', $post, $post_url, $hidden_fields, $specialisation, null, '',
-            $specialisation2, null, $this->_post_javascript() . (function_exists('captcha_ajax_check') ? captcha_ajax_check() : ''), null, true, true, false, true, is_mobile());
+            $specialisation2, null, $js_function_calls, null, true, true, false, true, is_mobile());
 
         url_default_parameters__disable();
 
@@ -2053,7 +2058,8 @@ class Module_topics
         if (is_object($post)) {
             $post = $post->evaluate();
         }
-        $posting_form = get_posting_form(do_lang('REPLY'), 'buttons__new_reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $this->_post_javascript());
+        $js_function_calls = $this->_post_javascript();
+        $posting_form = get_posting_form(do_lang('REPLY'), 'buttons__new_reply', $post, $post_url, $hidden_fields, $specialisation, null, $topic_posts->evaluate(), $specialisation2, null, $js_function_calls);
 
         if ($parent_id === null) {
             if ($forum_id !== null && get_param_integer('threaded', $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_is_threaded', array('id' => $forum_id))) == 1) {
@@ -2092,7 +2098,8 @@ class Module_topics
 
         $topic_info = null;
         $post_info = null;
-        $ret = report_post_form($title, $post_id, $this->_post_javascript(), $topic_info, $post_info);
+        $js_function_calls = $this->_post_javascript();
+        $ret = report_post_form($title, $post_id, $js_function_calls, $topic_info, $post_info);
 
         $topic_id = $post_info['p_topic_id'];
 
@@ -2832,7 +2839,7 @@ END;
         $or_list = get_forum_access_sql('t.t_forum_id');
         $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY id DESC',
             30);
-        $function = '';
+        $js_function_calls = [];
         if (count($polls) !== 0) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER',
                 array('_GUID' => '1fb2af282b014c3a6ae09d986e4f72eb', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ALT_COPY_EXISTING_POLL'))));
@@ -2845,7 +2852,7 @@ END;
             $fields->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('COPY_EXISTING_POLL'), 'existing', $list, null, false, false));
 
             require_javascript('cns_forum');
-            $function = 'moduleTopicsAddPoll';
+            $js_function_calls[] = 'moduleTopicsAddPoll';
         }
 
         $title = get_screen_title('ADD_TOPIC_POLL');
@@ -2867,7 +2874,7 @@ END;
             'SUBMIT_ICON' => 'menu___generic_admin__add_to_category',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
-            'FUNCTIONS' => $function
+            'JS_FUNCTION_CALLS' => $js_function_calls
         ));
     }
 
@@ -3085,7 +3092,8 @@ END;
         } else {
             $parsed = null;
         }
-        $posting_form = get_posting_form(do_lang('SAVE'), 'buttons__edit', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, $parsed, $this->_post_javascript());
+        $js_function_calls = $this->_post_javascript();
+        $posting_form = get_posting_form(do_lang('SAVE'), 'buttons__edit', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, $parsed, $js_function_calls);
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
@@ -3109,59 +3117,18 @@ END;
     {
         $size = cns_get_member_best_group_property(get_member(), 'max_post_length_comcode');
 
-        $javascript = '';
+        require_javascript('cns_forum');
+        $js_function_calls = [];
 
         if (get_option('force_guest_names') == '1') {
-            $javascript .= /** @lang JavaScript */'
-                var poster_name_if_guest=document.getElementById("poster_name_if_guest");
-                if (poster_name_if_guest) {
-                    var crf = function() {
-                        if (poster_name_if_guest.value == "' . php_addslashes(do_lang('GUEST')) . '") {
-                            poster_name_if_guest.value = "";
-                        }
-                    };
-                    crf();
-                    poster_name_if_guest.addEventListener("blur", crf);
-                }
-            ';
+            $js_function_calls[] = 'moduleTopicsPostJavascriptForceGuestNames';
         }
 
         $stub = str_replace("\n", '\n', addslashes(unixify_line_format(either_param_string('stub', ''))));
 
-        $javascript .= /** @lang JavaScript */
-            'var form = document.getElementById(\'post\').form;
-            form.addEventListener(\'submit\', function () {
-                var post = form.elements[\'post\'],
-                    text_value;
+        $js_function_calls[] = ['moduleTopicsPostJavascript', $size, $stub];
 
-                if ($cms.form.isWysiwygField(post)) {
-                    try {
-
-                        text_value = window.CKEDITOR.instances[\'post\'].getData();
-                    } catch (ignore) { }
-                } else {
-                    if (!post.value && post[1]) {
-                        post = post[1];
-                    }
-                    text_value = post.value;
-                }
-
-                if (text_value.length > ' . strval($size) . ') {
-                    $cms.ui.alert(\'' . php_addslashes(do_lang('POST_TOO_LONG')) . "');
-                    return false;
-                }
-
-                if ('$stub' != '') {
-                    var df = '$stub';
-                    var pv = post.value;
-                    if (post && (pv.substring(0, df.length) == df)) {
-                        pv = pv.substring(df.length, pv.length);
-                    }
-                    post.value = pv;
-                }
-            })";
-
-        return $javascript;
+        return $js_function_calls;
     }
 
     /**

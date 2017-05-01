@@ -122,7 +122,7 @@ class Hook_profiles_tabs_edit
         sort_maps_by($tabs, 4);
         $tabs = array_values($tabs); // Reindex, needed for lastness check
 
-        $javascript = '';
+        $js_function_calls = [];
 
         $hidden = new Tempcode();
 
@@ -141,7 +141,9 @@ class Hook_profiles_tabs_edit
                 continue;
             }
 
-            $javascript .= $tab[3];
+            if (is_array($tab[3])) {
+                $js_function_calls = array_merge($js_function_calls, $tab[3]);
+            }
 
             $tab_last = true;
             foreach ($tabs as $j => $tabj) {
@@ -177,7 +179,7 @@ class Hook_profiles_tabs_edit
 
         $content = do_template('CNS_MEMBER_PROFILE_EDIT', array(
             '_GUID' => '7a3e2cc210583fe4f3097af48b052351',
-            'JAVASCRIPT' => $javascript,
+            'JS_FUNCTION_CALLS' => $js_function_calls,
             'HIDDEN' => $hidden,
             'URL' => $url,
             'SUBMIT_ICON' => 'buttons__save',

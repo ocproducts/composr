@@ -104,7 +104,7 @@ function report_content_form($title, $content_type, $content_id)
     return do_template('POSTING_SCREEN', array(
         '_GUID' => '92a0a35a7c07edd0d3f8a960710de608',
         'TITLE' => $title,
-        'FUNCTIONS' => function_exists('captcha_ajax_check_function') ? captcha_ajax_check_function() : '',
+        'JS_FUNCTION_CALLS' => function_exists('captcha_ajax_check_function') && captcha_ajax_check_function() ? [captcha_ajax_check_function()] : [],
         'TEXT' => $text,
         'POSTING_FORM' => $posting_form,
     ));
@@ -115,12 +115,12 @@ function report_content_form($title, $content_type, $content_id)
  *
  * @param Tempcode $title Screen title
  * @param AUTO_LINK $post_id The post ID
- * @param string $javascript JavaScript code to include
+ * @param string $js_function_calls JavaScript code to include
  * @param ?array $topic_info The topic row (returned by reference) (null: )
  * @param ?array $post_info The topic row (returned by reference) (null: )
  * @return Tempcode The UI
  */
-function report_post_form($title, $post_id, $javascript, &$topic_info = null, &$post_info = null)
+function report_post_form($title, $post_id, $js_function_calls, &$topic_info = null, &$post_info = null)
 {
     check_report_content_access();
 
@@ -167,11 +167,18 @@ function report_post_form($title, $post_id, $javascript, &$topic_info = null, &$
 
     url_default_parameters__disable();
 
+    if (!is_array($js_function_calls)) {
+        $js_function_calls = [];
+    }
+
+    if (function_exists('captcha_ajax_check_function') && captcha_ajax_check_function()) {
+        $js_function_calls[] = captcha_ajax_check_function();
+    }
+
     return do_template('POSTING_SCREEN', array(
         '_GUID' => 'eee64757e66fed702f74fecf8d595260',
         'TITLE' => $title,
-        'JAVASCRIPT' => $javascript,
-        'FUNCTIONS' => function_exists('captcha_ajax_check_function') ? captcha_ajax_check_function() : '',
+        'JS_FUNCTION_CALLS' => $js_function_calls,
         'TEXT' => $text,
         'POSTING_FORM' => $posting_form,
     ));

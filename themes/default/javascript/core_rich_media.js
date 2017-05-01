@@ -336,6 +336,14 @@
         }
     };
 
+    $cms.functions.comcodeAddTryForSpecialComcodeTag = function comcodeAddTryForSpecialComcodeTag() {
+        document.getElementById('framed').addEventListener('change', function () {
+            if (this.checked && document.getElementById('_safe')) {
+                document.getElementById('_safe').checked = false;
+            }
+        })
+    };
+
     $cms.templates.comcodeMemberLink = function comcodeMemberLink(params, container) {
         $cms.dom.on(container, 'mouseover', '.js-mouseover-comcode-member-link', activateComcodeMemberLink);
         $cms.dom.on(container, 'focus', '.js-focus-comcode-member-link', activateComcodeMemberLink);

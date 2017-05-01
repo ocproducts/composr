@@ -5,8 +5,12 @@
     // POSTING_FORM.tpl
     // - POSTING_FIELD.tpl
     $cms.views.PostingForm = PostingForm;
-    function PostingForm() {
+    function PostingForm(params) {
         PostingForm.base(this, 'constructor', arguments);
+
+        if (params.jsFunctionCalls != null) {
+            $cms.executeJsFunctionCalls(params.jsFunctionCalls);
+        }
     }
 
     $cms.inherits(PostingForm, $cms.View, {
@@ -193,17 +197,8 @@
             this.btnSubmit.style.display = 'none';
         }
 
-        if (params.javascript) {
-            eval.call(window, params.javascript);
-        }
-
-        if (params.functions) {
-            var functions = strVal(params.functions).split(',');
-            functions.forEach(function(functionName) {
-                if (functionName) {
-                    $cms.functions[functionName]();
-                }
-            });
+        if (params.jsFunctionCalls != null) {
+            $cms.executeJsFunctionCalls(params.jsFunctionCalls);
         }
 
         if (!params.secondaryForm) {

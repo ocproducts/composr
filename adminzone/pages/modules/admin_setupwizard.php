@@ -586,7 +586,7 @@ class Module_admin_setupwizard
         $inner = do_template('FORM', array(
             '_GUID' => 'f1e9a4d271c7d68ff9da6dc0438f6e3f',
             'SKIP_WEBSTANDARDS' => true,
-            'FUNCTIONS' => 'adminSetupwizardStep5',
+            'JS_FUNCTION_CALLS' => ['adminSetupwizardStep5'],
             'SKIPPABLE' => 'skip_5',
             'FIELDS' => $fields,
             'URL' => $post_url,
@@ -766,8 +766,8 @@ class Module_admin_setupwizard
 
         require_code('setupwizard');
         require_javascript('setupwizard');
-        $function = 'adminSetupwizardStep7';
-        $form = do_template('FORM', array('_GUID' => 'bf01a2b90967e86213ae0672c36a4b4e', 'SKIPPABLE' => 'skip_7', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()), 'FUNCTIONS' => $function));
+        $js_function_calls = ['adminSetupwizardStep7'];
+        $form = do_template('FORM', array('_GUID' => 'bf01a2b90967e86213ae0672c36a4b4e', 'SKIPPABLE' => 'skip_7', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()), 'JS_FUNCTION_CALLS' => $js_function_calls));
 
         $balanced = comcode_to_tempcode($this->get_rules_file('balanced'), null, true);
         $liberal = comcode_to_tempcode($this->get_rules_file('liberal'), null, true);
@@ -829,7 +829,7 @@ class Module_admin_setupwizard
 
         require_code('setupwizard');
         require_javascript('setupwizard');
-        $function = 'adminSetupwizardStep9';
+        $js_function_calls = ['adminSetupwizardStep9'];
         $inner = do_template('FORM', array(
             '_GUID' => 'c405a64a08328f78ac0e3f22a8365411',
             'SKIP_WEBSTANDARDS' => true,
@@ -840,7 +840,7 @@ class Module_admin_setupwizard
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
-            'FUNCTIONS' => $function,
+            'JS_FUNCTION_CALLS' => $js_function_calls,
         ));
         return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'de13f131460e7f342c8beb6ba5ae3f42', 'TITLE' => $this->title, 'STEP' => '9', 'INNER' => $inner));
     }

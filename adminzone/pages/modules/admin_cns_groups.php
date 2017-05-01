@@ -111,7 +111,7 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         if ($type == 'add') {
             require_javascript('core_cns');
-            $this->functions = $this->functions ? ($this->functions . ',moduleAdminCnsGroupsRunStart') : 'moduleAdminCnsGroupsRunStart';
+            $this->js_function_calls[] = 'moduleAdminCnsGroupsRunStart';
         }
 
         $this->add_one_label = do_lang_tempcode('ADD_GROUP');

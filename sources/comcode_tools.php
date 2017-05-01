@@ -75,7 +75,7 @@ function comcode_convert_script()
             'HIDDEN' => $hidden,
             'URL' => find_script('comcode_convert', true),
             'FIELDS' => $fields,
-            'FUNCTIONS' => 'comcodeToolsComcodeConvertScript',
+            'JS_FUNCTION_CALLS' => ['comcodeToolsComcodeConvertScript'],
         )), null, '', true, true);
 
         $out2->evaluate_echo();
