@@ -153,6 +153,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'product_weight');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'is_deleted');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_cart', 'product_id', 'ID_TEXT', 'type_code');
+            $GLOBALS['SITE_DB']->add_table_field('shopping_cart', 'purchase_id', 'ID_TEXT', '');
 
             $GLOBALS['SITE_DB']->rename_table('shopping_order', 'shopping_orders');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'tot_price', 'REAL', 'total_price');
@@ -168,6 +169,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'c_member', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_orders', 'tax_opted_out');
             $GLOBALS['SITE_DB']->add_table_field('shopping_orders', 'order_currency', 'ID_TEXT', get_option('currency'));
+            $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'transaction_id', 'SHORT_TEXT', 'txn_id');
 
             $GLOBALS['SITE_DB']->alter_table_field('shopping_order_details', 'p_price', 'REAL', 'p_price');
             $GLOBALS['SITE_DB']->add_table_field('shopping_order_details', 'p_tax_code', 'ID_TEXT', '0%');
@@ -186,7 +188,10 @@ class Module_shopping
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'last_action', 'SHORT_TEXT', 'l_last_action');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'date_and_time', 'TIME', 'l_date_and_time');
 
-            $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_trans_addresses');
+            $GLOBALS['SITE_DB']->drop_table_if_exists('shopping_order_addresses');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('shopping_order', 'soc_member');
+            $GLOBALS['SITE_DB']->create_index('shopping_orders', 'somember_id', array('member_id'));
 
             $option = get_option('shipping_cost_factor');
             $base = 0.00;
@@ -201,6 +206,9 @@ class Module_shopping
             $factor = float_unformat($option) / 100.0;
             set_option('shipping_cost_base', float_format($base));
             set_option('shipping_cost_factor', float_format($factor));
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('shopping_cart', 'product_id');
+            $GLOBALS['SITE_DB']->create_index('shopping_cart', 'type_code', array('type_code'));
         }
     }
 

@@ -95,7 +95,7 @@ class Module_invoices
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_currency', 'ID_TEXT', get_option('currency'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+        if (($upgrade_from === null) || ($upgrade_from < 3)) {
             $GLOBALS['SITE_DB']->create_index('ecom_invoices', 'i_member_id', array('i_member_id'));
         }
     }

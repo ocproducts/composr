@@ -148,9 +148,8 @@ class Module_subscriptions
         if (($upgrade_from !== null) && ($upgrade_from < 6)) {
             $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
 
-            $GLOBALS['SITE_DB']->create_index('ecom_subscriptions', 's_member_id', array('s_member_id'));
             $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_amount', 'REAL');
-            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_payment_gateway', 'ID_TEXT', '');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_via', 'ID_TEXT', 's_payment_gateway');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_code', 'ID_TEXT', '0%');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax', 'REAL', 0.00);
@@ -159,6 +158,10 @@ class Module_subscriptions
 
             $GLOBALS['SITE_DB']->alter_table_field('f_usergroup_subs', 's_cost', 'REAL', 's_price');
             $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_tax_code', 'ID_TEXT', '0%');
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
+            $GLOBALS['SITE_DB']->create_index('ecom_subscriptions', 's_member_id', array('s_member_id'));
         }
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;

@@ -252,13 +252,11 @@ class Module_purchase
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_type_code', 'ID_TEXT', '');
 
             $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
-            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT', '');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_via', 'ID_TEXT', 't_payment_gateway');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_amount', 'REAL');
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax_tracking', 'LONG_TEXT', '');
-            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
-            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_invoicing_breakdown', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_member_id', 'MEMBER', $GLOBALS['FORUM_DRIVER']->get_guest_id());
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_session_id', 'ID_TEXT', '');
@@ -281,7 +279,7 @@ class Module_purchase
                 $GLOBALS['SITE_DB']->rename_table('pstore_permissions', 'ecom_prods_permissions');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_permissions', 'p_cost', '?INTEGER', 'p_price_points');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_price', '?REAL', null);
-                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_tax', 'REAL', 0.00);
+                $GLOBALS['SITE_DB']->add_table_field('ecom_prods_permissions', 'p_tax_code', 'ID_TEXT', '0%');
 
                 $GLOBALS['SITE_DB']->rename_table('sales', 'ecom_sales');
                 $GLOBALS['SITE_DB']->add_table_field('ecom_sales', 'txn_id', 'ID_TEXT', '');
@@ -392,6 +390,11 @@ class Module_purchase
                 'p_module' => 'ID_TEXT', // category and ?privilege only
                 'p_category' => 'ID_TEXT', // category and ?privilege only
             ));
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 7)) {
+            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
+            $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
         }
     }
 
