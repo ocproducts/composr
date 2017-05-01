@@ -249,11 +249,10 @@ class Module_purchase
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_tax_tracking', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_price_points', 'INTEGER', 0);
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_invoicing_breakdown', 'LONG_TEXT', '');
-            $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_session_id', 'ID_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_trans_expecting', 'e_type_code', 'ID_TEXT', '');
 
             $GLOBALS['SITE_DB']->rename_table('transactions', 'ecom_transactions');
-            $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_payment_gateway', 'ID_TEXT', '');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_transactions', 't_amount', 'REAL');
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_tax', 'REAL', 0.00);

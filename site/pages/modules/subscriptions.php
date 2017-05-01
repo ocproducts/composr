@@ -35,7 +35,7 @@ class Module_subscriptions
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 7;
+        $info['version'] = 6;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -146,14 +146,11 @@ class Module_subscriptions
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 6)) {
-            $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_payment_gateway', 'ID_TEXT', 's_payment_gateway');
-
-            $GLOBALS['SITE_DB']->create_index('subscriptions', 's_member_id', array('s_member_id'));
-        }
-
-        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
+
+            $GLOBALS['SITE_DB']->create_index('ecom_subscriptions', 's_member_id', array('s_member_id'));
             $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_amount', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_payment_gateway', 'ID_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_code', 'ID_TEXT', '0%');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_derivation', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax', 'REAL', 0.00);

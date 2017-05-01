@@ -45,7 +45,7 @@ class Module_invoices
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 3;
         $info['locked'] = false;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -85,11 +85,7 @@ class Module_invoices
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
-            $GLOBALS['SITE_DB']->create_index('ecom_invoices', 'i_member_id', array('i_member_id'));
-        }
-
-        if (($upgrade_from < 4) && ($upgrade_from !== null)) {
+        if (($upgrade_from < 3) && ($upgrade_from !== null)) {
             $GLOBALS['SITE_DB']->rename_table('invoices', 'ecom_invoices');
             $GLOBALS['SITE_DB']->alter_table_field('ecom_invoices', 'i_amount', 'REAL');
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_code', 'ID_TEXT', '0%');
@@ -97,6 +93,10 @@ class Module_invoices
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax', 'REAL', 0.00);
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_tracking', 'LONG_TEXT', '');
             $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_currency', 'ID_TEXT', get_option('currency'));
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->create_index('ecom_invoices', 'i_member_id', array('i_member_id'));
         }
     }
 
