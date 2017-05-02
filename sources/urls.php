@@ -1052,7 +1052,7 @@ function page_link_decode($page_link)
     } elseif ($zone === '_SELF') {
         $zone = get_zone_name();
     }
-    if (isset($bits[1])) {
+    if ((isset($bits[1])) && (strpos($bits[1], '=') === false)) {
         if ($bits[1] !== '') {
             if ($bits[1] === '_SELF') {
                 $attributes = array('page' => get_page_name());
