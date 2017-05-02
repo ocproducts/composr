@@ -1334,7 +1334,10 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
  */
 function actual_delete_catalogue_entry($id)
 {
-    $old_category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'cc_id', array('id' => $id));
+    $old_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'cc_id', array('id' => $id));
+    if ($old_category_id === null) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
+    }
 
     $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => $id));
 

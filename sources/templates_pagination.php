@@ -220,7 +220,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
             if ($start > 0) {
                 $url_array = array('page' => '_SELF', $start_name => strval(max($start - $max, 0)));
                 $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
-                $previous = do_template('PAGINATION_PREVIOUS_LINK', array('_GUID' => 'ec4d4da9677b5b9c8cea08676337c6eb', 'TITLE' => $title, 'P' => integer_format(intval($start / $max)), 'URL' => $cat_url));
+                $previous = do_template('PAGINATION_PREVIOUS_LINK', array('_GUID' => 'ec4d4da9677b5b9c8cea08676337c6eb', 'TITLE' => $title, 'P' => integer_format(($max == 0) ? 1 : intval($start / $max)), 'URL' => $cat_url));
             } else {
                 $previous = do_template('PAGINATION_PREVIOUS');
             }
