@@ -302,6 +302,9 @@ If you add a new gallery named [tt]example_distorted_gallery[/tt], there will be
 What the XML means:
  - The [tt]match_key[/tt] attribute represents the page-link to match against. This is where we're targeting our new set of parent links to, replacing the old set of parent links.
  - The [tt]label[/tt] attribute in the "substitution" tag represents the label to give the matched page in the breadcrumbs ([tt]substitution[/tt] tag) or the inserted link ([tt]link[/tt] tag).
+ - The [tt]skip_if_single_public_zone[/tt] attribute in the "substitution" tag makes the rule only apply if the single public zone option is off, if set to "true". Defaults to "false".
+ - The [tt]include_self[/tt] attribute in the "substitution" tag makes the rule include the node being substituted, if set to "true". Defaults to "true".
+ - The [tt]final[/tt] attribute in the "substitution" tag makes the rule the last rule that will apply, if set to "true". Defaults to "false".
  - The [tt]link[/tt] tag is used to specify all the different links which will show above the matched page (the parent links). The webmaster can give as many links as they need but we've just given one here.
 
 After saving customising the breadcrumbs, the updated breadcrumbs will be applied. See the screenshots for the before/after.

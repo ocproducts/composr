@@ -646,7 +646,7 @@ class Module_catalogues
 
             // Breadcrumbs
             $breadcrumbs = array();
-            if (is_null($root)) {
+            if ($root === null) {
                 $breadcrumbs = array_merge($breadcrumbs, array(array('_SELF:_SELF:browse' . ($is_ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
             }
             if ($catalogue['c_is_tree'] == 1) {
@@ -658,9 +658,11 @@ class Module_catalogues
                     $breadcrumbs[] = array('', $_title);
                 }
             } else {
-                $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name), '_SELF');
-                $catalogue_title = get_translated_text($catalogue['c_title']);
-                $breadcrumbs[] = array($page_link, $catalogue_title);
+                if ($root === null) {
+                    $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $catalogue['c_is_tree']), '_SELF');
+                    $catalogue_title = get_translated_text($catalogue['c_title']);
+                    $breadcrumbs[] = array($page_link, $catalogue_title);
+                }
                 $breadcrumbs[] = array('', $_title);
             }
             breadcrumb_set_parents($breadcrumbs);
@@ -716,16 +718,6 @@ class Module_catalogues
             $this->category = $category;
             $this->id = $id;
             $this->_title = $_title;
-        }
-
-        if ($type == 'tree') {
-            set_feed_url('?mode=catalogues&select=');
-
-            $catalogue_name = get_param_string('id');
-
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . (is_ecommerce_catalogue($catalogue_name) ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
-
-            $this->title = get_screen_title('CATEGORIES');
         }
 
         return null;

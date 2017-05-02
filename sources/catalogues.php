@@ -213,10 +213,10 @@ function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $gu
 
     $just_catalogue_row = db_map_restrict($row, array('c_name', 'c_description'));
 
-    if ($row['c_is_tree']) {
+    if ($row['c_is_tree'] == 1) {
         $url = build_url(array('page' => 'catalogues', 'type' => 'category', 'catalogue_name' => $row['c_name']), $zone);
     } else {
-        $url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $row['c_name']), $zone);
+        $url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $row['c_name'], 'tree' => $row['c_is_tree']), $zone);
     }
 
     $_title = get_translated_text($row['c_title']);
@@ -1077,7 +1077,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     // Breadcrumbs
     if ($breadcrumbs_details) {
         $map['BREADCRUMBS'] = '';
-        if (($catalogue['c_is_tree'] == 1) && ($only_fields === null)) {
+        if ($only_fields === null) {
             $_breadcrumbs = catalogue_category_breadcrumbs($entry['cc_id'], $root, false);
             $breadcrumbs = breadcrumb_segments_to_tempcode($_breadcrumbs);
             $map['BREADCRUMBS'] = $breadcrumbs;
@@ -1894,32 +1894,26 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     }
     seo_meta_load_for('catalogue_entry', strval($id), strip_html($title_to_use_2));
 
-    if ($map['BREADCRUMBS'] === '') {
-        $breadcrumbs = array();
-        $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name), '_SELF');
-        $breadcrumbs[] = array($page_link, get_translated_text($catalogue['c_title']));
-        $page_link_map = array('page' => '_SELF', 'type' => 'category', 'id' => $category['id']);
-        if ($attach_to_url_filter) {
-            $page_link_map += propagate_filtercode();
-        }
-        $page_link = build_page_link($page_link_map, '_SELF');
-        $breadcrumbs[] = array($page_link, get_translated_text($category['cc_title']));
-        $map['BREADCRUMBS'] = breadcrumb_segments_to_tempcode($breadcrumbs);
-    }
     $map['CATEGORY_TITLE'] = get_translated_text($category['cc_title']);
     $map['CAT'] = strval($entry['cc_id']);
 
     $map['TAGS'] = get_loaded_tags('catalogue_entries');
 
+    $_breadcrumbs = array();
     if ($root === null) {
-        $_breadcrumbs = array();
         $_breadcrumbs[] = array('_SELF:_SELF:browse' . ($ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'));
-        $breadcrumbs = $_breadcrumbs;
     }
-    $_breadcrumbs = catalogue_category_breadcrumbs($entry['cc_id'], ($root === null) ? get_param_integer('keep_catalogue_' . $catalogue['c_name'] . '_root', null) : $root, false);
-    $breadcrumbs = array_merge($breadcrumbs, $_breadcrumbs);
+    if ($catalogue['c_is_tree'] == 1) {
+        $breadcrumbs = array_merge($_breadcrumbs, $breadcrumbs);
+    } else {
+        if ($root === null) {
+            $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $catalogue['c_is_tree']), '_SELF');
+            $_breadcrumbs[] = array($page_link, get_translated_text($catalogue['c_title']));
+        }
+        $breadcrumbs = array_merge($_breadcrumbs, $breadcrumbs);
+    }
     $breadcrumbs[] = array('', $title_to_use);
-    breadcrumb_set_parents($_breadcrumbs);
+    breadcrumb_set_parents($breadcrumbs);
 
     set_extra_request_metadata(array(
         'type' => get_translated_text($catalogue['c_title']) . ' entry',

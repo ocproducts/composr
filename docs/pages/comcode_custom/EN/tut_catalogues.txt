@@ -129,16 +129,6 @@ Templates:
  - [tt]CATALOGUE_*_GRID_ENTRY_FIELD.tpl[/tt]
 [/surround]
 
-[title="2"]Creating a tree catalogue, fast[/title]
-
-There is a special feature on the screen to add a catalogue with a category tree constructed automatically for it.
-To define the tree you just need to type in the categories you want in a special format that is very quick to write.
-
-This is best shown by example, so here is an example for a catalogue category tree with that has categories for each of the states/provinces in the USA and Canada:
-[code="Text"]
-USA\Alabama|USA\Alaska|USA\Arizona|USA\Arkansas|USA\California|USA\Colorado|USA\Connecticut|USA\Delaware|USA\Florida|USA\Georgia|USA\Hawaii|USA\Idaho|USA\Illinois|USA\Indiana|USA\Iowa|USA\Kansas|USA\Kentucky|USA\Louisiana|USA\Maine|USA\Maryland|USA\Massachusetts|USA\Michigan|USA\Minnesota|USA\Mississippi|USA\Missouri|USA\Montana|USA\Nebraska|USA\Nevada|USA\New Hampshire|USA\New Jersey|USA\New Mexico|USA\New York|USA\North Carolina|USA\North Dakota|USA\Ohio|USA\Oklahoma|USA\Oregon|USA\Pennsylvania|USA\Rhode Island|USA\South Carolina|USA\South Dakota|USA\Tennessee|USA\Texas|USA\Utah|USA\Vermont|USA\Virginia|USA\Washington|USA\West Virginia|USA\Wisconsin|USA\Wyoming|Canada\Alberta|Canada\British Columbia|Canada\Manitoba|Canada\New Brunswick|Canada\Newfoundland and Labrador|Canada\Northwest Territories|USA\Nova Scotia|USA\Ontario|USA\Prince Edward Island|Canada\Quebec|Canada\Saskatchewan|Canada\Yukon Territory
-[/code]
-
 [title="2"]Adding a catalogue[/title]
 
 To add a catalogue (among other functions) go to Content Management > Catalogues > Add catalogue.
@@ -181,6 +171,8 @@ You view catalogues via the [tt]catalogues[/tt] module ([tt]site:catalogues:inde
 [title="2"]Permissions[/title]
 
 Like other Composr content types, catalogues support access permissions. However because catalogues essentially allow many different content types to be produced (each in their own catalogue), there is an extra layer of permissions available: you may set access permissions for both catalogues, and categories within them.
+
+If you manually alter the templates so that upload/picture fields display the raw URL, rather than going through Composr's downloader script, then you will need to delete the [tt]uploads/catalogues/.htaccess[/tt] file. By default permissions are denied to directly access these URLs, to prevent users without catalogue access from accessing individual files.
 
 [title="2"]Customising the look & feel of catalogues (advanced)[/title]
 
@@ -327,6 +319,93 @@ CATALOGUE_classifieds_ADD_TEXT=Your advertisement is now live on our site.
 CATALOGUE_classifieds_EDIT_TEXT=Your advertisement has been edited. The changes can be seen immediately.
 [/code]
 
+[title="2"]Searching catalogues[/title]
+
+The Composr [tt]search[/tt] module provides special support for searching catalogues by matching against field values. You can choose which fields are searchable when you add them to the catalogue (or when you go back to edit).
+
+For more information see the [page="_SEARCH:tut_search"]Searching your website[/page] tutorial.
+
+[title="2"]CSV import[/title]
+
+You can import CSV files into catalogues. Be aware this adds entries only, it doesn't try and do any merging with what is already there.
+You can also export CSV files. Some general notes about using CSV files with Composr may be found in the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial, as importing/exporting members via CSV files is the most common use of CSV files within Composr.
+
+[title="2"]Creating a tree catalogue, fast (advanced)[/title]
+
+There is a special feature on the screen to add a catalogue with a category tree constructed automatically for it.
+To define the tree you just need to type in the categories you want in a special format that is very quick to write.
+
+This is best shown by example, so here is an example for a catalogue category tree with that has categories for each of the states/provinces in the USA and Canada:
+[code="Text"]
+USA\Alabama|USA\Alaska|USA\Arizona|USA\Arkansas|USA\California|USA\Colorado|USA\Connecticut|USA\Delaware|USA\Florida|USA\Georgia|USA\Hawaii|USA\Idaho|USA\Illinois|USA\Indiana|USA\Iowa|USA\Kansas|USA\Kentucky|USA\Louisiana|USA\Maine|USA\Maryland|USA\Massachusetts|USA\Michigan|USA\Minnesota|USA\Mississippi|USA\Missouri|USA\Montana|USA\Nebraska|USA\Nevada|USA\New Hampshire|USA\New Jersey|USA\New Mexico|USA\New York|USA\North Carolina|USA\North Dakota|USA\Ohio|USA\Oklahoma|USA\Oregon|USA\Pennsylvania|USA\Rhode Island|USA\South Carolina|USA\South Dakota|USA\Tennessee|USA\Texas|USA\Utah|USA\Vermont|USA\Virginia|USA\Washington|USA\West Virginia|USA\Wisconsin|USA\Wyoming|Canada\Alberta|Canada\British Columbia|Canada\Manitoba|Canada\New Brunswick|Canada\Newfoundland and Labrador|Canada\Northwest Territories|USA\Nova Scotia|USA\Ontario|USA\Prince Edward Island|Canada\Quebec|Canada\Saskatchewan|Canada\Yukon Territory
+[/code]
+
+[title="2"]Breadcrumbs (advanced)[/title]
+
+The breadcrumb structure for catalogue is quite subtle as it depends on various factors:
+ - Configured breadcrumb XML code
+ - Tree catalogue vs Non-tree catalogue
+ - Virtual roots
+
+By default catalogue breadcrumbs include the list of catalogues. However, Composr also provides some default breadcrumbs XML that takes this out, because most webmasters don't want users to think of catalogues as anything separate.
+
+Tree catalogues don't include a link back to the index for the catalogue, while non-tree catalogues do. This is because a tree catalogue provides full category access via the root, while a non-tree catalogue relies on the index.
+
+If a virtual root is set then it will cut off everything before the virtual root (including parent categories, the index, and the list of catalogues). Virtual roots for catalogues are opened up with the [tt]keep_catalogue_<catalogue-name>_root[/tt] URL parameter.
+
+The default breadcrumb XML looks like this...
+[code="xml"]
+<!-- Simple catalogue links back to home page (most people don't want to expose catalogues technically as such) -->
+<substitution match_key="_WILD:catalogues:index:tree=0" include_self="true" final="true"> <!-- Skip catalogues list. -->
+	<link label="{!HOME}">:</link>
+</substitution>
+<substitution match_key="_WILD:catalogues:category"> <!-- Skip catalogues list. This rule won't run for non-tree catalogues as the above rule terminates first; i.e. it is only for tree catalogues -->
+	<link label="{!HOME}">:</link>
+</substitution>
+<substitution match_key="_WILD:catalogues:atoz"> <!-- Skip catalogues list. -->
+	<link label="{!HOME}">:</link>
+</substitution>
+[/code]
+
+[title="3"]Screenshots with default breadcrumb XML[/title]
+
+[title="4"]Tree catalogue[/title]
+
+[media width="800" description="Viewing a category" thumb="0"]data_custom/images/docs/tut_catalogues/with_xml__tree__category.png[/media]
+[media width="800" description="Viewing a subcategory" thumb="0"]data_custom/images/docs/tut_catalogues/with_xml__tree__subcategory.png[/media]
+[media width="800" description="Viewing an entry" thumb="0"]data_custom/images/docs/tut_catalogues/with_xml__tree__entry.png[/media]
+
+[title="4"]Non-tree catalogue[/title]
+
+[media width="800" description="Viewing an index" thumb="0"]data_custom/images/docs/tut_catalogues/with_xml__non_tree__index.png[/media]
+[media width="800" description="Viewing a category" thumb="0"]data_custom/images/docs/tut_catalogues/with_xml__non_tree__category.png[/media]
+[media width="800" description="Viewing an entry" thumb="0"]data_custom/images/docs/tut_catalogues/with_xml__non_tree__entry.png[/media]
+
+[title="3"]Screenshots without default breadcrumb XML[/title]
+
+[title="4"]Tree catalogue[/title]
+
+[media width="800" description="Viewing a category" thumb="0"]data_custom/images/docs/tut_catalogues/without_xml__tree__category.png[/media]
+[media width="800" description="Viewing a subcategory" thumb="0"]data_custom/images/docs/tut_catalogues/without_xml__tree__subcategory.png[/media]
+[media width="800" description="Viewing an entry" thumb="0"]data_custom/images/docs/tut_catalogues/without_xml__tree__entry.png[/media]
+
+[title="4"]Non-tree catalogue[/title]
+
+[media width="800" description="Viewing an index" thumb="0"]data_custom/images/docs/tut_catalogues/without_xml__non_tree__index.png[/media]
+[media width="800" description="Viewing a category" thumb="0"]data_custom/images/docs/tut_catalogues/without_xml__non_tree__category.png[/media]
+[media width="800" description="Viewing an entry" thumb="0"]data_custom/images/docs/tut_catalogues/without_xml__non_tree__entry.png[/media]
+
+[title="2"]Custom fields for other content types[/title]
+
+Most content types in Composr allow you to choose custom fields for them. This is actually powered by catalogues -- catalogue entries are automatically associated with other content entries, in order to extend them.
+
+[title="3"]Upload security[/title]
+
+Note that upload security (for file, picture, and video fields) is not perfect for custom fields. The security is checked when accessing a file field if it is a catalogue entry, but there is no mechanism to check the permissions of the content for which custom fields are attached.
+A similar caveat holds true for custom profile fields, which share the same field types.
+
+[title="2"]Special kinds of catalogues[/title]
+
 [title="3"]eCommerce catalogues[/title]
 
 Composr can have special eCommerce catalogues, which integrate with the Composr shopping cart. These catalogues provide the following special functionality:
@@ -353,37 +432,13 @@ The special eCommerce fields are:
  - weight
  - description
 
-[title="2"]Classified ads[/title]
+[title="3"]Classified ads[/title]
 
 Catalogues are ideal for setting up a classified ads system. In fact, there is special support for this as you can program a catalogue to move entries to an archival category after a specified period of time passes. There is also a permission ('Have a longer expiry-time for catalogue entries') that allows you to grant usergroups a longer period of advert display.
 
 This feature works by logging the date/time for each entry added. This is stored in the [tt]ce_last_moved[/tt] field in the database, under each entry. Any entry in a category that has a move target assigned will be scanned to see if the [tt]ce_last_moved[/tt] date/time is more than the configured number of move days. If it is, the entry is moved. When an entry is moved, the [tt]ce_last_moved[/tt] date/time is reset to the current time. Therefore you could, if you wished, set up chains of movements. There is no way in the Composr UI to change [tt]ce_last_moved[/tt] manually (it is not affected by manual moves, validation, or editing), although you could manually make changes to it in the database or you could manually move it back after it has moved and therefore the timer reset. As the movement happens in the CRON bridge scheduler, the [page="_SEARCH:tut_configuration"]scheduler[/page] must be enabled for it to work.
 
-The unofficial classified ads addon overrides the functionality of [tt]ce_last_moved[/tt] and uses it to track listing times. Unlike the default functionality, this de-validates entries rather than moving them (to allow listing extensions).
-
-[title="2"]Searching catalogues[/title]
-
-The Composr [tt]search[/tt] module provides special support for searching catalogues by matching against field values. You can choose which fields are searchable when you add them to the catalogue (or when you go back to edit).
-
-For more information see the [page="_SEARCH:tut_search"]Searching your website[/page] tutorial.
-
-[title="2"]CSV import[/title]
-
-You can import CSV files into catalogues. Be aware this adds entries only, it doesn't try and do any merging with what is already there.
-You can also export CSV files. Some general notes about using CSV files with Composr may be found in the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial, as importing/exporting members via CSV files is the most common use of CSV files within Composr.
-
-[title="2"]A note about permissions[/title]
-
-If you manually alter the templates so that upload/picture fields display the raw URL, rather than going through Composr's downloader script, then you will need to delete the [tt]uploads/catalogues/.htaccess[/tt] file. By default permissions are denied to directly access these URLs, to prevent users without catalogue access from accessing individual files.
-
-[title="2"]Custom fields for other content types[/title]
-
-Most content types in Composr allow you to choose custom fields for them. This is actually powered by catalogues -- catalogue entries are automatically associated with other content entries, in order to extend them.
-
-[title="3"]Upload security[/title]
-
-Note that upload security (for file, picture, and video fields) is not perfect for custom fields. The security is checked when accessing a file field if it is a catalogue entry, but there is no mechanism to check the permissions of the content for which custom fields are attached.
-A similar caveat holds true for custom profile fields, which share the same field types.
+The non-bundled classified ads addon overrides the functionality of [tt]ce_last_moved[/tt] and uses it to track listing times. Unlike the default functionality, this de-validates entries rather than moving them (to allow listing extensions).
 
 [concepts
  1_key="Catalogue"   1_value="A custom database stored within your database: define your own records, and manipulate and view them as a part of your website"

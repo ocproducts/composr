@@ -381,8 +381,10 @@ class Module_cms_catalogues extends Standard_crud_module
             $fields->attach(results_entry($_fr['row'], true));
         }
 
+        $is_tree = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
+
         $search_url = build_url(array('page' => 'search', 'id' => 'catalogue_entries', 'catalogue_name' => $catalogue_name), get_module_zone('search'));
-        $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name), get_module_zone('news'));
+        $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $is_tree), get_module_zone('catalogues'));
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
     }
@@ -406,7 +408,7 @@ class Module_cms_catalogues extends Standard_crud_module
         }
 
         $search_url = build_url(array('page' => 'search', 'id' => 'catalogue_entries', 'catalogue_name' => $catalogue_name), get_module_zone('search'));
-        $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name), get_module_zone('catalogues'));
+        $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $is_tree), get_module_zone('catalogues'));
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? null : get_member();
         $tree = form_input_tree_list(do_lang_tempcode('ENTRY'), '', 'id', null, 'choose_catalogue_entry', array('catalogue_name' => $catalogue_name, 'only_owned' => $only_owned, 'editable_filter' => true), true, null, false, null, has_js() && $this->supports_mass_delete);
@@ -928,6 +930,8 @@ class Module_cms_catalogues extends Standard_crud_module
         $c_name = $this->donext_catalogue_name;
         $category_id = $this->donext_category_id;
 
+        $is_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $c_name));
+
         require_code('templates_donext');
         return do_next_manager($title, $description,
             null,
@@ -951,7 +955,7 @@ class Module_cms_catalogues extends Standard_crud_module
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $c_name), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')) : null,
-                array('menu/_generic_admin/view_this', array('catalogues', array('type' => 'index', 'id' => $c_name), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
+                array('menu/_generic_admin/view_this', array('catalogues', array('type' => 'index', 'id' => $c_name, 'tree' => $is_tree), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
             ),
             do_lang('MANAGE_CATALOGUES'),
             null,
@@ -1208,8 +1212,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             $fields->attach(results_entry($fr, true));
         }
 
+        $is_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
+
         $search_url = build_url(array('page' => 'search', 'id' => 'catalogue_categories'), get_module_zone('search'));
-        $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name), get_module_zone('catalogues'));
+        $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $is_tree), get_module_zone('catalogues'));
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false, $search_url, $archive_url);
     }
@@ -1229,7 +1235,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         }
 
         $search_url = build_url(array('page' => 'search', 'id' => 'catalogue_categories', 'catalogue_name' => $catalogue_name), get_module_zone('search'));
-        $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name), get_module_zone('catalogues'));
+        $archive_url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $is_tree), get_module_zone('catalogues'));
 
         $tree = form_input_tree_list(do_lang_tempcode('CODENAME'), '', 'id', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), true);
         return array($tree, $search_url, $archive_url);
@@ -1325,7 +1331,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
      */
     public function get_cat($id)
     {
-        $c_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'c_name', array('id' => intval($id)));
+        $c_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'c_name', array('id' => intval($id)));
         if (is_null($c_name)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
@@ -1500,6 +1506,8 @@ class Module_cms_catalogues_cat extends Standard_crud_module
     {
         $catalogue_name = $this->donext_catalogue_name;
 
+        $is_tree = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
+
         require_code('templates_donext');
         return do_next_manager($title, $description,
             null,
@@ -1522,7 +1530,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $catalogue_name), '_SELF')) : null,
                 has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')) : null,
-                array('menu/_generic_admin/view_this', array('catalogues', array('type' => 'index', 'id' => $catalogue_name), get_module_zone('catalogues')), do_lang('INDEX'))
+                array('menu/_generic_admin/view_this', array('catalogues', array('type' => 'index', 'id' => $catalogue_name, 'tree' => $is_tree), get_module_zone('catalogues')), do_lang('INDEX'))
             ),
             do_lang('MANAGE_CATALOGUES'),
             null,
@@ -2187,6 +2195,8 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             $has_categories = false;
         }
 
+        $is_tree = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_is_tree', array('c_name' => $name));
+
         $is_custom_fields = (!is_null($name)) && (substr($name, 0, 1) == '_');
 
         require_code('templates_donext');
@@ -2211,7 +2221,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
                 $is_custom_fields ? null : array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')),
                 is_null($name) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF')),
                 $is_custom_fields ? null : array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')),
-                (is_null($name) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
+                (is_null($name) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name, 'tree' => $is_tree), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
             ),
             do_lang('MANAGE_CATALOGUES'),
             null,
