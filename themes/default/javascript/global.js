@@ -1857,6 +1857,8 @@ function get_window_scroll_y(win)
 }
 function find_pos_x(obj,not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
 {
+	if (!obj) return 0;
+
 	if (typeof not_relative=='undefined') not_relative=false;
 	var ret=obj.getBoundingClientRect().left+get_window_scroll_x();
 	if (!not_relative)
@@ -1877,6 +1879,8 @@ function find_pos_x(obj,not_relative) /* if not_relative is true it gets the pos
 }
 function find_pos_y(obj,not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
 {
+	if (!obj) return 0;
+
 	if (typeof not_relative=='undefined') not_relative=false;
 	var ret=obj.getBoundingClientRect().top+get_window_scroll_y();
 	if (!not_relative)
