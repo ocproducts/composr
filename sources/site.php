@@ -851,7 +851,7 @@ function do_site()
 
     // Warning about whether the Setup Wizard still needs running
     $zone = get_zone_name();
-    if (($zone == 'adminzone') || ($zone == 'cms')) {
+    if ((($zone == 'adminzone') || ($zone == 'cms')) && (get_param_integer('wide_high', 0) == 0)) {
         if ((get_param_integer('cancel_sw_warn', 0) == 1) || (!addon_installed('setupwizard'))) {
             set_value('setupwizard_completed', '1');
         } else {
@@ -867,7 +867,7 @@ function do_site()
     }
 
     // Warning if dev-mode is on
-    if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_hide_dev_mode_message', 0) == 0)) {
+    if (($GLOBALS['DEV_MODE']) && (get_param_integer('wide_high', 0) == 0) && (get_param_integer('keep_hide_dev_mode_message', 0) == 0)) {
         static $done_message = false;
         if (!$done_message) {
             attach_message(do_lang_tempcode('DEV_MODE_ON'), 'notice');
