@@ -68,7 +68,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             $id = substr($id, 6);
         }
 
-        $_page_links = cns_get_forum_tree(null, is_null($id) ? null : intval($id), '', null, null, false, 1);
+        $_page_links = cns_get_forum_tree(null, is_null($id) ? null : intval($id), '', null, null, false, ($id === null) ? 0 : 1);
 
         $page_links = array();
         foreach ($_page_links as $p) {

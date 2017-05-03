@@ -111,14 +111,15 @@ deny from all
 [/code]
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
-| Download the website database to your local machine, put it in [tt]<webroot>/<codename>/_temp[/tt]
+| Download the website database to your local machine, put it in [tt]<webroot>/<codename>/_temp/initial.sql[/tt]
 | If you can't access phpMyAdmin, then use a script:
 [codebox="PHP"]
 <?php
+
 $filename = 'sql-backup-' . date('Y-m-d') . '.sql';
 
 $h = 'Content-Disposition: attachment;
-    filename="' . $filename . '"';
+	filename="' . $filename . '"';
 header($h);
 
 $db_site = 'TODO';
@@ -144,12 +145,14 @@ if ($db_site == 'TODO') {
 }
 
 $sql_cmd = 'mysqldump';
-$sql_cmd .= ' -u"' . $db_site_user . '"';
-$sql_cmd .= ' -p"' . $db_site_password . '"';
-$sql_cmd .= ' -h"' . $db_site_host . '"';
-$sql_cmd .= ' ' . $db_site;
+$sql_cmd .= ' -u' . escapeshellarg($db_site_user);
+$sql_cmd .= ' -p' . escapeshellarg($db_site_password);
+$sql_cmd .= ' -h' . escapeshellarg($db_site_host);
+$sql_cmd .= ' ' . escapeshellarg($db_site);
 $sql_cmd .= ' 2>&1 > ' . $filename;
-shell_exec($sql_cmd);
+echo '/*';
+echo shell_exec($sql_cmd);
+echo '*/';
 
 $file_size = filesize($filename);
 $myfile = fopen($filename, 'rb');
@@ -167,7 +170,7 @@ fclose($myfile);
 
 unlink($filename);
 
-if (!empty($_GET['self_destruct']) {
+if (!empty($_GET['self_destruct'])) {
     unlink('sqldump.php');
 }
 [/codebox]
@@ -207,7 +210,7 @@ sudo chmod -R 777 .
 | Import the SQL dump into your local MySQL installation, in a database named [tt]client_<codename>[/tt], using the command line [tt]mysql[/tt] client
 | [code="Bash"]
 cd <webroot>/<codename>
-mysql client_<codename> < _temp/*.sql
+mysql client_<codename> < _temp/initial.sql
 [/code]
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -220,7 +223,12 @@ $SITE_INFO['session_cookie'] = 'cms_session__<something_random>';
 ! {$INC,step_num}{$GET,step_num}
 | Reconfigure [tt]_config.php[/tt]/[tt]info.php[/tt] to have local details by putting local ones at the end of the file
 | [code="PHP"]
-$SITE_INFO['base_url'] = 'http://localhost/client_<codename>';
+unset($SITE_INFO['db_forums']);
+unset($SITE_INFO['db_forums_host']);
+unset($SITE_INFO['db_forums_user']);
+unset($SITE_INFO['db_forums_password']);
+unset($SITE_INFO['cns_table_prefix']);
+$SITE_INFO['base_url'] = 'http://localhost/<codename>';
 $SITE_INFO['db_site'] = 'client_<codename>';
 $SITE_INFO['db_site_host'] = 'localhost';
 $SITE_INFO['db_site_user'] = 'root';
@@ -403,7 +411,12 @@ git commit -a -m "Finished code rebuild"
 [*] Take a new database backup and use a diff against your very first database backup, then manually copy those changes through. This is only a good idea if you expect a tiny number of simple changes. Of course in most cases you can ignore changes to logging tables.
 [*] Install MySQL utilities and Connector/Python, put your [tt]_temp/stage1.sql[/tt] file into [tt]client_<codename>_old[/tt] then run something like:
 [code="Bash"]
-mysqldbcompare --server1=remote_user@remote_host --server2=root@localhost remote_database:client_<codename>_old --run-all-tests --difftype sql --disable-binary-logging
+mysqldbcompare --server1=remote_user@remote_host \
+ --server2=root@localhost \
+ remote_database:client_<codename>_old \
+ --run-all-tests \
+ --difftype sql \
+ --disable-binary-logging
 [/code]
 ...to get SQL to do an update. Then carefully filter it to what you really want, then run it.
 [*] Take a new database backup, repeat steps from this tutorial marked &dagger; to re-upgrade that database. It should not take so long given the file upgrading you've already done will still apply. You'll need to re-open the site of course, given you closed the live site just before backing it up.

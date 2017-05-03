@@ -965,7 +965,7 @@ function make_install_sql()
     $v = float_to_raw_string(cms_version_number());
     $version_marker = '\'version\', \'' . $v . '\'';
     if (strpos($contents, $version_marker) === false) {
-        warn_exit('install.sql: Contains wrong version');
+        warn_exit('install.sql: Contains wrong version (you need to rebuild it for each non-patch update)');
     }
 
     // Do split...
