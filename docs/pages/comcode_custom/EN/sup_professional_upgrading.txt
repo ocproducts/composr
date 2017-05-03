@@ -390,6 +390,10 @@ There is a [tt]themechanges.sh[/tt] script which may be useful, but realisticall
 | Go through testing page by page, and also at least get a feel for content (such as news articles) working well
 |-
 ! {$INC,step_num}{$GET,step_num}
+| Review [tt]errorlog.php[/tt] then clear it out
+| 
+|-
+! {$INC,step_num}{$GET,step_num}
 | Do a git commit
 | [code="Bash"]
 cd <webroot>/<codename>

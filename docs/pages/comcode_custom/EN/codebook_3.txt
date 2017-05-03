@@ -848,6 +848,20 @@ We also have some special cases coded up directly. These are often referenced be
 
 All default parameters are flagged as 'non-canonical' to search engines, so that the search engine knows that variations in value are not indicative of entirely separate web pages.
 
+[title="3"]Log files[/title]
+
+These log files exist by default in [tt]data_custom[/tt]:
+ - [tt]errorlog.php[/tt] -- Run-time error logging (using the PHP error logging system) [shown in Composr Error log page]
+
+The follow log files can be created in [tt]data_custom[/tt], and will then be appended to as Composr runs:
+ - [tt]permissioncheckslog.php[/tt] -- Permisison checks (useful for debugging why accessing is failing) [shown in Composr Error log page]
+ - [tt]ecommerce.log[/tt] -- raw eCommerce transaction data (useful for debugging IPN)
+ - [tt]queries.log[/tt] -- queries running (debugging)
+ - [tt]big_query_screens.log[/tt] -- slow queries running (debugging performance)
+ - [tt]profiling*.log[/tt] -- profiling [if enabled] (debugging performance)
+ - [tt]resource_fs.log[/tt] -- resource-fs operations (debugging and audit)
+If you create these files it is your responsibility to make sure users cannot download their contents. We supply a default Apache [tt]data_custom/.htaccess[/tt] file for this, but this requires Apache and [tt].htaccess[/tt] files to be enabled; we also supply some rules in [tt]web.config[/tt] for IIS.
+
 [title="3"]Overriding files[/title]
 
 If you change an original Composr file for a client project you must save it into the [tt]_custom[/tt] equivalent of its original directory. E.g. if you change [tt]site/pages/modules/calendar.php[/tt] you need to save into [tt]site/pages/modules_custom/calendar.php[/tt]. Otherwise if the client ever upgrades their website chances are all the customisations you've made would be lost when a newer version of the original file is placed.
