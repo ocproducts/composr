@@ -58,64 +58,82 @@ function find_addon_category_download_category($category_name, $parent_id = null
             }
         }
 
+        $has_submit_access = false;
+
         if (substr($category_name, 0, 8) == 'Version ') {
             $theme_image = 'tutorial_icons/installation';
         } else {
             switch ($category_name) {
-                case 'Addons':
-                    $theme_image = 'tutorial_icons/addon';
-                    break;
-
                 case 'Composr Releases':
                     $theme_image = 'tutorial_icons/installation';
                     break;
 
+                // ---
+
+                case 'Addons':
+                    $theme_image = 'tutorial_icons/addon';
+                    break;
+
+                // ---
+
                 case 'Admin Utilities':
                     $theme_image = 'tutorial_icons/administration';
+                    $has_submit_access = true;
                     break;
 
                 case 'Development':
                     $theme_image = 'tutorial_icons/development';
+                    $has_submit_access = true;
                     break;
 
                 case 'Fun and Games':
                     $theme_image = 'tutorial_icons/fun_and_games';
+                    $has_submit_access = true;
                     break;
 
                 case 'Graphical':
                     $theme_image = 'tutorial_icons/galleries';
+                    $has_submit_access = true;
                     break;
 
                 case 'Information Display':
                     $theme_image = 'tutorial_icons/configuration';
+                    $has_submit_access = true;
                     break;
 
                 case 'New Features':
                     $theme_image = 'tutorial_icons/upgrading';
+                    $has_submit_access = true;
                     break;
 
                 case 'Themes':
                     $theme_image = 'tutorial_icons/design_and_themeing';
+                    $has_submit_access = true;
                     break;
 
                 case 'Professional Themes':
                     $theme_image = 'tutorial_icons/ecommerce';
+                    $has_submit_access = true;
                     break;
 
                 case 'Third Party Integration':
                     $theme_image = 'tutorial_icons/third_party_integration';
+                    $has_submit_access = true;
                     break;
 
                 case 'Translations':
                     $theme_image = 'tutorial_icons/internationalisation';
+                    $has_submit_access = true;
                     break;
 
                 case 'Uncategorised/Alpha':
                     $theme_image = 'tutorial_icons/maintenance';
+                    $has_submit_access = true;
                     break;
 
                 default:
                     $theme_image = 'tutorial_icons/' . strtolower(str_replace(' ', '_', $category_name));
+                    $has_submit_access = true;
                     break;
             }
         }
@@ -124,9 +142,13 @@ function find_addon_category_download_category($category_name, $parent_id = null
             fatal_exit('Could not find a theme image, ' . $theme_image);
         }
 
+        require_code('composr_homesite');
         $id = add_download_category($category_name, $parent_id, $description, '', $rep_image);
         require_code('permissions2');
         set_global_category_access('downloads', $id);
+        if (!$has_submit_access) {
+            set_privilege_access('downloads', $id, 'submit_midrange_content', 0);
+        }
     }
 
     $cache[$category_name][$parent_id] = $id;
