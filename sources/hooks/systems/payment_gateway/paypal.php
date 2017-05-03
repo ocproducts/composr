@@ -220,7 +220,7 @@ class Hook_payment_gateway_paypal
         $billing_state = '';
         $billing_post_code = '';
         $billing_country = '';
-        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, true);
+        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, false, false);
 
         if ($shipping_street_address == '') {
             $street_address = $billing_street_address;
@@ -254,8 +254,8 @@ class Hook_payment_gateway_paypal
             $member_address['country'] = ''; // PayPal only allows valid countries
         }
 
-        if (($member_address['country'] != '') && (($member_address['address1'] == '') || ($member_address['city'] == '') || ($member_address['zip'] == ''))) {
-            $member_address['country'] = ''; // Causes error on PayPal due to it crashing when trying to validate the address
+        if (($member_address['address1'] == '') || ($member_address['city'] == '') || ($member_address['zip'] == '')) {
+            $member_address = array(); // Causes error on PayPal due to it crashing when trying to validate the address
         }
 
         return $member_address;

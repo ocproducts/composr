@@ -30,6 +30,10 @@ class Hook_ecommerce_topic_pin
      */
     public function get_product_category()
     {
+        if (!addon_installed('cns_forum')) {
+            return array();
+        }
+
         return array(
             'category_name' => do_lang('TOPIC_PINNING'),
             'category_description' => do_lang_tempcode('TOPIC_PINNING_DESCRIPTION'),
@@ -48,6 +52,10 @@ class Hook_ecommerce_topic_pin
      */
     public function get_products($search = null)
     {
+        if (!addon_installed('cns_forum')) {
+            return array();
+        }
+
         require_lang('cns');
 
         $products = array();

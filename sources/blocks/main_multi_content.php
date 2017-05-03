@@ -228,19 +228,12 @@ class Block_main_multi_content
             $category_field_access = $first_id_field;
         }
 
-        if (($content_type == 'download') && (get_option('download_cat_access_late') == '1')) {
-            $category_type_access = null;
-            $category_type_select = null;
-            $category_field_access = null;
-            $category_field_select = null;
-        }
-
         $where = '1=1';
         $query = 'FROM ' . get_table_prefix() . $info['table'] . ' r';
         if ($info['table'] == 'catalogue_entries') {
             $where .= ' AND r.c_name NOT LIKE \'' . db_encode_like('\_%') . '\'';
         }
-        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient)) {
+        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient) && (($content_type != 'download') || (get_option('download_cat_access_late') == '0'))) {
             $_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, true);
             $groups = '';
             foreach ($_groups as $group) {

@@ -32,13 +32,14 @@ class Hook_config_shipping_weight_units
     {
         return array(
             'human_name' => 'SHIPPING_WEIGHT_UNITS',
-            'type' => 'float',
+            'type' => 'list',
             'category' => 'ECOMMERCE',
             'group' => 'SHIPPING',
             'explanation' => 'CONFIG_OPTION_shipping_weight_units',
             'shared_hosting_restricted' => '0',
             'list_options' => 'Kg|Lb',
             'order_in_category_group' => 6,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

@@ -227,7 +227,7 @@ class Module_purchase
             $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
             if ($cf_id !== null) {
                 $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer'), array('id' => $cf_id));
-                $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf_ft_29');
+                $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf_ft_' . $cf_id);
                 $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => '0'), array('field_' . strval($cf_id) => ''));
                 $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($cf_id), '?INTEGER');
                 $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . strval($cf_id) => null), array('field_' . strval($cf_id) => 0));

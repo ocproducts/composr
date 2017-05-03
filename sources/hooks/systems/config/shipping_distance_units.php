@@ -32,13 +32,14 @@ class Hook_config_shipping_distance_units
     {
         return array(
             'human_name' => 'SHIPPING_DISTANCE_UNITS',
-            'type' => 'float',
+            'type' => 'list',
             'category' => 'ECOMMERCE',
             'group' => 'SHIPPING',
             'explanation' => 'CONFIG_OPTION_shipping_distance_units',
             'shared_hosting_restricted' => '0',
             'list_options' => 'Cm|In',
             'order_in_category_group' => 5,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

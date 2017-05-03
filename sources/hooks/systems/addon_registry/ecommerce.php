@@ -310,8 +310,8 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/ecommerce/email.php',
             'sources/hooks/systems/ecommerce/topic_pin.php',
             'themes/default/javascript/ecommerce.js',
-            'themes/default/text/PAYMENT_RECEIVED_MAIL.txt',
-            'themes/default/text/PAYMENT_SENT_MAIL.txt',
+            'themes/default/text/ECOM_PAYMENT_RECEIVED_MAIL.txt',
+            'themes/default/text/ECOM_PAYMENT_SENT_MAIL.txt',
             'sources/hooks/systems/config/download_cat_buy_max_emailed_size.php',
             'sources/hooks/systems/config/download_cat_buy_max_emailed_count.php',
 

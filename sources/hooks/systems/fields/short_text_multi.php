@@ -89,7 +89,7 @@ class Hook_fields_short_text_multi
 
         $ret = new Tempcode();
         foreach ($exploded as $ev) {
-            $ret->attach(paragraph(escape_html($ev)));
+            $ret->attach(paragraph(escape_html($ev), 'short_text_multi'));
         }
 
         return $ret;

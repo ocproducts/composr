@@ -254,20 +254,37 @@ function get_needed_fields($type_code, $force_extended = false)
         list($fields, $text, $javascript) = $product_object->get_needed_fields($type_code);
     }
 
+    $shipping_email = '';
+    $shipping_phone = '';
+    $shipping_firstname = '';
+    $shipping_lastname = '';
+    $shipping_street_address = '';
+    $shipping_city = '';
+    $shipping_county = '';
+    $shipping_state = '';
+    $shipping_post_code = '';
+    $shipping_country = '';
+    $shipping_email = '';
+    $shipping_phone = '';
+    $cardholder_name = '';
+    $card_type = '';
+    $card_number = null;
+    $card_start_date_year = null;
+    $card_start_date_month = null;
+    $card_expiry_date_year = null;
+    $card_expiry_date_month = null;
+    $card_issue_number = null;
+    $card_cv2 = null;
+    $billing_street_address = '';
+    $billing_city = '';
+    $billing_county = '';
+    $billing_state = '';
+    $billing_post_code = '';
+    $billing_country = '';
+    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, false, false);
+
     $require_all_details = ($details['needs_shipping_address']) || (get_option('tax_detailed') == '1');
     if (($require_all_details) || ($force_extended)) {
-        $shipping_email = '';
-        $shipping_phone = '';
-        $shipping_firstname = '';
-        $shipping_lastname = '';
-        $shipping_street_address = '';
-        $shipping_city = '';
-        $shipping_county = '';
-        $shipping_state = '';
-        $shipping_post_code = '';
-        $shipping_country = '';
-        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country);
-
         if ($fields === null) {
             $fields = new Tempcode();
         }
@@ -285,12 +302,6 @@ function get_needed_fields($type_code, $force_extended = false)
         if ($fields === null) {
             $fields = new Tempcode();
         }
-
-        $shipping_email = '';
-        $shipping_phone = '';
-        $shipping_firstname = '';
-        $shipping_lastname = '';
-        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname);
 
         $fields->attach(get_shipping_name_fields($shipping_firstname, $shipping_lastname, $require_all_details));
         $fields->attach(get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details));
@@ -804,7 +815,7 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
     $billing_state = '';
     $billing_post_code = '';
     $billing_country = '';
-    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country);
+    get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, false, false);
 
     // Card fields...
 
@@ -947,8 +958,9 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
  * @param  string $billing_post_code Billing postcode (blank: unknown).
  * @param  string $billing_country Billing country (blank: unknown).
  * @param  boolean $default_to_store Default to the store address if we don't know the shipping address. Useful for a default tax calculation.
+ * @param  boolean $do_checking Check for accuracy of data. If $default_to_store is false, you probably want to set this to false also, as data may not be set properly.
  */
-function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', &$shipping_phone = '', &$shipping_firstname = '', &$shipping_lastname = '', &$shipping_street_address = '', &$shipping_city = '', &$shipping_county = '', &$shipping_state = '', &$shipping_post_code = '', &$shipping_country = '', &$cardholder_name = '', &$card_type = '', &$card_number = null, &$card_start_date_year = null, &$card_start_date_month = null, &$card_expiry_date_year = null, &$card_expiry_date_month = null, &$card_issue_number = null, &$card_cv2 = null, &$billing_street_address = '', &$billing_city = '', &$billing_county = '', &$billing_state = '', &$billing_post_code = '', &$billing_country = '', $default_to_store = false)
+function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', &$shipping_phone = '', &$shipping_firstname = '', &$shipping_lastname = '', &$shipping_street_address = '', &$shipping_city = '', &$shipping_county = '', &$shipping_state = '', &$shipping_post_code = '', &$shipping_country = '', &$cardholder_name = '', &$card_type = '', &$card_number = null, &$card_start_date_year = null, &$card_start_date_month = null, &$card_expiry_date_year = null, &$card_expiry_date_month = null, &$card_issue_number = null, &$card_cv2 = null, &$billing_street_address = '', &$billing_city = '', &$billing_county = '', &$billing_state = '', &$billing_post_code = '', &$billing_country = '', $default_to_store = false, $do_checking = true)
 {
     if ($member_id === null) {
         $member_id = get_member();
@@ -1096,6 +1108,10 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
         if ($billing_country == '') {
             $billing_country = get_option('business_country');
         }
+    }
+
+    if (!$do_checking) {
+        return;
     }
 
     global $USA_STATE_LIST;
