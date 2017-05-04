@@ -1060,7 +1060,7 @@ class Module_catalogues
             $cat_select = strval($id) . '#';
         }
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_cc_embed', array('param' => $cat_select, 'zone' => get_zone_name(), 'max' => get_option('catalogue_entries_per_page'), 'pagination' => '1', 'sorting' => '1', 'filter' => $filter, 'block_id' => 'module'));
+        $entries = do_block('main_cc_embed', array('param' => strval($id), 'select' => $cat_select, 'zone' => get_zone_name(), 'max' => get_option('catalogue_entries_per_page'), 'pagination' => '1', 'sorting' => '1', 'filter' => $filter, 'block_id' => 'module'));
 
         // Render
         return do_template('CATALOGUE_' . $tpl_set . '_CATEGORY_SCREEN', array(

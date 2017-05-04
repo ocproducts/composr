@@ -462,7 +462,8 @@ class Module_cms_catalogues extends Standard_crud_module
                 $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $catalogue_name));
             }
         }
-        if ((!is_null($category_id)) && ((is_null($id)) && (get_value('no_confirm_url_spec_cats') === '1') || (get_value('no_spec_cat__' . $catalogue_name) === '1'))) { // Adding, but defined category ID in URL, and set option saying not to ask for passed categories
+        $num_categories = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(id)', array('c_name' => $catalogue_name));
+        if ((!is_null($category_id)) && ((is_null($id)) && (get_value('no_confirm_url_spec_cats') === '1') || (get_value('no_spec_cat__' . $catalogue_name) === '1')) || ($num_categories == 1)) { // Adding, but defined category ID in URL, and set option saying not to ask for passed categories
             $hidden->attach(form_input_hidden('category_id', strval($category_id)));
         } else {
             if ((is_null($id)) && (is_null($category_id))) {
