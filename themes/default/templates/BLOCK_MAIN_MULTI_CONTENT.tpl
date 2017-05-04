@@ -76,8 +76,8 @@
 			<h2>{TITLE*}</h2>
 		{+END}
 
-		{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-		<div id="{$GET*,wrapper_id}" class="box_wrapper">
+		{$SET,ajax_block_main_multi_content_wrapper,ajax_block_main_multi_content_wrapper_{$RAND%}}
+		<div id="{$GET*,ajax_block_main_multi_content_wrapper}" class="box_wrapper">
 			<div class="float_surrounder cguid_{_GUID|*} raw_ajax_grow_spot">
 				{+START,IF_NON_EMPTY,{CONTENT}}
 					{+START,LOOP,CONTENT}

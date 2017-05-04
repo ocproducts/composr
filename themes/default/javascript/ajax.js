@@ -189,6 +189,8 @@ function internalise_infinite_scrolling_go(url_stem,wrapper,more_links)
 
 function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,extra_params,append,forms_too,scroll_to_top)
 {
+	if (!block_element) return;
+
 	if (typeof look_for=='undefined') look_for=[];
 	if (typeof extra_params=='undefined') extra_params=[];
 	if (typeof append=='undefined') append=false;
