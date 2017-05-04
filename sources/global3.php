@@ -1462,9 +1462,17 @@ function _multi_sort($a, $b)
 
             if ($backwards) { // Flip around
                 $key = substr($key, 1);
-                $ret = -strnatcasecmp($av, $bv);
+                if ((is_numeric($av)) && (is_numeric($bv))) {
+                    $ret = -strnatcasecmp($av, $bv);
+                } else {
+                    $ret = -strcasecmp($av, $bv);
+                }
             } else {
-                $ret = strnatcasecmp($av, $bv);
+                if ((is_numeric($av)) && (is_numeric($bv))) {
+                    $ret = strnatcasecmp($av, $bv);
+                } else {
+                    $ret = strcasecmp($av, $bv);
+                }
             }
         } while ((count($keys) !== 0) && ($ret === 0));
         return $ret;

@@ -498,7 +498,7 @@ hr.cns_sig_barrier {
 	margin: 1em 0;
 	font-size: 0.85em;
 }
-.cns_topic_actions * {
+.cns_topic_actions div, .cns_topic_actions span, .cns_topic_actions label, .cns_topic_actions form {
 	vertical-align: middle;
 	display: inline-block;
 }
