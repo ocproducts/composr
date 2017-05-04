@@ -433,7 +433,7 @@
                 if (initially_expanded) {
                     that.renderTree(node, new_html, element);
                 } else if (new_html) {
-                    $cms.dom.appendHtml(new_html, '{!PLEASE_WAIT;^}');
+                    $cms.dom.append(new_html, '{!PLEASE_WAIT;^}');
                 }
             });
 

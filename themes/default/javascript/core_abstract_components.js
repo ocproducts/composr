@@ -66,7 +66,7 @@
                 }
                 container.parentNode.removeChild(container);
 
-                $cms.dom.appendHtml(wrapper, ajax_result.responseText);
+                $cms.dom.append(wrapper, ajax_result.responseText);
 
                 window.setTimeout(function () {
                     var _ids = ids.split(',');

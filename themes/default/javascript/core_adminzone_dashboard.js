@@ -239,7 +239,7 @@
             form.elements.recur_interval.value = '';
             form.elements.new_task.value = '';
 
-            $cms.dom.appendHtml(document.getElementById('custom_tasks_go_here'), new_task);
+            $cms.dom.append(document.getElementById('custom_tasks_go_here'), new_task);
         }
     };
 

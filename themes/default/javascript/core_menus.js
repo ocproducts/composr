@@ -474,7 +474,7 @@
                 elements_bak.push([_elements_bak[i].name, _elements_bak[i].value]);
             }
 
-            $cms.dom.appendHtml(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
+            $cms.dom.append(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
 
             // Restore form branches
             for (i = 0; i < elements_bak.length; i++) {

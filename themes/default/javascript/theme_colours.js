@@ -70,7 +70,7 @@ function make_colour_chooser(name, color, context, tabindex, label, className) {
     }
 
     if (p.id === 'colours_go_here') {
-        $cms.dom.appendHtml(p, t);
+        $cms.dom.append(p, t);
     } else {
         $cms.dom.html(p, t);
     }

@@ -56,9 +56,12 @@
             progressTicker.setAttribute('src', $cms.img('{$IMG;,loading}'));
             progressTicker.style.verticalAlign = 'middle';
             progressTicker.style.marginLeft = '20px';
-            button.parentNode.appendChild(progressTicker, button);
-            $cms.ui.alert('{!CALCULATED_SIZE;^}'.replace('\{1\}', $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(max_size_field.value))));
-            button.parentNode.removeChild(progressTicker);
+            button.parentNode.appendChild(progressTicker);
+
+            $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(max_size_field.value), null, function (size) {
+                $cms.ui.alert($cms.format('{!CALCULATED_SIZE;^}', size));
+                button.parentNode.removeChild(progressTicker);
+            });
         });
 
         max_size_field.parentNode.appendChild(button, max_size_field);

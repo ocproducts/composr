@@ -1,8 +1,8 @@
-{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,chat}}
-	{$REQUIRE_JAVASCRIPT,chat}
-	{$REQUIRE_JAVASCRIPT,shoutr}
-	{$REQUIRE_CSS,shoutbox}
+{$REQUIRE_JAVASCRIPT,chat}
+{$REQUIRE_JAVASCRIPT,shoutr}
+{$REQUIRE_CSS,shoutbox}
 
+{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,chat}}
 	<section class="box box___block_side_shoutbox" role="marquee" data-require-javascript="['chat', 'shoutr']" data-tpl="blockSideShoutbox" data-tpl-params="{+START,PARAMS_JSON,CHATROOM_ID,LAST_MESSAGE_ID}{_*}{+END}">
         <div class="box_inner">
             <h3>{!SHOUTBOX}</h3>

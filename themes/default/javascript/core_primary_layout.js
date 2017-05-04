@@ -70,7 +70,7 @@
                 return;
             }
             var m2 = document.getElementById('global_messages_2');
-            $cms.dom.appendHtml(m1, $cms.dom.html(m2));
+            $cms.dom.append(m1, $cms.dom.html(m2));
             m2.parentNode.removeChild(m2);
         }
 

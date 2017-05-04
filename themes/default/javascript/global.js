@@ -90,7 +90,7 @@
          * @method
          * @returns {boolean}
          */
-        $VERBOSE: constant(true),
+        $VERBOSE: constant(false),
         /**
          * @method
          * @returns {number}
@@ -298,8 +298,8 @@
          * @returns {string|boolean|number}
          */
         $CONFIG_OPTION: function $CONFIG_OPTION(optionName) {
-            // Installer, likely executing global.js
             if (window.IN_MINIKERNEL_VERSION) {
+                // Installer, likely executing global.js
                 return '';
             }
 
@@ -370,8 +370,8 @@
          * @returns {string|boolean|number}
          */
         $VALUE_OPTION: function $VALUE_OPTION(optionName) {
-            // Installer, likely executing global.js
             if (window.IN_MINIKERNEL_VERSION) {
+                // Installer, likely executing global.js
                 return '';
             }
 
@@ -394,8 +394,8 @@
          * @returns {boolean}
          */
         $HAS_PRIVILEGE: function $HAS_PRIVILEGE(optionName) {
-            // Installer, likely executing global.js
             if (window.IN_MINIKERNEL_VERSION) {
+                // Installer, likely executing global.js
                 return false;
             }
 
@@ -543,9 +543,13 @@
         /**@method*/
         assert: assert,
         /**@method*/
+        verbose: verbose,
+        /**@method*/
         error: error,
         /**@method*/
         exception: exception,
+        /**@method*/
+        waitForResources: waitForResources,
         /**@method*/
         requireCss: requireCss,
         /**@method*/
@@ -648,7 +652,13 @@
     setTimeout(function () {
         executeCmsInitQueue();
 
-        if ((document.readyState === 'interactive') || (document.readyState === 'complete')) {
+        if (document.readyState === 'interactive') {
+            // Workaround for browser bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded.
+            // See: https://github.com/jquery/jquery/issues/3271
+            $cms.waitForResources(toArray(document.querySelectorAll('script[src][defer]'))).then(function () {
+                executeCmsReadyQueue();
+            });
+        } else if (document.readyState === 'complete') {
             executeCmsReadyQueue();
         } else {
             document.addEventListener('DOMContentLoaded', function listener() {
@@ -1111,7 +1121,7 @@
 
         for (var name in obj) {
             if (callback.call(obj, name, obj[name]) === false) {
-                break;
+                return obj;
             }
         }
 
@@ -1644,7 +1654,7 @@
     }
 
     function log() {
-        if ($cms.$DEV_MODE() && $cms.$VERBOSE()) {
+        if ($cms.$DEV_MODE()) {
             return console.log.apply(undefined, arguments);
         }
     }
@@ -1679,6 +1689,12 @@
         }
     }
 
+    function verbose() {
+        if ($cms.$DEV_MODE() && $cms.$VERBOSE()) {
+            return console.log.apply(undefined, arguments);
+        }
+    }
+
     function exception(ex) {
         if ($cms.$DEV_MODE()) {
             if (typeof ex === 'string') {
@@ -1686,6 +1702,63 @@
             }
             throw ex;
         }
+    }
+
+    /**
+     *
+     * @param resourceEls
+     */
+    function waitForResources(resourceEls) {
+        var promises = [];
+
+        if (resourceEls == null) {
+            return;
+        }
+
+        if (isEl(resourceEls)) {
+            resourceEls = [resourceEls];
+        }
+
+        if (!Array.isArray(resourceEls)) {
+            $cms.error('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+        }
+
+        resourceEls.forEach(function (el) {
+            if (!isEl(el)) {
+                $cms.error('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                return;
+            }
+
+            if (el.localName === 'script') {
+                if (el.src && !$cms.dom.hasScriptLoaded(el) && (!el.type || (el.type === 'application/javascript') || (el.type === 'text/javascript'))) {
+                    promises.push(new Promise(function (resolve) {
+                        el.addEventListener('load', function (e) {
+                            $cms.verbose('$cms.waitForResources(): Resource loaded successfully', el);
+                            resolve(e)
+                        });
+                        el.addEventListener('error', function (e) {
+                            $cms.error('$cms.waitForResources(): Resource failed to load', el);
+                            resolve(e); // Because reject(e) will make Promise.all halt
+                        });
+                    }));
+                }
+            } else if (el.localName === 'img') {
+                if (el.src && !el.complete) {
+                    promises.push(new Promise(function (resolve) {
+                        el.addEventListener('load', function (e) {
+                            $cms.verbose('$cms.waitForResources(): Resource loaded successfully', el);
+                            resolve(e)
+                        });
+                        el.addEventListener('error', function (e) {
+                            $cms.error('$cms.waitForResources(): Resource failed to load', el);
+                            resolve(e); // Because reject(e) will make Promise.all halt
+                        });
+                    }));
+                }
+            }
+        });
+
+        return Promise.all(promises);
     }
 
     /**
@@ -1711,7 +1784,7 @@
             var scriptEl = $cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified') || $cms.dom.$('script[src='+ script + ']');
 
             if (scriptEl) {
-                if (Array.isArray($cms.loadedScripts) && $cms.loadedScripts.includes(scriptEl)) {
+                if ($cms.dom.hasScriptLoaded(scriptEl)) {
                     requireJavascriptPromises[script] = Promise.resolve({ target: scriptEl });
                 } else {
                     requireJavascriptPromises[script] = new Promise(function (resolve, reject) {
@@ -1720,7 +1793,7 @@
                         });
                         scriptEl.addEventListener('error', function (e) {
                             $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
-                            reject(e);
+                            resolve(e); // Because reject(e) will make Promise.all halt
                         });
                     });
                 }
@@ -1734,7 +1807,7 @@
                     });
                     sEl.addEventListener('error', function (e) {
                         $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
-                        reject(e);
+                        resolve(e); // Because reject(e) will make Promise.all halt
                     });
 
                     if (isAbsoluteHttp(script)) {
@@ -2629,6 +2702,23 @@
         return parent;
     };
 
+    $cms.dom.hasScriptLoaded = function hasScriptLoaded(elOrSrc) {
+        if (isNode(elOrSrc)) {
+            return $cms.loadedScripts.includes(elOrSrc);
+        }
+
+        var src = strVal(elOrSrc),
+            scriptEl;
+
+        // NB: Inaccurate when a script with the same src is supposed to be loaded/executed multiple times.
+        for (var i = 0; i < $cms.loadedScripts.length; i++) {
+            scriptEl = $cms.loadedScripts[i];
+            if (scriptEl.src === src) {
+                return true;
+            }
+        }
+    };
+
     /**
      * @memberof $cms.dom
      * @param iframe
@@ -2784,34 +2874,6 @@
         parentNode = nodeArg(parentNode);
 
         return (parentNode !== childNode) && parentNode.contains(childNode);
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param el
-     * @param newChild
-     */
-    $cms.dom.append = function append(el, newChild) {
-        el = nodeArg(el);
-
-        el.appendChild(newChild);
-        if (isDocOrEl(newChild)) {
-            $cms.attachBehaviors(newChild);
-        }
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param el
-     * @param newChild
-     */
-    $cms.dom.prepend = function prepend(el, newChild) {
-        el = nodeArg(el);
-
-        el.insertBefore(newChild, el.firstChild);
-        if (isDocOrEl(newChild)) {
-            $cms.attachBehaviors(newChild);
-        }
     };
 
     var eventHandlers = {},
@@ -3485,34 +3547,217 @@
         });
     };
 
+    var fragmentRE = /^\s*<(\w+|!)[^>]*>/,
+        singleTagRE = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
+        tagExpanderRE = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
+        jsTypeRE = /^(?:|application\/javascript|type\/javascript)$/i,
+        table = document.createElement('table'),
+        tableRow = document.createElement('tr'),
+        containers = {
+            'tr': document.createElement('tbody'),
+            'tbody': table, 'thead': table, 'tfoot': table,
+            'td': tableRow, 'th': tableRow,
+            '*': document.createElement('div')
+        };
+
+    // `$cms.dom.fragment` takes an html string and an optional tag name
+    // to generate DOM nodes from the given html string.
+    // The generated DOM nodes are returned as an array.
+    // This function can be overridden in plugins for example to make
+    // it compatible with browsers that don't support the DOM fully.
+    $cms.dom.fragment = function(html, name, properties) {
+        var dom, container;
+
+        html = strVal(html);
+
+        // A special case optimization for a single tag
+        if (singleTagRE.test(html)) {
+            dom = [document.createElement(RegExp.$1)];
+        } else {
+            html = html.replace(tagExpanderRE, "<$1></$2>");
+
+            if (name === undefined) {
+                name = fragmentRE.test(html) && RegExp.$1;
+            }
+            if (!(name in containers)) {
+                name = '*';
+            }
+
+            container = containers[name];
+            container.innerHTML = strVal(html);
+            dom = toArray(container.childNodes);
+            forEach(container.childNodes, function(child){
+                container.removeChild(child)
+            });
+        }
+
+        if (isPlainObj(properties)) {
+            each(properties, function(key, value) {
+                dom.forEach(function (node) {
+                    if (!isEl(node)) {
+                        return;
+                    }
+
+                    if (methodAttributes[key]) {
+                        $cms.dom[key](node, value);
+                    } else {
+                        $cms.dom.attr(node, key, value)
+                    }
+                });
+            })
+        }
+
+        return dom;
+    };
+
+    function traverseNode(node, func) {
+        func(node);
+        for (var i = 0, len = node.childNodes.length; i < len; i++) {
+            traverseNode(node.childNodes[i], func);
+        }
+    }
+
+    // Generates the `after`, `prepend`, `before` and `append` methods
+    function createInsertionFunction(funcName) {
+        var inside = (funcName === 'prepend') || (funcName === 'append');
+
+        return function insertionFunction(target/*, ...args*/) {
+            target = elArg(target);
+
+            // `args` can be nodes, arrays of nodes and HTML strings
+            var args = toArray(arguments, 1),
+                nodes = [],
+                parent = inside ? target : target.parentNode;
+
+            args.forEach(function(arg) {
+                if (Array.isArray(arg)) {
+                    arg.forEach(function(el) {
+                        if (Array.isArray(el)) {
+                            nodes = nodes.concat(el);
+                            pushArray(nodes, el);
+                        } else if (isNode(el)) {
+                            nodes.push(el);
+                        } else {
+                            // Probably an html string
+                            var html = strVal(el);
+                            nodes = nodes.concat($cms.dom.fragment(html));
+                        }
+                    });
+                } else if (isNode(arg)) {
+                    nodes.push(arg);
+                } else {
+                    // Probably an html string
+                    var html = strVal(arg);
+                    nodes = nodes.concat($cms.dom.fragment(html));
+                }
+            });
+
+            if (nodes.length < 1) {
+                return Promise.resolve();
+            }
+
+            // convert all methods to a "before" operation
+            target = funcName === 'after' ? target.nextSibling :
+                funcName === 'prepend' ? target.firstChild :
+                    funcName === 'before' ? target :
+                        null;
+
+            var parentInDocument = $cms.dom.contains(document.documentElement, parent),
+                promises = [];
+
+            nodes.forEach(function (node) {
+                if (!isNode(node)) {
+                    return;
+                }
+
+                if (!parent) {
+                    node.remove();
+                    return;
+                }
+                // Insert the node
+                parent.insertBefore(node, target);
+
+                if (!isEl(node)) {
+                    return;
+                }
+
+                var scriptEls = parentInDocument ? $cms.dom.$$$(node, 'script') : [];
+
+                // Patch silly DOM behavior when dynamically inserting script elements
+                if (scriptEls.length > 0) {
+                    promises.push(new Promise(function (resolve) {
+                        scriptEls.forEach(function (el) {
+                            if (el.src && jsTypeRE.test(el.type) && !$cms.dom.hasScriptLoaded(el)) {
+                                el.parentNode.replaceChild(cloneScriptEl(el), el);
+                            }
+                        });
+
+                        $cms.waitForResources($cms.dom.$$$(node, 'script[src]')).then(function () {
+                            $cms.dom.$$$(node, 'script').forEach(function (el) {
+                                if (!el.src && jsTypeRE.test(el.type)) {
+                                    var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
+                                    win['eval'].call(win, el.innerHTML); // eval() call
+                                }
+                            });
+
+                            $cms.attachBehaviors(node);
+                            resolve();
+                        });
+                    }));
+                } else {
+                    $cms.attachBehaviors(node);
+                }
+            });
+
+            return Promise.all(promises);
+        };
+    }
+
+    function _forEachPromise(arr, callback) {
+        // To be implemented
+    }
+
+    function forEachPromise(arr, callback) {
+        // To be implemented
+    }
+
+    function cloneScriptEl(scriptEl) {
+        scriptEl = elArg(scriptEl);
+
+        var clone = document.createElement('script');
+
+        if (scriptEl.id) {
+            clone.id = scriptEl.id
+        }
+
+        if (scriptEl.className) {
+            clone.className = scriptEl.className;
+        }
+
+        if (scriptEl.dataset) {
+            for (var key in scriptEl.dataset) {
+                clone.dataset[key] = scriptEl.dataset[key];
+            }
+        }
+
+        clone.defer = !!scriptEl.defer;
+        clone.async = !!scriptEl.async;
+        clone.src = scriptEl.src;
+
+        return clone;
+    }
+
     /**
      * @memberof $cms.dom
-     * @param el
-     * @param html
-     * @returns {string|*}
+     * @returns { Promise }
      */
-    $cms.dom.html = function html(el, html) {
-        // Parser hint: .innerHTML okay
-        var i, len;
+    $cms.dom.after = createInsertionFunction('after');
 
-        el = elArg(el);
+    $cms.dom.prepend = createInsertionFunction('prepend');
 
-        if (html === undefined) {
-            return el.innerHTML;
-        }
+    $cms.dom.before = createInsertionFunction('before');
 
-        for (i = 0, len = el.children.length; i < len; i++) {
-            // Detach behaviors from the (if any) elements to be deleted
-            $cms.detachBehaviors(el.children[i]);
-        }
-
-        el.innerHTML = strVal(html);
-
-        // Attach behaviors to new child elements (if any)
-        for (i = 0, len = el.children.length; i < len; i++) {
-            $cms.attachBehaviors(el.children[i]);
-        }
-    };
+    $cms.dom.append = createInsertionFunction('append');
 
     /**
      * @memberof $cms.dom
@@ -3521,67 +3766,48 @@
     $cms.dom.empty = function empty(el) {
         el = elArg(el);
 
-        $cms.dom.html(el, '');
-    };
+        forEach(el.children, function (child) {
+            $cms.detachBehaviors(child);
+        });
 
-    /**
-     * @memberof $cms.dom
-     * @param el
-     */
-    $cms.dom.remove = function remove(el) {
-        el = elArg(el);
-
-        if (el) {
-            $cms.detachBehaviors(el);
-            el.parentNode.removeChild(el);
-        }
+        el.innerHTML = '';
     };
 
     /**
      * @memberof $cms.dom
      * @param el
      * @param html
+     * @returns {string|Promise}
      */
-    $cms.dom.prependHtml = function prependHtml(el, html) {
+    $cms.dom.html = function html(el, html) {
+        // Parser hint: .innerHTML okay
         el = elArg(el);
 
-        var prevChildrenLength = el.children.length, newChildrenLength, i, stop;
-
-        el.insertAdjacentHTML('afterbegin', html);
-
-        newChildrenLength = el.children.length;
-
-        if (prevChildrenLength === newChildrenLength) {
-            // No new child elements added.
-            return;
+        if (html === undefined) {
+            return el.innerHTML;
         }
 
-        for (i = 0, stop = (prevChildrenLength - newChildrenLength); i < stop; i++) {
-            $cms.attachBehaviors(el.children[i]);
-        }
+        $cms.dom.empty(el);
+        return $cms.dom.append(el, html);
     };
 
     /**
      * @memberof $cms.dom
-     * @param el
-     * @param html
+     * @param node
      */
-    $cms.dom.appendHtml = function appendHtml(el, html) {
-        el = elArg(el);
+    $cms.dom.remove = function remove(node) {
+        if (isArrayLike(node)) {
+            forEach(node, function (item) {
+                $cms.dom.remove(item);
+            });
+        } else {
+            node = nodeArg(node);
 
-        var startIndex = el.children.length, newChildrenLength, i;
+            if (isEl(node)) {
+                $cms.detachBehaviors(node);
+            }
 
-        el.insertAdjacentHTML('beforeend', html);
-
-        newChildrenLength = el.children.length;
-
-        if (startIndex === newChildrenLength) {
-            // No new child elements added.
-            return;
-        }
-
-        for (i = startIndex; i < newChildrenLength; i++) {
-            $cms.attachBehaviors(el.children[i]);
+            node.parentNode.removeChild(node);
         }
     };
 
@@ -4281,42 +4507,45 @@
      * @param settings
      */
     function attachBehaviors(context, settings) {
-        var names;
-
         if (!isDocOrEl(context)) {
             throw new TypeError('Invalid argument type: `context` must be of type HTMLDocument or HTMLElement');
         }
 
         settings || (settings = $cms.settings);
 
-        // Execute all of them.
-        names = behaviorNamesByPriority();
+        $cms.waitForResources($cms.dom.$$$(context, 'script[src]')).then(function () { // Wait for <script> dependencies to load
+            // Execute all of them.
+            var names = behaviorNamesByPriority();
 
-        _attach(0);
-        function _attach(i) {
-            var name = names[i], ret;
+            _attach(0);
 
-            if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
-                try {
-                    ret = $cms.behaviors[name].attach(context, settings);
-                    //$cms.log('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
-                } catch (e) {
-                    $cms.error('$cms.attachBehaviors(): Error while attaching behavior \'' + name + '\' to', context, '\n', e);
+            function _attach(i) {
+                var name = names[i], ret;
+
+                if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
+                    try {
+                        ret = $cms.behaviors[name].attach(context, settings);
+                        $cms.verbose('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
+                    } catch (e) {
+                        $cms.error('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
+                    }
+                }
+
+                ++i;
+
+                if (names.length <= i) {
+                    return;
+                }
+
+                if (isPromise(ret)) { // If the behavior returns a promise, we wait for it before moving on
+                    ret.then(_attach.bind(undefined, i), _attach.bind(undefined, i));
+                } else { // no promise!
+                    _attach(i);
                 }
             }
+        });
 
-            ++i;
-
-            if (names.length <= i) {
-                return;
-            }
-
-            if (isPromise(ret)) { // If the behavior returns a promise, we wait for it before moving on
-                ret.then(_attach.bind(undefined, i), _attach.bind(undefined, i));
-            } else { // no promise!
-                _attach(i);
-            }
-        }
+        return Promise.all([]);
     }
 
     /**
@@ -4340,11 +4569,14 @@
             if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].detach === 'function')) {
                 try {
                     $cms.behaviors[name].detach(context, settings, trigger);
+                    $cms.verbose('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
                 } catch (e) {
                     $cms.error('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
                 }
             }
         }
+
+        return Promise.all([]);
     }
 
     var _blockDataCache = {};
@@ -4468,7 +4700,7 @@
             var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
             if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
             if (append) {
-                $cms.dom.appendHtml(target_div, new_html);
+                $cms.dom.append(target_div, new_html);
             } else {
                 if (inner) {
                     $cms.dom.html(target_div, new_html);
@@ -4506,9 +4738,11 @@
         }
         var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
             html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), callback, post);
+
         if (callback) {
-            return null;
+            return Promise.resolve();
         }
+
         return html.responseText;
     }
 
@@ -5252,7 +5486,7 @@
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
             window.alert(notice);
             callback();
-            return;
+            return Promise.resolve();
         }
 
         var myAlert = {
@@ -5266,6 +5500,7 @@
         };
 
         $cms.openModalWindow(myAlert);
+        return Promise.resolve();
     };
 
     /**
@@ -5894,7 +6129,7 @@
             }
 
             if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) {// Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
-                $cms.dom.appendHtml(tooltipEl, tooltip);
+                $cms.dom.append(tooltipEl, tooltip);
             }
 
             el.tooltip_on = true;
@@ -7394,23 +7629,26 @@
     });
 
     $cms.defineBehaviors(/**@lends $cms.behaviors*/{
+
         // Implementation for [data-require-javascript="[<scripts>...]"]
-        initializeRequireJavascript: {
-            priority: 10000,
-            attach: function (context) {
-                var promises = [];
-
-                $cms.dom.$$$(context, '[data-require-javascript]').forEach(function (el) {
-                    var scripts = arrVal($cms.dom.data(el, 'requireJavascript'));
-
-                    if (scripts.length) {
-                        promises.push($cms.requireJavascript(scripts));
-                    }
-                });
-
-                return Promise.all(promises);
-            }
-        },
+        //initializeRequireJavascript: {
+        //    priority: 10000,
+        //    attach: function (context) {
+        //        var promises = [];
+        //
+        //        $cms.dom.$$$(context, '[data-require-javascript]').forEach(function (el) {
+        //            var scripts = arrVal($cms.dom.data(el, 'requireJavascript'));
+        //
+        //            if (scripts.length) {
+        //                promises.push($cms.requireJavascript(scripts));
+        //            }
+        //        });
+        //
+        //        if (promises.length > 0) {
+        //            return Promise.all(promises);
+        //        }
+        //    }
+        //},
 
         // Implementation for [data-view]
         initializeViews: {
@@ -7419,10 +7657,15 @@
                     var params = objVal($cms.dom.data(el, 'viewParams')),
                         view, viewOptions = { el: el };
 
+                    if (typeof $cms.views[el.dataset.view] !== 'function') {
+                        $cms.error('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + el.dataset.view + '" for', el);
+                        return;
+                    }
+
                     try {
                         view = new $cms.views[el.dataset.view](params, viewOptions);
                         $cms.viewInstances[$cms.uid(view)] = view;
-                        //$cms.log('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '"', view);
+                        $cms.verbose('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
                     } catch (ex) {
                         $cms.error('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
                     }
@@ -7437,8 +7680,14 @@
                     var template = el.dataset.tpl,
                         params = objVal($cms.dom.data(el, 'tplParams'));
 
+                    if (typeof $cms.templates[template] !== 'function') {
+                        $cms.error('$cms.behaviors.initializeTemplates.attach(): Missing template function "' + template + '" for', el);
+                        return;
+                    }
+
                     try {
                         $cms.templates[template].call(el, params, el);
+                        $cms.verbose('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
                     } catch (ex) {
                         $cms.error('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
                     }
@@ -7701,7 +7950,7 @@
                 return;
             }
             var m2 = $cms.dom.$('#global_messages_2');
-            $cms.dom.appendHtml(m1, $cms.dom.html(m2));
+            $cms.dom.append(m1, $cms.dom.html(m2));
             m2.parentNode.removeChild(m2);
         }
 
@@ -7918,7 +8167,7 @@
 
                     stuck_nav.real_height = stuck_nav_height;
                     var pos_y = $cms.dom.findPosY(stuck_nav.parentNode, true),
-                        footer_height = document.querySelector('footer').offsetHeight,
+                        footer_height = document.querySelector('footer') ? document.querySelector('footer').offsetHeight : 0,
                         panel_bottom = $cms.dom.$id('panel_bottom');
 
                     if (panel_bottom) {

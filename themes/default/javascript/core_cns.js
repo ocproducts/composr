@@ -27,7 +27,7 @@
                     }
 
                     $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, function (result) {
-                        $cms.dom.html($cms.dom.$('#g_' + tabCode), result.responseText);
+                        $cms.dom.html('#g_' + tabCode, result.responseText);
                         $cms.dom.findUrlTab();
                     });
                 }).bind(this);
@@ -58,10 +58,14 @@
     });
 
     $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
+        $cms.log('Executing $cms.templates.cnsMemberProfileEdit()');
+
         $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
-            var tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
+            var tabSet = 'edit__',
+                tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
+            $cms.log('Select tab', tabSet + tabCode);
             if (tabCode) {
-                $cms.ui.selectTab('g', 'edit__' + tabCode)
+                $cms.ui.selectTab('g', tabSet + tabCode)
             }
         });
     };
