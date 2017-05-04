@@ -564,7 +564,23 @@ function sheet_script()
     header('Content-Type: text/css');
     $sheet = get_param_string('sheet');
     if ($sheet != '') {
-        echo str_replace('../../../', '', file_get_contents(css_enforce(filter_naughty_harsh($sheet))));
+        echo str_replace('../../../', '', file_get_contents(css_enforce(filter_naughty_harsh($sheet), get_param_string('theme', null))));
+    }
+}
+
+/**
+ * AJAX script for dynamic inclusion of JavaScript.
+ *
+ * @ignore
+ */
+function script_script()
+{
+    prepare_for_known_ajax_response();
+
+    header('Content-Type: application/javascript');
+    $script = get_param_string('script');
+    if ($script != '') {
+        echo str_replace('../../../', '', file_get_contents(javascript_enforce(filter_naughty_harsh($script), get_param_string('theme', null))));
     }
 }
 
