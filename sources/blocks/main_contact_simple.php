@@ -51,60 +51,71 @@ class Block_main_contact_simple
     {
         require_lang('messaging');
         require_code('feedback');
+        require_code('mail');
 
-        $to = array_key_exists('param', $map) ? $map['param'] : get_option('staff_address');
+        $message = new Tempcode();
+
+        // Options...
+
+        if (addon_installed('captcha')) {
+            require_code('captcha');
+            $use_captcha = ((get_option('captcha_on_feedback') == '1') && (use_captcha()));
+        } else {
+            $use_captcha = false;
+        }
 
         $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
         $body_suffix = array_key_exists('body_suffix', $map) ? $map['body_suffix'] : '';
         $subject_prefix = array_key_exists('subject_prefix', $map) ? $map['subject_prefix'] : '';
         $subject_suffix = array_key_exists('subject_suffix', $map) ? $map['subject_suffix'] : '';
 
+        $to = array_key_exists('param', $map) ? $map['param'] : get_option('staff_address');
+        $box_title = array_key_exists('title', $map) ? $map['title'] : do_lang('CONTACT_US');
+        $private = (array_key_exists('private', $map)) && ($map['private'] == '1');
+        $email_optional = array_key_exists('email_optional', $map) ? (intval($map['email_optional']) == 1) : true;
+
         $block_id = md5(serialize($map));
 
-        $post = post_param_string('post', '');
-        if ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id) && ($post != '')) {
-            if (addon_installed('captcha')) {
-                if (get_option('captcha_on_feedback') == '1') {
-                    require_code('captcha');
-                    enforce_captcha();
-                }
-            }
+        // Submission...
 
+        list($subject, $message_raw, , , $from_email, $from_name) = _form_to_email();
+        if ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id) && ($message_raw != '')) {
             $message = new Tempcode();/*Used to be written out here*/
 
-            require_code('mail');
+            // Check CAPTCHA
+            if ($use_captcha) {
+                require_code('captcha');
+                enforce_captcha();
+            }
 
-            $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));
-
-            if ($email_from != '') {
+            // Checking
+            if ($from_email != '') {
                 require_code('type_sanitisation');
-                if (!is_email_address($email_from)) {
+                if (!is_email_address($from_email)) {
                     return paragraph(do_lang_tempcode('INVALID_EMAIL_ADDRESS'), '', 'red_alert');
                 }
             }
 
-            $title = post_param_string('title');
+            // Send e-mail
+            mail_wrap($subject_prefix . $subject . $subject_suffix, $body_prefix . $message_raw . $body_suffix, array($to), null, $from_email, $from_name, 3, null, false, get_member());
 
-            mail_wrap($subject_prefix . $title . $subject_suffix, $body_prefix . $post . $body_suffix, array($to), null, $email_from, $GLOBALS['FORUM_DRIVER']->get_username(get_member()), 3, null, false, get_member());
-
-            if ($email_from != '' && get_option('message_received_emails') == '1') {
-                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', 3, null, false, get_member());
+            // Send standard confirmation email to current user
+            if ($from_email != '' && get_option('message_received_emails') == '1') {
+                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $message_raw), array($from_email), null, '', '', 3, null, false, get_member());
             }
 
-            attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
-
+            // Redirect/messaging
             $redirect = array_key_exists('redirect', $map) ? $map['redirect'] : '';
             if ($redirect != '') {
                 $redirect = page_link_to_url($redirect);
                 require_code('site2');
                 assign_refresh($redirect, 0.0);
+            } else {
+                attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
             }
-        } else {
-            $message = new Tempcode();
         }
 
-        $box_title = array_key_exists('title', $map) ? $map['title'] : do_lang('CONTACT_US');
-        $private = (array_key_exists('private', $map)) && ($map['private'] == '1');
+        // Form...
 
         $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 
@@ -112,7 +123,6 @@ class Block_main_contact_simple
         require_javascript('checking');
 
         $comment_url = get_self_url();
-        $email_optional = array_key_exists('email_optional', $map) ? (intval($map['email_optional']) == 1) : true;
 
         if (addon_installed('captcha')) {
             require_code('captcha');
@@ -143,7 +153,6 @@ class Block_main_contact_simple
             'EM' => $em,
             'DISPLAY' => 'block',
             'TITLE' => $box_title,
-            'SUBMIT_NAME' => do_lang_tempcode('SEND'),
             'COMMENT_URL' => $comment_url,
             'HIDDEN' => $hidden,
         ));

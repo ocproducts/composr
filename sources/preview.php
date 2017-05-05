@@ -40,6 +40,8 @@ function build_preview($multi_return = false)
         }
     }
 
+    // See if we have a preview hook...
+
     require_code('attachments2');
     $hooks = find_all_hooks('systems', 'preview');
     $output = null;
@@ -67,6 +69,9 @@ function build_preview($multi_return = false)
             break;
         }
     }
+
+    // Some special checks, if requested...
+
     $webstandards = new Tempcode();
     $keyword_density = new Tempcode();
     $spelling = new Tempcode();
@@ -95,25 +100,15 @@ function build_preview($multi_return = false)
                 require_code('webstandards');
                 $webstandards->attach(check_xhtml_webstandards($valt->evaluate(), false, post_param_integer('perform_webstandards_check', 0), true));
             } elseif ($tempcodecss) {
-                $i = 0;
-                $color = post_param_string(strval($i), '');
-                while ($color != '') {
-                    $val = str_replace('<color-' . strval($i) . '>', '#' . $color, $val);
-                    $i++;
-
-                    $color = post_param_string(strval($i), '');
-                }
-                $_val_orig = $val;
-
                 require_lang('webstandards');
                 require_code('view_modes');
                 require_code('obfuscate');
                 require_code('webstandards');
                 require_code('webstandards2');
-                $error = check_css($_val_orig);
+                $error = check_css($val);
                 $show = (count($error['errors']) != 0);
                 if ($show) {
-                    $webstandards->attach(display_webstandards_results($_val_orig, $error, true, true));
+                    $webstandards->attach(display_webstandards_results($val, $error, true, true));
                 }
             }
         }
@@ -121,9 +116,13 @@ function build_preview($multi_return = false)
     if ($spellcheck) {
         require_code('spelling');
     }
+
+    // Process all the POSTed data...
+
     $db = $forum_db ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     $map_table_map = array();
     require_code('templates_map_table');
+
     foreach ($_POST as $key => $val) {
         if (!is_string($val)) {
             continue;
@@ -147,48 +146,18 @@ function build_preview($multi_return = false)
             $val .= '/10';
         }
 
-        $is_hidden =
-            in_array($key, array(
-                'stub',
-                'from_url',
-                'password',
-                'confirm_password',
-                'edit_password',
-                'MAX_FILE_SIZE',
-                'perform_webstandards_check',
-                '_validated',
-                'id',
-                'posting_ref_id',
-                'f_face',
-                'f_colour',
-                'f_size',
-                'http_referer',
-                'session_id',
-                'csrf_token',
-                'y' . md5(get_site_name() . ': antispam'),
-            )) ||
-            (strpos($key, 'hour') !== false) ||
-            (strpos($key, 'access_') !== false) ||
-            (strpos($key, 'minute') !== false) ||
-            (strpos($key, 'confirm') !== false) ||
-            (strpos($key, 'pre_f_') !== false) ||
-            (strpos($key, 'label_for__') !== false) ||
-            (strpos($key, 'wysiwyg_version_of_') !== false) ||
-            (strpos($key, 'is_wysiwyg') !== false) ||
-            (strpos($key, 'require__') !== false) ||
-            (strpos($key, 'tempcodecss__') !== false) ||
-            (strpos($key, 'comcode__') !== false) ||
-            (strpos($key, '_parsed') !== false) ||
-            (substr($key, 0, 1) == '_') ||
-            (substr($key, 0, 9) == 'hidFileID') ||
-            (substr($key, 0, 11) == 'hidFileName') ||
-            (($key[0] == 'x') && (strlen($key) == 33));
+        $is_hidden = false;
+
         if (substr($key, 0, 14) == 'tick_on_form__') {
             if (post_param_integer(substr($key, 14), 0) == 1) {
                 $is_hidden = true;
             } else {
-                $key = substr($key, 14);
+                $key = substr($key, 14); // Sneaky, inject a non-checked checkbox back in
             }
+        }
+
+        if (is_control_field($key)) {
+            $is_hidden = true;
         }
 
         // TODO: Do a better job with this using proper hooks, #2994
@@ -280,7 +249,7 @@ function build_preview($multi_return = false)
             } else {
                 $val = get_timezoned_date($timestamp, false, true, false, true);
             }
-        } elseif ((substr($key, -6) == '_month') || (substr($key, -5) == '_year')) {
+        } elseif ((substr($key, -6) == '_month') || (substr($key, -5) == '_year') || (substr($key, -7) == '_minute') || (substr($key, -5) == '_hour')) {
             $is_hidden = true;
         }
 
@@ -376,7 +345,8 @@ function build_preview($multi_return = false)
         }
     }
 
-    // Make attachments temporarily readable without any permission context
+    // Make attachments temporarily readable without any permission context...
+
     require_code('comcode_compiler');
     global $COMCODE_ATTACHMENTS;
     $posting_ref_id = post_param_integer('posting_ref_id', null);
@@ -388,6 +358,8 @@ function build_preview($multi_return = false)
             }
         }
     }
+
+    // Output fields...
 
     if (is_null($output)) {
         if (count($map_table_map) == 1) {
@@ -401,11 +373,14 @@ function build_preview($multi_return = false)
         }
     }
 
+    // Special case...
+
     if (get_param_integer('js_only', 0) == 1) {
         $output = new Tempcode();
     }
 
-    // This is to get the Comcode attachments updated to the new IDs
+    // This is to get the Comcode attachments updated to the new IDs...
+
     if (!is_null($new_post_value)) {
         $_new_post_value_html = comcode_to_tempcode($new_post_value, null, false, null, null, $db, true);
 
@@ -416,6 +391,8 @@ function build_preview($multi_return = false)
             $output->attach(do_template('PREVIEW_SCRIPT_CODE', array('_GUID' => 'bc7432af91e1eaf212dc210f3bf2f756', 'NEW_POST_VALUE_HTML' => $new_post_value_html, 'NEW_POST_VALUE' => $new_post_value)));
         }
     }
+
+    // ---
 
     if ($multi_return) {
         return array($output, $webstandards, $keyword_density, $spelling);

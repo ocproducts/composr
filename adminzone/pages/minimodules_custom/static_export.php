@@ -222,69 +222,205 @@ foreach (array_keys($langs) as $lang) {
     }
     $mailer_script = '
 <' . '?php
-function post_param_string($key,$default)
+
+function is_control_field($field_name, $include_email_metafields = false, $include_login_fields = false, $extra_boring_fields = null)
 {
-    return isset($_POST[$key])?$_POST[$key]:$default;
+    // NB: Keep this function synced with the copy of it in static_export.php
+
+    if ($extra_boring_fields === null) {
+        $extra_boring_fields = array(); // TODO: Fix in v11
+    }
+
+    $boring_fields = array(
+        // Passed through metadata
+        \'id\',
+
+        // Passed through data
+        \'stub\',
+
+        // Passed through context
+        \'from_url\',
+        \'http_referer\',
+        \'redirect\',
+        \'redirect_passon\',
+
+        // Image buttons send these
+        \'x\',
+        \'y\',
+
+        // Password fields
+        \'password\',
+        \'confirm_password\',
+        \'edit_password\',
+
+        // Relating to uploads/attachments
+        \'MAX_FILE_SIZE\',
+
+        // Relating to preview
+        \'perform_webstandards_check\',
+
+        // Relating to posting form/WYSIWYG
+        \'posting_ref_id\',
+        \'f_face\',
+        \'f_colour\',
+        \'f_size\',
+
+        // Relating to security
+        \'session_id\',
+        \'csrf_token\',
+        \'y\' . md5(get_site_name() . \': antispam\'),
+    );
+    if ($include_email_metafields) {
+        $boring_fields = array_merge($boring_fields, array(
+            \'subject\',
+            \'title\',
+            \'name\',
+            \'poster_name_if_guest\',
+            \'email\',
+            \'to_members_email\',
+            \'to_written_name\',
+        ));
+    }
+    if ($include_login_fields) {
+        $boring_fields = array_merge($boring_fields, array(
+            \'login_username\',
+            \'password\',
+            \'remember_me\',
+            \'login_invisible\',
+        ));
+    }
+    if (in_array($field_name, $boring_fields)) {
+        return true;
+    }
+
+    if (in_array($field_name, $extra_boring_fields)) {
+        return true;
+    }
+
+    $prefixes = array(
+        // Standard hidden-fields convention
+        \'_\',
+
+        // Form metadata
+        \'label_for__\',
+        \'description_for__\',
+        \'tick_on_form__\',
+        \'require__\',
+
+        // Relating to uploads/attachments
+        \'hidFileID_\',
+        \'hidFileName_\',
+
+        // Relating to preview
+        \'pre_f_\',
+        \'tempcodecss__\',
+        \'comcode__\',
+
+        // Relating to permissions setting
+        \'access_\',
+    );
+    if ($include_email_metafields) {
+        $prefixes = array_merge($prefixes, array(
+            \'field_tagged__\',
+        ));
+    }
+    foreach ($prefixes as $prefix) {
+        if (substr($field_name, 0, strlen($prefix)) == $prefix) {
+            return true;
+        }
+    }
+
+    $suffixes = array(
+        // Relating to posting form/WYSIWYG
+        \'_parsed\',
+        \'__is_wysiwyg\',
+    );
+    foreach ($suffixes as $suffix) {
+        if (substr($field_name, -strlen($suffix)) == $suffix) {
+            return true;
+        }
+    }
+
+    $substrings = array(
+        // Passed through metadata
+        \'confirm\',
+    );
+    foreach ($substrings as $substring) {
+        if (strpos($field_name, $substring) !== false) {
+            return true;
+        }
+    }
+
+    if (($field_name[0] == \'x\') && (strlen($field_name) == 33)) {
+        return true;
+    }
+
+    return false;
+}
+
+function post_param_string($key, $default)
+{
+    return isset($_POST[$key]) ? $_POST[$key] : $default;
 }
 
 function titleify($boring)
 {
-    return ucwords(str_replace("_"," ",$boring));
+    return ucwords(str_replace(\'_\', \' \', $boring));
 }
 
-if (!isset($_COOKIE["js_on"])) exit("Error: cookies must be enabled, for anti-spam reasons.");
-
-$title=post_param_string("title","' . do_lang('UNKNOWN') . '");
-
-$to="' . get_option('staff_address') . '";
-
-$email=post_param_string("email",$to);
-$name=post_param_string("name","' . do_lang('UNKNOWN') . '");
-
-$post=post_param_string("post","");
-
-$fields=array();
-foreach (array_diff(array_keys($_POST),array("MAX_FILE_SIZE","perform_webstandards_check","_validated","posting_ref_id","f_face","f_colour","f_size","x","y","name","subject","email","to_members_email","to_written_name","redirect","http_referer","session_id")) as $key)
-{
-    $is_hidden=(strpos($key,"hour")!==false) || (strpos($key,"access_")!==false) || (strpos($key,"minute")!==false) || (strpos($key,"confirm")!==false) || (strpos($key,"pre_f_")!==false) || (strpos($key,"tick_on_form__")!==false) || (strpos($key,"label_for__")!==false) || (strpos($key,"description_for__")!==false) || (strpos($key,"wysiwyg_version_of_")!==false) || (strpos($key,"is_wysiwyg")!==false) || (strpos($key,"require__")!==false) || (strpos($key,"tempcodecss__")!==false) || (strpos($key,"comcode__")!==false) || (strpos($key,"_parsed")!==false) || (substr($key,0,1)=="_") || (substr($key,0,9)=="hidFileID") || (substr($key,0,11)=="hidFileName");
-    if ($is_hidden) continue;
-
-    if (substr($key,0,1)!="_")
-        $fields[$key]=post_param_string("label_for__".$key,titleify($key));
-}
-foreach ($fields as $field=>$field_title)
-{
-    $field_val=post_param_string($field,"");
-    if ($field_val!="")
-        $post.="\n\n".$field_title.": ".$field_val;
+if (!isset($_COOKIE[\'js_on\'])) {
+    exit(\'Error: cookies must be enabled, for anti-spam reasons.\');
 }
 
-$subject=str_replace("xxx",$title,"' . addslashes(do_lang('CONTACT_US_NOTIFICATION_SUBJECT', 'xxx', null, null, $lang)) . '");
-$message=str_replace(array("aaa","bbb"),array($name,$post),"' . addslashes(comcode_to_clean_text(do_lang('CONTACT_US_NOTIFICATION_MESSAGE', get_site_name(), 'aaa', array('bbb'), $lang))) . '");
-$headers="";
-$website_email="' . addslashes(get_option('website_email')) . '";
-if ($website_email=="") $website_email=$email;
-$headers.="From: \"".str_replace("\"","",$name)."\" <{$website_email}>\n";
-$headers.="Reply-To: \"".str_replace("\"","",$name)."\" <{$email}>\n";
-$random_hash=md5(date("r",time()));
-$headers.="Content-type: multipart/mixed; boundary=\"PHP-mixed-{$random_hash}\"";
-$mime_message="";
-$mime_message.="--PHP-mixed-{$random_hash}\n";
-$mime_message.="Content-Type: text/plain; charset=\"' . get_charset() . '\"\n\n";
-$mime_message.=$message."\n\n";
-foreach ($_FILES as $f)
-{
-    $mime_message.="--PHP-mixed-{$random_hash}\n";
-    $mime_message.="Content-Type: application/octet-stream; name=\"".addslashes($f["name"])."\"\n";
-    $mime_message.="Content-Transfer-Encoding: base64\n";
-    $mime_message.="Content-Disposition: attachment\n\n";
-    $mime_message.=base64_encode(file_get_contents($f["tmp_name"]));
+$title = post_param_string(\'title\', \'' . do_lang('UNKNOWN') . '\');
+
+$to = \'' . get_option('staff_address') . '\';
+
+$email = post_param_string(\'email\', $to);
+$name = post_param_string(\'name\', \'' . do_lang('UNKNOWN') . '\');
+
+$post = post_param_string(\'post\', \'\');
+
+$fields = array();
+foreach (array_keys($_POST) as $key) {
+    if (!is_control_field($key)) {
+        $fields[$key] = post_param_string(\'label_for__\' . $key, titleify($key));
+    }
 }
-$mime_message.="--PHP-mixed-{$random_hash}--\n\n";
-if (trim($post)!="")
-{
-    mail($to,$subject,$mime_message,$headers);
+foreach ($fields as $field => $field_title) {
+    $field_val = post_param_string($field, \'\');
+    if ($field_val != \'\') {
+        $post .= "\n\n" . $field_title . \': \' . $field_val;
+    }
 }
+
+$subject = str_replace(\'xxx\', $title, \'' . addslashes(do_lang('CONTACT_US_NOTIFICATION_SUBJECT', 'xxx', null, null, $lang)) . '\');
+$message = str_replace(array(\'aaa\', \'bbb\'), array($name, $post), \'' . addslashes(comcode_to_clean_text(do_lang('CONTACT_US_NOTIFICATION_MESSAGE', get_site_name(), 'aaa', array('bbb'), $lang))) . '\');
+$headers = \'\';
+$website_email = \'' . addslashes(get_option('website_email')) . '\';
+if ($website_email == \'\') {
+    $website_email = $email;
+}
+$headers .= "From: \"" . str_replace("\"", "", $name) . "\" <{$website_email}>\n";
+$headers .= "Reply-To: \"" . str_replace("\"", "", $name) . "\" <{$email}>\n";
+$random_hash = md5(date(\'r\', time()));
+$headers .= "Content-type: multipart/mixed; boundary=\"PHP-mixed-{$random_hash}\"";
+$mime_message = "";
+$mime_message .= "--PHP-mixed-{$random_hash}\n";
+$mime_message .= "Content-Type: text/plain; charset=\"' . get_charset() . '\"\n\n";
+$mime_message .= $message . "\n\n";
+foreach ($_FILES as $f) {
+    $mime_message .= "--PHP-mixed-{$random_hash}\n";
+    $mime_message .= "Content-Type: application/octet-stream; name=\"" . addslashes($f["name"]) . "\"\n";
+    $mime_message .= "Content-Transfer-Encoding: base64\n";
+    $mime_message .= "Content-Disposition: attachment\n\n";
+    $mime_message .= base64_encode(file_get_contents($f["tmp_name"]));
+}
+$mime_message .= "--PHP-mixed-{$random_hash}--\n\n";
+if (trim($post) != \'\') {
+    mail($to, $subject, $mime_message, $headers);
+}
+
 ?' . '>
 
 <p>' . do_lang('MESSAGE_SENT', null, null, null, $lang) . '</p>

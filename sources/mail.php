@@ -1478,12 +1478,16 @@ function filter_css($c, $theme, $context)
 function form_to_email_entry_script()
 {
     require_lang('mail');
+
     form_to_email();
 
     global $PAGE_NAME_CACHE;
     $PAGE_NAME_CACHE = '_form_to_email';
+
     $title = get_screen_title('MAIL_SENT');
+
     $text = do_lang_tempcode('MAIL_SENT_TEXT', escape_html(post_param_string('to_written_name', get_site_name())));
+
     $redirect = get_param_string('redirect', null);
     if (!is_null($redirect)) {
         require_code('site2');
@@ -1491,25 +1495,28 @@ function form_to_email_entry_script()
     } else {
         $tpl = do_template('INFORM_SCREEN', array('_GUID' => 'e577a4df79eefd9064c14240cc99e947', 'TITLE' => $title, 'TEXT' => $text));
     }
+
     $echo = globalise($tpl, null, '', true);
     $echo->evaluate_echo();
 }
 
 /**
- * Send the posted form over email to the staff address.
+ * Send the POSTed form over email to the staff address.
  *
- * @param  ?string $subject The subject of the email (null: from posted subject parameter).
+ * @param  ?string $subject The subject of the email (null: from POSTed/tagged subject parameter).
  * @param  string $intro The intro text to the mail (blank: none).
- * @param  ?array $fields A map of fields to field titles to transmit. (null: all posted fields, except subject and email)
- * @param  ?string $to_email Email address to send to (null: look from post environment / staff address).
+ * @param  ?array $fields A map of fields to field titles to transmit. (null: all POSTed fields, except subject and email)
+ * @param  ?string $to_email Email address to send to (null: look from POST environment [if allowed] / staff address).
  * @param  string $outro The outro text to the mail (blank: none).
  * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
  */
 function form_to_email($subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
 {
+    // Data
     $details = _form_to_email(null, $subject, $intro, $fields, $to_email, $outro, $is_via_post);
     list($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments) = $details;
 
+    // Check CAPTCHA
     if (addon_installed('captcha')) {
         if (post_param_integer('_security', 0) == 1) {
             require_code('captcha');
@@ -1517,8 +1524,10 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
         }
     }
 
+    // Send e-mail
     mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
 
+    // Send standard confirmation email to current user
     if ($from_email != '' && get_option('message_received_emails') == '1') {
         mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', 3, null, false, get_member());
     }
@@ -1528,11 +1537,11 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
  * Worker funtion for form_to_email.
  *
  * @param  ?array $extra_boring_fields Fields to skip in addition to the normal skipped ones (null: just the normal skipped ones)
- * @param  ?string $subject The subject of the email (null: from posted subject parameter).
- * @param  string $intro The intro text to the mail (blank: none).
- * @param  ?array $fields A map of fields to field titles to transmit. (null: all posted fields, except subject and email)
- * @param  ?string $to_email Email address to send to (null: look from post environment / staff address).
- * @param  string $outro The outro text to the mail (blank: none).
+ * @param  ?string $subject The subject of the e-mail (null: from POSTed/tagged subject parameter).
+ * @param  string $intro The intro text to the e-mail (blank: none).
+ * @param  ?array $fields A map of field names to field titles to transmit. (null: all POSTed fields, except certain standardised ones)
+ * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address).
+ * @param  string $outro The outro text to the e-mail (blank: none).
  * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
  * @return array A tuple: subject, message, to e-mail, to name, from e-mail, from name, attachments
  *
@@ -1540,75 +1549,43 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
  */
 function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
 {
-    if (is_null($subject)) {
-        $subject = post_param_string('subject', get_site_name());
+    if ($extra_boring_fields === null) {
+        $extra_boring_fields = array(); // TODO: Fix in v11
     }
+
+    // Find subject...
+
+    if (is_null($subject)) {
+        $subject = post_param_string('subject', get_param_string('title', get_site_name()));
+    }
+
+    // Decide fields...
 
     if (is_null($fields)) {
         $fields = array();
-        $boring_fields = array( // NB: Keep in sync with static_export.php
-            'MAX_FILE_SIZE',
-            'perform_webstandards_check',
-            '_validated',
-            'posting_ref_id',
-            'f_face',
-            'f_colour',
-            'f_size',
-            'x',
-            'y',
-            'stub',
-            'name',
-            'subject',
-            'email',
-            'to_members_email',
-            'to_written_name',
-            'redirect',
-            'http_referer',
-            'session_id',
-            'csrf_token',
-            md5(get_site_name() . ': antispam'),
-        );
-        if (!is_null($extra_boring_fields)) {
-            $boring_fields = array_merge($boring_fields, $extra_boring_fields);
-        }
-        foreach (array_diff(array_keys($_POST), $boring_fields) as $key) {
-            $is_hidden =  // NB: Keep in sync with static_export.php
-                (strpos($key, 'hour') !== false) || 
-                (strpos($key, 'access_') !== false) || 
-                (strpos($key, 'minute') !== false) || 
-                (strpos($key, 'confirm') !== false) || 
-                (strpos($key, 'pre_f_') !== false) || 
-                (strpos($key, 'tick_on_form__') !== false) || 
-                (strpos($key, 'label_for__') !== false) || 
-                (strpos($key, 'description_for__') !== false) || 
-                (strpos($key, 'wysiwyg_version_of_') !== false) || 
-                (strpos($key, 'is_wysiwyg') !== false) || 
-                (strpos($key, 'require__') !== false) || 
-                (strpos($key, 'tempcodecss__') !== false) || 
-                (strpos($key, 'comcode__') !== false) || 
-                (strpos($key, '_parsed') !== false) || 
-                (substr($key, 0, 1) == '_') || 
-                (substr($key, 0, 9) == 'hidFileID') || 
-                (substr($key, 0, 11) == 'hidFileName');
-            if ($is_hidden) {
+        foreach (array_keys($_POST) as $key) {
+            if (is_control_field($key, true, false, $extra_boring_fields)) {
                 continue;
             }
 
-            if (substr($key, 0, 1) != '_') {
-                $label = post_param_string('label_for__' . $key, titleify($key));
-                $description = post_param_string('description_for__' . $key, '');
-                $_label = $label . (($description == '') ? '' : (' (' . $description . ')'));
+            $label = post_param_string('label_for__' . $key, titleify($key));
+            $description = post_param_string('description_for__' . $key, '');
+            $_label = $label . (($description == '') ? '' : (' (' . $description . ')'));
 
-                if ($is_via_post) {
-                    $fields[$key] = $_label;
-                } else {
-                    $fields[$label] = post_param_string($key, null);
-                }
+            if ($is_via_post) {
+                $fields[$key] = $_label;
+            } else {
+                $fields[$label] = post_param_string($key, null);
             }
         }
     }
 
+    // Find from details if simple...
+
     $from_email = trim(post_param_string('email', ''));
+    $from_name = trim(post_param_string('name', post_param_string('poster_name_if_guest', '')));
+
+    // Find body...
 
     $message_raw = '';
     if ($intro != '') {
@@ -1621,8 +1598,15 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
             if (!is_null($field_val)) {
                 _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val, count($fields));
 
-                if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field_name, '') == 'email')) {
+                // Tie in to tagging
+                if (post_param_string('field_tagged__' . $field_name, '') == 'email') {
                     $from_email = $field_val;
+                }
+                if (post_param_string('field_tagged__' . $field_name, '') == 'name') {
+                    $from_name = $field_val;
+                }
+                if (post_param_string('field_tagged__' . $field_name, '') == 'subject') {
+                    $subject = $field_val;
                 }
             }
         }
@@ -1638,10 +1622,16 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
         $message_raw .= "\n\n------------\n\n" . $outro;
     }
 
+    // Find from details if complex...
+
     if ($from_email == '') {
         $from_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
     }
-    $from_name = post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
+    if ($from_name == '') {
+        $from_name = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
+    }
+
+    // Find to details if enabled...
 
     $to_name = mixed();
     if ((is_null($to_email)) && (!is_null(get_value('allow_member_mail_relay')))) {
@@ -1652,12 +1642,16 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
         }
     }
 
+    // Find attachments...
+
     $attachments = array();
     require_code('uploads');
     is_plupload(true);
     foreach ($_FILES as $file) {
         $attachments[$file['tmp_name']] = $file['name'];
     }
+
+    // ---
 
     return array($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments);
 }

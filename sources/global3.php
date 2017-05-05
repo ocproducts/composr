@@ -3536,21 +3536,156 @@ function disable_smart_decaching_temporarily()
  */
 function has_interesting_post_fields()
 {
-    $post = $_POST;
-    $to_ignore = array(
-        'csrf_token',
-        'y' . md5(get_site_name() . ': antispam'),
-        'login_username',
-        'password',
-        'remember_me',
-        'login_invisible',
+    foreach (array_keys($_POST) as $field_name) {
+        if (!is_control_field($field_name, false, true)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Find if a POST field is some kind of special control field rather than interesting standalone data.
+ *
+ * @param string $field_name Field to check
+ * @param boolean $include_email_metafields Consider e-mail metafields as control fields
+ * @param boolean $include_login_fields Consider login fields as control fields
+ * @param ?array $extra_boring_fields Additional boring fields to skip (null: none)
+ * @return boolean If it's a control field
+ */
+function is_control_field($field_name, $include_email_metafields = false, $include_login_fields = false, $extra_boring_fields = null)
+{
+    // NB: Keep this function synced with the copy of it in static_export.php
+
+    if ($extra_boring_fields === null) {
+        $extra_boring_fields = array(); // TODO: Fix in v11
+    }
+
+    $boring_fields = array(
+        // Passed through metadata
+        'id',
+
+        // Passed through data
+        'stub',
+
+        // Passed through context
+        'from_url',
+        'http_referer',
         'redirect',
         'redirect_passon',
+
+        // Image buttons send these
+        'x',
+        'y',
+
+        // Password fields
+        'password',
+        'confirm_password',
+        'edit_password',
+
+        // Relating to uploads/attachments
+        'MAX_FILE_SIZE',
+
+        // Relating to preview
+        'perform_webstandards_check',
+
+        // Relating to posting form/WYSIWYG
+        'posting_ref_id',
+        'f_face',
+        'f_colour',
+        'f_size',
+
+        // Relating to security
+        'session_id',
+        'csrf_token',
+        'y' . md5(get_site_name() . ': antispam'),
     );
-    foreach ($to_ignore as $field) {
-        unset($post[$field]);
+    if ($include_email_metafields) {
+        $boring_fields = array_merge($boring_fields, array(
+            'subject',
+            'title',
+            'name',
+            'poster_name_if_guest',
+            'email',
+            'to_members_email',
+            'to_written_name',
+        ));
     }
-    return (count($post) !== 0);
+    if ($include_login_fields) {
+        $boring_fields = array_merge($boring_fields, array(
+            'login_username',
+            'password',
+            'remember_me',
+            'login_invisible',
+        ));
+    }
+    if (in_array($field_name, $boring_fields)) {
+        return true;
+    }
+
+    if (in_array($field_name, $extra_boring_fields)) {
+        return true;
+    }
+
+    $prefixes = array(
+        // Standard hidden-fields convention
+        '_',
+
+        // Form metadata
+        'label_for__',
+        'description_for__',
+        'tick_on_form__',
+        'require__',
+
+        // Relating to uploads/attachments
+        'hidFileID_',
+        'hidFileName_',
+
+        // Relating to preview
+        'pre_f_',
+        'tempcodecss__',
+        'comcode__',
+
+        // Relating to permissions setting
+        'access_',
+    );
+    if ($include_email_metafields) {
+        $prefixes = array_merge($prefixes, array(
+            'field_tagged__',
+        ));
+    }
+    foreach ($prefixes as $prefix) {
+        if (substr($field_name, 0, strlen($prefix)) == $prefix) {
+            return true;
+        }
+    }
+
+    $suffixes = array(
+        // Relating to posting form/WYSIWYG
+        '_parsed',
+        '__is_wysiwyg',
+    );
+    foreach ($suffixes as $suffix) {
+        if (substr($field_name, -strlen($suffix)) == $suffix) {
+            return true;
+        }
+    }
+
+    $substrings = array(
+        // Passed through metadata
+        'confirm',
+    );
+    foreach ($substrings as $substring) {
+        if (strpos($field_name, $substring) !== false) {
+            return true;
+        }
+    }
+
+    if (($field_name[0] == 'x') && (strlen($field_name) == 33)) {
+        return true;
+    }
+
+    return false;
 }
 
 /**

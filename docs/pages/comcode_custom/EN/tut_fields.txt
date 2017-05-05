@@ -68,7 +68,7 @@ Note that text fields will sort using a text sort algorithm. For example, "10" c
 | Up to 255 characters of text
 |-
 ! Special default values
-| [i]None[/i]
+| [tt]NAME[/tt]: Current member's display name
 |-
 ! Supported field options
 | [tt]maxlength[/tt] (the number of characters to have as a maximum; default is 255)
