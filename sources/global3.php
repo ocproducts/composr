@@ -1994,7 +1994,9 @@ function me_debug($ip, $data)
  */
 function get_browser_string()
 {
-    return cms_srv('HTTP_USER_AGENT');
+    $ret = cms_srv('HTTP_USER_AGENT');
+    $ret = str_replace(' (' . get_os_string() . ')', '', $ret);
+    return $ret;
 }
 
 /**

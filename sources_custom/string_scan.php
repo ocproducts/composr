@@ -5108,6 +5108,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MEMBER_GIVEN_POINTS
         MEMBER_GIVEN_POINTS_FOR
         MEMBER_ID
+        HISTORY
         MEMBER_IMPORT_CPF_ADDED
         MEMBER_IMPORT_GROUP_ADDED
         MEMBER_NO_EXIST
