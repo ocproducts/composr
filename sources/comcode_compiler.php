@@ -1245,18 +1245,29 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 }
                                 foreach ($shortcuts as $code => $replacement) {
                                     if (($next === $code[0]) && (isset($comcode[$pos])) && ($comcode[$pos] === $code[1]) && (substr($comcode, $pos - 1, strlen($code)) === $code)) {
-                                        if ($GLOBALS['XSS_DETECT']) {
-                                            ocp_mark_as_escaped($continuation);
+
+                                        $passes = true;
+
+                                        if (($code == '--') || ($code == '<--') || ($code == '-->')) {
+                                            if ((strpos($comcode, '<!--') !== false) || (strpos($comcode, '-->') !== false) || (strpos($comcode, '&lt;!--') !== false) || (strpos($comcode, '--&gt;') !== false)) {
+                                                $passes = false;
+                                            }
                                         }
-                                        $tag_output->attach($continuation);
-                                        $continuation = '';
-                                        $pos += strlen($code) - 1;
-                                        $differented = true;
-                                        if ($GLOBALS['XSS_DETECT']) {
-                                            ocp_mark_as_escaped($replacement);
+
+                                        if ($passes) {
+                                            if ($GLOBALS['XSS_DETECT']) {
+                                                ocp_mark_as_escaped($continuation);
+                                            }
+                                            $tag_output->attach($continuation);
+                                            $continuation = '';
+                                            $pos += strlen($code) - 1;
+                                            $differented = true;
+                                            if ($GLOBALS['XSS_DETECT']) {
+                                                ocp_mark_as_escaped($replacement);
+                                            }
+                                            $tag_output->attach($replacement);
+                                            break;
                                         }
-                                        $tag_output->attach($replacement);
-                                        break;
                                     }
                                 }
                             }
