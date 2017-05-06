@@ -130,7 +130,7 @@ class Hook_addon_registry_core_feedback_features
             'sources/hooks/systems/rss/comments.php',
             'themes/default/templates/COMMENTS_POSTING_FORM.tpl',
             'themes/default/templates/COMMENTS_WRAPPER.tpl',
-            'themes/default/templates/COMMENTS_DEFAULT_TEXT.tpl',
+            'themes/default/templates/COMMENTS_DEFAULT_POST.tpl',
             'themes/default/templates/RATING_BOX.tpl',
             'themes/default/templates/RATING_INLINE_STATIC.tpl',
             'themes/default/templates/RATING_INLINE_DYNAMIC.tpl',
@@ -174,7 +174,7 @@ class Hook_addon_registry_core_feedback_features
     public function tpl_previews()
     {
         return array(
-            'templates/COMMENTS_DEFAULT_TEXT.tpl' => 'comments_default_text',
+            'templates/COMMENTS_DEFAULT_POST.tpl' => 'comments_default_text',
             'templates/TRACKBACK.tpl' => 'administrative__trackback_delete_screen',
             'templates/TRACKBACK_DELETE_SCREEN.tpl' => 'administrative__trackback_delete_screen',
             'xml/TRACKBACK_XML_NO_ERROR.xml' => 'trackback_xml_wrapper',
@@ -208,7 +208,7 @@ class Hook_addon_registry_core_feedback_features
     public function tpl_preview__comments_default_text()
     {
         return array(
-            lorem_globalise(do_lorem_template('COMMENTS_DEFAULT_TEXT', array()), null, '', true)
+            lorem_globalise(do_lorem_template('COMMENTS_DEFAULT_POST', array()), null, '', true)
         );
     }
 
@@ -296,24 +296,24 @@ class Hook_addon_registry_core_feedback_features
         ));
 
         $ret = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
-            'ATTACHMENTS' => $attachments,
-            'ATTACH_SIZE_FIELD' => '',
-            'POST_WARNING' => lorem_phrase(),
-            'COMMENT_TEXT' => lorem_sentence_html(),
-            'GET_EMAIL' => lorem_word_html(),
-            'EMAIL_OPTIONAL' => lorem_word_html(),
+            'USE_CAPTCHA' => false,
+            'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => $attachments,
+            'ATTACH_SIZE_FIELD' => lorem_phrase(),
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'COMMENT_URL' => placeholder_url(),
-            'SUBMIT_NAME' => lorem_word(),
-            'TITLE' => lorem_word(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
-            'FIRST_POST' => lorem_paragraph_html(),
             'FIRST_POST_URL' => placeholder_url(),
-            'NAME' => 'field',
+            'FIRST_POST' => lorem_paragraph_html(),
+            'COMMENT_URL' => placeholder_url(),
         ));
 
         $ret->attach(do_lorem_template('COMMENT_AJAX_HANDLER', array(
@@ -384,25 +384,24 @@ class Hook_addon_registry_core_feedback_features
             $use_captcha = false;
         }
         $form = do_lorem_template('COMMENTS_POSTING_FORM', array(
-            'FIRST_POST_URL' => '',
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
-            'FIRST_POST' => lorem_paragraph_html(),
-            'TYPE' => 'downloads',
-            'ID' => placeholder_id(),
-            'REVIEW_RATING_CRITERIA' => $review_titles,
-            'USE_CAPTCHA' => $use_captcha,
-            'GET_EMAIL' => false,
+            'USE_CAPTCHA' => false,
+            'GET_EMAIL' => true,
             'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'POST_WARNING' => do_lang('POST_WARNING'),
-            'COMMENT_TEXT' => get_option('comment_text'),
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => lorem_phrase(),
+            'ATTACH_SIZE_FIELD' => lorem_phrase(),
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
+            'FIRST_POST_URL' => placeholder_url(),
+            'FIRST_POST' => lorem_paragraph_html(),
             'COMMENT_URL' => placeholder_url(),
-            'TITLE' => lorem_word(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
-            'NAME' => 'field',
         ));
 
         $out = do_lorem_template('COMMENTS_WRAPPER', array(

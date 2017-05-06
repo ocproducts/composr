@@ -777,7 +777,7 @@ class Module_topicview
                 $display = 'none';
                 $expand_type = 'expand';
             }
-            $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
+            $emoticons = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
             require_javascript('editing');
             require_javascript('checking');
             if (addon_installed('captcha')) {
@@ -800,24 +800,25 @@ class Module_topicview
 
             $quick_reply = do_template('COMMENTS_POSTING_FORM', array(
                 '_GUID' => '4c532620f3eb68d9cc820b18265792d7',
-                'JOIN_BITS' => '',
+                'TITLE' => do_lang_tempcode('QUICK_REPLY'),
                 'USE_CAPTCHA' => $use_captcha,
-                'ATTACHMENTS' => $attachments,
-                'ATTACH_SIZE_FIELD' => $attach_size_field,
                 'GET_EMAIL' => false,
                 'EMAIL_OPTIONAL' => true,
                 'GET_TITLE' => false,
+                'TITLE_OPTIONAL' => true,
+                'DEFAULT_TITLE' => '',
                 'POST_WARNING' => $post_warning,
-                'COMMENT_TEXT' => '',
-                'EM' => $em,
+                'RULES_TEXT' => '',
+                'ATTACHMENTS' => $attachments,
+                'ATTACH_SIZE_FIELD' => $attach_size_field,
+                'EMOTICONS' => $emoticons,
                 'EXPAND_TYPE' => $expand_type,
                 'DISPLAY' => $display,
                 'FIRST_POST_URL' => $first_post_url,
                 'FIRST_POST' => $first_post,
-                'MORE_URL' => $more_url,
                 'COMMENT_URL' => $post_url,
-                'TITLE' => do_lang_tempcode('QUICK_REPLY'),
                 'SUBMIT_NAME' => do_lang_tempcode('REPLY'),
+                'MORE_URL' => $more_url,
             ));
         } else {
             $quick_reply = new Tempcode();

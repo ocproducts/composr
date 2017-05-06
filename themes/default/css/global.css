@@ -2709,7 +2709,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 }
 
 .comments_field_name_column {
-	width: 12em;
+	width: 13em;
 }
 
 .comments_field_input_column {
@@ -2755,11 +2755,9 @@ div .post_buttons>*, div .buttons_group_faded>* {
 }
 
 .comments_posting_form_emoticons {
-	float: {!en_left};
-	width: 140px;
-	padding-{!en_right}: 5px;
 	text-align: center;
 	padding-top: 0.5em;
+	padding-left: 0.5em;
 }
 
 .comments_posting_form_emoticons p {
@@ -2797,7 +2795,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	text-align: left;
 }
 .comments_posting_form_end .proceed_button.contains_preview_button, .comments_captcha {
-	margin-left: 180px !important;
+	margin-left: 14.5em !important;
 }
 .comments_posting_form_end #submit_button.near_preview_button {
 	float: right;

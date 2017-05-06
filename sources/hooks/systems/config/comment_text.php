@@ -51,6 +51,6 @@ class Hook_config_comment_text
      */
     public function get_default()
     {
-        return has_no_forum() ? null : static_evaluate_tempcode(do_template('COMMENTS_DEFAULT_TEXT'));
+        return has_no_forum() ? null : static_evaluate_tempcode(do_template('COMMENTS_DEFAULT_POST'));
     }
 }

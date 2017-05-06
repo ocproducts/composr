@@ -146,22 +146,22 @@ class Hook_addon_registry_staff_messaging
     public function tpl_preview__administrative__messaging_message_screen()
     {
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
+            'FIRST_POST_URL' => placeholder_url(),
+            'FIRST_POST' => lorem_paragraph_html(),
             'COMMENT_URL' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
-            'FIRST_POST_URL' => '',
-            'FIRST_POST' => '',
-            'NAME' => 'field',
         ));
 
         return array(
@@ -194,22 +194,22 @@ class Hook_addon_registry_staff_messaging
         require_javascript('posting');
 
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
+            'FIRST_POST_URL' => placeholder_url(),
+            'FIRST_POST' => lorem_paragraph_html(),
             'COMMENT_URL' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
-            'FIRST_POST_URL' => '',
-            'FIRST_POST' => '',
-            'NAME' => 'field',
         ));
 
         return array(
@@ -235,27 +235,26 @@ class Hook_addon_registry_staff_messaging
         require_lang('cns');
 
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
+            'USE_CAPTCHA' => false,
+            'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
+            'GET_TITLE' => true,
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
+            'DISPLAY' => 'block',
             'FIRST_POST_URL' => placeholder_url(),
             'FIRST_POST' => lorem_paragraph_html(),
-            'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
-            'GET_EMAIL' => lorem_word(),
-            'GET_TITLE' => lorem_word(),
-            'EM' => placeholder_emoticon_chooser(),
-            'DISPLAY' => 'block',
-            'TITLE' => lorem_phrase(),
             'COMMENT_URL' => placeholder_url(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
-            'NAME' => 'field',
         ));
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTACT_SIMPLE', array(
-                'EMAIL_OPTIONAL' => lorem_word_html(),
                 'COMMENT_DETAILS' => $comment_details,
                 'MESSAGE' => lorem_phrase(),
             )), null, '', true)

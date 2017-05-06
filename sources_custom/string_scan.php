@@ -7512,7 +7512,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COMCODE_TAGS
         COMING_SOON
         COMMENTS
-        COMMENTS_DEFAULT_TEXT
+        COMMENTS_DEFAULT_POST
         COMMENT_FORUM_NAME
         COMMUNITY
         COMPETITIONS

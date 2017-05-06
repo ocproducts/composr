@@ -1122,7 +1122,7 @@ class CMS_Topic
         require_javascript('plupload');
         require_css('widget_plupload');
 
-        $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
+        $emoticons = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 
         $comment_text = get_option('comment_text');
 
@@ -1163,24 +1163,26 @@ class CMS_Topic
 
         return do_template('COMMENTS_POSTING_FORM', array(
             '_GUID' => 'c87025f81ee64c885f0ac545efa5f16c',
-            'EXPAND_TYPE' => 'contract',
-            'FIRST_POST_URL' => '',
-            'FIRST_POST' => '',
+            'TITLE' => $title,
             'JOIN_BITS' => $join_bits,
-            'REVIEWS' => $allow_reviews,
             'TYPE' => $type,
             'ID' => $id,
-            'REVIEW_RATING_CRITERIA' => $reviews_rating_criteria,
             'USE_CAPTCHA' => $use_captcha,
             'GET_EMAIL' => false,
             'EMAIL_OPTIONAL' => true,
-            'GET_TITLE' => null, // Depending upon configuration
+            'GET_TITLE' => (get_option('comment_topic_subject') == '1'),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
             'POST_WARNING' => $post_warning,
-            'COMMENT_TEXT' => $comment_text,
-            'EM' => $em,
+            'RULES_TEXT' => $comment_text,
+            'EMOTICONS' => $emoticons,
+            'REVIEWS' => $allow_reviews,
+            'REVIEW_RATING_CRITERIA' => $reviews_rating_criteria,
+            'EXPAND_TYPE' => 'contract',
             'DISPLAY' => 'block',
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
             'COMMENT_URL' => $post_url,
-            'TITLE' => $title,
         ));
     }
 }

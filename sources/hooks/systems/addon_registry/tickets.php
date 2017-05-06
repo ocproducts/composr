@@ -230,25 +230,24 @@ class Hook_addon_registry_tickets
         $comments = new Tempcode();
 
         $comment_form = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
-            'FIRST_POST_URL' => placeholder_url(),
-            'FIRST_POST' => lorem_paragraph_html(),
             'USE_CAPTCHA' => false,
+            'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
+            'GET_TITLE' => true,
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
             'ATTACHMENTS' => lorem_phrase(),
             'ATTACH_SIZE_FIELD' => lorem_phrase(),
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
-            'GET_EMAIL' => lorem_word(),
-            'EMAIL_OPTIONAL' => lorem_word(),
-            'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'COMMENT_URL' => '',
-            'SUBMIT_NAME' => lorem_phrase(),
-            'TITLE' => lorem_phrase(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
-            'NAME' => 'field',
+            'FIRST_POST_URL' => placeholder_url(),
+            'FIRST_POST' => lorem_paragraph_html(),
+            'COMMENT_URL' => placeholder_url(),
         ));
 
         $other_tickets = new Tempcode();

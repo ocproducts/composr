@@ -37,7 +37,7 @@ class Block_main_contact_us
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'title', 'email_optional', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect', 'guid');
+        $info['parameters'] = array('param', 'title', 'email_optional', 'subject', 'subject_prefix', 'subject_suffix', 'body_prefix', 'body_suffix', 'redirect', 'guid');
         return $info;
     }
 
@@ -64,10 +64,11 @@ class Block_main_contact_us
             $use_captcha = false;
         }
 
-        $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
-        $body_suffix = array_key_exists('body_suffix', $map) ? $map['body_suffix'] : '';
+        $subject = array_key_exists('subject', $map) ? $map['subject'] : '';
         $subject_prefix = array_key_exists('subject_prefix', $map) ? $map['subject_prefix'] : '';
         $subject_suffix = array_key_exists('subject_suffix', $map) ? $map['subject_suffix'] : '';
+        $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
+        $body_suffix = array_key_exists('body_suffix', $map) ? $map['body_suffix'] : '';
 
         $type = array_key_exists('param', $map) ? $map['param'] : do_lang('GENERAL');
         $box_title = array_key_exists('title', $map) ? $map['title'] : do_lang('CONTACT_US');
@@ -130,7 +131,7 @@ class Block_main_contact_us
         if (get_forum_type() != 'none') { // If cns_forum not installed, will still work
             $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('messaging_forum_name'));
             if ($forum_id !== null) {
-                $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
+                $emoticons = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 
                 require_javascript('editing');
                 require_javascript('checking');
@@ -147,10 +148,10 @@ class Block_main_contact_us
                     $use_captcha = false;
                 }
 
-                $default_text = mixed();
+                $default_post = mixed();
                 $redirect = get_param_string('redirect', '', true);
                 if ($redirect != '') {
-                    $default_text = do_lang('COMMENTS_DEFAULT_TEXT', $redirect);
+                    $default_post = do_lang('COMMENTS_DEFAULT_POST', $redirect);
                 }
 
                 $hidden = new Tempcode();
@@ -160,21 +161,22 @@ class Block_main_contact_us
 
                 $comment_details = do_template('COMMENTS_POSTING_FORM', array(
                     '_GUID' => $guid,
-                    'DEFAULT_TEXT' => $default_text,
-                    'JOIN_BITS' => '',
-                    'FIRST_POST_URL' => '',
-                    'FIRST_POST' => '',
-                    'USE_CAPTCHA' => $use_captcha,
-                    'EMAIL_OPTIONAL' => $email_optional,
-                    'POST_WARNING' => '',
-                    'COMMENT_TEXT' => '',
-                    'GET_EMAIL' => true,
-                    'GET_TITLE' => true,
-                    'EM' => $em,
-                    'DISPLAY' => 'block',
-                    'COMMENT_URL' => $comment_url,
                     'TITLE' => $box_title,
                     'HIDDEN' => $hidden,
+                    'USE_CAPTCHA' => $use_captcha,
+                    'GET_EMAIL' => true,
+                    'EMAIL_OPTIONAL' => $email_optional,
+                    'GET_TITLE' => true,
+                    'TITLE_OPTIONAL' => false,
+                    'DEFAULT_TITLE' => $subject,
+                    'DEFAULT_POST' => $default_post,
+                    'POST_WARNING' => '',
+                    'RULES_TEXT' => '',
+                    'EMOTICONS' => $emoticons,
+                    'DISPLAY' => 'block',
+                    'FIRST_POST_URL' => '',
+                    'FIRST_POST' => '',
+                    'COMMENT_URL' => $comment_url,
                     'SUBMIT_NAME' => do_lang_tempcode('SEND'),
                     'SUBMIT_ICON' => 'buttons__send',
                     'SKIP_PREVIEW' => true,

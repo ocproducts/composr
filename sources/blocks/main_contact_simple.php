@@ -37,7 +37,7 @@ class Block_main_contact_simple
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'title', 'private', 'email_optional', 'body_prefix', 'body_suffix', 'subject_prefix', 'subject_suffix', 'redirect', 'guid');
+        $info['parameters'] = array('param', 'title', 'private', 'email_optional', 'subject', 'subject_prefix', 'subject_suffix', 'body_prefix', 'body_suffix', 'redirect', 'guid');
         return $info;
     }
 
@@ -64,10 +64,11 @@ class Block_main_contact_simple
             $use_captcha = false;
         }
 
-        $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
-        $body_suffix = array_key_exists('body_suffix', $map) ? $map['body_suffix'] : '';
+        $subject = array_key_exists('subject', $map) ? $map['subject'] : '';
         $subject_prefix = array_key_exists('subject_prefix', $map) ? $map['subject_prefix'] : '';
         $subject_suffix = array_key_exists('subject_suffix', $map) ? $map['subject_suffix'] : '';
+        $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
+        $body_suffix = array_key_exists('body_suffix', $map) ? $map['body_suffix'] : '';
 
         $to_email = array_key_exists('param', $map) ? $map['param'] : get_option('staff_address');
         $box_title = array_key_exists('title', $map) ? $map['title'] : do_lang('CONTACT_US');
@@ -102,7 +103,7 @@ class Block_main_contact_simple
 
         // Form...
 
-        $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
+        $emoticons = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 
         require_javascript('editing');
         require_javascript('checking');
@@ -126,20 +127,21 @@ class Block_main_contact_simple
 
         $comment_details = do_template('COMMENTS_POSTING_FORM', array(
             '_GUID' => $guid,
-            'JOIN_BITS' => '',
+            'TITLE' => $box_title,
+            'HIDDEN' => $hidden,
+            'USE_CAPTCHA' => $use_captcha,
+            'GET_EMAIL' => !$private,
+            'EMAIL_OPTIONAL' => $email_optional,
+            'GET_TITLE' => !$private,
+            'TITLE_OPTIONAL' => false,
+            'DEFAULT_TITLE' => $subject,
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'EMOTICONS' => $emoticons,
+            'DISPLAY' => 'block',
             'FIRST_POST_URL' => '',
             'FIRST_POST' => '',
-            'USE_CAPTCHA' => $use_captcha,
-            'EMAIL_OPTIONAL' => $email_optional,
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
-            'GET_EMAIL' => !$private,
-            'GET_TITLE' => !$private,
-            'EM' => $em,
-            'DISPLAY' => 'block',
-            'TITLE' => $box_title,
             'COMMENT_URL' => $comment_url,
-            'HIDDEN' => $hidden,
             'SUBMIT_NAME' => do_lang_tempcode('SEND'),
             'SUBMIT_ICON' => 'buttons__send',
             'SKIP_PREVIEW' => true,
@@ -147,7 +149,6 @@ class Block_main_contact_simple
 
         $out = do_template('BLOCK_MAIN_CONTACT_SIMPLE', array(
             '_GUID' => $guid,
-            'EMAIL_OPTIONAL' => true,
             'COMMENT_DETAILS' => $comment_details,
             'MESSAGE' => $message,
         ));

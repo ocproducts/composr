@@ -3468,7 +3468,7 @@ insert into `cms_addons_files` values('core_cns','themes/default/images/cns_emot
  ('core_feedback_features','sources/hooks/systems/rss/comments.php','3272'),
  ('core_feedback_features','themes/default/templates/COMMENTS_POSTING_FORM.tpl','3273'),
  ('core_feedback_features','themes/default/templates/COMMENTS_WRAPPER.tpl','3274'),
- ('core_feedback_features','themes/default/templates/COMMENTS_DEFAULT_TEXT.tpl','3275'),
+ ('core_feedback_features','themes/default/templates/COMMENTS_DEFAULT_POST.tpl','3275'),
  ('core_feedback_features','themes/default/templates/RATING_BOX.tpl','3276'),
  ('core_feedback_features','themes/default/templates/RATING_INLINE_STATIC.tpl','3277'),
  ('core_feedback_features','themes/default/templates/RATING_INLINE_DYNAMIC.tpl','3278'),

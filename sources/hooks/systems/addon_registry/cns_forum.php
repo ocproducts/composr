@@ -1505,24 +1505,22 @@ class Hook_addon_registry_cns_forum
             $pagination = placeholder_pagination();
 
             $quick_reply = do_lorem_template('COMMENTS_POSTING_FORM', array(
+                'TITLE' => lorem_phrase(),
                 'JOIN_BITS' => lorem_phrase_html(),
-                'FIRST_POST' => lorem_paragraph_html(),
                 'USE_CAPTCHA' => false,
-                'GET_EMAIL' => false,
+                'GET_EMAIL' => true,
                 'EMAIL_OPTIONAL' => true,
-                'GET_TITLE' => false,
+                'GET_TITLE' => true,
+                'TITLE_OPTIONAL' => true,
+                'DEFAULT_TITLE' => '',
                 'POST_WARNING' => '',
-                'COMMENT_TEXT' => '',
-                'EM' => placeholder_emoticon_chooser(),
+                'RULES_TEXT' => '',
+                'EMOTICONS' => placeholder_emoticon_chooser(),
                 'EXPAND_TYPE' => 'expand',
                 'DISPLAY' => 'block',
-                'MORE_URL' => placeholder_url(),
                 'FIRST_POST_URL' => placeholder_url(),
+                'FIRST_POST' => lorem_paragraph_html(),
                 'COMMENT_URL' => placeholder_url(),
-                'TITLE' => lorem_word(),
-                'MAKE_POST' => true,
-                'CREATE_TICKET_MAKE_POST' => true,
-                'NAME' => 'field',
             ));
 
             $poll = new Tempcode();

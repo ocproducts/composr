@@ -258,7 +258,7 @@ class Hook_addon_registry_search
             $tpl_tags[] = array(
                 'TAG' => $tag,
                 'COUNT' => strval($count),
-                'EM' => float_to_raw_string($em),
+                'EMOTICONS' => float_to_raw_string($em),
                 'LINK' => placeholder_url(),
             );
         }
