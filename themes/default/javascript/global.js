@@ -1709,8 +1709,6 @@
      * @param resourceEls
      */
     function waitForResources(resourceEls) {
-        var promises = [];
-
         if (resourceEls == null) {
             return;
         }
@@ -3693,7 +3691,7 @@
             if (scriptEls.length > 0) {
                 return new Promise(function (resolve) {
                     $cms.waitForResources(scriptEls).then(function () {
-                        //// Patch silly DOM behavior when dynamically inserting script elements
+                        // Patch stupid DOM behavior when dynamically inserting inline script elements
                         scriptEls.forEach(function (el) {
                             if (!el.src && jsTypeRE.test(el.type)) {
                                 var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
@@ -4008,8 +4006,7 @@
         try {
             doc = iframe.contentDocument;
             de = doc.documentElement;
-        }
-        catch (e) {
+        } catch (e) {
             // May be connection interference somehow
             iframe.scrolling = 'auto';
             return;
