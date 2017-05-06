@@ -258,6 +258,9 @@ class Module_admin_email_log
         $fields['FROM_NAME'] = $from_name;
 
         $to_email = unserialize($row['m_to_email']);
+        if ($to_email === null) {
+            $to_email = array();
+        }
         if (is_string($to_email)) {
             $to_email = array($to_email);
         }
@@ -336,6 +339,9 @@ class Module_admin_email_log
         }
 
         $to_email = unserialize($row['m_to_email']);
+        if ($to_email === null) {
+            $to_email = array();
+        }
         if (is_string($to_email)) {
             $to_email = array($to_email);
         }

@@ -1189,7 +1189,7 @@ class Module_filedump
 
         if ($action == 'zip') {
             header('Content-Type: application/octet-stream' . '; authoritative=true;');
-            header('Content-Disposition: filename="filedump-selection.zip"');
+            header('Content-Disposition: attachment; filename="filedump-selection.zip"');
 
             create_zip_file($file_array, true);
             exit();
