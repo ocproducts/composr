@@ -1249,7 +1249,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         $passes = true;
 
                                         if (($code == '--') || ($code == '<--') || ($code == '-->')) {
-                                            if ((strpos($comcode, '<!--') !== false) || (strpos($comcode, '-->') !== false) || (strpos($comcode, '&lt;!--') !== false) || (strpos($comcode, '--&gt;') !== false)) {
+                                            if ((strpos($comcode, '<!--') !== false)/* || (strpos($comcode, '-->') !== false)*/ || (strpos($comcode, '&lt;!--') !== false)/* || (strpos($comcode, '--&gt;') !== false)*/) {
                                                 $passes = false;
                                             }
                                         }
