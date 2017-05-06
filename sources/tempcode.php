@@ -760,27 +760,29 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
     $_data = mixed();
     $_data = false;
-    if (($CACHE_TEMPLATES) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (!$RECORD_LANG_STRINGS/*Tempcode compilation embeds lang strings*/) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))) {
-        if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
-            $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
-            $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
-        } else {
-            $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
-        }
 
+    // Load from run-time cache?
+    if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
+        // We have run-time caching
+        $_data = $LOADED_TPL_CACHE[$codename][$theme];
+    }
+
+    // Find where template is on disk
+    if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
+        $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
+        $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
+    } else {
+        $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
+    }
+
+    // Load from template cache?
+    if (($CACHE_TEMPLATES) && ($_data === false) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (!$RECORD_LANG_STRINGS/*Tempcode compilation embeds lang strings*/) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))) {
         if ($found !== null) {
             $tcp_path = $prefix . $theme . '/templates_cached/' . $lang . '/' . $codename . $found[2] . '.tcp';
             if ($loaded_this_once) {
-                if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
-                    $_data = $LOADED_TPL_CACHE[$codename][$theme];
-                } else {
-                    $_data = new Tempcode();
-                    $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
-                    if (!$test) {
-                        $_data = false; // failed
-                    }
-                }
+                $may_use_cache = true;
             } else {
+                // We need to support smart-decaching
                 global $SITE_INFO;
                 $support_smart_decaching = support_smart_decaching();
                 if ($support_smart_decaching) {
@@ -800,29 +802,27 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
                         gae_optimistic_cache(false);
                     }
                 }
+
+                $may_use_cache = false;
                 if ((!$support_smart_decaching) || (($tcp_time !== false) && (is_file($file_path)))/*if in install can be found yet no file at path due to running from data.cms*/ && ($found !== null)) {
                     if ((!$support_smart_decaching) || ((filemtime($file_path) < $tcp_time) && ((empty($SITE_INFO['dependency__' . $file_path])) || (dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $file_path]), $tcp_time))))) {
-                        $_data = new Tempcode();
-                        $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
-                        if (!$test) {
-                            $_data = false; // failed
-                        }
+                        $may_use_cache = true;
                     }
                 }
             }
-        } else {
-            $_data = false;
+
+            if ($may_use_cache) {
+                $_data = new Tempcode();
+                $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
+                if (!$test) {
+                    $_data = false; // failed
+                }
+            }
         }
     }
-    if ($_data === false) { // No, it's not
-        if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
-            $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
-            $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
-        } else {
-            $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
-        }
 
-        unset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory]);
+    // Compile?
+    if ($_data === false) { // No, it's not
         if ($found === null) {
             if ($fallback === null) {
                 if ($light_error) {
@@ -839,10 +839,12 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if ($loaded_this_once) {// On 3rd load (and onwards) it will be fully cached
+    if (($loaded_this_once) && (!isset($LOADED_TPL_CACHE[$codename][$theme]))) { // On 3rd load (and onwards) it will be fully cached (1st = from disk with smart-decaching, 2nd = from disk [now], 3rd = from run-time cache)
+        // Set run-time cache
         $LOADED_TPL_CACHE[$codename][$theme] = $_data;
     }
 
+    // Optimisation
     if (!isset($parameters)) { // Streamlined if no parameters involved
         $out = new Tempcode();
         $out->codename = $codename;
@@ -863,11 +865,13 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         return $out;
     }
 
+    // Bind parameters
     $ret = $_data->bind($parameters, $codename);
     if ($special_treatment) {
         $ret->codename = '(mixed)'; // Stop optimisation that assumes the codename represents the sole content of it
     }
 
+    // Special rendering modes
     if ($special_treatment) {
         if ($KEEP_MARKERS) {
             $__data = new Tempcode();
