@@ -1723,6 +1723,13 @@
             $cms.error('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
         }
 
+        if (resourceEls.length < 1) {
+            return Promise.resolve();
+        }
+
+        $cms.log('$cms.waitForResources(): Waiting for resources', resourceEls);
+
+        var scriptsToLoad = [];
         resourceEls.forEach(function (el) {
             if (!isEl(el)) {
                 $cms.error('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
@@ -1730,35 +1737,39 @@
             }
 
             if (el.localName === 'script') {
-                if (el.src && !$cms.dom.hasScriptLoaded(el) && (!el.type || (el.type === 'application/javascript') || (el.type === 'text/javascript'))) {
-                    promises.push(new Promise(function (resolve) {
-                        el.addEventListener('load', function (e) {
-                            $cms.verbose('$cms.waitForResources(): Resource loaded successfully', el);
-                            resolve(e)
-                        });
-                        el.addEventListener('error', function (e) {
-                            $cms.error('$cms.waitForResources(): Resource failed to load', el);
-                            resolve(e); // Because reject(e) will make Promise.all halt
-                        });
-                    }));
-                }
-            } else if (el.localName === 'img') {
-                if (el.src && !el.complete) {
-                    promises.push(new Promise(function (resolve) {
-                        el.addEventListener('load', function (e) {
-                            $cms.verbose('$cms.waitForResources(): Resource loaded successfully', el);
-                            resolve(e)
-                        });
-                        el.addEventListener('error', function (e) {
-                            $cms.error('$cms.waitForResources(): Resource failed to load', el);
-                            resolve(e); // Because reject(e) will make Promise.all halt
-                        });
-                    }));
+                if (el.src && !$cms.dom.hasScriptLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
+                    scriptsToLoad.push(el);
                 }
             }
         });
 
-        return Promise.all(promises);
+        if (scriptsToLoad.length < 1) {
+            return Promise.resolve();
+        }
+
+        return new Promise(function (resolve) {
+            $cms.scriptsLoadedListeners.push(function scriptResourceListener(event) {
+                var loadedEl = event.target;
+
+                if (!scriptsToLoad.includes(loadedEl)) {
+                    return;
+                }
+
+                if (event.type === 'load') {
+                    $cms.log('$cms.waitForResources(): Resource loaded successfully', loadedEl);
+                } else {
+                    $cms.error('$cms.waitForResources(): Resource failed to load', loadedEl);
+                }
+
+                scriptsToLoad = scriptsToLoad.filter(function (el) {
+                    return el !== loadedEl;
+                });
+
+                if (scriptsToLoad.length < 1) {
+                    resolve(event);
+                }
+            });
+        });
     }
 
     /**
@@ -1776,54 +1787,37 @@
         document.head.appendChild(link);
     }
 
+    var validIdRE = /^[a-zA-Z][\w:.-]*$/;
     var requireJavascriptPromises = Object.create(null);
     function _requireJavascript(script) {
         script = strVal(script);
 
-        if (requireJavascriptPromises[script] == null) {
-            var scriptEl = $cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified') || $cms.dom.$('script[src='+ script + ']');
+        if (requireJavascriptPromises[script] != null) {
+            return requireJavascriptPromises[script];
+        }
 
-            if (scriptEl) {
-                if ($cms.dom.hasScriptLoaded(scriptEl)) {
-                    requireJavascriptPromises[script] = Promise.resolve({ target: scriptEl });
-                } else {
-                    requireJavascriptPromises[script] = new Promise(function (resolve, reject) {
-                        scriptEl.addEventListener('load', function (e) {
-                            resolve(e)
-                        });
-                        scriptEl.addEventListener('error', function (e) {
-                            $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
-                            resolve(e); // Because reject(e) will make Promise.all halt
-                        });
-                    });
-                }
+        if (isAbsoluteHttp(script) && $cms.dom.hasScriptLoaded(script)) {
+            return Promise.resolve();
+        }
 
+        var scriptEl;
+
+        if (validIdRE.test(script)) {
+            scriptEl = $cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified');
+        }
+
+        if (!scriptEl) {
+            scriptEl = document.createElement('script');
+            scriptEl.defer = true;
+            if (isAbsoluteHttp(script)) {
+                scriptEl.src = script;
             } else {
-                requireJavascriptPromises[script] = new Promise(function (resolve, reject) {
-                    var sEl = document.createElement('script');
-                    sEl.defer = true;
-                    sEl.addEventListener('load', function (e) {
-                        resolve(e)
-                    });
-                    sEl.addEventListener('error', function (e) {
-                        $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
-                        resolve(e); // Because reject(e) will make Promise.all halt
-                    });
-
-                    if (isAbsoluteHttp(script)) {
-                      sEl.src = script;
-                    } else {
-                        sEl.id = 'javascript-' + script;
-                        sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
-                    }
-
-                    if (document.body) {
-                        document.body.appendChild(sEl);
-                    } else {
-                        document.head.appendChild(sEl);
-                    }
-                });
+                scriptEl.id = 'javascript-' + script;
+                scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
             }
+
+            document.body.appendChild(scriptEl);
+            requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
         }
 
         return requireJavascriptPromises[script];
@@ -2704,15 +2698,15 @@
 
     $cms.dom.hasScriptLoaded = function hasScriptLoaded(elOrSrc) {
         if (isNode(elOrSrc)) {
-            return $cms.loadedScripts.includes(elOrSrc);
+            return $cms.scriptsLoaded.includes(elOrSrc);
         }
 
         var src = strVal(elOrSrc),
             scriptEl;
 
         // NB: Inaccurate when a script with the same src is supposed to be loaded/executed multiple times.
-        for (var i = 0; i < $cms.loadedScripts.length; i++) {
-            scriptEl = $cms.loadedScripts[i];
+        for (var i = 0; i < $cms.scriptsLoaded.length; i++) {
+            scriptEl = $cms.scriptsLoaded[i];
             if (scriptEl.src === src) {
                 return true;
             }
@@ -3550,7 +3544,7 @@
     var fragmentRE = /^\s*<(\w+|!)[^>]*>/,
         singleTagRE = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
         tagExpanderRE = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
-        jsTypeRE = /^(?:|application\/javascript|type\/javascript)$/i,
+        jsTypeRE = /^(?:|application\/javascript|text\/javascript)$/i,
         table = document.createElement('table'),
         tableRow = document.createElement('tr'),
         containers = {
@@ -3566,7 +3560,7 @@
     // This function can be overridden in plugins for example to make
     // it compatible with browsers that don't support the DOM fully.
     $cms.dom.fragment = function(html, name, properties) {
-        var dom, container;
+        var container, dom, i;
 
         html = strVal(html);
 
@@ -3589,6 +3583,13 @@
             forEach(container.childNodes, function(child){
                 container.removeChild(child)
             });
+
+            for (i = 0; i < dom.length; i++) {
+                // Cloning script[src] elements inserted to .innherHTML is required for them to actually work
+                if ((dom[i].localName === 'script') && jsTypeRE.test(dom[i].type) && dom[i].src) {
+                    dom[i] = cloneScriptEl(dom[i]);
+                }
+            }
         }
 
         if (isPlainObj(properties)) {
@@ -3627,7 +3628,7 @@
             // `args` can be nodes, arrays of nodes and HTML strings
             var args = toArray(arguments, 1),
                 nodes = [],
-                parent = inside ? target : target.parentNode;
+                newParent = inside ? target : target.parentNode;
 
             args.forEach(function(arg) {
                 if (Array.isArray(arg)) {
@@ -3662,62 +3663,70 @@
                     funcName === 'before' ? target :
                         null;
 
-            var parentInDocument = $cms.dom.contains(document.documentElement, parent),
-                promises = [];
+            var parentInDocument = $cms.dom.contains(document.documentElement, newParent),
+                scriptEls = [];
 
             nodes.forEach(function (node) {
                 if (!isNode(node)) {
                     return;
                 }
 
-                if (!parent) {
+                if (!newParent) {
                     node.remove();
                     return;
                 }
                 // Insert the node
-                parent.insertBefore(node, target);
+                newParent.insertBefore(node, target);
 
                 if (!isEl(node)) {
                     return;
                 }
 
-                var scriptEls = parentInDocument ? $cms.dom.$$$(node, 'script') : [];
-
-                // Patch silly DOM behavior when dynamically inserting script elements
-                if (scriptEls.length > 0) {
-                    promises.push(new Promise(function (resolve) {
-                        scriptEls.forEach(function (el) {
-                            if (el.src && jsTypeRE.test(el.type) && !$cms.dom.hasScriptLoaded(el)) {
-                                el.parentNode.replaceChild(cloneScriptEl(el), el);
-                            }
-                        });
-
-                        $cms.waitForResources($cms.dom.$$$(node, 'script[src]')).then(function () {
-                            $cms.dom.$$$(node, 'script').forEach(function (el) {
-                                if (!el.src && jsTypeRE.test(el.type)) {
-                                    var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
-                                    win['eval'].call(win, el.innerHTML); // eval() call
-                                }
-                            });
-
-                            $cms.attachBehaviors(node);
-                            resolve();
-                        });
-                    }));
-                } else {
-                    $cms.attachBehaviors(node);
+                if (parentInDocument) {
+                    var tmp = $cms.dom.$$$(node, 'script');
+                    if (tmp.length > 0) {
+                        scriptEls = scriptEls.concat(tmp);
+                    }
                 }
             });
 
-            return Promise.all(promises);
+            if (scriptEls.length > 0) {
+                return new Promise(function (resolve) {
+                    $cms.waitForResources(scriptEls).then(function () {
+                        //// Patch silly DOM behavior when dynamically inserting script elements
+                        scriptEls.forEach(function (el) {
+                            if (!el.src && jsTypeRE.test(el.type)) {
+                                var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
+                                win['eval'].call(win, el.innerHTML); // eval() call
+                            }
+                        });
+
+                        nodes.forEach(function (node) {
+                            if (isEl(node)) {
+                                $cms.attachBehaviors(node);
+                            }
+                        });
+
+                        resolve();
+                    });
+                });
+            } else {
+                nodes.forEach(function (node) {
+                    if (isEl(node)) {
+                        $cms.attachBehaviors(node);
+                    }
+                });
+
+                return Promise.resolve();
+            }
         };
     }
 
-    function _forEachPromise(arr, callback) {
+    function _promiseLoop(arr, callback) {
         // To be implemented
     }
 
-    function forEachPromise(arr, callback) {
+    function promiseLoop(arr, callback) {
         // To be implemented
     }
 
@@ -3742,7 +3751,7 @@
 
         clone.defer = !!scriptEl.defer;
         clone.async = !!scriptEl.async;
-        clone.src = scriptEl.src;
+        clone.src = strVal(scriptEl.src);
 
         return clone;
     }
@@ -4513,7 +4522,7 @@
 
         settings || (settings = $cms.settings);
 
-        $cms.waitForResources($cms.dom.$$$(context, 'script[src]')).then(function () { // Wait for <script> dependencies to load
+        //$cms.waitForResources($cms.dom.$$$(context, 'script[src]')).then(function () { // Wait for <script> dependencies to load
             // Execute all of them.
             var names = behaviorNamesByPriority();
 
@@ -4543,7 +4552,7 @@
                     _attach(i);
                 }
             }
-        });
+        //});
 
         return Promise.all([]);
     }
@@ -5207,7 +5216,6 @@
             $cms.dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
-
 
         /**
          * Clears all callbacks previously bound to the view by `delegateEvents`.
@@ -7686,8 +7694,9 @@
                     }
 
                     try {
+                        $cms.log('$cms.behaviors.initializeTemplates.attach(): Initializing template "' + template + '"');
                         $cms.templates[template].call(el, params, el);
-                        $cms.verbose('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
+                        $cms.log('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
                     } catch (ex) {
                         $cms.error('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
                     }

@@ -5,13 +5,7 @@
         var search = strVal(params.search),
             spammerBlackhole = strVal(params.spammerBlackhole);
 
-        document.body.appendChild($cms.dom.create('script', null, {
-            onload: jsapiLoaded,
-            defer: true,
-            src: 'https://www.google.com/jsapi'
-        }));
-
-        function jsapiLoaded() {
+        $cms.requireJavascript('https://www.google.com/jsapi').then(function () {
             google.load('search', '1', { language: 'en' });
             google.setOnLoadCallback(function() {
                 var customSearchControl = new google.search.CustomSearchControl('');
@@ -44,6 +38,6 @@
                     }
                 }
             }, true);
-        }
+        });
     };
 }(window.$cms));

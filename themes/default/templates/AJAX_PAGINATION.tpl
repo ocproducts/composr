@@ -9,4 +9,4 @@
 {+END}
 {+END}
 
-<script type="application/json" data-tpl="ajaxPagination" data-tpl-params="{+START,PARAMS_JSON,wrapper_id,block_call_url,infinite_scroll_call_url}{_*}{+END}">{}</script>
+<div class="tpl_placeholder" style="display: none;" data-tpl="ajaxPagination" data-tpl-params="{+START,PARAMS_JSON,wrapper_id,block_call_url,infinite_scroll_call_url}{_*}{+END}"></div>

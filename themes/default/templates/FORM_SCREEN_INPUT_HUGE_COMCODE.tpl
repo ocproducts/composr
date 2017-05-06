@@ -34,4 +34,4 @@
 	</td>
 </tr>
 
-<script type="application/json" data-require-javascript="core_form_interfaces" data-tpl="formScreenInputHugeComcode" data-tpl-params="{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id,REQUIRED}{_*}{+END}">{}</script>
+<div class="tpl_placeholder" style="display: none;" data-require-javascript="core_form_interfaces" data-tpl="formScreenInputHugeComcode" data-tpl-params="{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id,REQUIRED}{_*}{+END}"></div>
