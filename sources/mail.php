@@ -1083,6 +1083,12 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 }
             }
             $sending_message .= chunk_split(base64_encode($contents), 76, $line_term);
+
+            $sf_prefix = get_custom_file_base() . '/safe_mode_temp/';
+            if (substr($path, 0, strlen($sf_prefix)) == $sf_prefix) {
+                @unlink($path);
+                sync_file($path);
+            }
         }
 
         $sending_message .= $line_term . '--' . $boundary . '--' . $line_term;
@@ -1501,20 +1507,22 @@ function form_to_email_entry_script()
 }
 
 /**
- * Send the POSTed form over email to the staff address.
+ * Send the POSTed form over e-mail to the staff address.
  *
- * @param  ?string $subject The subject of the email (null: from POSTed/tagged subject parameter).
- * @param  string $intro The intro text to the mail (blank: none).
- * @param  ?array $fields A map of fields to field titles to transmit. (null: all POSTed fields, except subject and email)
- * @param  ?string $to_email Email address to send to (null: look from POST environment [if allowed] / staff address).
- * @param  string $outro The outro text to the mail (blank: none).
+ * @param  ?string $subject The subject of the e-mail (null: from POSTed/tagged subject parameter).
+ * @param  string $subject_prefix The prefix text to the e-mail subject (blank: none).
+ * @param  string $subject_suffix The suffix text to the e-mail subject (blank: none).
+ * @param  string $body_prefix The prefix text to the e-mail body (blank: none).
+ * @param  string $body_suffix The suffix text to the e-mail body (blank: none).
+ * @param  ?array $fields A map of fields to field titles to transmit. (null: all POSTed fields, except subject and e-mail)
+ * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address).
  * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
  */
-function form_to_email($subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
+function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $fields = null, $to_email = null, $is_via_post = true)
 {
     // Data
-    $details = _form_to_email(null, $subject, $intro, $fields, $to_email, $outro, $is_via_post);
-    list($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments) = $details;
+    $details = _form_to_email(null, $subject, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, $fields, $to_email, $is_via_post);
+    list($subject, $body, $to_email, $to_name, $from_email, $from_name, $attachments) = $details;
 
     // Check CAPTCHA
     if (addon_installed('captcha')) {
@@ -1524,8 +1532,13 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
         }
     }
 
+    // User metadata
+    require_code('lookup');
+    $user_metadata_path = save_user_metadata();
+    $attachments[$user_metadata_path] = 'user_metadata.txt';
+
     // Send e-mail
-    mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
+    mail_wrap($subject, $body, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
 
     // Send standard confirmation email to current user
     if ($from_email != '' && get_option('message_received_emails') == '1') {
@@ -1538,16 +1551,18 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
  *
  * @param  ?array $extra_boring_fields Fields to skip in addition to the normal skipped ones (null: just the normal skipped ones)
  * @param  ?string $subject The subject of the e-mail (null: from POSTed/tagged subject parameter).
- * @param  string $intro The intro text to the e-mail (blank: none).
+ * @param  string $subject_prefix The prefix text to the e-mail subject (blank: none).
+ * @param  string $subject_suffix The suffix text to the e-mail subject (blank: none).
+ * @param  string $body_prefix The prefix text to the e-mail body (blank: none).
+ * @param  string $body_suffix The suffix text to the e-mail body (blank: none).
  * @param  ?array $fields A map of field names to field titles to transmit. (null: all POSTed fields, except certain standardised ones)
  * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address).
- * @param  string $outro The outro text to the e-mail (blank: none).
  * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
  * @return array A tuple: subject, message, to e-mail, to name, from e-mail, from name, attachments
  *
  * @ignore
  */
-function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
+function _form_to_email($extra_boring_fields = null, $subject = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $fields = null, $to_email = null, $is_via_post = true)
 {
     if ($extra_boring_fields === null) {
         $extra_boring_fields = array(); // TODO: Fix in v11
@@ -1587,16 +1602,16 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
 
     // Find body...
 
-    $message_raw = '';
-    if ($intro != '') {
-        $message_raw .= $intro . "\n\n------------\n\n";
+    $body = '';
+    if ($body_prefix != '') {
+        $body .= $body_prefix . "\n\n------------\n\n";
     }
 
     if ($is_via_post) {
         foreach ($fields as $field_name => $field_title) {
             $field_val = post_param_string($field_name, null);
             if (!is_null($field_val)) {
-                _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val, count($fields));
+                _append_form_to_email($body, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val, count($fields));
 
                 // Tie in to tagging
                 if (post_param_string('field_tagged__' . $field_name, '') == 'email') {
@@ -1613,13 +1628,13 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
     } else {
         foreach ($fields as $field_title => $field_val) {
             if (!is_null($field_val)) {
-                _append_form_to_email($message_raw, false, $field_title, $field_val, count($fields));
+                _append_form_to_email($body, false, $field_title, $field_val, count($fields));
             }
         }
     }
 
-    if ($outro != '') {
-        $message_raw .= "\n\n------------\n\n" . $outro;
+    if ($body_suffix != '') {
+        $body .= "\n\n------------\n\n" . $body_suffix;
     }
 
     // Find from details if complex...
@@ -1653,13 +1668,13 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
 
     // ---
 
-    return array($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments);
+    return array($subject_prefix . $subject . $subject_suffix, $body, $to_email, $to_name, $from_email, $from_name, $attachments);
 }
 
 /**
  * Append a value to a text e-mail.
  *
- * @param  string $message_raw Text-email (altered by reference).
+ * @param  string $body Text-email (altered by reference).
  * @param  boolean $is_tick Whether it is a tick field.
  * @param  string $field_title Field title.
  * @param  string $field_val Field value.
@@ -1667,7 +1682,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '
  *
  * @ignore
  */
-function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val, $num_fields)
+function _append_form_to_email(&$body, $is_tick, $field_title, $field_val, $num_fields)
 {
     $prefix = '';
     if ($num_fields != 1) {
@@ -1680,20 +1695,20 @@ function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val
     }
 
     if ($is_tick && in_array($field_val, array('', '0', '1'))) {
-        $message_raw .= $prefix;
-        $message_raw .= ($field_val == '1') ? do_lang('YES') : do_lang('NO');
+        $body .= $prefix;
+        $body .= ($field_val == '1') ? do_lang('YES') : do_lang('NO');
     } else {
         if ($field_val == '') {
             return; // We won't show blank values, gets long
         }
 
-        $message_raw .= $prefix;
+        $body .= $prefix;
         if ($field_val == '') {
-            $message_raw .= '(' . do_lang('EMPTY') . ')';
+            $body .= '(' . do_lang('EMPTY') . ')';
         } else {
-            $message_raw .= $field_val;
+            $body .= $field_val;
         }
     }
 
-    $message_raw .= "\n\n";
+    $body .= "\n\n";
 }

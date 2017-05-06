@@ -271,11 +271,12 @@
 						{+END}
 					{+END}
 
-					<div class="proceed_button buttons_group">
-						{+START,IF,{$NOT,{$MOBILE}}}
-							{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
-								<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
-							{+END}{+END}{+END}
+					{$SET,has_preview_button,{$AND,{$NOT,{$MOBILE}},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}
+					{+START,IF_PASSED,SKIP_PREVIEW}{$SET,has_preview_button,0}{+END}
+
+					<div class="proceed_button buttons_group {$?,{$GET,has_preview_button},contains_preview_button,contains_no_preview_button}">
+						{+START,IF,{$GET,has_preview_button}}
+							<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
 						{+END}
 
 						{+START,IF_PASSED,MORE_URL}
@@ -291,7 +292,8 @@
 						{+END}
 
 						{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-						<input onclick="handle_comments_posting_form_submit(this,event);" tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
+						{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON*}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END}{+END}{+END}
+						<input onclick="handle_comments_posting_form_submit(this,event);" tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near_preview_button,not_near_preview_button} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
 					</div>
 				</div>
 			</div>

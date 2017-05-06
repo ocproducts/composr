@@ -69,7 +69,7 @@ class Block_main_contact_simple
         $subject_prefix = array_key_exists('subject_prefix', $map) ? $map['subject_prefix'] : '';
         $subject_suffix = array_key_exists('subject_suffix', $map) ? $map['subject_suffix'] : '';
 
-        $to = array_key_exists('param', $map) ? $map['param'] : get_option('staff_address');
+        $to_email = array_key_exists('param', $map) ? $map['param'] : get_option('staff_address');
         $box_title = array_key_exists('title', $map) ? $map['title'] : do_lang('CONTACT_US');
         $private = (array_key_exists('private', $map)) && ($map['private'] == '1');
         $email_optional = array_key_exists('email_optional', $map) ? (intval($map['email_optional']) == 1) : true;
@@ -78,31 +78,16 @@ class Block_main_contact_simple
 
         // Submission...
 
-        list($subject, $message_raw, , , $from_email, $from_name) = _form_to_email();
-        if ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id) && ($message_raw != '')) {
+        if ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id)) {
             $message = new Tempcode();/*Used to be written out here*/
 
             // Check CAPTCHA
             if ($use_captcha) {
-                require_code('captcha');
                 enforce_captcha();
             }
 
-            // Checking
-            if ($from_email != '') {
-                require_code('type_sanitisation');
-                if (!is_email_address($from_email)) {
-                    return paragraph(do_lang_tempcode('INVALID_EMAIL_ADDRESS'), '', 'red_alert');
-                }
-            }
-
             // Send e-mail
-            mail_wrap($subject_prefix . $subject . $subject_suffix, $body_prefix . $message_raw . $body_suffix, array($to), null, $from_email, $from_name, 3, null, false, get_member());
-
-            // Send standard confirmation email to current user
-            if ($from_email != '' && get_option('message_received_emails') == '1') {
-                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $message_raw), array($from_email), null, '', '', 3, null, false, get_member());
-            }
+            form_to_email(null, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, null, $to_email, true);
 
             // Redirect/messaging
             $redirect = array_key_exists('redirect', $map) ? $map['redirect'] : '';
@@ -155,6 +140,9 @@ class Block_main_contact_simple
             'TITLE' => $box_title,
             'COMMENT_URL' => $comment_url,
             'HIDDEN' => $hidden,
+            'SUBMIT_NAME' => do_lang_tempcode('SEND'),
+            'SUBMIT_ICON' => 'buttons__send',
+            'SKIP_PREVIEW' => true,
         ));
 
         $out = do_template('BLOCK_MAIN_CONTACT_SIMPLE', array(

@@ -525,11 +525,27 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email, $
             get_site_default_lang()
         );
 
+        if ($new_ticket) {
+            require_code('lookup');
+            $user_metadata_path = save_user_metadata();
+        }
         dispatch_notification(
             $new_ticket ? 'ticket_new_staff' : 'ticket_reply_staff',
             strval($ticket_type_id),
             $subject,
-            $message
+            $message,
+            null,
+            null,
+            3,
+            false,
+            false,
+            null,
+            null,
+            '',
+            '',
+            '',
+            '',
+            $new_ticket ? array($user_metadata_path => 'user_metadata.txt') : array()
         );
 
         // ALSO: Tell member that their message was received

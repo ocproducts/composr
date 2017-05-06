@@ -77,15 +77,15 @@ class Block_main_contact_us
 
         // Submission...
 
-        list($subject, $message_raw, , , $from_email, $from_name) = _form_to_email();
-        if ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id) && ($message_raw != '')) {
+        if ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id)) {
             $message = new Tempcode();/*Used to be written out here*/
 
             // Check CAPTCHA
             if ($use_captcha) {
-                require_code('captcha');
                 enforce_captcha();
             }
+
+            list($subject, $body, , , $from_email, $from_name) = _form_to_email(null, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix);
 
             // Checking
             if ($from_email != '') {
@@ -97,15 +97,17 @@ class Block_main_contact_us
 
             // Handle notifications
             require_code('notifications');
-            $notification_subject = do_lang('CONTACT_US_NOTIFICATION_SUBJECT', $subject_prefix . $subject . $subject_suffix, null, null, get_site_default_lang());
-            $notification_message = do_notification_lang('CONTACT_US_NOTIFICATION_MESSAGE', comcode_escape(get_site_name()), comcode_escape($from_name), array($body_prefix . $message_raw . $body_suffix, comcode_escape($type), strval(get_member())), get_site_default_lang());
+            $notification_subject = do_lang('CONTACT_US_NOTIFICATION_SUBJECT', $subject, null, null, get_site_default_lang());
+            $notification_message = do_notification_lang('CONTACT_US_NOTIFICATION_MESSAGE', comcode_escape(get_site_name()), comcode_escape($from_name), array($body, comcode_escape($type), strval(get_member())), get_site_default_lang());
             $id = uniqid('', false);
-            dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, 3, true, false, null, null, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix);
+            require_code('lookup');
+            $user_metadata_path = save_user_metadata();
+            dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, 3, true, false, null, null, '', '', '', '', array($user_metadata_path => 'user_metadata.txt'));
 
             // Send standard confirmation email to current user
             if ($from_email != '' && get_option('message_received_emails') == '1') {
                 require_code('mail');
-                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $message_raw), array($from_email), null, '', '', 3, null, false, get_member());
+                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $body), array($from_email), null, '', '', 3, null, false, get_member());
             }
 
             // Redirect/messaging
@@ -173,6 +175,9 @@ class Block_main_contact_us
                     'COMMENT_URL' => $comment_url,
                     'TITLE' => $box_title,
                     'HIDDEN' => $hidden,
+                    'SUBMIT_NAME' => do_lang_tempcode('SEND'),
+                    'SUBMIT_ICON' => 'buttons__send',
+                    'SKIP_PREVIEW' => true,
                 ));
 
                 $notifications_enabled = null;

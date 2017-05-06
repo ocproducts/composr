@@ -233,12 +233,31 @@ function find_security_alerts($where)
 }
 
 /**
+ * Save analytics metadata for the current user's request into a file.
+ *
+ * @param boolean $include_referer Whether to include the referer
+ * @return PATH The path of the file
+ */
+function save_user_metadata($include_referer = false)
+{
+    $data = find_user_metadata($include_referer);
+
+    $path = get_custom_file_base() . '/safe_mode_temp/mail_' . uniqid('', true) . '.txt';
+
+    file_put_contents($path, json_encode($data));
+    fix_permissions($path);
+    sync_file($path);
+
+    return $path;
+}
+
+/**
  * Find analytics metadata for the current user's request.
  *
  * @param boolean $include_referer Whether to include the referer
  * @return array Data
  */
-function find_request_metadata($include_referer = true)
+function find_user_metadata($include_referer = true)
 {
     $data = array();
 
@@ -254,7 +273,7 @@ function find_request_metadata($include_referer = true)
 
     $data[do_lang('IP_ADDRESS')] = get_ip_address();
 
-    $data['Session ID'] = get_session_id();
+    //$data['Session ID'] = get_session_id();   Don't want to pass this out too freely, not useful anyway
 
     if (php_function_allowed('gethostbyaddr')) {
         $data['Reverse-DNS/WHOIS'] = gethostbyaddr(get_ip_address());
@@ -334,7 +353,7 @@ function find_request_metadata($include_referer = true)
         $data[do_lang('HISTORY')] = $history;
     }
 
-    $data['Cookie'] = $_COOKIE;
+    //$data['Cookie'] = $_COOKIE;   Don't want to pass this out too freely, not useful anyway
 
     return $data;
 }
