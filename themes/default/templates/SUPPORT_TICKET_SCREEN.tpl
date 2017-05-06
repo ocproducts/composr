@@ -154,7 +154,12 @@
 {$SET,COMMENT_POSTING_ROWS,20}
 
 {+START,IF_NON_EMPTY,{COMMENT_FORM}}
-	<form title="{!PRIMARY_PAGE_FORM}" id="comments_form" onsubmit="return (check_field_for_blankness(this.elements['post'],event)) &amp;&amp; ((!this.elements['ticket_type_id']) || (check_field_for_blankness(this.elements['ticket_type_id'],event)));" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" id="comments_form" onsubmit="
+		var ret=true;
+		if (!check_field_for_blankness(this.elements['post'],event,ret)) ret=false;
+		if ((this.elements['ticket_type_id']) &amp;&amp; (!check_field_for_blankness(this.elements['ticket_type_id'],event,ret))) ret=false;
+		return ret;
+		" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{COMMENT_FORM}

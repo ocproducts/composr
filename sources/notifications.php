@@ -618,7 +618,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
                     false,
                     false,
                     'MAIL',
-                    true,
+                    false,
                     null,
                     null,
                     $join_time

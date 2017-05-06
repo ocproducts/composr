@@ -568,7 +568,7 @@ function set_font_size(size)
 }
 
 /* Very simple form control flow */
-function check_field_for_blankness(field,event)
+function check_field_for_blankness(field,event,already_shown_message)
 {
 	if (!field) return true; // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
 	if (typeof field.nodeName=='undefined') return true; // Also bizarre
@@ -597,7 +597,8 @@ function check_field_for_blankness(field,event)
 			set_inner_html(ee,'{!REQUIRED_NOT_FILLED_IN;^}');
 		}
 
-		window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
+		if ((typeof already_shown_message=='undefined') || (!already_shown_message))
+			window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN;^}');
 		return false;
 	}
 

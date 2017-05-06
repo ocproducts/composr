@@ -130,7 +130,7 @@ class Hook_addon_registry_core_feedback_features
             'sources/hooks/systems/rss/comments.php',
             'themes/default/templates/COMMENTS_POSTING_FORM.tpl',
             'themes/default/templates/COMMENTS_WRAPPER.tpl',
-            'themes/default/templates/COMMENTS_DEFAULT_POST.tpl',
+            'themes/default/templates/COMMENTS_DEFAULT_TEXT.tpl',
             'themes/default/templates/RATING_BOX.tpl',
             'themes/default/templates/RATING_INLINE_STATIC.tpl',
             'themes/default/templates/RATING_INLINE_DYNAMIC.tpl',
@@ -174,7 +174,7 @@ class Hook_addon_registry_core_feedback_features
     public function tpl_previews()
     {
         return array(
-            'templates/COMMENTS_DEFAULT_POST.tpl' => 'comments_default_text',
+            'templates/COMMENTS_DEFAULT_TEXT.tpl' => 'comments_default_text',
             'templates/TRACKBACK.tpl' => 'administrative__trackback_delete_screen',
             'templates/TRACKBACK_DELETE_SCREEN.tpl' => 'administrative__trackback_delete_screen',
             'xml/TRACKBACK_XML_NO_ERROR.xml' => 'trackback_xml_wrapper',
@@ -208,7 +208,7 @@ class Hook_addon_registry_core_feedback_features
     public function tpl_preview__comments_default_text()
     {
         return array(
-            lorem_globalise(do_lorem_template('COMMENTS_DEFAULT_POST', array()), null, '', true)
+            lorem_globalise(do_lorem_template('COMMENTS_DEFAULT_TEXT', array()), null, '', true)
         );
     }
 

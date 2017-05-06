@@ -649,9 +649,10 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
  * @param  ?MEMBER $highlight_by_user User to highlight the posts of (null: none)
  * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
  * @param  ?integer $num_to_show_limit Maximum to load (null: default)
+ * @param  ?tempcode $hidden Hidden form fields for commenting form (null: none)
  * @return Tempcode The Tempcode for the comment topic
  */
-function get_comments($content_type, $allow_comments, $content_id, $invisible_if_no_comments = false, $forum = null, $post_warning = null, $_comments = null, $explicit_allow = false, $reverse = null, $highlight_by_user = null, $allow_reviews = false, $num_to_show_limit = null)
+function get_comments($content_type, $allow_comments, $content_id, $invisible_if_no_comments = false, $forum = null, $post_warning = null, $_comments = null, $explicit_allow = false, $reverse = null, $highlight_by_user = null, $allow_reviews = false, $num_to_show_limit = null, $hidden = null)
 {
     if (((get_option('is_on_comments') == '1') && (get_forum_type() != 'none') && ((get_forum_type() != 'cns') || (addon_installed('cns_forum'))) && (($allow_reviews) || ($allow_comments))) || ($explicit_allow)) {
         if (is_null($forum)) {
@@ -661,7 +662,7 @@ function get_comments($content_type, $allow_comments, $content_id, $invisible_if
         require_code('topics');
         $renderer = new CMS_Topic();
 
-        return $renderer->render_as_comment_topic($content_type, $content_id, $allow_comments, $invisible_if_no_comments, $forum, $post_warning, $_comments, $explicit_allow, $reverse, $highlight_by_user, $allow_reviews, $num_to_show_limit);
+        return $renderer->render_as_comment_topic($content_type, $content_id, $allow_comments, $invisible_if_no_comments, $forum, $post_warning, $_comments, $explicit_allow, $reverse, $highlight_by_user, $allow_reviews, $num_to_show_limit, $hidden);
     }
 
     return new Tempcode(); // No franchise to render comments
@@ -724,6 +725,10 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
             require_code('captcha');
             enforce_captcha();
         }
+    }
+
+    if (post_param_string('_block_id', 'non_block')) {
+        return false;
     }
 
     if (is_null($post_title)) {
@@ -924,7 +929,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
     }
 
     if (($post != '') && (!$no_success_message)) {
-        attach_message(do_lang_tempcode('SUCCESS'));
+        attach_message(do_lang_tempcode('COMMENT_POSTED'));
     }
 
     return $is_hidden;

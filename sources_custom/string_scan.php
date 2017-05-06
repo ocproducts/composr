@@ -8526,6 +8526,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NEW_COMMENT_A
         NEW_COMMENT_B
         NEW_COMMENT_BODY
+        COMMENT_POSTED
         NEW_COMMENT_C
         NEW_COMMENT_D
         NEW_COMMENT_E

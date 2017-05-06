@@ -24,15 +24,15 @@
 
 {+START,IF_NON_EMPTY,{COMMENT_URL}}
 <form role="form" title="{TITLE*}" class="comments_form" id="comments_form" onsubmit="
-return
-	(
-		{+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}
-		{+START,IF,{$GET,GET_NAME}}(check_field_for_blankness(this.elements['poster_name_if_guest'],event)) &amp;&amp; {+END}
-		{+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}}(check_field_for_blankness(this.elements['email'],event)) &amp;&amp; {+END}
-		{+START,IF,{$AND,{GET_TITLE},{$NOT,{TITLE_OPTIONAL}}}}(check_field_for_blankness(this.elements['title'],event)) &amp;&amp; {+END}
-		(check_field_for_blankness(this.elements['post'],event))
-	);
-" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
+	{+START,IF_PASSED,MORE_URL}if (this.getAttribute('action')=='{MORE_URL;*}') return true;{+END}
+
+	var ret=true;
+	{+START,IF,{$GET,GET_NAME}}if (!check_field_for_blankness(this.elements['poster_name_if_guest'],event,ret)) ret=false;{+END}
+	{+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}}if (!check_field_for_blankness(this.elements['email'],event,ret)) ret=false;{+END}
+	{+START,IF,{$AND,{GET_TITLE},{$NOT,{TITLE_OPTIONAL}}}}if (!check_field_for_blankness(this.elements['title'],event,ret)) ret=false;{+END}
+	if (!check_field_for_blankness(this.elements['post'],event,ret)) ret=false;
+	return ret;
+	" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 	<input type="hidden" name="_comment_form_post" value="1" />
 {+END}

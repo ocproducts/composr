@@ -244,7 +244,7 @@ function save_user_metadata($include_referer = false)
 
     $path = get_custom_file_base() . '/safe_mode_temp/mail_' . uniqid('', true) . '.txt';
 
-    file_put_contents($path, json_encode($data));
+    file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT));
     fix_permissions($path);
     sync_file($path);
 

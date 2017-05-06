@@ -97,9 +97,10 @@ class CMS_Topic
      * @param  ?MEMBER $highlight_by_member Member to highlight the posts of (null: none)
      * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
      * @param  ?integer $num_to_show_limit Maximum to load (null: default)
+     * @param  ?tempcode $hidden Hidden form fields for commenting form (null: none)
      * @return Tempcode The Tempcode for the comment topic
      */
-    public function render_as_comment_topic($content_type, $content_id, $allow_comments, $invisible_if_no_comments, $forum_name, $post_warning, $preloaded_comments, $explicit_allow, $reverse, $highlight_by_member, $allow_reviews, $num_to_show_limit)
+    public function render_as_comment_topic($content_type, $content_id, $allow_comments, $invisible_if_no_comments, $forum_name, $post_warning, $preloaded_comments, $explicit_allow, $reverse, $highlight_by_member, $allow_reviews, $num_to_show_limit, $hidden = null)
     {
         if ((get_forum_type() == 'cns') && (!addon_installed('cns_forum'))) {
             return new Tempcode();
@@ -176,7 +177,7 @@ class CMS_Topic
             // Make-a-comment form
             if ($may_reply) {
                 $post_url = get_self_url();
-                $form = $this->get_posting_form($content_type, $content_id, $allow_reviews, $post_url, $post_warning);
+                $form = $this->get_posting_form($content_type, $content_id, $allow_reviews, $post_url, $post_warning, $hidden);
             } else {
                 $form = new Tempcode();
             }
@@ -1111,9 +1112,10 @@ class CMS_Topic
      * @param  boolean $allow_reviews Whether to accept reviews
      * @param  Tempcode $post_url URL where form submit will go
      * @param  ?string $post_warning The default post to use (null: standard courtesy warning)
+     * @param  ?tempcode $hidden Hidden form fields for commenting form (null: none)
      * @return Tempcode Posting form
      */
-    public function get_posting_form($type, $id, $allow_reviews, $post_url, $post_warning)
+    public function get_posting_form($type, $id, $allow_reviews, $post_url, $post_warning, $hidden = null)
     {
         require_lang('comcode');
 
@@ -1125,6 +1127,11 @@ class CMS_Topic
         $emoticons = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 
         $comment_text = get_option('comment_text');
+
+        if ($hidden === null) {
+            $hidden = new Tempcode();
+            $hidden->attach(form_input_hidden('_block_id', 'non_block'));
+        }
 
         if (is_null($post_warning)) {
             $post_warning = do_lang('POST_WARNING');
@@ -1164,6 +1171,7 @@ class CMS_Topic
         return do_template('COMMENTS_POSTING_FORM', array(
             '_GUID' => 'c87025f81ee64c885f0ac545efa5f16c',
             'TITLE' => $title,
+            'HIDDEN' => $hidden,
             'JOIN_BITS' => $join_bits,
             'TYPE' => $type,
             'ID' => $id,

@@ -1538,7 +1538,7 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
     $attachments[$user_metadata_path] = 'user_metadata.txt';
 
     // Send e-mail
-    mail_wrap($subject, $body, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
+    mail_wrap($subject, $body, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL');
 
     // Send standard confirmation email to current user
     if ($from_email != '' && get_option('message_received_emails') == '1') {
