@@ -18,7 +18,6 @@ function load_commandr() {
         tmp_element.id = 'commandr_img_loader';
         img.parentNode.appendChild(tmp_element);
 
-        $cms.requireJavascript('ajax');
         $cms.requireJavascript('commandr');
         $cms.requireCss('commandr');
         window.setTimeout(load_commandr, 200);
@@ -58,7 +57,7 @@ function load_commandr() {
                     $cms.dom.html(commandr_box, $cms.loadSnippet('commandr'));
                 }
 
-                if (commandr_box.style.display == 'none')  {// Showing Commandr again
+                if (commandr_box.style.display === 'none')  {// Showing Commandr again
                     commandr_box.style.display = 'block';
 
                     if (img) {

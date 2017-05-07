@@ -3,6 +3,10 @@
 
     // Workaround for bug, document.readyState == 'interactive' before [defer]'d <script>s are loaded :(
     // https://github.com/jquery/jquery/issues/3271
+    /**
+     * @memberOf $cms
+     * @type {boolean}
+     */
     $cms.isDOMContentLoaded = false;
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -10,7 +14,15 @@
     });
 
     // Required for $cms.requireJavascript() to work properly as DOM does not currently provide any way to check if a particular script has been already loaded
+    /**
+     * @memberOf $cms
+     * @type {Array}
+     */
     $cms.scriptsLoaded = [];
+    /**
+     * @memberOf $cms
+     * @type {Array}
+     */
     $cms.scriptsLoadedListeners = [];
 
     document.addEventListener('load', function (event) {
@@ -22,7 +34,7 @@
                     listener.call(event.target, event);
                 }
             });
-            console.log('Script loaded', event.target);
+            //console.log('Script loaded', event.target);
         }
     }, /*useCapture*/true);
 
@@ -34,7 +46,7 @@
                     listener.call(event.target, event);
                 }
             });
-            console.log('Script error\'d', event.target);
+            //console.log('Script error\'d', event.target);
         }
     }, /*useCapture*/true);
 

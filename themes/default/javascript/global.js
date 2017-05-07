@@ -295,7 +295,8 @@
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
          * @method
-         * @returns {string|boolean|number}
+         * @param {configOptions} optionName
+         * @returns {boolean|string|number}
          */
         $CONFIG_OPTION: function $CONFIG_OPTION(optionName) {
             if (window.IN_MINIKERNEL_VERSION) {
@@ -303,7 +304,11 @@
                 return '';
             }
 
-            var options =  {
+            /**
+             * @enum configOptions
+             * @readonly
+             */
+            var configOptions =  {
                 /**@member {boolean}*/
                 js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
                 /**@member {boolean}*/
@@ -358,8 +363,8 @@
                 cookie_notice: strVal(symbols.CONFIG_OPTION.cookie_notice)
             };
 
-            if (hasOwn(options, optionName)) {
-                return options[optionName];
+            if (hasOwn(configOptions, optionName)) {
+                return configOptions[optionName];
             }
 
             $cms.error('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
@@ -548,8 +553,71 @@
         error: error,
         /**@method*/
         exception: exception,
-        /**@method*/
-        waitForResources: waitForResources,
+        /**
+         * @method
+         * @param resourceEls
+         */
+        waitForResources: function waitForResources(resourceEls) {
+            if (resourceEls == null) {
+                return;
+            }
+
+            if (isEl(resourceEls)) {
+                resourceEls = [resourceEls];
+            }
+
+            if (!Array.isArray(resourceEls)) {
+                $cms.error('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+            }
+
+            if (resourceEls.length < 1) {
+                return Promise.resolve();
+            }
+
+            $cms.verbose('$cms.waitForResources(): Waiting for resources', resourceEls);
+
+            var scriptsToLoad = [];
+            resourceEls.forEach(function (el) {
+                if (!isEl(el)) {
+                    $cms.error('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                    return;
+                }
+
+                if (el.localName === 'script') {
+                    if (el.src && !$cms.dom.hasScriptLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
+                        scriptsToLoad.push(el);
+                    }
+                }
+            });
+
+            if (scriptsToLoad.length < 1) {
+                return Promise.resolve();
+            }
+
+            return new Promise(function (resolve) {
+                $cms.scriptsLoadedListeners.push(function scriptResourceListener(event) {
+                    var loadedEl = event.target;
+
+                    if (!scriptsToLoad.includes(loadedEl)) {
+                        return;
+                    }
+
+                    if (event.type === 'load') {
+                        $cms.verbose('$cms.waitForResources(): Resource loaded successfully', loadedEl);
+                    } else {
+                        $cms.error('$cms.waitForResources(): Resource failed to load', loadedEl);
+                    }
+
+                    scriptsToLoad = scriptsToLoad.filter(function (el) {
+                        return el !== loadedEl;
+                    });
+
+                    if (scriptsToLoad.length < 1) {
+                        resolve(event);
+                    }
+                });
+            });
+        },
         /**@method*/
         requireCss: requireCss,
         /**@method*/
@@ -1706,72 +1774,6 @@
 
     /**
      *
-     * @param resourceEls
-     */
-    function waitForResources(resourceEls) {
-        if (resourceEls == null) {
-            return;
-        }
-
-        if (isEl(resourceEls)) {
-            resourceEls = [resourceEls];
-        }
-
-        if (!Array.isArray(resourceEls)) {
-            $cms.error('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
-        }
-
-        if (resourceEls.length < 1) {
-            return Promise.resolve();
-        }
-
-        $cms.log('$cms.waitForResources(): Waiting for resources', resourceEls);
-
-        var scriptsToLoad = [];
-        resourceEls.forEach(function (el) {
-            if (!isEl(el)) {
-                $cms.error('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
-                return;
-            }
-
-            if (el.localName === 'script') {
-                if (el.src && !$cms.dom.hasScriptLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
-                    scriptsToLoad.push(el);
-                }
-            }
-        });
-
-        if (scriptsToLoad.length < 1) {
-            return Promise.resolve();
-        }
-
-        return new Promise(function (resolve) {
-            $cms.scriptsLoadedListeners.push(function scriptResourceListener(event) {
-                var loadedEl = event.target;
-
-                if (!scriptsToLoad.includes(loadedEl)) {
-                    return;
-                }
-
-                if (event.type === 'load') {
-                    $cms.log('$cms.waitForResources(): Resource loaded successfully', loadedEl);
-                } else {
-                    $cms.error('$cms.waitForResources(): Resource failed to load', loadedEl);
-                }
-
-                scriptsToLoad = scriptsToLoad.filter(function (el) {
-                    return el !== loadedEl;
-                });
-
-                if (scriptsToLoad.length < 1) {
-                    resolve(event);
-                }
-            });
-        });
-    }
-
-    /**
-     *
      * @param sheet
      */
     function requireCss(sheet) {
@@ -2205,24 +2207,30 @@
         return (property !== undefined) ? cs.getPropertyValue(property) : cs;
     }
 
-    /**
-     * Returns a single matching child element, defaults to 'document' as parent
-     * @memberof $cms.dom
-     * @param context
-     * @param id
-     * @returns {*}
-     */
-    $cms.dom.$id = function $id(context, id) {
-        if (id === undefined) {
-            id = context;
-            context = document;
-        } else {
-            context = nodeArg(context);
-        }
-        id = strVal(id);
 
-        return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
-    };
+    /** @namespace $cms */
+    $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/ {
+        /**
+         * Returns a single matching child element, defaults to 'document' as parent
+         * @method
+         * @param context
+         * @param id
+         * @returns {*}
+         */
+        $id: function $id(context, id) {
+            if (id === undefined) {
+                id = context;
+                context = document;
+            } else {
+                context = nodeArg(context);
+            }
+            id = strVal(id);
+
+            return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
+        }
+    });
+
+
 
     var rgxIdSelector = /^\#[\w\-]+$/;
     /**
@@ -5209,7 +5217,7 @@
          * @method
          */
         delegate: function (eventName, selector, listener) {
-            //$cms.log('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
+            //$cms.verbose('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
             $cms.dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
@@ -7691,9 +7699,8 @@
                     }
 
                     try {
-                        $cms.log('$cms.behaviors.initializeTemplates.attach(): Initializing template "' + template + '"');
                         $cms.templates[template].call(el, params, el);
-                        $cms.log('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
+                        $cms.verbose('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
                     } catch (ex) {
                         $cms.error('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
                     }
@@ -8981,7 +8988,7 @@
 
             nodes.forEach(function (node) {
                 if ((node.parentNode !== el) && $cms.dom.isDisplayed(node) && node.parentNode.classList.contains('js-tray-accordion-item')) {
-                    $cms.toggleableTray(node, true);
+                    $cms.toggleableTray({ el: node, animate: false });
                 }
             });
 
@@ -9002,25 +9009,32 @@
             var cookieValue = $cms.readCookie('tray_' + this.trayCookie);
 
             if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
-                $cms.toggleableTray(this.contentEl, true);
+                $cms.toggleableTray({ el: this.contentEl, animate: false });
             }
         }
     });
 
-    $cms.toggleableTray = toggleableTray;
     // Toggle a ToggleableTray
-    function toggleableTray(el, noAnimateHeight) {
-        var $IMG_expand = '{$IMG;,1x/trays/expand}',
+    $cms.toggleableTray = function toggleableTray(elOrOptions) {
+        var options, el, animate,
+            $IMG_expand = '{$IMG;,1x/trays/expand}',
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
             $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
 
-        if (!el) {
-            return;
+        if ($cms.isPlainObj(elOrOptions)) {
+            options = elOrOptions;
+            el =  options.el;
+            //@TODO: Implement slide-up/down animation triggered by this boolean
+            animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate != null) ? !!options.animate : true) : false;
+        } else {
+            el = elOrOptions;
+            animate = $cms.$CONFIG_OPTION('enable_animations');
         }
 
-        //@TODO: Implement slide-up/down animation which is triggered by this boolean
-        //noAnimateHeight = $cms.$CONFIG_OPTION('enable_animations') ? !!noAnimateHeight : true;
+        if (!$cms.isEl(el)) {
+            return;
+        }
 
         if (!el.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
             el = $cms.dom.$(el, '.toggleable_tray') || el;
@@ -9072,7 +9086,7 @@
                 }
             }
         }
-    }
+    };
 
     $cms.functions.abstractFileManagerGetAfmForm = function abstractFileManagerGetAfmForm() {
         var usesFtp = document.getElementById('uses_ftp');
