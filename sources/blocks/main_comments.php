@@ -88,9 +88,9 @@ class Block_main_comments
         if (!is_null($test_changed)) {
             decache('main_comments');
         }
-        $hidden = $submitted ? actualise_post_comment(true, 'block_main_comments', $map['page'] . '_' . $map['param'] . $extra, $self_url, $self_title, array_key_exists('forum', $map) ? $map['forum'] : null, false, null, $explicit_allow) : false;
+        $is_hidden = $submitted ? actualise_post_comment(true, 'block_main_comments', $map['page'] . '_' . $map['param'] . $extra, $self_url, $self_title, array_key_exists('forum', $map) ? $map['forum'] : null, false, null, $explicit_allow) : false;
 
-        if ((array_key_exists('title', $_POST)) && ($hidden) && ($submitted)) {
+        if ((array_key_exists('title', $_POST)) && ($is_hidden) && ($submitted)) {
             attach_message(do_lang_tempcode('MESSAGE_POSTED'), 'inform');
 
             if (get_forum_type() == 'cns') {

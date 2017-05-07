@@ -243,8 +243,6 @@ class Hook_addon_registry_tickets
             'ATTACHMENTS' => null,
             'ATTACH_SIZE_FIELD' => null,
             'TRUE_ATTACHMENT_UI' => false,
-            'ATTACHMENTS' => lorem_phrase(),
-            'ATTACH_SIZE_FIELD' => lorem_phrase(),
             'EMOTICONS' => placeholder_emoticon_chooser(),
             'DISPLAY' => 'block',
             'FIRST_POST_URL' => '',

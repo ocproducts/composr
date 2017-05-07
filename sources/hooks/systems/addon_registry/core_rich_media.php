@@ -577,7 +577,6 @@ class Hook_addon_registry_core_rich_media
             'ATTACHMENT_TEMPLATE' => $content,
             'IMAGE_TYPES' => placeholder_types(),
             'ATTACHMENTS' => $content,
-            'POSTING_FIELD_NAME' => '',
             'MAX_ATTACHMENTS' => placeholder_number(),
             'NUM_ATTACHMENTS' => placeholder_number(),
             'TRUE_ATTACHMENT_UI' => true,

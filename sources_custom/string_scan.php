@@ -247,6 +247,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ERROR_UPLOADING_4
         ERROR_UPLOADING_6
         ERROR_UPLOADING_7
+        BLOCK_main_contact_simple_PARAM_attachments
+        BLOCK_main_contact_simple_PARAM_attachments_TITLE
+        BLOCK_main_contact_simple_PARAM_subject
+        BLOCK_main_contact_simple_PARAM_subject_TITLE
+        BLOCK_main_contact_us_PARAM_attachments
+        BLOCK_main_contact_us_PARAM_attachments_TITLE
+        BLOCK_main_contact_us_PARAM_subject
+        BLOCK_main_contact_us_PARAM_subject_TITLE
         VOTE_CHEAT
         ACCESS_FOR
         MISSING_CONFIRM_CODE
@@ -2973,6 +2981,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_use_lastondate
         CONFIG_OPTION_use_local_payment
         CONFIG_OPTION_use_true_from
+        CONFIG_OPTION_use_true_from_VALUE_0
+        CONFIG_OPTION_use_true_from_VALUE_1
+        CONFIG_OPTION_use_true_from_VALUE_2
         EMAIL_LOG_DAYS
         CONFIG_OPTION_email_log_days
         CONFIG_OPTION_user_postsize_errors

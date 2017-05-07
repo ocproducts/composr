@@ -97,7 +97,7 @@ class CMS_Topic
      * @param  ?MEMBER $highlight_by_member Member to highlight the posts of (null: none)
      * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
      * @param  ?integer $num_to_show_limit Maximum to load (null: default)
-     * @param  ?tempcode $hidden Hidden form fields for commenting form (null: none)
+     * @param  ?Tempcode $hidden Hidden form fields for commenting form (null: none)
      * @return Tempcode The Tempcode for the comment topic
      */
     public function render_as_comment_topic($content_type, $content_id, $allow_comments, $invisible_if_no_comments, $forum_name, $post_warning, $preloaded_comments, $explicit_allow, $reverse, $highlight_by_member, $allow_reviews, $num_to_show_limit, $hidden = null)
@@ -1112,7 +1112,7 @@ class CMS_Topic
      * @param  boolean $allow_reviews Whether to accept reviews
      * @param  Tempcode $post_url URL where form submit will go
      * @param  ?string $post_warning The default post to use (null: standard courtesy warning)
-     * @param  ?tempcode $hidden Hidden form fields for commenting form (null: none)
+     * @param  ?Tempcode $hidden Hidden form fields for commenting form (null: none)
      * @return Tempcode Posting form
      */
     public function get_posting_form($type, $id, $allow_reviews, $post_url, $post_warning, $hidden = null)

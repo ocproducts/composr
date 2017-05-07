@@ -383,6 +383,8 @@ class Module_admin_email_log
         echo file_get_contents($path);
 
         exit();
+
+        return new Tempcode();
     }
 
     /**

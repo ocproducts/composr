@@ -649,7 +649,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
  * @param  ?MEMBER $highlight_by_user User to highlight the posts of (null: none)
  * @param  boolean $allow_reviews Whether to allow ratings along with the comment (like reviews)
  * @param  ?integer $num_to_show_limit Maximum to load (null: default)
- * @param  ?tempcode $hidden Hidden form fields for commenting form (null: none)
+ * @param  ?Tempcode $hidden Hidden form fields for commenting form (null: none)
  * @return Tempcode The Tempcode for the comment topic
  */
 function get_comments($content_type, $allow_comments, $content_id, $invisible_if_no_comments = false, $forum = null, $post_warning = null, $_comments = null, $explicit_allow = false, $reverse = null, $highlight_by_user = null, $allow_reviews = false, $num_to_show_limit = null, $hidden = null)
@@ -727,7 +727,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         }
     }
 
-    if (post_param_string('_block_id', 'non_block')) {
+    if (post_param_string('_block_id', '') != 'non_block') {
         return false;
     }
 

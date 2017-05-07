@@ -26,7 +26,7 @@
 		}
 
 		add_event_listener_abstract(window,'real_load',function() {
-			aub = document.getElementById('attachment_upload_button');
+			aub=document.getElementById('attachment_upload_button');
 			if ((aub) && (aub.className.indexOf('for_field_{POSTING_FIELD_NAME%} ')!=-1))
 			{
 				add_event_listener_abstract(window,'load',function () {

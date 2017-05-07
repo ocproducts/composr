@@ -231,7 +231,7 @@ function script_load_stuff()
 
 	// If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
 	window.has_js_state=false;
-	window.onpopstate = function(event) {
+	window.onpopstate=function(event) {
 		window.setTimeout(function() {
 			if (window.location.hash=='' && window.has_js_state) {
 				window.location.reload();
@@ -630,6 +630,7 @@ function disable_button_just_clicked(input,permanent)
 	input.style.cursor='wait';
 	if (!permanent)
 	{
+		var timeout=null;
 		var goback=function() {
 			if (timeout!=null)
 			{
@@ -643,7 +644,7 @@ function disable_button_just_clicked(input,permanent)
 				input.style.cursor='default';
 			}
 		};
-		var timeout=window.setTimeout(goback,5000);
+		timeout=window.setTimeout(goback,5000);
 
 		if (input.form.target=='preview_iframe')
 		{
