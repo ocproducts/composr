@@ -338,12 +338,15 @@ class Hook_addon_registry_iotds
             'DEFAULT_TITLE' => '',
             'POST_WARNING' => '',
             'RULES_TEXT' => '',
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
             'EMOTICONS' => placeholder_emoticon_chooser(),
             'REVIEW_RATING_CRITERIA' => $review_titles,
             'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'FIRST_POST_URL' => placeholder_url(),
-            'FIRST_POST' => lorem_paragraph_html(),
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
             'COMMENT_URL' => placeholder_url(),
         ));
 

@@ -287,12 +287,14 @@ class Hook_addon_registry_core_feedback_features
         ));
 
         $attachments = do_lorem_template('ATTACHMENTS', array(
+            'POSTING_FIELD_NAME' => lorem_word(),
             'ATTACHMENT_TEMPLATE' => $content,
             'IMAGE_TYPES' => placeholder_types(),
             'POSTING_FIELD_NAME' => '',
             'ATTACHMENTS' => $content,
             'MAX_ATTACHMENTS' => placeholder_number(),
             'NUM_ATTACHMENTS' => placeholder_number(),
+            'TRUE_ATTACHMENT_UI' => true,
         ));
 
         $ret = do_lorem_template('COMMENTS_POSTING_FORM', array(
@@ -306,13 +308,14 @@ class Hook_addon_registry_core_feedback_features
             'DEFAULT_TITLE' => '',
             'POST_WARNING' => '',
             'RULES_TEXT' => '',
-            'ATTACHMENTS' => $attachments,
-            'ATTACH_SIZE_FIELD' => lorem_phrase(),
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
             'EMOTICONS' => placeholder_emoticon_chooser(),
             'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'FIRST_POST_URL' => placeholder_url(),
-            'FIRST_POST' => lorem_paragraph_html(),
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
             'COMMENT_URL' => placeholder_url(),
         ));
 
@@ -394,13 +397,14 @@ class Hook_addon_registry_core_feedback_features
             'DEFAULT_TITLE' => '',
             'POST_WARNING' => '',
             'RULES_TEXT' => '',
-            'ATTACHMENTS' => lorem_phrase(),
-            'ATTACH_SIZE_FIELD' => lorem_phrase(),
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
             'EMOTICONS' => placeholder_emoticon_chooser(),
             'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'FIRST_POST_URL' => placeholder_url(),
-            'FIRST_POST' => lorem_paragraph_html(),
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
             'COMMENT_URL' => placeholder_url(),
         ));
 

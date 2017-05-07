@@ -125,6 +125,9 @@ class Block_main_contact_simple
 
         $guid = isset($map['guid']) ? $map['guid'] : 'd35227903b5f786331f6532bce1765e4';
 
+        require_code('form_templates');
+        list($attachments, $attach_size_field) = get_attachments('post', false);
+
         $comment_details = do_template('COMMENTS_POSTING_FORM', array(
             '_GUID' => $guid,
             'TITLE' => $box_title,
@@ -137,6 +140,9 @@ class Block_main_contact_simple
             'DEFAULT_TITLE' => $subject,
             'POST_WARNING' => '',
             'RULES_TEXT' => '',
+            'ATTACHMENTS' => $attachments,
+            'ATTACH_SIZE_FIELD' => $attach_size_field,
+            'TRUE_ATTACHMENT_UI' => false,
             'EMOTICONS' => $emoticons,
             'DISPLAY' => 'block',
             'FIRST_POST_URL' => '',

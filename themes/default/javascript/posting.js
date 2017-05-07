@@ -54,6 +54,8 @@ function set_attachment(field_name,number,filename,multi,uploader_settings)
 	var post=document.getElementById(field_name);
 	post=ensure_true_id(post,field_name);
 
+	var true_attachment_ui=(post.className.indexOf('true_attachment_ui')!=-1);
+
 	var tmp_form=post.form;
 	if ((tmp_form) && (tmp_form.preview))
 	{
@@ -94,6 +96,17 @@ function set_attachment(field_name,number,filename,multi,uploader_settings)
 		if (filepath.indexOf('fakepath')==-1) // iPhone gives c:\fakepath\image.jpg, so don't use that
 			defaults.description=filepath; // Default caption to local file path
 		/*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
+
+		if (!true_attachment_ui)
+		{
+			// Add field for next one
+			var add_another_field=(number==window.num_attachments) && (window.num_attachments<window.max_attachments); // Needs running late, in case something happened inbetween
+			if (add_another_field)
+			{
+				add_attachment(window.num_attachments+1,field_name);
+			}
+			return;
+		}
 
 		if (!show_overlay)
 		{

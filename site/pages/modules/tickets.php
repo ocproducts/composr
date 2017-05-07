@@ -619,6 +619,7 @@ class Module_tickets
                     'RULES_TEXT' => '',
                     'ATTACHMENTS' => $attachments,
                     'ATTACH_SIZE_FIELD' => $attach_size_field,
+                    'TRUE_ATTACHMENT_UI' => true,
                     'EMOTICONS' => $emoticons,
                     'DISPLAY' => 'block',
                     'FIRST_POST_URL' => '',

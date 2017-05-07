@@ -69,6 +69,10 @@ class Module_admin_email_log
 
         require_lang('email_log');
 
+        if ($type != 'browse') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('EMAIL_LOG'))));
+        }
+
         if ($type == 'browse') {
             $this->title = get_screen_title('EMAIL_LOG');
         }

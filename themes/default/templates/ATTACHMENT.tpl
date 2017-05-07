@@ -1,4 +1,4 @@
-{+START,IF,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}}}
+{+START,IF,{$NAND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
 	<div class="wide_table_wrap"><table class="map_table form_table wide_table">
 		{+START,IF,{$NOT,{$MOBILE}}}
 			<colgroup>
@@ -15,9 +15,9 @@
 					<th class="form_table_field_name vertical_alignment">
 						{!ATTACHMENT,{I*}}
 
-						{+START,IF,{$NOT,{$MOBILE}}}
+						{+START,IF,{TRUE_ATTACHMENT_UI}}{+START,IF,{$NOT,{$MOBILE}}}
 							<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
-						{+END}
+						{+END}{+END}
 					</th>
 				{+END}
 				<td class="form_table_field_input">
