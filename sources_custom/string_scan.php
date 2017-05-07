@@ -2973,6 +2973,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_use_lastondate
         CONFIG_OPTION_use_local_payment
         CONFIG_OPTION_use_true_from
+        EMAIL_LOG_DAYS
+        CONFIG_OPTION_email_log_days
         CONFIG_OPTION_user_postsize_errors
         CONFIG_OPTION_username_click_im
         CONFIG_OPTION_username_profile_links

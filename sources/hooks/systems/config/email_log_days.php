@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_use_true_from
+class Hook_config_email_log_days
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_use_true_from
     public function get_details()
     {
         return array(
-            'human_name' => 'USE_TRUE_FROM',
-            'type' => 'list',
+            'human_name' => 'EMAIL_LOG_DAYS',
+            'type' => 'integer',
             'category' => 'SITE',
             'group' => '_EMAIL',
-            'explanation' => 'CONFIG_OPTION_use_true_from',
+            'explanation' => 'CONFIG_OPTION_email_log_days',
             'shared_hosting_restricted' => '0',
-            'list_options' => '1|2|0',
-            'order_in_category_group' => 9,
+            'list_options' => '',
+            'order_in_category_group' => 14,
 
             'addon' => 'core_configuration',
         );
@@ -51,6 +51,6 @@ class Hook_config_use_true_from
      */
     public function get_default()
     {
-        return '0';
+        return '14';
     }
 }
