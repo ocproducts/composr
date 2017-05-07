@@ -281,22 +281,6 @@ class Hook_addon_registry_core_feedback_features
 
         require_css('forms');
 
-        $content = do_lorem_template('ATTACHMENT', array(
-            'I' => placeholder_number(),
-            'POSTING_FIELD_NAME' => '',
-        ));
-
-        $attachments = do_lorem_template('ATTACHMENTS', array(
-            'POSTING_FIELD_NAME' => lorem_word(),
-            'ATTACHMENT_TEMPLATE' => $content,
-            'IMAGE_TYPES' => placeholder_types(),
-            'POSTING_FIELD_NAME' => '',
-            'ATTACHMENTS' => $content,
-            'MAX_ATTACHMENTS' => placeholder_number(),
-            'NUM_ATTACHMENTS' => placeholder_number(),
-            'TRUE_ATTACHMENT_UI' => true,
-        ));
-
         $ret = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),

@@ -77,6 +77,10 @@ class Module_admin_email_log
             $this->title = get_screen_title('EMAIL_LOG');
         }
 
+        if ($type != 'browse') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('EMAIL_LOG'))));
+        }
+
         if ($type == 'view') {
             $this->title = get_screen_title('VIEW_SENT_MESSAGE');
         }
@@ -410,6 +414,9 @@ class Module_admin_email_log
         }
 
         $to_email = unserialize($row['m_to_email']);
+        if ($to_email === null) {
+            $to_email = array();
+        }
         if (is_string($to_email)) {
             $to_email = array($to_email);
         }

@@ -631,6 +631,11 @@ function disable_button_just_clicked(input,permanent)
 	if (!permanent)
 	{
 		var goback=function() {
+			if (timeout!=null)
+			{
+				window.clearTimeout(timeout);
+				timeout=null;
+			}
 			if (input.under_timer)
 			{
 				input.disabled=false;
@@ -638,7 +643,21 @@ function disable_button_just_clicked(input,permanent)
 				input.style.cursor='default';
 			}
 		};
-		window.setTimeout(goback,5000);
+		var timeout=window.setTimeout(goback,5000);
+
+		if (input.form.target=='preview_iframe')
+		{
+			var interval=window.setInterval(function() {
+				if (frames['preview_iframe'].document && frames['preview_iframe'].document.body) {
+					if (interval!=null)
+					{
+						window.clearInterval(interval);
+						interval=null;
+					}
+					goback();
+				}
+			},500);
+		}
 	} else input.under_timer=false;
 
 	add_event_listener_abstract(window,'pagehide',goback);
