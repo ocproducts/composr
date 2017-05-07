@@ -37,7 +37,7 @@ class Block_main_contact_us
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'title', 'email_optional', 'subject', 'subject_prefix', 'subject_suffix', 'body_prefix', 'body_suffix', 'redirect', 'guid');
+        $info['parameters'] = array('param', 'title', 'email_optional', 'subject', 'subject_prefix', 'subject_suffix', 'body_prefix', 'body_suffix', 'redirect', 'guid', 'attachments');
         return $info;
     }
 
@@ -73,6 +73,7 @@ class Block_main_contact_us
         $type = array_key_exists('param', $map) ? $map['param'] : do_lang('GENERAL');
         $box_title = array_key_exists('title', $map) ? $map['title'] : do_lang('CONTACT_US');
         $email_optional = array_key_exists('email_optional', $map) ? (intval($map['email_optional']) == 1) : true;
+        $support_attachments = array_key_exists('attachments', $map) ? (intval($map['attachments']) == 1) : false;
 
         $block_id = md5(serialize($map));
 
@@ -159,8 +160,14 @@ class Block_main_contact_us
 
                 $guid = isset($map['guid']) ? $map['guid'] : '31fe96c5ec3b609fbf19595a1de3886f';
 
-                require_code('form_templates');
-                list($attachments, $attach_size_field) = get_attachments('post', false);
+                if ($support_attachments) {
+                    require_code('form_templates');
+                    list($attachments, $attach_size_field) = get_attachments('post', false);
+                } else 
+                {
+                    $attachments = null;
+                    $attach_size_field = null;
+                }
 
                 $comment_details = do_template('COMMENTS_POSTING_FORM', array(
                     '_GUID' => $guid,
