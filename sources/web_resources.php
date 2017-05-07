@@ -227,7 +227,9 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
     $temp = $do_enforce ? javascript_enforce($j, null, (!running_script('script')) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';
     if (($temp != '') || (!$do_enforce)) {
         if ($temp == 'defer') {
-            $js->attach(do_template('JAVASCRIPT_NEED_FULL', array('_GUID' => 'a2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => find_script('script') . '?script=' . urlencode($j) . '&theme=' . urlencode($GLOBALS['FORUM_DRIVER']->get_theme()))));
+            $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+            $url = find_script('script') . '?script=' . urlencode($j) . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $js->attach(do_template('JAVASCRIPT_NEED_FULL', array('_GUID' => 'a2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url)));
         } else {
             if (!$minify) {
                 $j .= '_non_minified';
@@ -467,7 +469,9 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
         $temp = $do_enforce ? css_enforce($c, $theme, (!running_script('sheet')) && ($context === null) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';
 
         if ($temp == 'defer') {
-            $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'g2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => find_script('sheet') . '?sheet=' . urlencode($c) . '&theme=' . urlencode(($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme)), user_lang(), false, null, '.tpl', 'templates', $theme));
+            $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
+            $url = find_script('sheet') . '?sheet=' . urlencode($c) . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'g2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url), user_lang(), false, null, '.tpl', 'templates', $theme));
         } else {
             if (!$minify) {
                 $c .= '_non_minified';
