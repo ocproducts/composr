@@ -3728,11 +3728,11 @@
         };
     }
 
-    function _promiseLoop(arr, callback) {
+    function _forEachAwait(arr, callback) {
         // To be implemented
     }
 
-    function promiseLoop(arr, callback) {
+    function forEachAwait(arr, callback) {
         // To be implemented
     }
 
@@ -3768,10 +3768,22 @@
      */
     $cms.dom.after = createInsertionFunction('after');
 
+    /**
+     * @memberof $cms.dom
+     * @returns { Promise }
+     */
     $cms.dom.prepend = createInsertionFunction('prepend');
 
+    /**
+     * @memberof $cms.dom
+     * @returns { Promise }
+     */
     $cms.dom.before = createInsertionFunction('before');
 
+    /**
+     * @memberof $cms.dom
+     * @returns { Promise }
+     */
     $cms.dom.append = createInsertionFunction('append');
 
     /**
@@ -9052,13 +9064,13 @@
             $cms.dom.fadeIn(el);
 
             if (pic) {
-                set_tray_theme_image('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
+                setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
         } else {
             $cms.dom.hide(el);
 
             if (pic) {
-                set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
+                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
                 pic.title = '{!EXPAND;^}';
             }
@@ -9069,7 +9081,7 @@
         // Execution ends here
 
         var isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
-        function set_tray_theme_image(before_theme_img, after_theme_img, before1_url, after1_url, after2_url) {
+        function setTrayThemeImage(before_theme_img, after_theme_img, before1_url, after1_url, after2_url) {
             var is_1 = $cms.dom.matchesThemeImage(pic.src, before1_url);
 
             if (is_1) {
@@ -9282,20 +9294,22 @@
     $cms.functions.decisionTreeRender = function decisionTreeRender(parameter, value, notice, noticeTitle) {
         var e=document.getElementById('main_form').elements[parameter];
         if (e.length === undefined) {
-            e=[e];
+            e = [e];
         }
-        for (var i=0;i<e.length;i++) {
-            e[i].addEventListener('click',function(_e) { return function() {
-                var selected=false;
-                if (_e.type!='undefined' && _e.type=='checkbox') {
-                    selected=(_e.checked && _e.value==value) || (!_e.checked && ''==value);
-                } else {
-                    selected=(_e.value== value);
+        for (var i = 0; i < e.length; i++) {
+            e[i].addEventListener('click', function (_e) {
+                return function () {
+                    var selected = false;
+                    if (_e.type != 'undefined' && _e.type == 'checkbox') {
+                        selected = (_e.checked && _e.value == value) || (!_e.checked && '' == value);
+                    } else {
+                        selected = (_e.value == value);
+                    }
+                    if (selected) {
+                        $cms.ui.alert(notice, null, noticeTitle, true);
+                    }
                 }
-                if (selected) {
-                    $cms.ui.alert(notice, null, noticeTitle, true);
-                }
-            }}(e[i]));
+            }(e[i]));
         }
     };
 
