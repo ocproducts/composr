@@ -247,7 +247,7 @@ class Hook_addon_registry_tickets
             'DISPLAY' => 'block',
             'FIRST_POST_URL' => '',
             'FIRST_POST' => '',
-            'COMMENT_URL' => placeholder_url(),
+            'COMMENT_URL' => '',
         ));
 
         $other_tickets = new Tempcode();
