@@ -29,27 +29,29 @@ function init__tempcode()
         return;
     }
 
-    define('ENTITY_ESCAPED', 1); // HTML entities
-    define('SQ_ESCAPED', 2); // Single quotes
-    define('DQ_ESCAPED', 3); // Double quotes
-    define('NL_ESCAPED', 4); // New lines disappear
-    define('CC_ESCAPED', 5); // Comcode
-    define('UL_ESCAPED', 6); // URL
-    define('JSHTML_ESCAPED', 7); // JavaScript </ -> <\/
-    define('NL2_ESCAPED', 8); // New lines go to \n
-    define('ID_ESCAPED', 9); // Strings to to usable IDs
-    define('NAUGHTY_ESCAPED', 10); // Used as a JavaScript variable name, for example... to prevent code injection
-    define('NULL_ESCAPED', 11); // This is useful to mark something that takes strings but does not need escaping (usually because it is escaped further down the line)
-    define('FORCIBLY_ENTITY_ESCAPED', 12); // To force a language string to be escaped
-    define('CSS_ESCAPED', 13); // To stop CSS injection
-    define('UL2_ESCAPED', 14); // rawurlencode
-    define('PURE_STRING', 16); // Used to indicating we just put something directly into the output. Works with __toString or normal strings. Does no escaping.
+    if (!defined('ENTITY_ESCAPED')) {
+        define('ENTITY_ESCAPED', 1); // HTML entities
+        define('SQ_ESCAPED', 2); // Single quotes
+        define('DQ_ESCAPED', 3); // Double quotes
+        define('NL_ESCAPED', 4); // New lines disappear
+        define('CC_ESCAPED', 5); // Comcode
+        define('UL_ESCAPED', 6); // URL
+        define('JSHTML_ESCAPED', 7); // JavaScript </ -> <\/
+        define('NL2_ESCAPED', 8); // New lines go to \n
+        define('ID_ESCAPED', 9); // Strings to to usable IDs
+        define('NAUGHTY_ESCAPED', 10); // Used as a JavaScript variable name, for example... to prevent code injection
+        define('NULL_ESCAPED', 11); // This is useful to mark something that takes strings but does not need escaping (usually because it is escaped further down the line)
+        define('FORCIBLY_ENTITY_ESCAPED', 12); // To force a language string to be escaped
+        define('CSS_ESCAPED', 13); // To stop CSS injection
+        define('UL2_ESCAPED', 14); // rawurlencode
+        define('PURE_STRING', 16); // Used to indicating we just put something directly into the output. Works with __toString or normal strings. Does no escaping.
 
-    define('TC_SYMBOL', 0);
-    define('TC_KNOWN', 1); // Either Tempcode or string
-    define('TC_LANGUAGE_REFERENCE', 2);
-    define('TC_PARAMETER', 3); // A late parameter for a compiled template
-    define('TC_DIRECTIVE', 4);
+        define('TC_SYMBOL', 0);
+        define('TC_KNOWN', 1); // Either Tempcode or string
+        define('TC_LANGUAGE_REFERENCE', 2);
+        define('TC_PARAMETER', 3); // A late parameter for a compiled template
+        define('TC_DIRECTIVE', 4);
+    }
 
     global $XHTML_SPIT_OUT, $NO_EVAL_CACHE, $MEMORY_OVER_SPEED, $TEMPLATE_DISK_ORIGIN_CACHE, $REQUEST_BLOCK_NEST_LEVEL, $LOADED_TPL_CACHE, $KEEP_TPL_FUNCS;
     $XHTML_SPIT_OUT = null;

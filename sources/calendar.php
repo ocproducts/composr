@@ -25,11 +25,13 @@ function init__calendar()
 {
     require_code('temporal2');
 
-    define('DETECT_CONFLICT_SCOPE_NONE', 0);
-    define('DETECT_CONFLICT_SCOPE_SAME_MEMBER', 1);
-    define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL', 2);
-    define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE', 2);
-    define('DETECT_CONFLICT_SCOPE_ALL', 3);
+    if (!defined('DETECT_CONFLICT_SCOPE_NONE')) {
+        define('DETECT_CONFLICT_SCOPE_NONE', 0);
+        define('DETECT_CONFLICT_SCOPE_SAME_MEMBER', 1);
+        define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL', 2);
+        define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE', 2);
+        define('DETECT_CONFLICT_SCOPE_ALL', 3);
+    }
 
     require_lang('calendar');
 }

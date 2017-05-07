@@ -43,12 +43,14 @@ Any notifications are CC'd to the configured CC email address (if there is one).
  */
 function init__notifications()
 {
-    // Notifications will be sent from one of the following if not a specific member ID
-    define('A_FROM_SYSTEM_UNPRIVILEGED', -3); // Sent from system (website itself) *without* dangerous Comcode permission
-    define('A_FROM_SYSTEM_PRIVILEGED', -2); // Sent from system (website itself) *with* dangerous Comcode permission
+    if (!defined('A_FROM_SYSTEM_UNPRIVILEGED')) {
+        // Notifications will be sent from one of the following if not a specific member ID
+        define('A_FROM_SYSTEM_UNPRIVILEGED', -3); // Sent from system (website itself) *without* dangerous Comcode permission
+        define('A_FROM_SYSTEM_PRIVILEGED', -2); // Sent from system (website itself) *with* dangerous Comcode permission
 
-    // Notifications will be sent to one of the following if not to a specific list of member IDs
-    define('A_TO_ANYONE_ENABLED', null);
+        // Notifications will be sent to one of the following if not to a specific list of member IDs
+        define('A_TO_ANYONE_ENABLED', null);
+    }
 
     global $NOTIFICATION_SETTING_CACHE;
     $NOTIFICATION_SETTING_CACHE = array();

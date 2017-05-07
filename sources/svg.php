@@ -28,24 +28,26 @@ function init__svg()
     require_css('svg');
 
     // Some default values
-    define('VIEWPORT_WIDTH', 1024.0);
-    define('VIEWPORT_HEIGHT', 400.0);
-    define('SVG_WIDTH', 1024.0);
-    define('SVG_HEIGHT', 400.0);
-    define('Y_LABEL_WIDTH', 50.0);
-    define('Y_AXIS_WIDTH', 50.0);
-    define('PLOT_WIDTH_BIAS', 10.0);
-    define('PLOT_WIDTH', SVG_WIDTH - Y_LABEL_WIDTH - Y_AXIS_WIDTH - PLOT_WIDTH_BIAS);
-    define('X_LABEL_HEIGHT', 13.0);
-    define('X_AXIS_HEIGHT', 13.0);
-    define('PLOT_HEIGHT_BIAS', 10.0);
-    define('PLOT_HEIGHT', SVG_HEIGHT - X_LABEL_HEIGHT - X_AXIS_HEIGHT - PLOT_HEIGHT_BIAS);
-    define('X_PADDING', 2.0);
-    define('Y_PADDING', 2.0);
-    define('MIN_Y_MARKER_DISTANCE', 14.0);
-    define('MIN_X_MARKER_DISTANCE', 14.0);
-    define('TEXT_HEIGHT', 14.0);
-    define('BAR_WIDTH', 15.0);
+    if (!defined('VIEWPORT_WIDTH')) {
+        define('VIEWPORT_WIDTH', 1024.0);
+        define('VIEWPORT_HEIGHT', 400.0);
+        define('SVG_WIDTH', 1024.0);
+        define('SVG_HEIGHT', 400.0);
+        define('Y_LABEL_WIDTH', 50.0);
+        define('Y_AXIS_WIDTH', 50.0);
+        define('PLOT_WIDTH_BIAS', 10.0);
+        define('PLOT_WIDTH', SVG_WIDTH - Y_LABEL_WIDTH - Y_AXIS_WIDTH - PLOT_WIDTH_BIAS);
+        define('X_LABEL_HEIGHT', 13.0);
+        define('X_AXIS_HEIGHT', 13.0);
+        define('PLOT_HEIGHT_BIAS', 10.0);
+        define('PLOT_HEIGHT', SVG_HEIGHT - X_LABEL_HEIGHT - X_AXIS_HEIGHT - PLOT_HEIGHT_BIAS);
+        define('X_PADDING', 2.0);
+        define('Y_PADDING', 2.0);
+        define('MIN_Y_MARKER_DISTANCE', 14.0);
+        define('MIN_X_MARKER_DISTANCE', 14.0);
+        define('TEXT_HEIGHT', 14.0);
+        define('BAR_WIDTH', 15.0);
+    }
 
     global $CSS_FILE_CONTENTS;
     $CSS_FILE_CONTENTS = '';

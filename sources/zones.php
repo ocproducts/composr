@@ -93,9 +93,11 @@ function init__zones()
         $HOOKS_CACHE = array();
     }
 
-    define('FIND_ALL_PAGES__PERFORMANT', 0);
-    define('FIND_ALL_PAGES__NEWEST', 1);
-    define('FIND_ALL_PAGES__ALL', 2);
+    if (!defined('FIND_ALL_PAGES__PERFORMANT')) {
+        define('FIND_ALL_PAGES__PERFORMANT', 0);
+        define('FIND_ALL_PAGES__NEWEST', 1);
+        define('FIND_ALL_PAGES__ALL', 2);
+    }
 
     global $BLOCKS_AT_CACHE;
     $BLOCKS_AT_CACHE = function_exists('persistent_cache_get') ? persistent_cache_get('BLOCKS_AT') : array();
@@ -104,9 +106,11 @@ function init__zones()
     }
 
     // "Kid Gloves Modes" tracking
-    define('I_UNDERSTAND_SQL_INJECTION', 1);
-    define('I_UNDERSTAND_XSS', 2);
-    define('I_UNDERSTAND_PATH_INJECTION', 4);
+    if (!defined('I_UNDERSTAND_SQL_INJECTION')) {
+        define('I_UNDERSTAND_SQL_INJECTION', 1);
+        define('I_UNDERSTAND_XSS', 2);
+        define('I_UNDERSTAND_PATH_INJECTION', 4);
+    }
     global $DECLARATIONS_STACK, $DECLARATIONS_STATE, $DECLARATIONS_STATE_DEFAULT;
     $DECLARATIONS_STACK = array();
     $DECLARATIONS_STATE_DEFAULT = array(

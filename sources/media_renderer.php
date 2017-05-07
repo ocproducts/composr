@@ -25,20 +25,22 @@
  */
 function init__media_renderer()
 {
-    define('MEDIA_RECOG_PRECEDENCE_SUPER', 50);
-    define('MEDIA_RECOG_PRECEDENCE_HIGH', 40);
-    define('MEDIA_RECOG_PRECEDENCE_MEDIUM', 30);
-    define('MEDIA_RECOG_PRECEDENCE_LOW', 20);
-    define('MEDIA_RECOG_PRECEDENCE_TRIVIAL', 10);
-    define('MEDIA_RECOG_PRECEDENCE_NONE', 0);
+    if (!defined('MEDIA_RECOG_PRECEDENCE_SUPER')) {
+        define('MEDIA_RECOG_PRECEDENCE_SUPER', 50);
+        define('MEDIA_RECOG_PRECEDENCE_HIGH', 40);
+        define('MEDIA_RECOG_PRECEDENCE_MEDIUM', 30);
+        define('MEDIA_RECOG_PRECEDENCE_LOW', 20);
+        define('MEDIA_RECOG_PRECEDENCE_TRIVIAL', 10);
+        define('MEDIA_RECOG_PRECEDENCE_NONE', 0);
 
-    define('MEDIA_TYPE_IMAGE', 1);
-    define('MEDIA_TYPE_VIDEO', 2);
-    define('MEDIA_TYPE_AUDIO', 4);
-    define('MEDIA_TYPE_OTHER', 8);
-    define('MEDIA_TYPE_ALL', 15);
+        define('MEDIA_TYPE_IMAGE', 1);
+        define('MEDIA_TYPE_VIDEO', 2);
+        define('MEDIA_TYPE_AUDIO', 4);
+        define('MEDIA_TYPE_OTHER', 8);
+        define('MEDIA_TYPE_ALL', 15);
 
-    define('MEDIA_LOWFI', 1);
+        define('MEDIA_LOWFI', 1);
+    }
 
     /** Options for media rendering.
      *
