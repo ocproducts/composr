@@ -5,6 +5,7 @@
 ._*
 test_a
 /safe_mode_temp/*.dat
+/safe_mode_temp/*.txt
 /safe_mode_temp/subs.inc
 /sources_custom/user_sync__customise.php
 /www.pid
