@@ -877,7 +877,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     if ($website_email == '') {
         $website_email = $from_email;
     }
-    if ((get_option('use_true_from') == '1') || ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', $website_email)))) {
+    if (
+        (get_option('use_true_from') == '1') ||
+        ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('website_email')))) ||
+        ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('staff_address')))) ||
+        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_email_from')))) ||
+        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == get_domain()))
+    ) {
         $headers = 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
     } else {
         $headers = 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
