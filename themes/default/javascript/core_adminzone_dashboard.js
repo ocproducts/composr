@@ -244,11 +244,11 @@
     };
 
     $cms.templates.blockMainStaffActions = function (params) {
-        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
+        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
     };
 
     $cms.templates.blockMainStaffTips = function (params) {
-        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
+        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
     };
 
     $cms.templates.blockMainStaffChecklistItem = function blockMainStaffChecklistItem(params, container) {

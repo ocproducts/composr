@@ -2208,8 +2208,14 @@
     }
 
 
+    var rgxIdSelector = /^\#[\w\-]+$/,
+        rgxSimpleSelector = /^[\#\.]?[\w\-]+$/,
+        // Special attributes that should be set via method calls
+        methodAttributes = { val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 },
+        rgxNotWhite = /\S+/g;
+
     /** @namespace $cms */
-    $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/ {
+    $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/{
         /**
          * Returns a single matching child element, defaults to 'document' as parent
          * @method
@@ -2227,180 +2233,165 @@
             id = strVal(id);
 
             return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
+        },
+        /**
+         * Returns a single matching child element, `context` defaults to 'document'
+         * @memberof $cms.dom
+         * @param context
+         * @param selector
+         * @returns {*}
+         */
+        $: function $(context, selector) {
+            if (selector === undefined) {
+                selector = context;
+                context = document;
+            } else {
+                context = nodeArg(context);
+            }
+            selector = strVal(selector);
+
+            return (rgxIdSelector.test(selector) && ('getElementById' in context)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
+        },
+        /**
+         * `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
+         * @memberof $cms.dom
+         * @param context
+         * @param selector
+         * @returns {*}
+         */
+        $$: function $$(context, selector) {
+            var found;
+
+            if (selector === undefined) {
+                selector = context;
+                context = document;
+            } else {
+                context = nodeArg(context);
+            }
+            selector = strVal(selector);
+
+            // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
+            if (rgxSimpleSelector.test(selector) && isDocOrEl(context)) {
+                switch (selector[0]) {
+                    case '#': // selector is an ID
+                        return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
+                        break;
+
+                    case '.': // selector is a class name
+                        return toArray(context.getElementsByClassName(selector.substr(1)));
+                        break;
+
+                    default: // selector is a tag name
+                        return toArray(context.getElementsByTagName(selector));
+                        break;
+                }
+            }
+
+            return toArray(context.querySelectorAll(selector));
+        },
+        /**
+         * @memberof $cms.dom
+         * @param context
+         * @param selector
+         * @returns { Element }
+         */
+        $last: function last(context, selector) {
+            return $cms.dom.$$(context, selector).pop();
+        },
+        /**
+         * This one (3 dollars) also includes the context element (at offset 0) if it matches the selector
+         * @memberof $cms.dom
+         * @param context
+         * @param selector
+         * @returns {*}
+         */
+        $$$: function $$$(context, selector) {
+            if (selector === undefined) {
+                selector = context;
+                context = document;
+            } else {
+                context = nodeArg(context);
+            }
+            selector = strVal(selector);
+
+            var els = $cms.dom.$$(context, selector);
+
+            if (isEl(context) && $cms.dom.matches(context, selector)) {
+                els.unshift(context);
+            }
+
+            return els;
+        },
+        /**
+         * @memberof $cms.dom
+         * @param tag
+         * @param attributes
+         * @param properties
+         * @returns { Element }
+         */
+        create: function create(tag, attributes, properties) {
+            var el = document.createElement(strVal(tag));
+
+            if (isObj(attributes)) {
+                each(attributes, function (key, value) {
+                    if (key in methodAttributes) {
+                        $cms.dom[key](el, value);
+                    } else {
+                        $cms.dom.attr(el, key, value)
+                    }
+                });
+            }
+
+            if (isObj(properties)) {
+                extendDeep(el, properties);
+            }
+
+            return el;
+        },
+        /**
+         * @memberof $cms.dom
+         * @param el
+         * @param value
+         * @returns {*}
+         */
+        val: function val(el, value) {
+            el = elArg(el);
+
+            if (value === undefined) {
+                if ((el.localName !== 'select') || !el.multiple) {
+                    return el.value;
+                }
+
+                // Special case: <select [multiple]>
+                var values = [], i;
+                for (i = 0; i < el.options.length; i++) {
+                    if (el.options[i].selected) {
+                        values.push(el.options[i].value);
+                    }
+                }
+
+                return values;
+            }
+
+            el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
+        },
+        /**
+         * @memberof $cms.dom
+         * @param node
+         * @param newText
+         * @returns {string|*}
+         */
+        text: function text(node, newText) {
+            node = nodeArg(node);
+
+            if (newText === undefined) {
+                return node.textContent;
+            }
+
+            node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
         }
     });
 
-
-
-    var rgxIdSelector = /^\#[\w\-]+$/;
-    /**
-     * Returns a single matching child element, `context` defaults to 'document'
-     * @memberof $cms.dom
-     * @param context
-     * @param selector
-     * @returns {*}
-     */
-    $cms.dom.$ = function $(context, selector) {
-        if (selector === undefined) {
-            selector = context;
-            context = document;
-        } else {
-            context = nodeArg(context);
-        }
-        selector = strVal(selector);
-
-        return (rgxIdSelector.test(selector) && ('getElementById' in context)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
-    };
-
-    var rgxSimpleSelector = /^[\#\.]?[\w\-]+$/;
-    /**
-     * `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
-     * @memberof $cms.dom
-     * @param context
-     * @param selector
-     * @returns {*}
-     */
-    $cms.dom.$$ = function $$(context, selector) {
-        var found;
-
-        if (selector === undefined) {
-            selector = context;
-            context = document;
-        } else {
-            context = nodeArg(context);
-        }
-        selector = strVal(selector);
-
-        // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
-        if (rgxSimpleSelector.test(selector) && isDocOrEl(context)) {
-            switch (selector[0]) {
-                case '#': // selector is an ID
-                    return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
-                    break;
-
-                case '.': // selector is a class name
-                    return toArray(context.getElementsByClassName(selector.substr(1)));
-                    break;
-
-                default: // selector is a tag name
-                    return toArray(context.getElementsByTagName(selector));
-                    break;
-            }
-        }
-
-        return toArray(context.querySelectorAll(selector));
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param context
-     * @param selector
-     * @returns { Element }
-     */
-    $cms.dom.$last = function last(context, selector) {
-        return $cms.dom.$$(context, selector).pop();
-    };
-
-    /**
-     * This one (3 dollars) also includes the context element (at offset 0) if it matches the selector
-     * @memberof $cms.dom
-     * @param context
-     * @param selector
-     * @returns {*}
-     */
-    $cms.dom.$$$ = function $$$(context, selector) {
-        if (selector === undefined) {
-            selector = context;
-            context = document;
-        } else {
-            context = nodeArg(context);
-        }
-        selector = strVal(selector);
-
-        var els = $cms.dom.$$(context, selector);
-
-        if (isEl(context) && $cms.dom.matches(context, selector)) {
-            els.unshift(context);
-        }
-
-        return els;
-    };
-
-    // Special attributes that should be set via method calls
-    var methodAttributes = { val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 };
-
-    /**
-     * @memberof $cms.dom
-     * @param tag
-     * @param attributes
-     * @param properties
-     * @returns { Element }
-     */
-    $cms.dom.create = function create(tag, attributes, properties) {
-        var el = document.createElement(strVal(tag));
-
-        if (isObj(attributes)) {
-            each(attributes, function (key, value) {
-                if (key in methodAttributes) {
-                    $cms.dom[key](el, value);
-                } else {
-                    $cms.dom.attr(el, key, value)
-                }
-            });
-        }
-
-        if (isObj(properties)) {
-            extendDeep(el, properties);
-        }
-
-        return el;
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param el
-     * @param value
-     * @returns {*}
-     */
-    $cms.dom.val = function val(el, value) {
-        el = elArg(el);
-
-        if (value === undefined) {
-            if ((el.localName !== 'select') || !el.multiple) {
-                return el.value;
-            }
-
-            // Special case: <select [multiple]>
-            var values = [], i;
-            for (i = 0; i < el.options.length; i++) {
-                if (el.options[i].selected) {
-                    values.push(el.options[i].value);
-                }
-            }
-
-            return values;
-        }
-
-        el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param node
-     * @param newText
-     * @returns {string|*}
-     */
-    $cms.dom.text = function text(node, newText) {
-        node = nodeArg(node);
-
-        if (newText === undefined) {
-            return node.textContent;
-        }
-
-        node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
-    };
-
-    var rgxNotWhite = /\S+/g;
     /** @class */
     function Data() {
         this.expando = $cms.id + '-data-' + Data.uid++;
@@ -2780,12 +2771,11 @@
     $cms.dom.parents = function parents(el, selector) {
         el = elArg(el);
 
-        var parents = [],
-            parent;
+        var parents = [];
 
-        while (parent = el.parentElement) {
-            if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
-                parents.push(parent);
+        while (el = el.parentElement) {
+            if ((selector === undefined) || $cms.dom.matches(el, selector)) {
+                parents.push(el);
             }
         }
 
@@ -2801,11 +2791,9 @@
     $cms.dom.parent = function parent(el, selector) {
         el = elArg(el);
 
-        var parent;
-
-        while (parent = el.parentElement) {
-            if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
-                return parent;
+        while (el = el.parentElement) {
+            if ((selector === undefined) || $cms.dom.matches(el, selector)) {
+                return el;
             }
         }
 
@@ -4637,7 +4625,7 @@
         ajax_url += '&utheme=' + $cms.$THEME();
         if ((_blockDataCache[ajax_url] !== undefined) && post_params == null) {
             // Show results from cache
-            show_block_html(_blockDataCache[ajax_url], target_div, append, inner);
+            showBlockHtml(_blockDataCache[ajax_url], target_div, append, inner);
             if (callback) {
                 callback();
             }
@@ -4707,7 +4695,7 @@
             window.document.body.style.cursor = '';
 
             // Put in HTML
-            show_block_html(new_html, target_div, append, inner);
+            showBlockHtml(new_html, target_div, append, inner);
 
             // Scroll up if required
             if (scroll_to_top_of_wrapper) {
@@ -4722,7 +4710,7 @@
             }
         }
 
-        function show_block_html(new_html, target_div, append, inner) {
+        function showBlockHtml(new_html, target_div, append, inner) {
             var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
             if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
             if (append) {
@@ -5388,7 +5376,6 @@
             if (char in filterIdReplace) {
                 out += filterIdReplace[char];
             } else {
-                // @TODO (Salman): Need to make sure I ported this block accurately from PHP.
                 ascii = char.charCodeAt(0);
 
                 if (
@@ -7330,12 +7317,12 @@
     /*
      Faux frames and faux scrolling
      */
-    window.infinite_scrolling_block = infinite_scrolling_block;
-    window.infinite_scrolling_block_hold = infinite_scrolling_block_hold;
-    window.infinite_scrolling_block_unhold = infinite_scrolling_block_unhold;
-    window.internalise_infinite_scrolling = internalise_infinite_scrolling;
-    window.internalise_infinite_scrolling_go = internalise_infinite_scrolling_go;
-    window.internalise_ajax_block_wrapper_links = internalise_ajax_block_wrapper_links;
+    window.infiniteScrollingBlock = infiniteScrollingBlock;
+    window.infiniteScrollingBlockHold = infiniteScrollingBlockHold;
+    window.infiniteScrollingBlockUnhold = infiniteScrollingBlockUnhold;
+    window.internaliseInfiniteScrolling = internaliseInfiniteScrolling;
+    window.internaliseInfiniteScrollingGo = internaliseInfiniteScrollingGo;
+    window.internaliseAjaxBlockWrapperLinks = internaliseAjaxBlockWrapperLinks;
 
     var infinite_scroll_pending = false, // Blocked due to queued HTTP request
         infinite_scroll_blocked = false, // Blocked due to event tracking active
@@ -7345,7 +7332,7 @@
      *
      * @param event
      */
-    function infinite_scrolling_block(event) {
+    function infiniteScrollingBlock(event) {
         if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
             infinite_scroll_blocked = true;
             window.setTimeout(function () {
@@ -7354,7 +7341,7 @@
         }
     }
 
-    function infinite_scrolling_block_hold() {
+    function infiniteScrollingBlockHold() {
         if (!infinite_scroll_blocked) {
             infinite_scroll_blocked = true;
             infinite_scroll_mouse_held = true;
@@ -7365,7 +7352,7 @@
      *
      * @param infinite_scrolling
      */
-    function infinite_scrolling_block_unhold(infinite_scrolling) {
+    function infiniteScrollingBlockUnhold(infinite_scrolling) {
         if (infinite_scroll_mouse_held) {
             infinite_scroll_blocked = false;
             infinite_scroll_mouse_held = false;
@@ -7379,7 +7366,7 @@
      * @param wrapper
      * @returns {*}
      */
-    function internalise_infinite_scrolling(url_stem, wrapper) {
+    function internaliseInfiniteScrolling(url_stem, wrapper) {
         if (infinite_scroll_blocked || infinite_scroll_pending) {
             // Already waiting for a result
             return false;
@@ -7421,7 +7408,7 @@
                 $cms.dom.html(load_more_link_a, '{!LOAD_MORE;^}');
                 load_more_link_a.href = '#!';
                 load_more_link_a.onclick = function () {
-                    internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
+                    internaliseInfiniteScrollingGo(url_stem, wrapper, more_links);
                     return false;
                 }; // Click link -- load
                 load_more_link.appendChild(load_more_link_a);
@@ -7481,7 +7468,7 @@
         // Scroll down -- load
         if ((scroll_y + window_height > wrapper_bottom - window_height * 2) && (scroll_y + window_height < page_height - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
         {
-            return internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
+            return internaliseInfiniteScrollingGo(url_stem, wrapper, more_links);
         }
 
         return false;
@@ -7494,7 +7481,7 @@
      * @param more_links
      * @returns {boolean}
      */
-    function internalise_infinite_scrolling_go(url_stem, wrapper, more_links) {
+    function internaliseInfiniteScrollingGo(url_stem, wrapper, more_links) {
         if (infinite_scroll_pending) {
             return false;
         }
@@ -7518,7 +7505,7 @@
 
                     return $cms.callBlock(url_stem + url_stub, '', wrapper_inner, true, function () {
                         infinite_scroll_pending = false;
-                        internalise_infinite_scrolling(url_stem, wrapper);
+                        internaliseInfiniteScrolling(url_stem, wrapper);
                     });
                 }
             }
@@ -7537,7 +7524,7 @@
      * @param forms_too
      * @param scroll_to_top
      */
-    function internalise_ajax_block_wrapper_links(url_stem, block_element, look_for, extra_params, append, forms_too, scroll_to_top) {
+    function internaliseAjaxBlockWrapperLinks(url_stem, block_element, look_for, extra_params, append, forms_too, scroll_to_top) {
         look_for || (look_for = []);
         extra_params || (extra_params = []);
         append = !!append;
@@ -7580,13 +7567,13 @@
             }
 
             if (link.localName === 'a') {
-                $cms.dom.on(link, 'click', submit_func);
+                $cms.dom.on(link, 'click', submitFunc);
             } else {
-                $cms.dom.on(link, 'submit', submit_func);
+                $cms.dom.on(link, 'submit', submitFunc);
             }
         });
 
-        function submit_func() {
+        function submitFunc() {
             var url_stub = '', j;
 
             var href = (this.localName === 'a') ? this.href : this.action;
@@ -7740,14 +7727,14 @@
 
                         // Convert <a> title attributes into composr tooltips
                         if (!anchor.classList.contains('no_tooltip')) {
-                            convert_tooltip(anchor);
+                            convertTooltip(anchor);
                         }
                     }
 
                     if ($cms.$VALUE_OPTION('js_keep_params')) {
                         // Keep parameters need propagating
                         if (anchor.href && anchor.href.startsWith($cms.$BASE_URL_S())) {
-                            anchor.href += keep_stub_with_context(anchor.href);
+                            anchor.href += keepStubWithContext(anchor.href);
                         }
                     }
                 });
@@ -7774,14 +7761,14 @@
 
                         for (j = 0; j < elements.length; j++) {
                             if ((elements[j].title !== undefined) && (elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no_tooltip')) {
-                                convert_tooltip(elements[j]);
+                                convertTooltip(elements[j]);
                             }
                         }
 
                         elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
                         for (j = 0; j < elements.length; j++) {
                             if ((elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no_tooltip')) {
-                                convert_tooltip(elements[j]);
+                                convertTooltip(elements[j]);
                             }
                         }
                     }
@@ -7789,7 +7776,7 @@
                     if ($cms.$VALUE_OPTION('js_keep_params')) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.startsWith($cms.$BASE_URL_S())) {
-                            form.action += keep_stub_with_context(form.action);
+                            form.action += keepStubWithContext(form.action);
                         }
                     }
 
@@ -7828,7 +7815,7 @@
                 }
 
                 $cms.dom.$$$(context, 'img:not([data-cms-rich-tooltip])').forEach(function (img) {
-                    convert_tooltip(img);
+                    convertTooltip(img);
                 });
             }
         },
@@ -7894,7 +7881,7 @@
         }
     });
 
-    function keep_stub_with_context(context) {
+    function keepStubWithContext(context) {
         context || (context = '');
 
         var starting = !context || !context.includes('?');
@@ -8679,7 +8666,7 @@
             if ($cms.$CONFIG_OPTION('enable_animations')) {
                 if ((window.parent === window) && !loc.includes('js_cache=1') && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
                     window.addEventListener('beforeunload', function () {
-                        staff_unload_action();
+                        staffUnloadAction();
                     });
                 }
             }
@@ -8692,8 +8679,8 @@
 
                 if (isImage) {
                     $cms.dom.on(el, {
-                        mouseover: handle_image_mouse_over,
-                        mouseout: handle_image_mouse_out,
+                        mouseover: handleImageMouseOver,
+                        mouseout: handleImageMouseOut,
                         click: handle_image_click
                     });
                 }
@@ -8713,7 +8700,7 @@
                         if (link.href && !link.onmouseover) {
                             var id = link.href.match(patternRgx);
                             if (id) {
-                                apply_comcode_tooltip(hook, id, link);
+                                applyComcodeTooltip(hook, id, link);
                             }
                         }
                     });
@@ -8721,7 +8708,7 @@
             }
 
             /* Screen transition, for staff */
-            function staff_unload_action() {
+            function staffUnloadAction() {
                 $cms.undoStaffUnloadAction();
 
                 // If clicking a download link then don't show the animation
@@ -8767,7 +8754,7 @@
              TOOLTIPS FOR THUMBNAILS TO CONTENT, AS DISPLAYED IN CMS ZONE
              */
 
-            function apply_comcode_tooltip(hook, id, link) {
+            function applyComcodeTooltip(hook, id, link) {
                 link.addEventListener('mouseout', function () {
                     $cms.ui.deactivateTooltip(link);
                 });
@@ -8802,7 +8789,7 @@
             /*
              THEME IMAGE CLICKING
              */
-            function handle_image_mouse_over(event) {
+            function handleImageMouseOver(event) {
                 var target = event.target;
                 if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
                     return;
@@ -8854,7 +8841,7 @@
                 window.status = '{!SPECIAL_CLICK_TO_EDIT;^}';
             }
 
-            function handle_image_mouse_out(event) {
+            function handleImageMouseOut(event) {
                 var target = event.target;
 
                 if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
@@ -9131,7 +9118,7 @@
             form = delBtn.form;
 
         $cms.dom.on(delBtn, 'click', function () {
-            confirm_delete(form, true, function () {
+            confirmDelete(form, true, function () {
                 var idEl = $cms.dom.$id('id'),
                     ids = (idEl.value === '') ? [] : idEl.value.split(',');
 
@@ -9162,7 +9149,7 @@
         var form = this;
         $cms.dom.on(form, 'submit', function (e) {
             e.preventDefault();
-            confirm_delete(form, true);
+            confirmDelete(form, true);
         });
     };
 
@@ -9379,7 +9366,7 @@
         $cms.ui.open(new_url, null, 'width=' + options.width + ';height=' + options.height, options.target);
     }
 
-    function convert_tooltip(el) {
+    function convertTooltip(el) {
         var title = el.title;
 
         if (!title || $cms.isTouchEnabled() || el.classList.contains('leave_native_tooltip')) {
@@ -9436,7 +9423,7 @@
         });
     }
 
-    function confirm_delete(form, multi, callback) {
+    function confirmDelete(form, multi, callback) {
         multi = !!multi;
 
         $cms.ui.confirm(

@@ -131,7 +131,7 @@
     };
 
     $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params, element) {
-        internalise_ajax_block_wrapper_links(params.url, element, ['.*'], {}, false, true);
+        internaliseAjaxBlockWrapperLinks(params.url, element, ['.*'], {}, false, true);
 
         if (params.changeDetectionUrl && (Number(params.refreshTime) > 0)) {
             window.detect_interval = window.setInterval(function () {
@@ -151,19 +151,19 @@
             infiniteScrollCallUrl = params.infiniteScrollCallUrl,
             infiniteScrollFunc;
 
-        internalise_ajax_block_wrapper_links(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
+        internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
 
         if (infiniteScrollCallUrl) {
-            infiniteScrollFunc = internalise_infinite_scrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
+            infiniteScrollFunc = internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
 
             $cms.dom.on(window, {
                 scroll: infiniteScrollFunc,
                 touchmove: infiniteScrollFunc,
-                keydown: infinite_scrolling_block,
-                mousedown: infinite_scrolling_block_hold,
+                keydown: infiniteScrollingBlock,
+                mousedown: infiniteScrollingBlockHold,
                 mousemove: function () {
                     // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                    infinite_scrolling_block_unhold(infiniteScrollFunc);
+                    infiniteScrollingBlockUnhold(infiniteScrollFunc);
                 }
             });
 

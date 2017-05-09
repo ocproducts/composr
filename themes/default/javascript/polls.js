@@ -26,7 +26,7 @@
     $cms.views.PollBox = PollBox;
 
     $cms.templates.blockMainPoll = function blockMainPoll(params) {
-        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
+        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
     };
 
     $cms.templates.pollAnswer = function pollAnswer(params, container) {

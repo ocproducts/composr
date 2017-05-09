@@ -247,20 +247,20 @@
             replace_comments_form_with_ajax(params.options, params.hash, 'comments_form', 'comments_wrapper');
 
             if (wrapper) {
-                internalise_ajax_block_wrapper_links(urlStem, wrapper, ['start_comments', 'max_comments'], {});
+                internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['start_comments', 'max_comments'], {});
             }
 
             // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
             if (params.infiniteScroll) {
                 var infinite_scrolling_comments_wrapper = function (event) {
-                    internalise_infinite_scrolling(urlStem, wrapper);
+                    internaliseInfiniteScrolling(urlStem, wrapper);
                 };
 
                 $cms.dom.on(window, 'scroll', infinite_scrolling_comments_wrapper);
-                $cms.dom.on(window, 'keydown', infinite_scrolling_block);
-                $cms.dom.on(window, 'mousedown', infinite_scrolling_block_hold);
+                $cms.dom.on(window, 'keydown', infiniteScrollingBlock);
+                $cms.dom.on(window, 'mousedown', infiniteScrollingBlockHold);
                 $cms.dom.on(window, 'mousemove', function () {
-                    infinite_scrolling_block_unhold(infinite_scrolling_comments_wrapper);
+                    infiniteScrollingBlockUnhold(infinite_scrolling_comments_wrapper);
                 });
 
                 // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)

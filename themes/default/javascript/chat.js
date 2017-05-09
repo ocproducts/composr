@@ -264,7 +264,7 @@
 
     $cms.templates.blockMainFriendsList = function (params, container) {
         if (params.wrapperId && params.blockCallUrl) {
-            internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
+            internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
         }
 
         $cms.dom.on(container, 'keyup', '.js-input-friends-search', function (e, input) {
@@ -273,7 +273,7 @@
     };
 
     $cms.templates.blockSideShoutbox = function (params, container) {
-        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
+        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
 
         $cms.dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
 
