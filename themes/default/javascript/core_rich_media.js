@@ -8,11 +8,11 @@
     function Attachment(params) {
         Attachment.base(this, 'constructor', arguments);
 
-        preinit_file_input("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
+        preinitFileInput("attachment_multi", "file" + params.i, null, params.postingFieldName, params.filter);
 
         if (params.syndicationJson !== undefined) {
             $cms.requireJavascript('editing').then(function () {
-                show_upload_syndication_options("file" + params.i, params.syndicationJson, !!params.noQuota);
+                showUploadSyndicationOptions("file" + params.i, params.syndicationJson, !!params.noQuota);
             });
         }
     }
@@ -228,7 +228,7 @@
                         new_position = imgs.length - 1;
                     }
                     modal.positionInSet = new_position;
-                    _open_different_image_into_lightbox(modal, new_position, imgs);
+                    _openDifferentImageIntoLightbox(modal, new_position, imgs);
                 }
 
                 modal.left = previous;
@@ -247,13 +247,13 @@
                         new_position = 0;
                     }
                     modal.positionInSet = new_position;
-                    _open_different_image_into_lightbox(modal, new_position, imgs);
+                    _openDifferentImageIntoLightbox(modal, new_position, imgs);
                 }
 
                 modal.right = next;
                 modal.boxWrapperEl.firstElementChild.appendChild(next_button);
 
-                function _open_different_image_into_lightbox(modal, position, imgs) {
+                function _openDifferentImageIntoLightbox(modal, position, imgs) {
                     var is_video = imgs[position][2];
 
                     // Load proper image
@@ -314,7 +314,7 @@
                 id = params.id || '',
                 description = params.description || '';
 
-            do_attachment(fieldName, id, description);
+            doAttachment(fieldName, id, description);
             (window.faux_close !== undefined) ? window.faux_close() :  window.close();
         }
     });
@@ -322,11 +322,11 @@
     $cms.functions.comcodeToolsComcodeConvertScript = function comcodeToolsComcodeConvertScript() {
         var form = $cms.dom.$('#semihtml').form;
 
-        form.elements['from_html'][0].addEventListener('click', refresh_locked_inputs);
-        form.elements['from_html'][1].addEventListener('click', refresh_locked_inputs);
-        form.elements['from_html'][2].addEventListener('click', refresh_locked_inputs);
+        form.elements['from_html'][0].addEventListener('click', refreshLockedInputs);
+        form.elements['from_html'][1].addEventListener('click', refreshLockedInputs);
+        form.elements['from_html'][2].addEventListener('click', refreshLockedInputs);
 
-        function refresh_locked_inputs() {
+        function refreshLockedInputs() {
             var value = $cms.form.radioValue(form.elements['from_html']);
             $cms.dom.$('#semihtml').disabled = (value != 0);
             $cms.dom.$('#is_semihtml').disabled = (value != 0);
@@ -372,7 +372,7 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-toggle-wysiwyg', function () {
-            toggle_wysiwyg(name);
+            toggleWysiwyg(name);
         });
     };
 
@@ -395,8 +395,8 @@
             $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
-        window.rebuild_attachment_button_for_next = rebuild_attachment_button_for_next;
-        function rebuild_attachment_button_for_next(posting_field_name, attachment_upload_button) {
+        window.rebuild_attachment_button_for_next = rebuildAttachmentButtonForNext;
+        function rebuildAttachmentButtonForNext(posting_field_name, attachment_upload_button) {
             if (posting_field_name !== params.postingFieldName) {
                 return false;
             }
@@ -407,7 +407,7 @@
             window.attachment_upload_button = attachment_upload_button;
 
             $cms.requireJavascript('plupload').then(function () {
-                prepare_simplified_file_input('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, strVal(params.filter), window.attachment_upload_button);
+                prepareSimplifiedFileInput('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, strVal(params.filter), window.attachment_upload_button);
             });
         }
 
@@ -504,9 +504,9 @@
             window.shocker_parts[id].push([part.left, part.right]);
         }
 
-        shocker_tick(id, time, params.maxColor, params.minColor);
+        shockerTick(id, time, params.maxColor, params.minColor);
         window.setInterval(function () {
-            shocker_tick(id, time, params.maxColor, params.minColor);
+            shockerTick(id, time, params.maxColor, params.minColor);
         }, time);
     };
 
@@ -521,7 +521,7 @@
             window[id].push(params.sections[i]);
         }
 
-        flip_page(0, passId, id);
+        flipPage(0, passId, id);
 
         $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
             var flipTo = (clicked.dataset.vwFlipTo !== undefined) ? clicked.dataset.vwFlipTo : 0;
@@ -529,7 +529,7 @@
                 flipTo = +flipTo;
             }
 
-            flip_page(flipTo, passId, id);
+            flipPage(flipTo, passId, id);
         });
     };
 
@@ -537,7 +537,7 @@
         var fieldName = strVal(params.fieldName);
 
         $cms.dom.on(container, 'click', function () {
-            do_emoticon(fieldName, container, false)
+            doEmoticon(fieldName, container, false)
         });
     };
 
@@ -630,10 +630,10 @@
                         next_page = 0;
                     }
 
-                    flip_page(sections[next_page], id, sections);
+                    flipPage(sections[next_page], id, sections);
                 };
 
-                flip_page(0, id, sections);
+                flipPage(0, id, sections);
             }
 
             $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
@@ -642,7 +642,7 @@
                     flipTo = Number(flipTo);
                 }
 
-                flip_page(flipTo, id, fullId);
+                flipPage(flipTo, id, fullId);
             });
         };
 
@@ -668,7 +668,7 @@
         );
 
         window.setInterval(function () {
-            ticker_tick(id, params.width);
+            tickerTick(id, params.width);
         }, 100 / params.speed);
     };
 
@@ -685,7 +685,7 @@
         $cms.dom.html(container, '<span id="' + id + '">' + window.jumper_parts[id][0] + '<\/span>');
 
         window.setInterval(function () {
-            jumper_tick(id);
+            jumperTick(id);
         }, params.time);
     };
 
@@ -706,7 +706,7 @@
                         },
                         'onStateChange': function (newState) {
                             if (slideshow_mode) {
-                                if (newState == 0) player_stopped();
+                                if (newState == 0) playerStopped();
                             }
                         }
                     }
@@ -731,11 +731,11 @@
         // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
         window.$cmsLoad.push(function () {
             if (document.getElementById('next_slide')) {
-                stop_slideshow_timer();
+                stopSlideshowTimer();
                 window.setTimeout(function () {
                     document.getElementById(params.playerId).addEventListener('stateChange', function (newState) {
                         if (newState == 0) {
-                            player_stopped();
+                            playerStopped();
                         }
                     });
                     document.getElementById(params.playerId).DoPlay();
@@ -749,10 +749,10 @@
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
         window.$cmsLoad.push(function () {
             if (document.getElementById('next_slide')) {
-                stop_slideshow_timer();
+                stopSlideshowTimer();
                 window.setTimeout(function () {
                     document.getElementById(params.playerId).addEventListener('qt_ended', function () {
-                        player_stopped();
+                        playerStopped();
                     });
                     document.getElementById(params.playerId).Play();
                 }, 1000);
@@ -766,20 +766,20 @@
             // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
         window.$cmsLoad.push(function () {
                 if (document.getElementById('next_slide')) {
-                    stop_slideshow_timer();
+                    stopSlideshowTimer();
 
                     window.setTimeout(function () {
                         var player = document.getElementById(params.playerId);
                         // WMP
                         player.addEventListener('playstatechange', function (newState) {
                             if (newState == 1) {
-                                player_stopped();
+                                playerStopped();
                             }
                         });
 
                         // Quicktime
                         player.addEventListener('qt_ended', function () {
-                            player_stopped();
+                            playerStopped();
                         });
 
                         try {
@@ -798,9 +798,9 @@
     $cms.templates.mediaVimeo = function (params) {
             // Tie into callback event to see when finished, for our slideshows}
             if (document.getElementById('next_slide')) {
-                stop_slideshow_timer();
+                stopSlideshowTimer();
                 window.setTimeout(function () {
-                    window.addEventListener('message', player_stopped, false);
+                    window.addEventListener('message', playerStopped, false);
 
                     var player = document.getElementById(params.playerId);
                     player.contentWindow.postMessage(JSON.stringify({method: 'addEventListener', value: 'finish'}), 'https://player.vimeo.com/video/' + params.remoteId);
@@ -822,12 +822,12 @@
             events: {
                 onComplete: function () {
                     if (document.getElementById('next_slide')) {
-                        player_stopped();
+                        playerStopped();
                     }
                 },
                 onReady: function () {
                     if (document.getElementById('next_slide')) {
-                        stop_slideshow_timer();
+                        stopSlideshowTimer();
                         jwplayer(params.playerId).play(true);
                     }
                 }
@@ -858,11 +858,11 @@
             flashplayer: params.flashplayer,
             events: {
                 onComplete: function () {
-                    if (document.getElementById('next_slide')) player_stopped();
+                    if (document.getElementById('next_slide')) playerStopped();
                 },
                 onReady: function () {
                     if (document.getElementById('next_slide')) {
-                        stop_slideshow_timer();
+                        stopSlideshowTimer();
                         jwplayer(params.playerId).play(true);
                     }
                 }
@@ -891,7 +891,7 @@
     };
 
 
-    function shocker_tick(id, time, min_color, max_color) {
+    function shockerTick(id, time, min_color, max_color) {
         if ((document.hidden !== undefined) && (document.hidden)) return;
 
         if (window.shocker_pos[id] == window.shocker_parts[id].length - 1) window.shocker_pos[id] = 0;
@@ -917,7 +917,7 @@
         }, window['comcodeshocker' + id + '_left'][3]);
     }
 
-    function flip_page(to, pass_id, sections) {
+    function flipPage(to, pass_id, sections) {
         var i, current_pos = 0, section;
 
         if (window['big_tabs_auto_cycler_' + pass_id]) {
@@ -1079,8 +1079,8 @@
 
     window.tick_pos || (window.tick_pos = []);
 
-    window.ticker_tick = ticker_tick;
-    function ticker_tick(id, width) {
+    window.ticker_tick = tickerTick;
+    function tickerTick(id, width) {
         if (document.hidden === true) {
             return;
         }
@@ -1100,8 +1100,8 @@
     window.jumper_pos || (window.jumper_pos = []);
     window.jumper_parts || (window.jumper_parts = []);
 
-    window.jumper_tick = jumper_tick;
-    function jumper_tick(id) {
+    window.jumper_tick = jumperTick;
+    function jumperTick(id) {
         if (document.hidden === true) {
             return;
         }
@@ -1117,8 +1117,8 @@
         window.jumper_pos[id]++;
     }
 
-    window.crazy_tick = crazy_tick;
-    function crazy_tick() {
+    window.crazy_tick = crazyTick;
+    function crazyTick() {
         if (window.mouse_x == null) {
             return;
         }

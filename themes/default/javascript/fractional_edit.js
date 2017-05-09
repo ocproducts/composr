@@ -1,6 +1,6 @@
 "use strict";
 
-function fractional_edit(event, object, url, raw_text, edit_param_name, was_double_click, control_button, type) {
+function fractionalEdit(event, object, url, raw_text, edit_param_name, was_double_click, control_button, type) {
     was_double_click = !!was_double_click;
     type = strVal(type) || 'line';
 
@@ -94,7 +94,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         $cms.dom.html(control_button, '{!SAVE;^}');
     }
 
-    function cleanup_function() {
+    function cleanupFunction() {
         object.onclick = object.old_onclick;
         object.ondblclick = object.old_ondblclick;
         object.onkeypress = object.old_onkeypress;
@@ -118,15 +118,15 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         }
     }
 
-    function cancel_function() {
-        cleanup_function();
+    function cancelFunction() {
+        cleanupFunction();
 
         $cms.ui.alert('{!FRACTIONAL_EDIT_CANCELLED;^}', null, '{!FRACTIONAL_EDIT;^}');
 
         return false;
     }
 
-    function save_function() {
+    function saveFunction() {
         // Call AJAX request
         $cms.doAjaxRequest(input.form.action, function (response) {
             // Some kind of error?
@@ -138,14 +138,14 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
                     $cms.ui.confirmSession(
                         function (result) {
                             if (result) {
-                                save_function();
+                                saveFunction();
                             } else {
-                                cleanup_function();
+                                cleanupFunction();
                             }
                         }
                     );
                 } else {
-                    cleanup_function(); // Has to happen before, as that would cause defocus then refocus, causing a second save attempt
+                    cleanupFunction(); // Has to happen before, as that would cause defocus then refocus, causing a second save attempt
 
                     $cms.ui.alert((response.status == 500) ? response.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
                 }
@@ -153,7 +153,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
                 object.raw_text = input.value;
                 $cms.dom.html(object, response.responseText);
 
-                cleanup_function();
+                cleanupFunction();
             }
         }, input.name + '=' + encodeURIComponent(input.value));
 
@@ -168,7 +168,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
         }
 
         if ($cms.magicKeypress(event)) {
-            cleanup_function();
+            cleanupFunction();
         }
 
         return false;
@@ -183,7 +183,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
                 input.onblur = null;
                 $cms.ui.confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;^}', function (result) {
                     if (result) {
-                        cancel_function();
+                        cancelFunction();
                     } else {
                         input.focus();
                         input.onblur = tmp;
@@ -193,7 +193,7 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
             }
 
             if ($cms.dom.keyPressed(event, 'Enter') && (this.value != '')) {// Save
-                return save_function();
+                return saveFunction();
             }
 
             return null;
@@ -201,9 +201,9 @@ function fractional_edit(event, object, url, raw_text, edit_param_name, was_doub
     }
     input.onblur = function () {
         if (this.value != '' || raw_text == '') {
-            save_function();
+            saveFunction();
         } else {
-            cancel_function();
+            cancelFunction();
         }
     };
 

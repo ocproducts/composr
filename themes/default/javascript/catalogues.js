@@ -12,8 +12,6 @@
         catalogueFieldChangeWatching();
     }
 
-
-
     $cms.inherits(CatalogueAddingScreen, $cms.View, {
         events: function () {
             return {
@@ -51,10 +49,10 @@
         var key_field = document.getElementById('key_field'),
             form = key_field.form;
 
-        key_field.onchange = update_key_settings;
-        update_key_settings();
+        key_field.onchange = updateKeySettings;
+        updateKeySettings();
 
-        function update_key_settings() {
+        function updateKeySettings() {
             var has_key = (key_field.value != '');
 
             form.elements.new_handling[0].disabled = !has_key;

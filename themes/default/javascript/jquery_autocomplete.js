@@ -661,13 +661,13 @@ function autoCompleteElementFactory(element,e) {
 
 /* Composr binder code */
 
-function set_up_comcode_autocomplete(name, wysiwyg) {
+function setUpComcodeAutocomplete(name, wysiwyg) {
 	if (wysiwyg && window.wysiwyg_on && wysiwygOn() && ((window.CKEDITOR == null) ||  (window.CKEDITOR.instances[name] == null))) {
 		return;
 	}
 
 	if (!window.jQuery || !window.jQuery.fn.sew) {
-		$cms.error('set_up_comcode_autocomplete(): jQuery.fn.sew plugin is not loaded');
+		$cms.error('setUpComcodeAutocomplete(): jQuery.fn.sew plugin is not loaded');
 	}
 
     window.jQuery('#' + name).sew({

@@ -99,7 +99,7 @@
             window.menu_hold_time = 3000;
             if (!target.dataset.timer) {
                 target.dataset.timer = window.setTimeout(function () {
-                    var ret = pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
+                    var ret = popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
                     try {
                         document.getElementById('search_content').focus();
                     } catch (ignore) {}
@@ -874,7 +874,4 @@
 
         return false;
     }
-
-    window.set_active_menu = setActiveMenu;
-    window.pop_up_menu = popUpMenu;
 }(window.$cms));

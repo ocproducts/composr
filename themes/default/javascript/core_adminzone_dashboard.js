@@ -183,21 +183,21 @@
         var showAllLink = document.getElementById('checklist_show_all_link'),
             hideDoneLink = document.getElementById('checklist_hide_done_link');
 
-        set_task_hiding(true);
+        setTaskHiding(true);
 
         $cms.dom.on(container, 'click', '.js-click-enable-task-hiding', function () {
-            set_task_hiding(true);
+            setTaskHiding(true);
         });
 
         $cms.dom.on(container, 'click', '.js-click-disable-task-hiding', function () {
-            set_task_hiding(false);
+            setTaskHiding(false);
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-custom-task', function (e, form) {
-            submit_custom_task(form);
+            submitCustomTask(form);
         });
 
-        function set_task_hiding(hide_enable) {
+        function setTaskHiding(hide_enable) {
             hide_enable = !!hide_enable;
 
             new Image().src = $IMG_checklist_cross2;
@@ -232,7 +232,7 @@
             $cms.dom.toggle(hideDoneLink, !hide_enable);
         }
 
-        function submit_custom_task(form) {
+        function submitCustomTask(form) {
             var new_task = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
 
             form.elements.recur_every.value = '';

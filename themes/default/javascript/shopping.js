@@ -35,13 +35,13 @@
             emptyCaryUrl = strVal(params.emptyCartUrl);
 
         $cms.dom.on(container, 'click', '.js-click-btn-cart-update', function (e) {
-            if (update_cart(productIds) === false) {
+            if (updateCart(productIds) === false) {
                 e.preventDefault();
             }
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-cart-empty', function (e, btn) {
-            if (confirm_empty('{!EMPTY_CONFIRM;}', emptyCaryUrl, btn.form) === false) {
+            if (confirmEmpty('{!EMPTY_CONFIRM;}', emptyCaryUrl, btn.form) === false) {
                 e.preventDefault();
             }
         });
@@ -50,7 +50,7 @@
             $cms.form.doFormSubmit(btn.form, e);
         });
 
-        function update_cart(pro_ids) {
+        function updateCart(pro_ids) {
             var pro_ids_array = pro_ids.split(',');
 
             var tot = pro_ids_array.length;
@@ -67,7 +67,7 @@
             }
         }
 
-        function confirm_empty(message, action_url, form) {
+        function confirmEmpty(message, action_url, form) {
             $cms.ui.confirm(
                 message,
                 function () {
@@ -87,9 +87,7 @@
         });
     };
 
-    $cms.templates.ecomAdminOrderActions = function ecomAdminOrderActions() {
-        var container = this;
-
+    $cms.templates.ecomAdminOrderActions = function ecomAdminOrderActions(params, container) {
         $cms.dom.on(container, 'change', '.js-select-change-action-submit-form', function (e, select) {
             if (select.selectedIndex > 0) {
                 select.form.submit();

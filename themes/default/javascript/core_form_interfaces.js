@@ -28,7 +28,7 @@
         },
 
         toggleSubordinateFields: function (e, target) {
-            toggle_subordinate_fields(target.parentNode.querySelector('img'), 'fes_attachments_help');
+            toggleSubordinateFields(target.parentNode.querySelector('img'), 'fes_attachments_help');
         }
     });
 
@@ -38,13 +38,13 @@
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN()) {
             $cms.requireJavascript('plupload').then(function () {
-                preinit_file_input('upload', params.name, null, null, params.filter);
+                preinitFileInput('upload', params.name, null, null, params.filter);
             });
         }
 
         if (params.syndicationJson != null) {
             $cms.requireJavascript('editing').then(function () {
-                show_upload_syndication_options(params.name, params.syndicationJson);
+                showUploadSyndicationOptions(params.name, params.syndicationJson);
             });
         }
     }
@@ -108,12 +108,12 @@
                 $cms.ui.alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
                 for (var j = 0; j < trs.length; j++) {
                     if (trs[j] !== tr) {
-                        trs[j].onclick = copy_permissions_function(trs[j], tr);
+                        trs[j].onclick = copyPermissionsFunction(trs[j], tr);
                     }
                 }
             }
 
-            function copy_permissions_function(to_row, from_row) {
+            function copyPermissionsFunction(to_row, from_row) {
                 return function () {
                     var inputs_to = to_row.getElementsByTagName('input');
                     var inputs_from = from_row.getElementsByTagName('input');
@@ -173,7 +173,7 @@
         },
 
         permissionsOverridden: function () {
-            permissions_overridden(this.prefix);
+            permissionsOverridden(this.prefix);
         },
 
         showPermissionSetting: function (e, select) {
@@ -206,8 +206,8 @@
         }
 
         if (params.supportAutosave && params.formName) {
-            if (window.init_form_saving !== undefined) {
-                init_form_saving(params.formName);
+            if (window.initFormSaving !== undefined) {
+                initFormSaving(params.formName);
             }
         }
     }
@@ -344,7 +344,7 @@
     };
 
     $cms.templates.formScreen = function (params, container) {
-        try_to_simplify_iframe_form();
+        tryToSimplifyIframeForm();
 
         if (params.iframeUrl) {
             window.setInterval(function () {
@@ -385,7 +385,7 @@
 
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
         $cms.requireJavascript('jquery_autocomplete').then(function () {
-            set_up_comcode_autocomplete(params.name, !!params.wysiwyg);
+            setUpComcodeAutocomplete(params.name, !!params.wysiwyg);
         });
     };
 
@@ -420,11 +420,11 @@
         });
 
         $cms.dom.on(container, 'change', '.js-change-ensure-next-field', function (e, input) {
-            ensure_next_field(input)
+            ensureNextField(input)
         });
 
         $cms.dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, input) {
-            ensure_next_field(input)
+            ensureNextField(input)
         });
     };
 
@@ -442,7 +442,7 @@
 
     $cms.templates.formScreenInputLineMulti = function (params, container) {
         $cms.dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, input) {
-            _ensure_next_field(e, input);
+            _ensureNextField(e, input);
         });
     };
 
@@ -460,7 +460,7 @@
 
         $cms.manageScrollHeight(textarea);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
-            set_up_comcode_autocomplete(params.name, params.required && params.required.includes('wysiwyg'));
+            setUpComcodeAutocomplete(params.name, params.required && params.required.includes('wysiwyg'));
         });
     };
 
@@ -502,10 +502,10 @@
         window.perm_serverid = params.serverId;
 
         $cms.dom.on(container, 'click', '.js-click-permissions-toggle', function (e, clicked) {
-            permissions_toggle(clicked.parentNode)
+            permissionsToggle(clicked.parentNode)
         });
 
-        function permissions_toggle(cell) {
+        function permissionsToggle(cell) {
             var index = cell.cellIndex,
                 table = cell.parentNode.parentNode;
 
@@ -535,7 +535,7 @@
                         input.selectedIndex = ((state_list != input.options.length - 1) ? (input.options.length - 1) : (input.options.length - 2));
                         input.disabled = false;
 
-                        permissions_overridden(table.rows[i].id.replace(/_privilege_container$/, ''));
+                        permissionsOverridden(table.rows[i].id.replace(/_privilege_container$/, ''));
                     }
                 }
             }
@@ -560,15 +560,15 @@
         }
 
         $cms.dom.on(container, 'click', '.js-click-toggle-subord-fields', function (e, clicked) {
-            toggle_subordinate_fields(clicked.parentNode.querySelector('img'), 'fes' + title + '_help');
+            toggleSubordinateFields(clicked.parentNode.querySelector('img'), 'fes' + title + '_help');
         });
 
         $cms.dom.on(container, 'keypress', '.js-keypress-toggle-subord-fields', function (e, pressed) {
-            toggle_subordinate_fields(pressed.parentNode.querySelector('img'), 'fes' + title + '_help');
+            toggleSubordinateFields(pressed.parentNode.querySelector('img'), 'fes' + title + '_help');
         });
 
         $cms.dom.on(container, 'click', '.js-click-geolocate-address-fields', function () {
-            geolocate_address_fields();
+            geolocateAddressFields();
         });
     };
 
@@ -582,10 +582,10 @@
         }
 
         if (params.name === 'delete') {
-            assign_tick_deletion_confirm(params.name);
+            assignTickDeletionConfirm(params.name);
         }
 
-        function assign_tick_deletion_confirm(name) {
+        function assignTickDeletionConfirm(name) {
             var el = document.getElementById(name);
 
             el.onchange = function () {
@@ -661,7 +661,7 @@
     };
 
     $cms.templates.formScreenFieldsSet = function (params) {
-        standard_alternate_fields_within(params.setName, !!params.required);
+        standardAlternateFieldsWithin(params.setName, !!params.required);
     };
 
     $cms.templates.formScreenInputThemeImageEntry = function (params) {
@@ -682,8 +682,8 @@
             return null;
         };
 
-        function click_func(event) {
-            choose_picture('j_' + stem, img, name, event);
+        function clickFunc(event) {
+            choosePicture('j_' + stem, img, name, event);
 
             if (window.main_form_very_simple !== undefined) {
                 form.submit();
@@ -692,9 +692,9 @@
             event.stopPropagation();
         }
 
-        img.onkeypress = click_func;
-        img.onclick = click_func;
-        el.onclick = click_func;
+        img.onkeypress = clickFunc;
+        img.onclick = clickFunc;
+        el.onclick = clickFunc;
 
         label.className = 'js_widget';
 
@@ -703,7 +703,7 @@
                 return;
             }
 
-            deselect_alt_url(this.form);
+            deselectAltUrl(this.form);
 
             if (window.main_form_very_simple !== undefined) {
                 this.form.submit();
@@ -711,7 +711,7 @@
             event.stopPropagation();
         };
 
-        function deselect_alt_url(form) {
+        function deselectAltUrl(form) {
             if (form.elements['alt_url'] != null) {
                 form.elements['alt_url'].value = '';
             }
@@ -795,23 +795,23 @@
             }
 
             if (params.wordCounter !== undefined) {
-                setup_word_counter($cms.dom.$('#post'), $cms.dom.$('#word_count_' + params.wordCountId));
+                setupWordCounter($cms.dom.$('#post'), $cms.dom.$('#word_count_' + params.wordCountId));
             }
         }
 
         $cms.manageScrollHeight(postEl);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
-            set_up_comcode_autocomplete(name, true);
+            setUpComcodeAutocomplete(name, true);
         });
 
         if (initDragDrop) {
             $cms.requireJavascript('plupload').then(function () {
-                initialise_html5_dragdrop_upload('container_for_' + name, name);
+                initialiseHtml5DragdropUpload('container_for_' + name, name);
             });
         }
 
         $cms.dom.on(labelRow, 'click', '.js-click-toggle-wysiwyg', function () {
-            toggle_wysiwyg(name);
+            toggleWysiwyg(name);
         });
 
         $cms.dom.on(labelRow, 'click', '.js-link-click-open-field-emoticon-chooser-window', function (e, link) {
@@ -835,7 +835,9 @@
         main_window.set_textbox(post, params.newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), params.newPostValueHtml);
 
         // Turn main post editing back on
-        if (wysiwyg_set_readonly !== undefined) wysiwyg_set_readonly('post', false);
+        if (wysiwygSetReadonly !== undefined) {
+            wysiwygSetReadonly('post', false);
+        }
 
         // Remove attachment uploads
         var inputs = post.form.elements, upload_button;
@@ -892,7 +894,7 @@
 
         var loading_space = document.getElementById('loading_space');
 
-        function shutdown_overlay() {
+        function shutdownOverlay() {
             window.setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
                 if (window.faux_close !== undefined) {
                     window.faux_close();
@@ -902,7 +904,7 @@
             }, 200);
         }
 
-        function dispatch_block_helper() {
+        function dispatchBlockHelper() {
             if ((typeof params.saveToId === 'string') && (params.saveToId !== '')) {
                 var ob = target_window.wysiwyg_editors[element.id].document.$.getElementById(params.saveToId);
 
@@ -916,7 +918,7 @@
 
                 target_window.wysiwyg_editors[element.id].updateElement();
 
-                shutdown_overlay();
+                shutdownOverlay();
             } else {
                 var message = '';
                 if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
@@ -940,21 +942,21 @@
                     }
 
                     if ((element.value.indexOf(comcode_semihtml) == -1) || (comcode.indexOf('[attachment') == -1)) { // Don't allow attachments to add twice
-                        target_window.insert_textbox(element, _comcode, target_window.document.selection ? target_window.document.selection : null, true, _comcode_semihtml);
+                        target_window.insertTextbox(element, _comcode, target_window.document.selection ? target_window.document.selection : null, true, _comcode_semihtml);
                     }
                 };
 
                 if (params.prefix !== undefined) {
-                    target_window.insert_textbox(element, params.prefix, target_window.document.selection ? target_window.document.selection : null, true);
+                    target_window.insertTextbox(element, params.prefix, target_window.document.selection ? target_window.document.selection : null, true);
                 }
                 target_window.insert_comcode_tag();
 
                 if (message != '') {
                     $cms.ui.alert(message, function () {
-                        shutdown_overlay();
+                        shutdownOverlay();
                     });
                 } else {
-                    shutdown_overlay();
+                    shutdownOverlay();
                 }
             }
         }
@@ -970,10 +972,10 @@
                 var ob = upload_element.plupload_object;
                 if (ob.state == target_window.plupload.STARTED) {
                     ob.bind('UploadComplete', function () {
-                        window.setTimeout(dispatch_block_helper, 100);
+                        window.setTimeout(dispatchBlockHelper, 100);
                         /*Give enough time for everything else to update*/
                     });
-                    ob.bind('Error', shutdown_overlay);
+                    ob.bind('Error', shutdownOverlay);
 
                     // Keep copying the upload indicator
                     var progress = $cms.dom.html(target_window.document.getElementById('fsUploadProgress_' + field));
@@ -991,7 +993,7 @@
         }
 
         if (!attached_event_action) {
-            window.setTimeout(dispatch_block_helper, 1000); // Delay it, so if we have in a faux popup it can set up faux_close
+            window.setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up faux_close
         }
     };
 
@@ -1002,17 +1004,17 @@
 
         if (params.syndicationJson !== undefined) {
             $cms.requireJavascript('editing').then(function () {
-                show_upload_syndication_options(nameStub, syndicationJson);
+                showUploadSyndicationOptions(nameStub, syndicationJson);
             });
         }
 
         if (params.plupload && !$cms.$IS_HTTPAUTH_LOGIN()) {
-            preinit_file_input('upload_multi', nameStub + '_' + index, null, null, params.filter);
+            preinitFileInput('upload_multi', nameStub + '_' + index, null, null, params.filter);
         }
 
         $cms.dom.on(container, 'change', '.js-input-change-ensure-next-field-upload', function (e, input) {
             if (!$cms.dom.keyPressed(e, 'Tab')) {
-                ensure_next_field_upload(input);
+                ensureNextFieldUpload(input);
             }
         });
 
@@ -1025,7 +1027,7 @@
         });
 
 
-        function ensure_next_field_upload(this_field) {
+        function ensureNextFieldUpload(this_field) {
             var mid = this_field.name.lastIndexOf('_'),
                 name_stub = this_field.name.substring(0, mid + 1),
                 this_num = this_field.name.substring(mid + 1, this_field.name.length) - 0,
@@ -1040,15 +1042,15 @@
                 next_field = document.createElement('input');
                 next_field.className = 'input_upload';
                 next_field.setAttribute('id', 'multi_' + next_num);
-                next_field.addEventListener('change', _ensure_next_field_upload);
+                next_field.addEventListener('change', _ensureNextFieldUpload);
                 next_field.setAttribute('type', 'file');
                 next_field.name = name_stub + next_num;
                 this_field.parentNode.appendChild(next_field);
             }
 
-            function _ensure_next_field_upload(event) {
+            function _ensureNextFieldUpload(event) {
                 if (!$cms.dom.keyPressed(event, 'Tab')) {
-                    ensure_next_field_upload(this);
+                    ensureNextFieldUpload(this);
                 }
             }
         }
@@ -1060,14 +1062,14 @@
         }
 
         if (params.code !== undefined) {
-            choose_picture('j_' + $cms.filter.id(params.name) + '_' + $cms.filter.id(params.code), null, params.name, null);
+            choosePicture('j_' + $cms.filter.id(params.name) + '_' + $cms.filter.id(params.code), null, params.name, null);
         }
 
         if (params.name === 'delete') {
-            assign_radio_deletion_confirm(params.name);
+            assignRadioDeletionConfirm(params.name);
         }
 
-        function assign_radio_deletion_confirm(name) {
+        function assignRadioDeletionConfirm(name) {
             for (var i = 1; i < 3; i++) {
                 var e = document.getElementById('j_' + name + '_' + i);
                 if (e) {
@@ -1096,14 +1098,14 @@
 
     $cms.templates.formScreenInputMultiList = function formScreenInputMultiList(params, container) {
         $cms.dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
-            _ensure_next_field(e, input)
+            _ensureNextField(e, input)
         });
     };
 
     $cms.templates.formScreenInputTextMulti = function formScreenInputTextMulti(params, container) {
         $cms.dom.on(container, 'keypress', '.js-keypress-textarea-ensure-next-field', function (e, textarea) {
             if (!$cms.dom.keyPressed(e, 'Tab')) {
-                ensure_next_field(textarea);
+                ensureNextField(textarea);
             }
         });
     };
@@ -1139,7 +1141,7 @@
         });
 
         $cms.dom.on(container, 'keypress', '.js-keypress-input-ensure-next-field', function (e, input) {
-            _ensure_next_field(e, input);
+            _ensureNextField(e, input);
         });
     };
 
@@ -1159,7 +1161,7 @@
     };
 
     /* Set up a word count for a form field */
-    function setup_word_counter(post, count_element) {
+    function setupWordCounter(post, count_element) {
         window.setInterval(function () {
             if ($cms.form.isWysiwygField(post)) {
                 try {
@@ -1175,7 +1177,7 @@
         }, 1000);
     }
 
-    function permissions_overridden(select) {
+    function permissionsOverridden(select) {
         var element = document.getElementById(select + '_presets');
         if (element.options[0].id != select + '_custom_option') {
             var new_option = document.createElement('option');
@@ -1187,7 +1189,7 @@
         element.selectedIndex = 0;
     }
 
-    function try_to_simplify_iframe_form() {
+    function tryToSimplifyIframeForm() {
         var form_cat_selector = document.getElementById('main_form'),
             elements, i, element,
             count = 0, found, foundButton;
@@ -1216,7 +1218,7 @@
                             '{!Q_SURE_LOSE;^}',
                             function (result) {
                                 if (result) {
-                                    _simplified_form_continue_submit(iframe, form_cat_selector);
+                                    _simplifiedFormContinueSubmit(iframe, form_cat_selector);
                                 }
                             }
                         );
@@ -1225,7 +1227,7 @@
                     }
                 }
 
-                _simplified_form_continue_submit(iframe, form_cat_selector);
+                _simplifiedFormContinueSubmit(iframe, form_cat_selector);
 
                 return null;
             };
@@ -1236,7 +1238,7 @@
         }
     }
 
-    function _simplified_form_continue_submit(iframe, form_cat_selector) {
+    function _simplifiedFormContinueSubmit(iframe, form_cat_selector) {
         if ($cms.form.checkForm(form_cat_selector)) {
             if (iframe) {
                 $cms.dom.animateFrameLoad(iframe, 'iframe_under');
@@ -1246,7 +1248,7 @@
     }
 
     /* Geolocation for address fields */
-    function geolocate_address_fields() {
+    function geolocateAddressFields() {
         if (!navigator.geolocation) {
             return;
         }
@@ -1355,7 +1357,7 @@
     }
 
     // Hide a 'tray' of trs in a form
-    function toggle_subordinate_fields(pic, help_id) {
+    function toggleSubordinateFields(pic, help_id) {
         var field_input = pic.parentElement.parentElement.parentElement,
             next = field_input.nextElementSibling,
             newDisplayState, newDisplayState2;
@@ -1427,7 +1429,7 @@
         $cms.dom.triggerResize();
     }
 
-    function choose_picture(j_id, img_ob, name, event) {
+    function choosePicture(j_id, img_ob, name, event) {
         var j = document.getElementById(j_id);
         if (!j) {
             return;
@@ -1466,7 +1468,7 @@
     }
 
 
-    function standard_alternate_fields_within(set_name, something_required) {
+    function standardAlternateFieldsWithin(set_name, something_required) {
         var form = document.getElementById('set_wrapper_' + set_name);
 
         while (form && (form.localName !== 'form')) {
@@ -1486,10 +1488,10 @@
             }
         }
 
-        standard_alternate_fields(field_names, something_required);
+        standardAlternateFields(field_names, something_required);
 
         // Do dynamic $cms.form.setLocked/$cms.form.setRequired such that one of these must be set, but only one may be
-        function standard_alternate_fields(field_names, something_required, second_run) {
+        function standardAlternateFields(field_names, something_required, second_run) {
             second_run = !!second_run;
 
             // Look up field objects
@@ -1505,7 +1507,7 @@
                 field = fields[i];
                 if ((!field) || (field.alternating === undefined)) {// ... but only if not already set
                     var self_function = function (e) {
-                        standard_alternate_fields(field_names, something_required, true);
+                        standardAlternateFields(field_names, something_required, true);
                     }; // We'll re-call ourself on change
                     _standard_alternate_field_create_listeners(field, self_function);
                 }
@@ -1540,7 +1542,7 @@
                 function __standard_alternate_field_update_editability(field, chosen_field, is_locked, is_chosen, something_required) {
                     if ((!field) || (field.nodeName !== undefined)) {
                         ___standard_alternate_field_update_editability(field, chosen_field, is_locked, is_chosen, something_required);
-                    } else {// List of fields (e.g. radio list, or just because standard_alternate_fields_within was used)
+                    } else {// List of fields (e.g. radio list, or just because standardAlternateFieldsWithin was used)
                         for (var i = 0; i < field.length; i++) {
                             if (field[i].name !== undefined) {// If it is an object, as opposed to some string in the collection
                                 ___standard_alternate_field_update_editability(field[i], chosen_field, is_locked, is_chosen, something_required);
@@ -1660,14 +1662,14 @@
 // Multi-field
 // ===========
 
-function _ensure_next_field(event, el) {
+function _ensureNextField(event, el) {
     if ($cms.dom.keyPressed(event, 'Enter')) {
-        goto_next_field(el);
+        gotoNextField(el);
     } else if (!$cms.dom.keyPressed(event, 'Tab')) {
-        ensure_next_field(el);
+        ensureNextField(el);
     }
 
-    function goto_next_field(thisField) {
+    function gotoNextField(thisField) {
         var mid = thisField.id.lastIndexOf('_'),
             name_stub = thisField.id.substring(0, mid + 1),
             this_num = thisField.id.substring(mid + 1, thisField.id.length) - 0,
@@ -1682,7 +1684,7 @@ function _ensure_next_field(event, el) {
     }
 }
 
-function ensure_next_field(this_field) {
+function ensureNextField(this_field) {
     var mid = this_field.id.lastIndexOf('_'),
         name_stub = this_field.id.substring(0, mid + 1),
         this_num = this_field.id.substring(mid + 1, this_field.id.length) - 0,
@@ -1722,7 +1724,7 @@ function ensure_next_field(this_field) {
             next_field.onkeyup = this_field.onkeyup;
         }
         next_field.onkeypress = function (event) {
-            _ensure_next_field(event, next_field);
+            _ensureNextField(event, next_field);
         };
         if (this_field.onchange) {
             next_field.onchange = this_field.onchange;

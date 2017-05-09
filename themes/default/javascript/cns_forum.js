@@ -196,9 +196,8 @@
         });
     };
 
-    $cms.templates.cnsForumInGrouping = function cnsForumInGrouping(params) {
-        var container = this,
-            forumRulesUrl = params.forumRulesUrl,
+    $cms.templates.cnsForumInGrouping = function cnsForumInGrouping(params, container) {
+        var forumRulesUrl = params.forumRulesUrl,
             introQuestionUrl = params.introQuestionUrl;
 
         $cms.dom.on(container, 'click', '.js-click-open-forum-rules-popup', function () {
@@ -249,12 +248,12 @@
             error  = (minSelections === maxSelections) ? $cms.format('{!POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $cms.format('{!POLL_NOT_ENOUGH_ERROR;^}', minSelections, maxSelections);
 
         $cms.dom.on(form, 'submit', function (e) {
-            if (cns_check_poll() === false) {
+            if (cnsCheckPoll() === false) {
                 e.preventDefault();
             }
         });
 
-        function cns_check_poll() {
+        function cnsCheckPoll() {
             var j = 0;
             for (var i = 0; i < form.elements.length; i++) {
                 if (form.elements[i].checked && ((form.elements[i].type === 'checkbox') || (form.elements[i].type === 'radio'))) {
@@ -309,9 +308,7 @@
         });
     };
 
-    $cms.templates.cnsPrivateTopicLink = function (params) {
-        var container = this;
-
+    $cms.templates.cnsPrivateTopicLink = function (params, container) {
         $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
             pollForNotifications(true, true);
         });

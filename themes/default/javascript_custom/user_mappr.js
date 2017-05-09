@@ -21,7 +21,7 @@
         }
 
         var options = {
-            callback: google_map_users_initialize,
+            callback: googleMapUsersInitialize,
             other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION('googleMapKey') : ''
         };
 
@@ -32,7 +32,7 @@
             google.load('maps','3', options);
         });
 
-        function google_map_users_initialize() {
+        function googleMapUsersInitialize() {
             var bounds = new google.maps.LatLngBounds();
             var center = new google.maps.LatLng((latitude !== '' ? latitude : 0.0), (longitude !== '' ? longitude : 0.0));
             var map = new google.maps.Map(document.getElementById('map_canvas'), {
@@ -73,7 +73,7 @@
             //{$,Show markers}
             var markers = [];
             for (var i = 0; i < data.length; i++) {
-                add_data_point(data[i], bounds, markers, info_window, map);
+                addDataPoint(data[i], bounds, markers, info_window, map);
             }
 
             if (cluster) {
@@ -93,7 +93,7 @@
                             $cms.doAjaxRequest(setCoordUrl + position.coords.latitude + '_' + position.coords.longitude + $cms.keepStub(), function() {});
                             var initial_location = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
                             map.setCenter(initial_location);
-                            add_data_point([username, position.coords.latitude, position.coords.longitude, ''], bounds, markers, info_window, map);
+                            addDataPoint([username, position.coords.latitude, position.coords.longitude, ''], bounds, markers, info_window, map);
                         });
                     } catch (e) {}
                 }
@@ -110,7 +110,7 @@
              }*/
         }
 
-        function add_data_point(data_point,bounds,markers,info_window,map) {
+        function addDataPoint(data_point,bounds,markers,info_window,map) {
             var lat_lng = new google.maps.LatLng(data_point[1], data_point[2]);
             bounds.extend(lat_lng);
 

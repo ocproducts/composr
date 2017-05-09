@@ -11,21 +11,21 @@
 
         $cms.requireJavascript('https://www.google.com/jsapi').then(function () {
             window.setTimeout(function() {
-                window.google.load('maps', '3', { callback: google_map_users_initialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
+                window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
             },0);
         });
 
         $cms.dom.on(container, 'change', '.js-change-set-place-marker', function () {
-            place_marker(latitudeInput.value, longitudeInput.value);
+            placeMarker(latitudeInput.value, longitudeInput.value);
         });
 
         $cms.dom.on(container, 'click', '.js-click-geolocate-user-for-map-field', function () {
-            geolocate_user_for_map_field();
+            geolocateUserForMapField();
         });
 
         var marker, map, last_point;
 
-        function google_map_users_initialize() {
+        function googleMapUsersInitialize() {
             marker = new google.maps.Marker();
 
             var bounds = new google.maps.LatLngBounds(),
@@ -53,7 +53,7 @@
 
             // Show marker for current position
             if (latitude !== '') {
-                place_marker(((latitude !== '') ? latitude : 0), ((longitude !== '') ? longitude : 0));
+                placeMarker(((latitude !== '') ? latitude : 0), ((longitude !== '') ? longitude : 0));
             }
             marker.setMap(map);
 
@@ -61,29 +61,29 @@
             google.maps.event.addListener(map, 'mousemove', function (point) {
                 last_point = point.latLng;
             });
-            google.maps.event.addListener(map, 'click', _place_marker);
-            google.maps.event.addListener(marker, 'click', _place_marker);
+            google.maps.event.addListener(map, 'click', _placeMarker);
+            google.maps.event.addListener(marker, 'click', _placeMarker);
         }
 
-        function _place_marker() {
+        function _placeMarker() {
             document.getElementById(name + '_latitude').value = last_point.lat();
             document.getElementById(name + '_longitude').value = last_point.lng();
-            place_marker(last_point.lat(), last_point.lng());
+            placeMarker(last_point.lat(), last_point.lng());
             marker.setMap(map);
         }
 
-        function place_marker(latitude, longitude) {
+        function placeMarker(latitude, longitude) {
             var latLng = new google.maps.LatLng(latitude, longitude);
             marker.setPosition(latLng);
             map.setCenter(latLng);
             map.setZoom(12);
         }
 
-        function geolocate_user_for_map_field() {
+        function geolocateUserForMapField() {
             if (navigator.geolocation != null) {
                 try {
                     navigator.geolocation.getCurrentPosition(function (position) {
-                        place_marker(position.coords.latitude, position.coords.longitude);
+                        placeMarker(position.coords.latitude, position.coords.longitude);
 
                         document.getElementById(name + '_latitude').value = position.coords.latitude;
                         document.getElementById(name + '_longitude').value = position.coords.longitude;
@@ -115,7 +115,7 @@
         }
 
         var options = {
-            callback: google_map_initialize,
+            callback: googleMapInitialize,
             other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION('googleMapKey') : ''
         };
 
@@ -128,17 +128,17 @@
         }
 
         $cms.requireJavascript(scripts).then(function () {
-            google.load('maps','3', options);
+            google.load('maps', '3', options);
         });
 
-        function google_map_initialize() {
+        function googleMapInitialize() {
             var bounds = new google.maps.LatLngBounds();
             var specified_center = new google.maps.LatLng((latitude !== '' ? latitude : 0.0), (longitude !== '' ? longitude : 0.0));
             var gOptions = {
                 zoom: zoom,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 overviewMapControl: true,
-                overviewMapControlOptions: { opened: true }
+                overviewMapControlOptions: {opened: true}
             };
 
             if (!center) { //{$,NB: the block center parameter means to autofit the contents cleanly; if the parameter is not set it will center about the given latitude/longitude}
@@ -148,10 +148,10 @@
             window.data_map = new google.maps.Map(document.getElementById(divId), gOptions);
 
 
-            var info_window=new google.maps.InfoWindow();
+            var info_window = new google.maps.InfoWindow();
 
             //{$,Close InfoWindow when clicking anywhere on the map.}
-            google.maps.event.addListener(data_map,'click',function () {
+            google.maps.event.addListener(data_map, 'click', function () {
                 info_window.close();
             });
 
@@ -170,10 +170,10 @@
             }
 
             //{$,Show markers}
-            var latLng,marker_options,marker;
-            var bound_length=0;
+            var latLng, marker_options, marker;
+            var bound_length = 0;
             if (cluster) {
-                var markers=[];
+                var markers = [];
             }
 
             if ((minLatitude !== maxLatitude) && (minLongitude !== maxLongitude)) {
@@ -190,16 +190,15 @@
                 }
             }
 
-            var bound_by_contents=(bound_length==0);
-            for (var i=0;i<data.length;i++) {
-                latLng=new google.maps.LatLng(data[i][1],data[i][2]);
-                if (bound_by_contents)
-                {
+            var bound_by_contents = (bound_length == 0);
+            for (var i = 0; i < data.length; i++) {
+                latLng = new google.maps.LatLng(data[i][1], data[i][2]);
+                if (bound_by_contents) {
                     bounds.extend(latLng);
                     bound_length++;
                 }
 
-                marker_options={
+                marker_options = {
                     position: latLng,
                     title: data[i][0]
                 };
@@ -207,12 +206,12 @@
                 /*{$,Reenable if you have put appropriate images in place
                  var categoryIcon='{$BASE_URL;/}/themes/default/images_custom/map_icons/catalogue_category_'+data[i][3]+'.png';
                  marker_options.icon=categoryIcon;}*/
-                if (data[i][6]==1) {
-                    var starIcon= $cms.$BASE_URL() + '/themes/default/images_custom/star_highlight.png';
+                if (data[i][6] == 1) {
+                    var starIcon = $cms.$BASE_URL() + '/themes/default/images_custom/star_highlight.png';
                     marker_options.icon = starIcon;
                 }
 
-                marker=new google.maps.Marker(marker_options);
+                marker = new google.maps.Marker(marker_options);
 
                 if (cluster) {
                     markers.push(marker);
@@ -220,20 +219,20 @@
                     marker.setMap(data_map);
                 }
 
-                google.maps.event.addListener(marker,'click',(function (arg_marker,entry_title,entry_id,entry_content) {
+                google.maps.event.addListener(marker, 'click', (function (arg_marker, entry_title, entry_id, entry_content) {
                     return function () {
                         //{$,Dynamically load entry details only when their marker is clicked.}
-                        var content=entry_content.replace(/<colgroup>(.|\n)*<\/colgroup>/,'').replace(/&nbsp;/g,' ');
-                        if (content!='') {
-                            info_window.setContent('<div class="global_middle_faux float_surrounder">'+content+'<\/div>');
-                            info_window.open(data_map,arg_marker);
+                        var content = entry_content.replace(/<colgroup>(.|\n)*<\/colgroup>/, '').replace(/&nbsp;/g, ' ');
+                        if (content != '') {
+                            info_window.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
+                            info_window.open(data_map, arg_marker);
                         }
                     };
-                })(marker,data[i][0],data[i][4],data[i][5])); //{$,These are the args passed to the dynamic function above.}
+                })(marker, data[i][0], data[i][4], data[i][5])); //{$,These are the args passed to the dynamic function above.}
             }
 
             if (cluster) {
-                var markerCluster=new MarkerClusterer(data_map,markers);
+                var markerCluster = new MarkerClusterer(data_map, markers);
             }
 
             //{$,Autofit the map around the markers}
@@ -248,11 +247,11 @@
             }
             //{$,Sample code to grab clicked positions
             var lastPoint;
-            google.maps.event.addListener(data_map,'mousemove',function(point) {
-                lastPoint=point.latLng;
+            google.maps.event.addListener(data_map, 'mousemove', function (point) {
+                lastPoint = point.latLng;
             });
-            google.maps.event.addListener(data_map,'click',function() {
-                console.log(lastPoint.lat()+', '+lastPoint.lng());
+            google.maps.event.addListener(data_map, 'click', function () {
+                console.log(lastPoint.lat() + ', ' + lastPoint.lng());
             });
         }
     }

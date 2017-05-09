@@ -24,7 +24,7 @@
     $cms.form.setFieldError = function setFieldError(the_element, error_msg) {
         if (the_element.name !== undefined) {
             var id = the_element.name;
-            var errormsg_element = get_errormsg_element(id);
+            var errormsg_element = getErrormsgElement(id);
             if ((error_msg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) { // Do not blank out as day/month/year (which comes first) would have already done it
                 return;
             }
@@ -75,7 +75,7 @@
             the_element.classList.add('input_erroneous');
         }
 
-        function get_errormsg_element(id) {
+        function getErrormsgElement(id) {
             var errormsg_element = document.getElementById('error_' + id);
 
             if (!errormsg_element) {
@@ -201,8 +201,8 @@
         $cms.ui.disableSubmitAndPreviewButtons();
 
         // Turn main post editing back off
-        if (window.wysiwyg_set_readonly !== undefined) {
-            wysiwyg_set_readonly('post', true);
+        if (window.wysiwygSetReadonly !== undefined) {
+            wysiwygSetReadonly('post', true);
         }
 
         return true;
@@ -233,7 +233,7 @@
         var value;
         switch (element.localName) {
             case 'textarea':
-                value = (window.get_textbox === undefined) ? element.value : get_textbox(element);
+                value = (window.getTextbox === undefined) ? element.value : getTextbox(element);
                 break;
             case 'select':
                 value = '';
@@ -312,7 +312,7 @@
 
             the_element = the_form.elements[j];
 
-            check_result = check_field(the_element, the_form, for_preview);
+            check_result = checkField(the_element, the_form, for_preview);
             if (check_result != null) {
                 erroneous = check_result[0] || erroneous;
                 if (!error_element && erroneous) error_element = the_element;
@@ -322,7 +322,7 @@
                 if (check_result[0]) {
                     var auto_reset_error = function (the_element) {
                         return function (event, no_recurse) {
-                            var check_result = check_field(the_element, the_form, for_preview);
+                            var check_result = checkField(the_element, the_form, for_preview);
                             if ((check_result != null) && (!check_result[0])) {
                                 $cms.form.setFieldError(the_element, '');
                             }
@@ -399,7 +399,7 @@
 
         return !erroneous;
 
-        function check_field(the_element, the_form) {
+        function checkField(the_element, the_form) {
             var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
 
             // No checking for hidden elements
@@ -451,7 +451,7 @@
             my_value = $cms.form.cleverFindValue(the_form, the_element);
 
             // Prepare for custom error messages, stored as HTML5 data on the error message display element
-            var errormsg_element = (the_element.name === undefined) ? null : get_errormsg_element(the_element.name);
+            var errormsg_element = (the_element.name === undefined) ? null : getErrormsgElement(the_element.name);
 
             // Blank?
             if ((required) && (my_value.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
@@ -509,7 +509,7 @@
 
             return [erroneous, total_file_size, alerted];
 
-            function get_errormsg_element(id) {
+            function getErrormsgElement(id) {
                 var errormsg_element = $cms.dom.$id('error_' + id);
                 if (!errormsg_element) {
                     errormsg_element = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));

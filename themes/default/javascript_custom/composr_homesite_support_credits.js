@@ -9,13 +9,13 @@
     };
 
     $cms.templates.blockCreditExpsInner = function blockCreditExpsInner(params, container) {
-        update_product_info_display();
+        updateProductInfoDisplay();
 
         $cms.dom.on(container, 'change', '.js-change-update-product-info-display', function () {
-            update_product_info_display();
+            updateProductInfoDisplay();
         });
 
-        function update_product_info_display() {
+        function updateProductInfoDisplay() {
             var type_code = document.getElementById('type_code');
             var value = type_code.options[type_code.selectedIndex].value;
             var creditsInfo = document.body.querySelectorAll('.creditsInfo');

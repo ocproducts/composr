@@ -244,7 +244,7 @@
         $cms.dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
             var fieldName = target.dataset.tpFieldName;
             if (fieldName) {
-                do_emoticon(fieldName, target, true)
+                doEmoticon(fieldName, target, true)
             }
         });
     };

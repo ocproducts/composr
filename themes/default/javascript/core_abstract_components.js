@@ -29,10 +29,14 @@
 
         if (!explicitEditingLinks) {
             $cms.dom.on(el, 'click', function (e) {
-                fractional_edit(e, el, url, editText, editParamName, null, null, editType);
+                fractionalEdit(e, el, url, editText, editParamName, null, null, editType);
             });
 
-            $cms.dom.on(el, 'mouseover mouseout', function (e) {
+            $cms.dom.on(el, 'mouseover mouseout', function (e, target) {
+                if (target.contains(e.relatedTarget)) {
+                    return;
+                }
+
                 if (e.type === 'mouseover') {
                     window.old_status = window.status;
                     window.status = '{!SPECIAL_CLICK_TO_EDIT;}';
@@ -46,7 +50,7 @@
             });
         } else {
             $cms.dom.on(el, 'click', function (e) {
-                fractional_edit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName);
+                fractionalEdit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName);
             });
         }
     };

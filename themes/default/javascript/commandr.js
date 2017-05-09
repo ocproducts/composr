@@ -8,11 +8,11 @@ window.previous_commands || (window.previous_commands = []);
 
     $cms.templates.commandrMain = function commandrMain(params, container) {
         $cms.dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
-            commandr_form_submission($cms.dom.$('#commandr_command').value, form);
+            commandrFormSubmission($cms.dom.$('#commandr_command').value, form);
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-input-commandr-handle-history', function (e, input) {
-            if (commandr_handle_history(input, e.keyCode ? e.keyCode : e.charCode, e) === false) {
+            if (commandrHandleHistory(input, e.keyCode ? e.keyCode : e.charCode, e) === false) {
                 e.preventDefault();
             }
         });
@@ -63,13 +63,13 @@ window.previous_commands || (window.previous_commands = []);
 
         $cms.dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
             var command = 'write "' + file + '" "' + form.elements.edit_content.value.replace(/\\/g, '\\\\').replace(/</g, '\\<').replace(/>/g, '\\>').replace(/"/g, '\\"') + '"';
-            commandr_form_submission(command, form);
+            commandrFormSubmission(command, form);
         });
     };
 }(window.$cms));
 
 // Deal with Commandr history
-function commandr_handle_history(element, key_code, e) {
+function commandrHandleHistory(element, key_code, e) {
     if ((key_code == 38) && (window.previous_commands.length > 0)) {// Up button
         e && event.stopPropagation();
         if (e.cancelable) {
@@ -110,7 +110,7 @@ function commandr_handle_history(element, key_code, e) {
 }
 
 // Submit an Commandr command
-function commandr_form_submission(command, form) {
+function commandrFormSubmission(command, form) {
     // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
     // var command=document.getElementById('commandr_command').value;
 
@@ -121,7 +121,7 @@ function commandr_form_submission(command, form) {
 
         var post = 'command=' + encodeURIComponent(command);
         post = $cms.form.modsecurityWorkaroundAjax(post);
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandr_command_response, post);
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandrCommandResponse, post);
 
         window.disable_timeout = window.setTimeout(function () {
             document.getElementById('commandr_command').disabled = false;
@@ -141,7 +141,7 @@ function commandr_form_submission(command, form) {
  }
 
 // Deal with the response to a command
-function commandr_command_response(ajax_result_frame, ajax_result) {
+function commandrCommandResponse(ajax_result_frame, ajax_result) {
     if (window.disable_timeout) {
         window.clearTimeout(window.disable_timeout);
         window.disable_timeout = null;
@@ -255,7 +255,7 @@ function commandr_command_response(ajax_result_frame, ajax_result) {
 }
 
 // Clear the command line
-function clear_cl() {
+function clearCl() {
     // Clear all results from the CL
     var command_line = document.getElementById('commands_go_here');
     var elements = command_line.querySelectorAll('.command');
@@ -273,8 +273,19 @@ function bsod() {
     // Nothing to see here, move along.
     var command_line = document.getElementById('commands_go_here');
     command_line.style.backgroundColor = '#0000FF';
-    bsod_traverse_node(window.document.documentElement);
+    bsodTraverseNode(window.document.documentElement);
     setInterval(foxy, 1);
+
+    function bsodTraverseNode(node) {
+        var i, t;
+        for (i = 0; i < node.childNodes.length; i++) {
+            t = node.childNodes[i];
+            if (t.nodeType == 3) {
+                if ((t.data.length > 1) && (Math.random() < 0.3)) window.commandr_foxy_textnodes[window.commandr_foxy_textnodes.length] = t;
+            }
+            else bsodTraverseNode(t);
+        }
+    }
 }
 
 function foxy() {
@@ -289,13 +300,3 @@ function foxy() {
     }
 }
 
-function bsod_traverse_node(node) {
-    var i, t;
-    for (i = 0; i < node.childNodes.length; i++) {
-        t = node.childNodes[i];
-        if (t.nodeType == 3) {
-            if ((t.data.length > 1) && (Math.random() < 0.3)) window.commandr_foxy_textnodes[window.commandr_foxy_textnodes.length] = t;
-        }
-        else bsod_traverse_node(t);
-    }
-}

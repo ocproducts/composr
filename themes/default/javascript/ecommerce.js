@@ -23,7 +23,10 @@
 
     $cms.functions.moduleAdminEcommerce = function moduleAdminEcommerce() {
         var _length_units = document.getElementById('length_units'), _length = document.getElementById('length');
-        var adjust_lengths = function () {
+        _length_units.addEventListener('change', adjustLengths);
+        _length.addEventListener('change', adjustLengths);
+
+        function adjustLengths() {
             var length_units = _length_units.options[_length_units.selectedIndex].value, length = _length.value;
             if (document.getElementById('auto_recur').checked) {
                 // Limits based on https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
@@ -39,9 +42,7 @@
                 if (length < 1)
                     _length.value = 1;
             }
-        };
-        _length_units.addEventListener('change', adjust_lengths);
-        _length.addEventListener('change', adjust_lengths);
+        }
     };
 
     $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params, container) {

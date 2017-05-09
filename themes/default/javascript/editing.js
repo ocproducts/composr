@@ -11,7 +11,7 @@ function wysiwygOn() {
     return (!cookie || (cookie !== '0')) && $cms.$CONFIG_OPTION('wysiwyg') && !$cms.$MOBILE();
 }
 
-function toggle_wysiwyg(name) {
+function toggleWysiwyg(name) {
     if (!$cms.$CONFIG_OPTION('wysiwyg')) {
         $cms.ui.alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
         return false;
@@ -20,7 +20,7 @@ function toggle_wysiwyg(name) {
     var is_wysiwyg_on = wysiwygOn();
     if (is_wysiwyg_on) {
         if ($cms.readCookie('use_wysiwyg') === '-1') {
-            _toggle_wysiwyg(name);
+            _toggleWysiwyg(name);
         } else {
             $cms.ui.generateQuestionUi(
                 '{!comcode:WHETHER_SAVE_WYSIWYG_SELECTION;^}',
@@ -38,16 +38,16 @@ function toggle_wysiwyg(name) {
                     }
 
                     if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE;^}'.toLowerCase()) {
-                        _toggle_wysiwyg(name);
+                        _toggleWysiwyg(name);
                     }
 
                     if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}'.toLowerCase()) {
-                        _toggle_wysiwyg(name);
+                        _toggleWysiwyg(name);
                         $cms.setCookie('use_wysiwyg', '-1', 3000);
                     }
 
                     if (saving_cookies.toLowerCase() === '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'.toLowerCase()) {
-                        _toggle_wysiwyg(name);
+                        _toggleWysiwyg(name);
                         $cms.setCookie('use_wysiwyg', '0', 3000);
                     }
                 },
@@ -58,7 +58,7 @@ function toggle_wysiwyg(name) {
         return false;
     }
 
-    _toggle_wysiwyg(name);
+    _toggleWysiwyg(name);
 
     if ($cms.readCookie('use_wysiwyg') != '-1') {
         $cms.setCookie('use_wysiwyg', '1', 3000);
@@ -66,7 +66,7 @@ function toggle_wysiwyg(name) {
 
     return false;
 
-    function _toggle_wysiwyg(name) {
+    function _toggleWysiwyg(name) {
         var is_wysiwyg_on = wysiwygOn();
 
         var forms = document.getElementsByTagName('form');
@@ -86,9 +86,9 @@ function toggle_wysiwyg(name) {
             }
 
             if (all_empty) {
-                disable_wysiwyg(forms, so, so2, true);
+                disableWysiwyg(forms, so, so2, true);
             } else if ((window.wysiwyg_original_comcode[id] === undefined) || (window.wysiwyg_original_comcode[id].indexOf('&#8203;') != -1) || (window.wysiwyg_original_comcode[id].indexOf('cms_keep') != -1)) {
-                disable_wysiwyg(forms, so, so2, false);
+                disableWysiwyg(forms, so, so2, false);
             } else {
                 $cms.ui.generateQuestionUi(
                     '{!javascript:DISCARD_WYSIWYG_CHANGES_NICE;^}',
@@ -107,30 +107,30 @@ function toggle_wysiwyg(name) {
                         }
                         var discard = (prompt.toLowerCase() == '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
 
-                        disable_wysiwyg(forms, so, so2, discard);
+                        disableWysiwyg(forms, so, so2, discard);
                     }
                 );
             }
         } else {
-            enable_wysiwyg(forms, so, so2);
+            enableWysiwyg(forms, so, so2);
         }
 
         return false;
     }
 
 
-    function enable_wysiwyg(forms, so, so2) {
+    function enableWysiwyg(forms, so, so2) {
         window.wysiwyg_on = function () {
             return true;
         };
 
         for (var fid = 0; fid < forms.length; fid++) {
-            load_html_edit(forms[fid], true);
+            loadHtmlEdit(forms[fid], true);
         }
     }
 
 
-    function disable_wysiwyg(forms, so, so2, discard) {
+    function disableWysiwyg(forms, so, so2, discard) {
         for (var fid = 0; fid < forms.length; fid++) {
             for (var counter = 0; counter < forms[fid].elements.length; counter++) {
                 var id = forms[fid].elements[counter].id;
@@ -196,7 +196,7 @@ function toggle_wysiwyg(name) {
 }
 
 window.wysiwyg_readonly_timer = {};
-function wysiwyg_set_readonly(name, readonly) {
+function wysiwygSetReadonly(name, readonly) {
     if (window.wysiwyg_editors[name] === undefined) {
         return;
     }
@@ -215,7 +215,7 @@ function wysiwyg_set_readonly(name, readonly) {
     }
     if (readonly) {
         window.wysiwyg_readonly_timer[name] = window.setTimeout(function () {
-            wysiwyg_set_readonly(name, false);
+            wysiwygSetReadonly(name, false);
         }, 5000);
     }
 }
@@ -224,7 +224,7 @@ function wysiwyg_set_readonly(name, readonly) {
 window.wysiwyg_editors || (window.wysiwyg_editors = {});
 window.wysiwyg_original_comcode || (window.wysiwyg_original_comcode = {});
 
-function load_html_edit(posting_form, ajax_copy) {
+function loadHtmlEdit(posting_form, ajax_copy) {
     if ((!posting_form.method) || (posting_form.method.toLowerCase() !== 'post')) {
         return;
     }
@@ -259,7 +259,7 @@ function load_html_edit(posting_form, ajax_copy) {
         e = posting_form.elements[counter];
         id = e.id;
 
-        if ((e.type == 'textarea') && (e.className.indexOf('wysiwyg') != -1)) {
+        if ((e.type === 'textarea') && (e.className.indexOf('wysiwyg') !== -1)) {
             if (document.getElementById(id + '__is_wysiwyg')) {
                 indicator = document.getElementById(id + '__is_wysiwyg');
             } else {
@@ -300,223 +300,223 @@ function load_html_edit(posting_form, ajax_copy) {
             }
             window.setTimeout(function (e, id) {
                 return function () {
-                    wysiwyg_editor_init_for(e, id);
+                    wysiwygEditorInitFor(e, id);
                 }
             }(e, id), 1000);
         }
     }
-}
 
-function wysiwyg_editor_init_for(element, id) {
-    var page_stylesheets = [];
-    if (!document) return;
-    var linked_sheets = document.getElementsByTagName('link');
-    for (var counter = 0; counter < linked_sheets.length; counter++) {
-        if (linked_sheets[counter].getAttribute('rel') == 'stylesheet')
-            page_stylesheets.push(linked_sheets[counter].getAttribute('href'));
-    }
-
-    // Fiddly procedure to find our colour
-    var test_div = document.createElement('div');
-    document.body.appendChild(test_div);
-    test_div.className = 'wysiwyg_toolbar_color_finder';
-    var matches;
-    var wysiwyg_color = window.getComputedStyle(test_div).getPropertyValue('color');
-    test_div.parentNode.removeChild(test_div);
-    matches = wysiwyg_color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, matches);
-    if (matches) {
-        wysiwyg_color = '#';
-        var hex;
-        hex = (window.parseInt(matches[1]).toString(16)) + '';
-        if (hex.length == 1) hex = '0' + hex;
-        wysiwyg_color += hex;
-        hex = (window.parseInt(matches[2]).toString(16)) + '';
-        if (hex.length == 1) hex = '0' + hex;
-        wysiwyg_color += hex;
-        hex = (window.parseInt(matches[3]).toString(16)) + '';
-        if (hex.length == 1) hex = '0' + hex;
-        wysiwyg_color += hex;
-    }
-    // CKEditor doesn't allow low saturation, so raise up if we need to
-    matches = wysiwyg_color.match(/^#([0-4])(.)([0-4])(.)([0-4])(.)$/);
-    if (matches) {
-        wysiwyg_color = '#';
-        wysiwyg_color += (window.parseInt(matches[1]) + 4) + matches[2];
-        wysiwyg_color += (window.parseInt(matches[3]) + 4) + matches[4];
-        wysiwyg_color += (window.parseInt(matches[5]) + 4) + matches[6];
-    }
-
-    /*== START WYSIWYG_SETTINGS.js ==*/
-    // Carefully work out toolbar
-    // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
-    var precision_editing = $cms.$IS_STAFF() || (document.body.querySelectorAll('.comcode_button_box').length > 1);
-    var toolbar = [];
-    if (precision_editing) {
-        toolbar.push(['Source', '-']);
-    }
-    var toolbar_edit_actions = ['Cut', 'Copy', 'Paste', precision_editing ? 'PasteText' : null, precision_editing ? 'PasteFromWord' : null, precision_editing ? 'PasteCode' : null];
-    if ($cms.$VALUE_OPTION('commercial_spellchecker')) {
-        toolbar_edit_actions.push('-', 'SpellChecker', 'Scayt');
-    }
-    toolbar.push(toolbar_edit_actions);
-    toolbar.push(['Undo', 'Redo', precision_editing ? '-' : null, precision_editing ? 'Find' : null, precision_editing ? 'Replace' : null, ((document.body.spellcheck !== undefined) ? 'spellchecktoggle' : null), '-', precision_editing ? 'SelectAll' : null, 'RemoveFormat']);
-    toolbar.push(['Link', 'Unlink']);
-    toolbar.push(precision_editing ? '/' : '-');
-    var formatting = ['Bold', 'Italic', 'Strike', '-', precision_editing ? 'Subscript' : null, (precision_editing ? 'Superscript' : null)];
-    toolbar.push(formatting);
-    toolbar.push(['NumberedList', 'BulletedList', precision_editing ? '-' : null, precision_editing ? 'Outdent' : null, precision_editing ? 'Indent' : null]);
-    if (precision_editing) {
-        toolbar.push(['JustifyLeft', 'JustifyCenter', 'JustifyRight', precision_editing ? 'JustifyBlock' : null]);
-    }
-    toolbar.push([precision_editing ? 'composr_image' : null, 'Table']);
-    if (precision_editing) {
-        toolbar.push('/');
-    }
-    toolbar.push(['Format', 'Font', 'FontSize']);
-    toolbar.push(['TextColor']);
-    if (precision_editing) {
-        toolbar.push(['Maximize', 'ShowBlocks']);
-    }
-    if (precision_editing) {
-        toolbar.push(['HorizontalRule', 'SpecialChar']);
-    }
-    var use_composr_toolbar = true;
-    if (use_composr_toolbar) {
-        toolbar.push(['composr_block', 'composr_comcode', (precision_editing ? 'composr_page' : null), 'composr_quote', (precision_editing ? 'composr_box' : null), 'composr_code']);
-    }
-    var editor_settings = {
-        skin: 'kama',
-        enterMode: window.CKEDITOR.ENTER_BR,
-        uiColor: wysiwyg_color,
-        ocpTheme: $cms.$THEME(),
-        fontSize_sizes: '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
-        removePlugins: '',
-        extraPlugins: 'showcomcodeblocks,imagepaste,spellchecktoggle' + (use_composr_toolbar ? ',composr' : ''),
-        /*{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}*/
-        customConfig: '',
-        /*{+END}*/
-        bodyId: 'wysiwyg_editor',
-        baseHref: $cms.baseUrl(),
-        linkShowAdvancedTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
-        imageShowAdvancedTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
-        imageShowLinkTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
-        imageShowSizing: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
-        autoUpdateElement: true,
-        contentsCss: page_stylesheets,
-        cssStatic: css,
-        startupOutlineBlocks: true,
-        language: $cms.$LANG() ? $cms.$LANG().toLowerCase() : 'en',
-        emailProtection: false,
-        resize_enabled: true,
-        width: (element.offsetWidth - 15),
-        height: window.location.href.includes('cms_comcode_pages') ? 250 : 500,
-        toolbar: toolbar,
-        allowedContent: true,
-        browserContextMenuOnCtrl: true,
-        comcodeXMLBlockTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}',
-        comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
-        magicline_everywhere: true,
-        autoGrow_onStartup: true
-    };
-    /*== END WYSIWYG_SETTINGS.js ==*/
-
-
-    if (window.CKEDITOR.instances[element.id]) {
-        // Workaround "The instance "xxx" already exists" error in Google Chrome
-        delete window.CKEDITOR.instances[element.id];
-    }
-    var editor = window.CKEDITOR.replace(element.id, editor_settings);
-    if (!editor) return; // Not supported on this platform
-    window.wysiwyg_editors[id] = editor;
-
-    element.parentNode.className += ' ' + editor_settings.skin; // Used for us to target per-skin CSS
-
-    // CSS to run inside the CKEditor frame
-    linked_sheets = document.getElementsByTagName('style');
-    var css = '';
-    for (counter = 0; counter < linked_sheets.length; counter++) {
-        css += $cms.dom.html(linked_sheets[counter]);
-    }
-    window.CKEDITOR.addCss(css);
-
-    // Change some CKEditor defaults
-    window.CKEDITOR.on('dialogDefinition', function (ev) {
-        var dialogName = ev.data.name;
-        var dialogDefinition = ev.data.definition;
-
-        if (dialogName == 'table') {
-            var info = dialogDefinition.getContents('info');
-
-            info.get('txtWidth')['default'] = '100%';
-            info.get('txtBorder')['default'] = '0';
-            info.get('txtBorder')['default'] = '0';
-            info.get('txtCellSpace')['default'] = '0';
-            info.get('txtCellPad')['default'] = '0';
-        }
-    });
-    if (document.getElementById('attachment_store')) {
-        window.lang_PREFER_CMS_ATTACHMENTS = '{!javascript:PREFER_CMS_ATTACHMENTS;^}';
-    }
-    window.lang_SPELLCHECKER_ENABLED = '{!javascript:SPELLCHECKER_ENABLED;^}';
-    window.lang_SPELLCHECKER_DISABLED = '{!javascript:SPELLCHECKER_DISABLED;^}';
-    window.lang_SPELLCHECKER_TOGGLE = '{!javascript:SPELLCHECKER_TOGGLE;^}';
-    window.lang_SPELLCHECKER_LABEL = '{!javascript:SPELLCHECKER_LABEL;^}';
-    window.lang_NO_IMAGE_PASTE_SAFARI = '{!javascript:NO_IMAGE_PASTE_SAFARI;^}';
-
-    // Mainly used by autosaving, but also sometimes CKEditor seems to not refresh the textarea (e.g. for one user's site when pressing delete key on an image)
-    editor.on('change', function (event) {
-        element.value = editor.getData();
-        if (element.externalOnKeyPress !== undefined) {
-            element.externalOnKeyPress(event, element);
-        }
-    });
-
-    editor.on('instanceReady', function (event) {
-        editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
-
-        if (window.set_up_comcode_autocomplete !== undefined) {
-            set_up_comcode_autocomplete(id);
+    function wysiwygEditorInitFor(element, id) {
+        var page_stylesheets = [];
+        if (!document) return;
+        var linked_sheets = document.getElementsByTagName('link');
+        for (var counter = 0; counter < linked_sheets.length; counter++) {
+            if (linked_sheets[counter].getAttribute('rel') == 'stylesheet')
+                page_stylesheets.push(linked_sheets[counter].getAttribute('href'));
         }
 
-        // Instant preview of Comcode
-        find_tags_in_editor(editor, element);
-    });
-    window.setInterval(function () {
-        if ($cms.form.isWysiwygField(element))
-            find_tags_in_editor(editor, element);
-    }, 1000);
-
-    // Weird issues in Chrome cutting+pasting blocks etc
-    editor.on('paste', function (event) {
-        if (event.data.html) {
-            event.data.html = event.data.html.replace(/<meta charset="utf-8">/g, '');
-            event.data.html = event.data.html.replace(/<br class="Apple-interchange-newline">/g, '<br>');
-            event.data.html = event.data.html.replace(/<div style="text-align: center;"><font class="Apple-style-span" face="'Lucida Grande'"><span class="Apple-style-span" style="font-size: 11px; white-space: pre;"><br><\/span><\/font><\/div>$/, '<br><br>');
+        // Fiddly procedure to find our colour
+        var test_div = document.createElement('div');
+        document.body.appendChild(test_div);
+        test_div.className = 'wysiwyg_toolbar_color_finder';
+        var matches;
+        var wysiwyg_color = window.getComputedStyle(test_div).getPropertyValue('color');
+        test_div.parentNode.removeChild(test_div);
+        matches = wysiwyg_color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, matches);
+        if (matches) {
+            wysiwyg_color = '#';
+            var hex;
+            hex = (window.parseInt(matches[1]).toString(16)) + '';
+            if (hex.length == 1) hex = '0' + hex;
+            wysiwyg_color += hex;
+            hex = (window.parseInt(matches[2]).toString(16)) + '';
+            if (hex.length == 1) hex = '0' + hex;
+            wysiwyg_color += hex;
+            hex = (window.parseInt(matches[3]).toString(16)) + '';
+            if (hex.length == 1) hex = '0' + hex;
+            wysiwyg_color += hex;
         }
-    });
-
-    // Monitor pasting, for anti-spam reasons
-    editor.on('paste', function (event) {
-        if (event.data.html && event.data.html.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
-            $cms.setPostDataFlag('paste');
+        // CKEditor doesn't allow low saturation, so raise up if we need to
+        matches = wysiwyg_color.match(/^#([0-4])(.)([0-4])(.)([0-4])(.)$/);
+        if (matches) {
+            wysiwyg_color = '#';
+            wysiwyg_color += (window.parseInt(matches[1]) + 4) + matches[2];
+            wysiwyg_color += (window.parseInt(matches[3]) + 4) + matches[4];
+            wysiwyg_color += (window.parseInt(matches[5]) + 4) + matches[6];
         }
-    });
 
-    // Allow drag and drop uploading
-    editor.on('contentDom', function () {
-        editor.document.on('dragover', function (e) {
-            html5_upload_event_drag_over(e.data.$);
+        /*== START WYSIWYG_SETTINGS.js ==*/
+        // Carefully work out toolbar
+        // Look to see if this Comcode button is here as a hint whether we are doing an advanced editor. Unfortunately we cannot put contextual Tempcode inside a JavaScript file, so this trick is needed.
+        var precision_editing = $cms.$IS_STAFF() || (document.body.querySelectorAll('.comcode_button_box').length > 1);
+        var toolbar = [];
+        if (precision_editing) {
+            toolbar.push(['Source', '-']);
+        }
+        var toolbar_edit_actions = ['Cut', 'Copy', 'Paste', precision_editing ? 'PasteText' : null, precision_editing ? 'PasteFromWord' : null, precision_editing ? 'PasteCode' : null];
+        if ($cms.$VALUE_OPTION('commercial_spellchecker')) {
+            toolbar_edit_actions.push('-', 'SpellChecker', 'Scayt');
+        }
+        toolbar.push(toolbar_edit_actions);
+        toolbar.push(['Undo', 'Redo', precision_editing ? '-' : null, precision_editing ? 'Find' : null, precision_editing ? 'Replace' : null, ((document.body.spellcheck !== undefined) ? 'spellchecktoggle' : null), '-', precision_editing ? 'SelectAll' : null, 'RemoveFormat']);
+        toolbar.push(['Link', 'Unlink']);
+        toolbar.push(precision_editing ? '/' : '-');
+        var formatting = ['Bold', 'Italic', 'Strike', '-', precision_editing ? 'Subscript' : null, (precision_editing ? 'Superscript' : null)];
+        toolbar.push(formatting);
+        toolbar.push(['NumberedList', 'BulletedList', precision_editing ? '-' : null, precision_editing ? 'Outdent' : null, precision_editing ? 'Indent' : null]);
+        if (precision_editing) {
+            toolbar.push(['JustifyLeft', 'JustifyCenter', 'JustifyRight', precision_editing ? 'JustifyBlock' : null]);
+        }
+        toolbar.push([precision_editing ? 'composr_image' : null, 'Table']);
+        if (precision_editing) {
+            toolbar.push('/');
+        }
+        toolbar.push(['Format', 'Font', 'FontSize']);
+        toolbar.push(['TextColor']);
+        if (precision_editing) {
+            toolbar.push(['Maximize', 'ShowBlocks']);
+        }
+        if (precision_editing) {
+            toolbar.push(['HorizontalRule', 'SpecialChar']);
+        }
+        var use_composr_toolbar = true;
+        if (use_composr_toolbar) {
+            toolbar.push(['composr_block', 'composr_comcode', (precision_editing ? 'composr_page' : null), 'composr_quote', (precision_editing ? 'composr_box' : null), 'composr_code']);
+        }
+        var editor_settings = {
+            skin: 'kama',
+            enterMode: window.CKEDITOR.ENTER_BR,
+            uiColor: wysiwyg_color,
+            ocpTheme: $cms.$THEME(),
+            fontSize_sizes: '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
+            removePlugins: '',
+            extraPlugins: 'showcomcodeblocks,imagepaste,spellchecktoggle' + (use_composr_toolbar ? ',composr' : ''),
+            /*{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}*/
+            customConfig: '',
+            /*{+END}*/
+            bodyId: 'wysiwyg_editor',
+            baseHref: $cms.baseUrl(),
+            linkShowAdvancedTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
+            imageShowAdvancedTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
+            imageShowLinkTab: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
+            imageShowSizing: !$cms.$CONFIG_OPTION('eager_wysiwyg'),
+            autoUpdateElement: true,
+            contentsCss: page_stylesheets,
+            cssStatic: css,
+            startupOutlineBlocks: true,
+            language: $cms.$LANG() ? $cms.$LANG().toLowerCase() : 'en',
+            emailProtection: false,
+            resize_enabled: true,
+            width: (element.offsetWidth - 15),
+            height: window.location.href.includes('cms_comcode_pages') ? 250 : 500,
+            toolbar: toolbar,
+            allowedContent: true,
+            browserContextMenuOnCtrl: true,
+            comcodeXMLBlockTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}',
+            comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
+            magicline_everywhere: true,
+            autoGrow_onStartup: true
+        };
+        /*== END WYSIWYG_SETTINGS.js ==*/
+
+
+        if (window.CKEDITOR.instances[element.id]) {
+            // Workaround "The instance "xxx" already exists" error in Google Chrome
+            delete window.CKEDITOR.instances[element.id];
+        }
+        var editor = window.CKEDITOR.replace(element.id, editor_settings);
+        if (!editor) return; // Not supported on this platform
+        window.wysiwyg_editors[id] = editor;
+
+        element.parentNode.className += ' ' + editor_settings.skin; // Used for us to target per-skin CSS
+
+        // CSS to run inside the CKEditor frame
+        linked_sheets = document.getElementsByTagName('style');
+        var css = '';
+        for (counter = 0; counter < linked_sheets.length; counter++) {
+            css += $cms.dom.html(linked_sheets[counter]);
+        }
+        window.CKEDITOR.addCss(css);
+
+        // Change some CKEditor defaults
+        window.CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+
+            if (dialogName == 'table') {
+                var info = dialogDefinition.getContents('info');
+
+                info.get('txtWidth')['default'] = '100%';
+                info.get('txtBorder')['default'] = '0';
+                info.get('txtBorder')['default'] = '0';
+                info.get('txtCellSpace')['default'] = '0';
+                info.get('txtCellPad')['default'] = '0';
+            }
+        });
+        if (document.getElementById('attachment_store')) {
+            window.lang_PREFER_CMS_ATTACHMENTS = '{!javascript:PREFER_CMS_ATTACHMENTS;^}';
+        }
+        window.lang_SPELLCHECKER_ENABLED = '{!javascript:SPELLCHECKER_ENABLED;^}';
+        window.lang_SPELLCHECKER_DISABLED = '{!javascript:SPELLCHECKER_DISABLED;^}';
+        window.lang_SPELLCHECKER_TOGGLE = '{!javascript:SPELLCHECKER_TOGGLE;^}';
+        window.lang_SPELLCHECKER_LABEL = '{!javascript:SPELLCHECKER_LABEL;^}';
+        window.lang_NO_IMAGE_PASTE_SAFARI = '{!javascript:NO_IMAGE_PASTE_SAFARI;^}';
+
+        // Mainly used by autosaving, but also sometimes CKEditor seems to not refresh the textarea (e.g. for one user's site when pressing delete key on an image)
+        editor.on('change', function (event) {
+            element.value = editor.getData();
+            if (element.externalOnKeyPress !== undefined) {
+                element.externalOnKeyPress(event, element);
+            }
         });
 
-        editor.document.on('drop', function (e) {
-            html5_upload_event_drop(e.data.$, element, element.id);
-        });
-    });
+        editor.on('instanceReady', function (event) {
+            editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
-    return editor;
+            if (window.setUpComcodeAutocomplete !== undefined) {
+                setUpComcodeAutocomplete(id);
+            }
+
+            // Instant preview of Comcode
+            findTagsInEditor(editor, element);
+        });
+        window.setInterval(function () {
+            if ($cms.form.isWysiwygField(element))
+                findTagsInEditor(editor, element);
+        }, 1000);
+
+        // Weird issues in Chrome cutting+pasting blocks etc
+        editor.on('paste', function (event) {
+            if (event.data.html) {
+                event.data.html = event.data.html.replace(/<meta charset="utf-8">/g, '');
+                event.data.html = event.data.html.replace(/<br class="Apple-interchange-newline">/g, '<br>');
+                event.data.html = event.data.html.replace(/<div style="text-align: center;"><font class="Apple-style-span" face="'Lucida Grande'"><span class="Apple-style-span" style="font-size: 11px; white-space: pre;"><br><\/span><\/font><\/div>$/, '<br><br>');
+            }
+        });
+
+        // Monitor pasting, for anti-spam reasons
+        editor.on('paste', function (event) {
+            if (event.data.html && event.data.html.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
+                $cms.setPostDataFlag('paste');
+            }
+        });
+
+        // Allow drag and drop uploading
+        editor.on('contentDom', function () {
+            editor.document.on('dragover', function (e) {
+                html5UploadEventDragOver(e.data.$);
+            });
+
+            editor.document.on('drop', function (e) {
+                html5UploadEventDrop(e.data.$, element, element.id);
+            });
+        });
+
+        return editor;
+    }
 }
 
-function find_tags_in_editor(editor, element) {
+function findTagsInEditor(editor, element) {
     if (!editor.document || !editor.document.$) {
         return;
     }
@@ -646,7 +646,7 @@ function find_tags_in_editor(editor, element) {
 // BOTH EDITORS
 // ============
 
-function do_emoticon(field_name, callerEl, isOpener) {
+function doEmoticon(field_name, callerEl, isOpener) {
     var element, title, text;
 
     isOpener = !!isOpener;
@@ -670,13 +670,13 @@ function do_emoticon(field_name, callerEl, isOpener) {
     text = ' ' + title + ' ';
 
     if (isOpener) {
-        insert_textbox_opener(element, text, null, true, $cms.dom.html(callerEl));
+        insertTextboxOpener(element, text, null, true, $cms.dom.html(callerEl));
     } else {
-        insert_textbox(element, text, null, true, $cms.dom.html(callerEl));
+        insertTextbox(element, text, null, true, $cms.dom.html(callerEl));
     }
 }
 
-function do_attachment(field_name, id, description) {
+function doAttachment(field_name, id, description) {
     if (!$cms.getMainCmsWindow().wysiwyg_editors) {
         return;
     }
@@ -687,10 +687,10 @@ function do_attachment(field_name, id, description) {
 
     var comcode = '\n\n[attachment description="' + $cms.filter.comcode(description) + '"]' + id + '[/attachment]';
 
-    insert_textbox_opener(element, comcode);
+    insertTextboxOpener(element, comcode);
 }
 
-function get_textbox(element) {
+function getTextbox(element) {
     if ($cms.form.isWysiwygField(element)) {
         var ret = window.wysiwyg_editors[element.id].getData();
         if ((ret === '\n') || (ret === '<br />')) {
@@ -701,7 +701,7 @@ function get_textbox(element) {
     return element.value;
 }
 
-function set_textbox(element, text, html) {
+function setTextbox(element, text, html) {
     if ($cms.form.isWysiwygField(element)) {
         if (html === undefined) {
             html = $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />');
@@ -711,7 +711,7 @@ function set_textbox(element, text, html) {
         window.wysiwyg_editors[element.id].updateElement();
 
         window.setTimeout(function () {
-            find_tags_in_editor(window.wysiwyg_editors[element.id], element);
+            findTagsInEditor(window.wysiwyg_editors[element.id], element);
         }, 100);
     } else {
         element.value = text;
@@ -727,9 +727,9 @@ function set_textbox(element, text, html) {
  plain_insert: Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation
  html: HTML to insert (if not passed then 'text' will be escaped)
 
- (Use insert_textbox_wrapping to wrap Comcode tags around a selection)
+ (Use insertTextboxWrapping to wrap Comcode tags around a selection)
  */
-function insert_textbox(element, text, sel, plain_insert, html) {
+function insertTextbox(element, text, sel, plain_insert, html) {
     plain_insert = !!plain_insert;
     html = strVal(html);
 
@@ -738,7 +738,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
 
         var insert = '';
         if (plain_insert) {
-            insert = get_selected_html(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
+            insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
         } else {
             var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
             if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
@@ -754,7 +754,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
 
         try {
             editor.focus(); // Needed on some browsers
-            var selected_html = get_selected_html(editor);
+            var selected_html = getSelectedHtml(editor);
 
             if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
             {
@@ -770,7 +770,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
                 throw 'Failed to insert';
             }
 
-            find_tags_in_editor(editor, element);
+            findTagsInEditor(editor, element);
         } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
 
             var after = editor.getData();
@@ -800,7 +800,7 @@ function insert_textbox(element, text, sel, plain_insert, html) {
         var end = element.value.substring(to, element.value.length);
 
         element.value = start + element.value.substring(from, to) + text + end;
-        set_selection_range(element, from + text.length, from + text.length);
+        setSelectionRange(element, from + text.length, from + text.length);
     } else if (sel) {// IE style
         var ourRange = sel.createRange();
         if ((ourRange.moveToElementText) || (ourRange.parentElement() == element)) {
@@ -809,26 +809,26 @@ function insert_textbox(element, text, sel, plain_insert, html) {
         } else {
             element.value += text;
             from += 2;
-            set_selection_range(element, from + text.length, from + text.length);
+            setSelectionRange(element, from + text.length, from + text.length);
         }
     }
     else {
         // :(
         from += 2;
         element.value += text;
-        set_selection_range(element, from + text.length, from + text.length);
+        setSelectionRange(element, from + text.length, from + text.length);
     }
  }
-function insert_textbox_opener(element, text, sel, plain_insert, html) {
+function insertTextboxOpener(element, text, sel, plain_insert, html) {
     if (!sel) {
         sel = $cms.getMainCmsWindow().document.selection || null;
     }
 
-    $cms.getMainCmsWindow().insert_textbox(element, text, sel, plain_insert, html);
+    $cms.getMainCmsWindow().insertTextbox(element, text, sel, plain_insert, html);
 }
 
 // Get selected HTML from CKEditor
-function get_selected_html(editor) {
+function getSelectedHtml(editor) {
     var my_selection = editor.getSelection();
     if (!my_selection || my_selection.getType() == window.CKEDITOR.SELECTION_NONE) return '';
 
@@ -847,7 +847,7 @@ function get_selected_html(editor) {
 }
 
 // Insert into the editor such as to *wrap* the current selection with something new (typically a new Comcode tag)
-function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
+function insertTextboxWrapping(element, before_wrap_tag, after_wrap_tag) {
     var from, to;
 
     if (after_wrap_tag == '') {
@@ -859,7 +859,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         var editor = window.wysiwyg_editors[element.id];
 
         editor.focus(); // Needed on some browsers, but on Opera will defocus our selection
-        var selected_html = get_selected_html(editor);
+        var selected_html = getSelectedHtml(editor);
 
         if (selected_html == '') selected_html = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;^}'.toUpperCase();
 
@@ -885,7 +885,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
             editor.insertHtml(new_html);
         }
 
-        find_tags_in_editor(editor, element);
+        findTagsInEditor(editor, element);
 
         editor.updateElement();
 
@@ -904,7 +904,7 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
         } else {
             element.value = start + before_wrap_tag + after_wrap_tag + end;
         }
-        set_selection_range(element, from, to + before_wrap_tag.length + after_wrap_tag.length);
+        setSelectionRange(element, from, to + before_wrap_tag.length + after_wrap_tag.length);
     } else if (document.selection !== undefined) {// IE style
         element.focus();
         var sel = document.selection;
@@ -916,12 +916,12 @@ function insert_textbox_wrapping(element, before_wrap_tag, after_wrap_tag) {
     } else {
         // :(
         element.value += before_wrap_tag + after_wrap_tag;
-        set_selection_range(element, from, to + before_wrap_tag.length + after_wrap_tag.length);
+        setSelectionRange(element, from, to + before_wrap_tag.length + after_wrap_tag.length);
     }
 }
 
 // From http://www.faqts.com/knowledge_base/view.phtml/aid/13562
-function set_selection_range(input, selection_start, selection_end) {
+function setSelectionRange(input, selection_start, selection_end) {
     if (input.set_selection_range !== undefined) {/* Mozilla style */
         input.focus();
         input.set_selection_range(selection_start, selection_end);
@@ -936,7 +936,7 @@ function set_selection_range(input, selection_start, selection_end) {
     }
 }
 
-function show_upload_syndication_options(name, syndication_json, no_quota) {
+function showUploadSyndicationOptions(name, syndication_json, no_quota) {
     name = strVal(name);
     no_quota = !!no_quota;
 

@@ -105,7 +105,7 @@
         $cms.dom.on(container, 'click', '.js-click-start-friend-im', function (e, link) {
             var memberId = strVal(link.dataset.tpMemberId);
 
-            if (start_im(memberId, true) === false) {
+            if (startIm(memberId, true) === false) {
                 e.preventDefault();
             }
         });
@@ -202,14 +202,14 @@
         $cms.dom.on(container, 'click', '.js-click-btn-im-invite-ticked-people', function (e, btn) {
             var people = getTickedPeople(btn.form);
             if (people) {
-                invite_im(people);
+                inviteIm(people);
             }
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-im-start-ticked-people', function (e, btn) {
             var people = getTickedPeople(btn.form);
             if (people) {
-                start_im(people);
+                startIm(people);
             }
         });
 
@@ -366,16 +366,16 @@
 
         window.$cmsReady.push(function () {
             if (!window.load_from_room_id) { // Only if not in chat lobby or chatroom, so as to avoid conflicts
-                begin_im_chatting();
+                beginImChatting();
             }
         });
 
-        function begin_im_chatting() {
+        function beginImChatting() {
             window.load_from_room_id = -1;
             if ((window.chatCheck)) {
                 chatCheck(true, 0);
             } else {
-                window.setTimeout(begin_im_chatting, 100);
+                window.setTimeout(beginImChatting, 100);
             }
         }
     };
@@ -391,7 +391,7 @@
                 btnSubmitId += '_' + memberId;
             }
 
-            preinit_file_input('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
+            preinitFileInput('chat_effect_settings', btnSubmitId, null, null, 'mp3', 'button_micro');
         }
 
         $cms.dom.on(container, 'click', '.js-click-require-sound-selection', function () {
@@ -520,7 +520,7 @@ function getTickedPeople(form) {
 }
 
 function do_input_private_message(field_name) {
-    if (window.insert_textbox === undefined) {
+    if (window.insertTextbox === undefined) {
         return;
     }
     $cms.ui.prompt(
@@ -533,7 +533,7 @@ function do_input_private_message(field_name) {
                     '',
                     function (vb) {
                         if (vb != null) {
-                            insert_textbox(document.getElementById(field_name), '[private="' + va + '"]' + vb + '[/private]');
+                            insertTextbox(document.getElementById(field_name), '[private="' + va + '"]' + vb + '[/private]');
                         }
                     },
                     '{!chat:INPUT_CHATCODE_private_message;^}'
@@ -545,7 +545,7 @@ function do_input_private_message(field_name) {
 }
 
 function do_input_invite(field_name) {
-    if (window.insert_textbox === undefined) {
+    if (window.insertTextbox === undefined) {
         return;
     }
     $cms.ui.prompt(
@@ -557,7 +557,7 @@ function do_input_invite(field_name) {
                     '{!chat:ENTER_CHATROOM;^}',
                     '',
                     function (vb) {
-                        if (vb != null) insert_textbox(document.getElementById(field_name), '[invite="' + va + '"]' + vb + '[/invite]');
+                        if (vb != null) insertTextbox(document.getElementById(field_name), '[invite="' + va + '"]' + vb + '[/invite]');
                     },
                     '{!chat:INPUT_CHATCODE_invite;^}'
                 );
@@ -568,7 +568,7 @@ function do_input_invite(field_name) {
 }
 
 function do_input_new_room(field_name) {
-    if (window.insert_textbox === undefined) {
+    if (window.insertTextbox === undefined) {
         return;
     }
     $cms.ui.prompt(
@@ -580,7 +580,7 @@ function do_input_new_room(field_name) {
                     '{!chat:ENTER_ALLOW;^}',
                     '',
                     function (vb) {
-                        if (vb != null) insert_textbox(document.getElementById(field_name), '[newroom="' + va + '"]' + vb + '[/newroom]');
+                        if (vb != null) insertTextbox(document.getElementById(field_name), '[newroom="' + va + '"]' + vb + '[/newroom]');
                     },
                     '{!chat:INPUT_CHATCODE_new_room;^}'
                 );
@@ -605,7 +605,7 @@ function chatPost(event, current_room_id, field_name, font_name, font_colour) {
 
         // Reinvite last left member if necessary
         if ((element.force_invite !== undefined) && (element.force_invite !== null)) {
-            invite_im(element.force_invite);
+            inviteIm(element.force_invite);
             element.force_invite = null;
         }
 
@@ -886,7 +886,7 @@ function processChatXmlMessages(ajax_result, skip_incoming_sound) {
                             }
                         } else if (!document.getElementById('chat_lobby_convos_tabs')) {
                             createOverlayEvent(/*skip_incoming_sound*/true, member_id, '{!NOW_ONLINE;^}'.replace('{' + '1}', username), function () {
-                                start_im(member_id, true);
+                                startIm(member_id, true);
                                 return false;
                             }, avatar_url);
                         }
@@ -1320,7 +1320,7 @@ function createOverlayEvent(skip_incoming_sound, member_id, message, click_event
                     function (answer) {
                         /*if (answer.toLowerCase()=='{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) return;*/
                         if (answer.toLowerCase() == '{!CLOSE;^}'.toLowerCase()) {
-                            deinvolve_im(room_id, false, false);
+                            deinvolveIm(room_id, false, false);
                         }
                         document.body.removeChild(div);
                         div = null;
@@ -1334,7 +1334,7 @@ function createOverlayEvent(skip_incoming_sound, member_id, message, click_event
     }
 }
 
-function start_im(people, just_refocus) {
+function startIm(people, just_refocus) {
     if (($cms.browserMatches('non_concurrent')) && !document.getElementById('chat_lobby_convos_tabs')) {
         // Let it navigate to chat lobby
         return true;
@@ -1361,33 +1361,34 @@ function start_im(people, just_refocus) {
         $cms.ui.confirm(
             message,
             function (answer) {
-                if (answer) _start_im(people, false); // false, because can't recycle if its already open
+                if (answer) _startIm(people, false); // false, because can't recycle if its already open
             }
         );
     } else {
-        _start_im(people, true); // true, because an IM may exist we don't have open, so let that be recycled
+        _startIm(people, true); // true, because an IM may exist we don't have open, so let that be recycled
     }
 
     return false;
+
+    function _startIm(people, may_recycle) {
+        var div = document.createElement('div');
+        div.className = 'loading_overlay';
+        $cms.dom.html(div, '{!LOADING;^}');
+        document.body.appendChild(div);
+        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + $cms.keepStub(false)), function (result) {
+            var responses = result.getElementsByTagName('result');
+            if (responses[0]) {
+                window.instant_go = true;
+                processChatXmlMessages(responses[0], true);
+                window.instant_go = false;
+            }
+            document.body.removeChild(div);
+        }, 'people=' + people);
+    }
+
 }
 
-function _start_im(people, may_recycle) {
-    var div = document.createElement('div');
-    div.className = 'loading_overlay';
-    $cms.dom.html(div, '{!LOADING;^}');
-    document.body.appendChild(div);
-    $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&may_recycle=' + (may_recycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.top_window.last_event_id) + $cms.keepStub(false)), function (result) {
-        var responses = result.getElementsByTagName('result');
-        if (responses[0]) {
-            window.instant_go = true;
-            processChatXmlMessages(responses[0], true);
-            window.instant_go = false;
-        }
-        document.body.removeChild(div);
-    }, 'people=' + people);
-}
-
-function invite_im(people) {
+function inviteIm(people) {
     var room_id = findCurrentImRoom();
     if (!room_id) {
         $cms.ui.alert('{!NO_IM_ACTIVE;^}');
@@ -1439,11 +1440,11 @@ function closeChatConversation(room_id) {
             if (logs.toLowerCase() !== '{!INPUTSYSTEM_CANCEL*;^}'.toLowerCase()) {
                 if (logs.toLowerCase() === '{!YES*;^}'.toLowerCase()) {
                     window.open('{$FIND_SCRIPT*;,download_chat_logs}?room=' + room_id + '{$KEEP*;^}');
-                    deinvolve_im(room_id, true, is_popup);
+                    deinvolveIm(room_id, true, is_popup);
                     return;
                 }
                 /*{+END}*/
-                deinvolve_im(room_id, false, is_popup);
+                deinvolveIm(room_id, false, is_popup);
                 /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
             }
         }
@@ -1451,7 +1452,7 @@ function closeChatConversation(room_id) {
     /*{+END}*/
 }
 
-function deinvolve_im(room_id, logs, is_popup) {// is_popup means that we show a progress indicator over it, then kill the window after deinvolvement
+function deinvolveIm(room_id, logs, is_popup) {// is_popup means that we show a progress indicator over it, then kill the window after deinvolvement
     if (is_popup) {
         var body = document.getElementsByTagName('body');
         if (body[0] !== undefined) {

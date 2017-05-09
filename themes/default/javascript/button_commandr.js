@@ -1,10 +1,10 @@
 "use strict";
 
-function load_commandr() {
+function loadCommandr() {
     // (Still?) loading
-    if ((window.commandr_command_response === undefined) || (window.$cms.doAjaxRequest === undefined)) {
+    if (window.commandrCommandResponse === undefined) {
         if (document.getElementById('commandr_img_loader')) {
-            setTimeout(load_commandr, 200);
+            setTimeout(loadCommandr, 200);
             return false;
         }
 
@@ -20,12 +20,12 @@ function load_commandr() {
 
         $cms.requireJavascript('commandr');
         $cms.requireCss('commandr');
-        window.setTimeout(load_commandr, 200);
+        window.setTimeout(loadCommandr, 200);
         return false;
     }
 
     // Loaded
-    if (window.commandr_command_response !== undefined) {
+    if (window.commandrCommandResponse !== undefined) {
         $cms.ui.confirmSession(
             function (result) {
                 // Remove "loading" indicator from button

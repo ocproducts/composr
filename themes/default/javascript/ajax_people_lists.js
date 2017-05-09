@@ -33,7 +33,7 @@
         if (!$cms.browserMatches('ios') && !target.onblur) {
             target.onblur = function () {
                 setTimeout(function () {
-                    close_down_ajax_list();
+                    closeDownAjaxList();
                 }, 300);
             }
         }
@@ -64,7 +64,7 @@
 
         $cms.doAjaxRequest(script + $cms.keepStub(), updateAjaxNemberListResponse);
 
-        function close_down_ajax_list() {
+        function closeDownAjaxList() {
             var current = $cms.dom.$('#ajax_list');
             if (current) {
                 current.parentNode.removeChild(current);
@@ -76,7 +76,7 @@
                 return;
             }
 
-            close_down_ajax_list();
+            closeDownAjaxList();
 
             var isDataList = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
 

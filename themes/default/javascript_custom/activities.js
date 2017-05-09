@@ -7,7 +7,7 @@ if (window.latest_activity === undefined) {
     window.activities_feed_grow = true;
 }
 
-function s_update_get_data() {
+function sUpdateGetData() {
     // Lock feed updates by setting s_ajax_update_locking to 1
     if ((++window.s_ajax_update_locking) > 1) {
         window.s_ajax_update_locking = 1;
@@ -40,10 +40,10 @@ function s_update_get_data() {
                         cache: false,
                         timeout: 5000,
                         success: function (data, stat) {
-                            s_update_show(data, stat);
+                            sUpdateShow(data, stat);
                         },
                         error: function (a, stat, err) {
-                            s_update_show(err, stat);
+                            sUpdateShow(err, stat);
                         }
                     });
                 } else {
@@ -59,7 +59,7 @@ function s_update_get_data() {
 /**
  * Receive and parse data for the activities activities feed
  */
-function s_update_show(data, stat) {
+function sUpdateShow(data, stat) {
     if (window.s_ajax_update_locking > 1) {
         window.s_ajax_update_locking = 1;
     } else {
@@ -111,7 +111,7 @@ function s_update_show(data, stat) {
     }
 }
 
-function s_update_remove(event, id) {
+function sUpdateRemove(event, id) {
     $cms.ui.confirm(
         '{!activities:DELETE_CONFIRM;^}',
         function (result) {
@@ -128,10 +128,10 @@ function s_update_remove(event, id) {
                     cache: false,
                     timeout: 5000,
                     success: function (data, stat) {
-                        s_update_remove_show(data, stat);
+                        sUpdateRemoveShow(data, stat);
                     },
                     error: function (a, stat, err) {
-                        s_update_remove_show(err, stat);
+                        sUpdateRemoveShow(err, stat);
                     }
                 });
             }
@@ -140,7 +140,7 @@ function s_update_remove(event, id) {
     event.preventDefault();
 }
 
-function s_update_remove_show(data, stat) {
+function sUpdateRemoveShow(data, stat) {
     var succeeded = false;
     var status_id = '';
 

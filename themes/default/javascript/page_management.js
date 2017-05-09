@@ -19,10 +19,10 @@
         });
 
         $cms.dom.on(container, 'change', '.js-change-update-details-box', function (e, changed) {
-            update_details_box(changed);
+            updateDetailsBox(changed);
         });
 
-        function update_details_box(element) {
+        function updateDetailsBox(element) {
             var actions_tpl = '{!ACTIONS;^}:<nav><ul class="actions_list">[1]<\/ul><\/nav><br />',
                 actions_tpl_item = '<li><a href="[2]">[1]<\/a><\/li>',
                 info_tpl = '<div class="wide_table_wrap"><table class="map_table results_table wide_table autosized_table"><tbody>[1]<\/tbody><\/table><\/div>',

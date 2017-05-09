@@ -63,13 +63,13 @@
         },
 
         editorKeyPress: function (e) {
-            if (!template_editor_keypress(e)) {
+            if (!templateEditorKeypress(e)) {
                 e.preventDefault();
             }
 
-            function template_editor_keypress(event) {
+            function templateEditorKeypress(event) {
                 if ($cms.dom.keyPressed(event, 'Tab')) {
-                    insert_textbox(this, "\t");
+                    insertTextbox(this, "\t");
                     return false;
                 }
                 return true;
@@ -136,7 +136,7 @@
 
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
-                insert_textbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}');
+                insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}');
                 if (has_editarea) editareaRefresh(textbox.id);
 
                 return false;
@@ -583,7 +583,7 @@
                 '',
                 function (textbox, name, value, params) {
                     if (name.indexOf('ppdirective') != -1) {
-                        insert_textbox_wrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}');
+                        insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}');
                     } else {
                         var st_value;
                         if (name.indexOf('ppparameter') == -1) {
@@ -594,7 +594,7 @@
 
                         value = st_value + value + '*' + params + '}';
 
-                        insert_textbox(textbox, value);
+                        insertTextbox(textbox, value);
                     }
 
                     if (has_editarea) editareaRefresh(textbox.name);
@@ -771,10 +771,10 @@
             revisionId = strVal(params.revisionId);
 
         $cms.dom.on(container, 'click', function () {
-            template_editor_restore_revision(file, revisionId);
+            templateEditorRestoreRevision(file, revisionId);
         });
 
-        function template_editor_restore_revision(file, revision_id) {
+        function templateEditorRestoreRevision(file, revision_id) {
             var file_id = fileToFileId(file);
 
             // Set content from revision
@@ -1083,12 +1083,12 @@
                 var editor = window.ace_editors[textarea_id];
                 var editor_session = editor.getSession();
                 editor_session.on('change', function () {
-                    template_editor_tab_mark_changed_content(file);
+                    templateEditorTabMarkChangedContent(file);
                     editor.last_change = (new Date()).getTime();
                 });
             } else {
                 getFileTextbox(file).addEventListener('change', function () {
-                    template_editor_tab_mark_changed_content(file);
+                    templateEditorTabMarkChangedContent(file);
                 });
             }
         }, 1000);
@@ -1097,7 +1097,7 @@
             unsaved_changes: false
         };
 
-        function template_editor_tab_mark_changed_content(file) {
+        function templateEditorTabMarkChangedContent(file) {
             window.template_editor_open_files[file].unsaved_changes = true;
 
             var file_id = fileToFileId(file);

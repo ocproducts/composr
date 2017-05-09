@@ -107,7 +107,7 @@
                     // Facebook has automatically rebuilt its expired fbsr cookie, auth.login not triggered as already technically logged in
                     else {
                         if (serverside_fbuid === null)  {// Definitive mismatch between server-side and client-side, so we must refresh
-                            facebook_trigger_refresh(home_page_url);
+                            facebookTriggerRefresh(home_page_url);
                         }
                     }
 
@@ -133,7 +133,7 @@
                     if (!just_logged_out) { // Check it is not that logout
                         // ... and therefore refresh to let Composr server-side re-sync, as this was a new login initiated just now on the client side
                         if ((response.status == 'connected') && (response.authResponse)) { // Check we really are logged in, in case this event calls without us being
-                            facebook_trigger_refresh(home_page_url);
+                            facebookTriggerRefresh(home_page_url);
                         }
                     }
                 });
@@ -152,7 +152,7 @@
         }(document, 'script', 'facebook-jssdk'));
     }
 
-    function facebook_trigger_refresh(home_page_url) {
+    function facebookTriggerRefresh(home_page_url) {
         window.setTimeout(function () { // Firefox needs us to wait a bit
             if (document.querySelector('failover')) {
                 return;

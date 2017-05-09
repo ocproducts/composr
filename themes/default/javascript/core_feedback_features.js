@@ -10,7 +10,7 @@
         this.btnSubmit = this.$('.js-btn-submit-comments');
 
         $cms.requireJavascript('jquery_autocomplete').then(function () {
-            set_up_comcode_autocomplete('post', !!params.wysiwyg);
+            setUpComcodeAutocomplete('post', !!params.wysiwyg);
         });
 
         if ($cms.$CONFIG_OPTION('enable_previews') && $cms.$FORCE_PREVIEWS()) {
@@ -225,7 +225,7 @@
             for (var i = 0, len = params.allRatingCriteria; i < len; i++) {
                 rating = objVal(params.allRatingCriteria[i]);
 
-                apply_rating_highlight_and_ajax_code((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
+                applyRatingHighlightAndAjaxCode((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
             }
         },
 
@@ -244,7 +244,7 @@
             var urlStem = params.urlStem,
                 wrapper = $cms.dom.$id('comments_wrapper');
 
-            replace_comments_form_with_ajax(params.options, params.hash, 'comments_form', 'comments_wrapper');
+            replaceCommentsFormWithAjax(params.options, params.hash, 'comments_form', 'comments_wrapper');
 
             if (wrapper) {
                 internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['start_comments', 'max_comments'], {});
@@ -252,31 +252,31 @@
 
             // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
             if (params.infiniteScroll) {
-                var infinite_scrolling_comments_wrapper = function (event) {
+                var infiniteScrollingCommentsWrapper = function (event) {
                     internaliseInfiniteScrolling(urlStem, wrapper);
                 };
 
-                $cms.dom.on(window, 'scroll', infinite_scrolling_comments_wrapper);
+                $cms.dom.on(window, 'scroll', infiniteScrollingCommentsWrapper);
                 $cms.dom.on(window, 'keydown', infiniteScrollingBlock);
                 $cms.dom.on(window, 'mousedown', infiniteScrollingBlockHold);
                 $cms.dom.on(window, 'mousemove', function () {
-                    infiniteScrollingBlockUnhold(infinite_scrolling_comments_wrapper);
+                    infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
                 });
 
                 // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                infinite_scrolling_comments_wrapper();
+                infiniteScrollingCommentsWrapper();
             }
         }
     });
 
-    function force_reload_on_back() {
+    function forceReloadOnBack() {
         $cms.dom.on(window, 'pageshow', function () {
             window.location.reload();
         });
     }
 
     /* Update a normal comments topic with AJAX replying */
-    function replace_comments_form_with_ajax(options, hash, comments_form_id, comments_wrapper_id) {
+    function replaceCommentsFormWithAjax(options, hash, comments_form_id, comments_wrapper_id) {
         var comments_form = $cms.dom.$id(comments_form_id);
         if (comments_form) {
             comments_form.old_onsubmit = comments_form.onsubmit;
@@ -345,7 +345,7 @@
                         }, 0);
 
                         // Force reload on back button, as otherwise comment would be missing
-                        force_reload_on_back();
+                        forceReloadOnBack();
 
                         // Collapse, so user can see what happening
                         var outer = $cms.dom.$id('comments_posting_form_outer');
@@ -363,7 +363,7 @@
                         }
 
                         // And re-attach this code (got killed by $cms.dom.outerHtml)
-                        replace_comments_form_with_ajax(options, hash);
+                        replaceCommentsFormWithAjax(options, hash);
                     } else { // Error: do a normal post so error can be seen
                         comments_form.submit();
                     }
@@ -374,7 +374,7 @@
         }
     }
 
-    function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, rating, content_url, content_title, initialisation_phase, visual_only) {
+    function applyRatingHighlightAndAjaxCode(likes, initial_rating, content_type, id, type, rating, content_url, content_title, initialisation_phase, visual_only) {
         rating = +rating || 0;
         visual_only = !!visual_only;
 
@@ -390,10 +390,10 @@
             }
 
             bit.addEventListener('mouseover', function () {
-                apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, number, content_url, content_title, false);
+                applyRatingHighlightAndAjaxCode(likes, initial_rating, content_type, id, type, number, content_url, content_title, false);
             });
             bit.addEventListener('mouseout', function () {
-                apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, initial_rating, content_url, content_title, false);
+                applyRatingHighlightAndAjaxCode(likes, initial_rating, content_type, id, type, initial_rating, content_url, content_title, false);
             });
 
             if (visual_only) {

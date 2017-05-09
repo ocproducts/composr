@@ -127,13 +127,13 @@
                 var loading_preview_of = id;
 
                 var data = '';
-                data += get_textbox(edit_element);
+                data += getTextbox(edit_element);
                 var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(edit_element) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + $cms.keepStub();
                 var post = ($cms.form.isWysiwygField(edit_element) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
                 post = $cms.form.modsecurityWorkaroundAjax(post);
-                $cms.doAjaxRequest(url, reloaded_preview, post);
+                $cms.doAjaxRequest(url, reloadedPreview, post);
 
-                function reloaded_preview(ajax_result_frame, ajax_result) {
+                function reloadedPreview(ajax_result_frame, ajax_result) {
                     if (!loading_preview_of) {
                         return;
                     }
@@ -152,7 +152,7 @@
         },
 
         toggleWysiwyg: function () {
-            toggle_wysiwyg('edit_' + this.params.id + '_textarea');
+            toggleWysiwyg('edit_' + this.params.id + '_textarea');
         },
 
         setEditedPanel: function (e, field) {
@@ -213,7 +213,7 @@
                 store.id = 'store_' + id;
                 $cms.dom.$('#edit_field_store').appendChild(store);
             }
-            store.value = get_textbox(el);
+            store.value = getTextbox(el);
         }
 
         /* The WYSIWYG setting (not the actual HTML text value of the editor, the setting of whether WYSIWYG was used or not) */

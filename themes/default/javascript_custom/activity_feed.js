@@ -24,7 +24,7 @@
         var liid = strVal(params.liid);
 
         $cms.dom.on(container, 'click', '.js-submit-confirm-update-remove', function (e) {
-            s_update_remove(e, liid);
+            sUpdateRemove(e, liid);
         });
     };
 
@@ -39,7 +39,7 @@
                 window.activities_feed_grow = !!params.grow;
                 window.activities_feed_max = params.max;
                 if (document.getElementById('activities_feed')) {
-                    window.setInterval(s_update_get_data, params.refreshTime * 1000);
+                    window.setInterval(sUpdateGetData, params.refreshTime * 1000);
                 }
             }
         }

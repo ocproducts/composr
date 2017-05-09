@@ -98,11 +98,11 @@ function doColorChooser() {
         }
     }
     for (ce = 0; ce < a; ce++) {
-        do_color_chooser_element(my_elements[ce]);
+        doColorChooserElement(my_elements[ce]);
     }
 
 
-    function do_color_chooser_element(element) {
+    function doColorChooserElement(element) {
         var id = element.id.substring(10),
             source = document.getElementById('cc_source_' + id),
             bgColor = source.style.backgroundColor;

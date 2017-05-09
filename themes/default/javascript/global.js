@@ -4231,16 +4231,16 @@
         $cms.dom.registerMouseListener = noop; // ensure this function is only executed once
 
         if (e) {
-            window.mouse_x = get_mouse_x(e);
-            window.mouse_y = get_mouse_y(e);
+            window.mouse_x = getMouseX(e);
+            window.mouse_y = getMouseY(e);
         }
 
         document.documentElement.addEventListener('mousemove', function (event) {
-            window.mouse_x = get_mouse_x(event);
-            window.mouse_y = get_mouse_y(event);
+            window.mouse_x = getMouseX(event);
+            window.mouse_y = getMouseY(event);
         });
 
-        function get_mouse_x(event) {
+        function getMouseX(event) {
             try {
                 if (event.pageX) {
                     return event.pageX;
@@ -4252,7 +4252,7 @@
             return 0;
         }
 
-        function get_mouse_y(event) {
+        function getMouseY(event) {
             try {
                 if (event.pageY) {
                     return event.pageY;
@@ -5898,10 +5898,10 @@
         sup.style.textAlign = 'center';
         sup.style.overflow = 'hidden';
 
-        dims_func();
-        $cms.dom.on(window, 'resize', dims_func);
+        dimsFunc();
+        $cms.dom.on(window, 'resize', dimsFunc);
 
-        function dims_func() {
+        function dimsFunc() {
             lightbox_description.style.display = (lightbox_description.firstChild) ? 'inline' : 'none';
             if (lightbox_full_link) {
                 var showLightboxFullLink = !!(!is_video && has_full_button && ((real_width > max_width) || (real_height > max_height)));
@@ -5911,7 +5911,7 @@
             $cms.dom.toggle(lightbox_meta, showLightboxMeta);
 
             // Might need to rescale using some maths, if natural size is too big
-            var max_dims = _get_max_lightbox_img_dims(modal, has_full_button),
+            var max_dims = _getMaxLightboxImgDims(modal, has_full_button),
                 max_width = max_dims[0],
                 max_height = max_dims[1];
 
@@ -5938,12 +5938,14 @@
                 img.parentElement.parentElement.parentElement.style.height = 'auto';
             }
 
-            function _get_max_lightbox_img_dims(modal, has_full_button) {
-                var max_width = modal.top_window.$cms.dom.getWindowWidth() - 20;
-                var max_height = modal.top_window.$cms.dom.getWindowHeight() - 60;
+            function _getMaxLightboxImgDims(modal, has_full_button) {
+                var max_width = modal.top_window.$cms.dom.getWindowWidth() - 20,
+                    max_height = modal.top_window.$cms.dom.getWindowHeight() - 60;
+
                 if (has_full_button) {
                     max_height -= 120;
                 }
+
                 return [max_width, max_height];
             }
         }
@@ -6808,7 +6810,7 @@
 
                     // Fiddle it, to behave like a popup would
                     var name = this.name;
-                    var make_frame_like_popup = function make_frame_like_popup() {
+                    var makeFrameLikePopup = function makeFrameLikePopup() {
                         if (iframe.parentNode.parentNode.parentNode.parentNode == null && that.iframe_restyle_timer != null) {
                             clearInterval(that.iframe_restyle_timer);
                             that.iframe_restyle_timer = null;
@@ -6894,10 +6896,10 @@
                     window.setTimeout(function () {
                         $cms.dom.illustrateFrameLoad('overlay_iframe');
                         iframe.src = that.href;
-                        make_frame_like_popup();
+                        makeFrameLikePopup();
 
                         if (that.iframe_restyle_timer == null)
-                            that.iframe_restyle_timer = window.setInterval(make_frame_like_popup, 300); // In case internal nav changes
+                            that.iframe_restyle_timer = window.setInterval(makeFrameLikePopup, 300); // In case internal nav changes
                     }, 0);
                     break;
 
@@ -7507,8 +7509,8 @@
 
                 forms.forEach(function (form) {
                     // HTML editor
-                    if (window.load_html_edit !== undefined) {
-                        load_html_edit(form);
+                    if (window.loadHtmlEdit !== undefined) {
+                        loadHtmlEdit(form);
                     }
 
                     // Remove tooltips from forms as they are for screenreader accessibility only
@@ -8408,12 +8410,12 @@
         },
 
         loadRealtimeRain: function () {
-            load_realtime_rain();
+            loadRealtimeRain();
 
-            function load_realtime_rain() {
-                if ((window.realtime_rain_button_load_handler === undefined)) {
+            function loadRealtimeRain() {
+                if ((window.realtimeRainButtonLoadHandler === undefined)) {
                     if (document.getElementById('realtime_rain_img_loader')) {
-                        setTimeout(load_realtime_rain, 200);
+                        setTimeout(loadRealtimeRain, 200);
                         return false;
                     }
 
@@ -8429,12 +8431,12 @@
 
                     $cms.requireJavascript('realtime_rain');
                     $cms.requireCss('realtime_rain');
-                    window.setTimeout(load_realtime_rain, 200);
+                    window.setTimeout(loadRealtimeRain, 200);
 
                     return false;
                 }
-                if ((window.realtime_rain_button_load_handler !== undefined)) {
-                    return realtime_rain_button_load_handler();
+                if ((window.realtimeRainButtonLoadHandler !== undefined)) {
+                    return realtimeRainButtonLoadHandler();
                 }
                 window.location.href = document.getElementById('realtime_rain_button').href;
                 return false;
@@ -8443,8 +8445,8 @@
         },
 
         loadCommandr: function () {
-            if (window.load_commandr) {
-                load_commandr();
+            if (window.loadCommandr) {
+                loadCommandr();
             }
         },
 
@@ -8470,7 +8472,7 @@
                     $cms.dom.on(el, {
                         mouseover: handleImageMouseOver,
                         mouseout: handleImageMouseOut,
-                        click: handle_image_click
+                        click: handleImageClick
                     });
                 }
             }
@@ -8606,7 +8608,7 @@
                     // Add edit button
                     var ml = document.createElement('input');
                     ml.onclick = function (event) {
-                        handle_image_click(event, target, true);
+                        handleImageClick(event, target, true);
                     };
                     ml.type = 'button';
                     ml.id = 'editimg_' + target.id;
@@ -8659,7 +8661,7 @@
                 window.status = window.old_status_img;
             }
 
-            function handle_image_click(event, ob, force) {
+            function handleImageClick(event, ob, force) {
                 ob || (ob = this);
 
                 var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
@@ -8882,10 +8884,10 @@
             return;
         }
 
-        ftp_ticker();
-        usesFtp.onclick = ftp_ticker;
+        ftpTicker();
+        usesFtp.onclick = ftpTicker;
 
-        function ftp_ticker() {
+        function ftpTicker() {
             var form = usesFtp.form;
             form.elements.ftp_domain.disabled = !usesFtp.checked;
             form.elements.ftp_directory.disabled = !usesFtp.checked;
@@ -9041,12 +9043,12 @@
 
     $cms.templates.blockTopPersonalStats = function (params, container) {
         $cms.dom.on(container, 'click', '.js-click-toggle-top-personal-stats', function (e) {
-            if (toggle_top_personal_stats(e) === false) {
+            if (toggleTopPersonalStats(e) === false) {
                 e.preventDefault();
             }
         });
 
-        function toggle_top_personal_stats(event) {
+        function toggleTopPersonalStats(event) {
             _toggleMessagingBox(event, 'pts', true);
             _toggleMessagingBox(event, 'web_notifications', true);
             return _toggleMessagingBox(event, 'top_personal_stats');

@@ -113,7 +113,7 @@
                             view.notificationEl.textContent = feedbackEl.textContent;
 
                             if ($cms.dom.$('#activities_feed')) {// The update box won't necessarily have a displayed feed to update
-                                s_update_get_data();
+                                sUpdateGetData();
                             }
 
                             $cms.dom.fadeIn(view.notificationEl, 1200, function () {
