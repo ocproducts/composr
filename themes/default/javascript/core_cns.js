@@ -78,7 +78,7 @@
 
     $cms.templates.cnsMemberProfileAbout = function cnsMemberProfileAbout(params, container) {
         $cms.dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
-            decrypt_data();
+            decryptData();
         });
     };
 

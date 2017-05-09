@@ -37,19 +37,19 @@
                     helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
                 }
             } else {
-                if ($cms.readCookie('hide_helper_panel') == '') {
+                if ($cms.readCookie('hide_helper_panel') === '') {
                     $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
                         if (answer) {
-                            _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
+                            _hideHelperPanel(panel_right, helper_panel_contents, helper_panel_toggle);
                         }
                     });
                 } else {
-                    _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
+                    _hideHelperPanel(panel_right, helper_panel_contents, helper_panel_toggle);
 
                 }
             }
 
-            function _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle) {
+            function _hideHelperPanel(panel_right, helper_panel_contents, helper_panel_toggle) {
                 panel_right.classList.add('helper_panel_hidden');
                 helper_panel_contents.setAttribute('aria-expanded', 'false');
                 helper_panel_contents.style.display = 'none';

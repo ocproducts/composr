@@ -135,12 +135,12 @@
                 html = $cms.dom.$id(this.name + 'tree_list_c_' + expanding_id);
             }
 
-            attributes_full_fixup(xml);
+            attributesFullFixup(xml);
 
             this.root_element = this.renderTree(xml, html);
 
             var name = this.name;
-            fixup_node_positions(name);
+            fixupNodePositions(name);
         },
 
         renderTree: function (xml, html, element) {
@@ -361,7 +361,7 @@
 
                 if ((node.getAttribute('draggable')) && (node.getAttribute('draggable') !== 'false')) {
                     master_html = $cms.dom.$id('tree_list__root_' + that.name);
-                    fix_up_node_position(node_self);
+                    fixUpNodePosition(node_self);
                     node_self.cms_draggable = node.getAttribute('draggable');
                     node_self.draggable = true;
                     node_self.ondragstart = function (event) {
@@ -373,7 +373,7 @@
                     };
                     node_self.ondrag = function (event) {
                         if (!event.clientY) return;
-                        var hit = find_overlapping_selectable(event.clientY + window.pageYOffset, this, this.object.tree_list_data, this.object.name);
+                        var hit = findOverlappingSelectable(event.clientY + window.pageYOffset, this, this.object.tree_list_data, this.object.name);
                         if (this.last_hit != null) {
                             this.last_hit.parentNode.parentNode.style.border = '0px';
                         }
@@ -410,7 +410,7 @@
                                 // Ajax request
                                 eval('drag_' + xml_node.getAttribute('draggable') + '("' + xml_node.getAttribute('serverid') + '","' + target_xml_node.getAttribute('serverid') + '")');
 
-                                fixup_node_positions(this.object.name);
+                                fixupNodePositions(this.object.name);
                             }
                         }
                     };
@@ -501,7 +501,7 @@
                 expand_button.alt = expand_button.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
             }
 
-            fixup_node_positions(this.object.name);
+            fixupNodePositions(this.object.name);
 
             $cms.dom.triggerResize();
 
@@ -631,7 +631,7 @@
         }
     });
 
-    function attributes_full_fixup(xml) {
+    function attributesFullFixup(xml) {
         var node, i,
             id = xml.getAttribute('id');
 
@@ -645,35 +645,35 @@
             node = xml.children[i];
 
             if ((node.localName === 'category') || (node.localName === 'entry')) {
-                attributes_full_fixup(node);
+                attributesFullFixup(node);
             }
         }
     }
 
-    function fixup_node_positions(name) {
+    function fixupNodePositions(name) {
         var html = $cms.dom.$('#tree_list__root_' + name);
         var to_fix = html.getElementsByTagName('div');
         var i;
         for (i = 0; i < to_fix.length; i++) {
             if (to_fix[i].style.position === 'absolute') {
-                fix_up_node_position(to_fix[i]);
+                fixUpNodePosition(to_fix[i]);
             }
         }
     }
 
-    function fix_up_node_position(node_self) {
+    function fixUpNodePosition(node_self) {
         node_self.style.left = $cms.dom.findPosX(node_self.parentNode, true) + 'px';
         node_self.style.top = $cms.dom.findPosY(node_self.parentNode, true) + 'px';
     }
 
-    function find_overlapping_selectable(mouse_y, element, node, name) { // Find drop targets
+    function findOverlappingSelectable(mouse_y, element, node, name) { // Find drop targets
         var i, childNode, temp, child_node_element, y, height;
 
         // Recursion
         if (node.getAttribute('expanded') !== 'false') {
             for (i = 0; i < node.children.length; i++) {
                 childNode = node.children[i];
-                temp = find_overlapping_selectable(mouse_y, element, childNode, name);
+                temp = findOverlappingSelectable(mouse_y, element, childNode, name);
                 if (temp) {
                     return temp;
                 }

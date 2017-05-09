@@ -16,7 +16,7 @@ if (!(    document.getElementById && document.getElementsByName))
     throw complaining("Your browser is too old to render this page properly."
         + "  Consider going to getfirefox.com to upgrade.");
 
-function check_decoding() {
+function checkDecoding() {
     var d = document.getElementById('cometestme');
     if (!d) {
         throw complaining("Can't find an id='cometestme' element?");
@@ -55,8 +55,8 @@ function check_decoding() {
 }
 
 
-function go_decoding() {
-    check_decoding();
+function goDecoding() {
+    checkDecoding();
 
     if (is_decoding) {
         if (DEBUG) alert("No work needs doing -- already decoded!");

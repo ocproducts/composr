@@ -29,24 +29,44 @@
 
 
     $cms.templates.notificationPoller = function notificationPoller(params) {
-        notification_poller_init(params.timestamp);
+        notificationPollerInit(params.timestamp);
+
+        function notificationPollerInit(time_barrier) {
+            $cms.requireJavascript('sound');
+
+            window.notifications_time_barrier = time_barrier;
+
+            window.setInterval(window.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
+
+            var web_notifications_button = document.getElementById('web_notifications_button');
+            if (web_notifications_button) {
+                web_notifications_button.addEventListener('click', explicitNotificationsEnableRequest);
+            }
+        }
+
+        // We attach to an onclick handler, to enable desktop notifications later on; we need this as we cannot call requestPermission out of the blue
+        function explicitNotificationsEnableRequest() {
+            if ($cms.$CONFIG_OPTION('notification_desktop_alerts')) {
+                window.notify.requestPermission();
+            }
+        }
     };
 
     $cms.templates.blockTopNotifications = function blockTopNotifications(params, container) {
         window.max_notifications_to_show = +params.max || 0;
 
         $cms.dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
-            notifications_mark_all_read(e);
+            notificationsMarkAllRead(e);
         });
 
         $cms.dom.on(container, 'click', '.js-click-toggle-web-notifications', function (e) {
-            if (toggle_web_notifications(e) === false) {
+            if (toggleWebNotifications(e) === false) {
                 e.preventDefault();
             }
         });
 
         $cms.dom.on(container, 'mouseup', '.js-mouseup-toggle-web-notifications', function (e) {
-            toggle_web_notifications(e);
+            toggleWebNotifications(e);
         });
 
         $cms.dom.on(container, 'mouseup', '.js-mouseup-find-url-tab', function (e) {
@@ -54,14 +74,39 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-toggle-pts', function (e) {
-            if (toggle_pts(e) === false) {
+            if (togglePts(e) === false) {
                 e.preventDefault();
             }
         });
 
         $cms.dom.on(container, 'mouseup', '.js-mouseup-toggle-pts', function (e) {
-            toggle_pts(e);
+            togglePts(e);
         });
+
+        function notificationsMarkAllRead(event) {
+            var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=mark_all_read';
+            if (window.max_notifications_to_show !== undefined) {
+                url += '&max=' + window.max_notifications_to_show;
+            }
+            url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
+            url += '&forced_update=1';
+            url += $cms.keepStub();
+            $cms.doAjaxRequest(url, window._pollForNotifications);
+            _toggleMessagingBox(event, 'web_notifications', true);
+            return false;
+        }
+
+        function toggleWebNotifications(event) {
+            _toggleMessagingBox(event, 'top_personal_stats', true);
+            _toggleMessagingBox(event, 'pts', true);
+            return _toggleMessagingBox(event, 'web_notifications');
+        }
+
+        function togglePts(event) {
+            _toggleMessagingBox(event, 'top_personal_stats', true);
+            _toggleMessagingBox(event, 'web_notifications', true);
+            return _toggleMessagingBox(event, 'pts');
+        }
     };
 
     $cms.templates.notificationsManageScreen = function notificationsManageScreen(params, container) {
@@ -82,10 +127,10 @@
 
     $cms.templates.notificationsTree = function notificationsTree(params, tableRow) {
         $cms.dom.on(tableRow, 'click', '.js-click-copy-advanced-notifications', function () {
-            advanced_notifications_copy_under(tableRow);
+            advancedNotificationsCopyUnder(tableRow);
         });
 
-        function advanced_notifications_copy_under(row) {
+        function advancedNotificationsCopyUnder(row) {
             var inputsFrom = row.querySelectorAll('input'),
                 parentDepth = $cms.dom.css(row.querySelector('th'), 'padding-left'),
                 childDepth, inputsTo;
@@ -115,7 +160,7 @@
 
     $cms.templates.notificationWeb = function notificationWeb(params, container) {
         $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
-            poll_for_notifications(true, true);
+            pollForNotifications(true, true);
         });
     };
 
@@ -147,4 +192,453 @@
 }(window.$cms));
 
 
+/*
+ Poll for notifications (and unread PTs)
+ */
 
+
+window.notifications_already_presented || (window.notifications_already_presented = {});
+(window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}');
+(window.notifications_time_barrier != null) || (window.notifications_time_barrier = null);
+
+function pollForNotifications(forced_update, delay) {
+    forced_update = !!forced_update;
+    delay = !!delay;
+
+    if (delay) {
+        window.setTimeout(function () {
+            pollForNotifications(forced_update);
+        }, 1000);
+        return;
+    }
+
+    var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=poller';
+    if (window.max_notifications_to_show !== undefined) {
+        url += '&max=' + window.max_notifications_to_show;
+    }
+    url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
+    if (forced_update) {
+        url += '&forced_update=1';
+    }
+    url += $cms.keepStub();
+    $cms.doAjaxRequest(url, window._pollForNotifications);
+}
+
+function _pollForNotifications(raw_ajax_result) {
+    if (raw_ajax_result.getElementsByTagName === undefined)
+        return; // Some kind of error
+
+    var time_node = raw_ajax_result.querySelector('time');
+    window.notifications_time_barrier = window.parseInt($cms.dom.html(time_node));
+
+    // HTML5 notification API
+
+    var alerts;
+
+    alerts = raw_ajax_result.getElementsByTagName('web_notification');
+    for (var i = 0; i < alerts.length; i++) {
+        displayAlert(alerts[i]);
+    }
+
+    alerts = raw_ajax_result.getElementsByTagName('pt');
+    for (var i = 0; i < alerts.length; i++) {
+        displayAlert(alerts[i]);
+    }
+
+    // Show in the software directly, if possible
+
+    var spot, display, button, unread;
+
+    spot = document.getElementById('web_notifications_spot');
+    if (spot) {
+        display = raw_ajax_result.getElementsByTagName('display_web_notifications');
+        button = document.getElementById('web_notifications_button');
+        if (display[0]) {
+            unread = raw_ajax_result.getElementsByTagName('unread_web_notifications');
+            $cms.dom.html(spot, $cms.dom.html(display[0]));
+            $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
+            button.className = 'count_' + $cms.dom.html(unread[0]);
+        }
+    }
+
+    spot = document.getElementById('pts_spot');
+    if (spot) {
+        display = raw_ajax_result.getElementsByTagName('display_pts');
+        button = document.getElementById('pts_button');
+        if (display[0]) {
+            unread = raw_ajax_result.getElementsByTagName('unread_pts');
+            $cms.dom.html(spot, $cms.dom.html(display[0]));
+            $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
+            button.className = 'count_' + $cms.dom.html(unread[0]);
+        }
+    }
+
+
+    function displayAlert(notification) {
+        var id = notification.getAttribute('id');
+
+        if (window.notifications_already_presented[id] !== undefined) {
+            // Already handled this one
+            return;
+        }
+
+        // Play sound, if requested
+        var sound = notification.getAttribute('sound');
+        if (!sound) {
+            sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
+        }
+        if ($cms.readCookie('sound', 'off') === 'off') {
+            sound = 'off';
+        }
+        var notification_code = notification.getAttribute('notification_code');
+        if (sound === 'on' && typeof window.detect_change == 'undefined' || notification_code != 'ticket_reply' && notification_code != 'ticket_reply_staff') {
+            if (window.soundManager !== undefined) {
+                var go_func = function () {
+                    var sound_url = 'data/sounds/message_received.mp3';
+                    var base_url = ((sound_url.indexOf('data_custom') == -1) && (sound_url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;^}' : '{$CUSTOM_BASE_URL_NOHTTP;^}';
+                    var sound_object = window.soundManager.createSound({url: base_url + '/' + sound_url});
+                    if (sound_object) sound_object.play();
+                };
+
+                if (!window.soundManager.setupOptions.url) {
+                    window.soundManager.setup({onready: go_func, url: $cms.baseUrl('data/soundmanager'), debugMode: false});
+                } else {
+                    go_func();
+                }
+            }
+        }
+
+        // Show desktop notification
+        if ($cms.$CONFIG_OPTION('notification_desktop_alerts') && window.notify.isSupported) {
+            var icon = $cms.img('{$IMG;,favicon}');
+            var title = '{!notifications:DESKTOP_NOTIFICATION_SUBJECT;^}';
+            title = title.replace(/\\{1\\}/, notification.getAttribute('subject'));
+            title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
+            var body = '';//notification.getAttribute('rendered'); Looks ugly
+            if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
+                var notification_wrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.$SITE_NAME() + '__' + id });
+                if (notification_wrapper) {
+                    window.addEventListener('focus', function () {
+                        notification_wrapper.close();
+                    });
+
+                    notification_wrapper.notification.addEventListener('click', function () {
+                        try {
+                            window.focus();
+                        } catch (ignore) {}
+                    });
+                }
+            } else {
+                window.notify.requestPermission(); // Probably won't actually work (silent fail), as we're not running via a user-initiated event; this is why we have explicit_notifications_enable_request called elsewhere
+            }
+        }
+
+        // Mark done
+        window.notifications_already_presented[id] = true;
+    }
+}
+
+function _toggleMessagingBox(event, name, hide) {
+    hide = !!hide;
+
+    var e = document.getElementById(name + '_rel');
+    if (!e) {
+        return;
+    }
+
+    event.within_message_box = true;
+    event.stopPropagation();
+
+    var body = document.body;
+    if (e.parentNode !== body) {// Move over, so it is not cut off by overflow:hidden of the header
+        e.parentNode.removeChild(e);
+        body.appendChild(e);
+
+        e.addEventListener('click', function (event) {
+            event.within_message_box = true;
+        });
+        body.addEventListener('click', function (event) {
+            if (event.within_message_box !== undefined) return;
+            _toggleMessagingBox(event, 'top_personal_stats', true);
+            _toggleMessagingBox(event, 'web_notifications', true);
+            _toggleMessagingBox(event, 'pts', true);
+        });
+    }
+
+    var button = document.getElementById(name + '_button');
+    button.title = '';
+    var set_position = function () {
+        var button_x = $cms.dom.findPosX(button, true);
+        var button_width = button.offsetWidth;
+        var x = (button_x + button_width - e.offsetWidth);
+        if (x < 0) {
+            var span = e.querySelector('span');
+            span.style.marginLeft = (button_x + button_width / 4) + 'px';
+            x = 0;
+        }
+        e.style.left = x + 'px';
+        e.style.top = ($cms.dom.findPosY(button, true) + button.offsetHeight) + 'px';
+        try {
+            e.style.opacity = '1.0';
+        }
+        catch (ex) {
+        }
+    };
+    window.setTimeout(set_position, 0);
+
+    if ((e.style.display == 'none') && (!hide)) {
+        var tooltips = document.querySelectorAll('body>.tooltip');
+        if (tooltips[0] !== undefined)
+            tooltips[0].style.display = 'none'; // Hide tooltip, to stop it being a mess
+
+        e.style.display = 'inline';
+    } else {
+        e.style.display = 'none';
+    }
+    try {
+        e.style.opacity = '0.0'; // Render, but invisibly, until we've positioned it
+    } catch (ex) {}
+
+    return false;
+}
+
+/**
+ * Copyright 2012 Tsvetan Tsvetkov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author: Tsvetan Tsvetkov (tsekach@gmail.com)
+ */
+(function () {
+    if (!$cms.$CONFIG_OPTION('notification_desktop_alerts')) {
+        return;
+    }
+
+    /*
+     Safari native methods required for Notifications do NOT run in strict mode.
+     */
+    //"use strict";
+    var PERMISSION_DEFAULT = "default",
+        PERMISSION_GRANTED = "granted",
+        PERMISSION_DENIED = "denied",
+        PERMISSION = [PERMISSION_GRANTED, PERMISSION_DEFAULT, PERMISSION_DENIED],
+        defaultSetting = {
+            pageVisibility: false,
+            autoClose: 5000
+        },
+        empty = {},
+        emptyString = "",
+        isSupported = (function () {
+            var isSupported = false;
+            /*
+             * Use try {} catch() {} because the check for IE may throws an exception
+             * if the code is run on browser that is not Safar/Chrome/IE or
+             * Firefox with html5notifications plugin.
+             *
+             * Also, we canNOT detect if msIsSiteMode method exists, as it is
+             * a method of host object. In IE check for existing method of host
+             * object returns undefined. So, we try to run it - if it runs
+             * successfully - then it is IE9+, if not - an exceptions is thrown.
+             */
+            try {
+                isSupported = !!(/* Safari, Chrome */window.Notification || /* Chrome & ff-html5notifications plugin */window.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(window.external && window.external.msIsSiteMode() !== undefined));
+            } catch (e) {
+            }
+            return isSupported;
+        }()),
+        ieVerification = Math.floor((Math.random() * 10) + 1),
+        isFunction = function (value) {
+            return (value && (value).constructor === Function);
+        },
+        isString = function (value) {
+            return (value && (value).constructor === String);
+        },
+        isObject = function (value) {
+            return (value && (value).constructor === Object);
+        },
+        /**
+         * Dojo Mixin
+         */
+        mixin = function (target, source) {
+            var name, s;
+            for (name in source) {
+                s = source[name];
+                if ((target[name] === undefined) || (!target.name) || (target[name] !== s && ((empty[name] === undefined) || (!empty[name]) || empty[name] !== s))) {
+                    target[name] = s;
+                }
+            }
+            return target; // Object
+        },
+        noop = function () {
+        },
+        settings = defaultSetting;
+
+    function getNotification(title, options) {
+        var notification;
+        if (window.Notification) { /* Safari 6, Chrome (23+) */
+            notification = new window.Notification(title, {
+                /* The notification's icon - For Chrome in Windows, Linux & Chrome OS */
+                icon: isString(options.icon) ? options.icon : options.icon.x32,
+                /* The notification's subtitle. */
+                body: options.body || emptyString,
+                /*
+                 The notification's unique identifier.
+                 This prevents duplicate entries from appearing if the user has multiple instances of your website open at once.
+                 */
+                tag: options.tag || emptyString
+            });
+        } else if (window.webkitNotifications) { /* FF with html5Notifications plugin installed */
+            notification = window.webkitNotifications.createNotification(options.icon, title, options.body);
+            notification.tag = options.tag || emptyString;
+            notification.show();
+        } else if (navigator.mozNotification) { /* Firefox Mobile */
+            notification = navigator.mozNotification.createNotification(title, options.body, options.icon);
+            notification.tag = options.tag || emptyString;
+            notification.show();
+        } else if (window.external && window.external.msIsSiteMode()) { /* IE9+ */
+            //Clear any previous notifications
+            window.external.msSiteModeClearIconOverlay();
+            window.external.msSiteModeSetIconOverlay('{$IMG;,notifications/notifications}', title);
+            window.external.msSiteModeActivate();
+            notification = {
+                "ieVerification": ++ieVerification
+            };
+        } else {
+            if (window.focus !== undefined) {
+                try {
+                    window.focus();
+                }
+                catch (e) {
+                }
+            }
+        }
+        return notification;
+    }
+
+    function getWrapper(notification) {
+        return {
+            notification: notification,
+            close: function () {
+                if (notification) {
+                    if (notification.close) {
+                        //http://code.google.com/p/ff-html5notifications/issues/detail?id=58
+                        notification.close();
+                    } else if (window.external && window.external.msIsSiteMode()) {
+                        if (notification.ieVerification === ieVerification) {
+                            window.external.msSiteModeClearIconOverlay();
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    function requestPermission(callback) {
+        if (!isSupported) {
+            return;
+        }
+        var callbackFunction = isFunction(callback) ? callback : noop;
+        if (window.webkitNotifications && window.webkitNotifications.checkPermission) {
+            /*
+             * Chrome 23 supports window.Notification.requestPermission, but it
+             * breaks the browsers, so use the old-webkit-prefixed
+             * window.webkitNotifications.checkPermission instead.
+             *
+             * Firefox with html5notifications plugin supports this method
+             * for requesting permissions.
+             */
+            window.webkitNotifications.requestPermission(callbackFunction);
+        } else if (window.Notification && window.Notification.requestPermission) {
+            window.Notification.requestPermission(callbackFunction);
+        }
+    }
+
+    function permissionLevel() {
+        var permission;
+        if (!isSupported) {
+            return;
+        }
+        if (window.Notification && window.Notification.permissionLevel) {
+            //Safari 6
+            permission = window.Notification.permissionLevel();
+        } else if (window.webkitNotifications && window.webkitNotifications.checkPermission) {
+            //Chrome & Firefox with html5-notifications plugin installed
+            permission = PERMISSION[window.webkitNotifications.checkPermission()];
+        } else if (navigator.mozNotification) {
+            //Firefox Mobile
+            permission = PERMISSION_GRANTED;
+        } else if (window.Notification && window.Notification.permission) {
+            // Firefox 23+
+            permission = window.Notification.permission;
+        } else if (window.external && (window.external.msIsSiteMode() !== undefined)) { /* keep last */
+            //IE9+
+            permission = window.external.msIsSiteMode() ? PERMISSION_GRANTED : PERMISSION_DEFAULT;
+        }
+        return permission;
+    }
+
+    /**
+     *
+     */
+    function config(params) {
+        if (params && isObject(params)) {
+            mixin(settings, params);
+        }
+        return settings;
+    }
+
+    function isDocumentHidden() {
+        return settings.pageVisibility ? (document.hidden || document.msHidden || document.mozHidden || document.webkitHidden) : true;
+    }
+
+    function createNotification(title, options) {
+        var notification,
+            notificationWrapper;
+        /*
+         Return undefined if notifications are not supported.
+
+         Return undefined if no permissions for displaying notifications.
+
+         Title and icons are required. Return undefined if not set.
+         */
+        if (isSupported && isDocumentHidden() && isString(title) && (options && (isString(options.icon) || isObject(options.icon))) && (permissionLevel() === PERMISSION_GRANTED)) {
+            notification = getNotification(title, options);
+        }
+        notificationWrapper = getWrapper(notification);
+        //Auto-close notification
+        if (settings.autoClose != 0 && notification && !notification.ieVerification && notification.addEventListener) {
+            notification.addEventListener("show", function () {
+                var notification = notificationWrapper;
+                window.setTimeout(function () {
+                    notification.close();
+                }, settings.autoClose);
+            });
+        }
+        return notificationWrapper;
+    }
+
+    window.notify = {
+        PERMISSION_DEFAULT: PERMISSION_DEFAULT,
+        PERMISSION_GRANTED: PERMISSION_GRANTED,
+        PERMISSION_DENIED: PERMISSION_DENIED,
+        isSupported: isSupported,
+        config: config,
+        createNotification: createNotification,
+        permissionLevel: permissionLevel,
+        requestPermission: requestPermission
+    };
+
+    if (isFunction(Object.seal)) {
+        Object.seal(window.notify);
+    }
+}());

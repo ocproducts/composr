@@ -235,7 +235,7 @@
          * @method
          * @returns {string}
          */
-        $BASE_URL_PRL: constant(toProtocolRelative(symbols.BASE_URL)), // Protocol relative
+        $BASE_URL_PRL: constant(toSchemeRelative(symbols.BASE_URL)), // Scheme relative
         /**
          * @method
          * @returns {string}
@@ -668,6 +668,8 @@
         openModalWindow: openModalWindow,
         /**@method*/
         executeJsFunctionCalls: executeJsFunctionCalls,
+        /**@method*/
+        doAjaxRequest: doAjaxRequest,
         /**
          * Addons will add template related methods under this object
          * @namespace $cms.templates
@@ -1441,10 +1443,11 @@
 
     /**
      * @param val
-     * @returns { Array|null } array or array-like object
+     * @param clone
+     * @returns { Array } array or array-like object
      */
     function arrVal(val, clone) {
-        var isArr;
+        var isArr = false;
 
         clone = !!clone;
 
@@ -1452,8 +1455,8 @@
             return [];
         }
 
-        if ((typeof val === 'object') && ((isArr = Array.isArray(val))/* || isArrayLike(val)*/)) {
-            return clone ? toArray(val) : val;
+        if ((typeof val === 'object') && ((isArr = Array.isArray(val)) || isArrayLike(val))) {
+            return (!isArr || clone) ? toArray(val) : val;
         }
 
         return [val];
@@ -1631,16 +1634,9 @@
     };
 
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
-        rgxHttp = /^https?:(?=\/\/)/i;
-
-    /**
-     *
-     * @param absoluteUrl
-     * @returns {string}
-     */
-    function toProtocolRelative(absoluteUrl) {
-        return strVal(absoluteUrl).replace(rgxProtocol, '');
-    }
+        rgxHttp = /^https?:(?=\/\/)/i,
+        rgxRel = /^\/\//i,
+        rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
 
     /**
      *
@@ -1654,17 +1650,44 @@
             return $cms.$BASE_URL_S();
         }
 
-        if (rgxHttp.test(relativeUrl)) {
+        if (isAbsolute(relativeUrl)) {
             // Already an absolute url, just ensure matching protocol as the current page.
             return relativeUrl.replace(rgxHttp, window.location.protocol);
+        } else if (isSchemeRelative(relativeUrl)) {
+            // Scheme-relative URL, add current protocol
+            return window.location.protocol + relativeUrl;
         }
 
         return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : $cms.$BASE_URL_S()) + relativeUrl;
     }
 
-    function isAbsoluteHttp(url) {
+    function isAbsolute(url) {
         url = strVal(url);
         return rgxHttp.test(url);
+    }
+
+    function isRelative(url) {
+        url = strVal(url);
+        return !isAbsoluteOrSchemeRelative(url);
+    }
+
+    function isSchemeRelative(url) {
+        url = strVal(url);
+        return rgxRel.test(url);
+    }
+
+    function isAbsoluteOrSchemeRelative(url) {
+        url = strVal(url);
+        return rgxHttpRel.test(url);
+    }
+
+    /**
+     *
+     * @param absoluteUrl
+     * @returns {string}
+     */
+    function toSchemeRelative(absoluteUrl) {
+        return strVal(absoluteUrl).replace(rgxProtocol, '');
     }
 
     /**
@@ -1772,23 +1795,42 @@
         }
     }
 
+    var validIdRE = /^[a-zA-Z][\w:.-]*$/;
+
     /**
-     *
-     * @param sheet
+     * @private
+     * @param sheetName
      */
-    function requireCss(sheet) {
-        if ($cms.dom.$('link#css-' + sheet)) {
-            return;
+    function _requireCss(sheetName) {
+        if ($cms.dom.$('link#css-' + sheetName)) {
+            return Promise.resolve();
         }
         var link = document.createElement('link');
-        link.id = 'css-' + sheet;
+        link.id = 'css-' + sheetName;
         link.rel = 'stylesheet';
-        link.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheet + $cms.keepStub();
+        link.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
         document.head.appendChild(link);
+
+        return Promise.resolve();
     }
 
-    var validIdRE = /^[a-zA-Z][\w:.-]*$/;
+    /**
+     * @param sheetNames
+     * @returns { Promise }
+     */
+    function requireCss(sheetNames) {
+        sheetNames = arrVal(sheetNames);
+
+        return Promise.all(sheetNames.map(_requireCss));
+    }
+
     var requireJavascriptPromises = Object.create(null);
+
+    /**
+     * @private
+     * @param script
+     * @returns { Promise }
+     */
     function _requireJavascript(script) {
         script = strVal(script);
 
@@ -1796,7 +1838,7 @@
             return requireJavascriptPromises[script];
         }
 
-        if (isAbsoluteHttp(script) && $cms.dom.hasScriptLoaded(script)) {
+        if (isAbsoluteOrSchemeRelative(script) && $cms.dom.hasScriptLoaded(script)) {
             return Promise.resolve();
         }
 
@@ -1809,7 +1851,7 @@
         if (!scriptEl) {
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
-            if (isAbsoluteHttp(script)) {
+            if (isAbsoluteOrSchemeRelative(script)) {
                 scriptEl.src = script;
             } else {
                 scriptEl.id = 'javascript-' + script;
@@ -2046,7 +2088,7 @@
      *
      * @param cookieName
      * @param defaultValue
-     * @returns {*}
+     * @returns {string}
      */
     function readCookie(cookieName, defaultValue) {
         cookieName = strVal(cookieName);
@@ -2693,15 +2735,53 @@
         return parent;
     };
 
+    $cms.dom.hasStyleSheetLoaded = function (elOrHref) {
+        if (isNode(elOrHref)) {
+            return $cms.styleSheetsLoaded.includes(elOrHref);
+        }
+
+        // It's a href value
+        var href = strVal(elOrHref),
+            linkEl;
+
+        if (href === '') {
+            return false;
+        }
+
+        if (isSchemeRelative(href)) {
+            href = window.location.protocol + href;
+        } else if (isRelative(href)) {
+            href = $cms.baseUrl(href);
+        }
+
+        for (var i = 0; i < $cms.styleSheetsLoaded.length; i++) {
+            linkEl = $cms.styleSheetsLoaded[i];
+            if (linkEl.href === href) {
+                return true;
+            }
+        }
+    };
+
     $cms.dom.hasScriptLoaded = function hasScriptLoaded(elOrSrc) {
         if (isNode(elOrSrc)) {
             return $cms.scriptsLoaded.includes(elOrSrc);
         }
 
+        // It's an src value
+        // NB: Inaccurate when a script with the same src is supposed to be loaded/executed multiple times.
         var src = strVal(elOrSrc),
             scriptEl;
 
-        // NB: Inaccurate when a script with the same src is supposed to be loaded/executed multiple times.
+        if (src === '') {
+            return false;
+        }
+
+        if (isSchemeRelative(src)) {
+            src = window.location.protocol + src;
+        } else if (isRelative(src)) {
+            src = $cms.baseUrl(src);
+        }
+
         for (var i = 0; i < $cms.scriptsLoaded.length; i++) {
             scriptEl = $cms.scriptsLoaded[i];
             if (scriptEl.src === src) {
@@ -3266,7 +3346,7 @@
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.hide = function hide(el) {
@@ -6800,7 +6880,7 @@
                             }
                         } else
                         {
-                            if (has_iframe_loaded(iframe) && !has_iframe_ownership(iframe)) {
+                            if (hasIframeLoaded(iframe) && !hasIframeOwnership(iframe)) {
                                 iframe.scrolling='yes';
                                 iframe.style.height='500px';
                             }
@@ -6925,7 +7005,7 @@
 
             // Put together
             if (this.button_container.firstChild) {
-                if (this.type == 'iframe') {
+                if (this.type === 'iframe') {
                     container.appendChild(this.element('hr', {'class': 'spaced_rule'}));
                 }
                 container.appendChild(this.button_container);
@@ -6953,18 +7033,18 @@
             }, 100);
 
 
-            function has_iframe_loaded(iframe) {
+            function hasIframeLoaded(iframe) {
                 var has_loaded = false;
                 try {
-                    has_loaded = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host != '');
+                    has_loaded = (iframe != null) && (iframe.contentWindow.location.host != '');
                 } catch (ignore) {}
                 return has_loaded;
             }
 
-            function has_iframe_ownership(iframe) {
+            function hasIframeOwnership(iframe) {
                 var has_ownership = false;
                 try {
-                    has_ownership = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
+                    has_ownership = (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
                 } catch (ignore) {}
                 return has_ownership;
             }
@@ -7144,7 +7224,7 @@
      * @param post
      * @returns {*}
      */
-    $cms.doAjaxRequest = function doAjaxRequest(url, callbackMethod, post) { // Note: 'post' is not an array, it's a string (a=b)
+    function doAjaxRequest(url, callbackMethod, post) { // Note: 'post' is not an array, it's a string (a=b)
         var async = !!callbackMethod, index, result;
 
         if (!url.includes('://') && url.startsWith('/')) {
@@ -7308,330 +7388,10 @@
                 }
             }
         }
-    };
-
-
-}(window.$cms || (window.$cms = {}), !window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {}));
-
-(function () {
-    /*
-     Faux frames and faux scrolling
-     */
-    window.infiniteScrollingBlock = infiniteScrollingBlock;
-    window.infiniteScrollingBlockHold = infiniteScrollingBlockHold;
-    window.infiniteScrollingBlockUnhold = infiniteScrollingBlockUnhold;
-    window.internaliseInfiniteScrolling = internaliseInfiniteScrolling;
-    window.internaliseInfiniteScrollingGo = internaliseInfiniteScrollingGo;
-    window.internaliseAjaxBlockWrapperLinks = internaliseAjaxBlockWrapperLinks;
-
-    var infinite_scroll_pending = false, // Blocked due to queued HTTP request
-        infinite_scroll_blocked = false, // Blocked due to event tracking active
-        infinite_scroll_mouse_held = false;
-
-    /**
-     *
-     * @param event
-     */
-    function infiniteScrollingBlock(event) {
-        if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
-            infinite_scroll_blocked = true;
-            window.setTimeout(function () {
-                infinite_scroll_blocked = false;
-            }, 3000);
-        }
     }
 
-    function infiniteScrollingBlockHold() {
-        if (!infinite_scroll_blocked) {
-            infinite_scroll_blocked = true;
-            infinite_scroll_mouse_held = true;
-        }
-    }
 
-    /**
-     *
-     * @param infinite_scrolling
-     */
-    function infiniteScrollingBlockUnhold(infinite_scrolling) {
-        if (infinite_scroll_mouse_held) {
-            infinite_scroll_blocked = false;
-            infinite_scroll_mouse_held = false;
-            infinite_scrolling();
-        }
-    }
-
-    /**
-     *
-     * @param url_stem
-     * @param wrapper
-     * @returns {*}
-     */
-    function internaliseInfiniteScrolling(url_stem, wrapper) {
-        if (infinite_scroll_blocked || infinite_scroll_pending) {
-            // Already waiting for a result
-            return false;
-        }
-
-        var _pagination = wrapper.querySelectorAll('.pagination');
-
-        if (_pagination.length === 0) {
-            return false;
-        }
-
-        var more_links = [], found_new_links = null;
-
-        for (var _i = 0; _i < _pagination.length; _i++) {
-            var pagination = _pagination[_i];
-
-            if (pagination.style.display != 'none') {
-                // Remove visibility of pagination, now we've replaced with AJAX load more link
-                var pagination_parent = pagination.parentNode;
-                pagination.style.display = 'none';
-                var num_node_children = 0;
-                for (var i = 0; i < pagination_parent.childNodes.length; i++) {
-                    if (pagination_parent.childNodes[i].nodeName != '#text') num_node_children++;
-                }
-                if (num_node_children == 0) // Remove empty pagination wrapper
-                {
-                    pagination_parent.style.display = 'none';
-                }
-
-                // Add AJAX load more link before where the last pagination control was
-                // Remove old pagination_load_more's
-                var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
-                if (pagination_load_more.length > 0) pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
-
-                // Add in new one
-                var load_more_link = document.createElement('div');
-                load_more_link.className = 'pagination_load_more';
-                var load_more_link_a = document.createElement('a');
-                $cms.dom.html(load_more_link_a, '{!LOAD_MORE;^}');
-                load_more_link_a.href = '#!';
-                load_more_link_a.onclick = function () {
-                    internaliseInfiniteScrollingGo(url_stem, wrapper, more_links);
-                    return false;
-                }; // Click link -- load
-                load_more_link.appendChild(load_more_link_a);
-                _pagination[_pagination.length - 1].parentNode.insertBefore(load_more_link, _pagination[_pagination.length - 1].nextSibling);
-
-                more_links = pagination.getElementsByTagName('a');
-                found_new_links = _i;
-            }
-        }
-        for (var _i = 0; _i < _pagination.length; _i++) {
-            var pagination = _pagination[_i];
-            if (found_new_links != null) // Cleanup old pagination
-            {
-                if (_i != found_new_links) {
-                    var _more_links = pagination.getElementsByTagName('a');
-                    var num_links = _more_links.length;
-                    for (var i = num_links - 1; i >= 0; i--) {
-                        _more_links[i].parentNode.removeChild(_more_links[i]);
-                    }
-                }
-            } else {// Find links from an already-hidden pagination
-
-                more_links = pagination.getElementsByTagName('a');
-                if (more_links.length != 0) {
-                    break;
-                }
-            }
-        }
-
-        // Is more scrolling possible?
-        var rel, found_rel = false;
-        for (var i = 0; i < more_links.length; i++) {
-            rel = more_links[i].getAttribute('rel');
-            if (rel && rel.indexOf('next') != -1) {
-                found_rel = true;
-            }
-        }
-        if (!found_rel) // Ah, no more scrolling possible
-        {
-            // Remove old pagination_load_more's
-            var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
-            if (pagination_load_more.length > 0) {
-                pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
-            }
-
-            return;
-        }
-
-        // Used for calculating if we need to scroll down
-        var wrapper_pos_y = $cms.dom.findPosY(wrapper);
-        var wrapper_height = wrapper.offsetHeight;
-        var wrapper_bottom = wrapper_pos_y + wrapper_height;
-        var window_height = $cms.dom.getWindowHeight();
-        var page_height = $cms.dom.getWindowScrollHeight();
-        var scroll_y = window.pageYOffset;
-
-        // Scroll down -- load
-        if ((scroll_y + window_height > wrapper_bottom - window_height * 2) && (scroll_y + window_height < page_height - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-        {
-            return internaliseInfiniteScrollingGo(url_stem, wrapper, more_links);
-        }
-
-        return false;
-    }
-
-    /**
-     *
-     * @param url_stem
-     * @param wrapper
-     * @param more_links
-     * @returns {boolean}
-     */
-    function internaliseInfiniteScrollingGo(url_stem, wrapper, more_links) {
-        if (infinite_scroll_pending) {
-            return false;
-        }
-
-        var wrapper_inner = $cms.dom.$id(wrapper.id + '_inner');
-        if (!wrapper_inner) wrapper_inner = wrapper;
-
-        var rel;
-        for (var i = 0; i < more_links.length; i++) {
-            rel = more_links[i].getAttribute('rel');
-            if (rel && rel.indexOf('next') != -1) {
-                var next_link = more_links[i];
-                var url_stub = '';
-
-                var matches = next_link.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
-                if (matches) {
-                    url_stub += (url_stem.indexOf('?') == -1) ? '?' : '&';
-                    url_stub += matches[1] + '=' + matches[2];
-                    url_stub += '&raw=1';
-                    infinite_scroll_pending = true;
-
-                    return $cms.callBlock(url_stem + url_stub, '', wrapper_inner, true, function () {
-                        infinite_scroll_pending = false;
-                        internaliseInfiniteScrolling(url_stem, wrapper);
-                    });
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     *
-     * @param url_stem
-     * @param block_element
-     * @param look_for
-     * @param extra_params
-     * @param append
-     * @param forms_too
-     * @param scroll_to_top
-     */
-    function internaliseAjaxBlockWrapperLinks(url_stem, block_element, look_for, extra_params, append, forms_too, scroll_to_top) {
-        look_for || (look_for = []);
-        extra_params || (extra_params = []);
-        append = !!append;
-        forms_too = !!forms_too;
-        scroll_to_top = (scroll_to_top !== undefined) ? !!scroll_to_top : true;
-
-        var block_pos_y = $cms.dom.findPosY(block_element, true);
-        if (block_pos_y > window.pageYOffset) {
-            scroll_to_top = false;
-        }
-
-        var _link_wrappers = block_element.querySelectorAll('.ajax_block_wrapper_links');
-        if (_link_wrappers.length === 0) {
-            _link_wrappers = [block_element];
-        }
-        var links = [];
-        for (var i = 0; i < _link_wrappers.length; i++) {
-            var _links = _link_wrappers[i].getElementsByTagName('a');
-
-            for (var j = 0; j < _links.length; j++) {
-                links.push(_links[j]);
-            }
-
-            if (forms_too) {
-                _links = _link_wrappers[i].getElementsByTagName('form');
-
-                for (var k = 0; k < _links.length; k++) {
-                    links.push(_links[k]);
-                }
-
-                if (_link_wrappers[i].localName === 'form') {
-                    links.push(_link_wrappers[i]);
-                }
-            }
-        }
-
-        links.forEach(function (link) {
-            if (!link.target || (link.target !== '_self') || (link.href && link.href.startsWith('#'))) {
-                return; // (continue)
-            }
-
-            if (link.localName === 'a') {
-                $cms.dom.on(link, 'click', submitFunc);
-            } else {
-                $cms.dom.on(link, 'submit', submitFunc);
-            }
-        });
-
-        function submitFunc() {
-            var url_stub = '', j;
-
-            var href = (this.localName === 'a') ? this.href : this.action;
-
-            // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            for (j = 0; j < look_for.length; j++) {
-                var matches = href.match(new RegExp('[&\?](' + look_for[j] + ')=([^&]*)'));
-                if (matches) {
-                    url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-                    url_stub += matches[1] + '=' + matches[2];
-                }
-            }
-            for (j in extra_params) {
-                url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-                url_stub += j + '=' + encodeURIComponent(extra_params[j]);
-            }
-
-            // Any POST parameters?
-            var post_params = null, param;
-            if (this.localName === 'form') {
-                post_params = '';
-                for (j = 0; j < this.elements.length; j++) {
-                    if (this.elements[j].name) {
-                        param = this.elements[j].name + '=' + encodeURIComponent($cms.form.cleverFindValue(this, this.elements[j]));
-
-                        if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
-                            if (post_params != '') post_params += '&';
-                            post_params += param;
-                        } else {
-                            url_stub += (url_stem.indexOf('?') == -1) ? '?' : '&';
-                            url_stub += param;
-                        }
-                    }
-                }
-            }
-
-            if (window.history && window.history.pushState) {
-                try {
-                    window.has_js_state = true;
-                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
-                } catch (ignore) {
-                    // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
-                    // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
-                }
-            }
-
-            $cms.ui.clearOutTooltips();
-
-            // Make AJAX block call
-            return $cms.callBlock(url_stem + url_stub, '', block_element, append, function () {
-                if (scroll_to_top) {
-                    window.scrollTo(0, block_pos_y);
-                }
-            }, false, post_params);
-        }
-    }
-}());
-
+}(window.$cms || (window.$cms = {}), (!window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {})));
 
 (function ($cms) {
     'use strict';
@@ -8648,9 +8408,38 @@
         },
 
         loadRealtimeRain: function () {
-            if (window.load_realtime_rain) {
-                load_realtime_rain();
+            load_realtime_rain();
+
+            function load_realtime_rain() {
+                if ((window.realtime_rain_button_load_handler === undefined)) {
+                    if (document.getElementById('realtime_rain_img_loader')) {
+                        setTimeout(load_realtime_rain, 200);
+                        return false;
+                    }
+
+                    var img = document.getElementById('realtime_rain_img');
+                    img.className = 'footer_button_loading';
+                    var tmp_element = document.createElement('img');
+                    tmp_element.src = $cms.img('{$IMG;,loading}');
+                    tmp_element.style.position = 'absolute';
+                    tmp_element.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
+                    tmp_element.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
+                    tmp_element.id = 'realtime_rain_img_loader';
+                    img.parentNode.appendChild(tmp_element);
+
+                    $cms.requireJavascript('realtime_rain');
+                    $cms.requireCss('realtime_rain');
+                    window.setTimeout(load_realtime_rain, 200);
+
+                    return false;
+                }
+                if ((window.realtime_rain_button_load_handler !== undefined)) {
+                    return realtime_rain_button_load_handler();
+                }
+                window.location.href = document.getElementById('realtime_rain_button').href;
+                return false;
             }
+
         },
 
         loadCommandr: function () {
@@ -9256,6 +9045,12 @@
                 e.preventDefault();
             }
         });
+
+        function toggle_top_personal_stats(event) {
+            _toggleMessagingBox(event, 'pts', true);
+            _toggleMessagingBox(event, 'web_notifications', true);
+            return _toggleMessagingBox(event, 'top_personal_stats');
+        }
     };
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
@@ -9279,7 +9074,7 @@
     };
 
     $cms.functions.decisionTreeRender = function decisionTreeRender(parameter, value, notice, noticeTitle) {
-        var e=document.getElementById('main_form').elements[parameter];
+        var e = document.getElementById('main_form').elements[parameter];
         if (e.length === undefined) {
             e = [e];
         }
@@ -9460,3 +9255,324 @@
         mass_delete_form.style.display = 'block';
     }
 }(window.$cms));
+
+(function () {
+    /*
+     Faux frames and faux scrolling
+     */
+    window.infiniteScrollingBlock = infiniteScrollingBlock;
+    window.infiniteScrollingBlockHold = infiniteScrollingBlockHold;
+    window.infiniteScrollingBlockUnhold = infiniteScrollingBlockUnhold;
+    window.internaliseInfiniteScrolling = internaliseInfiniteScrolling;
+    window.internaliseInfiniteScrollingGo = internaliseInfiniteScrollingGo;
+    window.internaliseAjaxBlockWrapperLinks = internaliseAjaxBlockWrapperLinks;
+
+    var infinite_scroll_pending = false, // Blocked due to queued HTTP request
+        infinite_scroll_blocked = false, // Blocked due to event tracking active
+        infinite_scroll_mouse_held = false;
+
+    /**
+     *
+     * @param event
+     */
+    function infiniteScrollingBlock(event) {
+        if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
+            infinite_scroll_blocked = true;
+            window.setTimeout(function () {
+                infinite_scroll_blocked = false;
+            }, 3000);
+        }
+    }
+
+    function infiniteScrollingBlockHold() {
+        if (!infinite_scroll_blocked) {
+            infinite_scroll_blocked = true;
+            infinite_scroll_mouse_held = true;
+        }
+    }
+
+    /**
+     *
+     * @param infinite_scrolling
+     */
+    function infiniteScrollingBlockUnhold(infinite_scrolling) {
+        if (infinite_scroll_mouse_held) {
+            infinite_scroll_blocked = false;
+            infinite_scroll_mouse_held = false;
+            infinite_scrolling();
+        }
+    }
+
+    /**
+     *
+     * @param url_stem
+     * @param wrapper
+     * @returns {*}
+     */
+    function internaliseInfiniteScrolling(url_stem, wrapper) {
+        if (infinite_scroll_blocked || infinite_scroll_pending) {
+            // Already waiting for a result
+            return false;
+        }
+
+        var _pagination = wrapper.querySelectorAll('.pagination');
+
+        if (_pagination.length === 0) {
+            return false;
+        }
+
+        var more_links = [], found_new_links = null;
+
+        for (var _i = 0; _i < _pagination.length; _i++) {
+            var pagination = _pagination[_i];
+
+            if (pagination.style.display != 'none') {
+                // Remove visibility of pagination, now we've replaced with AJAX load more link
+                var pagination_parent = pagination.parentNode;
+                pagination.style.display = 'none';
+                var num_node_children = 0;
+                for (var i = 0; i < pagination_parent.childNodes.length; i++) {
+                    if (pagination_parent.childNodes[i].nodeName != '#text') num_node_children++;
+                }
+                if (num_node_children == 0) // Remove empty pagination wrapper
+                {
+                    pagination_parent.style.display = 'none';
+                }
+
+                // Add AJAX load more link before where the last pagination control was
+                // Remove old pagination_load_more's
+                var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
+                if (pagination_load_more.length > 0) pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
+
+                // Add in new one
+                var load_more_link = document.createElement('div');
+                load_more_link.className = 'pagination_load_more';
+                var load_more_link_a = document.createElement('a');
+                $cms.dom.html(load_more_link_a, '{!LOAD_MORE;^}');
+                load_more_link_a.href = '#!';
+                load_more_link_a.onclick = function () {
+                    internaliseInfiniteScrollingGo(url_stem, wrapper, more_links);
+                    return false;
+                }; // Click link -- load
+                load_more_link.appendChild(load_more_link_a);
+                _pagination[_pagination.length - 1].parentNode.insertBefore(load_more_link, _pagination[_pagination.length - 1].nextSibling);
+
+                more_links = pagination.getElementsByTagName('a');
+                found_new_links = _i;
+            }
+        }
+        for (var _i = 0; _i < _pagination.length; _i++) {
+            var pagination = _pagination[_i];
+            if (found_new_links != null) // Cleanup old pagination
+            {
+                if (_i != found_new_links) {
+                    var _more_links = pagination.getElementsByTagName('a');
+                    var num_links = _more_links.length;
+                    for (var i = num_links - 1; i >= 0; i--) {
+                        _more_links[i].parentNode.removeChild(_more_links[i]);
+                    }
+                }
+            } else {// Find links from an already-hidden pagination
+
+                more_links = pagination.getElementsByTagName('a');
+                if (more_links.length !== 0) {
+                    break;
+                }
+            }
+        }
+
+        // Is more scrolling possible?
+        var rel, found_rel = false;
+        for (var i = 0; i < more_links.length; i++) {
+            rel = more_links[i].getAttribute('rel');
+            if (rel && rel.indexOf('next') !== -1) {
+                found_rel = true;
+            }
+        }
+        if (!found_rel) // Ah, no more scrolling possible
+        {
+            // Remove old pagination_load_more's
+            var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
+            if (pagination_load_more.length > 0) {
+                pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
+            }
+
+            return;
+        }
+
+        // Used for calculating if we need to scroll down
+        var wrapper_pos_y = $cms.dom.findPosY(wrapper);
+        var wrapper_height = wrapper.offsetHeight;
+        var wrapper_bottom = wrapper_pos_y + wrapper_height;
+        var window_height = $cms.dom.getWindowHeight();
+        var page_height = $cms.dom.getWindowScrollHeight();
+        var scroll_y = window.pageYOffset;
+
+        // Scroll down -- load
+        if ((scroll_y + window_height > wrapper_bottom - window_height * 2) && (scroll_y + window_height < page_height - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
+        {
+            return internaliseInfiniteScrollingGo(url_stem, wrapper, more_links);
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param url_stem
+     * @param wrapper
+     * @param more_links
+     * @returns {boolean}
+     */
+    function internaliseInfiniteScrollingGo(url_stem, wrapper, more_links) {
+        if (infinite_scroll_pending) {
+            return false;
+        }
+
+        var wrapper_inner = $cms.dom.$id(wrapper.id + '_inner');
+        if (!wrapper_inner) wrapper_inner = wrapper;
+
+        var rel;
+        for (var i = 0; i < more_links.length; i++) {
+            rel = more_links[i].getAttribute('rel');
+            if (rel && rel.indexOf('next') !== -1) {
+                var next_link = more_links[i];
+                var url_stub = '';
+
+                var matches = next_link.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
+                if (matches) {
+                    url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
+                    url_stub += matches[1] + '=' + matches[2];
+                    url_stub += '&raw=1';
+                    infinite_scroll_pending = true;
+
+                    return $cms.callBlock(url_stem + url_stub, '', wrapper_inner, true, function () {
+                        infinite_scroll_pending = false;
+                        internaliseInfiniteScrolling(url_stem, wrapper);
+                    });
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param url_stem
+     * @param block_element
+     * @param look_for
+     * @param extra_params
+     * @param append
+     * @param forms_too
+     * @param scroll_to_top
+     */
+    function internaliseAjaxBlockWrapperLinks(url_stem, block_element, look_for, extra_params, append, forms_too, scroll_to_top) {
+        look_for || (look_for = []);
+        extra_params || (extra_params = []);
+        append = !!append;
+        forms_too = !!forms_too;
+        scroll_to_top = (scroll_to_top !== undefined) ? !!scroll_to_top : true;
+
+        var block_pos_y = $cms.dom.findPosY(block_element, true);
+        if (block_pos_y > window.pageYOffset) {
+            scroll_to_top = false;
+        }
+
+        var _link_wrappers = block_element.querySelectorAll('.ajax_block_wrapper_links');
+        if (_link_wrappers.length === 0) {
+            _link_wrappers = [block_element];
+        }
+        var links = [];
+        for (var i = 0; i < _link_wrappers.length; i++) {
+            var _links = _link_wrappers[i].getElementsByTagName('a');
+
+            for (var j = 0; j < _links.length; j++) {
+                links.push(_links[j]);
+            }
+
+            if (forms_too) {
+                _links = _link_wrappers[i].getElementsByTagName('form');
+
+                for (var k = 0; k < _links.length; k++) {
+                    links.push(_links[k]);
+                }
+
+                if (_link_wrappers[i].localName === 'form') {
+                    links.push(_link_wrappers[i]);
+                }
+            }
+        }
+
+        links.forEach(function (link) {
+            if (!link.target || (link.target !== '_self') || (link.href && link.href.startsWith('#'))) {
+                return; // (continue)
+            }
+
+            if (link.localName === 'a') {
+                $cms.dom.on(link, 'click', submitFunc);
+            } else {
+                $cms.dom.on(link, 'submit', submitFunc);
+            }
+        });
+
+        function submitFunc() {
+            var url_stub = '', j;
+
+            var href = (this.localName === 'a') ? this.href : this.action;
+
+            // Any parameters matching a pattern must be sent in the URL to the AJAX block call
+            for (j = 0; j < look_for.length; j++) {
+                var matches = href.match(new RegExp('[&\?](' + look_for[j] + ')=([^&]*)'));
+                if (matches) {
+                    url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
+                    url_stub += matches[1] + '=' + matches[2];
+                }
+            }
+            for (j in extra_params) {
+                url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
+                url_stub += j + '=' + encodeURIComponent(extra_params[j]);
+            }
+
+            // Any POST parameters?
+            var post_params = null, param;
+            if (this.localName === 'form') {
+                post_params = '';
+                for (j = 0; j < this.elements.length; j++) {
+                    if (this.elements[j].name) {
+                        param = this.elements[j].name + '=' + encodeURIComponent($cms.form.cleverFindValue(this, this.elements[j]));
+
+                        if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
+                            if (post_params != '') {
+                                post_params += '&';
+                            }
+                            post_params += param;
+                        } else {
+                            url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
+                            url_stub += param;
+                        }
+                    }
+                }
+            }
+
+            if (window.history && window.history.pushState) {
+                try {
+                    window.has_js_state = true;
+                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
+                } catch (ignore) {
+                    // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
+                    // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
+                }
+            }
+
+            $cms.ui.clearOutTooltips();
+
+            // Make AJAX block call
+            return $cms.callBlock(url_stem + url_stub, '', block_element, append, function () {
+                if (scroll_to_top) {
+                    window.scrollTo(0, block_pos_y);
+                }
+            }, false, post_params);
+        }
+    }
+}());

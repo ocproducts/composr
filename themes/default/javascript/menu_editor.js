@@ -4,8 +4,7 @@
 // MENU FUNCTIONS
 // ==============
 
-
-function make_field_selected(el) {
+function makeFieldSelected(el) {
     if (el.classList.contains('menu_editor_selected_field')) {
         return;
     }
@@ -20,10 +19,10 @@ function make_field_selected(el) {
         }
     }
 
-    copy_fields_into_bottom(el.id.substr(8), changed);
+    copyFieldsIntoBottom(el.id.substr(8), changed);
 }
 
-function copy_fields_into_bottom(i, changed) {
+function copyFieldsIntoBottom(i, changed) {
     window.current_selection = i;
     var form = $cms.dom.$id('edit_form');
 
@@ -108,24 +107,24 @@ function copy_fields_into_bottom(i, changed) {
     }
 }
 
-function menu_editor_handle_keypress(e) {
+function menuEditorHandleKeypress(e) {
     var t = e.target;
 
     var up = (e.keyCode ? e.keyCode : e.charCode) == 38;
     var down = (e.keyCode ? e.keyCode : e.charCode) == 40;
 
-    handle_ordering(t, up, down);
+    handleOrdering(t, up, down);
 }
 
-function branch_depth(branch) {
+function branchDepth(branch) {
     if (branch.parentNode) {
-        return branch_depth(branch.parentNode) + 1;
+        return branchDepth(branch.parentNode) + 1;
     }
 
     return 0;
 }
 
-function exists_child(elements, parent) {
+function existsChild(elements, parent) {
     for (var i = 0; i < elements.length; i++) {
         if ((elements[i].name.substr(0, 7) === 'parent_') && (elements[i].value == parent)) {
             return true;
@@ -135,21 +134,21 @@ function exists_child(elements, parent) {
     return false;
 }
 
-function is_child(elements, possible_parent, possible_child) {
+function isChild(elements, possible_parent, possible_child) {
     for (var i = 0; i < elements.length; i++) {
         if ((elements[i].name.substr(7) == possible_child) && (elements[i].name.substr(0, 7) == 'parent_')) {
             if (elements[i].value == possible_parent) {
                 return true;
             }
 
-            return is_child(elements, possible_parent, elements[i].value);
+            return isChild(elements, possible_parent, elements[i].value);
         }
     }
 
     return false;
 }
 
-function handle_ordering(el, up, down) {
+function handleOrdering(el, up, down) {
     if (up || down) {
         var form = $cms.dom.$('#edit_form');
 
@@ -199,11 +198,11 @@ function handle_ordering(el, up, down) {
 
                 var us = elements[i];
                 for (b = up ? (i - 1) : (i + 1); up ? (b > 0) : (b < elements.length); up ? b-- : b++) {
-                    if ((!is_child(elements, index, elements[b].name.substr(7))) && (elements[b].name.startsWith('parent_') && ((up) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex == 0) || (!exists_child(elements, elements[b].name.substr(7)))))) {
+                    if ((!isChild(elements, index, elements[b].name.substr(7))) && (elements[b].name.startsWith('parent_') && ((up) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex == 0) || (!existsChild(elements, elements[b].name.substr(7)))))) {
                         var target = elements[b];
                         var main = us.parentNode.parentNode;
                         var place = target.parentNode.parentNode;
-                        if (((up) && (branch_depth(target) <= branch_depth(us))) || ((down) && (branch_depth(target) != branch_depth(us)))) {
+                        if (((up) && (branchDepth(target) <= branchDepth(us))) || ((down) && (branchDepth(target) != branchDepth(us)))) {
                             main.parentNode.removeChild(main);
                             place.parentNode.insertBefore(main, place);
                         } else {
@@ -223,79 +222,13 @@ function handle_ordering(el, up, down) {
     }
 }
 
-function swap_names(t, a, b, t2, values_also) {
-    if (t2 === undefined) {
-        t2 = '';
-    }
-    if (values_also === undefined) {
-        values_also = false;
-    }
 
-    var _a = $cms.dom.$id(t + '_' + a + t2);
-    var _b = $cms.dom.$id(t + '_' + b + t2);
-    _a.name = t + '_' + b + t2;
-    _b.name = t + '_' + a + t2;
-    _a.id = t + '_' + b + t2;
-    _b.id = t + '_' + a + t2;
-    if (values_also) {
-        var temp = _a.value;
-        _a.value = _b.value;
-        _b.value = temp;
-    }
-
-    var _al = $cms.dom.$('#label_' + t + '_' + a + t2);
-    var _bl = $cms.dom.$('#label_' + t + '_' + b + t2);
-    if (_al) {
-        _al.setAttribute('for', t + '_' + b + t2);
-        _bl.setAttribute('for', t + '_' + a + t2);
-        _al.id = 'label_' + t + '_' + b + t2;
-        _bl.id = 'label_' + t + '_' + a + t2;
-    }
-}
-
-function magic_copier(object, caption, url, error_message, confirm_message) {
-    var els = parent.document.getElementsByName('selected');
-
-    var i, num, yes = false, target_type;
-    for (i = 0; i < els.length; i++) {
-        if (els[i].checked) {
-            num = els[i].value.substring(9, els[i].value.length);
-            target_type = parent.document.getElementById('branch_type_' + num);
-            if ((target_type.value == 'page') || (target_type.getElementsByTagName('option').length < 3)) {
-                if (parent.document.getElementById('url_' + num).value == '') {
-                    _do_magic_copier(num, url, caption);
-                } else {
-                    $cms.ui.confirm(
-                        confirm_message,
-                        function (answer) {
-                            if (answer) _do_magic_copier(num, url, caption);
-                        }
-                    );
-                }
-            } else $cms.ui.alert(error_message);
-            yes = true;
-        }
-    }
-
-    if (!yes) {
-        $cms.ui.alert('{!javascript:RADIO_NOTHING_SELECTED;^}');
-    }
-
-    return false;
-}
-
-function _do_magic_copier(num, url, caption) {
-    parent.document.getElementById('url_' + num).value = url;
-    parent.document.getElementById('caption_' + num).value = caption;
-}
-
-
-function delete_branch(id) {
+function deleteBranch(id) {
     var branch = $cms.dom.$id(id);
     branch.parentNode.removeChild(branch);
 }
 
-function check_menu() {
+function checkMenu() {
     var form = $cms.dom.$('#edit_form');
     var i, id, name, the_parent, ignore, caption, url, branch_type;
     for (i = 0; i < form.elements.length; i++) {

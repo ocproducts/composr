@@ -313,7 +313,7 @@
         var container = this;
 
         $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
-            poll_for_notifications(true, true);
+            pollForNotifications(true, true);
         });
     };
 

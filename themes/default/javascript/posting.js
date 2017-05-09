@@ -6,7 +6,7 @@
 // ATTACHMENTS
 // ===========
 
-function add_attachment(start_num, posting_field_name) {
+function addAttachment(start_num, posting_field_name) {
     if (window.num_attachments === undefined) return;
     if (window.max_attachments === undefined) return;
 
@@ -35,11 +35,11 @@ function add_attachment(start_num, posting_field_name) {
     $cms.dom.triggerResize();
 }
 
-function attachment_present(post_value, number) {
+function attachmentPresent(post_value, number) {
     return !(post_value.indexOf('[attachment]new_' + number + '[/attachment]') == -1) && (post_value.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') == -1) && (post_value.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') == -1) && (post_value.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') == -1) && (post_value.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') == -1) && (post_value.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') == -1);
 }
 
-function set_attachment(field_name, number, filename, multi, uploader_settings) {
+function setAttachment(field_name, number, filename, multi, uploader_settings) {
     multi = !!multi;
 
     if (window.insert_textbox === undefined) return;
@@ -55,7 +55,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
     }
 
     var post_value = get_textbox(post);
-    var done = attachment_present(post.value, number) || attachment_present(post_value, number);
+    var done = attachmentPresent(post.value, number) || attachmentPresent(post_value, number);
     if (!done) {
         var filepath = filename;
         if ((!filename) && (document.getElementById('file' + number))) {
@@ -140,7 +140,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
                 // Add field for next one
                 var add_another_field = (number == window.num_attachments) && (window.num_attachments < window.max_attachments); // Needs running late, in case something happened inbetween
                 if (add_another_field) {
-                    add_attachment(window.num_attachments + 1, field_name);
+                    addAttachment(window.num_attachments + 1, field_name);
                 }
             }
             if (suffix != '') insert_textbox(post, suffix);
@@ -149,7 +149,7 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
                 uploader_settings.callbacks.push(function () {
                     // Do insta-preview
                     if ($cms.form.isWysiwygField(post)) {
-                        generate_background_preview(post);
+                        generateBackgroundPreview(post);
                     }
                 });
             }
@@ -204,12 +204,12 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
                         // Add field for next one
                         var add_another_field = (number == window.num_attachments) && (window.num_attachments < window.max_attachments); // Needs running late, in case something happened inbetween
                         if (add_another_field) {
-                            add_attachment(window.num_attachments + 1, field_name);
+                            addAttachment(window.num_attachments + 1, field_name);
                         }
 
                         // Do insta-preview
                         if ((comcode_added.indexOf('[attachment_safe') != -1) && ($cms.form.isWysiwygField(post))) {
-                            generate_background_preview(post);
+                            generateBackgroundPreview(post);
                         }
                     } else // Cancelled
                     {
@@ -225,11 +225,11 @@ function set_attachment(field_name, number, filename, multi, uploader_settings) 
         // Add field for next one
         var add_another_field = (number == window.num_attachments) && (window.num_attachments < window.max_attachments);
         if (add_another_field)
-            add_attachment(window.num_attachments + 1, field_name);
+            addAttachment(window.num_attachments + 1, field_name);
     }
 }
 
-function generate_background_preview(post) {
+function generateBackgroundPreview(post) {
     var form_post = '';
     var form = post.form;
     for (var i = 0; i < form.elements.length; i++) {
@@ -776,7 +776,7 @@ function init_form_saving(form_id) {
     if (navigator.onLine) {
         $cms.log('Searching AJAX for auto-save');
 
-        var url = '{$FIND_SCRIPT;,autosave}?type=retrieve';
+        var url = '{$FIND_SCRIPT_NOHTTP;,autosave}?type=retrieve';
         url += '&stem=' + encodeURIComponent(get_autosave_url_stem());
         url += $cms.keepStub();
         var callback = function (form) {
@@ -787,202 +787,228 @@ function init_form_saving(form_id) {
         }(form);
         $cms.doAjaxRequest(url, callback);
     }
-}
 
-function _retrieve_form_autosave(result, form) {
-    var fields_to_do = {}, fields_to_do_counter = 0, biggest_length_data = '';
-    var key, value;
-    var fields = result.getElementsByTagName('field');
-    var element, element_name, autosave_name;
-    for (var i = 0; i < fields.length; i++) {
-        key = fields[i].getAttribute('key');
-        value = fields[i].getAttribute('value');
+    function handle_form_saving_explicit(event, form) {
+        if (event.keyCode == 83/*s*/ && (navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey) && (!navigator.platform.match('Mac') ? event.ctrlKey : event.metaKey) && (!event.altKey)) {
+            $cms.log('Doing explicit auto-save');
 
-        element = null;
-        for (var j = 0; j < form.elements.length; j++) {
-            element_name = (form.elements[j].name === undefined) ? form.elements[0][j].name : form.elements[j].name;
-            autosave_name = get_autosave_name(element_name);
-            if (autosave_name == key) {
-                element = form.elements[j];
-                break;
-            }
-        }
+            event.preventDefault(); // Prevent browser save dialog
 
-        if (element) {
-            if (typeof element.value != 'undefined' && element.value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
-                continue;
-            }
+            // Go through al fields to save
+            var post = '', found_validated_field = false, temp;
+            for (var i = 0; i < form.elements.length; i++) {
+                if (form.elements[i].name == 'validated') found_validated_field = true;
 
-            fields_to_do[element_name] = value;
-
-            fields_to_do_counter++;
-
-            if (value.length > biggest_length_data.length) // The longest is what we quote to the user as being restored
-            {
-                biggest_length_data = value;
-            }
-        }
-    }
-
-    if ((fields_to_do_counter != 0) && (biggest_length_data.length > 25)) {
-        _restore_form_autosave(form, fields_to_do, biggest_length_data);
-    } else {
-        $cms.log('No auto-save, fields found was ' + fields_to_do_counter + ', largest length was ' + biggest_length_data.length);
-    }
-}
-
-function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
-    var autosave_name;
-
-    // If we've found something to restore then invite user to restore it
-    biggest_length_data = biggest_length_data.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').replace(/&nbsp;/g, ' '); // Strip HTML and new lines
-    if (biggest_length_data.length > 100) { // Trim down if needed
-        biggest_length_data = biggest_length_data.substr(0, 100) + '...';
-    }
-
-    $cms.ui.confirm(
-        '{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggest_length_data,
-        function (result) {
-            if (result) {
-                for (key in fields_to_do) {
-                    if (typeof fields_to_do[key] != 'string') continue;
-
-                    if (form.elements[key] !== undefined) {
-                        if (console.log !== undefined) console.log('Restoring ' + key);
-                        clever_set_value(form, form.elements[key], fields_to_do[key]);
+                if (field_supports_autosave(form.elements[i])) {
+                    temp = _handle_form_saving(event, form.elements[i], true);
+                    if (temp) {
+                        if (post != '') post += '&';
+                        post += encodeURIComponent(temp[0]) + '=' + encodeURIComponent(temp[1]);
                     }
                 }
-            } else {
-                // Was asked to throw the autosave away...
+            }
 
-                $cms.setCookie(encodeURIComponent(get_autosave_url_stem()), '0', 0.167/*4 hours*/); // Mark as not wanting to restore from local storage
+            if (post != '') {
+                document.body.style.cursor = 'wait';
 
-                if (window.localStorage !== undefined) {
-                    for (var key in fields_to_do) {
+                // Save remotely
+                if (navigator.onLine) {
+                    post = $cms.form.modsecurityWorkaroundAjax(post);
+                    $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
+                        if (document.body.style.cursor == 'wait') document.body.style.cursor = '';
+
+                        var message = found_validated_field ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
+                        $cms.ui.alert(message, null, '{!javascript:DRAFT_SAVE;^}');
+                    }, post);
+                }
+            }
+        }
+    }
+
+
+    function _retrieve_form_autosave(result, form) {
+        var fields_to_do = {}, fields_to_do_counter = 0, biggest_length_data = '';
+        var key, value;
+        var fields = result.getElementsByTagName('field');
+        var element, element_name, autosave_name;
+        for (var i = 0; i < fields.length; i++) {
+            key = fields[i].getAttribute('key');
+            value = fields[i].getAttribute('value');
+
+            element = null;
+            for (var j = 0; j < form.elements.length; j++) {
+                element_name = (form.elements[j].name === undefined) ? form.elements[0][j].name : form.elements[j].name;
+                autosave_name = get_autosave_name(element_name);
+                if (autosave_name == key) {
+                    element = form.elements[j];
+                    break;
+                }
+            }
+
+            if (element) {
+                if (typeof element.value != 'undefined' && element.value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
+                    continue;
+                }
+
+                fields_to_do[element_name] = value;
+
+                fields_to_do_counter++;
+
+                if (value.length > biggest_length_data.length) // The longest is what we quote to the user as being restored
+                {
+                    biggest_length_data = value;
+                }
+            }
+        }
+
+        if ((fields_to_do_counter != 0) && (biggest_length_data.length > 25)) {
+            _restore_form_autosave(form, fields_to_do, biggest_length_data);
+        } else {
+            $cms.log('No auto-save, fields found was ' + fields_to_do_counter + ', largest length was ' + biggest_length_data.length);
+        }
+    }
+
+
+    function _restore_form_autosave(form, fields_to_do, biggest_length_data) {
+        var autosave_name;
+
+        // If we've found something to restore then invite user to restore it
+        biggest_length_data = biggest_length_data.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').replace(/&nbsp;/g, ' '); // Strip HTML and new lines
+        if (biggest_length_data.length > 100) { // Trim down if needed
+            biggest_length_data = biggest_length_data.substr(0, 100) + '...';
+        }
+
+        $cms.ui.confirm(
+            '{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n' + biggest_length_data,
+            function (result) {
+                if (result) {
+                    for (key in fields_to_do) {
                         if (typeof fields_to_do[key] != 'string') continue;
 
-                        autosave_name = get_autosave_name(key);
-                        if (localStorage[autosave_name] !== undefined) {
-                            delete localStorage[autosave_name];
+                        if (form.elements[key] !== undefined) {
+                            if (console.log !== undefined) console.log('Restoring ' + key);
+                            clever_set_value(form, form.elements[key], fields_to_do[key]);
+                        }
+                    }
+                } else {
+                    // Was asked to throw the autosave away...
+
+                    $cms.setCookie(encodeURIComponent(get_autosave_url_stem()), '0', 0.167/*4 hours*/); // Mark as not wanting to restore from local storage
+
+                    if (window.localStorage !== undefined) {
+                        for (var key in fields_to_do) {
+                            if (typeof fields_to_do[key] != 'string') continue;
+
+                            autosave_name = get_autosave_name(key);
+                            if (localStorage[autosave_name] !== undefined) {
+                                delete localStorage[autosave_name];
+                            }
                         }
                     }
                 }
-            }
-        },
-        '{!javascript:AUTO_SAVING;^}'
-    );
-}
-
-function field_supports_autosave(element) {
-    if ((element.length !== undefined) && (element.nodeName === undefined)) {
-        // Radio button
-        element = element[0];
+            },
+            '{!javascript:AUTO_SAVING;^}'
+        );
     }
 
-    if (element.name === undefined) return false;
+    function clever_set_value(form, element, value) {
+        if ((element.length !== undefined) && (element.nodeName === undefined)) {
+            // Radio button
+            element = element[0];
+        }
 
-    var name = element.name;
-    if (name == '') return false;
-    if (name.substr(-2) == '[]') return false;
-
-    if ($cms.form.isWysiwygField(element)) return true;
-
-    if (element.disabled) return false;
-
-    switch (element.localName) {
-        case 'textarea':
-        case 'select':
-            return true;
-        case 'input':
-            switch (element.type) {
-                case 'checkbox':
-                case 'radio':
-                case 'text':
-                case 'color':
-                case 'date':
-                case 'datetime':
-                case 'datetime-local':
-                case 'email':
-                case 'month':
-                case 'number':
-                case 'range':
-                case 'tel':
-                case 'time':
-                case 'url':
-                case 'week':
-                    return true;
-            }
-    }
-
-    return false;
-}
-
-function is_typed_input(element) {
-    if ((element.length !== undefined) && (element.nodeName === undefined)) {
-        // Radio button
-        element = element[0];
-    }
-
-    switch (element.nodeName.toLowerCase()) {
-        case 'textarea':
-            return true;
-        case 'input':
-            switch (element.type) {
-                case 'hidden':
-                case 'text':
-                case 'color':
-                case 'date':
-                case 'datetime':
-                case 'datetime-local':
-                case 'email':
-                case 'month':
-                case 'number':
-                case 'range':
-                case 'tel':
-                case 'time':
-                case 'url':
-                case 'week':
-                    return true;
-            }
-    }
-
-    return false;
-}
-
-function handle_form_saving_explicit(event, form) {
-    if (event.keyCode == 83/*s*/ && (navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey) && (!navigator.platform.match('Mac') ? event.ctrlKey : event.metaKey) && (!event.altKey)) {
-        $cms.log('Doing explicit auto-save');
-
-        event.preventDefault(); // Prevent browser save dialog
-
-        // Go through al fields to save
-        var post = '', found_validated_field = false, temp;
-        for (var i = 0; i < form.elements.length; i++) {
-            if (form.elements[i].name == 'validated') found_validated_field = true;
-
-            if (field_supports_autosave(form.elements[i])) {
-                temp = _handle_form_saving(event, form.elements[i], true);
-                if (temp) {
-                    if (post != '') post += '&';
-                    post += encodeURIComponent(temp[0]) + '=' + encodeURIComponent(temp[1]);
+        switch (element.nodeName.toLowerCase()) {
+            case 'textarea':
+                set_textbox(element, value, value);
+                break;
+            case 'select':
+                for (var i = 0; i < element.options.length; i++) {
+                    if (element.options[i].value == value) {
+                        element.selectedIndex = i;
+                        if ($(element).select2 !== undefined) {
+                            $(element).trigger('change');
+                        }
+                    }
                 }
-            }
+                break;
+            case 'input':
+                switch (element.type) {
+                    case 'checkbox':
+                        element.checked = (value != '');
+                        break;
+
+                    case 'radio':
+                        value = '';
+                        for (var i = 0; i < form.elements.length; i++) {
+                            if ((form.elements[i].name == element.name) && (form.elements[i].value == value))
+                                form.elements[i].checked = true;
+                        }
+                        break;
+
+                    case 'text':
+                    case 'color':
+                    case 'date':
+                    case 'datetime':
+                    case 'datetime-local':
+                    case 'email':
+                    case 'month':
+                    case 'number':
+                    case 'range':
+                    case 'search':
+                    case 'tel':
+                    case 'time':
+                    case 'url':
+                    case 'week':
+                        element.value = value;
+                        break;
+                }
         }
 
-        if (post != '') {
-            document.body.style.cursor = 'wait';
+        if (element.onchange) element.onchange();
+    }
 
-            // Save remotely
-            if (navigator.onLine) {
-                post = $cms.form.modsecurityWorkaroundAjax(post);
-                $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
-                    if (document.body.style.cursor == 'wait') document.body.style.cursor = '';
-
-                    var message = found_validated_field ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
-                    $cms.ui.alert(message, null, '{!javascript:DRAFT_SAVE;^}');
-                }, post);
-            }
+    function field_supports_autosave(element) {
+        if ((element.length !== undefined) && (element.nodeName === undefined)) {
+            // Radio button
+            element = element[0];
         }
+
+        if (element.name === undefined) return false;
+
+        var name = element.name;
+        if (name == '') return false;
+        if (name.substr(-2) == '[]') return false;
+
+        if ($cms.form.isWysiwygField(element)) return true;
+
+        if (element.disabled) return false;
+
+        switch (element.localName) {
+            case 'textarea':
+            case 'select':
+                return true;
+            case 'input':
+                switch (element.type) {
+                    case 'checkbox':
+                    case 'radio':
+                    case 'text':
+                    case 'color':
+                    case 'date':
+                    case 'datetime':
+                    case 'datetime-local':
+                    case 'email':
+                    case 'month':
+                    case 'number':
+                    case 'range':
+                    case 'tel':
+                    case 'time':
+                    case 'url':
+                    case 'week':
+                        return true;
+                }
+        }
+
+        return false;
     }
 }
 
@@ -1044,62 +1070,38 @@ function _handle_form_saving(event, element, force) {
     }
 
     return [autosave_name, value];
-}
 
-function clever_set_value(form, element, value) {
-    if ((element.length !== undefined) && (element.nodeName === undefined)) {
-        // Radio button
-        element = element[0];
-    }
+    function is_typed_input(element) {
+        if ((element.length !== undefined) && (element.nodeName === undefined)) {
+            // Radio button
+            element = element[0];
+        }
 
-    switch (element.nodeName.toLowerCase()) {
-        case 'textarea':
-            set_textbox(element, value, value);
-            break;
-        case 'select':
-            for (var i = 0; i < element.options.length; i++) {
-                if (element.options[i].value == value) {
-                    element.selectedIndex = i;
-                    if ($(element).select2 !== undefined) {
-                        $(element).trigger('change');
-                    }
+        switch (element.nodeName.toLowerCase()) {
+            case 'textarea':
+                return true;
+            case 'input':
+                switch (element.type) {
+                    case 'hidden':
+                    case 'text':
+                    case 'color':
+                    case 'date':
+                    case 'datetime':
+                    case 'datetime-local':
+                    case 'email':
+                    case 'month':
+                    case 'number':
+                    case 'range':
+                    case 'tel':
+                    case 'time':
+                    case 'url':
+                    case 'week':
+                        return true;
                 }
-            }
-            break;
-        case 'input':
-            switch (element.type) {
-                case 'checkbox':
-                    element.checked = (value != '');
-                    break;
+        }
 
-                case 'radio':
-                    value = '';
-                    for (var i = 0; i < form.elements.length; i++) {
-                        if ((form.elements[i].name == element.name) && (form.elements[i].value == value))
-                            form.elements[i].checked = true;
-                    }
-                    break;
-
-                case 'text':
-                case 'color':
-                case 'date':
-                case 'datetime':
-                case 'datetime-local':
-                case 'email':
-                case 'month':
-                case 'number':
-                case 'range':
-                case 'search':
-                case 'tel':
-                case 'time':
-                case 'url':
-                case 'week':
-                    element.value = value;
-                    break;
-            }
+        return false;
     }
-
-    if (element.onchange) element.onchange();
 }
 
 function get_autosave_url_stem() {

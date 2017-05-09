@@ -25,7 +25,7 @@ function load_commandr() {
     }
 
     // Loaded
-    if (window.$cms.doAjaxRequest && (window.commandr_command_response !== undefined)) {
+    if (window.commandr_command_response !== undefined) {
         $cms.ui.confirmSession(
             function (result) {
                 // Remove "loading" indicator from button

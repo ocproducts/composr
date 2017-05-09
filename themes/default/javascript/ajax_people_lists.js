@@ -142,7 +142,7 @@
             currentListForEl.down_once = false;
 
             currentListForEl.onkeyup = function (event) {
-                var ret = handle_arrow_usage(event);
+                var ret = handleArrowUsage(event);
                 if (ret != null) {
                     return ret;
                 }
@@ -156,13 +156,13 @@
                 }
             };
             list.onkeyup = function (event) {
-                var ret = handle_arrow_usage(event);
+                var ret = handleArrowUsage(event);
                 if (ret != null) {
                     return ret;
                 }
 
                 if ($cms.dom.keyPressed(event, 'Enter')) {// ENTER
-                    make_selection(event);
+                    makeSelection(event);
                     current_list_for_copy.disabled = true;
                     window.setTimeout(function () {
                         current_list_for_copy.disabled = false;
@@ -198,11 +198,11 @@
                 return null;
             };
 
-            list.addEventListener($cms.browserMatches('ios') ? 'change' : 'click', make_selection, false);
+            list.addEventListener($cms.browserMatches('ios') ? 'change' : 'click', makeSelection, false);
 
             currentListForEl = null;
 
-            function handle_arrow_usage(event) {
+            function handleArrowUsage(event) {
                 if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
                     current_list_for_copy.disabled = true;
                     window.setTimeout(function () {
@@ -248,7 +248,7 @@
                 return null;
             }
 
-            function make_selection(e) {
+            function makeSelection(e) {
                 var el = e.target;
 
                 current_list_for_copy.value = el.value;

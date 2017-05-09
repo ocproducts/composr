@@ -87,7 +87,7 @@
         unsetActiveMenu: function (e, target) {
             if (!target.contains(e.relatedTarget)) {
                 window.active_menu = null;
-                recreate_clean_timeout();
+                recreateCleanTimeout();
             }
         },
 
@@ -131,7 +131,7 @@
         unsetActiveMenu: function (e, target) {
             if (!target.contains(e.relatedTarget)) {
                 window.active_menu = null;
-                recreate_clean_timeout();
+                recreateCleanTimeout();
             }
         }
     });
@@ -318,7 +318,7 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-check-menu', function (e, button) {
-            if (!check_menu()) {
+            if (!checkMenu()) {
                 e.preventDefault();
                 return;
             }
@@ -358,7 +358,7 @@
         document.getElementById('branch_type_' + id).selectedIndex = sIndex;
 
         $cms.dom.on(container, 'focus', '.js-focus-make-caption-field-selected', function (e, focused) {
-            make_field_selected(focused);
+            makeFieldSelected(focused);
         });
 
         $cms.dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
@@ -368,26 +368,26 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
-            delete_menu_branch(clicked);
+            deleteMenuBranch(clicked);
         });
 
         $cms.dom.on(container, 'click', '.js-click-menu-editor-branch-type-change', function () {
-            menu_editor_branch_type_change(id);
+            menuEditorBranchTypeChange(id);
         });
 
         $cms.dom.on(container, 'change', '.js-change-menu-editor-branch-type-change', function () {
-            menu_editor_branch_type_change(id);
+            menuEditorBranchTypeChange(id);
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-move-down-handle-ordering', function (e, btn) {
-            handle_ordering(btn, false, true);
+            handleOrdering(btn, false, true);
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-move-up-handle-ordering', function (e, btn) {
-            handle_ordering(btn, true, false);
+            handleOrdering(btn, true, false);
         });
 
-        function delete_menu_branch(ob) {
+        function deleteMenuBranch(ob) {
             var id = ob.id.substring(4, ob.id.length);
 
             if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) || (ob.form.elements['branch_type_' + id] != 'page')) {
@@ -399,7 +399,7 @@
                     null,
                     function (result) {
                         if (result.toLowerCase() == '{!DELETE;^}'.toLowerCase()) {
-                            delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                            deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                         } else if (result.toLowerCase() == '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
                             var choices = {buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}'};
                             for (var i = 0; i < window.all_menus.length; i++) {
@@ -429,7 +429,7 @@
                                             }
                                         }
                                         $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + $cms.keepStub(), null, post);
-                                        delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                                        deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                                     }
                                 }
                             );
@@ -441,7 +441,7 @@
                     '{!CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     function (result) {
                         if (result)
-                            delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                            deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                     }
                 );
             }
@@ -484,7 +484,7 @@
             }
 
             if (!clickableSections) {
-                menu_editor_branch_type_change(new_id);
+                menuEditorBranchTypeChange(new_id);
             }
 
             $cms.dom.$id('mini_form_hider').style.display = 'none';
@@ -492,7 +492,7 @@
     };
 
 
-    function menu_editor_branch_type_change(id) {
+    function menuEditorBranchTypeChange(id) {
         var disabled = (document.getElementById('branch_type_' + id).value !== 'page');
         var sub = $cms.dom.$id('branch_' + id + '_follow_1');
         if (sub) {
@@ -508,12 +508,12 @@
         var menuId = strVal(params.menuSitemapId),
             content = arrVal($cms.dom.data(container, 'tpMenuContent'));
 
-        generate_menu_sitemap($cms.dom.$('#' + menuId), content, 0);
+        generateMenuSitemap($cms.dom.$('#' + menuId), content, 0);
 
         // ==============================
         // DYNAMIC TREE CREATION FUNCTION
         // ==============================
-        function generate_menu_sitemap(targetEl, structure, theLevel) {
+        function generateMenuSitemap(targetEl, structure, theLevel) {
             structure = arrVal(structure);
             theLevel = +theLevel || 0;
 
@@ -527,10 +527,10 @@
             var node;
             for (var i = 0; i < structure.length; i++) {
                 node = structure[i];
-                _generate_menu_sitemap(targetEl, node, theLevel);
+                _generateMenuSitemap(targetEl, node, theLevel);
             }
 
-            function _generate_menu_sitemap(target, node, theLevel) {
+            function _generateMenuSitemap(target, node, theLevel) {
                 theLevel = +theLevel || 0;
 
                 var branchId = 'sitemap_menu_branch_' + $cms.random();
@@ -592,7 +592,7 @@
 
                     // Show children...
                     $cms.dom.append(li, ul);
-                    generate_menu_sitemap(ul, node.children, theLevel + 1);
+                    generateMenuSitemap(ul, node.children, theLevel + 1);
                 }
             }
         }
@@ -739,14 +739,14 @@
         }
     }
 
-    function recreate_clean_timeout() {
+    function recreateCleanTimeout() {
         if (clean_menus_timeout) {
             window.clearTimeout(clean_menus_timeout);
         }
-        clean_menus_timeout = window.setTimeout(clean_menus, window.menu_hold_time);
+        clean_menus_timeout = window.setTimeout(cleanMenus, window.menu_hold_time);
     }
 
-    function clean_menus() {
+    function cleanMenus() {
         clean_menus_timeout = null;
 
         var m = $cms.dom.$('#r_' + last_active_menu);
@@ -757,7 +757,7 @@
         var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
         var i, hideable;
         for (i = tags.length - 1; i >= 0; i--) {
-            if (tags[i].localName != 'ul' && tags[i].localName != 'div') continue;
+            if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') continue;
 
             hideable = true;
             if (e) {
@@ -794,7 +794,7 @@
 
         window.active_menu = id;
         last_active_menu = menu;
-        clean_menus();
+        cleanMenus();
 
         var l = 0;
         var t = 0;
@@ -845,7 +845,7 @@
         el.style.minWidth = e_parent_width + 'px';
         var e_parent_height = el.parentNode.offsetHeight;
         var e_width = el.offsetWidth;
-        function position_l() {
+        function positionL() {
             var pos_left = l;
             if (place == 'below') {// Top-level of drop-down
                 if (pos_left + e_width > full_width) {
@@ -856,9 +856,9 @@
             }
             el.style.left = pos_left + 'px';
         }
-        position_l();
-        window.setTimeout(position_l, 0);
-        function position_t() {
+        positionL();
+        window.setTimeout(positionL, 0);
+        function positionT() {
             var pos_top = t;
             if (pos_top + el.offsetHeight + 10 > full_height) {
                 var above_pos_top = pos_top - $cms.dom.contentHeight(el) + e_parent_height - 10;
@@ -866,11 +866,11 @@
             }
             el.style.top = pos_top + 'px';
         }
-        position_t();
-        window.setTimeout(position_t, 0);
+        positionT();
+        window.setTimeout(positionT, 0);
         el.style.zIndex = 200;
 
-        recreate_clean_timeout();
+        recreateCleanTimeout();
 
         return false;
     }

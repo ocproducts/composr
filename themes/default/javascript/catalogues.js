@@ -9,7 +9,7 @@
             $cms.executeJsFunctionCalls(params.jsFunctionCalls);
         }
 
-        catalogue_field_change_watching();
+        catalogueFieldChangeWatching();
     }
 
 
@@ -31,7 +31,7 @@
     function CatalogueEditingScreen() {
         CatalogueEditingScreen.base(this, 'constructor', arguments);
 
-        catalogue_field_change_watching();
+        catalogueFieldChangeWatching();
     }
 
     $cms.inherits(CatalogueEditingScreen, $cms.View, {
@@ -107,7 +107,7 @@
         }
     };
 
-    function catalogue_field_change_watching() {
+    function catalogueFieldChangeWatching() {
         // Find all our ordering fields
         var s = document.getElementsByTagName('select');
         var all_orderers = [];
@@ -118,11 +118,11 @@
         }
         // Assign generated change function to all ordering fields (generated so as to avoid JS late binding problem)
         for (var i = 0; i < all_orderers.length; i++) {
-            all_orderers[i].onchange = catalogue_field_reindex_around(all_orderers, all_orderers[i]);
+            all_orderers[i].onchange = catalogueFieldReindexAround(all_orderers, all_orderers[i]);
         }
     }
 
-    function catalogue_field_reindex_around(all_orderers, ob) {
+    function catalogueFieldReindexAround(all_orderers, ob) {
         return function () {
             var next_index = 0;
 

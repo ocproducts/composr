@@ -1,7 +1,6 @@
 (function ($cms) {
     'use strict';
 
-    /* TODO: fix for v11 */
     window.$cmsReady.push(function() {
         var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
 
@@ -15,7 +14,7 @@
 
             $cms.dom.on(billing, 'change', function () {
                 if (billing.localName === 'select') {
-                    if (shipping.selectedIndex == 0) {
+                    if (shipping.selectedIndex === 0) {
                         shipping.selectedIndex = billing.selectedIndex;
                         if (window.jQuery && window.jQuery.fn.select2) {
                             window.jQuery(shipping).trigger('change');

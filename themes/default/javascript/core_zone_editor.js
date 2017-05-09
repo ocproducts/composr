@@ -22,11 +22,11 @@
         fetchAndSubmit: function (e, btn) {
             var params = this.params;
 
-            set_edited_panel('panel_left');
-            set_edited_panel('panel_right');
-            set_edited_panel('panel_top');
-            set_edited_panel('panel_bottom');
-            set_edited_panel(params.defaultZonePageName);
+            setEditedPanel('panel_left');
+            setEditedPanel('panel_right');
+            setEditedPanel('panel_top');
+            setEditedPanel('panel_bottom');
+            setEditedPanel(params.defaultZonePageName);
 
             var form = $cms.dom.$id('middle_fields');
             var edit_field_store = $cms.dom.$id('edit_field_store');
@@ -58,7 +58,7 @@
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
-            if ((window.wysiwyg_on) && (wysiwyg_on())) {
+            if ((window.wysiwyg_on) && (wysiwygOn())) {
                 $cms.dom.$('#edit_' + params.id + '_textarea').readOnly = true;
             }
         }
@@ -78,13 +78,13 @@
             var id = this.params.id,
                 tab = target.dataset.jsTab;
 
-            select_ze_tab(id, tab);
+            selectZeTab(id, tab);
 
             if (tab === 'view') {
-                reload_preview(id);
+                reloadPreview(id);
             }
 
-            function select_ze_tab(id, tab) {
+            function selectZeTab(id, tab) {
                 var tabs = ['view', 'edit', 'info', 'settings'];
                 var i, j, element, elementh, selects;
 
@@ -114,7 +114,7 @@
                 }
             }
 
-            function reload_preview(id) {
+            function reloadPreview(id) {
                 var element = $cms.dom.$id('view_' + id);
 
                 var edit_element = $cms.dom.$id('edit_' + id + '_textarea');
@@ -159,7 +159,7 @@
             var params = this.params,
                 editor = $cms.dom.$id('edit_tab_' + params.id);
 
-            set_edited_panel(params.id);
+            setEditedPanel(params.id);
 
             if (editor) {
                 if (field.localName === 'select') {
@@ -199,7 +199,7 @@
         });
     };
 
-    function set_edited_panel(id) {
+    function setEditedPanel(id) {
         var el, store;
 
         /* The editing box */

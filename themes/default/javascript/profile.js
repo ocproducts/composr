@@ -1,6 +1,6 @@
 "use strict";
 
-function decrypt_data() {
+function decryptData() {
     if (document.getElementById('decryption_overlay')) {
         return;
     }

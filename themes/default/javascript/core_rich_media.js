@@ -25,7 +25,7 @@
         },
 
         setAttachment: function () {
-            set_attachment('post', this.params.i, '');
+            setAttachment('post', this.params.i, '');
         }
     });
 
@@ -484,7 +484,7 @@
 
         window[id] = [0, params.maxColor, params.minColor, params.speed, []];
         window.setInterval(function() {
-            process_wave(document.getElementById(id));
+            processWave(document.getElementById(id));
         }, params.speed);
     };
 
@@ -913,7 +913,7 @@
 
         window['comcodeshocker' + id + '_left'] = [0, min_color, max_color, time / 13, []];
         window.setInterval(function () {
-            process_wave(e_left);
+            processWave(e_left);
         }, window['comcodeshocker' + id + '_left'][3]);
     }
 

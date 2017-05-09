@@ -62,13 +62,13 @@
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copy_permission_presets(prefix, '0', true)) {
+            if (!copyPermissionPresets(prefix, '0', true)) {
                 list.selectedIndex = list.options.length - 4;
-            } else if (!copy_permission_presets(prefix, '1', true)) {
+            } else if (!copyPermissionPresets(prefix, '1', true)) {
                 list.selectedIndex = list.options.length - 3;
-            } else if (!copy_permission_presets(prefix, '2', true)) {
+            } else if (!copyPermissionPresets(prefix, '2', true)) {
                 list.selectedIndex = list.options.length - 2;
-            } else if (!copy_permission_presets(prefix, '3', true)) {
+            } else if (!copyPermissionPresets(prefix, '3', true)) {
                 list.selectedIndex = list.options.length - 1;
             }
         }
@@ -84,8 +84,8 @@
         },
 
         copyPresets: function (e, select) {
-            copy_permission_presets(this.prefix, select.options[select.selectedIndex].value);
-            cleanup_permission_list(this.prefix);
+            copyPermissionPresets(this.prefix, select.options[select.selectedIndex].value);
+            cleanupPermissionList(this.prefix);
         },
 
         permissionRepeating: function (e, button) {
@@ -146,18 +146,18 @@
         this.groupId = params.groupId;
         this.prefix = prefix;
 
-        setup_privilege_override_selector(prefix, params.defaultAccess, params.privilege, params.title, !!params.allGlobal);
+        setupPrivilegeOverrideSelector(prefix, params.defaultAccess, params.privilege, params.title, !!params.allGlobal);
 
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');
             // Test to see what we wouldn't have to make a change to get - and that is what we're set at
-            if (!copy_permission_presets(prefix, '0', true)) {
+            if (!copyPermissionPresets(prefix, '0', true)) {
                 list.selectedIndex = list.options.length - 4;
-            } else if (!copy_permission_presets(prefix, '1', true)) {
+            } else if (!copyPermissionPresets(prefix, '1', true)) {
                 list.selectedIndex = list.options.length - 3;
-            } else if (!copy_permission_presets(prefix, '2', true)) {
+            } else if (!copyPermissionPresets(prefix, '2', true)) {
                 list.selectedIndex = list.options.length - 2;
-            } else if (!copy_permission_presets(prefix, '3', true)) {
+            } else if (!copyPermissionPresets(prefix, '3', true)) {
                 list.selectedIndex = list.options.length - 1;
             }
         }
@@ -178,7 +178,7 @@
 
         showPermissionSetting: function (e, select) {
             if (select.options[select.selectedIndex].value === '-1') {
-                show_permission_setting(select);
+                showPermissionSetting(select);
             }
         }
     });
@@ -450,7 +450,7 @@
         var textarea = $cms.dom.$id(params.name),
             input = $cms.dom.$id('form_table_field_input__' + params.randomisedId);
 
-        if (params.required && params.required.includes('wysiwyg') && wysiwyg_on()) {
+        if (params.required && params.required.includes('wysiwyg') && wysiwygOn()) {
             textarea.readOnly = true;
         }
 
@@ -473,8 +473,8 @@
     $cms.templates.formScreenInputColour = function (params) {
         var label = params.rawField ? ' ' : params.prettyName;
 
-        make_colour_chooser(params.name, params.default, '', params.tabindex, label, 'input_colour' + params._required);
-        do_color_chooser();
+        makeColourChooser(params.name, params.default, '', params.tabindex, label, 'input_colour' + params._required);
+        doColorChooser();
     };
 
     $cms.templates.formScreenInputTreeList = function formScreenInputTreeList(params, container) {
@@ -784,7 +784,7 @@
             attachmentsUiInputRow = $cms.dom.$('#field-' + id +'-attachments-ui-input');
 
         if (params.class.includes('wysiwyg')) {
-            if (window.wysiwyg_on && wysiwyg_on()) {
+            if (window.wysiwyg_on && wysiwygOn()) {
                 postEl.readOnly = true; // Stop typing while it loads
 
                 window.setTimeout(function () {
@@ -1145,7 +1145,7 @@
 
     $cms.templates.formScreenInputText = function formScreenInputText(params) {
         if (params.required.includes('wysiwyg')) {
-            if ((window.wysiwyg_on) && (wysiwyg_on())) {
+            if ((window.wysiwyg_on) && (wysiwygOn())) {
                 document.getElementById(params.name).readOnly = true;
             }
         }

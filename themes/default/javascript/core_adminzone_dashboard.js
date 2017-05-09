@@ -94,7 +94,7 @@
         formSubmitHeadless: function (e, btn) {
             var params = this.params;
 
-            if (!ajax_form_submit__admin__headless(btn.form, params.blockName, params.map)) {
+            if (!ajaxFormSubmitAdminHeadless(btn.form, params.blockName, params.map)) {
                 e.preventDefault();
             }
         }
@@ -128,7 +128,7 @@
             var blockName = $cms.filter.nl(this.params.blockName),
                 map = $cms.filter.nl(this.params.map);
 
-            if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
+            if (!ajaxFormSubmitAdminHeadless(this.formEl, blockName, map)) {
                 e.preventDefault();
             }
         }
@@ -154,7 +154,7 @@
             var blockName = $cms.filter.nl(this.params.blockName),
                 map = $cms.filter.nl(this.params.map);
 
-            if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
+            if (!ajaxFormSubmitAdminHeadless(this.formEl, blockName, map)) {
                 e.preventDefault();
             }
         },
@@ -265,7 +265,7 @@
         });
     };
 
-    function ajax_form_submit__admin__headless(form, block_name, map) {
+    function ajaxFormSubmitAdminHeadless(form, block_name, map) {
         var post = '';
         if (block_name !== undefined) {
             if (map === undefined) {

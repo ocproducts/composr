@@ -1,5 +1,6 @@
-'use strict';
 (function ($cms) {
+    'use strict';
+
     if (window.slideshow_timer === undefined) {
         window.slideshow_timer = null;
         window.slideshow_slides = {};

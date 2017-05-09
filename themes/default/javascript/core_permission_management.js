@@ -32,11 +32,11 @@
         },
 
         setPermissions: function () {
-            set_permissions(document.getElementById('tree_list'));
+            setPermissions(document.getElementById('tree_list'));
         },
 
         updatePermissionBox: function (e, target) {
-            update_permission_box(target);
+            updatePermissionBox(target);
         }
     });
 
@@ -71,7 +71,7 @@
     };
 
     // Selection changed, so update box
-    function update_permission_box(setting) {
+    function updatePermissionBox(setting) {
         if (!window.sitemap) {
             return;
         }
@@ -197,13 +197,13 @@
                                 $cms.dom.html(new_cell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilege_title) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
                                 $cms.dom.on(new_cell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
                                     if (select.value === '-1') {
-                                        show_permission_setting(select, e);
+                                        showPermissionSetting(select, e);
                                     }
                                 });
 
                                 element = document.getElementById('access_' + group + '_privilege_' + privilege);
 
-                                setup_privilege_override_selector('access_' + group, '-1', privilege, privilege_title, false);
+                                setupPrivilegeOverrideSelector('access_' + group, '-1', privilege, privilege_title, false);
                             }
                         }
                         if (element)
@@ -237,7 +237,7 @@
                 if (num_privilege_default == num_privilege) {
                     element = document.getElementById('access_' + group + '_presets');
                     element.selectedIndex = 1;
-                    cleanup_permission_list('access_' + group);
+                    cleanupPermissionList('access_' + group);
                     for (j = 0; j < known_privileges.length; j++) {
                         element = document.getElementById('access_' + group + '_privilege_' + known_privileges[j]);
                         if (window.sitemap === undefined) element.disabled = true;
@@ -270,10 +270,10 @@
             for (k = 0; k < known_groups.length; k++) {
                 group = known_groups[k];
                 var list = document.getElementById('access_' + group + '_presets');
-                if (!copy_permission_presets('access_' + group, '0', true)) list.selectedIndex = list.options.length - 4;
-                else if (!copy_permission_presets('access_' + group, '1', true)) list.selectedIndex = list.options.length - 3;
-                else if (!copy_permission_presets('access_' + group, '2', true)) list.selectedIndex = list.options.length - 2;
-                else if (!copy_permission_presets('access_' + group, '3', true)) list.selectedIndex = list.options.length - 1;
+                if (!copyPermissionPresets('access_' + group, '0', true)) list.selectedIndex = list.options.length - 4;
+                else if (!copyPermissionPresets('access_' + group, '1', true)) list.selectedIndex = list.options.length - 3;
+                else if (!copyPermissionPresets('access_' + group, '2', true)) list.selectedIndex = list.options.length - 2;
+                else if (!copyPermissionPresets('access_' + group, '3', true)) list.selectedIndex = list.options.length - 1;
             }
         }
 
@@ -290,7 +290,7 @@
     }
 
     // Saving
-    function set_permissions(setting) {
+    function setPermissions(setting) {
         if (!setting.value) {
             return;
         }
@@ -352,7 +352,7 @@
                 }
 
                 // Update UI indicators
-                $cms.dom.html(document.getElementById('tree_listextra_' + id), permissions_img_func_1(node, id) + permissions_img_func_2(node, id));
+                $cms.dom.html(document.getElementById('tree_listextra_' + id), permissionsImgFunc1(node, id) + permissionsImgFunc2(node, id));
             }
 
             if (set_request_b != '') set_request = set_request + '&map_' + i + '=' + encodeURIComponent(serverid) + set_request_b;

@@ -1,6 +1,6 @@
 window.ace_editors || (window.ace_editors = {});
 
-function ace_composr_loader(textarea_id, programming_language, auto_refresh) {
+function aceComposrLoader(textarea_id, programming_language, auto_refresh) {
     if (typeof auto_refresh == 'undefined') auto_refresh = true;
 
     // Create Ace editor div from textarea
@@ -34,7 +34,7 @@ function ace_composr_loader(textarea_id, programming_language, auto_refresh) {
     editor_session.setValue(val);
     if (auto_refresh) {
         editor_session.on('change', function () {
-            editarea_reverse_refresh(textarea_id);
+            editareaReverseRefresh(textarea_id);
         });
     }
 }
@@ -43,7 +43,7 @@ function editarea_is_loaded(textarea_id) {
     return (typeof window.ace_editors[textarea_id] != 'undefined');
 }
 
-function editarea_do_search(textarea_id, regexp) {
+function editareaDoSearch(textarea_id, regexp) {
     var editor = window.ace_editors[textarea_id];
 
     editor.find(regexp, {
@@ -57,14 +57,14 @@ function editarea_do_search(textarea_id, regexp) {
     } catch (e) {}
 }
 
-function editarea_reverse_refresh(textarea_id) {
+function editareaReverseRefresh(textarea_id) {
     var editor = window.ace_editors[textarea_id];
     if (typeof editor == 'undefined') return;
 
     document.getElementById(textarea_id).value = editor.getValue();
 }
 
-function editarea_refresh(textarea_id) {
+function editareaRefresh(textarea_id) {
     var editor = window.ace_editors[textarea_id];
     if (editor == null) {
         return;
@@ -73,13 +73,7 @@ function editarea_refresh(textarea_id) {
     editor.setValue(document.getElementById(textarea_id).value, -1);
 }
 
-function editarea_set_value(textarea_id, value) {
-    var editor = window.ace_editors[textarea_id];
-
-    editor.setValue(value, -1);
-}
-
-function editarea_get_value(textarea_id) {
+function editareaGetValue(textarea_id) {
     var editor = window.ace_editors[textarea_id];
 
     return editor.getValue();

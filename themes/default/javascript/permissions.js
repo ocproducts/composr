@@ -1,6 +1,6 @@
 "use strict";
 
-function show_permission_setting(ob, event) {
+function showPermissionSetting(ob, event) {
     if (ob.disabled) { // already showing default in disabled dropdown
         return;
     }
@@ -39,7 +39,7 @@ function show_permission_setting(ob, event) {
     ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.full_setting + ']';
 }
 
-function cleanup_permission_list(name) {
+function cleanupPermissionList(name) {
     // We always try and cleanup the 'custom' option if we're choosing something else (because it's confusing for it to stay there)
     var custom_option = document.getElementById(name + '_custom_option');
     if (custom_option) {
@@ -47,8 +47,13 @@ function cleanup_permission_list(name) {
     }
 }
 
-function copy_permission_presets(name, value, just_track) {
-    if (value == '') return false;
+function copyPermissionPresets(name, value, just_track) {
+    name = strVal(name);
+    value = strVal(value);
+
+    if (value === '') {
+        return false;
+    }
 
     var made_change = false;
 
@@ -64,11 +69,15 @@ function copy_permission_presets(name, value, just_track) {
         node = window.sitemap.getElementByIdHack(document.getElementById('tree_list').value.split(',')[0]);
     }
 
-    if (value != '-1') {
+    if (value !== '-1') {
         for (i = 0; i < elements.length; i++) {
-            if (elements[i].name.indexOf('presets') != -1) continue;
+            if (elements[i].name.indexOf('presets') != -1) {
+                continue;
+            }
 
-            if (window.sitemap === undefined) elements[i].disabled = false;
+            if (window.sitemap === undefined) {
+                elements[i].disabled = false;
+            }
             test = -1;
             name2 = elements[i].name.substr(stub.length);
             x = name2.replace(/(high|mid|low)/, 'x');
@@ -79,7 +88,7 @@ function copy_permission_presets(name, value, just_track) {
                     break;
                 }
             }
-            if ((test != -1) || ((node) && (node.getAttribute('serverid') != '_root'))) {
+            if ((test !== -1) || ((node) && (node.getAttribute('serverid') !== '_root'))) {
                 if (elements[i].selectedIndex != test + 1) {
                     made_change = true;
                     if (elements[i].selectedIndex != test + 1) {
@@ -91,7 +100,9 @@ function copy_permission_presets(name, value, just_track) {
         }
     } else {
         for (i = 0; i < elements.length; i++) {
-            if (elements[i].name.indexOf('presets') != -1) continue;
+            if (elements[i].name.indexOf('presets') !== -1) {
+                continue;
+            }
 
             if (window.sitemap === undefined) elements[i].disabled = true;
             // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
@@ -99,14 +110,14 @@ function copy_permission_presets(name, value, just_track) {
         }
     }
 
-    if ((!just_track) && (elements.length == 2) && (made_change)) {
+    if ((!just_track) && (elements.length === 2) && (made_change)) {
         $cms.ui.alert('{!permissions:JUST_PRESETS;^}');
     }
 
     return made_change;
 }
 
-function setup_privilege_override_selector(name, default_access, privilege, title, all_global) {
+function setupPrivilegeOverrideSelector(name, default_access, privilege, title, all_global) {
     eval('window.' + name + '_privilege_' + privilege + '=' + default_access);
     var select_element = document.getElementById(name + '_privilege_' + privilege);
     if (all_global) {
@@ -121,64 +132,64 @@ function setup_privilege_override_selector(name, default_access, privilege, titl
 // =========================================
 
 
-function permissions_img_func_1(node, id) {
-    var temp = permissions_img_func_1_b(node, id);
+function permissionsImgFunc1(node, id) {
+    var temp = permissionsImgFunc1b(node, id);
     var url = temp[0];
     var title = temp[1];
     return '<img class="vertical_alignment perm_icon" src="' + url + '" alt="' + title + '" title="' + title + '" />&nbsp;';
+
+
+    function permissionsImgFunc1b(node, id) {
+        var group = document.getElementById('group').value;
+
+        if (id === undefined) {
+            id = node.getAttribute('id');
+        }
+
+        if (window.attributes_full === undefined) {
+            window.attributes_full = [];
+        }
+
+        if (window.attributes_full[id] === undefined) {
+            window.attributes_full[id] = node.attributes;
+        }
+
+        if (((window.attributes_full[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
+            ((window.attributes_full[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
+            ((window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group] == '1')))
+            return [$cms.img('{$IMG;,permlevels/3}'), '{!PINTERFACE_LEVEL_3;^}'];
+        else if (((window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
+            ((window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
+            ((window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1')))
+            return [$cms.img('{$IMG;,permlevels/2}'), '{!PINTERFACE_LEVEL_2;^}'];
+        else if (((window.attributes_full[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
+            ((window.attributes_full[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
+            ((window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group] == '1')))
+            return [$cms.img('{$IMG;,permlevels/1}'), '{!PINTERFACE_LEVEL_1;^}'];
+        else if (window.attributes_full[id]['inherits_something'])
+            return [$cms.img('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
+        else if (window.attributes_full[id]['no_privileges']) return [$cms.img('{$IMG;,blank}'), ''];
+
+        return [$cms.img('{$IMG;,permlevels/0}'), '{!permissions:PINTERFACE_LEVEL_0;^}'];
+    }
 }
 
-function permissions_img_func_1_b(node, id) {
-    var group = document.getElementById('group').value;
-
-    if (id === undefined) {
-        id = node.getAttribute('id');
-    }
-
-    if (window.attributes_full === undefined) {
-        window.attributes_full = [];
-    }
-
-    if (window.attributes_full[id] === undefined) {
-        window.attributes_full[id] = node.attributes;
-    }
-
-    if (((window.attributes_full[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
-        ((window.attributes_full[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
-        ((window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group] == '1')))
-        return [$cms.img('{$IMG;,permlevels/3}'), '{!PINTERFACE_LEVEL_3;^}'];
-    else if (((window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
-        ((window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
-        ((window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1')))
-        return [$cms.img('{$IMG;,permlevels/2}'), '{!PINTERFACE_LEVEL_2;^}'];
-    else if (((window.attributes_full[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
-        ((window.attributes_full[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
-        ((window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group] == '1')))
-        return [$cms.img('{$IMG;,permlevels/1}'), '{!PINTERFACE_LEVEL_1;^}'];
-    else if (window.attributes_full[id]['inherits_something'])
-        return [$cms.img('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
-    else if (window.attributes_full[id]['no_privileges']) return [$cms.img('{$IMG;,blank}'), ''];
-
-    return [$cms.img('{$IMG;,permlevels/0}'), '{!permissions:PINTERFACE_LEVEL_0;^}'];
-}
-
-function permissions_img_func_2(node, id) {
-    var temp = permissions_img_func_2_b(node, id);
+function permissionsImgFunc2(node, id) {
+    var temp = permissionsImgFunc2b(node, id);
     var url = temp[0];
     var title = temp[1];
     return '<img class="vertical_alignment" src="' + url + '" alt="' + title + '" title="' + title + '" />';
-}
 
-function permissions_img_func_2_b(node, id) {
-    if (id === undefined) id = node.getAttribute('id');
+    function permissionsImgFunc2b(node, id) {
+        if (id === undefined) id = node.getAttribute('id');
 
-    var group = document.getElementById('group').value;
+        var group = document.getElementById('group').value;
 
-    if (node.getAttribute('g_view_' + group) == 'true') {
-        return [$cms.img('{$IMG;,led_on}'), '{!permissions:PINTERFACE_VIEW;^}'];
+        if (node.getAttribute('g_view_' + group) == 'true') {
+            return [$cms.img('{$IMG;,led_on}'), '{!permissions:PINTERFACE_VIEW;^}'];
+        }
+
+        return [$cms.img('{$IMG;,led_off}'), '{!permissions:PINTERFACE_VIEW_NO;^}'];
     }
-
-    return [$cms.img('{$IMG;,led_off}'), '{!permissions:PINTERFACE_VIEW_NO;^}'];
 }
-
 
