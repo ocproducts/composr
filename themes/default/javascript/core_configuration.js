@@ -2,6 +2,11 @@
     'use strict';
 
     $cms.views.XmlConfigScreen = XmlConfigScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function XmlConfigScreen() {
         XmlConfigScreen.base(this, 'constructor', arguments);
 

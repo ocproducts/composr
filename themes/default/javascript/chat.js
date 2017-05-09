@@ -2,7 +2,11 @@
     'use strict';
 
     $cms.views.ChatRoomScreen = ChatRoomScreen;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function ChatRoomScreen(params) {
         ChatRoomScreen.base(this, 'constructor', arguments);
         this.chatroomId = strVal(params.chatroomId);
@@ -12,7 +16,7 @@
         });
     }
 
-    $cms.inherits(ChatRoomScreen, $cms.View, {
+    $cms.inherits(ChatRoomScreen, $cms.View, /**@lends ChatRoomScreen#*/{
         events: function () {
             return {
                 'click .js-btn-toggle-chat-comcode-panel': 'toggleChatPanel',

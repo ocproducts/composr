@@ -2,7 +2,11 @@
     'use strict';
 
     $cms.views.CommentsPostingForm = CommentsPostingForm;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function CommentsPostingForm(params) {
         CommentsPostingForm.base(this, 'constructor', arguments);
 
@@ -31,7 +35,7 @@
         }
     }
 
-    $cms.inherits(CommentsPostingForm, $cms.View, {
+    $cms.inherits(CommentsPostingForm, $cms.View, /**@lends CommentsPostingForm#*/{
         events: function () {
             return {
                 'click .js-btn-full-editor': 'moveToFullEditor',

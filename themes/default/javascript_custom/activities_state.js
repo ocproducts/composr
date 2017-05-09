@@ -5,7 +5,11 @@
      */
 
     $cms.views.BlockMainActivitiesState = BlockMainActivitiesState;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainActivitiesState(params) {
         BlockMainActivitiesState.base(this, 'constructor', arguments);
 
@@ -15,7 +19,7 @@
         this.notificationEl = this.$('.js-el-activities-update-notification');
     }
 
-    $cms.inherits(BlockMainActivitiesState, $cms.View, {
+    $cms.inherits(BlockMainActivitiesState, $cms.View, /**@lends BlockMainActivitiesState#*/{
         events: function () {
             return {
                 'focus textarea.js-textarea-activity-status': 'textareaFocus',

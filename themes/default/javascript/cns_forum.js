@@ -1,13 +1,17 @@
 (function ($cms) {
     'use strict';
 
-    /** @class */
     $cms.views.CnsForumTopicWrapper = CnsForumTopicWrapper;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function CnsForumTopicWrapper() {
         CnsForumTopicWrapper.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(CnsForumTopicWrapper, $cms.View, {
+    $cms.inherits(CnsForumTopicWrapper, $cms.View, /**@lends CnsForumTopicWrapper#*/{
         events: function () {
             return {
                 'click .js-click-mark-all-topics': 'markAllTopics',

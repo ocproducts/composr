@@ -2,7 +2,11 @@
     'use strict';
 
     $cms.views.NotificationButtons = NotificationButtons;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function NotificationButtons(params) {
         NotificationButtons.base(this, 'constructor', arguments);
 
@@ -10,7 +14,7 @@
         this.enableFormEl = this.$('#nenable_' + params.notificationId);
     }
 
-    $cms.inherits(NotificationButtons, $cms.View, {
+    $cms.inherits(NotificationButtons, $cms.View, /**@lends NotificationButtons#*/{
         events: function () {
             return {
                 'submit .js-submit-show-disable-form': 'showDisableForm',
@@ -26,7 +30,6 @@
             $cms.dom.show(this.enableFormEl);
         }
     });
-
 
     $cms.templates.notificationPoller = function notificationPoller(params) {
         notificationPollerInit(params.timestamp);
@@ -195,7 +198,6 @@
 /*
  Poll for notifications (and unread PTs)
  */
-
 
 window.notifications_already_presented || (window.notifications_already_presented = {});
 (window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}');

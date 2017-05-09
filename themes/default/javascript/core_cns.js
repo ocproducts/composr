@@ -42,7 +42,7 @@
         }
     }
 
-    $cms.inherits(CnsMemberProfileScreen, $cms.View, /**@lends $cms.views.CnsMemberProfileScreen#*/ {
+    $cms.inherits(CnsMemberProfileScreen, $cms.View, /**@lends CnsMemberProfileScreen#*/ {
         events: function () {
             return {
                 'click .js-click-select-tab-g': 'onClickSelectTab'
@@ -157,7 +157,7 @@
 
         function crf() {
             var preset = $cms.form.radioValue(form.elements['preset']);
-            if (preset == '') {
+            if (preset === '') {
                 form.elements['fields_to_use'].disabled = false;
                 form.elements['order_by'].disabled = false;
                 form.elements['usergroups'].disabled = false;

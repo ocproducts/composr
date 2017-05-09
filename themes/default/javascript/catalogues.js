@@ -2,6 +2,11 @@
     'use strict';
 
     $cms.views.CatalogueAddingScreen = CatalogueAddingScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function CatalogueAddingScreen(params) {
         CatalogueAddingScreen.base(this, 'constructor', arguments);
 
@@ -12,7 +17,7 @@
         catalogueFieldChangeWatching();
     }
 
-    $cms.inherits(CatalogueAddingScreen, $cms.View, {
+    $cms.inherits(CatalogueAddingScreen, $cms.View, /**@lends CatalogueAddingScreen#*/{
         events: function () {
             return {
                 'submit .js-form-catalogue-add': 'submit'
@@ -26,13 +31,18 @@
     });
 
     $cms.views.CatalogueEditingScreen = CatalogueEditingScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function CatalogueEditingScreen() {
         CatalogueEditingScreen.base(this, 'constructor', arguments);
 
         catalogueFieldChangeWatching();
     }
 
-    $cms.inherits(CatalogueEditingScreen, $cms.View, {
+    $cms.inherits(CatalogueEditingScreen, $cms.View, /**@lends CatalogueEditingScreen#*/{
         events: function () {
             return {
                 'submit .js-form-catalogue-edit': 'submit'

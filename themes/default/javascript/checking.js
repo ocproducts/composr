@@ -5,7 +5,7 @@
     /**
      * @memberof $cms.form
      * @param radios
-     * @returns {*}
+     * @returns {string}
      */
     $cms.form.radioValue = function radioValue(radios) {
         for (var i = 0; i < radios.length; i++) {

@@ -2,6 +2,11 @@
     'use strict';
 
     $cms.views.Menu = Menu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function Menu(params) {
         Menu.base(this, 'constructor', arguments);
 
@@ -22,6 +27,11 @@
     // MENU_dropdown.tpl
     // - MENU_BRANCH_dropdown.tpl
     $cms.views.DropdownMenu = DropdownMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function DropdownMenu(params) {
         DropdownMenu.base(this, 'constructor', arguments);
     }
@@ -116,6 +126,11 @@
     });
 
     $cms.views.PopupMenu = PopupMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function PopupMenu(params) {
         PopupMenu.base(this, 'constructor', arguments);
     }
@@ -137,6 +152,11 @@
     });
 
     $cms.views.PopupMenuBranch = PopupMenuBranch;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function PopupMenuBranch() {
         PopupMenuBranch.base(this, 'constructor', arguments);
 
@@ -164,6 +184,11 @@
     });
 
     $cms.views.TreeMenu = TreeMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function TreeMenu() {
         TreeMenu.base(this, 'constructor', arguments);
     }
@@ -186,6 +211,11 @@
     // MENU_mobile.tpl
     // - MENU_BRANCH_mobile.tpl
     $cms.views.MobileMenu = MobileMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function MobileMenu() {
         MobileMenu.base(this, 'constructor', arguments);
         this.menuContentEl = this.$('.js-el-menu-content');
@@ -236,6 +266,11 @@
     };
 
     $cms.views.SelectMenu = SelectMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function SelectMenu() {
         SelectMenu.base(this, 'constructor', arguments);
     }

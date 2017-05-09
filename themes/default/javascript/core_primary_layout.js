@@ -2,13 +2,17 @@
     'use strict';
 
     $cms.views.GlobalHelperPanel = GlobalHelperPanel;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function GlobalHelperPanel(params) {
         GlobalHelperPanel.base(this, 'constructor', arguments);
         this.contentsEl = this.$('.js-helper-panel-contents');
     }
 
-    $cms.inherits(GlobalHelperPanel, $cms.View, {
+    $cms.inherits(GlobalHelperPanel, $cms.View, /**@lends GlobalHelperPanel#*/{
         events: function () {
             return {
                 'click .js-click-toggle-helper-panel': 'toggleHelperPanel'

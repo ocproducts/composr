@@ -2,11 +2,16 @@
     'use strict';
 
     $cms.views.BlockMainSearch = BlockMainSearch;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainSearch (params) {
         BlockMainSearch.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(BlockMainSearch, $cms.View, {
+    $cms.inherits(BlockMainSearch, $cms.View, /**@lends BlockMainSearch#*/{
         events: function () {
             return {
                 'submit form.js-form-submit-main-search': 'submitMainSearch',
@@ -34,6 +39,11 @@
 
     $cms.views.SearchFormScreen = SearchFormScreen;
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function SearchFormScreen() {
         SearchFormScreen.base(this, 'constructor', arguments);
 

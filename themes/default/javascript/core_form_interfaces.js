@@ -5,6 +5,11 @@
     // POSTING_FORM.tpl
     // - POSTING_FIELD.tpl
     $cms.views.PostingForm = PostingForm;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function PostingForm(params) {
         PostingForm.base(this, 'constructor', arguments);
 
@@ -33,6 +38,11 @@
     });
 
     $cms.views.FromScreenInputUpload = FromScreenInputUpload;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function FromScreenInputUpload(params) {
         FromScreenInputUpload.base(this, 'constructor', arguments);
 
@@ -52,6 +62,11 @@
     $cms.inherits(FromScreenInputUpload, $cms.View);
 
     $cms.views.FormScreenInputPermission = FormScreenInputPermission;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function FormScreenInputPermission(params) {
         FormScreenInputPermission.base(this, 'constructor', arguments);
 
@@ -138,6 +153,11 @@
     });
 
     $cms.views.FormScreenInputPermissionOverride = FormScreenInputPermissionOverride;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function FormScreenInputPermissionOverride(params) {
         FormScreenInputPermissionOverride.base(this, 'constructor', arguments);
 
@@ -163,7 +183,7 @@
         }
     }
 
-    $cms.inherits(FormScreenInputPermissionOverride, $cms.View, {
+    $cms.inherits(FormScreenInputPermissionOverride, $cms.View, /**@lends FormScreenInputPermissionOverride#*/{
         events: function () {
             return {
                 'click .js-click-perms-overridden': 'permissionsOverridden',
@@ -184,6 +204,11 @@
     });
 
     $cms.views.FormStandardEnd = FormStandardEnd;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function FormStandardEnd(params) {
         FormStandardEnd.base(this, 'constructor', arguments);
 
@@ -212,7 +237,7 @@
         }
     }
 
-    $cms.inherits(FormStandardEnd, $cms.View, {
+    $cms.inherits(FormStandardEnd, $cms.View, /**@lends FormStandardEnd#*/{
         events: function () {
             return {
                 'click .js-click-do-form-preview': 'doFormPreview',

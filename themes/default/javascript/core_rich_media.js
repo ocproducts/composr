@@ -4,7 +4,11 @@
     $cms.views.Attachment = Attachment;
     $cms.views.Carousel = Carousel;
     $cms.views.ComcodeMediaSet = ComcodeMediaSet;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function Attachment(params) {
         Attachment.base(this, 'constructor', arguments);
 
@@ -17,7 +21,7 @@
         }
     }
 
-    $cms.inherits(Attachment, $cms.View, {
+    $cms.inherits(Attachment, $cms.View, /**@lends Attachment#*/{
         events: function () {
             return {
                 'change .js-inp-file-attachment': 'setAttachment'
@@ -28,7 +32,11 @@
             setAttachment('post', this.params.i, '');
         }
     });
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function Carousel(params) {
         Carousel.base(this, 'constructor', arguments);
 
@@ -126,7 +134,11 @@
             }
         }
     });
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function ComcodeMediaSet(params) {
         ComcodeMediaSet.base(this, 'constructor', arguments);
 
@@ -135,7 +147,7 @@
         }
     }
 
-    $cms.inherits(ComcodeMediaSet, $cms.View, {
+    $cms.inherits(ComcodeMediaSet, $cms.View, /**@lends ComcodeMediaSet#*/{
         setup: function (params) {
             var imgs = window['imgs_' + params.rand] = [],
                 imgsThumbs = window['imgs_thumbs_' + params.rand] = [],
@@ -297,12 +309,16 @@
             }
         }
     });
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function AttachmentsBrowser() {
         AttachmentsBrowser.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(AttachmentsBrowser, $cms.View, {
+    $cms.inherits(AttachmentsBrowser, $cms.View, /**@lends AttachmentsBrowser#*/{
         events: function () {
             return {
                 'click .js-click-do-attachment-and-close': 'doAttachmentAndClose'

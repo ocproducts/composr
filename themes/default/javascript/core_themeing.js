@@ -21,13 +21,21 @@
 
     $cms.views.ThemeManageScreen = ThemeManageScreen;
     $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function ThemeManageScreen() {
         ThemeManageScreen.base(this, 'constructor', arguments);
     }
 
     $cms.inherits(ThemeManageScreen, $cms.View);
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function ThemeTemplateEditorTab(params) {
         ThemeTemplateEditorTab.base(this, 'constructor', arguments);
 
@@ -48,7 +56,7 @@
         }
     }
 
-    $cms.inherits(ThemeTemplateEditorTab, $cms.View, {
+    $cms.inherits(ThemeTemplateEditorTab, $cms.View, /**@lends ThemeTemplateEditorTab#*/{
         events: function () {
             return {
                 'keydown .js-ta-tpl-editor': 'editorKeyPress',

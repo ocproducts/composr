@@ -1,10 +1,15 @@
 (function ($cms) {
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function PollBox() {
         PollBox.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(PollBox, $cms.View, {
+    $cms.inherits(PollBox, $cms.View, /**@lends PollBox#*/{
         events: function () {
             return {
                 'click .js-click-confirm-forfeit': 'confirmForfeit'

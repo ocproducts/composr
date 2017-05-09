@@ -2,11 +2,16 @@
     'use strict';
 
     $cms.views.ZoneEditorScreen = ZoneEditorScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function ZoneEditorScreen(params) {
         ZoneEditorScreen.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(ZoneEditorScreen, $cms.View, {
+    $cms.inherits(ZoneEditorScreen, $cms.View, /**@lends ZoneEditorScreen#*/{
         events: function () {
             return {
                 'submit .js-form-ze-save': 'submit',
@@ -48,6 +53,11 @@
     });
 
     $cms.views.ZoneEditorPanel = ZoneEditorPanel;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function ZoneEditorPanel(params) {
         ZoneEditorPanel.base(this, 'constructor', arguments);
 
@@ -64,7 +74,7 @@
         }
     }
 
-    $cms.inherits(ZoneEditorPanel, $cms.View, {
+    $cms.inherits(ZoneEditorPanel, $cms.View, /**@lends ZoneEditorPanel#*/{
         events: function () {
             return {
                 'click .js-click-select-tab': 'selectTab',

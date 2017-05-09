@@ -1,6 +1,12 @@
 (function ($cms) {
     'use strict';
 
+    $cms.views.AddonInstallConfirmScreen = AddonInstallConfirmScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function AddonInstallConfirmScreen() {
         AddonInstallConfirmScreen.base(this, 'constructor', arguments);
     }
@@ -10,11 +16,17 @@
     // Templates:
     // ADDON_SCREEN.tpl
     // - ADDON_SCREEN_ADDON.tpl
+    $cms.views.AddonScreen = AddonScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function AddonScreen() {
         AddonScreen.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(AddonScreen, $cms.View, {
+    $cms.inherits(AddonScreen, $cms.View, /**@lends AddonScreen#*/{
         events: function () {
             return {
                 'click .js-click-check-uninstall-all': 'checkUninstallAll',
@@ -37,7 +49,4 @@
             }
         }
     });
-
-    $cms.views.AddonInstallConfirmScreen = AddonInstallConfirmScreen;
-    $cms.views.AddonScreen = AddonScreen;
 }(window.$cms));

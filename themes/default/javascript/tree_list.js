@@ -28,8 +28,11 @@
     };
 
     $cms.views.TreeList = TreeList;
-
-    /** @class */
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function TreeList(params) {
         TreeList.base(this, 'constructor', arguments);
 

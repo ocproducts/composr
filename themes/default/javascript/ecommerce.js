@@ -2,12 +2,17 @@
     'use strict';
 
     $cms.views.PurchaseWizardScreen = PurchaseWizardScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function PurchaseWizardScreen() {
         PurchaseWizardScreen.base(this, 'constructor', arguments);
         this.formEl = this.$('form.js-form-primary');
     }
 
-    $cms.inherits(PurchaseWizardScreen, $cms.View, {
+    $cms.inherits(PurchaseWizardScreen, $cms.View, /**@lends PurchaseWizardScreen#*/{
         formEl: null,
         events: function () {
             return {

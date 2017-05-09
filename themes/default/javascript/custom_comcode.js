@@ -6,7 +6,7 @@
     };
 
     $cms.functions.moduleAdminCustomComcode = function moduleAdminCustomComcode() {
-        var update_func = function () {
+        var updateFunc = function () {
             var e = document.getElementById('example');
             e.value = '[' + tag.value;
             var i = 0, param;
@@ -25,12 +25,12 @@
         do {
             param = document.getElementById('parameters_' + i);
             if (param) {
-                param.addEventListener('blur', update_func);
+                param.addEventListener('blur', updateFunc);
             }
             i++;
         } while (param != null);
         tag.addEventListener('blur', function () {
-            update_func();
+            updateFunc();
             var title = document.getElementById('title');
             if (title.value == '') {
                 title.value = tag.value.substr(0, 1).toUpperCase() + tag.value.substring(1, tag.value.length).replace(/\_/g, ' ');

@@ -8,6 +8,11 @@
     }
 
     $cms.views.BlockMainImageFader = BlockMainImageFader;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainImageFader(params) {
         BlockMainImageFader.base(this, 'constructor', arguments);
 
@@ -39,7 +44,7 @@
         }
     }
 
-    $cms.inherits(BlockMainImageFader, $cms.View, {
+    $cms.inherits(BlockMainImageFader, $cms.View, /**@lends BlockMainImageFader#*/{
         initializeTitle: function (data, v, k) {
             data['title' + k] = v;
             if (k == 0) {
@@ -94,6 +99,11 @@
     });
 
     $cms.views.GalleryNav = GalleryNav;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function GalleryNav(params) {
         GalleryNav.base(this, 'constructor', arguments);
 
@@ -105,7 +115,7 @@
         }
     }
 
-    $cms.inherits(GalleryNav, $cms.View, {
+    $cms.inherits(GalleryNav, $cms.View, /**@lends GalleryNav#*/{
         initializeSlideshow: function () {
             resetSlideshowCountdown();
             startSlideshowTimer();

@@ -2,7 +2,11 @@
     'use strict';
 
     $cms.views.PermissionsTreeEditorScreen = PermissionsTreeEditorScreen;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function PermissionsTreeEditorScreen(params) {
         PermissionsTreeEditorScreen.base(this, 'constructor', arguments);
 
@@ -14,7 +18,7 @@
         });
     }
 
-    $cms.inherits(PermissionsTreeEditorScreen, $cms.View, {
+    $cms.inherits(PermissionsTreeEditorScreen, $cms.View, /**@lends PermissionsTreeEditorScreen#*/{
         events: function () {
             return {
                 'click .js-click-update-group': 'updateGroupDisplayer',

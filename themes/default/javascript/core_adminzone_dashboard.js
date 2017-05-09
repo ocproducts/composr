@@ -9,6 +9,11 @@
 
     var $SCRIPT_comcode_convert = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}';
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainStaffChecklistCustomTask() {
         BlockMainStaffChecklistCustomTask.base(this, 'constructor', arguments);
 
@@ -16,7 +21,7 @@
         this.imgChecklistStatus = this.$('.js-img-checklist-status');
     }
 
-    $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, {
+    $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, /**@lends BlockMainStaffChecklistCustomTask#*/{
         events: function () {
             return {
                 'mouseover': 'mouseover',
@@ -71,11 +76,16 @@
         }
     });
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainStaffLinks() {
         BlockMainStaffLinks.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(BlockMainStaffLinks, $cms.View, {
+    $cms.inherits(BlockMainStaffLinks, $cms.View, /**@lends BlockMainStaffLinks#*/{
         events: function () {
             return {
                 'click .js-click-staff-block-flip': 'staffBlockFlip',
@@ -100,6 +110,11 @@
         }
     });
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainStaffWebsiteMonitoring() {
         BlockMainStaffWebsiteMonitoring.base(this, 'constructor', arguments);
 
@@ -109,7 +124,7 @@
         this.formEl = this.$('.js-form-site-watchlist');
     }
 
-    $cms.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, {
+    $cms.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, /**@lends BlockMainStaffWebsiteMonitoring#*/{
         events: function () {
             return {
                 'click .js-click-staff-block-flip': 'staffBlockFlip',
@@ -134,12 +149,17 @@
         }
     });
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainNotes() {
         BlockMainNotes.base(this, 'constructor', arguments);
         this.formEl = this.$('.js-form-block-main-notes');
     }
 
-    $cms.inherits(BlockMainNotes, $cms.View, {
+    $cms.inherits(BlockMainNotes, $cms.View, /**@lends BlockMainNotes#*/{
         events: function () {
             return {
                 'click .js-click-headless-submit': 'headlessSubmit',
