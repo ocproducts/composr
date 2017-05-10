@@ -537,7 +537,9 @@ function ecv($lang, $escaped, $type, $name, $param)
             case 'MAKE_MOBILE':
                 $value = $param[count($param) - 2]->evaluate();
                 if (is_mobile()) {
-                    $value = preg_replace('#<(/?)(table|tbody|thead|tr|th|td)(\s[^<>]*)?>#', '<$1div$3>', $value);
+                    $value = preg_replace('#<(table|tbody|thead|tr|th|td)(\s[^<>]*)?>#', '<div$2>', $value);
+                    $value = preg_replace('#</(table|tbody|thead|tr|th|td)>#', '</div>', $value);
+                    $value = '<div class="make_mobile">' . $value . '</div>';
                 }
                 break;
 
