@@ -188,7 +188,7 @@ class Module_admin_email_log
                 $to_email = array($to_email);
             }
             if ((is_null($to_email)) || (!array_key_exists(0, $to_email))) {
-                $to_email[0] = get_option('staff_address');
+                $to_email = array(get_option('staff_address'));
             }
             $to_link = 'mailto:' . $to_email[0] . '?subject=' . rawurlencode($row['m_subject']);
 
@@ -262,14 +262,11 @@ class Module_admin_email_log
         $fields['FROM_NAME'] = $from_name;
 
         $to_email = unserialize($row['m_to_email']);
-        if ($to_email === null) {
-            $to_email = array();
-        }
         if (is_string($to_email)) {
             $to_email = array($to_email);
         }
-        if (!array_key_exists(0, $to_email)) {
-            $to_email[0] = get_option('staff_address');
+        if ((is_null($to_email)) || (!array_key_exists(0, $to_email))) {
+            $to_email = array(get_option('staff_address'));
         }
         $to_emails = new Tempcode();
         foreach ($to_email as $i => $_to_email) {
@@ -343,14 +340,11 @@ class Module_admin_email_log
         }
 
         $to_email = unserialize($row['m_to_email']);
-        if ($to_email === null) {
-            $to_email = array();
-        }
         if (is_string($to_email)) {
             $to_email = array($to_email);
         }
-        if (!array_key_exists(0, $to_email)) {
-            $to_email[0] = get_option('staff_address');
+        if ((is_null($to_email)) || (!array_key_exists(0, $to_email))) {
+            $to_email = array(get_option('staff_address'));
         }
 
         $to_name = unserialize($row['m_to_name']);
