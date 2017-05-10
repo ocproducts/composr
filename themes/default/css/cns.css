@@ -498,7 +498,7 @@ hr.cns_sig_barrier {
 	margin: 1em 0;
 	font-size: 0.85em;
 }
-.cns_topic_actions * {
+.cns_topic_actions div, .cns_topic_actions span, .cns_topic_actions label, .cns_topic_actions form {
 	vertical-align: middle;
 	display: inline-block;
 }
@@ -836,9 +836,11 @@ hr.cns_sig_barrier {
 .buttons__new_post_full {
 	background-image: url('{$IMG,icons/24x24/buttons/new_post_full}') !important;
 }
-.buttons__new_topic {
-	background-image: url('{$IMG,icons/24x24/buttons/new_topic}') !important;
-}
+{+START,IF,{$ADDON_INSTALLED,cns_forum}}
+	.buttons__new_topic {
+		background-image: url('{$IMG,icons/24x24/buttons/new_topic}') !important;
+	}
+{+END}
 .buttons__new_quote {
 	background-image: url('{$IMG,icons/24x24/buttons/new_quote}') !important;
 }
@@ -890,9 +892,11 @@ hr.cns_sig_barrier {
 	.buttons__new_post_full {
 		background-image: url('{$IMG,icons/48x48/buttons/new_post_full}') !important;
 	}
-	.buttons__new_topic {
-		background-image: url('{$IMG,icons/48x48/buttons/new_topic}') !important;
-	}
+	{+START,IF,{$ADDON_INSTALLED,cns_forum}}
+		.buttons__new_topic {
+			background-image: url('{$IMG,icons/48x48/buttons/new_topic}') !important;
+		}
+	{+END}
 	.buttons__new_quote {
 		background-image: url('{$IMG,icons/48x48/buttons/new_quote}') !important;
 	}

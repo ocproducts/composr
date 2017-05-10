@@ -2793,7 +2793,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	/*{+END}*//*{+END}*/
 }
 
-.comments_posting_form_end .proceed_button input, .comments_captcha {
+.comments_posting_form_end .proceed_button input:first-child, .comments_captcha {
 	margin-left: 180px !important;
 }
 

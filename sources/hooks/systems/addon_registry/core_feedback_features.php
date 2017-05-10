@@ -302,7 +302,7 @@ class Hook_addon_registry_core_feedback_features
             'POST_WARNING' => lorem_phrase(),
             'COMMENT_TEXT' => lorem_sentence_html(),
             'GET_EMAIL' => lorem_word_html(),
-            'EMAIL_OPTIONAL' => lorem_word_html(),
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
             'EM' => placeholder_emoticon_chooser(),
             'DISPLAY' => 'block',

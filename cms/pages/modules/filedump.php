@@ -1105,7 +1105,9 @@ class Module_filedump
         foreach ($files as $_file) {
             list($file, $place) = $_file;
 
-            $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+            $where = array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80));
+
+            $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', $where);
             if (((!is_null($owner)) && ($owner == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'))) {
                 $is_directory = is_dir(get_custom_file_base() . '/uploads/filedump' . $place . $file);
                 $path = get_custom_file_base() . '/uploads/filedump' . $place . $file;
@@ -1132,10 +1134,10 @@ class Module_filedump
 
                     case 'edit':
                         $description = $descriptions[$place . $file];
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', $where);
                         if (!is_null($test)) {
                             $map = lang_remap('description', $test, $description);
-                            $GLOBALS['SITE_DB']->query_update('filedump', $map);
+                            $GLOBALS['SITE_DB']->query_update('filedump', $map, $where);
                         } else {
                             $map = array(
                                 'name' => cms_mb_substr($file, 0, 80),
@@ -1148,7 +1150,7 @@ class Module_filedump
                         break;
 
                     case 'delete':
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', $where);
                         if (!is_null($test)) {
                             delete_lang($test);
                         }
@@ -1172,7 +1174,7 @@ class Module_filedump
                         rename($path, $path_target) or intelligent_write_error($path);
                         sync_file_move($path, $path_target);
 
-                        $test = $GLOBALS['SITE_DB']->query_update('filedump', array('path' => cms_mb_substr($target, 0, 80)), array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+                        $test = $GLOBALS['SITE_DB']->query_update('filedump', array('path' => cms_mb_substr($target, 0, 80)), $where, '', 1);
 
                         update_filedump_links($place . $file, $target . $file);
 
@@ -1187,7 +1189,7 @@ class Module_filedump
 
         if ($action == 'zip') {
             header('Content-Type: application/octet-stream' . '; authoritative=true;');
-            header('Content-Disposition: filename="filedump-selection.zip"');
+            header('Content-Disposition: attachment; filename="filedump-selection.zip"');
 
             create_zip_file($file_array, true);
             exit();

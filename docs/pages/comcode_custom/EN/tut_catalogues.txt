@@ -354,7 +354,7 @@ Tree catalogues don't include a link back to the index for the catalogue, while 
 If a virtual root is set then it will cut off everything before the virtual root (including parent categories, the index, and the list of catalogues). Virtual roots for catalogues are opened up with the [tt]keep_catalogue_<catalogue-name>_root[/tt] URL parameter.
 
 The default breadcrumb XML looks like this...
-[code="xml"]
+[code="XML"]
 <!-- Simple catalogue links back to home page (most people don't want to expose catalogues technically as such) -->
 <substitution match_key="_WILD:catalogues:index:tree=0" final="true"> <!-- Skip catalogues list. -->
 	<link label="{!HOME}">:</link>

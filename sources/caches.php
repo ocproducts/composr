@@ -28,16 +28,18 @@ function init__caches()
     global $BLOCK_CACHE_ON_CACHE;
     $BLOCK_CACHE_ON_CACHE = null;
 
-    // These are ways we might enhance block caching with standardised (queryable) additional caching restraints
-    define('CACHE_AGAINST_NOTHING_SPECIAL', 0);
-    // -
-    define('CACHE_AGAINST_STAFF_STATUS', 1);
-    define('CACHE_AGAINST_MEMBER', 2);
-    define('CACHE_AGAINST_PERMISSIVE_GROUPS', 4);
-    define('CACHE_AGAINST_BOT_STATUS', 8);
-    define('CACHE_AGAINST_TIMEZONE', 16);
-    // -
-    define('CACHE_AGAINST_DEFAULT', CACHE_AGAINST_BOT_STATUS | CACHE_AGAINST_TIMEZONE);
+    if (!defined('CACHE_AGAINST_NOTHING_SPECIAL')) {
+        // These are ways we might enhance block caching with standardised (queryable) additional caching restraints
+        define('CACHE_AGAINST_NOTHING_SPECIAL', 0);
+        // -
+        define('CACHE_AGAINST_STAFF_STATUS', 1);
+        define('CACHE_AGAINST_MEMBER', 2);
+        define('CACHE_AGAINST_PERMISSIVE_GROUPS', 4);
+        define('CACHE_AGAINST_BOT_STATUS', 8);
+        define('CACHE_AGAINST_TIMEZONE', 16);
+        // -
+        define('CACHE_AGAINST_DEFAULT', CACHE_AGAINST_BOT_STATUS | CACHE_AGAINST_TIMEZONE);
+    }
 
     global $PERSISTENT_CACHE, $SITE_INFO;
     /** The persistent cache access object (null if there is no persistent cache).

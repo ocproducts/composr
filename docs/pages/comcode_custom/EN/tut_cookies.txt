@@ -112,6 +112,7 @@ The Composr "Cookie notice" configuration option implements this. It isn't on by
 
 [title="2"]See also[/title]
 
+ - https://www.youtube.com/watch?v=mI2STe_Kklk
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]

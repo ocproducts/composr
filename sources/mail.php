@@ -634,7 +634,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     if (!$coming_out_of_queue) {
         if ((mt_rand(0, 100) == 1) && (!$GLOBALS['SITE_DB']->table_is_locked('logged_mail_messages'))) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0', 500/*to reduce lock times*/); // Log it all for 2 weeks, then delete
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('email_log_days'))) . ' AND m_queued=0', 500/*to reduce lock times*/); // Log it all for 2 weeks, then delete
         }
 
         $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
@@ -877,10 +877,16 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     if ($website_email == '') {
         $website_email = $from_email;
     }
-    if (get_option('use_true_from') == '0') {
-        $headers = 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
-    } else {
+    if (
+        (get_option('use_true_from') == '1') ||
+        ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('website_email')))) ||
+        ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('staff_address')))) ||
+        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_email_from')))) ||
+        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == get_domain()))
+    ) {
         $headers = 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
+    } else {
+        $headers = 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
     }
     $headers .= 'Reply-To: <' . $from_email . '>' . $line_term;
     $headers .= 'Return-Path: <' . $website_email . '>' . $line_term;

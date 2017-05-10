@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_use_true_from
+class Hook_config_autogrow
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,13 @@ class Hook_config_use_true_from
     public function get_details()
     {
         return array(
-            'human_name' => 'USE_TRUE_FROM',
-            'type' => 'list',
-            'category' => 'SITE',
-            'group' => '_EMAIL',
-            'explanation' => 'CONFIG_OPTION_use_true_from',
+            'human_name' => 'AUTOGROW',
+            'type' => 'tick',
+            'category' => 'FEATURE',
+            'group' => '_COMCODE',
+            'explanation' => 'CONFIG_OPTION_autogrow',
             'shared_hosting_restricted' => '0',
-            'list_options' => '1|2|0',
+            'list_options' => '',
             'order_in_category_group' => 9,
 
             'addon' => 'core_configuration',

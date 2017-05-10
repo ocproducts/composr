@@ -122,35 +122,39 @@ function init__global3()
     global $MASS_IMPORT_HAPPENING;
     $MASS_IMPORT_HAPPENING = false;
 
-    // Notifications (defined here, as notification_poller may need them - yet we don't want to include all the notification dispatch code)
-    define('A_NA', 0x0); // Not applicable          (0 in decimal)
-    //
-    define('A_INSTANT_EMAIL', 0x2);         // (2 in decimal)
-    define('A_DAILY_EMAIL_DIGEST', 0x4);    // (4 in decimal)
-    define('A_WEEKLY_EMAIL_DIGEST', 0x8);   // (8 in decimal)
-    define('A_MONTHLY_EMAIL_DIGEST', 0x10); // (16 in decimal)
-    define('A_INSTANT_SMS', 0x20);          // (32 in decimal)
-    define('A_INSTANT_PT', 0x40);           // (64 in decimal)  Private topic
-    define('A_WEB_NOTIFICATION', 0x80);     // (128 in decimal) Desktop notification if site is open, and always shows on notification dropdown
-    // And...
-    define('A__ALL', 0xFFFFFF);
-    // And...
-    define('A__STATISTICAL', -0x1); // This is magic, it will choose whatever the user probably wants, based on their existing settings
-    define('A__CHOICE', -0x2); // Never stored in DB, used as a flag inside admin_notifications module
+    if (!defined('A_NA')) {
+        // Notifications (defined here, as notification_poller may need them - yet we don't want to include all the notification dispatch code)
+        define('A_NA', 0x0); // Not applicable          (0 in decimal)
+        //
+        define('A_INSTANT_EMAIL', 0x2);         // (2 in decimal)
+        define('A_DAILY_EMAIL_DIGEST', 0x4);    // (4 in decimal)
+        define('A_WEEKLY_EMAIL_DIGEST', 0x8);   // (8 in decimal)
+        define('A_MONTHLY_EMAIL_DIGEST', 0x10); // (16 in decimal)
+        define('A_INSTANT_SMS', 0x20);          // (32 in decimal)
+        define('A_INSTANT_PT', 0x40);           // (64 in decimal)  Private topic
+        define('A_WEB_NOTIFICATION', 0x80);     // (128 in decimal) Desktop notification if site is open, and always shows on notification dropdown
+        // And...
+        define('A__ALL', 0xFFFFFF);
+        // And...
+        define('A__STATISTICAL', -0x1); // This is magic, it will choose whatever the user probably wants, based on their existing settings
+        define('A__CHOICE', -0x2); // Never stored in DB, used as a flag inside admin_notifications module
+    }
 
     global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
     $ESCAPE_HTML_OUTPUT = array();
     $KNOWN_TRUE_HTML = array();
 
-    // Would normally put these in sources/comcode.php, but some of our templating references these constants
-    define('WYSIWYG_COMCODE__BUTTON', 1);
-    define('WYSIWYG_COMCODE__XML_BLOCK', 2);
-    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
-    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
-    define('WYSIWYG_COMCODE__XML_INLINE', 16);
-    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
-    define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
-    define('WYSIWYG_COMCODE__HTML', 128);
+    if (!defined('WYSIWYG_COMCODE__BUTTON')) {
+        // Would normally put these in sources/comcode.php, but some of our templating references these constants
+        define('WYSIWYG_COMCODE__BUTTON', 1);
+        define('WYSIWYG_COMCODE__XML_BLOCK', 2);
+        define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
+        define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
+        define('WYSIWYG_COMCODE__XML_INLINE', 16);
+        define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
+        define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
+        define('WYSIWYG_COMCODE__HTML', 128);
+    }
 
     global $DOING_OUTPUT_PINGS;
     $DOING_OUTPUT_PINGS = false;
@@ -1463,9 +1467,17 @@ function _multi_sort($a, $b)
 
             if ($backwards) { // Flip around
                 $key = substr($key, 1);
-                $ret = -strnatcasecmp($av, $bv);
+                if ((is_numeric($av)) && (is_numeric($bv))) {
+                    $ret = -strnatcasecmp($av, $bv);
+                } else {
+                    $ret = -strcasecmp($av, $bv);
+                }
             } else {
-                $ret = strnatcasecmp($av, $bv);
+                if ((is_numeric($av)) && (is_numeric($bv))) {
+                    $ret = strnatcasecmp($av, $bv);
+                } else {
+                    $ret = strcasecmp($av, $bv);
+                }
             }
         } while ((count($keys) !== 0) && ($ret === 0));
         return $ret;

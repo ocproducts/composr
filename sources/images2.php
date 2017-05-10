@@ -176,9 +176,6 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     }
 
     list($source, $reorientated) = adjust_pic_orientation($source, $exif);
-    if ((!is_null($thumb_options)) || (!$only_make_smaller)) {
-        unset($from_file);
-    }
 
     //$source = remove_white_edges($source);    Not currently enabled, as PHP seems to have problems with alpha transparency reading
 
@@ -221,12 +218,12 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             $_height = $height;
             $_width = intval($height / ($sy / $sx));
         }
-        if (($_width > $sx) && ($only_make_smaller)) {
+        if (($_width >= $sx) && ($only_make_smaller)) {
             $_width = $sx;
             $_height = $sy;
 
             if (!$reorientated) {
-                // We can just escape, nothing to do
+                // We can just escape, nothing to do...
 
                 imagedestroy($source);
 
@@ -407,6 +404,29 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             $dest_y = ($pad_axis == 'y') ? $pad_amount : 0;
         }
     }
+
+    if (($_width == $sx) && ($_height == $sy)) {
+        // We can just escape, nothing to do...
+
+        imagedestroy($source);
+
+        if (($using_path) && ($from == $to)) {
+            return true;
+        }
+
+        if ($using_path) {
+            copy($from, $to);
+            fix_permissions($to);
+            sync_file($to);
+        } else {
+            require_code('files');
+            cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+        }
+        return true;
+    }
+
+    unset($from_file);
+
     // Resample/copy
     $gd_version = get_gd_version();
     if ($gd_version >= 2.0) { // If we have GD2

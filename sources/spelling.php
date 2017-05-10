@@ -27,7 +27,9 @@
  */
 function init__spelling()
 {
-    define('WORD_REGEXP', '#([\w\'\-]{1,200})#' . ((get_charset() == 'utf-8') ? 'u' : ''));
+    if (!defined('WORD_REGEXP')) {
+        define('WORD_REGEXP', '#([\w\'\-]{1,200})#' . ((get_charset() == 'utf-8') ? 'u' : ''));
+    }
 }
 
 /**

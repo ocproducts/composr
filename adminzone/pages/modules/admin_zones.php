@@ -984,7 +984,11 @@ class Module_admin_zones
             sync_htaccess_with_zones();
 
             // Show it worked / Refresh
-            $url = get_param_string('redirect', null);
+            if ($new_zone == $zone) {
+                $url = get_param_string('redirect', null);
+            } else {
+                $url = null; // Can't redirect back
+            }
             if (is_null($url)) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF');
                 $url = $_url->evaluate();

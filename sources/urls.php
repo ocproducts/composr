@@ -80,7 +80,9 @@ function init__urls()
     $HAS_NO_KEEP_CONTEXT = false;
     $NO_KEEP_CONTEXT_STACK = array();
 
-    define('SELF_REDIRECT', '!--:)defUNLIKELY');
+    if (!defined('SELF_REDIRECT')) {
+        define('SELF_REDIRECT', '!--:)defUNLIKELY');
+    }
 }
 
 /**

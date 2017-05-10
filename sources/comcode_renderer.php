@@ -1683,11 +1683,23 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($attributes['target'] == 'blank') {
                 $attributes['target'] = '_blank';
             }
-            $rel = (($as_admin) || has_privilege($source_member, 'search_engine_links')) ? '' : 'nofollow';
             if (array_key_exists('rel', $attributes)) {
                 $rel = trim($rel . ' ' . $attributes['rel']);
+            } else {
+                $rel = '';
             }
-            $rel = str_replace('nofollow nofollow', 'nofollow', $rel);
+            if ((!$as_admin) && (!has_privilege($source_member, 'search_engine_links'))) {
+                if ($rel != '') {
+                    $rel .= ' ';
+                }
+                $rel .= 'noopener';
+            }
+            if (!$as_admin) {
+                if ($rel != '') {
+                    $rel .= ' ';
+                }
+                $rel .= 'nofollow';
+            }
             if ($attributes['target'] == '_blank') {
                 $title = strip_tags(is_object($caption) ? static_evaluate_tempcode($caption) : $caption) . ' ' . do_lang('LINK_NEW_WINDOW');
             } else {

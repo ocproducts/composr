@@ -148,7 +148,7 @@ class Hook_addon_registry_staff_messaging
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
@@ -196,7 +196,7 @@ class Hook_addon_registry_staff_messaging
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
@@ -239,7 +239,7 @@ class Hook_addon_registry_staff_messaging
             'FIRST_POST_URL' => placeholder_url(),
             'FIRST_POST' => lorem_paragraph_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => lorem_word(),
@@ -255,7 +255,7 @@ class Hook_addon_registry_staff_messaging
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTACT_SIMPLE', array(
-                'EMAIL_OPTIONAL' => lorem_word_html(),
+                'EMAIL_OPTIONAL' => true,
                 'COMMENT_DETAILS' => $comment_details,
                 'MESSAGE' => lorem_phrase(),
             )), null, '', true)

@@ -35,12 +35,14 @@ function init__hooks__modules__admin_import__phpbb3()
     $OLD_BASE_URL = null;
 
     // Profile Field Types
-    define('FIELD_INT', 1);
-    define('FIELD_STRING', 2);
-    define('FIELD_TEXT', 3);
-    define('FIELD_BOOL', 4);
-    define('FIELD_DROPDOWN', 5);
-    define('FIELD_DATE', 6);
+    if (!defined('FIELD_INT')) {
+        define('FIELD_INT', 1);
+        define('FIELD_STRING', 2);
+        define('FIELD_TEXT', 3);
+        define('FIELD_BOOL', 4);
+        define('FIELD_DROPDOWN', 5);
+        define('FIELD_DATE', 6);
+    }
 }
 
 /**

@@ -31,15 +31,17 @@ function init__database_helper()
         return;
     }
 
-    // Limits (we also limit field names to not conflict with keywords - those defined in database_action.php)
-    define('DB_MAX_KEY_SIZE', 500);
-    define('DB_MAX_PRIMARY_KEY_SIZE', 251);
-    define('DB_MAX_ROW_SIZE', 8000);
-    define('DB_MAX_FIELD_IDENTIFIER_SIZE', 31);
-    define('DB_MAX_IDENTIFIER_SIZE', 32);
-    // We have to take into account that chars might take 3 bytes - but we'll assume unicode is only used on db's with higher limits
-    define('DB_MAX_KEY_SIZE_UNICODE', 1000);
-    define('DB_MAX_ROW_SIZE_UNICODE', 24000);
+    if (!defined('DB_MAX_KEY_SIZE')) {
+        // Limits (we also limit field names to not conflict with keywords - those defined in database_action.php)
+        define('DB_MAX_KEY_SIZE', 500);
+        define('DB_MAX_PRIMARY_KEY_SIZE', 251);
+        define('DB_MAX_ROW_SIZE', 8000);
+        define('DB_MAX_FIELD_IDENTIFIER_SIZE', 31);
+        define('DB_MAX_IDENTIFIER_SIZE', 32);
+        // We have to take into account that chars might take 3 bytes - but we'll assume unicode is only used on db's with higher limits
+        define('DB_MAX_KEY_SIZE_UNICODE', 1000);
+        define('DB_MAX_ROW_SIZE_UNICODE', 24000);
+    }
 }
 
 /**

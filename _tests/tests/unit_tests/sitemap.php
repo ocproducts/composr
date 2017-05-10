@@ -129,11 +129,15 @@ class sitemap_test_set extends cms_test_case
     {
         foreach ($this->flattened as $k => $c) {
             if (preg_match('#^\w*:(\w*(:\w*)?)?$#', $k) != 0) {
-                if (in_array($k, array(
+                if (in_array($k, array( // Exceptions
                     'site:popup_blockers',
                     'site:userguide_chatcode',
                     'site:userguide_comcode',
                     'site:top_sites',
+                    ':popup_blockers',
+                    ':userguide_chatcode',
+                    ':userguide_comcode',
+                    ':top_sites',
                     ':recommend_help',
                 ))) {
                     continue;

@@ -306,7 +306,7 @@ function hard_filter_input_data__html(&$val, $lite = false)
     } while ($old_val != $val);
 
     // Tag vectors
-    $bad_tags = 'noscript|script|link|style|meta|iframe|frame|object|embed|applet|html|xml|body|head|form|base|layer|v:vmlframe';
+    $bad_tags = 'noscript|script|link|style|meta|iframe|frame|object|embed|applet|html|xml|body|head|form|base|layer|v:vmlframe|svg';
     $val = preg_replace('#\<(' . $bad_tags . ')#i', '<span', $val); // Intentionally does not strip so as to avoid attacks like <<scriptscript --> <script
     $val = preg_replace('#\</(' . $bad_tags . ')#i', '</span', $val);
 

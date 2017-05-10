@@ -176,7 +176,6 @@ class Hook_fields_video
     public function get_field_inputter($_cf_name, $_cf_description, $field, $actual_value, $new)
     {
         $say_required = ($field['cf_required'] == 1) && (($actual_value == '') || (is_null($actual_value)));
-        require_code('galleries');
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
         $ffield = form_input_upload($_cf_name, $_cf_description, $input_name, $say_required, ($field['cf_required'] == 1) ? null/*so unlink option not shown*/ : preg_replace('# .*$#', '', $actual_value), null, true, get_allowed_video_file_types());
 
@@ -214,6 +213,10 @@ class Hook_fields_video
             if ((!is_null($old_value)) && ($old_value['cv_value'] != '') && (($ev != '') || (post_param_integer('custom_' . strval($field['id']) . '_value_unlink', 0) == 1))) {
                 @unlink(get_custom_file_base() . '/' . rawurldecode($old_value['cv_value']));
                 sync_file(rawurldecode($old_value['cv_value']));
+            }
+
+            if ($ev == '') {
+                return $ev;
             }
 
             if (addon_installed('galleries')) {

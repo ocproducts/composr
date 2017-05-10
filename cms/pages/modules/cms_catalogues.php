@@ -462,7 +462,8 @@ class Module_cms_catalogues extends Standard_crud_module
                 $category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => $catalogue_name));
             }
         }
-        if ((!is_null($category_id)) && ((is_null($id)) && (get_value('no_confirm_url_spec_cats') === '1') || (get_value('no_spec_cat__' . $catalogue_name) === '1'))) { // Adding, but defined category ID in URL, and set option saying not to ask for passed categories
+        $num_categories = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(id)', array('c_name' => $catalogue_name));
+        if ((!is_null($category_id)) && ((is_null($id)) && (get_value('no_confirm_url_spec_cats') === '1') || (get_value('no_spec_cat__' . $catalogue_name) === '1')) || ($num_categories == 1)) { // Adding, but defined category ID in URL, and set option saying not to ask for passed categories
             $hidden->attach(form_input_hidden('category_id', strval($category_id)));
         } else {
             if ((is_null($id)) && (is_null($category_id))) {
@@ -2199,6 +2200,8 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     {
         require_code('catalogues2');
 
+        $this->is_tree_catalogue = ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $id)) === 1);
+
         require_code('menus2');
         delete_menu_item_simple('_SEARCH:catalogues:category:catalogue_name=' . $id);
         delete_menu_item_simple('_SEARCH:catalogues:index:' . $id);
@@ -2222,8 +2225,6 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         } else {
             $has_categories = false;
         }
-
-        $is_tree = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_is_tree', array('c_name' => $name));
 
         $is_custom_fields = (!is_null($name)) && (substr($name, 0, 1) == '_');
 
@@ -2249,7 +2250,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
                 $is_custom_fields ? null : array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array('type' => 'add_catalogue'), '_SELF')),
                 is_null($name) ? null : array('menu/cms/catalogues/edit_this_catalogue', array('_SELF', array('type' => '_edit_catalogue', 'id' => $name), '_SELF')),
                 $is_custom_fields ? null : array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array('type' => 'edit_catalogue'), '_SELF')),
-                (is_null($name) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name, 'tree' => $is_tree), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
+                (is_null($name) || $is_custom_fields) ? null : array('menu/rich_content/catalogues/catalogues', array('catalogues', $this->is_tree_catalogue ? array('type' => 'category', 'catalogue_name' => $name) : array('type' => 'index', 'id' => $name, 'tree' => $this->is_tree_catalogue ? 1 : 0), get_module_zone('catalogues')), do_lang('VIEW_CATALOGUE'))
             ),
             do_lang('MANAGE_CATALOGUES'),
             null,

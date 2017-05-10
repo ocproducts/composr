@@ -29,18 +29,20 @@ REMEMBER to keep db_export.sh updated too
  */
 function init__database_relations()
 {
-    define('TABLE_PURPOSE__NORMAL', 0);
-    define('TABLE_PURPOSE__NO_BACKUPS', 1); // For some reason we do not backup this
-    define('TABLE_PURPOSE__FLUSHABLE', 2 + (4)); // Flushable because the contents is not HUGELY important. Should not be routinely flushed. Logs, chats, etc - not member settings, etc. Think: "stuff to do before opening a new site that has just gone through testing"
-    define('TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE', 4); // Flushable if we're being extra aggressive. Don't set if already has FLUSHABLE set
-    define('TABLE_PURPOSE__NO_STAGING_COPY', 8); // For some special reason we don't copy this between staging to live. Don't set if already has FLUSHABLE set
-    define('TABLE_PURPOSE__NON_BUNDLED', 16); // Non-bundled. Do not apply this to anything defined in this core file. Applies only to non-bundled tables injected via an override to this file
-    define('TABLE_PURPOSE__AUTOGEN_STATIC', 32); // Contents is auto-generated/meta and essentially static, not for merging between sites
-    define('TABLE_PURPOSE__MISC_NO_MERGE', 64); // Should not be merged between sites for other unspecified reasons
-    define('TABLE_PURPOSE__SUBDATA', 128); // Data which is subsumed under other data when doing a transfer and has some importance but is totally meaningless when taken on its own
-    define('TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG', 256); // We won't give the table full handling somewhere under a Resource-fs hook, we'll have a Commandr-fs extended config hook instead
-    // -
-    define('TABLE_PURPOSE__NOT_KNOWN', 512);
+    if (!defined('TABLE_PURPOSE__NORMAL')) {
+        define('TABLE_PURPOSE__NORMAL', 0);
+        define('TABLE_PURPOSE__NO_BACKUPS', 1); // For some reason we do not backup this
+        define('TABLE_PURPOSE__FLUSHABLE', 2 + (4)); // Flushable because the contents is not HUGELY important. Should not be routinely flushed. Logs, chats, etc - not member settings, etc. Think: "stuff to do before opening a new site that has just gone through testing"
+        define('TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE', 4); // Flushable if we're being extra aggressive. Don't set if already has FLUSHABLE set
+        define('TABLE_PURPOSE__NO_STAGING_COPY', 8); // For some special reason we don't copy this between staging to live. Don't set if already has FLUSHABLE set
+        define('TABLE_PURPOSE__NON_BUNDLED', 16); // Non-bundled. Do not apply this to anything defined in this core file. Applies only to non-bundled tables injected via an override to this file
+        define('TABLE_PURPOSE__AUTOGEN_STATIC', 32); // Contents is auto-generated/meta and essentially static, not for merging between sites
+        define('TABLE_PURPOSE__MISC_NO_MERGE', 64); // Should not be merged between sites for other unspecified reasons
+        define('TABLE_PURPOSE__SUBDATA', 128); // Data which is subsumed under other data when doing a transfer and has some importance but is totally meaningless when taken on its own
+        define('TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG', 256); // We won't give the table full handling somewhere under a Resource-fs hook, we'll have a Commandr-fs extended config hook instead
+        // -
+        define('TABLE_PURPOSE__NOT_KNOWN', 512);
+    }
 }
 
 /**

@@ -770,7 +770,11 @@ class Hook_addon_registry_core
             'themes/default/javascript/global.js',
             'themes/default/javascript/ajax.js',
             'themes/default/templates/JAVASCRIPT_NEED.tpl',
+            'themes/default/templates/JAVASCRIPT_NEED_FULL.tpl',
             'themes/default/templates/JAVASCRIPT_NEED_INLINE.tpl',
+            'themes/default/templates/CSS_NEED.tpl',
+            'themes/default/templates/CSS_NEED_FULL.tpl',
+            'themes/default/templates/CSS_NEED_INLINE.tpl',
             'themes/default/javascript/staff.js',
             'themes/default/javascript/transitions.js',
             'themes/default/javascript/tree_list.js',
@@ -788,8 +792,6 @@ class Hook_addon_registry_core
             'themes/default/templates/REDIRECT_POST_METHOD_SCREEN.tpl',
             'themes/default/templates/LOGIN_SCREEN.tpl',
             'themes/default/css/login.css',
-            'themes/default/templates/CSS_NEED.tpl',
-            'themes/default/templates/CSS_NEED_INLINE.tpl',
             'themes/default/templates/BROKEN_LANG_STRINGS.tpl',
             'themes/default/templates/BROKEN_URLS.tpl',
             'themes/default/templates/FORUMS_EMBED.tpl',
@@ -996,6 +998,7 @@ class Hook_addon_registry_core
             'data/page_link_redirect.php',
             'data/quash_referer.php',
             'data/sheet.php',
+            'data/script.php',
             'data/sitemap.php',
             'data/snippet.php',
             'data/soundmanager/soundmanager2.swf',
@@ -1446,10 +1449,12 @@ class Hook_addon_registry_core
             'templates/REDIRECT_POST_METHOD_SCREEN.tpl' => 'redirect_post_method_screen',
             'templates/FORUMS_EMBED.tpl' => 'forums_embed',
             'templates/JS_BLOCK.tpl' => 'js_block',
-            'templates/JAVASCRIPT_NEED_INLINE.tpl' => 'javascript_need_inline',
-            'templates/CSS_NEED_INLINE.tpl' => 'css_need_inline',
             'templates/JAVASCRIPT_NEED.tpl' => 'javascript_need',
+            'templates/JAVASCRIPT_NEED_FULL.tpl' => 'javascript_need_full',
+            'templates/JAVASCRIPT_NEED_INLINE.tpl' => 'javascript_need_inline',
             'templates/CSS_NEED.tpl' => 'css_need',
+            'templates/CSS_NEED_FULL.tpl' => 'css_need_full',
+            'templates/CSS_NEED_INLINE.tpl' => 'css_need_inline',
             'templates/FATAL_SCREEN.tpl' => 'administrative__fatal_screen',
             'templates/STACK_TRACE.tpl' => 'administrative__stack_trace',
             'templates/INLINE_WIP_MESSAGE.tpl' => 'inline_wip_message',
@@ -1682,11 +1687,75 @@ class Hook_addon_registry_core
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
+    public function tpl_preview__javascript_need()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('JAVASCRIPT_NEED', array(
+                'CODE' => placeholder_javascript_code(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__javascript_need_full()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('JAVASCRIPT_NEED_FULL', array(
+                'URL' => placeholder_url(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
     public function tpl_preview__javascript_need_inline()
     {
         return array(
             lorem_globalise(do_lorem_template('JAVASCRIPT_NEED_INLINE', array(
                 'CODE' => placeholder_javascript_code(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__css_need()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('CSS_NEED', array(
+                'CODE' => lorem_phrase(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__css_need_full()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('CSS_NEED_FULL', array(
+                'URL' => placeholder_url(),
             )), null, '', true)
         );
     }
@@ -1812,38 +1881,6 @@ class Hook_addon_registry_core
                     'A' => 'a',
                     'B' => 'b',
                 )
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__javascript_need()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('JAVASCRIPT_NEED', array(
-                'CODE' => placeholder_javascript_code(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__css_need()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('CSS_NEED', array(
-                'CODE' => lorem_phrase(),
             )), null, '', true)
         );
     }

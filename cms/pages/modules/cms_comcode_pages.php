@@ -996,7 +996,11 @@ class Module_cms_comcode_pages
             }
         }
         $completion_text = ($validated == 0) ? do_lang_tempcode('SUBMIT_UNVALIDATED', 'comcode_page') : do_lang_tempcode('SUCCESS');
-        $url = post_param_string('redirect', '');
+        if ($new_file == $file) {
+            $url = post_param_string('redirect', '');
+        } else {
+            $url = '';
+        }
         if ($url != '') {
             return redirect_screen($this->title, $url, $completion_text);
         }
