@@ -254,7 +254,7 @@ class Hook_payment_gateway_paypal
             $member_address['country'] = ''; // PayPal only allows valid countries
         }
 
-        if (($member_address['address1'] == '') || ($member_address['city'] == '') || ($member_address['zip'] == '')) {
+        if (($member_address['address1'] == '') || ($member_address['city'] == '') || ($member_address['zip'] == '') || ($member_address['country'] == '')) {
             $member_address = array(); // Causes error on PayPal due to it crashing when trying to validate the address
         }
 

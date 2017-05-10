@@ -60,7 +60,7 @@ function download_gateway_script()
         $url .= $keep->evaluate();
     }
 
-    attach_to_screen_header('<meta http-equiv="refresh" content="2; URL=' . $download_url . '">');
+    attach_to_screen_header('<meta http-equiv="refresh" content="2; URL=' . $download_url->evaluate() . '">');
 
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
@@ -71,7 +71,7 @@ function download_gateway_script()
         $tpl_wrapped = globalise($tpl, null, '', true, true);
         $tpl_wrapped->evaluate_echo();
     } else {
-        header('Location:' . escape_header($download_url));
+        header('Location:' . escape_header($download_url->evaluate()));
     }
 }
 

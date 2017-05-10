@@ -142,10 +142,18 @@ function permission_product_save($resource_type, $old_category_id, $new_category
         if (post_param_integer('permission_product__delete', 0) == 1) {
             $operation = 'delete';
         } else {
-            $operation = 'edit';
+            if (($price !== null) || ($price_points !== null)) {
+                $operation = 'edit';
+            } else {
+                $operation = 'delete';
+            }
         }
     } else {
-        $operation = 'add';
+        if (($price !== null) || ($price_points !== null)) {
+            $operation = 'add';
+        } else {
+            return;
+        }
     }
 
     switch ($operation) {

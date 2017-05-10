@@ -257,7 +257,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         }
 
         // Decrypt the value if appropriate
-        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1) && ($member_value != $field_to_show['cf_default']) && (!is_null($member_value))) {
+        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1) && ($member_value != '') && ($member_value != $field_to_show['cf_default']) && (!is_null($member_value))) {
             require_code('encryption');
             if ((is_encryption_enabled()) && (post_param_string('decrypt', null) !== null)) {
                 $member_value = decrypt_data($member_value, post_param_string('decrypt'));

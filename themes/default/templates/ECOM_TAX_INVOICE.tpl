@@ -3,7 +3,7 @@
 		<tbody>
 			<tr class="top">
 				<td class="title">
-					<img alt="{$SITE_NAME*}" src="{$IMG*,logo/standalone_logo}" /><br />
+					<img title="{$SITE_NAME*}" alt="{$SITE_NAME*}" src="{$IMG*,logo/standalone_logo}" /><br />
 					{+START,IF_NON_EMPTY,{$CONFIG_OPTION,tax_number}}
 						<br />{$TAX_NUMBER_LABEL} {$CONFIG_OPTION,tax_number}
 					{+END}

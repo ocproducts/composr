@@ -461,7 +461,7 @@ class Hook_ecommerce_permission
 
             $attachments = array();
 
-            if (($row['p_type'] == 'member_category_access') && ($row['p_module'] == 'download_category')) {
+            if (($row['p_type'] == 'member_category_access') && ($row['p_module'] == 'downloads')) {
                 $all_attached = true;
 
                 $_download_category = $GLOBALS['SITE_DB']->query_select('download_categories', array('*'), array('id' => intval($row['p_category'])), '', 1);

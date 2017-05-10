@@ -302,8 +302,10 @@ function cns_may_whisper($target, $member_id = null)
         $member_id = get_member();
     }
 
-    if (get_option('enable_pt_restrict') == '0') {
-        return true;
+    if (addon_installed('cns_forum')) {
+        if (get_option('enable_pt_restrict') == '0') {
+            return true;
+        }
     }
 
     if ($target == $member_id) {

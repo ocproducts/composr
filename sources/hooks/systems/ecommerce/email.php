@@ -267,34 +267,37 @@ class Hook_ecommerce_email
             $current_amount += intval($quota_increase_row['details2']);
         }
 
-        $price_points = get_option('quota_price_points');
-        foreach (array(100, 1000, 2000, 5000, 10000) as $amount) {
-            if ($max_quota < $amount) {
-                continue;
+        $pop3_domain_count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'ecom_prods_prices WHERE name LIKE \'pop3\_%\'');
+        if ($pop3_domain_count > 0) {
+            $price_points = get_option('quota_price_points');
+            foreach (array(100, 1000, 2000, 5000, 10000) as $amount) {
+                if ($max_quota < $amount) {
+                    continue;
+                }
+
+                $products['QUOTA_' . strval($amount)] = automatic_discount_calculation(array(
+                    'item_name' => do_lang('PURCHASE_QUOTA', integer_format($amount), integer_format($current_amount), integer_format($current_amount + $amount)),
+                    'item_description' => do_lang_tempcode('PURCHASE_QUOTA_DESCRIPTION', escape_html(integer_format($amount)), escape_html(integer_format($current_amount)), escape_html(integer_format($current_amount + $amount))),
+                    'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_to_category'),
+
+                    'type' => PRODUCT_PURCHASE,
+                    'type_special_details' => array(),
+
+                    'price' => (get_option('quota_price') == '') ? null : (floatval(get_option('quota_price')) * $amount),
+                    'currency' => get_option('currency'),
+                    'price_points' => empty($price_points) ? null : (intval($price_points) * $amount),
+                    'discount_points__num_points' => null,
+                    'discount_points__price_reduction' => null,
+
+                    'tax_code' => tax_multiplier(get_option('quota_tax_code'), $amount),
+                    'shipping_cost' => 0.00,
+                    'product_weight' => null,
+                    'product_length' => null,
+                    'product_width' => null,
+                    'product_height' => null,
+                    'needs_shipping_address' => false,
+                ));
             }
-
-            $products['QUOTA_' . strval($amount)] = automatic_discount_calculation(array(
-                'item_name' => do_lang('PURCHASE_QUOTA', integer_format($amount), integer_format($current_amount), integer_format($current_amount + $amount)),
-                'item_description' => do_lang_tempcode('PURCHASE_QUOTA_DESCRIPTION', escape_html(integer_format($amount)), escape_html(integer_format($current_amount)), escape_html(integer_format($current_amount + $amount))),
-                'item_image_url' => find_theme_image('icons/48x48/menu/_generic_admin/add_to_category'),
-
-                'type' => PRODUCT_PURCHASE,
-                'type_special_details' => array(),
-
-                'price' => (get_option('quota_price') == '') ? null : (floatval(get_option('quota_price')) * $amount),
-                'currency' => get_option('currency'),
-                'price_points' => empty($price_points) ? null : (intval($price_points) * $amount),
-                'discount_points__num_points' => null,
-                'discount_points__price_reduction' => null,
-
-                'tax_code' => tax_multiplier(get_option('quota_tax_code'), $amount),
-                'shipping_cost' => 0.00,
-                'product_weight' => null,
-                'product_length' => null,
-                'product_width' => null,
-                'product_height' => null,
-                'needs_shipping_address' => false,
-            ));
         }
 
         foreach (array('pop3' => 'POP3', 'forw' => 'FORWARDING') as $protocol => $protocol_label) {
