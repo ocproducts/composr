@@ -80,9 +80,13 @@ class Hook_fields_list_multi
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
         if ($required !== null) {
-            if (($required) && ($default == '')) {
-                $default = preg_replace('#\|.*$#', '', $field['cf_default']);
-                $default = preg_replace('#=.*$#', '', $field['cf_default']);
+            if ((($default == '') && ($required)) || ($default == $field['cf_default'])) {
+                $default = $field['cf_default'];
+                if ($required) {
+                    $default = preg_replace('#^(=.*)?\|#U', '', $default); // Get key of blank option
+                }
+                $default = preg_replace('#\|.*$#', '', $default); // Remove all the non-first list options
+                $default = preg_replace('#=.*$#', '', $default); // Get key of first
             }
         }
         return array('long_unescaped', $default, 'long');
