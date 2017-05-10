@@ -80,6 +80,8 @@ This does not show to mobile devices.
 
 This works in Comcode pages, templates, and also CSS.
 
+[title="3"]CSS[/title]
+
 For CSS you can also use the [tt]CSS_MODE[/tt] directive. For example:
 [code="CSS"]
 /*{+START,CSS_MODE,mobile}*/
@@ -96,6 +98,20 @@ For CSS you can also use the [tt]CSS_MODE[/tt] directive. For example:
 This will mark sections to use full responsive-design on desktop mode (media rules) and do rule filtering on mobile mode so that only the mobile-relevant bit is output.
 
 The particular modes ([tt]mobile[/tt], [tt]desktop[/tt]) can be configured in [tt]global.css[/tt] with particular width ranges, and to define the exact rules to apply on mobile mode. This is discussed more in the [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
+
+[title="3"]Cleanup directive[/title]
+
+There is a simple technique for adjusting content on mobile for cases where you do not want to, or cannot, write CSS.
+Consider this sample code:
+[code="Tempcode"]
+{+START,IF,MAKE_MOBILE}
+	...
+{+END}
+[/code]
+On mobile mode perform this will perform some basic conversions on the enclosed HTML to make it mobile-friendly. It is very rough.
+
+At the time of writing this covers the following only:
+ - Converting tables into [tt]div[/tt]s.
 
 [title="2"]Using responsive design techniques directly[/title]
 

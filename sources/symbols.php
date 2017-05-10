@@ -534,6 +534,13 @@ function ecv($lang, $escaped, $type, $name, $param)
 
                 break;
 
+            case 'MAKE_MOBILE':
+                $value = $param[count($param) - 2]->evaluate();
+                if (is_mobile()) {
+                    $value = preg_replace('#<(/?)(table|tbody|thead|tr|th|td)(\s[^<>]*)?>#', '<$1div$3>', $value);
+                }
+                break;
+
             default:
                 require_code('site');
                 attach_message(do_lang_tempcode('UNKNOWN_DIRECTIVE', escape_html($name)), 'warn');

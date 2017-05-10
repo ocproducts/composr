@@ -1852,6 +1852,10 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>NO_PREPROCESSING</td>
 			<td>Avoid preprocessing of anything inside the directive. This is needed for complex cases such as when you need to do heavy optimisation of unusual code paths, or unusual GET/SET situations with shared variables which may not always exist (and need to be evaluated therefore in a strictly linear way).</td>
 		</tr>
+		<tr style="background: #DDFFDD">
+			<td>MAKE_MOBILE</td>
+			<td>On mobile mode perform some basic conversions on the enclosed HTML to make it mobile-friendly. Covered in the [page="_SEARCH:tut_mobile"]Mobile design tutorial[/page].</td>
+		</tr>
 	</tbody>
 </table>
 [/html]
