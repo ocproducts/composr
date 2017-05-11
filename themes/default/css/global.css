@@ -247,9 +247,6 @@ h1, h2, h3, .faux_h2 {
 	color: {$GET,heading_text};
 	border-bottom: 1px solid {$GET,pale_border};
 }
-h3 {
-	letter-spacing: -0.75px;
-}
 h1 {
 	font-size: 1.6em;
 	margin-top: 0.27em; /* Consistency with boxes (so gap between header and content is consistent), but rationalised against higher em font size */
@@ -259,6 +256,7 @@ h2, .faux_h2 {
 }
 h3 {
 	font-size: 1.1em;
+	letter-spacing: -0.75px;
 }
 h3 a, h3 a:hover {
 	text-decoration: none;
