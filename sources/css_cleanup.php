@@ -27,6 +27,7 @@ abstract class CSSCleanup
 {
     protected $theme = 'default';
     protected $css_files = array();
+    protected $css_files_old_names = array();
     protected $do_as_overrides = true;
     protected $carry_from_default = true;
 
@@ -63,9 +64,24 @@ abstract class CSSCleanup
         }
 
         foreach ($this->css_files as $path => $c) {
-            file_put_contents($path, $c);
-            fix_permissions($path);
-            sync_file($path);
+            $old_path = $this->css_files_old_names[$path];
+            if (file_get_contents($old_path) != $c) {
+                if (is_file($path)) {
+                    $revision_path = $path . '.' . strval(time());
+                    copy($old_path, $revision_path);
+                    fix_permissions($revision_path);
+                    sync_file($revision_path);
+                } else {
+                    $editfrom_path = $path . '.editfrom';
+                    copy($old_path, $editfrom_path);
+                    fix_permissions($editfrom_path);
+                    sync_file($editfrom_path);
+                }
+
+                file_put_contents($path, $c);
+                fix_permissions($path);
+                sync_file($path);
+            }
         }
     }
 
@@ -101,6 +117,8 @@ abstract class CSSCleanup
                         }
 
                         $this->css_files[$new_path] = $c;
+
+                        $this->css_files_old_names[$new_path] = $path;
                     }
                 }
             }
