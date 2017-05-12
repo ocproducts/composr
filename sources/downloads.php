@@ -54,7 +54,7 @@ function may_enter_download_category($member_id, $category_id)
 function get_download_category_purchase_url($category_id)
 {
     if (addon_installed('ecommerce')) {
-        $product_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_prods_permissions', 'id', array('p_module' => 'downloads', 'p_category' => strval($category_id)));
+        $product_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_prods_permissions', 'id', array('p_module' => 'downloads', 'p_category' => strval($category_id), 'p_enabled' => 1));
         if ($product_id !== null) {
             return build_url(array('page' => 'purchase', 'type' => 'details', 'type_code' => 'PERMISSION_' . strval($product_id)), get_module_zone('purchase'));
         }

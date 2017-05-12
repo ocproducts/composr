@@ -514,6 +514,20 @@ class Module_downloads
             $edit_cat_url = new Tempcode();
         }
 
+        // Pricing
+        $price = null;
+        $product_details = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('p_module' => 'downloads', 'p_category' => strval($category_id), 'p_enabled' => 1));
+        if (array_key_exists(0, $product_details)) {
+            if ($product_details[0]['p_price'] !== null) {
+                require_code('currency');
+                $price = currency_convert_wrap($product_details[0]['p_price']);
+            } elseif ($product_details[0]['p_price_points'] !== null) {
+                $price = escape_html(integer_format($product_details[0]['p_price_points'])) . ' ' . do_lang('POINTS');
+            } else {
+                $price = do_lang('UNKNOWN');
+            }
+        }
+
         // Warning details
         $warning_details = new Tempcode();
         if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
@@ -521,7 +535,7 @@ class Module_downloads
             if ($purchase_url !== null) {
                 $warning_details->attach(do_template('WARNING_BOX', array(
                     '_GUID' => '8da781b8fbb1ef9b8f47693afcff02b9',
-                    'WARNING' => do_lang_tempcode('CAN_PURCHASE_DOWNLOAD_CATEGORY_ACCESS', escape_html($purchase_url->evaluate())),
+                    'WARNING' => do_lang_tempcode('CAN_PURCHASE_DOWNLOAD_CATEGORY_ACCESS', escape_html($purchase_url->evaluate()), $price),
                 )));
             }
         }
@@ -541,6 +555,7 @@ class Module_downloads
             'SUBCATEGORIES' => $subcategories,
             'DOWNLOADS' => $downloads,
             'SORTING' => $sorting,
+            'PRICE' => $price,
         ));
     }
 

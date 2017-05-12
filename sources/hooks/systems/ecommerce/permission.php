@@ -77,8 +77,6 @@ class Hook_ecommerce_permission
      */
     protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = 0.00, $tax_code = '0%', $price_points = null, $hours = null, $type = 'member_privileges', $privilege = '', $zone = '', $page = '', $module = '', $category = '', $mail_subject = '', $mail_body = '')
     {
-        require_lang('points');
-
         $fields = new Tempcode();
 
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'permission_title' . $name_suffix, $title, true));
@@ -86,6 +84,7 @@ class Hook_ecommerce_permission
         $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_PRICE'), 'permission_price' . $name_suffix, $price, false));
         $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_CODE'), 'permission_tax_code' . $name_suffix, $tax_code, false));
         if (addon_installed('points')) {
+            require_lang('points');
             $fields->attach(form_input_integer(do_lang_tempcode('PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_PRICE_POINTS'), 'permission_price_points' . $name_suffix, $price_points, false));
         }
         $fields->attach(form_input_integer(do_lang_tempcode('PERMISSION_HOURS'), do_lang_tempcode('DESCRIPTION_PERMISSION_HOURS'), 'permission_hours' . $name_suffix, $hours, false));

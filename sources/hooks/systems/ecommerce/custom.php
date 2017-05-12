@@ -65,8 +65,6 @@ class Hook_ecommerce_custom
      */
     protected function _get_fields($name_suffix = '', $title = '', $description = '', $enabled = 1, $price = null, $tax_code = '0%', $shipping_cost = 0.00, $price_points = null, $one_per_member = 0, $mail_subject = '', $mail_body = '')
     {
-        require_lang('points');
-
         $fields = new Tempcode();
 
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'custom_title' . $name_suffix, $title, true));
@@ -75,6 +73,7 @@ class Hook_ecommerce_custom
         $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_CODE'), 'custom_tax_code' . $name_suffix, $tax_code, false));
         $fields->attach(form_input_float(do_lang_tempcode('SHIPPING_COST'), do_lang_tempcode('DESCRIPTION_SHIPPING_COST'), 'custom_shipping_cost' . $name_suffix, $shipping_cost, true));
         if (addon_installed('points')) {
+            require_lang('points');
             $fields->attach(form_input_integer(do_lang_tempcode('PRICE_POINTS'), do_lang_tempcode('DESCRIPTION_PRICE_POINTS'), 'custom_price_points' . $name_suffix, $price_points, false));
         }
         $fields->attach(form_input_tick(do_lang_tempcode('ONE_PER_MEMBER'), do_lang_tempcode('DESCRIPTION_ONE_PER_MEMBER'), 'custom_one_per_member' . $name_suffix, $one_per_member == 1));
