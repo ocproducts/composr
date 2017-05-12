@@ -2347,7 +2347,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 /* This relies on some JavaScript running too, to set the data attributes; works great though for properly marked up thead'd tables*/
 /*{+START,CSS_MODE,mobile}*/
-	.responsive_table, .responsive_table>tbody, .responsive_table>tbody>tr, .responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tfoot, .responsive_table>tfoot>tr, .responsive_table>tfoot>tr>th, .responsive_table>tfoot>tr>td, .responsive_table>tr, .responsive_table>tr>th, .responsive_table>tr>td {
+	.responsive_table, .responsive_table>caption, .responsive_table>tbody, .responsive_table>tbody>tr, .responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tfoot, .responsive_table>tfoot>tr, .responsive_table>tfoot>tr>th, .responsive_table>tfoot>tr>td, .responsive_table>tr, .responsive_table>tr>th, .responsive_table>tr>td {
 		display: block;
 		width: auto;
 		overflow: hidden;
@@ -2364,6 +2364,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 		content: attr(data-th) ":";
 		font-weight: bold;
 		width: 7em;
+		word-wrap: normal !important;
 		display: inline-block;
 		vertical-align: top;
 	}
