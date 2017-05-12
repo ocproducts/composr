@@ -393,6 +393,8 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
         $permission_product_rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('id', 'p_module', 'p_category')));
     }
 
+    $product_det_url = null;
+
     $matches = array();
     if (($post_purchase_access_url) && (preg_match('#^PERMISSION\_(\d+)$#', $type_code, $matches) != 0)) {
         $permission_product_id = intval($matches[1]);
@@ -412,7 +414,7 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
                     list(, , $cma_info) = content_get_details($resource_type, $category_id);
 
                     $page_link = str_replace('_WILD', $category_id, $cma_info['view_page_link_pattern']);
-                    $apt_url = page_link_to_url($page_link, $email_safe);
+                    $product_det_url = page_link_to_url($page_link, $email_safe);
                 }
             }
         }
@@ -428,9 +430,12 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
         $product_det_url = build_url(array('page' => 'subscriptions', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('subscriptions'), null, false, false, $email_safe);
     } elseif (($member_id !== null) && ($post_purchase_access_url) && ($type_code == 'work')) {
         $product_det_url = build_url(array('page' => 'invoices', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('invoices'), null, false, false, $email_safe);
-    } else {
+    }
+
+    if ($product_det_url === null) {
         $product_det_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $type_code), get_module_zone('purchase'), null, false, false, $email_safe);
     }
+
     return $product_det_url;
 }
 
