@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
 <div data-tpl="warnScreen">
 {TITLE}
 

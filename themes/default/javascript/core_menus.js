@@ -135,7 +135,7 @@
         PopupMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(PopupMenu, Menu, /**@lends PopupMenu.prototype*/{
+    $cms.inherits(PopupMenu, Menu, /**@lends PopupMenu#*/{
         events: function () {
             return {
                 'click .js-click-unset-active-menu': 'unsetActiveMenu',
@@ -165,7 +165,7 @@
         this.popup = this.menu + '_pexpand_' + this.rand;
     }
 
-    $cms.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch.prototype*/{
+    $cms.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch#*/{
         events: function () {
             return {
                 'focus .js-focus-pop-up-menu': 'popUpMenu',
@@ -193,7 +193,7 @@
         TreeMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu.prototype*/{
+    $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu#*/{
         events: function () {
             return {
                 'click [data-menu-tree-toggle]': 'toggleMenu'
@@ -221,7 +221,7 @@
         this.menuContentEl = this.$('.js-el-menu-content');
     }
 
-    $cms.inherits(MobileMenu, Menu, /**@lends MobileMenu.prototype*/{
+    $cms.inherits(MobileMenu, Menu, /**@lends MobileMenu#*/{
         events: function () {
             return {
                 'click .js-click-toggle-content': 'toggleContent',
@@ -275,7 +275,7 @@
         SelectMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(SelectMenu, Menu, /**@lends SelectMenu.prototype*/{
+    $cms.inherits(SelectMenu, Menu, /**@lends SelectMenu#*/{
         events: function () {
             return {
                 'change .js-change-redirect-to-value': 'redirect'

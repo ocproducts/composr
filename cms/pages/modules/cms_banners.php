@@ -80,11 +80,12 @@ class Module_cms_banners extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        require_lang('banners');
+
         $this->cat_crud_module = class_exists('Mx_cms_banners_cat') ? new Mx_cms_banners_cat() : new Module_cms_banners_cat();
 
         $type = get_param_string('type', 'browse');
 
-        require_lang('banners');
 
         inform_non_canonical_parameter('b_type');
 
@@ -170,6 +171,7 @@ class Module_cms_banners extends Standard_crud_module
     public function create_selection_list_choose_table($url_map)
     {
         require_code('templates_results_table');
+        require_lang('banners');
 
         $current_ordering = get_param_string('sort', 'b_type ASC', INPUT_FILTER_GET_COMPLEX);
         if (strpos($current_ordering, ' ') === false) {

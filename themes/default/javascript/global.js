@@ -7864,6 +7864,8 @@
                 'mouseover [data-mouseover-class]': 'mouseoverClass',
                 'mouseout [data-mouseout-class]': 'mouseoutClass',
 
+                'click [data-click-toggle-checked]': 'clickToggleChecked',
+
                 // Disable button after click
                 'click [data-disable-on-click]': 'disableButton',
 
@@ -8091,6 +8093,22 @@
                     target.classList.toggle(key, bool);
                 }
             }
+        },
+
+        // Implementation for [data-click-toggle-checked]
+        clickToggleChecked: function (e, target) {
+            var selector = strVal(target.dataset.clickToggleChecked),
+                checkboxes  = [];
+
+            if (selector === '') {
+                checkboxes.push(target);
+            } else {
+                checkboxes = $cms.dom.$$$(selector)
+            }
+
+            checkboxes.forEach(function (checkbox) {
+                $cms.dom.toggleChecked(checkbox);
+            });
         },
 
         // Implementation for [data-disable-on-click]
@@ -9020,7 +9038,7 @@
     };
 
     $cms.templates.ipBanScreen = function (params, container) {
-        var textarea = commandrLs.querySelector('#bans');
+        var textarea = container.querySelector('#bans');
         $cms.manageScrollHeight(textarea);
 
         if (!$cms.$MOBILE()) {
@@ -9476,7 +9494,8 @@
         forms_too = !!forms_too;
         scroll_to_top = (scroll_to_top !== undefined) ? !!scroll_to_top : true;
 
-        var block_pos_y = $cms.dom.findPosY(block_element, true);
+        var block_pos_y = block_element ? $cms.dom.findPosY(block_element, true) : 0;
+
         if (block_pos_y > window.pageYOffset) {
             scroll_to_top = false;
         }

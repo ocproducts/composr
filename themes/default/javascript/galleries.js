@@ -170,15 +170,15 @@
 
         function hideFunc() {
             var ob = document.getElementById('type');
-            if (ob.value == 'TEST') {
+            if (ob.value === 'TEST') {
                 document.getElementById('percentage').disabled = false;
                 document.getElementById('num_winners').disabled = true;
             }
-            if (ob.value == 'COMPETITION') {
+            if (ob.value === 'COMPETITION') {
                 document.getElementById('num_winners').disabled = false;
                 document.getElementById('percentage').disabled = true;
             }
-            if (ob.value == 'SURVEY') {
+            if (ob.value === 'SURVEY') {
                 document.getElementById('text').value = document.getElementById('text').value.replace(/ \[\*\]/g, '');
                 document.getElementById('num_winners').disabled = true;
                 document.getElementById('percentage').disabled = true;

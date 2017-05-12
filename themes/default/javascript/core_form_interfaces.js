@@ -471,11 +471,12 @@
         });
     };
 
-    $cms.templates.formScreenInputHugeComcode = function (params) {
-        var textarea = $cms.dom.$id(params.name),
+    $cms.templates.formScreenInputHugeComcode = function formScreenInputHugeComcode(params) {
+        var required = strVal(params.required),
+            textarea = $cms.dom.$id(params.name),
             input = $cms.dom.$id('form_table_field_input__' + params.randomisedId);
 
-        if (params.required && params.required.includes('wysiwyg') && wysiwygOn()) {
+        if (required.includes('wysiwyg') && wysiwygOn()) {
             textarea.readOnly = true;
         }
 
@@ -485,7 +486,7 @@
 
         $cms.manageScrollHeight(textarea);
         $cms.requireJavascript('jquery_autocomplete').then(function () {
-            setUpComcodeAutocomplete(params.name, params.required && params.required.includes('wysiwyg'));
+            setUpComcodeAutocomplete(params.name, required.includes('wysiwyg'));
         });
     };
 

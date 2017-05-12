@@ -1717,6 +1717,7 @@ function cns_member_choose_signature($new_signature, $member_id = null)
 
     $max_sig_length = cns_get_member_best_group_property($member_id, 'max_sig_length_comcode');
     if (cms_mb_strlen($new_signature) > $max_sig_length) {
+        require_lang('cns');
         warn_exit(make_string_tempcode(escape_html(do_lang('SIGNATURE_TOO_BIG'))));
     }
 

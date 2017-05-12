@@ -50,7 +50,7 @@
                 }
 
                 if (start_date > end_date) {
-                    $cms.ui.alert('{!EVENT_CANNOT_AROUND;}');
+                    $cms.ui.alert('{!calendar:EVENT_CANNOT_AROUND;}');
                     return false;
                 }
             }

@@ -159,7 +159,9 @@ function toggleWysiwyg(name) {
                         textarea.value = window.wysiwyg_original_comcode[id];
                     } else {
                         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
-                        if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
+                        if (window.location.href.indexOf('topics') != -1) {
+                            url += '&forum_db=1';
+                        }
                         var post = 'data=' + encodeURIComponent(wysiwyg_data.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
                         post = $cms.form.modsecurityWorkaroundAjax(post);
                         var request = $cms.doAjaxRequest(url, null, post);
@@ -170,10 +172,12 @@ function toggleWysiwyg(name) {
                             var result = result_tags[0];
                             textarea.value = result.textContent.replace(/\s*$/, '');
                         }
-                        if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') == -1) && (textarea.value != '')) textarea.value += '{\$,page hint: no_wysiwyg}';
+                        if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') == -1) && (textarea.value != '')) {
+                            textarea.value += '{\$,page hint: no_wysiwyg}';
+                        }
                     }
                     if (document.getElementById('toggle_wysiwyg_' + id))
-                        $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwygOn} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
+                        $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
 
                     // Unload editor
                     try {
@@ -195,7 +199,7 @@ function toggleWysiwyg(name) {
     }
 }
 
-window.wysiwyg_readonly_timer = {};
+window.wysiwyg_readonly_timer || (window.wysiwyg_readonly_timer = {});
 function wysiwygSetReadonly(name, readonly) {
     if (window.wysiwyg_editors[name] === undefined) {
         return;
@@ -517,7 +521,7 @@ function loadHtmlEdit(posting_form, ajax_copy) {
 }
 
 function findTagsInEditor(editor, element) {
-    if (!editor.document || !editor.document.$) {
+    if (!editor.document || !editor.document.$ || !editor.document.$.querySelector('body')) {
         return;
     }
 
@@ -589,7 +593,9 @@ function findTagsInEditor(editor, element) {
                 event = editor.window.$.event;
             }
 
-            event.stopPropagation();
+            if (event) {
+                event.stopPropagation();
+            }
 
             if (window.$cms.ui.activateTooltip) {
                 var tag_text = '';
