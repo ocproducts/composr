@@ -45,21 +45,25 @@ class Hook_commandr_command_css_cleanup
 
             require_code('css_cleanup');
 
-            switch ($parameters[1]) {
-                case 'DirSimplify':
-                    $ob = new DirSimplify($parameters[0]);
-                    break;
+            for ($i = 1; $i < count($parameters); $i++) {
+                $parameter = $parameters[$i];
 
-                case 'EmToPx':
-                    $ob = new EmToPx($parameters[0]);
-                    break;
+                switch ($parameter) {
+                    case 'DirSimplify':
+                        $ob = new DirSimplify($parameters[0]);
+                        break;
 
-                default:
-                    return array('', '', '', do_lang('MISSING_RESOURCE'));
+                    case 'EmToPx':
+                        $ob = new EmToPx($parameters[0]);
+                        break;
+
+                    default:
+                        return array('', '', '', do_lang('MISSING_RESOURCE'));
+                }
+
+                $css_files = $ob->work_out_changes();
+                $ob->save_changes();
             }
-
-            $css_files = $ob->work_out_changes();
-            $ob->save_changes();
 
             $result = do_lang('SUCCESS');
 
