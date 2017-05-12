@@ -26,13 +26,16 @@
 	</select>
 	<select id="f_size" name="f_size">
 		<option value="">[{!SIZE}]</option>
-		<option value="0.8">0.8</option>
-		<option value="1">1</option>
-		<option value="1.5">1.5</option>
-		<option value="2">2</option>
-		<option value="2.5">2.5</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
+		{+START,IF,{$EQ,{$CONFIG_OPTION,wysiwyg_font_units},em}}
+			{+START,LOOP,0.8\,1\,1.5\,2\,2.5\,3\,4}
+				<option value="{_loop_var*}">{_loop_var*}em</option>
+			{+END}
+		{+END}
+		{+START,IF,{$NEQ,{$CONFIG_OPTION,wysiwyg_font_units},em}}
+			{+START,LOOP,8\,9\,10\,11\,12\,14\,16\,18\,20\,22\,24\,36\,48\,72}
+				<option value="{_loop_var*}px">{_loop_var*}px</option>
+			{+END}
+		{+END}
 	</select>
 	<select id="f_colour" name="f_colour">
 		<option value="">[{!COLOUR}]</option>
