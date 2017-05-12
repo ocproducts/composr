@@ -196,6 +196,7 @@ tt, kbd, samp {
 
 abbr {
 	border-bottom: 1px dotted; /* For Safari, which does not have it by default */
+	text-decoration: none;
 }
 
 /* Give all browsers a 'q' tag with smart quotes */
