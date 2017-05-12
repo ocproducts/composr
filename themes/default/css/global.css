@@ -1987,11 +1987,11 @@ table.scrollable_inside {
 	padding: 0.7em;
 }
 
-{+START,IF,{$MOBILE}}
+/*{+START,IF,{$MOBILE}}*/
 	.spaced_table td {
 		overflow-x: auto;
 	}
-{+END}
+/*{+END}*/
 
 /* Undo any descendant spacing for nested tables made in WYSIWYG */
 .results_table table[cellpadding="0"] td, .results_table table[cellpadding="0"] th {
@@ -3580,14 +3580,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-{+START,IF,{$ADDON_INSTALLED,actionlog}}
+/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
 	.buttons__undo {
 		background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
 	}
 	.buttons__revisions {
 		background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 	}
-{+END}
+/*{+END}*/
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
