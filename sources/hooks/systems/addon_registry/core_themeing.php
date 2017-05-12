@@ -117,6 +117,7 @@ class Hook_addon_registry_core_themeing
             'sources/hooks/systems/snippets/exists_theme.php',
             'adminzone/load_template.php',
             'adminzone/tempcode_tester.php',
+            'sources/css_cleanup.php',
             'sources/hooks/systems/addon_registry/core_themeing.php',
             'themes/default/javascript/theme_colours.js',
             'themes/default/templates/THEME_IMAGE_MANAGE_SCREEN.tpl',

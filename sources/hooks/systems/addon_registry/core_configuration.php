@@ -116,6 +116,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/enable_seo_fields.php',
             'sources/hooks/systems/config/enable_staff_notes.php',
             'sources/hooks/systems/config/filetype_icons.php',
+            'sources/hooks/systems/config/wysiwyg_font_units.php',
             'sources/hooks/systems/config/force_local_temp_dir.php',
             'sources/hooks/systems/config/general_safety_listing_limit.php',
             'sources/hooks/systems/config/hack_ban_threshold.php',

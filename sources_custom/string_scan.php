@@ -318,6 +318,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BANNERS_C
         BANNERS_D
         BANNER_ADS
+        WYSIWYG_FONT_UNITS
+        CONFIG_OPTION_wysiwyg_font_units
+        CONFIG_OPTION_wysiwyg_font_units_VALUE_px
+        CONFIG_OPTION_wysiwyg_font_units_VALUE_em
         ADDON
         ADDONS
         ADDONS_NOT_INSTALLED_IN_SETUPWIZARD
