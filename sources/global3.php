@@ -1186,7 +1186,7 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
             $str = rtrim($str, '.');
         }
     }
-    if ($only_needed_decs) {
+    if ($only_needed_decs && $decs_wanted != 0) {
         $str = rtrim(rtrim($str, '0'), '.');
     }
     return $str;
@@ -1220,7 +1220,7 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
         }
     }
     if ($only_needed_decs && $decs_wanted != 0) {
-        $str = preg_replace('#\.$#', '', preg_replace('#0+$#', '', $str));
+        $str = rtrim(rtrim($str, '0'), '.');
     }
     return $str;
 }
