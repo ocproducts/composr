@@ -3495,6 +3495,46 @@
 
     /**
      * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param callback
+     */
+    $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
+        // To be implemented
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param callback
+     */
+    $cms.dom.slideDown = function slideDown(el, duration, callback) {
+        // To be implemented
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param callback
+     */
+    $cms.dom.slideUp = function slideUp(el, duration, callback) {
+        // To be implemented
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param callback
+     */
+    $cms.dom.slideToggle = function slideToggle(el, duration, callback) {
+        // To be implemented
+    };
+
+    /**
+     * @memberof $cms.dom
      * @param keyboardEvent
      * @param checkKey
      * @returns {*}
@@ -6793,11 +6833,11 @@
 
                     $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
 
-                    if (that.boxWrapperEl) {
-                        window.setTimeout(function () {
+                    window.setTimeout(function () {
+                        if (isEl(that.boxWrapperEl)) {
                             $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_finished);
-                        }, 1000);
-                    }
+                        }
+                    }, 1000);
 
                     $cms.dom.on(iframe, 'load', function () {
                         if (($cms.dom.hasIframeAccess(iframe)) && (!iframe.contentWindow.document.querySelector('h1')) && (!iframe.contentWindow.document.querySelector('h2'))) {
@@ -9493,6 +9533,10 @@
         append = !!append;
         forms_too = !!forms_too;
         scroll_to_top = (scroll_to_top !== undefined) ? !!scroll_to_top : true;
+
+        if (!block_element) {
+            return;
+        }
 
         var block_pos_y = block_element ? $cms.dom.findPosY(block_element, true) : 0;
 

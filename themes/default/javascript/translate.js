@@ -28,9 +28,8 @@ function translate(name, old, lang_from, lang_to) {
 
         var newScript = document.createElement('script');
         newScript.type = 'text/javascript';
-        var source = 'https://www.googleapis.com/language/translate/v2?key=' + encodeURIComponent(apiKey) + '&source=' + encodeURIComponent(lang_from) + '&target=' + encodeURIComponent(lang_to) + '&callback=translateText&q=' + encodeURIComponent(old);
-        newScript.src = source;
-        document.querySelector('head').appendChild(newScript);
+        newScript.src = 'https://www.googleapis.com/language/translate/v2?key=' + encodeURIComponent(apiKey) + '&source=' + encodeURIComponent(lang_from) + '&target=' + encodeURIComponent(lang_to) + '&callback=translateText&q=' + encodeURIComponent(old);
+        document.head.appendChild(newScript);
     }
 }
 

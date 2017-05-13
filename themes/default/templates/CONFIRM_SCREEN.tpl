@@ -1,4 +1,5 @@
-<div data-tpl="confirmScreen" data-tpl-params="{+START,PARAMS_JSON,JAVASCRIPT}{_*}{+END}">
+{$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
+<div data-require-javascript="core_abstract_interfaces" data-tpl="confirmScreen" data-tpl-params="{+START,PARAMS_JSON,JAVASCRIPT}{_*}{+END}">
 {TITLE}
 
 {+START,IF_NON_PASSED,TEXT}

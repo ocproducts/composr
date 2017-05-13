@@ -14,12 +14,12 @@ function processWave(e) {
         return;
     }
 
-    var pos = window[e.id][0];
-    var max_color = window[e.id][1];
-    var min_color = window[e.id][2];
-    var text_nodes = window[e.id][4];
+    var pos = window[e.id][0],
+        maxColor = window[e.id][1],
+        minColor = window[e.id][2],
+        textNodes = window[e.id][4];
 
-    if (text_nodes.length === 0)  { // Setup
+    if (textNodes.length === 0)  { // Setup
         var text_nodes_temp = findTextNodes(e);
 
         // Now split up the nodes so each is actually wrapped by a span
@@ -32,18 +32,18 @@ function processWave(e) {
                 var span = document.createElement('span');
                 var te = document.createTextNode(text.substr(j, 1));
                 span.appendChild(te);
-                text_nodes.push(span);
+                textNodes.push(span);
                 parent.appendChild(span);
             }
         }
 
-        window[e.id][4] = text_nodes;
+        window[e.id][4] = textNodes;
     }
 
-    var range = text_nodes.length;
+    var range = textNodes.length;
 
     // Apply colour wave
-    for (var i = 0; i < text_nodes.length; i++) {
+    for (var i = 0; i < textNodes.length; i++) {
         var dist_leftwards = i - pos;
         if (dist_leftwards < 0) dist_leftwards = i + range - pos;
         var dist_rightwards = pos - i;
@@ -51,26 +51,25 @@ function processWave(e) {
 
         var diff = (dist_leftwards < dist_rightwards) ? dist_leftwards : dist_rightwards;
         var fraction = diff / (range / 2);
-        text_nodes[i].style.color = '#' + colorInterpolation(max_color, min_color, fraction);
+        textNodes[i].style.color = '#' + colorInterpolation(maxColor, minColor, fraction);
     }
 
     // Cycle around
     window[e.id][0]++;
-    if (window[e.id][0] > text_nodes.length) {
+    if (window[e.id][0] > textNodes.length) {
         window[e.id][0] = 0;
     }
 
     function colorInterpolation(max_color, min_color, fraction) {
-        var min_color_r = hexToDec(min_color.substr(0, 2));
-        var min_color_g = hexToDec(min_color.substr(2, 2));
-        var min_color_b = hexToDec(min_color.substr(4, 2));
-        var max_color_r = hexToDec(max_color.substr(0, 2));
-        var max_color_g = hexToDec(max_color.substr(2, 2));
-        var max_color_b = hexToDec(max_color.substr(4, 2));
-
-        var color_r = min_color_r + fraction * (max_color_r - min_color_r);
-        var color_g = min_color_g + fraction * (max_color_g - min_color_g);
-        var color_b = min_color_b + fraction * (max_color_b - min_color_b);
+        var min_color_r = hexToDec(min_color.substr(0, 2)),
+            min_color_g = hexToDec(min_color.substr(2, 2)),
+            min_color_b = hexToDec(min_color.substr(4, 2)),
+            max_color_r = hexToDec(max_color.substr(0, 2)),
+            max_color_g = hexToDec(max_color.substr(2, 2)),
+            max_color_b = hexToDec(max_color.substr(4, 2)),
+            color_r = min_color_r + fraction * (max_color_r - min_color_r),
+            color_g = min_color_g + fraction * (max_color_g - min_color_g),
+            color_b = min_color_b + fraction * (max_color_b - min_color_b);
 
         return decToHex(window.parseInt(color_r)) + decToHex(window.parseInt(color_g)) + decToHex(window.parseInt(color_b));
     }

@@ -22,8 +22,8 @@ function addAttachment(start_num, posting_field_name) {
     }
 
     // Rebuild uploader button, if we have a singular button
-    if (window.rebuild_attachment_button_for_next !== undefined) {
-        rebuild_attachment_button_for_next(posting_field_name);
+    if (window.rebuildAttachmentButtonForNext != null) {
+        rebuildAttachmentButtonForNext(posting_field_name);
     }
 
     // Previous file input cannot be used anymore, if it exists

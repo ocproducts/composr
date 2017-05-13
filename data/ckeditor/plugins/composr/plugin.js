@@ -31,12 +31,12 @@
 
 			var uses_plupload = false;
 
-			if (typeof window.rebuild_attachment_button_for_next != 'undefined') {
+			if (typeof window.rebuildAttachmentButtonForNext != 'undefined') {
 				var aub=document.getElementById('attachment_upload_button');
 				if (!aub || aub.parentNode.parentNode.style.display=='none') // If attachment button was not placed elsewhere
 				{
 					window.setTimeout(function () {
-						rebuild_attachment_button_for_next(editor.element.$.id, document.getElementsByClassName('cke_button__composr_image')[0].id);
+						rebuildAttachmentButtonForNext(editor.element.$.id, document.getElementsByClassName('cke_button__composr_image')[0].id);
 					}, 0);
 
 					uses_plupload = true;

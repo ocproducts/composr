@@ -144,8 +144,8 @@ function toggleWysiwyg(name) {
                     textarea.disabled = false;
                     textarea.readOnly = false;
 
-                    if (window.rebuild_attachment_button_for_next !== undefined)
-                        rebuild_attachment_button_for_next(id, 'attachment_upload_button');
+                    if (window.rebuildAttachmentButtonForNext !== undefined)
+                        rebuildAttachmentButtonForNext(id, 'attachment_upload_button');
 
                     // Unload editor
                     var wysiwyg_data = window.wysiwyg_editors[id].getData();

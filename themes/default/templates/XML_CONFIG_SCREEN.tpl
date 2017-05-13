@@ -1,4 +1,5 @@
-<div data-view="XmlConfigScreen">
+{$REQUIRE_JAVASCRIPT,core_configuration}
+<div data-require-javascript="core_configuration" data-view="XmlConfigScreen">
 {TITLE}
 
 <form title="{!PRIMARY_PAGE_FORM}" action="{POST_URL*}" method="post" autocomplete="off" class="js-form-xml-config">

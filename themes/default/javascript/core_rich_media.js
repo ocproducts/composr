@@ -411,7 +411,7 @@
             $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
-        window.rebuild_attachment_button_for_next = rebuildAttachmentButtonForNext;
+        window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
         function rebuildAttachmentButtonForNext(posting_field_name, attachment_upload_button) {
             if (posting_field_name !== params.postingFieldName) {
                 return false;
@@ -432,7 +432,7 @@
 
             window.$cmsLoad.push(function () {
                 if (document.getElementById('attachment_upload_button')) {
-                    window.rebuild_attachment_button_for_next(params.postingFieldName, 'attachment_upload_button');
+                    window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
                 }
             });
         }

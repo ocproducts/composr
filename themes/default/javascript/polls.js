@@ -1,5 +1,6 @@
 (function ($cms) {
 
+    $cms.views.PollBox = PollBox;
     /**
      * @memberof $cms.views
      * @class
@@ -27,8 +28,6 @@
             return false;
         }
     });
-
-    $cms.views.PollBox = PollBox;
 
     $cms.templates.blockMainPoll = function blockMainPoll(params) {
         internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*poll.*'], {}, false, true);
