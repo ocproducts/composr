@@ -38,7 +38,8 @@ foreach ($gifts as $gift) {
     if (!is_null($username)) {
         $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
         $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
-        $signature = get_translated_tempcode('gifts', $GLOBALS['FORUM_DRIVER']->get_member_row($member_id), 'm_signature', $GLOBALS['FORUM_DB']);
+        $just_member_row = db_map_restrict($GLOBALS['FORUM_DRIVER']->get_member_row($member_id), array('id', 'm_signature'));
+        $signature = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
         $points = $gift['cnt'];
         $rank = get_translated_text(cns_get_group_property(cns_get_member_primary_group($member_id), 'name'), $GLOBALS['FORUM_DB']);
 

@@ -63,7 +63,13 @@ class Database_Static_oracle
      */
     public function db_create_index($table_name, $index_name, $_fields, $db)
     {
+        if (preg_match('#\(25\d\)#', $_fields) != 0) {
+            // We can't support this in SQL Server http://www.oratable.com/ora-01450-maximum-key-length-exceeded/.
+            // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
+            return;
+        }
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
+
         if ($index_name[0] == '#') {
             $index_name = substr($index_name, 1);
             $fields = explode(',', $_fields);

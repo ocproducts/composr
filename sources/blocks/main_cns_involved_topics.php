@@ -83,7 +83,7 @@ class Block_main_cns_involved_topics
             $where_more .= ' AND p_cache_forum_id<>' . strval($forum2);
         }
         */
-        $rows = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT p_topic_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_poster=' . strval($member_id_of) . $where_more . ' ORDER BY p_time DESC', $max, $start, false, true);
+        $rows = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT p_topic_id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_poster=' . strval($member_id_of) . $where_more . ' ORDER BY p_time DESC', $max, $start, false, true);
         if (count($rows) != 0) {
             if (get_bot_type() === null) {
                 $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT p_topic_id) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_poster=' . strval($member_id_of) . $where_more, false, true);

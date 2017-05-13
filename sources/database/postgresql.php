@@ -62,7 +62,14 @@ class Database_Static_postgresql
         if ($index_name[0] == '#') {
             return;
         }
+
+        if (preg_match('#\(25\d\)#', $_fields) != 0) {
+            // We can't support this in PostgreSQL
+            // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
+            return;
+        }
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
+
         $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 

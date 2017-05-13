@@ -1239,12 +1239,12 @@ class Module_cms_galleries extends Standard_crud_module
     /**
      * Standard crud_module cat getter.
      *
-     * @param  AUTO_LINK $id The entry for which the cat is sought
+     * @param  ID_TEXT $id The entry for which the cat is sought
      * @return mixed The cat
      */
     public function get_cat($id)
     {
-        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'cat', array('id' => $id));
+        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'cat', array('id' => intval($id)));
         if (is_null($temp)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'image'));
         }
@@ -1830,12 +1830,12 @@ class Module_cms_galleries_alt extends Standard_crud_module
     /**
      * Standard crud_module cat getter.
      *
-     * @param  AUTO_LINK $id The entry for which the cat is sought
+     * @param  ID_TEXT $id The entry for which the cat is sought
      * @return mixed The cat
      */
     public function get_cat($id)
     {
-        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('videos', 'cat', array('id' => $id));
+        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('videos', 'cat', array('id' => intval($id)));
         if (is_null($temp)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'video'));
         }
