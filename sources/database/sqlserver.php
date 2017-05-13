@@ -395,7 +395,7 @@ class Database_Static_sqlserver
                 $max += $start;
             }
 
-            if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
                 $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
             }
         }
@@ -423,7 +423,7 @@ class Database_Static_sqlserver
                 @mssql_data_seek($results, $start);
             }
         }
-        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT '))) && ($results === true)) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT '))) && ($results === true)) && (!$fail_ok)) {
             if (function_exists('sqlsrv_errors')) {
                 $err = serialize(sqlsrv_errors());
             } else {
@@ -450,7 +450,8 @@ class Database_Static_sqlserver
             }
         }
 
-        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
+        $sub = substr(ltrim($query), 0, 4);
+        if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }
 

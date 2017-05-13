@@ -1247,40 +1247,67 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
     static $catalogue_entry_cache = array();
     if ((!isset($catalogue_entry_cache[$entry_id])) || (class_exists('Resource_fs_base')/*Implies resource-fs import*/)) {
         $catalogue_entry_cache[$entry_id] = array();
-        $query = '';
-        foreach (array('catalogue_efv_float', 'catalogue_efv_integer', 'catalogue_efv_long', 'catalogue_efv_long_trans', 'catalogue_efv_short', 'catalogue_efv_short_trans',) as $table) {
-            if ($query != '') {
-                $query .= ' UNION ';
-            }
-            $query .= 'SELECT f.id AS f_id,v.cv_value';
-            if (!multi_lang_content()) {
-                if (strpos($table, '_trans') !== false) {
-                    $query .= ',v.cv_value__text_parsed,v.cv_value__source_user';
-                } else {
-                    $query .= ',NULL AS cv_value__text_parsed,NULL AS cv_value__source_user';
-                }
-            }
-            $query .= ' FROM ' . get_table_prefix() . 'catalogue_fields f JOIN ' . get_table_prefix() . $table . ' v ON v.cf_id=f.id';
-            $query .= ' WHERE v.ce_id=' . strval($entry_id);
-            if ($only_field_ids !== null) {
-                $query .= ' AND (';
-                if ($only_field_ids != array()) {
-                    foreach ($only_field_ids as $i => $_field_id) {
-                        if ($i != 0) {
-                            $query .= ' OR ';
-                        }
-                        $query .= 'f.id=' . strval($_field_id);
+
+        $only_fields_sql = '';
+        if ($only_field_ids !== null) {
+            $only_fields_sql .= ' AND (';
+            if ($only_field_ids != array()) {
+                foreach ($only_field_ids as $i => $_field_id) {
+                    if ($i != 0) {
+                        $only_fields_sql .= ' OR ';
                     }
-                } else {
-                    $query .= '1=0';
+                    $only_fields_sql .= 'f.id=' . strval($_field_id);
                 }
-                $query .= ')';
+            } else {
+                $only_fields_sql .= '1=0';
+            }
+            $only_fields_sql .= ')';
+        }
+
+        $tables = array('catalogue_efv_float', 'catalogue_efv_integer', 'catalogue_efv_long', 'catalogue_efv_long_trans', 'catalogue_efv_short', 'catalogue_efv_short_trans',);
+        if (strpos(get_db_type(), 'mysql') !== false) { // Optimised for MySQL
+            $query = '';
+            foreach ($tables as $table) {
+                if ($query != '') {
+                    $query .= ' UNION ';
+                }
+                $query .= 'SELECT f.id AS f_id,'.db_cast('v.cv_value', 'CHAR');
+                if (!multi_lang_content()) {
+                    if (strpos($table, '_trans') !== false) {
+                        $query .= ',v.cv_value__text_parsed,v.cv_value__source_user';
+                    } else {
+                        $query .= ',NULL AS cv_value__text_parsed,NULL AS cv_value__source_user';
+                    }
+                }
+                $query .= ' FROM ' . get_table_prefix() . 'catalogue_fields f JOIN ' . get_table_prefix() . $table . ' v ON v.cf_id=f.id';
+                $query .= ' WHERE v.ce_id=' . strval($entry_id);
+                $query .= $only_fields_sql;
+            }
+            $rows = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+            foreach ($rows as $row) {
+                $catalogue_entry_cache[$entry_id][$row['f_id']] = $row;
+            }
+        } else { // Other databases may not support unions with different data types, even if we do casting (PostgreSQL definitely doesn't)
+            foreach ($tables as $table) {
+                $query = 'SELECT f.id AS f_id,v.cv_value';
+                if (!multi_lang_content()) {
+                    if (strpos($table, '_trans') !== false) {
+                        $query .= ',v.cv_value__text_parsed,v.cv_value__source_user';
+                    } else {
+                        $query .= ',NULL AS cv_value__text_parsed,NULL AS cv_value__source_user';
+                    }
+                }
+                $query .= ' FROM ' . get_table_prefix() . 'catalogue_fields f JOIN ' . get_table_prefix() . $table . ' v ON v.cf_id=f.id';
+                $query .= ' WHERE v.ce_id=' . strval($entry_id);
+                $query .= $only_fields_sql;
+
+                $rows = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+                foreach ($rows as $row) {
+                    $catalogue_entry_cache[$entry_id][$row['f_id']] = $row;
+                }
             }
         }
-        $rows = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
-        foreach ($rows as $row) {
-            $catalogue_entry_cache[$entry_id][$row['f_id']] = $row;
-        }
+
         $value = isset($catalogue_entry_cache[$entry_id][$field_id]) ? $catalogue_entry_cache[$entry_id][$field_id] : null;
 
         if (class_exists('Resource_fs_base')) {

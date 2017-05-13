@@ -355,13 +355,13 @@ class Database_Static_access
                 $max += $start;
             }
 
-            if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
                 $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
             }
         }
 
         $results = @odbc_exec($db, $query);
-        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = odbc_errormsg($db);
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
@@ -378,7 +378,8 @@ class Database_Static_access
             }
         }
 
-        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ') && ($results !== false)) && ($results !== true)) {
+        $sub = substr(ltrim($query), 0, 4);
+        if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }
 

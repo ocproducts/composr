@@ -671,6 +671,10 @@ function step_3()
             continue;
         }
 
+        if (isset($SITE_INFO['db_type'])) {
+            $selected = ($database == $SITE_INFO['db_type']);
+        }
+
         if (array_key_exists($database, $database_names)) {
             $mapped_name = $database_names[$database];
         } else {

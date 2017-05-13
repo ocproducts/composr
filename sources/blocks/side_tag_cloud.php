@@ -92,9 +92,17 @@ class Block_side_tag_cloud
         } else {
             $where = '1=1';
         }
-        $meta_rows = $GLOBALS['SITE_DB']->query('SELECT meta_for_type,meta_for_id,meta_keyword,COUNT(*) AS cnt FROM ' . get_table_prefix() . 'seo_meta_keywords m WHERE ' . $where . ' GROUP BY ' . $GLOBALS['SITE_DB']->translate_field_ref('meta_keyword') . ' ORDER BY COUNT(*) DESC', 300/*reasonable limit*/, null, false, false, array('meta_keyword' => 'SHORT_TRANS'));
+        $sql = '
+            SELECT
+                ' . $GLOBALS['SITE_DB']->translate_field_ref('meta_keyword') . ' AS meta_keyword,
+                COUNT(*) AS cnt
+            FROM ' . get_table_prefix() . 'seo_meta_keywords m
+            WHERE ' . $where . '
+            GROUP BY ' . $GLOBALS['SITE_DB']->translate_field_ref('meta_keyword') . '
+            ORDER BY COUNT(*) DESC';
+        $meta_rows = $GLOBALS['SITE_DB']->query($sql, 300/*reasonable limit*/, null, false, false, array('meta_keyword' => 'SHORT_TRANS'));
         foreach ($meta_rows as $mr) {
-            $keyword = get_translated_text($mr['meta_keyword']);
+            $keyword = $mr['meta_keyword'];
             if (strlen(is_numeric($keyword) ? strval(intval($keyword)) : $keyword) < 4) {
                 continue; // Won't be indexed, plus will uglify the tag list
             }

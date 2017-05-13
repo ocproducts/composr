@@ -95,10 +95,6 @@ class Module_admin_customers
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (substr(get_db_type(), 0, 5) != 'mysql') {
-            return;
-        }
-
         if (get_forum_type() != 'cns') {
             return; // Conversr only
         }
@@ -150,7 +146,7 @@ class Module_admin_customers
 
         // Tracker...
 
-        if (get_db_type() != 'xml') {
+        if (substr(get_db_type(), 0, 5) == 'mysql') {
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_table` (
                                         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                                         `bug_id` int(10) unsigned NOT NULL DEFAULT '0',

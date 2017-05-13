@@ -432,7 +432,7 @@ class Hook_vb3
                 } else {
                     if ($row['avatarid'] != 0) {
                         $avatar_rows = $db->query('SELECT * FROM ' . $table_prefix . 'avatar WHERE avatarid=' . strval($row['avatarid']));
-                        $setting_row = $db->query('SELECT value,defaultvalue FROM ' . $table_prefix . 'setting WHERE varname=\'avatarpath\'');
+                        $setting_row = $db->query('SELECT value,defaultvalue FROM ' . $table_prefix . 'setting WHERE ' . db_string_equal_to('varname', 'avatarpath'));
                         $setting = ($setting_row[0]['value'] == '') ? $setting_row[0]['defaultvalue'] : $setting_row[0]['value'];
                         if (array_key_exists(0, $avatar_rows)) {
                             $avatar_row = $avatar_rows[0];

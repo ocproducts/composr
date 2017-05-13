@@ -62,7 +62,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             </td>
             <td>Certain kinds of content can have authors instead of submitters (e.g. &#039;ocProducts&#039;). The authors may be independently described and searched under.</td>
             <td><a href="http://compo.sr/docs10/tut-authors.htm">Authors</a><br /><br /><a href="http://compo.sr/docs10/tut-users.htm">People in their roles</a></td>
-            <td>bio<br /><br />biography</td>
+            <td>login<br /><br />log-in<br /><br />sign-in<br /><br />sign-on<br /><br />logon<br /><br />log-on<br /><br />authorize<br /><br />bio<br /><br />biography</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=authors&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -224,7 +224,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/users/custom_profile_fields.png" />Conversr CPFs<br />(<kbd>cns_cpfs</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/adminzone/tools/users/custom_profile_fields.png" />Conversr Custom Profile Fields<br />(<kbd>cns_cpfs</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
@@ -613,7 +613,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
             <td>Translate the software, or just change what it says for stylistic reasons.</td>
-            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language (for end users)</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-content.htm">Translating Composr content</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-code-philosophy.htm">Translations code philosophy</a></td>
+            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language (for end users)</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-content.htm">Translating Composr content</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-code-philosophy.htm">Translations code philosophy</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-maintenance.htm">International support communities</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=core_language_editing&amp;status_id=10">Link</a></td>
         </tr>
@@ -890,7 +890,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             </td>
             <td>Switch to Composr from other software. This addon provides the architecture for importing, and a number of prewritten importers.</td>
             <td><a href="http://compo.sr/docs10/tut-importer.htm">Importing data into Composr</a></td>
-            <td>convert<br /><br />migrate<br /><br />interchange</td>
+            <td>convert<br /><br />migrate<br /><br />interchange<br /><br />importance<br /><br />priority<br /><br />precedence<br /><br />level</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=import&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -913,7 +913,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
             <td>A block to allow visitors to choose their language.</td>
-            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language (for end users)</a></td>
+            <td><a href="http://compo.sr/docs10/tut-intl.htm">Localisation and internationalisation</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-users.htm">Changing the site language (for end users)</a><br /><br /><a href="http://compo.sr/docs10/tut-intl-maintenance.htm">International support communities</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=language_block&amp;status_id=10">Link</a></td>
         </tr>
@@ -974,7 +974,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             </td>
             <td>News and blogging.</td>
             <td><a href="http://compo.sr/docs10/tut-news.htm">Releasing news &amp; running a Blog</a><br /><br /><a href="http://compo.sr/docs10/tut-adv-news.htm">Advanced news</a><br /><br /><a href="http://compo.sr/docs10/tut-information.htm">Choosing how to publish</a></td>
-            <td>blogs<br /><br />press release<br /><br />story<br /><br />stories<br /><br />article</td>
+            <td>blogs<br /><br />press release<br /><br />journal<br /><br />story<br /><br />stories<br /><br />article</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=news&amp;status_id=10">Link</a></td>
         </tr>
     
@@ -1200,7 +1200,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
                 <strong>Core</strong>: No<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>
-            <td>Provides an option for the software to send SMS messages, via the commercial Clickatell web service.</td>
+            <td>Provides an option for the software to send SMS messages, via the commercial Clickatell web service. By default this is only used by the notifications system.</td>
             <td><a href="http://compo.sr/docs10/tut-notifications.htm">Notifications</a></td>
             <td></td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=sms&amp;status_id=10">Link</a></td>

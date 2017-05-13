@@ -434,7 +434,7 @@ class Hook_smf2
                 $cpf_rows = $db->query('SELECT id_field,col_name FROM ' . $table_prefix . 'custom_fields');
                 foreach ($cpf_rows as $cpf_row) {
                     $cpf_id = import_id_remap_get('cpf', strval($cpf_row['id_field']));
-                    $cpf_value = $db->query('SELECT value FROM ' . $table_prefix . 'themes WHERE id_member=' . $row['id_member'] . ' AND variable=\'' . $cpf_row['col_name'] . '\'');
+                    $cpf_value = $db->query('SELECT value FROM ' . $table_prefix . 'themes WHERE id_member=' . $row['id_member'] . ' AND ' . db_string_equal_to('variable', $cpf_row['col_name']));
                     if (!isset($cpf_value[0])) {
                         continue;
                     }
@@ -648,7 +648,7 @@ class Hook_smf2
 
                 $avatar_url = '';
                 if (!isset($row['avatar']) || (strlen($row['avatar']) == 0)) {
-                    $query_attachments = 'SELECT id_member,filename,width,height,size,attachment_type FROM ' . $table_prefix . 'attachments WHERE attachment_type=\'1\' AND id_member=\'' . strval($row['id_member']) . '\'';
+                    $query_attachments = 'SELECT id_member,filename,width,height,size,attachment_type FROM ' . $table_prefix . 'attachments WHERE ' . db_string_equal_to('attachment_type', '1') . ' AND ' . db_string_equal_to('id_member', strval($row['id_member']));
 
                     $attachment_data = $db->query($query_attachments, 1, 0);
                     if (isset($attachment_data[0]['filename']) && (strlen($attachment_data[0]['filename']) > 0)) {

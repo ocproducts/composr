@@ -270,8 +270,7 @@ class Database_Static_mysqli extends Database_super_mysql
             }
         }
 
-        $sub = substr(ltrim($query), 0, 7);
-        $sub = substr($query, 0, 4);
+        $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }

@@ -452,7 +452,7 @@ class Block_main_multi_content
                                 $sort .= ' DESC';
                             }
 
-                            $select_rating = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . $first_id_field . ') AS average_rating';
+                            $select_rating = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . db_cast($first_id_field, 'CHAR') . ') AS average_rating';
                             $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . 'ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
                             break;
                         }
@@ -465,7 +465,7 @@ class Block_main_multi_content
                                 $sort .= ' DESC';
                             }
 
-                            $select_rating = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . $first_id_field . ') AS compound_rating';
+                            $select_rating = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . db_cast($first_id_field, 'CHAR') . ') AS compound_rating';
                             $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . 'ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
                             break;
                         }

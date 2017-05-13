@@ -65,6 +65,7 @@ function do_work()
     }
 
     $num_wanted = isset($_SERVER['argv'][1]) ? intval($_SERVER['argv'][1]) : 200;
+    $want_zones = isset($_SERVER['argv'][2]) ? (in_array('zones', explode(',', $_SERVER['argv'][2])));
 
     require_code('config2');
     set_option('post_read_history_days', '0'); // Needed for a little sanity in recent post retrieval
@@ -155,15 +156,17 @@ function do_work()
     }
 
     // zones
-    require_code('zones2');
-    require_code('abstract_file_manager');
-    for ($i = $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)'); $i < min($num_wanted, 1000/* lets be somewhat reasonable! */); $i++) {
-        actual_add_zone(uniqid('', false), random_line(), 'start', random_line(), 'default', 0);
-    }
-    echo 'done zone stuff' . "\n";
+    if ($want_zones) {
+        require_code('zones2');
+        require_code('abstract_file_manager');
+        for ($i = $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)'); $i < min($num_wanted, 1000/* lets be somewhat reasonable! */); $i++) {
+            actual_add_zone(uniqid('', false), random_line(), 'start', random_line(), 'default', 0);
+        }
+        echo 'done zone stuff' . "\n";
 
-    if (function_exists('gc_collect_cycles')) {
-        gc_enable();
+        if (function_exists('gc_collect_cycles')) {
+            gc_enable();
+        }
     }
 
     // calendar events

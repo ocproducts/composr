@@ -1004,12 +1004,12 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     // Rating ordering, via special encoding
     if (strpos($order, 'compound_rating:') !== false) {
         list(, $rating_type, $meta_rating_id_field) = explode(':', $order);
-        $select .= ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . $meta_rating_id_field . ') AS compound_rating';
+        $select .= ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . db_cast($meta_rating_id_field, 'CHAR') . ') AS compound_rating';
         $order = 'compound_rating';
     }
     if (strpos($order, 'average_rating:') !== false) {
         list(, $rating_type, $meta_rating_id_field) = explode(':', $order);
-        $select .= ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . $meta_rating_id_field . ') AS average_rating';
+        $select .= ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . db_cast($meta_rating_id_field, 'CHAR') . ') AS average_rating';
         $order = 'average_rating';
     }
 
@@ -1031,7 +1031,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             if ($meta_id_field == 'the_zone:the_page') { // Special case
                 $meta_join = 'm.meta_for_id=CONCAT(r.the_zone,\':\',r.the_page)';
             } else {
-                $meta_join = 'm.meta_for_id=r.' . $meta_id_field;
+                $meta_join = 'm.meta_for_id=' . db_cast('r.' . $meta_id_field, 'CHAR');
             }
             $extra_join = '';
             if (multi_lang_content()) {

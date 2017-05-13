@@ -50,7 +50,7 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
             return array('', '', '', '');
         }
 
-        $join = ' LEFT JOIN ' . get_table_prefix() . 'content_privacy priv ON priv.content_id=' . $table_alias . '.' . $first_id_field . ' AND ' . db_string_equal_to('priv.content_type', $content_type);
+        $join = ' LEFT JOIN ' . get_table_prefix() . 'content_privacy priv ON priv.content_id=' . db_cast($table_alias . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('priv.content_type', $content_type);
     } else {
         if (has_privilege($viewing_member_id, 'view_private_content')) {
             return array('', '', '', '');

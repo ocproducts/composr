@@ -123,8 +123,7 @@ function user_sync__inbound($since = null)
                 $sql .= ' AND ' . $username_field . '=' . $dbh->quote(is_array($DO_USER_ONLY_ID) ? $DO_USER_ONLY_ID[$j] : $DO_USER_ONLY_ID);
             }
         }
-        $sql .= ' LIMIT ' . strval($DO_USER_SYNC_OFFSET) . ',18446744073709551615';
-        $sth = $dbh->query($sql);
+        $sth = $dbh->query($sql, 18446744073709551615, $DO_USER_SYNC_OFFSET);
 
         // Handle each user
         while (($user = $sth->fetch(PDO::FETCH_ASSOC)) !== false) {

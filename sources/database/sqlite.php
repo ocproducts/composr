@@ -348,7 +348,7 @@ class Database_Static_sqlite
         }
 
         $results = @sqlite_query($db, $query);
-        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
             $err = sqlite_last_error($db);
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
@@ -365,7 +365,8 @@ class Database_Static_sqlite
             }
         }
 
-        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
+        $sub = substr(ltrim($query), 0, 4);
+        if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }
 

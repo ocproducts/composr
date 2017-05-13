@@ -185,9 +185,9 @@ class Block_main_gallery_embed
             $total_videos = 0;
         }
         if ($_sort == 'average_rating') {
-            $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS average_rating';
+            $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($_sort == 'compound_rating') {
-            $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS compound_rating';
+            $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif ($_sort == 'fixed_random') {
             $rating_sort = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
         } else {
@@ -195,9 +195,9 @@ class Block_main_gallery_embed
         }
         $rows_images = $GLOBALS['SITE_DB']->query('SELECT *' . $rating_sort . $extra_filter_sql . ' FROM ' . get_table_prefix() . 'images r' . $extra_join_sql . $extra_join_image . ' WHERE ' . $cat_select . $where_sup . $extra_where_image . ' ORDER BY ' . $sort, $max + $start, null, false, true);
         if ($_sort == 'average_rating') {
-            $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS average_rating';
+            $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($_sort == 'compound_rating') {
-            $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS compound_rating';
+            $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif ($_sort == 'fixed_random') {
             $rating_sort = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
         } else {

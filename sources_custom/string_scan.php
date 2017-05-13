@@ -1161,6 +1161,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_multi_content_PARAM_zone_TITLE
         BLOCK_main_multi_content_USE
         BLOCK_main_news_DESCRIPTION
+        CONFIG_OPTION_autogrow
+        AUTOGROW
         BLOCK_main_news_PARAM_as_guest
         BLOCK_main_news_PARAM_as_guest_TITLE
         BLOCK_main_news_PARAM_attach_to_url_filter
@@ -9832,7 +9834,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     $just_lang_strings_non_admin = array_diff($lang_strings_non_admin, $lang_strings_admin);
     $lang_strings_shared = array_intersect($lang_strings_non_admin, $lang_strings_admin);
 
-    return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang);
+    return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang, $strings_files);
 }
 
 function find_files_in_dir($dir)

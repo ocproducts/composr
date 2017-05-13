@@ -305,6 +305,25 @@ function db_has_expression_ordering($db)
 }
 
 /**
+ * Find whether expression ordering support is present
+ *
+ * @param  array $db A DB connection
+ * @return boolean Whether it is
+ */
+function db_uses_offset_syntax($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_has_expression_ordering')) {
+        return false;
+    }
+    return $GLOBALS['DB_STATIC_OBJECT']->db_uses_offset_syntax($db);
+}
+
+/**
  * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
  *
  * @param  string $string The string
@@ -1010,7 +1029,13 @@ class DatabaseConnector
     {
         // Optimisation for entirely automatic translate table linkage (only done on non-joins, as this removes a whole lot of potential complexities -- if people are doing joins they go a little further to do this manually anyway; also we make sure we're operating on our site's table prefix so we don't collect meta info for the wrong table set)
         if ($lang_fields === null) {
-            if (($table !== 'translate') && (strpos($table, ' ') === false) && ((isset($GLOBALS['SITE_DB'])) && ($this->table_prefix === $GLOBALS['SITE_DB']->table_prefix) || (get_forum_type() === 'cns'))) {
+            if (
+                ($table !== 'translate') &&
+                (strpos($table, ' ') === false) &&
+                (strpos($end, 'GROUP BY ') === false/*Can only SELECT what is also in GROUP BY*/) &&
+                ((isset($GLOBALS['SITE_DB'])) &&
+                ($this->table_prefix === $GLOBALS['SITE_DB']->table_prefix) || (get_forum_type() === 'cns'))
+            ) {
                 global $TABLE_LANG_FIELDS_CACHE;
                 $lang_fields_provisional = isset($TABLE_LANG_FIELDS_CACHE[$table]) ? $TABLE_LANG_FIELDS_CACHE[$table] : array();
                 $lang_fields = array();
