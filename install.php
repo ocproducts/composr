@@ -2534,7 +2534,7 @@ function handle_self_referencing_embedment()
                     exit();
                 }
                 $conn = false;
-                $domain = trim(get_param_string('ftp_domain'));
+                $domain = trim(post_param_string('ftp_domain'));
                 $port = 21;
                 if (strpos($domain, ':') !== false) {
                     list($domain, $_port) = explode(':', $domain, 2);
@@ -2544,8 +2544,8 @@ function handle_self_referencing_embedment()
                     $conn = @ftp_ssl_connect($domain, $port);
                 }
                 $ssl = ($conn !== false);
-                $username = get_param_string('ftp_username');
-                $password = get_param_string('ftp_password');
+                $username = post_param_string('ftp_username');
+                $password = post_param_string('ftp_password');
                 $ssl = ($conn !== false);
                 if (($ssl) && (!@ftp_login($conn, $username, $password))) {
                     $conn = false;
@@ -2563,7 +2563,7 @@ function handle_self_referencing_embedment()
                     ftp_close($conn);
                     exit();
                 }
-                $ftp_folder = get_param_string('ftp_folder');
+                $ftp_folder = post_param_string('ftp_folder');
                 if (substr($ftp_folder, -1) != '/') {
                     $ftp_folder .= '/';
                 }
@@ -2591,12 +2591,12 @@ function handle_self_referencing_embedment()
                 if (!isset($SITE_INFO)) {
                     $SITE_INFO = array();
                 }
-                $SITE_INFO['db_type'] = get_param_string('db_type');
+                $SITE_INFO['db_type'] = post_param_string('db_type');
                 require_code('database');
-                if (get_param_string('db_site') == '') {
-                    $db = new DatabaseConnector(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password'), '', true);
+                if (post_param_string('db_site') == '') {
+                    $db = new DatabaseConnector(post_param_string('db_forums'), post_param_string('db_forums_host'), post_param_string('db_forums_user'), post_param_string('db_forums_password'), '', true);
                 } else {
-                    $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
+                    $db = new DatabaseConnector(post_param_string('db_site'), post_param_string('db_site_host'), post_param_string('db_site_user'), post_param_string('db_site_password'), '', true);
                 }
                 $connection = &$db->connection_write;
                 if (count($connection) > 4) { // Okay, we can't be lazy anymore

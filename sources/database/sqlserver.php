@@ -302,7 +302,7 @@ class Database_Static_sqlserver
         if ((!function_exists('sqlsrv_connect')) && (!function_exists('mssql_pconnect'))) {
             $error = 'The sqlserver PHP extension not installed (anymore?). You need to contact the system administrator of this server.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -319,7 +319,7 @@ class Database_Static_sqlserver
         if ($db === false) {
             $error = 'Could not connect to database-server (' . @strval($php_errormsg) . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
@@ -328,7 +328,7 @@ class Database_Static_sqlserver
             if (!mssql_select_db($db_name, $db)) {
                 $error = 'Could not connect to database (' . mssql_get_last_message() . ')';
                 if ($fail_ok) {
-                    echo $error;
+                    echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                     return null;
                 }
                 critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_ERROR'));

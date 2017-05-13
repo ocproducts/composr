@@ -275,7 +275,7 @@ class Database_Static_sqlite
         if (!function_exists('sqlite_popen')) {
             $error = 'The sqlite PHP extension not installed (anymore?). You need to contact the system administrator of this server.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -286,7 +286,7 @@ class Database_Static_sqlite
         if ($db === false) {
             $error = 'Could not open database file (' . $error_message . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));

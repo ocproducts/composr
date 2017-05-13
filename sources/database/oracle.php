@@ -319,7 +319,7 @@ class Database_Static_oracle
         if (!function_exists('ocilogon')) {
             $error = 'The oracle PHP extension not installed (anymore?). You need to contact the system administrator of this server.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -329,7 +329,7 @@ class Database_Static_oracle
         if ($db === false) {
             $error = 'Could not connect to database-server (' . ocierror() . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));

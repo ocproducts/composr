@@ -277,7 +277,7 @@ class Database_Static_ibm
         if (!function_exists('odbc_connect')) {
             $error = 'The ODBC PHP extension not installed (anymore?). You need to contact the system administrator of this server.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -287,7 +287,7 @@ class Database_Static_ibm
         if ($db === false) {
             $error = 'Could not connect to database-server (' . odbc_errormsg() . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
