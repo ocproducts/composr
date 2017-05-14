@@ -202,7 +202,9 @@ function erase_thumb_cache()
     $dh = @opendir($full);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            @unlink($full . '/' . $file);
+            if (!in_array($file, array('index.html', '.htaccess'))) {
+                @unlink($full . '/' . $file);
+            }
         }
         closedir($dh);
     }
