@@ -138,7 +138,12 @@ class shopping_test_set extends cms_test_case
 
     public function testHandleTransaction()
     {
-        $purchase_id = strval($GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array()));
+        $_purchase_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)', array());
+        if ($_purchase_id === null) {
+            $this->assertTrue(false, 'Order did not save');
+            return;
+        }
+        $purchase_id = strval($_purchase_id);
         $item_name = lorem_phrase();
         $payment_status = 'Completed';
         $reason_code = '';
