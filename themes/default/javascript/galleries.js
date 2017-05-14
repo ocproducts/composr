@@ -62,11 +62,11 @@
             }
         },
         initializeImage: function (data, v, k, mill, total) {
-            var period_in_msecs = 50;
+            var periodInMsecs = 50;
             var increment = 3;
-            if (period_in_msecs * 100 / increment > mill) {
-                period_in_msecs = mill * increment / 100;
-                period_in_msecs *= 0.9; // A little give
+            if (periodInMsecs * 100 / increment > mill) {
+                periodInMsecs = mill * increment / 100;
+                periodInMsecs *= 0.9; // A little give
             }
 
             data['url' + k] = v;
@@ -75,9 +75,9 @@
                 function func() {
                     data.fp_animation_fader.src = data.fp_animation.src;
                     $cms.dom.clearTransitionAndSetOpacity(data.fp_animation_fader, 1.0);
-                    $cms.dom.fadeTransition(data.fp_animation_fader, 0, period_in_msecs, increment * -1);
+                    $cms.dom.fadeTransition(data.fp_animation_fader, 0, periodInMsecs, increment * -1);
                     $cms.dom.clearTransitionAndSetOpacity(data.fp_animation, 0.0);
-                    $cms.dom.fadeTransition(data.fp_animation, 100, period_in_msecs, increment);
+                    $cms.dom.fadeTransition(data.fp_animation, 100, periodInMsecs, increment);
                     data.fp_animation.src = data['url' + k];
                     data.fp_animation_fader.style.left = ((data.fp_animation_fader.parentNode.offsetWidth - data.fp_animation_fader.offsetWidth) / 2) + 'px';
                     data.fp_animation_fader.style.top = ((data.fp_animation_fader.parentNode.offsetHeight - data.fp_animation_fader.offsetHeight) / 2) + 'px';
@@ -280,8 +280,8 @@
     }
 
     function resetSlideshowCountdown() {
-        var slideshow_from = document.getElementById('slideshow_from');
-        window.slideshow_time = slideshow_from ? window.parseInt(slideshow_from.value) : 5;
+        var slideshowFrom = document.getElementById('slideshow_from');
+        window.slideshow_time = slideshowFrom ? window.parseInt(slideshowFrom.value) : 5;
 
         showCurrentSlideshowTime();
 
@@ -358,13 +358,13 @@
             }
 
             if (callback !== undefined) {
-                $cms.doAjaxRequest(url, function (ajax_result_raw) {
-                    _slideshowReadInSlide(ajax_result_raw, slide);
+                $cms.doAjaxRequest(url, function (ajaxResultRaw) {
+                    _slideshowReadInSlide(ajaxResultRaw, slide);
                     callback();
                 });
             } else {
-                $cms.doAjaxRequest(url, function (ajax_result_raw) {
-                    _slideshowReadInSlide(ajax_result_raw, slide);
+                $cms.doAjaxRequest(url, function (ajaxResultRaw) {
+                    _slideshowReadInSlide(ajaxResultRaw, slide);
                 });
             }
         } else {
@@ -372,42 +372,42 @@
         }
     }
 
-    function _slideshowReadInSlide(ajax_result_raw, slide) {
-        window.slideshow_slides[slide] = ajax_result_raw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, '');
+    function _slideshowReadInSlide(ajaxResultRaw, slide) {
+        window.slideshow_slides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, '');
     }
 
     function slideshowShowSlide(slide) {
         slideshowEnsureLoaded(slide, function () {
-            var fade_elements;
+            var fadeElements;
 
             if (window.slideshow_current_position !== slide) { // If not already here
-                var slideshow_from = document.getElementById('slideshow_from');
+                var slideshowFrom = document.getElementById('slideshow_from');
 
-                var fade_elements_old = document.body.querySelectorAll('.scale_down');
-                if (fade_elements_old[0] !== undefined) {
-                    var fade_element_old = fade_elements_old[0];
-                    var left_pos = fade_element_old.parentNode.offsetWidth / 2 - fade_element_old.offsetWidth / 2;
-                    fade_element_old.style.left = left_pos + 'px';
-                    fade_element_old.style.position = 'absolute';
+                var fadeElementsOld = document.body.querySelectorAll('.scale_down');
+                if (fadeElementsOld[0] !== undefined) {
+                    var fadeElementOld = fadeElementsOld[0];
+                    var leftPos = fadeElementOld.parentNode.offsetWidth / 2 - fadeElementOld.offsetWidth / 2;
+                    fadeElementOld.style.left = leftPos + 'px';
+                    fadeElementOld.style.position = 'absolute';
                 } // else probably a video
 
-                var cleaned_slide_html = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, '').replace(/<script[^>]*>(.|\n)*?<\/script>/gi, '');
-                $cms.dom.html(document.getElementById('gallery_entry_screen'), cleaned_slide_html);
+                var cleanedSlideHtml = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, '').replace(/<script[^>]*>(.|\n)*?<\/script>/gi, '');
+                $cms.dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
 
-                fade_elements = document.body.querySelectorAll('.scale_down');
-                if ((fade_elements[0] !== undefined) && (fade_elements_old[0] !== undefined)) {
-                    var fade_element = fade_elements[0];
-                    $cms.dom.clearTransitionAndSetOpacity(fade_element, 0);
-                    fade_element.parentNode.insertBefore(fade_element_old, fade_element);
-                    fade_element.parentNode.style.position = 'relative';
-                    $cms.dom.fadeTransition(fade_element, 100.0, 30, 10);
-                    $cms.dom.clearTransitionAndSetOpacity(fade_element_old, 1.0);
-                    $cms.dom.fadeTransition(fade_element_old, 0.0, 30, -10, true);
+                fadeElements = document.body.querySelectorAll('.scale_down');
+                if ((fadeElements[0] !== undefined) && (fadeElementsOld[0] !== undefined)) {
+                    var fadeElement = fadeElements[0];
+                    $cms.dom.clearTransitionAndSetOpacity(fadeElement, 0);
+                    fadeElement.parentNode.insertBefore(fadeElementOld, fadeElement);
+                    fadeElement.parentNode.style.position = 'relative';
+                    $cms.dom.fadeTransition(fadeElement, 100.0, 30, 10);
+                    $cms.dom.clearTransitionAndSetOpacity(fadeElementOld, 1.0);
+                    $cms.dom.fadeTransition(fadeElementOld, 0.0, 30, -10, true);
                 } // else probably a video
 
-                if (slideshow_from){
+                if (slideshowFrom){
                     // Make sure stays the same
-                    document.getElementById('slideshow_from').value = slideshow_from.value;
+                    document.getElementById('slideshow_from').value = slideshowFrom.value;
                 }
 
                 window.slideshow_current_position = slide;
@@ -417,8 +417,8 @@
                 }
             }
 
-            fade_elements = document.body.querySelectorAll('.scale_down');
-            if (fade_elements[0] !== undefined) {// Is image
+            fadeElements = document.body.querySelectorAll('.scale_down');
+            if (fadeElements[0] !== undefined) {// Is image
                 startSlideshowTimer();
                 resetSlideshowCountdown();
             } else {// Is video

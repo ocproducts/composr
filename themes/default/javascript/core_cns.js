@@ -175,14 +175,14 @@
         var suffix = $cms.filter.id('{!DELETE_MEMBER;^}').toLowerCase();
 
         window['load_tab__edit__' + suffix] = function() {
-            var submit_button = document.getElementById('submit_button'),
+            var submitButton = document.getElementById('submit_button'),
                 delete_checkbox = document.getElementById('delete'),
                 tab = document.getElementById('t_edit__' + suffix);
 
-            submit_button.disabled = !delete_checkbox.checked;
+            submitButton.disabled = !delete_checkbox.checked;
 
             window.setInterval(function () {
-                submit_button.disabled = !delete_checkbox.checked && tab.classList.contains('tab_active');
+                submitButton.disabled = !delete_checkbox.checked && tab.classList.contains('tab_active');
             }, 100);
         };
     };
@@ -213,9 +213,7 @@
         });
     };
 
-    $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen() {
-        var container = this;
-
+    $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen(params, container) {
         $cms.dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
             document.getElementById('proceed_button').disabled = !checkbox.checked;
         });

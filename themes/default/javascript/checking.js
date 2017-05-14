@@ -18,70 +18,70 @@
 
     /**
      * @memberof $cms.form
-     * @param the_element
-     * @param error_msg
+     * @param theElement
+     * @param errorMsg
      */
-    $cms.form.setFieldError = function setFieldError(the_element, error_msg) {
-        if (the_element.name !== undefined) {
-            var id = the_element.name;
-            var errormsg_element = getErrormsgElement(id);
-            if ((error_msg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) { // Do not blank out as day/month/year (which comes first) would have already done it
+    $cms.form.setFieldError = function setFieldError(theElement, errorMsg) {
+        if (theElement.name !== undefined) {
+            var id = theElement.name;
+            var errormsgElement = getErrormsgElement(id);
+            if ((errorMsg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) { // Do not blank out as day/month/year (which comes first) would have already done it
                 return;
             }
-            if (errormsg_element) {
+            if (errormsgElement) {
                 // Make error message visible, if there's an error
-                errormsg_element.style.display = (error_msg == '') ? 'none' : 'block';
+                errormsgElement.style.display = (errorMsg == '') ? 'none' : 'block';
 
                 // Changed error message
-                if ($cms.dom.html(errormsg_element) != $cms.filter.html(error_msg)) {
-                    $cms.dom.html(errormsg_element, '');
-                    if (error_msg != '') // If there actually an error
+                if ($cms.dom.html(errormsgElement) != $cms.filter.html(errorMsg)) {
+                    $cms.dom.html(errormsgElement, '');
+                    if (errorMsg != '') // If there actually an error
                     {
-                        the_element.setAttribute('aria-invalid', 'true');
+                        theElement.setAttribute('aria-invalid', 'true');
 
                         // Need to switch tab?
-                        var p = errormsg_element;
+                        var p = errormsgElement;
                         while (p !== null) {
                             p = p.parentNode;
-                            if ((error_msg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
+                            if ((errorMsg.substr(0, 5) != '{!DISABLED_FORM_FIELD;^}'.substr(0, 5)) && (p) && (p.getAttribute !== undefined) && (p.getAttribute('id')) && (p.getAttribute('id').substr(0, 2) == 'g_') && (p.style.display == 'none')) {
                                 $cms.ui.selectTab('g', p.getAttribute('id').substr(2, p.id.length - 2), false, true);
                                 break;
                             }
                         }
 
                         // Set error message
-                        var msg_node = document.createTextNode(error_msg);
-                        errormsg_element.appendChild(msg_node);
-                        errormsg_element.setAttribute('role', 'alert');
+                        var msgNode = document.createTextNode(errorMsg);
+                        errormsgElement.appendChild(msgNode);
+                        errormsgElement.setAttribute('role', 'alert');
 
                         // Fade in
-                        $cms.dom.clearTransitionAndSetOpacity(errormsg_element, 0.0);
-                        $cms.dom.fadeTransition(errormsg_element, 100, 30, 4);
+                        $cms.dom.clearTransitionAndSetOpacity(errormsgElement, 0.0);
+                        $cms.dom.fadeTransition(errormsgElement, 100, 30, 4);
 
                     } else {
-                        the_element.setAttribute('aria-invalid', 'false');
-                        errormsg_element.setAttribute('role', '');
+                        theElement.setAttribute('aria-invalid', 'false');
+                        errormsgElement.setAttribute('role', '');
                     }
                 }
             }
         }
-        if (($cms.form.isWysiwygField !== undefined) && ($cms.form.isWysiwygField(the_element))) {
-            the_element = the_element.parentNode;
+        if (($cms.form.isWysiwygField !== undefined) && ($cms.form.isWysiwygField(theElement))) {
+            theElement = theElement.parentNode;
         }
 
-        the_element.classList.remove('input_erroneous');
+        theElement.classList.remove('input_erroneous');
 
-        if (error_msg != '') {
-            the_element.classList.add('input_erroneous');
+        if (errorMsg != '') {
+            theElement.classList.add('input_erroneous');
         }
 
         function getErrormsgElement(id) {
-            var errormsg_element = document.getElementById('error_' + id);
+            var errormsgElement = document.getElementById('error_' + id);
 
-            if (!errormsg_element) {
-                errormsg_element = document.getElementById('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+            if (!errormsgElement) {
+                errormsgElement = document.getElementById('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
             }
-            return errormsg_element;
+            return errormsgElement;
         }
     };
 
@@ -143,33 +143,33 @@
      * @memberof $cms.form
      * @param event
      * @param form
-     * @param preview_url
-     * @param has_separate_preview
+     * @param previewUrl
+     * @param hasSeparatePreview
      * @returns {boolean}
      */
-    $cms.form.doFormPreview = function doFormPreview(event, form, preview_url, has_separate_preview) {
-        has_separate_preview = !!has_separate_preview;
+    $cms.form.doFormPreview = function doFormPreview(event, form, previewUrl, hasSeparatePreview) {
+        hasSeparatePreview = !!hasSeparatePreview;
 
         if (!$cms.dom.$id('preview_iframe')) {
             $cms.ui.alert('{!ADBLOCKER;^}');
             return false;
         }
 
-        preview_url += ((window.mobile_version_for_preview === undefined) ? '' : ('&keep_mobile=' + (window.mobile_version_for_preview ? '1' : '0')));
+        previewUrl += ((window.mobile_version_for_preview === undefined) ? '' : ('&keep_mobile=' + (window.mobile_version_for_preview ? '1' : '0')));
 
-        var old_action = form.getAttribute('action');
+        var oldAction = form.getAttribute('action');
 
         if (!form.old_action) {
-            form.old_action = old_action;
+            form.old_action = oldAction;
         }
-        form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(preview_url) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
-        var old_target = form.getAttribute('target');
-        if (!old_target) {
-            old_target = '_top';
+        form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(previewUrl) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
+        var oldTarget = form.getAttribute('target');
+        if (!oldTarget) {
+            oldTarget = '_top';
         }
         /* not _self due to edit screen being a frame itself */
         if (!form.old_target) {
-            form.old_target = old_target;
+            form.old_target = oldTarget;
         }
         form.setAttribute('target', 'preview_iframe');
 
@@ -184,7 +184,7 @@
             }
         }
 
-        if ((has_separate_preview) || (window.has_separate_preview)) {
+        if (hasSeparatePreview) {
             form.setAttribute('action', form.old_action + ((form.old_action.indexOf('?') == -1) ? '?' : '&') + 'preview=1');
             return true;
         }
@@ -294,75 +294,75 @@
 
     /**
      * @memberof $cms.form
-     * @param the_form
-     * @param for_preview
+     * @param theForm
+     * @param forPreview
      * @returns {boolean}
      */
-    $cms.form.checkForm = function checkForm(the_form, for_preview) {
-        var delete_element = $cms.dom.$('#delete');
-        if ((!for_preview) && (delete_element != null) && (((delete_element.classList[0] == 'input_radio') && (delete_element.value != '0')) || (delete_element.classList[0] == 'input_tick')) && (delete_element.checked)) {
+    $cms.form.checkForm = function checkForm(theForm, forPreview) {
+        var deleteElement = $cms.dom.$('#delete');
+        if ((!forPreview) && (deleteElement != null) && (((deleteElement.classList[0] == 'input_radio') && (deleteElement.value != '0')) || (deleteElement.classList[0] == 'input_tick')) && (deleteElement.checked)) {
             return true;
         }
 
-        var j, the_element, erroneous = false, total_file_size = 0, alerted = false, error_element = null, check_result;
-        for (j = 0; j < the_form.elements.length; j++) {
-            if (!the_form.elements[j]) {
+        var j, theElement, erroneous = false, totalFileSize = 0, alerted = false, errorElement = null, checkResult;
+        for (j = 0; j < theForm.elements.length; j++) {
+            if (!theForm.elements[j]) {
                 continue;
             }
 
-            the_element = the_form.elements[j];
+            theElement = theForm.elements[j];
 
-            check_result = checkField(the_element, the_form, for_preview);
-            if (check_result != null) {
-                erroneous = check_result[0] || erroneous;
-                if (!error_element && erroneous) error_element = the_element;
-                total_file_size += check_result[1];
-                alerted = check_result[2] || alerted;
+            checkResult = checkField(theElement, theForm, forPreview);
+            if (checkResult != null) {
+                erroneous = checkResult[0] || erroneous;
+                if (!errorElement && erroneous) errorElement = theElement;
+                totalFileSize += checkResult[1];
+                alerted = checkResult[2] || alerted;
 
-                if (check_result[0]) {
-                    var auto_reset_error = function (the_element) {
-                        return function (event, no_recurse) {
-                            var check_result = checkField(the_element, the_form, for_preview);
-                            if ((check_result != null) && (!check_result[0])) {
-                                $cms.form.setFieldError(the_element, '');
+                if (checkResult[0]) {
+                    var autoResetError = function (theElement) {
+                        return function (event, noRecurse) {
+                            var checkResult = checkField(theElement, theForm, forPreview);
+                            if ((checkResult != null) && (!checkResult[0])) {
+                                $cms.form.setFieldError(theElement, '');
                             }
 
-                            if ((!no_recurse) && (the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/))) {
-                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_day'));
-                                if (e != the_element) {
+                            if ((!noRecurse) && (theElement.className.indexOf('date') != -1) && (theElement.name.match(/\_(day|month|year)$/))) {
+                                var e = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_day'));
+                                if (e != theElement) {
                                     e.onblur(event, true);
                                 }
-                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_month'));
-                                if (e != the_element) {
+                                var e = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_month'));
+                                if (e != theElement) {
                                     e.onblur(event, true);
                                 }
-                                var e = $cms.dom.$id(the_element.id.replace(/\_(day|month|year)$/, '_year'));
-                                if (e != the_element) {
+                                var e = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_year'));
+                                if (e != theElement) {
                                     e.onblur(event, true);
                                 }
                             }
                         };
                     };
 
-                    if (the_element.getAttribute('type') == 'radio') {
-                        for (var i = 0; i < the_form.elements.length; i++) {
-                            the_form.elements[i].onchange = auto_reset_error(the_form.elements[i]);
+                    if (theElement.getAttribute('type') == 'radio') {
+                        for (var i = 0; i < theForm.elements.length; i++) {
+                            theForm.elements[i].onchange = autoResetError(theForm.elements[i]);
                         }
                     } else {
-                        the_element.onblur = auto_reset_error(the_element);
+                        theElement.onblur = autoResetError(theElement);
                     }
                 }
             }
         }
 
-        if ((total_file_size > 0) && (the_form.elements['MAX_FILE_SIZE'])) {
-            if (total_file_size > the_form.elements['MAX_FILE_SIZE'].value) {
+        if ((totalFileSize > 0) && (theForm.elements['MAX_FILE_SIZE'])) {
+            if (totalFileSize > theForm.elements['MAX_FILE_SIZE'].value) {
                 if (!erroneous) {
-                    error_element = the_element;
+                    errorElement = theElement;
                     erroneous = true;
                 }
                 if (!alerted) {
-                    $cms.ui.alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(total_file_size / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(the_form.elements['MAX_FILE_SIZE'].value / 1024)));
+                    $cms.ui.alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{' + '1' + '\\\\}', 'g'), Math.round(totalFileSize / 1024)).replace(new RegExp('\\\\{' + '2' + '\\\\}', 'g'), Math.round(theForm.elements['MAX_FILE_SIZE'].value / 1024)));
                 }
                 alerted = true;
             }
@@ -370,28 +370,27 @@
 
         if (erroneous) {
             if (!alerted) $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
-            var posy = $cms.dom.findPosY(error_element, true);
+            var posy = $cms.dom.findPosY(errorElement, true);
             if (posy == 0) {
-                posy = $cms.dom.findPosY(error_element.parentNode, true);
+                posy = $cms.dom.findPosY(errorElement.parentNode, true);
             }
             if (posy != 0)
                 $cms.dom.smoothScroll(posy - 50, null, null, function () {
                     try {
-                        error_element.focus();
-                    } catch (e) {
-                    }
+                        errorElement.focus();
+                    } catch (e) {}
                     /* Can have exception giving focus on IE for invisible fields */
                 });
         }
 
         // Try and workaround max_input_vars problem if lots of usergroups
         if (!erroneous) {
-            var delete_e = $cms.dom.$id('delete');
-            var is_delete = delete_e && delete_e.type == 'checkbox' && delete_e.checked;
+            var deleteE = $cms.dom.$id('delete');
+            var isDelete = deleteE && deleteE.type == 'checkbox' && deleteE.checked;
             var es = document.getElementsByTagName('select'), e;
             for (var i = 0; i < es.length; i++) {
                 e = es[i];
-                if ((e.name.match(/^access_\d+_privilege_/)) && ((is_delete) || (e.options[e.selectedIndex].value == '-1'))) {
+                if ((e.name.match(/^access_\d+_privilege_/)) && ((isDelete) || (e.options[e.selectedIndex].value == '-1'))) {
                     e.disabled = true;
                 }
             }
@@ -399,122 +398,122 @@
 
         return !erroneous;
 
-        function checkField(the_element, the_form) {
-            var i, the_class, required, my_value, erroneous = false, error_msg = '', regexp, total_file_size = 0, alerted = false;
+        function checkField(theElement, theForm) {
+            var i, theClass, required, myValue, erroneous = false, errorMsg = '', regexp, totalFileSize = 0, alerted = false;
 
             // No checking for hidden elements
-            if (((the_element.type === 'hidden') || (((the_element.style.display == 'none') || (the_element.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.style.display == 'none') || (the_element.parentNode.parentNode.parentNode.style.display == 'none')) && (($cms.form.isWysiwygField === undefined) || (!$cms.form.isWysiwygField(the_element))))) && ((!the_element.className) || (the_element.classList.contains('hidden_but_needed')) == null)) {
+            if (((theElement.type === 'hidden') || (((theElement.style.display == 'none') || (theElement.parentNode.style.display == 'none') || (theElement.parentNode.parentNode.style.display == 'none') || (theElement.parentNode.parentNode.parentNode.style.display == 'none')) && (($cms.form.isWysiwygField === undefined) || (!$cms.form.isWysiwygField(theElement))))) && ((!theElement.className) || (theElement.classList.contains('hidden_but_needed')) == null)) {
                 return null;
             }
-            if (the_element.disabled) {
+            if (theElement.disabled) {
                 return null;
             }
 
             // Test file sizes
-            if ((the_element.type == 'file') && (the_element.files) && (the_element.files.item) && (the_element.files.item(0)) && (the_element.files.item(0).fileSize))
-                total_file_size += the_element.files.item(0).fileSize;
+            if ((theElement.type == 'file') && (theElement.files) && (theElement.files.item) && (theElement.files.item(0)) && (theElement.files.item(0).fileSize))
+                totalFileSize += theElement.files.item(0).fileSize;
 
             // Test file types
-            if ((the_element.type == 'file') && (the_element.value) && (the_element.name != 'file_anytype')) {
-                var allowed_types = '{$VALID_FILE_TYPES;^}'.split(/,/);
-                var type_ok = false;
-                var theFileType = the_element.value.indexOf('.') ? the_element.value.substr(the_element.value.lastIndexOf('.') + 1) : '{!NONE;^}';
-                for (var k = 0; k < allowed_types.length; k++) {
-                    if (allowed_types[k].toLowerCase() == theFileType.toLowerCase()) type_ok = true;
+            if ((theElement.type == 'file') && (theElement.value) && (theElement.name != 'file_anytype')) {
+                var allowedTypes = '{$VALID_FILE_TYPES;^}'.split(/,/);
+                var typeOk = false;
+                var theFileType = theElement.value.indexOf('.') ? theElement.value.substr(theElement.value.lastIndexOf('.') + 1) : '{!NONE;^}';
+                for (var k = 0; k < allowedTypes.length; k++) {
+                    if (allowedTypes[k].toLowerCase() == theFileType.toLowerCase()) typeOk = true;
                 }
-                if (!type_ok) {
-                    error_msg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
-                    if (!alerted) $cms.ui.alert(error_msg);
+                if (!typeOk) {
+                    errorMsg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
+                    if (!alerted) $cms.ui.alert(errorMsg);
                     alerted = true;
                 }
             }
 
             // Fix up bad characters
-            if (($cms.browserMatches('ie')) && (the_element.value) && (the_element.localName != 'select')) {
-                var bad_word_chars = [8216, 8217, 8220, 8221];
-                var fixed_word_chars = ['\'', '\'', '"', '"'];
-                for (i = 0; i < bad_word_chars.length; i++) {
-                    regexp = new RegExp(String.fromCharCode(bad_word_chars[i]), 'gm');
-                    the_element.value = the_element.value.replace(regexp, fixed_word_chars[i]);
+            if (($cms.browserMatches('ie')) && (theElement.value) && (theElement.localName != 'select')) {
+                var badWordChars = [8216, 8217, 8220, 8221];
+                var fixedWordChars = ['\'', '\'', '"', '"'];
+                for (i = 0; i < badWordChars.length; i++) {
+                    regexp = new RegExp(String.fromCharCode(badWordChars[i]), 'gm');
+                    theElement.value = theElement.value.replace(regexp, fixedWordChars[i]);
                 }
             }
 
             // Class name
-            the_class = the_element.classList[0];
+            theClass = theElement.classList[0];
 
             // Find whether field is required and value of it
-            if (the_element.type == 'radio') {
-                required = (the_form.elements['require__' + the_element.name] !== undefined) && (the_form.elements['require__' + the_element.name].value == '1');
+            if (theElement.type == 'radio') {
+                required = (theForm.elements['require__' + theElement.name] !== undefined) && (theForm.elements['require__' + theElement.name].value == '1');
             } else {
-                required = the_element.className.includes('_required');
+                required = theElement.className.includes('_required');
             }
-            my_value = $cms.form.cleverFindValue(the_form, the_element);
+            myValue = $cms.form.cleverFindValue(theForm, theElement);
 
             // Prepare for custom error messages, stored as HTML5 data on the error message display element
-            var errormsg_element = (the_element.name === undefined) ? null : getErrormsgElement(the_element.name);
+            var errormsgElement = (theElement.name === undefined) ? null : getErrormsgElement(theElement.name);
 
             // Blank?
-            if ((required) && (my_value.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
-                error_msg = '{!REQUIRED_NOT_FILLED_IN;^}';
-                if ((errormsg_element) && (errormsg_element.getAttribute('data-errorUnfilled') != null) && (errormsg_element.getAttribute('data-errorUnfilled') != ''))
-                    error_msg = errormsg_element.getAttribute('data-errorUnfilled');
+            if ((required) && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
+                errorMsg = '{!REQUIRED_NOT_FILLED_IN;^}';
+                if ((errormsgElement) && (errormsgElement.getAttribute('data-errorUnfilled') != null) && (errormsgElement.getAttribute('data-errorUnfilled') != ''))
+                    errorMsg = errormsgElement.getAttribute('data-errorUnfilled');
             } else {
                 // Standard field-type checks
-                if ((the_element.className.indexOf('date') != -1) && (the_element.name.match(/\_(day|month|year)$/)) && (my_value != '')) {
-                    var day = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
-                    var month = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
-                    var year = the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
-                    var source_date = new Date(year, month - 1, day);
-                    if (year != source_date.getFullYear()) error_msg = '{!javascript:NOT_A_DATE;^}';
-                    if (month != source_date.getMonth() + 1) error_msg = '{!javascript:NOT_A_DATE;^}';
-                    if (day != source_date.getDate()) error_msg = '{!javascript:NOT_A_DATE;^}';
+                if ((theElement.className.indexOf('date') != -1) && (theElement.name.match(/\_(day|month|year)$/)) && (myValue != '')) {
+                    var day = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
+                    var month = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
+                    var year = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
+                    var sourceDate = new Date(year, month - 1, day);
+                    if (year != sourceDate.getFullYear()) errorMsg = '{!javascript:NOT_A_DATE;^}';
+                    if (month != sourceDate.getMonth() + 1) errorMsg = '{!javascript:NOT_A_DATE;^}';
+                    if (day != sourceDate.getDate()) errorMsg = '{!javascript:NOT_A_DATE;^}';
                 }
-                if (((the_class == 'input_email') || (the_class == 'input_email_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
-                    error_msg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', my_value);
+                if (((theClass == 'input_email') || (theClass == 'input_email_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                    errorMsg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', myValue);
                 }
-                if (((the_class == 'input_username') || (the_class == 'input_username_required')) && (my_value != '') && (window.$cms.form.doAjaxFieldTest) && (!$cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(my_value)))) {
-                    error_msg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', my_value);
+                if (((theClass == 'input_username') || (theClass == 'input_username_required')) && (myValue != '') && (window.$cms.form.doAjaxFieldTest) && (!$cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(myValue)))) {
+                    errorMsg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', myValue);
                 }
-                if (((the_class == 'input_codename') || (the_class == 'input_codename_required')) && (my_value != '') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
-                    error_msg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', my_value);
+                if (((theClass == 'input_codename') || (theClass == 'input_codename_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
+                    errorMsg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', myValue);
                 }
-                if (((the_class == 'input_integer') || (the_class == 'input_integer_required')) && (my_value != '') && (parseInt(my_value, 10) != my_value - 0)) {
-                    error_msg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', my_value);
+                if (((theClass == 'input_integer') || (theClass == 'input_integer_required')) && (myValue != '') && (parseInt(myValue, 10) != myValue - 0)) {
+                    errorMsg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', myValue);
                 }
-                if (((the_class == 'input_float') || (the_class == 'input_float_required')) && (my_value != '') && (parseFloat(my_value) != my_value - 0)) {
-                    error_msg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', my_value);
+                if (((theClass == 'input_float') || (theClass == 'input_float_required')) && (myValue != '') && (parseFloat(myValue) != myValue - 0)) {
+                    errorMsg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', myValue);
                 }
 
                 // Shim for HTML5 regexp patterns
-                if (the_element.getAttribute('pattern')) {
-                    if ((my_value != '') && (!my_value.match(new RegExp(the_element.getAttribute('pattern'))))) {
-                        error_msg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', my_value);
+                if (theElement.getAttribute('pattern')) {
+                    if ((myValue != '') && (!myValue.match(new RegExp(theElement.getAttribute('pattern'))))) {
+                        errorMsg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', myValue);
                     }
                 }
 
                 // Custom error messages
-                if (error_msg != '' && errormsg_element != null) {
-                    var custom_msg = errormsg_element.getAttribute('data-errorRegexp');
-                    if ((custom_msg != null) && (custom_msg != ''))
-                        error_msg = custom_msg;
+                if (errorMsg != '' && errormsgElement != null) {
+                    var customMsg = errormsgElement.getAttribute('data-errorRegexp');
+                    if ((customMsg != null) && (customMsg != ''))
+                        errorMsg = customMsg;
                 }
             }
 
             // Show error?
-            $cms.form.setFieldError(the_element, error_msg);
+            $cms.form.setFieldError(theElement, errorMsg);
 
-            if ((error_msg != '') && (!erroneous)) {
+            if ((errorMsg != '') && (!erroneous)) {
                 erroneous = true;
             }
 
-            return [erroneous, total_file_size, alerted];
+            return [erroneous, totalFileSize, alerted];
 
             function getErrormsgElement(id) {
-                var errormsg_element = $cms.dom.$id('error_' + id);
-                if (!errormsg_element) {
-                    errormsg_element = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+                var errormsgElement = $cms.dom.$id('error_' + id);
+                if (!errormsgElement) {
+                    errormsgElement = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
                 }
-                return errormsg_element;
+                return errormsgElement;
             }
         }
     };
@@ -522,47 +521,47 @@
     /**
      * @memberof $cms.form
      * @param field
-     * @param is_locked
-     * @param chosen_ob
+     * @param isLocked
+     * @param chosenOb
      */
-    $cms.form.setLocked = function setLocked(field, is_locked, chosen_ob) {
-        var radio_button = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
-        if (!radio_button) {
-            radio_button = $cms.dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
+    $cms.form.setLocked = function setLocked(field, isLocked, chosenOb) {
+        var radioButton = $cms.dom.$id('choose_' + field.name.replace(/\[\]$/, ''));
+        if (!radioButton) {
+            radioButton = $cms.dom.$id('choose_' + field.name.replace(/\_\d+$/, '_'));
         }
 
         // For All-and-not,Line-multi,Compound-Tick,Radio-List,Date/Time: $cms.form.setLocked assumes that the calling code is clever
         // special input types are coded to observe their master input field readonly status)
         var button = $cms.dom.$id('uploadButton_' + field.name.replace(/\[\]$/, ''));
 
-        if (is_locked) {
+        if (isLocked) {
             var labels = document.getElementsByTagName('label'), label = null;
             for (var i = 0; i < labels.length; i++) {
-                if (chosen_ob && (labels[i].getAttribute('for') == chosen_ob.id)) {
+                if (chosenOb && (labels[i].getAttribute('for') == chosenOb.id)) {
                     label = labels[i];
                     break;
                 }
             }
-            if (!radio_button) {
+            if (!radioButton) {
                 if (label) {
-                    var label_nice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
+                    var labelNice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
                     if (field.type == 'file') {
-                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\{1\}/, label_nice));
+                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\{1\}/, labelNice));
                     } else {
-                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\{1\}/, label_nice));
+                        $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\{1\}/, labelNice));
                     }
                 } else {
                     $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD;^}');
                 }
             }
             field.classList.remove('input_erroneous');
-        } else if (!radio_button) {
+        } else if (!radioButton) {
             $cms.form.setFieldError(field, '');
         }
-        field.disabled = is_locked;
+        field.disabled = isLocked;
 
         if (button) {
-            button.disabled = is_locked;
+            button.disabled = isLocked;
         }
     };
 
@@ -572,38 +571,38 @@
      * @param isRequired
      */
     $cms.form.setRequired = function setRequired(fieldName, isRequired) {
-        var radio_button = $cms.dom.$('#choose_' + fieldName);
+        var radioButton = $cms.dom.$('#choose_' + fieldName);
 
         isRequired = !!isRequired;
 
-        if (radio_button) {
+        if (radioButton) {
             if (isRequired) {
-                radio_button.checked = true;
+                radioButton.checked = true;
             }
         } else {
-            var required_a = $cms.dom.$('#form_table_field_name__' + fieldName),
-                required_b = $cms.dom.$('#required_readable_marker__' + fieldName),
-                required_c = $cms.dom.$('#required_posted__' + fieldName),
-                required_d = $cms.dom.$('#form_table_field_input__' + fieldName);
+            var requiredA = $cms.dom.$('#form_table_field_name__' + fieldName),
+                requiredB = $cms.dom.$('#required_readable_marker__' + fieldName),
+                requiredC = $cms.dom.$('#required_posted__' + fieldName),
+                requiredD = $cms.dom.$('#form_table_field_input__' + fieldName);
 
-            if (required_a) {
-                required_a.className = 'form_table_field_name';
+            if (requiredA) {
+                requiredA.className = 'form_table_field_name';
 
                 if (isRequired) {
-                    required_a.classList.add('required');
+                    requiredA.classList.add('required');
                 }
             }
 
-            if (required_b) {
-                $cms.dom.toggle(required_b, isRequired);
+            if (requiredB) {
+                $cms.dom.toggle(requiredB, isRequired);
             }
 
-            if (required_c) {
-                required_c.value = isRequired ? 1 : 0;
+            if (requiredC) {
+                requiredC.value = isRequired ? 1 : 0;
             }
 
-            if (required_d) {
-                required_d.className = 'form_table_field_input';
+            if (requiredD) {
+                requiredD.className = 'form_table_field_input';
             }
         }
 
@@ -812,13 +811,13 @@
      * @returns {boolean}
      */
     $cms.form.modsecurityWorkaround = function modsecurityWorkaround(form) {
-        var temp_form = document.createElement('form');
-        temp_form.method = 'post';
+        var tempForm = document.createElement('form');
+        tempForm.method = 'post';
 
         if (form.target) {
-            temp_form.target = form.target;
+            tempForm.target = form.target;
         }
-        temp_form.action = form.action;
+        tempForm.action = form.action;
 
         var data = $cms.dom.serialize(form);
         data = _modsecurityWorkaround(data);
@@ -827,22 +826,22 @@
         input.type = 'hidden';
         input.name = '_data';
         input.value = data;
-        temp_form.appendChild(input);
+        tempForm.appendChild(input);
 
         if (form.elements.csrf_token) {
-            var csrf_input = document.createElement('input');
-            csrf_input.type = 'hidden';
-            csrf_input.name = 'csrf_token';
-            csrf_input.value = form.elements.csrf_token.value;
-            temp_form.appendChild(csrf_input);
+            var csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrf_token';
+            csrfInput.value = form.elements.csrf_token.value;
+            tempForm.appendChild(csrfInput);
         }
 
-        temp_form.style.display = 'none';
-        document.body.appendChild(temp_form);
+        tempForm.style.display = 'none';
+        document.body.appendChild(tempForm);
 
         window.setTimeout(function () {
-            temp_form.submit();
-            temp_form.parentNode.removeChild(temp_form);
+            tempForm.submit();
+            tempForm.parentNode.removeChild(tempForm);
         });
 
         return false;

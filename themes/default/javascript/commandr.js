@@ -69,8 +69,8 @@ window.previous_commands || (window.previous_commands = []);
 }(window.$cms));
 
 // Deal with Commandr history
-function commandrHandleHistory(element, key_code, e) {
-    if ((key_code == 38) && (window.previous_commands.length > 0)) {// Up button
+function commandrHandleHistory(element, keyCode, e) {
+    if ((keyCode == 38) && (window.previous_commands.length > 0)) {// Up button
         e && event.stopPropagation();
         if (e.cancelable) {
             e.preventDefault();
@@ -85,7 +85,7 @@ function commandrHandleHistory(element, key_code, e) {
             element.value = window.previous_commands[window.current_command];
         }
         return false;
-    } else if ((key_code == 40) && (window.previous_commands.length > 0)) {// Down button
+    } else if ((keyCode == 40) && (window.previous_commands.length > 0)) {// Down button
 
         e && e.stopPropagation();
         if (e.cancelable) {
@@ -141,7 +141,7 @@ function commandrFormSubmission(command, form) {
  }
 
 // Deal with the response to a command
-function commandrCommandResponse(ajax_result_frame, ajax_result) {
+function commandrCommandResponse(ajax_result_frame, ajaxResult) {
     if (window.disable_timeout) {
         window.clearTimeout(window.disable_timeout);
         window.disable_timeout = null;
@@ -151,25 +151,25 @@ function commandrCommandResponse(ajax_result_frame, ajax_result) {
     document.getElementById('commandr_command').focus();
 
     var command = document.getElementById('commandr_command');
-    var command_prompt = document.getElementById('command_prompt');
+    var commandPrompt = document.getElementById('command_prompt');
     var cl = document.getElementById('commands_go_here');
-    var new_command = document.createElement('div');
-    var past_command_prompt = document.createElement('p');
-    var past_command = document.createElement('div');
+    var newCommand = document.createElement('div');
+    var pastCommandPrompt = document.createElement('p');
+    var pastCommand = document.createElement('div');
 
-    new_command.setAttribute('class', 'command float_surrounder');
-    past_command_prompt.setAttribute('class', 'past_command_prompt');
-    past_command.setAttribute('class', 'past_command');
+    newCommand.setAttribute('class', 'command float_surrounder');
+    pastCommandPrompt.setAttribute('class', 'past_command_prompt');
+    pastCommand.setAttribute('class', 'past_command');
 
-    if (!ajax_result) {
-        var stderr_text = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n{!INTERNAL_ERROR;^}');
-        var stderr_text_p = document.createElement('p');
-        stderr_text_p.setAttribute('class', 'error_output');
-        stderr_text_p.appendChild(stderr_text);
-        past_command.appendChild(stderr_text_p);
+    if (!ajaxResult) {
+        var stderrText = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n{!INTERNAL_ERROR;^}');
+        var stderrTextP = document.createElement('p');
+        stderrTextP.setAttribute('class', 'error_output');
+        stderrTextP.appendChild(stderrText);
+        pastCommand.appendChild(stderrTextP);
 
-        new_command.appendChild(past_command);
-        cl.appendChild(new_command);
+        newCommand.appendChild(pastCommand);
+        cl.appendChild(newCommand);
 
         command.value = '';
         var cl2 = document.getElementById('command_line');
@@ -179,38 +179,38 @@ function commandrCommandResponse(ajax_result_frame, ajax_result) {
     }
 
     // Deal with the response: add the result to the command_line
-    var method = ajax_result.querySelector('command').textContent;
-    var stdcommand = ajax_result.querySelector('stdcommand').textContent;
-    var stdhtml = ajax_result.querySelector('stdhtml').firstElementChild;
-    var stdout = ajax_result.querySelector('stdout').textContent;
-    var stderr = ajax_result.querySelector('stderr').textContent;
+    var method = ajaxResult.querySelector('command').textContent;
+    var stdcommand = ajaxResult.querySelector('stdcommand').textContent;
+    var stdhtml = ajaxResult.querySelector('stdhtml').firstElementChild;
+    var stdout = ajaxResult.querySelector('stdout').textContent;
+    var stderr = ajaxResult.querySelector('stderr').textContent;
 
-    var past_command_text = document.createTextNode(method + ' \u2192 ');
-    past_command_prompt.appendChild(past_command_text);
+    var pastCommandText = document.createTextNode(method + ' \u2192 ');
+    pastCommandPrompt.appendChild(pastCommandText);
 
-    new_command.appendChild(past_command_prompt);
+    newCommand.appendChild(pastCommandPrompt);
 
     if (stdout != '') {
         // Text-only. Any HTML should've been escaped server-side. Escaping it over here with the DOM getting in the way is too complex.
-        var stdout_text = document.createTextNode(stdout);
-        var stdout_text_p = document.createElement('p');
-        stdout_text_p.setAttribute('class', 'text_output');
-        stdout_text_p.appendChild(stdout_text);
-        past_command.appendChild(stdout_text_p);
+        var stdoutText = document.createTextNode(stdout);
+        var stdoutTextP = document.createElement('p');
+        stdoutTextP.setAttribute('class', 'text_output');
+        stdoutTextP.appendChild(stdoutText);
+        pastCommand.appendChild(stdoutTextP);
     }
 
     if (stdhtml.childNodes) {
-        var child_node, new_child, cloned_node;
-        for (i = 0; i < stdhtml.childNodes.length; i++) {
-            child_node = stdhtml.childNodes[i];
+        var childNode, newChild, clonedNode;
+        for (var i = 0; i < stdhtml.childNodes.length; i++) {
+            childNode = stdhtml.childNodes[i];
 
-            new_child = child_node;
+            newChild = childNode;
             try {
-                new_child = document.importNode(child_node, true);
+                newChild = document.importNode(childNode, true);
             } catch (ignore) {}
 
-            cloned_node = new_child.cloneNode(true);
-            past_command.appendChild(cloned_node);
+            clonedNode = newChild.cloneNode(true);
+            pastCommand.appendChild(clonedNode);
         }
     }
 
@@ -218,34 +218,34 @@ function commandrCommandResponse(ajax_result_frame, ajax_result) {
         // JavaScript commands; eval() them.
         eval(stdcommand);
 
-        var stdcommand_text = document.createTextNode('{!JAVASCRIPT_EXECUTED;^}');
-        var stdcommand_text_p = document.createElement('p');
-        stdcommand_text_p.setAttribute('class', 'command_output');
-        stdcommand_text_p.appendChild(stdcommand_text);
-        past_command.appendChild(stdcommand_text_p);
+        var stdcommandText = document.createTextNode('{!JAVASCRIPT_EXECUTED;^}');
+        var stdcommandTextP = document.createElement('p');
+        stdcommandTextP.setAttribute('class', 'command_output');
+        stdcommandTextP.appendChild(stdcommandText);
+        pastCommand.appendChild(stdcommandTextP);
     }
 
     if ((stdcommand == '') && (!stdhtml.childNodes) && (stdout == '')) {
         // Exit with an error.
-        if (stderr != '') var stderr_text = document.createTextNode('{!PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
-        else var stderr_text = document.createTextNode('{!TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
-        var stderr_text_p = document.createElement('p');
-        stderr_text_p.setAttribute('class', 'error_output');
-        stderr_text_p.appendChild(stderr_text);
-        past_command.appendChild(stderr_text_p);
+        if (stderr != '') var stderrText = document.createTextNode('{!PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
+        else var stderrText = document.createTextNode('{!TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
+        var stderrTextP = document.createElement('p');
+        stderrTextP.setAttribute('class', 'error_output');
+        stderrTextP.appendChild(stderrText);
+        pastCommand.appendChild(stderrTextP);
 
         return false;
     }
     else if (stderr != '') {
-        var stderr_text = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n' + stderr);
-        var stderr_text_p = document.createElement('p');
-        stderr_text_p.setAttribute('class', 'error_output');
-        stderr_text_p.appendChild(stderr_text);
-        past_command.appendChild(stderr_text_p);
+        var stderrText = document.createTextNode('{!commandr:ERROR_NON_TERMINAL;^}\n' + stderr);
+        var stderrTextP = document.createElement('p');
+        stderrTextP.setAttribute('class', 'error_output');
+        stderrTextP.appendChild(stderrText);
+        pastCommand.appendChild(stderrTextP);
     }
 
-    new_command.appendChild(past_command);
-    cl.appendChild(new_command);
+    newCommand.appendChild(pastCommand);
+    cl.appendChild(newCommand);
 
     command.value = '';
     var cl2 = document.getElementById('command_line');
@@ -257,11 +257,11 @@ function commandrCommandResponse(ajax_result_frame, ajax_result) {
 // Clear the command line
 function clearCl() {
     // Clear all results from the CL
-    var command_line = document.getElementById('commands_go_here');
-    var elements = command_line.querySelectorAll('.command');
+    var commandLine = document.getElementById('commands_go_here');
+    var elements = commandLine.querySelectorAll('.command');
 
     for (var i = 0; i < elements.length; i++) {
-        command_line.removeChild(elements[i]);
+        commandLine.removeChild(elements[i]);
     }
 }
 
@@ -271,8 +271,8 @@ window.commandr_foxy_textnodes || (window.commandr_foxy_textnodes = []);
 
 function bsod() {
     // Nothing to see here, move along.
-    var command_line = document.getElementById('commands_go_here');
-    command_line.style.backgroundColor = '#0000FF';
+    var commandLine = document.getElementById('commands_go_here');
+    commandLine.style.backgroundColor = '#0000FF';
     bsodTraverseNode(window.document.documentElement);
     setInterval(foxy, 1);
 
@@ -292,8 +292,8 @@ function foxy() {
     var rand = Math.round(Math.random() * (window.commandr_foxy_textnodes.length - 1));
     var t = window.commandr_foxy_textnodes[rand];
     var at = Math.round(Math.random() * (t.data.length - 1));
-    var a_char = t.data.charCodeAt(at);
-    if ((a_char > 33) && (a_char < 126)) {
+    var aChar = t.data.charCodeAt(at);
+    if ((aChar > 33) && (aChar < 126)) {
         var string = 'The quick brown fox jumps over the lazy dog.';
         var rep = string.charAt(at % string.length);
         t.replaceData(at, 1, rep);

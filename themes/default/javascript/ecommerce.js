@@ -27,21 +27,21 @@
     });
 
     $cms.functions.moduleAdminEcommerce = function moduleAdminEcommerce() {
-        var _length_units = document.getElementById('length_units'), _length = document.getElementById('length');
-        _length_units.addEventListener('change', adjustLengths);
+        var _lengthUnits = document.getElementById('length_units'), _length = document.getElementById('length');
+        _lengthUnits.addEventListener('change', adjustLengths);
         _length.addEventListener('change', adjustLengths);
 
         function adjustLengths() {
-            var length_units = _length_units.options[_length_units.selectedIndex].value, length = _length.value;
+            var lengthUnits = _lengthUnits.options[_lengthUnits.selectedIndex].value, length = _length.value;
             if (document.getElementById('auto_recur').checked) {
                 // Limits based on https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/
-                if ((length_units == 'd') && ((length < 1) || (length > 90)))
+                if ((lengthUnits == 'd') && ((length < 1) || (length > 90)))
                     _length.value = (length < 1) ? 1 : 90;
-                if ((length_units == 'w') && ((length < 1) || (length > 52)))
+                if ((lengthUnits == 'w') && ((length < 1) || (length > 52)))
                     _length.value = (length < 1) ? 1 : 52;
-                if ((length_units == 'm') && ((length < 1) || (length > 24)))
+                if ((lengthUnits == 'm') && ((length < 1) || (length > 24)))
                     _length.value = (length < 1) ? 1 : 24;
-                if ((length_units == 'y') && ((length < 1) || (length > 5)))
+                if ((lengthUnits == 'y') && ((length < 1) || (length > 5)))
                     _length.value = (length < 1) ? 1 : 5;
             } else {
                 if (length < 1)

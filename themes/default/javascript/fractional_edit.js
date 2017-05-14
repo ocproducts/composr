@@ -1,15 +1,15 @@
 "use strict";
 
-function fractionalEdit(event, object, url, raw_text, edit_param_name, was_double_click, control_button, type) {
-    was_double_click = !!was_double_click;
+function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleClick, controlButton, type) {
+    wasDoubleClick = !!wasDoubleClick;
     type = strVal(type) || 'line';
 
-    if (raw_text.length > 255) {
+    if (rawText.length > 255) {
         // Cannot process this
         return null;
     }
 
-    if (!$cms.magicKeypress(event) && !was_double_click && (object === event.target)) {
+    if (!$cms.magicKeypress(event) && !wasDoubleClick && (object === event.target)) {
         return null;
     }
 
@@ -34,34 +34,34 @@ function fractionalEdit(event, object, url, raw_text, edit_param_name, was_doubl
     form.method = 'post';
     form.action = url;
     form.style.display = 'inline';
-    var populated_value;
+    var populatedValue;
     if (object.raw_text !== undefined) {
-        populated_value = object.raw_text; // Our previous text edited in this JS session
+        populatedValue = object.raw_text; // Our previous text edited in this JS session
     } else {
-        object.raw_text = raw_text;
-        populated_value = raw_text; // What was in the DB when the screen loaded
+        object.raw_text = rawText;
+        populatedValue = rawText; // What was in the DB when the screen loaded
     }
     var input;
     switch (type) {
         case 'line':
             input = document.createElement('input');
             input.setAttribute('maxlength', '255');
-            input.value = populated_value;
+            input.value = populatedValue;
             break;
         case 'textarea':
             input = document.createElement('textarea');
-            input.value = populated_value;
+            input.value = populatedValue;
             input.rows = '6';
             break;
         default:
             input = document.createElement('select');
-            var list_options = type.split('|');
-            var list_option;
-            for (var i = 0; i < list_options.length; i++) {
-                list_option = document.createElement('option');
-                $cms.dom.html(list_option, $cms.filter.html(list_options[i]));
-                list_option.selected = (populated_value == list_options[i]);
-                input.appendChild(list_option);
+            var listOptions = type.split('|');
+            var listOption;
+            for (var i = 0; i < listOptions.length; i++) {
+                listOption = document.createElement('option');
+                $cms.dom.html(listOption, $cms.filter.html(listOptions[i]));
+                listOption.selected = (populatedValue == listOptions[i]);
+                input.appendChild(listOption);
             }
             break;
     }
@@ -71,27 +71,27 @@ function fractionalEdit(event, object, url, raw_text, edit_param_name, was_doubl
     input.style.top = (y + 8) + 'px';
     input.style.margin = 0;
 
-    var to_copy = ['font-size', 'font-weight', 'font-style'];
+    var toCopy = ['font-size', 'font-weight', 'font-style'];
     if (type === 'line') {
-        to_copy.push('border');
-        to_copy.push('border-top');
-        to_copy.push('border-right');
-        to_copy.push('border-bottom');
-        to_copy.push('border-left');
+        toCopy.push('border');
+        toCopy.push('border-top');
+        toCopy.push('border-right');
+        toCopy.push('border-bottom');
+        toCopy.push('border-left');
     }
 
-    for (var i = 0; i < to_copy.length; i++) {
-        var style = window.getComputedStyle(object.parentNode).getPropertyValue(to_copy[i]);
+    for (var i = 0; i < toCopy.length; i++) {
+        var style = window.getComputedStyle(object.parentNode).getPropertyValue(toCopy[i]);
         if (style !== undefined) {
-            input.style[to_copy[i]] = style;
+            input.style[toCopy[i]] = style;
         }
     }
-    input.name = edit_param_name;
+    input.name = editParamName;
     form.onsubmit = function (event) {
         return false;
     };
-    if (control_button) {
-        $cms.dom.html(control_button, '{!SAVE;^}');
+    if (controlButton) {
+        $cms.dom.html(controlButton, '{!SAVE;^}');
     }
 
     function cleanupFunction() {
@@ -104,16 +104,16 @@ function fractionalEdit(event, object, url, raw_text, edit_param_name, was_doubl
             input.form.parentNode.removeChild(input.form);
         }
 
-        if (control_button) {
-            $cms.dom.html(control_button, '{!EDIT;^}');
+        if (controlButton) {
+            $cms.dom.html(controlButton, '{!EDIT;^}');
 
             // To stop it instantly re-clicking
-            var backup = control_button.onclick;
-            control_button.onclick = function () {
+            var backup = controlButton.onclick;
+            controlButton.onclick = function () {
                 return false;
             };
             window.setTimeout(function () {
-                control_button.onclick = backup;
+                controlButton.onclick = backup;
             }, 10);
         }
     }
@@ -131,10 +131,10 @@ function fractionalEdit(event, object, url, raw_text, edit_param_name, was_doubl
         $cms.doAjaxRequest(input.form.action, function (response) {
             // Some kind of error?
             if (((response.responseText == '') && (input.value != '')) || (response.status != 200)) {
-                var session_test_url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
-                var session_test_ret = $cms.doAjaxRequest(session_test_url + $cms.keepStub(true), null);
+                var sessionTestUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
+                var sessionTestRet = $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true), null);
 
-                if (session_test_ret.responseText) {// If it failed, see if it is due to a non-confirmed session
+                if (sessionTestRet.responseText) {// If it failed, see if it is due to a non-confirmed session
                     $cms.ui.confirmSession(
                         function (result) {
                             if (result) {
@@ -200,7 +200,7 @@ function fractionalEdit(event, object, url, raw_text, edit_param_name, was_doubl
         };
     }
     input.onblur = function () {
-        if (this.value != '' || raw_text == '') {
+        if (this.value != '' || rawText == '') {
             saveFunction();
         } else {
             cancelFunction();
@@ -209,8 +209,8 @@ function fractionalEdit(event, object, url, raw_text, edit_param_name, was_doubl
 
     // Add in form
     form.appendChild(input);
-    var website_inner = document.body;
-    website_inner.appendChild(form);
+    var websiteInner = document.body;
+    websiteInner.appendChild(form);
     input.focus();
     if (input.select !== undefined) {
         input.select();

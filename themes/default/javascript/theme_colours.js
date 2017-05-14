@@ -90,15 +90,15 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
 
 function doColorChooser() {
     var elements = document.getElementsByTagName('div');
-    var ce, a = 0, my_elements = [];
+    var ce, a = 0, myElements = [];
     for (ce = 0; ce < elements.length; ce++) {
         if (elements[ce].id.substring(0, 10) == 'cc_target_') {
-            my_elements[a] = elements[ce];
+            myElements[a] = elements[ce];
             a++;
         }
     }
     for (ce = 0; ce < a; ce++) {
-        doColorChooserElement(my_elements[ce]);
+        doColorChooserElement(myElements[ce]);
     }
 
 
@@ -114,8 +114,8 @@ function doColorChooser() {
             bgColor = 'rgb(' + hexToDec(bgColor.substr(1, 2)) + ',' + hexToDec(bgColor.substr(3, 2)) + ',' + hexToDec(bgColor.substr(5, 2)) + ')';
         }
 
-        var s_rgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
-        var rgb = s_rgb.split(',');
+        var sRgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
+        var rgb = sRgb.split(',');
 
         rgb[0] = Math.round(rgb[0] / 4) * 4;
         rgb[1] = Math.round(rgb[1] / 4) * 4;
@@ -200,12 +200,12 @@ function doColorChange(e) {
     rgb[1] = 0;
     rgb[2] = 0;
     rgb[d] = window.last_cc_i[d + window.names_to_numbers[_id] * 3];
-    var temp_last_cc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + _id);
-    if (temp_last_cc != targ) {
-        temp_last_cc.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]);
-        temp_last_cc.style.cursor = 'pointer';
-        temp_last_cc.style.outline = 'none';
-        temp_last_cc.style.position = 'static';
+    var tempLastCc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + _id);
+    if (tempLastCc !== targ) {
+        tempLastCc.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]);
+        tempLastCc.style.cursor = 'pointer';
+        tempLastCc.style.outline = 'none';
+        tempLastCc.style.position = 'static';
         window.last_cc_i[d + window.names_to_numbers[_id] * 3] = i;
 
         // Show a white line over the colour we clicked
@@ -215,11 +215,11 @@ function doColorChange(e) {
         targ.style.position = 'relative';
 
         var element = document.getElementById('cc_target_' + _id);
-        var bg_color = element.style.backgroundColor;
-        if (bg_color.substr(0, 1) == '#') bg_color = 'rgb(' + hexToDec(bg_color.substr(1, 2)) + ',' + hexToDec(bg_color.substr(3, 2)) + ',' + hexToDec(bg_color.substr(5, 2)) + ')';
+        var bgColor = element.style.backgroundColor;
+        if (bgColor.substr(0, 1) === '#') bgColor = 'rgb(' + hexToDec(bgColor.substr(1, 2)) + ',' + hexToDec(bgColor.substr(3, 2)) + ',' + hexToDec(bgColor.substr(5, 2)) + ')';
 
-        var s_rgb = bg_color.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
-        var _rgb = s_rgb.split(',');
+        var sRgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
+        var _rgb = sRgb.split(',');
         _rgb[d] = i;
         element.style.backgroundColor = '#' + decToHex(_rgb[0]) + decToHex(_rgb[1]) + decToHex(_rgb[2]);
         element.style.color = '#' + decToHex(255 - _rgb[0]) + decToHex(255 - _rgb[1]) + decToHex(255 - _rgb[2]);
@@ -250,17 +250,17 @@ function updateChooser(chooser) {
         rgb[1] = 0;
         rgb[2] = 0;
         rgb[d] = window.last_cc_i[d + window.names_to_numbers[id] * 3];
-        var temp_last_cc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + id);
-        temp_last_cc.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]); // Reset old
-        temp_last_cc.style.outline = 'none';
-        temp_last_cc.style.position = 'static';
+        var tempLastCc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + id);
+        tempLastCc.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]); // Reset old
+        tempLastCc.style.outline = 'none';
+        tempLastCc.style.position = 'static';
         window.last_cc_i[d + window.names_to_numbers[id] * 3] = i;
 
         var element = document.getElementById('cc_target_' + id);
-        var bg_color = element.style.backgroundColor;
-        if (bg_color.substr(0, 1) == '#') bg_color = 'rgb(' + hexToDec(bg_color.substr(1, 2)) + ',' + hexToDec(bg_color.substr(3, 2)) + ',' + hexToDec(bg_color.substr(5, 2)) + ')';
-        var s_rgb = bg_color.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
-        rgb = s_rgb.split(',');
+        var bgColor = element.style.backgroundColor;
+        if (bgColor.substr(0, 1) == '#') bgColor = 'rgb(' + hexToDec(bgColor.substr(1, 2)) + ',' + hexToDec(bgColor.substr(3, 2)) + ',' + hexToDec(bgColor.substr(5, 2)) + ')';
+        var sRgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
+        rgb = sRgb.split(',');
         rgb[d] = i;
         element.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]);
         element.style.color = '#' + decToHex(255 - rgb[0]) + decToHex(255 - rgb[1]) + decToHex(255 - rgb[2]);

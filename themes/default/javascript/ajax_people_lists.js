@@ -4,13 +4,13 @@
      * @memberof $cms.form
      * @param target
      * @param e
-     * @param search_type
+     * @param searchType
      */
-    $cms.form.updateAjaxSearchList = function updateAjaxSearchList(target, e, search_type) {
+    $cms.form.updateAjaxSearchList = function updateAjaxSearchList(target, e, searchType) {
         var special = 'search';
-        search_type = strVal(search_type);
-        if (search_type) {
-            special += '&search_type=' + encodeURIComponent(search_type);
+        searchType = strVal(searchType);
+        if (searchType) {
+            special += '&search_type=' + encodeURIComponent(searchType);
         }
         $cms.form.updateAjaxMemberList(target, special, false, e);
     };
@@ -42,10 +42,10 @@
             if (currentlyDoingListTimer) {
                 window.clearTimeout(currentlyDoingListTimer);
             }
-            var e_copy = { 'keyCode': event.keyCode, 'which': event.which };
+            var eCopy = { 'keyCode': event.keyCode, 'which': event.which };
 
             currentlyDoingListTimer = window.setTimeout(function () {
-                $cms.form.updateAjaxMemberList(target, special, true, e_copy);
+                $cms.form.updateAjaxMemberList(target, special, true, eCopy);
             }, 400);
             return;
         } else {
@@ -71,8 +71,8 @@
             }
         }
 
-        function updateAjaxNemberListResponse(result, list_contents) {
-            if (!list_contents || !currentListForEl) {
+        function updateAjaxNemberListResponse(result, listContents) {
+            if (!listContents || !currentListForEl) {
                 return;
             }
 
@@ -87,10 +87,10 @@
             if (isDataList) {
                 currentListForEl.setAttribute('list', 'ajax_list');
             } else {
-                if (list_contents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
+                if (listContents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
                     list.setAttribute('multiple', 'multiple');
                 } else {
-                    list.setAttribute('size', list_contents.childNodes.length + 1);
+                    list.setAttribute('size', listContents.childNodes.length + 1);
                 }
                 list.style.position = 'absolute';
                 list.style.left = ($cms.dom.findPosX(currentListForEl)) + 'px';
@@ -100,17 +100,17 @@
                 list.style.zIndex++;
             }, 100); // Fixes Opera by causing a refresh
 
-            if (list_contents.children.length === 0) {
+            if (listContents.children.length === 0) {
                 return;
             }
 
             var i, item, displaytext;
-            for (i = 0; i < list_contents.children.length; i++) {
+            for (i = 0; i < listContents.children.length; i++) {
                 item = document.createElement('option');
-                item.value = list_contents.children[i].getAttribute('value');
+                item.value = listContents.children[i].getAttribute('value');
                 displaytext = item.value;
-                if (list_contents.children[i].getAttribute('displayname') != '')
-                    displaytext = list_contents.children[i].getAttribute('displayname');
+                if (listContents.children[i].getAttribute('displayname') != '')
+                    displaytext = listContents.children[i].getAttribute('displayname');
                 item.text = displaytext;
                 item.textContent = displaytext;
                 list.appendChild(item);
@@ -129,7 +129,7 @@
             $cms.dom.clearTransitionAndSetOpacity(list, 0.0);
             $cms.dom.fadeTransition(list, 100, 30, 8);
 
-            var current_list_for_copy = currentListForEl;
+            var currentListForCopy = currentListForEl;
 
             if (currentListForEl.old_onkeyup === undefined) {
                 currentListForEl.old_onkeyup = currentListForEl.onkeyup;
@@ -146,13 +146,13 @@
                 if (ret != null) {
                     return ret;
                 }
-                return $cms.form.updateAjaxMemberList(current_list_for_copy, current_list_for_copy.special, false, event);
+                return $cms.form.updateAjaxMemberList(currentListForCopy, currentListForCopy.special, false, event);
             };
             currentListForEl.onchange = function (event) {
-                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
-                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-                if (current_list_for_copy.onchange) {
-                    current_list_for_copy.onchange(event);
+                currentListForCopy.onkeyup = currentListForCopy.old_onkeyup;
+                currentListForCopy.onchange = currentListForCopy.old_onchange;
+                if (currentListForCopy.onchange) {
+                    currentListForCopy.onchange(event);
                 }
             };
             list.onkeyup = function (event) {
@@ -163,9 +163,9 @@
 
                 if ($cms.dom.keyPressed(event, 'Enter')) {// ENTER
                     makeSelection(event);
-                    current_list_for_copy.disabled = true;
+                    currentListForCopy.disabled = true;
                     window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
+                        currentListForCopy.disabled = false;
                     }, 200);
 
                     return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
@@ -203,19 +203,21 @@
             currentListForEl = null;
 
             function handleArrowUsage(event) {
+                var temp;
+
                 if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
-                    current_list_for_copy.disabled = true;
+                    currentListForCopy.disabled = true;
                     window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
+                        currentListForCopy.disabled = false;
                     }, 1000);
 
-                    var temp = current_list_for_copy.onblur;
-                    current_list_for_copy.onblur = function () {
+                    temp = currentListForCopy.onblur;
+                    currentListForCopy.onblur = function () {
                     };
                     list.focus();
-                    current_list_for_copy.onblur = temp;
-                    if (!current_list_for_copy.down_once) {
-                        current_list_for_copy.down_once = true;
+                    currentListForCopy.onblur = temp;
+                    if (!currentListForCopy.down_once) {
+                        currentListForCopy.down_once = true;
                         list.selectedIndex = 0;
                     } else {
                         if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
@@ -225,17 +227,17 @@
                 }
 
                 if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
-                    current_list_for_copy.disabled = true;
+                    currentListForCopy.disabled = true;
                     window.setTimeout(function () {
-                        current_list_for_copy.disabled = false;
+                        currentListForCopy.disabled = false;
                     }, 1000);
 
-                    var temp = current_list_for_copy.onblur;
-                    current_list_for_copy.onblur = function () {};
+                    temp = currentListForCopy.onblur;
+                    currentListForCopy.onblur = function () {};
                     list.focus();
-                    current_list_for_copy.onblur = temp;
-                    if (!current_list_for_copy.down_once) {
-                        current_list_for_copy.down_once = true;
+                    currentListForCopy.onblur = temp;
+                    if (!currentListForCopy.down_once) {
+                        currentListForCopy.down_once = true;
                         list.selectedIndex = 0;
                     } else {
                         if (list.selectedIndex > 0) {
@@ -251,21 +253,21 @@
             function makeSelection(e) {
                 var el = e.target;
 
-                current_list_for_copy.value = el.value;
-                current_list_for_copy.onkeyup = current_list_for_copy.old_onkeyup;
-                current_list_for_copy.onchange = current_list_for_copy.old_onchange;
-                current_list_for_copy.onkeypress = function () {
+                currentListForCopy.value = el.value;
+                currentListForCopy.onkeyup = currentListForCopy.old_onkeyup;
+                currentListForCopy.onchange = currentListForCopy.old_onchange;
+                currentListForCopy.onkeypress = function () {
                 };
-                if (current_list_for_copy.onrealchange) {
-                    current_list_for_copy.onrealchange(e);
+                if (currentListForCopy.onrealchange) {
+                    currentListForCopy.onrealchange(e);
                 }
-                if (current_list_for_copy.onchange) {
-                    current_list_for_copy.onchange(e);
+                if (currentListForCopy.onchange) {
+                    currentListForCopy.onchange(e);
                 }
                 var al = $cms.dom.$id('ajax_list');
                 al.parentNode.removeChild(al);
                 window.setTimeout(function () {
-                    current_list_for_copy.focus();
+                    currentListForCopy.focus();
                 }, 300);
             }
         }

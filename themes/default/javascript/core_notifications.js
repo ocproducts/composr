@@ -41,9 +41,9 @@
 
             window.setInterval(window.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
 
-            var web_notifications_button = document.getElementById('web_notifications_button');
-            if (web_notifications_button) {
-                web_notifications_button.addEventListener('click', explicitNotificationsEnableRequest);
+            var webNotificationsButton = document.getElementById('web_notifications_button');
+            if (webNotificationsButton) {
+                webNotificationsButton.addEventListener('click', explicitNotificationsEnableRequest);
             }
         }
 
@@ -203,13 +203,13 @@ window.notifications_already_presented || (window.notifications_already_presente
 (window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}');
 (window.notifications_time_barrier != null) || (window.notifications_time_barrier = null);
 
-function pollForNotifications(forced_update, delay) {
-    forced_update = !!forced_update;
+function pollForNotifications(forcedUpdate, delay) {
+    forcedUpdate = !!forcedUpdate;
     delay = !!delay;
 
     if (delay) {
         window.setTimeout(function () {
-            pollForNotifications(forced_update);
+            pollForNotifications(forcedUpdate);
         }, 1000);
         return;
     }
@@ -219,30 +219,30 @@ function pollForNotifications(forced_update, delay) {
         url += '&max=' + window.max_notifications_to_show;
     }
     url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
-    if (forced_update) {
+    if (forcedUpdate) {
         url += '&forced_update=1';
     }
     url += $cms.keepStub();
     $cms.doAjaxRequest(url, window._pollForNotifications);
 }
 
-function _pollForNotifications(raw_ajax_result) {
-    if (raw_ajax_result.getElementsByTagName === undefined)
+function _pollForNotifications(rawAjaxResult) {
+    if (rawAjaxResult.getElementsByTagName === undefined)
         return; // Some kind of error
 
-    var time_node = raw_ajax_result.querySelector('time');
-    window.notifications_time_barrier = window.parseInt($cms.dom.html(time_node));
+    var timeNode = rawAjaxResult.querySelector('time');
+    window.notifications_time_barrier = window.parseInt($cms.dom.html(timeNode));
 
     // HTML5 notification API
 
     var alerts;
 
-    alerts = raw_ajax_result.getElementsByTagName('web_notification');
+    alerts = rawAjaxResult.getElementsByTagName('web_notification');
     for (var i = 0; i < alerts.length; i++) {
         displayAlert(alerts[i]);
     }
 
-    alerts = raw_ajax_result.getElementsByTagName('pt');
+    alerts = rawAjaxResult.getElementsByTagName('pt');
     for (var i = 0; i < alerts.length; i++) {
         displayAlert(alerts[i]);
     }
@@ -253,10 +253,10 @@ function _pollForNotifications(raw_ajax_result) {
 
     spot = document.getElementById('web_notifications_spot');
     if (spot) {
-        display = raw_ajax_result.getElementsByTagName('display_web_notifications');
+        display = rawAjaxResult.getElementsByTagName('display_web_notifications');
         button = document.getElementById('web_notifications_button');
         if (display[0]) {
-            unread = raw_ajax_result.getElementsByTagName('unread_web_notifications');
+            unread = rawAjaxResult.getElementsByTagName('unread_web_notifications');
             $cms.dom.html(spot, $cms.dom.html(display[0]));
             $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
             button.className = 'count_' + $cms.dom.html(unread[0]);
@@ -265,10 +265,10 @@ function _pollForNotifications(raw_ajax_result) {
 
     spot = document.getElementById('pts_spot');
     if (spot) {
-        display = raw_ajax_result.getElementsByTagName('display_pts');
+        display = rawAjaxResult.getElementsByTagName('display_pts');
         button = document.getElementById('pts_button');
         if (display[0]) {
-            unread = raw_ajax_result.getElementsByTagName('unread_pts');
+            unread = rawAjaxResult.getElementsByTagName('unread_pts');
             $cms.dom.html(spot, $cms.dom.html(display[0]));
             $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
             button.className = 'count_' + $cms.dom.html(unread[0]);
@@ -292,20 +292,20 @@ function _pollForNotifications(raw_ajax_result) {
         if ($cms.readCookie('sound', 'off') === 'off') {
             sound = 'off';
         }
-        var notification_code = notification.getAttribute('notification_code');
-        if (sound === 'on' && typeof window.detect_change == 'undefined' || notification_code != 'ticket_reply' && notification_code != 'ticket_reply_staff') {
+        var notificationCode = notification.getAttribute('notification_code');
+        if (sound === 'on' && typeof window.detect_change == 'undefined' || notificationCode != 'ticket_reply' && notificationCode != 'ticket_reply_staff') {
             if (window.soundManager !== undefined) {
-                var go_func = function () {
-                    var sound_url = 'data/sounds/message_received.mp3';
-                    var base_url = ((sound_url.indexOf('data_custom') == -1) && (sound_url.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;^}' : '{$CUSTOM_BASE_URL_NOHTTP;^}';
-                    var sound_object = window.soundManager.createSound({url: base_url + '/' + sound_url});
-                    if (sound_object) sound_object.play();
+                var goFunc = function () {
+                    var soundUrl = 'data/sounds/message_received.mp3';
+                    var baseUrl = ((soundUrl.indexOf('data_custom') == -1) && (soundUrl.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;^}' : '{$CUSTOM_BASE_URL_NOHTTP;^}';
+                    var soundObject = window.soundManager.createSound({url: baseUrl + '/' + soundUrl});
+                    if (soundObject) soundObject.play();
                 };
 
                 if (!window.soundManager.setupOptions.url) {
-                    window.soundManager.setup({onready: go_func, url: $cms.baseUrl('data/soundmanager'), debugMode: false});
+                    window.soundManager.setup({onready: goFunc, url: $cms.baseUrl('data/soundmanager'), debugMode: false});
                 } else {
-                    go_func();
+                    goFunc();
                 }
             }
         }
@@ -318,13 +318,13 @@ function _pollForNotifications(raw_ajax_result) {
             title = title.replace(/\\{2\\}/, notification.getAttribute('from_username'));
             var body = '';//notification.getAttribute('rendered'); Looks ugly
             if (window.notify.permissionLevel() == window.notify.PERMISSION_GRANTED) {
-                var notification_wrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.$SITE_NAME() + '__' + id });
-                if (notification_wrapper) {
+                var notificationWrapper = window.notify.createNotification(title, { icon: icon, body: body, tag: $cms.$SITE_NAME() + '__' + id });
+                if (notificationWrapper) {
                     window.addEventListener('focus', function () {
-                        notification_wrapper.close();
+                        notificationWrapper.close();
                     });
 
-                    notification_wrapper.notification.addEventListener('click', function () {
+                    notificationWrapper.notification.addEventListener('click', function () {
                         try {
                             window.focus();
                         } catch (ignore) {}
@@ -369,13 +369,13 @@ function _toggleMessagingBox(event, name, hide) {
 
     var button = document.getElementById(name + '_button');
     button.title = '';
-    var set_position = function () {
-        var button_x = $cms.dom.findPosX(button, true);
-        var button_width = button.offsetWidth;
-        var x = (button_x + button_width - e.offsetWidth);
+    var setPosition = function () {
+        var buttonX = $cms.dom.findPosX(button, true);
+        var buttonWidth = button.offsetWidth;
+        var x = (buttonX + buttonWidth - e.offsetWidth);
         if (x < 0) {
             var span = e.querySelector('span');
-            span.style.marginLeft = (button_x + button_width / 4) + 'px';
+            span.style.marginLeft = (buttonX + buttonWidth / 4) + 'px';
             x = 0;
         }
         e.style.left = x + 'px';
@@ -386,7 +386,7 @@ function _toggleMessagingBox(event, name, hide) {
         catch (ex) {
         }
     };
-    window.setTimeout(set_position, 0);
+    window.setTimeout(setPosition, 0);
 
     if ((e.style.display == 'none') && (!hide)) {
         var tooltips = document.querySelectorAll('body>.tooltip');

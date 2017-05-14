@@ -235,42 +235,42 @@
                     e.stopPropagation();
                     e.preventDefault();
 
-                    var new_position = modal.positionInSet - 1;
-                    if (new_position < 0) {
-                        new_position = imgs.length - 1;
+                    var newPosition = modal.positionInSet - 1;
+                    if (newPosition < 0) {
+                        newPosition = imgs.length - 1;
                     }
-                    modal.positionInSet = new_position;
-                    _openDifferentImageIntoLightbox(modal, new_position, imgs);
+                    modal.positionInSet = newPosition;
+                    _openDifferentImageIntoLightbox(modal, newPosition, imgs);
                 }
 
                 modal.left = previous;
                 modal.boxWrapperEl.firstElementChild.appendChild(previousButton);
 
-                var next_button = document.createElement('img');
-                next_button.className = 'next_button';
-                next_button.src = $cms.img('{$IMG;,mediaset_next}');
-                next_button.addEventListener('click', clickNextButton);
+                var nextButton = document.createElement('img');
+                nextButton.className = 'next_button';
+                nextButton.src = $cms.img('{$IMG;,mediaset_next}');
+                nextButton.addEventListener('click', clickNextButton);
                 function clickNextButton(e) {
                     e.stopPropagation();
                     e.preventDefault();
 
-                    var new_position = modal.positionInSet + 1;
-                    if (new_position >= imgs.length) {
-                        new_position = 0;
+                    var newPosition = modal.positionInSet + 1;
+                    if (newPosition >= imgs.length) {
+                        newPosition = 0;
                     }
-                    modal.positionInSet = new_position;
-                    _openDifferentImageIntoLightbox(modal, new_position, imgs);
+                    modal.positionInSet = newPosition;
+                    _openDifferentImageIntoLightbox(modal, newPosition, imgs);
                 }
 
                 modal.right = next;
-                modal.boxWrapperEl.firstElementChild.appendChild(next_button);
+                modal.boxWrapperEl.firstElementChild.appendChild(nextButton);
 
                 function _openDifferentImageIntoLightbox(modal, position, imgs) {
-                    var is_video = imgs[position][2];
+                    var isVideo = imgs[position][2];
 
                     // Load proper image
                     window.setTimeout(function () { // Defer execution until the HTML was parsed
-                        if (is_video) {
+                        if (isVideo) {
                             var video = document.createElement('video');
                             video.id = 'lightbox_image';
                             video.className = 'lightbox_image';
@@ -287,21 +287,21 @@
                             img.src = '{$IMG_INLINE;,loading}';
                             window.setTimeout(function () { // Defer execution until after loading is set
                                 img.addEventListener('load', function () {
-                                    $cms.ui.resizeLightboxDimensionsImg(modal, img, true, is_video);
+                                    $cms.ui.resizeLightboxDimensionsImg(modal, img, true, isVideo);
                                 });
                                 img.src = imgs[position][0];
                             }, 0);
                         }
 
-                        var lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
-                            lightbox_position_in_set_x = modal.top_window.$cms.dom.$id('lightbox_position_in_set_x');
+                        var lightboxDescription = modal.top_window.$cms.dom.$id('lightbox_description'),
+                            lightboxPositionInSetX = modal.top_window.$cms.dom.$id('lightbox_position_in_set_x');
 
-                        if (lightbox_description) {
-                            $cms.dom.html(lightbox_description, imgs[position][1]);
+                        if (lightboxDescription) {
+                            $cms.dom.html(lightboxDescription, imgs[position][1]);
                         }
 
-                        if (lightbox_position_in_set_x) {
-                            $cms.dom.html(lightbox_position_in_set_x, position + 1);
+                        if (lightboxPositionInSetX) {
+                            $cms.dom.html(lightboxPositionInSetX, position + 1);
                         }
                     });
                 }
@@ -633,20 +633,20 @@
             if (params.switchTime !== undefined) {
                 window['big_tabs_switch_time_' + id] = params.switchtime;
                 window['move_between_big_tabs_' + id] = function () {
-                    var next_page = 0, i, x;
+                    var nextPage = 0, i, x;
 
                     for (i = 0; i < sections.length; i++) {
                         x = document.getElementById(id + '_section_' + sections[i]);
                         if ((x.style.display === 'block') && (x.style.position !== 'absolute')) {
-                            next_page = i + 1;
+                            nextPage = i + 1;
                         }
                     }
 
-                    if (next_page === sections.length) {
-                        next_page = 0;
+                    if (nextPage === sections.length) {
+                        nextPage = 0;
                     }
 
-                    flipPage(sections[next_page], id, sections);
+                    flipPage(sections[nextPage], id, sections);
                 };
 
                 flipPage(0, id, sections);
@@ -708,20 +708,20 @@
     $cms.templates.mediaYoutube = function (params, element) {
             // Tie into callback event to see when finished, for our slideshows}
             // API: https://developers.google.com/youtube/iframe_api_reference}
-            var youtube_callback = function () {
-                var slideshow_mode = document.getElementById('next_slide');
+            var youtubeCallback = function () {
+                var slideshowMode = document.getElementById('next_slide');
                 var player = new YT.Player(element.id, {
                     width: params.width,
                     height: params.height,
                     videoId: params.remoteId,
                     events: {
                         'onReady': function () {
-                            if (slideshow_mode) {
+                            if (slideshowMode) {
                                 player.playVideo();
                             }
                         },
                         'onStateChange': function (newState) {
-                            if (slideshow_mode) {
+                            if (slideshowMode) {
                                 if (newState == 0) playerStopped();
                             }
                         }
@@ -732,13 +732,13 @@
             if (window.done_youtube_player_init === undefined) {
                 var tag = document.createElement('script');
                 tag.src = "https://www.youtube.com/iframe_api";
-                var first_script_tag = document.querySelector('script');
-                first_script_tag.parentNode.insertBefore(tag, first_script_tag);
+                var firstScriptTag = document.querySelector('script');
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
                 window.done_youtube_player_init = true;
 
-                window.onYouTubeIframeAPIReady = youtube_callback;
+                window.onYouTubeIframeAPIReady = youtubeCallback;
             } else {
-                youtube_callback();
+                youtubeCallback();
             }
         };
 
@@ -907,43 +907,43 @@
     };
 
 
-    function shockerTick(id, time, min_color, max_color) {
+    function shockerTick(id, time, minColor, maxColor) {
         if ((document.hidden !== undefined) && (document.hidden)) return;
 
         if (window.shocker_pos[id] == window.shocker_parts[id].length - 1) window.shocker_pos[id] = 0;
-        var e_left = document.getElementById('comcodeshocker' + id + '_left');
-        if (!e_left) return;
-        $cms.dom.html(e_left, window.shocker_parts[id][window.shocker_pos[id]][0]);
-        $cms.dom.clearTransitionAndSetOpacity(e_left, 0.6);
-        $cms.dom.clearTransitionAndSetOpacity(e_left, 0.0);
-        $cms.dom.fadeTransition(e_left, 100, time / 40, 5);
+        var eLeft = document.getElementById('comcodeshocker' + id + '_left');
+        if (!eLeft) return;
+        $cms.dom.html(eLeft, window.shocker_parts[id][window.shocker_pos[id]][0]);
+        $cms.dom.clearTransitionAndSetOpacity(eLeft, 0.6);
+        $cms.dom.clearTransitionAndSetOpacity(eLeft, 0.0);
+        $cms.dom.fadeTransition(eLeft, 100, time / 40, 5);
 
-        var e_right = document.getElementById('comcodeshocker' + id + '_right');
-        if (!e_right) return;
-        $cms.dom.html(e_right, window.shocker_parts[id][window.shocker_pos[id]][1]);
-        $cms.dom.clearTransitionAndSetOpacity(e_right, 0);
-        $cms.dom.clearTransitionAndSetOpacity(e_right, 0.0);
-        $cms.dom.fadeTransition(e_right, 100, time / 20, 5);
+        var eRight = document.getElementById('comcodeshocker' + id + '_right');
+        if (!eRight) return;
+        $cms.dom.html(eRight, window.shocker_parts[id][window.shocker_pos[id]][1]);
+        $cms.dom.clearTransitionAndSetOpacity(eRight, 0);
+        $cms.dom.clearTransitionAndSetOpacity(eRight, 0.0);
+        $cms.dom.fadeTransition(eRight, 100, time / 20, 5);
 
         window.shocker_pos[id]++;
 
-        window['comcodeshocker' + id + '_left'] = [0, min_color, max_color, time / 13, []];
+        window['comcodeshocker' + id + '_left'] = [0, minColor, maxColor, time / 13, []];
         window.setInterval(function () {
-            processWave(e_left);
+            processWave(eLeft);
         }, window['comcodeshocker' + id + '_left'][3]);
     }
 
-    function flipPage(to, pass_id, sections) {
+    function flipPage(to, passId, sections) {
         var i, current_pos = 0, section;
 
-        if (window['big_tabs_auto_cycler_' + pass_id]) {
-            window.clearTimeout(window['big_tabs_auto_cycler_' + pass_id]);
-            window['big_tabs_auto_cycler_' + pass_id] = null;
+        if (window['big_tabs_auto_cycler_' + passId]) {
+            window.clearTimeout(window['big_tabs_auto_cycler_' + passId]);
+            window['big_tabs_auto_cycler_' + passId] = null;
         }
 
         if (typeof to === 'number') {
             for (i = 0; i < sections.length; i++) {
-                section = document.getElementById(pass_id + '_section_' + sections[i]);
+                section = document.getElementById(passId + '_section_' + sections[i]);
                 if (section) {
                     if ((section.style.display === 'block') && (section.style.position !== 'absolute')) {
                         current_pos = i;
@@ -964,45 +964,45 @@
 
         // Previous/next updates
         var x;
-        x = document.getElementById(pass_id + '_has_next_yes');
+        x = document.getElementById(passId + '_has_next_yes');
         if (x) {
             x.style.display = (current_pos == sections.length - 1) ? 'none' : 'inline-block';
         }
-        x = document.getElementById(pass_id + '_has_next_no');
+        x = document.getElementById(passId + '_has_next_no');
         if (x) {
             x.style.display = (current_pos == sections.length - 1) ? 'inline-block' : 'none';
         }
-        x = document.getElementById(pass_id + '_has_previous_yes');
+        x = document.getElementById(passId + '_has_previous_yes');
         if (x) {
             x.style.display = (current_pos == 0) ? 'none' : 'inline-block';
         }
-        x = document.getElementById(pass_id + '_has_previous_no');
+        x = document.getElementById(passId + '_has_previous_no');
         if (x) {
             x.style.display = (current_pos == 0) ? 'inline-block' : 'none';
         }
 
         // We make our forthcoming one instantly visible to stop Google Chrome possibly scrolling up if there is a tiny time interval when none are visible
-        x = document.getElementById(pass_id + '_section_' + sections[i]);
+        x = document.getElementById(passId + '_section_' + sections[i]);
         if (x) x.style.display = 'block';
 
         for (i = 0; i < sections.length; i++) {
-            x = document.getElementById(pass_id + '_goto_' + sections[i]);
+            x = document.getElementById(passId + '_goto_' + sections[i]);
             if (x) {
                 x.style.display = (i == current_pos) ? 'none' : 'inline-block';
             }
-            x = document.getElementById(pass_id + '_btgoto_' + sections[i]);
+            x = document.getElementById(passId + '_btgoto_' + sections[i]);
             if (x) {
                 x.classList.toggle('big_tab_active', (i == current_pos));
                 x.classList.toggle('big_tab_inactive', (i != current_pos));
             }
-            x = document.getElementById(pass_id + '_isat_' + sections[i]);
+            x = document.getElementById(passId + '_isat_' + sections[i]);
             if (x) {
                 x.style.display = (i == current_pos) ? 'inline-block' : 'none';
             }
-            x = document.getElementById(pass_id + '_section_' + sections[i]);
-            var current_place = document.getElementById(pass_id + '_section_' + sections[current_pos]);
+            x = document.getElementById(passId + '_section_' + sections[i]);
+            var currentPlace = document.getElementById(passId + '_section_' + sections[current_pos]);
             //var width=current_place?'100%':null;
-            var width = current_place ? $cms.dom.contentWidth(current_place) : null;
+            var width = currentPlace ? $cms.dom.contentWidth(currentPlace) : null;
             if (x) {
                 if (x.className === 'comcode_big_tab') {
                     if (i == current_pos) {
@@ -1040,8 +1040,8 @@
             }
         }
 
-        if (window['move_between_big_tabs_' + pass_id]) {
-            window['big_tabs_auto_cycler_' + pass_id] = window.setInterval(window['move_between_big_tabs_' + pass_id], window['big_tabs_switch_time_' + pass_id]);
+        if (window['move_between_big_tabs_' + passId]) {
+            window['big_tabs_auto_cycler_' + passId] = window.setInterval(window['move_between_big_tabs_' + passId], window['big_tabs_switch_time_' + passId]);
         }
 
         return false;

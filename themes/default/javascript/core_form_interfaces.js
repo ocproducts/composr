@@ -105,7 +105,7 @@
 
         permissionRepeating: function (e, button) {
             var name = this.prefix,
-                old_permission_copying = window.permission_copying,
+                oldPermissionCopying = window.permission_copying,
                 tr = button.parentNode.parentNode,
                 trs = tr.parentNode.getElementsByTagName('tr');
 
@@ -117,7 +117,7 @@
                 }
             }
 
-            if (old_permission_copying !== name) {// Starting a new copying session
+            if (oldPermissionCopying !== name) {// Starting a new copying session
                 button.style.textDecoration = 'blink';
                 window.permission_copying = name;
                 $cms.ui.alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
@@ -130,22 +130,22 @@
 
             function copyPermissionsFunction(to_row, from_row) {
                 return function () {
-                    var inputs_to = to_row.getElementsByTagName('input');
-                    var inputs_from = from_row.getElementsByTagName('input');
-                    for (var i = 0; i < inputs_to.length; i++) {
-                        inputs_to[i].checked = inputs_from[i].checked;
+                    var inputsTo = to_row.getElementsByTagName('input');
+                    var inputsFrom = from_row.getElementsByTagName('input');
+                    for (var i = 0; i < inputsTo.length; i++) {
+                        inputsTo[i].checked = inputsFrom[i].checked;
                     }
-                    var selects_to = to_row.getElementsByTagName('select');
-                    var selects_from = from_row.getElementsByTagName('select');
-                    for (var i = 0; i < selects_to.length; i++) {
-                        while (selects_to[i].options.length > 0) {
-                            selects_to[i].remove(0);
+                    var selectsTo = to_row.getElementsByTagName('select');
+                    var selectsFrom = from_row.getElementsByTagName('select');
+                    for (var i = 0; i < selectsTo.length; i++) {
+                        while (selectsTo[i].options.length > 0) {
+                            selectsTo[i].remove(0);
                         }
-                        for (var j = 0; j < selects_from[i].options.length; j++) {
-                            selects_to[i].add(selects_from[i].options[j].cloneNode(true), null);
+                        for (var j = 0; j < selectsFrom[i].options.length; j++) {
+                            selectsTo[i].add(selectsFrom[i].options[j].cloneNode(true), null);
                         }
-                        selects_to[i].selectedIndex = selects_from[i].selectedIndex;
-                        selects_to[i].disabled = selects_from[i].disabled;
+                        selectsTo[i].selectedIndex = selectsFrom[i].selectedIndex;
+                        selectsTo[i].disabled = selectsFrom[i].disabled;
                     }
                 }
             }
@@ -539,8 +539,8 @@
                 table = table.parentNode;
             }
 
-            var state_list = null,
-                state_checkbox = null;
+            var stateList = null,
+                stateCheckbox = null;
 
             for (var i = 0; i < table.rows.length; i++) {
                 if (i >= 1) {
@@ -548,17 +548,17 @@
                     var input = cell2.querySelector('input');
                     if (input) {
                         if (!input.disabled) {
-                            if (state_checkbox == null) {
-                                state_checkbox = input.checked;
+                            if (stateCheckbox == null) {
+                                stateCheckbox = input.checked;
                             }
-                            input.checked = !state_checkbox;
+                            input.checked = !stateCheckbox;
                         }
                     } else {
                         input = cell2.querySelector('select');
-                        if (state_list == null) {
-                            state_list = input.selectedIndex;
+                        if (stateList == null) {
+                            stateList = input.selectedIndex;
                         }
-                        input.selectedIndex = ((state_list != input.options.length - 1) ? (input.options.length - 1) : (input.options.length - 2));
+                        input.selectedIndex = ((stateList != input.options.length - 1) ? (input.options.length - 1) : (input.options.length - 2));
                         input.disabled = false;
 
                         permissionsOverridden(table.rows[i].id.replace(/_privilege_container$/, ''));
@@ -810,7 +810,7 @@
             attachmentsUiInputRow = $cms.dom.$('#field-' + id +'-attachments-ui-input');
 
         if (params.class.includes('wysiwyg')) {
-            if (window.wysiwyg_on && wysiwygOn()) {
+            if (window.wysiwygOn && wysiwygOn()) {
                 postEl.readOnly = true; // Stop typing while it loads
 
                 window.setTimeout(function () {
@@ -852,13 +852,13 @@
     };
 
     $cms.templates.previewScriptCode = function (params) {
-        var main_window = $cms.getMainCmsWindow();
+        var mainWindow = $cms.getMainCmsWindow();
 
-        var post = main_window.document.getElementById('post');
+        var post = mainWindow.document.getElementById('post');
 
         // Replace Comcode
-        var old_comcode = main_window.get_textbox(post);
-        main_window.set_textbox(post, params.newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), params.newPostValueHtml);
+        var oldComcode = mainWindow.getTextbox(post);
+        mainWindow.setTextbox(post, params.newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), params.newPostValueHtml);
 
         // Turn main post editing back on
         if (wysiwygSetReadonly !== undefined) {
@@ -866,17 +866,17 @@
         }
 
         // Remove attachment uploads
-        var inputs = post.form.elements, upload_button;
+        var inputs = post.form.elements, uploadButton;
         var i, done_one = false;
         for (i = 0; i < inputs.length; i++) {
             if (((inputs[i].type == 'file') || ((inputs[i].type == 'text') && (inputs[i].disabled))) && (inputs[i].value != '') && (inputs[i].name.match(/file\d+/))) {
                 if (inputs[i].plupload_object !== undefined) {
                     if ((inputs[i].value != '-1') && (inputs[i].value != '')) {
                         if (!done_one) {
-                            if (old_comcode.indexOf('attachment_safe') == -1) {
+                            if (oldComcode.indexOf('attachment_safe') == -1) {
                                 $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             } else {
-                                if (!main_window.$cms.form.isWysiwygField(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
+                                if (!mainWindow.$cms.form.isWysiwygField(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
                                     $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             }
                         }
@@ -886,8 +886,8 @@
                     if (inputs[i].plupload_object.setButtonDisabled !== undefined) {
                         inputs[i].plupload_object.setButtonDisabled(false);
                     } else {
-                        upload_button = main_window.document.getElementById('uploadButton_' + inputs[i].name);
-                        if (upload_button) upload_button.disabled = true;
+                        uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
+                        if (uploadButton) uploadButton.disabled = true;
                     }
                     inputs[i].value = '-1';
                 } else {
@@ -905,20 +905,20 @@
 
     $cms.templates.blockHelperDone = function (params) {
         var element;
-        var target_window = window.opener ? window.opener : window.parent;
-        element = target_window.document.getElementById(params.fieldName);
+        var targetWindow = window.opener ? window.opener : window.parent;
+        element = targetWindow.document.getElementById(params.fieldName);
         if (!element) {
-            target_window = target_window.frames['iframe_page'];
-            element = target_window.document.getElementById(params.fieldName);
+            targetWindow = targetWindow.frames['iframe_page'];
+            element = targetWindow.document.getElementById(params.fieldName);
         }
-        var is_wysiwyg = target_window.$cms.form.isWysiwygField(element);
+        var isWysiwyg = targetWindow.$cms.form.isWysiwygField(element);
 
-        var comcode, comcode_semihtml;
+        var comcode, comcodeSemihtml;
         comcode = params.comcode;
         window.returnValue = comcode;
-        comcode_semihtml = params.comcodeSemihtml;
+        comcodeSemihtml = params.comcodeSemihtml;
 
-        var loading_space = document.getElementById('loading_space');
+        var loadingSpace = document.getElementById('loading_space');
 
         function shutdownOverlay() {
             window.setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
@@ -932,50 +932,50 @@
 
         function dispatchBlockHelper() {
             if ((typeof params.saveToId === 'string') && (params.saveToId !== '')) {
-                var ob = target_window.wysiwyg_editors[element.id].document.$.getElementById(params.saveToId);
+                var ob = targetWindow.wysiwyg_editors[element.id].document.$.getElementById(params.saveToId);
 
                 if (params.delete) {
                     ob.parentNode.removeChild(ob);
                 } else {
-                    var input_container = document.createElement('div');
-                    $cms.dom.html(input_container, comcode_semihtml.replace(/^\s*/, ''));
-                    ob.parentNode.replaceChild(input_container.firstElementChild, ob);
+                    var inputContainer = document.createElement('div');
+                    $cms.dom.html(inputContainer, comcodeSemihtml.replace(/^\s*/, ''));
+                    ob.parentNode.replaceChild(inputContainer.firstElementChild, ob);
                 }
 
-                target_window.wysiwyg_editors[element.id].updateElement();
+                targetWindow.wysiwyg_editors[element.id].updateElement();
 
                 shutdownOverlay();
             } else {
                 var message = '';
                 if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
-                    if (is_wysiwyg) {
+                    if (isWysiwyg) {
                         message = '';//'!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^}'; Not really needed
                     } else {
                         message = '!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
                     }
                 }
 
-                target_window.insert_comcode_tag = function (rep_from, rep_to, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
-                    var _comcode_semihtml = comcode_semihtml;
+                targetWindow.insert_comcode_tag = function (repFrom, repTo, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
+                    var _comcodeSemihtml = comcodeSemihtml;
                     var _comcode = comcode;
-                    if (rep_from !== undefined) {
-                        _comcode_semihtml = _comcode_semihtml.replace(rep_from, rep_to);
-                        _comcode = _comcode.replace(rep_from, rep_to);
+                    if (repFrom !== undefined) {
+                        _comcodeSemihtml = _comcodeSemihtml.replace(repFrom, repTo);
+                        _comcode = _comcode.replace(repFrom, repTo);
                     }
 
                     if (ret !== undefined && ret) {
-                        return [_comcode_semihtml, _comcode];
+                        return [_comcodeSemihtml, _comcode];
                     }
 
-                    if ((element.value.indexOf(comcode_semihtml) == -1) || (comcode.indexOf('[attachment') == -1)) { // Don't allow attachments to add twice
-                        target_window.insertTextbox(element, _comcode, target_window.document.selection ? target_window.document.selection : null, true, _comcode_semihtml);
+                    if ((element.value.indexOf(comcodeSemihtml) == -1) || (comcode.indexOf('[attachment') == -1)) { // Don't allow attachments to add twice
+                        targetWindow.insertTextbox(element, _comcode, targetWindow.document.selection ? targetWindow.document.selection : null, true, _comcodeSemihtml);
                     }
                 };
 
                 if (params.prefix !== undefined) {
-                    target_window.insertTextbox(element, params.prefix, target_window.document.selection ? target_window.document.selection : null, true);
+                    targetWindow.insertTextbox(element, params.prefix, targetWindow.document.selection ? targetWindow.document.selection : null, true);
                 }
-                target_window.insert_comcode_tag();
+                targetWindow.insert_comcode_tag();
 
                 if (message != '') {
                     $cms.ui.alert(message, function () {
@@ -987,16 +987,16 @@
             }
         }
 
-        var attached_event_action = false;
+        var attachedEventAction = false;
 
         if (params.syncWysiwygAttachments) {
             // WYSIWYG-editable attachments must be synched
             var field = 'file' + params.tagContents.substr(4);
-            var upload_element = target_window.document.getElementById(field);
-            if (!upload_element) upload_element = target_window.document.getElementById('hidFileID_' + field);
-            if ((upload_element.plupload_object !== undefined) && (is_wysiwyg)) {
-                var ob = upload_element.plupload_object;
-                if (ob.state == target_window.plupload.STARTED) {
+            var uploadElement = targetWindow.document.getElementById(field);
+            if (!uploadElement) uploadElement = targetWindow.document.getElementById('hidFileID_' + field);
+            if ((uploadElement.plupload_object !== undefined) && (isWysiwyg)) {
+                var ob = uploadElement.plupload_object;
+                if (ob.state == targetWindow.plupload.STARTED) {
                     ob.bind('UploadComplete', function () {
                         window.setTimeout(dispatchBlockHelper, 100);
                         /*Give enough time for everything else to update*/
@@ -1004,21 +1004,21 @@
                     ob.bind('Error', shutdownOverlay);
 
                     // Keep copying the upload indicator
-                    var progress = $cms.dom.html(target_window.document.getElementById('fsUploadProgress_' + field));
+                    var progress = $cms.dom.html(targetWindow.document.getElementById('fsUploadProgress_' + field));
                     window.setInterval(function () {
                         if (progress != '') {
-                            $cms.dom.html(loading_space, progress);
-                            loading_space.className = 'spaced flash';
+                            $cms.dom.html(loadingSpace, progress);
+                            loadingSpace.className = 'spaced flash';
                         }
                     }, 100);
 
-                    attached_event_action = true;
+                    attachedEventAction = true;
                 }
             }
 
         }
 
-        if (!attached_event_action) {
+        if (!attachedEventAction) {
             window.setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up faux_close
         }
     };
@@ -1053,25 +1053,25 @@
         });
 
 
-        function ensureNextFieldUpload(this_field) {
-            var mid = this_field.name.lastIndexOf('_'),
-                name_stub = this_field.name.substring(0, mid + 1),
-                this_num = this_field.name.substring(mid + 1, this_field.name.length) - 0,
-                next_num = this_num + 1,
-                next_field = document.getElementById('multi_' + next_num),
-                name = name_stub + next_num,
-                this_id = this_field.id;
+        function ensureNextFieldUpload(thisField) {
+            var mid = thisField.name.lastIndexOf('_'),
+                nameStub = thisField.name.substring(0, mid + 1),
+                thisNum = thisField.name.substring(mid + 1, thisField.name.length) - 0,
+                nextNum = thisNum + 1,
+                nextField = document.getElementById('multi_' + nextNum),
+                name = nameStub + nextNum,
+                thisId = thisField.id;
 
-            if (!next_field) {
-                next_num = this_num + 1;
-                this_field = document.getElementById(this_id);
-                next_field = document.createElement('input');
-                next_field.className = 'input_upload';
-                next_field.setAttribute('id', 'multi_' + next_num);
-                next_field.addEventListener('change', _ensureNextFieldUpload);
-                next_field.setAttribute('type', 'file');
-                next_field.name = name_stub + next_num;
-                this_field.parentNode.appendChild(next_field);
+            if (!nextField) {
+                nextNum = thisNum + 1;
+                thisField = document.getElementById(thisId);
+                nextField = document.createElement('input');
+                nextField.className = 'input_upload';
+                nextField.setAttribute('id', 'multi_' + nextNum);
+                nextField.addEventListener('change', _ensureNextFieldUpload);
+                nextField.setAttribute('type', 'file');
+                nextField.name = nameStub + nextNum;
+                thisField.parentNode.appendChild(nextField);
             }
 
             function _ensureNextFieldUpload(event) {
@@ -1173,7 +1173,7 @@
 
     $cms.templates.formScreenInputText = function formScreenInputText(params) {
         if (params.required.includes('wysiwyg')) {
-            if ((window.wysiwyg_on) && (wysiwygOn())) {
+            if ((window.wysiwygOn) && (wysiwygOn())) {
                 document.getElementById(params.name).readOnly = true;
             }
         }
@@ -1191,8 +1191,8 @@
         window.setInterval(function () {
             if ($cms.form.isWysiwygField(post)) {
                 try {
-                    var text_value = window.CKEDITOR.instances[post.name].getData();
-                    var matches = text_value.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
+                    var textValue = window.CKEDITOR.instances[post.name].getData();
+                    var matches = textValue.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
                     var count = 0;
                     if (matches) count = matches.length / 2;
                     $cms.dom.html(count_element, '{!WORDS;^}'.replace('\\{1\\}', count));
@@ -1206,24 +1206,24 @@
     function permissionsOverridden(select) {
         var element = document.getElementById(select + '_presets');
         if (element.options[0].id != select + '_custom_option') {
-            var new_option = document.createElement('option');
-            $cms.dom.html(new_option, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
-            new_option.id = select + '_custom_option';
-            new_option.value = '';
-            element.insertBefore(new_option, element.options[0]);
+            var newOption = document.createElement('option');
+            $cms.dom.html(newOption, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
+            newOption.id = select + '_custom_option';
+            newOption.value = '';
+            element.insertBefore(newOption, element.options[0]);
         }
         element.selectedIndex = 0;
     }
 
     function tryToSimplifyIframeForm() {
-        var form_cat_selector = document.getElementById('main_form'),
+        var formCatSelector = document.getElementById('main_form'),
             elements, i, element,
             count = 0, found, foundButton;
-        if (!form_cat_selector) {
+        if (!formCatSelector) {
             return;
         }
 
-        elements = $cms.dom.$$(form_cat_selector, 'input, button, select, textarea');
+        elements = $cms.dom.$$(formCatSelector, 'input, button, select, textarea');
         for (i = 0; i < elements.length; i++) {
             element = elements[i];
             if (((element.localName === 'input') && (element.type !== 'hidden') && (element.type !== 'button') && (element.type !== 'image') && (element.type !== 'submit')) || (element.localName === 'select') || (element.localName === 'textarea')) {
@@ -1244,7 +1244,7 @@
                             '{!Q_SURE_LOSE;^}',
                             function (result) {
                                 if (result) {
-                                    _simplifiedFormContinueSubmit(iframe, form_cat_selector);
+                                    _simplifiedFormContinueSubmit(iframe, formCatSelector);
                                 }
                             }
                         );
@@ -1253,7 +1253,7 @@
                     }
                 }
 
-                _simplifiedFormContinueSubmit(iframe, form_cat_selector);
+                _simplifiedFormContinueSubmit(iframe, formCatSelector);
 
                 return null;
             };
@@ -1264,12 +1264,12 @@
         }
     }
 
-    function _simplifiedFormContinueSubmit(iframe, form_cat_selector) {
-        if ($cms.form.checkForm(form_cat_selector)) {
+    function _simplifiedFormContinueSubmit(iframe, formCatSelector) {
+        if ($cms.form.checkForm(formCatSelector)) {
             if (iframe) {
                 $cms.dom.animateFrameLoad(iframe, 'iframe_under');
             }
-            form_cat_selector.submit();
+            formCatSelector.submit();
         }
     }
 
@@ -1289,22 +1289,22 @@
                     '{!cns_special_cpf:SPECIAL_CPF__cms_country;^}'
                 ];
 
-                var geocode_url = '{$FIND_SCRIPT;,geocode}';
-                geocode_url += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
-                geocode_url += $cms.keepStub();
+                var geocodeUrl = '{$FIND_SCRIPT;,geocode}';
+                geocodeUrl += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
+                geocodeUrl += $cms.keepStub();
 
-                $cms.doAjaxRequest(geocode_url, function (ajax_result) {
-                    var parsed = JSON.parse(ajax_result.responseText);
+                $cms.doAjaxRequest(geocodeUrl, function (ajaxResult) {
+                    var parsed = JSON.parse(ajaxResult.responseText);
                     if (parsed === null) return;
-                    var labels = document.getElementsByTagName('label'), label, field_name, field;
+                    var labels = document.getElementsByTagName('label'), label, fieldName, field;
                     for (var i = 0; i < labels.length; i++) {
                         label = $cms.dom.html(labels[i]);
                         for (var j = 0; j < fields.length; j++) {
                             if (fields[j].replace(/^.*: /, '') == label) {
                                 if (parsed[j + 1] === null) parsed[j + 1] = '';
 
-                                field_name = labels[i].getAttribute('for');
-                                field = document.getElementById(field_name);
+                                fieldName = labels[i].getAttribute('for');
+                                field = document.getElementById(fieldName);
                                 if (field.localName === 'select') {
                                     field.value = parsed[j + 1];
                                     if (jQuery(field).select2 !== undefined) {
@@ -1383,9 +1383,9 @@
     }
 
     // Hide a 'tray' of trs in a form
-    function toggleSubordinateFields(pic, help_id) {
-        var field_input = pic.parentElement.parentElement.parentElement,
-            next = field_input.nextElementSibling,
+    function toggleSubordinateFields(pic, helpId) {
+        var fieldInput = pic.parentElement.parentElement.parentElement,
+            next = fieldInput.nextElementSibling,
             newDisplayState, newDisplayState2;
 
         if (!next) {
@@ -1407,7 +1407,7 @@
             }
             pic.alt = '{!CONTRACT;^}';
             pic.title = '{!CONTRACT;^}';
-            newDisplayState = (field_input.localName === 'tr') ? 'table-row' : 'block';
+            newDisplayState = (fieldInput.localName === 'tr') ? 'table-row' : 'block';
             newDisplayState2 = 'block';
         } else { /* Contracting now */
             pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('contract', 'expand') : $cms.img('{$IMG;,1x/trays/expand}');
@@ -1422,27 +1422,27 @@
 
         // Hide everything until we hit end of section
         var count = 0;
-        while (field_input.nextElementSibling) {
-            field_input = field_input.nextElementSibling;
+        while (fieldInput.nextElementSibling) {
+            fieldInput = fieldInput.nextElementSibling;
 
             /* Start of next section? */
-            if (field_input.classList.contains('form_table_field_spacer')) {
+            if (fieldInput.classList.contains('form_table_field_spacer')) {
                 break; // End of section
             }
 
             /* Ok to proceed */
-            field_input.style.display = newDisplayState;
+            fieldInput.style.display = newDisplayState;
 
             if ((newDisplayState2 !== 'none') && (count < 50/*Performance*/)) {
-                $cms.dom.clearTransitionAndSetOpacity(field_input, 0.0);
-                $cms.dom.fadeTransition(field_input, 100, 30, 20);
+                $cms.dom.clearTransitionAndSetOpacity(fieldInput, 0.0);
+                $cms.dom.fadeTransition(fieldInput, 100, 30, 20);
                 count++;
             }
         }
-        if (help_id === undefined) {
-            help_id = pic.parentNode.id + '_help';
+        if (helpId === undefined) {
+            helpId = pic.parentNode.id + '_help';
         }
-        var help = document.getElementById(help_id);
+        var help = document.getElementById(helpId);
 
         while (help !== null) {
             help.style.display = newDisplayState2;
@@ -1455,15 +1455,15 @@
         $cms.dom.triggerResize();
     }
 
-    function choosePicture(j_id, img_ob, name, event) {
-        var j = document.getElementById(j_id);
+    function choosePicture(jId, imgOb, name, event) {
+        var j = document.getElementById(jId);
         if (!j) {
             return;
         }
 
-        if (!img_ob) {
-            img_ob = document.getElementById('w_' + j_id.substring(2, j_id.length)).querySelector('img');
-            if (!img_ob) {
+        if (!imgOb) {
+            imgOb = document.getElementById('w_' + jId.substring(2, jId.length)).querySelector('img');
+            if (!imgOb) {
                 return;
             }
         }
@@ -1472,7 +1472,7 @@
         for (var i = 0; i < e.length; i++) {
             if (e[i].disabled) continue;
             var img = e[i].parentNode.parentNode.querySelector('img');
-            if (img && (img !== img_ob)) {
+            if (img && (img !== imgOb)) {
                 if (img.parentNode.classList.contains('selected')) {
                     img.parentNode.classList.remove('selected');
                     img.style.outline = '0';
@@ -1489,183 +1489,184 @@
         if (j.fakeonchange) {
             j.fakeonchange(event);
         }
-        img_ob.parentNode.classList.add('selected');
-        img_ob.style.outline = '1px dotted';
+        imgOb.parentNode.classList.add('selected');
+        imgOb.style.outline = '1px dotted';
     }
 
 
-    function standardAlternateFieldsWithin(set_name, something_required) {
-        var form = document.getElementById('set_wrapper_' + set_name);
+    function standardAlternateFieldsWithin(setName, somethingRequired) {
+        var form = document.getElementById('set_wrapper_' + setName);
 
         while (form && (form.localName !== 'form')) {
             form = form.parentNode;
         }
-        var fields = form.elements[set_name];
-        var field_names = [];
+        var fields = form.elements[setName];
+        var fieldNames = [];
         for (var i = 0; i < fields.length; i++) {
             if (fields[i][0] === undefined) {
                 if (fields[i].id.startsWith('choose_')) {
-                    field_names.push(fields[i].id.replace(/^choose\_/, ''));
+                    fieldNames.push(fields[i].id.replace(/^choose\_/, ''));
                 }
             } else {
                 if (fields[i][0].id.startsWith('choose_')) {
-                    field_names.push(fields[i][0].id.replace(/^choose\_/, ''));
+                    fieldNames.push(fields[i][0].id.replace(/^choose\_/, ''));
                 }
             }
         }
 
-        standardAlternateFields(field_names, something_required);
+        standardAlternateFields(fieldNames, somethingRequired);
 
         // Do dynamic $cms.form.setLocked/$cms.form.setRequired such that one of these must be set, but only one may be
-        function standardAlternateFields(field_names, something_required, second_run) {
-            second_run = !!second_run;
+        function standardAlternateFields(fieldNames, somethingRequired, secondRun) {
+            secondRun = !!secondRun;
 
             // Look up field objects
             var fields = [], i, field;
 
-            for (i = 0; i < field_names.length; i++) {
-                field = _standard_alternate_fields_get_object(field_names[i]);
+            for (i = 0; i < fieldNames.length; i++) {
+                field = _standardAlternateFieldsGetObject(fieldNames[i]);
                 fields.push(field);
             }
 
             // Set up listeners...
-            for (i = 0; i < field_names.length; i++) {
+            for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
                 if ((!field) || (field.alternating === undefined)) {// ... but only if not already set
-                    var self_function = function (e) {
-                        standardAlternateFields(field_names, something_required, true);
+                    var selfFunction = function (e) {
+                        standardAlternateFields(fieldNames, somethingRequired, true);
                     }; // We'll re-call ourself on change
-                    _standard_alternate_field_create_listeners(field, self_function);
+                    _standardAlternateFieldCreateListeners(field, selfFunction);
                 }
             }
 
             // Update things
-            for (i = 0; i < field_names.length; i++) {
+            for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
-                if (_standard_alternate_field_is_filled_in(field, second_run, false))
-                    return _standard_alternate_field_update_editability(field, fields, something_required);
+                if (_standardAlternateFieldIsFilledIn(field, secondRun, false))
+                    return _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
             }
 
             // Hmm, force first one chosen then
-            for (i = 0; i < field_names.length; i++) {
-                if (field_names[i] == '') {
-                    var radio_button = document.getElementById('choose_'); // Radio button handles field alternation
-                    radio_button.checked = true;
-                    return _standard_alternate_field_update_editability(null, fields, something_required);
+            for (i = 0; i < fieldNames.length; i++) {
+                if (fieldNames[i] == '') {
+                    var radioButton = document.getElementById('choose_'); // Radio button handles field alternation
+                    radioButton.checked = true;
+                    return _standardAlternateFieldUpdateEditability(null, fields, somethingRequired);
                 }
 
                 field = fields[i];
-                if ((field) && (_standard_alternate_field_is_filled_in(field, second_run, true)))
-                    return _standard_alternate_field_update_editability(field, fields, something_required);
+                if ((field) && (_standardAlternateFieldIsFilledIn(field, secondRun, true)))
+                    return _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
             }
 
-            function _standard_alternate_field_update_editability(chosen, choices, something_required) {
+            function _standardAlternateFieldUpdateEditability(chosen, choices, somethingRequired) {
                 for (var i = 0; i < choices.length; i++) {
-                    __standard_alternate_field_update_editability(choices[i], chosen, choices[i] != chosen, choices[i] == chosen, something_required);
+                    __standardAlternateFieldUpdateEditability(choices[i], chosen, choices[i] != chosen, choices[i] == chosen, somethingRequired);
                 }
 
                 // NB: is_chosen may only be null if is_locked is false
-                function __standard_alternate_field_update_editability(field, chosen_field, is_locked, is_chosen, something_required) {
+                function __standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired) {
                     if ((!field) || (field.nodeName !== undefined)) {
-                        ___standard_alternate_field_update_editability(field, chosen_field, is_locked, is_chosen, something_required);
+                        ___standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired);
                     } else {// List of fields (e.g. radio list, or just because standardAlternateFieldsWithin was used)
                         for (var i = 0; i < field.length; i++) {
                             if (field[i].name !== undefined) {// If it is an object, as opposed to some string in the collection
-                                ___standard_alternate_field_update_editability(field[i], chosen_field, is_locked, is_chosen, something_required);
-                                something_required = false; // Only the first will be required
+                                ___standardAlternateFieldUpdateEditability(field[i], chosenField, isLocked, isChosen, somethingRequired);
+                                somethingRequired = false; // Only the first will be required
                             }
                         }
                     }
 
-                    function ___standard_alternate_field_update_editability(field, chosen_field, is_locked, is_chosen, something_required) {
+                    function ___standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired) {
                         if (!field) return;
 
-                        var radio_button = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
-                        if (!radio_button) radio_button = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                        var radioButton = document.getElementById('choose_' + field.name.replace(/\[\]$/, ''));
+                        if (!radioButton) radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
 
-                        $cms.form.setLocked(field, is_locked, chosen_field);
-                        if (something_required) {
-                            $cms.form.setRequired(field.name.replace(/\[\]$/, ''), is_chosen);
+                        $cms.form.setLocked(field, isLocked, chosenField);
+                        if (somethingRequired) {
+                            $cms.form.setRequired(field.name.replace(/\[\]$/, ''), isChosen);
                         }
                     }
                 }
             }
 
-            function _standard_alternate_fields_get_object(field_name) {
+            function _standardAlternateFieldsGetObject(fieldName) {
                 // Maybe it's an N/A so no actual field
-                if (!field_name) {
+                if (!fieldName) {
                     return null;
                 }
 
                 // Try and get direct field
-                var field = document.getElementById(field_name);
+                var field = document.getElementById(fieldName);
                 if (field) {
                     return field;
                 }
 
                 // A radio field, so we need to create a virtual field object to return that will hold our value
-                var radio_buttons = [], i, j, e;
+                var radioButtons = [], i, j, e;
                 /*JSLINT: Ignore errors*/
-                radio_buttons['name'] = field_name;
-                radio_buttons['value'] = '';
+                radioButtons['name'] = fieldName;
+                radioButtons['value'] = '';
                 for (i = 0; i < document.forms.length; i++) {
                     for (j = 0; j < document.forms[i].elements.length; j++) {
                         e = document.forms[i].elements[j];
                         if (!e.name) continue;
 
-                        if ((e.name.replace(/\[\]$/, '') == field_name) || (e.name.replace(/\_\d+$/, '_') == field_name)) {
-                            radio_buttons.push(e);
+                        if ((e.name.replace(/\[\]$/, '') == fieldName) || (e.name.replace(/\_\d+$/, '_') == fieldName)) {
+                            radioButtons.push(e);
                             if (e.checked) // This is the checked radio equivalent to our text field, copy the value through to the text field
                             {
-                                radio_buttons['value'] = e.value;
+                                radioButtons['value'] = e.value;
                             }
-                            if (e.alternating) radio_buttons.alternating = true;
+                            if (e.alternating) radioButtons.alternating = true;
                         }
                     }
                 }
 
-                if (radio_buttons.length === 0) {
+                if (radioButtons.length === 0) {
                     return null;
                 }
 
-                return radio_buttons;
+                return radioButtons;
             }
 
-            function _standard_alternate_field_is_filled_in(field, second_run, force) {
+            function _standardAlternateFieldIsFilledIn(field, secondRun, force) {
                 if (!field) return false; // N/A input is considered unset
 
-                var is_set = force || ((field.value != '') && (field.value != '-1')) || ((field.virtual_value !== undefined) && (field.virtual_value != '') && (field.virtual_value != '-1'));
+                var isSet = force || ((field.value != '') && (field.value != '-1')) || ((field.virtual_value !== undefined) && (field.virtual_value != '') && (field.virtual_value != '-1'));
 
-                var radio_button = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
-                if (!radio_button) radio_button = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
-                if (second_run) {
-                    if (radio_button) return radio_button.checked;
+                var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
+                if (!radioButton) radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                if (secondRun) {
+                    if (radioButton) return radioButton.checked;
                 } else {
-                    if (radio_button) radio_button.checked = is_set;
+                    if (radioButton) radioButton.checked = isSet;
                 }
-                return is_set;
+                return isSet;
             }
 
-            function _standard_alternate_field_create_listeners(field, refreshFunction) {
+            function _standardAlternateFieldCreateListeners(field, refreshFunction) {
                 if ((!field) || (field.nodeName !== undefined)) {
-                    __standard_alternate_field_create_listeners(field, refreshFunction);
+                    __standardAlternateFieldCreateListeners(field, refreshFunction);
                 } else {
                     var i;
                     for (i = 0; i < field.length; i++) {
                         if (field[i].name !== undefined)
-                            __standard_alternate_field_create_listeners(field[i], refreshFunction);
+                            __standardAlternateFieldCreateListeners(field[i], refreshFunction);
                     }
                     field.alternating = true;
                 }
 
                 return null;
 
-                function __standard_alternate_field_create_listeners(field, refreshFunction) {
-                    var radio_button = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, ''));
-                    if (!radio_button) radio_button = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
-                    if (radio_button) // Radio button handles field alternation
-                    {
-                        radio_button.addEventListener('change', refreshFunction);
+                function __standardAlternateFieldCreateListeners(field, refreshFunction) {
+                    var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, ''));
+                    if (!radioButton) {
+                        radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
+                    }
+                    if (radioButton) {// Radio button handles field alternation
+                        radioButton.addEventListener('change', refreshFunction);
                     } else { // Filling/blanking out handles field alternation
                         if (field) {
                             field.addEventListener('keyup', refreshFunction);
@@ -1697,73 +1698,73 @@ function _ensureNextField(event, el) {
 
     function gotoNextField(thisField) {
         var mid = thisField.id.lastIndexOf('_'),
-            name_stub = thisField.id.substring(0, mid + 1),
-            this_num = thisField.id.substring(mid + 1, thisField.id.length) - 0,
-            next_num = this_num + 1,
-            next_field = document.getElementById(name_stub + next_num);
+            nameStub = thisField.id.substring(0, mid + 1),
+            thisNum = thisField.id.substring(mid + 1, thisField.id.length) - 0,
+            nextNum = thisNum + 1,
+            nextField = document.getElementById(nameStub + nextNum);
 
-        if (next_field) {
+        if (nextField) {
             try {
-                next_field.focus();
+                nextField.focus();
             } catch (e) {}
         }
     }
 }
 
-function ensureNextField(this_field) {
-    var mid = this_field.id.lastIndexOf('_'),
-        name_stub = this_field.id.substring(0, mid + 1),
-        this_num = this_field.id.substring(mid + 1, this_field.id.length) - 0,
-        next_num = this_num + 1,
-        next_field = document.getElementById(name_stub + next_num),
-        name = name_stub + next_num,
-        this_id = this_field.id;
+function ensureNextField(thisField) {
+    var mid = thisField.id.lastIndexOf('_'),
+        nameStub = thisField.id.substring(0, mid + 1),
+        thisNum = thisField.id.substring(mid + 1, thisField.id.length) - 0,
+        nextNum = thisNum + 1,
+        nextField = document.getElementById(nameStub + nextNum),
+        name = nameStub + nextNum,
+        thisId = thisField.id;
 
-    if (!next_field) {
-        next_num = this_num + 1;
-        this_field = document.getElementById(this_id);
-        var next_field_wrap = document.createElement('div');
-        next_field_wrap.className = this_field.parentNode.className;
-        if (this_field.localName === 'textarea') {
-            next_field = document.createElement('textarea');
+    if (!nextField) {
+        nextNum = thisNum + 1;
+        thisField = document.getElementById(thisId);
+        var nextFieldWrap = document.createElement('div');
+        nextFieldWrap.className = thisField.parentNode.className;
+        if (thisField.localName === 'textarea') {
+            nextField = document.createElement('textarea');
         } else {
-            next_field = document.createElement('input');
-            next_field.setAttribute('size', this_field.getAttribute('size'));
+            nextField = document.createElement('input');
+            nextField.setAttribute('size', thisField.getAttribute('size'));
         }
-        next_field.className = this_field.className.replace(/\_required/g, '');
-        if (this_field.form.elements['label_for__' + name_stub + '0']) {
+        nextField.className = thisField.className.replace(/\_required/g, '');
+        if (thisField.form.elements['label_for__' + nameStub + '0']) {
             var nextLabel = document.createElement('input');
             nextLabel.setAttribute('type', 'hidden');
-            nextLabel.value = this_field.form.elements['label_for__' + name_stub + '0'].value + ' (' + (next_num + 1) + ')';
-            nextLabel.name = 'label_for__' + name_stub + next_num;
-            next_field_wrap.appendChild(nextLabel);
+            nextLabel.value = thisField.form.elements['label_for__' + nameStub + '0'].value + ' (' + (nextNum + 1) + ')';
+            nextLabel.name = 'label_for__' + nameStub + nextNum;
+            nextFieldWrap.appendChild(nextLabel);
         }
-        next_field.setAttribute('tabindex', this_field.getAttribute('tabindex'));
-        next_field.setAttribute('id', name_stub + next_num);
-        if (this_field.onfocus) {
-            next_field.onfocus = this_field.onfocus;
+        nextField.setAttribute('tabindex', thisField.getAttribute('tabindex'));
+        nextField.setAttribute('id', nameStub + nextNum);
+        if (thisField.onfocus) {
+            nextField.onfocus = thisField.onfocus;
         }
-        if (this_field.onblur) {
-            next_field.onblur = this_field.onblur;
+        if (thisField.onblur) {
+            nextField.onblur = thisField.onblur;
         }
-        if (this_field.onkeyup) {
-            next_field.onkeyup = this_field.onkeyup;
+        if (thisField.onkeyup) {
+            nextField.onkeyup = thisField.onkeyup;
         }
-        next_field.onkeypress = function (event) {
-            _ensureNextField(event, next_field);
+        nextField.onkeypress = function (event) {
+            _ensureNextField(event, nextField);
         };
-        if (this_field.onchange) {
-            next_field.onchange = this_field.onchange;
+        if (thisField.onchange) {
+            nextField.onchange = thisField.onchange;
         }
-        if (this_field.onrealchange != null) {
-            next_field.onchange = this_field.onrealchange;
+        if (thisField.onrealchange != null) {
+            nextField.onchange = thisField.onrealchange;
         }
-        if (this_field.localName !== 'textarea') {
-            next_field.type = this_field.type;
+        if (thisField.localName !== 'textarea') {
+            nextField.type = thisField.type;
         }
-        next_field.value = '';
-        next_field.name = (this_field.name.includes('[]') ? this_field.name : (name_stub + next_num));
-        next_field_wrap.appendChild(next_field);
-        this_field.parentNode.parentNode.insertBefore(next_field_wrap, this_field.parentNode.nextSibling);
+        nextField.value = '';
+        nextField.name = (thisField.name.includes('[]') ? thisField.name : (nameStub + nextNum));
+        nextFieldWrap.appendChild(nextField);
+        thisField.parentNode.parentNode.insertBefore(nextFieldWrap, thisField.parentNode.nextSibling);
     }
 }

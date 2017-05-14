@@ -16,8 +16,8 @@
         });
 
         function updateProductInfoDisplay() {
-            var type_code = document.getElementById('type_code');
-            var value = type_code.options[type_code.selectedIndex].value;
+            var typeCode = document.getElementById('type_code');
+            var value = typeCode.options[typeCode.selectedIndex].value;
             var creditsInfo = document.body.querySelectorAll('.creditsInfo');
             for (var i = 0; i < creditsInfo.length; i++) {
                 creditsInfo[i].style.display = (creditsInfo[i].id == 'info_' + value) ? 'block' : 'none';

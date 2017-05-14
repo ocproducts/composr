@@ -1,13 +1,13 @@
 function doShake() {
     var seconds = 1, amount = 30;
 
-    var overflow_before = window.getComputedStyle(document.body).getPropertyValue('overflow');
+    var overflowBefore = window.getComputedStyle(document.body).getPropertyValue('overflow');
     document.body.style.overflow = 'hidden';
 
-    var divs = document.getElementsByTagName('div'), current_positioning;
+    var divs = document.getElementsByTagName('div'), currentPositioning;
     for (var i = 0; i < divs.length; i++) {
-        current_positioning = window.getComputedStyle(divs[i]).getPropertyValue('position');
-        if ((current_positioning == '') || (current_positioning == 'static')) {
+        currentPositioning = window.getComputedStyle(divs[i]).getPropertyValue('position');
+        if ((currentPositioning == '') || (currentPositioning == 'static')) {
             divs[i].vector_speed = Math.round(Math.random() * 2);
             divs[i].style.position = 'relative';
         }
@@ -29,7 +29,7 @@ function doShake() {
             }
         }
 
-        document.body.style.overflow = overflow_before;
+        document.body.style.overflow = overflowBefore;
     }, 1000 * seconds * 2);
 
     function shakeAnimateFunc(times, divs, amount) {

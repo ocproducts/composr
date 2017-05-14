@@ -207,17 +207,15 @@
         });
     };
 
-    function detectChange(change_detection_url, refresh_if_changed, callback) {
-        $cms.doAjaxRequest(change_detection_url, function (result) {
-            var response = result.responseText;
-            if (response == '1') {
+    function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
+        $cms.doAjaxRequest(changeDetectionUrl, function (result) {
+            var response = strVal(result.responseText);
+            if (response === '1') {
                 window.clearInterval(window.detect_interval);
-
                 $cms.log('detectChange(): Change detected');
-
                 callback();
             }
-        }, 'refresh_if_changed=' + encodeURIComponent(refresh_if_changed));
+        }, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged));
     }
 
     function detectedChange() {
@@ -228,12 +226,12 @@
         } catch (e) {}
 
         if (window.soundManager !== undefined) {
-            var sound_url = 'data/sounds/message_received.mp3',
-                base_url = (!sound_url.includes('data_custom') && !sound_url.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP : $cms.$CUSTOM_BASE_URL_NOHTTP,
-                sound_object = window.soundManager.createSound({ url: base_url + '/' + sound_url });
+            var soundUrl = 'data/sounds/message_received.mp3',
+                baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP : $cms.$CUSTOM_BASE_URL_NOHTTP,
+                soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
 
-            if (sound_object) {
-                sound_object.play();
+            if (soundObject) {
+                soundObject.play();
             }
         }
     }

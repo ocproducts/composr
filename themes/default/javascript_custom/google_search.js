@@ -14,22 +14,22 @@
                 options.setSearchFormRoot('cse-search-form');
                 customSearchControl.draw('cse', options);
 
-                var cse_form = document.getElementById('cse-search-form'),
-                    gsc_search_box = cse_form.querySelector('.gsc-search-box'),
-                    gsc_search_button = cse_form.querySelector('.gsc-search-button');
+                var cseForm = document.getElementById('cse-search-form'),
+                    gscSearchBox = cseForm.querySelector('.gsc-search-box'),
+                    gscSearchButton = cseForm.querySelector('.gsc-search-button');
 
                 if (!document.getElementById('cse')) {// Not on the results page, so we need to direct the search to it
-                    gsc_search_box.action = '{$PAGE_LINK;,_SEARCH:{PAGE_NAME}}';
-                    gsc_search_box.method = 'post';
-                    gsc_search_box.innerHTML += spammerBlackhole;
-                    gsc_search_button.onclick = function () {
-                        gsc_search_box.submit();
+                    gscSearchBox.action = '{$PAGE_LINK;,_SEARCH:{PAGE_NAME}}';
+                    gscSearchBox.method = 'post';
+                    gscSearchBox.innerHTML += spammerBlackhole;
+                    gscSearchButton.onclick = function () {
+                        gscSearchBox.submit();
                     };
                 } else {// On result page, so normal operation
-                    gsc_search_button.onclick = function () {
-                        var no_search_entered = document.getElementById('no_search_entered');
-                        if (no_search_entered) {
-                            no_search_entered.parentNode.removeChild(no_search_entered);
+                    gscSearchButton.onclick = function () {
+                        var noSearchEntered = document.getElementById('no_search_entered');
+                        if (noSearchEntered) {
+                            noSearchEntered.parentNode.removeChild(noSearchEntered);
                         }
                     };
 

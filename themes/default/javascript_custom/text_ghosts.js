@@ -1,8 +1,8 @@
-function showGhost(html_message) {
+function showGhost(htmlMessage) {
     var div = document.createElement('div');
     div.style.position = 'absolute';
     div.className = 'ghost';
-    $cms.dom.html(div, html_message);
+    $cms.dom.html(div, htmlMessage);
     var limit = 36;
     for (var counter = 0; counter < limit; counter++) {
         window.setTimeout(buildGhostFunc(div, counter, limit), counter * 100);

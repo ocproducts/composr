@@ -29,19 +29,19 @@
 
     function iterateCountdown(dif) {
         var st = document.getElementById('quiz_timer');
-        var new_value = window.parseInt($cms.dom.html(st)) + dif;
-        if (new_value >= 0) {
-            $cms.dom.html(st, new_value);
+        var newValue = window.parseInt($cms.dom.html(st)) + dif;
+        if (newValue >= 0) {
+            $cms.dom.html(st, newValue);
         }
 
         var st2 = document.getElementById('quiz_timer_minutes_and_seconds');
         if (st2) {
-            if (new_value >= 0) {
+            if (newValue >= 0) {
                 var v = '';
-                v += Math.floor(new_value / 60);
+                v += Math.floor(newValue / 60);
                 v += ':';
-                if (new_value % 60 < 10) v += '0';
-                v += new_value % 60;
+                if (newValue % 60 < 10) v += '0';
+                v += newValue % 60;
                 $cms.dom.html(st2, v);
             }
         }

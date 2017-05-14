@@ -118,8 +118,8 @@ function realtimeRainButtonLoadHandler() {
     if (img.srcset !== undefined) {
         img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}') + ' 2x';
     }
-    var tmp_element = document.getElementById('realtime_rain_img_loader');
-    if (tmp_element) tmp_element.parentNode.removeChild(tmp_element);
+    var tmpElement = document.getElementById('realtime_rain_img_loader');
+    if (tmpElement) tmpElement.parentNode.removeChild(tmpElement);
     img.className = '';
 
     var x = document.createElement('div');
@@ -141,9 +141,9 @@ function realtimeRainButtonLoadHandler() {
 
 // Called to start the animation
 function startRealtimeRain() {
-    var news_ticker = document.getElementById('news_ticker');
-    news_ticker.style.top = '20px';
-    news_ticker.style.left = ($cms.dom.getWindowWidth() / 2 - news_ticker.offsetWidth / 2) + 'px';
+    var newsTicker = document.getElementById('news_ticker');
+    newsTicker.style.top = '20px';
+    newsTicker.style.left = ($cms.dom.getWindowWidth() / 2 - newsTicker.offsetWidth / 2) + 'px';
 
     document.getElementById('loading_icon').style.display = 'block';
 
@@ -173,65 +173,65 @@ function getMoreEvents(from, to) {
     $cms.doAjaxRequest(url, receivedEvents);
 }
 
-function receivedEvents(ajax_result_frame, ajax_result) {
+function receivedEvents(ajaxResultFrame, ajaxResult) {
     document.getElementById('loading_icon').style.display = 'none';
 
     var bubbles = document.getElementById('bubbles_go_here');
 
-    var max_height = bubbles.parentNode.offsetHeight;
-    var total_vertical_slots = max_height / 183;
-    var height_per_second = max_height / 10;
-    var frame_delay = (1000 / height_per_second) / 1.1; // 1.1 is a fudge factor to reduce chance of overlap (creates slight inaccuracy in spacing though)
+    var maxHeight = bubbles.parentNode.offsetHeight;
+    var totalVerticalSlots = maxHeight / 183;
+    var heightPerSecond = maxHeight / 10;
+    var frameDelay = (1000 / heightPerSecond) / 1.1; // 1.1 is a fudge factor to reduce chance of overlap (creates slight inaccuracy in spacing though)
 
-    var window_width = $cms.dom.getWindowWidth(),
-        elements = ajax_result.children,
-        left_pos = 25;
+    var windowWidth = $cms.dom.getWindowWidth(),
+        elements = ajaxResult.children,
+        leftPos = 25;
 
     elements.some(function (element) {
-        var _cloned_message, cloned_message;
+        var _clonedMessage, clonedMessage;
 
         if (element.localName !== 'div') {
             return; // (continue)
         }
 
         // Set up HTML (difficult, as we are copying from XML)
-        _cloned_message = element;
+        _clonedMessage = element;
 
         try {
-            _cloned_message = document.importNode(element, true);
+            _clonedMessage = document.importNode(element, true);
         } catch (ignore) {}
 
-        cloned_message = $cms.dom.create('div', {
-            id: _cloned_message.getAttribute('id'),
-            class: _cloned_message.getAttribute('class'),
-            html: $cms.dom.html(_cloned_message)
+        clonedMessage = $cms.dom.create('div', {
+            id: _clonedMessage.getAttribute('id'),
+            class: _clonedMessage.getAttribute('class'),
+            html: $cms.dom.html(_clonedMessage)
         });
 
-        left_pos += 200;
-        if (left_pos >= window_width) {
+        leftPos += 200;
+        if (leftPos >= windowWidth) {
             // Too much!
             return true; // (break)
         }
         window.setTimeout(function () {
-            window.pending_eval_function(cloned_message);
+            window.pending_eval_function(clonedMessage);
 
             // Set positioning (or break-out if we have too many bubbles to show)
-            cloned_message.style.position = 'absolute';
-            cloned_message.style.zIndex = 50;
-            cloned_message.style.left = left_pos + 'px';
-            bubbles.appendChild(cloned_message);
-            var vertical_slot = Math.round(total_vertical_slots * cloned_message.time_offset / window.time_window);
-            cloned_message.style.top = (-(vertical_slot + 1) * cloned_message.offsetHeight) + 'px';
+            clonedMessage.style.position = 'absolute';
+            clonedMessage.style.zIndex = 50;
+            clonedMessage.style.left = leftPos + 'px';
+            bubbles.appendChild(clonedMessage);
+            var verticalSlot = Math.round(totalVerticalSlots * clonedMessage.time_offset / window.time_window);
+            clonedMessage.style.top = (-(verticalSlot + 1) * clonedMessage.offsetHeight) + 'px';
 
             // JS events, for pausing and changing z-index
-            cloned_message.addEventListener('mouseover', function () {
+            clonedMessage.addEventListener('mouseover', function () {
                 this.style.zIndex = 160;
                 if (!window.paused) {
                     this.pausing = true;
                     window.paused = true;
                 }
             });
-            cloned_message.addEventListener('mouseout', function () {
+            clonedMessage.addEventListener('mouseout', function () {
                 this.style.zIndex = 50;
                 if (this.pausing) {
                     this.pausing = false;
@@ -241,44 +241,44 @@ function receivedEvents(ajax_result_frame, ajax_result) {
 
             // Draw lines and emails animation (after delay, so that we know it's rendered by then and hence knows full coordinates)
             window.setTimeout(function () {
-                if ((cloned_message.lines_for === undefined) || (cloned_message.icon_multiplicity === undefined)) {
+                if ((clonedMessage.lines_for === undefined) || (clonedMessage.icon_multiplicity === undefined)) {
                     return;
                 }
 
-                var num = cloned_message.icon_multiplicity,
-                    main_icon = cloned_message.querySelector('.email-icon'),
-                    icon_spot = $cms.dom.$('#real_time_surround');
+                var num = clonedMessage.icon_multiplicity,
+                    mainIcon = clonedMessage.querySelector('.email-icon'),
+                    iconSpot = $cms.dom.$('#real_time_surround');
 
-                if ($cms.dom.findPosY(icon_spot, true) > 0) {
-                    icon_spot = icon_spot.parentNode;
+                if ($cms.dom.findPosY(iconSpot, true) > 0) {
+                    iconSpot = iconSpot.parentNode;
                 }
                 for (var x = 0; x < num; x++) {
                     window.setTimeout(function () {
-                        var next_icon = document.createElement('div');
-                        next_icon.className = main_icon.className;
-                        $cms.dom.html(next_icon, $cms.dom.html(main_icon));
-                        next_icon.style.position = 'absolute';
-                        next_icon.style.left = $cms.dom.findPosX(main_icon, true) + 'px';
-                        next_icon.style.top = $cms.dom.findPosY(main_icon, true) + 'px';
-                        next_icon.style.zIndex = 80;
-                        next_icon.x_vector = 5 - Math.random() * 10;
-                        next_icon.y_vector = -Math.random() * 6;
-                        next_icon.opacity = 1.0;
-                        icon_spot.appendChild(next_icon);
-                        next_icon.animation_timer = window.setInterval(function () {
+                        var nextIcon = document.createElement('div');
+                        nextIcon.className = mainIcon.className;
+                        $cms.dom.html(nextIcon, $cms.dom.html(mainIcon));
+                        nextIcon.style.position = 'absolute';
+                        nextIcon.style.left = $cms.dom.findPosX(mainIcon, true) + 'px';
+                        nextIcon.style.top = $cms.dom.findPosY(mainIcon, true) + 'px';
+                        nextIcon.style.zIndex = 80;
+                        nextIcon.x_vector = 5 - Math.random() * 10;
+                        nextIcon.y_vector = -Math.random() * 6;
+                        nextIcon.opacity = 1.0;
+                        iconSpot.appendChild(nextIcon);
+                        nextIcon.animation_timer = window.setInterval(function () {
                             if (window.paused) return;
 
-                            var left = ((parseInt(next_icon.style.left) || 0) + next_icon.x_vector);
-                            next_icon.style.left = left + 'px';
-                            var top = ((parseInt(next_icon.style.top) || 0) + next_icon.y_vector);
-                            next_icon.style.top = top + 'px';
-                            $cms.dom.clearTransitionAndSetOpacity(next_icon, next_icon.opacity);
-                            next_icon.opacity *= 0.98;
-                            next_icon.y_vector += 0.2;
-                            if ((top > max_height) || (next_icon.opacity < 0.05) || (left + 50 > window_width) || (left < 0)) {
-                                window.clearInterval(next_icon.animation_timer);
-                                next_icon.animation_timer = null;
-                                next_icon.parentNode.removeChild(next_icon);
+                            var left = ((parseInt(nextIcon.style.left) || 0) + nextIcon.x_vector);
+                            nextIcon.style.left = left + 'px';
+                            var top = ((parseInt(nextIcon.style.top) || 0) + nextIcon.y_vector);
+                            nextIcon.style.top = top + 'px';
+                            $cms.dom.clearTransitionAndSetOpacity(nextIcon, nextIcon.opacity);
+                            nextIcon.opacity *= 0.98;
+                            nextIcon.y_vector += 0.2;
+                            if ((top > maxHeight) || (nextIcon.opacity < 0.05) || (left + 50 > windowWidth) || (left < 0)) {
+                                window.clearInterval(nextIcon.animation_timer);
+                                nextIcon.animation_timer = null;
+                                nextIcon.parentNode.removeChild(nextIcon);
                             }
                         }, 50);
                     }, 7000 + 500 * x);
@@ -286,28 +286,28 @@ function receivedEvents(ajax_result_frame, ajax_result) {
             }, 100);
 
             // Set up animation timer
-            cloned_message.timer = window.setInterval(function () {
-                animateDown(cloned_message);
-            }, frame_delay);
+            clonedMessage.timer = window.setInterval(function () {
+                animateDown(clonedMessage);
+            }, frameDelay);
         }, 0);
     });
 }
 
-function animateDown(el, avoid_remove) {
+function animateDown(el, avoidRemove) {
     if (window.paused) {
         return;
     }
 
-    avoid_remove = !!avoid_remove;
+    avoidRemove = !!avoidRemove;
 
     var bubbles = document.getElementById('bubbles_go_here');
-    var max_height = bubbles.parentNode.offsetHeight;
-    var jump_speed = 1;
-    var new_pos = (parseInt(el.style.top) || 0) + jump_speed;
-    el.style.top = new_pos + 'px';
+    var maxHeight = bubbles.parentNode.offsetHeight;
+    var jumpSpeed = 1;
+    var newPos = (parseInt(el.style.top) || 0) + jumpSpeed;
+    el.style.top = newPos + 'px';
 
-    if ((new_pos > max_height) || (!el.parentNode)) {
-        if (!avoid_remove) {
+    if ((newPos > maxHeight) || (!el.parentNode)) {
+        if (!avoidRemove) {
             if (el.parentNode) {
                 window.total_lines -= el.querySelectorAll('.line').length;
                 el.parentNode.removeChild(el);
@@ -326,10 +326,10 @@ function timelineClick(prospective) {
     prospective = !!prospective;
 
     var pos = window.mouse_x - $cms.dom.findPosX(document.getElementById('time_line_image'), true);
-    var timeline_length = 808;
-    var min_time = window.min_time;
-    var max_time = timeNow();
-    var time = min_time + pos * (max_time - min_time) / timeline_length;
+    var timelineLength = 808;
+    var minTime = window.min_time;
+    var maxTime = timeNow();
+    var time = minTime + pos * (maxTime - minTime) / timelineLength;
     if (!prospective) {
         window.current_time = time;
         bubblesTidyUp();
@@ -342,8 +342,8 @@ function timelineClick(prospective) {
 }
 
 function bubblesTidyUp() {
-    var bubbles_go_here = document.getElementById('bubbles_go_here');
-    if (!bubbles_go_here) return;
+    var bubblesGoHere = document.getElementById('bubbles_go_here');
+    if (!bubblesGoHere) return;
     var bubbles = document.getElementById('real_time_surround').parentNode.querySelectorAll('.bubble_wrap');
     for (var i = 0; i < bubbles.length; i++) {
         if (bubbles[i].timer) {
@@ -351,7 +351,7 @@ function bubblesTidyUp() {
             bubbles[i].timer = null;
         }
     }
-    $cms.dom.html(bubbles_go_here, '');
+    $cms.dom.html(bubblesGoHere, '');
     window.bubble_groups = [];
     window.total_lines = 0;
     var icons = document.getElementById('real_time_surround').parentNode.querySelectorAll('.email_icon');
@@ -368,19 +368,19 @@ function setTimeLinePosition(time) {
     time = Math.round(time);
 
     var marker = document.getElementById('real_time_indicator');
-    var timeline_length = 808;
-    var min_time = window.min_time;
-    var max_time = timeNow();
-    var timeline_range = max_time - min_time;
-    var timeline_offset_time = time - min_time;
-    var timeline_offset_position = timeline_offset_time * timeline_length / timeline_range;
-    marker.style.marginLeft = (50 + timeline_offset_position) + 'px';
+    var timelineLength = 808;
+    var minTime = window.min_time;
+    var maxTime = timeNow();
+    var timelineRange = maxTime - minTime;
+    var timelineOffsetTime = time - minTime;
+    var timelineOffsetPosition = timelineOffsetTime * timelineLength / timelineRange;
+    marker.style.marginLeft = (50 + timelineOffsetPosition) + 'px';
 
-    var date_object = new Date();
-    date_object.setTime(time * 1000);
+    var dateObject = new Date();
+    dateObject.setTime(time * 1000);
     var realtimedate = document.getElementById('real_time_date');
     var realtimetime = document.getElementById('real_time_time');
     if (!realtimedate) return;
-    $cms.dom.html(realtimedate, date_object.getFullYear() + '/' + ('' + date_object.getMonth()) + '/' + ('' + date_object.getDate()));
-    $cms.dom.html(realtimetime, ('' + date_object.getHours()) + ':' + ('' + date_object.getMinutes()) + ':' + ('' + date_object.getSeconds()));
+    $cms.dom.html(realtimedate, dateObject.getFullYear() + '/' + ('' + dateObject.getMonth()) + '/' + ('' + dateObject.getDate()));
+    $cms.dom.html(realtimetime, ('' + dateObject.getHours()) + ':' + ('' + dateObject.getMinutes()) + ':' + ('' + dateObject.getSeconds()));
 }

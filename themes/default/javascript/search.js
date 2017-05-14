@@ -90,7 +90,6 @@
     $cms.templates.blockTopSearch = function (params, container) {
         var searchType = $cms.filter.nl(params.searchType);
 
-
         $cms.dom.on(container, 'submit', '.js-submit-check-search-content-element', function (e, form) {
             if (form.elements.content === undefined) {
                 $cms.ui.disableFormButtons(form);

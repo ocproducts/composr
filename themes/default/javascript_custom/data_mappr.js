@@ -23,7 +23,7 @@
             geolocateUserForMapField();
         });
 
-        var marker, map, last_point;
+        var marker, map, lastPoint;
 
         function googleMapUsersInitialize() {
             marker = new google.maps.Marker();
@@ -59,16 +59,16 @@
 
             //{$,Save into hidden fields}
             google.maps.event.addListener(map, 'mousemove', function (point) {
-                last_point = point.latLng;
+                lastPoint = point.latLng;
             });
             google.maps.event.addListener(map, 'click', _placeMarker);
             google.maps.event.addListener(marker, 'click', _placeMarker);
         }
 
         function _placeMarker() {
-            document.getElementById(name + '_latitude').value = last_point.lat();
-            document.getElementById(name + '_longitude').value = last_point.lng();
-            placeMarker(last_point.lat(), last_point.lng());
+            document.getElementById(name + '_latitude').value = lastPoint.lat();
+            document.getElementById(name + '_longitude').value = lastPoint.lng();
+            placeMarker(lastPoint.lat(), lastPoint.lng());
             marker.setMap(map);
         }
 
@@ -133,7 +133,7 @@
 
         function googleMapInitialize() {
             var bounds = new google.maps.LatLngBounds();
-            var specified_center = new google.maps.LatLng((latitude !== '' ? latitude : 0.0), (longitude !== '' ? longitude : 0.0));
+            var specifiedCenter = new google.maps.LatLng((latitude !== '' ? latitude : 0.0), (longitude !== '' ? longitude : 0.0));
             var gOptions = {
                 zoom: zoom,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -142,17 +142,17 @@
             };
 
             if (!center) { //{$,NB: the block center parameter means to autofit the contents cleanly; if the parameter is not set it will center about the given latitude/longitude}
-                gOptions.center = specified_center;
+                gOptions.center = specifiedCenter;
             }
 
             window.data_map = new google.maps.Map(document.getElementById(divId), gOptions);
 
 
-            var info_window = new google.maps.InfoWindow();
+            var infoWindow = new google.maps.InfoWindow();
 
             //{$,Close InfoWindow when clicking anywhere on the map.}
             google.maps.event.addListener(data_map, 'click', function () {
-                info_window.close();
+                infoWindow.close();
             });
 
             var data = [];
@@ -170,8 +170,8 @@
             }
 
             //{$,Show markers}
-            var latLng, marker_options, marker;
-            var bound_length = 0;
+            var latLng, markerOptions, marker;
+            var boundLength = 0;
             if (cluster) {
                 var markers = [];
             }
@@ -180,25 +180,25 @@
                 if ((minLatitude + minLongitude) !== '') {
                     latLng = new google.maps.LatLng(minLatitude, minLongitude);
                     bounds.extend(latLng);
-                    bound_length++;
+                    boundLength++;
                 }
 
                 if ((maxLatitude + maxLongitude) !== '') {
                     latLng = new google.maps.LatLng(maxLatitude, maxLongitude);
                     bounds.extend(latLng);
-                    bound_length++;
+                    boundLength++;
                 }
             }
 
-            var bound_by_contents = (bound_length == 0);
+            var boundByContents = (boundLength == 0);
             for (var i = 0; i < data.length; i++) {
                 latLng = new google.maps.LatLng(data[i][1], data[i][2]);
-                if (bound_by_contents) {
+                if (boundByContents) {
                     bounds.extend(latLng);
-                    bound_length++;
+                    boundLength++;
                 }
 
-                marker_options = {
+                markerOptions = {
                     position: latLng,
                     title: data[i][0]
                 };
@@ -208,10 +208,10 @@
                  marker_options.icon=categoryIcon;}*/
                 if (data[i][6] == 1) {
                     var starIcon = $cms.$BASE_URL() + '/themes/default/images_custom/star_highlight.png';
-                    marker_options.icon = starIcon;
+                    markerOptions.icon = starIcon;
                 }
 
-                marker = new google.maps.Marker(marker_options);
+                marker = new google.maps.Marker(markerOptions);
 
                 if (cluster) {
                     markers.push(marker);
@@ -219,13 +219,13 @@
                     marker.setMap(data_map);
                 }
 
-                google.maps.event.addListener(marker, 'click', (function (arg_marker, entry_title, entry_id, entry_content) {
+                google.maps.event.addListener(marker, 'click', (function (argMarker, entryTitle, entryId, entryContent) {
                     return function () {
                         //{$,Dynamically load entry details only when their marker is clicked.}
-                        var content = entry_content.replace(/<colgroup>(.|\n)*<\/colgroup>/, '').replace(/&nbsp;/g, ' ');
+                        var content = entryContent.replace(/<colgroup>(.|\n)*<\/colgroup>/, '').replace(/&nbsp;/g, ' ');
                         if (content != '') {
-                            info_window.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
-                            info_window.open(data_map, arg_marker);
+                            infoWindow.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
+                            infoWindow.open(data_map, argMarker);
                         }
                     };
                 })(marker, data[i][0], data[i][4], data[i][5])); //{$,These are the args passed to the dynamic function above.}
@@ -237,9 +237,9 @@
 
             //{$,Autofit the map around the markers}
             if (center) {
-                if (bound_length == 0) {//{$,We may have to center at given lat/long after all if there are no pins}
-                    data_map.setCenter(specified_center);
-                } else if (bound_length == 1) {//{$,Center around the only pin}
+                if (boundLength == 0) {//{$,We may have to center at given lat/long after all if there are no pins}
+                    data_map.setCenter(specifiedCenter);
+                } else if (boundLength == 1) {//{$,Center around the only pin}
                     data_map.setCenter(new google.maps.LatLng(data[0][1], data[0][2]));
                 } else {//{$,Good - autofit lots of pins}
                     data_map.fitBounds(bounds);

@@ -56,20 +56,20 @@
 
         var form = $cms.dom.$('form#comments_form');
 
-        var parent_id_field;
+        var parentIdField;
         if (form.elements.parent_id === undefined) {
-            parent_id_field = document.createElement('input');
-            parent_id_field.type = 'hidden';
-            parent_id_field.name = 'parent_id';
-            form.appendChild(parent_id_field);
+            parentIdField = document.createElement('input');
+            parentIdField.type = 'hidden';
+            parentIdField.name = 'parent_id';
+            form.appendChild(parentIdField);
         } else {
-            parent_id_field = form.elements['parent_id'];
+            parentIdField = form.elements['parent_id'];
             if (window.last_reply_to !== undefined) {
                 $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
             }
         }
         window.last_reply_to = el;
-        parent_id_field.value = isThreaded ? id : '';
+        parentIdField.value = isThreaded ? id : '';
 
         el.classList.add('activated_quote_button');
 
@@ -140,15 +140,15 @@
     };
 
     $cms.functions.moduleTopicsPostJavascriptForceGuestNames = function moduleTopicsPostJavascriptForceGuestNames() {
-        var poster_name_if_guest = document.getElementById("poster_name_if_guest");
-        if (poster_name_if_guest) {
+        var posterNameIfGuest = document.getElementById("poster_name_if_guest");
+        if (posterNameIfGuest) {
             var crf = function () {
-                if (poster_name_if_guest.value == "{!GUEST;}") {
-                    poster_name_if_guest.value = "";
+                if (posterNameIfGuest.value == "{!GUEST;}") {
+                    posterNameIfGuest.value = "";
                 }
             };
             crf();
-            poster_name_if_guest.addEventListener("blur", crf);
+            posterNameIfGuest.addEventListener("blur", crf);
         }
     };
 
@@ -159,11 +159,11 @@
         form.addEventListener('change', pollFormElementsChangeListener);
 
         function pollFormElementsChangeListener() {
-            var disable_all = (existing.selectedIndex !== 0);
+            var disableAll = (existing.selectedIndex !== 0);
             for (var i = 0; i < form.elements.length; i++) {
                 if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].getAttribute('type') === 'checkbox') || (form.elements[i].getAttribute('type') === 'text'))) {
-                    $cms.form.setRequired(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
-                    $cms.form.setLocked(form.elements[i], disable_all);
+                    $cms.form.setRequired(form.elements[i].name, (!disableAll) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
+                    $cms.form.setLocked(form.elements[i], disableAll);
                 }
             }
         }

@@ -49,29 +49,29 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         var forms = document.getElementsByTagName('form');
 
         for (var i = 0; i < forms.length; i++) {
-            inject_form_select_chaining__form(forms[i]);
+            injectFormSelectChainingForm(forms[i]);
         }
     });
 
-    function inject_form_select_chaining__form(form) {
-        var cpf_fields = window.nested_csv_structure.cpf_fields;
-        for (var i in cpf_fields) {
-            var cpf_field = cpf_fields[i];
-            if (cpf_field.possible_fields === undefined) continue; // Is not part of list
+    function injectFormSelectChainingForm(form) {
+        var cpfFields = window.nested_csv_structure.cpf_fields;
+        for (var i in cpfFields) {
+            var cpfField = cpfFields[i];
+            if (cpfField.possible_fields === undefined) continue; // Is not part of list
 
-            var element = find_cpf_field_element(form, cpf_field);
-            if (element) inject_form_select_chaining__element(element, cpf_field, true);
+            var element = findCpfFieldElement(form, cpfField);
+            if (element) injectFormSelectChainingElement(element, cpfField, true);
         }
     }
 
-    function find_cpf_field_element(form, cpf_field) {
+    function findCpfFieldElement(form, cpfField) {
         for (var i = 0; i < form.elements.length; i++) {
 
             if (form.elements[i].localName === 'select') {
 
-                for (var j = 0; j < cpf_field.possible_fields.length; j++) {
+                for (var j = 0; j < cpfField.possible_fields.length; j++) {
 
-                    if ((form.elements[i].name !== undefined) && (cpf_field.possible_fields[j] == form.elements[i].name.replace('[]', ''))) {
+                    if ((form.elements[i].name !== undefined) && (cpfField.possible_fields[j] == form.elements[i].name.replace('[]', ''))) {
                         return form.elements[i];
                     }
                 }
@@ -81,50 +81,50 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         return null;
     }
 
-    function inject_form_select_chaining__element(element, cpf_field, initial_run) {
-        var cpf_fields = window.nested_csv_structure.cpf_fields;
+    function injectFormSelectChainingElement(element, cpfField, initialRun) {
+        var cpfFields = window.nested_csv_structure.cpf_fields;
 
-        var changes_made_already = true;
+        var changesMadeAlready = true;
 
-        if (cpf_field.csv_parent_heading !== null)  {// We need to look at parent to filter possibilities, if we have one
-            var current_value = $cms.dom.val(element);
+        if (cpfField.csv_parent_heading !== null)  {// We need to look at parent to filter possibilities, if we have one
+            var currentValue = $cms.dom.val(element);
 
             element.innerHTML = ''; // Wipe list contents
             var option;
 
-            var parent_cpf_field_element = find_cpf_field_element(element.form, cpf_fields[cpf_field.csv_parent_heading]);
-            var current_parent_value = $cms.dom.val(parent_cpf_field_element);
-            if (current_parent_value.length == 0) {// Parent unset, so this is
+            var parentCpfFieldElement = findCpfFieldElement(element.form, cpfFields[cpfField.csv_parent_heading]);
+            var currentParentValue = $cms.dom.val(parentCpfFieldElement);
+            if (currentParentValue.length == 0) {// Parent unset, so this is
 
                 option = document.createElement('option');
                 element.add(option, null);
-                $cms.dom.html(option, <?= json_encode(strval(do_lang('SELECT_OTHER_FIRST', 'xxx'))) ?> +''.replace(/xxx/g, cpf_fields[cpf_field.csv_parent_heading].label));
+                $cms.dom.html(option, <?= json_encode(strval(do_lang('SELECT_OTHER_FIRST', 'xxx'))) ?> +''.replace(/xxx/g, cpfFields[cpfField.csv_parent_heading].label));
                 option.value = '';
             } else {// Parent is set, so we need to filter possibilities
                 // Work out available (filtered) possibilities
-                var csv_data = window.nested_csv_structure.csv_files[cpf_field.csv_parent_filename].data;
+                var csvData = window.nested_csv_structure.csv_files[cpfField.csv_parent_filename].data;
                 var possibilities = [];
-                for (var i = 0; i < csv_data.length; i++) {// This is going through parent table. Note that the parent table must contain both the child and parent IDs, as essentially it is a linker table. Field names are defined as unique across all CSV files, so you don't need to use the same actual CSV file as the parent field was drawn from.
+                for (var i = 0; i < csvData.length; i++) {// This is going through parent table. Note that the parent table must contain both the child and parent IDs, as essentially it is a linker table. Field names are defined as unique across all CSV files, so you don't need to use the same actual CSV file as the parent field was drawn from.
 
-                    for (var j = 0; j < current_parent_value.length; j++) {
+                    for (var j = 0; j < currentParentValue.length; j++) {
 
-                        if (csv_data[i][cpf_field.csv_parent_heading] == current_parent_value[j]) {
-                            if ((csv_data[i]['deprecated'] === undefined) || (csv_data[i]['deprecated'] == '0') || (window.handle_csv_deprecation === undefined) || (!window.window.handle_csv_deprecation)) {
+                        if (csvData[i][cpfField.csv_parent_heading] == currentParentValue[j]) {
+                            if ((csvData[i]['deprecated'] === undefined) || (csvData[i]['deprecated'] == '0') || (window.handle_csv_deprecation === undefined) || (!window.window.handle_csv_deprecation)) {
 
-                                if (csv_data[i][cpf_field.csv_heading] === undefined) {
+                                if (csvData[i][cpfField.csv_heading] === undefined) {
                                     $cms.log('Configured linker table does not include child field');
                                 }
-                                possibilities.push(csv_data[i][cpf_field.csv_heading]);
+                                possibilities.push(csvData[i][cpfField.csv_heading]);
                             }
                         }
                     }
                 }
-                if (cpf_field.csv_parent_filename != cpf_field.csv_filename) {
-                    csv_data = window.nested_csv_structure.csv_files[cpf_field.csv_filename].data;
-                    for (var i = 0; i < csv_data.length; i++) {
-                        if ((csv_data[i]['deprecated'] !== undefined) && (csv_data[i]['deprecated'] == '1') && (window.handle_csv_deprecation !== undefined) && (window.window.handle_csv_deprecation)) {
+                if (cpfField.csv_parent_filename != cpfField.csv_filename) {
+                    csvData = window.nested_csv_structure.csv_files[cpfField.csv_filename].data;
+                    for (var i = 0; i < csvData.length; i++) {
+                        if ((csvData[i]['deprecated'] !== undefined) && (csvData[i]['deprecated'] == '1') && (window.handle_csv_deprecation !== undefined) && (window.window.handle_csv_deprecation)) {
                             for (var j = 0; j < possibilities.length; j++) {
-                                if (possibilities[j] == csv_data[i][cpf_field.csv_heading]) {
+                                if (possibilities[j] == csvData[i][cpfField.csv_heading]) {
                                     possibilities[j] = null; // Deprecated, so remove
                                 }
                             }
@@ -140,27 +140,27 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                     $cms.dom.html(option, <?= json_encode(strval(do_lang('PLEASE_SELECT'))) ?>);
                     option.value = '';
                 }
-                var previous_one = null;
+                var previousOne = null;
                 for (var i = 0; i < possibilities.length; i++) {
                     if (possibilities[i] === null) continue;
 
-                    if (previous_one != possibilities[i]) // don't allow dupes (which we know are sequential due to sorting)
+                    if (previousOne != possibilities[i]) // don't allow dupes (which we know are sequential due to sorting)
                     { // not a dupe
                         option = document.createElement('option');
                         element.add(option, null);
                         $cms.dom.html(option, escape_html(possibilities[i]));
                         option.value = possibilities[i];
-                        if (current_value.length == 0) {
+                        if (currentValue.length == 0) {
                             if (element.multiple) // Pre-select all, if multiple input
                             {
                                 option.selected = true;
                             }
                         } else {
-                            for (var j = 0; j < current_value.length; j++) {
-                                if (possibilities[i] == current_value[j]) option.selected = true;
+                            for (var j = 0; j < currentValue.length; j++) {
+                                if (possibilities[i] == currentValue[j]) option.selected = true;
                             }
                         }
-                        previous_one = possibilities[i];
+                        previousOne = possibilities[i];
                     }
                 }
                 if (!element.multiple) {
@@ -168,42 +168,42 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                 }
             }
 
-            changes_made_already = true;
+            changesMadeAlready = true;
         } else {
-            changes_made_already = false;
+            changesMadeAlready = false;
         }
 
-        if (initial_run) {// This may effectively be called on non-initial runs, but it would be due to the list filter changes causing a selection change that propagates
-            var all_refresh_functions = [];
+        if (initialRun) {// This may effectively be called on non-initial runs, but it would be due to the list filter changes causing a selection change that propagates
+            var allRefreshFunctions = [];
 
-            $cms.log('Looking for children of ' + cpf_field.csv_heading + '...');
+            $cms.log('Looking for children of ' + cpfField.csv_heading + '...');
 
-            for (var i in cpf_fields) {
+            for (var i in cpfFields) {
 
-                var child_cpf_field = cpf_fields[i], refresh_function, child_cpf_field_element;
+                var childCpfField = cpfFields[i], refreshFunction, childCpfFieldElement;
 
-                if (child_cpf_field.csv_parent_heading == cpf_field.csv_heading) {
-                    $cms.log(' ' + cpf_field.csv_heading + ' has child ' + child_cpf_field.csv_heading);
+                if (childCpfField.csv_parent_heading == cpfField.csv_heading) {
+                    $cms.log(' ' + cpfField.csv_heading + ' has child ' + childCpfField.csv_heading);
 
-                    child_cpf_field_element = find_cpf_field_element(element.form, child_cpf_field);
+                    childCpfFieldElement = findCpfFieldElement(element.form, childCpfField);
 
-                    refresh_function = function (child_cpf_field_element, child_cpf_field) {
+                    refreshFunction = function (childCpfFieldElement, childCpfField) {
                         return function () {
-                            $cms.log('UPDATING: ' + child_cpf_field.csv_heading);
+                            $cms.log('UPDATING: ' + childCpfField.csv_heading);
 
-                            if (child_cpf_field_element) {
-                                inject_form_select_chaining__element(child_cpf_field_element, child_cpf_field, false);
+                            if (childCpfFieldElement) {
+                                injectFormSelectChainingElement(childCpfFieldElement, childCpfField, false);
                             }
                         };
-                    }(child_cpf_field_element, child_cpf_field);
+                    }(childCpfFieldElement, childCpfField);
 
-                    all_refresh_functions.push(refresh_function);
+                    allRefreshFunctions.push(refreshFunction);
                 }
             }
 
             element.onchange = function () {
-                for (var i = 0; i < all_refresh_functions.length; i++) {
-                    all_refresh_functions[i]();
+                for (var i = 0; i < allRefreshFunctions.length; i++) {
+                    allRefreshFunctions[i]();
                 }
             };
         } else {
@@ -211,4 +211,4 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         }
     }
 
-}());/*</script>*/
+}());

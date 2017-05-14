@@ -33,7 +33,7 @@ $cms.requireJavascript('jquery').then(function () {
 
 			toHtml: function (text) {
 				return text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')
-					.split(' ').join('<span style="white-space:prev-wrap">&nbsp;</span>');
+					.split(' ').join('<span style="white-space: pre-wrap">&nbsp;</span>');
 			},
 			// calculate position
 			getCaretPosition: function () {
@@ -662,7 +662,7 @@ function autoCompleteElementFactory(element,e) {
 /* Composr binder code */
 
 function setUpComcodeAutocomplete(name, wysiwyg) {
-	if (wysiwyg && window.wysiwyg_on && wysiwygOn() && ((window.CKEDITOR == null) ||  (window.CKEDITOR.instances[name] == null))) {
+	if (wysiwyg && window.wysiwygOn && wysiwygOn() && ((window.CKEDITOR == null) ||  (window.CKEDITOR.instances[name] == null))) {
 		return;
 	}
 
@@ -677,15 +677,15 @@ function setUpComcodeAutocomplete(name, wysiwyg) {
         onFilterChanged: function (sew, token, expression) {
 			$cms.doAjaxRequest(
                 '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keepStub(),
-                function (result, list_contents) {
-                    var new_values = [];
-                    for (var i = 0; i < list_contents.childNodes.length; i++) {
-                        new_values.push({
-                            val: list_contents.childNodes[i].getAttribute('value'),
-                            meta: list_contents.childNodes[i].getAttribute('displayname')
+                function (result, listContents) {
+                    var newValues = [];
+                    for (var i = 0; i < listContents.childNodes.length; i++) {
+                        newValues.push({
+                            val: listContents.childNodes[i].getAttribute('value'),
+                            meta: listContents.childNodes[i].getAttribute('displayname')
                         });
                     }
-                    sew.setValues(new_values);
+                    sew.setValues(newValues);
                 }
             );
         }

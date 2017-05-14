@@ -134,14 +134,14 @@ function existsChild(elements, parent) {
     return false;
 }
 
-function isChild(elements, possible_parent, possible_child) {
+function isChild(elements, possibleParent, possibleChild) {
     for (var i = 0; i < elements.length; i++) {
-        if ((elements[i].name.substr(7) == possible_child) && (elements[i].name.substr(0, 7) == 'parent_')) {
-            if (elements[i].value == possible_parent) {
+        if ((elements[i].name.substr(7) == possibleChild) && (elements[i].name.substr(0, 7) == 'parent_')) {
+            if (elements[i].value == possibleParent) {
                 return true;
             }
 
-            return isChild(elements, possible_parent, elements[i].value);
+            return isChild(elements, possibleParent, elements[i].value);
         }
     }
 
@@ -157,7 +157,7 @@ function handleOrdering(el, up, down) {
         var num = window.parseInt(form.elements['order_' + index].value) || 0;
 
         // Find the parent
-        var parent_num = $cms.dom.$('#parent_' + index).value;
+        var parentNum = $cms.dom.$('#parent_' + index).value;
 
         var i, b, bindex;
         var best = -1, bestindex = -1;
@@ -166,7 +166,7 @@ function handleOrdering(el, up, down) {
     if (up) {// Up
         // Find previous branch with same parent (if exists)
         for (i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parent_num)) {
+            if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
                 bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
                 b = window.parseInt(form.elements['order_' + bindex].value) || 0;
                 if ((b < num) && (b > best)) {
@@ -180,7 +180,7 @@ function handleOrdering(el, up, down) {
     if (down) {// Down
         // Find next branch with same parent (if exists)
         for (i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parent_num)) {
+            if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
                 bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
                 b = window.parseInt(form.elements['order_' + bindex].value);
                 if ((b > num) && ((b < best) || (best == -1))) {
@@ -230,22 +230,22 @@ function deleteBranch(id) {
 
 function checkMenu() {
     var form = $cms.dom.$('#edit_form');
-    var i, id, name, the_parent, ignore, caption, url, branch_type;
+    var i, id, name, theParent, ignore, caption, url, branchType;
     for (i = 0; i < form.elements.length; i++) {
         name = form.elements[i].name.substr(0, 7);
-        if (name == 'parent_') {// We don't care about this, but it does tell us we have found a menu branch ID
+        if (name === 'parent_') {// We don't care about this, but it does tell us we have found a menu branch ID
 
             id = form.elements[i].name.substring(7, form.elements[i].name.length);
 
             // Is this visible? (if it is we need to check the IDs
-            the_parent = form.elements[i];
+            theParent = form.elements[i];
             do {
-                if (the_parent.style.display == 'none') {
+                if (theParent.style.display === 'none') {
                     ignore = true;
                     break;
                 }
-                the_parent = the_parent.parentNode;
-            } while (the_parent.parentNode);
+                theParent = theParent.parentNode;
+            } while (theParent.parentNode);
 
             if (!ignore) {// It's the real deal
 
@@ -258,8 +258,8 @@ function checkMenu() {
                 }
 
                 // If we are a page, check we have a URL
-                branch_type = $cms.dom.$id('branch_type_' + id);
-                if (branch_type.options[branch_type.selectedIndex].value == 'page') {
+                branchType = $cms.dom.$id('branch_type_' + id);
+                if (branchType.options[branchType.selectedIndex].value == 'page') {
                     if ((caption.value != '') && (url.value == '')) {
                         $cms.ui.alert('{!MISSING_URL_ERROR;^}');
                         return false;

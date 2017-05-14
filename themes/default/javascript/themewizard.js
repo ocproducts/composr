@@ -4,9 +4,9 @@
     $cms.functions.adminThemewizardStep1 = function () {
         var form = document.getElementById('main_form');
         form.elements['source_theme'].addEventListener('change', function () {
-            var default_theme = (form.elements['source_theme'].value === 'default');
-            form.elements['algorithm'][0].checked = default_theme;
-            form.elements['algorithm'][1].checked = !default_theme;
+            var defaultTheme = (form.elements['source_theme'].value === 'default');
+            form.elements['algorithm'][0].checked = defaultTheme;
+            form.elements['algorithm'][1].checked = !defaultTheme;
         });
         form.addEventListener('submit', function () {
             document.getElementById('submit_button').disabled = true;

@@ -18,7 +18,7 @@
 		<script>
 			window.IN_MINIKERNEL_VERSION = true;
 
-			function install_stage_load() {
+			function installStageLoad() {
 				//set_cookie('js_on',1,120);
 
 				var none = document.getElementById('{DEFAULT_FORUM;/}');
@@ -35,7 +35,7 @@
 				var cns = document.getElementById('cns');
 				if (cns)
 				{
-					var use_multi_db_locker = function() {
+					var useMultiDbLocker = function() {
 						forms[0].elements['use_multi_db'][0].disabled = cns.checked;
 						forms[0].elements['use_multi_db'][1].disabled = cns.checked;
 						if (cns.checked) {
@@ -43,9 +43,9 @@
 						}
 					};
 					for (var i=0; i < forms[0].elements['forum'].length; i++) {
-						forms[0].elements['forum'][i].onclick = use_multi_db_locker;
+						forms[0].elements['forum'][i].onclick = useMultiDbLocker;
 					}
-					use_multi_db_locker();
+					useMultiDbLocker();
 				}
 			}
 
@@ -66,7 +66,7 @@
 					}
 				}
 
-				if (!check_passwords(form)) return false;
+				if (!checkPasswords(form)) return false;
 
 				if ((form.elements['db_site_password']) && (window.$cms.form.doAjaxFieldTest)) {
 					var url = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(form.elements['db_type'].value) + '&db_site_host=' + encodeURIComponent(form.elements['db_site_host'].value) + '&db_site=' + encodeURIComponent(form.elements['db_site'].value) + '&db_site_user=' + encodeURIComponent(form.elements['db_site_user'].value) + '&db_site_password=' + encodeURIComponent(form.elements['db_site_password'].value);
@@ -138,7 +138,7 @@
 		{+START,INCLUDE,PASSWORD_CHECK_JS}INSTALLER=1{+END}
 	</head>
 
-	<body id="installer_body" class="website_body" onload="install_stage_load();">
+	<body id="installer_body" class="website_body" onload="installStageLoad();">
 		<div class="installer_main">
 			<img alt="Composr" src="{LOGO_URL*}" width="550" height="115" />
 		</div>

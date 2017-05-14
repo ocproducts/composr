@@ -1,16 +1,16 @@
 window.sb_cc_timer = null;
 window.sb_last_message_id = null;
 
-function sbChatCheck(room_id, last_message_id, last_event_id) {
-    window.sb_room_id = room_id;
-    window.sb_last_message_id = last_message_id;
-    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + room_id + "&message_id=" + last_message_id + "&event_id=" + last_event_id;
+function sbChatCheck(roomId, lastMessageId, lastEventId) {
+    window.sb_room_id = roomId;
+    window.sb_last_message_id = lastMessageId;
+    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + lastMessageId + "&event_id=" + lastEventId;
     $cms.doAjaxRequest(url + $cms.keepStub(false), sbChatCheckResponse);
 
-    function sbChatCheckResponse(ajax_result_frame, ajax_result) {
-        if (!ajax_result) return; // Some server side glitch. As this polls, lets ignore it
+    function sbChatCheckResponse(ajaxResultFrame, ajaxResult) {
+        if (!ajaxResult) return; // Some server side glitch. As this polls, lets ignore it
 
-        sbHandleSignals(ajax_result);
+        sbHandleSignals(ajaxResult);
 
         // Schedule the next check
         if (window.sb_cc_timer) {
@@ -25,8 +25,8 @@ function sbChatCheck(room_id, last_message_id, last_event_id) {
         }(), 10000);
 
 
-        function sbHandleSignals(ajax_result) {
-            var messages = ajax_result.childNodes;
+        function sbHandleSignals(ajaxResult) {
+            var messages = ajaxResult.childNodes;
 
             // Look through our messages
             for (var i = 0; i < messages.length; i++) {

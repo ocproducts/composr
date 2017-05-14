@@ -2,19 +2,19 @@
     'use strict';
 
     $cms.functions.moduleAdminCnsWelcomeEmailsRunStart = function moduleAdminCnsWelcomeEmailsRunStart() {
-        var newsletter_field = document.getElementById('newsletter');
-        var usergroup_field = newsletter_field.form.elements['usergroup'];
-        newsletter_field.addEventListener('change', updateNewsletterSettings);
-        usergroup_field.addEventListener('change', updateNewsletterSettings);
+        var newsletterField = document.getElementById('newsletter');
+        var usergroupField = newsletterField.form.elements['usergroup'];
+        newsletterField.addEventListener('change', updateNewsletterSettings);
+        usergroupField.addEventListener('change', updateNewsletterSettings);
         updateNewsletterSettings();
 
         function updateNewsletterSettings() {
-            var has_newsletter = (newsletter_field.selectedIndex != 0);
-            var has_usergroup = (usergroup_field.selectedIndex != 0);
-            newsletter_field.form.elements['usergroup'].disabled = has_newsletter;
-            newsletter_field.form.elements['usergroup_type'][0].disabled = has_newsletter || !has_usergroup;
-            newsletter_field.form.elements['usergroup_type'][1].disabled = has_newsletter || !has_usergroup;
-            newsletter_field.form.elements['usergroup_type'][2].disabled = has_newsletter || !has_usergroup;
+            var hasNewsletter = (newsletterField.selectedIndex != 0);
+            var hasUsergroup = (usergroupField.selectedIndex != 0);
+            newsletterField.form.elements['usergroup'].disabled = hasNewsletter;
+            newsletterField.form.elements['usergroup_type'][0].disabled = hasNewsletter || !hasUsergroup;
+            newsletterField.form.elements['usergroup_type'][1].disabled = hasNewsletter || !hasUsergroup;
+            newsletterField.form.elements['usergroup_type'][2].disabled = hasNewsletter || !hasUsergroup;
         }
     };
 

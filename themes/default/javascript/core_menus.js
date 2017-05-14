@@ -488,25 +488,25 @@
             clickableSections = !!params.clickableSections && (params.clickableSections !== '0');
 
         $cms.dom.on(container, 'click', '.js-click-add-new-menu-item', function () {
-            var insert_before_id = 'branches_go_before_' + parentId;
+            var insertBeforeId = 'branches_go_before_' + parentId;
 
             var template = $cms.dom.$id('template').value;
 
-            var before = $cms.dom.$id(insert_before_id);
-            var new_id = 'm_' + Math.floor(Math.random() * 10000);
-            var template2 = template.replace(/replace\_me\_with\_random/gi, new_id);
-            var highest_order_element = $cms.dom.$id('highest_order');
-            var new_order = highest_order_element.value + 1;
-            highest_order_element.value++;
-            template2 = template2.replace(/replace\_me\_with\_order/gi, new_order);
+            var before = $cms.dom.$id(insertBeforeId);
+            var newId = 'm_' + Math.floor(Math.random() * 10000);
+            var template2 = template.replace(/replace\_me\_with\_random/gi, newId);
+            var highestOrderElement = $cms.dom.$id('highest_order');
+            var newOrder = highestOrderElement.value + 1;
+            highestOrderElement.value++;
+            template2 = template2.replace(/replace\_me\_with\_order/gi, newOrder);
             template2 = template2.replace(/replace\_me\_with\_parent/gi, parentId);
 
             // Backup form branches
             var form = $cms.dom.$id('edit_form');
-            var _elements_bak = form.elements, elements_bak = [];
+            var _elementsBak = form.elements, elements_bak = [];
             var i;
-            for (i = 0; i < _elements_bak.length; i++) {
-                elements_bak.push([_elements_bak[i].name, _elements_bak[i].value]);
+            for (i = 0; i < _elementsBak.length; i++) {
+                elements_bak.push([_elementsBak[i].name, _elementsBak[i].value]);
             }
 
             $cms.dom.append(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
@@ -519,7 +519,7 @@
             }
 
             if (!clickableSections) {
-                menuEditorBranchTypeChange(new_id);
+                menuEditorBranchTypeChange(newId);
             }
 
             $cms.dom.$id('mini_form_hider').style.display = 'none';
@@ -665,18 +665,18 @@
     };
 
     function menuActiveSelection(menu_id) {
-        var menu_element = $cms.dom.$('#' + menu_id),
+        var menuElement = $cms.dom.$('#' + menu_id),
             possibilities = [], is_selected, url, min_score, i;
 
-        if (menu_element.localName === 'select') {
-            for (i = 0; i < menu_element.options.length; i++) {
-                url = menu_element.options[i].value;
+        if (menuElement.localName === 'select') {
+            for (i = 0; i < menuElement.options.length; i++) {
+                url = menuElement.options[i].value;
                 is_selected = menuItemIsSelected(url);
                 if (is_selected !== null) {
                     possibilities.push({
                         url: url,
                         score: is_selected,
-                        element: menu_element.options[i]
+                        element: menuElement.options[i]
                     });
                 }
             }
@@ -695,12 +695,12 @@
                 }
             }
         } else {
-            var menu_items = menu_element.querySelectorAll('.non_current'), a;
-            for (i = 0; i < menu_items.length; i++) {
+            var menuItems = menuElement.querySelectorAll('.non_current'), a;
+            for (i = 0; i < menuItems.length; i++) {
                 a = null;
-                for (var j = 0; j < menu_items[i].children.length; j++) {
-                    if (menu_items[i].children[j].localName === 'a') {
-                        a = menu_items[i].children[j];
+                for (var j = 0; j < menuItems[i].children.length; j++) {
+                    if (menuItems[i].children[j].localName === 'a') {
+                        a = menuItems[i].children[j];
                     }
                 }
                 if (!a) {
@@ -713,7 +713,7 @@
                     possibilities.push({
                         url: url,
                         score: is_selected,
-                        element: menu_items[i]
+                        element: menuItems[i]
                     });
                 }
             }
@@ -742,14 +742,14 @@
             return null;
         }
 
-        var current_url = window.location.href;
-        if (current_url === url) {
+        var currentUrl = window.location.href;
+        if (currentUrl === url) {
             return 0;
         }
-        var global_breadcrumbs = document.getElementById('global_breadcrumbs');
+        var globalBreadcrumbs = document.getElementById('global_breadcrumbs');
 
-        if (global_breadcrumbs) {
-            var links = global_breadcrumbs.querySelectorAll('a');
+        if (globalBreadcrumbs) {
+            var links = globalBreadcrumbs.querySelectorAll('a');
             for (var i = 0; i < links.length; i++) {
                 if (url == links[links.length - 1 - i].href) {
                     return i + 1;
@@ -764,27 +764,27 @@
     window.active_menu = null;
     window.last_active_menu = null;
 
-    var clean_menus_timeout,
-        last_active_menu;
+    var cleanMenusTimeout,
+        lastActiveMenu;
 
     function setActiveMenu(id, menu) {
         window.active_menu = id;
         if (menu != null) {
-            last_active_menu = menu;
+            lastActiveMenu = menu;
         }
     }
 
     function recreateCleanTimeout() {
-        if (clean_menus_timeout) {
-            window.clearTimeout(clean_menus_timeout);
+        if (cleanMenusTimeout) {
+            window.clearTimeout(cleanMenusTimeout);
         }
-        clean_menus_timeout = window.setTimeout(cleanMenus, window.menu_hold_time);
+        cleanMenusTimeout = window.setTimeout(cleanMenus, window.menu_hold_time);
     }
 
     function cleanMenus() {
-        clean_menus_timeout = null;
+        cleanMenusTimeout = null;
 
-        var m = $cms.dom.$('#r_' + last_active_menu);
+        var m = $cms.dom.$('#r_' + lastActiveMenu);
         if (!m) {
             return;
         }
@@ -800,7 +800,7 @@
                 do {
                     if (tags[i].id == t.id) hideable = false;
                     t = t.parentNode.parentNode;
-                } while (t.id != 'r_' + last_active_menu);
+                } while (t.id != 'r_' + lastActiveMenu);
             }
             if (hideable) {
                 tags[i].style.left = '-999px';
@@ -809,9 +809,9 @@
         }
     }
 
-    function popUpMenu(id, place, menu, outside_fixed_width) {
+    function popUpMenu(id, place, menu, outsideFixedWidth) {
         place || (place = 'right');
-        outside_fixed_width = !!outside_fixed_width;
+        outsideFixedWidth = !!outsideFixedWidth;
 
         var el = $cms.dom.$('#' + id);
 
@@ -819,8 +819,8 @@
             return;
         }
 
-        if (clean_menus_timeout) {
-            window.clearTimeout(clean_menus_timeout);
+        if (cleanMenusTimeout) {
+            window.clearTimeout(cleanMenusTimeout);
         }
 
         if ($cms.dom.isDisplayed(el)) {
@@ -828,7 +828,7 @@
         }
 
         window.active_menu = id;
-        last_active_menu = menu;
+        lastActiveMenu = menu;
         cleanMenus();
 
         var l = 0;
@@ -860,46 +860,46 @@
             l += el.parentNode.offsetWidth;
         }
 
-        var full_height = $cms.dom.getWindowScrollHeight(); // Has to be got before e is visible, else results skewed
+        var fullHeight = $cms.dom.getWindowScrollHeight(); // Has to be got before e is visible, else results skewed
         el.style.position = 'absolute';
         el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
         el.style.display = 'block';
         $cms.dom.clearTransitionAndSetOpacity(el, 0.0);
         $cms.dom.fadeTransition(el, 100, 30, 8);
 
-        var full_width = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
+        var fullWidth = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
 
-        if ($cms.$CONFIG_OPTION('fixed_width') && !outside_fixed_width) {
-            var main_website_inner = document.getElementById('main_website_inner');
-            if (main_website_inner) {
-                full_width = main_website_inner.offsetWidth;
+        if ($cms.$CONFIG_OPTION('fixed_width') && !outsideFixedWidth) {
+            var mainWebsiteInner = document.getElementById('main_website_inner');
+            if (mainWebsiteInner) {
+                fullWidth = mainWebsiteInner.offsetWidth;
             }
         }
 
-        var e_parent_width = el.parentNode.offsetWidth;
-        el.style.minWidth = e_parent_width + 'px';
-        var e_parent_height = el.parentNode.offsetHeight;
-        var e_width = el.offsetWidth;
+        var eParentWidth = el.parentNode.offsetWidth;
+        el.style.minWidth = eParentWidth + 'px';
+        var eParentHeight = el.parentNode.offsetHeight;
+        var eWidth = el.offsetWidth;
         function positionL() {
-            var pos_left = l;
+            var posLeft = l;
             if (place == 'below') {// Top-level of drop-down
-                if (pos_left + e_width > full_width) {
-                    pos_left += e_parent_width - e_width;
+                if (posLeft + eWidth > fullWidth) {
+                    posLeft += eParentWidth - eWidth;
                 }
             } else { // NB: For non-below, we can't assume 'left' is absolute, as it is actually relative to parent node which is itself positioned
-                if ($cms.dom.findPosX(el.parentNode, true) + e_width + e_parent_width + 10 > full_width) pos_left -= e_width + e_parent_width;
+                if ($cms.dom.findPosX(el.parentNode, true) + eWidth + eParentWidth + 10 > fullWidth) posLeft -= eWidth + eParentWidth;
             }
-            el.style.left = pos_left + 'px';
+            el.style.left = posLeft + 'px';
         }
         positionL();
         window.setTimeout(positionL, 0);
         function positionT() {
-            var pos_top = t;
-            if (pos_top + el.offsetHeight + 10 > full_height) {
-                var above_pos_top = pos_top - $cms.dom.contentHeight(el) + e_parent_height - 10;
-                if (above_pos_top > 0) pos_top = above_pos_top;
+            var posTop = t;
+            if (posTop + el.offsetHeight + 10 > fullHeight) {
+                var abovePosTop = posTop - $cms.dom.contentHeight(el) + eParentHeight - 10;
+                if (abovePosTop > 0) posTop = abovePosTop;
             }
-            el.style.top = pos_top + 'px';
+            el.style.top = posTop + 'px';
         }
         positionT();
         window.setTimeout(positionT, 0);

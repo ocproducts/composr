@@ -51,14 +51,14 @@
         });
 
         function updateCart(pro_ids) {
-            var pro_ids_array = pro_ids.split(',');
+            var proIdsArray = pro_ids.split(',');
 
-            var tot = pro_ids_array.length;
+            var tot = proIdsArray.length;
 
             for (var i = 0; i < tot; i++) {
-                var quantity_data = 'quantity_' + pro_ids_array[i];
+                var quantityData = 'quantity_' + proIdsArray[i];
 
-                var qval = document.getElementById(quantity_data).value;
+                var qval = document.getElementById(quantityData).value;
 
                 if (isNaN(qval)) {
                     $cms.ui.alert('{!shopping:CART_VALIDATION_REQUIRE_NUMBER;^}');

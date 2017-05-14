@@ -16,15 +16,16 @@
 
     $cms.functions.moduleCmsBannersRunStart = function moduleCmsBannersRunStart() {
         document.getElementById("importancemodulus").onkeyup = function () {
-            var _im_here = document.getElementById("im_here");
-            if (_im_here) {
-                var _im_total = document.getElementById("im_total");
-                var im_here = window.parseInt(document.getElementById("importancemodulus").value);
-                var im_total = window.parseInt(_im_total.className.replace("im_", "")) + im_here;
-                $cms.dom.html(_im_here, im_here);
-                $cms.dom.html(document.getElementById("im_here_2"), im_here);
-                $cms.dom.html(_im_total, im_total);
-                $cms.dom.html(document.getElementById("im_total_2"), im_total);
+            var _imHere = document.getElementById("im_here");
+            if (_imHere) {
+                var _imTotal = document.getElementById("im_total"),
+                    imHere = window.parseInt(document.getElementById("importancemodulus").value),
+                    imTotal = window.parseInt(_imTotal.className.replace("im_", "")) + imHere;
+
+                $cms.dom.html(_imHere, imHere);
+                $cms.dom.html(document.getElementById("im_here_2"), imHere);
+                $cms.dom.html(_imTotal, imTotal);
+                $cms.dom.html(document.getElementById("im_total_2"), imTotal);
             }
         }
     };

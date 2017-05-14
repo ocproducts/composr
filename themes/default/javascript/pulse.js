@@ -20,14 +20,14 @@ function processWave(e) {
         textNodes = window[e.id][4];
 
     if (textNodes.length === 0)  { // Setup
-        var text_nodes_temp = findTextNodes(e);
+        var textNodesTemp = findTextNodes(e);
 
         // Now split up the nodes so each is actually wrapped by a span
-        for (var i = 0; i < text_nodes_temp.length; i++) {
-            var parent = text_nodes_temp[i].parentNode;
-            parent.removeChild(text_nodes_temp[i]);
+        for (var i = 0; i < textNodesTemp.length; i++) {
+            var parent = textNodesTemp[i].parentNode;
+            parent.removeChild(textNodesTemp[i]);
 
-            var text = text_nodes_temp[i].data;
+            var text = textNodesTemp[i].data;
             for (var j = 0; j < text.length; j++) {
                 var span = document.createElement('span');
                 var te = document.createTextNode(text.substr(j, 1));
@@ -44,12 +44,12 @@ function processWave(e) {
 
     // Apply colour wave
     for (var i = 0; i < textNodes.length; i++) {
-        var dist_leftwards = i - pos;
-        if (dist_leftwards < 0) dist_leftwards = i + range - pos;
-        var dist_rightwards = pos - i;
-        if (dist_rightwards < 0) dist_rightwards = pos + range - i;
+        var distLeftwards = i - pos;
+        if (distLeftwards < 0) distLeftwards = i + range - pos;
+        var distRightwards = pos - i;
+        if (distRightwards < 0) distRightwards = pos + range - i;
 
-        var diff = (dist_leftwards < dist_rightwards) ? dist_leftwards : dist_rightwards;
+        var diff = (distLeftwards < distRightwards) ? distLeftwards : distRightwards;
         var fraction = diff / (range / 2);
         textNodes[i].style.color = '#' + colorInterpolation(maxColor, minColor, fraction);
     }
@@ -60,18 +60,18 @@ function processWave(e) {
         window[e.id][0] = 0;
     }
 
-    function colorInterpolation(max_color, min_color, fraction) {
-        var min_color_r = hexToDec(min_color.substr(0, 2)),
-            min_color_g = hexToDec(min_color.substr(2, 2)),
-            min_color_b = hexToDec(min_color.substr(4, 2)),
-            max_color_r = hexToDec(max_color.substr(0, 2)),
-            max_color_g = hexToDec(max_color.substr(2, 2)),
-            max_color_b = hexToDec(max_color.substr(4, 2)),
-            color_r = min_color_r + fraction * (max_color_r - min_color_r),
-            color_g = min_color_g + fraction * (max_color_g - min_color_g),
-            color_b = min_color_b + fraction * (max_color_b - min_color_b);
+    function colorInterpolation(maxColor, minColor, fraction) {
+        var minColorR = hexToDec(minColor.substr(0, 2)),
+            minColorG = hexToDec(minColor.substr(2, 2)),
+            minColorB = hexToDec(minColor.substr(4, 2)),
+            maxColorR = hexToDec(maxColor.substr(0, 2)),
+            maxColorG = hexToDec(maxColor.substr(2, 2)),
+            maxColorB = hexToDec(maxColor.substr(4, 2)),
+            colorR = minColorR + fraction * (maxColorR - minColorR),
+            colorG = minColorG + fraction * (maxColorG - minColorG),
+            colorB = minColorB + fraction * (maxColorB - minColorB);
 
-        return decToHex(window.parseInt(color_r)) + decToHex(window.parseInt(color_g)) + decToHex(window.parseInt(color_b));
+        return decToHex(window.parseInt(colorR)) + decToHex(window.parseInt(colorG)) + decToHex(window.parseInt(colorB));
     }
 
     function findTextNodes(e) {

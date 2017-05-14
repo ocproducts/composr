@@ -41,13 +41,13 @@ function showPermissionSetting(ob, event) {
 
 function cleanupPermissionList(name) {
     // We always try and cleanup the 'custom' option if we're choosing something else (because it's confusing for it to stay there)
-    var custom_option = document.getElementById(name + '_custom_option');
-    if (custom_option) {
-        custom_option.parentNode.removeChild(custom_option);
+    var customOption = document.getElementById(name + '_custom_option');
+    if (customOption) {
+        customOption.parentNode.removeChild(customOption);
     }
 }
 
-function copyPermissionPresets(name, value, just_track) {
+function copyPermissionPresets(name, value, justTrack) {
     name = strVal(name);
     value = strVal(value);
 
@@ -55,9 +55,8 @@ function copyPermissionPresets(name, value, just_track) {
         return false;
     }
 
-    var made_change = false;
-
-    var usual_suspects = ['bypass_validation_xrange_content', 'edit_xrange_content', 'edit_own_xrange_content', 'delete_xrange_content', 'delete_own_xrange_content', 'submit_xrange_content', 'edit_cat_xrange_content'];
+    var madeChange = false;
+    var usualSuspects = ['bypass_validation_xrange_content', 'edit_xrange_content', 'edit_own_xrange_content', 'delete_xrange_content', 'delete_own_xrange_content', 'submit_xrange_content', 'edit_cat_xrange_content'];
     var access = [2, 3, 2, 3, 2, 1, 3]; // The minimum access level that turns on each of the above permissions   NB: Also defined in resource_fs.php, so keep that in-sync
 
     var holder = document.getElementById(name + '_privilege_container');
@@ -82,18 +81,18 @@ function copyPermissionPresets(name, value, just_track) {
             name2 = elements[i].name.substr(stub.length);
             x = name2.replace(/(high|mid|low)/, 'x');
 
-            for (j = 0; j < usual_suspects.length; j++) {
-                if (usual_suspects[j] == x) {
+            for (j = 0; j < usualSuspects.length; j++) {
+                if (usualSuspects[j] == x) {
                     test = (access[j] <= window.parseInt(value)) ? 1 : 0;
                     break;
                 }
             }
             if ((test !== -1) || ((node) && (node.getAttribute('serverid') !== '_root'))) {
                 if (elements[i].selectedIndex != test + 1) {
-                    made_change = true;
+                    madeChange = true;
                     if (elements[i].selectedIndex != test + 1) {
-                        made_change = true;
-                        if (!just_track) elements[i].selectedIndex = test + 1; // -1 is at index 0
+                        madeChange = true;
+                        if (!justTrack) elements[i].selectedIndex = test + 1; // -1 is at index 0
                     }
                 }
             }
@@ -110,20 +109,20 @@ function copyPermissionPresets(name, value, just_track) {
         }
     }
 
-    if ((!just_track) && (elements.length === 2) && (made_change)) {
+    if ((!justTrack) && (elements.length === 2) && (madeChange)) {
         $cms.ui.alert('{!permissions:JUST_PRESETS;^}');
     }
 
-    return made_change;
+    return madeChange;
 }
 
-function setupPrivilegeOverrideSelector(name, default_access, privilege, title, all_global) {
-    eval('window.' + name + '_privilege_' + privilege + '=' + default_access);
-    var select_element = document.getElementById(name + '_privilege_' + privilege);
-    if (all_global) {
+function setupPrivilegeOverrideSelector(name, defaultAccess, privilege, title, allGlobal) {
+    eval('window.' + name + '_privilege_' + privilege + '=' + defaultAccess);
+    var selectElement = document.getElementById(name + '_privilege_' + privilege);
+    if (allGlobal) {
         // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
-        select_element.selectedIndex = eval(name + '_privilege_' + privilege) + 1; // -1 is at index 0
-        if (window.sitemap === undefined) select_element.disabled = true;
+        selectElement.selectedIndex = eval(name + '_privilege_' + privilege) + 1; // -1 is at index 0
+        if (window.sitemap === undefined) selectElement.disabled = true;
     }
 }
 

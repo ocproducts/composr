@@ -223,28 +223,28 @@
             new Image().src = $IMG_checklist_cross2;
             new Image().src = $IMG_checklist_toggleicon2;
 
-            var i, checklist_rows = document.querySelectorAll('.checklist_row'), row_imgs, src;
+            var i, checklistRows = document.querySelectorAll('.checklist_row'), rowImgs, src;
 
-            for (i = 0; i < checklist_rows.length; i++) {
-                row_imgs = checklist_rows[i].getElementsByTagName('img');
+            for (i = 0; i < checklistRows.length; i++) {
+                rowImgs = checklistRows[i].getElementsByTagName('img');
                 if (hide_enable) {
-                    src = row_imgs[row_imgs.length - 1].getAttribute('src');
-                    if (row_imgs[row_imgs.length - 1].origsrc) {
-                        src = row_imgs[row_imgs.length - 1].origsrc;
+                    src = rowImgs[rowImgs.length - 1].getAttribute('src');
+                    if (rowImgs[rowImgs.length - 1].origsrc) {
+                        src = rowImgs[rowImgs.length - 1].origsrc;
                     }
                     if (src && src.includes('checklist1')) {
-                        $cms.dom.hide(checklist_rows[i]);
-                        checklist_rows[i].classList.add('task_hidden');
+                        $cms.dom.hide(checklistRows[i]);
+                        checklistRows[i].classList.add('task_hidden');
                     } else {
-                        checklist_rows[i].classList.remove('task_hidden');
+                        checklistRows[i].classList.remove('task_hidden');
                     }
                 } else {
-                    if (!$cms.dom.isDisplayed(checklist_rows[i])) {
-                        $cms.dom.clearTransitionAndSetOpacity(checklist_rows[i], 0.0);
-                        $cms.dom.fadeTransition(checklist_rows[i], 100, 30, 4);
+                    if (!$cms.dom.isDisplayed(checklistRows[i])) {
+                        $cms.dom.clearTransitionAndSetOpacity(checklistRows[i], 0.0);
+                        $cms.dom.fadeTransition(checklistRows[i], 100, 30, 4);
                     }
-                    $cms.dom.show(checklist_rows[i]);
-                    checklist_rows[i].classList.remove('task_hidden');
+                    $cms.dom.show(checklistRows[i]);
+                    checklistRows[i].classList.remove('task_hidden');
                 }
             }
 
@@ -253,13 +253,13 @@
         }
 
         function submitCustomTask(form) {
-            var new_task = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
+            var newTask = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value));
 
             form.elements.recur_every.value = '';
             form.elements.recur_interval.value = '';
             form.elements.new_task.value = '';
 
-            $cms.dom.append(document.getElementById('custom_tasks_go_here'), new_task);
+            $cms.dom.append(document.getElementById('custom_tasks_go_here'), newTask);
         }
     };
 
@@ -285,13 +285,13 @@
         });
     };
 
-    function ajaxFormSubmitAdminHeadless(form, block_name, map) {
+    function ajaxFormSubmitAdminHeadless(form, blockName, map) {
         var post = '';
-        if (block_name !== undefined) {
+        if (blockName !== undefined) {
             if (map === undefined) {
                 map = '';
             }
-            var comcode = '[block' + map + ']' + block_name + '[/block]';
+            var comcode = '[block' + map + ']' + blockName + '[/block]';
             post += 'data=' + encodeURIComponent(comcode);
         }
         for (var i = 0; i < form.elements.length; i++) {
@@ -307,15 +307,15 @@
             if (result) {
                 var xhtml = result.textContent;
 
-                var element_replace = form;
-                while (element_replace.className !== 'form_ajax_target') {
-                    element_replace = element_replace.parentNode;
-                    if (!element_replace) {
+                var elementReplace = form;
+                while (elementReplace.className !== 'form_ajax_target') {
+                    elementReplace = elementReplace.parentNode;
+                    if (!elementReplace) {
                         return true;  // Oh dear, target not found
                     }
                 }
 
-                $cms.dom.html(element_replace, xhtml);
+                $cms.dom.html(elementReplace, xhtml);
 
                 $cms.ui.alert('{!SUCCESS;^}');
 

@@ -34,7 +34,7 @@
             setEditedPanel(params.defaultZonePageName);
 
             var form = $cms.dom.$id('middle_fields');
-            var edit_field_store = $cms.dom.$id('edit_field_store');
+            var editFieldStore = $cms.dom.$id('edit_field_store');
             var i, store;
             for (i = 0; i < form.elements.length; i++) {
                 store = document.createElement('input');
@@ -45,7 +45,7 @@
                 } else {
                     store.value = form.elements[i].value;
                 }
-                edit_field_store.appendChild(store);
+                editFieldStore.appendChild(store);
             }
 
             btn.form.submit();
@@ -68,7 +68,7 @@
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
-            if ((window.wysiwyg_on) && (wysiwygOn())) {
+            if ((window.wysiwygOn) && (wysiwygOn())) {
                 $cms.dom.$('#edit_' + params.id + '_textarea').readOnly = true;
             }
         }
@@ -127,29 +127,29 @@
             function reloadPreview(id) {
                 var element = $cms.dom.$id('view_' + id);
 
-                var edit_element = $cms.dom.$id('edit_' + id + '_textarea');
-                if (!edit_element) {
+                var editElement = $cms.dom.$id('edit_' + id + '_textarea');
+                if (!editElement) {
                     return; // Nothing interatively edited
                 }
 
                 $cms.dom.html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
 
-                var loading_preview_of = id;
+                var loadingPreviewOf = id;
 
                 var data = '';
-                data += getTextbox(edit_element);
-                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(edit_element) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + $cms.keepStub();
-                var post = ($cms.form.isWysiwygField(edit_element) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
+                data += getTextbox(editElement);
+                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(editElement) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + $cms.keepStub();
+                var post = ($cms.form.isWysiwygField(editElement) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
                 post = $cms.form.modsecurityWorkaroundAjax(post);
                 $cms.doAjaxRequest(url, reloadedPreview, post);
 
-                function reloadedPreview(ajax_result_frame, ajax_result) {
-                    if (!loading_preview_of) {
+                function reloadedPreview(ajaxResultFrame, ajaxResult) {
+                    if (!loadingPreviewOf) {
                         return;
                     }
 
-                    var element = $cms.dom.$id('view_' + loading_preview_of);
-                    $cms.dom.html(element, ajax_result.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
+                    var element = $cms.dom.$id('view_' + loadingPreviewOf);
+                    $cms.dom.html(element, ajaxResult.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
 
                     $cms.form.disablePreviewScripts(element);
                 }

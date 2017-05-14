@@ -20,7 +20,6 @@
     }
 
     $cms.views.ThemeManageScreen = ThemeManageScreen;
-    $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
     /**
      * @memberof $cms.views
      * @class
@@ -31,6 +30,8 @@
     }
 
     $cms.inherits(ThemeManageScreen, $cms.View);
+
+    $cms.views.ThemeTemplateEditorTab = ThemeTemplateEditorTab;
     /**
      * @memberof $cms.views
      * @class
@@ -96,8 +97,8 @@
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
                 var post = 'contents=' + encodeURIComponent(getFileTextbox(file).value);
-                $cms.loadSnippet(url, post, function (ajax_result) {
-                    $cms.ui.alert(ajax_result.responseText, null, null, true);
+                $cms.loadSnippet(url, post, function (ajaxResult) {
+                    $cms.ui.alert(ajaxResult.responseText, null, null, true);
                     templateEditorTabMarkNonchangedContent(file);
                 });
             }
@@ -105,8 +106,8 @@
             function templateEditorTabMarkNonchangedContent(file) {
                 window.template_editor_open_files[file].unsaved_changes = false;
 
-                var file_id = fileToFileId(file);
-                var ob = document.getElementById('t_' + file_id);
+                var fileId = fileToFileId(file);
+                var ob = document.getElementById('t_' + fileId);
                 ob.classList.remove('file_changed');
                 ob.classList.add('file_nonchanged');
             }
@@ -140,12 +141,14 @@
             function insertGuid(file, guid) {
                 var textbox = getFileTextbox(file);
 
-                var has_editarea = editarea_is_loaded(textbox.name);
+                var hasEditarea = editarea_is_loaded(textbox.name);
 
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
                 insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}');
-                if (has_editarea) editareaRefresh(textbox.id);
+                if (hasEditarea) {
+                    editareaRefresh(textbox.id);
+                }
 
                 return false;
             }
@@ -177,18 +180,22 @@
         }
     });
 
-    function templateEditorPreview(file_id, url, button, ask_for_url) {
-        if (ask_for_url === undefined) ask_for_url = false;
+    function templateEditorPreview(fileId, url, button, askForUrl) {
+        if (askForUrl === undefined) {
+            askForUrl = false;
+        }
 
-        var has_editarea = editarea_is_loaded('e_' + file_id);
-        if (has_editarea) editareaReverseRefresh('e_' + file_id);
+        var hasEditarea = editarea_is_loaded('e_' + fileId);
+        if (hasEditarea) {
+            editareaReverseRefresh('e_' + fileId);
+        }
 
-        if (document.getElementById('mobile_preview_' + file_id).checked) {
+        if (document.getElementById('mobile_preview_' + fileId).checked) {
             url += (url.indexOf('?') == -1) ? '?' : '&';
             url += 'keep_mobile=1';
         }
 
-        if (ask_for_url) {
+        if (askForUrl) {
             $cms.ui.prompt(
                 '{!themes:URL_TO_PREVIEW_WITH;^}',
                 url,
@@ -209,61 +216,61 @@
         return true;
     }
 
-    function loadContextualCssEditor(file, file_id) {
-        var ui = document.getElementById('selectors_' + file_id);
+    function loadContextualCssEditor(file, fileId) {
+        var ui = document.getElementById('selectors_' + fileId);
         ui.style.display = 'block'; // Un-hide it
         var list = document.createElement('ul');
-        list.id = 'selector_list_' + file_id;
-        document.getElementById('selectors_inner_' + file_id).appendChild(list);
+        list.id = 'selector_list_' + fileId;
+        document.getElementById('selectors_inner_' + fileId).appendChild(list);
 
-        setUpParentPageHighlighting(file, file_id);
+        setUpParentPageHighlighting(file, fileId);
 
         // Set up background compiles
-        var textarea_id = 'e_' + file_id;
-        if (editarea_is_loaded(textarea_id)) {
-            var editor = window.ace_editors[textarea_id];
+        var textareaId = 'e_' + fileId;
+        if (editarea_is_loaded(textareaId)) {
+            var editor = window.ace_editors[textareaId];
 
-            var last_css = editareaGetValue(textarea_id);
+            var lastCss = editareaGetValue(textareaId);
 
             editor.css_recompiler_timer = window.setInterval(function () {
                 if ((window.opener) && (window.opener.document)) {
                     if (editor.last_change === undefined) return; // No change made at all
 
-                    var milliseconds_ago = (new Date()).getTime() - editor.last_change;
-                    if (milliseconds_ago > 3 * 1000) return; // Not changed recently enough (within last 3 seconds)
+                    var millisecondsAgo = (new Date()).getTime() - editor.last_change;
+                    if (millisecondsAgo > 3 * 1000) return; // Not changed recently enough (within last 3 seconds)
 
                     if (window.opener.have_set_up_parent_page_highlighting === undefined) {
-                        setUpParentPageHighlighting(file, file_id);
-                        last_css = '';
+                        setUpParentPageHighlighting(file, fileId);
+                        lastCss = '';
                         /*force new CSS to apply*/
                     }
 
-                    var new_css = editareaGetValue(textarea_id);
-                    if (new_css == last_css) return; // Not changed
+                    var newCss = editareaGetValue(textareaId);
+                    if (newCss == lastCss) return; // Not changed
 
                     var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keepStub());
-                    $cms.doAjaxRequest(url, function (ajax_result_frame) {
-                        receiveCompiledCss(ajax_result_frame, file);
-                    }, $cms.form.modsecurityWorkaroundAjax('css=' + encodeURIComponent(new_css)));
+                    $cms.doAjaxRequest(url, function (ajaxResultFrame) {
+                        receiveCompiledCss(ajaxResultFrame, file);
+                    }, $cms.form.modsecurityWorkaroundAjax('css=' + encodeURIComponent(newCss)));
 
-                    last_css = new_css;
+                    lastCss = newCss;
                 }
             }, 2000);
         }
 
 
-        function receiveCompiledCss(ajax_result_frame, file, win) {
-            var doing_css_for = file.replace(/^css\//, '').replace('.css', '');
+        function receiveCompiledCss(ajaxResultFrame, file, win) {
+            var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
 
             win || (win = window.opener)
 
             if (win) {
                 try {
-                    var css = ajax_result_frame.responseText;
+                    var css = ajaxResultFrame.responseText;
 
                     // Remove old link tag
                     var e;
-                    if (doing_css_for == 'no_cache') {
+                    if (doingCssFor == 'no_cache') {
                         e = win.document.getElementById('inline_css');
                         if (e) {
                             e.parentNode.removeChild(e);
@@ -272,17 +279,17 @@
                         var links = win.document.getElementsByTagName('link');
                         for (var i = 0; i < links.length; i++) {
                             e = links[i];
-                            if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.$LANG() + '/' + doing_css_for) != -1)) {
+                            if ((e.type == 'text/css') && (e.href.indexOf('/templates_cached/' + window.opener.$cms.$LANG() + '/' + doingCssFor) != -1)) {
                                 e.parentNode.removeChild(e);
                             }
                         }
                     }
 
                     // Create style tag for this
-                    var style = win.document.getElementById('style_for_' + doing_css_for);
+                    var style = win.document.getElementById('style_for_' + doingCssFor);
                     if (!style) style = win.document.createElement('style');
                     style.type = 'text/css';
-                    style.id = 'style_for_' + doing_css_for;
+                    style.id = 'style_for_' + doingCssFor;
                     if (style.styleSheet) {
                         style.styleSheet.cssText = css;
                     } else {
@@ -295,7 +302,7 @@
                     for (var i = 0; i < win.frames.length; i++) {
                         if (win.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
                         {
-                            receiveCompiledCss(ajax_result_frame, file, win.frames[i]);
+                            receiveCompiledCss(ajaxResultFrame, file, win.frames[i]);
                         }
                     }
                 }
@@ -304,16 +311,16 @@
             }
         }
 
-        function setUpParentPageHighlighting(file, file_id) {
+        function setUpParentPageHighlighting(file, fileId) {
             window.opener.have_set_up_parent_page_highlighting = true;
 
-            var doing_css_for = file.replace(/^css\//, '').replace('.css', '');
+            var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
 
             var li, a, selector, elements, element, j, css_text;
 
-            var selectors = window.opener.findActiveSelectors(doing_css_for, window.opener);
+            var selectors = window.opener.findActiveSelectors(doingCssFor, window.opener);
 
-            var list = document.getElementById('selector_list_' + file_id);
+            var list = document.getElementById('selector_list_' + fileId);
             $cms.dom.html(list, '');
 
             for (var i = 0; i < selectors.length; i++) {
@@ -341,9 +348,9 @@
                 li.addEventListener('mousemove', function (event) {
                     $cms.ui.repositionTooltip(this, event);
                 });
-                li.addEventListener('mouseover', function (css_text) {
+                li.addEventListener('mouseover', function (cssText) {
                     return function (event) {
-                        $cms.ui.activateTooltip(this, event, css_text, 'auto');
+                        $cms.ui.activateTooltip(this, event, cssText, 'auto');
                     }
                 }(css_text));
 
@@ -352,7 +359,7 @@
                     return function (event) {
                         event.stopPropagation();
                         editareaDoSearch(
-                            'e_' + file_id,
+                            'e_' + fileId,
                             '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'
                         ); // Opera does not support \s
                         return false;
@@ -392,20 +399,20 @@
                         return function (event) {
                             if (window && !event.ctrlKey && !event.metaKey) {
                                 var target = event.target;
-                                var target_distance = 0;
-                                var element_recurse = element;
+                                var targetDistance = 0;
+                                var elementRecurse = element;
                                 do
                                 {
-                                    if (element_recurse == target) break;
-                                    element_recurse = element_recurse.parentNode;
-                                    target_distance++;
+                                    if (elementRecurse == target) break;
+                                    elementRecurse = elementRecurse.parentNode;
+                                    targetDistance++;
                                 }
-                                while (element_recurse);
-                                if (target_distance > 10) target_distance = 10; // Max range
+                                while (elementRecurse);
+                                if (targetDistance > 10) targetDistance = 10; // Max range
 
                                 a.style.outline = '1px dotted green';
-                                a.style.background = '#00' + (decToHex(255 - target_distance * 25)) + '00';
-                                if (target_distance > 4)
+                                a.style.background = '#00' + (decToHex(255 - targetDistance * 25)) + '00';
+                                if (targetDistance > 4)
                                     a.style.color = 'white';
                                 else
                                     a.style.color = 'black';
@@ -520,13 +527,13 @@
                 request += encodeURIComponent(btn.form.elements[i].name) + '=' + encodeURIComponent(btn.form.elements[i].value) + '&';
             }
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keepStub(true), function (ajax_result) {
-                $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(ajax_result.responseText));
-                $cms.dom.html(document.getElementById('preview_html'), ajax_result.responseText);
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keepStub(true), function (ajaxResult) {
+                $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(ajaxResult.responseText));
+                $cms.dom.html(document.getElementById('preview_html'), ajaxResult.responseText);
             }, request);
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keepStub(), function (ajax_result) {
-                $cms.dom.html(document.getElementById('preview_comcode'), ajax_result.responseText);
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keepStub(), function (ajaxResult) {
+                $cms.dom.html(document.getElementById('preview_comcode'), ajaxResult.responseText);
             }, request);
         });
     };
@@ -539,18 +546,18 @@
             templateInsertParameter('b_' + fileId + '_' + stub, fileId);
         });
 
-        function templateInsertParameter(dropdown_name, file_id) {
-            var textbox = document.getElementById('e_' + file_id);
+        function templateInsertParameter(dropdownName, fileId) {
+            var textbox = document.getElementById('e_' + fileId);
 
-            editareaReverseRefresh('e_' + file_id);
+            editareaReverseRefresh('e_' + fileId);
 
-            var dropdown = document.getElementById(dropdown_name);
+            var dropdown = document.getElementById(dropdownName);
             var value = dropdown.options[dropdown.selectedIndex].value;
-            var value_parts = value.split('__');
-            value = value_parts[0];
+            var valueParts = value.split('__');
+            value = valueParts[0];
             if (value == '---') return false;
 
-            var has_editarea = editarea_is_loaded(textbox.name);
+            var hasEditarea = editarea_is_loaded(textbox.name);
 
             if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays'))) {
                 var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keepStub();
@@ -559,7 +566,7 @@
                     null,
                     'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
                     function () {
-                        if (has_editarea) {
+                        if (hasEditarea) {
                             editareaRefresh(textbox.name);
                         }
                     }
@@ -567,21 +574,21 @@
                 return;
             }
 
-            var arity = value_parts[1];
-            var definite_gets = 0;
-            if (arity == '1') definite_gets = 1;
-            else if (arity == '2') definite_gets = 2;
-            else if (arity == '3') definite_gets = 3;
-            else if (arity == '4') definite_gets = 4;
-            else if (arity == '5') definite_gets = 5;
-            else if (arity == '0-1') definite_gets = 0;
-            else if (arity == '3-4') definite_gets = 3;
-            else if (arity == '0+') definite_gets = 0;
-            else if (arity == '1+') definite_gets = 1;
+            var arity = valueParts[1];
+            var definiteGets = 0;
+            if (arity == '1') definiteGets = 1;
+            else if (arity == '2') definiteGets = 2;
+            else if (arity == '3') definiteGets = 3;
+            else if (arity == '4') definiteGets = 4;
+            else if (arity == '5') definiteGets = 5;
+            else if (arity == '0-1') definiteGets = 0;
+            else if (arity == '3-4') definiteGets = 3;
+            else if (arity == '0+') definiteGets = 0;
+            else if (arity == '1+') definiteGets = 1;
             var parameter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 
             _getParameterParameters(
-                definite_gets,
+                definiteGets,
                 parameter,
                 arity,
                 textbox,
@@ -593,33 +600,33 @@
                     if (name.indexOf('ppdirective') != -1) {
                         insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}');
                     } else {
-                        var st_value;
+                        var stValue;
                         if (name.indexOf('ppparameter') == -1) {
-                            st_value = '{' + '$';
+                            stValue = '{' + '$';
                         } else {
-                            st_value = '{';
+                            stValue = '{';
                         }
 
-                        value = st_value + value + '*' + params + '}';
+                        value = stValue + value + '*' + params + '}';
 
                         insertTextbox(textbox, value);
                     }
 
-                    if (has_editarea) editareaRefresh(textbox.name);
+                    if (hasEditarea) editareaRefresh(textbox.name);
                 }
             );
 
             return false;
 
-            function _getParameterParameters(definite_gets, parameter, arity, box, name, value, num_done, params, callback) {
-                if (num_done < definite_gets) {
+            function _getParameterParameters(definiteGets, parameter, arity, box, name, value, numDone, params, callback) {
+                if (numDone < definiteGets) {
                     $cms.ui.prompt(
-                        '{!themes:INPUT_NECESSARY_PARAMETER;^}' + ', ' + parameter[num_done],
+                        '{!themes:INPUT_NECESSARY_PARAMETER;^}' + ', ' + parameter[numDone],
                         '',
                         function (v) {
                             if (v !== null) {
                                 params = params + ',' + v;
-                                _getParameterParameters(definite_gets, parameter, arity, box, name, value, num_done + 1, params, callback);
+                                _getParameterParameters(definiteGets, parameter, arity, box, name, value, numDone + 1, params, callback);
                             }
                         },
                         '{!themes:INSERT_PARAMETER;^}'
@@ -632,7 +639,7 @@
                             function (v) {
                                 if (v !== null) {
                                     params = params + ',' + v;
-                                    _getParameterParameters(definite_gets, parameter, arity, box, name, value, num_done + 1, params, callback);
+                                    _getParameterParameters(definiteGets, parameter, arity, box, name, value, numDone + 1, params, callback);
                                 } else callback(box, name, value, params);
                             },
                             '{!themes:INSERT_PARAMETER;^}'
@@ -782,15 +789,15 @@
             templateEditorRestoreRevision(file, revisionId);
         });
 
-        function templateEditorRestoreRevision(file, revision_id) {
-            var file_id = fileToFileId(file);
+        function templateEditorRestoreRevision(file, revisionId) {
+            var fileId = fileToFileId(file);
 
             // Set content from revision
-            var url = templateEditorLoadingUrl(file, revision_id);
-            $cms.loadSnippet(url, null, function (ajax_result) {
-                document.getElementById('t_' + file_id).className = 'tab tab_active';
+            var url = templateEditorLoadingUrl(file, revisionId);
+            $cms.loadSnippet(url, null, function (ajaxResult) {
+                document.getElementById('t_' + fileId).className = 'tab tab_active';
 
-                templateEditorTabLoadedContent(ajax_result, file);
+                templateEditorTabLoadedContent(ajaxResult, file);
             });
 
             return false;
@@ -835,31 +842,30 @@
                 if (node.nodeType === 3) {// Text node
                     var matches = node.data.match(/[\u200B\uFEFF]+/g);
                     if (matches) {
-                        var all_decoded = [];
+                        var allDecoded = [];
                         for (var i = 0; i < matches.length; i++) {
                             var decoded = invisibleOutputDecode(matches[i]);
                             var _decoded = decoded.match(/<\/?templates\/[^<>]*>/g);
                             for (var j = 0; j < _decoded.length; j++) {
-                                all_decoded.push(_decoded[j]);
+                                allDecoded.push(_decoded[j]);
                             }
                         }
-                        for (var i = 0; i < all_decoded.length; i++) {
-                            var decoded = all_decoded[i];
-                            var opener_match = decoded.match('<(templates/.*)>');
-                            if (opener_match != null) {
-                                inside.push(opener_match[1]);
+                        for (var i = 0; i < allDecoded.length; i++) {
+                            var decoded = allDecoded[i];
+                            var openerMatch = decoded.match('<(templates/.*)>');
+                            if (openerMatch != null) {
+                                inside.push(openerMatch[1]);
                             }
-                            var closer_match = decoded.match('</(templates/.*)>');
-                            if (closer_match != null) {
-                                var at = inside.indexOf(closer_match[1]);
+                            var closerMatch = decoded.match('</(templates/.*)>');
+                            if (closerMatch != null) {
+                                var at = inside.indexOf(closerMatch[1]);
                                 if (at != -1) inside.splice(at, 1);
                             }
 
                             node.data = node.data.replace(matches[i], ''); // Strip it, to clean document
                         }
                     }
-                } else if (node.nodeType === 1) // Element node
-                {
+                } else if (node.nodeType === 1) {// Element node
                     var before = node.getAttribute('data-template');
                     if (!before) before = '';
                     node.setAttribute('data-template', before + ' ' + inside.join(' ') + ' ');
@@ -874,17 +880,17 @@
 
             function invisibleOutputDecode(string) {
                 var ret = '';
-                var i, j, char, _bits_rep, bits_rep, _bit, bit;
+                var i, j, char, _bitsRep, bitsRep, _bit, bit;
                 var len = string.length;
                 for (i = 0; i < len / 8; i++) {
-                    _bits_rep = '';
+                    _bitsRep = '';
                     for (_bit = 0; _bit < 8; _bit++) {
                         char = string.substr(i * 8 + _bit, 1);
                         bit = (char == "\u200B") ? "1" : "0";
-                        _bits_rep += bit;
+                        _bitsRep += bit;
                     }
-                    bits_rep = window.parseInt(_bits_rep, 2);
-                    ret += String.fromCharCode(bits_rep);
+                    bitsRep = window.parseInt(_bitsRep, 2);
+                    ret += String.fromCharCode(bitsRep);
                 }
 
                 return ret;
@@ -893,14 +899,14 @@
     }
 
     function templateEditorAddTab(file) {
-        var tab_title = file.replace(/^.*\//, ''),
-            file_id = fileToFileId(file);
+        var tabTitle = file.replace(/^.*\//, ''),
+            fileId = fileToFileId(file);
 
         // Switch to tab if exists
-        if (document.getElementById('t_' + file_id)) {
-            $cms.ui.selectTab('g', file_id);
+        if (document.getElementById('t_' + fileId)) {
+            $cms.ui.selectTab('g', fileId);
 
-            templateEditorShowTab(file_id);
+            templateEditorShowTab(fileId);
 
             return;
         }
@@ -909,59 +915,59 @@
         var headers = document.getElementById('template_editor_tab_headers');
 
         var header = document.createElement('a');
-        header.setAttribute('aria-controls', 'g_' + file_id);
+        header.setAttribute('aria-controls', 'g_' + fileId);
         header.setAttribute('role', 'tab');
         header.setAttribute('href', '#');
-        header.id = 't_' + file_id;
+        header.id = 't_' + fileId;
         header.className = 'tab file_nonchanged';
         header.addEventListener('click', function (event) {
-            $cms.ui.selectTab('g', file_id);
-            templateEditorShowTab(file_id);
+            $cms.ui.selectTab('g', fileId);
+            templateEditorShowTab(fileId);
             return false;
         });
 
-        var ext = (tab_title.indexOf('.') != -1) ? tab_title.substring(tab_title.indexOf('.') + 1, tab_title.length) : '';
+        var ext = (tabTitle.indexOf('.') != -1) ? tabTitle.substring(tabTitle.indexOf('.') + 1, tabTitle.length) : '';
         if (ext != '') {
-            tab_title = tab_title.substr(0, tab_title.length - 4);
+            tabTitle = tabTitle.substr(0, tabTitle.length - 4);
         }
-        var icon_img = document.createElement('img');
+        var iconImg = document.createElement('img');
         if (ext == 'tpl') {
-            icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/tpl}');
-            icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/tpl}'));
+            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/tpl}');
+            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/tpl}'));
         }
         if (ext == 'css') {
-            icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/css}');
-            icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/css}'));
+            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/css}');
+            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/css}'));
         }
         if (ext == 'js') {
-            icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/js}');
-            icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/js}'));
+            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/js}');
+            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/js}'));
         }
         if (ext == 'xml') {
-            icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/xml}');
-            icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/xml}'));
+            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/xml}');
+            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/xml}'));
         }
         if (ext == 'txt' || ext == '') {
-            icon_img.src = $cms.img('{$IMG;,icons/16x16/filetypes/page_txt}');
-            icon_img.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/page_txt}'));
+            iconImg.src = $cms.img('{$IMG;,icons/16x16/filetypes/page_txt}');
+            iconImg.setAttribute('srcset', $cms.img('{$IMG;,icons/32x32/filetypes/page_txt}'));
         }
-        icon_img.style.width = '16px';
-        header.appendChild(icon_img);
+        iconImg.style.width = '16px';
+        header.appendChild(iconImg);
         header.appendChild(document.createTextNode(' '));
         var span = document.createElement('span');
-        span.textContent = tab_title;
+        span.textContent = tabTitle;
         header.appendChild(span);
-        var close_button = document.createElement('img');
-        close_button.src = $cms.img('{$IMG;,icons/16x16/close}');
-        if (close_button.srcset !== undefined) {
-            close_button.srcset = $cms.img('{$IMG;,icons/32x32/close}') + ' 2x';
+        var closeButton = document.createElement('img');
+        closeButton.src = $cms.img('{$IMG;,icons/16x16/close}');
+        if (closeButton.srcset !== undefined) {
+            closeButton.srcset = $cms.img('{$IMG;,icons/32x32/close}') + ' 2x';
         }
-        close_button.alt = '{!CLOSE;^}';
-        close_button.style.paddingLeft = '5px';
-        close_button.style.width = '16px';
-        close_button.style.height = '16px';
-        close_button.style.verticalAlign = 'middle';
-        close_button.addEventListener('click', function (event) {
+        closeButton.alt = '{!CLOSE;^}';
+        closeButton.style.paddingLeft = '5px';
+        closeButton.style.width = '16px';
+        closeButton.style.height = '16px';
+        closeButton.style.verticalAlign = 'middle';
+        closeButton.addEventListener('click', function (event) {
             event.stopPropagation();
             if (event.cancelable) {
                 event.preventDefault();
@@ -977,67 +983,67 @@
                 templateEditorTabUnloadContent(file);
             }
         });
-        header.appendChild(close_button);
+        header.appendChild(closeButton);
         headers.appendChild(header);
 
         // Create new tab body
         var bodies = document.getElementById('template_editor_tab_bodies');
         var body = document.createElement('div');
-        body.setAttribute('aria-labeledby', 't_' + file_id);
+        body.setAttribute('aria-labeledby', 't_' + fileId);
         body.setAttribute('role', 'tabpanel');
-        body.id = 'g_' + file_id;
+        body.id = 'g_' + fileId;
         body.style.display = 'none';
-        var loading_image = document.createElement('img');
-        loading_image.className = 'ajax_loading';
-        loading_image.src = $cms.img('{$IMG;,loading}');
-        loading_image.style.height = '12px';
-        body.appendChild(loading_image);
+        var loadingImage = document.createElement('img');
+        loadingImage.className = 'ajax_loading';
+        loadingImage.src = $cms.img('{$IMG;,loading}');
+        loadingImage.style.height = '12px';
+        body.appendChild(loadingImage);
         bodies.appendChild(body);
 
         // Set content
         var url = templateEditorLoadingUrl(file);
-        $cms.loadSnippet(url, null, function (ajax_result) {
-            templateEditorTabLoadedContent(ajax_result, file);
+        $cms.loadSnippet(url, null, function (ajaxResult) {
+            templateEditorTabLoadedContent(ajaxResult, file);
         });
 
         // Cleanup
         templateEditorCleanTabs();
 
         // Select tab
-        $cms.ui.selectTab('g', file_id);
+        $cms.ui.selectTab('g', fileId);
 
-        templateEditorShowTab(file_id);
+        templateEditorShowTab(fileId);
 
         function templateEditorTabUnloadContent(file) {
-            var file_id = fileToFileId(file);
-            var was_active = templateEditorRemoveTab(file_id);
+            var fileId = fileToFileId(file);
+            var wasActive = templateEditorRemoveTab(fileId);
 
             delete window.template_editor_open_files[file];
 
-            if (was_active) {
+            if (wasActive) {
                 // Select tab
                 var c = document.getElementById('template_editor_tab_headers').childNodes;
                 if (c[0] !== undefined) {
-                    var next_file_id = c[0].id.substr(2);
+                    var nextFileId = c[0].id.substr(2);
 
-                    $cms.ui.selectTab('g', next_file_id);
+                    $cms.ui.selectTab('g', nextFileId);
 
-                    templateEditorShowTab(next_file_id);
+                    templateEditorShowTab(nextFileId);
                 }
             }
 
-            function templateEditorRemoveTab(file_id) {
-                var header = document.getElementById('t_' + file_id);
+            function templateEditorRemoveTab(fileId) {
+                var header = document.getElementById('t_' + fileId);
                 if (header) {
-                    var is_active = (header.className.indexOf(' tab_active') != -1);
+                    var isActive = (header.className.indexOf(' tab_active') != -1);
 
                     header.parentNode.removeChild(header);
-                    var body = document.getElementById('g_' + file_id);
+                    var body = document.getElementById('g_' + fileId);
                     if (body) body.parentNode.removeChild(body);
 
                     templateEditorCleanTabs();
 
-                    return is_active;
+                    return isActive;
                 }
 
                 return false;
@@ -1045,7 +1051,7 @@
         }
     }
 
-    function templateEditorLoadingUrl(file, revision_id) {
+    function templateEditorLoadingUrl(file, revisionId) {
         var url = 'template_editor_load';
         url += '&file=' + encodeURIComponent(file);
         url += '&theme=' + encodeURIComponent(window.template_editor_theme);
@@ -1055,8 +1061,8 @@
         if (window.template_editor_live_preview_url !== undefined) {
             url += '&live_preview_url=' + encodeURIComponent(window.template_editor_live_preview_url);
         }
-        if (revision_id !== undefined) {
-            url += '&undo_revision=' + encodeURIComponent(revision_id);
+        if (revisionId !== undefined) {
+            url += '&undo_revision=' + encodeURIComponent(revisionId);
         }
         return url;
     }
@@ -1064,33 +1070,33 @@
     function templateEditorCleanTabs() {
         var headers = document.getElementById('template_editor_tab_headers');
         var bodies = document.getElementById('template_editor_tab_bodies');
-        var num_tabs = headers.childNodes.length;
+        var numTabs = headers.childNodes.length;
 
         var header = document.getElementById('t_default');
         var body = document.getElementById('g_default');
 
-        if (header && num_tabs > 1) {
+        if (header && numTabs > 1) {
             header.parentNode.removeChild(header);
             body.parentNode.removeChild(body);
         }
 
-        if (num_tabs == 0) {
+        if (numTabs == 0) {
             $cms.dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
             $cms.dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
         }
     }
 
-    function templateEditorTabLoadedContent(ajax_result, file) {
-        var file_id = fileToFileId(file);
+    function templateEditorTabLoadedContent(ajaxResult, file) {
+        var fileId = fileToFileId(file);
 
-        $cms.dom.html('#g_' + file_id, ajax_result.responseText);
+        $cms.dom.html('#g_' + fileId, ajaxResult.responseText);
 
         window.setTimeout(function () {
-            var textarea_id = 'e_' + file_id;
-            if (editarea_is_loaded(textarea_id)) {
-                var editor = window.ace_editors[textarea_id];
-                var editor_session = editor.getSession();
-                editor_session.on('change', function () {
+            var textareaId = 'e_' + fileId;
+            if (editarea_is_loaded(textareaId)) {
+                var editor = window.ace_editors[textareaId];
+                var editorSession = editor.getSession();
+                editorSession.on('change', function () {
                     templateEditorTabMarkChangedContent(file);
                     editor.last_change = (new Date()).getTime();
                 });
@@ -1108,29 +1114,29 @@
         function templateEditorTabMarkChangedContent(file) {
             window.template_editor_open_files[file].unsaved_changes = true;
 
-            var file_id = fileToFileId(file);
-            var ob = document.getElementById('t_' + file_id);
+            var fileId = fileToFileId(file);
+            var ob = document.getElementById('t_' + fileId);
             ob.classList.remove('file_nonchanged');
             ob.classList.add('file_changed');
         }
     }
 
-    function templateEditorShowTab(file_id) {
+    function templateEditorShowTab(fileId) {
         window.setTimeout(function () {
-            if (!document.getElementById('t_' + file_id) || document.getElementById('t_' + file_id).className.indexOf('tab_active') == -1) {
+            if (!document.getElementById('t_' + fileId) || document.getElementById('t_' + fileId).className.indexOf('tab_active') == -1) {
                 // No longer visible
                 return;
             }
 
             if (window.opener) // If anchored
-                highlightTemplate(window.opener, fileIdToFile(file_id));
+                highlightTemplate(window.opener, fileIdToFile(fileId));
 
-            $('#e_' + file_id.replace(/\./g, '\\.') + '_wrap').resizable({
+            window.jQuery('#e_' + fileId.replace(/\./g, '\\.') + '_wrap').resizable({
                 resize: function (event, ui) {
-                    var editor = window.ace_editors['e_' + file_id];
+                    var editor = window.ace_editors['e_' + fileId];
                     if (editor !== undefined) {
-                        $cms.dom.$('#e_' + file_id.replace(/\./g, '\\.') + '__ace').style.height = '100%';
-                        $cms.dom.$('#e_' + file_id.replace(/\./g, '\\.') + '__ace').parentNode.style.height = '100%';
+                        $cms.dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').style.height = '100%';
+                        $cms.dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').parentNode.style.height = '100%';
                         editor.resize();
                     }
                 },
@@ -1138,26 +1144,26 @@
             });
         }, 1000);
 
-        function fileIdToFile(file_id) {
+        function fileIdToFile(fileId) {
             for (var file in window.template_editor_open_files) {
-                if (fileToFileId(file) == file_id) return file;
+                if (fileToFileId(file) == fileId) return file;
             }
             return null;
         }
 
-        function highlightTemplate(win, template_path) {
-            _highlightTemplate(win.document.body, template_path, 0);
+        function highlightTemplate(win, templatePath) {
+            _highlightTemplate(win.document.body, templatePath, 0);
 
 
-            function _highlightTemplate(node, template_path, depth) {
+            function _highlightTemplate(node, templatePath, depth) {
                 var inside = [];
 
                 node = node.firstChild;
                 while (node) {
                     if (node.nodeType === 1) {// Element node
                         var template = node.getAttribute('data-template');
-                        var data_match = (template && template.includes(' ' + template_path + ' '));
-                        if (data_match) {
+                        var dataMatch = (template && template.includes(' ' + templatePath + ' '));
+                        if (dataMatch) {
                             node.classList.add('glowing_node');
                         } else {
                             node.classList.remove('glowing_node');
@@ -1166,7 +1172,7 @@
 
                     // Continue...
 
-                    _highlightTemplate(node, template_path, depth + 1);
+                    _highlightTemplate(node, templatePath, depth + 1);
 
                     node = node.nextSibling;
                 }

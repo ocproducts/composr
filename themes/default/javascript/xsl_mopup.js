@@ -63,16 +63,16 @@ function goDecoding() {
         return;
     }
 
-    var to_decode = document.getElementsByName('decodeable');
-    if (!( to_decode && to_decode.length )) {
+    var toDecode = document.getElementsByName('decodeable');
+    if (!( toDecode && toDecode.length )) {
         if (DEBUG) alert("No work needs doing -- no elements to decode!");
         return;
     }
 
 
     var s;
-    for (var i = to_decode.length - 1; i >= 0; i--) {
-        s = to_decode[i].textContent;
+    for (var i = toDecode.length - 1; i >= 0; i--) {
+        s = toDecode[i].textContent;
 
         if (
             s == undefined ||
@@ -80,7 +80,7 @@ function goDecoding() {
         ) {
             // the null or markupless element needs no reworking
         } else {
-            $cms.dom.html(to_decode[i], s);  // that's the magic
+            $cms.dom.html(toDecode[i], s);  // that's the magic
         }
     }
 
