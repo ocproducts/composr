@@ -269,7 +269,7 @@ class Block_main_members
             'm_profile_views' => do_lang_tempcode('PROFILE_VIEWS'),
             'random' => do_lang_tempcode('RANDOM'),
         );
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if ((strpos(get_db_type(), 'mysql') !== false) || (get_db_type() == 'postgresql')) {
             $sortables['m_total_sessions'] = do_lang_tempcode('LOGIN_FREQUENCY');
         }
         if (strpos($sort, ' ') === false) {
@@ -282,10 +282,18 @@ class Block_main_members
                 $sort = 'RAND() ASC';
                 break;
             case 'm_total_sessions ASC':
-                $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) ASC';
+                if (get_db_type() == 'postgresql') {
+                    $sort = 'm_total_sessions/extract(epoch from now()) ASC';
+                } else {
+                    $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) ASC';
+                }
                 break;
             case 'm_total_sessions DESC':
-                $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) DESC';
+                if (get_db_type() == 'postgresql') {
+                    $sort = 'm_total_sessions/extract(epoch from now()) DESC';
+                } else {
+                    $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) DESC';
+                }
                 break;
             case 'm_join_time':
             case 'm_last_visit_time':

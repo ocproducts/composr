@@ -480,7 +480,7 @@ function unparse_filtercode($parsed)
  * @param  ID_TEXT $filter_key The field to get
  * @param  string $filter_val The field value for this
  * @param  array $db_fields Database field data
- * @param  string $table_join_code What MySQL will join the table with
+ * @param  string $table_join_code What the database will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
  * @ignore
  */
@@ -528,7 +528,7 @@ function _fields_api_filtercode_named($db, $info, $catalogue_name, &$extra_join,
  * @param  ID_TEXT $filter_key The field to get
  * @param  string $filter_val The field value for this
  * @param  array $db_fields Database field data
- * @param  string $table_join_code What MySQL will join the table with
+ * @param  string $table_join_code What the database will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
  * @ignore
  */
@@ -606,7 +606,7 @@ function generate_filtercode_join_key_from_string($str)
  * @param  ID_TEXT $filter_key The field to get
  * @param  string $filter_val The field value for this
  * @param  array $db_fields Database field data
- * @param  string $table_join_code What MySQL will join the table with
+ * @param  string $table_join_code What the database will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
  * @ignore
  */
@@ -763,7 +763,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
  * @param  array $filters Parsed Filtercode structure
  * @param  ?ID_TEXT $content_type The content type (null: no function needed, direct in-table mapping always works)
  * @param  ?string $context First parameter to send to the conversion function, may mean whatever that function wants it to. If we have no conversion function, this is the name of a table to read field metadata from (null: none)
- * @param  string $table_join_code What MySQL will join the table with
+ * @param  string $table_join_code What the database will join the table with
  * @return array Tuple: array of extra select, array of extra join, string of extra where
  */
 function filtercode_to_sql($db, $filters, $content_type = null, $context = null, $table_join_code = 'r')
@@ -955,7 +955,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
                     break;
 
                 case '~':
-                    if (strlen($filter_val) > 3) { // Within MySQL filter limits
+                    if (strlen($filter_val) > get_minimum_search_length()) {
                         if ($filter_val != '') {
                             if ($alt != '') {
                                 $alt .= ' OR ';

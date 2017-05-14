@@ -320,6 +320,16 @@ class Database_super_mysql
     }
 
     /**
+     * Find whether table truncation support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function db_supports_truncate_table()
+    {
+        return true;
+    }
+
+    /**
      * Delete a table.
      *
      * @param  ID_TEXT $table The table name

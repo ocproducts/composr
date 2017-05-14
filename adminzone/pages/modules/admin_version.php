@@ -420,10 +420,8 @@ class Module_admin_version
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 13)) {
-            if (substr(get_db_type(), 0, 5) == 'mysql') {
-                $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));
-                $GLOBALS['SITE_DB']->create_index('translate', 'decache', array('text_parsed(2)'));
-            }
+            $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));
+            $GLOBALS['SITE_DB']->create_index('translate', 'decache', array('text_parsed(2)'));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from >= 10) && ($upgrade_from < 14)) {

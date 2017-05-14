@@ -36,6 +36,14 @@ class Database_Static_postgresql
      */
     public function db_default_user()
     {
+        if ((php_function_allowed('get_current_user'))) {
+            //$_ret = posix_getpwuid(posix_getuid()); $ret = $_ret['name'];
+            //$ret = posix_getlogin();
+            $ret = get_current_user();
+            if (!in_array($ret, array('apache', 'nobody', 'www', '_www'))) {
+                return $ret;
+            }
+        }
         return 'postgres';
     }
 
@@ -193,7 +201,7 @@ class Database_Static_postgresql
      */
     public function db_string_equal_to($attribute, $compare)
     {
-        return $attribute . " LIKE '" . $this->db_escape_string($compare) . "'";
+        return $attribute . "='" . $this->db_escape_string($compare) . "'";
     }
 
     /**
@@ -224,6 +232,16 @@ class Database_Static_postgresql
      * @return boolean Whether it is
      */
     public function db_uses_offset_syntax()
+    {
+        return true;
+    }
+
+    /**
+     * Find whether table truncation support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function db_supports_truncate_table()
     {
         return true;
     }

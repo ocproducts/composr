@@ -305,7 +305,7 @@ function db_has_expression_ordering($db)
 }
 
 /**
- * Find whether expression ordering support is present
+ * Whether 'OFFSET' syntax is used on limit clauses.
  *
  * @param  array $db A DB connection
  * @return boolean Whether it is
@@ -321,6 +321,25 @@ function db_uses_offset_syntax($db)
         return false;
     }
     return $GLOBALS['DB_STATIC_OBJECT']->db_uses_offset_syntax($db);
+}
+
+/**
+ * Find whether table truncation support is present
+ *
+ * @param  array $db A DB connection
+ * @return boolean Whether it is
+ */
+function db_supports_truncate_table($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_supports_truncate_table')) {
+        return false;
+    }
+    return $GLOBALS['DB_STATIC_OBJECT']->db_supports_truncate_table($db);
 }
 
 /**
@@ -1549,7 +1568,7 @@ class DatabaseConnector
     public function query_delete($table, $where_map = null, $end = '', $max = null, $start = null, $fail_ok = false)
     {
         if ($where_map === null) {
-            if (($end === '') && (is_null($max)) && (is_null($start)) && (strpos(get_db_type(), 'mysql') !== false)) {
+            if (($end === '') && (is_null($max)) && (is_null($start)) && (db_supports_truncate_table($GLOBALS['SITE_DB']->connection_read))) {
                 $this->_query('TRUNCATE ' . $this->table_prefix . $table, null, null, $fail_ok);
             } else {
                 $this->_query('DELETE FROM ' . $this->table_prefix . $table . ' ' . $end, $max, $start, $fail_ok);

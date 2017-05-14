@@ -1,0 +1,60 @@
+[title sub="Written by Chris Graham (ocProducts CEO)"]Composr Supplementary: Using PostgreSQL with Composr[/title]
+
+Composr has internal 'support' for many different databases backends and is intentionally written with simple common-denominator SQL and an abstraction API. However officially only MySQL is supported outside of a commercial relationship, due to the significant effort testing across new versions of Composr and the database software involved. Different database systems vary in all kinds of surprising and subtle ways. Inside a commercial relationship whatever extra testing and bug fixing is required will be done under that relationship, and fixes put back into the mainline version of Composr.
+
+This tutorial provides some advice targeted towards PostgreSQL (also known simply as 'Postgres'). Postgres has been tested for Composr v10.0.x under a commercial relationship.
+
+Postgres is a very high quality Open Source database backend developed by developers working for a number of different companies. It is much more sophisticated than MySQL, although it also tends to be stricter in a number of ways, more technical, and not as available on shared hosting.
+
+[title="2"]Installing Postgres[/title]
+
+You can usually install Postgres using your normal package manager. On Mac I installed using HomeBrew.
+
+[title="2"]After installing Postgres[/title]
+
+Postgres ties its own user acccounts to system accounts. On my Mac it tied it to my normal login account automatically, with a blank password. On other systems it may create a new [tt]postgres[/tt] user.
+
+To get a Postgres console if you are already logged into the same system account as the Postgres user:
+[code="Bash"]
+psql postgres
+[/code]
+or, if not you can either [tt]su[/tt]/[tt]sudo[/tt] into that user (Linux or MacOS), or be explicit:
+[code="Bash"]
+psql postgres -U <user>
+[/code]
+[tt]postgres[/tt] refers to the system database.
+
+Postgres has system commands that you execute with a leading [tt]\[/tt]. To see a list of users you can do:
+[code="Bash"]
+\du
+[/code]
+
+You can create a database using SQL:
+[code="Bash"]
+CREATE DATABASE cms;
+[/code]
+
+Obviously for a live site you should set up a dedicated Postgres user for the website with a strong password. That's outside the scope of this tutorial, but covered here:
+https://www.a2hosting.com/kb/developer-corner/postgresql/managing-postgresql-databases-and-users-from-the-command-line
+
+[title="2"]Technical information for developers[/title]
+
+The main complexities of Postgres support, for MySQL developers are:
+1) No support for prefix indexes, which is a feature of only MySQL. This means you cannot add an index for a text field without imposing a length limit. Postgres has excellent support for "calculated indexes", which MySQL does not, and which could work for a substitute for prefix indexes except you would need to code specifically to this feature when writing read queries. Therefore if you are making a Postgres site with many millions of records and are relying on querying based on the contents or prefixes of long text fields, you need to give some special consideration.
+2) You can not query an integer field using a string representation of an integer, or vice-versa.
+3) You can not directly join an integer and string field, unless you use casting. Composr's [tt]db_cast[/tt] function will help with this.
+4) The MySQL [tt]LIMIT max,start[/tt] syntax is not supported. You can do [tt]LIMIT max OFFSET start[/tt] though.
+5) You need to use Postgres string escaping, not MySQL string escaping.
+6) You have to be much more careful about aggregate functions like [tt]COUNT[/tt] or [tt]GROUP BY[/tt] or [tt]DISTINCT[/tt]. If you do a [tt]COUNT[/tt] then you are not allowed an [tt]ORDER BY[/tt] clause (you don't need one, but it's easy to add one by mistake when you are deriving a count query from your pagination query and this causes the count query to fail). If you do a [tt]GROUP BY[/tt] then you may not select anything that is not covered by the [tt]GROUP BY[/tt] clause or is itself an aggregate like [tt]COUNT[/tt] or [tt]SUM[/tt] or [tt]MAX[/tt] or [tt]MIN[/tt] -- this is because Postgres won't allow selecting an arbitrary value out of a result set for you like MySQL will. If doing a [tt]DISTINCT[/tt] query then you can only do an [tt]ORDER BY[/tt] with something that is also being [tt]SELECT[/tt]ed (because Postgres reserves the right to apply the ordering [i]after[/i] it has whittled down the result set).
+7) I haven't covered any of the cases of obvious MySQL-specific syntax or case sensitivity differences. Assume almost any kind of data function (e.g. string manipulations) is not portable, do this stuff in PHP.
+
+[title="2"]See also[/title]
+
+ - http://www.psequel.com/ (a free MacOS Postgres GUI)
+ - https://www.heidisql.com/ (a free Windows Postgres GUI)
+ - http://phppgadmin.sourceforge.net/ (a free web-based Postgres GUI)
+ - http://dbeaver.jkiss.org/ (a free cross-platform Postgres GUI)
+ - http://squirrel-sql.sourceforge.net/ (a free cross-platform Postgres GUI)
+ - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
+
+{$SET,tutorial_tags,core_database_drivers,Installation,expert}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,A guide on using PostgreSQL with Composr, and providing some information relevant to other non-MySQL backends.}[block]main_tutorial_rating[/block]

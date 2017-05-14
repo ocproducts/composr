@@ -38,6 +38,26 @@ function init__database_search()
 }
 
 /**
+ * Get minimum search length for MySQL.
+ *
+ * @return integer    Search length
+ */
+function get_minimum_search_length()
+{
+    static $min_word_length = null;
+    if (is_null($min_word_length)) {
+        $min_word_length = 4;
+        if (substr(get_db_type(), 0, 5) == 'mysql') {
+            $_min_word_length = $GLOBALS['SITE_DB']->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', null, null, true);
+            if (isset($_min_word_length[0])) {
+                $min_word_length = intval($_min_word_length[0]['Value']);
+            }
+        }
+    }
+    return $min_word_length;
+}
+
+/**
  * Get a list of MySQL stopwords.
  *
  * @return array List of stopwords (actually a map of stopword to true)
@@ -1217,7 +1237,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $query .= ')';
             // Work out COUNT(*) query using one of a few possible methods. It's not efficient and stops us doing proper merge-sorting between content types (and possible not accurate - if we use an efficient but non-deduping COUNT strategy) if we have to use this, so we only do it if there are too many rows to fetch in one go.
             $_query = '';
-            if (strpos(get_db_type(), 'mysql') === false) {
+            if (!db_has_subqueries($db->connection_read)) {
                 foreach ($where_alternative_matches as $parts) {
                     list($where_clause_2, $where_clause_3, , $_table_clause, $tid) = $parts;
 
