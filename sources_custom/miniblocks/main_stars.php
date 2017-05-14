@@ -24,7 +24,7 @@ $stars = array();
 $sql = 'SELECT gift_to,SUM(amount) as cnt FROM ' . get_table_prefix() . 'gifts g WHERE ';
 $sql .= $GLOBALS['SITE_DB']->translate_field_ref('reason') . ' LIKE \'' . db_encode_like($map['param'] . ': %') . '\' AND gift_from<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
 $sql .= ' GROUP BY gift_to ORDER BY cnt DESC';
-$gifts = $GLOBALS['SITE_DB']->query($sql, 10);
+$gifts = $GLOBALS['SITE_DB']->query($sql, 10, null, false, false, array('reason' => 'SHORT_TRANS'));
 
 if (count($gifts) == 0 && $GLOBALS['DEV_MODE']) {
     $gifts[] = array('gift_to' => 2, 'cnt' => 123);

@@ -160,6 +160,10 @@ function set_privilege_access($category_type, $category_name, $permission, $valu
 {
     require_code('database_action');
 
+    if (is_integer($category_name)) {
+        $category_name = strval($category_name);
+    }
+
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
     foreach (array_keys($groups) as $group_id) {

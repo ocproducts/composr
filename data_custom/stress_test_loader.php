@@ -65,7 +65,7 @@ function do_work()
     }
 
     $num_wanted = isset($_SERVER['argv'][1]) ? intval($_SERVER['argv'][1]) : 200;
-    $want_zones = isset($_SERVER['argv'][2]) ? (in_array('zones', explode(',', $_SERVER['argv'][2])));
+    $want_zones = isset($_SERVER['argv'][2]) ? (in_array('zones', explode(',', $_SERVER['argv'][2]))) : false;
 
     require_code('config2');
     set_option('post_read_history_days', '0'); // Needed for a little sanity in recent post retrieval
@@ -418,7 +418,7 @@ function do_work()
     require_code('tickets');
     require_code('tickets2');
     for ($i = intval(floatval($GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)')) / 2.0); $i < $num_wanted; $i++) {
-        ticket_add_post(mt_rand(db_get_first_id(), $num_wanted - 1), uniqid('', true), db_get_first_id(), random_line(), random_text(), '', false);
+        ticket_add_post(mt_rand(db_get_first_id(), $num_wanted - 1), strval(get_member()) . '_' . uniqid('', true), db_get_first_id(), random_line(), random_text(), '', false);
     }
     echo 'done tickets stuff' . "\n";
 

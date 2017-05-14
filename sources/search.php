@@ -263,7 +263,7 @@ abstract class FieldsSearchHook
             return;
         }
 
-        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=r.id AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
+        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=' . db_cast('r.id', 'CHAR') . ' AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entries ce ON ce.id=l.catalogue_entry_id';
 
         list($sup_table, $sup_where_clause, $sup_trans_fields, $sup_nontrans_fields) = $advanced;

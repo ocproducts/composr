@@ -1457,7 +1457,7 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box, .right .box, .left .box {
+td>.box, .right .box:first-child:last-child, .left .box:first-child:last-child {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -3420,6 +3420,7 @@ div.proceed_button_left_2 {
 }
 
 .shunted_button {
+	clear: {!en_right};
 	text-align: {!en_right};
 }
 

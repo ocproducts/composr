@@ -3033,6 +3033,7 @@ function titleify($boring)
     if (strpos($ret, 'Captcha') !== false) {
         $ret = str_replace('Captcha', addon_installed('captcha') ? do_lang('captcha:CAPTCHA') : 'CAPTCHA', $ret);
     }
+    $ret = str_replace('Adminzone', do_lang('ADMIN_ZONE'), $ret);
     $ret = str_replace('Emails', do_lang('EMAILS'), $ret);
     $ret = str_replace('Phpinfo', 'PHP-Info', $ret);
     $ret = str_replace('CNS', 'Conversr', $ret);
