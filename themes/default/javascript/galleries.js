@@ -411,10 +411,6 @@
                 }
 
                 window.slideshow_current_position = slide;
-
-                if (window.show_slide_callback !== undefined) {
-                    show_slide_callback();
-                }
             }
 
             fadeElements = document.body.querySelectorAll('.scale_down');

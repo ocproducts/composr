@@ -8,7 +8,9 @@
 function translate(name, old, langFrom, langTo) {
     var apiKey = '{$VALUE_OPTION;,google_translate_api_key}';
 
-    if (langFrom == langTo) langFrom = 'EN';
+    if (langFrom == langTo) {
+        langFrom = 'EN';
+    }
 
     if (!apiKey) {
         $cms.toggleableTray($cms.dom.$('#rexp_' + name));

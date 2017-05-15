@@ -128,15 +128,15 @@
                 }
             }
 
-            function copyPermissionsFunction(to_row, from_row) {
+            function copyPermissionsFunction(toRow, fromRow) {
                 return function () {
-                    var inputsTo = to_row.getElementsByTagName('input');
-                    var inputsFrom = from_row.getElementsByTagName('input');
+                    var inputsTo = toRow.getElementsByTagName('input');
+                    var inputsFrom = fromRow.getElementsByTagName('input');
                     for (var i = 0; i < inputsTo.length; i++) {
                         inputsTo[i].checked = inputsFrom[i].checked;
                     }
-                    var selectsTo = to_row.getElementsByTagName('select');
-                    var selectsFrom = from_row.getElementsByTagName('select');
+                    var selectsTo = toRow.getElementsByTagName('select');
+                    var selectsFrom = fromRow.getElementsByTagName('select');
                     for (var i = 0; i < selectsTo.length; i++) {
                         while (selectsTo[i].options.length > 0) {
                             selectsTo[i].remove(0);
@@ -1187,7 +1187,7 @@
     };
 
     /* Set up a word count for a form field */
-    function setupWordCounter(post, count_element) {
+    function setupWordCounter(post, countElement) {
         window.setInterval(function () {
             if ($cms.form.isWysiwygField(post)) {
                 try {
@@ -1195,7 +1195,7 @@
                     var matches = textValue.replace(/<[^<|>]+?>|&nbsp;/gi, ' ').match(/\b/g);
                     var count = 0;
                     if (matches) count = matches.length / 2;
-                    $cms.dom.html(count_element, '{!WORDS;^}'.replace('\\{1\\}', count));
+                    $cms.dom.html(countElement, '{!WORDS;^}'.replace('\\{1\\}', count));
                 }
                 catch (e) {
                 }

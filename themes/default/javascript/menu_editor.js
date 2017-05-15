@@ -4,23 +4,7 @@
 // MENU FUNCTIONS
 // ==============
 
-function makeFieldSelected(el) {
-    if (el.classList.contains('menu_editor_selected_field')) {
-        return;
-    }
 
-    el.classList.add('menu_editor_selected_field');
-
-    var changed = false;
-    for (var i = 0; i < el.form.elements.length; i++) {
-        if ((el.form.elements[i].classList.contains('menu_editor_selected_field')) && (el.form.elements[i] !== el)) {
-            el.form.elements[i].classList.remove('menu_editor_selected_field');
-            changed = true;
-        }
-    }
-
-    copyFieldsIntoBottom(el.id.substr(8), changed);
-}
 
 function copyFieldsIntoBottom(i, changed) {
     window.current_selection = i;
@@ -107,23 +91,6 @@ function copyFieldsIntoBottom(i, changed) {
     }
 }
 
-function menuEditorHandleKeypress(e) {
-    var t = e.target;
-
-    var up = (e.keyCode ? e.keyCode : e.charCode) == 38;
-    var down = (e.keyCode ? e.keyCode : e.charCode) == 40;
-
-    handleOrdering(t, up, down);
-}
-
-function branchDepth(branch) {
-    if (branch.parentNode) {
-        return branchDepth(branch.parentNode) + 1;
-    }
-
-    return 0;
-}
-
 function existsChild(elements, parent) {
     for (var i = 0; i < elements.length; i++) {
         if ((elements[i].name.substr(0, 7) === 'parent_') && (elements[i].value == parent)) {
@@ -132,94 +99,6 @@ function existsChild(elements, parent) {
     }
 
     return false;
-}
-
-function isChild(elements, possibleParent, possibleChild) {
-    for (var i = 0; i < elements.length; i++) {
-        if ((elements[i].name.substr(7) == possibleChild) && (elements[i].name.substr(0, 7) == 'parent_')) {
-            if (elements[i].value == possibleParent) {
-                return true;
-            }
-
-            return isChild(elements, possibleParent, elements[i].value);
-        }
-    }
-
-    return false;
-}
-
-function handleOrdering(el, up, down) {
-    if (up || down) {
-        var form = $cms.dom.$('#edit_form');
-
-        // Find the num
-        var index = el.id.substring(el.id.indexOf('_') + 1, el.id.length);
-        var num = window.parseInt(form.elements['order_' + index].value) || 0;
-
-        // Find the parent
-        var parentNum = $cms.dom.$('#parent_' + index).value;
-
-        var i, b, bindex;
-        var best = -1, bestindex = -1;
-    }
-
-    if (up) {// Up
-        // Find previous branch with same parent (if exists)
-        for (i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
-                bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
-                b = window.parseInt(form.elements['order_' + bindex].value) || 0;
-                if ((b < num) && (b > best)) {
-                    best = b;
-                    bestindex = bindex;
-                }
-            }
-        }
-    }
-
-    if (down) {// Down
-        // Find next branch with same parent (if exists)
-        for (i = 0; i < form.elements.length; i++) {
-            if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
-                bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
-                b = window.parseInt(form.elements['order_' + bindex].value);
-                if ((b > num) && ((b < best) || (best == -1))) {
-                    best = b;
-                    bestindex = bindex;
-                }
-            }
-        }
-    }
-
-    if (up || down) {
-        var elements = form.querySelectorAll('input');
-        for (i = 0; i < elements.length; i++) {
-            if (elements[i].name == 'parent_' + index) {// Found our spot
-
-                var us = elements[i];
-                for (b = up ? (i - 1) : (i + 1); up ? (b > 0) : (b < elements.length); up ? b-- : b++) {
-                    if ((!isChild(elements, index, elements[b].name.substr(7))) && (elements[b].name.startsWith('parent_') && ((up) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex == 0) || (!existsChild(elements, elements[b].name.substr(7)))))) {
-                        var target = elements[b];
-                        var main = us.parentNode.parentNode;
-                        var place = target.parentNode.parentNode;
-                        if (((up) && (branchDepth(target) <= branchDepth(us))) || ((down) && (branchDepth(target) != branchDepth(us)))) {
-                            main.parentNode.removeChild(main);
-                            place.parentNode.insertBefore(main, place);
-                        } else {
-                            main.parentNode.removeChild(main);
-                            if (!place.nextSibling) {
-                                place.parentNode.appendChild(main);
-                            } else {
-                                place.parentNode.insertBefore(main, place.nextSibling);
-                            }
-                        }
-                        us.value = target.value;
-                        return;
-                    }
-                }
-            }
-        }
-    }
 }
 
 

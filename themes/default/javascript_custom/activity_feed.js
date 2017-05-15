@@ -12,12 +12,6 @@
                 $cms.executeJsFunctionCalls(syndication.syndicationJavascriptFunctionCalls);
             }
         }
-
-        //$syndications[$hook] = array(
-        //    'SYNDICATION_IS_SET' => $ob->auth_is_set($member_id_of),
-        //    'SYNDICATION_SERVICE_NAME' => $ob->get_service_name(),
-        //    'SYNDICATION_JAVASCRIPT_FUNCTION_CALLS' => method_exists($ob, 'syndication_javascript_function_calls') ? $ob->syndication_javascript_function_calls() : ''
-        //);
     };
 
     $cms.templates.activity = function activity(params, container) {

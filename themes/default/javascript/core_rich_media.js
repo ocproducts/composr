@@ -108,7 +108,6 @@
         },
 
         carouselMove: function (amount) {
-
             amount = +amount;
 
             if (amount > 0) {
@@ -412,15 +411,15 @@
         });
 
         window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
-        function rebuildAttachmentButtonForNext(posting_field_name, attachment_upload_button) {
-            if (posting_field_name !== params.postingFieldName) {
+        function rebuildAttachmentButtonForNext(postingFieldName, attachmentUploadButton) {
+            if (postingFieldName !== params.postingFieldName) {
                 return false;
             }
 
-            if (attachment_upload_button === undefined) {
-                attachment_upload_button = window.attachment_upload_button; // Use what was used last time
+            if (attachmentUploadButton === undefined) {
+                attachmentUploadButton = window.attachment_upload_button; // Use what was used last time
             }
-            window.attachment_upload_button = attachment_upload_button;
+            window.attachment_upload_button = attachmentUploadButton;
 
             $cms.requireJavascript('plupload').then(function () {
                 prepareSimplifiedFileInput('attachment_multi', 'file' + window.num_attachments, null, params.postingFieldName, strVal(params.filter), window.attachment_upload_button);
@@ -934,7 +933,7 @@
     }
 
     function flipPage(to, passId, sections) {
-        var i, current_pos = 0, section;
+        var i, currentPos = 0, section;
 
         if (window['big_tabs_auto_cycler_' + passId]) {
             window.clearTimeout(window['big_tabs_auto_cycler_' + passId]);
@@ -946,17 +945,17 @@
                 section = document.getElementById(passId + '_section_' + sections[i]);
                 if (section) {
                     if ((section.style.display === 'block') && (section.style.position !== 'absolute')) {
-                        current_pos = i;
+                        currentPos = i;
                         break;
                     }
                 }
             }
 
-            current_pos += to;
+            currentPos += to;
         } else {
             for (i = 0; i < sections.length; i++) {
                 if (sections[i] == to) {
-                    current_pos = i;
+                    currentPos = i;
                     break;
                 }
             }
@@ -966,19 +965,19 @@
         var x;
         x = document.getElementById(passId + '_has_next_yes');
         if (x) {
-            x.style.display = (current_pos == sections.length - 1) ? 'none' : 'inline-block';
+            x.style.display = (currentPos == sections.length - 1) ? 'none' : 'inline-block';
         }
         x = document.getElementById(passId + '_has_next_no');
         if (x) {
-            x.style.display = (current_pos == sections.length - 1) ? 'inline-block' : 'none';
+            x.style.display = (currentPos == sections.length - 1) ? 'inline-block' : 'none';
         }
         x = document.getElementById(passId + '_has_previous_yes');
         if (x) {
-            x.style.display = (current_pos == 0) ? 'none' : 'inline-block';
+            x.style.display = (currentPos == 0) ? 'none' : 'inline-block';
         }
         x = document.getElementById(passId + '_has_previous_no');
         if (x) {
-            x.style.display = (current_pos == 0) ? 'inline-block' : 'none';
+            x.style.display = (currentPos == 0) ? 'inline-block' : 'none';
         }
 
         // We make our forthcoming one instantly visible to stop Google Chrome possibly scrolling up if there is a tiny time interval when none are visible
@@ -988,24 +987,24 @@
         for (i = 0; i < sections.length; i++) {
             x = document.getElementById(passId + '_goto_' + sections[i]);
             if (x) {
-                x.style.display = (i == current_pos) ? 'none' : 'inline-block';
+                x.style.display = (i == currentPos) ? 'none' : 'inline-block';
             }
             x = document.getElementById(passId + '_btgoto_' + sections[i]);
             if (x) {
-                x.classList.toggle('big_tab_active', (i == current_pos));
-                x.classList.toggle('big_tab_inactive', (i != current_pos));
+                x.classList.toggle('big_tab_active', (i == currentPos));
+                x.classList.toggle('big_tab_inactive', (i != currentPos));
             }
             x = document.getElementById(passId + '_isat_' + sections[i]);
             if (x) {
-                x.style.display = (i == current_pos) ? 'inline-block' : 'none';
+                x.style.display = (i == currentPos) ? 'inline-block' : 'none';
             }
             x = document.getElementById(passId + '_section_' + sections[i]);
-            var currentPlace = document.getElementById(passId + '_section_' + sections[current_pos]);
+            var currentPlace = document.getElementById(passId + '_section_' + sections[currentPos]);
             //var width=current_place?'100%':null;
             var width = currentPlace ? $cms.dom.contentWidth(currentPlace) : null;
             if (x) {
                 if (x.className === 'comcode_big_tab') {
-                    if (i == current_pos) {
+                    if (i == currentPos) {
                         $cms.dom.clearTransition(x);
                         x.style.width = '';
                         x.style.position = 'static';
@@ -1030,9 +1029,9 @@
                     x.style.display = 'block';
                     //x.style.width=width+'px';
                 } else {
-                    x.style.display = (i == current_pos) ? 'block' : 'none';
+                    x.style.display = (i == currentPos) ? 'block' : 'none';
 
-                    if (i == current_pos) {
+                    if (i == currentPos) {
                         $cms.dom.clearTransitionAndSetOpacity(x, 0.0);
                         $cms.dom.fadeTransition(x, 100, 30, 4);
                     }
@@ -1142,10 +1141,10 @@
             return;
         }
 
-        var e, i, s_width, biasx, biasy;
+        var e, i, sWidth, biasx, biasy;
         for (i = 0; i < window.crazy_criters.length; i++) {
             e = document.getElementById(window.crazy_criters[i]);
-            s_width = e.clientWidth;
+            sWidth = e.clientWidth;
 
             biasx = window.mouse_x - e.offsetLeft;
             if (biasx > 0) {
@@ -1169,8 +1168,8 @@
                 biasy = 0;
             }
 
-            if (s_width < 100) {
-                e.style.width = (s_width + 1) + 'px';
+            if (sWidth < 100) {
+                e.style.width = (sWidth + 1) + 'px';
             }
 
             e.style.left = (e.offsetLeft + (Math.random() * 2 - 1 + biasx) * 30) + 'px';

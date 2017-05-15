@@ -217,8 +217,8 @@
             submitCustomTask(form);
         });
 
-        function setTaskHiding(hide_enable) {
-            hide_enable = !!hide_enable;
+        function setTaskHiding(hideEnable) {
+            hideEnable = !!hideEnable;
 
             new Image().src = $IMG_checklist_cross2;
             new Image().src = $IMG_checklist_toggleicon2;
@@ -227,7 +227,7 @@
 
             for (i = 0; i < checklistRows.length; i++) {
                 rowImgs = checklistRows[i].getElementsByTagName('img');
-                if (hide_enable) {
+                if (hideEnable) {
                     src = rowImgs[rowImgs.length - 1].getAttribute('src');
                     if (rowImgs[rowImgs.length - 1].origsrc) {
                         src = rowImgs[rowImgs.length - 1].origsrc;
@@ -248,8 +248,8 @@
                 }
             }
 
-            $cms.dom.toggle(showAllLink, hide_enable);
-            $cms.dom.toggle(hideDoneLink, !hide_enable);
+            $cms.dom.toggle(showAllLink, hideEnable);
+            $cms.dom.toggle(hideDoneLink, !hideEnable);
         }
 
         function submitCustomTask(form) {

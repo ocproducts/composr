@@ -210,11 +210,11 @@
 
     /**
      * @memberof $cms.form
-     * @param the_element
+     * @param theElement
      * @returns {*|boolean}
      */
-    $cms.form.isWysiwygField = function isWysiwygField(the_element) {
-        var id = the_element.id;
+    $cms.form.isWysiwygField = function isWysiwygField(theElement) {
+        var id = theElement.id;
         return window.wysiwyg_editors && (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
     };
 

@@ -315,8 +315,7 @@
                 if (dieOnLost === undefined) dieOnLost = false;
                 if (becomeAutonomousOnLost === undefined) becomeAutonomousOnLost = false;
 
-                if (becomeAutonomousOnLost) // Becoming autonomous means allowing to work with a master window
-                {
+                if (becomeAutonomousOnLost) {// Becoming autonomous means allowing to work with a master window
                     chatWindowBecomeAutonomous();
                 } else if (dieOnLost) {
                     window.is_shutdown = true;
@@ -1034,8 +1033,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 }
                 flashableAlert = true;
             }
-        } else if (messages[i].nodeName == 'chat_tracking') // TRACKING
-        {
+        } else if (messages[i].nodeName == 'chat_tracking') {// TRACKING
             window.top_window.last_message_id = messages[i].getAttribute('last_msg');
             window.top_window.last_event_id = messages[i].getAttribute('last_event');
         }
@@ -1063,13 +1061,13 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 }
             }
         } else {
-            if (window.getAttention !== undefined) window.getAttention();
+            if (window.getAttention !== undefined) {
+                window.getAttention();
+            }
             if (window.focus !== undefined) {
                 try {
                     window.focus();
-                }
-                catch (e) {
-                }
+                } catch (e) {}
             }
             var post = document.getElementById('post');
             if (post && post.name == 'message'/*The chat posting field is named message and IDd post*/) {
@@ -1103,7 +1101,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             newParticipantInner = newParticipantInner.replace(/\_\_id\_\_/g, memberId);
             newParticipantInner = newParticipantInner.replace(/\_\_room\_id\_\_/g, roomId);
             newParticipantInner = newParticipantInner.replace(/\_\_avatar\_url\_\_/g, avatarUrl);
-            if (avatarUrl == '') newParticipantInner = newParticipantInner.replace('style="display: block" id="avatar__', 'style="display: none" id="avatar__');
+            if (avatarUrl == '') {
+                newParticipantInner = newParticipantInner.replace('style="display: block" id="avatar__', 'style="display: none" id="avatar__');
+            }
             newParticipantInner = newParticipantInner.replace(/\_\_online\_\_/g, away ? '{!INACTIVE;^}' : '{!ACTIVE;^}');
             $cms.dom.html(newParticipant, newParticipantInner);
             newParticipant.setAttribute('id', 'participant__' + roomId + '__' + memberId);
@@ -1112,10 +1112,13 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             {
                 var pList = $cms.dom.html(element).toLowerCase();
 
-                if ((pList.indexOf('<em class="none">') != -1) || (pList.indexOf('<em class="loading">') != -1))
+                if ((pList.indexOf('<em class="none">') != -1) || (pList.indexOf('<em class="loading">') != -1)) {
                     $cms.dom.html(element, '');
+                }
                 element.appendChild(newParticipant);
-                if (doc.getElementById('friend_img_' + memberId)) doc.getElementById('friend__' + memberId).style.display = 'none';
+                if (doc.getElementById('friend_img_' + memberId)) {
+                    doc.getElementById('friend__' + memberId).style.display = 'none';
+                }
             }
         }, 0);
     }

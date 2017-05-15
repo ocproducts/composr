@@ -109,21 +109,21 @@
         var form = document.getElementById('post').form;
         form.addEventListener('submit', function () {
             var post = form.elements['post'],
-                text_value;
+                textValue;
 
             if ($cms.form.isWysiwygField(post)) {
                 try {
 
-                    text_value = window.CKEDITOR.instances['post'].getData();
+                    textValue = window.CKEDITOR.instances['post'].getData();
                 } catch (ignore) { }
             } else {
                 if (!post.value && post[1]) {
                     post = post[1];
                 }
-                text_value = post.value;
+                textValue = post.value;
             }
 
-            if (text_value.length > size) {
+            if (textValue.length > size) {
                 $cms.ui.alert('{!POST_TOO_LONG;}');
                 return false;
             }

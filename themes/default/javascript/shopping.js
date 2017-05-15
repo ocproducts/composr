@@ -50,8 +50,8 @@
             $cms.form.doFormSubmit(btn.form, e);
         });
 
-        function updateCart(pro_ids) {
-            var proIdsArray = pro_ids.split(',');
+        function updateCart(proIds) {
+            var proIdsArray = proIds.split(',');
 
             var tot = proIdsArray.length;
 
@@ -67,11 +67,11 @@
             }
         }
 
-        function confirmEmpty(message, action_url, form) {
+        function confirmEmpty(message, actionUrl, form) {
             $cms.ui.confirm(
                 message,
                 function () {
-                    form.action = action_url;
+                    form.action = actionUrl;
                     form.submit();
                 }
             );
@@ -136,9 +136,9 @@
     };
 
     window.checkout = checkout;
-    function checkout(form_name, checkout_url) {
-        var form = document.getElementById(form_name);
-        form.action = checkout_url;
+    function checkout(formName, checkoutUrl) {
+        var form = document.getElementById(formName);
+        form.action = checkoutUrl;
         form.submit();
         return true;
     }

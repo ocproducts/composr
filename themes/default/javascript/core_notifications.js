@@ -34,10 +34,10 @@
     $cms.templates.notificationPoller = function notificationPoller(params) {
         notificationPollerInit(params.timestamp);
 
-        function notificationPollerInit(time_barrier) {
+        function notificationPollerInit(timeBarrier) {
             $cms.requireJavascript('sound');
 
-            window.notifications_time_barrier = time_barrier;
+            window.notifications_time_barrier = timeBarrier;
 
             window.setInterval(window.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
 

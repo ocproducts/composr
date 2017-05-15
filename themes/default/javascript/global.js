@@ -3872,24 +3872,36 @@
 
     /**
      * @memberof $cms.dom
+     * @method
+     * @param el
+     * @param html
      * @returns { Promise }
      */
     $cms.dom.after = createInsertionFunction('after');
 
     /**
      * @memberof $cms.dom
+     * @method
+     * @param el
+     * @param html
      * @returns { Promise }
      */
     $cms.dom.prepend = createInsertionFunction('prepend');
 
     /**
      * @memberof $cms.dom
+     * @method
+     * @param el
+     * @param html
      * @returns { Promise }
      */
     $cms.dom.before = createInsertionFunction('before');
 
     /**
      * @memberof $cms.dom
+     * @method
+     * @param el
+     * @param html
      * @returns { Promise }
      */
     $cms.dom.append = createInsertionFunction('append');
@@ -4456,10 +4468,10 @@
     /**
      * @memberof $cms.dom
      * @deprecated
-     * @param and_subframes
+     * @param andSubframes
      */
-    $cms.dom.triggerResize = function triggerResize(and_subframes) {
-        and_subframes = !!and_subframes;
+    $cms.dom.triggerResize = function triggerResize(andSubframes) {
+        andSubframes = !!andSubframes;
 
         if (!window.parent || !window.parent.document) {
             return;
@@ -4475,7 +4487,7 @@
             }
         }
 
-        if (and_subframes) {
+        if (andSubframes) {
             iframes = document.querySelectorAll('iframe');
             for (i = 0; i < iframes.length; i++) {
                 if ((iframes[i].name != '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
@@ -4722,14 +4734,14 @@
      * @param append
      * @param callback
      * @param scrollToTopOfWrapper
-     * @param post_params
+     * @param postParams
      * @param inner
      * @param showLoadingAnimation
      * @returns {boolean}
      */
-    function callBlock(url, newBlockParams, targetDiv, append, callback, scrollToTopOfWrapper, post_params, inner, showLoadingAnimation) {
+    function callBlock(url, newBlockParams, targetDiv, append, callback, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
         scrollToTopOfWrapper = !!scrollToTopOfWrapper;
-        post_params = (post_params !== undefined) ? post_params : null;
+        postParams = (postParams !== undefined) ? postParams : null;
         inner = !!inner;
         showLoadingAnimation = (showLoadingAnimation !== undefined) ? !!showLoadingAnimation : true;
         if ((_blockDataCache[url] === undefined) && (newBlockParams != '')) {
@@ -4743,7 +4755,7 @@
         }
 
         ajaxUrl += '&utheme=' + $cms.$THEME();
-        if ((_blockDataCache[ajaxUrl] !== undefined) && post_params == null) {
+        if ((_blockDataCache[ajaxUrl] !== undefined) && postParams == null) {
             // Show results from cache
             showBlockHtml(_blockDataCache[ajaxUrl], targetDiv, append, inner);
             if (callback) {
@@ -4798,7 +4810,7 @@
             function (rawAjaxResult) { // Show results when available
                 _callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, callback, scrollToTopOfWrapper, inner);
             },
-            post_params
+            postParams
         );
 
         return false;
@@ -4849,11 +4861,11 @@
     /**
      * Dynamic inclusion
      * @memberof $cms
-     * @param snippet_hook
+     * @param snippetHook
      * @param post
      * @param callback
      */
-    function loadSnippet(snippet_hook, post, callback) {
+    function loadSnippet(snippetHook, post, callback) {
         if (!window.location) { // In middle of page navigation away
             return null;
         }
@@ -4870,7 +4882,7 @@
         if (!url) {
             url = window.location.href;
         }
-        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
+        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
             html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), callback, post);
 
         if (callback) {
@@ -5908,18 +5920,18 @@
      * @memberof $cms.ui
      * @param modal
      * @param img
-     * @param has_full_button
-     * @param is_video
+     * @param hasFullButton
+     * @param isVideo
      */
-    $cms.ui.resizeLightboxDimensionsImg = function resizeLightboxDimensionsImg(modal, img, has_full_button, is_video) {
+    $cms.ui.resizeLightboxDimensionsImg = function resizeLightboxDimensionsImg(modal, img, hasFullButton, isVideo) {
         if (!modal.boxWrapperEl) {
             /* Overlay closed already */
             return;
         }
 
-        var realWidth = is_video ? img.videoWidth : img.width,
+        var realWidth = isVideo ? img.videoWidth : img.width,
             width = realWidth,
-            realHeight = is_video ? img.videoHeight : img.height,
+            realHeight = isVideo ? img.videoHeight : img.height,
             height = realHeight,
             lightboxImage = modal.top_window.$cms.dom.$id('lightbox_image'),
             lightboxMeta = modal.top_window.$cms.dom.$id('lightbox_meta'),
@@ -5944,14 +5956,14 @@
         function dimsFunc() {
             lightboxDescription.style.display = (lightboxDescription.firstChild) ? 'inline' : 'none';
             if (lightboxFullLink) {
-                var showLightboxFullLink = !!(!is_video && has_full_button && ((realWidth > maxWidth) || (realHeight > maxHeight)));
+                var showLightboxFullLink = !!(!isVideo && hasFullButton && ((realWidth > maxWidth) || (realHeight > maxHeight)));
                 $cms.dom.toggle(lightboxFullLink, showLightboxFullLink);
             }
             var showLightboxMeta = !!((lightboxDescription.style.display === 'inline') || (lightboxPositionInSet !== null) || (lightboxFullLink && lightboxFullLink.style.display === 'inline'));
             $cms.dom.toggle(lightboxMeta, showLightboxMeta);
 
             // Might need to rescale using some maths, if natural size is too big
-            var maxDims = _getMaxLightboxImgDims(modal, has_full_button),
+            var maxDims = _getMaxLightboxImgDims(modal, hasFullButton),
                 maxWidth = maxDims[0],
                 maxHeight = maxDims[1];
 
@@ -5978,11 +5990,11 @@
                 img.parentElement.parentElement.parentElement.style.height = 'auto';
             }
 
-            function _getMaxLightboxImgDims(modal, has_full_button) {
+            function _getMaxLightboxImgDims(modal, hasFullButton) {
                 var maxWidth = modal.top_window.$cms.dom.getWindowWidth() - 20,
                     maxHeight = modal.top_window.$cms.dom.getWindowHeight() - 60;
 
-                if (has_full_button) {
+                if (hasFullButton) {
                     maxHeight -= 120;
                 }
 
@@ -7892,7 +7904,7 @@
                 // Prevent form submission for forms with a placeholder action
                 'submit form[action$="#!"]': 'preventDefault',
                 // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
-                'submit [data-click-pd]': 'clickPreventDefault',
+                'click [data-click-pd]': 'clickPreventDefault',
                 'submit [data-submit-pd]': 'submitPreventDefault',
 
                 // Simulated href for non <a> elements

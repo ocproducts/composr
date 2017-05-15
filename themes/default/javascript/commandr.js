@@ -141,7 +141,7 @@ function commandrFormSubmission(command, form) {
  }
 
 // Deal with the response to a command
-function commandrCommandResponse(ajax_result_frame, ajaxResult) {
+function commandrCommandResponse(ajaxResultFrame, ajaxResult) {
     if (window.disable_timeout) {
         window.clearTimeout(window.disable_timeout);
         window.disable_timeout = null;

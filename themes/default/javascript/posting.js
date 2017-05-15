@@ -35,8 +35,8 @@ function addAttachment(startNum, postingFieldName) {
     $cms.dom.triggerResize();
 }
 
-function attachmentPresent(post_value, number) {
-    return !(post_value.indexOf('[attachment]new_' + number + '[/attachment]') == -1) && (post_value.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') == -1) && (post_value.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') == -1) && (post_value.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') == -1) && (post_value.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') == -1) && (post_value.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') == -1);
+function attachmentPresent(postValue, number) {
+    return !(postValue.indexOf('[attachment]new_' + number + '[/attachment]') == -1) && (postValue.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') == -1) && (postValue.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') == -1) && (postValue.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') == -1) && (postValue.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') == -1) && (postValue.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') == -1);
 }
 
 function setAttachment(fieldName, number, filename, multi, uploaderSettings) {

@@ -13171,24 +13171,24 @@ function beginFormUploading(e, ob, recurse) {
     return false;
 }
 
-function submitFormWithTheUpload(btn_submit) {
-    if (btn_submit.form.target == 'preview_iframe') {
+function submitFormWithTheUpload(btnSubmit) {
+    if (btnSubmit.form.target == 'preview_iframe') {
         $cms.dom.illustrateFrameLoad('preview_iframe');
     }
-    btn_submit.form.submit();
+    btnSubmit.form.submit();
 }
 
-function dispatchForPageType(page_type, name, file_name, posting_field_name, num_files) {
-    posting_field_name || (posting_field_name = 'post');
+function dispatchForPageType(pageType, name, fileName, postingFieldName, numFiles) {
+    postingFieldName || (postingFieldName = 'post');
 
-    if (page_type.includes('attachment')) {
-        var multi = ((page_type.includes('_multi')) && (num_files > 1));
+    if (pageType.includes('attachment')) {
+        var multi = ((pageType.includes('_multi')) && (numFiles > 1));
 
         var element = document.getElementById(name);
         if (element) {
             if ( element.determined_attachment_properties == undefined) {
                 var currentNum = name.replace('file', '');
-                setAttachment(posting_field_name, currentNum, file_name, multi, element.plupload_object.settings);
+                setAttachment(postingFieldName, currentNum, fileName, multi, element.plupload_object.settings);
                 element.onchange = null;
                 if (multi) {
                     element.determined_attachment_properties = true;
@@ -13198,7 +13198,7 @@ function dispatchForPageType(page_type, name, file_name, posting_field_name, num
             element = document.getElementById('hidFileID_' + name);
             if ( element.determined_attachment_properties == undefined) {
                 var currentNum = name.replace('file', '');
-                setAttachment(posting_field_name, currentNum, file_name, multi, element.plupload_object.settings);
+                setAttachment(postingFieldName, currentNum, fileName, multi, element.plupload_object.settings);
                 if (multi) {
                     element.determined_attachment_properties = true;
                 }
@@ -13428,7 +13428,7 @@ function preinitFileInput(pageType, name, _btnSubmitId, postingFieldName, filter
     replaceFileInput(pageType, name, _btnSubmitId, postingFieldName, filter, buttonType);
 }
 
-function replaceFileInput(pageType, name, _btnSubmitId, postingFieldName, filter, button_type) {
+function replaceFileInput(pageType, name, _btnSubmitId, postingFieldName, filter, buttonType) {
     if (!$cms.$CONFIG_OPTION('complex_uploader')) {
         return;
     }
@@ -13442,8 +13442,8 @@ function replaceFileInput(pageType, name, _btnSubmitId, postingFieldName, filter
         rep.disabled = false;
     }
 
-    if (button_type === undefined) {
-        button_type = 'button_micro';
+    if (buttonType === undefined) {
+        buttonType = 'button_micro';
     }
 
     // Mark so we don't do more than once
@@ -13480,7 +13480,7 @@ function replaceFileInput(pageType, name, _btnSubmitId, postingFieldName, filter
     var uploadButton = document.createElement('input');
     uploadButton.type = 'button';
     uploadButton.value = '{!BROWSE;^}';
-    uploadButton.className = 'buttons__upload ' + button_type;
+    uploadButton.className = 'buttons__upload ' + buttonType;
     uploadButton.id = 'uploadButton_' + name;
     uploadButton.onclick = function () {
         return false;
@@ -13530,7 +13530,7 @@ function replaceFileInput(pageType, name, _btnSubmitId, postingFieldName, filter
     var newClearBtn = document.createElement('input');
     newClearBtn.id = 'fsClear_' + name;
     newClearBtn.type = 'button';
-    newClearBtn.className = 'buttons__clear ' + button_type + ' clear_button';
+    newClearBtn.className = 'buttons__clear ' + buttonType + ' clear_button';
     newClearBtn.alt = '{!CLEAR;^}';
     newClearBtn.value = '{!CLEAR;^}';
     subDiv.appendChild(newClearBtn);

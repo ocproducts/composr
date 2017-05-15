@@ -110,13 +110,13 @@
              }*/
         }
 
-        function addDataPoint(data_point,bounds,markers,info_window,map) {
-            var latLng = new google.maps.LatLng(data_point[1], data_point[2]);
+        function addDataPoint(dataPoint,bounds,markers,infoWindow,map) {
+            var latLng = new google.maps.LatLng(dataPoint[1], dataPoint[2]);
             bounds.extend(latLng);
 
             var markerOptions = {
                 position: latLng,
-                title: usernamePrefix + data_point[0]
+                title: usernamePrefix + dataPoint[0]
             };
 
             /*{$,Reenable if you have put appropriate images in place
@@ -139,12 +139,12 @@
                     $cms.doAjaxRequest($cms.$BASE_URL() + '/data_custom/get_member_tooltip.php?member=' + argMember + $cms.keepStub(), function (reply) {
                         var content = reply.querySelector('result').firstChild.nodeValue;
                         if (content != '') {
-                            info_window.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
-                            info_window.open(map, argMarker);
+                            infoWindow.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
+                            infoWindow.open(map, argMarker);
                         }
                     });
                 };
-            })(marker, data_point[0])); //{$,These are the args passed to the dynamic function above.}
+            })(marker, dataPoint[0])); //{$,These are the args passed to the dynamic function above.}
         }
     };
 

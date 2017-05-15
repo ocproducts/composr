@@ -176,13 +176,13 @@
 
         window['load_tab__edit__' + suffix] = function() {
             var submitButton = document.getElementById('submit_button'),
-                delete_checkbox = document.getElementById('delete'),
+                deleteCheckbox = document.getElementById('delete'),
                 tab = document.getElementById('t_edit__' + suffix);
 
-            submitButton.disabled = !delete_checkbox.checked;
+            submitButton.disabled = !deleteCheckbox.checked;
 
             window.setInterval(function () {
-                submitButton.disabled = !delete_checkbox.checked && tab.classList.contains('tab_active');
+                submitButton.disabled = !deleteCheckbox.checked && tab.classList.contains('tab_active');
             }, 100);
         };
     };

@@ -415,12 +415,120 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-move-down-handle-ordering', function (e, btn) {
-            handleOrdering(btn, false, true);
+            handleOrdering(btn, /*up*/false, /*down*/true);
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-move-up-handle-ordering', function (e, btn) {
-            handleOrdering(btn, true, false);
+            handleOrdering(btn, /*up*/true, /*down*/false);
         });
+
+        function makeFieldSelected(el) {
+            if (el.classList.contains('menu_editor_selected_field')) {
+                return;
+            }
+
+            el.classList.add('menu_editor_selected_field');
+
+            var changed = false;
+            for (var i = 0; i < el.form.elements.length; i++) {
+                if ((el.form.elements[i].classList.contains('menu_editor_selected_field')) && (el.form.elements[i] !== el)) {
+                    el.form.elements[i].classList.remove('menu_editor_selected_field');
+                    changed = true;
+                }
+            }
+
+            copyFieldsIntoBottom(el.id.substr(8), changed);
+        }
+
+        function handleOrdering(el, upwards) {
+                var form = $cms.dom.$('#edit_form');
+
+                // Find the num
+                var index = el.id.substring(el.id.indexOf('_') + 1, el.id.length);
+                var num = window.parseInt(form.elements['order_' + index].value) || 0;
+
+                // Find the parent
+                var parentNum = $cms.dom.$('#parent_' + index).value;
+
+                var i, b, bindex;
+                var best = -1, bestindex = -1;
+
+            if (upwards) {// Up
+                // Find previous branch with same parent (if exists)
+                for (i = 0; i < form.elements.length; i++) {
+                    if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
+                        bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
+                        b = window.parseInt(form.elements['order_' + bindex].value) || 0;
+                        if ((b < num) && (b > best)) {
+                            best = b;
+                            bestindex = bindex;
+                        }
+                    }
+                }
+            } else {// Down
+                // Find next branch with same parent (if exists)
+                for (i = 0; i < form.elements.length; i++) {
+                    if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value === parentNum)) {
+                        bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
+                        b = window.parseInt(form.elements['order_' + bindex].value);
+                        if ((b > num) && ((b < best) || (best === -1))) {
+                            best = b;
+                            bestindex = bindex;
+                        }
+                    }
+                }
+            }
+
+
+            var elements = form.querySelectorAll('input');
+            for (i = 0; i < elements.length; i++) {
+                if (elements[i].name === 'parent_' + index) {// Found our spot
+                    var el = elements[i];
+                    for (b = upwards ? (i - 1) : (i + 1); upwards ? (b > 0) : (b < elements.length); upwards ? b-- : b++) {
+                        if ((!isChild(elements, index, elements[b].name.substr(7))) && (elements[b].name.startsWith('parent_') && ((upwards) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex === 0) || (!existsChild(elements, elements[b].name.substr(7)))))) {
+                            var target = elements[b];
+                            var main = el.parentNode.parentNode;
+                            var place = target.parentNode.parentNode;
+                            if ((upwards && (branchDepth(target) <= branchDepth(el))) || ((branchDepth(target) !== branchDepth(el)))) {
+                                main.parentNode.removeChild(main);
+                                place.parentNode.insertBefore(main, place);
+                            } else {
+                                main.parentNode.removeChild(main);
+                                if (!place.nextSibling) {
+                                    place.parentNode.appendChild(main);
+                                } else {
+                                    place.parentNode.insertBefore(main, place.nextSibling);
+                                }
+                            }
+                            el.value = target.value;
+                            return;
+                        }
+                    }
+                }
+            }
+
+            function isChild(elements, possibleParent, possibleChild) {
+                for (var i = 0; i < elements.length; i++) {
+                    if ((elements[i].name.substr(7) == possibleChild) && (elements[i].name.substr(0, 7) == 'parent_')) {
+                        if (elements[i].value == possibleParent) {
+                            return true;
+                        }
+
+                        return isChild(elements, possibleParent, elements[i].value);
+                    }
+                }
+
+                return false;
+            }
+
+            function branchDepth(branch) {
+                if (branch.parentNode) {
+                    return branchDepth(branch.parentNode) + 1;
+                }
+
+                return 0;
+            }
+        }
 
         function deleteMenuBranch(ob) {
             var id = ob.id.substring(4, ob.id.length);
@@ -433,9 +541,9 @@
                     '{!menus:DELETE_MENU_ITEM;^}',
                     null,
                     function (result) {
-                        if (result.toLowerCase() == '{!DELETE;^}'.toLowerCase()) {
+                        if (result.toLowerCase() === '{!DELETE;^}'.toLowerCase()) {
                             deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
-                        } else if (result.toLowerCase() == '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
+                        } else if (result.toLowerCase() === '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
                             var choices = {buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}'};
                             for (var i = 0; i < window.all_menus.length; i++) {
                                 choices['buttons__choose___' + i] = window.all_menus[i];
@@ -446,20 +554,24 @@
                                 '{!menus:MOVE_MENU_ITEM;^}',
                                 null,
                                 function (result) {
-                                    if (result.toLowerCase() != '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
+                                    if (result.toLowerCase() !== '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
                                         var post = '', name, value;
                                         for (var i = 0; i < ob.form.elements.length; i++) {
                                             name = ob.form.elements[i].name;
-                                            if (name.substr(name.length - (('_' + id).length)) == '_' + id) {
-                                                if (ob.localName == 'select') {
+                                            if (name.substr(name.length - (('_' + id).length)) === '_' + id) {
+                                                if (ob.localName === 'select') {
                                                     value = ob.form.elements[i].value;
                                                     window.myValue = ob.options[ob.selectedIndex].value;
                                                 } else {
-                                                    if ((ob.type.toLowerCase() == 'checkbox') && (!ob.checked)) continue;
+                                                    if ((ob.type.toLowerCase() === 'checkbox') && (!ob.checked)) {
+                                                        continue;
+                                                    }
 
                                                     value = ob.form.elements[i].value;
                                                 }
-                                                if (post != '') post += '&';
+                                                if (post !== '') {
+                                                    post += '&';
+                                                }
                                                 post += name + '=' + encodeURIComponent(value);
                                             }
                                         }
@@ -503,18 +615,18 @@
 
             // Backup form branches
             var form = $cms.dom.$id('edit_form');
-            var _elementsBak = form.elements, elements_bak = [];
+            var _elementsBak = form.elements, elementsBak = [];
             var i;
             for (i = 0; i < _elementsBak.length; i++) {
-                elements_bak.push([_elementsBak[i].name, _elementsBak[i].value]);
+                elementsBak.push([_elementsBak[i].name, _elementsBak[i].value]);
             }
 
             $cms.dom.append(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
 
             // Restore form branches
-            for (i = 0; i < elements_bak.length; i++) {
-                if (elements_bak[i][0]) {
-                    form.elements[elements_bak[i][0]].value = elements_bak[i][1];
+            for (i = 0; i < elementsBak.length; i++) {
+                if (elementsBak[i][0]) {
+                    form.elements[elementsBak[i][0]].value = elementsBak[i][1];
                 }
             }
 
@@ -664,18 +776,18 @@
         });
     };
 
-    function menuActiveSelection(menu_id) {
-        var menuElement = $cms.dom.$('#' + menu_id),
-            possibilities = [], is_selected, url, min_score, i;
+    function menuActiveSelection(menuId) {
+        var menuElement = $cms.dom.$('#' + menuId),
+            possibilities = [], isSelected, url, min_score, i;
 
         if (menuElement.localName === 'select') {
             for (i = 0; i < menuElement.options.length; i++) {
                 url = menuElement.options[i].value;
-                is_selected = menuItemIsSelected(url);
-                if (is_selected !== null) {
+                isSelected = menuItemIsSelected(url);
+                if (isSelected !== null) {
                     possibilities.push({
                         url: url,
-                        score: is_selected,
+                        score: isSelected,
                         element: menuElement.options[i]
                     });
                 }
@@ -708,11 +820,11 @@
                 }
 
                 url = (a.getAttribute('href') === '') ? '' : a.href;
-                is_selected = menuItemIsSelected(url);
-                if (is_selected !== null) {
+                isSelected = menuItemIsSelected(url);
+                if (isSelected !== null) {
                     possibilities.push({
                         url: url,
-                        score: is_selected,
+                        score: isSelected,
                         element: menuItems[i]
                     });
                 }
