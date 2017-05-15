@@ -82,9 +82,6 @@ class Database_super_mysql
     public function db_create_index_sql($table_name, $index_name, $_fields)
     {
         if ($index_name[0] == '#') {
-            if ($this->using_innodb()) {
-                return null;
-            }
             $index_name = substr($index_name, 1);
             $type = 'FULLTEXT';
         } else {
@@ -180,16 +177,6 @@ class Database_super_mysql
     }
 
     /**
-     * Whether to use InnoDB for MySQL. Change this function by hand - official only MyISAM supported
-     *
-     * @return boolean Answer
-     */
-    public function using_innodb()
-    {
-        return false;
-    }
-
-    /**
      * Create a new table.
      *
      * @param  ID_TEXT $table_name The table name
@@ -247,7 +234,7 @@ class Database_super_mysql
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $innodb = $this->using_innodb();
+        $innodb = (get_value('innodb') == '1');
         $table_type = ($innodb ? 'INNODB' : 'MyISAM');
         $type_key = 'engine';
         /*if ($raw_table_name == 'sessions') {

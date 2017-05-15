@@ -38,7 +38,8 @@ function init__database_search()
 }
 
 /**
- * Get minimum search length for MySQL.
+ * Get minimum search length.
+ * This is broadly MySQL-specific. For other databases we will usually return 4, although there may truly not be a limit on it.
  *
  * @return integer    Search length
  */
@@ -47,6 +48,9 @@ function get_minimum_search_length()
     static $min_word_length = null;
     if (is_null($min_word_length)) {
         $min_word_length = 4;
+        if (get_db_type() == 'postgresql') {
+            $min_word_length = 1; // PostgreSQL uses a dictionary based limiter, so even a 1-character word in the dictionary would work.
+        }
         if (substr(get_db_type(), 0, 5) == 'mysql') {
             $_min_word_length = $GLOBALS['SITE_DB']->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', null, null, true);
             if (isset($_min_word_length[0])) {

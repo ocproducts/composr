@@ -640,7 +640,8 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         if ($filter_key == 'fixed_random') {
             $matches[1] .= '__' . $catalogue_name;
         }
-        $clause = '(MOD(CAST(r.' . $first_id_field . ' AS SIGNED),' . date('d') . '))';
+        $clause = db_cast('r.' . $first_id_field, 'INT');
+        $clause = '(MOD(' . $clause . ',' . date('d') . '))';
         $extra_select[$filter_key] = ', ' . $clause . ' AS fixed_random_' . fix_id($matches[1]);
         return array($clause, '', $filter_val);
     }

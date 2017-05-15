@@ -387,7 +387,9 @@ class Block_main_multi_content
                     case 'random':
                     case 'fixed_random':
                     case 'fixed_random ASC':
-                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ',(MOD(CAST(r.' . $first_id_field . ' AS SIGNED),' . date('d') . ')) AS fixed_random ' . $query . ' ORDER BY fixed_random', $max, $start, false, true, $lang_fields);
+                        $clause = db_cast('r.' . $first_id_field, 'INT');
+                        $clause = '(MOD(' . $clause . ',' . date('d') . '))';
+                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ',' . $clause . ' AS fixed_random ' . $query . ' ORDER BY fixed_random', $max, $start, false, true, $lang_fields);
                         break;
                     case 'recent_contents':
                     case 'recent_contents ASC':

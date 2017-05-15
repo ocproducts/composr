@@ -123,10 +123,6 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_has_full_text($db)
     {
-        if ($this->using_innodb()) {
-            return false;
-        }
-
         return true;
     }
 

@@ -1,14 +1,37 @@
 [title sub="Written by Chris Graham (ocProducts CEO)"]Composr Supplementary: Using PostgreSQL with Composr[/title]
 
-Composr has internal 'support' for many different databases backends and is intentionally written with simple common-denominator SQL and an abstraction API. However officially only MySQL is supported outside of a commercial relationship, due to the significant effort testing across new versions of Composr and the database software involved. Different database systems vary in all kinds of surprising and subtle ways. Inside a commercial relationship whatever extra testing and bug fixing is required will be done under that relationship, and fixes put back into the mainline version of Composr.
+Composr has internal 'support' for many different databases backends and is intentionally written with simple common-denominator SQL and an abstraction API. However officially only MySQL is supported outside of a commercial relationship, due to the significant effort testing across new versions of Composr and the database backends involved. Different database systems vary in all kinds of surprising and subtle ways. Inside a commercial relationship whatever extra testing and bug fixing is required will be done under that relationship, and fixes put back into the mainline version of Composr.
 
-This tutorial provides some advice targeted towards PostgreSQL (also known simply as 'Postgres'). Postgres has been tested for Composr v10.0.x under a commercial relationship.
+This tutorial provides some advice targeted towards PostgreSQL (also known simply as 'Postgres'). Postgres has been tested for Composr v10.0.x under a commercial relationship. We tested on 9.6.3 across our whole test set and all screens and blocks, with both multi-lang-content on and off. We expect in practice Postgres 8.3+ is supported as we are not using any complex functionality (full-text search was introduced in Postgres 8.3).
 
 Postgres is a very high quality Open Source database backend developed by developers working for a number of different companies. It is much more sophisticated than MySQL, although it also tends to be stricter in a number of ways, more technical, and not as available on shared hosting.
+
+[title="2"]What is and is not supported[/title]
+
+The following parts of our ecosystem are MySQL-specific:
+ - Some non-bundled addons marked as requiring MySQL (at the time of writing nothing significant)
+ - Certain performance optimisations for certain cases of large amounts of data (the MySQL support is heavily optimised for a wide range of high load scenarios; similar PostgreSQL optimisations will be made as client requirements come up)
+ - Commandr-FS feature for listing when tables were last updated (other database backends tend to not provide last-updated timestamps for tables)
+ - Documentation is written with MySQL in mind, particularly tutorials relating to installation, performance, and maintenance (however expert system/database administrators will be able to adapt instructions to the systems they use without too much trouble)
+ - The database repair cleanup tool (we use this to help test our upgrade code works perfectly, or to make it easier for 3rd-party developers who don't know how to correctly code to our database meta-system; it is not required and SQL structure dump comparison will as a substitute in most cases)
+ - We only do minimum version check for MySQL (MySQL is the only database backend that tends to not support basic stuff until recent versions!)
+ - The bundled [tt]rootkit_detector[/tt] addon (this is developed for experts and bakes in assumption of [tt]mysqli[/i] due to running outside of Composr; the code can be customised to other backends as required)
+ - The MySQL optimiser cleanup tool (other database backends are better at doing automatic cleanup)
+ - Upgrade code is only tested for MySQL (upgrades for professional sites should be done by a developer, who should be able to patch around any issues in the upgrade code)
+Nothing in the above list is likely to be of concern for the vast majority of Composr users who also who would want to use Postgres.
+
+The following parts of our ecosystem are only supported on MySQL and PostgreSQL (at the time of writing):
+ - Member directory login frequency sort
+ - Commandr [tt]mysql_table_sizes[/tt] command
+ - Showing database server version on the PHP-Info page
+
+Third parties may write code that assumes (intentionally or not) MySQL, so don't assume any third party code is going to work without putting it through testing.
 
 [title="2"]Installing Postgres[/title]
 
 You can usually install Postgres using your normal package manager. On Mac I installed using HomeBrew.
+
+You will need the PHP [tt]postgresql[/tt] extension to be installed.
 
 [title="2"]After installing Postgres[/title]
 
@@ -56,5 +79,6 @@ The main complexities of Postgres support, for MySQL developers are:
  - http://dbeaver.jkiss.org/ (a free cross-platform Postgres GUI)
  - http://squirrel-sql.sourceforge.net/ (a free cross-platform Postgres GUI)
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
+ - http://troels.arvin.dk/db/rdbms/
 
 {$SET,tutorial_tags,core_database_drivers,Installation,expert}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,A guide on using PostgreSQL with Composr, and providing some information relevant to other non-MySQL backends.}[block]main_tutorial_rating[/block]
