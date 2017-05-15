@@ -234,7 +234,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-form-submit-add-friend', function (e, form) {
-            $cms.loadSnippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements.friend_username.value), function (ajaxResult) {
+            $cms.loadSnippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements.friend_username.value), true).then(function (ajaxResult) {
                 $cms.dom.html($cms.dom.$('#friends_wrap'), ajaxResult.responseText);
                 form.elements.friend_username.value = '';
             });
@@ -268,7 +268,7 @@
     };
 
     $cms.templates.chatSitewideImPopup = function (params) {
-        window.detect_if_chat_window_closed_checker = window.setInterval(function () {
+        window.detectIfChatWindowClosedChecker = window.setInterval(function () {
             if (detectIfChatWindowClosed !== undefined) {
                 detectIfChatWindowClosed();
             }
@@ -296,11 +296,11 @@
                         } else {
                             window.opener.opened_popups['room_' + roomId] = window; // Reattach, presumably a navigation has happened
 
-                            if ((window.already_autonomous !== undefined) && (window.already_autonomous)) // Losing autonomity again?
+                            if ((window.alreadyAutonomous !== undefined) && (window.alreadyAutonomous)) // Losing autonomity again?
                             {
                                 window.top_window = window.opener;
                                 chatCheck(false, window.last_message_id, window.last_event_id);
-                                window.already_autonomous = false;
+                                window.alreadyAutonomous = false;
                             }
 
                             if (window.opener.console.log !== undefined) window.opener.console.log('Reattaching chat window to re-navigated master window.');
@@ -322,7 +322,7 @@
                     window.onbeforeunload = null;
                     window.close();
                 } else {
-                    if ((window.already_autonomous === undefined) || (!window.already_autonomous)) {
+                    if ((window.alreadyAutonomous === undefined) || (!window.alreadyAutonomous)) {
                         window.setTimeout(function () {
                             detectIfChatWindowClosed(false, true);
                         }, 3000); // If connection still lost after this time then kill the window
@@ -331,10 +331,10 @@
             }
 
             function chatWindowBecomeAutonomous() {
-                if ((window.already_autonomous === undefined) || (!window.already_autonomous)) {
+                if ((window.alreadyAutonomous === undefined) || (!window.alreadyAutonomous)) {
                     window.top_window = window;
                     chatCheck(false, window.last_message_id, window.last_event_id);
-                    window.already_autonomous = true;
+                    window.alreadyAutonomous = true;
                 }
             }
         }
@@ -728,7 +728,9 @@ function chatCheckResponse(ajaxResultFrame, ajaxResult, skipIncomingSound) {
         if (skipIncomingSound === undefined) skipIncomingSound = false;
 
         var temp = processChatXmlMessages(ajaxResult, skipIncomingSound);
-        if (temp == -2) return false;
+        if (temp == -2) {
+            return false;
+        }
     }
 
     // Schedule the next check
@@ -1492,7 +1494,7 @@ function deinvolveIm(roomId, logs, isPopup) {// is_popup means that we show a pr
         participants = tabElement.participants;
     } else {
         if (isPopup) {
-            participants = ((window.already_autonomous !== undefined) && (window.already_autonomous)) ? window.participants : window.top_window.opened_popups['room_' + roomId].participants;
+            participants = ((window.alreadyAutonomous !== undefined) && (window.alreadyAutonomous)) ? window.participants : window.top_window.opened_popups['room_' + roomId].participants;
         }
     }
 

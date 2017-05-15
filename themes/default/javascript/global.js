@@ -1832,6 +1832,8 @@
      * @returns { Promise }
      */
     function _requireJavascript(script) {
+        var scriptEl;
+
         script = strVal(script);
 
         if (requireJavascriptPromises[script] != null) {
@@ -1840,11 +1842,7 @@
 
         if (isAbsoluteOrSchemeRelative(script) && $cms.dom.hasScriptLoaded(script)) {
             return Promise.resolve();
-        }
-
-        var scriptEl;
-
-        if (validIdRE.test(script)) {
+        } else if (validIdRE.test(script)) {
             scriptEl = $cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified');
         }
 
@@ -1874,6 +1872,20 @@
         scripts = arrVal(scripts);
 
         return Promise.all(scripts.map(_requireJavascript));
+    }
+
+    function removeCssJsSuffixes(codeName) {
+        // if (!$minify) {
+        //     $c .= '_non_minified';
+        // }
+        // if ($https) {
+        //     $c .= '_ssl';
+        // }
+        // if ($mobile) {
+        //     $c .= '_mobile';
+        // }
+
+        return codeName;
     }
 
     /**
@@ -4862,10 +4874,13 @@
      * Dynamic inclusion
      * @memberof $cms
      * @param snippetHook
-     * @param post
-     * @param callback
+     * @param [post]
+     * @param {boolean} [async]
+     * @returns { Promise }
      */
-    function loadSnippet(snippetHook, post, callback) {
+    function loadSnippet(snippetHook, post, async) {
+        snippetHook = strVal(snippetHook);
+
         if (!window.location) { // In middle of page navigation away
             return null;
         }
@@ -4882,13 +4897,17 @@
         if (!url) {
             url = window.location.href;
         }
-        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
-            html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), callback, post);
+        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
 
-        if (callback) {
-            return Promise.resolve();
+        if (async) {
+            return new Promise(function (resolve) {
+                $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (ajaxResult) {
+                    resolve(ajaxResult);
+                }, post);
+            });
         }
 
+        var html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), async, post);
         return html.responseText;
     }
 
@@ -7788,8 +7807,7 @@
 
         if (($cms.$ZONE() === 'adminzone') && $cms.$CONFIG_OPTION('background_template_compilation')) {
             var page = $cms.filter.url($cms.$PAGE());
-            $cms.loadSnippet('background_template_compilation&page=' + page, '', function () {
-            });
+            $cms.loadSnippet('background_template_compilation&page=' + page, '', true);
         }
 
         if (((window === window.top) && !window.opener) || (window.name === '')) {
@@ -7888,7 +7906,7 @@
         }
     };
 
-    $cms.inherits($cms.views.Global, $cms.View, /**@lends $cms.views.Global#*/{
+    $cms.inherits($cms.views.Global, $cms.View, /**@lends Global#*/{
         events: function () {
             return {
                 // Show a confirmation dialog for clicks on a link (is higher up for priority)

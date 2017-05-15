@@ -1,31 +1,21 @@
 "use strict";
 
 function loadCommandr() {
-    // (Still?) loading
-    if (window.commandrCommandResponse === undefined) {
-        if (document.getElementById('commandr_img_loader')) {
-            setTimeout(loadCommandr, 200);
-            return false;
-        }
+    $cms.requireCss('commandr');
 
+    if (!document.getElementById('commandr_img_loader')) {
         var img = document.getElementById('commandr_img');
         img.className = 'footer_button_loading';
         var tmpElement = document.createElement('img');
+        tmpElement.id = 'commandr_img_loader';
         tmpElement.src = $cms.img('{$IMG;,loading}');
         tmpElement.style.position = 'absolute';
         tmpElement.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
         tmpElement.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
-        tmpElement.id = 'commandr_img_loader';
         img.parentNode.appendChild(tmpElement);
-
-        $cms.requireJavascript('commandr');
-        $cms.requireCss('commandr');
-        window.setTimeout(loadCommandr, 200);
-        return false;
     }
 
-    // Loaded
-    if (window.commandrCommandResponse !== undefined) {
+    $cms.requireJavascript('commandr').then(function () {
         $cms.ui.confirmSession(
             function (result) {
                 // Remove "loading" indicator from button
@@ -48,7 +38,9 @@ function loadCommandr() {
                     commandrBox.style.zIndex = 2000;
                     commandrBox.style.left = ($cms.dom.getWindowWidth() - 800) / 2 + 'px';
                     var topTemp = ($cms.dom.getWindowHeight() - 600) / 2;
-                    if (topTemp < 100) topTemp = 100;
+                    if (topTemp < 100) {
+                        topTemp = 100;
+                    }
                     commandrBox.style.top = topTemp + 'px';
                     commandrBox.style.display = 'none';
                     commandrBox.style.width = '800px';
@@ -57,8 +49,9 @@ function loadCommandr() {
                     $cms.dom.html(commandrBox, $cms.loadSnippet('commandr'));
                 }
 
-                if (commandrBox.style.display === 'none')  {// Showing Commandr again
-                    commandrBox.style.display = 'block';
+                var bi;
+                if ($cms.dom.notDisplayed(commandrBox)) {// Showing Commandr again
+                    $cms.dom.show(commandrBox);
 
                     if (img) {
                         img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_off}');
@@ -77,7 +70,7 @@ function loadCommandr() {
                     $cms.dom.fadeTransition(document.getElementById('command_line'), 90, 30, 5);
 
 
-                    var bi = document.getElementById('main_website_inner');
+                    bi = document.getElementById('main_website_inner');
                     if (bi) {
                         $cms.dom.clearTransition(bi);
                         bi.style.opacity = 1.0;
@@ -96,22 +89,12 @@ function loadCommandr() {
                     }
 
                     commandrBox.style.display = 'none';
-                    var bi = document.getElementById('main_website_inner');
+                    bi = document.getElementById('main_website_inner');
                     if (bi) {
                         $cms.dom.fadeTransition(bi, 100, 30, 5);
                     }
                 }
             }
         );
-
-        return false;
-    }
-
-    // Fallback to link to module
-    var btn = document.getElementById('commandr_button');
-    if (btn) {
-        window.location.href = btn.href;
-    }
-
-    return false;
+    });
 }

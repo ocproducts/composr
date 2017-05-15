@@ -652,7 +652,7 @@ $cms.requireJavascript('jquery').then(function () {
  */
 function autoCompleteElementFactory(element,e) {
 	var customItemTemplate='<div><span />&nbsp;<small /></div>';
-	var template=$(customItemTemplate).find('span')
+	var template=window.jQuery(customItemTemplate).find('span')
 		.text('@'+e.val).end()
 		.find('small')
 		.text((e.meta=='')?'':'('+e.meta+')').end();

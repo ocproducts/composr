@@ -316,7 +316,7 @@
                 return;
             }
             var ind = _ind.querySelector('div');
-            var post = 'password=' + encodeUC(input.value);
+            var post = 'password=' + encodeURIComponent(input.value);
             if (input.form && (input.form.elements.username !== undefined)) {
                 post += '&username=' + input.form.elements['username'].value;
             } else {
@@ -339,7 +339,7 @@
                 ind.style.backgroundColor = 'orange';
             }
 
-            ind.parentNode.style.display = (input.value.length == 0) ? 'none' : 'block';
+            ind.parentNode.style.display = (input.value.length === 0) ? 'none' : 'block';
         });
     };
 

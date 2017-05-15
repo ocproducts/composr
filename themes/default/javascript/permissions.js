@@ -180,11 +180,13 @@ function permissionsImgFunc2(node, id) {
     return '<img class="vertical_alignment" src="' + url + '" alt="' + title + '" title="' + title + '" />';
 
     function permissionsImgFunc2b(node, id) {
-        if (id === undefined) id = node.getAttribute('id');
+        if (id === undefined) {
+            id = node.getAttribute('id');
+        }
 
         var group = document.getElementById('group').value;
 
-        if (node.getAttribute('g_view_' + group) == 'true') {
+        if (node.getAttribute('g_view_' + group) === 'true') {
             return [$cms.img('{$IMG;,led_on}'), '{!permissions:PINTERFACE_VIEW;^}'];
         }
 

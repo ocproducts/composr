@@ -9,18 +9,18 @@ function hexToDec(number) {
     return parseInt(number, 16);
 }
 
-function processWave(e) {
-    if (!e) {
+function processWave(el) {
+    if (!el) {
         return;
     }
 
-    var pos = window[e.id][0],
-        maxColor = window[e.id][1],
-        minColor = window[e.id][2],
-        textNodes = window[e.id][4];
+    var pos = window[el.id][0],
+        maxColor = window[el.id][1],
+        minColor = window[el.id][2],
+        textNodes = window[el.id][4];
 
     if (textNodes.length === 0)  { // Setup
-        var textNodesTemp = findTextNodes(e);
+        var textNodesTemp = findTextNodes(el);
 
         // Now split up the nodes so each is actually wrapped by a span
         for (var i = 0; i < textNodesTemp.length; i++) {
@@ -37,7 +37,7 @@ function processWave(e) {
             }
         }
 
-        window[e.id][4] = textNodes;
+        window[el.id][4] = textNodes;
     }
 
     var range = textNodes.length;
@@ -55,9 +55,9 @@ function processWave(e) {
     }
 
     // Cycle around
-    window[e.id][0]++;
-    if (window[e.id][0] > textNodes.length) {
-        window[e.id][0] = 0;
+    window[el.id][0]++;
+    if (window[el.id][0] > textNodes.length) {
+        window[el.id][0] = 0;
     }
 
     function colorInterpolation(maxColor, minColor, fraction) {

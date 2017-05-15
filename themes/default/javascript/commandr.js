@@ -66,79 +66,80 @@ window.previous_commands || (window.previous_commands = []);
             commandrFormSubmission(command, form);
         });
     };
-}(window.$cms));
 
-// Deal with Commandr history
-function commandrHandleHistory(element, keyCode, e) {
-    if ((keyCode == 38) && (window.previous_commands.length > 0)) {// Up button
-        e && event.stopPropagation();
-        if (e.cancelable) {
-            e.preventDefault();
-        }
+    // Deal with Commandr history
+    function commandrHandleHistory(element, keyCode, e) {
+        if ((keyCode == 38) && (window.previous_commands.length > 0)) {// Up button
+            e && event.stopPropagation();
+            if (e.cancelable) {
+                e.preventDefault();
+            }
 
-        if (window.current_command == null) {
-            window.current_command = window.previous_commands.length - 1;
-            element.value = window.previous_commands[window.current_command];
-        }
-        else if (window.current_command > 0) {
-            window.current_command--;
-            element.value = window.previous_commands[window.current_command];
-        }
-        return false;
-    } else if ((keyCode == 40) && (window.previous_commands.length > 0)) {// Down button
-
-        e && e.stopPropagation();
-        if (e.cancelable) {
-            e.preventDefault();
-        }
-
-        if (window.current_command != null) {
-            if (window.current_command < window.previous_commands.length - 1) {
-                window.current_command++;
+            if (window.current_command == null) {
+                window.current_command = window.previous_commands.length - 1;
                 element.value = window.previous_commands[window.current_command];
             }
-            else {
-                window.current_command = null;
-                element.value = '';
+            else if (window.current_command > 0) {
+                window.current_command--;
+                element.value = window.previous_commands[window.current_command];
             }
+            return false;
+        } else if ((keyCode == 40) && (window.previous_commands.length > 0)) {// Down button
+
+            e && e.stopPropagation();
+            if (e.cancelable) {
+                e.preventDefault();
+            }
+
+            if (window.current_command != null) {
+                if (window.current_command < window.previous_commands.length - 1) {
+                    window.current_command++;
+                    element.value = window.previous_commands[window.current_command];
+                }
+                else {
+                    window.current_command = null;
+                    element.value = '';
+                }
+            }
+            return false;
+        } else {
+            window.current_command = null;
+            return true;
         }
-        return false;
-    } else {
-        window.current_command = null;
-        return true;
     }
-}
 
-// Submit an Commandr command
-function commandrFormSubmission(command, form) {
-    // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
-    // var command=document.getElementById('commandr_command').value;
+    // Submit an Commandr command
+    function commandrFormSubmission(command, form) {
+        // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
+        // var command=document.getElementById('commandr_command').value;
 
-    if (window.$cms.doAjaxRequest) {
-        // Send it through XMLHttpRequest, and append the results.
-        document.getElementById('commandr_command').focus();
-        document.getElementById('commandr_command').disabled = true;
-
-        var post = 'command=' + encodeURIComponent(command);
-        post = $cms.form.modsecurityWorkaroundAjax(post);
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandrCommandResponse, post);
-
-        window.disable_timeout = window.setTimeout(function () {
-            document.getElementById('commandr_command').disabled = false;
+        if (window.$cms.doAjaxRequest) {
+            // Send it through XMLHttpRequest, and append the results.
             document.getElementById('commandr_command').focus();
-            if (window.disable_timeout) {
-                window.clearTimeout(window.disable_timeout);
-                window.disable_timeout = null;
-            }
-        }, 5000);
-        window.previous_commands.push(command);
+            document.getElementById('commandr_command').disabled = true;
 
-        return false;
-    } else if (form !== undefined) {
-        // Let the form be submitted the old-fashioned way.
-        return $cms.form.modsecurityWorkaround(form);
+            var post = 'command=' + encodeURIComponent(command);
+            post = $cms.form.modsecurityWorkaroundAjax(post);
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandrCommandResponse, post);
+
+            window.disable_timeout = window.setTimeout(function () {
+                document.getElementById('commandr_command').disabled = false;
+                document.getElementById('commandr_command').focus();
+                if (window.disable_timeout) {
+                    window.clearTimeout(window.disable_timeout);
+                    window.disable_timeout = null;
+                }
+            }, 5000);
+            window.previous_commands.push(command);
+
+            return false;
+        } else if (form !== undefined) {
+            // Let the form be submitted the old-fashioned way.
+            return $cms.form.modsecurityWorkaround(form);
+        }
     }
- }
+
+}(window.$cms));
 
 // Deal with the response to a command
 function commandrCommandResponse(ajaxResultFrame, ajaxResult) {
@@ -267,7 +268,7 @@ function clearCl() {
 
 // Fun stuff...
 
-window.commandr_foxy_textnodes || (window.commandr_foxy_textnodes = []);
+window.commandrFoxyTextnodes || (window.commandrFoxyTextnodes = []);
 
 function bsod() {
     // Nothing to see here, move along.
@@ -281,22 +282,23 @@ function bsod() {
         for (i = 0; i < node.childNodes.length; i++) {
             t = node.childNodes[i];
             if (t.nodeType == 3) {
-                if ((t.data.length > 1) && (Math.random() < 0.3)) window.commandr_foxy_textnodes[window.commandr_foxy_textnodes.length] = t;
+                if ((t.data.length > 1) && (Math.random() < 0.3)) window.commandrFoxyTextnodes[window.commandrFoxyTextnodes.length] = t;
             }
             else bsodTraverseNode(t);
         }
     }
-}
 
-function foxy() {
-    var rand = Math.round(Math.random() * (window.commandr_foxy_textnodes.length - 1));
-    var t = window.commandr_foxy_textnodes[rand];
-    var at = Math.round(Math.random() * (t.data.length - 1));
-    var aChar = t.data.charCodeAt(at);
-    if ((aChar > 33) && (aChar < 126)) {
-        var string = 'The quick brown fox jumps over the lazy dog.';
-        var rep = string.charAt(at % string.length);
-        t.replaceData(at, 1, rep);
+    function foxy() {
+        var rand = Math.round(Math.random() * (window.commandrFoxyTextnodes.length - 1));
+        var t = window.commandrFoxyTextnodes[rand];
+        var at = Math.round(Math.random() * (t.data.length - 1));
+        var aChar = t.data.charCodeAt(at);
+        if ((aChar > 33) && (aChar < 126)) {
+            var string = 'The quick brown fox jumps over the lazy dog.';
+            var rep = string.charAt(at % string.length);
+            t.replaceData(at, 1, rep);
+        }
     }
 }
+
 

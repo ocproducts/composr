@@ -97,7 +97,7 @@
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
                 var post = 'contents=' + encodeURIComponent(getFileTextbox(file).value);
-                $cms.loadSnippet(url, post, function (ajaxResult) {
+                $cms.loadSnippet(url, post, true).then(function (ajaxResult) {
                     $cms.ui.alert(ajaxResult.responseText, null, null, true);
                     templateEditorTabMarkNonchangedContent(file);
                 });
@@ -794,7 +794,7 @@
 
             // Set content from revision
             var url = templateEditorLoadingUrl(file, revisionId);
-            $cms.loadSnippet(url, null, function (ajaxResult) {
+            $cms.loadSnippet(url, null, true).then(function (ajaxResult) {
                 document.getElementById('t_' + fileId).className = 'tab tab_active';
 
                 templateEditorTabLoadedContent(ajaxResult, file);
@@ -1002,7 +1002,7 @@
 
         // Set content
         var url = templateEditorLoadingUrl(file);
-        $cms.loadSnippet(url, null, function (ajaxResult) {
+        $cms.loadSnippet(url, null, true).then(function (ajaxResult) {
             templateEditorTabLoadedContent(ajaxResult, file);
         });
 

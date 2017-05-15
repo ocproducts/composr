@@ -58,7 +58,7 @@
             progressTicker.style.marginLeft = '20px';
             button.parentNode.appendChild(progressTicker);
 
-            $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(maxSizeField.value), null, function (size) {
+            $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(maxSizeField.value), null, true).then(function (size) {
                 $cms.ui.alert($cms.format('{!CALCULATED_SIZE;^}', size));
                 button.parentNode.removeChild(progressTicker);
             });
