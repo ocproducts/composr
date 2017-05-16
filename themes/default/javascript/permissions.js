@@ -15,7 +15,7 @@ function showPermissionSetting(ob, event) {
         if (window.sitemap != null) {
             var value = document.getElementById('tree_list').value;
 
-            if (value.indexOf(',') != -1) { // Can't find any single value, as multiple resources are selected
+            if (value.indexOf(',') !== -1) { // Can't find any single value, as multiple resources are selected
                 return;
             }
 

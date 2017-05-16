@@ -190,7 +190,7 @@
     $cms.functions.hookProfilesTabsEditSettingsRenderTab = function hookProfilesTabsEditSettingsRenderTab() {
         var form = document.getElementById('email_address').form;
         form.prior_profile_edit_submit = form.onsubmit;
-        form.onsubmit = (function () {
+        form.onsubmit = function () {
             if (form.elements['edit_password'] !== undefined) {
                 if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['edit_password'].value)) {
                     document.getElementById('submit_button').disabled = false;
@@ -210,7 +210,7 @@
                 return form.prior_profile_edit_submit();
             }
             return true;
-        });
+        };
     };
 
     $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen(params, container) {
@@ -226,7 +226,7 @@
 
     $cms.templates.cnsViewGroupScreen = function cnsViewGroupScreen(params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-add-member-to-group', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements.username, e)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();

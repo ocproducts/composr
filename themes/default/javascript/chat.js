@@ -498,12 +498,8 @@ function chatLoad(roomId) {
 function beginChatting(roomId) {
     window.load_from_room_id = roomId;
 
-    if (window.$cms.doAjaxRequest) {
-        chatCheck(true, 0);
-        playChatSound('you_connect');
-    } else {
-        window.setTimeout(beginChatting, 10);
-    }
+    chatCheck(true, 0);
+    playChatSound('you_connect');
 }
 
 function decToHex(number) {
@@ -677,38 +673,35 @@ function chatCheck(backlog, messageId, eventId) {
     eventId = +eventId || -1;  // -1 Means, we don't want to look at events, but the server will give us a null event
 
     // Check for new messages on the server the new or old way
-    if (window.$cms.doAjaxRequest) {
-        // AJAX!
-        window.setTimeout(function () {
-            chatCheckTimeout(backlog, messageId, eventId);
-        }, window.MESSAGE_CHECK_INTERVAL * 1.2);
-        var theDate = new Date();
-        if ((!window.message_checking) || (window.message_checking + window.MESSAGE_CHECK_INTERVAL <= theDate.getTime())) // If not currently in process, or process stalled
-        {
-            window.message_checking = theDate.getTime();
-            var url;
-            var _roomId = (window.load_from_room_id == null) ? -1 : window.load_from_room_id;
-            if (backlog) {
-                url = '{$FIND_SCRIPT;,messages}?action=all&room_id=' + encodeURIComponent(_roomId);
-            } else {
-                url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_roomId) + '&message_id=' + encodeURIComponent(messageId ? messageId : -1) + '&event_id=' + encodeURIComponent(eventId);
-            }
-            if (window.location.href.indexOf('no_reenter_message=1') != -1) url = url + '&no_reenter_message=1';
-            var fullUrl = $cms.maintainThemeInLink(url + $cms.keepStub(false));
-            var func = function (ajaxResultFrame, ajaxResult) {
-                chatCheckResponse(ajaxResultFrame, ajaxResult, backlog/*backlog = skip_incoming_sound*/);
-            };
-            $cms.doAjaxRequest(fullUrl, [func, errorFunc]);
-            return false;
+    window.setTimeout(function () {
+        chatCheckTimeout(backlog, messageId, eventId);
+    }, window.MESSAGE_CHECK_INTERVAL * 1.2);
+
+    var theDate = new Date();
+    if (!window.message_checking || (window.message_checking + window.MESSAGE_CHECK_INTERVAL <= theDate.getTime()))  {// If not currently in process, or process stalled
+        window.message_checking = theDate.getTime();
+        var url;
+        var _roomId = (window.load_from_room_id == null) ? -1 : window.load_from_room_id;
+        if (backlog) {
+            url = '{$FIND_SCRIPT;,messages}?action=all&room_id=' + encodeURIComponent(_roomId);
+        } else {
+            url = '{$FIND_SCRIPT;,messages}?action=new&room_id=' + encodeURIComponent(_roomId) + '&message_id=' + encodeURIComponent(messageId ? messageId : -1) + '&event_id=' + encodeURIComponent(eventId);
         }
-        return null;
-    } else {
-        // Resort to reloading the page
-        window.location.reload(true);
-        return true;
+        if (window.location.href.indexOf('no_reenter_message=1') !== -1) {
+            url = url + '&no_reenter_message=1';
+        }
+        var fullUrl = $cms.maintainThemeInLink(url + $cms.keepStub(false));
+        $cms.doAjaxRequest(fullUrl, [func, errorFunc]);
+        return false;
     }
 
-    var errorFunc = function () {
+    return null;
+
+    function func(ajaxResultFrame, ajaxResult) {
+        chatCheckResponse(ajaxResultFrame, ajaxResult, backlog/*backlog = skip_incoming_sound*/);
+    }
+
+    function errorFunc() {
         chatCheckResponse(null, null);
     }
 }
@@ -1523,7 +1516,9 @@ function deinvolveIm(roomId, logs, isPopup) {// is_popup means that we show a pr
                 $cms.dom.html(tabs, '&nbsp;');
                 document.getElementById('chat_lobby_convos_tabs').style.display = 'none';
                 $cms.dom.html(document.getElementById('chat_lobby_convos_areas'), no_im_html);
-                if (document.getElementById('invite_ongoing_im_button')) document.getElementById('invite_ongoing_im_button').disabled = true;
+                if (document.getElementById('invite_ongoing_im_button')) {
+                    document.getElementById('invite_ongoing_im_button').disabled = true;
+                }
             } else {
                 chatSelectTab(document.getElementById('tab_' + findImConvoRoomIds().pop()));
             }

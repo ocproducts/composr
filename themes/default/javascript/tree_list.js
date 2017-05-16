@@ -9,7 +9,7 @@
      * @param tabindex
      * @param allNodesSelectable
      * @param useServerId
-     * @returns {TreeList|*}
+     * @returns { $cms.views.TreeList }
      */
     $cms.ui.createTreeList = function createTreeList(name, ajaxUrl, rootId, opts, multiSelection, tabindex, allNodesSelectable, useServerId) {
         var options = {
@@ -22,7 +22,7 @@
                 all_nodes_selectable: allNodesSelectable,
                 use_server_id: useServerId
             },
-            el = $cms.dom.$('#tree_list__root_' + name);
+            el = $cms.dom.$id('tree_list__root_' + name);
 
         return new $cms.views.TreeList(options, {el: el});
     };
@@ -30,7 +30,7 @@
     $cms.views.TreeList = TreeList;
     /**
      * @memberof $cms.views
-     * @class
+     * @class TreeList
      * @extends $cms.View
      */
     function TreeList(params) {
@@ -54,27 +54,25 @@
         url += '&options=' + this.options;
         url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
 
-        $cms.doAjaxRequest(url, this);
+        $cms.doAjaxRequest(url, this.response.bind(this));
 
-        var that = this;
-        $cms.dom.on(document.documentElement, 'mousemove', function (event) {
-            that.specialKeyPressed = !!(event.ctrlKey || event.altKey || event.metaKey || event.shiftKey)
-        });
+        $cms.dom.on(document.documentElement, 'mousemove', (function (event) {
+            this.specialKeyPressed = !!(event.ctrlKey || event.altKey || event.metaKey || event.shiftKey)
+        }).bind(this));
     }
 
     $cms.inherits(TreeList, $cms.View, /**@lends TreeList#*/ {
         specialKeyPressed: false,
-
         tree_list_data: '',
         busy: false,
         last_clicked: null, // The hyperlink object that was last clicked (usage during multi selection when holding down shift)
 
         /* Go through our tree list looking for a particular XML node */
-        getElementByIdHack: function (id, type, ob, serverid) {
+        getElementByIdHack: function getElementByIdHack(id, type, ob, serverid) {
             var i, test, done = false;
 
-            type || (type = 'c');
-            ob || (ob = this.tree_list_data);
+            type = strVal(type) || 'c';
+            ob = ob || this.tree_list_data;
             serverid = !!serverid;
 
             // Normally we could only ever use getElementsByTagName, but Konqueror and Safari don't like it
@@ -106,7 +104,7 @@
             return null;
         },
 
-        response: function (ajaxResultFrame, ajaxResult, expandingId) {
+        response: function response(ajaxResultFrame, ajaxResult, expandingId) {
             if (!ajaxResult) {
                 return;
             }
@@ -146,10 +144,10 @@
             fixupNodePositions(name);
         },
 
-        renderTree: function (xml, html, element) {
+        renderTree: function renderTree(xml, html, element) {
             var that = this, i, colour, newHtml, url, escapedTitle,
                 initiallyExpanded, selectable, extra, title, func,
-                temp, masterHtml, node, nodeSelfWrap, nodeSelf;
+                temp, masterHtml, node, nodeSelfWrap, nodeSelf, a;
 
             element || (element = $cms.dom.$id(this.name));
 
@@ -158,7 +156,7 @@
 
             html.style.display = xml.firstElementChild ? 'block' : 'none';
 
-            forEach(xml.children, function (node) {
+            $cms.forEach(xml.children, function (node) {
                 var el, htmlNode, expanding;
 
                 // Special handling of 'options' nodes, inject new options
@@ -169,20 +167,20 @@
 
                 // Special handling of 'expand' nodes, which say to pre-expand some categories as soon as the page loads
                 if (node.localName === 'expand') {
-                    el = $cms.dom.$('#' + that.name + 'texp_c_' + $cms.dom.html(node));
+                    el = $cms.dom.$id(that.name + 'texp_c_' + $cms.dom.html(node));
                     if (el) {
-                        htmlNode = $cms.dom.$('#' + that.name + 'tree_list_c_' + $cms.dom.html(node));
-                        expanding = (htmlNode.style.display != 'block');
+                        htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + $cms.dom.html(node));
+                        expanding = (htmlNode.style.display !== 'block');
                         if (expanding)
                             el.onclick(null, true);
                     } else {
                         // Now try against serverid
                         var xmlNode = that.getElementByIdHack($cms.dom.html(node), 'c', null, true);
                         if (xmlNode) {
-                            el = $cms.dom.$('#' + that.name + 'texp_c_' + xmlNode.getAttribute('id'));
+                            el = $cms.dom.$id(that.name + 'texp_c_' + xmlNode.getAttribute('id'));
                             if (el) {
                                 htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + xmlNode.getAttribute('id'));
-                                expanding = (htmlNode.style.display != 'block');
+                                expanding = (htmlNode.style.display !== 'block');
                                 if (expanding) {
                                     el.onclick(null, true);
                                 }
@@ -239,11 +237,11 @@
 				</div> \
 			');
                     var expandButton = nodeSelf.querySelector('input');
-                    expandButton.oncontextmenu = returnFalse;
+                    expandButton.oncontextmenu = $cms.returnFalse;
                     expandButton.object = that;
                     expandButton.onclick = function (event, automated) {
-                        if ($cms.dom.$('#choose_' + that.name)) {
-                            $cms.dom.$('#choose_' + that.name).click();
+                        if ($cms.dom.$id('choose_' + that.name)) {
+                            $cms.dom.$id('choose_' + that.name).click();
                         }
 
                         if (event) {
@@ -253,7 +251,7 @@
                         return false;
 
                     };
-                    var a = nodeSelf.querySelector('label');
+                    a = nodeSelf.querySelector('label');
                     expandButton.onkeypress = a.onkeypress = a.firstElementChild.onkeypress = function (expandButton) {
                         return function (event) {
                             if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
@@ -261,7 +259,7 @@
                             }
                         }
                     }(expandButton);
-                    a.oncontextmenu = returnFalse;
+                    a.oncontextmenu = $cms.returnFalse;
                     a.handleSelection = that.handleSelection;
                     a.firstElementChild.addEventListener('focus', function () {
                         this.parentNode.style.outline = '1px dotted';
@@ -445,7 +443,7 @@
             return a;
         },
 
-        handleTreeClick: function (event, automated) {// Not called as a method
+        handleTreeClick: function handleTreeClick(event, automated) {// Not called as a method
             var element = $cms.dom.$id(this.object.name),
                 xmlNode;
             if (element.disabled || this.object.busy) {
@@ -459,7 +457,7 @@
             var htmlNode = $cms.dom.$id(this.object.name + 'tree_list_c_' + clickedId);
             var expandButton = $cms.dom.$id(this.object.name + 'texp_c_' + clickedId);
 
-            var expanding = (htmlNode.style.display != 'block');
+            var expanding = (htmlNode.style.display !== 'block');
 
             if (expanding) {
                 xmlNode = this.object.getElementByIdHack(clickedId, 'c');
@@ -513,7 +511,7 @@
             return true;
         },
 
-        handleSelection: function (event, assumeCtrl) {// Not called as a method
+        handleSelection: function handleSelection(event, assumeCtrl) {// Not called as a method
             assumeCtrl = !!assumeCtrl;
 
             var element = $cms.dom.$id(this.object.name);
@@ -625,7 +623,7 @@
             }
         },
 
-        makeElementLookSelected: function (target, selected) {
+        makeElementLookSelected: function makeElementLookSelected(target, selected) {
             if (!target) {
                 return;
             }
@@ -654,7 +652,7 @@
     }
 
     function fixupNodePositions(name) {
-        var html = $cms.dom.$('#tree_list__root_' + name);
+        var html = $cms.dom.$id('tree_list__root_' + name);
         var toFix = html.getElementsByTagName('div');
         var i;
         for (i = 0; i < toFix.length; i++) {

@@ -20,7 +20,7 @@
 
     // Too useful to not have globally!
     window.intVal   = intVal;
-    window.floatVal = floatVal;
+    //window.numVal = numVal;
     window.strVal   = strVal;
     window.arrVal   = arrVal;
     window.objVal   = objVal;
@@ -483,6 +483,10 @@
 
         /**@method*/
         uid: uid,
+        /**@method*/
+        returnTrue: returnTrue,
+        /**@method*/
+        returnFalse: returnFalse,
         /**@method*/
         isObj: isObj,
         /**@method*/
@@ -1432,8 +1436,8 @@
      * @param val
      * @returns { Number }
      */
-    function floatVal(val) {
-        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    function numVal(val) {
+        return ((val != null) && (val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     function numberFormat(num) {
@@ -4876,7 +4880,7 @@
      * @param snippetHook
      * @param [post]
      * @param {boolean} [async]
-     * @returns { Promise }
+     * @returns { Promise|string }
      */
     function loadSnippet(snippetHook, post, async) {
         snippetHook = strVal(snippetHook);
@@ -4886,8 +4890,7 @@
         }
 
         var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
-            metas = document.getElementsByTagName('link'), i,
-            url = window.location.href;
+            metas = document.getElementsByTagName('link'), i, url;
 
         for (i = 0; i < metas.length; i++) {
             if (metas[i].getAttribute('rel') === 'canonical') {
@@ -7286,8 +7289,8 @@
         }
     };
 
-    var ajaxInstances,
-        ajaxCallbacks,
+    var ajaxInstances = [],
+        ajaxCallbacks = [],
         networkDownAlerted = false;
 
     /**
@@ -7303,9 +7306,6 @@
         if (!url.includes('://') && url.startsWith('/')) {
             url = window.location.protocol + '//' + window.location.host + url;
         }
-
-        ajaxInstances || (ajaxInstances = []);
-        ajaxCallbacks || (ajaxCallbacks = []);
 
         index = ajaxInstances.length;
 
@@ -7338,9 +7338,6 @@
         return result;
 
         function readyStateChangeListener() {
-            ajaxInstances || (ajaxInstances = []);
-            ajaxCallbacks || (ajaxCallbacks = []);
-
             // Check if any ajax requests are complete
             ajaxInstances.forEach(function (xhr, i) {
                 if (!xhr || (xhr.readyState !== 4)) { // 4 = DONE
@@ -7388,9 +7385,6 @@
         }
 
         function processRequestChange(ajaxResultFrame, i) {
-            ajaxInstances || (ajaxInstances = []);
-            ajaxCallbacks || (ajaxCallbacks = []);
-
             var method = null,
                 methodEl = ajaxResultFrame.querySelector('method');
 
@@ -7401,13 +7395,13 @@
             var messageEl = ajaxResultFrame.querySelector('message');
             if (messageEl) {
                 // Either an error or a message was returned. :(
-                var message = messageEl.firstChild.data;
+                var message = messageEl.firstChild.textContent;
 
                 callAjaxMethod(method);
 
                 if (ajaxResultFrame.querySelector('error')) {
                     // It's an error :|
-                    $cms.ui.alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.data + ') message was returned by the server: ' + message);
+                    $cms.ui.alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
                     return;
                 }
 
@@ -7416,12 +7410,12 @@
             }
 
             var ajaxResultEl = ajaxResultFrame.querySelector('result');
-            if (!ajaxResultEl) {
-                callAjaxMethod(method);
+            if (ajaxResultEl) {
+                callAjaxMethod(method, ajaxResultFrame, ajaxResultEl);
                 return;
             }
 
-            callAjaxMethod(ajaxResultFrame, ajaxResultEl);
+            callAjaxMethod(method);
         }
 
         function handleErrorsInResult(xhr) {
@@ -7453,12 +7447,8 @@
                 method = null;
             }
 
-            if (method != null) {
-                if (method.response !== undefined) {
-                    method.response(ajaxResultFrame, ajaxResult);
-                } else if (typeof method === 'function') {
-                    method(ajaxResultFrame, ajaxResult);
-                }
+            if (typeof method === 'function') {
+                method(ajaxResultFrame, ajaxResult);
             }
         }
     }

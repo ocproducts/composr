@@ -112,31 +112,25 @@ window.previous_commands || (window.previous_commands = []);
     function commandrFormSubmission(command, form) {
         // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
         // var command=document.getElementById('commandr_command').value;
+        // Send it through XMLHttpRequest, and append the results.
+        document.getElementById('commandr_command').focus();
+        document.getElementById('commandr_command').disabled = true;
 
-        if (window.$cms.doAjaxRequest) {
-            // Send it through XMLHttpRequest, and append the results.
+        var post = 'command=' + encodeURIComponent(command);
+        post = $cms.form.modsecurityWorkaroundAjax(post);
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandrCommandResponse, post);
+
+        window.disable_timeout = window.setTimeout(function () {
+            document.getElementById('commandr_command').disabled = false;
             document.getElementById('commandr_command').focus();
-            document.getElementById('commandr_command').disabled = true;
+            if (window.disable_timeout) {
+                window.clearTimeout(window.disable_timeout);
+                window.disable_timeout = null;
+            }
+        }, 5000);
+        window.previous_commands.push(command);
 
-            var post = 'command=' + encodeURIComponent(command);
-            post = $cms.form.modsecurityWorkaroundAjax(post);
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandrCommandResponse, post);
-
-            window.disable_timeout = window.setTimeout(function () {
-                document.getElementById('commandr_command').disabled = false;
-                document.getElementById('commandr_command').focus();
-                if (window.disable_timeout) {
-                    window.clearTimeout(window.disable_timeout);
-                    window.disable_timeout = null;
-                }
-            }, 5000);
-            window.previous_commands.push(command);
-
-            return false;
-        } else if (form !== undefined) {
-            // Let the form be submitted the old-fashioned way.
-            return $cms.form.modsecurityWorkaround(form);
-        }
+        return false;
     }
 
 }(window.$cms));
