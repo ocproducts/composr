@@ -641,7 +641,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
             $matches[1] .= '__' . $catalogue_name;
         }
         $clause = db_cast('r.' . $first_id_field, 'INT');
-        $clause = '(MOD(' . $clause . ',' . date('d') . '))';
+        $clause = '(' . db_function('MOD', array($clause, date('d'))) . ')';
         $extra_select[$filter_key] = ', ' . $clause . ' AS fixed_random_' . fix_id($matches[1]);
         return array($clause, '', $filter_val);
     }
@@ -658,9 +658,9 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
     if ($filter_key == 'meta_keywords') {
         $seo_type_code = isset($info['seo_type_code']) ? $info['seo_type_code'] : '!!!ERROR!!!';
         if (multi_lang_content()) {
-            $clause = '(SELECT GROUP_CONCAT(text_original) FROM ' . $db->get_table_prefix() . 'seo_meta_keywords kw JOIN ' . $db->get_table_prefix() . 'translate kwt ON kwt.id=kw.meta_keyword WHERE kw.meta_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code) . ')';
+            $clause = '(' . db_function('GROUP_CONCAT', array('text_original', $db->get_table_prefix() . 'seo_meta_keywords kw JOIN ' . $db->get_table_prefix() . 'translate kwt ON kwt.id=kw.meta_keyword WHERE kw.meta_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code))) . ')';
         } else {
-            $clause = '(SELECT GROUP_CONCAT(meta_keyword) FROM ' . $db->get_table_prefix() . 'seo_meta_keywords kw WHERE kw.meta_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code) . ')';
+            $clause = '(' . db_function('GROUP_CONCAT', array('meta_keyword', $db->get_table_prefix() . 'seo_meta_keywords kw WHERE kw.meta_for_id=' . db_cast($table_join_code . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('kw.meta_for_type', $seo_type_code))) . ')';
         }
         $extra_select[$filter_key] = ', ' . $clause . ' AS meta_keyword_' . fix_id($seo_type_code);
         return array($clause, '', $filter_val);
@@ -901,20 +901,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
                             $alt .= ' OR ';
                         }
 
-                        switch ($filter_op) {
-                            case '<':
-                                $alt .= 'STRCMP(REPLACE(' . $filter_key . ',\'-\',\'\'),REPLACE(\'' . db_escape_string($filter_val) . '\',\'-\',\'\'))<0';
-                                break;
-                            case '>':
-                                $alt .= 'STRCMP(REPLACE(' . $filter_key . ',\'-\',\'\'),REPLACE(\'' . db_escape_string($filter_val) . '\',\'-\',\'\'))>0';
-                                break;
-                            case '<=':
-                                $alt .= 'STRCMP(REPLACE(' . $filter_key . ',\'-\',\'\'),REPLACE(\'' . db_escape_string($filter_val) . '\',\'-\',\'\'))<=0';
-                                break;
-                            case '>=':
-                                $alt .= 'STRCMP(REPLACE(' . $filter_key . ',\'-\',\'\'),REPLACE(\'' . db_escape_string($filter_val) . '\',\'-\',\'\'))>=0';
-                                break;
-                        }
+                        $alt .= 'REPLACE(' . $filter_key . ',\'-\',\'\')' . $filter_op . 'REPLACE(\'' . db_escape_string($filter_val) . '\',\'-\',\'\')';
                     }
                     break;
 
@@ -991,11 +978,11 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
                                 }
 
                                 if ($is_join) {
-                                    $alt .= $filter_key . ' LIKE CONCAT(' . $it_value . ',\'' . $delim . '%\')';
+                                    $alt .= $filter_key . ' LIKE ' . db_function('CONCAT', array($it_value, '\'' . $delim . '%\''));
                                     $alt .= ' OR ';
-                                    $alt .= $filter_key . ' LIKE CONCAT(\'%' . $delim . '\',' . $it_value . ')';
+                                    $alt .= $filter_key . ' LIKE ' . db_function('CONCAT', array('\'%' . $delim . '\'',  $it_value));
                                     $alt .= ' OR ';
-                                    $alt .= $filter_key . ' LIKE CONCAT(\'%' . $delim . '\',' . $it_value . ',\'' . $delim . '%\')';
+                                    $alt .= $filter_key . ' LIKE ' . db_function('CONCAT', array('\'%' . $delim . '\'', $it_value, '\'' . $delim . '%\''));
                                     $alt .= ' OR ';
                                     $alt .= $filter_key . '=' . $it_value;
                                 } else {
@@ -1027,7 +1014,7 @@ function filtercode_to_sql($db, $filters, $content_type = null, $context = null,
                                 $alt .= ' OR ';
                             }
                             if ($is_join) {
-                                $alt .= $filter_key . ' LIKE CONCAT(\'%\',' . $it_value . ',\'%\')';
+                                $alt .= $filter_key . ' LIKE ' . db_function('CONCAT', array('\'%\'', $it_value, '\'%\''));
                             } else {
                                 $alt .= $filter_key . ' LIKE \'' . db_encode_like('%' . $it_value . '%') . '\'';
                             }

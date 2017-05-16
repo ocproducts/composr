@@ -1185,7 +1185,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             }
 
                                             $this_member_id = mixed();
-                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY LENGTH(m_username) DESC', 1);
+                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY ' . db_function('LENGTH', array('m_username')) . ' DESC', 1);
                                             if (isset($results[0])) {
                                                 $this_member_id = $results[0]['id'];
                                                 $username = $results[0]['m_username'];

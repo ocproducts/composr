@@ -778,7 +778,7 @@ class DatabaseRepair
             $this->add_fixup_query($query);
 
             foreach ($key_fields as $key_field) {
-                $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=CONCAT(\'*\',m_type) WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($key_field) . '\'';
+                $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('\'*\'', 'm_type')) . ' WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($key_field) . '\'';
                 $this->add_fixup_query($query);
             }
         }

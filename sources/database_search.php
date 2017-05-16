@@ -1053,7 +1053,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
         if ($keywords_where != '') {
             if ($meta_id_field == 'the_zone:the_page') { // Special case
-                $meta_join = 'm.meta_for_id=CONCAT(r.the_zone,\':\',r.the_page)';
+                $meta_join = 'm.meta_for_id=' . db_function('CONCAT', array('r.the_zone', '\':\'', 'r.the_page'));
             } else {
                 $meta_join = 'm.meta_for_id=' . db_cast('r.' . $meta_id_field, 'CHAR');
             }

@@ -508,14 +508,16 @@ function user_sync__outbound($member_id)
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
     // Try and fetch details of remote user
-    $sql = 'SELECT * FROM ' . $db_table . ' WHERE CONCAT(';
+    $sql = 'SELECT * FROM ' . $db_table . ' WHERE ';
+    $_username_parts = array();
     foreach ($username_fields as $i => $uf) {
         if ($i != 0) {
-            $sql .= ',' . $dbh->quote(' ') . ',';
+            $_username_parts[] = $dbh->quote(' ');
         }
-        $sql .= $uf;
+        $_username_parts[] = $uf;
     }
-    $sql .= ')=' . $dbh->quote($record['m_username']);
+    $sql .= db_function('CONCAT', $_username_parts);
+    $sql .= '=' . $dbh->quote($record['m_username']);
     $sth = $dbh->query($sql);
     $user = $sth->fetch(PDO::FETCH_ASSOC);
 

@@ -12,7 +12,7 @@
 
 */
 
-/*EXTRA FUNCTIONS: pg\_.+*/
+/*EXTRA FUNCTIONS: pg\_.+|get_current_user*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License

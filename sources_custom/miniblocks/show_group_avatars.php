@@ -26,7 +26,7 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 $order = 'm_join_time DESC';
 if (isset($map['order'])) {
     if ($map['order'] == 'random') {
-        $order = 'RAND()';
+        $order = db_function('RAND');
     }
     if ($map['order'] == 'username') {
         $order = 'm_username';

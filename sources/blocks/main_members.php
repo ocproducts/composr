@@ -279,21 +279,13 @@ class Block_main_members
         switch ($sort) {
             case 'random ASC':
             case 'random DESC':
-                $sort = 'RAND() ASC';
+                $sort = db_function('RAND') . ' ASC';
                 break;
             case 'm_total_sessions ASC':
-                if (get_db_type() == 'postgresql') {
-                    $sort = 'm_total_sessions/extract(epoch from now()) ASC';
-                } else {
-                    $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) ASC';
-                }
+                $sort = 'm_total_sessions/(' . strval(time()) . '-m_join_time) ASC';
                 break;
             case 'm_total_sessions DESC':
-                if (get_db_type() == 'postgresql') {
-                    $sort = 'm_total_sessions/extract(epoch from now()) DESC';
-                } else {
-                    $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) DESC';
-                }
+                $sort = 'm_total_sessions/(' . strval(time()) . '-m_join_time) DESC';
                 break;
             case 'm_join_time':
             case 'm_last_visit_time':

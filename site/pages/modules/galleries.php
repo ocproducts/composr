@@ -1549,8 +1549,8 @@ class Module_galleries
             $suffix_images = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
             $suffix_videos = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($sort == 'fixed_random ASC') {
-            $suffix_images = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
-            $suffix_videos = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
+            $suffix_images = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
+            $suffix_videos = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
         } else {
             $suffix_images = '';
             $suffix_videos = '';

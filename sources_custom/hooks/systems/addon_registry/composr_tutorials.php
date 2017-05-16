@@ -217,6 +217,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/faq/balanced_approach.png',
             'data_custom/images/docs/dont.png',
             'data_custom/images/docs/remember.png',
+            'docs/pages/comcode_custom/EN/sup_staging_servers.txt',
             'data_custom/images/docs/tut_intl_maintenance/continents-975936_1280.jpg',
             'data_custom/images/docs/sup_irrational_behaviour/image.png',
             'data_custom/images/docs/sup_forum_separation/1.jpg',

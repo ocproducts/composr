@@ -664,7 +664,7 @@ class Module_admin_version
             }
             foreach ($comcode_lang_fields as $table => $fields) {
                 foreach ($fields as $field) {
-                    $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta SET m_type=CONCAT(m_type,\'__COMCODE\') WHERE ' . db_string_equal_to('m_table', $table) . ' AND ' . db_string_equal_to('m_name', $field));
+                    $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('m_type', '\'__COMCODE\'')) . ' WHERE ' . db_string_equal_to('m_table', $table) . ' AND ' . db_string_equal_to('m_name', $field));
                 }
             }
 
@@ -719,7 +719,19 @@ class Module_admin_version
 
             $GLOBALS['SITE_DB']->add_table_field('url_id_monikers', 'm_manually_chosen', 'BINARY');
             $GLOBALS['SITE_DB']->add_table_field('url_id_monikers', 'm_moniker_reversed', 'SHORT_TEXT');
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'url_id_monikers SET m_moniker_reversed=REVERSE(m_moniker)');
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'url_id_monikers SET m_moniker_reversed=REVERSE(m_moniker)');
+            } else {
+                $start = 0;
+                $max = 500;
+                do {
+                    $url_id_monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('DISTINCT m_moniker'), null, '', $max, $start);
+                    foreach ($url_id_monikers as $url_id_moniker) {
+                        $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_moniker_reversed' => strrev($url_id_moniker['m_moniker'])), array('m_moniker' => $url_id_moniker['m_moniker']));
+                    }
+                    $start += $max;
+                } while (count($url_id_monikers) == $max);
+            }
             $GLOBALS['SITE_DB']->create_index('url_id_monikers', 'uim_monrev', array('m_moniker_reversed'));
 
             $GLOBALS['SITE_DB']->alter_table_field('captchas', 'si_session_id', '*ID_TEXT');

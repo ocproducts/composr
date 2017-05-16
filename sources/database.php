@@ -368,6 +368,169 @@ function db_escape_string($string)
 }
 
 /**
+ * Call a database function that may be different on different database drivers.
+ * We are using MySQL syntax as a de-facto standard. SQL does not standardise this stuff well.
+ * This is HACKHACK and should move into database drivers into the future.
+ * Basic arithmetic and inequality operators are assumed supported without needing a function.
+ *
+ * @param string $function Function name
+ * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT
+ * @param ?array $args List of string arguments, assumed already quoted/escaped correctly for the particular database (null: none)
+ * @return string SQL fragment
+ */
+function db_function($function, $args = null)
+{
+    if ($args === null) {
+        $args = array(); // TODO: In v11 make like this as default parameter
+    }
+
+    switch ($function) {
+        case 'CONCAT':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                // Supported on most
+
+                case 'sqlite':
+                    return implode(' || ', $args);
+
+                case 'access':
+                    return implode(' & ', $args);
+            }
+            break;
+
+        case 'REPLACE':
+            if (count($args) != 3) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                // Supported on all http://troels.arvin.dk/db/rdbms/#functions-REPLACE
+                // You don't even need to call this function.
+            }
+            break;
+
+        case 'SUBSTR':
+            if (count($args) != 3) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            if ($args[1] != '1') {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // Can only act as a 'LEFT'
+            }
+            switch (get_db_type()) {
+                case 'sqlserver':
+                    $function = 'SUBSTRING'; // http://troels.arvin.dk/db/rdbms/#functions-REPLACE
+                    break;
+
+                case 'access':
+                    $function = 'LEFT'; // http://stackoverflow.com/questions/809120/is-there-an-equivalent-to-the-substring-function-in-ms-access-sql
+                    $args = array($args[0], $args[2]);
+                    break;
+            }
+            break;
+
+        case 'LENGTH':
+            if (count($args) != 1) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'sqlserver':
+                case 'access':
+                    $function = 'LEN';
+                    break;
+            }
+            break;
+
+        case 'RAND':
+            if (count($args) != 0) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'postgresql':
+                case 'sqlite':
+                    $function = 'RAND';
+                    break;
+            }
+            break;
+
+        case 'COALESCE':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'access':
+                    $function = 'IIF';
+                    $args[0] .= ' IS NULL';
+                    break;
+            }
+            break;
+
+        case 'LEAST':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'sqlite':
+                    $function = 'MIN';
+                    break;
+                case 'sqlserver':
+                case 'access':
+                    return '(SELECT MIN(C1) FROM (SELECT ' . $args[0] . ' AS C1 UNION ALL SELECT ' . $args[1] . ' AS C2))';
+            }
+            break;
+
+        case 'GREATEST':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+            }
+            break;
+
+        case 'MOD':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'access':
+                    return $args[0] . ' MOD ' . $args[1];
+                case 'postgresql':
+                case 'sqlserver':
+                case 'sqlite':
+                    return $args[0] . ' % ' . $args[1];
+            }
+            break;
+
+        // This may not be fully supported on all database systems
+        case 'GROUP_CONCAT':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'mysql':
+                case 'mysqli':
+                case 'mysql_dbx':
+                case 'sqlite':
+                    return 'SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+                case 'oracle':
+                    return 'SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1];
+                case 'postgresql':
+                    return 'SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1];
+                case 'sql_server':
+                    return 'STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\')';
+                case 'access': // Not fully supported
+                    return 'SELECT TOP 1 ' . $args[0] . ' FROM ' . $args[1];
+                case 'ibm': // Not fully supported
+                    return 'SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only';
+            }
+            break;
+    }
+
+    // Default handling
+    return $function . '(' . implode(',', $args) . ')';
+}
+
+/**
  * Create an SQL cast.
  *
  * @param string $field The field identifier

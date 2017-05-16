@@ -1,0 +1,176 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Staging Servers[/title]
+
+When running a professional website where a team of stakeholders are involved you are likely to want a staging server that mirrors the live server, for testing before pushing a site live.
+
+The staging server will be updated multiple times, as the site develops.
+
+This tutorial provides a few ideas and suggestions on process.
+
+[title="2"]Basic architecture[/title]
+
+You will have the following machines running your code:
+ - Live server(s)
+ - Staging server
+ - Any number of development machines
+
+[title="2"]Synching files[/title]
+
+There are 2 plausible approaches for synching files:[list="a"]
+[*] [b]Using git[/b]. You are likely already using git for development. Consider also using the same git repository for deployment, as described below. This is what we recommend.
+[*] Zipping up changed files. Our bundled [tt]recentchanges.sh[/tt] script can do this.
+[/list]
+
+[title="2"]Installation options[/title]
+
+You can code the [tt]_config.php[/tt] file to have multiple configurations, serving individual machine settings. This allows you to share a single configuration file between sites.
+
+For example, you may have this code:
+[code="PHP"]
+<?php
+
+/* Normal _config.php settings go here, not shown in this example */
+
+// Per-machine overrides
+switch (gethostname()) {
+    case 'example': // live machine, uses the main settings from above
+        break;
+
+    case 'sandbox': // sandbox machine
+        unset($SITE_INFO['base_url']); // Allow dynamic base URL
+
+        // Different DB settings
+        $SITE_INFO['db_site'] = 'cms';
+        $SITE_INFO['db_site_host'] = 'localhost';
+        $SITE_INFO['db_site_user'] = 'cms';
+        $SITE_INFO['db_site_password'] = 'abcdef';
+        break;
+
+    case 'dev01': // dev machine
+        unset($SITE_INFO['base_url']); // Allow dynamic base URL
+        $SITE_INFO['backdoor_ip'] = '127.0.0.1'; // Automatic login for localhost
+        $SITE_INFO['no_email_output'] = '1'; // Suppress any e-mails going out (the 'mail_queue_debug' configuration option would be another choice)
+
+        // Different DB settings
+        $SITE_INFO['db_site'] = 'cms';
+        $SITE_INFO['db_site_host'] = 'localhost';
+        $SITE_INFO['db_site_user'] = 'cms';
+        $SITE_INFO['db_site_password'] = 'abcdef';
+        break;
+
+    default:
+        exit('Unrecognised server, ' . gethostname());
+}
+[/code]
+
+[title="3"]Using git[/title]
+
+Using git works as follows:
+1) Install git on the staging server and live server.
+2) Set up the staging and live server SSH keys as 'deploy keys' on your git server (deploy keys are read-only keys).
+3) When you have finished development and developer testing, do a pull to the staging server, and conduct testing there, then when ready pull to the live server.
+
+More sophisticated users may:
+1) Use multiple git branches so you can parallel-develop new functionality while functionality is going through testing.
+2) Also run a continuous integration server, where changes made in git (or multiple git branches) have unit tests run against them every time a new push is made. 
+
+The level of sophistication you have will typically depend on the size of your development team.
+
+[title="2"]Synching data[/title]
+
+Initially you can push a database live just by doing an SQL dump and import using standard MySQL tools. However, it becomes much more difficult to managing subsequent changes as your live server will have data that you cannot just overwrite with data from a development machine (you would lose live data and inject test data).
+
+There are 3 broad kinds of data:[list="1"]
+[*] Content (e.g. pages or galleries)
+[*] Configuration (e.g. configuration options)
+[*] Structure (e.g. catalogues)
+[/list]
+
+Each of these kinds are covered in their own section below.
+
+You may also wish to occasionally replace the staging server database with that of the live server, to improve the accuracy of your testing environment.
+
+[title="3"]Content[/title]
+
+There are 4 plausible approaches for synching Content:[list="a"]
+[*] Make content on the live server, and [b]use the Composr Validation feature[/b] to control it going live to regular users. This is what we recommend.
+[*] Make it on the staging server and copy it live by manual copy and paste of the data into a new live entry.
+[*] Make it on the staging server and copy it live by copying a pseudo-file [page="_SEARCH:tut_repository"]using WebDAV[/page]. This is only recommended for organisations that can invest in tuning and testing Composr's WebDAV implementation to their need; it's easy once a good workflow and understand is in place, but it does have some complexities under-the-hood.
+[*] Make it in code using the Composr API and run code to make it live. This is similar to the approach for Configuration, so is covered below.
+[/list]
+
+[title="3"]Configuration and Structure[/title]
+
+There are 3 plausible approaches for synching Configuration and Structure:[list="a"]
+[*] [b]Write scripts[/b] to do your changes and make them live. Recommended for developers.[list="i"]
+ [*] By putting the code in [tt]data_custom/execute_temp.php[/tt] -- this is a spot reserved for temporary custom code. This approaches makes sense if the developer is the one pushing code to live.
+ [*] By creating a site-specific versioning script. This is described in the section below. This is recommended for serious development.
+ [*] By noting down Commandr commands used to do the configuration, then re-executing them on live later. This is only really recommended for small occasionally changes, but for those it works well due to the interactivity of it.
+[/list]
+[*] Note down every change you're making and manually re-apply it live.
+[*] Use diff tools to compare database dumps taken at different points in times, and manually transfer the database changes. This is not recommended due to complexity, but useful when in a tight spot.
+[/list]
+
+[title="4"]Site-specific versioning scripts[/title]
+
+You can give each site update an incremental version number, and code in changes relating to this update. By coding it within a Composr [tt]systems/startup[/tt] hook it will run on the first page view as soon as git code is pulled through.
+
+Here's an example:
+[code="PHP"]
+<?php
+
+class Hook_startup_upgrading
+{
+    /**
+     * Run startup code.
+     */
+    public function run()
+    {
+        $version_at = intval(get_value('pseudo_version', '0', true));
+
+        $version_check = 1;
+        if ($version_at < $version_check) {
+            set_option('wysiwyg_font_units', 'px');
+
+            require_code('caches3');
+            erase_cached_templates();
+        }
+
+        $version_check = 2;
+        if ($version_at < $version_check) {
+            set_option('enable_previews', '1');
+
+            require_code('caches3');
+            erase_cached_templates();
+        }
+
+        // ^ Add a new code block, with an incremented version number, for each targeted updated
+
+        if ($version_at != $version_check) {
+            set_value('pseudo_version', strval($version_check), true);
+        }
+    }
+}
+[/code]
+
+I this example we have coded in 2 updates. The first update changes the [tt]wysiwyg_font_units[/tt] option and empties the template cache. The second changes the [tt]enable_previews[/tt] option and empties the template cache.
+Each update should contain all the code needed to move a site along for the code being pulled for that update.
+
+[title="3"]Tips[/title]
+
+Here are some assorted tips to help with portability:
+1) Avoid using Composr attachments because it's hard to sync them due to database changes. Instead place files in [tt]uploads/website_specific[/tt] or [tt]uploads/filedump[/tt] and reference them using the [tt]media[/tt] Comcode tag (which has all the same rendering functionality attachments do).
+2) Avoid coding in the site's base URL directly, use [tt]{$BASE_URL}[/tt].
+
+[concepts
+ 1_key="Staging server"       1_value="A server that mirrors the live server, used for final testing."
+ 2_key="Deploy key"           2_value="A key for SSH that provides read-only access to a git repository."
+ 3_key="Portability"          3_value="Something is portable if it is easily transferable between sites or systems."
+]Concepts[/concepts]
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:sup_professional_upgrading"]Professional upgrading[/page]
+ - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
+ - [page="_SEARCH:sup_site_cloning"]Cloning your site[/page]
+
+{$SET,tutorial_tags,Maintenance,expert}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,Some advice about using a staging server.}[block]main_tutorial_rating[/block]

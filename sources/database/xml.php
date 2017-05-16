@@ -129,6 +129,7 @@ function _get_sql_keywords()
 {
     return array(
         'LEFT', 'RIGHT', 'CONCAT', 'LENGTH', 'REPLACE', 'COALESCE',
+        'SUBSTR', 'RAND', 'LEAST', 'GREATEST', 'MOD',
         'WHERE',
         'SELECT', 'FROM', 'AS', 'UNION', 'ALL', 'DISTINCT',
         'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE',
@@ -252,7 +253,7 @@ class Database_Static_xml
     {
         $this->db_query('UPDATE db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name), $db);
         foreach ($new_key as $_new_key) {
-            $this->db_query('UPDATE db_meta SET m_type=CONCAT(\'*\',m_type) WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key), $db);
+            $this->db_query('UPDATE db_meta SET m_type=' . db_function('CONCAT', array('\'*\'', 'm_type')) . ' WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key), $db);
         }
     }
 
@@ -1950,19 +1951,33 @@ class Database_Static_xml
 
             // Conventional expressions...
 
-            case 'COALESCE':
+            case 'RAND':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
-                $expr1 = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
-                if (!$this->_parsing_expects($at, $tokens, ',', $query)) {
-                    return null;
-                }
-                $expr2 = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('COALESCE', $expr1, $expr2);
+                $expr = array($token);
+                break;
+
+            case 'LEAST':
+            case 'GREATEST':
+            case 'COALESCE':
+            case 'CONCAT':
+            case 'MOD':
+                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                    return null;
+                }
+                $expr1 = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
+                if (!$this->_parsing_expects($at, $tokens, ',', $query)) {
+                    return null;
+                }
+                $expr2 = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
+                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                    return null;
+                }
+                $expr = array($token, $expr1, $expr2);
                 break;
 
             case 'CAST':
@@ -1977,10 +1992,11 @@ class Database_Static_xml
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('CAST', $expr, $type);
+                $expr = array($token, $expr, $type);
                 break;
 
             case 'REPLACE':
+            case 'SUBSTR':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
@@ -1996,22 +2012,7 @@ class Database_Static_xml
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('REPLACE', $expr1, $expr2, $expr3);
-                break;
-
-            case 'CONCAT':
-                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
-                    return null;
-                }
-                $expr1 = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
-                if (!$this->_parsing_expects($at, $tokens, ',', $query)) {
-                    return null;
-                }
-                $expr2 = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
-                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
-                    return null;
-                }
-                $expr = array('CONCAT', $expr1, $expr2);
+                $expr = array($token, $expr1, $expr2, $expr3);
                 break;
 
             case 'LENGTH':
@@ -2022,7 +2023,7 @@ class Database_Static_xml
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('LENGTH', $expr1);
+                $expr = array($token, $expr1);
                 break;
 
             case 'EXISTS':
@@ -2036,7 +2037,7 @@ class Database_Static_xml
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('EXISTS', $results);
+                $expr = array($token, $results);
                 break;
 
             case '(':
@@ -2386,6 +2387,21 @@ class Database_Static_xml
                     return null;
                 }
                 return isset($subquery[0]) ? array_shift($subquery[0]) : null;
+
+            case 'RAND':
+                return mt_rand(0, mt_getrandmax());
+
+            case 'SUBSTR':
+                return substr($this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set), $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set) + 1, $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set));
+
+            case 'LEAST':
+                return min($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set), $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set));
+
+            case 'GREATEST':
+                return max($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set), $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set));
+
+            case 'MOD':
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) % $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
 
             case 'IN':
                 $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);

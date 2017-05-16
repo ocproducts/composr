@@ -189,7 +189,7 @@ class Block_main_gallery_embed
         } elseif ($_sort == 'compound_rating') {
             $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif ($_sort == 'fixed_random') {
-            $rating_sort = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
+            $rating_sort = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
         } else {
             $rating_sort = '';
         }
@@ -199,7 +199,7 @@ class Block_main_gallery_embed
         } elseif ($_sort == 'compound_rating') {
             $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif ($_sort == 'fixed_random') {
-            $rating_sort = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
+            $rating_sort = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
         } else {
             $rating_sort = '';
         }

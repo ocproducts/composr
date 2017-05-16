@@ -388,7 +388,7 @@ class Block_main_multi_content
                     case 'fixed_random':
                     case 'fixed_random ASC':
                         $clause = db_cast('r.' . $first_id_field, 'INT');
-                        $clause = '(MOD(' . $clause . ',' . date('d') . '))';
+                        $clause = '(' . db_function('MOD', array($clause, date('d'))) . ')';
                         $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ',' . $clause . ' AS fixed_random ' . $query . ' ORDER BY fixed_random', $max, $start, false, true, $lang_fields);
                         break;
                     case 'recent_contents':
@@ -404,24 +404,23 @@ class Block_main_multi_content
                             }
                         }
                         if ($sort_combos != array()) {
-                            if (count($sort_combos) != 1) {
-                                $order_by = 'GREATEST(';
-                            }
+                            $_order_by = array();
                             foreach ($sort_combos as $i => $sort_combo) {
-                                if ($i != 0) {
-                                    $order_by .= ',';
-                                }
                                 list($other_table, $other_add_time_field, $other_category_field) = $sort_combo;
                                 if ($sort == 'recent_contents DESC') {
-                                    $order_by .= 'IFNULL((SELECT MAX(';
+                                    $__order_by_a = '(SELECT MAX(';
                                 } else {
-                                    $order_by .= 'IFNULL((SELECT MIN(';
+                                    $__order_by_a = '(SELECT MIN(';
                                 }
-                                $order_by .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $first_id_field . '=x.' . $other_category_field;
-                                $order_by .= '),' . (($sort == 'recent_contents DESC') ? '0' : strval(PHP_INT_MAX)/*so empty galleries go to end of order*/) . ')';
+                                $__order_by_a .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $first_id_field . '=x.' . $other_category_field;
+                                $__order_by_a .= ')';
+                                $__order_by_b = (($sort == 'recent_contents DESC') ? '0' : strval(PHP_INT_MAX)/*so empty galleries go to end of order*/);
+                                $_order_by[] = db_function('COALESCE', array($__order_by_a, $__order_by_b));
                             }
-                            if (count($sort_combos) != 1) {
-                                $order_by .= ')';
+                            if (count($sort_combos) == 1) {
+                                $order_by = $_order_by[0];
+                            } else {
+                                $order_by = db_function('GREATEST', $_order_by);
                             }
 
                             if ($sort == 'recent_contents DESC') {
