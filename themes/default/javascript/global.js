@@ -7666,16 +7666,14 @@
         // Implementation for [data-cms-select2]
         select2Plugin: {
             attach: function (context) {
-                if (!window.jQuery || !window.jQuery.fn.select2) {
-                    return;
-                }
+                $cms.requireJavascript(['jquery', 'select2']).then(function () {
+                    var els = $cms.dom.$$$(context, '[data-cms-select2]');
 
-                var els = $cms.dom.$$$(context, '[data-cms-select2]');
-
-                // Select2 plugin hook
-                els.forEach(function (el) {
-                    var options = objVal($cms.dom.data(el, 'cmsSelect2'));
-                    window.jQuery(el).select2(options);
+                    // Select2 plugin hook
+                    els.forEach(function (el) {
+                        var options = objVal($cms.dom.data(el, 'cmsSelect2'));
+                        window.jQuery(el).select2(options);
+                    });
                 });
             }
         },
