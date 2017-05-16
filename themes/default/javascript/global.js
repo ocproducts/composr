@@ -1847,7 +1847,10 @@
         if (isAbsoluteOrSchemeRelative(script) && $cms.dom.hasScriptLoaded(script)) {
             return Promise.resolve();
         } else if (validIdRE.test(script)) {
-            scriptEl = $cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified');
+            scriptEl = $cms.dom.$('script[id^="javascript-' + script + '"]');
+            if (scriptEl && !(new RegExp('^javascript-' + script + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(scriptEl.id)) {
+                scriptEl = null;
+            }
         }
 
         if (!scriptEl) {
@@ -1873,23 +1876,34 @@
      * @returns { Promise }
      */
     function requireJavascript(scripts) {
+        var calls = [];
+
         scripts = arrVal(scripts);
 
-        return Promise.all(scripts.map(_requireJavascript));
+        scripts.forEach(function (script) {
+            calls.push(_requireJavascript.bind(undefined, script));
+        });
+
+        return sequentialPromises(calls);
     }
 
-    function removeCssJsSuffixes(codeName) {
-        // if (!$minify) {
-        //     $c .= '_non_minified';
-        // }
-        // if ($https) {
-        //     $c .= '_ssl';
-        // }
-        // if ($mobile) {
-        //     $c .= '_mobile';
-        // }
+    function sequentialPromises(funcs) {
+        funcs = arrVal(funcs, true);
 
-        return codeName;
+        if (funcs.length < 1) {
+            return Promise.resolve();
+        }
+
+        var func = funcs.shift(),
+            promise = func();
+        if (!isPromise(promise)) {
+            promise = Promise.resolve(promise);
+        }
+        return promise.then(function(val){
+            return (funcs.length > 0) ? sequentialPromises(funcs) : val;
+        }, function () {
+            return (funcs.length > 0) ? sequentialPromises(funcs) : val;
+        });
     }
 
     /**
@@ -4939,6 +4953,8 @@
      * @returns {string}
      */
     function keepStub(starting) {// `starting` set to true means "Put a '?' for the first parameter"
+        starting = !!starting;
+
         var keep = $cms.uspKeepSession.toString();
 
         if (!keep) {
