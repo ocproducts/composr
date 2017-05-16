@@ -8365,7 +8365,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.$JS_ON() || $cms.usp.get('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
+            if ($cms.$JS_ON() || +$cms.usp.get('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
                 return;
             }
 

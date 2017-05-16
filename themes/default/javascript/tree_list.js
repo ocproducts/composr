@@ -310,7 +310,7 @@
                     newHtml = null;
 
                     escapedTitle = $cms.filter.html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
-                    if (escapedTitle == '') escapedTitle = '{!NA_EM;^}';
+                    if (escapedTitle === '') escapedTitle = '{!NA_EM;^}';
 
                     var description = '';
                     var descriptionInUse = '';
