@@ -448,7 +448,7 @@ function db_function($function, $args = null)
             switch (get_db_type()) {
                 case 'postgresql':
                 case 'sqlite':
-                    $function = 'RAND';
+                    $function = 'RANDOM';
                     break;
             }
             break;
@@ -466,24 +466,40 @@ function db_function($function, $args = null)
             break;
 
         case 'LEAST':
-            if (count($args) != 2) {
-                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-            }
             switch (get_db_type()) {
                 case 'sqlite':
                     $function = 'MIN';
                     break;
                 case 'sqlserver':
                 case 'access':
-                    return '(SELECT MIN(C1) FROM (SELECT ' . $args[0] . ' AS C1 UNION ALL SELECT ' . $args[1] . ' AS C2))';
+                    $ret = '(SELECT MIN(X) FROM (';
+                    foreach ($args as $i => $arg) {
+                        if ($i != 0) {
+                            $ret .= ' UNION ALL ';
+                        }
+                        $ret .= 'SELECT ' . $args[0] . ' AS X';
+                    }
+                    $ret .= '))';
+                    return $ret;
             }
             break;
 
         case 'GREATEST':
-            if (count($args) != 2) {
-                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-            }
             switch (get_db_type()) {
+                case 'sqlite':
+                    $function = 'MAX';
+                    break;
+                case 'sqlserver':
+                case 'access':
+                    $ret = '(SELECT MAX(X) FROM (';
+                    foreach ($args as $i => $arg) {
+                        if ($i != 0) {
+                            $ret .= ' UNION ALL ';
+                        }
+                        $ret .= 'SELECT ' . $args[0] . ' AS X';
+                    }
+                    $ret .= '))';
+                    return $ret;
             }
             break;
 
@@ -524,6 +540,10 @@ function db_function($function, $args = null)
                     return 'SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only';
             }
             break;
+    }
+
+    if (get_db_type() == 'xml') {
+        $function = 'X_' . $function;
     }
 
     // Default handling

@@ -71,7 +71,7 @@ class Database_Static_access
             return;
         }
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
-        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
     /**
@@ -433,6 +433,8 @@ class Database_Static_access
                         } else {
                             $newrow[$name] = null;
                         }
+                    } elseif (substr($type, 0, 6) == 'DOUBLE') {
+                        $newrow[$name] = floatval($v);
                     } else {
                         $newrow[$name] = $v;
                     }

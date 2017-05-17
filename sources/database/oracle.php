@@ -79,7 +79,7 @@ class Database_Static_oracle
             }
             return;
         }
-        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
     /**
@@ -521,6 +521,8 @@ class Database_Static_oracle
                         } else {
                             $newrow[$name] = null;
                         }
+                    } elseif (substr($type, 0, 5) == 'FLOAT') || substr($type, 0, 6) == 'NUMBER' {
+                        $newrow[$name] = floatval($v);
                     } else {
                         if ($v == ' ') {
                             $v = '';

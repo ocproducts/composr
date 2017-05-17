@@ -371,12 +371,15 @@ function _helper_delete_index_if_exists($this_ref, $table_name, $index_name)
     if (substr($index_name, 0, 1) == '#') {
         $index_name = substr($index_name, 1);
     }
-    $query = 'DROP INDEX ' . $index_name . ' ON ' . $this_ref->get_table_prefix() . $table_name;
-    $this_ref->query($query, null, null, true);
 
-    if (isset($GLOBALS['XML_CHAIN_DB'])) {
-        // DB chaining: It's a write query, so needs doing on chained DB too
-        $GLOBALS['XML_CHAIN_DB']->_query($query, null, null, true);
+    foreach (array($index_name, $index_name . '__' . $table_name/*Some DB drivers have to make it globally unique via using table name in name*/) as $_index_name) {
+        $query = 'DROP INDEX ' . $_index_name . ' ON ' . $this_ref->get_table_prefix() . $table_name;
+        $this_ref->query($query, null, null, true);
+
+        if (isset($GLOBALS['XML_CHAIN_DB'])) {
+            // DB chaining: It's a write query, so needs doing on chained DB too
+            $GLOBALS['XML_CHAIN_DB']->_query($query, null, null, true);
+        }
     }
 
     $this_ref->query_delete('db_meta_indices', array('i_table' => $table_name, 'i_name' => $full_index_name));

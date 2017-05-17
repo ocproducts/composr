@@ -63,6 +63,7 @@ function get_minimum_search_length()
 
 /**
  * Get a list of MySQL stopwords.
+ * May be overridden for other databases, if you want to tune your stopword list.
  *
  * @return array List of stopwords (actually a map of stopword to true)
  */

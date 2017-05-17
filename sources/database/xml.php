@@ -21,15 +21,15 @@
  */
 
 /*
-    Known (intentional) issues in SQL support (we are targeting MySQL-4.0 compatibility, similar to SQL-92)
-        We support a few MySQL functions: LEFT, RIGHT, REPLACE, LENGTH, CONCAT, COALESCE. These are not likely usable on all DB's.
-        We do not support the range of standard SQL functions.
-        We do not support SQL data types, we use Composr ones instead. We don't support complex type-specific ops such as "+" for string concatenation.
+    Known (intentional) issues in SQL support (we are targeting MySQL-4.3 compatibility, similar to SQL-92)
+        We support a few SQL/MySQL functions, the ones the Composr db_function outputs and the very basic operators. However we prefix with 'X_' so that we don't accidentally code in assumptions about MySQL.
+        We do not support SQL data types, we use Composr ones instead.
         We do not have any special table/field naming escaping support-- so you need to use names that aren't awkward
         MySQL-style auto-increment is supported, but actually done as key randomisation, once install has finished
         Indexes are not supported
         We ARE type strict, unlike MySQL (even MySQL strict mode won't complain if a type conversion is always lossless, such as integer to string)
         Data Control Language (DCL) is not supported
+        Information schemas are not supported
         Semi-colons to split queries are not supported at the driver level
         Temporary tables are not supported
         Views are not supported
@@ -46,7 +46,6 @@
         Field naming for things like COUNT(*) will not be consistent with MySQL
         You must specify the field names in INSERT queries
         Expressions in ORDER BY clauses will be ignored
-        GROUP_CONCAT not implemented
     This database system is intended only for Composr, and not as a general purpose database. In Composr our philosophy is to write logic in PHP, not SQL, hence the subset supported.
     Also as we have to target MySQL-4.3 we can't implement some more sophisticated featured, in case programmers rely on them!
 */
@@ -128,8 +127,9 @@ function init__database__xml()
 function _get_sql_keywords()
 {
     return array(
-        'LEFT', 'RIGHT', 'CONCAT', 'LENGTH', 'REPLACE', 'COALESCE',
-        'SUBSTR', 'RAND', 'LEAST', 'GREATEST', 'MOD',
+        'LEFT', 'RIGHT', // Join types
+        'X_CONCAT', 'X_LENGTH', 'X_REPLACE', 'X_COALESCE',
+        'X_SUBSTR', 'X_RAND', 'X_LEAST', 'X_GREATEST', 'X_MOD',
         'WHERE',
         'SELECT', 'FROM', 'AS', 'UNION', 'ALL', 'DISTINCT',
         'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE',
@@ -137,7 +137,7 @@ function _get_sql_keywords()
         'LIKE', 'IF', 'NOT', 'IS', 'NULL', 'AND', 'OR', 'BETWEEN', 'IN', 'EXISTS',
         'GROUP', 'BY', 'ORDER', 'ASC', 'DESC',
         'JOIN', 'OUTER', 'INNER', 'ON',
-        'COUNT', 'SUM', 'AVG', 'MAX', 'MIN',
+        'COUNT', 'SUM', 'AVG', 'MAX', 'MIN', 'X_GROUP_CONCAT',
         'LIMIT',
         '+', '-', '*', '/',
         '<>', '>', '<', '>=', '<=', '=',
@@ -251,9 +251,9 @@ class Database_Static_xml
      */
     public function db_change_primary_key($table_name, $new_key, $db)
     {
-        $this->db_query('UPDATE db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name), $db);
+        $this->db_query('UPDATE db_meta SET m_type=X_REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name), $db);
         foreach ($new_key as $_new_key) {
-            $this->db_query('UPDATE db_meta SET m_type=' . db_function('CONCAT', array('\'*\'', 'm_type')) . ' WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key), $db);
+            $this->db_query('UPDATE db_meta SET m_type=' . db_function('X_CONCAT', array('\'*\'', 'm_type')) . ' WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key), $db);
         }
     }
 
@@ -1926,6 +1926,7 @@ class Database_Static_xml
             case 'MAX':
             case 'MIN':
             case 'SUM':
+            case 'X_GROUP_CONCAT':
             case 'AVG':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
@@ -1951,7 +1952,7 @@ class Database_Static_xml
 
             // Conventional expressions...
 
-            case 'RAND':
+            case 'X_RAND':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
@@ -1961,11 +1962,11 @@ class Database_Static_xml
                 $expr = array($token);
                 break;
 
-            case 'LEAST':
-            case 'GREATEST':
-            case 'COALESCE':
-            case 'CONCAT':
-            case 'MOD':
+            case 'X_LEAST':
+            case 'X_GREATEST':
+            case 'X_COALESCE':
+            case 'X_CONCAT':
+            case 'X_MOD':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
@@ -1995,8 +1996,8 @@ class Database_Static_xml
                 $expr = array($token, $expr, $type);
                 break;
 
-            case 'REPLACE':
-            case 'SUBSTR':
+            case 'X_REPLACE':
+            case 'X_SUBSTR':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
@@ -2015,7 +2016,7 @@ class Database_Static_xml
                 $expr = array($token, $expr1, $expr2, $expr3);
                 break;
 
-            case 'LENGTH':
+            case 'X_LENGTH':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
@@ -2250,6 +2251,7 @@ class Database_Static_xml
             case 'MAX':
             case 'MIN':
             case 'SUM':
+            case 'X_GROUP_CONCAT':
             case 'AVG':
                 if ($full_set === null) {
                     return $this->_bad_query($query, $fail_ok, 'Cannot use aggregate function outside SELECT/HAVING scope');
@@ -2265,7 +2267,7 @@ class Database_Static_xml
 
             // Conventional expressions...
 
-            case 'COALESCE':
+            case 'X_COALESCE':
                 $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
                 if ($val === null) {
                     $val = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
@@ -2371,13 +2373,13 @@ class Database_Static_xml
                 $comp = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
                 return $comp >= $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set) && $comp <= $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set);
 
-            case 'REPLACE':
+            case 'X_REPLACE':
                 return str_replace($this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set), $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok), $this->_execute_expression($expr[1], $bindings, $query, $fail_ok, $full_set));
 
-            case 'CONCAT':
+            case 'X_CONCAT':
                 return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) . $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
 
-            case 'LENGTH':
+            case 'X_LENGTH':
                 return strlen($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set));
 
             case 'SUBQUERY_VALUE':
@@ -2388,19 +2390,19 @@ class Database_Static_xml
                 }
                 return isset($subquery[0]) ? array_shift($subquery[0]) : null;
 
-            case 'RAND':
+            case 'X_RAND':
                 return mt_rand(0, mt_getrandmax());
 
-            case 'SUBSTR':
+            case 'X_SUBSTR':
                 return substr($this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set), $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set) + 1, $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set));
 
-            case 'LEAST':
+            case 'X_LEAST':
                 return min($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set), $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set));
 
-            case 'GREATEST':
+            case 'X_GREATEST':
                 return max($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set), $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set));
 
-            case 'MOD':
+            case 'X_MOD':
                 return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) % $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
 
             case 'IN':
@@ -3055,7 +3057,7 @@ class Database_Static_xml
             // Now handle functions (as applied to all records, as no GROUP BY)
             $single_result = false;
             foreach ($select as $s) {
-                if (($s[0] == 'MIN') || ($s[0] == 'MAX') || ($s[0] == 'SUM') || ($s[0] == 'COUNT') || ($s[0] == 'AVG')) {
+                if (($s[0] == 'MIN') || ($s[0] == 'MAX') || ($s[0] == 'SUM') || ($s[0] == 'X_GROUP_CONCAT') || ($s[0] == 'COUNT') || ($s[0] == 'AVG')) {
                     $single_result = true;
                 }
             }
@@ -3100,6 +3102,7 @@ class Database_Static_xml
                     case 'MIN':
                     case 'COUNT':
                     case 'SUM':
+                    case 'X_GROUP_CONCAT':
                     case 'AVG':
                         // Was already specially process, compound function - just copy through
                         $as = $this->_param_name_for($want[1], $i);
@@ -3145,6 +3148,7 @@ class Database_Static_xml
                             case 'MIN':
                             case 'COUNT':
                             case 'SUM':
+                            case 'X_GROUP_CONCAT':
                             case 'AVG':
                                 // Was already specially process, compound function - just copy through
                                 $_record[preg_replace('#^.*\.#', '', $as)] = $record[$as];
@@ -3320,6 +3324,18 @@ class Database_Static_xml
                     } else {
                         $rep[$as] = $temp;
                     }
+                    break;
+
+                case 'X_GROUP_CONCAT':
+                    $temp = '';
+                    foreach ($set as $set_item) {
+                        $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
+                        if ($temp != '') {
+                            $temp .= ',';
+                        }
+                        $temp .= $val;
+                    }
+                    $rep[$as] = $temp;
                     break;
 
                 case 'AVG':

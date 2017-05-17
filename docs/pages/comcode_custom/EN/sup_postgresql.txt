@@ -2,7 +2,7 @@
 
 Composr has internal 'support' for many different databases backends and is intentionally written with simple common-denominator SQL and an abstraction API. However officially only MySQL is supported outside of a commercial relationship, due to the significant effort testing across new versions of Composr and the database backends involved. Different database systems vary in all kinds of surprising and subtle ways. Inside a commercial relationship whatever extra testing and bug fixing is required will be done under that relationship, and fixes put back into the mainline version of Composr.
 
-This tutorial provides some advice targeted towards PostgreSQL (also known simply as 'Postgres'). Postgres has been tested for Composr v10.0.x under a commercial relationship. We tested on 9.6.3 across our whole test set and all screens and blocks, with both multi-lang-content on and off. We expect in practice Postgres 8.3+ is supported as we are not using any complex functionality (full-text search was introduced in Postgres 8.3).
+This tutorial provides some advice targeted towards PostgreSQL (also known simply as 'Postgres'). Postgres has been tested for Composr v10.0.x under a commercial relationship. We tested on 9.6.3 across our whole test set and all screens and blocks, with both multi-lang-content on and off. We expect in practice Postgres 8.4+ is supported (subquery string joining [via arrays] in 8.4 as an alternative to MySQL's [tt]GROUP_CONCAT[/tt] function).
 
 Postgres is a very high quality Open Source database backend developed by developers working for a number of different companies. It is much more sophisticated than MySQL, although it also tends to be stricter in a number of ways, more technical, and not as available on shared hosting.
 
@@ -23,6 +23,7 @@ Nothing in the above list is likely to be of concern for the vast majority of Co
 The following parts of our ecosystem are only supported on MySQL and PostgreSQL (at the time of writing):
  - Commandr [tt]mysql_table_sizes[/tt] command
  - Showing database server version on the PHP-Info page
+ - Full-text search
 
 Third parties may write code that assumes (intentionally or not) MySQL, so don't assume any third party code is going to work without putting it through testing.
 
@@ -69,6 +70,14 @@ The main complexities of Postgres support, for MySQL developers are:
 5) You need to use Postgres string escaping, not MySQL string escaping.
 6) You have to be much more careful about aggregate functions like [tt]COUNT[/tt] or [tt]GROUP BY[/tt] or [tt]DISTINCT[/tt]. If you do a [tt]COUNT[/tt] then you are not allowed an [tt]ORDER BY[/tt] clause (you don't need one, but it's easy to add one by mistake when you are deriving a count query from your pagination query and this causes the count query to fail). If you do a [tt]GROUP BY[/tt] then you may not select anything that is not covered by the [tt]GROUP BY[/tt] clause or is itself an aggregate like [tt]COUNT[/tt] or [tt]SUM[/tt] or [tt]MAX[/tt] or [tt]MIN[/tt] -- this is because Postgres won't allow selecting an arbitrary value out of a result set for you like MySQL will. If doing a [tt]DISTINCT[/tt] query then you can only do an [tt]ORDER BY[/tt] with something that is also being [tt]SELECT[/tt]ed (because Postgres reserves the right to apply the ordering [i]after[/i] it has whittled down the result set).
 7) I haven't covered any of the cases of obvious MySQL-specific syntax or case sensitivity differences. Assume almost any kind of data function (e.g. string manipulations) is not portable, do this stuff in PHP.
+
+[title="2"]Full-text search[/title]
+
+Full-text is fully supported. However, ideally Composr would know the correct stop-word list for PostgreSQL so it knows whether to direct searches only for a stopword to a non-full-text search. This is controlled in a dictionary (unlike MySQL, where it's hard-coded, and hence hard-coded in our code also).
+
+To provide Composr an accurate full-text search word list you need to override the [tt]get_stopwords_list()[/tt] function.
+
+If you don't want PostgreSQL's default English configuration for word tokenisation there's a hidden [tt]postgres_fulltext_language[/tt] option you can use to set a different PostgreSQL configuration.
 
 [title="2"]See also[/title]
 

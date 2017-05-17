@@ -68,6 +68,23 @@ class Database_Static_postgresql
     public function db_create_index($table_name, $index_name, $_fields, $db)
     {
         if ($index_name[0] == '#') {
+            $index_name = substr($index_name, 1);
+
+            $postgres_fulltext_language = get_value('postgres_fulltext_language');
+            if ($postgres_fulltext_language === null) {
+                $postgres_fulltext_language = 'english';
+            }
+
+            $aggregation = '';
+            foreach (explode(',', $_fields) as $_field) {
+                if ($aggregation != '') {
+                    $aggregation .= ' || \' \' || ';
+                }
+                $aggregation .= '\'' . $this->db_escape_string($_field) . '\'';
+            }
+
+            $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . ' USING gin(to_tsvector(\'pg_catalog.' . $postgres_fulltext_language . '\', ' . $aggregation . '))', $db);
+
             return;
         }
 
@@ -78,7 +95,7 @@ class Database_Static_postgresql
         }
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
 
-        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
     /**
@@ -92,6 +109,34 @@ class Database_Static_postgresql
     {
         $this->db_query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY', $db);
         $this->db_query('ALTER TABLE ' . $table_name . ' ADD PRIMARY KEY (' . implode(',', $new_key) . ')', $db);
+    }
+
+    /**
+     * Assemble part of a WHERE clause for doing full-text search
+     *
+     * @param  string $content Our match string (assumes "?" has been stripped already)
+     * @param  boolean $boolean Whether to do a boolean full text search
+     * @return string Part of a WHERE clause for doing full-text search
+     */
+    public function db_full_text_assemble($content, $boolean)
+    {
+        static $stopwords = null;
+        if (is_null($stopwords)) {
+            require_code('database_search');
+            $stopwords = get_stopwords_list();
+        }
+        if (isset($stopwords[trim(strtolower($content), '"')])) {
+            // This is an imperfect solution for searching for a stop-word
+            // It will not cover the case where the stop-word is within the wider text. But we can't handle that case efficiently anyway
+            return db_string_equal_to('?', trim($content, '"'));
+        }
+
+        $postgres_fulltext_language = get_value('postgres_fulltext_language');
+        if ($postgres_fulltext_language === null) {
+            $postgres_fulltext_language = 'english';
+        }
+
+        return 'to_tsvector(?) @@ plainto_tsquery(\'pg_catalog.' . $postgres_fulltext_language . '\', \'' . $this->db_escape_string($content) . '\')';
     }
 
     /**
@@ -330,7 +375,7 @@ class Database_Static_postgresql
      */
     public function db_has_full_text($db)
     {
-        return false;
+        return true;
     }
 
     /**
@@ -344,6 +389,16 @@ class Database_Static_postgresql
         $string = fix_bad_unicode($string);
 
         return pg_escape_string($string);
+    }
+
+    /**
+     * Find whether full-text-boolean-search is present
+     *
+     * @return boolean Whether it is
+     */
+    public function db_has_full_text_boolean()
+    {
+        return true; // Actually it is always boolean for PostgreSQL
     }
 
     /**
@@ -443,6 +498,8 @@ class Database_Static_postgresql
                     } else {
                         $newrow[$name] = null;
                     }
+                } elseif (substr($type, 0, 5) == 'FLOAT') {
+                    $newrow[$name] = floatval($v);
                 } else {
                     $newrow[$name] = $v;
                 }

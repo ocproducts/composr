@@ -503,7 +503,7 @@ function do_search_block($map)
 
     $limit_to = array('all_defaults');
     $extrax = array();
-    if (array_key_exists('limit_to', $map)) {
+    if ((array_key_exists('limit_to', $map)) && ($map['limit_to'] != 'all_defaults')) {
         $limit_to = array();
         $map['limit_to'] = str_replace('|', ',', $map['limit_to']); // "|" looks cleaner in templates
         foreach (explode(',', $map['limit_to']) as $key) {
