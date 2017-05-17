@@ -17,6 +17,7 @@ $title = get_screen_title('Composr translations, via Transifex', false);
 
 require_code('transifex');
 require_code('lang2');
+require_code('http');
 
 $project_slug = 'composr-cms-' . str_replace('.', '-', strval(cms_version()));
 

@@ -1806,14 +1806,21 @@
      * @param sheetName
      */
     function _requireCss(sheetName) {
-        if ($cms.dom.$('link#css-' + sheetName)) {
-            return Promise.resolve();
+        var linkEl;
+
+        linkEl = $cms.dom.$('link[id^="css-' + sheetName + '"]');
+
+        if (linkEl && !(new RegExp('^css-' + sheetName + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(linkEl.id)) {
+            linkEl = null;
         }
-        var link = document.createElement('link');
-        link.id = 'css-' + sheetName;
-        link.rel = 'stylesheet';
-        link.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
-        document.head.appendChild(link);
+
+        if (!linkEl) {
+            linkEl = document.createElement('link');
+            linkEl.id = 'css-' + sheetName;
+            linkEl.rel = 'stylesheet';
+            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
+            document.head.appendChild(linkEl);
+        }
 
         return Promise.resolve();
     }
@@ -1845,7 +1852,7 @@
         }
 
         if (isAbsoluteOrSchemeRelative(script) && $cms.dom.hasScriptLoaded(script)) {
-            return Promise.resolve();
+            return (requireJavascriptPromises[script] = Promise.resolve());
         } else if (validIdRE.test(script)) {
             scriptEl = $cms.dom.$('script[id^="javascript-' + script + '"]');
             if (scriptEl && !(new RegExp('^javascript-' + script + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(scriptEl.id)) {
@@ -3055,7 +3062,7 @@
      * @memberof $cms.dom
      * @param el { Window|Document|Element|string }
      * @param event {string|object}
-     * @param selector {string|function}
+     * @param [selector] {string|function}
      * @param [data] {object|function}
      * @param [callback] {function}
      * @param [one] {number}
@@ -4762,14 +4769,13 @@
      * @param newBlockParams
      * @param targetDiv
      * @param append
-     * @param callback
      * @param scrollToTopOfWrapper
      * @param postParams
      * @param inner
      * @param showLoadingAnimation
-     * @returns {boolean}
+     * @returns { Promise }
      */
-    function callBlock(url, newBlockParams, targetDiv, append, callback, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
+    function callBlock(url, newBlockParams, targetDiv, append, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
         scrollToTopOfWrapper = !!scrollToTopOfWrapper;
         postParams = (postParams !== undefined) ? postParams : null;
         inner = !!inner;
@@ -4788,10 +4794,7 @@
         if ((_blockDataCache[ajaxUrl] !== undefined) && postParams == null) {
             // Show results from cache
             showBlockHtml(_blockDataCache[ajaxUrl], targetDiv, append, inner);
-            if (callback) {
-                callback();
-            }
-            return false;
+            return Promise.resolve();
         }
 
         // Show loading animation
@@ -4834,16 +4837,18 @@
             window.document.body.style.cursor = 'wait';
         }
 
-        // Make AJAX call
-        $cms.doAjaxRequest(
-            ajaxUrl + $cms.keepStub(),
-            function (rawAjaxResult) { // Show results when available
-                _callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, callback, scrollToTopOfWrapper, inner);
-            },
-            postParams
-        );
-
-        return false;
+        return new Promise(function (resolve) {
+            // Make AJAX call
+            $cms.doAjaxRequest(
+                ajaxUrl + $cms.keepStub(),
+                function (rawAjaxResult) { // Show results when available
+                    _callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, function () {
+                        resolve();
+                    }, scrollToTopOfWrapper, inner);
+                },
+                postParams
+            );
+        });
 
         function _callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, callback, scrollToTopOfWrapper, inner) {
             var newHtml = rawAjaxResult.responseText;
@@ -9123,7 +9128,7 @@
     };
 
     $cms.templates.jsBlock = function jsBlock(params) {
-        $cms.callBlock(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, null, false, null, false, false);
+        $cms.callBlock(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, false, null, false, false);
     };
 
     $cms.templates.massSelectMarker = function (params, container) {
@@ -9540,10 +9545,11 @@
                     urlStub += '&raw=1';
                     infiniteScrollPending = true;
 
-                    return $cms.callBlock(urlStem + urlStub, '', wrapperInner, true, function () {
+                    $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
                         infiniteScrollPending = false;
                         internaliseInfiniteScrolling(urlStem, wrapper);
                     });
+                    return false;
                 }
             }
         }
@@ -9667,11 +9673,12 @@
             $cms.ui.clearOutTooltips();
 
             // Make AJAX block call
-            return $cms.callBlock(urlStem + urlStub, '', blockElement, append, function () {
+            $cms.callBlock(urlStem + urlStub, '', blockElement, append, false, postParams).then(function () {
                 if (scrollToTop) {
                     window.scrollTo(0, blockPosY);
                 }
-            }, false, postParams);
+            });
+            return false;
         }
     }
 }());

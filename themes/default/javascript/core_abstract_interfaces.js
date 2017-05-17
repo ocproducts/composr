@@ -137,8 +137,9 @@
             window.detect_interval = window.setInterval(function () {
                 detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
                     if ((!document.getElementById('post')) || (document.getElementById('post').value === '')) {
-                        var _detectedChange = detectedChange;
-                        $cms.callBlock(params.url, '', element, false, _detectedChange, true, null, true);
+                        $cms.callBlock(params.url, '', element, false, true, null, true).then(function () {
+                            detectedChange();
+                        });
                     }
                 });
             }, params.refreshTime * 1000);
