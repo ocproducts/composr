@@ -54,7 +54,7 @@ class database_misc_test_set extends cms_test_case
     {
         $sql = 'SELECT ' . db_function('RAND');
         $result = $GLOBALS['SITE_DB']->query_value_if_there($sql);
-        $this->assertTrue(is_integer($result) || is_float($result));
+        $this->assertTrue(is_numeric($result)/*NB: On MySQL it will come as a string and we have no way of changing that*/);
     }
 
     public function testCOALESCE()
@@ -182,43 +182,43 @@ class database_misc_test_set extends cms_test_case
 
     public function testInequalities()
     {
-        $sql = 'SELECT 1 WHERE 1>2';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1>2';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
 
-        $sql = 'SELECT 1 WHERE 2>1';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 2>1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 WHERE 1<2';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1<2';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 WHERE 2<1';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 2<1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
 
-        $sql = 'SELECT 1 WHERE 1>=2';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1>=2';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
 
-        $sql = 'SELECT 1 WHERE 2>=1';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 2>=1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 WHERE 1<=2';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1<=2';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 WHERE 2<=1';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 2<=1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
 
-        $sql = 'SELECT 1 WHERE 1=1';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1=1';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 1);
 
-        $sql = 'SELECT 1 WHERE 1=0';
+        $sql = 'SELECT 1 FROM (SELECT 1) x WHERE 1=0';
         $result = $GLOBALS['SITE_DB']->query($sql);
         $this->assertTrue(count($result) == 0);
     }
@@ -247,86 +247,60 @@ class database_misc_test_set extends cms_test_case
         $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test');
         $GLOBALS['SITE_DB']->create_table('testy_test_test', array(
             'id' => '*AUTO',
-            'test_data_1' => 'SHORT_TEXT',
+            'test_data_1' => 'LONG_TEXT',
             'test_data_2' => 'SHORT_TEXT',
         ));
         $GLOBALS['SITE_DB']->create_index('testy_test_test', '#testx', array('test_data_1'));
 
-        $id = $GLOBALS['SITE_DB']->query_insert('testy_test_test', array(
-            'test_data_1' => 'aloha world this is a test',
-            'test_data_2' => 'cheese',
-        ), true);
-        require_code('seo2');
-        seo_meta_set_for_explicit('test', strval($id), 'sample', '');
+        $total = 20;
+
+        for ($i = 0; $i < $total; $i++) {
+            $id = $GLOBALS['SITE_DB']->query_insert('testy_test_test', array(
+                'test_data_1' => ($i == 0) ? 'abacus, this is a test' : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+                'test_data_2' => 'cheese',
+            ), true);
+            require_code('seo2');
+            seo_meta_set_for_explicit('test', strval($id), 'sample', '');
+        }
 
         $searches = array(
             // By keyword
             'by_keyword' => array(
                 /*$content = */'sample',
                 /*$boolean_search = */true,
-                /*$expected = */1,
-                /*$fields = */array('r.test_data_1' => 'SHORT_TEXT'),
-                /*$raw_fields = */null,
+                /*$expected = */$total,
+                /*$fields = */array(),
+                /*$raw_fields = */array('r.test_data_1'),
             ),
 
             // Fulltext
-            'fulltext_boolean_yes__success' => array(
-                /*$content = */'aloha',
-                /*$boolean_search = */true,
-                /*$expected = */1,
-                /*$fields = */array('r.test_data_1' => 'SHORT_TEXT'),
-                /*$raw_fields = */null,
-            ),
-            'fulltext_boolean_no__success' => array(
-                /*$content = */'aloha',
-                /*$boolean_search = */false,
-                /*$expected = */1,
-                /*$fields = */array('r.test_data_1' => 'SHORT_TEXT'),
-                /*$raw_fields = */null,
-            ),
-            'fulltext_boolean_yes__fail' => array(
-                /*$content = */'foobar',
-                /*$boolean_search = */true,
-                /*$expected = */0,
-                /*$fields = */array('r.test_data_1' => 'SHORT_TEXT'),
-                /*$raw_fields = */null,
-            ),
-            'fulltext_boolean_no__fail' => array(
-                /*$content = */'foobar',
-                /*$boolean_search = */false,
-                /*$expected = */0,
-                /*$fields = */array('r.test_data_1' => 'SHORT_TEXT'),
-                /*$raw_fields = */null,
-            ),
-
-            // Non-fulltext
-            'basic_boolean_yes__success' => array(
-                /*$content = */'cheese',
+            'boolean_yes__success' => array(
+                /*$content = */'abacus',
                 /*$boolean_search = */true,
                 /*$expected = */1,
                 /*$fields = */array(),
-                /*$raw_fields = */array('r.test_data_2'),
+                /*$raw_fields = */array('r.test_data_1'),
             ),
-            'basic_boolean_no__success' => array(
-                /*$content = */'cheese',
+            'boolean_no__success' => array(
+                /*$content = */'abacus',
                 /*$boolean_search = */false,
                 /*$expected = */1,
                 /*$fields = */array(),
-                /*$raw_fields = */array('r.test_data_2'),
+                /*$raw_fields = */array('r.test_data_1'),
             ),
-            'basic_boolean_yes__fail' => array(
+            'boolean_yes__fail' => array(
                 /*$content = */'foobar',
                 /*$boolean_search = */true,
                 /*$expected = */0,
                 /*$fields = */array(),
-                /*$raw_fields = */array('r.test_data_2'),
+                /*$raw_fields = */array('r.test_data_1'),
             ),
-            'basic_boolean_no__fail' => array(
+            'boolean_no__fail' => array(
                 /*$content = */'foobar',
                 /*$boolean_search = */false,
                 /*$expected = */0,
                 /*$fields = */array(),
-                /*$raw_fields = */array('r.test_data_2'),
+                /*$raw_fields = */array('r.test_data_1'),
             ),
         );
 
@@ -347,7 +321,7 @@ class database_misc_test_set extends cms_test_case
                 $boolean_operator,
                 false,
                 'ASC',
-                1,
+                1000,
                 0,
                 false,
                 'testy_test_test r',

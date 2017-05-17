@@ -576,7 +576,7 @@ function get_table_count_approx($table, $where = null, $where_clause = null, $db
         }
     }
 
-    return $db->query_select_value($table, 'COUNT(*)', $where, ($where_clause === null) ? '' : (' AND ' . $where_clause), false, true);
+    return $db->query_select_value($table, 'COUNT(*)', $where, ($where_clause === null) ? '' : (' AND ' . $where_clause));
 }
 
 /**
