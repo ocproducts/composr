@@ -231,6 +231,14 @@ class database_misc_test_set extends cms_test_case
         delete_value('emoji_test');
     }
 
+    public function testCountApprox()
+    {
+        $this->assertTrue(get_table_count_approx('download_categories', null, null) > 0);
+        $this->assertTrue(get_table_count_approx('download_categories', array('id' => db_get_first_id()), null) > 0);
+        $this->assertTrue(get_table_count_approx('download_categories', null, 'id=' . strval(db_get_first_id())) > 0);
+        $this->assertTrue(get_table_count_approx('download_categories', array('id' => db_get_first_id()), 'id=' . strval(db_get_first_id())) > 0);
+    }
+
     public function testFullTextSearch()
     {
         require_code('database_search');

@@ -3327,15 +3327,15 @@ class Database_Static_xml
                     break;
 
                 case 'X_GROUP_CONCAT':
-                    $temp = '';
+                    $temp_str = '';
                     foreach ($set as $set_item) {
                         $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
-                        if ($temp != '') {
-                            $temp .= ',';
+                        if ($temp_str != '') {
+                            $temp_str .= ',';
                         }
-                        $temp .= $val;
+                        $temp_str .= $val;
                     }
-                    $rep[$as] = $temp;
+                    $rep[$as] = $temp_str;
                     break;
 
                 case 'AVG':

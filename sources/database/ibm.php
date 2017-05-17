@@ -421,7 +421,7 @@ class Database_Static_ibm
                         } else {
                             $newrow[$name] = null;
                         }
-                    } elseif (substr($type, 0, 5) == 'FLOAT') || substr($type, 0, 6) == 'NUMBER' {
+                    } elseif ((substr($type, 0, 5) == 'FLOAT') || substr($type, 0, 6) == 'NUMBER') {
                         $newrow[$name] = floatval($v);
                     } else {
                         $newrow[$name] = $v;

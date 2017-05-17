@@ -355,6 +355,28 @@ class Database_Static_sqlserver
     }
 
     /**
+     * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+     *
+     * @param string $table The table name
+     * @param array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form
+     * @param string $where_clause WHERE clauses if it will help get a more reliable number when we're not approximating in SQL form
+     * @param object $db The DB connection to check against
+     * @return ?integer The count (null: do it normally)
+     */
+    public function get_table_count_approx($table, $where, $where_clause, $db)
+    {
+        $sql = 'SELECT SUM(p.rows) FROM sys.partitions AS p
+            INNER JOIN sys.tables AS t
+            ON p.[object_id] = t.[object_id]
+            INNER JOIN sys.schemas AS s
+            ON s.[schema_id] = t.[schema_id]
+            WHERE t.name = N\'' . $db->get_table_prefix() . $table . '\'
+            AND s.name = N\'dbo\'
+            AND p.index_id IN (0,1)';
+        return $db->query_value_if_there($sql, false, true);
+    }
+
+    /**
      * Find whether full-text-search is present
      *
      * @param  array $db A DB connection

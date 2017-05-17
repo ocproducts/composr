@@ -359,6 +359,21 @@ class Database_Static_oracle
     }
 
     /**
+     * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+     *
+     * @param string $table The table name
+     * @param array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form
+     * @param string $where_clause WHERE clauses if it will help get a more reliable number when we're not approximating in SQL form
+     * @param object $db The DB connection to check against
+     * @return ?integer The count (null: do it normally)
+     */
+    public function get_table_count_approx($table, $where, $where_clause, $db)
+    {
+        $sql = 'SELECT NUM_ROWS FROM ALL_TABLES WHERE TABLE_NAME=\'' . strtoupper($db->get_table_prefix() . $table) . '\'';
+        return $db->query_value_if_there($sql, false, true);
+    }
+
+    /**
      * Find whether full-text-search is present
      *
      * @param  array $db A DB connection
@@ -521,7 +536,7 @@ class Database_Static_oracle
                         } else {
                             $newrow[$name] = null;
                         }
-                    } elseif (substr($type, 0, 5) == 'FLOAT') || substr($type, 0, 6) == 'NUMBER' {
+                    } elseif ((substr($type, 0, 5) == 'FLOAT') || substr($type, 0, 6) == 'NUMBER') {
                         $newrow[$name] = floatval($v);
                     } else {
                         if ($v == ' ') {

@@ -149,6 +149,25 @@ class Database_Static_mysql extends Database_super_mysql
     }
 
     /**
+     * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+     *
+     * @param string $table The table name
+     * @param array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form
+     * @param string $where_clause WHERE clauses if it will help get a more reliable number when we're not approximating in SQL form
+     * @param object $db The DB connection to check against
+     * @return ?integer The count (null: do it normally)
+     */
+    public function get_table_count_approx($table, $where, $where_clause, $db)
+    {
+        if (get_value('slow_counts') === '1') {
+            $sql = 'SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema=DATABASE() AND TABLE_NAME=\'' . $db->get_table_prefix() . $table . '\'';
+            return $db->query_value_if_there($sql, false, true);
+        }
+
+        return null;
+    }
+
+    /**
      * Find whether full-text-boolean-search is present
      *
      * @return boolean Whether it is

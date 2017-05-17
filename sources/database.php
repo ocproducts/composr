@@ -551,6 +551,35 @@ function db_function($function, $args = null)
 }
 
 /**
+ * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+ *
+ * @param string $table The table name
+ * @param  ?array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form (null: none)
+ * @param  ?string $where_clause WHERE clauses if it will help get a more reliable number when we're not approximating in SQL form (null: none)
+ * @param  ?object $db The DB connection to check against (null: site's main active forum database)
+ * @return ?integer The count (null: do it normally)
+ */
+function get_table_count_approx($table, $where = null, $where_clause = null, $db = null)
+{
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
+    }
+
+    if ($where === null) {
+        $where = array();
+    }
+
+    if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'get_table_count_approx')) {
+        $test = $GLOBALS['DB_STATIC_OBJECT']->get_table_count_approx($table, $where, $where_clause, $db);
+        if ($test !== null) {
+            return $test;
+        }
+    }
+
+    return $db->query_select_value($table, 'COUNT(*)', $where, ($where_clause === null) ? '' : (' AND ' . $where_clause), false, true);
+}
+
+/**
  * Create an SQL cast.
  *
  * @param string $field The field identifier
