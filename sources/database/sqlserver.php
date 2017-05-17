@@ -76,13 +76,6 @@ class Database_Static_sqlserver
      */
     public function db_create_index($table_name, $index_name, $_fields, $db, $unique_key_field = 'id')
     {
-        if (preg_match('#\(25\d\)#', $_fields) != 0) {
-            // We can't support this in SQL Server https://blogs.msdn.microsoft.com/bartd/2011/01/06/living-with-sqls-900-byte-index-key-length-limit/.
-            // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
-            return;
-        }
-        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
-
         if ($index_name[0] == '#') {
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
@@ -93,6 +86,18 @@ class Database_Static_sqlserver
             }
             return;
         }
+
+        $fields = explode(',', $_fields);
+        foreach ($fields as $field) {
+            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field)), 'LONG') !== false) {
+                // We can't support this in SQL Server https://blogs.msdn.microsoft.com/bartd/2011/01/06/living-with-sqls-900-byte-index-key-length-limit/.
+                // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
+                return;
+            }
+        }
+
+        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
+
         $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')', $db);
     }
 
