@@ -269,6 +269,8 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_information/image.jpg',
             'data_custom/images/docs/tut_information/image2.jpg',
             'data_custom/images/docs/tut_users/image.png',
+            'data_custom/images/docs/sup_staging_servers/process.jpg',
+            'data_custom/images/docs/sup_postgresql/postgresql_logo.png',
             'data_custom/images/docs/sup_hardcore_blocks/standard_nerd.jpg',
             'data_custom/images/docs/tut_google_analytics/experiment_step1.jpg',
             'data_custom/images/docs/tut_google_analytics/experiment_step2.jpg',
