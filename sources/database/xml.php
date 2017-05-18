@@ -103,15 +103,6 @@ function init__database__xml()
 
     require_code('xml');
 
-    // Support for chaining a DB- to make reads faster
-    global $SITE_INFO;
-    if ((!empty($SITE_INFO['db_chain_type'])) && (!running_script('xml_db_import')) && (get_param_integer('keep_no_chain', 0) != 1)) {
-        require_code('database/' . $SITE_INFO['db_chain_type']);
-        $GLOBALS['XML_CHAIN_DB'] = new DatabaseConnector($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
-    } else {
-        $GLOBALS['XML_CHAIN_DB'] = null;
-    }
-
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(100); // XML DB is *slow*
     }
@@ -133,7 +124,7 @@ function _get_sql_keywords()
         'WHERE',
         'SELECT', 'FROM', 'AS', 'UNION', 'ALL', 'DISTINCT',
         'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE',
-        'ALTER', 'CREATE', 'DROP', 'ADD', 'CHANGE', 'RENAME', 'DEFAULT', 'TABLE', 'PRIMARY', 'KEY',
+        'ALTER', 'CREATE', 'X_CREATE_TABLE', 'DROP', 'X_DROP_TABLE', 'ADD', 'CHANGE', 'RENAME', 'DEFAULT', 'TABLE', 'PRIMARY', 'KEY',
         'LIKE', 'IF', 'NOT', 'IS', 'NULL', 'AND', 'OR', 'BETWEEN', 'IN', 'EXISTS',
         'GROUP', 'BY', 'ORDER', 'ASC', 'DESC',
         'JOIN', 'OUTER', 'INNER', 'ON',
@@ -230,16 +221,20 @@ class Database_Static_xml
     }
 
     /**
-     * Create a table index.
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
      * @param  array $db The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @return array List of SQL queries to run
      */
-    public function db_create_index($table_name, $index_name, $_fields, $db)
+    public function db_create_index($table_name, $index_name, $_fields, $db, $raw_table_name, $unique_key_fields)
     {
         // Indexes not supported
+        return array();
     }
 
     /**
@@ -268,40 +263,18 @@ class Database_Static_xml
     }
 
     /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
      * @param  array $db The DB connection to make on
-     * @param  boolean $if_not_exists Whether to only do it if it does not currently exist
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
-    public function db_create_table($table_name, $fields, $db, $if_not_exists = false)
+    public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
     {
-        if (!is_null($GLOBALS['XML_CHAIN_DB'])) {
-            // DB chaining: It's a write query, so needs doing on chained DB too
-            $GLOBALS['XML_CHAIN_DB']->static_ob->db_create_table($table_name, $fields, $GLOBALS['XML_CHAIN_DB']->connection_write, $if_not_exists);
-        }
-
-        $path = $db[0] . '/' . $table_name;
-
-        if (($if_not_exists) && (file_exists($path))) {
-            return;
-        }
-
-        $found_key = false;
-        foreach ($fields as $type) {
-            if (strpos($type, '*') !== false) {
-                $found_key = true;
-            }
-        }
-        if (!$found_key) {
-            fatal_exit('No key specified for table ' . $table_name);
-        }
-
-        @mkdir($path, 0777);
-        require_code('files');
-        fix_permissions($path);
-        sync_file($path);
+        return array("X_CREATE_TABLE '" . $this->db_escape_string(serialize(array($table_name, $fields, $raw_table_name, $save_bytes))) . "'");
     }
 
     /**
@@ -343,31 +316,11 @@ class Database_Static_xml
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $db The DB connection to delete on
+     * @return array List of SQL queries to run
      */
     public function db_drop_table_if_exists($table_name, $db)
     {
-        if (!is_null($GLOBALS['XML_CHAIN_DB'])) {
-            // DB chaining: It's a write query, so needs doing on chained DB too
-            $GLOBALS['XML_CHAIN_DB']->static_ob->db_drop_table_if_exists($table_name, $GLOBALS['XML_CHAIN_DB']->connection_write);
-        }
-
-        $file_path = $db[0] . '/' . $table_name;
-        $dh = @opendir($file_path);
-        if ($dh !== false) {
-            while (($file = readdir($dh)) !== false) {
-                if ((substr($file, -4) == '.xml') || (substr($file, -13) == '.xml-volatile')) {
-                    unlink($file_path . '/' . $file);
-                    sync_file($file_path . '/' . $file);
-                }
-            }
-            closedir($dh);
-            @rmdir($file_path);
-            sync_file($file_path);
-        }
-
-        global $SCHEMA_CACHE, $DIR_CONTENTS_CACHE;
-        unset($SCHEMA_CACHE[$table_name]);
-        unset($DIR_CONTENTS_CACHE[$table_name]);
+        return array('X_DROP_TABLE ' . $table_name);
     }
 
     /**
@@ -432,7 +385,7 @@ class Database_Static_xml
      */
     public function db_has_full_text($db)
     {
-        return is_null($GLOBALS['XML_CHAIN_DB']) ? false : $GLOBALS['XML_CHAIN_DB']->static_ob->db_has_full_text($GLOBALS['XML_CHAIN_DB']->connection_read);
+        return false;
     }
 
     /**
@@ -444,7 +397,7 @@ class Database_Static_xml
      */
     public function db_full_text_assemble($content, $boolean)
     {
-        return is_null($GLOBALS['XML_CHAIN_DB']) ? '' : $GLOBALS['XML_CHAIN_DB']->static_ob->db_full_text_assemble($content, $boolean);
+        return '';
     }
 
     /**
@@ -454,7 +407,7 @@ class Database_Static_xml
      */
     public function db_has_full_text_boolean()
     {
-        return is_null($GLOBALS['XML_CHAIN_DB']) ? false : $GLOBALS['XML_CHAIN_DB']->static_ob->db_has_full_text_boolean($GLOBALS['XML_CHAIN_DB']->connection_read);
+        return false;
     }
 
     /**
@@ -561,104 +514,6 @@ class Database_Static_xml
 
         $query = substr($query, 0, $len - 1);
 
-        // CHAINING
-        // --------
-
-        $random_key = mt_rand(0, min(2147483647, mt_getrandmax())); // Generated later, passed by reference. We will assume we only need one; multi inserts will need to each specify the key in full
-
-        if ((!is_null($GLOBALS['XML_CHAIN_DB'])) && (!$no_syndicate)) {
-            if (substr(strtoupper($query), 0, 7) == 'SELECT ') {
-                $chain_connection = &$GLOBALS['XML_CHAIN_DB']->connection_read;
-            } else {
-                $chain_connection = &$GLOBALS['XML_CHAIN_DB']->connection_write;
-            }
-            if (count($chain_connection) > 4) { // Okay, we can't be lazy anymore
-                $chain_connection = call_user_func_array(array($GLOBALS['XML_CHAIN_DB']->static_ob, 'db_get_connection'), $chain_connection);
-                _general_db_init();
-            }
-
-            switch ($tokens[0]) {
-                case 'INSERT':
-                    // DB chaining: It's a write query, so needs doing on chained DB too
-                    //  But because it's an insert we may need to put in an auto-increment also
-                    $_inserts = $this->_do_query_insert__parse($tokens, $query, $db, $fail_ok);
-                    if (is_null($_inserts)) {
-                        return null;
-                    }
-                    list($table_name, $inserts) = $_inserts;
-                    $insert_keys = array_keys($inserts[0]);
-                    $query_new = 'INSERT INTO ' . $table_name . ' (';
-                    $schema = $this->_read_schema($db, $table_name, $fail_ok);
-                    global $TABLE_BASES;
-                    foreach ($schema as $key => $val) {
-                        if ((preg_replace('#[^\w]#', '', $val) == 'AUTO') && (!in_array($key, $insert_keys))) {
-                            $insert_keys[] = $key;
-                            foreach (array_keys($inserts) as $i) {
-                                if ($i != 0) {
-                                    $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
-                                }
-
-                                $inserts[$i][$key] = isset($TABLE_BASES[$table_name]) ? $TABLE_BASES[$table_name] : $this->db_get_first_id(); // We always want first record as '1', because we often reference it in a hard-coded way
-                                while ((file_exists($db[0] . '/' . $table_name . '/' . strval($inserts[$i][$key]) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $inserts[$i]) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . strval($inserts[$i][$key]) . '.xml-volatile')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $inserts[$i]) . '.xml-volatile'))) {
-                                    if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // In particular the f_groups/f_forum_groupings/calendar_types usage of tables references ID numbers for things. But let's just make all installer stuff linear
-                                        $inserts[$i][$key]++;
-                                        $TABLE_BASES[$table_name] = $inserts[$i][$key] + 1;
-                                    } else {
-                                        if ($i != 0) {
-                                            $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
-                                        }
-                                        $inserts[$i][$key] = $random_key; // We don't use auto-increment, we use randomisation. As otherwise when people sync over revision control there'd be conflicts
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    foreach ($insert_keys as $i => $key) {
-                        if ($i != 0) {
-                            $query_new .= ',';
-                        }
-                        $query_new .= $key;
-                    }
-                    $query_new .= ')';
-                    foreach ($inserts as $ii => $insert) {
-                        if ($ii != 0) {
-                            $query_new .= ', (';
-                        } else {
-                            $query_new .= ' VALUES (';
-                        }
-                        $i = 0;
-                        foreach ($insert as $value) {
-                            if ($i != 0) {
-                                $query_new .= ',';
-                            }
-                            if (is_integer($value)) {
-                                $query_new .= strval($value);
-                            } elseif (is_float($value)) {
-                                $query_new .= float_to_raw_string($value);
-                            } elseif (is_null($value)) {
-                                $query_new .= 'NULL';
-                            } else {
-                                $query_new .= '\'' . db_escape_string($value) . '\'';
-                            }
-                            $i++;
-                        }
-                        $query_new .= ')';
-                    }
-
-                    $GLOBALS['XML_CHAIN_DB']->static_ob->db_query($query_new, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
-                    break;
-
-                case 'UPDATE':
-                case 'DELETE':
-                    // DB chaining: It's a write query, so needs doing on chained DB too
-                    $GLOBALS['XML_CHAIN_DB']->static_ob->db_query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
-                    break;
-
-                case 'SELECT':
-                    return $GLOBALS['XML_CHAIN_DB']->static_ob->db_query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
-            }
-        }
-
         // PARSING/EXECUTION STAGE
         // -----------------------
 
@@ -666,10 +521,14 @@ class Database_Static_xml
             case 'ALTER':
                 return $this->_do_query_alter($tokens, $query, $db, $fail_ok);
 
+            case 'X_CREATE_TABLE':
+                return $this->_do_query_x_create($tokens, $query, $db, $fail_ok);
+
             case 'CREATE':
                 return $this->_do_query_create($tokens, $query, $db, $fail_ok);
 
             case 'INSERT':
+                $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
                 return $this->_do_query_insert($tokens, $query, $db, $fail_ok, $get_insert_id, $random_key, $save_as_volatile);
 
             case 'UPDATE':
@@ -682,6 +541,9 @@ class Database_Static_xml
                 $at = 0;
                 $results = $this->_do_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at);
                 return $results;
+
+            case 'X_DROP_TABLE':
+                return $this->_do_query_x_drop($tokens, $query, $db, $fail_ok);
 
             case 'DROP':
                 return $this->_do_query_drop($tokens, $query, $db, $fail_ok);
@@ -765,11 +627,7 @@ class Database_Static_xml
                 ),
             );
         } else {
-            if (get_db_type() != 'xml') {
-                $fields = $GLOBALS['SITE_DB']->query($schema_query);
-            } else {
-                $fields = $this->db_query($schema_query, $db, null, null, $fail_ok);
-            }
+            $fields = $this->db_query($schema_query, $db, null, null, $fail_ok);
             if (is_null($fields)) {
                 return array(); // Can happen during installation
             }
@@ -1437,6 +1295,41 @@ class Database_Static_xml
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The results (null: no results)
      */
+    protected function _do_query_x_drop($tokens, $query, $db, $fail_ok)
+    {
+        $at = 0;
+        $table_name = $this->_parsing_read($at, $tokens, $query);
+
+        $file_path = $db[0] . '/' . $table_name;
+        $dh = @opendir($file_path);
+        if ($dh !== false) {
+            while (($file = readdir($dh)) !== false) {
+                if ((substr($file, -4) == '.xml') || (substr($file, -13) == '.xml-volatile')) {
+                    unlink($file_path . '/' . $file);
+                    sync_file($file_path . '/' . $file);
+                }
+            }
+            closedir($dh);
+            @rmdir($file_path);
+            sync_file($file_path);
+        }
+
+        global $SCHEMA_CACHE, $DIR_CONTENTS_CACHE;
+        unset($SCHEMA_CACHE[$table_name]);
+        unset($DIR_CONTENTS_CACHE[$table_name]);
+
+        return null;
+    }
+
+    /**
+     * Execute a DROP query.
+     *
+     * @param  array $tokens Tokens
+     * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
+     * @return ?mixed The results (null: no results)
+     */
     protected function _do_query_drop($tokens, $query, $db, $fail_ok)
     {
         $at = 0;
@@ -1459,7 +1352,11 @@ class Database_Static_xml
                 }
             }
             $table_name = $this->_parsing_read($at, $tokens, $query);
-            $this->db_drop_table_if_exists($table_name, $db);
+
+            $queries = $this->db_drop_table_if_exists($table_name, $db);
+            foreach ($queries as $sql) {
+                $this->db_query($sql, $db, null, null, true); // Might already exist so suppress errors
+            }
         } else {
             return $this->_bad_query($query, $fail_ok, 'Unrecognised DROP type, ' . $type);
         }
@@ -1622,6 +1519,46 @@ class Database_Static_xml
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The results (null: no results)
      */
+    protected function _do_query_x_create($tokens, $query, $db, $fail_ok)
+    {
+        $at = 0;
+        $parameters = $this->_parsing_read($at, $tokens, $query);
+
+        list($table_name, $fields, $raw_table_name, $save_bytes) = unserialize($parameters);
+
+        $path = $db[0] . '/' . $table_name;
+
+        if (file_exists($path)) {
+            return;
+        }
+
+        $found_key = false;
+        foreach ($fields as $type) {
+            if (strpos($type, '*') !== false) {
+                $found_key = true;
+            }
+        }
+        if (!$found_key) {
+            fatal_exit('No key specified for table ' . $table_name);
+        }
+
+        @mkdir($path, 0777);
+        require_code('files');
+        fix_permissions($path);
+        sync_file($path);
+
+        return null;
+    }
+
+    /**
+     * Execute a CREATE query.
+     *
+     * @param  array $tokens Tokens
+     * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
+     * @return ?mixed The results (null: no results)
+     */
     protected function _do_query_create($tokens, $query, $db, $fail_ok)
     {
         $at = 0;
@@ -1695,7 +1632,10 @@ class Database_Static_xml
             return null;
         }
 
-        $this->db_create_table($table_name, $fields, $db, $if_not_exists);
+        $queries = $this->db_create_table($table_name, $fields, $db);
+        foreach ($queries as $sql) {
+            $this->db_query($sql, $db, null, null, true); // Might already exist so suppress errors
+        }
 
         if (!$this->_parsing_check_ended($at, $tokens, $query)) {
             return null;

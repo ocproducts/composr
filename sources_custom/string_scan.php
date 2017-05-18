@@ -1834,8 +1834,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CMD_MV_HELP
         CMD_MV_HELP_PARAM_0
         CMD_MV_HELP_PARAM_1
-        CMD_MYSQL_TABLE_SIZES_HELP
-        CMD_MYSQL_TABLE_SIZES_HELP_PARAM_0
+        CMD_DB_TABLE_SIZES_HELP
+        CMD_DB_TABLE_SIZES_HELP_PARAM_0
+        NOT_SUPPORTED_ON_DB
+        CMD_SQL_DUMP_HELP
+        CMD_SQL_DUMP_HELP_PARAM_0
+        CMD_SQL_DUMP_HELP_PARAM_1
+        SQL_DUMP_SAVED_TO
         CMD_PASSWD_HELP
         CMD_PASSWD_HELP_PARAM_0
         CMD_PASSWD_HELP_U

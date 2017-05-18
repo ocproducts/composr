@@ -54,37 +54,41 @@ class Database_Static_oracle
     }
 
     /**
-     * Create a table index.
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
      * @param  array $db The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @return array List of SQL queries to run
      */
-    public function db_create_index($table_name, $index_name, $_fields, $db)
+    public function db_create_index($table_name, $index_name, $_fields, $db, $raw_table_name, $unique_key_fields)
     {
         if ($index_name[0] == '#') {
+            $ret = array();
             $index_name = substr($index_name, 1);
             $fields = explode(',', $_fields);
             foreach ($fields as $field) {
-                $this->db_query('CREATE INDEX index' . $index_name . ' ON ' . $table_name . '(' . $field . ') INDEXTYPE IS CTXSYS.CONTEXT PARAMETERS(\'lexer theme_lexer\')', $db);
-                $this->db_query('EXEC DBMS_STATS.GATHER_TABLE_STATS(USER,\'' . $table_name . '\',cascade=>TRUE)', $db);
+                $ret[] = 'CREATE INDEX ' . $index_name . ' ON ' . $table_name . '(' . $field . ') INDEXTYPE IS CTXSYS.CONTEXT PARAMETERS(\'lexer theme_lexer\')';
+                $ret[] = 'EXEC DBMS_STATS.GATHER_TABLE_STATS(USER,\'' . $table_name . '\',cascade=>TRUE)';
             }
-            return;
-        }
-
-        $fields = explode(',', $_fields);
-        foreach ($fields as $field) {
-            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field)), 'LONG') !== false) {
-                // We can't support this in SQL Server http://www.oratable.com/ora-01450-maximum-key-length-exceeded/.
-                // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
-                return;
-            }
+            return $ret;
         }
 
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
 
-        $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $fields = explode(',', $_fields);
+        foreach ($fields as $field) {
+            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field)), 'LONG') !== false) {
+                // We can't support this in SQL Server http://www.oratable.com/ora-01450-maximum-key-length-exceeded/.
+                // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
+                return array();
+            }
+        }
+
+        return array('CREATE INDEX ' . $index_name . '__' . $raw_table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**
@@ -157,13 +161,16 @@ class Database_Static_oracle
     }
 
     /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
      * @param  array $db The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
-    public function db_create_table($table_name, $fields, $db)
+    public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->db_get_type_remap();
 
@@ -201,30 +208,22 @@ class Database_Static_oracle
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $this->db_query('CREATE TABLE ' . $table_name . ' (
-          ' . $_fields . '
-          PRIMARY KEY (' . $keys . ')
-        )', $db, null, null);
+        $ret = array();
+
+        $ret[] = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
 
         if ($trigger) {
-            $query1 = "
-        CREATE SEQUENCE gen_$table_name
-    ";
-            $query2 = "
-        CREATE OR REPLACE TRIGGER gen_$table_name BEFORE INSERT ON $table_name
-        FOR EACH ROW
-        BEGIN
-            SELECT gen_$table_name.nextval
-            into :new.id
-            from dual;
-        END;
-    ";
-
-            $parsed1 = ociparse($db, $query1);
-            $parsed2 = ociparse($db, $query2);
-            @ociexecute($parsed1);
-            ociexecute($parsed2);
+            $ret[] = "CREATE SEQUENCE gen_$table_name";
+            $ret[] = "CREATE OR REPLACE TRIGGER gen_$table_name BEFORE INSERT ON $table_name
+                FOR EACH ROW
+                BEGIN
+                    SELECT gen_$table_name.nextval
+                    into :new.id
+                    from dual;
+                END";
         }
+
+        return $ret;
     }
 
     /**
@@ -276,10 +275,11 @@ class Database_Static_oracle
      *
      * @param  ID_TEXT $table The table name
      * @param  array $db The DB connection to delete on
+     * @return array List of SQL queries to run
      */
     public function db_drop_table_if_exists($table, $db)
     {
-        $this->db_query('DROP TABLE ' . $table, $db, null, null, true);
+        return array('DROP TABLE ' . $table);
     }
 
     /**

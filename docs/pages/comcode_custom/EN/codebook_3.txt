@@ -200,6 +200,7 @@ Composr is not just built for MySQL. It is designed to work with any kind of dat
 It is advisable for you to:
  - write SQL conservatively: avoid SQL syntax/functionality that Composr does not already use somewhere because that syntax/functionality probably is vendor-specific
  - avoid being sloppy and getting MySQL to perform automatic type conversions and to automatically guess missing values during insert queries.
+See the [page="_SEARCH:sup_postgresql"]Using PostgreSQL with Composr[/page] tutorial for a practical discussion for PostgreSQL as a specific example.
 
 [title="3"]Blank pages[/title]
 
@@ -613,7 +614,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]force_spell_checker[/tt] -- set to 'pspell' or 'enchant' to force that particular spell-checker, rather than auto-detecting
   - [tt]avoid_register_shutdown_function[/tt] -- set this to '1' if [tt]register_shutdown_function[/tt] is not reliable on this system (may appear to be unreliable on some Windows servers, for example)
  - Performance tuning (positive) [not official options as will break normal expectations of how the system will behave / complicate things]
-  - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive db lookups rather than one huge flat lookup
+  - [tt]lots_of_data_in_*[/tt] -- set this to '1', with '*' replaced with a database table name, if you want the Selectcode mechanism to work with recursive DB lookups rather than one huge flat lookup
   - [tt]disable_cat_cat_perms[/tt] -- set this to '1' if you want to disable catalogue category permissions
   - [tt]catalogue_limit_cat_field_load__<cataloguename>[/tt] -- set this to '1' if you want that catalogue to not have all fields loaded on category views, an optimisation that reduces templating flexibility
   - [tt]no_catalogue_field_assembly[/tt] -- set this to '1' if you want catalogue entries to be 100% hand-templated; removing this will improve performance but remove pre-assembly
@@ -914,7 +915,12 @@ There are a large number of scripts and tools for helping in particular situatio
 
 Many of these are designed just for programmers, to speed up development. But some are particularly useful just for basic configuration management and DevOps.
 
-In this section we document all the scripts and tools that may be generally useful to you as a developer.
+In this section we document all the scripts and tools that may be generally useful to you as a developer, with a few categories of exceptions:
+1) Commandr commands (go to Commandr and type [tt]commands[/tt] to see a list)
+2) Website cleanup tools (go to Admin Zone > Tools > Website cleanup tools)
+3) Tools within the upgrader ([tt]upgrader.php[/tt])
+4) Scripts with code listings provided in the [page="_SEARCH:sup_professional_upgrading"]Professional upgrading[/page] tutorial
+5) IP address lookup (when you do an Investigate User in Composr you get various links to do investigations on the IP address like geographic lookup)
 
 This section is not designed as primary documentation for the tools. Those tools not designed for programmer use may be described in various individual tutorials. The tools for programmers are typically undocumented, but a programmer can analyse the code to see how they work (and make improvements as needed).
 
@@ -1092,11 +1098,6 @@ This section is not designed as primary documentation for the tools. Those tools
 | Count the number of lines of code, excluding third-party code.
 | [tt]meta_toolkit[/tt]
 | Command-line via Bash
-|-
-| [tt]data_custom/xml_db_import.php[/tt]
-| Script to help keep the XML database in sync (auto-detects when it is out of date, and launches a syncing front-end tool).
-| [tt]meta_toolkit[/tt]
-| Web browser
 |-
 | [tt]adminzone:admin_generate_adhoc_upgrade[/tt]
 | Generate a TAR file of recent central repository file changes to upgrade a site's installed addons. Works by looking at what exact addons are installed on the site, and finds if they are outdated.

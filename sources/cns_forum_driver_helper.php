@@ -49,18 +49,12 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
     $EMOTICON_LEVELS = array();
 
     $query = 'SELECT e_code,e_theme_img_code,e_relevance_level FROM ' . $this_ref->connection->get_table_prefix() . 'f_emoticons WHERE e_relevance_level<4' . $extra;
-    if (strpos(get_db_type(), 'mysql') !== false) {
-        $query .= ' ORDER BY ' . db_function('LENGTH', array('e_code')) . ' DESC';
-    }
+    $query .= ' ORDER BY ' . db_function('LENGTH', array('e_code')) . ' DESC';
     $rows = $this_ref->connection->query($query);
     foreach ($rows as $myrow) {
         $tpl = 'EMOTICON_IMG_CODE_THEMED';
         $this_ref->EMOTICON_CACHE[$myrow['e_code']] = array($tpl, $myrow['e_theme_img_code'], $myrow['e_code']);
         $EMOTICON_LEVELS[$myrow['e_code']] = $myrow['e_relevance_level'];
-    }
-    if (strpos(get_db_type(), 'mysql') === false) {
-        uksort($this_ref->EMOTICON_CACHE, '_strlen_sort');
-        $this_ref->EMOTICON_CACHE = array_reverse($this_ref->EMOTICON_CACHE);
     }
     return $this_ref->EMOTICON_CACHE;
 }

@@ -360,7 +360,7 @@ function get_relation_map_for_table($table)
     $relation_map = get_relation_map();
     $new_relation_map = array();
     foreach ($relation_map as $from => $to) {
-        if (!is_null($to)) {
+        if ($to !== null) {
             list($from_table, $from_field) = explode('.', $from, 2);
             if ($table == $from_table) {
                 list($to_table, $to_field) = explode('.', $to, 2);
@@ -519,4 +519,183 @@ function get_relation_map()
         'wiki_children.parent_id' => 'wiki_pages.id',
         'wiki_posts.page_id' => 'wiki_pages.id',
     );
+}
+
+/**
+ * Get a list of the defined tables.
+ *
+ * @param  object $db Database connection to look in
+ * @return array The tables
+ */
+function find_all_tables($db)
+{
+    $fields = $db->query_select('db_meta', array('m_table', 'm_name', 'm_type'), null, 'ORDER BY m_table');
+    $tables = array();
+    foreach ($fields as $field) {
+        if (!isset($tables[$field['m_table']])) {
+            $tables[$field['m_table']] = array();
+        }
+        $tables[$field['m_table']][$field['m_name']] = $field['m_type'];
+    }
+    $tables['db_meta'] = array('m_table' => '*ID_TEXT', 'm_name' => '*ID_TEXT', 'm_type' => 'ID_TEXT');
+    $tables['db_meta_indices'] = array('i_table' => '*ID_TEXT', 'i_name' => '*ID_TEXT', 'i_fields' => '*ID_TEXT');
+
+    ksort($tables);
+
+    return $tables;
+}
+
+/**
+ * Get an SQL dump of a database.
+ *
+ * @param  resource $out_file File to stream into
+ * @param  boolean $include_drops Whether to include 'DROP' statements
+ * @param  boolean $output_statuses Whether to output status as we go
+ * @param  ?array $skip Array of table names to skip (null: none)
+ * @param  ?array $only Array of only table names to do (null: all)
+ * @param  ?object $conn Database connection to use (null: site database)
+ * @param  ?string $intended_db_type Database driver to use (null: site database driver)
+ */
+function get_sql_dump($out_file, $include_drops = false, $output_statuses = false, $skip = null, $only = null, $conn = null, $intended_db_type = null)
+{
+    disable_php_memory_limit();
+    if (php_function_allowed('set_time_limit')) {
+        @set_time_limit(0);
+    }
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+    require_code('database_helper');
+
+    if ($conn === null) {
+        $conn = $GLOBALS['SITE_DB'];
+    }
+
+    if ($intended_db_type === null) {
+        $intended_db_type = get_db_type();
+    }
+    require_code('database/' . $intended_db_type);
+    $db_static = object_factory('Database_Static_' . $intended_db_type);
+
+    if (!db_supports_drop_table_if_exists($conn->connection_write)) {
+        $include_drops = false; // "DROP IF EXISTS" only supported on some DBs.
+    }
+
+    // Tables
+    $tables = find_all_tables($conn);
+    foreach ($tables as $table_name => $fields) {
+        if (($skip !== null) && (in_array($table_name, $skip))) {
+            continue;
+        }
+        if (($only !== null) && (!in_array($table_name, $only))) {
+            continue;
+        }
+
+        if ($output_statuses) {
+            print('Working out SQL for table: ' . $table_name . "\n");
+            flush();
+        }
+
+        if ($include_drops) {
+            $queries = $db_static->db_drop_table_if_exists($conn->get_table_prefix() . $table_name, $conn->connection_write);
+            foreach ($queries as $sql) {
+                fwrite($out_file, $sql . ";\n\n");
+            }
+        }
+
+        $save_bytes = _helper_needs_to_save_bytes($table_name, $fields);
+
+        $queries = $db_static->db_create_table($conn->get_table_prefix() . $table_name, $fields, $table_name, $conn->connection_write, $save_bytes);
+        foreach ($queries as $sql) {
+            fwrite($out_file, $sql . ";\n\n");
+        }
+
+        // Data
+        $start = 0;
+        do {
+            $data = $conn->query_select($table_name, array('*'), null, '', 100, $start, false, array());
+            foreach ($data as $map) {
+                $keys = '';
+                $all_values = array();
+
+                foreach ($map as $key => $value) {
+                    if ($keys != '') {
+                        $keys .= ', ';
+                    }
+                    $keys .= $key;
+
+                    $_value = (!is_array($value)) ? array($value) : $value;
+
+                    $v = mixed();
+                    foreach ($_value as $i => $v) {
+                        if (!array_key_exists($i, $all_values)) {
+                            $all_values[$i] = '';
+                        }
+                        $values = $all_values[$i];
+
+                        if ($values != '') {
+                            $values .= ', ';
+                        }
+
+                        if ($value === null) {
+                            $values .= 'NULL';
+                        } else {
+                            if (is_float($v)) {
+                                $values .= float_to_raw_string($v);
+                            } elseif (is_integer($v)) {
+                                $values .= strval($v);
+                            } else {
+                                $values .= '\'' . $db_static->db_escape_string($v) . '\'';
+                            }
+                        }
+
+                        $all_values[$i] = $values; // essentially appends, as $values was loaded from former $all_values[$i] value
+                    }
+                }
+
+                $sql = 'INSERT INTO ' . $conn->get_table_prefix() . $table_name . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
+                fwrite($out_file, $sql . ";\n");
+            }
+
+            if (count($data) != 0) {
+                $start += 100;
+            }
+        } while (count($data) != 0);
+
+        // Divider, if we put out some data
+        if ($start > 0) {
+            fwrite($out_file, "\n");
+        }
+
+        // Indexes
+        $indexes = $conn->query_select('db_meta_indices', array('*'), array('i_table' => $table_name));
+        foreach ($indexes as $index) {
+            $index_name = $index['i_name'];
+
+            if ($index_name[0] == '#') {
+                $_index_name = substr($index_name, 1);
+                $is_full_text = true;
+            } else {
+                $_index_name = $index_name;
+                $is_full_text = false;
+            }
+
+            $fields = array();
+            foreach (explode(',', $index['i_fields']) as $field_name) {
+                $db_type = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field_name));
+                $fields[$field_name] = $db_type;
+            }
+
+            $_fields = _helper_generate_index_fields($table_name, $fields, $is_full_text);
+
+            if ($_fields !== null) {
+                $unique_key_fields = implode(',', _helper_get_table_key_fields($table_name));
+
+                $queries = $db_static->db_create_index(get_table_prefix() . $table_name, $index_name, $_fields, $conn->connection_write, $table_name, $unique_key_fields);
+                foreach ($queries as $sql) {
+                    fwrite($out_file, $sql . ";\n\n");
+                }
+            }
+        }
+    }
 }

@@ -66,39 +66,46 @@ class Database_Static_sqlserver
     }
 
     /**
-     * Create a table index.
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
      * @param  array $db The DB connection to make on
-     * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @return array List of SQL queries to run
      */
-    public function db_create_index($table_name, $index_name, $_fields, $db, $unique_key_field = 'id')
+    public function db_create_index($table_name, $index_name, $_fields, $db, $raw_table_name, $unique_key_fields)
     {
         if ($index_name[0] == '#') {
+            $ret = array();
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
-                $unique_index_name = $index_name . '__' . $table_name;
-                $this->db_query('CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_field . ')', $db);
-                $this->db_query('CREATE FULLTEXT CATALOG ft AS DEFAULT', $db, null, null, true); // Might already exist
-                $this->db_query('CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name, $db, null, null, true);
-            }
-            return;
-        }
 
-        $fields = explode(',', $_fields);
-        foreach ($fields as $field) {
-            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field)), 'LONG') !== false) {
-                // We can't support this in SQL Server https://blogs.msdn.microsoft.com/bartd/2011/01/06/living-with-sqls-900-byte-index-key-length-limit/.
-                // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
-                return;
+                $unique_index_name = $index_name . '__' . $raw_table_name;
+
+                $ret[] = 'CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
+
+                $ret[] = 'CREATE FULLTEXT CATALOG ft AS DEFAULT';
+
+                $ret[] = 'CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
             }
+            return $ret;
         }
 
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
 
-        $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $fields = explode(',', $_fields);
+        foreach ($fields as $field) {
+            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field)), 'LONG') !== false) {
+                // We can't support this in SQL Server https://blogs.msdn.microsoft.com/bartd/2011/01/06/living-with-sqls-900-byte-index-key-length-limit/.
+                // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
+                return array();
+            }
+        }
+
+        return array('CREATE INDEX ' . $index_name . '__' . $raw_table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**
@@ -179,13 +186,16 @@ class Database_Static_sqlserver
     }
 
     /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
      * @param  array $db The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
-    public function db_create_table($table_name, $fields, $db)
+    public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->db_get_type_remap();
 
@@ -218,11 +228,8 @@ class Database_Static_sqlserver
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $query = 'CREATE TABLE ' . $table_name . ' (
-          ' . $_fields . '
-          PRIMARY KEY (' . $keys . ')
-        )';
-        $this->db_query($query, $db, null, null);
+        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
+        return array($query);
     }
 
     /**
@@ -274,10 +281,11 @@ class Database_Static_sqlserver
      *
      * @param  ID_TEXT $table The table name
      * @param  array $db The DB connection to delete on
+     * @return array List of SQL queries to run
      */
     public function db_drop_table_if_exists($table, $db)
     {
-        $this->db_query('DROP TABLE ' . $table, $db, null, null, true);
+        return array('DROP TABLE ' . $table);
     }
 
     /**

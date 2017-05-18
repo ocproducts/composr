@@ -20,6 +20,8 @@
  * @package    core_database_drivers
  */
 
+// See sup_postgresql tutorial for documentation on using PostgreSQL.
+
 /**
  * Database Driver.
  *
@@ -58,14 +60,17 @@ class Database_Static_postgresql
     }
 
     /**
-     * Create a table index.
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
      * @param  array $db The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @return array List of SQL queries to run
      */
-    public function db_create_index($table_name, $index_name, $_fields, $db)
+    public function db_create_index($table_name, $index_name, $_fields, $db, $raw_table_name, $unique_key_fields)
     {
         if ($index_name[0] == '#') {
             $index_name = substr($index_name, 1);
@@ -83,22 +88,20 @@ class Database_Static_postgresql
                 $aggregation .= '\'' . $this->db_escape_string($_field) . '\'';
             }
 
-            $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . ' USING gin(to_tsvector(\'pg_catalog.' . $postgres_fulltext_language . '\', ' . $aggregation . '))', $db);
-
-            return;
-        }
-
-        $fields = explode(',', $_fields);
-        foreach ($fields as $field) {
-            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field)), 'LONG') !== false) {
-                // We can't support this in PostgreSQL, too much data will give an error when inserting into the index
-                return;
-            }
+            return array('CREATE INDEX ' . $index_name . '__' . $raw_table_name . ' ON ' . $table_name . ' USING gin(to_tsvector(\'pg_catalog.' . $postgres_fulltext_language . '\', ' . $aggregation . '))');
         }
 
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
 
-        $this->db_query('CREATE INDEX index' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+        $fields = explode(',', $_fields);
+        foreach ($fields as $field) {
+            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field)), 'LONG') !== false) {
+                // We can't support this in PostgreSQL, too much data will give an error when inserting into the index
+                return array();
+            }
+        }
+
+        return array('CREATE INDEX ' . $index_name . '__' . $raw_table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**
@@ -194,13 +197,16 @@ class Database_Static_postgresql
     }
 
     /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
      * @param  array $db The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
-    public function db_create_table($table_name, $fields, $db)
+    public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->db_get_type_remap();
 
@@ -233,11 +239,8 @@ class Database_Static_postgresql
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $query = 'CREATE TABLE ' . $table_name . ' (
-          ' . $_fields . '
-          PRIMARY KEY (' . $keys . ')
-        )';
-        $this->db_query($query, $db, null, null);
+        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
+        return array($query);
     }
 
     /**
@@ -295,14 +298,25 @@ class Database_Static_postgresql
     }
 
     /**
+     * Find whether drop table "if exists" is present
+     *
+     * @return boolean Whether it is
+     */
+    public function db_supports_drop_table_if_exists()
+    {
+        return true;
+    }
+
+    /**
      * Delete a table.
      *
      * @param  ID_TEXT $table The table name
      * @param  array $db The DB connection to delete on
+     * @return array List of SQL queries to run
      */
     public function db_drop_table_if_exists($table, $db)
     {
-        $this->db_query('DROP TABLE ' . $table, $db, null, null, true);
+        return array('DROP TABLE IF EXISTS ' . $table);
     }
 
     /**

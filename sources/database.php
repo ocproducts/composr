@@ -231,6 +231,26 @@ function db_encode_like($pattern)
 }
 
 /**
+ * Find whether drop table "if exists" is present
+ *
+ * @param  array $db A DB connection
+ * @return boolean Whether it is
+ */
+function db_supports_drop_table_if_exists($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_supports_drop_table_if_exists')) {
+        return false;
+    }
+
+    return $GLOBALS['DB_STATIC_OBJECT']->db_supports_drop_table_if_exists();
+}
+
+/**
  * Find whether full-text-search is present
  *
  * @param  array $db A DB connection
@@ -868,22 +888,6 @@ class DatabaseConnector
     }
 
     /**
-     * Initialise a filesystem DB that we can use for caching.
-     */
-    public function initialise_filesystem_db()
-    {
-        global $FILECACHE_OBJECT;
-        require_code('database/xml');
-        $chain_db = new DatabaseConnector(get_custom_file_base() . '/caches/persistent', '', '', '', get_table_prefix(), false, object_factory('Database_Static_xml'));
-        $chain_connection = &$chain_db->connection_write;
-        if (count($chain_connection) > 4) { // Okay, we can't be lazy anymore
-            $chain_connection = call_user_func_array(array($chain_db->static_ob, 'db_get_connection'), $chain_connection);
-            _general_db_init();
-        }
-        $FILECACHE_OBJECT = $chain_db;
-    }
-
-    /**
      * Check if a table exists.
      *
      * @param  ID_TEXT $table_name The table name
@@ -923,7 +927,7 @@ class DatabaseConnector
      * @param  array $fields The fields
      * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
      * @param  boolean $skip_null_check Whether to skip the check for null string fields
-     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @param  ?boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue (null: auto-detect if needed). Pass as true/false for normal install code to make intentions explicit, maintenance code may use auto-detect.
      */
     public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
     {

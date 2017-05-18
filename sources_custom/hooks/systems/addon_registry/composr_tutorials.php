@@ -660,7 +660,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_commandr/cpuinfo_linux.png',
             'data_custom/images/docs/tut_commandr/cpuinfo_mac.png',
             'data_custom/images/docs/tut_commandr/directory_sizes.png',
-            'data_custom/images/docs/tut_commandr/mysql_table_sizes.png',
+            'data_custom/images/docs/tut_commandr/db_table_sizes.png',
             'data_custom/images/docs/tut_commandr/php.png',
             'data_custom/images/docs/tut_commandr/query.png',
             'data_custom/images/docs/tut_commandr/uptime.png',

@@ -114,7 +114,7 @@ function get_relation_map()
 The following code is strictly intended for building up a *FAKE* InnoDB schema for the
 database.
 
-It is not intended for real-world backups. For that see database_toolkit.php.
+It is not intended for real-world backups.
 */
 
 function get_all_innodb_tables()
@@ -204,72 +204,70 @@ function get_innodb_table_sql($tables, $all_tables)
     $relations = array();
     $relation_map = get_relation_map();
 
-    $i = 0;
-    $table_prefix = get_table_prefix();
+    $conn = $GLOBALS['SITE_DB'];
+    $table_prefix = $conn->get_table_prefix();
+
+    require_code('database/mysqli');
+    $db_static = object_factory('Database_Static_mysqli');
+
     for ($loop_it = 0; $loop_it < count($tables); $loop_it++) { // Loops over $tables, which is growing as we pull in tables needed due to foreign key references
         $tables_keys = array_keys($tables);
         $tables_values = array_values($tables);
 
-        $table = $tables_keys[$loop_it];
+        $table_name = $tables_keys[$loop_it];
 
-        if ($table == 'translate') {
+        if ($table_name == 'translate') {
             continue; // Only used in multi-lang mode, which is the exception
         }
-        if (table_has_purpose_flag($table, TABLE_PURPOSE__NON_BUNDLED) && get_param_integer('include_custom', 0) == 0) {
+        if (table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED) && get_param_integer('include_custom', 0) == 0) {
             continue;
         }
 
         $fields = $tables_values[$loop_it];
 
-        $_i = strval($i);
-        $out .= "CREATE TABLE {$table_prefix}{$table}\n(\n";
         $keys = array();
-        $type_remap = get_innodb_data_types();
+
         if (!is_array($fields)) { // Error
             @print($out);
             @var_dump($fields);
             exit();
         }
+
         foreach ($fields as $field => $type) {
-            $_type = $type_remap[str_replace(array('*', '?'), array('', ''), $type)];
-            $nullness = (strpos($type, '*') !== false) ? 'NULL' : 'NOT NULL';
-            $out .= "     {$field} {$_type} {$nullness},\n";
             if (strpos($type, '*') !== false) {
                 $keys[] = $field;
             }
-            if (isset($relation_map[$table . '.' . $field])) {
-                $relations[$table . '.' . $field] = $relation_map[$table . '.' . $field];
+            if (isset($relation_map[$table_name . '.' . $field])) {
+                $relations[$table_name . '.' . $field] = $relation_map[$table_name . '.' . $field];
             }
             if (strpos($type, 'MEMBER') !== false) {
-                $relations[$table . '.' . $field] = 'f_members.id';
+                $relations[$table_name . '.' . $field] = 'f_members.id';
             }
             if (strpos($type, 'GROUP') !== false) {
-                $relations[$table . '.' . $field] = 'f_groups.id';
+                $relations[$table_name . '.' . $field] = 'f_groups.id';
             }
             /*if (strpos($type, 'TRANS') !== false) {   We don't bother showing this anymore
-                $relations[$table . '.' . $field] = 'translate.id';
+                $relations[$table_name . '.' . $field] = 'translate.id';
             }*/
-            if ((strpos($field, 'author') !== false) && ($type == 'ID_TEXT') && ($table != 'authors') && ($field != 'block_author') && ($field != 'module_author')) {
-                $relations[$table . '.' . $field] = 'authors.author';
+            if ((strpos($field, 'author') !== false) && ($type == 'ID_TEXT') && ($table_name != 'authors') && ($field != 'block_author') && ($field != 'module_author')) {
+                $relations[$table_name . '.' . $field] = 'authors.author';
             }
 
-            if (isset($relations[$table . '.' . $field])) {
-                $mapped_table = preg_replace('#\..*$#', '', $relations[$table . '.' . $field]);
+            if (isset($relations[$table_name . '.' . $field])) {
+                $mapped_table = preg_replace('#\..*$#', '', $relations[$table_name . '.' . $field]);
                 if (!isset($tables[$mapped_table])) {
                     $tables[$mapped_table] = $all_tables[$mapped_table];
                 }
             }
         }
-        $out .= "\n     PRIMARY KEY (";
-        foreach ($keys as $it => $key) {
-            if ($it != 0) {
-                $out .= ',';
-            }
-            $out .= $key;
-        }
-        $out .= ")\n) engine=InnoDB;\n\n";
 
-        $i++;
+        $save_bytes = _helper_needs_to_save_bytes($table_name, $fields);
+
+        $queries = $db_static->db_create_table($table_prefix . $table_name, $fields, $table_name, $conn->connection_write, $save_bytes);
+        foreach ($queries as $sql) {
+            $sql = str_replace('MyISAM', 'InnoDB', $sql);
+            $out .= $sql . ";\n";
+        }
     }
 
     foreach ($relations as $from => $to) {
@@ -279,37 +277,9 @@ function get_innodb_table_sql($tables, $all_tables)
         $to_field = preg_replace('#^.*\.#', '', $to);
         $source_id = strval(array_search($from_table, array_keys($tables)));
         $target_id = strval(array_search($to_table, array_keys($tables)));
-        $out .= "\nCREATE INDEX `{$from}` ON {$table_prefix}{$from_table}({$from_field});\nALTER TABLE {$table_prefix}{$from_table} ADD FOREIGN KEY `{$from}` ({$from_field}) REFERENCES {$table_prefix}{$to_table} ({$to_field});\n";
+        $out .= "\nCREATE INDEX `{$from}` ON {$table_prefix}{$from_table}({$from_field});\n";
+        $out .= "ALTER TABLE {$table_prefix}{$from_table} ADD FOREIGN KEY `{$from}` ({$from_field}) REFERENCES {$table_prefix}{$to_table} ({$to_field});\n";
     }
 
     return $out;
-}
-
-function get_innodb_data_types()
-{
-    $type_remap = array(
-        'AUTO' => 'integer auto_increment', // USUALLY IS UNSIGNED, BUT WE NEED KEY CONSISTENCY HERE
-        'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
-        'INTEGER' => 'integer',
-        'UINTEGER' => 'integer unsigned',
-        'SHORT_INTEGER' => 'tinyint',
-        'REAL' => 'real',
-        'BINARY' => 'tinyint(1)',
-        'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
-        'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
-        'TIME' => 'integer unsigned',
-        'LONG_TRANS' => 'integer', // USUALLY IS UNSIGNED, BUT WE NEED KEY CONSISTENCY HERE
-        'SHORT_TRANS' => 'integer', // USUALLY IS UNSIGNED, BUT WE NEED KEY CONSISTENCY HERE
-        'LONG_TRANS__COMCODE' => 'integer', // USUALLY IS UNSIGNED, BUT WE NEED KEY CONSISTENCY HERE
-        'SHORT_TRANS__COMCODE' => 'integer', // USUALLY IS UNSIGNED, BUT WE NEED KEY CONSISTENCY HERE
-        'SHORT_TEXT' => 'varchar(255)',
-        'LONG_TEXT' => 'longtext',
-        'ID_TEXT' => 'varchar(80)',
-        'MINIID_TEXT' => 'varchar(40)',
-        'IP' => 'varchar(40)', // 15 for ip4, but we now support ip6
-        'LANGUAGE_NAME' => 'varchar(5)',
-        'URLPATH' => 'varchar(255)',
-    );
-
-    return $type_remap;
 }

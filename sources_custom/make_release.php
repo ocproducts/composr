@@ -909,19 +909,16 @@ function make_install_sql()
     $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 
     // Build SQL dump
-    require_code('database_toolkit');
     global $HAS_MULTI_LANG_CONTENT;
     $bak = $HAS_MULTI_LANG_CONTENT;
     $HAS_MULTI_LANG_CONTENT = false;
-    $st = get_sql_dump(true, false, null, null, null, false, $conn);
+    $out_path = get_file_base() . '/install.sql';
+    $out_file = fopen($out_path, 'wb');
+    get_sql_dump($out_file, true, false, null, null, $conn);
+    fclose($out_file);
+    fix_permissions($out_path);
+    sync_file($out_path);
     $HAS_MULTI_LANG_CONTENT = $bak;
-    $sql_contents = '';
-    foreach ($st as $s) {
-        $sql_contents .= $s;
-        $sql_contents .= "\n\n";
-    }
-    require_code('files');
-    cms_file_put_contents_safe(get_file_base() . '/install.sql', $sql_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     // Run some checks to make sure our process is not buggy...
 

@@ -18,6 +18,10 @@
  * @package    core
  */
 
+/*
+Only works with MySQL.
+*/
+
 /**
  * Provide advice for repairing database issues.
  * @package core
@@ -672,8 +676,12 @@ class DatabaseRepair
             }
         }
 
-        $query = $GLOBALS['SITE_DB']->static_ob->db_create_table_sql(get_table_prefix() . $table_name, $table, $table_name);
-        $this->add_fixup_query($query);
+        $save_bytes = _helper_needs_to_save_bytes($table_name, $table);
+
+        $queries = $GLOBALS['SITE_DB']->static_ob->db_create_table(get_table_prefix() . $table_name, $table, $table_name, $save_bytes);
+        foreach ($queries as $sql) {
+            $this->add_fixup_query($sql);
+        }
     }
 
     /**
@@ -873,26 +881,24 @@ class DatabaseRepair
 
         $table_name = $index['table'];
 
-        $_index_name = ($index['is_full_text'] ? '#' : '') . $index_name;
+        $is_full_text = $index['is_full_text'];
+        $_index_name = ($is_full_text ? '#' : '') . $index_name;
 
-        $_fields = '';
+        $fields = array();
         foreach ($index['fields'] as $field_name) {
-            if ($_fields != '') {
-                $_fields .= ',';
-            }
-            $_fields .= $field_name;
-
             $db_type = isset($meta_tables[$table_name][$field_name]) ? $meta_tables[$table_name][$field_name] : null;
-            if ((!$index['is_full_text']) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
-                if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
-                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
-                }
-            }
+            $fields[$field_name] = $db_type;
         }
 
-        $query = $GLOBALS['SITE_DB']->static_ob->db_create_index_sql(get_table_prefix() . $table_name, $_index_name, $_fields);
-        if (!is_null($query)) {
-            $this->add_fixup_query($query);
+        $_fields = _helper_generate_index_fields($table_name, $fields, $is_full_text);
+
+        if ($_fields !== null) {
+            $unique_key_fields = implode(',', _helper_get_table_key_fields($table_name));
+
+            $queries = $GLOBALS['SITE_DB']->static_ob->db_create_index(get_table_prefix() . $table_name, $_index_name, $_fields, $GLOBALS['SITE_DB']->connection_write, $table_name, $unique_key_fields);
+            foreach ($queries as $sql) {
+                $this->add_fixup_query($sql);
+            }
         }
     }
 
