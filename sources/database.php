@@ -406,9 +406,6 @@ function db_function($function, $args = null)
 
     switch ($function) {
         case 'CONCAT':
-            if (count($args) != 2) {
-                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-            }
             switch (get_db_type()) {
                 // Supported on most
 
@@ -543,11 +540,6 @@ function db_function($function, $args = null)
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
             switch (get_db_type()) {
-                case 'mysql':
-                case 'mysqli':
-                case 'mysql_dbx':
-                case 'sqlite':
-                    return 'SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
                 case 'oracle':
                     return 'SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1];
                 case 'postgresql':
@@ -558,6 +550,14 @@ function db_function($function, $args = null)
                     return 'SELECT TOP 1 ' . $args[0] . ' FROM ' . $args[1];
                 case 'ibm': // Not fully supported
                     return 'SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only';
+                case 'xml':
+                    return 'SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+                case 'mysql':
+                case 'mysqli':
+                case 'mysql_dbx':
+                case 'sqlite':
+                default:
+                    return 'SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
             }
             break;
     }

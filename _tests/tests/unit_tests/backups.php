@@ -20,6 +20,10 @@ class backups_test_set extends cms_test_case
 {
     public function testBackup()
     {
+        if (get_db_type() == 'xml') {
+            warn_exit('Cannot run on XML database driver');
+        }
+
         require_lang('backups');
         require_code('backup');
         require_code('tar');
