@@ -2925,7 +2925,7 @@ class Database_Static_xml
         if (count($joins) == 0) {
             $records = array(array());
         }
-        elseif ((count($joins) == 1) && (!is_array($joins[0][1])) && ($where_expr == array('LITERAL', true)) && ($select === array(array('COUNT', '*')))) { // Quick fudge to get fast table counts
+        elseif ((count($joins) == 1) && (!is_array($joins[0][1])) && ($where_expr == array('LITERAL', true)) && ($select === array(array('COUNT', '*'))) && ($orders === null)) { // Quick fudge to get fast table counts
             global $DIR_CONTENTS_CACHE;
             if (!isset($DIR_CONTENTS_CACHE[$joins[0][1]])) {
                 if (is_dir($db[0] . '/' . $joins[0][1])) {
@@ -3204,6 +3204,18 @@ class Database_Static_xml
                 }
 
                 $results[] = $rep;
+            }
+        }
+
+        // Try and validate some stuff PostgreSQL wouldn't like, so we make XML driver as strict as possible
+        //  It's not perfect, only works if we actually have a non-zero result set.
+        //  Can't dig into expressions because the XML driver doesn't support ordering by them.
+        if (count($results) > 0) {
+            $matches = array();
+            if (preg_match('#^\!?(\w+)$#', $orders, $matches) != 0) {
+                if (!isset($records[0][$matches[1]])) {
+                    warn_exit('Cannot sort by ' . $matches[1] . ', it\'s not selected');
+                }
             }
         }
 
