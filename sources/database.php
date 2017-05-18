@@ -401,7 +401,7 @@ function db_escape_string($string)
 function db_function($function, $args = null)
 {
     if ($args === null) {
-        $args = array(); // TODO: In v11 make like this as default parameter
+        $args = array(); // TODO: Fix in v11, make like this as default parameter
     }
 
     switch ($function) {

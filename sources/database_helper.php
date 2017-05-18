@@ -209,7 +209,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         $save_bytes = $_save_bytes;
     } else {
         if ($save_bytes != $_save_bytes) {
-            warn_exit('$save_bytes setting was not needed.');
+            warn_exit(protect_from_escaping('<kbd>$save_bytes</kbd> setting was not needed when creating table <kbd>' . escape_html($table_name) . '</kbd>'));
         }
     }
 
@@ -249,7 +249,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
 
     $queries = $this_ref->static_ob->db_create_table($this_ref->table_prefix . $table_name, $fields, $this_ref->connection_write, $table_name, $save_bytes);
     foreach ($queries as $sql) {
-        $this_ref->static_ob->db_query($sql, $this_ref->connection_write, null, null, true); // Might already exist so suppress errors
+        $this_ref->static_ob->db_query($sql, $this_ref->connection_write);
     }
 
     // Considering tabes in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
@@ -365,7 +365,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
         $queries = $this_ref->static_ob->db_create_index($this_ref->table_prefix . $table_name, $index_name, $_fields, $this_ref->connection_write, $table_name, $unique_key_fields);
         foreach ($queries as $sql) {
-            $this_ref->static_ob->db_query($sql, $this_ref->connection_write, null, null, true); // Might already exist so suppress errors
+            $this_ref->static_ob->db_query($sql, $this_ref->connection_write, null, null, $is_full_text/*May fail on database backends that don't cleanup full-text well when dropping tables*/);
         }
     }
 }
@@ -434,7 +434,15 @@ function _helper_delete_index_if_exists($this_ref, $table_name, $index_name)
         $index_name = substr($index_name, 1);
     }
 
-    foreach (array($index_name, $index_name . '__' . $table_name/*Some DB drivers have to make it globally unique via using table name in name*/) as $_index_name) {
+    $possible_final_index_names = array(
+        $index_name,
+
+        // Some DB drivers have to make it globally unique via using table name in name
+        $index_name . '__' . $table_name,
+        $index_name . '__' . $this_ref->get_table_prefix() . $table_name,
+    );
+
+    foreach ($possible_final_index_names as $_index_name) {
         $query = 'DROP INDEX ' . $_index_name . ' ON ' . $this_ref->get_table_prefix() . $table_name;
         $this_ref->query($query, null, null, true);
     }
@@ -467,9 +475,16 @@ function _helper_drop_table_if_exists($this_ref, $table)
         $this_ref->query_delete('db_meta', array('m_table' => $table));
         $this_ref->query_delete('db_meta_indices', array('i_table' => $table));
     }
+
     if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
+    }
+
+    // In case DB needs pre-cleanup for full-text indexes if they get left behind (for example)
+    $indices = $this_ref->query_select('db_meta_indices', array('*'), array('i_table' => $table));
+    foreach ($indices as $index) {
+        $this_ref->delete_index_if_exists($table, $index['i_name']);
     }
 
     $queries = $this_ref->static_ob->db_drop_table_if_exists($this_ref->table_prefix . $table, $this_ref->connection_write);
@@ -592,10 +607,8 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     $this_ref->query_insert('db_meta', array('m_table' => $table_name, 'm_name' => $name, 'm_type' => $_type));
     reload_lang_fields(false, $table_name);
 
-    if (!multi_lang_content()) {
-        if (strpos($_type, '_TRANS') !== false) {
-            $GLOBALS['SITE_DB']->create_index($table_name, '#' . $name, array($name));
-        }
+    if (strpos($_type, '_TRANS') !== false) {
+        $GLOBALS['SITE_DB']->create_index($table_name, '#' . $name, array($name));
     }
 
     if ((!multi_lang_content()) && (strpos($_type, '__COMCODE') !== false)) {

@@ -88,7 +88,7 @@ class Database_Static_postgresql
                 $aggregation .= '\'' . $this->db_escape_string($_field) . '\'';
             }
 
-            return array('CREATE INDEX ' . $index_name . '__' . $raw_table_name . ' ON ' . $table_name . ' USING gin(to_tsvector(\'pg_catalog.' . $postgres_fulltext_language . '\', ' . $aggregation . '))');
+            return array('CREATE INDEX ' . $index_name . '__' . $table_name . ' ON ' . $table_name . ' USING gin(to_tsvector(\'pg_catalog.' . $postgres_fulltext_language . '\', ' . $aggregation . '))');
         }
 
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
@@ -101,7 +101,7 @@ class Database_Static_postgresql
             }
         }
 
-        return array('CREATE INDEX ' . $index_name . '__' . $raw_table_name . ' ON ' . $table_name . '(' . $_fields . ')');
+        return array('CREATE INDEX ' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**

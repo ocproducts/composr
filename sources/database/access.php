@@ -76,7 +76,7 @@ class Database_Static_access
 
         $_fields = preg_replace('#\(\d+\)#', '', $_fields);
 
-        return array('CREATE INDEX ' . $index_name . '__' . $raw_table_name . ' ON ' . $table_name . '(' . $_fields . ')');
+        return array('CREATE INDEX ' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**

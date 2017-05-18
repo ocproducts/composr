@@ -261,13 +261,13 @@ function get_innodb_table_sql($tables, $all_tables)
             }
         }
 
-        $save_bytes = _helper_needs_to_save_bytes($table_name, $fields);
-
-        $queries = $db_static->db_create_table($table_prefix . $table_name, $fields, $table_name, $conn->connection_write, $save_bytes);
+        $queries = $db_static->db_create_table($table_prefix . $table_name, $fields, $table_name, $conn->connection_write, null);
         foreach ($queries as $sql) {
             $sql = str_replace('MyISAM', 'InnoDB', $sql);
             $out .= $sql . ";\n";
         }
+
+        $out .= "\n";
     }
 
     foreach ($relations as $from => $to) {

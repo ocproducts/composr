@@ -334,5 +334,7 @@ class database_misc_test_set extends cms_test_case
             );
             $this->assertTrue(count($rows) == $expected, $test_codename . ' failed, got ' . integer_format(count($rows)) . ' rows but expected ' . integer_format($expected) . ' rows');
         }
+
+        $GLOBALS['SITE_DB']->drop_table_if_exists('testy_test_test');
     }
 }

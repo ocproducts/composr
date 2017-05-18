@@ -63,7 +63,7 @@ class Module_admin_wordfilter
                 'word' => 'SHORT_TEXT',
                 'w_replacement' => 'SHORT_TEXT',
                 'w_substr' => 'BINARY'
-            ), false, false, true);
+            ));
 
             $naughties = array(
                 'arsehole', 'asshole', 'arse', 'bastard', 'cock', 'cocked', 'cocksucker', 'crap', 'cunt', 'cum',

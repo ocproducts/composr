@@ -85,6 +85,7 @@ require_code('version');
 require_code('comcode');
 require_code('database');
 require_code('database_action');
+require_code('config');
 
 // If we are referencing this file in order to extract dependant url's from a pack
 handle_self_referencing_embedment();

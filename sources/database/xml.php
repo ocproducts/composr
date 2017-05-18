@@ -1634,7 +1634,7 @@ class Database_Static_xml
 
         $queries = $this->db_create_table($table_name, $fields, $db);
         foreach ($queries as $sql) {
-            $this->db_query($sql, $db, null, null, true); // Might already exist so suppress errors
+            $this->db_query($sql, $db);
         }
 
         if (!$this->_parsing_check_ended($at, $tokens, $query)) {

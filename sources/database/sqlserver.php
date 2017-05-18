@@ -83,7 +83,7 @@ class Database_Static_sqlserver
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
 
-                $unique_index_name = $index_name . '__' . $raw_table_name;
+                $unique_index_name = $index_name . '__' . $table_name;
 
                 $ret[] = 'CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
 
@@ -105,7 +105,7 @@ class Database_Static_sqlserver
             }
         }
 
-        return array('CREATE INDEX ' . $index_name . '__' . $raw_table_name . ' ON ' . $table_name . '(' . $_fields . ')');
+        return array('CREATE INDEX ' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**

@@ -676,9 +676,7 @@ class DatabaseRepair
             }
         }
 
-        $save_bytes = _helper_needs_to_save_bytes($table_name, $table);
-
-        $queries = $GLOBALS['SITE_DB']->static_ob->db_create_table(get_table_prefix() . $table_name, $table, $table_name, $save_bytes);
+        $queries = $GLOBALS['SITE_DB']->static_ob->db_create_table(get_table_prefix() . $table_name, $table, $table_name, null);
         foreach ($queries as $sql) {
             $this->add_fixup_query($sql);
         }

@@ -56,6 +56,7 @@ class Block_main_friends_list
         $block_id = get_block_id($map);
 
         require_lang('chat');
+        require_lang('cns');
 
         $member_id = array_key_exists('member_id', $map) ? intval($map['member_id']) : get_member();
         $max = get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : 12);

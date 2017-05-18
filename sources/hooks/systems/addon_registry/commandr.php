@@ -168,7 +168,7 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/commandr_commands/alien_check.php',
             'sources/hooks/systems/commandr_commands/directory_sizes.php',
             'sources/hooks/systems/commandr_commands/db_table_sizes.php',
-            'sources/hooks/systems/commandr_commands/sql_dump.php ',
+            'sources/hooks/systems/commandr_commands/sql_dump.php',
             'sources/hooks/systems/commandr_commands/db_search.php',
             'sources/hooks/systems/commandr_commands/append.php',
             'sources/hooks/systems/commandr_commands/ban_ip.php',

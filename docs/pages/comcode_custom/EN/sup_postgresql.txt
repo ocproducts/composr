@@ -57,6 +57,8 @@ Postgres has system commands that you execute with a leading [tt]\[/tt]. To see 
 \du
 [/code]
 
+From now on the tutorial we'll assume you want to be using a database called "cms" and a database user "cms".
+
 You can create a database using SQL:
 [code="Bash"]
 CREATE DATABASE cms;
@@ -72,6 +74,7 @@ You can grant access like:
 GRANT ALL PRIVILEGES ON DATABASE cms TO cms;
 \connect cms;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO cms;
+ALTER DATABASE cms OWNER TO cms;
 [/code]
 
 [title="2"]Migration to Postgres[/title]
@@ -85,10 +88,19 @@ sql_dump postgresql
 [*] You then setup your database, user, and password, in Postgres.
 [*] You then import via:
 [code="Bash"]
-psql <database> -f <file.sql>
+psql <database> -f <file.sql> -U cms
 [/code]
 [*] You then edit Composr's [tt]_config.php[/tt] to have the correct database details.
 [/list]
+
+[title="3"]Whoops?[/title]
+
+You may need to reassign ownership of the tables you imported if you accidentally did it with he wrong user. This will generate some SQL you can run to do that:
+[code="SQL"]
+SELECT 'ALTER TABLE '|| tablename ||' OWNER TO cms;'
+FROM pg_tables WHERE NOT schemaname IN ('pg_catalog', 'information_schema')
+ORDER BY schemaname, tablename;
+[/code]
 
 [title="2"]Full-text search (advanced)[/title]
 

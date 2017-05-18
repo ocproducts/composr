@@ -464,7 +464,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
     
         <tr>
             <td>
-                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Adminzone Dashboard<br />(<kbd>core_adminzone_dashboard</kbd>)<br /><br />
+                <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/_generic_admin/component.png" />Core Admin Zone Dashboard<br />(<kbd>core_adminzone_dashboard</kbd>)<br /><br />
                 <strong>Core</strong>: Yes<br /><br />
                 <strong>Dependencies</strong>: <em>None</em>
             </td>

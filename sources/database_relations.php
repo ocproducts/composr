@@ -603,9 +603,7 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
             }
         }
 
-        $save_bytes = _helper_needs_to_save_bytes($table_name, $fields);
-
-        $queries = $db_static->db_create_table($conn->get_table_prefix() . $table_name, $fields, $table_name, $conn->connection_write, $save_bytes);
+        $queries = $db_static->db_create_table($conn->get_table_prefix() . $table_name, $fields, $table_name, $conn->connection_write, null);
         foreach ($queries as $sql) {
             fwrite($out_file, $sql . ";\n\n");
         }
