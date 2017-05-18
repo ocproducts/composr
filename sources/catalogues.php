@@ -1271,7 +1271,7 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
                 if ($query != '') {
                     $query .= ' UNION ';
                 }
-                $query .= 'SELECT f.id AS f_id,' . db_cast('v.cv_value', 'CHAR');
+                $query .= 'SELECT f.id AS f_id,' . db_cast('v.cv_value', 'CHAR') . ' AS cv_value';
                 if (!multi_lang_content()) {
                     if (strpos($table, '_trans') !== false) {
                         $query .= ',v.cv_value__text_parsed,v.cv_value__source_user';

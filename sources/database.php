@@ -601,6 +601,7 @@ function get_table_count_approx($table, $where = null, $where_clause = null, $db
 
 /**
  * Create an SQL cast.
+ * Note if using this in a SELECT clause you should use 'AS', as you can't predict what the CAST is going to set the field name as.
  *
  * @param string $field The field identifier
  * @param string $type The type wanted

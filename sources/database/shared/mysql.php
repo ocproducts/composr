@@ -226,7 +226,7 @@ class Database_super_mysql
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $innodb = (get_value('innodb') == '1');
+        $innodb = ((function_exists('get_value')) && (get_value('innodb') == '1'));
         $table_type = ($innodb ? 'INNODB' : 'MyISAM');
         $type_key = 'engine';
         /*if ($raw_table_name == 'sessions') {

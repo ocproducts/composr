@@ -110,6 +110,7 @@ If you don't want Postgres's default English configuration for word tokenisation
 [code="Commandr"]
 :set_value('postgres_fulltext_language', 'spanish');
 [/code]
+Existing indices would need hand-editing to the new value too.
 
 [title="2"]Technical information for developers (advanced)[/title]
 

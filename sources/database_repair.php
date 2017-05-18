@@ -115,7 +115,18 @@ class DatabaseRepair
 
             $is_full_text = (strpos($index['i_name'], '#') !== false);
 
-            if ((multi_lang_content()) && (strpos($index_name, '__combined') !== false) && ($is_full_text) && ($table_name != 'translate')) {
+            $db_types = '';
+            foreach ($fields as $field) {
+                $db_type = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
+                if ($db_type !== null) {
+                    if ($db_types != '') {
+                        $db_types .= ',';
+                    }
+                    $db_types .= $db_type;
+                }
+            }
+
+            if ((multi_lang_content()) && ($is_full_text) && ($table_name != 'translate') && (strpos($db_types, '_TRANS') !== false)) {
                 continue;
             }
 
@@ -550,7 +561,18 @@ class DatabaseRepair
                     $needs_changes = true;
                 }
             } else {
-                if ((multi_lang_content()) && (((strpos($expected_index_name, '__combined') !== false) && ($expected_is_full_text) && ($index['table'] != 'translate')) || (count($expected_fields) == 1) && (isset($meta_tables[$index['table']][$expected_fields[0]])) && (strpos($meta_tables[$index['table']][$expected_fields[0]], '_TRANS') !== false))) {
+                $db_types = '';
+                foreach ($expected_fields as $field) {
+                    $db_type = $meta_tables[$index['table']][$field];
+                    if ($db_type !== null) {
+                        if ($db_types != '') {
+                            $db_types .= ',';
+                        }
+                        $db_types .= $db_type;
+                    }
+                }
+
+                if ((multi_lang_content()) && ($expected_is_full_text) && ($index['table'] != 'translate')) {
                     // Ignore, as it only existed to index a string column in non-multi-lang content mode
                 } else {
                     $this->create_index_missing_from_db($expected_index_name, $index, true, $meta_tables);

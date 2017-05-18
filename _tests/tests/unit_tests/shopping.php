@@ -119,10 +119,7 @@ class shopping_test_set extends cms_test_case
 
         $map = $cms_module->get_set_field_map($catalogue_name, get_member());
         $this->product_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
-    }
 
-    public function testAddtoCart()
-    {
         require_code('site/pages/modules/shopping.php');
         $shopping_module = new Module_shopping();
 

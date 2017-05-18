@@ -75,7 +75,7 @@ class Database_Static_postgresql
         if ($index_name[0] == '#') {
             $index_name = substr($index_name, 1);
 
-            $postgres_fulltext_language = get_value('postgres_fulltext_language');
+            $postgres_fulltext_language = function_exists('get_value') ? get_value('postgres_fulltext_language') : null/*backup restore?*/;
             if ($postgres_fulltext_language === null) {
                 $postgres_fulltext_language = 'english';
             }

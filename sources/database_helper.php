@@ -472,6 +472,12 @@ function _helper_drop_table_if_exists($this_ref, $table)
             mass_delete_lang($table, $_attrs, $this_ref);
         }
 
+        // In case DB needs pre-cleanup for full-text indexes if they get left behind (for example)
+        $indices = $this_ref->query_select('db_meta_indices', array('*'), array('i_table' => $table));
+        foreach ($indices as $index) {
+            $this_ref->delete_index_if_exists($table, $index['i_name']);
+        }
+
         $this_ref->query_delete('db_meta', array('m_table' => $table));
         $this_ref->query_delete('db_meta_indices', array('i_table' => $table));
     }
@@ -479,12 +485,6 @@ function _helper_drop_table_if_exists($this_ref, $table)
     if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
         $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
         _general_db_init();
-    }
-
-    // In case DB needs pre-cleanup for full-text indexes if they get left behind (for example)
-    $indices = $this_ref->query_select('db_meta_indices', array('*'), array('i_table' => $table));
-    foreach ($indices as $index) {
-        $this_ref->delete_index_if_exists($table, $index['i_name']);
     }
 
     $queries = $this_ref->static_ob->db_drop_table_if_exists($this_ref->table_prefix . $table, $this_ref->connection_write);
