@@ -1212,11 +1212,11 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             }
 
             // Work out main query
-            $query = 'SELECT * FROM (';
+            $query = '(';
             foreach ($where_alternative_matches as $parts) { // We UNION them, because doing OR's on MATCH's is insanely slow in MySQL (sometimes I hate SQL...)
                 list($where_clause_2, $where_clause_3, $_select, $_table_clause, $tid) = $parts;
 
-                if ($query != 'SELECT * FROM (') {
+                if ($query != '(') {
                     if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {
                         $query .= ' ORDER BY ' . $order;
                         if (($direction == 'DESC') && (substr($order, -4) != ' ASC') && (substr($order, -5) != ' DESC')) {
@@ -1239,7 +1239,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                 }
             }
             $query .= ' LIMIT ' . strval($max + $start);
-            $query .= ') x';
+            $query .= ')';
             // Work out COUNT(*) query using one of a few possible methods. It's not efficient and stops us doing proper merge-sorting between content types (and possible not accurate - if we use an efficient but non-deduping COUNT strategy) if we have to use this, so we only do it if there are too many rows to fetch in one go.
             $_query = '';
             if (!db_has_subqueries($db->connection_read)) {

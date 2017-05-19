@@ -537,6 +537,7 @@ class Database_Static_xml
             case 'DELETE':
                 return $this->_do_query_delete($tokens, $query, $db, $max, $start, $fail_ok);
 
+            case '(':
             case 'SELECT':
                 $at = 0;
                 $results = $this->_do_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at);
@@ -2645,6 +2646,16 @@ class Database_Static_xml
 
         $as = null;
 
+        if ($tokens[$at] == '(') {
+            if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                return null;
+            }
+
+            $is_bracketed = true;
+        } else {
+            $is_bracketed = false;
+        }
+
         if (!$this->_parsing_expects($at, $tokens, 'SELECT', $query)) {
             return null;
         }
@@ -2862,6 +2873,12 @@ class Database_Static_xml
                 }
             } else {
                 $at--;
+            }
+        }
+
+        if ($is_bracketed) {
+            if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                return null;
             }
         }
 
