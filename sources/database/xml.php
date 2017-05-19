@@ -21,7 +21,7 @@
  */
 
 /*
-    Known (intentional) issues in SQL support (we are targeting MySQL-4.3 compatibility, similar to SQL-92)
+    Known (intentional) issues in SQL support (we are targeting rough MySQL-4.3 parity, similar to SQL-92)
         We support a few SQL/MySQL functions, the ones the Composr db_function outputs and the very basic operators. However we prefix with 'X_' so that we don't accidentally code in assumptions about MySQL.
         We do not support SQL data types, we use Composr ones instead.
         We do not have any special table/field naming escaping support-- so you need to use names that aren't awkward
