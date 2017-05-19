@@ -5,7 +5,7 @@
 {+START,IF_NON_EMPTY,{DESCRIPTION}}
 	<div class="box box___catalogue_products_category_screen__description"><div class="box_inner">
 		<div itemprop="description">
-			{DESCRIPTION}
+			{$PARAGRAPH,{DESCRIPTION}}
 		</div>
 	</div></div>
 {+END}

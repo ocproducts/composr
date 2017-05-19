@@ -33,7 +33,7 @@ var editor_settings={
 	{+START,IF,{$EQ,{$CONFIG_OPTION,wysiwyg_font_units},em}}
 		fontSize_sizes : '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
 	{+END}
-	removePlugins: '',
+	removePlugins: '{+START,IF,{$NOT,{$CONFIG_OPTION,autogrow}}}autogrow{+END}',
 	extraPlugins: 'showcomcodeblocks,imagepaste,spellchecktoggle'+(use_composr_toolbar?',composr':''),
 	{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}
 		customConfig: '',
@@ -58,6 +58,8 @@ var editor_settings={
 	browserContextMenuOnCtrl: true,
 	comcodeXMLBlockTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}',
 	comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
-	magicline_everywhere: true,
-	autoGrow_onStartup: true
+	{+START,IF,{$CONFIG_OPTION,autogrow}}
+		autoGrow_onStartup: true,
+	{+END}
+	magicline_everywhere: true
 };

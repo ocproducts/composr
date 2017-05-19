@@ -1113,6 +1113,9 @@ function has_feature($dependency)
     }
 
     // Some other features
+    if (($dependency == 'mysql') && (strpos(get_db_type(), 'mysql') !== false)) {
+        return true;
+    }
     if (($dependency == 'javascript') && (has_js())) {
         return true;
     }

@@ -319,7 +319,7 @@ function chat_check(backlog,message_id,event_id)
 		{
 			window.message_checking=the_date.getTime();
 			var url;
-			var _room_id = (window.load_from_room_id == null) ? -1 : window.load_from_room_id;
+			var _room_id=(window.load_from_room_id == null) ? -1 : window.load_from_room_id;
 			if (backlog)
 			{
 				url='{$FIND_SCRIPT;,messages}?action=all&room_id='+window.encodeURIComponent(_room_id);

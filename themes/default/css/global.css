@@ -278,9 +278,6 @@ h1, h2, h3, .faux_h2 {
 	color: {$GET,heading_text};
 	border-bottom: 1px solid {$GET,pale_border};
 }
-h3 {
-	letter-spacing: -0.75px;
-}
 h1 {
 	font-size: 1.6em;
 	margin-top: 0.27em; /* Consistency with boxes (so gap between header and content is consistent), but rationalised against higher em font size */
@@ -290,6 +287,7 @@ h2, .faux_h2 {
 }
 h3 {
 	font-size: 1.1em;
+	letter-spacing: -0.75px;
 }
 h3 a, h3 a:hover {
 	text-decoration: none;
@@ -1633,7 +1631,7 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box:first-child, .fake_table_cell>.box:first-child, .fake_table_cell>div:first-child>.box:first-child, .fake_table_cell>div:first-child>div:first-child>.box:first-child, .left .box, .right .box,
+td>.box:first-child, .fake_table_cell>.box:first-child, .fake_table_cell>div:first-child>.box:first-child, .fake_table_cell>div:first-child>div:first-child>.box:first-child, .left .box:first-child:last-child, .right .box:first-child:last-child,
 td>.comcode_code:first-child, .fake_table_cell>.comcode_code:first-child, .fake_table_cell>div:first-child>.comcode_code:first-child, .fake_table_cell>div:first-child>div:first-child>.comcode_code:first-child, .left .comcode_code, .right .comcode_code,
 td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fake_table_cell>div:first-child>.comcode_quote:first-child, .fake_table_cell>div:first-child>div:first-child>.comcode_quote:first-child, .left .comcode_quote, .right .comcode_quote {
 	margin: 0;
@@ -3177,17 +3175,16 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	}
 /*{+END}*//*{+END}*/
 
-/*{+START,CSS_MODE,desktop}*/
-	.comments_posting_form_end input {
-		float: left;
-		margin-right: 0.5em !important;
-	}
+.comments_posting_form_end .proceed_button input:first-child, .comments_captcha {
+	margin-left: 180px !important;
+}
 
-	.comments_posting_form_end #submit_button {
+.comments_posting_form_end #submit_button {
+	/*{+START,IF,{$CONFIG_OPTION,enable_previews}}*/
 		float: right;
-		margin-right: 1em !important;
-	}
-/*{+END}*/
+	/*{+END}*/
+	margin-right: 1em !important;
+}
 
 .comments_captcha {
 	width: 210px;
@@ -3856,6 +3853,7 @@ div.proceed_button_left_2 {
 }
 
 .shunted_button {
+	clear: {!en_right};
 	text-align: {!en_right};
 }
 
@@ -4016,14 +4014,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-{+START,IF,{$ADDON_INSTALLED,actionlog}}
+/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
 	.buttons__undo {
 		background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
 	}
 	.buttons__revisions {
 		background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 	}
-{+END}
+/*{+END}*/
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
@@ -5129,6 +5127,7 @@ a[rel="lightbox"] {
 	.print_icon {
 		background: url('{$IMG;,icons/24x24/links/print}') no-repeat left top !important;
 		padding: 0 0 5px 32px !important;
+		display: inline-block;
 	}
 
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {

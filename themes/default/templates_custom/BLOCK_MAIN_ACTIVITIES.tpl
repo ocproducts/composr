@@ -1,6 +1,6 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-	<div id="{$GET*,wrapper_id}">
+	{$SET,ajax_block_main_activities_wrapper,ajax_block_main_activities_wrapper_{$RAND%}}
+	<div id="{$GET*,ajax_block_main_activities_wrapper}">
 		<div class="float_surrounder">
 			<div id="activities_feed">
 				<div id="activities_general_notify"></div>

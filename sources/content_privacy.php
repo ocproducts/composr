@@ -50,7 +50,7 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
             return array('', '', '', '');
         }
 
-        $join = ' LEFT JOIN ' . get_table_prefix() . 'content_privacy priv ON priv.content_id=' . $table_alias . '.' . $first_id_field . ' AND ' . db_string_equal_to('priv.content_type', $content_type);
+        $join = ' LEFT JOIN ' . get_table_prefix() . 'content_privacy priv ON priv.content_id=' . db_cast($table_alias . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('priv.content_type', $content_type);
     } else {
         if (has_privilege($viewing_member_id, 'view_private_content')) {
             return array('', '', '', '');
@@ -68,7 +68,7 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
             $where .= ' OR priv.friend_view=1 AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'chat_friends f WHERE f.member_liked=' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . ' AND f.member_likes=' . strval($viewing_member_id) . ')';
         }
         $where .= ' OR ' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . '=' . strval($viewing_member_id);
-        $where .= ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_privacy__members pm WHERE pm.member_id=' . strval($viewing_member_id) . ' AND pm.content_id=' . (is_null($submitter) ? ($table_alias . '.' . $first_id_field) : strval($submitter)) . ' AND ' . db_string_equal_to('pm.content_type', $content_type) . ')';
+        $where .= ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_privacy__members pm WHERE pm.member_id=' . strval($viewing_member_id) . ' AND pm.content_id=' . (is_null($submitter) ? db_cast($table_alias . '.' . $first_id_field, 'CHAR') : strval($submitter)) . ' AND ' . db_string_equal_to('pm.content_type', $content_type) . ')';
         if ($additional_or != '') {
             $where .= ' OR ' . $additional_or;
         }

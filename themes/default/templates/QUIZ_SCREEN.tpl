@@ -7,7 +7,7 @@
 {+START,IF_NON_EMPTY,{START_TEXT}}
 	<div class="box box___quiz_screen"><div class="box_inner">
 		<div itemprop="description">
-			{START_TEXT}
+			{$PARAGRAPH,{START_TEXT}}
 		</div>
 	</div></div>
 {+END}

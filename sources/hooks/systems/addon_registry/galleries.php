@@ -679,7 +679,7 @@ class Hook_addon_registry_galleries
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
@@ -794,7 +794,7 @@ class Hook_addon_registry_galleries
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
@@ -938,7 +938,7 @@ class Hook_addon_registry_galleries
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
@@ -996,7 +996,7 @@ class Hook_addon_registry_galleries
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,

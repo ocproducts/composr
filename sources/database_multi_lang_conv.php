@@ -98,9 +98,9 @@ function disable_content_translation()
 
         // Copy from translate table
         $query = 'UPDATE ' . $db->table_prefix . $field['m_table'] . ' a SET ';
-        $query .= 'a.' . $field['m_name'] . '__new=IFNULL((SELECT b.text_original FROM ' . $db->table_prefix . 'translate b WHERE b.id=a.' . $field['m_name'] . ' ORDER BY broken), \'\')';
+        $query .= 'a.' . $field['m_name'] . '__new=' . db_function('COALESCE', array('(SELECT b.text_original FROM ' . $db->table_prefix . 'translate b WHERE b.id=a.' . $field['m_name'] . ' ORDER BY broken)', '\'\''));
         if (strpos($field['m_type'], '__COMCODE') !== false) {
-            $query .= ', a.' . $field['m_name'] . '__source_user=IFNULL((SELECT b.source_user FROM ' . $db->table_prefix . 'translate b WHERE b.id=a.' . $field['m_name'] . ' ORDER BY broken), ' . strval(db_get_first_id()) . ')';
+            $query .= ', a.' . $field['m_name'] . '__source_user=' . db_function('COALESCE', array('(SELECT b.source_user FROM ' . $db->table_prefix . 'translate b WHERE b.id=a.' . $field['m_name'] . ' ORDER BY broken)', strval(db_get_first_id())));
             $query .= ', a.' . $field['m_name'] . '__text_parsed=\'\'';
         }
         $db->_query($query);
@@ -197,6 +197,10 @@ function enable_content_translation()
         do {
             $trans = $db->query_select($field['m_table'], array('*'), null, '', 100, $start, false, array()/*Needs to disable auto-field-grabbing as DB state is currently inconsistent*/);
             foreach ($trans as $t) {
+                $lang_id = null;
+                $lock = false;
+                table_id_locking_start($db, $lang_id, $lock);
+
                 $insert_map = array(
                     'language' => get_site_default_lang(),
                     'importance_level' => 3,
@@ -205,8 +209,15 @@ function enable_content_translation()
                     'broken' => 0,
                     'source_user' => $has_comcode ? $t[$field['m_name'] . '__source_user'] : $GLOBALS['FORUM_DRIVER']->get_guest_id(),
                 );
-                $ins_id = $db->query_insert('translate', $insert_map, true);
-                $GLOBALS['SITE_DB']->query_update($field['m_table'], array($field['m_name'] => $ins_id), $t, '', 1);
+                if ($lang_id === null) {
+                    $lang_id = $db->query_insert('translate', $insert_map, true);
+                } else {
+                    $db->query_insert('translate', array('id' => $lang_id) + $insert_map);
+                }
+
+                table_id_locking_end($db, $lang_id, $lock);
+
+                $GLOBALS['SITE_DB']->query_update($field['m_table'], array($field['m_name'] => $lang_id), $t, '', 1);
             }
             $start += 100;
         } while (count($trans) > 0);

@@ -3,6 +3,10 @@
 /*EXTRA FUNCTIONS: openssl\_.+|recurse|array_replace_recursive*/
 /*NO_API_CHECK*/
 
+/**
+ * @package    core
+ */
+
 /*
 3rd party code modified for Composr.
 Removed legacy Domain Keys functionality.

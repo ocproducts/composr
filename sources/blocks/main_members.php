@@ -268,10 +268,8 @@ class Block_main_members
             'm_last_visit_time' => do_lang_tempcode('LAST_VISIT_TIME'),
             'm_profile_views' => do_lang_tempcode('PROFILE_VIEWS'),
             'random' => do_lang_tempcode('RANDOM'),
+            'm_total_sessions' => do_lang_tempcode('LOGIN_FREQUENCY'),
         );
-        if (strpos(get_db_type(), 'mysql') !== false) {
-            $sortables['m_total_sessions'] = do_lang_tempcode('LOGIN_FREQUENCY');
-        }
         if (strpos($sort, ' ') === false) {
             $sort .= ' ASC';
         }
@@ -279,13 +277,13 @@ class Block_main_members
         switch ($sort) {
             case 'random ASC':
             case 'random DESC':
-                $sort = 'RAND() ASC';
+                $sort = db_function('RAND') . ' ASC';
                 break;
             case 'm_total_sessions ASC':
-                $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) ASC';
+                $sort = 'm_total_sessions/(' . strval(time()) . '-m_join_time) ASC';
                 break;
             case 'm_total_sessions DESC':
-                $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) DESC';
+                $sort = 'm_total_sessions/(' . strval(time()) . '-m_join_time) DESC';
                 break;
             case 'm_join_time':
             case 'm_last_visit_time':

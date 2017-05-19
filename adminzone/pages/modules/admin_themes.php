@@ -206,7 +206,7 @@ class Module_admin_themes
             $theme = post_param_string('theme');
             $file = '';
             foreach (array_keys($_REQUEST) as $_i) {
-                if (preg_match('#f(\d+)file#', $_i) != 0) {
+                if (preg_match('#^f(\d+)file$#', $_i) != 0) {
                     $file = either_param_string($_i);
                 }
             }
@@ -1431,9 +1431,9 @@ class Module_admin_themes
                 $field_set->attach(form_input_multi_list(do_lang_tempcode('EXISTING'), '', 'f' . strval($i) . 'file', make_string_tempcode($files), null, 35));
             }
 
-            $field_set->attach(form_input_line(do_lang_tempcode('SEARCH'), do_lang_tempcode('DESCRIPTION_TEMPLATES_SEARCH'), 'search', '', false));
+            $field_set->attach(form_input_line(do_lang_tempcode('SEARCH'), do_lang_tempcode('DESCRIPTION_TEMPLATES_SEARCH'), 'f' . strval($i) . 'search', '', false));
 
-            $field_set->attach(form_input_codename(do_lang_tempcode('NEW'), do_lang_tempcode('NEW_TEMPLATE'), 'f0file2', '', false));
+            $field_set->attach(form_input_codename(do_lang_tempcode('NEW'), do_lang_tempcode('NEW_TEMPLATE'), 'f' . strval($i) . 'file2', '', false));
 
             $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, null, true));
 
@@ -1482,7 +1482,14 @@ class Module_admin_themes
         $theme = get_param_string('theme');
 
         // Searching for something, which will provide links that loop back to the proper version of this page
-        $search = get_param_string('search', '', true);
+        $search = '';
+        foreach (array_keys($_GET) as $_i) {
+            $matches = array();
+            if (preg_match('#^f(\d+)search$#', $_i, $matches) != 0) {
+                $i = $matches[1];
+                $search = get_param_string('f' . $i . 'search', '', true);
+            }
+        }
         if ($search != '') {
             $directory = get_param_string('directory');
 
@@ -1535,7 +1542,7 @@ class Module_admin_themes
         $first_id = '';
         foreach (array_keys($_GET) as $_i) {
             $matches = array();
-            if (preg_match('#f(\d+)file#', $_i, $matches) != 0) {
+            if (preg_match('#^f(\d+)file2?$#', $_i, $matches) != 0) {
                 $i = $matches[1];
             } else {
                 continue;
@@ -1847,7 +1854,7 @@ class Module_admin_themes
 
         foreach (array_keys($_REQUEST) as $_i) {
             $matches = array();
-            if (preg_match('#f(\d+)file#', $_i, $matches) != 0) {
+            if (preg_match('#^f(\d+)file$#', $_i, $matches) != 0) {
                 $i = $matches[1];
             } else {
                 continue;

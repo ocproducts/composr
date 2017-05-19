@@ -199,5 +199,6 @@ Generally Resource-fs is not designed for merging separate websites into one. Th
  - [page="_SEARCH:tut_commandr"]Commandr[/page]
  - [page="_SEARCH:tut_aggregate_types"]Aggregate Content Types[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
+ - [page="_SEARCH:sup_staging_servers"]Staging Servers[/page]
 
 {$SET,tutorial_tags,Power tools,Collaboration,Administration,commandr,expert,pinned}{$SET,tutorial_add_date,May 2013}{$SET,tutorial_summary,How the Composr content repository works and may be accessed and used.}[block]main_tutorial_rating[/block]

@@ -1,0 +1,137 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Supplementary: Using PostgreSQL with Composr[/title]
+
+[media float="right" framed="0"]data_custom/images/docs/sup_postgresql/postgresql_logo.png[/media]This tutorial provides some advice targeted towards PostgreSQL (also known simply as 'Postgres').
+
+Composr has internal 'support' for many different databases backends and is intentionally written with a combination of simple common-denominator SQL and use of an abstraction API. However officially only MySQL is supported outside of a commercial relationship, due to the significant effort testing across new versions of Composr and the database backends involved. Different database systems vary in all kinds of surprising and subtle ways. Inside a commercial relationship whatever extra testing and bug fixing is required will be done under that relationship, and fixes put back into the mainline version of Composr.
+
+Postgres has been tested for Composr v10.0.x under a commercial relationship (starting with 10.0.5). We tested on Postgres 9.6.3 across our whole test set and all screens and blocks, with both multi-lang-content on and off. We expect in practice Postgres 8.4+ is supported (we use subquery string joining [via arrays] in 8.4 as an alternative to MySQL's [tt]GROUP_CONCAT[/tt] function).
+
+Postgres is a very high quality Open Source database backend developed by developers working for a number of different companies. It is much more sophisticated than MySQL, although it also tends to be stricter in a number of ways, more technical, and not as available on shared hosting. Usage is likely of most interest to technical organisations that are standardising on Postgres.
+
+[title="2"]What is and is not supported[/title]
+
+The following parts of our ecosystem are MySQL-specific:
+ - Some non-bundled addons marked as requiring MySQL (at the time of writing nothing significant)
+ - Certain esoteric performance optimisations for certain cases of large amounts of data are only for MySQL (the MySQL support is heavily optimised for a wide range of high load scenarios; similar Postgres optimisations will be made as client requirements come up)
+ - Commandr-fs feature for listing when tables were last updated is only for MySQL (other database backends tend to not provide last-updated timestamps for tables)
+ - Documentation is written with MySQL in mind, particularly tutorials relating to installation, performance, and maintenance (however experienced system/database administrators will be able to adapt instructions to the systems they use without too much trouble)
+ - The database repair cleanup tool is only for MySQL (we use this to help test our upgrade code works perfectly, or to make it easier for 3rd-party developers who don't know how to correctly code to our database meta-system; it is not required and SQL structure dump comparison will work as a substitute in most cases)
+ - We only do minimum version check for MySQL (MySQL is the only serious database backend that tends to not support basic stuff until recent versions!)
+ - The bundled [tt]rootkit_detector[/tt] addon is hard-coded to MySQL (this is developed for experts and bakes in assumption of [tt]mysqli[/tt] due to running outside of Composr; the code can be customised to other backends as required)
+ - The MySQL optimiser cleanup tool is MySQL only (other database backends are better at doing automatic cleanup)
+ - Upgrade code is only tested for MySQL (upgrades for professional sites should be done by a developer, who should be able to patch around any issues in the upgrade code and pass fixes back to mainline Composr)
+ - Extra development mode security checks designed to help ensure amateur Composr developers write secure code
+ - Laxness modes designed to help ensure amateur Composr developers write or port code without knowing too much about database portability (MySQL is the only database backend that has non-strictness, and in other cases we are just doing some niceties to smooth things over when developers assume MySQL)
+Nothing in the above list is likely to be of concern for the vast majority of Composr users who also who would want to use Postgres.
+
+The following parts of our ecosystem are only supported on MySQL and Postgres (at the time of writing):
+ - Commandr [tt]db_table_sizes[/tt] command
+ - Showing database server version on the PHP-Info page
+ - Full-text search (actually we have an SQL Server implementation too)
+
+Third-parties may write code that assumes (intentionally or not) MySQL, so don't assume any third party code is going to work without putting it through testing.
+
+[title="2"]Installing Postgres[/title]
+
+You can usually install Postgres using your normal package manager. On Mac I installed using HomeBrew. On Linux, [tt]yum[/tt], [tt]apt-get[/tt], etc, should all have it.
+On Windows there are downloadable packages.
+
+You will need the PHP [tt]postgresql[/tt] extension to be installed.
+
+[title="2"]After installing Postgres[/title]
+
+Postgres ties its own user acccounts to system accounts. On my Mac it tied it to my normal login account automatically, with a blank password. On other systems it may create a new [tt]postgres[/tt] user.
+
+To get a Postgres console [i]if[/i] you are already logged into the same system account as the Postgres user:
+[code="Bash"]
+psql postgres
+[/code]
+[i]or[/i], if not you can either [tt]su[/tt]/[tt]sudo[/tt] into that user (Linux or MacOS), [i]or[/i] be explicit:
+[code="Bash"]
+psql postgres -U <user>
+[/code]
+[tt]postgres[/tt] here refers to the system database not the user.
+
+Postgres has system commands that you execute with a leading [tt]\[/tt]. To see a list of users you can do:
+[code="Bash"]
+\du
+[/code]
+
+From now on the tutorial we'll assume you want to be using a database called "cms" and a database user "cms".
+
+You can create a database using SQL:
+[code="Bash"]
+CREATE DATABASE cms;
+[/code]
+
+You can create a user like:
+[code="Bash"]
+CREATE USER cms WITH password 'test';
+[/code]
+
+You can grant access like:
+[code="Bash"]
+GRANT ALL PRIVILEGES ON DATABASE cms TO cms;
+\connect cms;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO cms;
+ALTER DATABASE cms OWNER TO cms;
+[/code]
+
+[title="2"]Migration to Postgres[/title]
+
+It is fairly easy to migrate via a 4-step process:[list="1"]
+[*] Commandr can export an SQL dump compatible with any database that Composr supports:
+[code="Commandr"]
+sql_dump postgresql
+[/code]
+(yes, you can be running MySQL and export a Postgres SQL dump!)
+[*] You then setup your database, user, and password, in Postgres.
+[*] You then import via:
+[code="Bash"]
+psql <database> -f <file.sql> -U cms
+[/code]
+[*] You then edit Composr's [tt]_config.php[/tt] to have the correct database details.
+[/list]
+
+[title="3"]Whoops?[/title]
+
+You may need to reassign ownership of the tables you imported if you accidentally did it with he wrong user. This will generate some SQL you can run to do that:
+[code="SQL"]
+SELECT 'ALTER TABLE '|| tablename ||' OWNER TO cms;'
+FROM pg_tables WHERE NOT schemaname IN ('pg_catalog', 'information_schema')
+ORDER BY schemaname, tablename;
+[/code]
+
+[title="2"]Full-text search (advanced)[/title]
+
+Full-text is fully supported. However, ideally (not importantly) Composr would know the correct stop-word list for Postgres so it knows whether to direct searches only for a stopword to a non-full-text search. This is controlled in a dictionary (unlike MySQL, where it's hard-coded, and hence we were able to hard-code in our code also). To provide Composr an accurate full-text search word list you need to override the [tt]get_stopwords_list()[/tt] function.
+
+If you don't want Postgres's default English configuration for word tokenisation there's a hidden [tt]postgres_fulltext_language[/tt] option you can use to set a [url="different Postgres configuration"]http://stackoverflow.com/questions/39751892/get-full-list-of-full-text-search-configuration-languages[/url]:
+[code="Commandr"]
+:set_value('postgres_fulltext_language', 'spanish');
+[/code]
+Existing indices would need hand-editing to the new value too.
+
+[title="2"]Technical information for developers (advanced)[/title]
+
+The main complexities of Postgres support, for MySQL developers are:
+1) No support for prefix indexes, which is a feature only of MySQL. This means you cannot easily add an index for a text field without imposing a length limit on the data within the actual field. Postgres has excellent support for "calculated indexes", which MySQL does not, and which could work for a substitute for prefix indexes except you would need to code specifically to this feature when writing read queries. Therefore if you are making a Postgres site with many millions of records and are relying on querying based on the contents or prefixes of long text fields, you need to give some special consideration. This is unlikely in practice as search would be either via shorter fields or via full-text search.
+2) You can not query an integer field using a string representation of an integer, or vice-versa.
+3) You can not directly join an integer and string field, unless you use casting. Composr's [tt]db_cast[/tt] function will help with this in a portable way.
+4) The MySQL [tt]LIMIT max,start[/tt] syntax is not supported. You can do [tt]LIMIT max OFFSET start[/tt] though. The Composr [tt]query*[/tt] methods abstract this for 99.9% of cases you may have.
+5) You can only use particular functions. Composr's [tt]db_function[/tt] function will help with this in a portable way.
+6) You need to use Postgres string escaping, not MySQL string escaping.
+7) You have to be much more careful about aggregate functions like [tt]COUNT[/tt], or [tt]GROUP BY[/tt], or [tt]DISTINCT[/tt]. If you do a [tt]COUNT[/tt] then you are not allowed an [tt]ORDER BY[/tt] clause (you don't need one, but it's easy to add one by mistake when you are deriving a count query from your pagination query and this causes the count query to fail). If you do a [tt]GROUP BY[/tt] then you may not select anything that is not covered by the [tt]GROUP BY[/tt] clause or is itself an aggregate like [tt]COUNT[/tt] or [tt]SUM[/tt] or [tt]MAX[/tt] or [tt]MIN[/tt] -- this is because Postgres won't allow selecting an arbitrary value out of a result set for you like MySQL will. If doing a [tt]DISTINCT[/tt] query then you can only do an [tt]ORDER BY[/tt] with something that is also being [tt]SELECT[/tt]ed (because Postgres reserves the right to apply the ordering [i]after[/i] it has whittled down the result set).
+8) Stay away from hand-coding anything sophisticated like [acronym="Data Definition Language"]DDL[/acronym] or Information Schema. I haven't covered any of the cases of obvious MySQL-specific syntax, syntax which is very poorly standardised, or case sensitivity differences. The SQL standards only really cover some very core things, they don't even properly standardise basic data types, or moderately sophisticated use of indexes, or pagination, let alone complicated expressions, further let alone triggers or stored procedures (!).
+
+[title="2"]See also[/title]
+
+ - http://www.psequel.com/ (a free MacOS Postgres GUI)
+ - https://www.heidisql.com/ (a free Windows Postgres GUI)
+ - http://phppgadmin.sourceforge.net/ (a free web-based Postgres GUI)
+ - http://dbeaver.jkiss.org/ (a free cross-platform Postgres GUI)
+ - http://squirrel-sql.sourceforge.net/ (a free cross-platform Postgres GUI)
+ - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
+ - http://troels.arvin.dk/db/rdbms/ (a comparison of SQL support in different databases)
+
+{$SET,tutorial_tags,core_database_drivers,Installation,expert}{$SET,tutorial_add_date,May 2017}{$SET,tutorial_summary,A guide on using PostgreSQL with Composr, and providing some information relevant to other non-MySQL backends.}[block]main_tutorial_rating[/block]

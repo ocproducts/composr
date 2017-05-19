@@ -27,11 +27,13 @@ function init__upload_syndication()
 {
     require_code('uploads');
 
-    define('UPLOAD_PRECEDENCE_NO', 0);
-    define('UPLOAD_PRECEDENCE_LOW', 1);
-    define('UPLOAD_PRECEDENCE_MEDIUM', 5);
-    define('UPLOAD_PRECEDENCE_HIGH', 10);
-    define('UPLOAD_PRECEDENCE_REGARDLESS', 1000);
+    if (!defined('UPLOAD_PRECEDENCE_NO')) {
+        define('UPLOAD_PRECEDENCE_NO', 0);
+        define('UPLOAD_PRECEDENCE_LOW', 1);
+        define('UPLOAD_PRECEDENCE_MEDIUM', 5);
+        define('UPLOAD_PRECEDENCE_HIGH', 10);
+        define('UPLOAD_PRECEDENCE_REGARDLESS', 1000);
+    }
 }
 
 /**

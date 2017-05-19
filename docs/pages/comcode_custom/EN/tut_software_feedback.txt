@@ -228,6 +228,10 @@ If you are finding background requests for pages are not getting called (AJAX), 
 
 To report such issues it is best to take a screenshot of your JavaScript console. All modern browsers have this as a part of the developer tools, and it basically shows a log of all JavaScript errors that have happened since the page loaded.
 
+https://www.youtube.com/watch?v=FNEnGF4qYGk
+
+https://www.youtube.com/watch?v=8KXGIZGUPwE
+
 [title="4"]Cross-domain problems[/title]
 
 Issues with AJAX and frames specifically can be caused by JavaScript security relating to access across domains. If JavaScript is asked to call one domain, from a different one, it won't allow it, to preserve the general security of the web.

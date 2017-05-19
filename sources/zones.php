@@ -93,9 +93,11 @@ function init__zones()
         $HOOKS_CACHE = array();
     }
 
-    define('FIND_ALL_PAGES__PERFORMANT', 0);
-    define('FIND_ALL_PAGES__NEWEST', 1);
-    define('FIND_ALL_PAGES__ALL', 2);
+    if (!defined('FIND_ALL_PAGES__PERFORMANT')) {
+        define('FIND_ALL_PAGES__PERFORMANT', 0);
+        define('FIND_ALL_PAGES__NEWEST', 1);
+        define('FIND_ALL_PAGES__ALL', 2);
+    }
 
     global $BLOCKS_AT_CACHE;
     $BLOCKS_AT_CACHE = function_exists('persistent_cache_get') ? persistent_cache_get('BLOCKS_AT') : array();
@@ -104,9 +106,11 @@ function init__zones()
     }
 
     // "Kid Gloves Modes" tracking
-    define('I_UNDERSTAND_SQL_INJECTION', 1);
-    define('I_UNDERSTAND_XSS', 2);
-    define('I_UNDERSTAND_PATH_INJECTION', 4);
+    if (!defined('I_UNDERSTAND_SQL_INJECTION')) {
+        define('I_UNDERSTAND_SQL_INJECTION', 1);
+        define('I_UNDERSTAND_XSS', 2);
+        define('I_UNDERSTAND_PATH_INJECTION', 4);
+    }
     global $DECLARATIONS_STACK, $DECLARATIONS_STATE, $DECLARATIONS_STATE_DEFAULT;
     $DECLARATIONS_STACK = array();
     $DECLARATIONS_STATE_DEFAULT = array(
@@ -481,24 +485,30 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
             return $zone;
         }
     }
-    $zones = find_all_zones();
+    $start = 0;
+    $max = 50;
     $first_zones_flip = array_flip($first_zones);
-    foreach ($zones as $zone) {
-        if (!array_key_exists($zone, $first_zones_flip)) {
-            if ((is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
-                || (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
-            ) {
-                if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] === $module_name)) {
-                    $zone = $REDIRECT_CACHE[$zone][$module_name]['r_to_zone'];
+    do {
+        $zones = find_all_zones(false, false, false, $start, $max);
+        foreach ($zones as $zone) {
+            if (!array_key_exists($zone, $first_zones_flip)) {
+                if ((is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
+                    || (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
+                ) {
+                    if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] === $module_name)) {
+                        $zone = $REDIRECT_CACHE[$zone][$module_name]['r_to_zone'];
+                    }
+                    $MODULES_ZONES_CACHE[$check_redirects][$_zone][$type][$module_name] = $zone;
+                    if (function_exists('persistent_cache_set')) {
+                        persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
+                    }
+                    return $zone;
                 }
-                $MODULES_ZONES_CACHE[$check_redirects][$_zone][$type][$module_name] = $zone;
-                if (function_exists('persistent_cache_set')) {
-                    persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
-                }
-                return $zone;
             }
         }
+        $start += 50;
     }
+    while (count($zones) == $max);
 
     foreach ($zones as $zone) { // Okay, finally check for redirects
         if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 1)) {
@@ -688,7 +698,7 @@ function load_module_page($string, $codename, &$out = null)
         $PAGE_STRING = $string;
     }
 
-    if (strpos($string, '_custom/') !== false) {
+    if ((strpos($string, '_custom/') !== false) && (!is_file(str_replace('_custom/', '/', $string)))) {
         _solemnly_enter();
     }
 
@@ -761,7 +771,7 @@ function load_module_page($string, $codename, &$out = null)
     if (method_exists($object, 'pre_run')) {
         $exceptional_output = $object->pre_run();
         if ($exceptional_output !== null) {
-            if (strpos($string, '_custom/') !== false) {
+            if ((strpos($string, '_custom/') !== false) && (!is_file(str_replace('_custom/', '/', $string)))) {
                 $_exceptional_output = $exceptional_output->evaluate();
                 _solemnly_leave($_exceptional_output);
                 if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
@@ -774,7 +784,7 @@ function load_module_page($string, $codename, &$out = null)
 
         if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null)) {
             /* Breaks output streaming
-            if (strpos($string, '_custom/') !== false) {
+            if ((strpos($string, '_custom/') !== false) && (!is_file(str_replace('_custom/', '/', $string)))) {
                 $_out = $out->evaluate();
                 _solemnly_leave($_out);
                 if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
@@ -790,7 +800,7 @@ function load_module_page($string, $codename, &$out = null)
 
     $ret = $object->run();
 
-    if (strpos($string, '_custom/') !== false) {
+    if ((strpos($string, '_custom/') !== false) && (!is_file(str_replace('_custom/', '/', $string)))) {
         $_ret = $ret->evaluate();
         _solemnly_leave($_ret);
         if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
@@ -1408,7 +1418,9 @@ function do_block_hunt_file($codename, $map = null)
             }
         }
 
-        $new_security_scope = true;
+        if (!is_file($file_base . '/sources/blocks/' . $codename . '.php')) {
+            $new_security_scope = true;
+        }
     } elseif (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] === 'sources/blocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources/blocks/' . $codename . '.php')))) {
         if (!isset($REQUIRED_CODE['blocks/' . $codename])) {
             require_once($file_base . '/sources/blocks/' . $codename . '.php');

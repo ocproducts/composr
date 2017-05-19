@@ -5,7 +5,7 @@ SecFilterScanPOST Off
 SecRuleRemoveById 300018 340147 340014 950119 950120 973331
 </IfModule>
 
-<IfModule mod_php5.c>
+<IfModule mod_php7.c>
 # Composr needs uploads; many hosts leave these low
 php_value post_max_size "500M"
 php_value upload_max_filesize "500M"

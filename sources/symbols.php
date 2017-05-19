@@ -3603,6 +3603,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
         $timestamp = (!empty($param[1])) ? intval($param[1]) : time();
 
         if ($GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {
+            require_code('lorem');
             $timestamp = intval(placeholder_date_raw());
         }
 
@@ -3615,6 +3616,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
         }
     } else {
         if ($GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {
+            require_code('lorem');
             $value = placeholder_date_raw();
         } else {
             $timestamp = time();

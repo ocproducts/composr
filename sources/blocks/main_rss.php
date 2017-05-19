@@ -199,6 +199,12 @@ class Block_main_rss
                 $category = $item['category'];
             }
 
+            if ($category_img == '') {
+                if (!empty($item['rep_image'])) {
+                    $category_img = $item['rep_image'];
+                }
+            }
+
             $content->attach(do_template('BLOCK_MAIN_RSS_SUMMARY', array(
                 '_GUID' => '9ca64090348263449ea1fcea75c8ed5f',
                 'FEED_URL' => $url,

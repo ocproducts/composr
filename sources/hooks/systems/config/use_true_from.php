@@ -32,12 +32,12 @@ class Hook_config_use_true_from
     {
         return array(
             'human_name' => 'USE_TRUE_FROM',
-            'type' => 'tick',
+            'type' => 'list',
             'category' => 'SITE',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_use_true_from',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
+            'list_options' => '1|2|0',
             'order_in_category_group' => 9,
 
             'addon' => 'core_configuration',

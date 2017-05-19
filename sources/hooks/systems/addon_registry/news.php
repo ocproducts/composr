@@ -257,7 +257,6 @@ class Hook_addon_registry_news
             'RECENT_BLOG_POSTS' => lorem_paragraph_html(),
             'RSS_URL' => placeholder_url(),
             'ADD_BLOG_POST_URL' => placeholder_url(),
-            'PAGINATION' => '',
         ));
         return array(
             lorem_globalise($tab_content, null, '', true)
@@ -562,7 +561,7 @@ class Hook_addon_registry_news
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,

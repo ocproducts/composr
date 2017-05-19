@@ -434,7 +434,7 @@ class Hook_smf2
                 $cpf_rows = $db->query('SELECT id_field,col_name FROM ' . $table_prefix . 'custom_fields');
                 foreach ($cpf_rows as $cpf_row) {
                     $cpf_id = import_id_remap_get('cpf', strval($cpf_row['id_field']));
-                    $cpf_value = $db->query('SELECT value FROM ' . $table_prefix . 'themes WHERE id_member=' . $row['id_member'] . ' AND variable=\'' . $cpf_row['col_name'] . '\'');
+                    $cpf_value = $db->query('SELECT value FROM ' . $table_prefix . 'themes WHERE id_member=' . $row['id_member'] . ' AND ' . db_string_equal_to('variable', $cpf_row['col_name']));
                     if (!isset($cpf_value[0])) {
                         continue;
                     }
@@ -468,7 +468,7 @@ class Hook_smf2
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'custom_fields');
 
         foreach ($rows as $row) {
-            if (import_check_if_imported('cpf', $row['id_field'])) {
+            if (import_check_if_imported('cpf', strval($row['id_field']))) {
                 continue;
             }
 
@@ -564,7 +564,7 @@ class Hook_smf2
                 $id_new = cns_make_custom_field($name, 0, $desc, $def, $pub_view, $own_view, $own_set, 0, $type, $req, $show_in_posts, 0, null, '', $on_join, $options, false);
             }
 
-            import_id_remap_put('cpf', $row['id_field'], $id_new);
+            import_id_remap_put('cpf', strval($row['id_field']), $id_new);
         }
     }
 
@@ -648,7 +648,7 @@ class Hook_smf2
 
                 $avatar_url = '';
                 if (!isset($row['avatar']) || (strlen($row['avatar']) == 0)) {
-                    $query_attachments = 'SELECT id_member,filename,width,height,size,attachment_type FROM ' . $table_prefix . 'attachments WHERE attachment_type=\'1\' AND id_member=\'' . strval($row['id_member']) . '\'';
+                    $query_attachments = 'SELECT id_member,filename,width,height,size,attachment_type FROM ' . $table_prefix . 'attachments WHERE ' . db_string_equal_to('attachment_type', '1') . ' AND ' . db_string_equal_to('id_member', strval($row['id_member']));
 
                     $attachment_data = $db->query($query_attachments, 1, 0);
                     if (isset($attachment_data[0]['filename']) && (strlen($attachment_data[0]['filename']) > 0)) {
@@ -1071,7 +1071,7 @@ class Hook_smf2
      */
     protected function _fix_links_callback_member($m)
     {
-        return 'index.php?action=profile;u=' . strval(import_id_remap_get('member', strval($m[2]), true));
+        return 'index.php?action=profile;u=' . strval(import_id_remap_get('member', $m[2], true));
     }
 
     /**
@@ -1780,7 +1780,7 @@ class Hook_smf2
                     $news_article = '[html]' . $news_article . '[/html]';
                 }
 
-                $main_news_category = import_id_remap_get('news_category', $row['category'], true);
+                $main_news_category = import_id_remap_get('news_category', strval($row['category']), true);
                 if (is_null($main_news_category)) {
                     $main_news_category = $GLOBALS['SITE_DB']->query_select_value('news', 'MIN(id)');
                 }
@@ -1808,7 +1808,7 @@ class Hook_smf2
                     $image = '';
                 }
 
-                $submitter = import_id_remap_get('member', $row['author_id'], true);
+                $submitter = import_id_remap_get('member', strval($row['author_id']), true);
                 if (is_null($submitter)) {
                     $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                 }
@@ -1821,7 +1821,7 @@ class Hook_smf2
                 // Comments
                 $comments = $db->query_select('tp_variables', array('value1 AS subject', 'value2 AS post', 'value3 AS poster', 'value4 AS time'), array('type' => 'article_comment', 'value5' => $row['id']));
                 foreach ($comments as $comment) {
-                    $comment['poster'] = import_id_remap_get('member', $comment['poster'], true);
+                    $comment['poster'] = import_id_remap_get('member', strval($comment['poster']), true);
                     if (is_null($comment['poster'])) {
                         $comment['poster'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                     }

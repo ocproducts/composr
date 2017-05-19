@@ -3,6 +3,8 @@
 
 chdir(dirname(dirname(realpath(__FILE__))));
 
+file_put_contents('data_custom/modules/user_export/out.csv', '');
+
 if (git_repos() == 'composr_homesite') {
     $issues = shell_exec('php delete_alien_files.php git_only');
 

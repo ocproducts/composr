@@ -11,9 +11,9 @@
 
 			{+START,IF,{UNDERNEATH}}
 				<div class="float_surrounder">
-					<div class="search_option">
+					<p>
 						<label for="search_under">{!SEARCH_UNDERNEATH}:</label>
-					</div>
+					</p>
 					<div>
 						{+START,IF,{AJAX}}
 							{TREE}

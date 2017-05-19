@@ -1258,15 +1258,11 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_member_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_members\'');
-            } else {
-                $where = array('m_validated_email_confirm_code' => '');
-                if (addon_installed('unvalidated')) {
-                    $where['m_validated'] = 1;
-                }
-                $value = $this->connection->query_select_value('f_members', 'COUNT(*)', $where) - 1;
+            $where = array('m_validated_email_confirm_code' => '');
+            if (addon_installed('unvalidated')) {
+                $where['m_validated'] = 1;
             }
+            $value = max(0, get_table_count_approx('f_members', $where, null, $this->connection) - 1);
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_member_count', strval($value));
             }
@@ -1285,15 +1281,11 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_topic_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_topics\'');
-            } else {
-                $where = array();
-                if (addon_installed('unvalidated')) {
-                    $where['t_validated'] = 1;
-                }
-                $value = $this->connection->query_select_value('f_topics', 'COUNT(*)', $where);
+            $where = array();
+            if (addon_installed('unvalidated')) {
+                $where['t_validated'] = 1;
             }
+            $value = get_table_count_approx('f_topics', $where, null, $this->connection);
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_topic_count', strval($value));
             }
@@ -1312,15 +1304,12 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_post_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_posts\'');
-            } else {
-                $where = '';
-                if (addon_installed('unvalidated')) {
-                    $where = ' AND p_validated=1';
-                }
-                $value = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL' . $where);
+            $where = '';
+            if (addon_installed('unvalidated')) {
+                $where = ' AND p_validated=1';
             }
+            $where = 'p_cache_forum_id IS NOT NULL' . $where;
+            $value = get_table_count_approx('f_posts', null, $where, $this->connection);
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_post_count', strval($value));
             }

@@ -189,6 +189,15 @@ class Module_admin_phpinfo
             }
         }
 
+        if (function_exists('pg_version') && get_db_type() == 'postgresql') {
+            $postgresql_version = @pg_version($GLOBALS['SITE_DB']->connection_read);
+            if ($postgresql_version !== false) {
+                $out .= '<p><strong>PostgreSQL server version</strong>: ' . escape_html($postgresql_version['server']) . '</p>';
+                $out .= '<p><strong>PostgreSQL client version</strong>: ' . escape_html($postgresql_version['client']) . '</p>';
+                $out .= '<p><strong>PostgreSQL protocol version</strong>: ' . escape_html($postgresql_version['protocol']) . '</p>';
+            }
+        }
+
         if (php_function_allowed('shell_exec')) {
             $commands = array(
                 'uptime',

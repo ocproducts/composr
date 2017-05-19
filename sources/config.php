@@ -76,19 +76,6 @@ function init__config()
 
     global $MULTI_LANG_CACHE;
     $MULTI_LANG_CACHE = null;
-
-    // Enforce XML db synching
-    global $SITE_INFO;
-    if ((get_db_type() == 'xml') && (running_script('index')) && (isset($SITE_INFO['db_chain_type'])) && (is_file(get_file_base() . '/data_custom/xml_db_import.php')) && (is_dir(get_file_base() . '/.git'))) {
-        $last_xml_import = get_value('last_xml_import');
-        $mod_time = filemtime(get_file_base() . '/.git');
-        if ((is_null($last_xml_import)) || (intval($last_xml_import) < $mod_time)) {
-            set_value('last_xml_import', strval(time()));
-
-            header('Location: ' . get_base_url() . '/data_custom/xml_db_import.php');
-            exit();
-        }
-    }
 }
 
 /**

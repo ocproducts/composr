@@ -25,9 +25,9 @@ You can see it is fed with various parameters, and is written in [page="_SEARCH:
 
 [title="2"]Configuration options[/title]
 
-Pertinent configuration options are:
+Configuration options warranting particular discussion are:
  - "Link to images in e-mails rather than embed" -- by default this option is disabled, and when disabled makes Composr embed all images directly within e-mails rather than remotely linking to them. This means that users will see images immediately without having to grant permission for their e-mail client to download them.
- - "Use true 'from' address" -- by default this option is disabled, because Composr sends e-mails from a separate address to the reply-to address, to reduce chance of e-mails being considered fradulent.
+ - "E-mail 'from' address method" -- by default this option is set to separate From and Reply-To addresses, to reduce chance of e-mails being considered fradulent.
 
 [title="2"]Mail server overview[/title]
 
@@ -120,6 +120,7 @@ Positive advice:[list="1"]
 [*] [url="DMARC Wizard"]https://dmarcian.com/dmarc-inspector/[/url] and [url="DMARC Inspector"]https://dmarcian.com/dmarc-inspector/[/url]
 [/list]
 [*] [b]Include a physical mailing address[/b] in your newsletter footer. To be compliant with the US CAN-SPAM act you need to do this for commercial mailings (read as "advertising e-mail"). ISPs can't know if you are sending a commercial e-mail so are not likely to penalise you much if you don't, but you never know.
+[*] [b]Enable a [tt]List-Unsubscribe[/tt] header[/b]. You can do this with a Commandr command like [tt]:set_value('list_unsubscribe_target', 'mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me');[/tt].
 [/list]
 
 More extreme advice:[list="1"]
@@ -170,7 +171,7 @@ Composr has config options for:
 The queue can be viewed from:
 Admin Zone > Audit > E-mail queue/log
 
-All (&dagger;) e-mails are logged for 14 days in the same system, regardless of whether the queue is on or not. This is very useful for analysing what your site has been sending out.
+All (&dagger;) e-mails are logged for 14 days (by default) in the same system, regardless of whether the queue is on or not. This is very useful for analysing what your site has been sending out.
 
 &dagger; Except support ticket e-mails if IMAP integration is enabled, newsletter e-mails, password reset e-mails, and some other very high security or high volume e-mails.
 

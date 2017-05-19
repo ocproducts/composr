@@ -1,7 +1,7 @@
 {+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
 	<div class="box box___cns_forum"><div class="box_inner">
 		<div itemprop="description">
-			{DESCRIPTION}
+			{$PARAGRAPH,{DESCRIPTION}}
 		</div>
 	</div></div>
 {+END}{+END}

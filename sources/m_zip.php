@@ -33,8 +33,10 @@ function init__m_zip()
     if (substr($ud, -1) == '/') {
         $ud = substr($ud, 0, strlen($ud) - 1);
     }
-    define('UNZIP_DIR', $ud);
-    define('UNZIP_CMD', get_option('unzip_cmd'));
+    if (!defined('UNZIP_DIR')) {
+        define('UNZIP_DIR', $ud);
+        define('UNZIP_CMD', get_option('unzip_cmd'));
+    }
 
     if (!function_exists('zip_open')) {
         @eval("class ZIPARCHIVE

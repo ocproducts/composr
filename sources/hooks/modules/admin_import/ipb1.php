@@ -214,7 +214,7 @@ class Hook_ipb1 extends Hook_ipb_base
      */
     public function import_cns_private_topics($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'messages WHERE vid<>\'sent\' ORDER BY msg_date');
+        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'messages WHERE ' . db_string_not_equal_to('vid', 'sent') . ' ORDER BY msg_date');
 
         // Group them up into what will become topics
         $groups = array();

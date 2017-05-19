@@ -294,9 +294,10 @@ Be aware that logging in with Facebook is putting a dependency on Facebook's sys
 
 [title="3"]Debugging[/title]
 
-Facebook does sometimes changes things in its API, which may require changes to the Composr addon. As it is running under-the-hood it can be a bit tricky to see what is a sticking point.
-If clicking the Facebook log in button doesn't appear to do anything, look in your browser's developer tools, at the network request for the page view.
-You may see a [tt]Facebook-Error[/tt] header with an error message.
+[media width="150" description="Where to find Response Headers in Google Chrome" float="right"]data_custom/images/docs/tut_facebook/facebook_headers.png[/media]
+It is hard to debug Facebook login. Every few months Facebook change something, often invalidating the steps in this tutorial or changing API compatibility. For someone to debug it properly they need to be granted access to the Facebook app and write access to the website, then likely spend half a day stepping through it all, so you likely won't be able to get a lot of free support tracking an issue down. If it's not some easily identifiable basic error you'd probably need to pay a developer to step through it all properly as it's not really possible for the addon developer to tell upfront what is user-error, what is a very specific Facebook bug, or when there is a need to update the addon.
+
+If it's a basic error (clicking the Facebook log in button doesn't appear to do anything) then Facebook is probably returning an error message which we relay in the network request's response headers, giving you a little insight into what is happening under-the-hood. Look for the [tt]Facebook-Error[/tt] header.
 
 [title="3"]Logging out[/title]
 

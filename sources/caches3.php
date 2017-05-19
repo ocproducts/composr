@@ -28,15 +28,17 @@ function init__caches3()
     global $ERASED_TEMPLATES_ONCE;
     $ERASED_TEMPLATES_ONCE = false;
 
-    // Special ways of decaching templates
-    define('TEMPLATE_DECACHE_BASE', '\{\+START,INCLUDE');
-    // -
-    define('TEMPLATE_DECACHE_WITH_LANG', '\{\!|\{\$CHARSET' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_THEME_IMAGE', '\{\$IMG' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_CONFIG', '\{\!|\{\$IMG|\{\$SITE_NAME|\{\$CONFIG_OPTION|\{\$SITE_SCOPE|\{\$DOMAIN|\{\$STAFF_ADDRESS|\{\$SHOW_DOCS|\{\$COPYRIGHT|\{\$VALID_FILE_TYPES\{\$BRAND_|\{\$INLINE_STATS|\{\$CURRENCY_SYMBOL' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_ADDON', '\{\$ADDON_INSTALLED' . '|' . TEMPLATE_DECACHE_WITH_CONFIG);
-    // -
-    define('TEMPLATE_DECACHE_WITH_ANYTHING_INTERESTING', TEMPLATE_DECACHE_WITH_ADDON); // because TEMPLATE_DECACHE_WITH_ADDON actually does include everything already, via chaining
+    if (!defined('TEMPLATE_DECACHE_BASE')) {
+        // Special ways of decaching templates
+        define('TEMPLATE_DECACHE_BASE', '\{\+START,INCLUDE');
+        // -
+        define('TEMPLATE_DECACHE_WITH_LANG', '\{\!|\{\$CHARSET' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_THEME_IMAGE', '\{\$IMG' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_CONFIG', '\{\!|\{\$IMG|\{\$SITE_NAME|\{\$CONFIG_OPTION|\{\$SITE_SCOPE|\{\$DOMAIN|\{\$STAFF_ADDRESS|\{\$SHOW_DOCS|\{\$COPYRIGHT|\{\$VALID_FILE_TYPES\{\$BRAND_|\{\$INLINE_STATS|\{\$CURRENCY_SYMBOL' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_ADDON', '\{\$ADDON_INSTALLED' . '|' . TEMPLATE_DECACHE_WITH_CONFIG);
+        // -
+        define('TEMPLATE_DECACHE_WITH_ANYTHING_INTERESTING', TEMPLATE_DECACHE_WITH_ADDON); // because TEMPLATE_DECACHE_WITH_ADDON actually does include everything already, via chaining
+    }
 }
 
 /**
@@ -62,12 +64,12 @@ function auto_decache($changed_base_url)
 }
 
 /**
- * Rebuild the specified caches.
+ * Run the specified cleanup tools.
  *
- * @param  ?array $caches The caches to rebuild (null: all)
+ * @param  ?array $cleanup_tools The cleanup tools to run (null: all)
  * @return Tempcode Any messages returned
  */
-function composr_cleanup($caches = null)
+function composr_cleanup($cleanup_tools = null)
 {
     require_lang('cleanup');
 
@@ -87,17 +89,19 @@ function composr_cleanup($caches = null)
         $hooks['cns'] = $temp;
     }
 
-    if (!is_null($caches)) {
-        foreach ($caches as $cache) {
-            if (array_key_exists($cache, $hooks)) {
-                require_code('hooks/systems/cleanup/' . filter_naughty_harsh($cache));
-                $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($cache), true);
+    if (!is_null($cleanup_tools)) {
+        foreach ($cleanup_tools as $hook) {
+            if (array_key_exists($hook, $hooks)) {
+                require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
+                $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
                 if (is_null($object)) {
                     continue;
                 }
                 $messages->attach($object->run());
+
+                log_it('CLEANUP_TOOLS', $hook);
             } else {
-                $messages->attach(paragraph(do_lang_tempcode('_MISSING_RESOURCE', escape_html($cache))));
+                $messages->attach(paragraph(do_lang_tempcode('_MISSING_RESOURCE', escape_html($hook))));
             }
         }
     } else {
@@ -110,11 +114,12 @@ function composr_cleanup($caches = null)
             $info = $object->info();
             if ($info['type'] == 'cache') {
                 $messages->attach($object->run());
+
+                log_it('CLEANUP_TOOLS', $hook);
             }
         }
     }
 
-    log_it('CLEANUP_TOOLS');
     return $messages;
 }
 
@@ -197,7 +202,9 @@ function erase_thumb_cache()
     $dh = @opendir($full);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            @unlink($full . '/' . $file);
+            if (!in_array($file, array('index.html', '.htaccess'))) {
+                @unlink($full . '/' . $file);
+            }
         }
         closedir($dh);
     }

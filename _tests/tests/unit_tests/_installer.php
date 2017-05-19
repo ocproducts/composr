@@ -70,7 +70,7 @@ class _installer_test_set extends cms_test_case
     private function doHeadlessInstall($safe_mode)
     {
         $database = 'test';
-        $table_prefix = 'cms_unit_test_';
+        $table_prefix = 'cms_installer_test_';
 
         // Cleanup old install
         $tables = $GLOBALS['SITE_DB']->query('SHOW TABLES FROM ' . $database, null, null, true);
@@ -87,7 +87,7 @@ class _installer_test_set extends cms_test_case
         global $SITE_INFO;
         require_code('install_headless');
         for ($i = 0; $i < 2; $i++) { // 1st trial is clean DB, 2nd trial is dirty DB
-            $success = do_install_to($database, 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', $table_prefix, $safe_mode);
+            $success = do_install_to($database, (strpos(get_db_site(), 'mysql') === false) ? get_db_site_user() : 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', $table_prefix, $safe_mode);
             $fail_message = 'Failed on trial #' . strval($i + 1);
             $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
             if (!isset($_GET['debug'])) {

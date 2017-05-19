@@ -361,10 +361,6 @@ The [tt]from[/tt] address (different to the 'reply address' you see when you cli
 
 This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing e-mail server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website e-mail address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the webhost) is not working.
 
-[title="3"]Why do my sessions timeout too quickly?[/title]
-
-If your sessions timeout in less than the time configured in the "Session expiry-time" option then a faulty MySQL installation could be the cause. A workaround is to manually edit the [tt]cms_sessions[/tt] table to have a table type of [tt]MyISAM[/tt]. The default is type [tt]MEMORY[/tt] (for performance reasons), but if MySQL keeps resetting itself this won't hold properly.
-
 [title="3"]Why do large uploads fail on IIS?[/title]
 
 If you are using PHP as FastCGI check out these settings...

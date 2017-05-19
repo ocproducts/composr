@@ -236,7 +236,7 @@ function upgrade_script()
                     }
                     echo do_lang('FU_FILE_UPGRADE_INFO_MANUAL', escape_html($personal_upgrader_url));
                     echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
-                    echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /></p>';
+                    echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" size="80" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /></p>';
                     echo '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('FU_DRY_RUN') . '</label></p>';
                     if ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
                         echo '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
@@ -1739,7 +1739,6 @@ function version_specific()
                 $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'wordfilter CONVERT TO CHARACTER SET utf8mb4');
             }
 
-            set_value('version', float_to_raw_string($version_files, 10, true));
             delete_value('last_implicit_sync');
             delete_value('last_newsletter_drip_send');
             delete_value('last_confirm_reminder_time');
@@ -1813,6 +1812,8 @@ function version_specific()
             );
             perform_search_replace($reps);
         }
+
+        set_value('version', float_to_raw_string($version_files, 10, true));
 
         return true;
     }

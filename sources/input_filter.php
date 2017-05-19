@@ -127,11 +127,6 @@ function check_posted_field($name, $val)
 
     $is_true_referer = (substr($referer, 0, 7) === 'http://') || (substr($referer, 0, 8) === 'https://');
 
-    if ($is_true_referer) {
-        require_code('users_active_actions');
-        cms_setcookie('has_referers', '1'); // So we know for later requests that "blank" means a malicious external request (from third-party HTTPS URL, or a local file being executed)
-    }
-
     if ((cms_srv('REQUEST_METHOD') === 'POST') && (!is_guest())) {
         if ($is_true_referer) {
             $canonical_referer_domain = strip_url_to_representative_domain($referer);
@@ -153,8 +148,6 @@ function check_posted_field($name, $val)
                     }
                 }
             }
-        } elseif (cms_admirecookie('has_referers') === '1' && !addon_installed('ssl')/*https->http removes referer*/) {
-            $evil = true;
         }
     }
 
@@ -184,6 +177,11 @@ function get_allowed_partner_sites()
 {
     if (function_exists('get_option')) {
         $allowed_partners = (trim(get_option('allowed_post_submitters')) === '') ? array() : explode("\n", trim(get_option('allowed_post_submitters')));
+        foreach ($allowed_partners as $allowed_partner) {
+            if (substr($allowed_partner, 0, 4) != 'www.') {
+                $allowed_partners[] = 'www.' . $allowed_partner;
+            }
+        }
     } else {
         $allowed_partners = array();
     }
@@ -306,7 +304,7 @@ function hard_filter_input_data__html(&$val, $lite = false)
     } while ($old_val != $val);
 
     // Tag vectors
-    $bad_tags = 'noscript|script|link|style|meta|iframe|frame|object|embed|applet|html|xml|body|head|form|base|layer|v:vmlframe';
+    $bad_tags = 'noscript|script|link|style|meta|iframe|frame|object|embed|applet|html|xml|body|head|form|base|layer|v:vmlframe|svg';
     $val = preg_replace('#\<(' . $bad_tags . ')#i', '<span', $val); // Intentionally does not strip so as to avoid attacks like <<scriptscript --> <script
     $val = preg_replace('#\</(' . $bad_tags . ')#i', '</span', $val);
 

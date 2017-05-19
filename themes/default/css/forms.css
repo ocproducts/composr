@@ -750,6 +750,10 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	margin-bottom: 0.5em;
 }
 
+.fields_set_contents {
+	overflow: hidden;
+}
+
 .fields_set_contents .associated_details {
 	margin-top: 0.2em;
 }

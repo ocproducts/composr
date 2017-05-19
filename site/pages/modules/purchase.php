@@ -189,8 +189,10 @@ class Module_purchase
         if (!is_null($new_username)) {
             require_code('cns_join');
             list($messages) = cns_join_actual(true, false, false, true, false, false, false, true);
-            if (!$messages->is_empty()) {
-                return inform_screen($this->title, $messages);
+            if (is_guest()) {
+                if (!$messages->is_empty()) {
+                    return inform_screen($this->title, $messages);
+                }
             }
         }
 

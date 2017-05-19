@@ -25,9 +25,11 @@
  */
 function init__notification_poller()
 {
-    define('NOTIFICATION_POLL_FREQUENCY', intval(get_option('notification_poll_frequency')));
+    if (!defined('NOTIFICATION_POLL_FREQUENCY')) {
+        define('NOTIFICATION_POLL_FREQUENCY', intval(get_option('notification_poll_frequency')));
 
-    define('NOTIFICATION_POLL_SAFETY_LAG_SECS', 8); // Assume a request could have taken this long to happen, so we look back a little further even than NOTIFICATION_POLL_FREQUENCY
+        define('NOTIFICATION_POLL_SAFETY_LAG_SECS', 8); // Assume a request could have taken this long to happen, so we look back a little further even than NOTIFICATION_POLL_FREQUENCY
+    }
 }
 
 /**

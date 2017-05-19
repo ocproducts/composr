@@ -46,7 +46,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						{$,Search box for logged in users [could show to guests, except space is lacking]}
 						{+START,IF,{$AND,{$ADDON_INSTALLED,search},{$DESKTOP},{$NOT,{$IS_GUEST}}}}{+START,IF,{$CONFIG_OPTION,block_top_search}}
 							<div class="top_form top_search block_desktop">
-								{$BLOCK,block=top_search,failsafe=1}
+								{$BLOCK,block=top_search,failsafe=1,limit_to={$?,{$MATCH_KEY_MATCH,forum:_WILD},cns_posts,all_defaults}}
 							</div>
 						{+END}{+END}
 

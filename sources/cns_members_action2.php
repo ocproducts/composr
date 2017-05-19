@@ -1276,6 +1276,7 @@ function cns_ban_member($member_id)
 
     log_it('BAN_MEMBER', strval($member_id), $username);
 
+    require_lang('cns');
     $mail = do_lang('BAN_MEMBER_MAIL', $username, get_site_name(), array(), get_lang($member_id));
     mail_wrap(do_lang('BAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', 2, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
 
@@ -1305,6 +1306,7 @@ function cns_unban_member($member_id)
 
     log_it('UNBAN_MEMBER', strval($member_id), $username);
 
+    require_lang('cns');
     $mail = do_lang('UNBAN_MEMBER_MAIL', $username, get_site_name(), array(), get_lang($member_id));
     mail_wrap(do_lang('UNBAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', 2, null, false, null, false, false, false, 'MAIL', false, null, null, $join_time);
 

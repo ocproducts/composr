@@ -21,7 +21,7 @@ class _installer_xml_db_test_set extends cms_test_case
     public function testFullInstallSafeMode()
     {
         $database = 'test';
-        $table_prefix = 'cms_unit_test_';
+        $table_prefix = 'cms_xmldb_test_';
 
         global $SITE_INFO;
         require_code('install_headless');

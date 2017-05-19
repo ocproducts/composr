@@ -62,7 +62,7 @@ class Hook_task_find_orphaned_lang_strings
 
         $langidfields = array();
         foreach ($all_fields as $f) {
-            if (substr($f['m_type'], -6) == '_TRANS') {
+            if (strpos($f['m_type'], '_TRANS') !== false) {
                 $langidfields[] = array('m_name' => $f['m_name'], 'm_table' => $f['m_table']);
             }
         }

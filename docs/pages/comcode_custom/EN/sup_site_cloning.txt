@@ -80,5 +80,6 @@ A few things to note about the cloned site:
  - [page="_SEARCH:tut_backup"]Backing up your site[/page]
  - [page="_SEARCH:tut_moving"]Moving sites[/page]
  - [page="_SEARCH:tut_upgrade"]Performing an upgrade[/page]
+ - [page="_SEARCH:sup_staging_servers"]Staging Servers[/page]
 
 {$SET,tutorial_tags,expert,core_configuration,Maintenance}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,How to clone your website to create a testing copy.}[block]main_tutorial_rating[/block]
