@@ -218,7 +218,15 @@ class Module_vforums
         }
         $initial_table .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id';
 
-        return $this->_vforum($title, $condition, 'post_time_grouped', true, null, $initial_table, ',MAX(pos.p_time) AS p_time');
+        if (can_arbitrary_groupby()) {
+            $extra_select = ',MAX(pos.p_time) AS p_time';
+            $order = 'post_time_grouped';
+        } else {
+            $extra_select = '';
+            $order = 'post_time';
+        }
+
+        return $this->_vforum($title, $condition, $order, true, null, $initial_table, $extra_select);
     }
 
     /**

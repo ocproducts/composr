@@ -895,7 +895,7 @@ function insert_textbox_wrapping(element,before_wrap_tag,after_wrap_tag)
 			new_html=merge_text_nodes(result.childNodes).replace(/\s*$/,''); /* result is an XML-escaped string of HTML, so we get via looking at the node text */
 		} else
 		{
-			new_html = selected_html;
+			new_html=selected_html;
 		}
 
 		if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName()=='kbd')) // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.

@@ -629,7 +629,7 @@ class Forum_driver_wbb_shared extends Forum_driver_base
      */
     public function get_previous_member($member)
     {
-        $tempid = $this->connection->query_value_if_there('SELECT userid FROM ' . $this->connection->get_table_prefix() . 'users WHERE userid<' . strval($member) . ' AND userid<>\'0\' ORDER BY userid DESC');
+        $tempid = $this->connection->query_value_if_there('SELECT userid FROM ' . $this->connection->get_table_prefix() . 'users WHERE userid<' . strval($member) . ' AND userid<>0 ORDER BY userid DESC');
         return $tempid;
     }
 

@@ -34,7 +34,7 @@ class Hook_config_message_received_emails
             'human_name' => 'MESSAGE_RECEIVED_EMAILS',
             'type' => 'tick',
             'category' => 'SITE',
-            'group' => 'EMAIL',
+            'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_message_received_emails',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

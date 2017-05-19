@@ -34,7 +34,7 @@ class Hook_config_mail_queue_debug
             'human_name' => 'MAIL_QUEUE_DEBUG',
             'type' => 'tick',
             'category' => 'SITE',
-            'group' => 'EMAIL',
+            'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_mail_queue_debug',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

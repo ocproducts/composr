@@ -43,12 +43,14 @@ Any notifications are CC'd to the configured CC email address (if there is one).
  */
 function init__notifications()
 {
-    // Notifications will be sent from one of the following if not a specific member ID
-    define('A_FROM_SYSTEM_UNPRIVILEGED', -3); // Sent from system (website itself) *without* dangerous Comcode permission
-    define('A_FROM_SYSTEM_PRIVILEGED', -2); // Sent from system (website itself) *with* dangerous Comcode permission
+    if (!defined('A_FROM_SYSTEM_UNPRIVILEGED')) {
+        // Notifications will be sent from one of the following if not a specific member ID
+        define('A_FROM_SYSTEM_UNPRIVILEGED', -3); // Sent from system (website itself) *without* dangerous Comcode permission
+        define('A_FROM_SYSTEM_PRIVILEGED', -2); // Sent from system (website itself) *with* dangerous Comcode permission
 
-    // Notifications will be sent to one of the following if not to a specific list of member IDs
-    define('A_TO_ANYONE_ENABLED', null);
+        // Notifications will be sent to one of the following if not to a specific list of member IDs
+        define('A_TO_ANYONE_ENABLED', null);
+    }
 
     global $NOTIFICATION_SETTING_CACHE;
     $NOTIFICATION_SETTING_CACHE = array();
@@ -186,6 +188,9 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
         return;
     }
 
+    if (!isset($GLOBALS['FORUM_DRIVER'])) {
+        return; // We're not in a position to send a notification
+    }
     if ((function_exists('get_member')) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_param_integer('keep_no_notifications', 0) == 1)) {
         return;
     }
@@ -1006,7 +1011,7 @@ class Hook_Notification
         if (!$for_any_member) {
             $map['l_member_id'] = get_member();
         }
-        $types = $db->query_select('notifications_enabled', array('DISTINCT l_code_category'), $map, 'ORDER BY id DESC', 200/*reasonable limit*/); // Already monitoring members who may not be friends
+        $types = $db->query_select('notifications_enabled', array('DISTINCT l_code_category', 'id'), $map, 'ORDER BY id DESC', 200/*reasonable limit*/); // Already monitoring members who may not be friends
         foreach ($types as $type) {
             if ($type['l_code_category'] != '') {
                 $page_links[] = array(

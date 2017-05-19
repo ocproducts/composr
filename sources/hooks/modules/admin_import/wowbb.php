@@ -264,7 +264,7 @@ class Hook_wowbb
                     }
                 }
 
-                $primary_group = import_id_remap_get('group', $row['user_group_id']);
+                $primary_group = import_id_remap_get('group', strval($row['user_group_id']));
                 $secondary_groups = array();
 
                 $custom_fields = array(
@@ -623,7 +623,7 @@ class Hook_wowbb
 
                 $post_row = array();
                 if (!is_null($post_id)) {
-                    $post_id = import_id_remap_get('post', $post_id);
+                    $post_id = import_id_remap_get('post', strval($post_id));
                     $post_row = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_time', 'p_poster', 'p_post'), array('id' => $post_id), '', 1);
                 }
                 if (!array_key_exists(0, $post_row)) {

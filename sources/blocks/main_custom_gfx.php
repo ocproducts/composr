@@ -82,7 +82,8 @@ class Block_main_custom_gfx
         }
 
         // Cache to auto_thumbs
-        if ((!file_exists(get_custom_file_base() . '/uploads/auto_thumbs/' . $cache_id . '.png')) || (get_option('is_on_block_cache') == '0')) {
+        $thumb_path = get_custom_file_base() . '/uploads/auto_thumbs/' . $cache_id . '.png';
+        if ((!file_exists($thumb_path)) || (get_option('is_on_block_cache') == '0')) {
             // Ok so not cached yet
 
             $_color = array_key_exists('color', $map) ? $map['color'] : 'FFFFFF';
@@ -131,26 +132,28 @@ class Block_main_custom_gfx
                 if (strpos($text, '&#') === false) {
                     $previous = mixed();
                     $nxpos = 0;
-                    for ($i = 0; $i < strlen($line); $i++) {
-                        list(, , $rx1, $ry1, $rx2, $ry2) = imagettfbbox(floatval($map['font_size']), 0.0, $file_base . $font . '.ttf', $previous);
-                        if (!is_null($previous)) // check for existing previous character
-                        {
+                    for ($i = 0; $i < strlen($line); $i++) { // render character by character, for reliability
+                        if (!is_null($previous)) { // check for existing previous character
+                            list(, , $rx1, $ry1, $rx2, $ry2) = imagettfbbox(floatval($map['font_size']), 0.0, $file_base . $font . '.ttf', $previous);
                             $nxpos += max($rx1, $rx2) + 1;
                         }
                         imagettftext($img, floatval($map['font_size']), 0.0, $pos_x + $nxpos, $pos_y, $colour, $file_base . $font . '.ttf', $line[$i]);
                         $previous = $line[$i];
                     }
                 } else {
-                    imagettftext($img, floatval($map['font_size']), 0.0, $pos_x, $pos_y, $colour, $file_base . $font . '.ttf', $text);
+                    imagettftext($img, floatval($map['font_size']), 0.0, $pos_x, $pos_y, $colour, $file_base . $font . '.ttf', $line);
                 }
 
+                list(, , $rx1, $ry1, $rx2, $ry2) = imagettfbbox(floatval($map['font_size']), 0.0, $file_base . $font . '.ttf', $line);
                 $pos_y += ($ry1 - $ry2) + 5;
             }
 
-            imagepng($img, get_custom_file_base() . '/uploads/auto_thumbs/' . $cache_id . '.png', 9);
+            imagepng($img, $thumb_path, 9);
             imagedestroy($img);
             require_code('images_png');
-            png_compress(get_custom_file_base() . '/uploads/auto_thumbs/' . $cache_id . '.png');
+            png_compress($thumb_path);
+            fix_permissions($thumb_path);
+            sync_file($thumb_path);
         }
 
         $url = get_custom_base_url() . '/uploads/auto_thumbs/' . $cache_id . '.png';

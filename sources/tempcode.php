@@ -29,27 +29,29 @@ function init__tempcode()
         return;
     }
 
-    define('ENTITY_ESCAPED', 1); // HTML entities
-    define('SQ_ESCAPED', 2); // Single quotes
-    define('DQ_ESCAPED', 3); // Double quotes
-    define('NL_ESCAPED', 4); // New lines disappear
-    define('CC_ESCAPED', 5); // Comcode
-    define('UL_ESCAPED', 6); // URL
-    define('JSHTML_ESCAPED', 7); // JavaScript </ -> <\/
-    define('NL2_ESCAPED', 8); // New lines go to \n
-    define('ID_ESCAPED', 9); // Strings to to usable IDs
-    define('NAUGHTY_ESCAPED', 10); // Used as a JavaScript variable name, for example... to prevent code injection
-    define('NULL_ESCAPED', 11); // This is useful to mark something that takes strings but does not need escaping (usually because it is escaped further down the line)
-    define('FORCIBLY_ENTITY_ESCAPED', 12); // To force a language string to be escaped
-    define('CSS_ESCAPED', 13); // To stop CSS injection
-    define('UL2_ESCAPED', 14); // rawurlencode
-    define('PURE_STRING', 16); // Used to indicating we just put something directly into the output. Works with __toString or normal strings. Does no escaping.
+    if (!defined('ENTITY_ESCAPED')) {
+        define('ENTITY_ESCAPED', 1); // HTML entities
+        define('SQ_ESCAPED', 2); // Single quotes
+        define('DQ_ESCAPED', 3); // Double quotes
+        define('NL_ESCAPED', 4); // New lines disappear
+        define('CC_ESCAPED', 5); // Comcode
+        define('UL_ESCAPED', 6); // URL
+        define('JSHTML_ESCAPED', 7); // JavaScript </ -> <\/
+        define('NL2_ESCAPED', 8); // New lines go to \n
+        define('ID_ESCAPED', 9); // Strings to to usable IDs
+        define('NAUGHTY_ESCAPED', 10); // Used as a JavaScript variable name, for example... to prevent code injection
+        define('NULL_ESCAPED', 11); // This is useful to mark something that takes strings but does not need escaping (usually because it is escaped further down the line)
+        define('FORCIBLY_ENTITY_ESCAPED', 12); // To force a language string to be escaped
+        define('CSS_ESCAPED', 13); // To stop CSS injection
+        define('UL2_ESCAPED', 14); // rawurlencode
+        define('PURE_STRING', 16); // Used to indicating we just put something directly into the output. Works with __toString or normal strings. Does no escaping.
 
-    define('TC_SYMBOL', 0);
-    define('TC_KNOWN', 1); // Either Tempcode or string
-    define('TC_LANGUAGE_REFERENCE', 2);
-    define('TC_PARAMETER', 3); // A late parameter for a compiled template
-    define('TC_DIRECTIVE', 4);
+        define('TC_SYMBOL', 0);
+        define('TC_KNOWN', 1); // Either Tempcode or string
+        define('TC_LANGUAGE_REFERENCE', 2);
+        define('TC_PARAMETER', 3); // A late parameter for a compiled template
+        define('TC_DIRECTIVE', 4);
+    }
 
     global $XHTML_SPIT_OUT, $NO_EVAL_CACHE, $MEMORY_OVER_SPEED, $TEMPLATE_DISK_ORIGIN_CACHE, $REQUEST_BLOCK_NEST_LEVEL, $LOADED_TPL_CACHE, $KEEP_TPL_FUNCS;
     $XHTML_SPIT_OUT = null;
@@ -760,27 +762,29 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
     $_data = mixed();
     $_data = false;
-    if (($CACHE_TEMPLATES) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (!$RECORD_LANG_STRINGS/*Tempcode compilation embeds lang strings*/) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))) {
-        if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
-            $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
-            $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
-        } else {
-            $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
-        }
 
+    // Load from run-time cache?
+    if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
+        // We have run-time caching
+        $_data = $LOADED_TPL_CACHE[$codename][$theme];
+    }
+
+    // Find where template is on disk
+    if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
+        $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
+        $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
+    } else {
+        $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
+    }
+
+    // Load from template cache?
+    if (($CACHE_TEMPLATES) && ($_data === false) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (!$RECORD_LANG_STRINGS/*Tempcode compilation embeds lang strings*/) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))) {
         if ($found !== null) {
             $tcp_path = $prefix . $theme . '/templates_cached/' . $lang . '/' . $codename . $found[2] . '.tcp';
             if ($loaded_this_once) {
-                if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
-                    $_data = $LOADED_TPL_CACHE[$codename][$theme];
-                } else {
-                    $_data = new Tempcode();
-                    $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
-                    if (!$test) {
-                        $_data = false; // failed
-                    }
-                }
+                $may_use_cache = true;
             } else {
+                // We need to support smart-decaching
                 global $SITE_INFO;
                 $support_smart_decaching = support_smart_decaching();
                 if ($support_smart_decaching) {
@@ -800,29 +804,27 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
                         gae_optimistic_cache(false);
                     }
                 }
+
+                $may_use_cache = false;
                 if ((!$support_smart_decaching) || (($tcp_time !== false) && (is_file($file_path)))/*if in install can be found yet no file at path due to running from data.cms*/ && ($found !== null)) {
                     if ((!$support_smart_decaching) || ((filemtime($file_path) < $tcp_time) && ((empty($SITE_INFO['dependency__' . $file_path])) || (dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $file_path]), $tcp_time))))) {
-                        $_data = new Tempcode();
-                        $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
-                        if (!$test) {
-                            $_data = false; // failed
-                        }
+                        $may_use_cache = true;
                     }
                 }
             }
-        } else {
-            $_data = false;
+
+            if ($may_use_cache) {
+                $_data = new Tempcode();
+                $test = $_data->from_assembly_executed($tcp_path, array($codename, $codename, $lang, $theme, $suffix, $directory, $fallback));
+                if (!$test) {
+                    $_data = false; // failed
+                }
+            }
         }
     }
-    if ($_data === false) { // No, it's not
-        if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
-            $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
-            $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
-        } else {
-            $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
-        }
 
-        unset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory]);
+    // Compile?
+    if ($_data === false) { // No, it's not
         if ($found === null) {
             if ($fallback === null) {
                 if ($light_error) {
@@ -839,10 +841,12 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if ($loaded_this_once) {// On 3rd load (and onwards) it will be fully cached
+    if (($loaded_this_once) && (!isset($LOADED_TPL_CACHE[$codename][$theme]))) { // On 3rd load (and onwards) it will be fully cached (1st = from disk with smart-decaching, 2nd = from disk [now], 3rd = from run-time cache)
+        // Set run-time cache
         $LOADED_TPL_CACHE[$codename][$theme] = $_data;
     }
 
+    // Optimisation
     if (!isset($parameters)) { // Streamlined if no parameters involved
         $out = new Tempcode();
         $out->codename = $codename;
@@ -863,11 +867,13 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         return $out;
     }
 
+    // Bind parameters
     $ret = $_data->bind($parameters, $codename);
     if ($special_treatment) {
         $ret->codename = '(mixed)'; // Stop optimisation that assumes the codename represents the sole content of it
     }
 
+    // Special rendering modes
     if ($special_treatment) {
         if ($KEEP_MARKERS) {
             $__data = new Tempcode();

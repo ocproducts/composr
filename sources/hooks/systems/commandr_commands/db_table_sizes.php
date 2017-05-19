@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_commandr_command_mysql_table_sizes
+class Hook_commandr_command_db_table_sizes
 {
     /**
      * Run function for Commandr hooks.
@@ -34,18 +34,30 @@ class Hook_commandr_command_mysql_table_sizes
     public function run($options, $parameters, &$commandr_fs)
     {
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
-            return array('', do_command_help('mysql_table_sizes', array('h'), array(true, true)), '', '');
+            return array('', do_command_help('db_table_sizes', array('h'), array(true, true)), '', '');
         } else {
             require_code('files');
+
+            if ((strpos(get_db_type(), 'mysql') === false) && (get_db_type() != 'postgresql')) {
+                warn_exit(do_lang_tempcode('NOT_SUPPORTED_ON_DB'));
+            }
 
             $out = '<div class="box box___commandr_box inline_block"><div class="box_inner"><div class="website_body">'; // XHTMLXHTML
 
             $db = $GLOBALS['SITE_DB'];
             require_code('files');
-            $sizes = list_to_map('Name', $db->query('SHOW TABLE STATUS WHERE Name LIKE \'' . db_encode_like($db->get_table_prefix() . '%') . '\''));
-            foreach ($sizes as $key => $vals) {
-                $sizes[$key] = $vals['Data_length'] + $vals['Index_length'] - $vals['Data_free'];
+
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $results = $db->query('SHOW TABLE STATUS WHERE Name LIKE \'' . db_encode_like($db->get_table_prefix() . '%') . '\'');
+                $sizes = list_to_map('Name', $results);
+                foreach ($sizes as $key => $vals) {
+                    $sizes[$key] = $vals['Data_length'] + $vals['Index_length'] - $vals['Data_free'];
+                }
+            } elseif (get_db_type() == 'postgresql') {
+                $results = $db->query('SELECT relname,(pg_total_relation_size(relid)-pg_relation_size(relid)) AS size FROM pg_catalog.pg_statio_user_tables WHERE relname LIKE \'' . db_encode_like($db->get_table_prefix() . '%') . '\'');
+                $sizes = collapse_2d_complexity('relname', 'size', $results);
             }
+
             asort($sizes);
             $out .= '<table class="results_table"><thead><tr><th>' . do_lang('NAME') . '</th><th>' . do_lang('SIZE') . '</th></tr></thead>';
             $out .= '<tbody>';

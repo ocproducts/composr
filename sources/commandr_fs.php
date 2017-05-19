@@ -25,8 +25,10 @@
  */
 function init__commandr_fs()
 {
-    define('COMMANDR_FS_FILE', 0);
-    define('COMMANDR_FS_DIR', 1);
+    if (!defined('COMMANDR_FS_FILE')) {
+        define('COMMANDR_FS_FILE', 0);
+        define('COMMANDR_FS_DIR', 1);
+    }
 }
 
 /**

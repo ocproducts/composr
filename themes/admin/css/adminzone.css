@@ -14,13 +14,13 @@ header {
 	border-bottom: 3px solid #cacaca;
 }
 
-{+START,IF,{$MOBILE}}
+/*{+START,IF,{$MOBILE}}*/
 	.global_navigation_inner span {
 		float: right;
 		margin: 0.75em;
 		font-size: 1.2em;
 	}
-{+END}
+/*{+END}*/
 
 #main_website #main_website_inner {
 	border: 0;

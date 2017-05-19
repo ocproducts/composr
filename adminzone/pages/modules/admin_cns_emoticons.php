@@ -419,7 +419,13 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         $entries = new Tempcode();
         $first = true;
         foreach ($_m as $m) {
-            $url = find_theme_image($m['e_theme_img_code']);
+            $url = find_theme_image($m['e_theme_img_code'], true);
+
+            if ($url == '') { // Automatic cleanup of ones deleted from disk
+                $GLOBALS['FORUM_DB']->query_delete('f_emoticons', array('e_code' => $m['e_code']), '', 1);
+                continue;
+            }
+
             $entries->attach(do_template('FORM_SCREEN_INPUT_THEME_IMAGE_ENTRY', array('_GUID' => 'f7f64637d1c4984881f7acc68c2fe6c7', 'PRETTY' => $m['e_code'], 'CHECKED' => $first, 'NAME' => 'id', 'CODE' => $m['e_code'], 'URL' => $url)));
             $first = false;
         }

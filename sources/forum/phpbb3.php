@@ -1279,7 +1279,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_moderator_groups()
     {
-        $moderator_group = $this->connection->query_value_if_there('SELECT group_id FROM ' . $this->connection->get_table_prefix() . 'groups WHERE group_name=\'GLOBAL_MODERATORS\'');
+        $moderator_group = $this->connection->query_value_if_there('SELECT group_id FROM ' . $this->connection->get_table_prefix() . 'groups WHERE ' . db_string_equal_to('group_name', 'GLOBAL_MODERATORS'));
         if (is_null($moderator_group)) {
             return array();
         }

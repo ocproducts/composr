@@ -99,8 +99,8 @@
 <h2>{!POINTS_RECEIVED}</h2>
 
 {+START,IF_NON_EMPTY,{TO}}
-	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-	<div id="{$GET*,wrapper_id}">
+	{$SET,ajax_points_profile_to_wrapper,ajax_points_profile_to_wrapper_{$RAND%}}
+	<div id="{$GET*,ajax_points_profile_to_wrapper}">
 		{TO}
 	</div>
 {+END}
@@ -119,8 +119,8 @@
 
 	<p>{!_POINTS_GIFTED,{$DISPLAYED_USERNAME*,{USERNAME}},{GIFT_POINTS_USED*}}</p>
 
-	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-	<div id="{$GET*,wrapper_id}">
+	{$SET,ajax_points_profile_from_wrapper,ajax_points_profile_from_wrapper_{$RAND%}}
+	<div id="{$GET*,ajax_points_profile_from_wrapper}">
 		{FROM}
 	</div>
 {+END}
@@ -130,8 +130,8 @@
 
 	<p>{!_POINTS_SPENT,{$DISPLAYED_USERNAME*,{USERNAME}},{POINTS_USED*}}</p>
 
-	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-	<div id="{$GET*,wrapper_id}">
+	{$SET,ajax_points_profile_chargelog_wrapper,ajax_points_profile_chargelog_wrapper_{$RAND%}}
+	<div id="{$GET*,ajax_points_profile_chargelog_wrapper}">
 		{CHARGELOG_DETAILS}
 	</div>
 {+END}

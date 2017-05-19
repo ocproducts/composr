@@ -48,59 +48,61 @@ function init__sitemap()
         @set_time_limit(100);
     }
 
-    // Defining what should be gathered with the Sitemap
-    define('SITEMAP_GATHER_DESCRIPTION', 1);
-    define('SITEMAP_GATHER_IMAGE', 2);
-    define('SITEMAP_GATHER_TIMES', 4);
-    define('SITEMAP_GATHER_SUBMITTER', 8);
-    define('SITEMAP_GATHER_AUTHOR', 16);
-    define('SITEMAP_GATHER_VIEWS', 32);
-    define('SITEMAP_GATHER_RATING', 64);
-    define('SITEMAP_GATHER_NUM_COMMENTS', 128);
-    define('SITEMAP_GATHER_META', 256);
-    define('SITEMAP_GATHER_CATEGORIES', 512);
-    define('SITEMAP_GATHER_VALIDATED', 1024);
-    define('SITEMAP_GATHER_DB_ROW', 2048);
-    define('SITEMAP_GATHER__ALL', 0x7FFFFFF);
+    if (!defined('SITEMAP_GATHER_DESCRIPTION')) {
+        // Defining what should be gathered with the Sitemap
+        define('SITEMAP_GATHER_DESCRIPTION', 1);
+        define('SITEMAP_GATHER_IMAGE', 2);
+        define('SITEMAP_GATHER_TIMES', 4);
+        define('SITEMAP_GATHER_SUBMITTER', 8);
+        define('SITEMAP_GATHER_AUTHOR', 16);
+        define('SITEMAP_GATHER_VIEWS', 32);
+        define('SITEMAP_GATHER_RATING', 64);
+        define('SITEMAP_GATHER_NUM_COMMENTS', 128);
+        define('SITEMAP_GATHER_META', 256);
+        define('SITEMAP_GATHER_CATEGORIES', 512);
+        define('SITEMAP_GATHER_VALIDATED', 1024);
+        define('SITEMAP_GATHER_DB_ROW', 2048);
+        define('SITEMAP_GATHER__ALL', 0x7FFFFFF);
 
-    // Defining how a node will be handle
-    define('SITEMAP_NODE_NOT_HANDLED', 0);
-    define('SITEMAP_NODE_HANDLED', 1);
-    define('SITEMAP_NODE_HANDLED_VIRTUALLY', 2); // Not a real node, but a virtual node for which we can accumulate real nodes at
+        // Defining how a node will be handle
+        define('SITEMAP_NODE_NOT_HANDLED', 0);
+        define('SITEMAP_NODE_HANDLED', 1);
+        define('SITEMAP_NODE_HANDLED_VIRTUALLY', 2); // Not a real node, but a virtual node for which we can accumulate real nodes at
 
-    // Sitemap importances
-    define('SITEMAP_IMPORTANCE_NONE', 0.0);
-    //define('SITEMAP_IMPORTANCE_', 0.1);
-    define('SITEMAP_IMPORTANCE_LOW', 0.2);
-    //define('SITEMAP_IMPORTANCE_', 0.3);
-    //define('SITEMAP_IMPORTANCE_', 0.4);
-    define('SITEMAP_IMPORTANCE_MEDIUM', 0.5);
-    //define('SITEMAP_IMPORTANCE_', 0.6);
-    //define('SITEMAP_IMPORTANCE_', 0.7);
-    define('SITEMAP_IMPORTANCE_HIGH', 0.8);
-    //define('SITEMAP_IMPORTANCE_', 0.9);
-    define('SITEMAP_IMPORTANCE_ULTRA', 1.0);
+        // Sitemap importances
+        define('SITEMAP_IMPORTANCE_NONE', 0.0);
+        //define('SITEMAP_IMPORTANCE_', 0.1);
+        define('SITEMAP_IMPORTANCE_LOW', 0.2);
+        //define('SITEMAP_IMPORTANCE_', 0.3);
+        //define('SITEMAP_IMPORTANCE_', 0.4);
+        define('SITEMAP_IMPORTANCE_MEDIUM', 0.5);
+        //define('SITEMAP_IMPORTANCE_', 0.6);
+        //define('SITEMAP_IMPORTANCE_', 0.7);
+        define('SITEMAP_IMPORTANCE_HIGH', 0.8);
+        //define('SITEMAP_IMPORTANCE_', 0.9);
+        define('SITEMAP_IMPORTANCE_ULTRA', 1.0);
 
-    // Sitemap generation settings
-    define('SITEMAP_GEN_NONE', 0);
-    define('SITEMAP_GEN_REQUIRE_PERMISSION_SUPPORT', 1); // Only go so deep as needed to find nodes with permission-support (typically, stopping prior to the entry-level).
-    define('SITEMAP_GEN_USE_PAGE_GROUPINGS', 2); // Whether to make use of page groupings, to organise stuff with the hook schema, supplementing the default zone organisation.
-    define('SITEMAP_GEN_CONSIDER_SECONDARY_CATEGORIES', 4); // Whether to consider secondary categorisations for content that primarily exists elsewhere.
-    define('SITEMAP_GEN_CONSIDER_VALIDATION', 8); // Whether to filter out non-validated content.
-    define('SITEMAP_GEN_LABEL_CONTENT_TYPES', 16); // Whether to change title labels to show what nodes and what kinds of content (i.e. more technical).
-    define('SITEMAP_GEN_NO_EMPTY_PAGE_LINKS', 32); // When iteratively expanding we need to make sure this is set, otherwise we won't be able to expand everything. But when generating menus we do not want it set.
-    define('SITEMAP_GEN_KEEP_FULL_STRUCTURE', 64); // Avoid merging structure together to avoid page-link duplication.
-    define('SITEMAP_GEN_COLLAPSE_ZONES', 128); // Simulate zone collapse in the Sitemap.
-    define('SITEMAP_GEN_CHECK_PERMS', 256); // Check permissions when building up nodes.
+        // Sitemap generation settings
+        define('SITEMAP_GEN_NONE', 0);
+        define('SITEMAP_GEN_REQUIRE_PERMISSION_SUPPORT', 1); // Only go so deep as needed to find nodes with permission-support (typically, stopping prior to the entry-level).
+        define('SITEMAP_GEN_USE_PAGE_GROUPINGS', 2); // Whether to make use of page groupings, to organise stuff with the hook schema, supplementing the default zone organisation.
+        define('SITEMAP_GEN_CONSIDER_SECONDARY_CATEGORIES', 4); // Whether to consider secondary categorisations for content that primarily exists elsewhere.
+        define('SITEMAP_GEN_CONSIDER_VALIDATION', 8); // Whether to filter out non-validated content.
+        define('SITEMAP_GEN_LABEL_CONTENT_TYPES', 16); // Whether to change title labels to show what nodes and what kinds of content (i.e. more technical).
+        define('SITEMAP_GEN_NO_EMPTY_PAGE_LINKS', 32); // When iteratively expanding we need to make sure this is set, otherwise we won't be able to expand everything. But when generating menus we do not want it set.
+        define('SITEMAP_GEN_KEEP_FULL_STRUCTURE', 64); // Avoid merging structure together to avoid page-link duplication.
+        define('SITEMAP_GEN_COLLAPSE_ZONES', 128); // Simulate zone collapse in the Sitemap.
+        define('SITEMAP_GEN_CHECK_PERMS', 256); // Check permissions when building up nodes.
 
-    // Defining how the content-selection list should be put together
-    define('CSL_PERMISSION_VIEW', 0);
-    define('CSL_PERMISSION_ADD', 1);
-    define('CSL_PERMISSION_EDIT', 2);
-    define('CSL_PERMISSION_DELETE', 4);
+        // Defining how the content-selection list should be put together
+        define('CSL_PERMISSION_VIEW', 0);
+        define('CSL_PERMISSION_ADD', 1);
+        define('CSL_PERMISSION_EDIT', 2);
+        define('CSL_PERMISSION_DELETE', 4);
 
-    // Other constants
-    define('SITEMAP_MAX_ROWS_PER_LOOP', 500);
+        // Other constants
+        define('SITEMAP_MAX_ROWS_PER_LOOP', 500);
+    }
 }
 
 /**

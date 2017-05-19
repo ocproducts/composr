@@ -1131,7 +1131,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
      */
     protected function _get_moderator_groups()
     {
-        $moderator_group = $this->connection->query_value_if_there('SELECT group_id FROM ' . $this->connection->get_table_prefix() . 'groups WHERE group_single_user=0 AND (group_name=\'Moderator\' OR group_name=\'Moderators\')');
+        $moderator_group = $this->connection->query_value_if_there('SELECT group_id FROM ' . $this->connection->get_table_prefix() . 'groups WHERE group_single_user=0 AND (' . db_string_equal_to('group_name', 'Moderator') . ' OR ' . db_string_equal_to('group_name', 'Moderators') . ')');
         if (is_null($moderator_group)) {
             return array();
         }

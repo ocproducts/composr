@@ -147,7 +147,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     if (array_key_exists('id', $row)) {
         $download_url = generate_dload_url($row['id'], $row['url_redirect'] != '');
     } else {
-        $download_url = '';
+        $download_url = new Tempcode();
     }
     
     // Final template
@@ -630,7 +630,7 @@ function count_download_category_children($category_id)
  *
  * @param  AUTO_LINK $id The ID of the download to be downloaded
  * @param  boolean $use_gateway Whether to use the gateway script
- * @return URLPATH The URL
+ * @return Tempcode The URL
  */
 function generate_dload_url($id, $use_gateway)
 {
@@ -641,15 +641,17 @@ function generate_dload_url($id, $use_gateway)
     $keep = symbol_tempcode('KEEP', array('0', '1'));
 
     if ($use_gateway) {
-        $download_url = find_script('download_gateway');
+        $download_url = make_string_tempcode(find_script('download_gateway'));
     } else {
-        $download_url = find_script('dload');
+        $download_url = make_string_tempcode(find_script('dload'));
     }
 
-    $download_url .= '?id=' . strval($id) . $keep->evaluate();
+    $download_url->attach('?id=' . strval($id));
+    $download_url->attach($keep);
 
     if (get_option('anti_leech') == '1') {
-        $download_url .= '&for_session=' . md5(strval(get_session_id()));
+        $download_url->attach('&for_session=');
+        $download_url->attach(symbol_tempcode('SESSION_HASHED'));
     }
 
     return $download_url;

@@ -918,22 +918,24 @@ function init__webstandards2()
         '*.itemprop' => '.*',
     );
 
-    define('CSS_AT_RULE_BLOCK', -4);
-    define('CSS_AT_RULE', -3);
-    define('CSS_NO_MANS_LAND', -2);
-    define('CSS_EXPECTING_IDENTIFIER', -1);
-    define('CSS_IN_COMMENT', 0);
-    define('CSS_IN_CLASS', 1);
-    define('CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS', 2);
-    define('CSS_IN_IDENTIFIER', 3);
-    define('CSS_IN_PSEUDOCLASS_EXPRESSION', 6);
+    if (!defined('CSS_AT_RULE_BLOCK')) {
+        define('CSS_AT_RULE_BLOCK', -4);
+        define('CSS_AT_RULE', -3);
+        define('CSS_NO_MANS_LAND', -2);
+        define('CSS_EXPECTING_IDENTIFIER', -1);
+        define('CSS_IN_COMMENT', 0);
+        define('CSS_IN_CLASS', 1);
+        define('CSS_EXPECTING_SEP_OR_IDENTIFIER_OR_CLASS', 2);
+        define('CSS_IN_IDENTIFIER', 3);
+        define('CSS_IN_PSEUDOCLASS_EXPRESSION', 6);
 
-    define('_CSS_NO_MANS_LAND', 0);
-    define('_CSS_IN_PROPERTY_KEY', 1);
-    define('_CSS_IN_PROPERTY_BETWEEN', 2);
-    define('_CSS_IN_PROPERTY_VALUE', 3);
-    define('_CSS_IN_COMMENT', 4);
-    define('_CSS_EXPECTING_END', 5);
+        define('_CSS_NO_MANS_LAND', 0);
+        define('_CSS_IN_PROPERTY_KEY', 1);
+        define('_CSS_IN_PROPERTY_BETWEEN', 2);
+        define('_CSS_IN_PROPERTY_VALUE', 3);
+        define('_CSS_IN_COMMENT', 4);
+        define('_CSS_EXPECTING_END', 5);
+    }
 }
 
 /**

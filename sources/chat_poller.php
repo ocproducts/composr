@@ -23,7 +23,9 @@
  */
 function chat_poller()
 {
-    define('CHAT_ACTIVITY_PRUNE', 25); // A little naughty to define this here, as already defined in chat.php
+    if (!defined('CHAT_ACTIVITY_PRUNE')) {
+        define('CHAT_ACTIVITY_PRUNE', 25); // A little naughty to define this here, as already defined in chat.php
+    }
 
     $message_id = get_param_integer('message_id', -1);
     $event_id = get_param_integer('event_id', -1);

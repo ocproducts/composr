@@ -143,6 +143,7 @@ class Block_main_contact_simple
             'EM' => $em,
             'DISPLAY' => 'block',
             'TITLE' => $box_title,
+            'SUBMIT_NAME' => do_lang_tempcode('SEND'),
             'COMMENT_URL' => $comment_url,
             'HIDDEN' => $hidden,
         ));

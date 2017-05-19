@@ -226,17 +226,17 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_float', 'fcv_value', array('cv_value'));
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_integer', 'itv_value', array('cv_value'));
 
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_float', 'fcf_id', array('cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_integer', 'icf_id', array('cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_float', 'fce_id', array('ce_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_integer', 'ice_id', array('ce_id'), 'id');
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_float', 'fcf_id', array('cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_integer', 'icf_id', array('cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_float', 'fce_id', array('ce_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_integer', 'ice_id', array('ce_id'));
 
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_float', 'cefv_f_combo', array('ce_id', 'cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_integer', 'cefv_i_combo', array('ce_id', 'cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'cefv_l_combo', array('ce_id', 'cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'cefv_s_combo', array('ce_id', 'cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long_trans', 'cefv_lt_combo', array('ce_id', 'cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short_trans', 'cefv_st_combo', array('ce_id', 'cf_id'), 'id');
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_float', 'cefv_f_combo', array('ce_id', 'cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_integer', 'cefv_i_combo', array('ce_id', 'cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'cefv_l_combo', array('ce_id', 'cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'cefv_s_combo', array('ce_id', 'cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long_trans', 'cefv_lt_combo', array('ce_id', 'cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short_trans', 'cefv_st_combo', array('ce_id', 'cf_id'));
         }
 
         if (is_null($upgrade_from)) {
@@ -396,19 +396,19 @@ class Module_catalogues
 
             add_privilege('CATALOGUES', 'high_catalogue_entry_timeout', false);
 
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', '#lcv_value', array('cv_value'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', '#scv_value', array('cv_value'), 'id');
-            //$GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'ilcv_value', array('cv_value'), 'id');  Not allowed, LONG_TEXT can not be in key. People shouldn't order by this anyway
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'iscv_value', array('cv_value'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'lcf_id', array('cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'scf_id', array('cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long_trans', 'ltcf_id', array('cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short_trans', 'stcf_id', array('cf_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'lce_id', array('ce_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'sce_id', array('ce_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long_trans', 'ltce_id', array('ce_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short_trans', 'stce_id', array('ce_id'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_cc_id', array('cc_id'), 'id');
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', '#lcv_value', array('cv_value'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', '#scv_value', array('cv_value'));
+            //$GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'ilcv_value', array('cv_value'));  Not allowed, LONG_TEXT can not be in an index (except fulltext indices). People shouldn't order by this anyway
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'iscv_value', array('cv_value'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'lcf_id', array('cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'scf_id', array('cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long_trans', 'ltcf_id', array('cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short_trans', 'stcf_id', array('cf_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'lce_id', array('ce_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'sce_id', array('ce_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_long_trans', 'ltce_id', array('ce_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_efv_short_trans', 'stce_id', array('ce_id'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_cc_id', array('cc_id'));
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'ftjoin_cctitle', array('cc_title'));
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'ftjoin_ccdescrip', array('cc_description'));
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_long_trans', 'ltcv_value', array('cv_value'));
@@ -416,8 +416,8 @@ class Module_catalogues
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 6)) {
-            $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_add_date', array('ce_add_date'), 'id');
-            $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_c_name', array('c_name'), 'id');
+            $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_add_date', array('ce_add_date'));
+            $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_c_name', array('c_name'));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
@@ -646,7 +646,7 @@ class Module_catalogues
 
             // Breadcrumbs
             $breadcrumbs = array();
-            if (is_null($root)) {
+            if ($root === null) {
                 $breadcrumbs = array_merge($breadcrumbs, array(array('_SELF:_SELF:browse' . ($is_ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
             }
             if ($catalogue['c_is_tree'] == 1) {
@@ -658,9 +658,11 @@ class Module_catalogues
                     $breadcrumbs[] = array('', $_title);
                 }
             } else {
-                $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name), '_SELF');
-                $catalogue_title = get_translated_text($catalogue['c_title']);
-                $breadcrumbs[] = array($page_link, $catalogue_title);
+                if ($root === null) {
+                    $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $catalogue['c_is_tree']), '_SELF');
+                    $catalogue_title = get_translated_text($catalogue['c_title']);
+                    $breadcrumbs[] = array($page_link, $catalogue_title);
+                }
                 $breadcrumbs[] = array('', $_title);
             }
             breadcrumb_set_parents($breadcrumbs);
@@ -716,16 +718,6 @@ class Module_catalogues
             $this->category = $category;
             $this->id = $id;
             $this->_title = $_title;
-        }
-
-        if ($type == 'tree') {
-            set_feed_url('?mode=catalogues&select=');
-
-            $catalogue_name = get_param_string('id');
-
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . (is_ecommerce_catalogue($catalogue_name) ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
-
-            $this->title = get_screen_title('CATEGORIES');
         }
 
         return null;
@@ -1068,7 +1060,7 @@ class Module_catalogues
             $cat_select = strval($id) . '#';
         }
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_cc_embed', array('param' => $cat_select, 'zone' => get_zone_name(), 'max' => get_option('catalogue_entries_per_page'), 'pagination' => '1', 'sorting' => '1', 'filter' => $filter, 'block_id' => 'module'));
+        $entries = do_block('main_cc_embed', array('param' => strval($id), 'select' => $cat_select, 'zone' => get_zone_name(), 'max' => get_option('catalogue_entries_per_page'), 'pagination' => '1', 'sorting' => '1', 'filter' => $filter, 'block_id' => 'module'));
 
         // Render
         return do_template('CATALOGUE_' . $tpl_set . '_CATEGORY_SCREEN', array(

@@ -779,7 +779,7 @@ function _get_wordpress_db_data()
         $data[$user_id] = $user;
 
         // Fetch user posts/pages
-        $posts = $db->query('SELECT * FROM ' . $db_table_prefix . '_posts WHERE post_author=' . strval($user_id) . ' AND (post_type=\'post\' OR post_type=\'page\') AND post_status<>\'auto-draft\'');
+        $posts = $db->query('SELECT * FROM ' . $db_table_prefix . '_posts WHERE post_author=' . strval($user_id) . ' AND (' . db_string_equal_to('post_type', 'post') . ' OR ' . db_string_equal_to('post_type', 'page') . ') AND ' . db_string_not_equal_to('post_status', 'auto-draft'));
         foreach ($posts as $post) {
             $post_id = $post['ID'];
             $post['post_id'] = $post_id; // Consistency with XML feed
