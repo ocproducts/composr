@@ -1187,7 +1187,7 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
             $str = rtrim($str, '.');
         }
     }
-    if ($only_needed_decs) {
+    if ($only_needed_decs && $decs_wanted != 0) {
         $str = rtrim(rtrim($str, '0'), '.');
     }
     return $str;
@@ -1221,7 +1221,7 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
         }
     }
     if ($only_needed_decs && $decs_wanted != 0) {
-        $str = preg_replace('#\.$#', '', preg_replace('#0+$#', '', $str));
+        $str = rtrim(rtrim($str, '0'), '.');
     }
     return $str;
 }
@@ -3034,6 +3034,7 @@ function titleify($boring)
     if (strpos($ret, 'Captcha') !== false) {
         $ret = str_replace('Captcha', addon_installed('captcha') ? do_lang('captcha:CAPTCHA') : 'CAPTCHA', $ret);
     }
+    $ret = str_replace('Adminzone', do_lang('ADMIN_ZONE'), $ret);
     $ret = str_replace('Emails', do_lang('EMAILS'), $ret);
     $ret = str_replace('Phpinfo', 'PHP-Info', $ret);
     $ret = str_replace('CNS', 'Conversr', $ret);

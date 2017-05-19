@@ -688,7 +688,7 @@ class Module_wiki
             array('wiki_page', 'wiki_post'),
             array($this, '_render_revision'),
             null,
-            strval($id),
+            ($id === null) ? null : strval($id),
             null,
             'wiki_page'
         );

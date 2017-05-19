@@ -496,40 +496,40 @@ function cns_make_boiler_custom_field($type)
  *
  * @param  ID_TEXT $type The field type.
  * @param  BINARY $encrypted Whether the field is encrypted.
- * @param  ?string $_default The default value to use (null: none / null default).
+ * @param  string $__default The default value to use.
  * @return array A tuple: the DB field type, whether to index, the default (in correct data type).
  */
-function get_cpf_storage_for($type, $encrypted = 0, $_default = null)
+function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
 {
     $default = mixed();
 
     require_code('fields');
     $ob = get_fields_hook($type);
-    list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $type, 'cf_default' => ''));
+    list(, $_default, $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $type, 'cf_default' => $__default), false, $__default);
     $_type = ($encrypted == 1) ? 'LONG_TEXT' : 'SHORT_TEXT';
     switch ($storage_type) {
         case 'short_trans':
             $_type = 'SHORT_TRANS__COMCODE';
-            $default = empty($_default) ? '' : $_default;
+            $default = $_default;
             break;
         case 'long_trans':
             $_type = 'LONG_TRANS__COMCODE';
-            $default = empty($_default) ? '' : $_default;
+            $default = $_default;
             break;
         case 'long':
             $_type = 'LONG_TEXT';
-            $default = empty($_default) ? '' : $_default;
+            $default = $_default;
             break;
         case 'integer':
             $_type = '?INTEGER';
-            $default = (is_null($_default) || $_default == '') ? null : intval($_default);
+            $default = ($_default == '') ? null : intval($_default);
             break;
         case 'float':
             $_type = '?REAL';
-            $default = (is_null($_default) || $_default == '') ? null : floatval($_default);
+            $default = ($_default == '') ? null : floatval($_default);
             break;
         default:
-            $default = empty($_default) ? '' : $_default;
+            $default = $_default;
             break;
     }
 

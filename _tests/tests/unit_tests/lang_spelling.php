@@ -257,6 +257,7 @@ class lang_spelling_test_set extends cms_test_case
             'persistant' => 'persistent',
             'recieve'=> 'receive',
             'eratic' => 'erratic',
+            'psuedo' => 'pseudo',
         );
         foreach ($common_spelling_mistakes as $from => $to) {
             if (stripos($string, $from) !== false) {

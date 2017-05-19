@@ -49,7 +49,7 @@ class Database_Static_mysqli extends Database_super_mysql
         if (!function_exists('mysqli_connect')) {
             $error = 'MySQLi not on server (anymore?). Try using the \'mysql\' database driver. To use it, edit the _config.php config file.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -75,7 +75,7 @@ class Database_Static_mysqli extends Database_super_mysql
         if ($db === false) {
             $error = 'Could not connect to database-server (when authenticating) (' . mysqli_connect_error() . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
@@ -128,10 +128,6 @@ class Database_Static_mysqli extends Database_super_mysql
      */
     public function db_has_full_text($db)
     {
-        if ($this->using_innodb()) {
-            return false;
-        }
-
         return true;
     }
 
@@ -270,8 +266,7 @@ class Database_Static_mysqli extends Database_super_mysql
             }
         }
 
-        $sub = substr(ltrim($query), 0, 7);
-        $sub = substr($query, 0, 4);
+        $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }

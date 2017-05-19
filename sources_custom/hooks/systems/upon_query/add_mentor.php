@@ -77,7 +77,7 @@ class Hook_upon_query_add_mentor
             if (addon_installed('unvalidated')) {
                 $sql .= ' AND m_validated=1';
             }
-            $sql .= ' ORDER BY RAND()';
+            $sql .= ' ORDER BY ' . db_function('RAND');
             $mentor_id = $GLOBALS['FORUM_DB']->query_value_if_there($sql, true);
             if ($mentor_id === null) {
                 return;

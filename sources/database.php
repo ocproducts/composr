@@ -231,6 +231,26 @@ function db_encode_like($pattern)
 }
 
 /**
+ * Find whether drop table "if exists" is present
+ *
+ * @param  array $db A DB connection
+ * @return boolean Whether it is
+ */
+function db_supports_drop_table_if_exists($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_supports_drop_table_if_exists')) {
+        return false;
+    }
+
+    return $GLOBALS['DB_STATIC_OBJECT']->db_supports_drop_table_if_exists();
+}
+
+/**
  * Find whether full-text-search is present
  *
  * @param  array $db A DB connection
@@ -305,6 +325,44 @@ function db_has_expression_ordering($db)
 }
 
 /**
+ * Whether 'OFFSET' syntax is used on limit clauses.
+ *
+ * @param  array $db A DB connection
+ * @return boolean Whether it is
+ */
+function db_uses_offset_syntax($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_has_expression_ordering')) {
+        return false;
+    }
+    return $GLOBALS['DB_STATIC_OBJECT']->db_uses_offset_syntax($db);
+}
+
+/**
+ * Find whether table truncation support is present
+ *
+ * @param  array $db A DB connection
+ * @return boolean Whether it is
+ */
+function db_supports_truncate_table($db)
+{
+    if (count($db) > 4) { // Okay, we can't be lazy anymore
+        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
+        _general_db_init();
+    }
+
+    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_supports_truncate_table')) {
+        return false;
+    }
+    return $GLOBALS['DB_STATIC_OBJECT']->db_supports_truncate_table($db);
+}
+
+/**
  * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
  *
  * @param  string $string The string
@@ -330,7 +388,220 @@ function db_escape_string($string)
 }
 
 /**
+ * Call a database function that may be different on different database drivers.
+ * We are using MySQL syntax as a de-facto standard. SQL does not standardise this stuff well.
+ * This is HACKHACK and should move into database drivers into the future.
+ * Basic arithmetic and inequality operators are assumed supported without needing a function.
+ *
+ * @param string $function Function name
+ * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT
+ * @param ?array $args List of string arguments, assumed already quoted/escaped correctly for the particular database (null: none)
+ * @return string SQL fragment
+ */
+function db_function($function, $args = null)
+{
+    if ($args === null) {
+        $args = array(); // TODO: Fix in v11, make like this as default parameter
+    }
+
+    switch ($function) {
+        case 'CONCAT':
+            switch (get_db_type()) {
+                // Supported on most
+
+                case 'sqlite':
+                    return implode(' || ', $args);
+
+                case 'access':
+                    return implode(' & ', $args);
+            }
+            break;
+
+        case 'REPLACE':
+            if (count($args) != 3) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                // Supported on all http://troels.arvin.dk/db/rdbms/#functions-REPLACE
+                // You don't even need to call this function.
+            }
+            break;
+
+        case 'SUBSTR':
+            if (count($args) != 3) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            if ($args[1] != '1') {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // Can only act as a 'LEFT'
+            }
+            switch (get_db_type()) {
+                case 'sqlserver':
+                    $function = 'SUBSTRING'; // http://troels.arvin.dk/db/rdbms/#functions-REPLACE
+                    break;
+
+                case 'access':
+                    $function = 'LEFT'; // http://stackoverflow.com/questions/809120/is-there-an-equivalent-to-the-substring-function-in-ms-access-sql
+                    $args = array($args[0], $args[2]);
+                    break;
+            }
+            break;
+
+        case 'LENGTH':
+            if (count($args) != 1) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'sqlserver':
+                case 'access':
+                    $function = 'LEN';
+                    break;
+            }
+            break;
+
+        case 'RAND':
+            if (count($args) != 0) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'postgresql':
+                case 'sqlite':
+                    $function = 'RANDOM';
+                    break;
+            }
+            break;
+
+        case 'COALESCE':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'access':
+                    $function = 'IIF';
+                    $args[0] .= ' IS NULL';
+                    break;
+            }
+            break;
+
+        case 'LEAST':
+            switch (get_db_type()) {
+                case 'sqlite':
+                    $function = 'MIN';
+                    break;
+                case 'sqlserver':
+                case 'access':
+                    $ret = '(SELECT MIN(X) FROM (';
+                    foreach ($args as $i => $arg) {
+                        if ($i != 0) {
+                            $ret .= ' UNION ALL ';
+                        }
+                        $ret .= 'SELECT ' . $args[0] . ' AS X';
+                    }
+                    $ret .= '))';
+                    return $ret;
+            }
+            break;
+
+        case 'GREATEST':
+            switch (get_db_type()) {
+                case 'sqlite':
+                    $function = 'MAX';
+                    break;
+                case 'sqlserver':
+                case 'access':
+                    $ret = '(SELECT MAX(X) FROM (';
+                    foreach ($args as $i => $arg) {
+                        if ($i != 0) {
+                            $ret .= ' UNION ALL ';
+                        }
+                        $ret .= 'SELECT ' . $args[0] . ' AS X';
+                    }
+                    $ret .= '))';
+                    return $ret;
+            }
+            break;
+
+        case 'MOD':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'access':
+                    return $args[0] . ' MOD ' . $args[1];
+                case 'postgresql':
+                case 'sqlserver':
+                case 'sqlite':
+                    return $args[0] . ' % ' . $args[1];
+            }
+            break;
+
+        // This may not be fully supported on all database systems
+        case 'GROUP_CONCAT':
+            if (count($args) != 2) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            switch (get_db_type()) {
+                case 'oracle':
+                    return 'SELECT LISTAGG(' . $args[0] . ', \',\') WITHIN GROUP (ORDER BY ' . $args[0] . ') FROM ' . $args[1];
+                case 'postgresql':
+                    return 'SELECT array_to_string(array_agg(' . $args[0] . '), \',\') FROM ' . $args[1];
+                case 'sql_server':
+                    return 'STUFF((SELECT \',\'+' . $args[0] . ' FROM ' . $args[1] . ' FOR XML PATH(\'\')), 1, 1, \'\')';
+                case 'access': // Not fully supported
+                    return 'SELECT TOP 1 ' . $args[0] . ' FROM ' . $args[1];
+                case 'ibm': // Not fully supported
+                    return 'SELECT ' . $args[0] . ' FROM ' . $args[1] . ' fetch first 1 rows only';
+                case 'xml':
+                    return 'SELECT X_GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+                case 'mysql':
+                case 'mysqli':
+                case 'mysql_dbx':
+                case 'sqlite':
+                default:
+                    return 'SELECT GROUP_CONCAT(' . $args[0] . ') FROM ' . $args[1];
+            }
+            break;
+    }
+
+    if (get_db_type() == 'xml') {
+        $function = 'X_' . $function;
+    }
+
+    // Default handling
+    return $function . '(' . implode(',', $args) . ')';
+}
+
+/**
+ * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+ *
+ * @param string $table The table name
+ * @param  ?array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form (null: none)
+ * @param  ?string $where_clause WHERE clauses if it will help get a more reliable number when we're not approximating in SQL form (null: none)
+ * @param  ?object $db The DB connection to check against (null: site's main active forum database)
+ * @return ?integer The count (null: do it normally)
+ */
+function get_table_count_approx($table, $where = null, $where_clause = null, $db = null)
+{
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
+    }
+
+    if ($where === null) {
+        $where = array();
+    }
+
+    if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'get_table_count_approx')) {
+        $test = $GLOBALS['DB_STATIC_OBJECT']->get_table_count_approx($table, $where, $where_clause, $db);
+        if ($test !== null) {
+            return $test;
+        }
+    }
+
+    return $db->query_select_value($table, 'COUNT(*)', $where, ($where_clause === null) ? '' : (' AND ' . $where_clause));
+}
+
+/**
  * Create an SQL cast.
+ * Note if using this in a SELECT clause you should use 'AS', as you can't predict what the CAST is going to set the field name as.
  *
  * @param string $field The field identifier
  * @param string $type The type wanted
@@ -618,22 +889,6 @@ class DatabaseConnector
     }
 
     /**
-     * Initialise a filesystem DB that we can use for caching.
-     */
-    public function initialise_filesystem_db()
-    {
-        global $FILECACHE_OBJECT;
-        require_code('database/xml');
-        $chain_db = new DatabaseConnector(get_custom_file_base() . '/caches/persistent', '', '', '', get_table_prefix(), false, object_factory('Database_Static_xml'));
-        $chain_connection = &$chain_db->connection_write;
-        if (count($chain_connection) > 4) { // Okay, we can't be lazy anymore
-            $chain_connection = call_user_func_array(array($chain_db->static_ob, 'db_get_connection'), $chain_connection);
-            _general_db_init();
-        }
-        $FILECACHE_OBJECT = $chain_db;
-    }
-
-    /**
      * Check if a table exists.
      *
      * @param  ID_TEXT $table_name The table name
@@ -673,7 +928,7 @@ class DatabaseConnector
      * @param  array $fields The fields
      * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
      * @param  boolean $skip_null_check Whether to skip the check for null string fields
-     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @param  ?boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue (null: auto-detect if needed). Pass as true/false for normal install code to make intentions explicit, maintenance code may use auto-detect.
      */
     public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
     {
@@ -1010,7 +1265,13 @@ class DatabaseConnector
     {
         // Optimisation for entirely automatic translate table linkage (only done on non-joins, as this removes a whole lot of potential complexities -- if people are doing joins they go a little further to do this manually anyway; also we make sure we're operating on our site's table prefix so we don't collect meta info for the wrong table set)
         if ($lang_fields === null) {
-            if (($table !== 'translate') && (strpos($table, ' ') === false) && ((isset($GLOBALS['SITE_DB'])) && ($this->table_prefix === $GLOBALS['SITE_DB']->table_prefix) || (get_forum_type() === 'cns'))) {
+            if (
+                ($table !== 'translate') &&
+                (strpos($table, ' ') === false) &&
+                (strpos($end, 'GROUP BY ') === false/*Can only SELECT what is also in GROUP BY*/) &&
+                ((isset($GLOBALS['SITE_DB'])) &&
+                ($this->table_prefix === $GLOBALS['SITE_DB']->table_prefix) || (get_forum_type() === 'cns'))
+            ) {
                 global $TABLE_LANG_FIELDS_CACHE;
                 $lang_fields_provisional = isset($TABLE_LANG_FIELDS_CACHE[$table]) ? $TABLE_LANG_FIELDS_CACHE[$table] : array();
                 $lang_fields = array();
@@ -1524,7 +1785,7 @@ class DatabaseConnector
     public function query_delete($table, $where_map = null, $end = '', $max = null, $start = null, $fail_ok = false)
     {
         if ($where_map === null) {
-            if (($end === '') && (is_null($max)) && (is_null($start)) && (strpos(get_db_type(), 'mysql') !== false)) {
+            if (($end === '') && (is_null($max)) && (is_null($start)) && (db_supports_truncate_table($GLOBALS['SITE_DB']->connection_read))) {
                 $this->_query('TRUNCATE ' . $this->table_prefix . $table, null, null, $fail_ok);
             } else {
                 $this->_query('DELETE FROM ' . $this->table_prefix . $table . ' ' . $end, $max, $start, $fail_ok);

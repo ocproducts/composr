@@ -178,6 +178,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/automatic_meta_extraction.php',
             'sources/hooks/systems/config/bcc.php',
             'sources/hooks/systems/config/bottom_show_feedback_link.php',
+            'sources/hooks/systems/config/autogrow.php',
             'sources/hooks/systems/config/bottom_show_rules_link.php',
             'sources/hooks/systems/config/bottom_show_privacy_link.php',
             'sources/hooks/systems/config/bottom_show_sitemap_button.php',

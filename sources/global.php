@@ -119,8 +119,8 @@ function require_code($codename, $light_exit = false)
                 $pure = true; // We will set this to false if it does not have all functions the main one has. If it does have all functions we know we should not run the original init, as it will almost certainly just have been the same code copy&pasted through.
                 $overlaps = false;
                 foreach ($functions_diff as $function) { // Go through override's functions and make sure original doesn't have them: rename original's to non_overridden__ equivs.
-                    if (strpos($orig, 'function ' . $function . '(') !== false) { // NB: If this fails, it may be that "function\t" is in the file (you can't tell with a three-width proper tab)
-                        $orig = str_replace('function ' . $function . '(', 'function non_overridden__' . $function . '(', $orig);
+                    if (stripos($orig, 'function ' . $function . '(') !== false) { // NB: If this fails, it may be that "function\t" is in the file (you can't tell with a three-width proper tab)
+                        $orig = str_ireplace('function ' . $function . '(', 'function non_overridden__' . $function . '(', $orig);
                         $overlaps = true;
                     } else {
                         $pure = false;

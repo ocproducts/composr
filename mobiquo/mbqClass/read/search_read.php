@@ -115,7 +115,11 @@ class CMSSearchRead
         if (($keywords != '') && (!$titleonly)) {
             $full_sql1 .= ' LIMIT ' . strval($max + $start);
         } else {
-            $full_sql1 .= ' LIMIT ' . strval($start) . ',' . strval($max);
+            if (db_uses_offset_syntax($GLOBALS['FORUM_DB']->connection_read)) {
+                $full_sql1 .= ' LIMIT ' . strval($max) . ' OFFSET ' . strval($start);
+            } else {
+                $full_sql1 .= ' LIMIT ' . strval($start) . ',' . strval($max);
+            }
         }
 
         if ($keywords != '') {

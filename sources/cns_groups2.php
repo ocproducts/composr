@@ -35,7 +35,7 @@ function cns_get_group_members_raw_count($group_id, $include_primaries = true, $
     if (!$non_validated) {
         $where['gm_validated'] = 1;
     }
-    $a = $GLOBALS['FORUM_DB']->query_select_value('f_group_members', 'COUNT(*)', $where, 'ORDER BY gm_member_id');
+    $a = $GLOBALS['FORUM_DB']->query_select_value('f_group_members', 'COUNT(*)', $where);
     if ($include_primaries) {
         $map = array('m_primary_group' => $group_id);
         if (!$include_unvalidated_members) {

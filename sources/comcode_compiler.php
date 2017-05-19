@@ -1185,7 +1185,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             }
 
                                             $this_member_id = mixed();
-                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY LENGTH(m_username) DESC', 1);
+                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY ' . db_function('LENGTH', array('m_username')) . ' DESC', 1);
                                             if (isset($results[0])) {
                                                 $this_member_id = $results[0]['id'];
                                                 $username = $results[0]['m_username'];
@@ -1493,6 +1493,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 if ((!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
+                                        $ADVERTISING_BANNERS_CACHE = array();
+
                                         require_code('banners');
                                         $banner_sql = banner_select_sql(null, true);
                                         $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', '');
@@ -1514,7 +1516,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 }
                                             }
 
-                                            $ADVERTISING_BANNERS_CACHE = array();
                                             foreach ($rows as $row) {
                                                 $trigger_text = $row['b_title_text'];
                                                 foreach (explode(',', $trigger_text) as $t) {

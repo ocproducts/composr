@@ -512,7 +512,7 @@ class Forum_driver_wowbb extends Forum_driver_base
         }
         $order = $reverse ? 'post_date_time DESC' : 'post_date_time';
         $rows = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'posts p LEFT JOIN ' . $this->connection->get_table_prefix() . 'post_texts d ON p.post_id=d.post_id WHERE topic_id=' . strval($topic_id) . ' AND post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' ORDER BY ' . $order, $max, $start);
-        $count = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'posts p LEFT JOIN ' . $this->connection->get_table_prefix() . 'post_texts d ON p.post_id=d.post_id WHERE topic_id=' . strval($topic_id) . ' AND post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\' ORDER BY post_date_time');
+        $count = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'posts p LEFT JOIN ' . $this->connection->get_table_prefix() . 'post_texts d ON p.post_id=d.post_id WHERE topic_id=' . strval($topic_id) . ' AND post_text NOT LIKE \'' . db_encode_like(substr(do_lang('SPACER_POST', '', '', '', get_site_default_lang()), 0, 20) . '%') . '\'');
         $out = array();
         foreach ($rows as $myrow) {
             $temp = array();

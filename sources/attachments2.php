@@ -508,30 +508,40 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
     }
 
     $lang_id = null;
+    $lock = false;
+    table_id_locking_start($connection, $lang_id, $lock);
 
     if (user_lang() == 'Gibb') { // Debug code to help us spot language layer bugs. We expect &keep_lang=EN to show EnglishEnglish content, but otherwise no EnglishEnglish content.
-        $lang_id = $connection->query_insert('translate', array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang', 'text_parsed' => '', 'language' => 'EN'), true);
-    }
-    if (is_null($lang_id)) {
-        $lang_id = $connection->query_insert('translate', array(
+        $map = array(
             'source_user' => $source_user,
             'broken' => 0,
             'importance_level' => $level,
-            'text_original' => $_info['comcode'],
-            'text_parsed' => $text_parsed,
-            'language' => user_lang(),
-        ), true);
+            'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang',
+            'text_parsed' => '',
+            'language' => 'EN',
+        );
+        if ($lang_id === null) {
+            $lang_id = $connection->query_insert('translate', $map, true);
+        } else {
+            $connection->query_insert('translate', array('id' => $lang_id) + $map);
+        }
+    }
+
+    $map = array(
+        'source_user' => $source_user,
+        'broken' => 0,
+        'importance_level' => $level,
+        'text_original' => $_info['comcode'],
+        'text_parsed' => $text_parsed,
+        'language' => user_lang(),
+    );
+    if ($lang_id === null) {
+        $lang_id = $connection->query_insert('translate', $map, true);
     } else {
-        $connection->query_insert('translate', array(
-            'id' => $lang_id,
-            'source_user' => $source_user,
-            'broken' => 0,
-            'importance_level' => $level,
-            'text_original' => $_info['comcode'],
-            'text_parsed' => $text_parsed,
-            'language' => user_lang(),
-        ));
+        $connection->query_insert('translate', array('id' => $lang_id) + $map);
     }
+
+    table_id_locking_end($connection, $lang_id, $lock);
 
     final_attachments_from_preview($id, $connection);
 

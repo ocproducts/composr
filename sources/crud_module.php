@@ -1122,7 +1122,7 @@ abstract class Standard_crud_module
             $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
         }
-        $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, 'ORDER BY ' . $orderer, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
+        $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, '', false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($max_rows == 0) {
             return array(array(), 0);
         }

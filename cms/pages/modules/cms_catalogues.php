@@ -629,7 +629,7 @@ class Module_cms_catalogues extends Standard_crud_module
     /**
      * Standard crud_module cat getter.
      *
-     * @param  AUTO_LINK $id The entry for which the cat is sought
+     * @param  ID_TEXT $id The entry for which the cat is sought
      * @return string The cat
      */
     public function get_cat_b($id)
@@ -644,7 +644,7 @@ class Module_cms_catalogues extends Standard_crud_module
     /**
      * Standard crud_module cat getter.
      *
-     * @param  AUTO_LINK $id The entry for which the cat is sought
+     * @param  ID_TEXT $id The entry for which the cat is sought
      * @return string The cat
      */
     public function get_cat($id)

@@ -34,7 +34,7 @@ class CMSSubscriptionRead
         $member_id = get_member();
 
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
-        $table = 'notifications_enabled JOIN ' . $table_prefix . 'f_forums f ON l_code_category=CONCAT(\'forum:\',f.id)';
+        $table = 'notifications_enabled JOIN ' . $table_prefix . 'f_forums f ON l_code_category=' . db_function('CONCAT', array('\'forum:\'', 'f.id'));
 
         $select = array('f.id', 'f_name');
 

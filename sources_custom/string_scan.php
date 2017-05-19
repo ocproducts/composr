@@ -1175,6 +1175,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_multi_content_PARAM_zone_TITLE
         BLOCK_main_multi_content_USE
         BLOCK_main_news_DESCRIPTION
+        CONFIG_OPTION_autogrow
+        AUTOGROW
         BLOCK_main_news_PARAM_as_guest
         BLOCK_main_news_PARAM_as_guest_TITLE
         BLOCK_main_news_PARAM_attach_to_url_filter
@@ -1846,8 +1848,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CMD_MV_HELP
         CMD_MV_HELP_PARAM_0
         CMD_MV_HELP_PARAM_1
-        CMD_MYSQL_TABLE_SIZES_HELP
-        CMD_MYSQL_TABLE_SIZES_HELP_PARAM_0
+        CMD_DB_TABLE_SIZES_HELP
+        CMD_DB_TABLE_SIZES_HELP_PARAM_0
+        NOT_SUPPORTED_ON_DB
+        CMD_SQL_DUMP_HELP
+        CMD_SQL_DUMP_HELP_PARAM_0
+        CMD_SQL_DUMP_HELP_PARAM_1
+        SQL_DUMP_SAVED_TO
         CMD_PASSWD_HELP
         CMD_PASSWD_HELP_PARAM_0
         CMD_PASSWD_HELP_U
@@ -9953,7 +9960,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     $just_lang_strings_non_admin = array_diff($lang_strings_non_admin, $lang_strings_admin);
     $lang_strings_shared = array_intersect($lang_strings_non_admin, $lang_strings_admin);
 
-    return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang);
+    return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang, $strings_files);
 }
 
 function find_files_in_dir($dir)

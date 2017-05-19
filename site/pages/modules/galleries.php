@@ -1543,14 +1543,14 @@ class Module_galleries
         list($_sort, $_dir) = explode(' ', $sort, 2);
         $sort_backwards = $_sort . ' ' . (($_dir == 'ASC') ? 'DESC' : 'ASC');
         if (($sort == 'compound_rating ASC') || ($sort == 'compound_rating DESC')) {
-            $suffix_images = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS compound_rating';
-            $suffix_videos = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS compound_rating';
+            $suffix_images = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
+            $suffix_videos = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif (($sort == 'average_rating ASC') || ($sort == 'average_rating DESC')) {
-            $suffix_images = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS average_rating';
-            $suffix_videos = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS average_rating';
+            $suffix_images = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
+            $suffix_videos = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($sort == 'fixed_random ASC') {
-            $suffix_images = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
-            $suffix_videos = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
+            $suffix_images = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
+            $suffix_videos = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
         } else {
             $suffix_images = '';
             $suffix_videos = '';

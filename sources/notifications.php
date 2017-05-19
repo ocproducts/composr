@@ -188,6 +188,9 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
         return;
     }
 
+    if (!isset($GLOBALS['FORUM_DRIVER'])) {
+        return; // We're not in a position to send a notification
+    }
     if ((function_exists('get_member')) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_param_integer('keep_no_notifications', 0) == 1)) {
         return;
     }
@@ -1008,7 +1011,7 @@ class Hook_Notification
         if (!$for_any_member) {
             $map['l_member_id'] = get_member();
         }
-        $types = $db->query_select('notifications_enabled', array('DISTINCT l_code_category'), $map, 'ORDER BY id DESC', 200/*reasonable limit*/); // Already monitoring members who may not be friends
+        $types = $db->query_select('notifications_enabled', array('DISTINCT l_code_category', 'id'), $map, 'ORDER BY id DESC', 200/*reasonable limit*/); // Already monitoring members who may not be friends
         foreach ($types as $type) {
             if ($type['l_code_category'] != '') {
                 $page_links[] = array(

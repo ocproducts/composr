@@ -169,6 +169,8 @@ class Module_admin_revisions
      */
     public function gui()
     {
+        require_all_lang();
+
         $resource_types = get_param_string('resource_types', '');
         if ($resource_types == '') {
             $resource_types = null;

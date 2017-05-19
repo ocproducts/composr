@@ -70,7 +70,7 @@ class Hook_task_export_member_csv
         }
         $headings = array();
         foreach ($fields_to_use as $field_label) {
-            $field_name = isset($_headings[$field_label]) ? $_headings[$field_label] : $field_label;/*Must be a psuedo-field so just carry it forward*/
+            $field_name = isset($_headings[$field_label]) ? $_headings[$field_label] : $field_label;/*Must be a pseudo-field so just carry it forward*/
             $headings[$field_label] = is_numeric($field_name) ? intval($field_name) : $field_name;
         }
 
@@ -306,7 +306,7 @@ class Hook_task_export_member_csv
                             break;
 
                         default: // string
-                            // Psuedo fields
+                            // Pseudo fields
                             /*switch ($part) {
                                 case 'Initials':
                                     $at = preg_replace('#\s*(\w)\w*\s*#', '${1}', $m['field_' . find_cpf_field_id('Forenames')] . ' ' . $m['field_' . find_cpf_field_id('Surname')]);

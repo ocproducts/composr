@@ -263,7 +263,7 @@ abstract class FieldsSearchHook
             return;
         }
 
-        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=r.id AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
+        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=' . db_cast('r.id', 'CHAR') . ' AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entries ce ON ce.id=l.catalogue_entry_id';
 
         list($sup_table, $sup_where_clause, $sup_trans_fields, $sup_nontrans_fields) = $advanced;
@@ -332,27 +332,9 @@ function is_under_radar($test)
         return false;
     }
 
-    return ((strlen($test) < get_minimum_search_length()) && ($test != ''));
-}
+    require_code('database_search');
 
-/**
- * Get minimum search length for MySQL.
- *
- * @return integer    Search length
- */
-function get_minimum_search_length()
-{
-    static $min_word_length = null;
-    if (is_null($min_word_length)) {
-        $min_word_length = 4;
-        if (substr(get_db_type(), 0, 5) == 'mysql') {
-            $_min_word_length = $GLOBALS['SITE_DB']->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', null, null, true);
-            if (isset($_min_word_length[0])) {
-                $min_word_length = intval($_min_word_length[0]['Value']);
-            }
-        }
-    }
-    return $min_word_length;
+    return ((strlen($test) < get_minimum_search_length()) && ($test != ''));
 }
 
 /**
@@ -521,7 +503,7 @@ function do_search_block($map)
 
     $limit_to = array('all_defaults');
     $extrax = array();
-    if (array_key_exists('limit_to', $map)) {
+    if ((array_key_exists('limit_to', $map)) && ($map['limit_to'] != 'all_defaults')) {
         $limit_to = array();
         $map['limit_to'] = str_replace('|', ',', $map['limit_to']); // "|" looks cleaner in templates
         foreach (explode(',', $map['limit_to']) as $key) {

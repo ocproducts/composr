@@ -156,6 +156,23 @@ function find_addon_category_download_category($category_name, $parent_id = null
     return $id;
 }
 
+function set_privilege_access($category_type, $category_name, $permission, $value)
+{
+    require_code('database_action');
+
+    if (is_integer($category_name)) {
+        $category_name = strval($category_name);
+    }
+
+    $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
+    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+    foreach (array_keys($groups) as $group_id) {
+        if (!in_array($group_id, $admin_groups)) {
+            set_privilege($group_id, $permission, $value, '', $category_type, $category_name);
+        }
+    }
+}
+
 function get_addons_list_under_category($category_name, $version_branch)
 {
     static $addons_in_cats = null;

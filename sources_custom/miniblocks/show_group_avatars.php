@@ -26,7 +26,7 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 $order = 'm_join_time DESC';
 if (isset($map['order'])) {
     if ($map['order'] == 'random') {
-        $order = 'RAND()';
+        $order = db_function('RAND');
     }
     if ($map['order'] == 'username') {
         $order = 'm_username';
@@ -72,6 +72,8 @@ if (is_null($hook_objects)) {
     }
 }
 
+echo '<div class="float_surrounder">';
+
 $query = 'SELECT m.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m WHERE ' . $where . ' ORDER BY ' . $order;
 $rows = $GLOBALS['FORUM_DB']->query($query, $limit);
 foreach ($rows as $row) {
@@ -94,3 +96,5 @@ foreach ($rows as $row) {
         </div></div>
     ';
 }
+
+echo '</div>';

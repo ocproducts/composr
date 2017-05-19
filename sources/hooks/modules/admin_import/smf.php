@@ -441,7 +441,7 @@ class Hook_smf
 
                 $avatar_url = '';
                 if (!isset($row['avatar']) || (strlen($row['avatar']) == 0)) {
-                    $query_attachments = 'SELECT ID_MEMBER,filename,width,height,size,attachmentType FROM ' . $table_prefix . 'attachments WHERE attachmentType=\'0\' AND ID_MEMBER=\'' . strval($row['ID_MEMBER']) . '\'';
+                    $query_attachments = 'SELECT ID_MEMBER,filename,width,height,size,attachmentType FROM ' . $table_prefix . 'attachments WHERE ' . db_string_equal_to('attachmentType', '0') . ' AND ' . db_string_equal_to('ID_MEMBER', strval($row['ID_MEMBER']));
 
                     $attachment_data = $db->query($query_attachments, 1, 0);
                     if (isset($attachment_data[0]['filename']) && (strlen($attachment_data[0]['filename']) > 0)) {

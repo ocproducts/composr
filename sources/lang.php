@@ -1332,6 +1332,43 @@ function get_ordinal_suffix($index)
 }
 
 /**
+ * Start locking and get faux auto-increment ID for inserting into a table.
+ *
+ * @param  object $connection Database connection to use
+ * @param  ?integer $id ID number (returned by reference) (null: just do normal auto-increment)
+ * @param  boolean $lock Whether locking has happened (returned by reference)
+ * @param  string $table Translate table
+ * @param  string $id_field ID field
+ */
+function table_id_locking_start($connection, &$id, &$lock, $table = 'translate', $id_field = 'id')
+{
+    if (($id === null) && (multi_lang()) && (strpos(get_db_type(), 'mysql') !== false)) { // Needed as MySQL auto-increment works separately for each combo of other key values (i.e. language in this case). We can't let a language string ID get assigned to something entirely different in another language. This MySQL behaviour is not well documented, it may work differently on different versions.
+        $connection->query('LOCK TABLES ' . $connection->get_table_prefix() . $table, null, null, true);
+        $lock = true;
+        $id = $connection->query_select_value($table, 'MAX(' . $id_field . ')');
+        $id = ($id === null) ? null : ($id + 1);
+    } else {
+        $lock = false;
+    }
+}
+
+/**
+ * End locking for inserting into a table.
+ *
+ * @param  object $connection Database connection to use
+ * @param  ?integer $id ID number (null: just do normal auto-increment)
+ * @param  boolean $lock Whether locking has happened
+ * @param  string $table Translate table
+ * @param  string $id_field ID field
+ */
+function table_id_locking_end($connection, $id, $lock, $table = 'translate', $id_field = 'id')
+{
+    if ($lock) {
+        $connection->query('UNLOCK TABLES', null, null, true);
+    }
+}
+
+/**
  * Do filtering for a language pack. This is the base class that doesn't actually do anything.
  *
  * @package        core

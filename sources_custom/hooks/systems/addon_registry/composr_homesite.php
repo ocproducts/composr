@@ -120,6 +120,7 @@ This addon does not contain the compo.sr install code and the overall site and t
                 'downloads',
                 'ecommerce',
                 'news',
+                'mysql',
             ),
             'recommends' => array(
                 'composr_homesite_support_credits',

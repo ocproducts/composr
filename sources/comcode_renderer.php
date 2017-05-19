@@ -1684,7 +1684,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $attributes['target'] = '_blank';
             }
             if (array_key_exists('rel', $attributes)) {
-                $rel = trim($rel . ' ' . $attributes['rel']);
+                $rel = trim($attributes['rel']);
             } else {
                 $rel = '';
             }

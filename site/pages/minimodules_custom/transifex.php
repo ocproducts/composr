@@ -13,6 +13,8 @@
  * @package    transifex
  */
 
+i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+
 $title = get_screen_title('Composr translations, via Transifex', false);
 
 require_code('transifex');
