@@ -14,7 +14,10 @@
 	.headRCol>ul>li .mobile_menu_button { padding:0; color:black !important; }
 	.headRCol>ul>li .mobile_menu_button:hover, .headRCol li .mobile_menu_button:hover span { text-decoration:none !important; }
 	.srhHold { float:right; height:30px; margin:20px 5px 0 0; }
-	.srhHold .srhInp { float:left; width:140px; height:28px; padding:0 4px; border-top:1px solid #CCD3DD; border-bottom:1px solid #CCD3DD; border-left:1px solid #CCD3DD; border-right:0px; {$BETA_CSS_PROPERTY,border-radius:4px 0px 0px 4px;} font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; color:#9FB0C1; }
+	.srhHold .srhInp { float:left; width:140px; height:28px; padding:0 4px; border-top:1px solid #CCD3DD; border-bottom:1px solid #CCD3DD; border-left:1px solid #CCD3DD; border-right:0px; {$BETA_CSS_PROPERTY,border-radius:4px 0px 0px 4px;} font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
+	.srhHold .srhInp::-webkit-input-placeholder, .srhHold .srhInp::-moz-placeholder, .srhHold .srhInp:-ms-input-placeholder, .srhHold .srhInp:-moz-placeholder {
+		color:#9FB0C1; 
+	}
 	.srhHold .srhBtn { float:left; width:32px; height:28px; border-top:1px solid #CCD3DD; border-bottom:1px solid #CCD3DD; border-right:1px solid #CCD3DD; border-left:1px; {$BETA_CSS_PROPERTY,border-radius:0px 4px 4px 0px;} overflow:hidden; text-indent:-9999px; background-image:url('{$IMG;,composr_homesite/mobile/search_icon}'); background-repeat:no-repeat; background-position:6px 5px; background-color:#FFF; }
 	.srhHold .srhBtn a { display:block; height:26px; border-left:1px solid #CCD3DD; margin:1px 0 0 0; }
 

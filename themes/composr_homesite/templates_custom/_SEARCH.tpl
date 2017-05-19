@@ -1,7 +1,7 @@
 <form method="get" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,site:search}}" class="srhHold">
-	{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,site:search:search_tutorials_external=1:search_comcode_pages=1:days=-1}}
+	{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,site:search:search_tutorials_external=1:search_comcode_pages=1:days=-1:all_defaults=0}}
 
-	<input class="srhInp" type="text" placeholder="Search" value="" />
+	<input class="srhInp" type="text" name="content" placeholder="Search" value="" />
 
 	<div class="srhBtn">
 		<input type="submit" title="Search" />
