@@ -123,6 +123,14 @@ img, img a { border:none; outline:none; }
 	.dropMenu li:hover ul li a:hover { background:#DA7C25; text-shadow:none; color:#FFF; }
 {+END}
 
+.srhHold .srhBtn input {
+	width: 100%;
+	height: 100%;
+	display: block;
+	opacity: 0;
+	border: 1px solid transparent;
+}
+
 .srhHold .srhInp::-webkit-input-placeholder, .srhHold .srhInp::-moz-placeholder, .srhHold .srhInp:-ms-input-placeholder, .srhHold .srhInp:-moz-placeholder {
 	color:#9FB0C1; 
 }
