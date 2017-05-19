@@ -14,7 +14,7 @@ Think carefully about how you wish to mix news, forum announcements or forum new
 
 Newsletter subscription is distinct from membership, in that a subscription is solely tied to an e-mail address, and there is no formal tie between a subscription and a member account, and vice versa. This said, the newsletter subscription has special support for sending out newsletters to usergroup members regardless of whether they have specifically subscribed to a newsletter (it only shows usergroups that have at least one member in them with a configured e-mail address).
 
-If you only ever e-mail members, it is better to ask them to join target usergroups rather than target newsletters.
+If you only ever e-mail members, it is better to ask them to join target usergroups rather than target newsletters. i.e. You may be best off never asking users to join a newsletter directly.
 
 [title="3"]Multiple newsletters and Interest levels[/title]
 
