@@ -1,6 +1,6 @@
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
-	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-	<div id="{$GET*,wrapper_id}" class="box_wrapper">
+	{$SET,ajax_catalogue_default_category_embed_wrapper,ajax_catalogue_default_category_embed_wrapper_{$RAND%}}
+	<div id="{$GET*,ajax_catalogue_default_category_embed_wrapper}" class="box_wrapper">
 		{+START,SET,sorting}
 			{$SET,show_sort_button,1}
 			{+START,IF_NON_EMPTY,{SORTING}}

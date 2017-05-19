@@ -66,9 +66,10 @@ function require_javascript($javascript)
  *
  * @param  string $j The javascript file required
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme)
- * @return string The path to the javascript file in the cache (blank: no file)
+ * @param  boolean $allow_defer Allow the compilation to be deferred through a PHP call (useful for parallelising compilation)
+ * @return string The path to the javascript file in the cache (blank: no file) (defer: defer compilation through a script; only possible if $allow_defer is set)
  */
-function javascript_enforce($j, $theme = null)
+function javascript_enforce($j, $theme = null, $allow_defer = false)
 {
     if (get_param_integer('keep_textonly', 0) == 1) {
         return '';
@@ -126,6 +127,10 @@ function javascript_enforce($j, $theme = null)
     if ((($support_smart_decaching) && ((@(filemtime($js_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time())) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($js_cache_path)))) || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))) || (!$is_cached)) {
         if (@filesize($full_path) == 0) {
             return '';
+        }
+
+        if ($allow_defer) {
+            return 'defer';
         }
 
         require_code('css_and_js');
@@ -196,7 +201,7 @@ function javascript_tempcode($position = null)
             }
         }
 
-        _javascript_tempcode($j, $js, $minify, $https, $mobile, $do_enforce);
+        _javascript_tempcode($j, $js, null, null, null, $do_enforce);
     }
     if (!is_null($JAVASCRIPT)) {
         $js->attach($JAVASCRIPT);
@@ -219,22 +224,28 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
 {
     list($minify, $https, $mobile) = _get_web_resources_env(null, $_minify, $_https, $_mobile);
 
-    $temp = $do_enforce ? javascript_enforce($j) : '';
+    $temp = $do_enforce ? javascript_enforce($j, null, (!running_script('script')) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';
     if (($temp != '') || (!$do_enforce)) {
-        if (!$minify) {
-            $j .= '_non_minified';
-        }
-        if ($https) {
-            $j .= '_ssl';
-        }
-        if ($mobile) {
-            $j .= '_mobile';
-        }
+        if ($temp == 'defer') {
+            $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+            $url = find_script('script') . '?script=' . urlencode($j) . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $js->attach(do_template('JAVASCRIPT_NEED_FULL', array('_GUID' => 'a2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url)));
+        } else {
+            if (!$minify) {
+                $j .= '_non_minified';
+            }
+            if ($https) {
+                $j .= '_ssl';
+            }
+            if ($mobile) {
+                $j .= '_mobile';
+            }
 
-        $support_smart_decaching = support_smart_decaching();
-        $sup = ($support_smart_decaching && $temp != '' && !$GLOBALS['RECORD_TEMPLATES_USED']) ? strval(filemtime($temp)) : null; // Tweaks caching so that upgrades work without needing emptying browser cache; only runs if smart decaching is on because otherwise we won't have the mtime and don't want to introduce an extra filesystem hit
+            $support_smart_decaching = support_smart_decaching();
+            $sup = ($support_smart_decaching && $temp != '' && !$GLOBALS['RECORD_TEMPLATES_USED']) ? strval(filemtime($temp)) : null; // Tweaks caching so that upgrades work without needing emptying browser cache; only runs if smart decaching is on because otherwise we won't have the mtime and don't want to introduce an extra filesystem hit
 
-        $js->attach(do_template('JAVASCRIPT_NEED', array('_GUID' => 'b5886d9dfc4d528b7e1b0cd6f0eb1670', 'CODE' => $j, 'SUP' => $sup)));
+            $js->attach(do_template('JAVASCRIPT_NEED', array('_GUID' => 'b5886d9dfc4d528b7e1b0cd6f0eb1670', 'CODE' => $j, 'SUP' => $sup)));
+        }
     }
 }
 
@@ -278,9 +289,10 @@ function require_css($css)
  *
  * @param  string $c The CSS file required
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme)
- * @return string The path to the CSS file in the cache (blank: no file)
+ * @param  boolean $allow_defer Allow the compilation to be deferred through a PHP call (useful for parallelising compilation)
+ * @return string The path to the CSS file in the cache (blank: no file) (defer: defer compilation through a script; only possible if $allow_defer is set)
  */
-function css_enforce($c, $theme = null)
+function css_enforce($c, $theme = null, $allow_defer = false)
 {
     $text_only = (get_param_integer('keep_textonly', 0) == 1);
     if ($text_only) {
@@ -343,6 +355,10 @@ function css_enforce($c, $theme = null)
     if (((!$is_cached) || (($support_smart_decaching) && ((@(filemtime($css_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time()) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($css_cache_path))))))))) {
         if (@filesize($full_path) == 0) {
             return '';
+        }
+
+        if ($allow_defer) {
+            return 'defer';
         }
 
         require_code('css_and_js');
@@ -450,21 +466,27 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
             }
         }
     } else {
-        $temp = $do_enforce ? css_enforce($c, $theme) : '';
+        $temp = $do_enforce ? css_enforce($c, $theme, (!running_script('sheet')) && ($context === null) && ($_minify === null) && ($_https === null) && ($_mobile === null)) : '';
 
-        if (!$minify) {
-            $c .= '_non_minified';
-        }
-        if ($https) {
-            $c .= '_ssl';
-        }
-        if ($mobile) {
-            $c .= '_mobile';
-        }
-        if (($temp != '') || (!$do_enforce)) {
-            $support_smart_decaching = support_smart_decaching();
-            $sup = ($support_smart_decaching && $temp != '') ? strval(filemtime($temp)) : null; // Tweaks caching so that upgrades work without needing emptying browser cache; only runs if smart decaching is on because otherwise we won't have the mtime and don't want to introduce an extra filesystem hit
-            $css->attach(do_template('CSS_NEED', array('_GUID' => 'ed35fac857214000f69a1551cd483096', 'CODE' => $c, 'SUP' => $sup), user_lang(), false, null, '.tpl', 'templates', $theme));
+        if ($temp == 'defer') {
+            $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
+            $url = find_script('sheet') . '?sheet=' . urlencode($c) . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'g2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url), user_lang(), false, null, '.tpl', 'templates', $theme));
+        } else {
+            if (!$minify) {
+                $c .= '_non_minified';
+            }
+            if ($https) {
+                $c .= '_ssl';
+            }
+            if ($mobile) {
+                $c .= '_mobile';
+            }
+            if (($temp != '') || (!$do_enforce)) {
+                $support_smart_decaching = support_smart_decaching();
+                $sup = ($support_smart_decaching && $temp != '') ? strval(filemtime($temp)) : null; // Tweaks caching so that upgrades work without needing emptying browser cache; only runs if smart decaching is on because otherwise we won't have the mtime and don't want to introduce an extra filesystem hit
+                $css->attach(do_template('CSS_NEED', array('_GUID' => 'ed35fac857214000f69a1551cd483096', 'CODE' => $c, 'SUP' => $sup), user_lang(), false, null, '.tpl', 'templates', $theme));
+            }
         }
     }
 }

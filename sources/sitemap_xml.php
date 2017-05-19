@@ -29,7 +29,9 @@ function init__sitemap_xml()
 
     require_code('sitemap');
 
-    define('URLS_PER_SITEMAP_SET', 250); // Limit is 50,000, but we are allowed up to 50,000 sets, so let's be performant here and have small sets
+    if (!defined('URLS_PER_SITEMAP_SET')) {
+        define('URLS_PER_SITEMAP_SET', 250); // Limit is 50,000, but we are allowed up to 50,000 sets, so let's be performant here and have small sets
+    }
 }
 
 /**

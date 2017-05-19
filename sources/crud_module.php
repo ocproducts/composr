@@ -1122,7 +1122,7 @@ abstract class Standard_crud_module
             $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
             $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
         }
-        $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, 'ORDER BY ' . $orderer, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
+        $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, '', false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($max_rows == 0) {
             return array(array(), 0);
         }
@@ -1590,7 +1590,7 @@ abstract class Standard_crud_module
         }
 
         $delete = post_param_integer('delete', 0);
-        if (($delete == 1) || ($delete == 2)) { //1=partial,2=full,...=unknown,thus handled as an edit
+        if (($delete == 1) || ($delete == 2)) { // Delete: 1=partial,2=full,...=unknown,thus handled as an edit
             if (!is_null($this->permissions_require)) {
                 check_delete_permission($this->permissions_require, $submitter, array($this->permissions_cat_require, is_null($this->permissions_cat_name) ? null : $this->get_cat($id), $this->permissions_cat_require_b, is_null($this->permissions_cat_name_b) ? null : $this->get_cat_b($id)), $this->privilege_page_name);
             }
@@ -1608,25 +1608,10 @@ abstract class Standard_crud_module
                 delete_form_custom_fields($this->content_type, $id);
             }
 
-            /*    No - resource is gone now, and redirect would almost certainly try to take us back there
-            if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
-                $url = (($this->redirect_type == '!') || (is_null($this->redirect_type))) ? get_param_string('redirect') : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
-                return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
-            }
-            */
-
-            if (get_param_string('redirect', null) !== null) {
-                $_url = get_param_string('redirect');
-                if (strpos(str_replace(array(get_base_url(true), get_base_url(false)), array('', ''), $_url), 'view') === false) {
-                    $url = make_string_tempcode(str_replace('__ID__', $id, $_url));
-                    return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
-                }
-            }
-
             $description = is_null($this->do_next_description) ? do_lang_tempcode($this->success_message_str) : $this->do_next_description;
 
             return $this->do_next_manager($this->title, $description, null);
-        } else {
+        } else { // Edit
             if (!is_null($this->permissions_require)) {
                 check_edit_permission($this->permissions_require, $submitter, array($this->permissions_cat_require, is_null($this->permissions_cat_name) ? null : $this->get_cat($id), $this->permissions_cat_require_b, is_null($this->permissions_cat_name_b) ? null : $this->get_cat_b($id)), $this->privilege_page_name);
             }
@@ -1691,7 +1676,7 @@ abstract class Standard_crud_module
             }
         }
 
-        if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
+        if ((!is_null($this->redirect_type)) || (((!is_null(get_param_string('redirect', null)) && ($orig_id == $id))))) {
             $url = (($this->redirect_type == '!') || (is_null($this->redirect_type))) ? make_string_tempcode(get_param_string('redirect')) : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
 
             return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));

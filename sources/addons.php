@@ -106,6 +106,9 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
         }
         if ($_hook_bits[8] !== null) {
             $file_list = is_array($_hook_bits[8]) ? call_user_func_array($_hook_bits[8][0], $_hook_bits[8][1]) : @eval($_hook_bits[8]);
+            if (!is_array($file_list)) {
+                $file_list = array();
+            }
         } else {
             $file_list = array();
         }

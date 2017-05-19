@@ -457,7 +457,8 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             handle_active_login($username); // The auto-login simulates a real login, i.e. actually checks the password from the form against the real account. So no security hole when "re-registering" a real user
             $message->attach(do_lang_tempcode('CNS_LOGIN_AUTO'));
         } else { // Invite them to explicitly instant log in
-            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_param_string('redirect', null)), get_module_zone('login'));
+            $redirect = get_param_string('redirect', (get_page_name() == 'join') ? null : get_self_url(true));
+            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
             $login_url = $_login_url->evaluate();
             $message->attach(do_lang_tempcode('CNS_LOGIN_INSTANT', escape_html($login_url)));
         }

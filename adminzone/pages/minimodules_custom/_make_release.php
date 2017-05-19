@@ -72,6 +72,7 @@ $release_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('downloa
 if (is_null($release_category_id)) {
     $release_category_id = add_download_category('Version ' . strval(intval($version_dotted)), $releases_category_id, '', '');
     set_global_category_access('downloads', $release_category_id);
+    set_privilege_access('downloads', $release_category_id, 'submit_midrange_content', 0);
 }
 // NB: We don't add addon categories. This is done in publish_addons_as_downloads.php
 
@@ -79,18 +80,21 @@ $installatron_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('do
 if (is_null($installatron_category_id)) {
     $installatron_category_id = add_download_category('Installatron integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $installatron_category_id);
+    set_privilege_access('downloads', $installatron_category_id, 'submit_midrange_content', 0);
 }
 
 $microsoft_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Microsoft integration'));
 if (is_null($microsoft_category_id)) {
     $microsoft_category_id = add_download_category('Microsoft integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $microsoft_category_id);
+    set_privilege_access('downloads', $microsoft_category_id, 'submit_midrange_content', 0);
 }
 
 $aps_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'APS integration'));
 if (is_null($aps_category_id)) {
     $aps_category_id = add_download_category('APS integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $aps_category_id);
+    set_privilege_access('downloads', $aps_category_id, 'submit_midrange_content', 0);
 }
 
 $all_downloads_to_add = array(
@@ -186,7 +190,7 @@ if ((!$is_bleeding_edge) && (!$is_old_tree) && (isset($all_downloads_to_add[0]['
         $last_version_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), ' AND main.id<>' . strval($all_downloads_to_add[0]['download_id']));
         if ($last_version_id != $all_downloads_to_add[0]['download_id']) {
             $description = "A new version, {$version_pretty} is available. Upgrading to {$version_pretty} is considered {$needed} by ocProducts{$justification}. There may have been other upgrades since {$version_pretty} - see [url=\"the ocProducts news archive\" target=\"_blank\"]http://compo.sr/site/news.htm[/url].";
-            $GLOBALS['SITE_DB']->query_update('downloads', lang_remap_comcode($last_version_str, 'description', $description), array('id' => $last_version_id), '', 1);
+            $GLOBALS['SITE_DB']->query_update('downloads', lang_remap_comcode('description', $last_version_str, $description), array('id' => $last_version_id), '', 1);
         }
     }
 }

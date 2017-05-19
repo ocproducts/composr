@@ -25,8 +25,10 @@
  */
 function init__crypt()
 {
-    define('SALT_MD5PASSWORD', 0);
-    define('PASSWORD_SALT', 1);
+    if (!defined('SALT_MD5PASSWORD')) {
+        define('SALT_MD5PASSWORD', 0);
+        define('PASSWORD_SALT', 1);
+    }
 
     /**
      * A Compatibility library with PHP 5.5's simplified password hashing API.

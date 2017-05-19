@@ -40,10 +40,6 @@ class Module_admin_customers
      */
     public function uninstall()
     {
-        if (substr(get_db_type(), 0, 5) != 'mysql') {
-            return;
-        }
-
         /* NB: Does not delete CPFs and multi-mods. But that doesn't actually matter */
         delete_config_option('support_credit_value');
         delete_config_option('support_priority_backburner_minutes');
@@ -51,6 +47,10 @@ class Module_admin_customers
         $GLOBALS['SITE_DB']->drop_table_if_exists('credit_purchases');
         $GLOBALS['SITE_DB']->drop_table_if_exists('credit_charge_log');
         $GLOBALS['SITE_DB']->drop_table_if_exists('group_points');
+
+        if (substr(get_db_type(), 0, 5) != 'mysql') {
+            return;
+        }
 
         // MANTIS TABLE DELETION
 
@@ -95,10 +95,6 @@ class Module_admin_customers
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (substr(get_db_type(), 0, 5) != 'mysql') {
-            return;
-        }
-
         if (get_forum_type() != 'cns') {
             return; // Conversr only
         }
@@ -150,7 +146,7 @@ class Module_admin_customers
 
         // Tracker...
 
-        if (get_db_type() != 'xml') {
+        if (substr(get_db_type(), 0, 5) == 'mysql') {
             $GLOBALS['SITE_DB']->query("CREATE TABLE IF NOT EXISTS `mantis_bugnote_table` (
                                         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
                                         `bug_id` int(10) unsigned NOT NULL DEFAULT '0',

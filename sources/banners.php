@@ -25,9 +25,11 @@
  */
 function init__banners()
 {
-    define('BANNER_PERMANENT', 0);
-    define('BANNER_CAMPAIGN', 1);
-    define('BANNER_FALLBACK', 2);
+    if (!defined('BANNER_PERMANENT')) {
+        define('BANNER_PERMANENT', 0);
+        define('BANNER_CAMPAIGN', 1);
+        define('BANNER_FALLBACK', 2);
+    }
 }
 
 /**

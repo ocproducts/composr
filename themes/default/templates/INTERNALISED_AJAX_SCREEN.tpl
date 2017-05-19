@@ -1,5 +1,5 @@
-{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-<div id="{$GET*,wrapper_id}">
+{$SET,ajax_internalised_ajax_wrapper,ajax_internalised_ajax_wrapper_{$RAND%}}
+<div id="{$GET*,ajax_internalised_ajax_wrapper}">
 	{SCREEN_CONTENT}
 
 	{$REQUIRE_JAVASCRIPT,ajax}
@@ -7,7 +7,7 @@
 
 	<script>// <![CDATA[
 		add_event_listener_abstract(window,'load',function() {
-			internalise_ajax_block_wrapper_links('{URL;/}',document.getElementById('{$GET;,wrapper_id}'),['.*'],{ },false,true);
+			internalise_ajax_block_wrapper_links('{URL;/}',document.getElementById('{$GET;,ajax_internalised_ajax_wrapper}'),['.*'],{ },false,true);
 		});
 	//]]></script>
 </div>
@@ -24,7 +24,7 @@
 							if ((!document.getElementById('post')) || (document.getElementById('post').value==''))
 							{
 								var _detected_change=detected_change;
-								call_block('{URL;/}','',document.getElementById('{$GET;,wrapper_id}'),false,_detected_change,false,null,true);
+								call_block('{URL;/}','',document.getElementById('{$GET;,ajax_internalised_ajax_wrapper}'),false,_detected_change,false,null,true);
 							}
 						});
 					}

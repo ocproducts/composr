@@ -1131,7 +1131,7 @@ class Module_galleries
 
         // Description
         $just_row = db_map_restrict($myrow, array('cat', 'description'));
-        $description = get_translated_tempcode('galleries', $just_row, 'description');
+        $description = get_translated_tempcode('images', $just_row, 'description');
 
         // Validation
         if (($myrow['validated'] == 0) && (addon_installed('unvalidated'))) {
@@ -1263,7 +1263,7 @@ class Module_galleries
 
         // Description
         $just_row = db_map_restrict($myrow, array('cat', 'description'));
-        $description = get_translated_tempcode('galleries', $just_row, 'description');
+        $description = get_translated_tempcode('videos', $just_row, 'description');
 
         if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat)))) {
             $edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit_other', 'id' => $id), get_module_zone('cms_galleries'));
@@ -1543,14 +1543,14 @@ class Module_galleries
         list($_sort, $_dir) = explode(' ', $sort, 2);
         $sort_backwards = $_sort . ' ' . (($_dir == 'ASC') ? 'DESC' : 'ASC');
         if (($sort == 'compound_rating ASC') || ($sort == 'compound_rating DESC')) {
-            $suffix_images = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS compound_rating';
-            $suffix_videos = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS compound_rating';
+            $suffix_images = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
+            $suffix_videos = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif (($sort == 'average_rating ASC') || ($sort == 'average_rating DESC')) {
-            $suffix_images = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS average_rating';
-            $suffix_videos = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS average_rating';
+            $suffix_images = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
+            $suffix_videos = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($sort == 'fixed_random ASC') {
-            $suffix_images = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
-            $suffix_videos = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
+            $suffix_images = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
+            $suffix_videos = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
         } else {
             $suffix_images = '';
             $suffix_videos = '';

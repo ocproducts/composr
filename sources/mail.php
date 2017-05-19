@@ -18,6 +18,8 @@
  * @package    core
  */
 
+/*EXTRA FUNCTIONS: DKIMSignature*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -311,13 +313,15 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
             $message_plain = preg_replace("#\[media[^\[\]]*\](.*)\[/media\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
         }
     }
+    $message_plain = str_replace('{$BASE_URL*}', escape_html(get_base_url()), $message_plain);
+    $message_plain = str_replace('{$BASE_URL}', get_base_url(), $message_plain);
     if (!in_array('thumb', $tags_to_preserve)) {
         $message_plain = str_replace('[/thumb', '[/img', str_replace('[thumb', '[img', $message_plain));
     }
     if (stripos($message_plain, '[img') !== false) {
         if (!in_array('img', $tags_to_preserve)) {
-            $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url] ', $message_plain);
-            $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url] ', $message_plain);
+            $message_plain = preg_replace("#\[img( param)?=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\3"]\2[/url] ', $message_plain);
+            $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]' . do_lang('VIEW') . '[/url] ', $message_plain);
         }
     }
     if (stripos($message_plain, '[email') !== false) {
@@ -328,11 +332,11 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
 
     if (stripos($message_plain, '[url') !== false) {
         if (!in_array('url', $tags_to_preserve)) {
-            $message_plain = preg_replace("#\[url=\"([^\"]*)\"[^\[\]]*\]\\1\[/url\]#", '\1', $message_plain);
-            $message_plain = preg_replace("#\(\[url=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]\)#", '\1', $message_plain);
-            $message_plain = preg_replace("#\[url=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\3' : '\3 (\1)', $message_plain);
-            $message_plain = preg_replace("#\[url=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\1 (\3)', $message_plain);
-            $message_plain = preg_replace("#\[url=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\1' : '\1 (\3)', $message_plain);
+            $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]\\1\[/url\]#", '\2', $message_plain);
+            $message_plain = preg_replace("#\(\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]\)#", '\2', $message_plain);
+            $message_plain = preg_replace("#\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\4' : '\4 (\2)', $message_plain);
+            $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\2 (\3)', $message_plain);
+            $message_plain = preg_replace("#\[url( param)?=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\2' : '\2 (\4)', $message_plain);
         }
     }
 
@@ -570,7 +574,7 @@ http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
  * @param  string $from_name The from name (blank: site name)
  * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
  * @range  1 5
- * @param  ?array $attachments An list of attachments (each attachment being a map, path=>filename) (null: none)
+ * @param  ?array $attachments An list of attachments (each attachment being a map, absolute path=>filename) (null: none)
  * @param  boolean $no_cc Whether to NOT CC to the CC address
  * @param  ?MEMBER $as Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
  * @param  boolean $as_admin Replace above with arbitrary admin
@@ -632,11 +636,11 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     if (!$coming_out_of_queue) {
         if ((mt_rand(0, 100) == 1) && (!$GLOBALS['SITE_DB']->table_is_locked('logged_mail_messages'))) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0', 500/*to reduce lock times*/); // Log it all for 2 weeks, then delete
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('email_log_days'))) . ' AND m_queued=0', 500/*to reduce lock times*/); // Log it all for 2 weeks, then delete
         }
 
-        $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
-        if (!empty($attachments)) {
+        $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1'))) || (get_option('mail_queue_debug') === '1');
+        if ((!empty($attachments)) && (get_option('mail_queue_debug') === '0')) {
             foreach (array_keys($attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
                     $through_queue = false;
@@ -740,10 +744,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme(''); // ... So get theme of welcome zone
     }
 
-    // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail/postfix-masquerading-as-sendmail not supporting the correct \r\n
+    // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail not supporting the correct \r\n
     /*
     $sendmail_path = ini_get('sendmail_path');
-    if ((strpos($sendmail_path, 'qmail') !== false) || (strpos($sendmail_path, 'sendmail') !== false)) {
+    if (strpos($sendmail_path, 'qmail') !== false) {
         $line_term = "\n";
     } else {
         $line_term = "\r\n";
@@ -756,6 +760,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $line_term = "\r";*/
     } else {
         $line_term = "\n";
+    }
+
+    // DKIM prep
+    $dkim_private_key = get_option('dkim_private_key');
+    $signed_headers = ''; // Will be filled later, potentially
+    if (trim($dkim_private_key) != '') {
+        require_code('mail_dkim');
     }
 
     // We use the boundary to seperate message parts
@@ -868,10 +879,16 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     if ($website_email == '') {
         $website_email = $from_email;
     }
-    if (get_option('use_true_from') == '0') {
-        $headers = 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
-    } else {
+    if (
+        (get_option('use_true_from') == '1') ||
+        ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('website_email')))) ||
+        ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('staff_address')))) ||
+        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_email_from')))) ||
+        ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == get_domain()))
+    ) {
         $headers = 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
+    } else {
+        $headers = 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
     }
     $headers .= 'Reply-To: <' . $from_email . '>' . $line_term;
     $headers .= 'Return-Path: <' . $website_email . '>' . $line_term;
@@ -912,6 +929,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $brand_name = 'Composr';
     }
     $headers .= 'X-Mailer: ' . $brand_name . $line_term;
+    $list_unsubscribe_target = get_value('list_unsubscribe_target');
+    if (!empty($list_unsubscribe_target)) {
+        $headers .= 'List-Unsubscribe: <' . $list_unsubscribe_target . '>' . $line_term;
+    }
     if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
         $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
         $headers .= 'Require-Recipient-Valid-Since: ' . $to_email[0] . '; ' . $_require_recipient_valid_since . $line_term;
@@ -1208,16 +1229,23 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             } else {
                 $to_line = '"' . $_to_name . '" <' . $to . '>';
             }
+
+            // DKIM
+            if (trim($dkim_private_key) != '') {
+                $signature = new DKIMSignature(trim($dkim_private_key, " \t\r\n\"'"), '', get_domain(), get_option('dkim_selector'));
+                $signed_headers = str_replace("\r\n", $line_term, $signature->get_signed_headers($to_line, $tightened_subject, str_replace($line_term, "\r\n", $sending_message), str_replace($line_term, "\r\n", $headers)));
+            }
+
             //if (function_exists('mb_language')) mb_language('en'); Stop overridden mbstring mail function from messing and base64'ing stuff. Actually we don't need this as we make sure to pass through as headers with blank message, bypassing any filtering.
             $php_errormsg = mixed();
             if (get_value('manualproc_mail') === '1') {
                 require_code('mail2');
-                $worked = manualproc_mail($to_line, $tightened_subject, $sending_message, $headers, $additional);
+                $worked = manualproc_mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers, $additional);
             } else {
                 if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ($additional == '')) {
-                    $worked = mail($to_line, $tightened_subject, $sending_message, $headers);
+                    $worked = mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers);
                 } else {
-                    $worked = mail($to_line, $tightened_subject, $sending_message, $headers, $additional);
+                    $worked = mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers, $additional);
                 }
             }
             if ((!$worked) && (isset($php_errormsg))) {

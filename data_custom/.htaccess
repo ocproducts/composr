@@ -18,7 +18,7 @@ Order Allow,Deny
 Deny from all
 </Files>
 
-<Files "resourcefs.log">
+<Files "resource_fs.log">
 Order Allow,Deny
 Deny from all
 </Files>

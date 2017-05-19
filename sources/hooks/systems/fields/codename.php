@@ -59,8 +59,8 @@ class Hook_fields_codename
      * Get some info bits relating to our field type, that helps us look it up / set defaults.
      *
      * @param  ?array $field The field details (null: new field)
-     * @param  ?boolean $required Whether a default value cannot be blank (null: don't "lock in" a new default value)
-     * @param  ?string $default The given default value as a string (null: don't "lock in" a new default value)
+     * @param  ?boolean $required Whether a default value cannot be blank (null: don't "lock in" a new default value) (may be passed as false also if we want to avoid "lock in" of a new default value, but in this case possible cleanup of $default may still happen where appropriate)
+     * @param  ?string $default The given default value as a string (null: don't "lock in" a new default value) (blank: only "lock in" a new default value if $required is true)
      * @return array Tuple of details (row-type,default-value-to-use,db row-type)
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
@@ -175,7 +175,7 @@ class Hook_fields_codename
             if (!addon_installed('catalogues')) {
                 break;
             }
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_integer', 'ce_id', array('cv_value' => $value, 'cf_id' => $field_id));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_short', 'ce_id', array('cv_value' => $value, 'cf_id' => $field_id));
         } while (!is_null($test));
 
         return $value;

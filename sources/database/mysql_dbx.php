@@ -48,7 +48,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
         if (!function_exists('dbx_connect')) {
             $error = 'dbx not on server (anymore?). Try using the \'mysql\' database driver. To use it, edit the _config.php config file.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -97,9 +97,6 @@ class Database_Static_mysql_dbx extends Database_super_mysql
      */
     public function db_has_full_text($db)
     {
-        if ($this->using_innodb()) {
-            return false;
-        }
         return true;
     }
 
@@ -223,8 +220,8 @@ class Database_Static_mysql_dbx extends Database_super_mysql
             }
         }
 
-        $sub = substr($query, 0, 4);
-        if ((is_object($results)) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'CHEC') || ($sub == 'EXPL') || ($sub == 'REPA') || ($sub == 'DESC') || ($sub == 'SHOW'))) {
+        $sub = substr(ltrim($query), 0, 4);
+        if ((is_object($results)) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW'))) {
             return $this->db_get_query_rows($results);
         }
 

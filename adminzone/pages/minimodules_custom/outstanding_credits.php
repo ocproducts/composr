@@ -55,7 +55,7 @@ if (!is_null($field_id)) {
         log_hack_attack_and_exit('ORDERBY_HACK');
     }
     inform_non_canonical_parameter('sort');
-    $orderby = 'CAST(field_' . $field_id . ' AS UNSIGNED)';
+    $orderby = 'field_' . $field_id;
     switch ($sortable) {
         case 'username':
             $orderby = 'm_username';
@@ -68,7 +68,7 @@ if (!is_null($field_id)) {
             break;
         case 'credits':
         default:
-            $orderby = 'CAST(field_' . $field_id . ' AS UNSIGNED)';
+            $orderby = 'field_' . $field_id;
             break;
     }
 
@@ -76,9 +76,10 @@ if (!is_null($field_id)) {
     $fields_title = results_field_title(array($uname, $ucredits, $ujoin, $ulast), $sortables, 'sort', $sortable . ' ' . $sort_order);
     $fields_values = new Tempcode();
 
-    $members = $GLOBALS['FORUM_DB']->query('SELECT a.m_username AS m_username, a.m_join_time AS m_join_time, a.m_last_visit_time AS m_last_visit_time, b.mf_member_id AS mf_member_id, CAST(field_' . $field_id . ' AS UNSIGNED) AS field_' . strval($field_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields b JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members a ON a.id=b.mf_member_id WHERE ' . db_string_not_equal_to('field_' . strval($field_id), '') . ' AND CAST(field_' . strval($field_id) . ' AS UNSIGNED)>0 ORDER BY ' . $orderby . ' ' . $sort_order . ' LIMIT ' . strval($start) . ', ' . strval($max));
+    $sql = 'SELECT a.m_username AS m_username, a.m_join_time AS m_join_time, a.m_last_visit_time AS m_last_visit_time, b.mf_member_id AS mf_member_id, field_' . $field_id . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields b JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members a ON a.id=b.mf_member_id WHERE field_' . strval($field_id) . '>0 ORDER BY ' . $orderby . ' ' . $sort_order;
+    $members = $GLOBALS['FORUM_DB']->query($sql, $max, $start);
     if (count($members) < 1) {
-        $msg_tpl = warn_screen($title, do_lang_tempcode('NO_RESULTS_SORRY'));
+        $msg_tpl = inform_screen($title, do_lang_tempcode('NO_RESULTS_SORRY'));
         $msg_tpl->evaluate_echo();
         return;
     }

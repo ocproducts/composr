@@ -56,41 +56,25 @@ class Database_super_mysql
     }
 
     /**
-     * Create a table index.
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
      * @param  array $db The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @return array List of SQL queries to run
      */
-    public function db_create_index($table_name, $index_name, $_fields, $db)
-    {
-        $query = $this->db_create_index_sql($table_name, $index_name, $_fields, $db);
-        if (!is_null($query)) {
-            $this->db_query($query, $db);
-        }
-    }
-
-    /**
-     * SQL to create a table index.
-     *
-     * @param  ID_TEXT $table_name The name of the table to create the index on
-     * @param  ID_TEXT $index_name The index name (not really important at all)
-     * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
-     * @return ?string SQL (null: do nothing)
-     */
-    public function db_create_index_sql($table_name, $index_name, $_fields)
+    public function db_create_index($table_name, $index_name, $_fields, $db, $raw_table_name, $unique_key_fields)
     {
         if ($index_name[0] == '#') {
-            if ($this->using_innodb()) {
-                return null;
-            }
             $index_name = substr($index_name, 1);
             $type = 'FULLTEXT';
         } else {
             $type = 'INDEX';
         }
-        return 'ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')';
+        return array('ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')');
     }
 
     /**
@@ -103,6 +87,25 @@ class Database_super_mysql
     public function db_change_primary_key($table_name, $new_key, $db)
     {
         $this->db_query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY, ADD PRIMARY KEY (' . implode(',', $new_key) . ')', $db);
+    }
+
+    /**
+     * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+     *
+     * @param string $table The table name
+     * @param array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form
+     * @param string $where_clause WHERE clauses if it will help get a more reliable number when we're not approximating in SQL form
+     * @param object $db The DB connection to check against
+     * @return ?integer The count (null: do it normally)
+     */
+    public function get_table_count_approx($table, $where, $where_clause, $db)
+    {
+        if (get_value('slow_counts') === '1') {
+            $sql = 'SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema=DATABASE() AND TABLE_NAME=\'' . $db->get_table_prefix() . $table . '\'';
+            return $db->query_value_if_there($sql, false, true);
+        }
+
+        return null;
     }
 
     /**
@@ -180,40 +183,16 @@ class Database_super_mysql
     }
 
     /**
-     * Whether to use InnoDB for MySQL. Change this function by hand - official only MyISAM supported
-     *
-     * @return boolean Answer
-     */
-    public function using_innodb()
-    {
-        return false;
-    }
-
-    /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
      * @param  array $db The DB connection to make on
      * @param  ID_TEXT $raw_table_name The table name with no table prefix
      * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
     public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
-    {
-        $query = $this->db_create_table_sql($table_name, $fields, $raw_table_name, $save_bytes);
-        $this->db_query($query, $db, null, null);
-    }
-
-    /**
-     * SQL to create a new table.
-     *
-     * @param  ID_TEXT $table_name The table name
-     * @param  array $fields A map of field names to Composr field types (with *#? encodings)
-     * @param  ID_TEXT $raw_table_name The table name with no table prefix
-     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
-     * @return string SQL
-     */
-    public function db_create_table_sql($table_name, $fields, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->db_get_type_remap();
 
@@ -247,16 +226,14 @@ class Database_super_mysql
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $innodb = $this->using_innodb();
+        $innodb = ((function_exists('get_value')) && (get_value('innodb') == '1'));
         $table_type = ($innodb ? 'INNODB' : 'MyISAM');
         $type_key = 'engine';
         /*if ($raw_table_name == 'sessions') {
             $table_type = 'HEAP';   Some MySQL servers are very regularly reset
         }*/
 
-        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '
-            PRIMARY KEY (' . $keys . ')
-        )';
+        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
 
         global $SITE_INFO;
         if (empty($SITE_INFO['database_charset'])) {
@@ -271,7 +248,7 @@ class Database_super_mysql
 
         $query .= ' ' . $type_key . '=' . $table_type;
 
-        return $query;
+        return array($query);
     }
 
     /**
@@ -320,14 +297,35 @@ class Database_super_mysql
     }
 
     /**
+     * Find whether table truncation support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function db_supports_truncate_table()
+    {
+        return true;
+    }
+
+    /**
+     * Find whether drop table "if exists" is present
+     *
+     * @return boolean Whether it is
+     */
+    public function db_supports_drop_table_if_exists()
+    {
+        return true;
+    }
+
+    /**
      * Delete a table.
      *
      * @param  ID_TEXT $table The table name
      * @param  array $db The DB connection to delete on
+     * @return array List of SQL queries to run
      */
     public function db_drop_table_if_exists($table, $db)
     {
-        $this->db_query('DROP TABLE IF EXISTS ' . $table, $db);
+        return array('DROP TABLE IF EXISTS ' . $table);
     }
 
     /**
