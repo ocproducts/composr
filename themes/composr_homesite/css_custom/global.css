@@ -15,9 +15,6 @@
 	.headRCol>ul>li .mobile_menu_button:hover, .headRCol li .mobile_menu_button:hover span { text-decoration:none !important; }
 	.srhHold { float:right; height:30px; margin:20px 5px 0 0; }
 	.srhHold .srhInp { float:left; width:140px; height:28px; padding:0 4px; border-top:1px solid #CCD3DD; border-bottom:1px solid #CCD3DD; border-left:1px solid #CCD3DD; border-right:0px; {$BETA_CSS_PROPERTY,border-radius:4px 0px 0px 4px;} font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
-	.srhHold .srhInp::-webkit-input-placeholder, .srhHold .srhInp::-moz-placeholder, .srhHold .srhInp:-ms-input-placeholder, .srhHold .srhInp:-moz-placeholder {
-		color:#9FB0C1; 
-	}
 	.srhHold .srhBtn { float:left; width:32px; height:28px; border-top:1px solid #CCD3DD; border-bottom:1px solid #CCD3DD; border-right:1px solid #CCD3DD; border-left:1px; {$BETA_CSS_PROPERTY,border-radius:0px 4px 4px 0px;} overflow:hidden; text-indent:-9999px; background-image:url('{$IMG;,composr_homesite/mobile/search_icon}'); background-repeat:no-repeat; background-position:6px 5px; background-color:#FFF; }
 	.srhHold .srhBtn a { display:block; height:26px; border-left:1px solid #CCD3DD; margin:1px 0 0 0; }
 
@@ -99,16 +96,9 @@ img, img a { border:none; outline:none; }
 	/* Our search button, plus make Google Site Search look the same */
 
 	.srhHold { clear:both; float:right; width:180px; height:30px; margin-left:164px; }
-	.srhHold .srhInp, input.gsc-input  { float:left; width:140px !important; height:28px; padding:0 0 0 4px !important; border-top:1px solid #CCD3DD !important; border-bottom:1px solid #CCD3DD !important; border-left:1px solid #CCD3DD !important; border-right:0px !important; {$BETA_CSS_PROPERTY,border-radius:4px 0px 0px 4px;} font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; color:#9FB0C1; }
-	.srhBtn, input.gsc-search-button { margin-left:0 !important; float:left; width:32px; border-top:1px solid #CCD3DD; border-bottom:1px solid #CCD3DD; border-right:1px solid #CCD3DD; border-left:1px; {$BETA_CSS_PROPERTY,border-radius:0px 4px 4px 0px;} overflow:hidden; text-indent:-9999px; background-image:url('{$IMG;,composr_homesite/search_icon}'); background-repeat:no-repeat; background-position:6px 5px; background-color:#FFF; }
+	.srhHold .srhInp  { float:left; width:140px !important; height:28px; padding:0 0 0 4px !important; border-top:1px solid #CCD3DD !important; border-bottom:1px solid #CCD3DD !important; border-left:1px solid #CCD3DD !important; border-right:0px !important; {$BETA_CSS_PROPERTY,border-radius:4px 0px 0px 4px;} font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
+	.srhBtn { margin-left:0 !important; float:left; width:32px; border-top:1px solid #CCD3DD; border-bottom:1px solid #CCD3DD; border-right:1px solid #CCD3DD; border-left:1px; {$BETA_CSS_PROPERTY,border-radius:0px 4px 4px 0px;} overflow:hidden; text-indent:-9999px; background-image:url('{$IMG;,composr_homesite/search_icon}'); background-repeat:no-repeat; background-position:6px 5px; background-color:#FFF; }
 	.srhBtn { height:28px; }/*On wrapper of input*/
-	input.gsc-search-button { height:30px; }/*On actual input*/
-	#cse-search-form { text-align:center; }
-	.cse input.gsc-input, input.gsc-input { background-image:none !important; }
-	table.gsc-search-box { width:100px !important;/*less than real size, will grow up*/ }
-	table.gsc-search-box td { padding:0 !important; }
-	.gsc-input { width:145px !important; }
-	.gsc-clear-button { display:none; }
 	.srhBtn a { display:block; width:32px; height:28px; }
 	.srhBtn:hover, input.gsc-search-button:hover { background-position:6px -21px; }
 
@@ -132,6 +122,10 @@ img, img a { border:none; outline:none; }
 	.dropMenu li:hover ul li a { padding:5px 15px; display:block; white-space:nowrap; background-color:#E4A960; color:#520F18; line-height:32px; }
 	.dropMenu li:hover ul li a:hover { background:#DA7C25; text-shadow:none; color:#FFF; }
 {+END}
+
+.srhHold .srhInp::-webkit-input-placeholder, .srhHold .srhInp::-moz-placeholder, .srhHold .srhInp:-ms-input-placeholder, .srhHold .srhInp:-moz-placeholder {
+	color:#9FB0C1; 
+}
 
 /*Sliders*/
 
