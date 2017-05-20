@@ -20,6 +20,8 @@ class comment_encapsulation_test_set extends cms_test_case
 {
     public function testEncapsulation()
     {
+        require_code('files2');
+
         foreach (array('javascript' => '.js', 'javascript_custom' => '.js', 'css' => '.css', 'css_custom' => '.css') as $subdir => $suffix) {
             $path = get_file_base() . '/themes/default/' . $subdir;
             $files = get_directory_contents($path);
