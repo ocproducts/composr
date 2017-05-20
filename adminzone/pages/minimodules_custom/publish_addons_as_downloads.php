@@ -42,7 +42,7 @@ if ($version_branch === null) {
     if ($GLOBALS['DEV_MODE']) {
         $version_branch = get_version_branch();
     } else {
-        warn_exit('Please pass the branch version in the URL (?version_branch=num.x).');
+        warn_exit('Please pass the branch version in the URL (?version_branch=num.x, e.g. version_branch=10.1.x).');
     }
 }
 
@@ -118,7 +118,7 @@ function publish_addon($addon, $version_branch, $cat_id)
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'url', array('url' => $addon_url));
     if (is_null($test)) {
-        $tar = tar_open($from, 'rb');
+        $tar = tar_open($to, 'rb');
         $info_file = tar_get_file($tar, 'addon.inf', true);
         $ini_info = better_parse_ini_file(null, $info_file['data']);
         tar_close($tar);
@@ -169,7 +169,7 @@ function publish_theme($file, $version_branch, $cat_id)
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'url', array('url' => $addon_url));
     if (is_null($test)) {
-        $tar = tar_open($from, 'rb');
+        $tar = tar_open($to, 'rb');
         $info_file = tar_get_file($tar, 'addon.inf', true);
         $ini_info = better_parse_ini_file(null, $info_file['data']);
         tar_close($tar);
